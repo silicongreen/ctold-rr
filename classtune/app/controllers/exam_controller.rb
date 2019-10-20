@@ -3595,6 +3595,7 @@ class ExamController < ApplicationController
     
     
     k = k3
+    j = 3
     @report_data['report']['subjects'].each do |sub|
       row_first << total_std
       unless half_pass[sub['id']].blank?
@@ -3635,22 +3636,47 @@ class ExamController < ApplicationController
         row8 << total_std
         row9 << "100%"
       end
-     
-      
+      new_book.worksheet(0).merge_cells(k,j,k,j+3)
+      new_book.worksheet(0).merge_cells(k+1,j,k+1,j+3)
+      new_book.worksheet(0).merge_cells(k+2,j,k+2,j+3)
+      new_book.worksheet(0).merge_cells(k+3,j,k+3,j+3)
+      new_book.worksheet(0).merge_cells(k+4,j,k+4,j+3)
+      new_book.worksheet(0).merge_cells(k+5,j,k+5,j+3)
+      new_book.worksheet(0).merge_cells(k+6,j,k+6,j+3)
+      new_book.worksheet(0).merge_cells(k+7,j,k+7,j+3)
+      new_book.worksheet(0).merge_cells(k+8,j,k+8,j+3)
+      new_book.worksheet(0).merge_cells(k+9,j,k+9,j+3)
+      new_book.worksheet(0).merge_cells(k+10,j,k+10,j+3)
+      new_book.worksheet(0).merge_cells(k+11,j,k+11,j+3)
+      j = j+4
     end
     
     new_book.worksheet(0).insert_row(k, row_first)
+    sheet1.row(k).default_format = center_align_format
     new_book.worksheet(0).insert_row(k+1, row1)
+    sheet1.row(k+1).default_format = center_align_format
     new_book.worksheet(0).insert_row(k+2, row2)
+    sheet1.row(k+2).default_format = center_align_format
     new_book.worksheet(0).insert_row(k+3, row3)
+    sheet1.row(k+3).default_format = center_align_format
     new_book.worksheet(0).insert_row(k+4, row_second)
+    sheet1.row(k+4).default_format = center_align_format
     new_book.worksheet(0).insert_row(k+5, row4)
+    sheet1.row(k+5).default_format = center_align_format
     new_book.worksheet(0).insert_row(k+6, row5)
+    sheet1.row(k+6).default_format = center_align_format
     new_book.worksheet(0).insert_row(k+7, row6)
+    sheet1.row(k+7).default_format = center_align_format
     new_book.worksheet(0).insert_row(k+8, row_third)
+    sheet1.row(k+8).default_format = center_align_format
     new_book.worksheet(0).insert_row(k+9, row7)
+    sheet1.row(k+9).default_format = center_align_format
     new_book.worksheet(0).insert_row(k+10, row8)
+    sheet1.row(k+10).default_format = center_align_format
     new_book.worksheet(0).insert_row(k+11, row9)
+    sheet1.row(k+11).default_format = center_align_format
+    
+    
     
     
     spreadsheet = StringIO.new 

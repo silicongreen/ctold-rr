@@ -1131,8 +1131,8 @@ module FinanceLoader
   
   def pay_student(amount_from_gateway, total_fees, request_params, orderId, trans_date, ref_id)
     unless @financefee.is_paid?
-      abort('here1')
       unless amount_from_gateway.to_f < 0
+        abort('here1 ' + amount_from_gateway.to_s + "  " + total_fees.to_s)
           unless amount_from_gateway.to_f > Champs21Precision.set_and_modify_precision(total_fees).to_f
             
           transaction = FinanceTransaction.new

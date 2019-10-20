@@ -3185,6 +3185,7 @@ class ExamController < ApplicationController
     row_third = ['','','']
     i = 3
     j = 3 
+    t_subject = 0
     unless @report_data.blank?
       @report_data['report']['subjects'].each do |sub|
         row_first << sub['name']
@@ -3202,13 +3203,13 @@ class ExamController < ApplicationController
         
         @report_data['report']['exams'].each do |report|
           if report['exam_category'] == '1' && cq_max.blank? && !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']]['full_mark'].blank?
-            cq_max = report['result'][report['exam_id']][sub['id']]['full_mark'].to_s
+            cq_max = report['result'][report['exam_id']][sub['id']]['full_mark'].to_i.to_s
           end
           if report['exam_category'] == '2' && mcq_max.blank? && !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']]['full_mark'].blank?
-            mcq_max = report['result'][report['exam_id']][sub['id']]['full_mark'].to_s
+            mcq_max = report['result'][report['exam_id']][sub['id']]['full_mark'].to_i.to_s
           end
           if report['exam_category'] == '3' && mtt_max.blank? && !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']]['full_mark'].blank?
-            mtt_max = report['result'][report['exam_id']][sub['id']]['full_mark'].to_s
+            mtt_max = report['result'][report['exam_id']][sub['id']]['full_mark'].to_i.to_s
           end
         end  
         row_third << cq_max
@@ -3219,9 +3220,21 @@ class ExamController < ApplicationController
         new_book.worksheet(0).merge_cells(1,j+3,2,j+3)
         i = i+1
         j = j+4
+        t_subject = t_subject+1
         
       end
     end
+    
+    row_first << "Total Subject = "+t_subject
+    row_second << "Fail Subject"
+    row_third << ""
+    
+    row_first <<  "Comment"
+    row_second << ""
+    row_third << ""
+    
+    new_book.worksheet(0).merge_cells(1,j,2,j)
+    new_book.worksheet(0).merge_cells(0,j+1,2,j+1)
     
     new_book.worksheet(0).insert_row(0, row_first)
     new_book.worksheet(0).insert_row(1, row_second)
@@ -3229,6 +3242,332 @@ class ExamController < ApplicationController
     sheet1.row(0).default_format = center_align_format
     sheet1.row(1).default_format = center_align_format
     sheet1.row(2).default_format = center_align_format
+    
+    k = 3
+    k3 = 3
+    row_first = []
+    row_second = ['','']
+    row_third = ['','']
+    
+    total_std = 0
+    half_pass = {}
+    final_pass = {}
+    avg_pass = {}
+    
+    @report_data['report']['students'].each do |std|
+      
+      total_std = total_std+1
+      row_first << std['class_roll_no']
+      row_first << std['first_name'].to_s+" "+std['last_name'].to_s
+      row_first <<  "Half Yearly/Pre-Test"
+      row_second << "Yearly Final/Test"
+      row_third <<  "Average"
+      
+      fail_half = 0
+      fail_final = 0
+      fail_avg = 0
+      
+      new_book.worksheet(0).merge_cells(k3,0,k3+2,0)
+      new_book.worksheet(0).merge_cells(k3,1,k3+2,1)
+      
+      @report_data['report']['subjects'].each do |sub|
+        if final_pass[sub['id']].blank?
+          final_pass[sub['id']] = 0
+        end
+        if half_pass[sub['id']].blank?
+          half_pass[sub['id']] = 0
+        end
+        if avg_pass[sub['id']].blank?
+          avg_pass[sub['id']] = 0
+        end
+        cq_total = 0
+        mcq_total = 0
+        mtt_total = 0
+        cq = 0
+        mcq = 0
+        mtt = 0
+        
+        cq_total_main = 0
+        mcq_total_main = 0
+        mtt_total_main = 0
+        
+        
+        cq1 = 0
+        mcq1 = 0
+        mtt1 = 0
+        
+        cq2 = 0
+        mcq2 = 0
+        mtt2 = 0
+        
+        cq3 = 0
+        mcq3 = 0
+        mtt3 = 0
+        
+        
+        total_100 = 0
+        total_1002 = 0
+        full_100 = 0
+        full_1002 = 0
+        total_1003 = 0
+        full_1003 = 0
+        @report_data['report']['exams'].each do |report|
+          if report['quarter'] == "0"
+            grade_mark = 0
+            full_mark = 0
+
+            if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+              total_100 = total_100.to_f+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+              total_1003 = total_1003.to_f+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+              grade_mark = report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+                    
+              if report['exam_category'] == '1'
+                cq = cq+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+                cq1 =report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+              elsif report['exam_category'] == '2'
+                mcq = mcq+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+                mcq1 =report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+              elsif report['exam_category'] == '3'
+                mtt = mtt+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+                mtt1 =report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+              end  
+                    
+            end
+            if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+              full_100 = full_100+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+              full_1003 = full_1003+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+              full_mark = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+              if report['exam_category'] == '1'
+                cq_total = cq_total+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                cq_total_main = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+              elsif report['exam_category'] == '2'
+                mcq_total = mcq_total+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                mcq_total_main = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+              elsif report['exam_category'] == '3'
+                mtt_total = mtt_total+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                mtt_total_main = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+              end
+            end 
+
+            if full_mark > 0
+              if grade_mark > 0
+                point_mark = (grade_mark.to_f/full_mark.to_f)*100
+                grade = GradingLevel.percentage_to_grade(point_mark, @batch.id)
+                if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
+                  if grade.credit_points.to_i == 0
+                    u_grade = true
+                  end  
+                end
+              else
+                u_grade = true
+              end  
+            end 
+                  
+          else
+            grade_mark2 = 0
+            full_mark2 = 0
+
+            if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+              total_1002 = total_1002.to_f+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+              total_1003 = total_1003.to_f+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+              grade_mark2 = report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+              if report['exam_category'] == '1'
+                cq = cq+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+                cq2 =report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+              elsif report['exam_category'] == '2'
+                mcq = mcq+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+                mcq2 =report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+              elsif report['exam_category'] == '3'
+                mtt = mtt+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+                mtt2 =report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+              end 
+            end
+            if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+              full_1002 = full_1002+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+              full_1003 = full_1003+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+              full_mark2 = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+              if report['exam_category'] == '1'
+                cq_total = cq_total+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+              elsif report['exam_category'] == '2'
+                mcq_total = mcq_total+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+              elsif report['exam_category'] == '3'
+                mtt_total = mtt_total+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+              end
+            end 
+
+            if full_mark2 > 0
+              if grade_mark2 > 0
+                point_mark2 = (grade_mark2.to_f/full_mark2.to_f)*100
+                grade2 = GradingLevel.percentage_to_grade(point_mark2, @batch.id)
+                if !grade2.blank? and !grade2.name.blank? and !grade2.credit_points.blank?
+                  if grade2.credit_points.to_i == 0
+                    u_grade2 = true
+                  end  
+                end
+              else
+                u_grade2 = true
+              end  
+            end 
+                  
+          end 
+        end
+        
+        if cq_total > 0
+          if cq > 0
+            point_mark3 = (cq.to_f/cq_total.to_f)*100
+            
+            cq3 = (cq.to_f/cq_total.to_f)*cq_total_main
+            cq3 = cq3.round()
+            grade3 = GradingLevel.percentage_to_grade(point_mark3, @batch.id)
+            if !grade3.blank? and !grade3.name.blank? and !grade3.credit_points.blank?
+              if grade3.credit_points.to_i == 0
+                u_grade3 = true
+              end  
+            end
+          else
+            u_grade3 = true
+          end  
+        end 
+        if mcq_total > 0
+          if cq > 0
+            point_mark3 = (mcq.to_f/mcq_total.to_f)*100
+              
+            mcq3 = (mcq.to_f/mcq_total.to_f)*mcq_total_main
+            mcq3 = mcq3.round()
+            grade3 = GradingLevel.percentage_to_grade(point_mark3, @batch.id)
+            if !grade3.blank? and !grade3.name.blank? and !grade3.credit_points.blank?
+              if grade3.credit_points.to_i == 0
+                u_grade3 = true
+              end  
+            end
+          else
+            u_grade3 = true
+          end  
+        end
+        if mtt_total > 0
+          if mtt > 0
+            point_mark3 = (mtt.to_f/mtt_total.to_f)*100
+            mtt3 = (mtt.to_f/mtt_total.to_f)*mtt_total_main
+            mtt3 = mtt3.round()
+            grade3 = GradingLevel.percentage_to_grade(point_mark3, @batch.id)
+            if !grade3.blank? and !grade3.name.blank? and !grade3.credit_points.blank?
+              if grade3.credit_points.to_i == 0
+                u_grade3 = true
+              end  
+            end
+          else
+            u_grade3 = true
+          end  
+        end
+          
+        
+        coverted_100 = 0
+        if total_100 > 0
+          coverted_100 = (total_100.to_f/full_100.to_f)*100
+        end
+        coverted_100_fraction = coverted_100
+        coverted_100 = coverted_100.round()
+        gp_point =0
+        if full_100 > 0
+          grade = GradingLevel.percentage_to_grade(coverted_100, @batch.id)
+          if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
+            gp_point = grade.credit_points
+            if grade.credit_points.to_i == 0
+              u_grade = true
+            end  
+          end
+        end
+        coverted_1002 = 0
+        if total_1002 > 0
+          coverted_1002 = (total_1002.to_f/full_1002.to_f)*100
+        end
+        coverted_100_fraction2 = coverted_1002
+        coverted_1002 = coverted_1002.round()
+        gp_point2 =0
+        if full_1002 > 0
+          grade2 = GradingLevel.percentage_to_grade(coverted_1002, @batch.id)
+          if !grade2.blank? and !grade2.name.blank? and !grade2.credit_points.blank?
+            gp_point2 = grade2.credit_points
+            if grade2.credit_points.to_i == 0
+              u_grade2 = true
+            end  
+          end
+        end
+          
+        coverted_1003 = 0
+        if total_1003 > 0
+          coverted_1003 = (total_1003.to_f/full_1003.to_f)*100
+        end
+        coverted_100_fraction3 = coverted_1003
+        coverted_1003 = coverted_1003.round()
+        gp_point3 =0
+        if full_1003 > 0
+          grade3 = GradingLevel.percentage_to_grade(coverted_1003, @batch.id)
+          if !grade3.blank? and !grade3.name.blank? and !grade3.credit_points.blank?
+            gp_point3 = grade3.credit_points
+            if grade3.credit_points.to_i == 0
+              u_grade3 = true
+            end  
+          end
+        end
+          
+        row_first <<  cq1
+        row_first <<  mcq1
+        row_first <<  mtt1
+        if u_grade
+          fail_half = fail_half+1
+          row_first << "0.0"
+        elsif !grade.blank?
+          row_first << grade.name
+          half_pass[sub['id']] = half_pass[sub['id']]+1
+        else
+          row_first << "-"
+        end
+          
+        row_second <<  cq2
+        row_second <<  mcq2
+        row_second <<  mtt2
+        if u_grade2
+          fail_final = fail_final+1
+          
+          row_second << "0.0"
+        elsif !grade2.blank?
+          row_second << grade2.name
+          final_pass[sub['id']] = final_pass[sub['id']]+1
+        else
+          row_second << "-"
+        end
+          
+        row_third <<  cq3
+        row_third <<  mcq3
+        row_third <<  mtt3
+        if u_grade3
+          fail_avg = fail_avg+1
+          row_third << "0.0"
+        elsif !grade3.blank?
+          row_third << grade3.name
+          avg_pass[sub['id']] = avg_pass[sub['id']]+1
+        else
+          row_third << "-"
+        end
+         
+        
+      end
+      row_first << fail_half
+      row_second << fail_final
+      row_third << fail_avg
+      
+      row_first << ""
+      row_second << ""
+      row_third << ""
+      
+      new_book.worksheet(0).insert_row(k3, row_first)
+      new_book.worksheet(0).insert_row(k3+1, row_second)
+      new_book.worksheet(0).insert_row(k3+2, row_third)
+      sheet1.row(k).default_format = center_align_format
+      k = k+1
+      k3 = k3+3
+    end
     
     spreadsheet = StringIO.new 
     new_book.write spreadsheet 
@@ -5044,27 +5383,27 @@ class ExamController < ApplicationController
     elsif  MultiSchool.current_school.id == 356
       if @connect_exam_obj.result_type == 1
         render :pdf => template,
-        :save_to_file => file_name,
-        :save_only    => for_save,
-        :orientation => 'Portrait',
-        :margin => {    :top=> 10,
-        :bottom => 30,
-        :left=> 10,
-        :right => 10},
-        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_footer_baghc.html'}}
+          :save_to_file => file_name,
+          :save_only    => for_save,
+          :orientation => 'Portrait',
+          :margin => {    :top=> 10,
+          :bottom => 30,
+          :left=> 10,
+          :right => 10},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_footer_baghc.html'}}
       else
         render :pdf => template,
-        :save_to_file => file_name,
-        :save_only    => for_save,
-        :orientation => 'Landscape',
-        :page_size => 'Legal',
-        :margin => {    :top=> 10,
-        :bottom => 30,
-        :left=> 10,
-        :right => 10},
-        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_footer_baghc_landscape.html'}}
+          :save_to_file => file_name,
+          :save_only    => for_save,
+          :orientation => 'Landscape',
+          :page_size => 'Legal',
+          :margin => {    :top=> 10,
+          :bottom => 30,
+          :left=> 10,
+          :right => 10},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_footer_baghc_landscape.html'}}
       end  
     elsif  MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2 
       if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6 and @connect_exam_obj.result_type != 7
@@ -5798,9 +6137,9 @@ class ExamController < ApplicationController
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                           unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4  or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
                             if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
-                             if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)
-                              four_subject_failed = true
-                             end 
+                              if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)
+                                four_subject_failed = true
+                              end 
                             end
                           end
                         end 
@@ -5814,10 +6153,10 @@ class ExamController < ApplicationController
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                           unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4  or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
                             if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
-                            if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)  
-                              u_grade2 = u_grade2+1
-                              subject_failed = true
-                            end  
+                              if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)  
+                                u_grade2 = u_grade2+1
+                                subject_failed = true
+                              end  
                             end
                           end
                         end 
@@ -5876,9 +6215,9 @@ class ExamController < ApplicationController
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"  && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                           unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
                             if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
-                            if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)  
-                              four_subject_failed = true
-                            end  
+                              if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)  
+                                four_subject_failed = true
+                              end  
                             end
                           end
                         end 
@@ -5887,9 +6226,9 @@ class ExamController < ApplicationController
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"  && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                           unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
                             if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
-                            if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9) 
-                              four_subject_failed = true
-                            end  
+                              if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9) 
+                                four_subject_failed = true
+                              end  
                             end 
                           end
                         end 

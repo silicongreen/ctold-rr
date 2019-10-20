@@ -177,31 +177,7 @@
                                     <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
                                   <% end %>
                                     
-                                  <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
-                                    <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
-                                      <% failed = true %>
-                                      <% failed_subject = true %>
-                                    <% end %>
-                                  <% end %>
-                                  <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && !fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
-                                    <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
-                                      <% failed_subject = true %>
-                                    <% end %>
-                                  <% end %>
-                                    
-                                   <% if fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
-                                    <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i == 31 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == 70 %>
-                                      <% failed = true %>
-                                      <% failed_subject = true %>
-                                    <% end %>
-                                  <% end %>
-                                    
-                                    <% if !fourth_subject.blank? %>
-                                    <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i == 31 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == 70 %>
-                
-                                      <% failed_subject = true %>
-                                    <% end %>
-                                  <% end %>
+                                  
                                     
                                     
                                 <% else %>
@@ -219,6 +195,9 @@
                             </td>
                             <%
                               main_mark = (tota_mark_with_monthly.to_f.round/full_mark_all.to_f)*100
+                              if (full_mark_all == 50 && main_mark == 44)
+                                main_mark = 45
+                              end
                             %>
                             <% grand_total_fraction = grand_total_fraction+tota_mark_with_monthly.to_f %>
                             <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
@@ -281,57 +260,7 @@
                                   <% end %>
                                 <% end %>
                             
-                                <% if full_sb > 0 %>
-                                  <%
-                                    
-                                    if total_sb > 0
-                                      sb_main = (total_sb.to_f/full_sb.to_f)*100
-                                      grade = GradingLevel.percentage_to_grade(sb_main, @batch.id)
-                                      if !grade.blank? and !grade.name.blank?
-                                        if (grade.credit_points.to_i == 0 && fourth_subject.blank?) or (total_sb.to_i < 64 && full_sb.to_i == 140 && fourth_subject.blank?)
-                                          failed_subject = true
-                                        end
-                                      end   
-                                    else
-                                      failed_subject = true
-                                    end    
                                 
-                                  %>
-                                <% end %>
-                                <% if full_ob > 0 %>
-                                  <%
-                                    
-                                    if total_ob > 0
-                                      ob_main = (total_ob.to_f/full_ob.to_f)*100
-                                      grade = GradingLevel.percentage_to_grade(ob_main, @batch.id)
-                                      if !grade.blank? and !grade.name.blank? && (total_ob != 22 || full_ob != 25)
-                                        if (grade.credit_points.to_i == 0 && fourth_subject.blank?) && (total_ob != 26 || full_ob != 60)
-                                          failed_subject = true
-                                        end
-                                      end   
-                                    else
-                                      failed_subject = true
-                                    end    
-                                
-                                  %>
-                                <% end %>
-                                <% if full_pr > 0 %>
-                                  <%
-                                    
-                                    if total_pr > 0
-                                      pr_main = (total_pr.to_f/full_pr.to_f)*100
-                                      grade = GradingLevel.percentage_to_grade(pr_main, @batch.id)
-                                      if !grade.blank? and !grade.name.blank?
-                                        if grade.credit_points.to_i == 0 && fourth_subject.blank? && (total_pr != 22 || full_pr != 25)
-                                          failed_subject = true
-                                        end
-                                      end   
-                                    else
-                                      failed_subject = true
-                                    end    
-                                
-                                  %>
-                                <% end %>
                                 <% avg_mark = main_exam_mark.to_f %>
                                 <% tota_mark_with_monthly = avg_mark %>
                                 <%
@@ -486,6 +415,9 @@
                               </td>
                               <%
                                 main_mark = (tota_mark_with_monthly.to_f.round/full_mark_all.to_f)*100
+                                if (full_mark_all == 50 && main_mark == 44)
+                                  main_mark = 45
+                                end
                               %>
                               <% grand_total_fraction = grand_total_fraction+tota_mark_with_monthly.to_f %>
                               <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
@@ -527,6 +459,7 @@
                   <tr class="page-break-grade">
                      <td colspan="100"></td>
                   </tr> 
+                  <% total_subject_main = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['grade_subject'].to_i != 1 %>
@@ -579,9 +512,6 @@
                                   <% else %>
                                     <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
                                   <% end %>
-                                  <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" %>
-                                    <% failed_subject = true %>
-                                   <% end %>
                                 <% else %>
                                   <td class="col-pdf">-</td>
                                 <% end %>
@@ -597,6 +527,9 @@
                             </td>
                             <%
                               main_mark = (tota_mark_with_monthly.to_f.round/full_mark_all.to_f)*100
+                              if (full_mark_all == 50 && main_mark == 44)
+                                  main_mark = 45
+                              end
                             %>
                             
                             <td class="col-pdf no-warp">
@@ -629,5 +562,5 @@
                   
                    
 
-              </table>
+              </table>  
 <% end %>

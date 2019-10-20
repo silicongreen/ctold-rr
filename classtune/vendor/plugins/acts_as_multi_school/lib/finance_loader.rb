@@ -1134,7 +1134,7 @@ module FinanceLoader
       
       unless amount_from_gateway.to_f < 0
           unless amount_from_gateway.to_f > Champs21Precision.set_and_modify_precision(total_fees).to_f
-
+            abort('here')
           transaction = FinanceTransaction.new
           transaction.title = "#{t('receipt_no')}. F#{@financefee.id}"
           transaction.category = FinanceTransactionCategory.find_by_name("Fee")

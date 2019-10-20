@@ -3587,14 +3587,14 @@ class ExamController < ApplicationController
     row8 = ['','','Fail']
     row9 = ['','','Pass(%)']
     
-    new_book.worksheet(0).merge_cells(k3-2,0,k3+9,0)
-    new_book.worksheet(0).merge_cells(k3-2,1,k3+1,1)
+    new_book.worksheet(0).merge_cells(k3,0,k3+11,0)
+    new_book.worksheet(0).merge_cells(k3,1,k3+3,1)
     
-    new_book.worksheet(0).merge_cells(k3+2,1,k3+5,1)
-    new_book.worksheet(0).merge_cells(k3+6,1,k3+9,1)
+    new_book.worksheet(0).merge_cells(k3+4,1,k3+7,1)
+    new_book.worksheet(0).merge_cells(k3+8,1,k3+11,1)
     
     
-    k = k3-2
+    k = k3
     @report_data['report']['subjects'].each do |sub|
       row_first << total_std
       unless half_pass[sub['id']].blank?

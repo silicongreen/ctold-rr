@@ -3216,9 +3216,10 @@ class ExamController < ApplicationController
         row_third << mtt_max
         row_third << ""
         
-        sheet1.merge_cells(1,j+3,2,j+3)
+        new_book.worksheet(0).merge_cells(1,j+3,2,j+3)
         i = i+1
         j = j+4
+        sheet1.row(i).default_format = center_align_format
       end
     end
     

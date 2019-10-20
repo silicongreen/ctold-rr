@@ -3225,7 +3225,7 @@ class ExamController < ApplicationController
       end
     end
     
-    row_first << "Total Subject = "+t_subject
+    row_first << "Total Subject = "+t_subject.to_s
     row_second << "Fail Subject"
     row_third << ""
     

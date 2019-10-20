@@ -1221,7 +1221,7 @@ class PaymentSettingsController < ApplicationController
               unless @student.nil?
                 finance_orders = FinanceOrder.find_all_by_order_id(o)
                 unless finance_orders.nil?
-                  abort(finance_orders.map(&:finance_fee_id).inspect)
+                  
                   finance_orders.each do |finance_order|
                     request_params = finance_order.request_params
 
@@ -1241,6 +1241,7 @@ class PaymentSettingsController < ApplicationController
                         date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
                         unless date.nil?
                           @financefee = FinanceFee.find(fee.id)
+                          abort(@financefee.inspect)
                           
                           fee_collection_id = fee.fee_collection_id
                           advance_fee_collection = false

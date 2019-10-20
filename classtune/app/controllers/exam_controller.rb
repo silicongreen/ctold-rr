@@ -3610,6 +3610,8 @@ class ExamController < ApplicationController
         row3 << "100%"
       end 
       
+      
+      
       row_second << total_std
       unless half_pass[sub['id']].blank?
         row4 << final_pass[sub['id']]
@@ -3636,6 +3638,21 @@ class ExamController < ApplicationController
         row8 << total_std
         row9 << "100%"
       end
+      
+      row1 << ['','','']
+      row2 << ['','','']
+      row3 << ['','','']
+      row4 << ['','','']
+      row5 << ['','','']
+      row6 << ['','','']
+      row7 << ['','','']
+      row8 << ['','','']
+      row9 << ['','','']
+      
+      row_first << ['','','']
+      row_second << ['','','']
+      row_third << ['','','']
+      
       new_book.worksheet(0).merge_cells(k,j,k,j+3)
       new_book.worksheet(0).merge_cells(k+1,j,k+1,j+3)
       new_book.worksheet(0).merge_cells(k+2,j,k+2,j+3)

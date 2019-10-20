@@ -3184,13 +3184,14 @@ class ExamController < ApplicationController
     row_second = ['','','']
     row_third = ['','','']
     i = 3
+    j = 3 
     unless @report_data.blank?
       @report_data['report']['subjects'].each do |sub|
         row_first << sub['name']
         row_first << ""
         row_first << ""
         row_first << ""
-        new_book.worksheet(0).merge_cells(0,i,0,i+3)
+        new_book.worksheet(0).merge_cells(0,j,0,j+3)
         row_second << "CQ/SQ"
         row_second << "MCQ"
         row_second << "MTT/Prac"
@@ -3215,8 +3216,9 @@ class ExamController < ApplicationController
         row_third << mtt_max
         row_third << ""
         
-        sheet1.merge_cells(1,i+3,2,i+3)
+        sheet1.merge_cells(1,j+3,2,j+3)
         i = i+1
+        j = j+4
       end
     end
     

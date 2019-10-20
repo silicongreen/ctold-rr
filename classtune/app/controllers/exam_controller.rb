@@ -3178,9 +3178,9 @@ class ExamController < ApplicationController
       end
     end
     row_first = ['Roll','Name','Exam Name']
-    new_book.worksheet(0).merge_cells(0,0,0,2)
-    new_book.worksheet(0).merge_cells(1,0,1,2)
-    new_book.worksheet(0).merge_cells(2,0,2,2)
+    new_book.worksheet(0).merge_cells(0,0,2,0)
+    new_book.worksheet(0).merge_cells(0,1,2,1)
+    new_book.worksheet(0).merge_cells(0,2,2,2)
     row_second = ['','','']
     row_third = ['','','']
     i = 3
@@ -3190,7 +3190,7 @@ class ExamController < ApplicationController
         row_first << ""
         row_first << ""
         row_first << ""
-        new_book.worksheet(0).merge_cells(i,0,i+4,0)
+        new_book.worksheet(0).merge_cells(0,i,0,i+4)
         row_second << "CQ/SQ"
         row_second << "MCQ"
         row_second << "MTT/Prac"
@@ -3215,7 +3215,7 @@ class ExamController < ApplicationController
         row_third << mtt_max
         row_third << ""
         
-        sheet1.merge_cells(i+4,1,i+4,2)
+        sheet1.merge_cells(1,i+4,2,i+4)
         i = i+1
       end
     end

@@ -1241,7 +1241,7 @@ class PaymentSettingsController < ApplicationController
                         date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
                         unless date.nil?
                           @financefee = FinanceFee.find(fee.id)
-                          abort(@financefee.inspect)
+                          
                           
                           fee_collection_id = fee.fee_collection_id
                           advance_fee_collection = false
@@ -1334,7 +1334,7 @@ class PaymentSettingsController < ApplicationController
                           total_fees = @financefee.balance.to_f+@fine_amount.to_f
 
                           amount_from_gateway = amount
-                        
+                          abort(amount_from_gateway.to_s + " " + amount.to_s)
                           pay_student(amount_from_gateway, total_fees, request_params, finance_order.order_id, verification_trans_date, ref_id)
                         end
                       else

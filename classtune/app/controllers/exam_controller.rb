@@ -3245,9 +3245,7 @@ class ExamController < ApplicationController
     
     k = 3
     k3 = 3
-    row_first = []
-    row_second = ['','']
-    row_third = ['','']
+    
     
     total_std = 0
     half_pass = {}
@@ -3257,6 +3255,9 @@ class ExamController < ApplicationController
     @report_data['report']['students'].each do |std|
       
       total_std = total_std+1
+      row_first = []
+      row_second = ['','']
+      row_third = ['','']
       row_first << std['class_roll_no']
       row_first << std['first_name'].to_s+" "+std['last_name'].to_s
       row_first <<  "Half Yearly/Pre-Test"
@@ -3635,23 +3636,21 @@ class ExamController < ApplicationController
         row9 << "100%"
       end
      
-      new_book.worksheet(0).insert_row(k, row_first)
-      new_book.worksheet(0).insert_row(k+1, row1)
-      new_book.worksheet(0).insert_row(k+2, row2)
-      new_book.worksheet(0).insert_row(k+3, row3)
-      new_book.worksheet(0).insert_row(k+4, row_second)
-      new_book.worksheet(0).insert_row(k+5, row4)
-      new_book.worksheet(0).insert_row(k+6, row5)
-      new_book.worksheet(0).insert_row(k+7, row6)
-      new_book.worksheet(0).insert_row(k+8, row_third)
-      new_book.worksheet(0).insert_row(k+9, row7)
-      new_book.worksheet(0).insert_row(k+10, row8)
-      new_book.worksheet(0).insert_row(k+11, row9)
       
     end
     
-    
-    
+    new_book.worksheet(0).insert_row(k, row_first)
+    new_book.worksheet(0).insert_row(k+1, row1)
+    new_book.worksheet(0).insert_row(k+2, row2)
+    new_book.worksheet(0).insert_row(k+3, row3)
+    new_book.worksheet(0).insert_row(k+4, row_second)
+    new_book.worksheet(0).insert_row(k+5, row4)
+    new_book.worksheet(0).insert_row(k+6, row5)
+    new_book.worksheet(0).insert_row(k+7, row6)
+    new_book.worksheet(0).insert_row(k+8, row_third)
+    new_book.worksheet(0).insert_row(k+9, row7)
+    new_book.worksheet(0).insert_row(k+10, row8)
+    new_book.worksheet(0).insert_row(k+11, row9)
     
     
     spreadsheet = StringIO.new 

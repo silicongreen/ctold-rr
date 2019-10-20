@@ -3219,13 +3219,16 @@ class ExamController < ApplicationController
         new_book.worksheet(0).merge_cells(1,j+3,2,j+3)
         i = i+1
         j = j+4
-        sheet1.row(i).default_format = center_align_format
+        
       end
     end
     
     new_book.worksheet(0).insert_row(0, row_first)
     new_book.worksheet(0).insert_row(1, row_second)
     new_book.worksheet(0).insert_row(2, row_third)
+    sheet1.row(0).default_format = center_align_format
+    sheet1.row(1).default_format = center_align_format
+    sheet1.row(2).default_format = center_align_format
     
     spreadsheet = StringIO.new 
     new_book.write spreadsheet 

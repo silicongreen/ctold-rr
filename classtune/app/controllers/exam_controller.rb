@@ -3160,6 +3160,75 @@ class ExamController < ApplicationController
       :footer => {:html => { :template=> 'layouts/pdf_footer_sagc.html'}}
   end
   
+  def tabulation_excell_baghc
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    new_book = Spreadsheet::Workbook.new
+    sheet1 = new_book.create_worksheet :name => 'tabulation'
+    center_align_format = Spreadsheet::Format.new :horizontal_align => :center,  :vertical_align => :middle
+    @id = params[:id]
+    @connect_exam_obj = ExamConnect.active.find(@id)
+    @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    if @report_data.nil?
+      student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id)
+      @report_data = []
+      if student_response['status']['code'].to_i == 200
+        @report_data = student_response['data']
+      end
+    end
+    row_first = ['Roll','Name','Exam Name']
+    new_book.worksheet(0).merge_cells(0,0,0,2)
+    new_book.worksheet(0).merge_cells(1,0,1,2)
+    new_book.worksheet(0).merge_cells(2,0,2,2)
+    row_second = ['','','']
+    row_third = ['','','']
+    i = 3
+    unless @report_data.blank?
+      @report_data['report']['subjects'].each do |sub|
+        row_first << sub['name']
+        row_first << ""
+        row_first << ""
+        row_first << ""
+        new_book.worksheet(0).merge_cells(i,0,i+4,0)
+        row_second << "CQ/SQ"
+        row_second << "MCQ"
+        row_second << "MTT/Prac"
+        row_second << "GP"
+        cq_max = ""
+        mcq_max = ""
+        mtt_max = ""
+        
+        @report_data['report']['exams'].each do |report|
+          if report['exam_category'] == '1' && cq_max.blank? && !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']]['full_mark'].blank?
+            cq_max = report['result'][report['exam_id']][sub['id']]['full_mark'].to_s
+          end
+          if report['exam_category'] == '2' && mcq_max.blank? && !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']]['full_mark'].blank?
+            mcq_max = report['result'][report['exam_id']][sub['id']]['full_mark'].to_s
+          end
+          if report['exam_category'] == '3' && mtt_max.blank? && !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']]['full_mark'].blank?
+            mtt_max = report['result'][report['exam_id']][sub['id']]['full_mark'].to_s
+          end
+        end  
+        row_third << cq_max
+        row_third << mcq_max
+        row_third << mtt_max
+        row_third << ""
+        
+        sheet1.merge_cells(i+4,1,i+4,2)
+        i = i+1
+      end
+    end
+    
+    new_book.worksheet(0).insert_row(0, row_first)
+    new_book.worksheet(0).insert_row(1, row_second)
+    new_book.worksheet(0).insert_row(2, row_third)
+    
+    spreadsheet = StringIO.new 
+    new_book.write spreadsheet 
+    send_data spreadsheet.string, :filename => @batch.full_name + "-" + @connect_exam_obj.name + ".xls", :type =>  "application/vnd.ms-excel"
+  end
+  
   def tabulation_excell
     require 'spreadsheet'
     Spreadsheet.client_encoding = 'UTF-8'

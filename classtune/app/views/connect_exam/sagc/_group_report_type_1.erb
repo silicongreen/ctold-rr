@@ -39,7 +39,6 @@
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                 <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                               <% else %>
-                                AB
                               <% end %>
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                 <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -110,7 +109,6 @@
                                     <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                       <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% else %>
-                                      AB
                                     <% end %>
                                     <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                       <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -148,5 +146,83 @@
                   <% end %> 
                    
 
-              </table>      
+              </table>
+                
+             
+               <% 
+                total_att = ""
+                absent = ""
+                if !@exam_comment.blank?
+                  all_comments = @exam_comment.comments
+                  if !all_comments.blank?
+                    all_comments_array = all_comments.split("|")
+                    total_att = all_comments_array[0]
+                    if !all_comments_array[1].nil?
+                      absent = all_comments_array[1]
+                    end
+                  end
+                end
+              %> 
+              <% grade_point_avg = (grade_point_avg.to_f*100).round() %>
+              <% grade_point_avg = grade_point_avg.to_f/100 %>
+              <table id="pdf-table" class="evaluation table_99 top-left-center"  width="99.8%" >
+                <tr class="odd">
+                   <td class="col-pdf align-left" rowspan="4" width="20%" ><b>Letter Grade</b></td>
+                   <%
+                      grade = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
+                   %>
+                   <td class="col-pdf font-size-45 center-class" rowspan="4"  width="30%"><b>
+                           <% if failed == true %>
+                              F
+                           <% else %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                            <%= grade.name %>
+                            <% else %>
+                            -
+                            <% end %>
+                           <% end %>
+                       
+                       </b></td>
+                </tr>       
+                <tr class="odd">  
+                    <td class="col-pdf align-left" colspan="2" width="50%"><b>Attendance</b></td>
+                </tr>
+                <tr class="odd">
+                    <td class="col-pdf align-left" width="25%">
+                        Working Days
+                    </td> 
+                    <td class="col-pdf align-center" width="25%">
+                        <%= total_att %>
+                    </td>
+                </tr>
+                <tr class="odd">
+                    <td class="col-pdf align-left" width="25%">
+                        Attendance
+                    </td> 
+                    <td class="col-pdf align-center " width="25%">
+                        <%= absent %>
+                    </td>
+                </tr> 
+              </table>
+              
+              
+              <table id="pdf-table" class="evaluation table_99 top-left-center"  width="99.8%" >
+                  <tr class="even remarks-tr">
+                    <td>
+                        <b>Remarks : </b>
+                            <% if failed == true %>
+                              Failed
+                            <% else %>
+                              <% if !grade.blank? and !grade.name.blank? %>
+                                <%= grade.description %>
+                              <% else %>
+
+                              <% end %>
+                            <% end %>
+                          <br/>    
+                          <b> Marks Distribution</b> : CW- 10, Oral- 10, Neatness- 5, Punctuality- 5, Attendance- 10, HW- 05, Hand Writing- 05
+                        
+                    </td>
+                  </tr>
+              </table>     
 <% end %>

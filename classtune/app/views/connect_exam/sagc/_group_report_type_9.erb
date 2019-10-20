@@ -103,6 +103,7 @@
                           <td class="col-pdf"><%= total_subject_main %></td>
 
                           <% class_test_full_mark = 0 %>
+                          <% class_test_ab = true %>
                           <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %><%= fourth_subject %><%= third_subject %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
@@ -110,6 +111,7 @@
                                 <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                               <% end %> 
                               <% if report['exam_category'] == '1' %>
+                                
                                 <% class_test_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                               <% end %>
                             <% end %>
@@ -142,6 +144,9 @@
                                 <% if report['exam_category'] == '1' or report['exam_category'] == '2' %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                     <% if report['exam_category'] == '1' %>
+                                      <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s != "AB" %>
+                                        <% class_test_ab = false %>
+                                      <% end %>
                                       <%  class_test_mark = class_test_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% else %>
                                       <%  at_mark = at_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
@@ -168,6 +173,8 @@
                             <% end %>      
                             <% if class_test_mark > 0 %>
                               <td class="col-pdf"><%= class_test_mark.to_i %></td>
+                            <% elsif class_test_ab == true %> 
+                              <td class="col-pdf"><%= "AB" %></td>
                             <% else %>
                               <td class="col-pdf"><%= "0" %></td>
                             <% end %>      
@@ -178,7 +185,11 @@
                                 <% if report['exam_category'] != '1' and report['exam_category'] != '2' %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                     <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                    <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s == "AB" %>
+                                      <td class="col-pdf">AB</td>
+                                    <% else %>
+                                      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                    <% end %>
                                     <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && fourth_subject.blank? && (report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25 or report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 8) %>
                                       <% failed = true %>
                                       <% failed_subject = true %>
@@ -367,5 +378,103 @@
                   <% end %>
 
 
-              </table>     
+              </table>
+
+
+
+              <% grade_point_avg = (grade_point_avg.to_f*100).to_f.round() %>
+              <% grade_point_avg = grade_point_avg.to_f/100 %>
+              <table id="pdf-table" class="evaluation table_99 top-left-center" width="99.8%" cellspacing="0">
+                  <tr class="odd">
+                      <td class="align-left no-warp"><b>Grade Point Avg</b></td>
+                      <td><b>
+                              <% if failed == true %>
+                                0.00
+                              <% else %>
+                                <%= sprintf( "%0.02f", grade_point_avg) %>
+                              <% end %></b>
+                      </td>
+                      <td class="align-left no-warp" colspan="2"><b>Position in Merit List</b></td>
+                      <td class="align-left no-warp" colspan="2"><b>Attendance</b></td>
+                  </tr> 
+                  <tr class="odd">
+                      <%
+
+                      grade = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
+                    %>
+                      <td class="align-left no-warp">Letter Grade</td>
+                      <td >
+                          <b>
+                              <% if failed == true %>
+                                F
+                              <% else %>
+                                <% if !grade.blank? and !grade.name.blank? %>
+                                  <%= grade.name %>
+                                <% else %>
+                                  -
+                                <% end %>
+                              <% end %>
+                          </b>
+                      </td>
+                      <td class="align-left no-warp">Section</td>
+                      <td class="no-warp">
+                          <% if !@student_position_first_term_batch[@student.id.to_i].blank? %> 
+                            <%= @student_position_first_term_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
+                          <% else %>
+                            -
+                          <% end %> 
+
+                      </td>
+                      <td class="col-pdf align-left">
+                          Working Days
+                      </td> 
+                      <td class="col-pdf align-center">
+                          &nbsp;
+                      </td>
+                  </tr>
+                  <tr class="odd">
+
+                      <td class="align-left no-warp">Total Marks With Fraction</td>
+                      <td class="align-left no-warp"><b><%= sprintf( "%0.02f", grand_total_fraction)%></b></td>
+                      <td class="align-left no-warp">Class/Group</td>
+                      <td class="no-warp">
+                          <b>
+                             
+                              <% if !@student_position_first_term[@student.id.to_i].blank? %> 
+                                <%= @student_position_first_term[@student.id.to_i] %> out of <%= @total_std %>
+                              <% else %>
+                                -
+                              <% end %> 
+                          </b>  
+                      </td> 
+                      <td class="col-pdf align-left">
+                          Attendance
+                      </td> 
+                      <td class="col-pdf align-center" >
+                          &nbsp;
+                      </td>
+                  </tr>
+                  
+
+              </table>
+              
+              <table id="pdf-table" class="evaluation table_99 top-left-center"  width="99.8%" >
+                  <tr class="even remarks-tr">
+                      <td>
+
+                          <b>Remarks : </b> <% if !@exam_comment.blank? %><%= @exam_comment.comments %><% else %>
+                            <% if failed == true %>
+                              Failed
+                            <% else %>
+                              <% if !grade.blank? and !grade.name.blank? %>
+                                <%= grade.description %>
+                              <% else %>
+
+                              <% end %>
+                            <% end %>
+                          <% end %>
+
+                      </td>
+                  </tr>
+              </table>   
 <% end %>

@@ -3190,7 +3190,7 @@ class ExamController < ApplicationController
         row_first << ""
         row_first << ""
         row_first << ""
-        new_book.worksheet(0).merge_cells(0,i,0,i+4)
+        new_book.worksheet(0).merge_cells(0,i,0,i+3)
         row_second << "CQ/SQ"
         row_second << "MCQ"
         row_second << "MTT/Prac"
@@ -3215,7 +3215,7 @@ class ExamController < ApplicationController
         row_third << mtt_max
         row_third << ""
         
-        sheet1.merge_cells(1,i+4,2,i+4)
+        sheet1.merge_cells(1,i+3,2,i+3)
         i = i+1
       end
     end

@@ -3529,7 +3529,6 @@ class ExamController < ApplicationController
         row_second <<  mtt2
         if u_grade2
           fail_final = fail_final+1
-          
           row_second << "0.0"
         elsif !grade2.blank?
           row_second << grade2.name
@@ -3564,10 +3563,96 @@ class ExamController < ApplicationController
       new_book.worksheet(0).insert_row(k3, row_first)
       new_book.worksheet(0).insert_row(k3+1, row_second)
       new_book.worksheet(0).insert_row(k3+2, row_third)
-      sheet1.row(k).default_format = center_align_format
+      sheet1.row(k3).default_format = center_align_format
+      sheet1.row(k3+1).default_format = center_align_format
+      sheet1.row(k3+2).default_format = center_align_format
       k = k+1
       k3 = k3+3
     end
+    
+    row_first = ['Summarize','Half Yearly/Pre-Test','Total Students']
+    row_second = ['','Yearly Final/Test','Total Students']
+    row_third = ['','Average','Total Students']
+   
+    row1 = ['','','Pass']
+    row2 = ['','','Fail']
+    row3 = ['','','Pass(%)']
+    
+    row4 = ['','','Pass']
+    row5 = ['','','Fail']
+    row6 = ['','','Pass(%)']
+    
+    row7 = ['','','Pass']
+    row8 = ['','','Fail']
+    row9 = ['','','Pass(%)']
+    
+    new_book.worksheet(0).merge_cells(k3-2,0,k3+9,0)
+    new_book.worksheet(0).merge_cells(k3-2,1,k3+1,1)
+    
+    new_book.worksheet(0).merge_cells(k3+2,1,k3+5,1)
+    new_book.worksheet(0).merge_cells(k3+6,1,k3+9,1)
+    
+    
+    k = k3-2
+    @report_data['report']['subjects'].each do |sub|
+      row_first << total_std
+      unless half_pass[sub['id']].blank?
+        row1 << half_pass[sub['id']]
+        fail = total_std.to_i - half_pass[sub['id']].to_i
+        row2 << fail
+        percent = (half_pass[sub['id']].to_f/total_std.to_f)*100
+        row3 << sprintf( "%0.02f", percent)
+      else
+        row1 << "0"
+        row2 << total_std
+        row3 << "100%"
+      end 
+      
+      row_second << total_std
+      unless half_pass[sub['id']].blank?
+        row4 << final_pass[sub['id']]
+        fail = total_std.to_i - final_pass[sub['id']].to_i
+        row5 << fail
+        percent = (final_pass[sub['id']].to_f/total_std.to_f)*100
+        row6 << sprintf( "%0.02f", percent)
+      else
+        row4 << "0"
+        row5 << total_std
+        row6 << "100%"
+      end
+      
+      
+      row_third << total_std
+      unless half_pass[sub['id']].blank?
+        row7 << avg_pass[sub['id']]
+        fail = total_std.to_i - avg_pass[sub['id']].to_i
+        row8 << fail
+        percent = (avg_pass[sub['id']].to_f/total_std.to_f)*100
+        row9 << sprintf( "%0.02f", percent)
+      else
+        row7 << "0"
+        row8 << total_std
+        row9 << "100%"
+      end
+     
+      new_book.worksheet(0).insert_row(k, row_first)
+      new_book.worksheet(0).insert_row(k+1, row1)
+      new_book.worksheet(0).insert_row(k+2, row2)
+      new_book.worksheet(0).insert_row(k+3, row3)
+      new_book.worksheet(0).insert_row(k+4, row_second)
+      new_book.worksheet(0).insert_row(k+5, row4)
+      new_book.worksheet(0).insert_row(k+6, row5)
+      new_book.worksheet(0).insert_row(k+7, row6)
+      new_book.worksheet(0).insert_row(k+8, row_third)
+      new_book.worksheet(0).insert_row(k+9, row7)
+      new_book.worksheet(0).insert_row(k+10, row8)
+      new_book.worksheet(0).insert_row(k+11, row9)
+      
+    end
+    
+    
+    
+    
     
     spreadsheet = StringIO.new 
     new_book.write spreadsheet 

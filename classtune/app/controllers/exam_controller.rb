@@ -3749,7 +3749,7 @@ class ExamController < ApplicationController
       group_name = group_split[0]
     end
     sheet1.add_header("Banophool Adibashi Green Heart College (Tabulation Sheet : "+@connect_exam_obj.name.to_s+")
- Class :"+@batch.course.course_name.to_s+" || Section :"+@batch.course.section_name.to_s+" || Version :"+batch_split[1]+"
+        Class :"+@batch.course.course_name.to_s+" || Section :"+@batch.course.section_name.to_s+" || Version :"+batch_split[1]+"
       ")
     
     

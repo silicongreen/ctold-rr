@@ -3532,7 +3532,7 @@ class ExamController < ApplicationController
           fail_half = fail_half+1
           row_first << "0.0"
         elsif !grade.blank?
-          row_first << grade.name
+          row_first << grade.credit_points
           half_pass[sub['id']] = half_pass[sub['id']]+1
         else
           row_first << "-"
@@ -3545,7 +3545,7 @@ class ExamController < ApplicationController
           fail_final = fail_final+1
           row_second << "0.0"
         elsif !grade2.blank?
-          row_second << grade2.name
+          row_second << grade2.credit_points
           final_pass[sub['id']] = final_pass[sub['id']]+1
         else
           row_second << "-"
@@ -3558,7 +3558,7 @@ class ExamController < ApplicationController
           fail_avg = fail_avg+1
           row_third << "0.0"
         elsif !grade3.blank?
-          row_third << grade3.name
+          row_third << grade3.credit_points
           avg_pass[sub['id']] = avg_pass[sub['id']]+1
         else
           row_third << "-"

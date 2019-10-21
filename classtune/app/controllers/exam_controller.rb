@@ -3734,6 +3734,23 @@ class ExamController < ApplicationController
     sheet1.row(k+11).default_format = center_align_format
     
     
+    center_align_format_big_90 = Spreadsheet::Format.new :horizontal_align => :center,:size => 18,:rotation=> 90,  :vertical_align => :middle,:left=>:thin,:right=>:thin,:top=>:thin,:bottom=>:thin
+    
+    sheet1.row(k).set_format(0,center_align_format_big_90)
+    
+    batch_split = @batch.name.split(" ")
+    
+    group_name = ""
+    unless @batch.course.group.blank?
+      group_split = @batch.course.group.split(" ")
+      unless group_split[2].blank?
+        group_split[0] = group_split[0]+" "+group_split[1]
+      end
+      group_name = group_split[0]
+    end
+    sheet1.add_header("Banophool Adibashi Green Heart College (Tabulation Sheet : "+@connect_exam_obj.name.to_s+")
+ Class :"+@batch.course.course_name.to_s+" || Section :"+@batch.course.section_name.to_s+" || Version :"+batch_split[1]+"
+      ")
     
     
     spreadsheet = StringIO.new 

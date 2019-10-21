@@ -5725,7 +5725,7 @@ class StudentController < ApplicationController
     
     unless @recipients.empty?
       #sms = Delayed::Job.enqueue(SmsManagerIndividualMessage.new(tmp_message,@recipients)) 
-      send_sms_finance(tmp_message,@recipients)
+      #send_sms_finance(tmp_message,@recipients)
     end
   end
  

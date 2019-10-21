@@ -254,8 +254,9 @@
                                     coverted_100 = (total_100.to_f/full_100.to_f)*100
                                   end
                                  
+                                  coverted_100_no_round = coverted_100
                                   coverted_100 = coverted_100.round()
-                                  total_mark_result = total_mark_result+coverted_100
+                                  total_mark_result = total_mark_result+coverted_100_no_round
                                   gp_point =0
                                   lg = "-"
                                   grade = GradingLevel.percentage_to_grade(coverted_100, @batch.id)
@@ -289,7 +290,8 @@
                                   <% end %>    
                                 </td>
                                 <td>
-                                  <%= coverted_100.to_i %>  
+                                  <%= sprintf( "%0.02f", coverted_100_no_round) %>
+                                  <%#= coverted_100.to_i %>  
                                 </td>
                                 <%
                                     highest_mark = 0
@@ -298,7 +300,7 @@
                                     end
                                 %>
                                 <td>
-                                   <%= highest_mark.to_i %>
+                                   <%= sprintf( "%0.02f", highest_mark) %>
                                 </td>
                                 <% if failed_grade %>
                                   <% main_failed_grade = true %>
@@ -395,8 +397,9 @@
                                     coverted_100 = (total2_100.to_f/full2_100.to_f)*100
                                   end
                                  
+                                  coverted_100_no_round = coverted_100
                                   coverted_100 = coverted_100.round()
-                                  total_mark2_result = total_mark2_result+coverted_100
+                                  total_mark2_result = total_mark2_result+coverted_100_no_round
                                   gp_point2 =0
                                   lg = "-"
                                   grade = GradingLevel.percentage_to_grade(coverted_100, @batch.id)
@@ -430,7 +433,8 @@
                                   <% end %>    
                                 </td>
                                 <td>
-                                  <%= coverted_100.to_i %>  
+                                  <%= sprintf( "%0.02f", coverted_100_no_round) %>
+                                  <%#= coverted_100.to_i %>  
                                 </td>
                                 <%
                                     highest_mark = 0
@@ -439,7 +443,7 @@
                                     end
                                 %>
                                 <td>
-                                   <%= highest_mark.to_i %>
+                                   <%= sprintf( "%0.02f", highest_mark) %>
                                 </td>
                                 <% if failed_grade %>
                                   <% main_failed_grade2 = true %>
@@ -526,8 +530,9 @@
                                     coverted_100 = (total_mark3_100.to_f/total_full_mark3_100.to_f)*100
                                   end
                                  
+                                  coverted_100_no_round = coverted_100
                                   coverted_100 = coverted_100.round()
-                                  total_mark3_result = total_mark3_result+coverted_100
+                                  total_mark3_result = total_mark3_result+coverted_100_no_round
                                   gp_point3 =0
                                   lg = "-"
                                   grade = GradingLevel.percentage_to_grade(coverted_100, @batch.id)
@@ -562,7 +567,8 @@
                                   <% end %>    
                                 </td>
                                 <td>
-                                  <%= coverted_100.to_i %>  
+                                  <%= sprintf( "%0.02f", coverted_100_no_round) %>
+                                  <%#= coverted_100.to_i %>  
                                 </td>
                                 <%
                                     highest_mark = 0
@@ -571,7 +577,7 @@
                                     end
                                 %>
                                 <td>
-                                   <%= highest_mark.to_i %>
+                                   <%= sprintf( "%0.02f", highest_mark) %>
                                 </td>
                                 <% if failed_grade3 %>
                                   <% main_failed_grade3 = true %>

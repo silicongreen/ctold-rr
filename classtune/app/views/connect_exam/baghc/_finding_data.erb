@@ -237,9 +237,9 @@
 
               total_gpa = total_gpa+gp_point
               if @subject_highest[sub['id'].to_i].blank?
-                @subject_highest[sub['id'].to_i] = coverted_100
-                elsif coverted_100.to_f > @subject_highest[sub['id'].to_i].to_f
-                @subject_highest[sub['id'].to_i] = coverted_100.to_f
+                @subject_highest[sub['id'].to_i] = coverted_100_fraction
+                elsif coverted_100_fraction.to_f > @subject_highest[sub['id'].to_i].to_f
+                @subject_highest[sub['id'].to_i] = coverted_100_fraction.to_f
               end
               
               total_mark2 = total_mark2+total_1002
@@ -266,9 +266,9 @@
 
               total_gpa2 = total_gpa2+gp_point2
               if @subject_highest2[sub['id'].to_i].blank?
-                @subject_highest2[sub['id'].to_i] = coverted_1002
-                elsif coverted_1002.to_f > @subject_highest2[sub['id'].to_i].to_f
-                @subject_highest2[sub['id'].to_i] = coverted_1002.to_f
+                @subject_highest2[sub['id'].to_i] = coverted_100_fraction2
+                elsif coverted_100_fraction2.to_f > @subject_highest2[sub['id'].to_i].to_f
+                @subject_highest2[sub['id'].to_i] = coverted_100_fraction2.to_f
               end
               
               
@@ -296,9 +296,9 @@
 
               total_gpa3 = total_gpa3+gp_point3
               if @subject_highest3[sub['id'].to_i].blank?
-                @subject_highest3[sub['id'].to_i] = coverted_1003
-              elsif coverted_1003.to_f > @subject_highest3[sub['id'].to_i].to_f
-                @subject_highest3[sub['id'].to_i] = coverted_1003.to_f
+                @subject_highest3[sub['id'].to_i] = coverted_100_fraction3
+              elsif coverted_100_fraction3.to_f > @subject_highest3[sub['id'].to_i].to_f
+                @subject_highest3[sub['id'].to_i] = coverted_100_fraction3.to_f
               end
               
             end

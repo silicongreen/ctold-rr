@@ -3165,7 +3165,9 @@ class ExamController < ApplicationController
     Spreadsheet.client_encoding = 'UTF-8'
     new_book = Spreadsheet::Workbook.new
     sheet1 = new_book.create_worksheet :name => 'tabulation'
-    center_align_format = Spreadsheet::Format.new :horizontal_align => :center,  :vertical_align => :middle
+    center_align_format = Spreadsheet::Format.new :horizontal_align => :center,  :vertical_align => :middle,:left=>:thin,:right=>:thin,:top=>:thin,:bottom=>:thin
+    
+    center_align_format_90 = Spreadsheet::Format.new :horizontal_align => :center,:rotation=> 90,  :vertical_align => :middle,:left=>:thin,:right=>:thin,:top=>:thin,:bottom=>:thin
     @id = params[:id]
     @connect_exam_obj = ExamConnect.active.find(@id)
     @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
@@ -3216,6 +3218,10 @@ class ExamController < ApplicationController
         row_third << mcq_max
         row_third << mtt_max
         row_third << ""
+        
+        sheet1.row(1).set_format(j,center_align_format_90)
+        sheet1.row(1).set_format(j+1,center_align_format_90)
+        sheet1.row(1).set_format(j+2,center_align_format_90)
         
         new_book.worksheet(0).merge_cells(1,j+3,2,j+3)
         i = i+1
@@ -3595,6 +3601,8 @@ class ExamController < ApplicationController
     
     
     k = k3
+    k = k+2
+    k3 = k3+2
     j = 3
     @report_data['report']['subjects'].each do |sub|
       row_first << total_std

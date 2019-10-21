@@ -751,7 +751,7 @@
                                         <%= @report_data['present'] %>
                                     <% end %>    
                                 </td>
-                                <td colspan="3">
+                                <td colspan="1">
                                     Absent<br/>
                                     <% unless @report_data['absent'].nil?  %>
                                       <%= @report_data['absent'] %>
@@ -775,7 +775,7 @@
                                     <%= @report_data['present_first_term'] %>
                                 <% end %>    
                                 </td>
-                                <td colspan="3">
+                                <td colspan="1">
                                     Absent<br/>
                                     <% unless @report_data['absent_first_term'].nil?  %>
                                       <% absent = absent+@report_data['absent_first_term'].to_i %>
@@ -787,26 +787,40 @@
                                 </td>
                                 <% end %>
                                 
+                                <% percent = (present1.to_f/total1.to_f)*100 %>
+                                
+                                <td colspan="2">
+                                    Attendance<br/>
+                                    <%= sprintf( "%0.02f", percent) %>
+                                </td>
+                                
                                 <% if @report_data['total_first_term'].nil? %>
                                 <td colspan="2">Total Working day</td>
                                 <td colspan="2">Present</td>
-                                <td colspan="3">Absent</td>
+                                <td colspan="1">Absent</td>
+                                <td colspan="2">Attendance</td>
                                 <% else %>
                                 <td colspan="2">Total Working day<br/><%= @report_data['total'] %></td>
                                 <td colspan="2">Present<br/>
                                 <% unless @report_data['total_new_std'].blank?  %>
+                                    <% present2 = @report_data['total_new_std'].to_i-@report_data['absent'].to_i %>
                                     <%= @report_data['total_new_std'].to_i-@report_data['absent'].to_i %>
                                 <% else %>
                                     <%= @report_data['present'] %>
                                 <% end %>    
                                 </td>
-                                <td colspan="3">
+                                <td colspan="1">
                                     Absent<br/>
                                     <% unless @report_data['absent'].nil?  %>
                                       <%= @report_data['absent'] %>
                                     <% else %>
                                       <%= @report_data['total']-@report_data['present'] %>
                                     <% end %>
+                                </td>
+                                <% percent = (present2.to_f/total2.to_f)*100 %>
+                                <td colspan="2">
+                                    Attendance<br/>
+                                    <%= sprintf( "%0.02f", percent) %>
                                 </td>
                                 <% end %>
                                
@@ -815,7 +829,12 @@
                                 
                                 <td colspan="2">Total Working day<br/><%= total %></td>
                                 <td colspan="2">Present<br/><%= present %></td>
-                                <td colspan="3">Absent<br/><%= absent %></td>
+                                <td colspan="1">Absent<br/><%= absent %></td>
+                                <% percent = (present.to_f/total.to_f)*100 %>
+                                <td colspan="2">
+                                    Attendance<br/>
+                                    <%= sprintf( "%0.02f", percent) %>
+                                </td>
                                 
                             </tr>
 

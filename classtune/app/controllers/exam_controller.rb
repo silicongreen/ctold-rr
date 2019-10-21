@@ -3188,6 +3188,8 @@ class ExamController < ApplicationController
     i = 3
     j = 3 
     t_subject = 0
+    
+    rotate_90 = []
     unless @report_data.blank?
       @report_data['report']['subjects'].each do |sub|
         row_first << sub['name']
@@ -3219,9 +3221,10 @@ class ExamController < ApplicationController
         row_third << mtt_max
         row_third << ""
         
-        sheet1.row(1).set_format(j,center_align_format_90)
-        sheet1.row(1).set_format(j+1,center_align_format_90)
-        sheet1.row(1).set_format(j+2,center_align_format_90)
+        rotate_90 << j
+        rotate_90 << j+1
+        rotate_90 << j+2
+        
         
         new_book.worksheet(0).merge_cells(1,j+3,2,j+3)
         i = i+1
@@ -3248,6 +3251,10 @@ class ExamController < ApplicationController
     sheet1.row(0).default_format = center_align_format
     sheet1.row(1).default_format = center_align_format
     sheet1.row(2).default_format = center_align_format
+    
+    rotate_90.each do |n|
+      sheet1.row(1).set_format(n,center_align_format_90)
+    end  
     
     k = 3
     k3 = 3
@@ -3577,6 +3584,9 @@ class ExamController < ApplicationController
       k3 = k3+3
     end
     
+    k = k3
+    k = k+2
+    k3 = k3+2
     row_first = ['Summarize','Half Yearly/Pre-Test','Total Students']
     row_second = ['','Yearly Final/Test','Total Students']
     row_third = ['','Average','Total Students']
@@ -3600,9 +3610,7 @@ class ExamController < ApplicationController
     new_book.worksheet(0).merge_cells(k3+8,1,k3+11,1)
     
     
-    k = k3
-    k = k+2
-    k3 = k3+2
+    
     j = 3
     @report_data['report']['subjects'].each do |sub|
       row_first << total_std

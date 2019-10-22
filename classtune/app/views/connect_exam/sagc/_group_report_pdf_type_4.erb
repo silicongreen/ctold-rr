@@ -3,7 +3,7 @@
  <% total_u = 0 %>
   <div id="page-yield"  class="available_sections1 baf_shaheen">
       <%= render  :partial=>"/connect_exam/sagc/header" %>
-      <table id="pdf-table" class="tbl-lign-left first_table" width="38%" cellspacing="0">
+      <table id="pdf-table" class="tbl-lign-left-3 first_table" width="38%" cellspacing="0">
           <tr class="even">
               <td class="align-right col-pdf" width="20%">Student ID </td><td colspan="3" class="align-left"><b><%= @student.admission_no %></b></td>
           </tr>
@@ -1100,6 +1100,17 @@
          padding: 10px !important;
       }
       
+      .baf_shaheen table.tbl-lign-left-3 tr.even td,.baf_shaheen table.tbl-lign-left-3 tr.odd td
+      {
+         font-weight: normal !important;
+         padding: 4px !important;
+      }
+      .baf_shaheen table.tbl-lign-left-3
+      {
+          float:left !important;
+          margin-left: 2% !important;
+      }
+      
       .baf_shaheen table.tbl-lign-left-2 tr.even td, .baf_shaheen table.tbl-lign-left-2 tr.odd td
       {
          font-weight: normal !important;
@@ -1144,7 +1155,7 @@
     }
     .baf_shaheen div.grade_information table#pdf-table tr.even td
     {
-        padding: 3px 4px !important;
+        padding: 5px 4px !important;
     }
     div.baf_shaheen h2
     {

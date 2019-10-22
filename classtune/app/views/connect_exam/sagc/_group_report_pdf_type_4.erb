@@ -453,15 +453,15 @@
                             <%
                               main_mark = (tota_mark_with_monthly2.to_f.round/full_mark_all.to_f)*100
                             %>
-                            <% grand_total_fraction2 = grand_total_fraction2+tota_mark_with_monthly1.to_f %>
-                            <% grand_total2 = grand_total2+tota_mark_with_monthly1.to_f.round.to_i %>
+                            <% grand_total_fraction2 = grand_total_fraction2+tota_mark_with_monthly2.to_f %>
+                            <% grand_total2 = grand_total2+tota_mark_with_monthly2.to_f.round.to_i %>
                            
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <% if grade.credit_points.to_i == 0 %>
                                 <% failed1 = true %>
                               <% end %>
-                              <% total_grade1 = total_grade1.to_f+grade.credit_points.to_f %>
+                              <% total_grade2 = total_grade2.to_f+grade.credit_points.to_f %>
                               <td class="col-pdf"><%= grade.name %></td>
                               <td class="col-pdf"><%= grade.credit_points %></td>
                             <% else %>

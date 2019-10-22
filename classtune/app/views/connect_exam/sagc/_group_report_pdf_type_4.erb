@@ -443,18 +443,18 @@
                             <td class="col-pdf no-warp">
                                <%= sprintf( "%0.02f", avg_mark)%>
                             </td>
-                            <% tota_mark_with_monthly1 = avg_mark+class_test_mark2 %>
+                            <% tota_mark_with_monthly2 = avg_mark+class_test_mark2 %>
                             <td class="col-pdf no-warp">
-                                <b><%= tota_mark_with_monthly1.to_f.round.to_i %></b>
+                                <b><%= tota_mark_with_monthly2.to_f.round.to_i %></b>
                             </td>
                             
                             
                             <td><%=  highest_mark1.round() %></td>
                             <%
-                              main_mark = (tota_mark_with_monthly1.to_f.round/full_mark_all.to_f)*100
+                              main_mark = (tota_mark_with_monthly2.to_f.round/full_mark_all.to_f)*100
                             %>
-                            <% grand_total_fraction1 = grand_total_fraction1+tota_mark_with_monthly1.to_f %>
-                            <% grand_total1 = grand_total1+tota_mark_with_monthly1.to_f.round.to_i %>
+                            <% grand_total_fraction2 = grand_total_fraction2+tota_mark_with_monthly1.to_f %>
+                            <% grand_total2 = grand_total2+tota_mark_with_monthly1.to_f.round.to_i %>
                            
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
@@ -731,13 +731,13 @@
                             <td class="col-pdf no-warp">
                                <%= sprintf( "%0.02f", avg_mark)%>
                             </td>
-                            <% tota_mark_with_monthly = avg_mark+class_test_mark2 %>
+                            <% tota_mark_with_monthly2 = avg_mark+class_test_mark2 %>
                             <td class="col-pdf no-warp">
-                                <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
+                                <b><%= tota_mark_with_monthly2.to_f.round.to_i %></b>
                             </td>
                             <td><%=  highest_mark2.round() %></td>
                             <%
-                              main_mark = (tota_mark_with_monthly.to_f.round/full_mark_all.to_f)*100
+                              main_mark = (tota_mark_with_monthly2.to_f.round/full_mark_all.to_f)*100
                             %>
                           
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

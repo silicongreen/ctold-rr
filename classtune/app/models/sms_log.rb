@@ -23,7 +23,13 @@ class SmsLog < ActiveRecord::Base
   end
   
   def self.get_filter_sms_logs(mobile = nil)
-    SmsLog.find(:all,:conditions=> ["mobile = #{mobile}"])
+    unless mobile.blank?
+      SmsLog.find(:all, :conditions=> ["mobile = #{mobile}"])
+#    elsif start_date != nil and end_date != nil
+#      date1 = start_date.to_date.strftime("%Y-%m-%d")
+#      date2 = end_date.to_date.strftime("%Y-%m-%d")
+#      SmsLog.find(:all,:conditions=> ["created_at >= #{date1} AND created_at <= #{date2}"])
+    end
   end
 
   

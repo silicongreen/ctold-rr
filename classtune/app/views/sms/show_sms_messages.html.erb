@@ -28,16 +28,13 @@
         <% form_remote_for :sms_log, :url=>{:action=>"filter_sms_logs"}  do |form| %>
           <table style="padding:10px; background: #ddd; width:100%;">
               <tr>
-                  <th colspan="5" style="text-align:right; padding: 5px;">
+                  <th colspan="4" style="text-align:right; padding: 5px;">
                       <%= t('total_sms_sent') %> : <%= @total_sms %> <%= @mobile %>
                   </th>
               </tr>
               <tr>
                   <td>
                       <%= form.text_field :mobile, :class=>"form-control", :placeholder => "Enter Mobile Number" %>
-                  </td>
-                  <td>
-                      <%= form.text_field :sms, :class=>"form-control", :placeholder => "Enter SMS Text" %>
                   </td>
                   <td>
                       <div class="form-control-date">
@@ -94,6 +91,7 @@
         width: 90%;
         font-size: 12px;
         line-height: 1.5;
+        padding: 8px;
         color: #495057;
         background-color: #fff;
         background-clip: padding-box;

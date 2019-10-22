@@ -21,6 +21,10 @@ class SmsLog < ActiveRecord::Base
   def self.get_sms_logs(page = 1)
     SmsLog.paginate(:order=>"id DESC", :page => page, :per_page => 30)
   end
+  
+  def self.get_filter_sms_logs(page = 1)
+    SmsLog.paginate(:order=>"id DESC", :page => page, :per_page => 30)
+  end
 
   def self.default_time_zone_present_time(time_stamp)
     server_time = time_stamp

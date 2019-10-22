@@ -3940,8 +3940,13 @@ class ExamController < ApplicationController
       end
       group_name = group_split[0]
     end
+    shift = ""
+    version= ""
+    unless batch_split[1].blank?
+      version = batch_split[1]
+    end
     sheet1.add_header("SHAHEED BIR UTTAM LT. ANWAR GIRLS' COLLEGE (Tabulation Sheet : "+@connect_exam_obj.name.to_s+")
- Program :"+@batch.course.course_name.to_s+" || Group :"+group_name.to_s+" || Section :"+@batch.course.section_name.to_s+" || Shift :"+batch_split[0]+" || Session :"+@batch.course.session.to_s+" || Version :"+batch_split[1]+"
+ Program :"+@batch.course.course_name.to_s+" || Group :"+group_name.to_s+" || Section :"+@batch.course.section_name.to_s+" || Shift :"+batch_split[0]+" || Session :"+@batch.course.session.to_s+" || Version :"+version+"
       ")
     sheet1.add_footer("TIPS :: M.C = Merit in Class  ||  M.S = Merit in Section  ||  +RT = Raw Total  ||  +CT = Converted Total")
     spreadsheet = StringIO.new 
@@ -6610,7 +6615,7 @@ class ExamController < ApplicationController
                 if exam_type == 3
                   main_mark = (total_mark1.to_f+total_mark2.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
              
-                  main_mark_no_round = (total_mark1_no_round.to_f+total_mark2_no_round.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
+                  main_mark_no_round = (total_mark1_no_round.to_f+total_mark2_no_round.to_f)/(full_mark1.to_f+full_mark2.to_f)*full_mark1
                 elsif  exam_type == 2
                   main_mark = total_mark2.to_f/full_mark2.to_f*100
                  

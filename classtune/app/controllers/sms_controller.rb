@@ -1112,9 +1112,15 @@ class SmsController < ApplicationController
   end
 
   def show_sms_messages
-#    @sms_messages = SmsMessage.get_sms_messages(params[:page])
     @sms_logs = SmsLog.get_sms_logs(params[:page])
     @total_sms = SmsLog.count
+  end
+  
+  def filter_sms_logs
+     @sms_logs = SmsLog.get_filter_sms_logs(params[:page])
+     render :update do |page|
+      page.replace_html "sms-log-box", :partial => "filter_sms_logs"
+    end
   end
 
   def show_sms_logs

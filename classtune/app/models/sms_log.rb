@@ -22,10 +22,11 @@ class SmsLog < ActiveRecord::Base
     SmsLog.paginate(:order=>"id DESC", :page => page, :per_page => 30)
   end
   
-  def self.get_filter_sms_logs(page = 1)
-    SmsLog.paginate(:order=>"id DESC", :page => page, :per_page => 30)
+  def self.get_filter_sms_logs(mobile = nil)
+    SmsLog.find(:all,:conditions=> ["mobile = #{mobile}"])
   end
 
+  
   def self.default_time_zone_present_time(time_stamp)
     server_time = time_stamp
     server_time_to_gmt = server_time.getgm

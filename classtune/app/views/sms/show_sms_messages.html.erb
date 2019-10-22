@@ -25,14 +25,14 @@
 </div>
 <div id="page-yield">
     <div class="box">
-        <table style="padding:10px; background: #ddd; width:100%;">
-            <tr>
-                <th colspan="5" style="text-align:right; padding: 5px;">
-                    <%= t('total_sms_sent') %> : <%= @total_sms %> <%= @mobile %>
-                </th>
-            </tr>
-            <tr>
-                <% form_remote_for :sms_log, :url=>{:action=>"filter_sms_logs"}  do |form| %>
+        <% form_remote_for :sms_log, :url=>{:action=>"filter_sms_logs"}  do |form| %>
+          <table style="padding:10px; background: #ddd; width:100%;">
+              <tr>
+                  <th colspan="5" style="text-align:right; padding: 5px;">
+                      <%= t('total_sms_sent') %> : <%= @total_sms %> <%= @mobile %>
+                  </th>
+              </tr>
+              <tr>
                   <td>
                       <%= form.text_field :mobile, :class=>"form-control", :placeholder => "Enter Mobile Number" %>
                   </td>
@@ -52,9 +52,9 @@
                   <td>
                       <%= form.submit "Filter", :id => "filter-button" %>
                   </td>
-                <% end %>
-            </tr>
-        </table>
+              </tr>
+          </table>
+        <% end %>
     </div>
     <div class="box" id="sms-log-box">
         <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">

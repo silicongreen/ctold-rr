@@ -1112,8 +1112,9 @@ class SmsController < ApplicationController
   end
 
   def show_sms_messages
-    @sms_messages = SmsMessage.get_sms_messages(params[:page])
-    @total_sms = Configuration.get_config_value("TotalSmsCount")
+#    @sms_messages = SmsMessage.get_sms_messages(params[:page])
+    @sms_logs = SmsLog.get_sms_logs(params[:page])
+    @total_sms = SmsLog.count
   end
 
   def show_sms_logs

@@ -16,7 +16,11 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 class SmsLog < ActiveRecord::Base
-  belongs_to :sms_message
+  belongs_to :sms_message, :class_name => 'SmsMessage'
+
+  def self.get_sms_logs(page = 1)
+    SmsLog.paginate(:order=>"id DESC", :page => page, :per_page => 30)
+  end
 
   def self.default_time_zone_present_time(time_stamp)
     server_time = time_stamp

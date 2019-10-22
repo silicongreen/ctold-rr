@@ -16,28 +16,78 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-
+<style>
+  .form-control {
+    display: block;
+    width: 90%;
+    padding: 10px 10px;
+    font-size: 10px;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.form-btn{
+    background: #49BB4B;
+    color:#fff;
+    font-weight:bold;
+}
+</style>
 <div id="content-header">
-<%= show_header_icon %>
-  <h1><%= t('sms_text') %></h1>
-<div class='header-sep'>|</div>
-<div class='sub-header'><%= t('messages') %></div>
+    <%= show_header_icon %>
+    <h1><%= t('sms_text') %></h1>
+    <div class='header-sep'>|</div>
+    <div class='sub-header'><%= t('messages') %></div>
 
 </div>
 <div id="page-yield">
-  <div class="box">
-    <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
-      <tr class="tr-head">
-        <td><%= t('sms_messages') %></td><td><%= t('total_sms_sent') %> : <%= @total_sms %></td>
-      </tr>
-      <tr class="tr-blank"></tr>
-      <% @sms_messages.each do |sms| %>
-        <tr class="tr-<%= cycle('odd', 'even') %>">
-          <td class="col-4"><%= link_to CGI.unescape(sms.body), { :action=> 'show_sms_logs', :id=>sms.id} %></td>
-          <td class="col-7"><%= SmsMessage.default_time_zone_present_time(sms.created_at).strftime("%A, %d. %B %Y, %H:%M") %></td>
-        </tr>
-      <% end %>
-    </table>
-    <%= will_paginate @sms_messages %>
-  </div>
+    <div class="box">
+        <table style="padding:10px; background: #ddd; width:100%;">
+            <tr>
+                <td>
+                    <input type="text" class="form-control" placeholder="Enter Mobile Number">
+                </td>
+                <td>
+                    <input type="text" class="form-control" placeholder="Enter SMS">
+                </td>
+                <td>
+                    <input type="date" class="form-control">
+                </td>
+                <td>
+                    <input type="date" class="form-control">
+                </td>
+                <td>
+                    <button id="filter-button" class="form-control form-btn" type="button">Filter</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="box">
+        <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
+            <tr>
+                <th colspan="3">
+                    <%= t('total_sms_sent') %> : <%= @total_sms %>
+                </th>
+            </tr>
+            <tr class="tr-head">
+                <td>Mobile No</td>
+                <td><%= t('sms_messages') %></td>
+                <td>Gateway Response</td>
+                <td>Date</td>
+            </tr>
+            <tr class="tr-blank"></tr>
+            <% @sms_logs.each do |sms| %>
+              <tr class="tr-<%= cycle('odd', 'even') %>">
+                  <td class="col-4"><%= sms.mobile %></td>
+                  <td class="col-4"><%= sms.sms_message.blank? ? 'No-Message' : CGI.unescape(sms.sms_message.body) %></td>
+                  <td class="col-4"><%= sms.gateway_response %></td>
+                  <td class="col-7"><%= SmsMessage.default_time_zone_present_time(sms.created_at).strftime("%A, %d. %B %Y, %H:%M") %></td>
+              </tr>
+            <% end %>
+        </table>
+        <%= will_paginate @sms_logs %>
+    </div>
 </div>

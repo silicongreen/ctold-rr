@@ -16,7 +16,7 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 class SmsMessage < ActiveRecord::Base
-  has_many :sms_logs
+  has_many :sms_logs, :foreign_key => :sms_message_id
 
   def self.get_sms_messages(page = 1)
     SmsMessage.paginate(:order=>"id DESC", :page => page, :per_page => 30)

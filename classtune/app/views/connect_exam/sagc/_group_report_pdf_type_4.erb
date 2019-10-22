@@ -33,7 +33,7 @@
       </table>
       <table id="pdf-table" class="tbl-lign-left" width="27%" cellspacing="0">
           <tr class="even header-shade">
-              <td class="col-pdf" colspan="2" width="100%"><b><h4><%= @connect_exam_obj.name %></h4></b></td>
+              <td class="col-pdf" colspan="2" width="100%"><b><h5><center><%= @connect_exam_obj.name %></center></h5></b></td>
           </tr>
           <tr class="even">
               <td class="align-left col-pdf" colspan="2" width="100%"><b>Based On</b></td>
@@ -1013,7 +1013,7 @@
                               <br/><br/><br/>
                           </td> 
                           <td class="col-pdf " width="25%">
-                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/principal-sir-signature-2019.jpg")), :width=>"60%" %>
+                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/principal-sir-signature-2019.jpg")), :width=>"40%" %>
                           </td>
                       </tr>
                       <tr class="even">
@@ -1175,13 +1175,13 @@
     }
     div.baf_shaheen tr.odd td
     {
-        padding: 3px 4px !important;  
+        padding: 2px 4px !important;  
         border: 1px solid #000000;
         font-size:11px;
     }
     div.baf_shaheen tr.even td
     {
-        padding: 3px 4px !important;
+        padding: 2px 4px !important;
         border: 1px solid #000000;
         font-size:11px;
     }

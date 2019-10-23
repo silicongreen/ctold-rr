@@ -487,6 +487,7 @@ class CalenderController extends Controller
                     $response['data']['holiday'] = $holiday_count;
                     $response['data']['leave'] = $leave_count;
                     $response['data']['leave_array_modified'] = $leave_array_modified;
+                    $response['data']['start_date'] = $start_date;
                     $response['data']['current_date'] = date("Y-m-d");
                     $response['data']['total'] = $i;
                     $response['status']['code'] = 200;

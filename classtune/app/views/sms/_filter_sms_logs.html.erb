@@ -1,4 +1,9 @@
 <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
+    <tr>
+        <th colspan="4" style="text-align:right; padding: 5px;">
+            <%= t('total_sms_sent') %> : <%= @total_sms %> <%= @mobile %>
+        </th>
+    </tr>
     <% unless @sms_logs.blank? %>
       <tr class="tr-head">
           <td>Mobile No</td>
@@ -15,10 +20,10 @@
         </tr>
       <% end %>
     <% else %>
-        <tr>
-            <td colspan="4" style="text-align: center;">
-                <h2>No Record Found</h2>
-            </td>
-        </tr>
+      <tr>
+          <td colspan="4" style="text-align: center;">
+              <h2>No Record Found</h2>
+          </td>
+      </tr>
     <% end %>
 </table>

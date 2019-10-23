@@ -1117,11 +1117,59 @@ class SmsController < ApplicationController
   end
   
   def filter_sms_logs
-    @sms_logs = SmsLog.get_filter_sms_logs(params[:sms_log][:mobile], params[:start_date], params[:end_date])
+    @start_date = params[:start_date]
+    @end_date = params[:end_date]
+    @mobile = params[:sms_log][:mobile]
+    @sms_logs = SmsLog.get_filter_sms_logs(@mobile, @start_date, @end_date)
     @total_sms = @sms_logs.count
     render :update do |page|
       page.replace_html "sms-log-box", :partial => "filter_sms_logs"
     end
+  end
+  
+  def pdf_sms_log
+    @total_sms = params[:total_sms]
+    @start_date = params[:start_date]
+    @end_date = params[:end_date]
+    
+    render :pdf => "pdf_sms_log",
+      :orientation => 'Portrait',
+      :page_size => 'Legal',
+      :margin => {:top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
+  
+  def excel_sms_log
+    @total_sms = params[:total_sms]
+    @start_date = params[:start_date]
+    @end_date = params[:end_date] 
+    @sms_by_date = SmsLog.get_sms_logs_by_date(@start_date, @end_date)
+    @sms_data_group = @sms_by_date.inject(Hash.new(0)) { |h, e| h[e.created_at] += 1 ; h }
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    new_book = Spreadsheet::Workbook.new
+    sheet1 = new_book.create_worksheet :name => 'SMS Messages Log'
+    
+    row_1 = ['#','Date','SMS Amount']
+    new_book.worksheet(0).insert_row(0, row_1)
+    
+    row_loop = 1
+    sl = 1
+    @sms_by_date.each do |sms|
+        data_row = [sl,sms.created_at, sms.mobile]
+        new_book.worksheet(0).insert_row(row_loop, data_row)
+        row_loop+=1
+        sl+=1
+    end
+    
+    sheet1.add_header(Configuration.get_config_value('InstitutionName'))
+    spreadsheet = StringIO.new 
+    new_book.write spreadsheet 
+    send_data spreadsheet.string, :filename => "sms_messages_log.xls", :type =>  "application/vnd.ms-excel"
   end
 
   def show_sms_logs

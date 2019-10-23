@@ -34,6 +34,14 @@ class SmsLog < ActiveRecord::Base
     end
     return filter_data
   end
+  
+  def self.get_sms_logs_by_date(start_date, end_date)
+    date1 = start_date.to_date.strftime("%Y-%m-%d")
+    date2 = end_date.to_date.strftime("%Y-%m-%d")
+#    excel_data =  SmsLog.find(:all,:conditions=> ["created_at >= '#{date1}' AND created_at <= '#{date2}'"]).group("DATE(created_at)").count
+    excel_data =  SmsLog.find(:all,:conditions=> ["created_at >= '#{date1}' AND created_at <= '#{date2}'"])
+    return excel_data
+  end
 
   
   def self.default_time_zone_present_time(time_stamp)

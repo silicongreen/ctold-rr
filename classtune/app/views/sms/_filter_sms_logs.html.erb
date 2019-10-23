@@ -1,8 +1,21 @@
 <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
     <tr>
-        <th colspan="4" style="text-align:right; padding: 5px;">
-            <%= t('total_sms_sent') %> : <%= @total_sms %> <%= @mobile %>
+        <th colspan="2">
+            <span class="download-button"> 
+                <%= link_to 'Download PDF', :action=>:pdf_sms_log, :total_sms=>@total_sms , :start_date=>@start_date, :end_date => @end_date %>
+            </span>
+            <%#*<span class="download-button">%> 
+                <%#= link_to 'Download Excel', :action=>:excel_sms_log, :total_sms=>@total_sms , :start_date=>@start_date, :end_date => @end_date %>
+            <%#*</span>%>
         </th>
+        <th colspan="2" style="text-align:right; padding: 5px;">
+            <%= t('total_sms_sent') %> : <%= @total_sms %>
+        </th>
+    </tr>
+    <tr>
+        <td colspan="4">
+            <hr/>
+        </td>
     </tr>
     <% unless @sms_logs.blank? %>
       <tr class="tr-head">
@@ -19,8 +32,7 @@
             <td class="col-7"><%= SmsMessage.default_time_zone_present_time(sms.created_at).strftime("%A, %d. %B %Y, %H:%M") %></td>
         </tr>
       <% end %>
-    <% else %>
-      <tr>
+    <% else %>      <tr>
           <td colspan="4" style="text-align: center;">
               <h2>No Record Found</h2>
           </td>

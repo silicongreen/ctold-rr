@@ -3113,7 +3113,11 @@ class ExamController < ApplicationController
       @student_result.each do |std_result|
         
         position = 500000
-        if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank?
+        if !@student_position.blank? && !@student_position[std_result['id'].to_i].blank?
+          position = @student_position[std_result['id'].to_i]
+        elsif !@student_position_second_term.blank? && !@student_position_second_term[std_result['id'].to_i].blank?
+          position = @student_position_second_term[std_result['id'].to_i]
+        elsif !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank?
           position = @student_position_first_term[std_result['id'].to_i]
         else
           unless std_result['subject_failed'].blank?

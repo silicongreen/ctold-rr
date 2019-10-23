@@ -1117,7 +1117,7 @@ class SmsController < ApplicationController
   end
   
   def filter_sms_logs
-    @sms_logs = SmsLog.get_filter_sms_logs(params[:sms_log][:mobile])
+    @sms_logs = SmsLog.get_filter_sms_logs(params[:sms_log][:mobile], params[:start_date], params[:end_date])
     render :update do |page|
       page.replace_html "sms-log-box", :partial => "filter_sms_logs"
     end

@@ -22,14 +22,17 @@ class SmsLog < ActiveRecord::Base
     SmsLog.paginate(:order=>"id DESC", :page => page, :per_page => 30)
   end
   
-  def self.get_filter_sms_logs(mobile = nil)
-    unless mobile.blank?
-      SmsLog.find(:all, :conditions=> ["mobile = #{mobile}"])
-#    elsif start_date != nil and end_date != nil
-#      date1 = start_date.to_date.strftime("%Y-%m-%d")
-#      date2 = end_date.to_date.strftime("%Y-%m-%d")
-#      SmsLog.find(:all,:conditions=> ["created_at >= #{date1} AND created_at <= #{date2}"])
+  def self.get_filter_sms_logs(mobile = nil, start_date = nil, end_date = nil)
+    filter_data = nil
+    unless start_date.blank? and end_date.blank?
+      date1 = start_date.to_date.strftime("%Y-%m-%d")
+      date2 = end_date.to_date.strftime("%Y-%m-%d")
+      filter_data =  SmsLog.find(:all,:conditions=> ["created_at >= '#{date1}' AND created_at <= '#{date2}'"])
     end
+    unless mobile.blank?
+      filter_data = SmsLog.find(:all, :conditions=> ["mobile = #{mobile}"])
+    end
+    return filter_data
   end
 
   

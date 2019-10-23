@@ -18,6 +18,7 @@
 class SmsLog < ActiveRecord::Base
   belongs_to :sms_message, :class_name => 'SmsMessage'
 
+
   def self.get_sms_logs(page = 1)
     SmsLog.paginate(:order=>"id DESC", :page => page, :per_page => 30)
   end

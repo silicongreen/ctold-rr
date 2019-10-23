@@ -25,7 +25,7 @@
 </div>
 <div id="page-yield">
     <div class="box">
-        <% form_remote_for :sms_log, :url=>{:action=>"filter_sms_logs"}  do |form| %>
+        <% form_remote_for :sms_log, :url=>{:action=>"filter_sms_logs"}, :before=>"$('loading').show();", :complete=>"$('loading').hide();"  do |form| %>
           <table style="padding:10px; background: #ddd; width:100%;">
               <tr>
                   <td>
@@ -47,6 +47,7 @@
               </tr>
           </table>
         <% end %>
+        <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading", :style =>"display: none; width:30px; margin-left:50%;" ) %>
     </div>
     <div class="box" id="sms-log-box">
         <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">

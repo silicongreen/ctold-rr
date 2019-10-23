@@ -6613,7 +6613,8 @@ class ExamController < ApplicationController
                   main_mark1 = 0
                 end 
                 if exam_type == 3
-                  main_mark = (total_mark1.to_f+total_mark2.to_f)/(full_mark1.to_f+full_mark2.to_f)*100              
+
+                  main_mark = (total_mark1.to_f+total_mark2.to_f)/(full_mark1.to_f+full_mark2.to_f)*full_mark1 
                   mark_1_half = total_mark1_no_round.to_f/2.00
                   mark_2_half = total_mark2_no_round.to_f/2.00
                   main_mark_no_round = mark_1_half+mark_2_half
@@ -6718,6 +6719,7 @@ class ExamController < ApplicationController
                 end
                 ob_round = 0
                 sb_round = 0
+                pr_round = 0
                 if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['at'] = at_total_mark1+at_total_mark2
                   
@@ -6734,6 +6736,11 @@ class ExamController < ApplicationController
                     if appeared_ob
                       ob_round = total_ob1+total_ob2
                       ob_round = ob_round.round()
+                      if full_ob1 > 0 && full_ob2 > 0
+                        ob_round = (total_ob1+total_ob2)/2
+                        ob_round = ob_round.round()
+                      end
+                      
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = ob_round
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = "AB"
@@ -6743,20 +6750,37 @@ class ExamController < ApplicationController
                     if appeared_sb
                       sb_round = total_sb1+total_sb2
                       sb_round = sb_round.round()
+                      if full_sb1 > 0 && full_sb2 > 0
+                        sb_round = (total_sb1+total_sb2)/2
+                        sb_round = sb_round.round()
+                      end
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = sb_round
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = "AB"
                     end  
                   end
                   if full_pr1 > 0 || full_pr2 > 0
+                      pr_round = total_pr1+total_pr2
+                      pr_round = pr_round.round()
+                      if full_sb1 > 0 && full_sb2 > 0
+                        pr_round = (total_pr1+total_pr2)/2
+                        pr_round = pr_round.round()
+                      end
                     if appeared_pr
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = total_pr1+total_pr2
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = pr_round
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = "AB"
                     end  
                   end
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = ob_round+sb_round+total_pr1+total_pr2
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = ob_round+sb_round+pr_round
+                  
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = total_mark1+total_mark2
+                  if full_mark1 > 0 && full_mark2 > 0
+                    total_main = (total_mark1+total_mark2)/2
+                    @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = total_main.round()
+                  end
+                  
+                  
                   if @subject_result[main_sub_id].blank?
                     @subject_result[main_sub_id] = {}
                     @subject_result[main_sub_id]['id'] = main_sub_id

@@ -16,22 +16,6 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-
-<style>
-  .form-control {
-    display: block;
-    width: 90%;
-    padding: 10px 10px;
-    font-size: 10px;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: .25rem;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-}
-</style>
 <div id="content-header">
     <%= show_header_icon %>
     <h1><%= t('sms_text') %></h1>
@@ -73,15 +57,13 @@
                     <%= t('total_sms_sent') %> : <%= @total_sms %>
                 </th>
             </tr>
+
             <tr class="tr-head">
                 <td>Mobile No</td>
                 <td><%= t('sms_messages') %></td>
                 <td>Gateway Response</td>
                 <td>Date</td>
             </tr>
-
-            <tr class="tr-blank"></tr>
-
             <% @sms_logs.each do |sms| %>
               <tr class="tr-<%= cycle('odd', 'even') %>">
                   <td class="col-4"><%= sms.mobile %></td>

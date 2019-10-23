@@ -52,11 +52,12 @@
     <div class="box" id="sms-log-box">
 
         <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
-            <tr>
-                <th colspan="3">
-                    <%= t('total_sms_sent') %> : <%= @total_sms %>
-                </th>
-            </tr>
+
+             <tr>
+                  <th colspan="4" style="text-align:right; padding: 5px;">
+                      <%= t('total_sms_sent') %> : <%= @total_sms %> <%= @mobile %>
+                  </th>
+              </tr>
 
             <tr class="tr-head">
                 <td>Mobile No</td>

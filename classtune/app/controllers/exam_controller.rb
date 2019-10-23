@@ -6608,7 +6608,6 @@ class ExamController < ApplicationController
                 end 
                 if total_mark1.to_f>0 and full_mark1.to_f>0
                   main_mark1 = (total_mark1.to_f/full_mark1.to_f)*100
-               
                 else
                   main_mark1 = 0
                 end 

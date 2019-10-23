@@ -29,6 +29,14 @@ unless @group_name_upper.blank?
        
   @group_name_upper = group_split[0]
 end
+if !@student_position.blank?
+  @student_position_first_term_batch = @student_position_batch
+  @student_position_first_term = @student_position
+elsif !@student_position_second_term.blank? 
+  @student_position_first_term_batch = @student_position_second_term_batch
+  @student_position_first_term = @student_position_second_term
+end  
+
 %>
 <div id="page-yield" class="available_sections1 baf_shaheen">
     <div class="page1"> </div>

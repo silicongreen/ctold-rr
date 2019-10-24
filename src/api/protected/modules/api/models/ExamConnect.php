@@ -404,7 +404,7 @@ class ExamConnect extends CActiveRecord
                             $result['al_students'][$m]['name'] = $svalue['student_name'];
                             $result['al_students'][$m]['id'] = $svalue['student_id'];
                             $result['al_students'][$m]['class_roll_no'] = $svalue['roll_no'];
-                            $j++;
+                            $m++;
                             $result['ALL'][$f]['students'][$svalue['student_id']]['score'] = 0.0;
                             $result['ALL'][$f]['students'][$svalue['student_id']]['remarks'] = "";
 

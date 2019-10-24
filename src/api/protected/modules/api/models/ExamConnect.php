@@ -398,12 +398,12 @@ class ExamConnect extends CActiveRecord
                     } 
                     foreach($all_student_this_subject as $svalue)
                     {
-                        if(!in_array($svalue['student_id'], $students))
+                        if(!in_array($svalue['student_id'], $allstudents))
                         {
                             $students[] = $svalue['student_id'];
-                            $result['students'][$j]['name'] = $svalue['student_name'];
-                            $result['students'][$j]['id'] = $svalue['student_id'];
-                            $result['students'][$j]['class_roll_no'] = $svalue['roll_no'];
+                            $result['al_students'][$j]['name'] = $svalue['student_name'];
+                            $result['al_students'][$j]['id'] = $svalue['student_id'];
+                            $result['al_students'][$j]['class_roll_no'] = $svalue['roll_no'];
                             $j++;
                             $result['ALL'][$f]['students'][$svalue['student_id']]['score'] = 0.0;
                             $result['ALL'][$f]['students'][$svalue['student_id']]['remarks'] = "";

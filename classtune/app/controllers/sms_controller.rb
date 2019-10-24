@@ -1147,8 +1147,17 @@ class SmsController < ApplicationController
     @total_sms = params[:total_sms]
     @start_date = params[:start_date]
     @end_date = params[:end_date] 
-    @sms_by_date = SmsLog.get_sms_logs_by_date(@start_date, @end_date)
-    @sms_data_group = @sms_by_date.inject(Hash.new(0)) { |h, e| h[e.created_at] += 1 ; h }
+    @sms_list = []
+    all_dates = (Date.parse(@start_date)...Date.parse(@end_date)).map{|d| d.to_s}
+    all_dates.each do |dt|
+      amount = SmsLog.get_sms_logs_by_date(dt).count
+      unless amount == 0
+        @sms_list << {
+          'day' => dt,
+          'amount' => amount
+        }
+      end
+    end 
     require 'spreadsheet'
     Spreadsheet.client_encoding = 'UTF-8'
     new_book = Spreadsheet::Workbook.new
@@ -1159,11 +1168,11 @@ class SmsController < ApplicationController
     
     row_loop = 1
     sl = 1
-    @sms_by_date.each do |sms|
-        data_row = [sl,sms.created_at, sms.mobile]
-        new_book.worksheet(0).insert_row(row_loop, data_row)
-        row_loop+=1
-        sl+=1
+    @sms_list.each do |sms|
+      data_row = [sl, sms['day'], sms['amount']]
+      new_book.worksheet(0).insert_row(row_loop, data_row)
+      row_loop+=1
+      sl+=1
     end
     
     sheet1.add_header(Configuration.get_config_value('InstitutionName'))

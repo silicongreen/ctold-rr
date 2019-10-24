@@ -27,7 +27,7 @@ class SmsLog < ActiveRecord::Base
     unless start_date.blank? and end_date.blank?
       date1 = start_date.to_date.strftime("%Y-%m-%d")
       date2 = end_date.to_date.strftime("%Y-%m-%d")
-      filter_data =  SmsLog.find(:all,:conditions=> ["created_at >= '#{date1}' AND created_at <= '#{date2}'"])
+      filter_data =  SmsLog.find(:all,:conditions=> ["DATE(created_at) >= '#{date1}' AND DATE(created_at) <= '#{date2}'"])
     end
     unless mobile.blank?
       filter_data = SmsLog.find(:all, :conditions=> ["mobile = #{mobile}"])
@@ -35,15 +35,11 @@ class SmsLog < ActiveRecord::Base
     return filter_data
   end
   
-  def self.get_sms_logs_by_date(start_date, end_date)
-    date1 = start_date.to_date.strftime("%Y-%m-%d")
-    date2 = end_date.to_date.strftime("%Y-%m-%d")
-#    excel_data =  SmsLog.find(:all,:conditions=> ["created_at >= '#{date1}' AND created_at <= '#{date2}'"]).group("DATE(created_at)").count
-    excel_data =  SmsLog.find(:all,:conditions=> ["created_at >= '#{date1}' AND created_at <= '#{date2}'"])
-    return excel_data
+  def self.get_sms_logs_by_date(dt)
+    date1 = dt.to_date.strftime("%Y-%m-%d")
+    return SmsLog.find(:all,:conditions=> ["DATE(created_at) = '#{date1}'"], :select => "id")
   end
 
-  
   def self.default_time_zone_present_time(time_stamp)
     server_time = time_stamp
     server_time_to_gmt = server_time.getgm

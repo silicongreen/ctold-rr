@@ -36,8 +36,8 @@ class SmsLog < ActiveRecord::Base
   end
   
   def self.get_sms_logs_by_date(dt)
-    date1 = dt.to_date.strftime("%Y-%m-%d")
-    return SmsLog.find(:all,:conditions=> ["DATE(created_at) = '#{date1}'"], :select => "id")
+    today = dt.to_date.strftime("%Y-%m-%d")
+    return SmsLog.find(:all,:conditions=> ["DATE(created_at) = '#{today}'"], :select => "id")
   end
 
   def self.default_time_zone_present_time(time_stamp)

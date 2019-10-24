@@ -1148,16 +1148,19 @@ class SmsController < ApplicationController
     @start_date = params[:start_date]
     @end_date = params[:end_date] 
     @sms_list = []
-    all_dates = (Date.parse(@start_date)...Date.parse(@end_date)).map{|d| d.to_s}
-    all_dates.each do |dt|
-      amount = SmsLog.get_sms_logs_by_date(dt).count
-      unless amount == 0
-        @sms_list << {
-          'day' => dt,
-          'amount' => amount
-        }
-      end
-    end 
+    if(@start_date == @end_date)
+      amount = SmsLog.get_sms_logs_by_date(@start_date).count
+      @sms_list << { 'day' => @start_date, 'amount' => amount }
+    else
+      all_dates = (Date.parse(@start_date)...Date.parse(@end_date)).map{|d| d.to_s}
+      all_dates.each do |dt|
+        amount = SmsLog.get_sms_logs_by_date(dt).count
+        unless amount == 0
+          @sms_list << { 'day' => dt, 'amount' => amount }
+        end
+      end 
+    end
+   
     require 'spreadsheet'
     Spreadsheet.client_encoding = 'UTF-8'
     new_book = Spreadsheet::Workbook.new

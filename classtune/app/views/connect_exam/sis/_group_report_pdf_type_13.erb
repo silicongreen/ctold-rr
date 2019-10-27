@@ -141,20 +141,19 @@
                 <tr class="odd">
                     <td class="col-pdf"><b>SCORE</b></td>
                     <td class="col-pdf"><b>GRADES</b></td>
-                    <td class="col-pdf"><b>COMMENTS</b></td>
                 </tr>
                 <%  unless @grading_levels.empty? %>
                   <% @grading_levels.each_with_index do |grade,index| %>
                     <tr class="odd">
-                    <td class="align-left">
-                      <% if grade.max_score.nil? %>  
-                        <%= '%i%' % grade.min_score %>
-                      <% else %> 
-                        <%= grade.min_score.to_i.to_s + "-" + grade.max_score.to_i.to_s %>
-                      <% end %>
-                    </td>
-                    <td class="align-left"><%= grade.name %></td>
-                    <td class="align-left"><%= grade.description %></td>
+                      <td>
+                        <% if grade.max_score.nil? %>  
+                          <%= '%i%' % grade.min_score %>
+                        <% else %> 
+                          <%= grade.min_score.to_i.to_s + "-" + grade.max_score.to_i.to_s %>
+                        <% end %>
+                      </td>
+                      <td><%= grade.name %></td>
+                      <td><%= grade.description %></td>
                     </tr>
                   <% end %>
                 <% end %>

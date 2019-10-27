@@ -609,13 +609,25 @@
                               
                             <td class="col-pdf"><%= sprintf( "%0.02f", monthly_marks)%></td>
                             <% if has_ob %>
-                              <td class="col-pdf"><%= sprintf( "%0.02f", ob_marks)%></td>
+                              <% if ob_full_marks2 > 0  %>
+                                <td class="col-pdf"><%= sprintf( "%0.02f", ob_marks)%></td>
+                              <% else %>
+                                <td class="col-pdf">-</td>
+                              <% end %>
                             <% end %>
                             <% if has_sb %>
-                              <td class="col-pdf"><%= sprintf( "%0.02f", sb_marks)%></td>
+                               <% if sb_full_marks2 > 0  %>
+                                 <td class="col-pdf"><%= sprintf( "%0.02f", sb_marks)%></td>
+                              <% else %>
+                                <td class="col-pdf">-</td>
+                              <% end %>
                             <% end %>
                             <% if has_pr %>
-                              <td class="col-pdf"><%= sprintf( "%0.02f", pr_marks)%></td>
+                              <% if pr_full_marks2 > 0  %>
+                                <td class="col-pdf"><%= sprintf( "%0.02f", pr_marks)%></td>
+                              <% else %>
+                                <td class="col-pdf">-</td>
+                              <% end %>
                             <% end %>
                               <td class="col-pdf"><%= total_marks_ag.to_i %></td>
                               <td class="col-pdf"><%=  highest_mark.round() %></td>

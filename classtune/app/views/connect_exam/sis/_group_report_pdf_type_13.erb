@@ -134,7 +134,7 @@
               <% @grading_levels = GradingLevel.default %>
               <% end %>
               <table id="pdf-table"  width="47.9%" class="left-table odd-table big_padding" cellspacing="0" >
-                <tr>
+                <tr class="odd">
                     <td class="col-pdf" colspan="3"><b>GRADE SCALE</b></td>
                 </tr>
                   
@@ -145,6 +145,7 @@
                 </tr>
                 <%  unless @grading_levels.empty? %>
                   <% @grading_levels.each_with_index do |grade,index| %>
+                    <tr class="odd">
                     <td class="align-left">
                       <% if grade.max_score.nil? %>  
                         <%= '%i%' % grade.min_score %>
@@ -154,6 +155,7 @@
                     </td>
                     <td class="align-left"><%= grade.name %></td>
                     <td class="align-left"><%= grade.description %></td>
+                    </tr>
                   <% end %>
                 <% end %>
                 

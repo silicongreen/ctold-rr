@@ -3787,11 +3787,17 @@ class ExamController < ApplicationController
       end
     end
     finding_data5()
-    if @student_list_first_term.blank?
+    
+    if !@student_position.blank?
+      @student_position_first_term = @student_position
+      @subject_highest_1st_term = @subject_highest
+      @student_position_first_term = @student_position
+      @student_position_first_term_batch = @student_position_batch
+    elsif !@student_position_second_term.blank?
       @subject_highest_1st_term = @subject_highest_2nd_term
       @student_position_first_term = @student_position_second_term
       @student_position_first_term_batch = @student_position_second_term_batch
-    end
+    end 
     
  
     
@@ -6645,7 +6651,7 @@ class ExamController < ApplicationController
 
                   grand_total1 = grand_total1+total_mark1
                   grand_total2 = grand_total2+total_mark2
-                  grand_total = grand_total+subject_full_marks
+                  grand_total = grand_total+main_mark_no_round
 
                   grand_total1_with_fraction = grand_total1_with_fraction+total_mark1_no_round
                   grand_total2_with_fraction = grand_total2_with_fraction+total_mark2_no_round
@@ -6731,7 +6737,13 @@ class ExamController < ApplicationController
                   
                   if monthly_full_mark1 > 0 || monthly_full_mark2 > 0
                     if appeared_ct
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = monthly_total_main_mark1+monthly_total_main_mark2
+                      ct_round = monthly_total_main_mark1+monthly_total_main_mark2
+                      ct_round = ct_round.round()
+                      if monthly_full_mark1 > 0 && monthly_full_mark2 > 0
+                        ct_round = (monthly_total_main_mark1+monthly_total_main_mark2)/2
+                        ct_round = ct_round.round()
+                      end
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = ct_round
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = "AB"
                     end  

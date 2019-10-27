@@ -542,6 +542,7 @@
                             sb_marks = 0
                             ob_marks = 0
                             pr_marks = 0
+                            sb_marks_shoud_be = 0
                             
                             sb = sb1+sb2
                             ob = ob1+ob2
@@ -549,7 +550,7 @@
                             
                             if sb>0
                               sb_marks_main = sb_marks = sb/2.00
-                              sb_marks = (sb_marks.to_f/sb_full_marks2.to_f)*sb_full_marks_shoud_be
+                              sb_marks_shoud_be = (sb_marks.to_f/sb_full_marks2.to_f)*sb_full_marks_shoud_be
                               grade_mark = (sb_marks.to_f/sb_full_marks2.to_f)*100
                               grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
                               if !grade.blank? and !grade.name.blank?
@@ -565,7 +566,7 @@
                               grade_mark = (ob_marks.to_f/ob_full_marks2.to_f)*100
                               grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
                               if !grade.blank? and !grade.name.blank?
-                                if grade.credit_points.to_i == 0 && (sb_full_marks2.to_i != 30 || sb_marks_main.round() != 13) && (sb_full_marks2.to_i != 25 || sb_marks_main.round() != 11)
+                                if grade.credit_points.to_i == 0 && (ob_full_marks2.to_i != 30 || ob_marks.round() != 13) && (ob_full_marks2.to_i != 25 || ob_marks.round() != 11)
                                   failed_subject3 = true
                                 end
                               end
@@ -577,14 +578,14 @@
                               grade_mark = (pr_marks.to_f/pr_full_marks2.to_f)*100
                               grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
                               if !grade.blank? and !grade.name.blank?
-                                if grade.credit_points.to_i == 0 && (sb_full_marks2.to_i != 30 || sb_marks_main.round() != 13) && (sb_full_marks2.to_i != 25 || sb_marks_main.round() != 11)
-                                  failed_subject3 = true
+                                if grade.credit_points.to_i == 0 && (pr_full_marks2.to_i != 30 || pr_marks.round() != 13) && (pr_full_marks2.to_i != 25 || pr_marks.round() != 11)
+                                  #failed_subject3 = true
                                 end
                               end
                             elsif pr_full_marks2 > 0
-                              #failed_subject3 = true
+                              failed_subject3 = true
                             end
-                            total_marks_ag = sb_marks+ob_marks+pr_marks+monthly_marks
+                            total_marks_ag = sb_marks_shoud_be+ob_marks+pr_marks+monthly_marks
                             grand_total_fraction = grand_total_fraction+total_marks_ag
                             total_marks_ag = total_marks_ag.round()
                             grand_total = grand_total+total_marks_ag
@@ -678,11 +679,7 @@
                       <td class="col-pdf align-left-baf" colspan="2"></td>
                       <td class="col-pdf"><b><%= total_grade %></b></td>
                   </tr> 
-                      
-                    
-                  <tr class="page-break-grade">
-                      <td colspan="100"></td>
-                  </tr> 
+                   
                   
                   
                   <% unless @report_data['report']['subjects'].blank? %> 

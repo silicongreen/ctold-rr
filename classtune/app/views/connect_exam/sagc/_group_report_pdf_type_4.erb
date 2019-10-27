@@ -1082,19 +1082,39 @@
                   </tr>
               </table>
               
-             
+              <% extra_br = "" %>
             
+              <% if total_subject < 10 %>
+                <% extra_br = "<br/>" %>
+              
+              <% end %>
+              <% if total_subject < 9 %>
+                <% extra_br = "<br/><br/>" %>
+              
+              <% end %>
+              <% if total_subject < 8 %>
+                <% extra_br = "<br/><br/><br/>" %>
+              
+              <% end %>
+              <% if total_subject < 7 %>
+                <% extra_br = "<br/><br/><br/><br/>" %>
+              
+              <% end %>
+              <% if total_subject < 6 %>
+                <% extra_br = "<br/><br/><br/><br/><br/>" %>
+              
+              <% end %>
               <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
 
                       <tr class="even border-bottom-1-px">
                           <td class="col-pdf " width="25%">
-                               <br/><br/><br/>
+                               <br/><br/><br/><%= extra_br %>
                           </td> 
                           <td class="col-pdf" width="25%">
-                              <br/><br/><br/>
+                              <br/><br/><br/><%= extra_br %>
                           </td>
                           <td class="col-pdf" width="25%">
-                              <br/><br/><br/>
+                              <br/><br/><br/><%= extra_br %>
                           </td> 
                           <td class="col-pdf " width="25%">
                               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/principal-sir-signature-2019.jpg")), :width=>"40%" %>

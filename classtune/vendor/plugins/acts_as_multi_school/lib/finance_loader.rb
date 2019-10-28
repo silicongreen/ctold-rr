@@ -1133,8 +1133,8 @@ module FinanceLoader
     unless @financefee.is_paid?
       unless amount_from_gateway.to_f < 0
         
-          #unless amount_from_gateway.to_f > Champs21Precision.set_and_modify_precision(total_fees).to_f
-          unless total_fees < 0
+      unless amount_from_gateway.to_f > Champs21Precision.set_and_modify_precision(total_fees).to_f
+#          unless total_fees < 0
             #abort('here3 ' + amount_from_gateway.to_s + "  " + total_fees.to_s)
           transaction = FinanceTransaction.new
           transaction.title = "#{t('receipt_no')}. F#{@financefee.id}"

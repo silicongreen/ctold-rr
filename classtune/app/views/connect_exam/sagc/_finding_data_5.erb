@@ -512,7 +512,7 @@
                 
                 
                 if exam_type == 3
-                  if monthly_full_mark1 > 5 && monthly_full_mark2 > 5  &&  @connect_exam_obj.result_type == 5
+                  if monthly_full_mark1 > 5 && monthly_full_mark2 > 5  && @connect_exam_obj.result_type == 6
                       monthly_mark = (monthly_total_mark1+monthly_total_mark2)/2
                       if monthly_mark != 13
                         grade_mark = (monthly_mark.to_f/monthly_total_mark1.to_f)*100
@@ -925,8 +925,8 @@
                         if @student_result[loop_std]['subject_failed'].blank?
                           @student_result[loop_std]['subject_failed'] = []
                         end
-                        mark_failed = total_mark1+total_mark2
-                        @student_result[loop_std]['subject_failed'] << sub['code']+"-"+mark_failed.round().to_s
+                        
+                        @student_result[loop_std]['subject_failed'] << sub['code']+"-"+subject_full_marks.round().to_s
                       end 
                     else
                       if @subject_result[main_sub_id].blank?

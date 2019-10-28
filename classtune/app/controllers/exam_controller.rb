@@ -6515,7 +6515,7 @@ class ExamController < ApplicationController
                 
                 
                 if exam_type == 3
-                  if monthly_full_mark1 > 5 && monthly_full_mark2 > 5  &&  @connect_exam_obj.result_type == 5
+                  if monthly_full_mark1 > 5 && monthly_full_mark2 > 5  && @connect_exam_obj.result_type == 6
                       monthly_mark = (monthly_total_mark1+monthly_total_mark2)/2
                       if monthly_mark != 13
                         grade_mark = (monthly_mark.to_f/monthly_total_mark1.to_f)*100

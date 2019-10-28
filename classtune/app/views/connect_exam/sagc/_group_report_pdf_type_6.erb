@@ -530,7 +530,8 @@
                             monthly_marks = (class_test_mark1.to_f+class_test_mark2.to_f)/2.00
                             
                             if monthly_marks > 0
-                              grade_mark = (monthly_marks.to_f/(class_test_full_mark2.to_f+class_test_full_mark1.to_f))*100
+                              grade_mark = (monthly_marks.round().to_f/class_test_full_mark2)*100
+                              grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
                               if !grade.blank? and !grade.name.blank?
                                 if grade.credit_points.to_i == 0 && class_test_full_mark2.to_i != 5
                                   failed_subject3 = true
@@ -551,7 +552,8 @@
                             if sb>0
                               sb_marks_main = sb_marks = sb/2.00
                               sb_marks_shoud_be = (sb_marks.to_f/sb_full_marks2.to_f)*sb_full_marks_shoud_be
-                              grade_mark = (sb_marks.to_f/sb_full_marks2.to_f)*100
+                              grade_mark = (sb_marks.round().to_f/sb_full_marks2.to_f)*100
+                              
                               grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
                               if !grade.blank? and !grade.name.blank?
                                 if grade.credit_points.to_i == 0 && (sb_full_marks2.to_i != 30 || sb_marks_main.round() != 13) && (sb_full_marks2.to_i != 25 || sb_marks_main.round() != 11)
@@ -563,7 +565,7 @@
                             end
                             if ob>0
                               ob_marks = ob/2.00
-                              grade_mark = (ob_marks.to_f/ob_full_marks2.to_f)*100
+                              grade_mark = (ob_marks.round().to_f/ob_full_marks2.to_f)*100
                               grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
                               if !grade.blank? and !grade.name.blank?
                                 if grade.credit_points.to_i == 0 && (ob_full_marks2.to_i != 30 || ob_marks.round() != 13) && (ob_full_marks2.to_i != 25 || ob_marks.round() != 11)
@@ -575,7 +577,7 @@
                             end
                             if pr>0
                               pr_marks = pr/2.00
-                              grade_mark = (pr_marks.to_f/pr_full_marks2.to_f)*100
+                              grade_mark = (pr_marks.round().to_f/pr_full_marks2.to_f)*100
                               grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
                               if !grade.blank? and !grade.name.blank?
                                 if grade.credit_points.to_i == 0 && (pr_full_marks2.to_i != 30 || pr_marks.round() != 13) && (pr_full_marks2.to_i != 25 || pr_marks.round() != 11)

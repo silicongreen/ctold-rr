@@ -196,10 +196,11 @@
                   <% grand_total = 0 %>
                   <% grand_total_fraction = 0 %>
                   
-                  
+                  <% has_grade_subject = false %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['grade_subject'].to_i == 1 %>
+                        <% has_grade_subject = true %>
                         <% next %>
                       <% end %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -682,6 +683,11 @@
                       <td class="col-pdf"><b><%= total_grade %></b></td>
                   </tr> 
                    
+                  <% if has_grade_subject == true %>
+                    <tr class="page-break-grade">
+                        <td colspan="100"></td>
+                    </tr>
+                  <% end %>
                   
                   
                   <% unless @report_data['report']['subjects'].blank? %> 
@@ -689,6 +695,7 @@
                       <% if subjects['grade_subject'].to_i != 1 %>
                         <% next %>
                       <% end %>
+                      <% total_subject_new = 0 %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           
                           <%  monthly = 0 %>
@@ -701,8 +708,8 @@
                           <% total_mark2 = 0 %>
                           <% full_mark2 = 0 %>
                           <% full_mark = 0 %>
-                          <% total_subject = total_subject+1 %>
-                          <td class="col-pdf"><%= total_subject %></td>
+                          <% total_subject_new = total_subject_new+1 %>
+                          <td class="col-pdf"><%= total_subject_new %></td>
                           <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   

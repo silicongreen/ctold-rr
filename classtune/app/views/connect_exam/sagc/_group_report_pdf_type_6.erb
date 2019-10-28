@@ -579,11 +579,11 @@
                               grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
                               if !grade.blank? and !grade.name.blank?
                                 if grade.credit_points.to_i == 0 && (pr_full_marks2.to_i != 30 || pr_marks.round() != 13) && (pr_full_marks2.to_i != 25 || pr_marks.round() != 11)
-                                  #failed_subject3 = true
+                                  failed_subject3 = true
                                 end
                               end
                             elsif pr_full_marks2 > 0
-                              #failed_subject3 = true
+                              failed_subject3 = true
                             end
                             total_marks_ag = sb_marks_shoud_be+ob_marks+pr_marks+monthly_marks
                             grand_total_fraction = grand_total_fraction+total_marks_ag

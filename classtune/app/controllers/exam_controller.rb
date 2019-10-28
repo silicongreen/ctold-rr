@@ -6507,8 +6507,86 @@ class ExamController < ApplicationController
                 
                 if full_mark1 > 0 && full_mark2 > 0
                   exam_type = 3
+                  subject_failed = false
+                  four_subject_failed = false
                 elsif full_mark2 > 0
                   exam_type = 2
+                end
+                
+                
+                if exam_type == 3
+                  if monthly_full_mark1 > 5 && monthly_full_mark2 > 5  &&  @connect_exam_obj.result_type == 5
+                      monthly_mark = (monthly_total_mark1+monthly_total_mark2)/2
+                      if monthly_mark != 13
+                        grade_mark = (monthly_mark.to_f/monthly_total_mark1.to_f)*100
+                        grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
+                        if !grade.blank? and !grade.name.blank?
+                          if grade.credit_points.to_i == 0
+                            if fourth_subject.blank?
+                              u_grade = u_grade+1
+                              subject_failed = true
+                            else
+                              four_subject_failed = true
+                            end
+                          end
+                        end
+                      end
+                  end
+                  
+                  if full_sb1 > 0 && full_sb2 > 0 && sub['subject_group_id'].to_i == 0 && @connect_exam_obj.result_type != 1 && @connect_exam_obj.result_type != 12 && @connect_exam_obj.result_type != 3 && @connect_exam_obj.result_type != 4  && @connect_exam_obj.result_type != 8 && sub['grade_subject'].to_i != 1
+                    mark = (total_sb1+total_sb2)/2
+                    if ( full_sb1 != 25 || mark.round() != 11) && ( full_sb1 != 25 || mark.round() != 8 || @connect_exam_obj.result_type != 9)
+                      grade_mark = (mark.to_f/full_sb1.to_f)*100
+                      grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
+                        if !grade.blank? and !grade.name.blank?
+                          if grade.credit_points.to_i == 0
+                            if fourth_subject.blank?
+                              u_grade = u_grade+1
+                              subject_failed = true
+                            else
+                              four_subject_failed = true
+                            end
+                          end
+                        end
+                    end
+                  end
+                  
+                  if full_ob1 > 0 && full_ob2 > 0 && sub['subject_group_id'].to_i == 0 && @connect_exam_obj.result_type != 1 && @connect_exam_obj.result_type != 12 && @connect_exam_obj.result_type != 3 && @connect_exam_obj.result_type != 4  && @connect_exam_obj.result_type != 8 && sub['grade_subject'].to_i != 1
+                    mark = (total_ob1+total_ob2)/2
+                    if ( full_ob1 != 25 || mark.round() != 11) && ( full_ob1 != 25 || mark.round() != 8 || @connect_exam_obj.result_type != 9)
+                      grade_mark = (mark.to_f/full_ob1.to_f)*100
+                      grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
+                        if !grade.blank? and !grade.name.blank?
+                          if grade.credit_points.to_i == 0
+                            if fourth_subject.blank?
+                              u_grade = u_grade+1
+                              subject_failed = true
+                            else
+                              four_subject_failed = true
+                            end
+                          end
+                        end
+                    end
+                  end
+                  
+                  if full_pr1 > 0 && full_pr2 > 0 && sub['subject_group_id'].to_i == 0 && @connect_exam_obj.result_type != 1 && @connect_exam_obj.result_type != 12 && @connect_exam_obj.result_type != 3 && @connect_exam_obj.result_type != 4  && @connect_exam_obj.result_type != 8 && sub['grade_subject'].to_i != 1
+                    mark = (total_pr1+total_pr2)/2
+                    if ( full_pr1 != 25 || mark.round() != 11) && ( full_pr1 != 25 || mark.round() != 8 || @connect_exam_obj.result_type != 9)
+                      grade_mark = (mark.to_f/full_pr1.to_f)*100
+                      grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
+                        if !grade.blank? and !grade.name.blank?
+                          if grade.credit_points.to_i == 0
+                            if fourth_subject.blank?
+                              u_grade = u_grade+1
+                              subject_failed = true
+                            else
+                              four_subject_failed = true
+                            end
+                          end
+                        end
+                    end
+                  end
+                  
                 end
                 
                
@@ -6640,7 +6718,7 @@ class ExamController < ApplicationController
                   main_mark_no_round = total_mark1_no_round.to_f/full_mark1.to_f*100
                 end  
 
-                subject_full_marks = main_mark
+                subject_full_marks = main_mark_no_round.round()
                 if sub['grade_subject'].to_i != 1
                   if @student_subject_marks[sub['id'].to_i].blank?
                     @student_subject_marks[sub['id'].to_i] = {}

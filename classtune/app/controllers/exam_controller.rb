@@ -6724,7 +6724,7 @@ class ExamController < ApplicationController
                   subject_mark = total_mark1
                 end  
 
-                subject_full_marks = subject_mark.round()
+                subject_full_marks = main_mark_no_round.round()
                 if sub['grade_subject'].to_i != 1
                   if @student_subject_marks[sub['id'].to_i].blank?
                     @student_subject_marks[sub['id'].to_i] = {}

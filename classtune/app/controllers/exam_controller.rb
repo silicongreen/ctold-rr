@@ -6875,11 +6875,8 @@ class ExamController < ApplicationController
                   end
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = ob_round+sb_round+pr_round
                   
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = total_mark1+total_mark2
-                  if full_mark1 > 0 && full_mark2 > 0
-                    total_main = (total_mark1+total_mark2)/2
-                    @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = total_main.round()
-                  end
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = subject_full_marks
+                 
                   
                   
                   if @subject_result[main_sub_id].blank?

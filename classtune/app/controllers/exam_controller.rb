@@ -6703,22 +6703,28 @@ class ExamController < ApplicationController
                 else
                   main_mark1 = 0
                 end 
+                
+                subject_mark = 0
                 if exam_type == 3
                   main_mark = (total_mark1.to_f+total_mark2.to_f)/(full_mark1.to_f+full_mark2.to_f)*100 
                   mark_1_half = total_mark1_no_round.to_f/2.00
                   mark_2_half = total_mark2_no_round.to_f/2.00
                   main_mark_no_round = mark_1_half+mark_2_half
+                  subject_mark = (total_mark1+total_mark2)/2
+                  subject_mark = subject_mark.round()
                 elsif  exam_type == 2
                   main_mark = total_mark2.to_f/full_mark2.to_f*100
                  
                   main_mark_no_round = total_mark2_no_round.to_f/full_mark2.to_f*100
+                  subject_mark = total_mark2
                 else
                   main_mark = total_mark1.to_f/full_mark1.to_f*100
                   
                   main_mark_no_round = total_mark1_no_round.to_f/full_mark1.to_f*100
+                  subject_mark = total_mark1
                 end  
 
-                subject_full_marks = main_mark_no_round.round()
+                subject_full_marks = subject_mark.round()
                 if sub['grade_subject'].to_i != 1
                   if @student_subject_marks[sub['id'].to_i].blank?
                     @student_subject_marks[sub['id'].to_i] = {}

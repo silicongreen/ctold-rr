@@ -196,11 +196,12 @@
                   <% grand_total_fraction2 = 0 %>
                   <% grand_total = 0 %>
                   <% grand_total_fraction = 0 %>
-                  
+                  <% has_grade_subject = false %>
                   
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['grade_subject'].to_i == 1 %>
+                        <% has_grade_subject = true %>
                         <% next %>
                       <% end %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -485,9 +486,11 @@
                   </tr> 
                       
                     
-                  <tr class="page-break-grade">
-                      <td colspan="100"></td>
-                  </tr> 
+                  <% if has_grade_subject == true %>
+                    <tr class="page-break-grade">
+                        <td colspan="100"></td>
+                    </tr>
+                  <% end %> 
                   
                   
                   <% unless @report_data['report']['subjects'].blank? %> 

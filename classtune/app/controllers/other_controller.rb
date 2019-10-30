@@ -123,7 +123,7 @@ class OtherController < ApplicationController
     if request.post?
       unless params[:student_record][:student_ids].nil?
           @student_ids = params[:student_record][:student_ids]
-          @students = Student.find_all_by_id(@student_ids,:include=>[{:batch=>[:course]}],:conditions=>["is_deleted = ?",false])
+          @students = Student.find_all_by_id(@student_ids,:order=>"batch_id asc,first_name asc, last_name asc",:include=>[{:batch=>[:course]}],:conditions=>["is_deleted = ?",false])
           @section_name = params[:section_name]
           @year = params[:year]
       end   

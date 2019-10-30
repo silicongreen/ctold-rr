@@ -31,12 +31,13 @@
               <td class="align-right col-pdf" width="20%">Category</td><td colspan="3" class="align-left"><%= @student.student_category.name unless @student.student_category.blank? %></td>
           </tr>
       </table>
+      
       <table id="pdf-table" class="tbl-lign-left" width="27%" cellspacing="0">
           <tr class="even header-shade">
-              <td class="col-pdf" colspan="2" width="100%"><b><h3><%= @connect_exam_obj.name %></h3></b></td>
+              <td class="col-pdf" colspan="2" width="100%"><b><center><%= @connect_exam_obj.name %></center></b></td>
           </tr>
           <tr class="even">
-              <td class="align-left col-pdf" colspan="2" width="100%"><b>Based On</b></td>
+              <td class="align-left col-pdf" colspan="2" width="100%"><center><b>Based On</center></b></td>
           </tr>
           <tr class="odd">
               <td class="align-left" width="70%">1st Term Assessment Test - <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td><td>50%</td>
@@ -1097,19 +1098,31 @@
       .baf_shaheen table.tbl-lign-left tr.even td,.baf_shaheen table.tbl-lign-left tr.odd td
       {
          font-weight: normal !important;
-         padding: 10px !important;
+         padding: 4px !important;
+         font-size: 12px !important;
+      }
+      
+      .baf_shaheen table.tbl-lign-left-3 tr.even td,.baf_shaheen table.tbl-lign-left-3 tr.odd td
+      {
+         font-weight: normal !important;
+         padding: 2px 5px !important;
+      }
+      .baf_shaheen table.tbl-lign-left-3
+      {
+          float:left !important;
+          margin-left: 2% !important;
       }
       
       .baf_shaheen table.tbl-lign-left-2 tr.even td, .baf_shaheen table.tbl-lign-left-2 tr.odd td
       {
          font-weight: normal !important;
-         padding: 3px 4px !important;
+         padding: 2px 4px !important;
          font-size: 10px !important;
       }
       
       div.baf_shaheen table.extra-padding tr.even td
       {
-          padding: 8px 3px !important;
+          padding: 6px 3px !important;
           font-size: 10px !important;
       }
       div.baf_shaheen table.extra-padding tr.even:last-child td
@@ -1144,7 +1157,7 @@
     }
     .baf_shaheen div.grade_information table#pdf-table tr.even td
     {
-        padding: 3px 4px !important;
+        padding: 5px 4px !important;
     }
     div.baf_shaheen h2
     {
@@ -1164,13 +1177,13 @@
     }
     div.baf_shaheen tr.odd td
     {
-        padding: 3px 4px !important;  
+        padding: 1px 4px !important;  
         border: 1px solid #000000;
         font-size:11px;
     }
     div.baf_shaheen tr.even td
     {
-        padding: 3px 4px !important;
+        padding: 1px 4px !important;
         border: 1px solid #000000;
         font-size:11px;
     }
@@ -1214,5 +1227,5 @@
   }
    
    
-  </style>    
+  </style>      
      

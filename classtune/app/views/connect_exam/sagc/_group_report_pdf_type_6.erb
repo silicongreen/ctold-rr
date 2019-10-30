@@ -689,13 +689,13 @@
                     </tr>
                   <% end %>
                   
-                  
+                  <% total_subject_new = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['grade_subject'].to_i != 1 %>
                         <% next %>
                       <% end %>
-                      <% total_subject_new = 0 %>
+                      
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           
                           <%  monthly = 0 %>

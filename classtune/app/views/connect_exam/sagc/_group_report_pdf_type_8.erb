@@ -942,6 +942,7 @@
                                   end
                                 end   
                               else
+                                fsb = "F"
                                 failed_subject3 = true
                               end
                             end
@@ -957,6 +958,7 @@
                                   end
                                 end   
                               else
+                                fob = "F"
                                 failed_subject3 = true
                               end  
                             end
@@ -971,6 +973,7 @@
                                 end
                               end   
                             else
+                              fpr = "F"
                               failed_subject3 = true
                             end 
                           
@@ -1020,7 +1023,7 @@
                             
                           %>
                               
-                            <td class="col-pdf"><%= sprintf( "%0.02f", monthly5)%></td>
+                            <td class="col-pdf"><%= sprintf( "%0.02f", monthly5)%>|<%= main_mark %></td>
                             <% if has_ob %>
                               <% if full_ob > 0 %>
                                 <td class="col-pdf"><%= sprintf( "%0.02f", total_ob5)%><%= fob %></td>

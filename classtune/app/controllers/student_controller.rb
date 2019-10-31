@@ -2183,6 +2183,8 @@ class StudentController < ApplicationController
                     end
                   end
                 end
+                
+                exam_marks_to_new_batch(@previous_batch_id,@student)
               end
             end 
             username = MultiSchool.current_school.code.to_s+"-"+@student.admission_no        
@@ -2574,7 +2576,9 @@ class StudentController < ApplicationController
             auth_req.set_form_data({"paid_id" => @student.user.id, "paid_username" => username, "paid_school_id" => MultiSchool.current_school.id, "paid_school_code" => MultiSchool.current_school.code.to_s, "first_name" => @student.first_name, "middle_name" => @student.middle_name, "last_name" => @student.last_name, "gender" => (if @student.gender == 'm' then '1' else '0' end), "country" => @student.nationality_id, "dob" => @student.date_of_birth, "email" => username})
             auth_res = http.request(auth_req)
             @auth_response = JSON::parse(auth_res.body)
-            
+            if @previous_batch_id != @student.batch_id
+              exam_marks_to_new_batch(@previous_batch_id,@student)
+            end
             flash[:notice] = "#{t('flash3')}"
             redirect_to :controller => "student", :action => @action_name_main, :id => @student.id
           end
@@ -2686,6 +2690,10 @@ class StudentController < ApplicationController
                 end
               end
             end
+          end
+          
+          if @previous_batch_id != @student.batch_id
+            exam_marks_to_new_batch(@previous_batch_id,@student)
           end
           
           username = MultiSchool.current_school.code.to_s+"-"+@student.admission_no        
@@ -5485,6 +5493,8 @@ class StudentController < ApplicationController
     @attendence_text
   end
   
+  
+  
   def send_guardian_notification
     @applied_student = @formData.student
     reminderrecipients = []
@@ -5727,6 +5737,69 @@ class StudentController < ApplicationController
       #sms = Delayed::Job.enqueue(SmsManagerIndividualMessage.new(tmp_message,@recipients)) 
       send_sms_finance(tmp_message,@recipients)
     end
+  end
+  
+  def exam_marks_to_new_batch(previous_batch,student)    
+    batch_previous = Batch.find_by_id(previous_batch)
+    batch_new = student.batch
+    
+    if batch_previous.course.course_name == batch_new.course.course_name
+      @normal_subjects = Subject.find_all_by_batch_id(batch_new.id,:conditions=>"no_exams = false AND elective_group_id IS NULL AND is_deleted = false")
+      @student_electives = StudentsSubject.all(:conditions=>{:student_id=>student.id,:batch_id=>batch_new.id,:subjects=>{:is_deleted=>false}},:joins=>[:subject])
+      el_code = []
+      unless @student_electives.blank?
+        @student_electives.each do |e_subject|
+          subject_new = Subject.find_by_code_and_batch_id(e_subject.subject.code,batch_new.id)
+          unless subject_new.blank?
+            sub_el_prev = StudentsSubject.find_by_student_id_and_subject_id(student.id,e_subject.subject.id)
+            unless sub_el_prev.blank?
+              sub_el_prev.update_attribute("subject_id",subject_new.id)
+            end
+          end
+        end
+      end
+      
+      @previous_exam_groups = ExamGroup.active.find_all_by_batch_id(batch_previous)
+      @new_exam_groups = ExamGroup.active.find_all_by_batch_id(batch_new.id)
+      
+      change_subject_id = {}
+      if !@previous_exam_groups.blank? and !@new_exam_groups.blank?
+        @previous_exam_groups.each do |prev_exam|
+          new_exam = @new_exam_groups.find{|v| v.name == prev_exam.name and v.quarter == prev_exam.quarter}
+          unless new_exam.blank?
+            all_exam_previous = Exam.find_all_by_exam_group_id(prev_exam.id)
+            unless all_exam_previous.blank?
+              all_exam_new = Exam.find_all_by_exam_group_id(new_exam.id)
+              unless all_exam_new.blank?
+                all_exam_previous.each do |exam_prev|
+                  exam_subject = Subject.find_by_id(exam_prev.subject_id)
+                  unless exam_subject.blank?
+                    
+                    if !change_subject_id.blank? && !change_subject_id[exam_subject.id].blank?
+                      subject_id_new = change_subject_id[exam_subject.id]
+                    else
+                      new_subject = Subject.find_by_code_and_batch_id(exam_subject.code,batch_new.id)
+                      unless new_subject.blank?
+                        subject_id_new  = new_subject.id
+                        change_subject_id[exam_subject.id] == subject_id_new
+                      end
+                    end
+                    unless subject_id_new.blank?
+                      exam_new = all_exam_new.find{|v| v.subject_id == subject_id_new}
+                      unless exam_new.blank?
+                        exam_score = ExamScore.find_by_exam_id_and_student_id(exam_prev.id,student.id)
+                        exam_score.update_attribute("exam_id",exam_new.id)
+                      end  
+                    end
+                  end   
+                end
+              end
+            end
+          end  
+        end
+      end
+    end
+    
   end
  
 end

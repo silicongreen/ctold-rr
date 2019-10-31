@@ -934,7 +934,7 @@
                                 sb_main = (sb_marks.to_f/full_sb.to_f)*100
                                 grade = GradingLevel.percentage_to_grade(sb_main, @batch.id)
                                 if !grade.blank? and !grade.name.blank?
-                                  if (grade.credit_points.to_i == 0 && fourth_subject.blank?) or (sb_marks.to_i < 64 && full_sb.to_i == 140 && fourth_subject.blank?) or (sb_marks.to_i < 90 && full_sb.to_i == 200 && fourth_subject.blank?)
+                                  if (grade.credit_points.to_i == 0 && fourth_subject.blank?) or (sb_marks.round().to_i < 32 && full_sb.to_i == 70 && fourth_subject.blank?) or (sb_marks.round().to_i < 45 && full_sb.to_i == 100 && fourth_subject.blank?)
                                     failed_subject3 = true
                                   end
                                 end   
@@ -947,8 +947,8 @@
                               if ob_marks > 0
                                 ob_main = (ob_marks.to_f/full_ob.to_f)*100
                                 grade = GradingLevel.percentage_to_grade(ob_main, @batch.id)
-                                if !grade.blank? and !grade.name.blank? && (ob_marks != 22 || full_ob != 25)
-                                  if (grade.credit_points.to_i == 0 && fourth_subject.blank?) && (ob_marks.round().to_i != 26 || full_ob != 60)
+                                if !grade.blank? and !grade.name.blank? && (ob_marks.round().to_i != 11 || full_ob != 25)
+                                  if (grade.credit_points.to_i == 0 && fourth_subject.blank?) && (ob_marks.round().to_i != 13 || full_ob != 30)
                                     failed_subject3 = true
                                   end
                                 end   
@@ -961,7 +961,7 @@
                               pr_main = (pr_marks.to_f/full_pr.to_f)*100
                               grade = GradingLevel.percentage_to_grade(pr_main, @batch.id)
                               if !grade.blank? and !grade.name.blank?
-                                if grade.credit_points.to_i == 0 && fourth_subject.blank? && (pr_marks.round().to_i != 22 || full_pr != 25)
+                                if grade.credit_points.to_i == 0 && fourth_subject.blank? && (pr_marks.round().to_i != 11 || full_pr != 25)
                                   failed_subject3 = true
                                 end
                               end   

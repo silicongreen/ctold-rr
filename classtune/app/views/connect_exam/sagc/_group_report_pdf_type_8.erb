@@ -927,7 +927,9 @@
                             full_ob = full_ob1+full_ob2
                             full_pr = full_pr1+full_pr2
                             
-                            
+                            fsb = ""
+                            fob = ""
+                            fpr = ""
                           
                             if full_sb > 0
                               if sb_marks > 0
@@ -936,6 +938,7 @@
                                 if !grade.blank? and !grade.name.blank?
                                   if (grade.credit_points.to_i == 0 && fourth_subject.blank?) or (sb_marks.round().to_i < 32 && full_sb.to_i == 70 && fourth_subject.blank?) or (sb_marks.round().to_i < 45 && full_sb.to_i == 100 && fourth_subject.blank?)
                                     failed_subject3 = true
+                                    fsb = "F"
                                   end
                                 end   
                               else
@@ -950,6 +953,7 @@
                                 if !grade.blank? and !grade.name.blank? && (ob_marks.round().to_i != 11 || full_ob != 25)
                                   if (grade.credit_points.to_i == 0 && fourth_subject.blank?) && (ob_marks.round().to_i != 13 || full_ob != 30)
                                     failed_subject3 = true
+                                    fob = "F"
                                   end
                                 end   
                               else
@@ -963,6 +967,7 @@
                               if !grade.blank? and !grade.name.blank?
                                 if grade.credit_points.to_i == 0 && fourth_subject.blank? && (pr_marks.round().to_i != 11 || full_pr != 25)
                                   failed_subject3 = true
+                                  fpr = "F"
                                 end
                               end   
                             else
@@ -1018,21 +1023,21 @@
                             <td class="col-pdf"><%= sprintf( "%0.02f", monthly5)%></td>
                             <% if has_ob %>
                               <% if full_ob > 0 %>
-                                <td class="col-pdf"><%= sprintf( "%0.02f", total_ob5)%></td>
+                                <td class="col-pdf"><%= sprintf( "%0.02f", total_ob5)%><%= fob %></td>
                               <% else %>
                                 <td class="col-pdf">-</td>
                               <% end %>
                             <% end %>
                             <% if has_sb %>
                               <% if full_sb > 0 %>
-                                <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
+                                <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%><%= fsb %></td>
                               <% else %>
                                 <td class="col-pdf">-</td>
                               <% end %>
                             <% end %>
                             <% if has_pr %>
                               <% if full_pr > 0 %>
-                                <td class="col-pdf"><%= sprintf( "%0.02f", total_pr5)%></td>
+                                <td class="col-pdf"><%= sprintf( "%0.02f", total_pr5)%><%= fpr %></td>
                               <% else %>
                                 <td class="col-pdf">-</td>
                               <% end %>

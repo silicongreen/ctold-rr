@@ -1025,7 +1025,7 @@
                             <% end %>
                             <% if has_sb %>
                               <% if full_sb > 0 %>
-                                <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%>|<%= sb_marks %>|<%= full_sb %></td>
+                                <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
                               <% else %>
                                 <td class="col-pdf">-</td>
                               <% end %>
@@ -1317,13 +1317,25 @@
 
                               <td class="col-pdf"><%= sprintf( "%0.02f", monthly5)%></td>
                               <% if has_ob %>
-                                <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
+                                <% if full_ob > 0 %>
+                                  <td class="col-pdf"><%= sprintf( "%0.02f", total_ob5)%></td>
+                                <% else %>
+                                  <td class="col-pdf">-</td>
+                                <% end %>
                               <% end %>
                               <% if has_sb %>
-                                <td class="col-pdf"><%= sprintf( "%0.02f", total_ob5)%></td>
+                                <% if full_sb > 0 %>
+                                  <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
+                                <% else %>
+                                  <td class="col-pdf">-</td>
+                                <% end %>
                               <% end %>
                               <% if has_pr %>
-                                <td class="col-pdf"><%= sprintf( "%0.02f", total_pr5)%></td>
+                                <% if full_pr > 0 %>
+                                  <td class="col-pdf"><%= sprintf( "%0.02f", total_pr5)%></td>
+                                <% else %>
+                                  <td class="col-pdf">-</td>
+                                <% end %>
                               <% end %>
                               <td class="col-pdf"><%= total_marks_ag.round().to_i %></td>
                               <td class="col-pdf"><%=  highest_mark.round() %></td>

@@ -288,8 +288,9 @@
 
                                 <%
 
-                                subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                obt_mark = (subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*2.5
+                                subject_full_mark = subject_full_mark+2.5
+                                subject_obtain_mark = subject_obtain_mark+obt_mark
 
 
                               %>

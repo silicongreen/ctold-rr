@@ -931,7 +931,7 @@
                             fob = ""
                             fpr = ""
                             
-                            str_grade = "" 
+                         
                           
                             if full_sb > 0
                               if sb_marks > 0
@@ -940,7 +940,6 @@
                                 if !grade.blank? and !grade.name.blank?
                                   if (grade.credit_points.to_i == 0 && fourth_subject.blank?) or (sb_marks.round().to_i < 32 && full_sb.to_i == 70 && fourth_subject.blank?) or (sb_marks.round().to_i < 45 && full_sb.to_i == 100 && fourth_subject.blank?)
                                     failed_subject3 = true
-                                    str_grade = "sF"
                                   end
                                 end   
                               else
@@ -955,7 +954,6 @@
                                 if !grade.blank? and !grade.name.blank? && (ob_marks.round().to_i != 11 || full_ob != 25)
                                   if (grade.credit_points.to_i == 0 && fourth_subject.blank?) && (ob_marks.round().to_i != 13 || full_ob != 30)
                                     failed_subject3 = true
-                                    str_grade = "oF"
                                   end
                                 end   
                               else
@@ -964,17 +962,18 @@
                             end
                           
                             if full_pr > 0
-                              pr_main = (pr_marks.to_f/full_pr.to_f)*100
-                              grade = GradingLevel.percentage_to_grade(pr_main, @batch.id)
-                              if !grade.blank? and !grade.name.blank?
-                                if grade.credit_points.to_i == 0 && fourth_subject.blank? && (pr_marks.round().to_i != 11 || full_pr != 25)
-                                  failed_subject3 = true
-                                  str_grade = "pF"
-                                end
-                              end   
-                            else
-                              failed_subject3 = true
-                            end 
+                              if pr_marks > 0
+                                pr_main = (pr_marks.to_f/full_pr.to_f)*100
+                                grade = GradingLevel.percentage_to_grade(pr_main, @batch.id)
+                                if !grade.blank? and !grade.name.blank?
+                                  if grade.credit_points.to_i == 0 && fourth_subject.blank? && (pr_marks.round().to_i != 11 || full_pr != 25)
+                                    failed_subject3 = true
+                                  end
+                                end   
+                              else
+                                failed_subject3 = true
+                              end 
+                            end
                           
                             total_mark_all = (total_sb5+total_ob5+total_pr5)*0.9
                             total_marks_ag = total_mark_all+monthly5
@@ -1023,7 +1022,7 @@
                             
                           %>
                               
-                            <td class="col-pdf"><%= sprintf( "%0.02f", monthly5)%><%= str_grade %></td>
+                            <td class="col-pdf"><%= sprintf( "%0.02f", monthly5)%></td>
                             <% if has_ob %>
                               <% if full_ob > 0 %>
                                 <td class="col-pdf"><%= sprintf( "%0.02f", total_ob5)%></td>

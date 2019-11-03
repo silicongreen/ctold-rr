@@ -930,6 +930,8 @@
                             fsb = ""
                             fob = ""
                             fpr = ""
+                            
+                            str_grade = "" 
                           
                             if full_sb > 0
                               if sb_marks > 0
@@ -938,11 +940,11 @@
                                 if !grade.blank? and !grade.name.blank?
                                   if (grade.credit_points.to_i == 0 && fourth_subject.blank?) or (sb_marks.round().to_i < 32 && full_sb.to_i == 70 && fourth_subject.blank?) or (sb_marks.round().to_i < 45 && full_sb.to_i == 100 && fourth_subject.blank?)
                                     failed_subject3 = true
-                                    fsb = "F"
+                                    str_grade = "sF"
                                   end
                                 end   
                               else
-                                fsb = "F"
+                                str_grade = "sF"
                                 failed_subject3 = true
                               end
                             end
@@ -954,11 +956,11 @@
                                 if !grade.blank? and !grade.name.blank? && (ob_marks.round().to_i != 11 || full_ob != 25)
                                   if (grade.credit_points.to_i == 0 && fourth_subject.blank?) && (ob_marks.round().to_i != 13 || full_ob != 30)
                                     failed_subject3 = true
-                                    fob = "F"
+                                    str_grade = "oF"
                                   end
                                 end   
                               else
-                                fob = "F"
+                                str_grade = "oF"
                                 failed_subject3 = true
                               end  
                             end
@@ -969,11 +971,11 @@
                               if !grade.blank? and !grade.name.blank?
                                 if grade.credit_points.to_i == 0 && fourth_subject.blank? && (pr_marks.round().to_i != 11 || full_pr != 25)
                                   failed_subject3 = true
-                                  fpr = "F"
+                                  str_grade = "pF"
                                 end
                               end   
                             else
-                              fpr = "F"
+                              str_grade = "pF"
                               failed_subject3 = true
                             end 
                           
@@ -998,18 +1000,16 @@
                               main_mark = (total_marks_ag.to_f/full_mark_all.to_f)*100
                             end
                             grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                            str_grade = "" 
+                            
                             if !grade.blank? and !grade.name.blank?
                               if grade.credit_points.to_i == 0 && fourth_subject.blank?
                                 failed = true
-                                str_grade = "NF"
                               end
                             
                               if  failed_subject3 == true
                                   failed = true
                                   grade.credit_points = 0.0
-                                  grade.name = "F"
-                                  str_grade = "SF"
+                                  grade.name = "F" 
                               end
                               if fourth_subject.blank?
                                 total_grade = total_grade.to_f+grade.credit_points.to_f 

@@ -135,7 +135,7 @@
       
       <% @elective_subjects.each do |esubject| %>
           <% now_total = 0 %>
-          <td>
+          <td class="same-height-50">
           <% exam_score.each do |es| %>
               <% if es.exam.subject.elective_group.id.to_i == esubject.to_i %>
                 <% sub_marks = (((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100 %>  
@@ -187,5 +187,9 @@
      color: white !important;
      background: white !important;
      visibility: hidden !important;
+  }
+  td.same-height-50
+  {
+      height: 70px;
   }
 </style>    

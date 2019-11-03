@@ -985,7 +985,7 @@
                             
                           
                             total_mark_all2 = (total_sb6+total_ob6+total_pr6)*0.9
-                            total_marks_ag2 = total_mark_all+monthly6
+                            total_marks_ag2 = total_mark_all2+monthly6
                             grand_total_fraction = grand_total_fraction+total_marks_ag2
                             total_marks_ag2 = total_marks_ag2.round()
                             grand_total = grand_total+total_marks_ag2
@@ -998,15 +998,18 @@
                               main_mark = (total_marks_ag.to_f/full_mark_all.to_f)*100
                             end
                             grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                            str_grade = "" 
                             if !grade.blank? and !grade.name.blank?
                               if grade.credit_points.to_i == 0 && fourth_subject.blank?
                                 failed = true
+                                str_grade = "NF"
                               end
                             
                               if  failed_subject3 == true
                                   failed = true
                                   grade.credit_points = 0.0
                                   grade.name = "F"
+                                  str_grade = "SF"
                               end
                               if fourth_subject.blank?
                                 total_grade = total_grade.to_f+grade.credit_points.to_f 
@@ -1023,7 +1026,7 @@
                             
                           %>
                               
-                            <td class="col-pdf"><%= sprintf( "%0.02f", monthly5)%></td>
+                            <td class="col-pdf"><%= sprintf( "%0.02f", monthly5)%><%= str_grade %></td>
                             <% if has_ob %>
                               <% if full_ob > 0 %>
                                 <td class="col-pdf"><%= sprintf( "%0.02f", total_ob5)%></td>

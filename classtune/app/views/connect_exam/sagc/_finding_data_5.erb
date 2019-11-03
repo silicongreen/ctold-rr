@@ -1361,6 +1361,7 @@
                     
                     
                     
+                    
 
                     if main_mark1 > 0
                       main_mark1 = main_mark1/2.00
@@ -1375,7 +1376,7 @@
                       main_mark2 = main_mark2.round()
                     end
 
-                    subject_full_marks = main_mark
+                    subject_full_marks = main_mark_no_round.round()
                     if sub2['grade_subject'].to_i != 1
                       if @student_subject_marks[sub2['id'].to_i].blank?
                         @student_subject_marks[sub2['id'].to_i] = {}

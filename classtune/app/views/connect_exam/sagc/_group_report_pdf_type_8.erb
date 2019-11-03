@@ -1128,8 +1128,8 @@
                             <td class="col-pdf"><%= total_marks_ag.round().to_i %></td>
                             <td class="col-pdf"><%=  highest_mark.round() %></td>
                             <%  if subjects['subject_group_id'].to_i > 0 %> 
-                              <td class="col-pdf" rowspan="2"><%=  letter_grade_name %><%= sprintf( "%0.02f", total_sb2) %></td>
-                              <td class="col-pdf" rowspan="2"><%= sprintf( "%0.02f", letter_grade_point) %><%= sprintf( "%0.02f", total_ob2) %></td>
+                              <td class="col-pdf" rowspan="2"><%=  letter_grade_name %><%= sprintf( "%0.02f", total_sb4) %></td>
+                              <td class="col-pdf" rowspan="2"><%= sprintf( "%0.02f", letter_grade_point) %><%= sprintf( "%0.02f", total_ob4) %></td>
                             <% else %>
                               <td class="col-pdf"><%=  letter_grade_name %></td>
                               <td class="col-pdf"><%= sprintf( "%0.02f", letter_grade_point) %></td>

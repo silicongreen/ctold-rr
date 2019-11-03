@@ -798,13 +798,13 @@
                                 <% end %>
                                 <%
                                   full_sb = full_sb1+full_sb2
-                                  total_sb = total_sb1+total_sb2
+                                  total_sb = total_sb3+total_sb4
                                   
                                   full_ob = full_ob1+full_ob2
-                                  total_ob = total_ob1+total_ob2
+                                  total_ob = total_ob3+total_ob4
                                   
                                   full_pr = full_pr1+full_pr2
-                                  total_pr = total_pr1+total_pr2
+                                  total_pr = total_pr3+total_pr4
                               
                                 %>
                                 
@@ -1103,7 +1103,7 @@
                             
                           %>
                               
-                            <td class="col-pdf"><%= sprintf( "%0.02f", monthly5)%> <%= sprintf( "%0.02f", total_marks_ag2) %></td>
+                            <td class="col-pdf"><%= sprintf( "%0.02f", monthly5)%> </td>
                             <% if has_ob %>
                               <% if full_ob > 0 %>
                                 <td class="col-pdf"><%= sprintf( "%0.02f", total_ob5)%></td>
@@ -1128,8 +1128,8 @@
                             <td class="col-pdf"><%= total_marks_ag.round().to_i %></td>
                             <td class="col-pdf"><%=  highest_mark.round() %></td>
                             <%  if subjects['subject_group_id'].to_i > 0 %> 
-                              <td class="col-pdf" rowspan="2"><%=  letter_grade_name %></td>
-                              <td class="col-pdf" rowspan="2"><%= sprintf( "%0.02f", letter_grade_point) %></td>
+                              <td class="col-pdf" rowspan="2"><%=  letter_grade_name %><%= sprintf( "%0.02f", total_sb2) %></td>
+                              <td class="col-pdf" rowspan="2"><%= sprintf( "%0.02f", letter_grade_point) %><%= sprintf( "%0.02f", total_ob2) %></td>
                             <% else %>
                               <td class="col-pdf"><%=  letter_grade_name %></td>
                               <td class="col-pdf"><%= sprintf( "%0.02f", letter_grade_point) %></td>

@@ -1,0 +1,177 @@
+
+
+#page-yield {
+    width:1200px;
+    margin: 0 auto;
+    float: left;
+    overflow: hidden;
+}
+
+
+
+.hor_line{
+    width:1200px;
+    background: #333333;
+    height: 1px;
+}
+
+h2.heading{
+    text-align: center;
+    margin:5px;
+}
+
+#report_info{
+    width: 100%;
+}
+
+#report_info h6{
+    font-size: 15px;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    margin-bottom: 6px;
+    margin-top: 6px;
+}
+
+#new-main_info{
+    padding: 6px 5px;
+}
+#main_info{
+    padding: 6px 5px;
+    border: 1px solid #ccc;
+}
+#main_info div.std-items{
+    width: 20%;
+    display: inline-block;
+}
+#main_info div.std-items-full{
+    width: 50%;
+    display: inline-block;
+}
+#new-main_info div.std-items{
+    width: 35%;
+    display: inline-block;
+}
+#new-main_info div.std-items-full{
+    width: 40%;
+    display: inline-block;
+}
+#main_info div.std-items div.label, #main_info div.std-items-full div.label,
+#new-main_info div.std-items div.label, #new-main_info div.std-items-full div.label{
+    font-size: 14px;
+    font-family: verdana;
+    font-weight: bold;
+    display: inline-block;
+    padding-right: 10px;
+}
+#main_info div.std-items div.text, #main_info div.std-items-full div.text,
+#new-main_info div.std-items div.text, #new-main_info div.std-items-full div.text{
+    width: 45%;
+    font-size: 14px;
+    font-family: verdana;
+    display: inline-block;
+}
+#new-main_info div.std-items div.roll{
+    width: 100%;
+    font-weight: bold;
+    font-size: 14px;
+    font-family: verdana;
+    display: inline-block;
+}
+#main_info h4{
+    color: #555555;
+    margin-top: 18px;
+    font-weight: normal;
+}
+
+#main_info h2{
+    margin-bottom: 2px;
+    font-weight: normal;
+
+}
+
+
+.odd{
+    height:auto;
+    background: #EEEEEE;
+
+}
+
+.even{
+
+    height:auto;
+    background: #fff;
+
+
+}
+tr.even{
+    border: 1px solid #ADACAB;
+}
+
+tr.odd{
+    border: 1px solid #ADACAB;
+}
+
+.even td{
+
+    padding: 3px 3px 3px 3px;
+    border: 1px solid #ADACAB;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+
+}
+
+.odd td{
+    padding: 3px 3px 3px 3px;
+    border: 1px solid #ADACAB;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+
+}
+
+.table-header td{
+    padding: 3px 3px 3px 3px;
+    border-top: 1px solid #ADACAB;
+    border-left: 1px solid #ADACAB;
+    border-right: 1px solid #ADACAB;
+    color: #000;
+    font-weight: bold;
+    background: #EEEEEE;
+    font-size: 12px;
+    
+}
+
+table#pdf-table{
+    border-top: 1px solid #ADACAB;
+    border-collapse:collapse
+}
+
+#signature{
+    text-align: right;
+    width: 700px;
+    margin: 0 auto;
+    color: #999999;
+    font-size: 18px;
+}
+
+
+#page-yield h2{
+    text-align: center;
+}
+
+
+.page-break td{
+    height: 130px;
+    border: 1px solid #fff;
+    border-bottom: 1px solid #ADACAB;
+}
+.col-pdf1
+{color: #97080e;}
+
+.col-pdf{
+  text-align: left;
+}
+.col-pdf3{
+  text-align: right;
+}
+
+
+

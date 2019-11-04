@@ -17,20 +17,19 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-
 <% dates = [] %>
 <% unless @dates.blank? %>
   <% dates = [ ["Combined Dues", 0]] + @dates.map { |e| [e.full_name, e.id]} %>
 <% end %>
-<%= select  :fees_defaulters, :dates_id, dates,
+<%= select  :fees_defaulters, :sections, dates,
    {:prompt => "#{t('select_fee_collection_date')}"},
     {:onChange => "#{remote_function( :url =>
     {:action => "fees_defaulters_students"},
-    :with => "'date='+value+'&batch_id='+$('fees_defaulters_batch_id').value",
-    :before => "$('loading_fees_defaulters_dates_id').show();", :success => "$('loading_fees_defaulters_dates_id').hide(); ") }", :style=>"width: 90% !important; float: left;"
+    :with => "'date='+value+'&course_name='+$('fees_defaulters_class_name').value+'&section_id='+$('fees_defaulters_section_id').value+'&batch_id='+$('fees_defaulters_batch_name').value+'&opt=2'",
+    :before => "$('loading_sections_date').show();", :success => "$('loading_sections_date').hide(); ") }", :style=>"width: 90% !important; float: left;"
   } %>
-<%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_fees_defaulters_dates_id", :style =>"display: none;" ) %>
+<%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_sections_date", :style =>"display: none;" ) %>
 <script type="text/javascript" charset="utf-8">
-    j('#fees_defaulters_dates_id').select2();
+    j('#fees_defaulters_sections').select2();
 </script>
 

@@ -1,8 +1,50 @@
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
 
+<% unless @from_student_view %>
 <div style="background: transparent; height: 40px;">
 
 </div>
+<% else %>
+<div class="header-wrapper">
+
+    <div class="header-title">
+        <div class="header-icon">
+            <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+        </div>
+        <div class="header-title-text-wrapper">
+            <div class="header-title-main-text f2">
+                <%= link_to "Student Ledger", :controller => "finance", :action => "student_ledger", :id => @student.id,:id2=>1 %>
+            </div>
+            <div class="clearfix"></div>
+            <div class="header-title-sub-text">
+                <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="tabbed-header-wrapper">
+        <% if MultiSchool.current_school.id != 340 or !params[:show_fees].blank? %>
+        <ul class="header-tabs">
+            <li>
+                <%= link_to "#{t('fees_text')}", {:controller => 'student', :action => 'fees', :id => @student.id}, {:class => 'f2'} %>
+            </li>
+            <li>
+                <%= link_to "#{t('view_refunds')}", {:controller => 'finance', :action => "refund_student_view",:id => @student.id}, {:class => 'f2'} %>
+            </li>
+            <li class="active">
+                <%= link_to "Ledger", {:controller => 'finance', :action => "student_ledger",:id => @student.id,:id2=>1}, {:class => 'f2'} %>
+            </li>
+            <li>
+                <%= link_to "#{t('student_profile')}", {:controller => 'student', :action => 'profile', :id => @student.id}, {:class => 'f2'} %>
+            </li>
+        </ul>
+        <% end %>
+    </div>
+
+</div>
+<% end %>
 
 <div id="page-yield" class="bg-disable">
     <div class="fees_wrapper">
@@ -65,66 +107,127 @@
         </div>
 
         <div id="student_profile_heading1">
-            <div id="student_main_info1">
-                <span class="name" style="width: 70%; display: inline-block;"><h1> Student Ledger</h1> </span>
+            <div id="student_main_info1" style="float: left; width: 98%;">
+                <span class="name" style="width: 66%; display: inline-block;"><h1> Student Ledger</h1> </span>
+                <span class="name" style="width: 15%; padding-right: 10px; display: inline-block; text-align: right;">
+                    <%= link_to "Download PDF",
+                            {:controller => "finance", :action => "student_ledger_pdf_fees", :id => @student.id},:target => '_blank', :class => "user_button" %>
+                </span>
+                <span class="name" style="width: 15%; padding-right: 0px; display: inline-block; text-align: right;">
+                    <%= link_to "Download Excel",
+                            {:controller => "finance", :action => "student_ledger_xls_fees", :id => @student.id},:target => '_blank', :class => "user_button" %>
+                </span>
             </div>
             <div class="extender"> </div>
         </div>
         
         <hr style="border: 1px solid #ccc;" />
-        <div id="table-scroll" class="table-scroll" style="display: block; width: 80%; padding-bottom: 20px;">
+        <div id="table-scroll" class="table-scroll" style="display: block; width: 96%; padding-bottom: 20px;">
             <table class="table-bordered main-table" id="table-scroll" cellspacing="0" cellpadding="0" border="0" style="table-layout:fixed;">
                 <thead><!-- class="thead-inverse" -->
                   <tr>
-                    <th class="fixed-side" scope="col" style="width: 200px; text-align: center; vertical-align: middle;">Ledger Date</th>
-                    <th style="text-align: center; vertical-align: middle;">Amount to Pay</th>
-                    <th style="text-align: center; vertical-align: middle;">Paid Amount</th>
-                    <th style="text-align: center; vertical-align: middle;">Amount <br /> (Dues/Advance)</th>
+                    <th style="width: 40px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Sl No</th>  
+                    <th class="fixed-side" scope="col" style="width: 140px; text-align: center; vertical-align: middle;">Transaction Date</th>
+                    <th style="width: 80px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Tran Type</th>
+                    <th style="width: 70px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Tran ID</th>
+                    <th style="width: 70px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">For</th>
+                    <th style="width: 180px; text-align: left; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Particulars</th>
+                    <th style="text-align: center; vertical-align: middle;">Debit</th>
+                    <th style="text-align: center; vertical-align: middle;">Credit</th>
+                    <th style="text-align: center; vertical-align: middle;">Balance</th>
                   </tr>
                 </thead>
                 <tbody>
                     <% carried_amount = 0 %>
                     <% current_balance = 0 %>
                     <% i = 0 %>
-                    <% @student_fee_ledgers.each do |student_fee_ledger| %>
+                    <% @student_fee_ledgers.each_with_index do |student_fee_ledger, ind| %>
+                    <% ledger_info = "" %>
                     <% info = "" %>
+                    <% trans_type = "" %>
+                    <% trans = [] %>
+                    <% for_id = [] %>
+                    <% particulars = [] %>
+                    <% particular_name = "" %>
+                    <% trans_id = "" %>
                     <% if student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f == 0.00 %>
-                    <% info = "(Admission Date)" %>
+                    <% info = "Admission" %>
+                    <% trans_type = "Admission" %>
+                    <% particular_name = "" %>
+                    <% ledger_info = "(Admission Date)" %>
                     <% elsif student_fee_ledger.amount_to_pay.to_f > 0.00 and student_fee_ledger.amount_paid.to_f == 0.00 %>
+                      <% trans_type = "Receivable" %>
                       <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay > 0.00 and fee_id IS NOT NULL and amount_paid = 0.00 and transaction_id = 0"]) %>
                       <% unless student_ledgers.nil? %>
                         <% student_ledgers.each do |student_ledger| %>
                           <% fee = FinanceFee.find(:first, :conditions => "id = #{student_ledger.fee_id}") %>
                           <% unless fee.nil? %>
-                            <% info += "(<a href='/student/fee_details/" + @student.id.to_s + "/" + fee.finance_fee_collection.id.to_s + "?opt=" + Base64.encode64(@student.admission_no.to_s + "-" + fee.finance_fee_collection.id.to_s).reverse + '===' + "' target='_blank' style='text-decoration: underline;'>" + fee.finance_fee_collection.name + '</a>' %>
+                            <% trans << fee.id %>
+                            <% date_id = fee.fee_collection_id %>
+                            <% d = FinanceFeeCollection.find(date_id) %>
+                            <% for_id << d.name %>
+                            <%
+                              exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+                              unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+                                exclude_particular_ids = exclude_particular_ids
+                              else
+                                exclude_particular_ids = [0]
+                              end
+                            %>
+                            <% fee_particulars = d.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@student.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) } %>
+                            <% particular_name = fee_particulars.map(&:name).join(", ") + " for " + d.name  %>
+                            <% ledger_info += "(<a href='/student/fee_details/" + @student.id.to_s + "/" + fee.finance_fee_collection.id.to_s + "?opt=" + Base64.encode64(@student.admission_no.to_s + "-" + fee.finance_fee_collection.id.to_s).reverse + '===' + "' target='_blank' style='text-decoration: underline;'>" + fee.finance_fee_collection.name + '</a>' %>
                             <% if i == student_ledgers.length - 1 %>
-                            <% info += ")" %>
+                            <% ledger_info += ")" %>
                             <% else %>
-                            <% info += ", " %>
+                            <% ledger_info += ", " %>
                             <% end %>
                             <% i += 1 %>
                           <% end %>
+                          <% trans_id = trans.join(", ") %>
+                          <% info = for_id.join(", ") %>
                         <% end %>
                       <% end %>
                     <% elsif student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f > 0.00 %>
-                      <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay = 0.00 and amount_paid > 0.00"]) %>
-                      <% unless student_ledgers.nil? %>
-                        <% student_ledgers.each do |student_ledger| %>
-                          <% payments = Payment.find(:all, :conditions => "finance_transaction_id = #{student_ledger.transaction_id}") %>
-                          <% unless payments.nil? %>
-                            <% payments.each do |payment| %>
-                              <% fee = FinanceFee.find(:first, :conditions => "id = #{payment.payment_id}") %>
-                              <% info += "Order Id: #{payment.order_id} <a href='/finance/student_fee_receipt_pdf/#{@student.id}/#{fee.finance_fee_collection.id}?trn_id=#{payment.finance_transaction_id}' target='_blank' style='text-decoration: underline;'>Print receipt</a><Br />" %>
+                        <% trans_type = "Received" %>
+                        <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay = 0.00 and amount_paid > 0.00"]) %>
+                        <% unless student_ledgers.nil? %>
+                          <% student_ledgers.each do |student_ledger| %>
+                            <% payments = Payment.find(:all, :conditions => "finance_transaction_id = #{student_ledger.transaction_id}") %>
+                            <% unless payments.nil? %>
+                              <% payments.each do |payment| %>
+                                <% trans << payment.order_id %>
+                                <% fee = FinanceFee.find(:first, :conditions => "id = #{payment.payment_id}") %>
+                                <% unless fee.blank? %>
+                                  <% date_id = fee.fee_collection_id %>
+                                  <% d = FinanceFeeCollection.find(date_id) %>
+                                  <% for_id << d.name %>
+                                  <% particulars << d.name %>    
+                                <% end %>
+                                <% particulars << "Trust Bank Payment" %>  
+                                <% payment_type = (payment.gateway_response[:payment_type] = "MB") ? "Mobile Banking" : "Card Online" %>
+                                <% particulars << payment_type %>    
+                                <% particulars << "Reference ID: " + payment.gateway_response[:ref_id] %>    
+                                <% ledger_info += "Order Id: #{payment.order_id} <a href='/finance/student_fee_receipt_pdf/#{@student.id}/#{fee.finance_fee_collection.id}?trn_id=#{payment.finance_transaction_id}' target='_blank' style='text-decoration: underline;'>Print receipt</a><Br />" %>
+                              <% end %>
+                              <% trans_id = trans.join(", ") %>
+                              <% info = for_id.join(", ") %>
+                              <% particular_name = particulars.join(", ") %>
                             <% end %>
                           <% end %>
                         <% end %>
-                      <% end %>
                     <% end %>
+                      
                     <tr class="tr-odd">
+                          <td style="text-align: center;"><%= ind + 1 %></td>
                           <th style="vertical-align: middle; text-align: left; color: #555; font-family: verdana; font-size: 12px; line-height: 17px;" class="fixed-side">
                               <%= student_fee_ledger.ledger_date.strftime("%d %B, %Y") %><br />
-                              <small><%= info %></small>
+                              <small><%= ledger_info %></small>
                           </th>
+                          <td style="text-align: center; vertical-align: middle;"><%= trans_type %></td>
+                          <td style="text-align: center; vertical-align: middle;"><%= trans_id %></td>
+                          <td style="text-align: center; vertical-align: middle;"><%= info %></td>
+                          <td style="text-align: left; padding-left: 10px; vertical-align: middle;"><%= (student_fee_ledger.ledger_title.blank?) ? particular_name : student_fee_ledger.ledger_title %></td>
                           <td style="vertical-align: middle; text-align: right; font-size: 12px;"><%= to_comma_seperated_precision_label student_fee_ledger.amount_to_pay %></td>
                           <td style="vertical-align: middle; text-align: right; font-size: 12px;"><%= to_comma_seperated_precision_label student_fee_ledger.amount_paid %></td>
                           <% current_balance = (carried_amount + student_fee_ledger.amount_to_pay.to_f) - student_fee_ledger.amount_paid.to_f %>
@@ -142,8 +245,17 @@
 
                 </tbody>
             </table>
+            <% remaining_amount = 0.00 %>
+            <% if carried_amount < 0 %>
+              <% remaining_amount = carried_amount * (-1) %>
+            <% else %>
+              <% remaining_amount = carried_amount %>
+            <% end %>
+            <div id ="report_info" style="background: #EEEEEE; border: 1px solid #ccc; text-align: right; padding-right: 10px;">
+                <h6 style="font-size: 13px; font-family: verdana; margin-top: 20px;"><%= (carried_amount < 0) ? "Advance:" : "Current Dues:" %> <span style='font-weight: normal; padding-left: 10px;'><%= to_comma_seperated_precision_label remaining_amount %></span></h6>
+            </div>
             <% unless carried_amount == 0 %>
-              <div style="width: 140px; float: right; padding: 20px; border: 1px solid #ccc; border-radius: 6px; margin-top: 10px; background: #3b823c; color: #fff; text-align: center;">
+              <div style="display: none; width: 140px; float: right; padding: 20px; border: 1px solid #ccc; border-radius: 6px; margin-top: 10px; background: #3b823c; color: #fff; text-align: center;">
                   <% if carried_amount < 0 %>
                   <b style="font-size: 18px;"><%= to_comma_seperated_precision_label carried_amount * (-1) %></b><br />
                   <small style="font-size: 10px; letter-spacing: 2px; font-family: verdana;">(Advance)</small>
@@ -162,6 +274,14 @@
   <%= javascript_include_tag "custom/tabbed-header" %>
 <% end %>
 <style>
+    a.user_button {
+      margin-top: 0;
+      margin-left: 0;
+      margin-right: 0;
+      float: none;
+      font-size: 12px;
+      font-family: verdana;
+    }
     .table-scroll {
 	position:relative;
 	max-width:1000px;

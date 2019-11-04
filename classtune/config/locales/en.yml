@@ -446,6 +446,7 @@ en: # locale
   exam_schedule_details: "Exam Schedule Details"
   fee_collection_details: "Fee Collection Details"
   course_fee_defaulters: "Fees Defaulters Details"
+  download_as_excel: "Download As Excel"
   student_wise_fee_defaulters: "Students Fees Defaulters Details"
   event_category: "Event Category"
   club_category: "Club Category"

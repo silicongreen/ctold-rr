@@ -30,11 +30,15 @@
   <div class="report">
 
     <div id ="main_info">
-        <% batch_version = @batch.name.split(" ") %>
-        <h4 style="width: 25%; display: inline-block;"> <%= "#{t('shift')} :"+ " " "#{batch_version[0].strip}" %></h4>
-        <h4 style="width: 24%; display: inline-block; text-align: left; "> <%= "#{t('version')} :"+ " " "#{batch_version[1].strip}" %></h4>
-        <h4 style="width: 24%; display: inline-block; text-align: center;"> <%= "#{t('class')} :"+ " " "#{@batch.course.course_name}" %></h4>
-        <h4 style="width: 24%; display: inline-block; text-align: right;"> <%= "#{t('section')} :"+ " " "#{@batch.course.section_name}" %></h4>
+        <% unless @batch.blank? %>
+          <% batch_version = @batch.name.split(" ") %>
+          <h4 style="width: 25%; display: inline-block;"> <%= "#{t('shift')} :"+ " " "#{batch_version[0].strip}" %></h4>
+          <h4 style="width: 24%; display: inline-block; text-align: left; "> <%= "#{t('version')} :"+ " " "#{batch_version[1].strip}" %></h4>
+          <h4 style="width: 24%; display: inline-block; text-align: center;"> <%= "#{t('class')} :"+ " " "#{@batch.course.course_name}" %></h4>
+          <h4 style="width: 24%; display: inline-block; text-align: right;"> <%= "#{t('section')} :"+ " " "#{@batch.course.section_name}" %></h4>
+        <% else %>
+          <h4 style="width: 25%; display: inline-block;"> &nbsp;</h4>
+        <% end %>
     </div>
     <div id="pdf-info" style="padding-bottom: 40px;">
       <% page = 1 %>  
@@ -53,13 +57,24 @@
         <% index = 0   %>
         <% c = 'even' %>
         <% @defaulters.each do |s| %>
+          <% unless @date == 0 %>
+            <% if @multi_date %>
+            <% dates = @dates.map(&:id) %>
+            <% fees = s.finance_fees.select{ |f| dates.include?(f.fee_collection_id.to_i)} %>
+            <% @date = FinanceFeeCollection.find(fees[0].fee_collection_id) %>  
+            <% else %>
+            <% fees = s.finance_fees.select{ |f| f.fee_collection_id.to_i == @date.id.to_i} %>
+            <% end %>
+          <% else %>  
+            <% fees = s.finance_fees %>
+          <% end %>
           <% b = Batch.find(s.batch_id)  %>
           <% sc = StudentCategory.find(s.student_category_id)  %>
           <% b_v = b.name.split(" ") %>
-          <% if page == 1 and i== 35 %>
+          <% if page == 1 and i== 36 %>
               <% i= 0 %>
               <% page += 1 %>
-              <tr style="padding: 10px; height: 45px;"><td colspan="8">&nbsp;</td></tr>
+              <tr style="padding: 10px; height: 40px;"><td colspan="8">&nbsp;</td></tr>
               <tr class="table-header">
                 <td style="text-align: center;">SL</td>
                 <td style="text-align: center;"><%= t('student_id') %></td>
@@ -70,10 +85,10 @@
                 <td style="text-align: center;"><%= t('contact_number') %></td>
                 <td style="text-align: center;"><%= "Remarks" %></td>
               </tr>
-          <% elsif page > 1 and i== 39 %>
+          <% elsif page > 1 and i== 41 %>
               <% i= 0 %>
               <% page += 1 %>
-              <tr style="padding: 10px; height: 30px;"><td colspan="8">&nbsp;</td></tr>
+              <tr style="padding: 10px; height: 40px;"><td colspan="8">&nbsp;</td></tr>
               
               <tr class="table-header">
                 <td style="text-align: center;">SL</td>
@@ -97,9 +112,8 @@
               <% fee_remarks = "" %>
               <% unless params[:date] == '0' %>
               <% fee_remarks = @date.name %>
-              <td style="text-align: right;"><%= precision_label(s.balance.to_f+@date.fine_to_pay(s).to_f) %></td>
+              <% cnt = 1 %>
               <% else %>
-              <% fees = s.finance_fees %>
               <% cnt = 0 %>
               <% fees.each_with_index do |fee,m| %>
                 <% unless fee.is_paid %>
@@ -111,11 +125,11 @@
                   <% cnt += 1 %>
                 <% end %>
               <% end %>
-              <td style="text-align: right;"><%= precision_label fees.map(&:balance).sum %> (<%= cnt %>)</td>
               <% end %>
-
+              <td style="text-align: right;"><%= to_comma_seperated_precision_label fees.map(&:balance).sum %> (<%= cnt %>)</td>
+              
               <td style="text-align: center;"><%= s.sms_number %></td>
-              <td class="col-pdf remarks" style="text-align: center;;"><%= truncate(fee_remarks, :length => 30) %></td>
+              <td class="col-pdf remarks" style="text-align: center;;"><%= truncate(fee_remarks, :length => 25) %></td>
           </tr>
         <% end %>
       </table>

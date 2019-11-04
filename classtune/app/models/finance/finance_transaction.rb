@@ -246,7 +246,23 @@ INNER JOIN finance_fees on finance_fees.id=fee_transactions.finance_fee_id",
   end
 
   def delete_auto_transaction
+    if self.payee_type == 'Student'
+      student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{self.payee_id} and transaction_id = #{self.id}")
+      unless student_fee_ledgers.nil?
+        student_fee_ledgers.each do |fee_ledger|
+          fee_ledger.destroy
+        end
+      end
+    end
     FinanceTransaction.find_all_by_master_transaction_id(self.id).each do |f|
+      if f.payee_type == 'Student'
+        student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{f.payee_id} and transaction_id = #{f.id}")
+        unless student_fee_ledgers.nil?
+          student_fee_ledgers.each do |fee_ledger|
+            fee_ledger.destroy
+          end
+        end
+      end
       f.destroy
     end
     FinanceTransactionParticular.find_all_by_finance_transaction_id(self.id).each do |fp|

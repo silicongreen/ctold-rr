@@ -85,6 +85,7 @@
                 <th>Scholarship Name</th>
                 <th>Scholarship On</th>
                 <th>Discount</th>
+                <th>Amount</th>
                 <th style="width:50px;">Action</th>
             </tr>
         </thead>
@@ -99,6 +100,7 @@
                       <td><%= sc.name %></td>
                       <td><%= sc.finance_fee_particular_category.name %></td>
                       <td><span id="editID-<%= sc.id %>"><%= precision_label sc.discount %> <%= sc.is_amount == true ? 'BDT'  : '%' %></span></td>
+                      <td><%= precision_label @scholarships_student_ids[sc.receiver.id] %></td>
                       <td>
                           <button class="scholarAmountEdit" data-edit="<%= sc.id %>" data-amount="<%= sc.discount %>" data-type="<%= sc.is_amount %>">
                               <i class="fa fa-edit"></i>

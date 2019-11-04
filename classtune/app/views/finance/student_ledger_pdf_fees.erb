@@ -1,0 +1,596 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<title>Student Fees Ledger</title>
+
+</div>
+<div id="page-yield">
+
+    <div class="header-sagc">
+        <div class="header-sagc-left">
+            <div class="logo-left"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/sagc_logo.png")),:width=> '60%',:style=>"margin-left: 20%; margin-top: 10%;" %></div>
+            <div class="school-name-left">
+                <h2><%=Configuration.get_config_value('InstitutionName').upcase; %></h2>
+                <span>Dhaka Cantonment</span>
+                <span>Dhaka-1206</span>
+                <span>Phone: 9833306, Web: sagc.edu.bd</span>
+            </div>
+        </div>
+        <div class="header-sagc-right">
+            <span><%=  (Time.now +  + 6.hours).strftime("%a %b %d, %Y %H:%M:%S") %></span>
+            <span>Page 1 of 1</span>
+        </div>
+    </div>
+
+
+    <div class="extender"> </div>
+    <div class="report">
+        <div id ="report_info">
+            <h6>Title:  Student Ledger</h6>
+            <h6 style='margin-bottom: 12px;'>Period: <span style='font-weight: normal;'><%= @student_fee_ledgers[0].ledger_date.to_datetime.strftime("%b %d, %Y") %> to <%= @student_fee_ledgers[@student_fee_ledgers.length - 1].ledger_date.to_datetime.strftime("%b %d, %Y") %></span></h6>
+            <%#*<h6>Title:  Student Ledger</h6>%>
+        </div>
+        <%
+          batchsplit = @student.batch.name.split(" ")
+          version = ""
+          batch = batchsplit[0]
+          unless batchsplit[1].blank?
+            version = batchsplit[1]
+          end
+          unless batchsplit[2].blank?
+            version = version+" "+batchsplit[2]
+          end
+          std_category = ""
+          unless @student.student_category.blank?
+            std_category = @student.student_category.name
+          end
+        %>
+        <div id ="new-main_info" style='border: 0px;'>
+            <div class="std-items">
+                <div class="label">Student ID: </div>
+                <div class="text"><%=  "#{@student.admission_no}" %></div>
+            </div>
+            <div class="std-items-full">
+                <div class="label">Student Name: </div>
+                <div class="text"><%=  "#{@student.full_name}" %></div>
+            </div>
+            <div class="std-items" style='float: right; text-align: right; width: 14%;'>
+                <div class="roll">Student Roll: <span style="font-weight: normal;"><%=  "#{@student.class_roll_no}" %></span></div>
+            </div>
+        </div>
+        <div style='clear: both; height: 2px;'></div>
+        <div id ="main_info">
+            <div class="std-items">
+                <div class="label">Version: </div>
+                <div class="text"><%= version %></div>
+            </div>
+            <div class="std-items">
+                <div class="label">Class: </div>
+                <div class="text"><%= @student.batch.course.course_name %></div>
+            </div>
+            <div class="std-items">
+                <div class="label">Group: </div>
+                <div class="text"><%= @student.batch.course.group %></div>
+            </div>
+            <div class="std-items">
+                <div class="label">Section: </div>
+                <div class="text"><%= @student.batch.course.section_name %></div>
+            </div>
+            <div style='clear: both; height: 6px;'></div>
+            <div class="std-items">
+                <div class="label">Shift: </div>
+                <div class="text"><%= batch %></div>
+            </div>
+            <div class="std-items">
+                <div class="label">Session: </div>
+                <div class="text"><%= @student.batch.course.session %></div>
+            </div>
+            <div class="std-items">
+                <div class="label">Category: </div>
+                <div class="text"><%= std_category %></div>
+            </div>
+        </div>
+        
+        <% carried_amount = 0 %>
+        <% current_balance = 0 %>
+        <% i = 0 %>
+        
+        <div id="pdf-info">
+            <table id="pdf-table" width="100%" cellspacing="0">
+                <tr class="table-header">
+                    <td style="width: 40px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Sl No</td>
+                    <td style="width: 80px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Tran Date</td>
+                    <td style="width: 70px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Tran Type</td>
+                    <td style="width: 70px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Tran ID</td>
+                    <td style="width: 70px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">For</td>
+                    <td style="width: 200px; text-align: left; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Particulars</td>
+                    <td style="width: 90px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Debit</td>
+                    <td style="width: 90px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Credit</td>
+                    <td style="width: 90px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Balance</td>
+                </tr>
+                <% @student_fee_ledgers.each_with_index do |student_fee_ledger, ind| %>
+                  <% info = "" %>
+                  <% trans_type = "" %>
+                  <% trans = [] %>
+                  <% for_id = [] %>
+                  <% particulars = [] %>
+                  <% particular_name = "" %>
+                  <% trans_id = "" %>
+                  <% if student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f == 0.00 %>
+                  <% info = "Admission" %>
+                  <% trans_type = "Admission" %>
+                  <% particular_name = "" %>
+                  <% elsif student_fee_ledger.amount_to_pay.to_f > 0.00 and student_fee_ledger.amount_paid.to_f == 0.00 %>
+                    <% trans_type = "Receivable" %>
+                    <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay > 0.00 and fee_id IS NOT NULL and amount_paid = 0.00 and transaction_id = 0"]) %>
+                    <% unless student_ledgers.nil? %>
+                      <% student_ledgers.each do |student_ledger| %>
+                        <% fee = FinanceFee.find(:first, :conditions => "id = #{student_ledger.fee_id}") %>
+                        <% unless fee.nil? %>
+                          <% trans << fee.id %>
+                          <% date_id = fee.fee_collection_id %>
+                          <% d = FinanceFeeCollection.find(date_id) %>
+                          <% for_id << d.name %>
+                          <%
+                            exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+                            unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+                              exclude_particular_ids = exclude_particular_ids
+                            else
+                              exclude_particular_ids = [0]
+                            end
+                          %>
+                          <% fee_particulars = d.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@student.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) } %>
+                          <% particular_name = fee_particulars.map(&:name).join(",") + " for " + d.name  %>
+                        <% end %>
+                        <% trans_id = trans.join(",") %>
+                        <% info = for_id.join(",") %>
+                      <% end %>
+                    <% end %>
+                  <% elsif student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f > 0.00 %>
+                      <% trans_type = "Received" %>
+                      <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay = 0.00 and amount_paid > 0.00"]) %>
+                      <% unless student_ledgers.nil? %>
+                        <% student_ledgers.each do |student_ledger| %>
+                          <% payments = Payment.find(:all, :conditions => "finance_transaction_id = #{student_ledger.transaction_id}") %>
+                          <% unless payments.nil? %>
+                            <% payments.each do |payment| %>
+                              <% trans << payment.order_id %>
+                              <% fee = FinanceFee.find(:first, :conditions => "id = #{payment.payment_id}") %>
+                              <% unless fee.blank? %>
+                                <% date_id = fee.fee_collection_id %>
+                                <% d = FinanceFeeCollection.find(date_id) %>
+                                <% for_id << d.name %>
+                                <% particulars << d.name %>    
+                              <% end %>
+                              <% particulars << "Trust Bank Payment" %>  
+                              <% payment_type = (payment.gateway_response[:payment_type] = "MB") ? "Mobile Banking" : "Card Online" %>
+                              <% particulars << payment_type %>    
+                              <% particulars << "Reference ID: " + payment.gateway_response[:ref_id] %>    
+                            <% end %>
+                            <% trans_id = trans.join(", ") %>
+                            <% info = for_id.join(", ") %>
+                            <% particular_name = particulars.join(", ") %>
+                          <% end %>
+                        <% end %>
+                      <% end %>
+                  <% end %>
+                  <tr class="even">
+                    <td style="text-align: center;"><%= ind + 1 %></td>
+                    <td style="text-align: center;"><%= student_fee_ledger.ledger_date.strftime("%d-%m-%Y") %></td>
+                    <td style="text-align: center;"><%= trans_type %></td>
+                    <td style="text-align: center;"><%= trans_id %></td>
+                    <td style="text-align: center;"><%= info %></td>
+                    <td style="text-align: left; padding-left: 10px;"><%= (student_fee_ledger.ledger_title.blank?) ? particular_name : student_fee_ledger.ledger_title %></td>
+                    <td style="text-align: right; padding-right: 10px;"><%= to_comma_seperated_precision_label student_fee_ledger.amount_to_pay %></td>
+                    <td style="text-align: right; padding-right: 10px;"><%= to_comma_seperated_precision_label student_fee_ledger.amount_paid %></td>
+                    <% current_balance = (carried_amount + student_fee_ledger.amount_to_pay.to_f) - student_fee_ledger.amount_paid.to_f %>
+                    <% carried_amount = current_balance %>
+                    <td style="text-align: right;">
+                      <% if current_balance < 0 %>
+                        <%= to_comma_seperated_precision_label current_balance * (-1) %><br />
+                        <small style="font-size: 13px;">(Advance)</small>
+                      <% else %>
+                        <%= to_comma_seperated_precision_label current_balance %>
+                      <% end %>
+                    </td>
+                </tr>
+                <% end %>
+                
+            </table>
+            <% remaining_amount = 0.00 %>
+            <% if carried_amount < 0 %>
+              <% remaining_amount = carried_amount * (-1) %>
+            <% else %>
+              <% remaining_amount = carried_amount %>
+            <% end %>
+            <div id ="report_info">
+                <h6 style="font-size: 13px; margin-top: 20px;"><%= (carried_amount < 0) ? "Advance:" : "Current Dues:" %> <span style='font-weight: normal;'><%= to_comma_seperated_precision_label remaining_amount %></span></h6>
+                <h6 style="font-size: 13px;">In Word <span style='font-weight: normal;'><%= in_words(remaining_amount.to_i).split.map(&:capitalize).join(' ') if remaining_amount.to_i > 0 %></span></h6>
+            </div>
+        </div>
+
+    </div>
+    <p style="font-size: 12px; display: none; ">This is a computer generated copy no signature is required</p>
+</div>
+<style>
+  .header-sagc{ width: 99%; padding-bottom: 20px; }
+  .header-sagc-left .school-name-left{ width: 84%; display: inline-table; vertical-align: top; padding-top: 16px; }
+  .header-sagc-left .school-name-left h2{ font-size: 16px; margin-bottom: 10px; margin-top: 5px; text-align: left !important; }
+  .header-sagc-left .school-name-left span:first-child{ padding-top: 10px; }
+  .header-sagc-left .school-name-left span{ font-size: 12px; display: block; vertical-align: top; padding-bottom: 4px; }
+  .header-sagc-right span{ font-size: 11px; display: block; vertical-align: top; padding-bottom: 10px; }
+  .header-sagc-right{ width: 19%; vertical-align: top; display: inline-table; text-align: center; margin-top: 5px; }
+</style>
+
+<style>
+    tr.odd td, tr.even td,tr.table-header td
+    {
+       text-align:right;
+    }
+    td.align-center
+    {
+       text-align:center !important;
+    }
+    .date span{
+        display: none;
+        color: #FFFFFF;
+        text-align: left;
+    }
+    .date{
+        position: relative;
+    }
+    td:hover .date span{
+        display: block;
+        position: absolute;
+        background-color: black;
+        border:1px solid #ccc;
+        min-height: 20px;
+        min-width: 100px;
+        left: 0px;
+        top: -60px;
+        color: #FFFFFF;
+        padding: 5px;
+        font-size: 13px;
+        text-align: center;
+    }
+    td
+    {
+      cursor: pointer;
+    }
+ 
+    
+</style>   
+<style>
+    
+    .sub-header-sagc{
+        width: 99%;
+        height: 200px;
+    }
+    .content-area{
+        width: 99%;
+    }
+    .content-area table{
+        width: 100%;
+    }
+    .content-area table tr.thead, .content-area table tr.tfoot{
+        width: 100%;
+        background: #A5A5A5;
+        height: 40px;
+        border: none;
+    }
+    .content-area table tr.content{
+        width: 100%;
+        background: #E5E5E5;
+        height: 20px;
+        border: none;
+    }
+    .content-area table tr.content td{
+        padding: 2px 20px;
+    }
+    .content-area table tr.content td.amount{
+        text-align: right;
+    }
+    .content-area table tr.thead td{
+        height: 20px;
+        text-align: center;
+    }
+    .content-area table tr.thead td.sri{
+        width: 5%;
+    }
+    .content-area table tr.tfoot td{
+        height: 20px;
+        text-align: left;
+        padding: 2px 20px;
+    }
+    .content-area table tr.tfoot td span{
+        float: right;
+        font-weight: bold;
+        font-size: 9px;
+    }
+    .content-area table tr.tfoot td h2{
+        font-weight: bold;
+        font-size: 9px;
+    }
+    .header-sagc-left{
+        width: 80%;
+        vertical-align: top;
+        display: inline-table;
+    }
+    .sub-header-sagc-left{
+        width: 60%;
+        vertical-align: top;
+        display: inline-table;
+        padding: 4px;
+        margin: 0 auto;
+    }
+    .sub-header-sagc-right{
+        width: 39%;
+        vertical-align: top;
+        display: inline-table;
+        padding: 4px;
+        margin: 0 auto;
+    }
+    .sub-header-sagc-left .std-area{
+        width: 100%;
+        border: 1px solid #ccc;
+        display: inline-table;
+        height: 130px;
+        border-radius: 8px;
+        background: #E5E5E5;
+        padding: 10px;
+        -webkit-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+    }
+    .sub-header-sagc-left .std-items{
+        width: 50%;
+        border-bottom: 1px solid #fff;
+        display: inline-table;
+        padding-bottom: 6px;
+    }
+    .sub-header-sagc-left .std-items-full{
+        width: 100%;
+        border-bottom: 1px solid #fff;
+        display: inline-table;
+        padding-bottom: 6px;
+    }
+    .sub-header-sagc-left .std-items .label{
+        width: 70%;
+        padding-right: 5%;
+        display: inline-table;
+        text-align: right;
+        font-size: 11px;
+        font-weight: bold;
+    }
+    .sub-header-sagc-left .std-items-full .label{
+        width: 35%;
+        padding-right: 2%;
+        display: inline-table;
+        text-align: right;
+        font-size: 11px;
+        font-weight: bold;
+    }
+    .sub-header-sagc-left .std-items .text{
+        width: 24%;
+        display: inline-table;
+        font-size: 11px;
+    }
+    .sub-header-sagc-left .std-items-full .text{
+        width: 62%;
+        display: inline-table;
+        font-size: 11px;
+    }
+    .sub-header-sagc-right .receipt-area{
+        width: 100%;
+        border: 1px solid #ccc;
+        display: inline-table;
+        height: 176px;
+        border-radius: 8px;
+        background: #E5E5E5;
+        -webkit-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+    }
+    .sub-header-sagc-right .receipt-area .money_receipt{
+        width: 100%;
+        border: 1px solid #ccc;
+        display: inline-table;
+        height: 50px;
+        border-radius: 8px;
+        background: #A5A5A5;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        padding: 0 auto;
+        font-size: 24px;
+        font-weight: bold;
+        padding: 10px 20px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .sub-header-sagc-right .receipt-area .std-items-full{
+        width: 100%;
+        padding-bottom: 10px;
+        display: inline-table;
+    }
+    .sub-header-sagc-right .receipt-area .std-items-full .label{
+        width: 50%;
+        padding-right: 2%;
+        display: inline-table;
+        text-align: right;
+        font-size: 11px;
+        font-weight: bold;
+    }
+    .sub-header-sagc-right .receipt-area .std-items-full .text{
+        width: 48%;
+        display: inline-table;
+        font-size: 11px;
+    }
+    .header-sagc-left .logo-left{
+        width: 15%;
+        display: inline-block;
+    }
+    
+</style>
+
+<style>
+
+ #page-yield div.div-33
+{
+    float:left;
+    width: 32%;
+    margin-right: 15px;
+    border: 1px solid black;
+    min-height: 680px
+    
+} 
+#page-yield div.div-33 .section .general-header
+{
+    width: 100%;
+}
+#page-yield div.div-33:last-child
+{
+    margin-right: 0px;
+}
+table.vat_area tr td
+{
+    font-size: 10px;
+   
+}
+.registration_numer
+{
+  font-size: 10px;
+}
+.logo-left-div
+{
+  float:left;
+  width: 16%;
+  margin-left: 10px;
+}
+.school-left-div
+{
+  float: left;
+  width: 70%;
+  margin-left: 3px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.left-clear
+{
+  float:left;
+  clear:both;
+}
+center.due
+{
+  clear:both;
+  margin-top: 30px;
+  font-size: 12px;
+  font-weight: bold;
+}
+center
+{
+  clear:both;
+  margin-top: 1px;
+  font-size: 11px;
+}
+center.small
+{
+    font-size: 9px;
+    margin-top:10px;
+    margin-bottom: -15px;
+}
+.std_info .table-header td{
+    padding: 3px !important;
+    border-top: 1px solid black !important;
+    border-right: 1px solid black !important;
+    border-left: 1px solid black !important;
+    font-weight: normal;
+    background: #fff;
+    font-size: 11px;
+   
+}
+.std_info tr.table-header td.border-left-none
+{
+    border-left: none !important;
+}
+.std_info tr.table-header td.border-right-none
+{
+    border-right: none !important;
+}
+table#pdf-table{
+    border: none;
+    border-bottom: 1px solid black;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+table.std_info
+{
+    width:99.6%;
+    margin-left: 1px;
+}
+table.std_info tr td
+{
+    font-size: 8px !important;
+}
+table.signature
+{
+    width: 100%;
+    margin-top:80px;
+}
+table.signature tr td
+{
+    border-top: 1px solid Black;
+    padding: 3px 10px;
+    width: 30%;
+    text-align: center;
+    font-size: 11px;
+    
+}
+.in-words
+{
+  float:left;
+  clear:both;
+  margin-top: 10px;
+  padding: 3px;
+  font-size: 11px;
+  letter-spacing:normal !important;
+  
+}
+div.no-padding-no-margin
+{
+    padding: 0px 5px !important;
+    font-size: 11px;
+    margin-top: 5px !important;
+    margin-bottom: -15px !important;
+    font-weight: bold;
+}
+tr.table-header td.align-right
+{
+    text-align: right !important;
+}
+tr.table-header td.align-center
+{
+    text-align: center;
+}
+.no-warp
+{
+    white-space: nowrap;
+}
+</style>   

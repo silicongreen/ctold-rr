@@ -26,6 +26,9 @@
         <%= link_to "#{t('view_refunds')}", {:controller => 'finance', :action => "refund_student_view",:id => params[:id]}, {:class => 'f2'} %>
       </li>
       <li>
+          <%= link_to "Ledger", {:controller => 'finance', :action => "student_ledger",:id => params[:id],:id2=>1}, {:class => 'f2'} %>
+      </li>
+      <li>
         <%= link_to "#{t('student_profile')}", {:controller => 'student', :action => 'profile', :id => params[:id]}, {:class => 'f2'} %>
       </li>
     </ul>

@@ -104,15 +104,19 @@
     <% m = 0 %>
     <% @fees_collections.reverse.each do |fee| %>
       <% f = fee.to_i %>
+    <%#= debug  @date[f].inspect %>
       <% if m == 0 %>
-        <% fee_collection_name += @date[f].start_date.to_date.strftime('%B, %Y') + " - " %>
+        <% #fee_collection_name += @date[f].start_date.to_date.strftime('%B, %Y') + " - " %>
+        <% fee_collection_name += @date[f].name + " - " %>
       <% end %>
       <% if m == @fees_collections.length - 1 %>
-        <% fee_collection_name += @date[f].start_date.to_date.strftime('%B, %Y') + ")" %>
+        <% #fee_collection_name += @date[f].start_date.to_date.strftime('%B, %Y') + ")" %>
+        <% fee_collection_name += @date[f].name + ")" %>
       <% end %>
       <% m += 1 %>
     <% end %>
     <h2><%= fee_collection_name %></h2>
+    <%#= debug  @date[f].inspect %>
     <hr style="border: 1px solid #ccc;" />
 <br />
 <% total_fees =0 %>
@@ -150,7 +154,7 @@
       %>
       <tr>
         <td style="font-weight: normal; width: 8%; text-align: center; cursor: pointer;"><i id="expand_tr_<%= f %>" class="fa fa-plus-square-o expand_tr"></i></td>
-        <td style="font-weight: normal; width: 50%; text-align: left; font-weight: bold;"><%= "Fees for Month of " + @date[f].start_date.to_date.strftime('%B, %Y') %></td>
+        <td style="font-weight: normal; width: 50%; text-align: left; font-weight: bold;"><%= "Fees for Month of " + @date[f].name %></td>
         <td id="fee_amount_<%= f %>" style="font-weight: normal; width: 14%; font-weight: bold; text-align: right;">&nbsp;</td>
         <td id="fee_paid_<%= f %>" style="font-weight: normal; width: 14%; text-align: right; font-weight: bold;">&nbsp;</td>
         <td id="fee_remain_<%= f %>" style="font-weight: normal; width: 14%; text-align: right; font-weight: bold;">&nbsp;</td>
@@ -1212,10 +1216,12 @@
               <% unless fee_collection.blank? %>    
               <% fee_collection.each do |fee| %>
                 <% if m == 0 %>
-                  <% fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + " - " %>
+                  <% #fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + " - " %>
+                  <% fee_collection_name += fee.name + " - " %>
                 <% end %>
                 <% if m == fee_collection.length - 1 %>
-                  <% fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + ")" %>
+                  <% #fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + ")" %>
+                  <% fee_collection_name += fee.name + ")" %>
                 <% end %>
                 <% m += 1 %>
               <% end %>
@@ -1249,10 +1255,12 @@
             <% unless fee_collection.blank? %>    
               <% fee_collection.each do |fee| %>
                 <% if m == 0 %>
-                  <% fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + " - " %>
+                  <% #fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + " - " %>
+                  <% fee_collection_name += fee.name + " - " %>
                 <% end %>
                 <% if m == fee_collection.length - 1 %>
-                  <% fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + ")" %>
+                  <% #fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + ")" %>
+                  <% fee_collection_name += fee.name + ")" %>
                 <% end %>
                 <% m += 1 %>
               <% end %>

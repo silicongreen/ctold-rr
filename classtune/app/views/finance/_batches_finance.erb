@@ -1,0 +1,11 @@
+<%= select :fees_defaulters, :section_id, @sections.map {|c| [c.section_name.strip+" "+c.session.to_s, c.id]},
+{:prompt => "Select a Section"},
+{:class => "select2-combo", :autocomplete=> "off", :onChange => "#{remote_function(:url => {:controller => "finance",:action => "update_fees_collection_dates_defaulters_sections"}, 
+:with => "'section_id='+value+'&course_id='+$('fees_defaulters_class_name').value+'&batch_id='+$('fees_defaulters_batch_name').value+'&opt=2'" ,:before => "$('loading_section_data').show();",
+:success => "$('loading_section_data').hide(); ")}"} %>  
+<%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_section_data", :style =>"display: none;" ) %>
+
+
+<script type="text/javascript" charset="utf-8">
+    j('#fees_defaulters_section_id').select2();
+</script>

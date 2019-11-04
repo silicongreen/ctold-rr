@@ -1,0 +1,10 @@
+<%= select :fees_defaulters, :class_name, @courses.map {|c| [c.course_name, c.id]},
+{:prompt => "Select a Class"},
+{:class => "select2-combo", :autocomplete=> "off", :onChange => "#{remote_function(:url => {:controller => "finance",:action => "get_section_data_finance"}, :with => "'class_name='+value+'&batch_id='+j('#fees_defaulters_batch_name').val()" ,:before => "$('loading_course_data').show();",
+:success => "$('loading_course_data').hide(); ")}"} %>  
+<%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_course_data", :style =>"display: none;" ) %>
+
+<script type="text/javascript" charset="utf-8">
+    j('#fees_defaulters_class_name').select2();
+</script>
+

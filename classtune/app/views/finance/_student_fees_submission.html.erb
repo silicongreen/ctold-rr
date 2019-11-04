@@ -280,6 +280,12 @@
               <% end %>  
               <% if fee.is_tmp and paidAmount == 0 %>
                 <span style="float: right;"><%= link_to_remote '<i class="fa fa-minus-circle" style="font-size: 16px; color: #990A10; cursor: pointer;" aria-hidden="true"></i>',:url => {:action => 'remove_tmp_particular_from_fee', :batch_id => @batch.id, :student => @student.id, :date=> @date.id, :particular_id=>fee.id },:confirm => 'Are you sure, you want to remove this particular?'%></span>
+              <% else %>
+                <% if paidAmount == 0 %>
+                  <% if fee.finance_fee_particular_category_id == 78 and MultiSchool.current_school.id == 352 %>
+                    <span style="float: right;"><%= link_to_remote '<i class="fa fa-minus-circle" style="font-size: 16px; color: #990A10; cursor: pointer;" aria-hidden="true"></i>',:url => {:action => 'remove_tmp_particular_from_fee', :batch_id => @batch.id, :student => @student.id, :date=> @date.id, :particular_id=>fee.id },:confirm => 'Are you sure, you want to remove this particular?'%></span>
+                  <% end %>
+                <% end %>
               <% end %>  
             </td>
             <% if @self_advance_fee %>

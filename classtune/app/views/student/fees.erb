@@ -29,6 +29,9 @@
                 <%= link_to "#{t('view_refunds')}", {:controller => 'finance', :action => "refund_student_view",:id => @student.id}, {:class => 'f2'} %>
             </li>
             <li>
+                <%= link_to "Ledger", {:controller => 'finance', :action => "student_ledger",:id => @student.id,:id2=>1}, {:class => 'f2'} %>
+            </li>
+            <li>
                 <%= link_to "#{t('student_profile')}", {:controller => 'student', :action => 'profile', :id => @student.id}, {:class => 'f2'} %>
             </li>
         </ul>
@@ -163,9 +166,14 @@
                         paid_amount += pf.amount
                       end
                     end
+                    balance = FinanceFee.get_student_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f
+                    bal = balance - paid_amount
+                    if bal.to_f < 0 
+                      bal = 0.00
+                    end
                   %>
-
-                  <% if finance_fee.balance.to_f > 0 %>
+                  <%#= bal %>
+                  <% if bal.to_f > 0 %>
                   <% fee_box_class = "unpaid" %>
                   <% else %>
                   <% fee_box_class = "paid" %>
@@ -189,7 +197,7 @@
                               </tr>
                               <tr>
                                   <td class='fee_due'><b>Amount</b></td>
-                                  <td class='fee_due'><%= precision_label(finance_fee.balance.to_f+d.fine_to_pay(@student).to_f+paid_amount.to_f)  %></td>
+                                  <td class='fee_due'><%= precision_label(balance.to_f)  %></td>
                               </tr>
                               <tr>
                                   <td class='fee_due'><b>Paid</b></td>
@@ -197,31 +205,27 @@
                               </tr>
                               <tr>
                                   <td class='fee_due'><b>Due</b></td>
-                                  <td class='fee_due'><%=  precision_label((finance_fee.balance.to_f+d.fine_to_pay(@student).to_f)) %></td>
+                                  <td class='fee_due'><%=  precision_label(bal.to_f) %></td>
                               </tr>
                               <tr>
                                   <% has_due = false %>
                                   <% due = 0.00 %>
                                   <td class='fee_due'><b>Status</b></td>
-                                  <% if finance_fee.balance.to_f > 0 %>
+                                  <% if bal.to_f > 0 %>
                                   <% has_due = true %>
-                                  <% due_without_fee = finance_fee.balance.to_f %>
-                                  <% due = finance_fee.balance.to_f+d.fine_to_pay(@student).to_f %>
                                   <td class='fee_due'>Unpaid</td>
                                   <% else %>
                                   <td class='fee_due'>Paid</td>
                                   <% end %>
                               </tr>
-                              <% if has_due %>
-                                <% if finance_fee.balance.to_f != due_without_fee.to_f %>
+                              <% if bal > 0 %>
+                                <% if finance_fee.balance.to_f != bal.to_f %>
                                     <% ffee = FinanceFee.find(finance_fee.id) %>
-                                    <% ffee.update_attributes(:balance => due_without_fee, :is_paid => false) %>
+                                    <% ffee.update_attributes(:balance => bal, :is_paid => false) %>
                                 <% end %>
                               <% else %>
-                                <% if finance_fee.is_paid == false %>
-                                  <% ffee = FinanceFee.find(finance_fee.id) %>
-                                  <% ffee.update_attributes(:balance => 0.00, :is_paid => true) %>
-                                <% end %>
+                                <% ffee = FinanceFee.find(finance_fee.id) %>
+                                <% ffee.update_attributes(:balance => 0.00, :is_paid => true) %>
                               <% end %>
                           </table>
                       </div>
@@ -259,15 +263,15 @@
                         paid_amount += pf.amount
                       end
                     end
+                  
+                    balance = FinanceFee.get_student_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f
+                    bal = balance - paid_amount
+                    if bal < 0
+                      bal = 0
+                    end
                   %>
                   
-                  <% if finance_fee.balance.to_f+d.fine_to_pay(@student).to_f == 0.00 %>
-                  <% bal = FinanceFee.get_student_balance(d,@student, finance_fee) %>  
-                  <% else %>
-                  <% bal = finance_fee.balance.to_f+d.fine_to_pay(@student).to_f %>
-                  <% end %>
-                  <% due = bal - paid_amount %>
-                  <% if due > 0 %>
+                  <% if bal > 0 %>
                   <% fee_box_class = "unpaid" %>
                   <% else %>
                   <% fee_box_class = "paid" %>
@@ -275,7 +279,7 @@
                   <div class='fee_details_box <%= fee_box_class %>' id="finance_fee_<%= finance_fee.id %>">
                       <% cls_rerd = "finance_fees_collection_all" %>
                       <% checked_class = "fa-check-square-o" %>
-                      <% if due > 0 %>
+                      <% if bal > 0 %>
                         <% cls_rerd = "finance_fees_collection_chk finance_fees_collection_all" %>
                         <% checked_class = "fa-square-o" %>
                       
@@ -296,7 +300,7 @@
                               </tr>
                               <tr>
                                   <td class='fee_due'><b>Amount</b></td>
-                                  <td class='fee_due'>BDT <%= precision_label(bal.to_f)  %></td>
+                                  <td class='fee_due'>BDT <%= precision_label(balance.to_f)  %></td>
                               </tr>
                               <tr>
                                   <td class='fee_due'><b>Paid</b></td>
@@ -304,16 +308,16 @@
                               </tr>
                               <% has_due = false %>
                               <% due = 0.00 %>
-                              <% if paid_amount - bal > 0 %>
+                              <% if paid_amount - balance > 0 %>
                               <tr>
                                   <td class='fee_due'><b>Advance</b></td>
-                                  <% advance = paid_amount - bal %>
+                                  <% advance = paid_amount - balance %>
                                   <td class='fee_due'>BDT <%=  precision_label(advance) %></td>
                               </tr>
                               <% else %>
                               <tr>
                                   <td class='fee_due'><b>Due</b></td>
-                                  <% due = bal - paid_amount %>
+                                  <% due = balance - paid_amount %>
                                   <td class='fee_due'>BDT <%=  precision_label(due) %></td>
                               </tr>
                               <% if due > 0.00 %>

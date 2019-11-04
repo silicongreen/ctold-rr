@@ -1545,8 +1545,149 @@ class FinanceController < ApplicationController
   
   def student_ledger
     unless params[:id].nil?
+      @from_student_view = false
+      unless params[:id2].nil?
+        @from_student_view = true
+      end
       @student = Student.find(params[:id])
-      @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "ledger_date, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid", :order => 'ledger_date ASC', :conditions => ["student_id = #{params[:id]}"], :group => "ledger_date")
+      @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "ledger_date, ledger_title, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid", :order => 'ledger_date ASC', :conditions => ["student_id = #{params[:id]}"], :group => "ledger_date")
+    end
+  end
+  
+  def student_ledger_pdf_fees
+    unless params[:id].nil?
+      @student = Student.find(params[:id])
+      @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "ledger_date, ledger_title, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid", :order => 'ledger_date ASC', :conditions => ["student_id = #{params[:id]}"], :order => "ledger_date asc", :group => "ledger_date")
+    end
+    
+    render :pdf => 'student_ledger_pdf_fees',
+          :margin => {:top=> 10,
+          :bottom => 10,
+          :left=> 10,
+          :right => 10},
+          :orientation => 'Portrait',
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_ledger_footer.html'}}
+  end
+  
+  def student_ledger_xls_fees
+    unless params[:id].nil?
+      @student = Student.find(params[:id])
+      @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "ledger_date, ledger_title, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid", :order => 'ledger_date ASC', :conditions => ["student_id = #{params[:id]}"], :order => "ledger_date asc", :group => "ledger_date")
+      
+      require 'spreadsheet'
+      Spreadsheet.client_encoding = 'UTF-8'
+
+      amount_format = Spreadsheet::Format.new({
+        :number_format    => "0.00"
+      });
+
+
+      row_1 = ["Sl No","Transaction Date","Transaction Type","Transaction ID","For","Particulars","Debit","Credit","Balance"]
+
+      # Create a new Workbook
+      new_book = Spreadsheet::Workbook.new
+
+      # Create the worksheet
+      new_book.create_worksheet :name => 'Student Ledger'
+
+      # Add row_1
+      new_book.worksheet(0).insert_row(0, row_1)
+      
+      spreadsheet = StringIO.new 
+      new_book.write spreadsheet 
+
+      carried_amount = 0
+      current_balance = 0
+      ind = 1;
+      
+      @student_fee_ledgers.each_with_index do |student_fee_ledger, i|
+        info = ""
+        trans_type = ""
+        trans = []
+        for_id = []
+        particulars = []
+        particular_name = ""
+        trans_id = ""
+        if student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f == 0.00
+        info = "Admission"
+        trans_type = "Admission"
+        particular_name = ""
+        elsif student_fee_ledger.amount_to_pay.to_f > 0.00 and student_fee_ledger.amount_paid.to_f == 0.00
+          trans_type = "Receivable"
+          student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay > 0.00 and fee_id IS NOT NULL and amount_paid = 0.00 and transaction_id = 0"])
+          unless student_ledgers.nil?
+            student_ledgers.each do |student_ledger|
+              fee = FinanceFee.find(:first, :conditions => "id = #{student_ledger.fee_id}")
+              unless fee.nil?
+                trans << fee.id
+                date_id = fee.fee_collection_id
+                d = FinanceFeeCollection.find(date_id)
+                for_id << d.name
+                  exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+                  unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+                    exclude_particular_ids = exclude_particular_ids
+                  else
+                    exclude_particular_ids = [0]
+                  end
+               
+                fee_particulars = d.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@student.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) }
+                particular_name = fee_particulars.map(&:name).join(",") + " for " + d.name 
+              end
+              trans_id = trans.join(",")
+              info = for_id.join(",")
+            end
+          end
+        elsif student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f > 0.00
+            trans_type = "Received"
+            student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay = 0.00 and amount_paid > 0.00"])
+            unless student_ledgers.nil?
+              student_ledgers.each do |student_ledger|
+                payments = Payment.find(:all, :conditions => "finance_transaction_id = #{student_ledger.transaction_id}")
+                unless payments.nil?
+                  payments.each do |payment|
+                    trans << payment.order_id
+                    fee = FinanceFee.find(:first, :conditions => "id = #{payment.payment_id}")
+                    unless fee.blank?
+                      date_id = fee.fee_collection_id
+                      d = FinanceFeeCollection.find(date_id)
+                      for_id << d.name
+                      particulars << d.name    
+                    end
+                    particulars << "Trust Bank Payment"  
+                    payment_type = (payment.gateway_response[:payment_type] = "MB") ? "Mobile Banking" : "Card Online"
+                    particulars << payment_type    
+                    particulars << "Reference ID: " + payment.gateway_response[:ref_id]    
+                  end
+                  trans_id = trans.join(", ")
+                  info = for_id.join(", ")
+                  particular_name = particulars.join(", ")
+                end
+              end
+            end
+        end
+        
+        current_balance = (carried_amount + student_fee_ledger.amount_to_pay.to_f) - student_fee_ledger.amount_paid.to_f
+        carried_amount = current_balance
+        if current_balance < 0
+          current_balance = current_balance * (-1)
+        end
+        title = (student_fee_ledger.ledger_title.blank?) ? particular_name : student_fee_ledger.ledger_title
+        row_new = [i+1, student_fee_ledger.ledger_date.strftime("%d-%m-%Y"), trans_type, trans_id, info, title, student_fee_ledger.amount_to_pay.to_f, student_fee_ledger.amount_paid.to_f, current_balance.to_f]
+        new_book.worksheet(0).insert_row(ind, row_new)
+        new_book.worksheet(0).row(ind).set_format(6, amount_format)
+        new_book.worksheet(0).row(ind).set_format(7, amount_format)
+        new_book.worksheet(0).row(ind).set_format(8, amount_format)
+        ind += 1
+      end
+      
+      spreadsheet = StringIO.new 
+      new_book.write spreadsheet 
+    
+      filename = "student-ledger-#{@student.id}-#{Time.now.to_date.to_s}.xls"
+      send_data spreadsheet.string, :filename => filename, :type =>  "application/vnd.ms-excel"
+    else
+      render :text => ""
     end
   end
   
@@ -6814,7 +6955,7 @@ class FinanceController < ApplicationController
           if advance_fee_collection
             
             if @fee_collection_advances.particular_id == 0
-              fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.studၥnt_category or par.receiver==@batch) }
+              fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
             else
               fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@batch.id} and finance_fee_particular_category_id = #{@fee_collection_advances.particular_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
             end
@@ -9107,8 +9248,8 @@ class FinanceController < ApplicationController
 #      student_fee_ledger.ledger_date = s.admission_date
 #      student_fee_ledger.save
 #    end
-
-    
+#
+#    
 #    @students = Student.active
 #    @students.each do |s|
 #      finance_fees = FinanceFee.find(:all, :conditions => "student_id = #{s.id}")
@@ -9893,7 +10034,159 @@ class FinanceController < ApplicationController
 
   def fees_defaulters
     @batches = Batch.find(:all,:conditions=>{:is_deleted=>false,:is_active=>true},:joins=>:course,:select=>"`batches`.*,CONCAT(courses.code,'-',batches.name) as course_full_name",:order=>"course_full_name")
+    batches = @batches.map{|b| b.course_id}
+    #@courses = Course.find(:all, :conditions => ["id IN (?)", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+    @courses = []
     @dates = []
+    @sections = []
+  end
+
+  def single_payment_permission
+    @batches = Batch.find(:all,:conditions=>{:is_deleted=>false,:is_active=>true},:joins=>:course,:select=>"`batches`.*,CONCAT(courses.code,'-',batches.name) as course_full_name",:order=>"course_full_name")
+    batches = @batches.map{|b| b.course_id}
+    #@courses = Course.find(:all, :conditions => ["id IN (?)", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+    @courses = []
+    @dates = []
+    @sections = []
+    
+    @student_fee_configurations = StudentFeeConfiguration.find(:all, :conditions => "config_key = 'combined_payment_student' and config_value = #{false}")
+  end
+
+  def filter_single_payment_permission
+    @student_fee_configurations = []
+    unless params[:student_admission_no].blank?
+      @student_fee_configurations = StudentFeeConfiguration.find(:all, :joins => "INNER JOIN students ON students.id = student_fee_configurations.student_id", :conditions => "student_fee_configurations.config_key = 'combined_payment_student' and student_fee_configurations.config_value = #{false} and students.admission_no = '#{params[:student_admission_no]}'")
+    else
+      if params[:student_admission_no].blank?
+        @student_fee_configurations = StudentFeeConfiguration.find(:all, :conditions => "config_key = 'combined_payment_student' and config_value = #{false}")
+      end
+    end
+    
+    render :update do |page|
+      page.replace_html "student" , :partial => "single_permission_students"
+    end
+  end
+
+  def single_payment_permission_filter
+    @student_fee_configurations = []
+    if params[:opt].nil?
+      unless params[:batch_id].blank?
+        batch_id = params[:batch_id]
+        @student_fee_configurations = StudentFeeConfiguration.find(:all, :joins => "INNER JOIN students ON students.id = student_fee_configurations.student_id INNER JOIN batches ON batches.id = students.batch_id", :conditions => "student_fee_configurations.config_key = 'combined_payment_student' and student_fee_configurations.config_value = #{false} and batches.id = '#{batch_id}'")
+      else
+        @student_fee_configurations = StudentFeeConfiguration.find(:all, :conditions => "config_key = 'combined_payment_student' and config_value = #{false}")
+      end
+    else
+      if params[:opt].to_i == 1
+        @filter_by_course = params[:filter_by_course];
+        @d_id = params[:date];
+        if params[:filter_by_course].to_i == 1
+          eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+          tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id
+          college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+          if college_courses_id.blank?
+            college_courses_id[0] = 0
+          end
+          school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+          school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+          if school_course_id.blank?
+            school_course_id[0] = 0
+          end
+          batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          if batches.blank?
+            batches[0] = 0
+          end
+        elsif params[:filter_by_course].to_i == 2
+          eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+          tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id
+          college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+          if college_courses_id.blank?
+            college_courses_id[0] = 0
+          end
+          #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+          batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          #if batches.blank?
+          #  batches[0] = 0
+          #end
+        else
+          batches = Batch.all.map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          #if batches.blank?
+          #  batches[0] = 0
+          #end
+        end
+        #@student_fee_configurations = StudentFeeConfiguration.find(:all, :joins => "INNER JOIN students ON students.id = student_fee_configurations.student_id INNER JOIN batches ON batches.id = students.batch_id", :conditions => "student_fee_configurations.config_key = 'combined_payment_student' and student_fee_configurations.config_value = #{false} and batches.id IN '#{batches.join(",")}'")
+        unless batches.blank?
+          @student_fee_configurations = StudentFeeConfiguration.find(:all, :joins => "INNER JOIN students ON students.id = student_fee_configurations.student_id INNER JOIN batches ON batches.id = students.batch_id", :conditions => "student_fee_configurations.config_key = 'combined_payment_student' and student_fee_configurations.config_value = #{false} and batches.id IN (#{batches.join(",")})")
+        else
+          @student_fee_configurations = StudentFeeConfiguration.find(:all, :conditions => "config_key = 'combined_payment_student' and config_value = #{false}")
+        end
+      else  
+          batch_id = 0
+          course_id = 0
+          class_id = 0
+          unless params[:batch_id].nil?
+            batch_id = params[:batch_id]
+          end
+
+          unless params[:course_name].nil?
+            class_id = params[:course_name]
+          end
+
+          unless params[:section_id].blank?
+            course_id = params[:section_id]
+          end
+
+          batch_name = ""
+          batches = [0]
+          if batch_id.to_i > 0
+            batch = Batch.find batch_id
+            batch_name = batch.name
+          end
+
+          class_name = ""
+          if class_id.to_i > 0
+            course = Course.find class_id
+            class_name = course.course_name
+          end
+
+          unless batch_name.blank?
+            if course_id == 0
+              batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+              #abort(bclass_name.)
+              unless class_id == 0
+                courses = batches_all.map{|b| b.course_id}   
+                #abort(courses.inspect)
+                #batches = batches_all.map{|b| b.id}
+                @sections = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0 and id in (?)",class_name, courses])      
+
+                @dates = []
+                unless @sections.blank?
+                  batches_all = Batch.find(:all, :conditions => "name = '#{batch_name}' and is_deleted = '#{false}' and course_id IN (#{@sections.map(&:id).join(",")})")
+                  #batches = batches_all.map{|b| b.id}
+                end
+              end
+            else
+              batches_all = Batch.find_all_by_name_and_is_deleted_and_course_id(batch_name,false, course_id)
+            end
+
+            batches = batches_all.map{|b| b.id}    
+          end
+          
+          unless batches.blank?
+            @student_fee_configurations = StudentFeeConfiguration.find(:all, :joins => "INNER JOIN students ON students.id = student_fee_configurations.student_id INNER JOIN batches ON batches.id = students.batch_id", :conditions => "student_fee_configurations.config_key = 'combined_payment_student' and student_fee_configurations.config_value = #{false} and batches.id IN (#{batches.join(",")})")
+          else
+            @student_fee_configurations = StudentFeeConfiguration.find(:all, :conditions => "config_key = 'combined_payment_student' and config_value = #{false}")
+          end
+      end
+    end
+    render :update do |page|
+      page.replace_html "student" , :partial => "single_permission_students"
+    end
   end
 
   def update_batches
@@ -9914,30 +10207,721 @@ class FinanceController < ApplicationController
     end
   end
 
-  def fees_defaulters_students
-    @batch   = Batch.find(params[:batch_id])
-    @students = @batch.students
-    unless params[:date] == '0'
-      @date = FinanceFeeCollection.find(params[:date])
-      @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.balance > 0 and students.batch_id='#{@batch.id}'"],:order=>"students.admission_no ASC").uniq
+  def update_fees_collection_dates_defaulters_school_college
+    if params[:filter_by_course].to_i == 1
+      eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+      tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+      college_courses_id = eleven_courses_id + tweleve_courses_id
+      college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+      if college_courses_id.blank?
+        college_courses_id[0] = 0
+      end
+      school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+      school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+      if school_course_id.blank?
+        school_course_id[0] = 0
+      end
+      batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+      batches = batches.reject { |b| b.to_s.empty? }
+      if batches.blank?
+        batches[0] = 0
+      end
+    elsif params[:filter_by_course].to_i == 2
+      eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+      tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+      college_courses_id = eleven_courses_id + tweleve_courses_id
+      college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+      if college_courses_id.blank?
+        college_courses_id[0] = 0
+      end
+      #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+      batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+      batches = batches.reject { |b| b.to_s.empty? }
+      if batches.blank?
+        batches[0] = 0
+      end
     else
-      @date = 0
-      @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.balance > 0 and students.batch_id='#{@batch.id}'"],:order=>"students.admission_no ASC").uniq
+      batches = Batch.all.map(&:id)
+      batches = batches.reject { |b| b.to_s.empty? }
+      if batches.blank?
+        batches[0] = 0
+      end
+    end
+    
+    @fee_collection_batches = FeeCollectionBatch.find(:all, :conditions => "fee_collection_batches.batch_id IN (#{batches.join(",")}) and finance_fee_collections.is_deleted = #{false}", :joins => "INNER JOIN finance_fee_collections ON finance_fee_collections.id = fee_collection_batches.finance_fee_collection_id", :group => "fee_collection_batches.finance_fee_collection_id")
+    finance_fee_collection_ids = @fee_collection_batches.map(&:finance_fee_collection_id)
+    if finance_fee_collection_ids.blank?
+      finance_fee_collection_ids[0] = 0
+    end
+    @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}")
+    
+    render :update do |page|
+      page.replace_html "fees_collection_dates_school_college", :partial => "fees_collection_dates_defaulters_school_college"
+      page << "j('#fees_defaulters_dates_id_school_college').select2();"
+    end
+  end
+
+  def update_fees_collection_dates_defaulters_sections
+    batch_id = 0
+    course_id = 0
+    section_id = 0
+    unless params[:section_id].blank?
+      section_id = params[:section_id]
+    end
+    
+    unless params[:course_id].blank?
+      course_id = params[:course_id]
+    end
+    
+    unless params[:batch_id].blank?
+      batch_id = params[:batch_id]
+    end
+    
+    batch_name = ""
+    batches = [0]
+    if batch_id.to_i > 0
+      batch = Batch.find batch_id
+      batch_name = batch.name
+    end
+    
+    class_name = ""
+    if course_id.to_i > 0
+      course = Course.find course_id
+      class_name = course.course_name
+    end
+
+    unless batch_name.blank?
+      if section_id == 0
+        batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+        unless course_id == 0
+          courses = batches_all.map{|b| b.course_id}    
+          #batches = batches_all.map{|b| b.id}
+          @sections = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0 and id in (?)",class_name, courses])      
+
+          @dates = []
+          unless @sections.blank?
+            batches_all = Batch.find(:all, :conditions => "name = '#{batch_name}' and is_deleted = '#{false}' and course_id IN (#{@sections.map(&:id).join(",")})")
+            #batches = batches_all.map{|b| b.id}
+          end
+        end
+      else
+        batches_all = Batch.find_all_by_name_and_is_deleted_and_course_id(batch_name,false, section_id)
+      end
+
+      batches = batches_all.map{|b| b.id}    
+    end
+    if batches.blank?
+      batches[0] = 0
+    end
+    
+    @fee_collection_batches = FeeCollectionBatch.find(:all, :conditions => "fee_collection_batches.batch_id IN (#{batches.join(",")}) and finance_fee_collections.is_deleted = #{false}", :joins => "INNER JOIN finance_fee_collections ON finance_fee_collections.id = fee_collection_batches.finance_fee_collection_id", :group => "fee_collection_batches.finance_fee_collection_id")
+    finance_fee_collection_ids = @fee_collection_batches.map(&:finance_fee_collection_id)
+    if finance_fee_collection_ids.blank?
+      finance_fee_collection_ids[0] = 0
+    end
+    @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}")
+    
+    render :update do |page|
+      page.replace_html "fees_collection_dates_defaulters_sections", :partial => "fees_collection_dates_defaulters_sections"
+      page << "j('#fees_defaulters_sections').select2();"
+    end
+  end
+  
+  def get_section_data_finance
+    @batch_name = ""
+    @class_name = ""
+    @sections = []
+    @dates = []
+    
+    unless params[:batch_id].blank?
+      batch_id = 0
+      unless params[:batch_id].nil?
+        batch_id = params[:batch_id]
+      end
+      
+      class_id = 0
+      unless params[:class_name].nil?
+        class_id = params[:class_name]
+      end
+
+      batch_name = ""
+      if batch_id.to_i > 0
+        batch = Batch.find batch_id
+        batch_name = batch.name
+        @batch_name = batch_name
+      end
+      
+      class_name = ""
+      if class_id.to_i > 0
+        course = Course.find class_id
+        class_name = course.course_name
+        @class_name = class_name
+      end
+
+      unless params[:class_name].blank?
+        batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+
+        courses = batches_all.map{|b| b.course_id}    
+        #batches = batches_all.map{|b| b.id}
+        @sections = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0 and id in (?)",class_name, courses])      
+        
+        @dates = []
+        unless @sections.blank?
+          batches_all = Batch.find(:all, :conditions => "name = '#{batch_name}' and is_deleted = '#{false}' and course_id IN (#{@sections.map(&:id).join(",")})")
+          batches = batches_all.map{|b| b.id}
+          #abort(batches.inspect)
+          
+          @fee_collection_batches = FeeCollectionBatch.find(:all, :conditions => "fee_collection_batches.batch_id IN (#{batches.join(",")}) and finance_fee_collections.is_deleted = #{false}", :joins => "INNER JOIN finance_fee_collections ON finance_fee_collections.id = fee_collection_batches.finance_fee_collection_id", :group => "fee_collection_batches.finance_fee_collection_id")
+          finance_fee_collection_ids = @fee_collection_batches.map(&:finance_fee_collection_id)
+          if finance_fee_collection_ids.blank?
+            finance_fee_collection_ids[0] = 0
+          end
+          @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name")
+        end
+      else 
+        batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+
+        #courses = batches_all.map{|b| b.course_id}    
+        batches = batches_all.map{|b| b.id}
+        @sections = []
+
+        @fee_collection_batches = FeeCollectionBatch.find(:all, :conditions => "fee_collection_batches.batch_id IN (#{batches.join(",")}) and finance_fee_collections.is_deleted = #{false}", :joins => "INNER JOIN finance_fee_collections ON finance_fee_collections.id = fee_collection_batches.finance_fee_collection_id", :group => "fee_collection_batches.finance_fee_collection_id")
+        finance_fee_collection_ids = @fee_collection_batches.map(&:finance_fee_collection_id)
+        if finance_fee_collection_ids.blank?
+          finance_fee_collection_ids[0] = 0
+        end
+        @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name")
+        
+        #@sections =  Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0",class_name]) 
+        #@dates = []
+      end
     end
     render :update do |page|
-      page.replace_html "student", :partial => "student_defaulters"
+      page.replace_html 'batches', :partial => 'batches_finance', :object => @sections
+      page.replace_html "fees_collection_dates_defaulters_sections", :partial => "fees_collection_dates_defaulters_sections"
+      page << "j('#fees_defaulters_sections').select2();"
+    end
+  end
+  
+  def get_section_data_single
+    @batch_name = ""
+    @class_name = ""
+    @sections = []
+    @dates = []
+    
+    unless params[:batch_id].blank?
+      batch_id = 0
+      unless params[:batch_id].nil?
+        batch_id = params[:batch_id]
+      end
+      
+      class_id = 0
+      unless params[:class_name].nil?
+        class_id = params[:class_name]
+      end
+
+      batch_name = ""
+      if batch_id.to_i > 0
+        batch = Batch.find batch_id
+        batch_name = batch.name
+        @batch_name = batch_name
+      end
+      
+      class_name = ""
+      if class_id.to_i > 0
+        course = Course.find class_id
+        class_name = course.course_name
+        @class_name = class_name
+      end
+
+      unless params[:class_name].blank?
+        batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+
+        courses = batches_all.map{|b| b.course_id}    
+        #atches = batches_all.map{|b| b.id}
+        
+        @sections = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0 and id in (?)",class_name, courses])      
+        
+        unless @sections.blank?
+          batches_all = Batch.find(:all, :conditions => "name = '#{batch_name}' and is_deleted = '#{false}' and course_id IN (#{@sections.map(&:id).join(",")})")
+          batches = batches_all.map{|b| b.id}
+          #abort(batches.inspect)
+          
+          unless batches.blank?
+            @student_fee_configurations = StudentFeeConfiguration.find(:all, :joins => "INNER JOIN students ON students.id = student_fee_configurations.student_id INNER JOIN batches ON batches.id = students.batch_id", :conditions => "student_fee_configurations.config_key = 'combined_payment_student' and student_fee_configurations.config_value = #{false} and batches.id IN (#{batches.join(",")})")
+          end
+        end
+      else 
+        @sections = []
+        @student_fee_configurations = StudentFeeConfiguration.find(:all, :conditions => "config_key = 'combined_payment_student' and config_value = #{false}")
+      end
+    else
+      @student_fee_configurations = StudentFeeConfiguration.find(:all, :conditions => "config_key = 'combined_payment_student' and config_value = #{false}")
+    end
+    render :update do |page|
+      page.replace_html 'batches', :partial => 'batches_single', :object => @sections
+      page.replace_html "student" , :partial => "single_permission_students"
+    end
+  end
+  
+  def get_classes_finance
+    @courses = []
+    @dates = []
+    unless params[:batch_id].blank?
+      @batch_name = false
+      unless params[:batch_id].empty?
+        batch_data = Batch.find params[:batch_id]
+        batch_name = batch_data.name
+      end 
+
+      batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+
+      courses = batches_all.map{|b| b.course_id}
+      batches = batches_all.map{|b| b.id}
+
+      @fee_collection_batches = FeeCollectionBatch.find(:all, :conditions => "fee_collection_batches.batch_id IN (#{batches.join(",")}) and finance_fee_collections.is_deleted = #{false}", :joins => "INNER JOIN finance_fee_collections ON finance_fee_collections.id = fee_collection_batches.finance_fee_collection_id", :group => "fee_collection_batches.finance_fee_collection_id")
+      finance_fee_collection_ids = @fee_collection_batches.map(&:finance_fee_collection_id)
+      if finance_fee_collection_ids.blank?
+        finance_fee_collection_ids[0] = 0
+      end
+      @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name")
+
+      @courses = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", courses], :group => "course_name", :select => "id,course_name,no_call", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+      #abort(@courses.inspect)
+    end
+    @sections = []
+    render :update do |page|
+      page.replace_html "course_data", :partial => 'courses_data', :object => @courses
+      page.replace_html 'batches', :partial => 'batches_finance', :object => @sections
+      page.replace_html "fees_collection_dates_defaulters_sections", :partial => "fees_collection_dates_defaulters_sections"
+      page << "j('#fees_defaulters_sections').select2();"
+    end
+  end
+  
+  def get_classes_single_payment
+    @courses = []
+    @dates = []
+    unless params[:batch_id].blank?
+      @batch_name = false
+      unless params[:batch_id].empty?
+        batch_data = Batch.find params[:batch_id]
+        batch_name = batch_data.name
+      end 
+
+      batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+
+      courses = batches_all.map{|b| b.course_id}
+      batches = batches_all.map{|b| b.id}
+
+      @courses = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", courses], :group => "course_name", :select => "id,course_name,no_call", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+      
+      unless batches.blank?
+        @student_fee_configurations = StudentFeeConfiguration.find(:all, :joins => "INNER JOIN students ON students.id = student_fee_configurations.student_id INNER JOIN batches ON batches.id = students.batch_id", :conditions => "student_fee_configurations.config_key = 'combined_payment_student' and student_fee_configurations.config_value = #{false} and batches.id IN (#{batches.join(",")})")
+      end
+    else
+      @student_fee_configurations = StudentFeeConfiguration.find(:all, :conditions => "config_key = 'combined_payment_student' and config_value = #{false}")
+    end
+    @sections = []
+    render :update do |page|
+      page.replace_html "course_data", :partial => 'courses_data_single', :object => @courses
+      page.replace_html 'batches', :partial => 'batches_finance', :object => @sections
+      page.replace_html "student" , :partial => "single_permission_students"
+    end
+  end
+
+  def fees_defaulters_students
+    @multi_date = false
+    @defaulters = []
+    if params[:opt].nil?
+      @opt = 0;
+      @b_id = params[:batch_id];
+      @d_id = params[:date];
+      @batch   = Batch.find(params[:batch_id])
+      #@students = @batch.students
+      unless params[:date].blank?
+        unless params[:date] == '0'
+          @date = FinanceFeeCollection.find(params[:date])
+          @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.balance > 0 and students.batch_id='#{@batch.id}'"],:order=>"students.admission_no ASC").uniq
+        else
+          @date = 0
+          @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.balance > 0 and students.batch_id='#{@batch.id}'"],:order=>"students.admission_no ASC").uniq
+        end
+        render :update do |page|
+          page << "j('#student').show();"
+          page.replace_html "student", :partial => "student_defaulters"
+        end
+      else
+        render :update do |page|
+          page << "j('#student').hide();"
+        end
+      end
+    else
+      if params[:opt].to_i == 1
+        @opt = 1;
+        @filter_by_course = params[:filter_by_course];
+        @d_id = params[:date];
+        if params[:filter_by_course].to_i == 1
+          eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+          tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id
+          college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+          if college_courses_id.blank?
+            college_courses_id[0] = 0
+          end
+          school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+          school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+          if school_course_id.blank?
+            school_course_id[0] = 0
+          end
+          batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          if batches.blank?
+            batches[0] = 0
+          end
+        elsif params[:filter_by_course].to_i == 2
+          eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+          tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id
+          college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+          if college_courses_id.blank?
+            college_courses_id[0] = 0
+          end
+          #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+          batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          if batches.blank?
+            batches[0] = 0
+          end
+        else
+          batches = Batch.all.map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          if batches.blank?
+            batches[0] = 0
+          end
+        end
+        #@students = Student.find(:all,:conditions=>["batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+        unless params[:date].blank?
+          unless params[:date] == '0'
+            @multi_date = true
+            @date = FinanceFeeCollection.find(params[:date])
+            unless @date.blank?
+              @date_name = @date.name
+              @dates = FinanceFeeCollection.find_all_by_name(@date_name)
+              unless @dates.blank?
+                @dates_id = @dates.map(&:id)
+                if @dates_id.blank?
+                  @dates_id[0] = 0
+                end
+              else
+                @dates_id[0] = 0
+              end
+              #abort(@dates.map(&:id).inspect)
+              @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id IN (#{@dates_id.join(",")}) and finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+              #abort(@defaulters.inspect)
+            end
+          else
+            @date = 0
+            @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+          end
+          render :update do |page|
+            page << "j('#student').show();"
+            page.replace_html "student", :partial => "student_defaulters"
+          end
+        else
+          render :update do |page|
+            page << "j('#student').hide();"
+          end
+        end
+      else
+        @opt = 2;
+        @b_id = params[:batch_id]
+        @section_id = params[:section_id]
+        @course_name = params[:course_name]
+        @d_id = params[:date]
+        batch_id = 0
+        course_id = 0
+        class_id = 0
+        unless params[:batch_id].nil?
+          batch_id = params[:batch_id]
+        end
+        
+        unless params[:course_name].nil?
+          class_id = params[:course_name]
+        end
+
+        unless params[:section_id].blank?
+          course_id = params[:section_id]
+        end
+
+        batch_name = ""
+        batches = [0]
+        if batch_id.to_i > 0
+          batch = Batch.find batch_id
+          batch_name = batch.name
+        end
+        
+        class_name = ""
+        if class_id.to_i > 0
+          course = Course.find class_id
+          class_name = course.course_name
+        end
+
+        unless batch_name.blank?
+          if course_id == 0
+            batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+            #abort(bclass_name.)
+            unless class_id == 0
+              courses = batches_all.map{|b| b.course_id}   
+              #abort(courses.inspect)
+              #batches = batches_all.map{|b| b.id}
+              @sections = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0 and id in (?)",class_name, courses])      
+
+              @dates = []
+              unless @sections.blank?
+                batches_all = Batch.find(:all, :conditions => "name = '#{batch_name}' and is_deleted = '#{false}' and course_id IN (#{@sections.map(&:id).join(",")})")
+                #batches = batches_all.map{|b| b.id}
+              end
+            end
+          else
+            batches_all = Batch.find_all_by_name_and_is_deleted_and_course_id(batch_name,false, course_id)
+          end
+
+          batches = batches_all.map{|b| b.id}    
+        end
+        if batches.blank?
+          batches[0] = 0
+        end
+        #abort(batches.inspect)
+        #@students = Student.find(:all,:conditions=>["batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+        unless params[:date].blank?
+          unless params[:date] == '0'
+            if course_id == 0
+              @multi_date = true
+              @date = FinanceFeeCollection.find(params[:date])
+              unless @date.blank?
+                @date_name = @date.name
+                @dates = FinanceFeeCollection.find_all_by_name(@date_name)
+                unless @dates.blank?
+                  @dates_id = @dates.map(&:id)
+                  if @dates_id.blank?
+                    @dates_id[0] = 0
+                  end
+                else
+                  @dates_id[0] = 0
+                end
+                #abort(@dates.map(&:id).inspect)
+                @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id IN (#{@dates_id.join(",")}) and finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+                #abort(@defaulters.inspect)
+              end
+            else  
+              @date = FinanceFeeCollection.find(params[:date])
+              @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+            end
+          else
+            @date = 0
+            @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+          end
+          render :update do |page|
+            page << "j('#student').show();"
+            page.replace_html "student", :partial => "student_defaulters"
+          end
+        else
+          render :update do |page|
+            page << "j('#student').hide();"
+          end
+        end
+      end
     end
   end
 
   def fee_defaulters_pdf
-    @batch   = Batch.find(params[:batch_id])
-    unless params[:date] == '0'
-      @date = @finance_fee_collection = FinanceFeeCollection.find(params[:date])
-      @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.balance > 0 and students.batch_id='#{@batch.id}'"],:select=>["students.*,finance_fees.balance as balance"],:order=>"cast(students.class_roll_no as unsigned) ASC").uniq
+#    @batch   = Batch.find(params[:batch_id])
+#    unless params[:date] == '0'
+#      @date = @finance_fee_collection = FinanceFeeCollection.find(params[:date])
+#      @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.balance > 0 and students.batch_id='#{@batch.id}'"],:select=>["students.*,finance_fees.balance as balance"],:order=>"cast(students.class_roll_no as unsigned) ASC").uniq
+#    else
+#      # @date = @finance_fee_collection = FinanceFeeCollection.find(params[:date])
+#      @date = 0
+#      @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.balance > 0 and students.batch_id='#{@batch.id}'"],:select=>["students.*,finance_fees.balance as balance"],:order=>"cast(students.class_roll_no as unsigned) ASC").uniq
+#    end
+
+    @multi_date = false
+    @defaulters = []
+    if params[:opt].nil?
+      @opt = 0;
+      @b_id = params[:batch_id];
+      @d_id = params[:date];
+      @batch   = Batch.find(params[:batch_id])
+      #@students = @batch.students
+      unless params[:date].blank?
+        unless params[:date] == '0'
+          @date = FinanceFeeCollection.find(params[:date])
+          @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.balance > 0 and students.batch_id='#{@batch.id}'"],:order=>"students.admission_no ASC").uniq
+        else
+          @date = 0
+          @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.balance > 0 and students.batch_id='#{@batch.id}'"],:order=>"students.admission_no ASC").uniq
+        end
+      end
     else
-      # @date = @finance_fee_collection = FinanceFeeCollection.find(params[:date])
-      @date = 0
-      @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.balance > 0 and students.batch_id='#{@batch.id}'"],:select=>["students.*,finance_fees.balance as balance"],:order=>"cast(students.class_roll_no as unsigned) ASC").uniq
+      if params[:opt].to_i == 1
+        @opt = 1;
+        @filter_by_course = params[:filter_by_course];
+        @d_id = params[:date];
+        if params[:filter_by_course].to_i == 1
+          eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+          tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id
+          college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+          if college_courses_id.blank?
+            college_courses_id[0] = 0
+          end
+          school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+          school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+          if school_course_id.blank?
+            school_course_id[0] = 0
+          end
+          batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          if batches.blank?
+            batches[0] = 0
+          end
+        elsif params[:filter_by_course].to_i == 2
+          eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+          tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id
+          college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+          if college_courses_id.blank?
+            college_courses_id[0] = 0
+          end
+          #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+          batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          if batches.blank?
+            batches[0] = 0
+          end
+        else
+          batches = Batch.all.map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          if batches.blank?
+            batches[0] = 0
+          end
+        end
+        #@students = Student.find(:all,:conditions=>["batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+        unless params[:date].blank?
+          unless params[:date] == '0'
+            @multi_date = true
+            @date = FinanceFeeCollection.find(params[:date])
+            unless @date.blank?
+              @date_name = @date.name
+              @dates = FinanceFeeCollection.find_all_by_name(@date_name)
+              unless @dates.blank?
+                @dates_id = @dates.map(&:id)
+                if @dates_id.blank?
+                  @dates_id[0] = 0
+                end
+              else
+                @dates_id[0] = 0
+              end
+              #abort(@dates.map(&:id).inspect)
+              @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id IN (#{@dates_id.join(",")}) and finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+              #abort(@defaulters.inspect)
+            end
+          else
+            @date = 0
+            @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+          end
+        end
+      else
+        @opt = 2;
+        @b_id = params[:batch_id]
+        @section_id = params[:section_id]
+        @course_name = params[:course_name]
+        @d_id = params[:date]
+        batch_id = 0
+        course_id = 0
+        class_id = 0
+        unless params[:batch_id].nil?
+          batch_id = params[:batch_id]
+        end
+        
+        unless params[:course_name].nil?
+          class_id = params[:course_name]
+        end
+
+        unless params[:section_id].blank?
+          course_id = params[:section_id]
+        end
+
+        batch_name = ""
+        batches = [0]
+        if batch_id.to_i > 0
+          batch = Batch.find batch_id
+          batch_name = batch.name
+        end
+        
+        class_name = ""
+        if class_id.to_i > 0
+          course = Course.find class_id
+          class_name = course.course_name
+        end
+
+        unless batch_name.blank?
+          if course_id == 0
+            batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+            #abort(bclass_name.)
+            unless class_id == 0
+              courses = batches_all.map{|b| b.course_id}   
+              #abort(courses.inspect)
+              #batches = batches_all.map{|b| b.id}
+              @sections = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0 and id in (?)",class_name, courses])      
+
+              @dates = []
+              unless @sections.blank?
+                batches_all = Batch.find(:all, :conditions => "name = '#{batch_name}' and is_deleted = '#{false}' and course_id IN (#{@sections.map(&:id).join(",")})")
+                #batches = batches_all.map{|b| b.id}
+              end
+            end
+          else
+            batches_all = Batch.find_all_by_name_and_is_deleted_and_course_id(batch_name,false, course_id)
+          end
+
+          batches = batches_all.map{|b| b.id}    
+        end
+        if batches.blank?
+          batches[0] = 0
+        end
+        #abort(batches.inspect)
+        #@students = Student.find(:all,:conditions=>["batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+        unless params[:date].blank?
+          unless params[:date] == '0'
+            if course_id == 0
+              @multi_date = true
+              @date = FinanceFeeCollection.find(params[:date])
+              unless @date.blank?
+                @date_name = @date.name
+                @dates = FinanceFeeCollection.find_all_by_name(@date_name)
+                unless @dates.blank?
+                  @dates_id = @dates.map(&:id)
+                  if @dates_id.blank?
+                    @dates_id[0] = 0
+                  end
+                else
+                  @dates_id[0] = 0
+                end
+                #abort(@dates.map(&:id).inspect)
+                @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id IN (#{@dates_id.join(",")}) and finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+                #abort(@defaulters.inspect)
+              end
+            else  
+              @date = FinanceFeeCollection.find(params[:date])
+              @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+            end
+          else
+            @date = 0
+            @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+          end
+        end
+      end
     end
 
     @currency_type = currency
@@ -9950,6 +10934,254 @@ class FinanceController < ApplicationController
       :right => 10},
       :header => {:html => { :template=> 'layouts/pdf_header_defaulters.html'}},
       :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
+
+  def fee_defaulters_excel
+    @multi_date = false
+    @defaulters = []
+    if params[:opt].nil?
+      @opt = 0;
+      @b_id = params[:batch_id];
+      @d_id = params[:date];
+      @batch   = Batch.find(params[:batch_id])
+      #@students = @batch.students
+      unless params[:date].blank?
+        unless params[:date] == '0'
+          @date = FinanceFeeCollection.find(params[:date])
+          @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.balance > 0 and students.batch_id='#{@batch.id}'"],:order=>"students.admission_no ASC").uniq
+        else
+          @date = 0
+          @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.balance > 0 and students.batch_id='#{@batch.id}'"],:order=>"students.admission_no ASC").uniq
+        end
+      end
+    else
+      if params[:opt].to_i == 1
+        @opt = 1;
+        @filter_by_course = params[:filter_by_course];
+        @d_id = params[:date];
+        if params[:filter_by_course].to_i == 1
+          eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+          tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id
+          college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+          if college_courses_id.blank?
+            college_courses_id[0] = 0
+          end
+          school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+          school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+          if school_course_id.blank?
+            school_course_id[0] = 0
+          end
+          batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          if batches.blank?
+            batches[0] = 0
+          end
+        elsif params[:filter_by_course].to_i == 2
+          eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+          tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id
+          college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+          if college_courses_id.blank?
+            college_courses_id[0] = 0
+          end
+          #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+          batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          if batches.blank?
+            batches[0] = 0
+          end
+        else
+          batches = Batch.all.map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          if batches.blank?
+            batches[0] = 0
+          end
+        end
+        #@students = Student.find(:all,:conditions=>["batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+        unless params[:date].blank?
+          unless params[:date] == '0'
+            @multi_date = true
+            @date = FinanceFeeCollection.find(params[:date])
+            unless @date.blank?
+              @date_name = @date.name
+              @dates = FinanceFeeCollection.find_all_by_name(@date_name)
+              unless @dates.blank?
+                @dates_id = @dates.map(&:id)
+                if @dates_id.blank?
+                  @dates_id[0] = 0
+                end
+              else
+                @dates_id[0] = 0
+              end
+              #abort(@dates.map(&:id).inspect)
+              @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id IN (#{@dates_id.join(",")}) and finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+              #abort(@defaulters.inspect)
+            end
+          else
+            @date = 0
+            @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+          end
+        end
+      else
+        @opt = 2;
+        @b_id = params[:batch_id]
+        @section_id = params[:section_id]
+        @course_name = params[:course_name]
+        @d_id = params[:date]
+        batch_id = 0
+        course_id = 0
+        class_id = 0
+        unless params[:batch_id].nil?
+          batch_id = params[:batch_id]
+        end
+        
+        unless params[:course_name].nil?
+          class_id = params[:course_name]
+        end
+
+        unless params[:section_id].blank?
+          course_id = params[:section_id]
+        end
+
+        batch_name = ""
+        batches = [0]
+        if batch_id.to_i > 0
+          batch = Batch.find batch_id
+          batch_name = batch.name
+        end
+        
+        class_name = ""
+        if class_id.to_i > 0
+          course = Course.find class_id
+          class_name = course.course_name
+        end
+
+        unless batch_name.blank?
+          if course_id == 0
+            batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+            #abort(bclass_name.)
+            unless class_id == 0
+              courses = batches_all.map{|b| b.course_id}   
+              #abort(courses.inspect)
+              #batches = batches_all.map{|b| b.id}
+              @sections = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0 and id in (?)",class_name, courses])      
+
+              @dates = []
+              unless @sections.blank?
+                batches_all = Batch.find(:all, :conditions => "name = '#{batch_name}' and is_deleted = '#{false}' and course_id IN (#{@sections.map(&:id).join(",")})")
+                #batches = batches_all.map{|b| b.id}
+              end
+            end
+          else
+            batches_all = Batch.find_all_by_name_and_is_deleted_and_course_id(batch_name,false, course_id)
+          end
+
+          batches = batches_all.map{|b| b.id}    
+        end
+        if batches.blank?
+          batches[0] = 0
+        end
+        #abort(batches.inspect)
+        #@students = Student.find(:all,:conditions=>["batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+        unless params[:date].blank?
+          unless params[:date] == '0'
+            if course_id == 0
+              @multi_date = true
+              @date = FinanceFeeCollection.find(params[:date])
+              unless @date.blank?
+                @date_name = @date.name
+                @dates = FinanceFeeCollection.find_all_by_name(@date_name)
+                unless @dates.blank?
+                  @dates_id = @dates.map(&:id)
+                  if @dates_id.blank?
+                    @dates_id[0] = 0
+                  end
+                else
+                  @dates_id[0] = 0
+                end
+                #abort(@dates.map(&:id).inspect)
+                @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id IN (#{@dates_id.join(",")}) and finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+                #abort(@defaulters.inspect)
+              end
+            else  
+              @date = FinanceFeeCollection.find(params[:date])
+              @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+            end
+          else
+            @date = 0
+            @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+          end
+        end
+      end
+    end
+
+    @currency_type = currency
+
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    new_book = Spreadsheet::Workbook.new
+    sheet1 = new_book.create_worksheet :name => 'fee_defaulters'
+    
+    amount_format = Spreadsheet::Format.new({
+      :size             => 12,
+      :number_format    => "0.00"
+    });
+    
+    row_1 = ['#','Student ID','Student Name', 'Roll No','Student Category', 'Due Amount(BDT)','Contact Number','Remarks']
+    new_book.worksheet(0).insert_row(0, row_1)
+    
+    row_loop = 1
+    sl = 1
+    unless @defaulters.blank?
+      @defaulters.each do |s|
+        unless @date == 0
+          if @multi_date
+            dates = @dates.map(&:id)
+            fees = s.finance_fees.select{ |f| dates.include?(f.fee_collection_id.to_i)}
+            @date = FinanceFeeCollection.find(fees[0].fee_collection_id)  
+          else
+            fees = s.finance_fees.select{ |f| f.fee_collection_id.to_i == @date.id.to_i}
+          end
+        else
+          fees = s.finance_fees
+        end
+        b = Batch.find(s.batch_id)
+        sc = StudentCategory.find(s.student_category_id)
+        b_v = b.name.split(" ")
+        
+        fee_remarks = ""
+        unless params[:date] == '0'
+        fee_remarks = @date.name
+        cnt = 1
+        else
+        cnt = 0
+        fees.each_with_index do |fee,m|
+          unless fee.is_paid
+            if m == fees.length - 1
+            fee_remarks += fee.finance_fee_collection.name
+            else
+            fee_remarks += fee.finance_fee_collection.name + ", "
+            end
+            cnt += 1
+          end
+        end
+        end
+        
+        #unless sc.receiver.blank?
+          data_row = [sl, s.admission_no, s.full_name, s.class_roll_no, sc.name, fees.map(&:balance).sum, s.sms_number,fee_remarks ]
+          new_book.worksheet(0).insert_row(row_loop, data_row)
+          new_book.worksheet(0).row(row_loop).set_format(5, amount_format)
+          row_loop+=1
+          sl+=1
+        #end
+      end
+    end
+    
+    sheet1.add_header(Configuration.get_config_value('InstitutionName'))
+    spreadsheet = StringIO.new 
+    new_book.write spreadsheet 
+    send_data spreadsheet.string, :filename => "fee_defaulters.xls", :type =>  "application/vnd.ms-excel"
   end
   
   def fee_collection_pdf
@@ -11828,10 +13060,55 @@ class FinanceController < ApplicationController
   
   def view_scholarships
     @scholarships = FeeDiscount.find(:all, :conditions => ["finance_fee_category_id = 0"])
+    @scholarships_student_ids = []
+    unless @scholarships.blank?
+      @finance_fee_category = FinanceFeeParticularCategory.find(:first,:conditions => ["is_deleted = ? and name = 'Tuition Fees'", false])
+      unless @finance_fee_category.blank?
+        category_id = @finance_fee_category.id
+        @scholarships.each do |s|
+          unless s.receiver.blank?
+            student = s.receiver
+            fee_particulars = FinanceFeeParticular.all(:conditions=>"finance_fee_category_id = 0 and is_deleted=#{false} and batch_id=#{student.batch.id} and finance_fee_particular_category_id = #{category_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+            payable_ampt=fee_particulars.map{|st| st.amount}.sum.to_f
+            discount_amt = payable_ampt * s.discount.to_f/ (s.is_amount?? payable_ampt : 100)
+            @scholarships_student_ids[student.id] = discount_amt
+          end
+        end
+      else
+        @scholarships.each do |s|
+          unless s.receiver.blank?
+            @scholarships_student_ids[s.receiver.id] = 0
+          end
+        end
+      end
+    end
   end
   
   def download_pdf_scholarships
     @scholarships = FeeDiscount.find(:all, :conditions => ["finance_fee_category_id = 0"])
+    
+    @scholarships_student_ids = []
+    unless @scholarships.blank?
+      @finance_fee_category = FinanceFeeParticularCategory.find(:first,:conditions => ["is_deleted = ? and name = 'Tuition Fees'", false])
+      unless @finance_fee_category.blank?
+        category_id = @finance_fee_category.id
+        @scholarships.each do |s|
+          unless s.receiver.blank?
+            student = s.receiver
+            fee_particulars = FinanceFeeParticular.all(:conditions=>"finance_fee_category_id = 0 and is_deleted=#{false} and batch_id=#{student.batch.id} and finance_fee_particular_category_id = #{category_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+            payable_ampt=fee_particulars.map{|st| st.amount}.sum.to_f
+            discount_amt = payable_ampt * s.discount.to_f/ (s.is_amount?? payable_ampt : 100)
+            @scholarships_student_ids[student.id] = discount_amt
+          end
+        end
+      else
+        @scholarships.each do |s|
+          unless s.receiver.blank?
+            @scholarships_student_ids[s.receiver.id] = 0
+          end
+        end
+      end
+    end
     
     render :pdf => "download_pdf_scholarships",
       :orientation => 'Portrait',
@@ -11848,11 +13125,40 @@ class FinanceController < ApplicationController
     require 'spreadsheet'
     Spreadsheet.client_encoding = 'UTF-8'
     new_book = Spreadsheet::Workbook.new
+    amount_format = Spreadsheet::Format.new({
+      :size             => 12,
+      :number_format    => "0.00"
+    });
+    
     sheet1 = new_book.create_worksheet :name => 'student_scholarships'
     
     row_1 = ['#','Student ID','Student Name','Class, Section','Scholarship Name','Scholarship On','Discount','Amount']
     new_book.worksheet(0).insert_row(0, row_1)
     @scholarships = FeeDiscount.find(:all, :conditions => ["finance_fee_category_id = 0"])
+    
+    @scholarships_student_ids = []
+    unless @scholarships.blank?
+      @finance_fee_category = FinanceFeeParticularCategory.find(:first,:conditions => ["is_deleted = ? and name = 'Tuition Fees'", false])
+      unless @finance_fee_category.blank?
+        category_id = @finance_fee_category.id
+        @scholarships.each do |s|
+          unless s.receiver.blank?
+            student = s.receiver
+            fee_particulars = FinanceFeeParticular.all(:conditions=>"finance_fee_category_id = 0 and is_deleted=#{false} and batch_id=#{student.batch.id} and finance_fee_particular_category_id = #{category_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+            payable_ampt=fee_particulars.map{|st| st.amount}.sum.to_f
+            discount_amt = payable_ampt * s.discount.to_f/ (s.is_amount?? payable_ampt : 100)
+            @scholarships_student_ids[student.id] = discount_amt
+          end
+        end
+      else
+        @scholarships.each do |s|
+          unless s.receiver.blank?
+            @scholarships_student_ids[s.receiver.id] = 0
+          end
+        end
+      end
+    end
+    
     row_loop = 1
     sl = 1
     @scholarships.each do |sc|
@@ -11860,8 +13166,10 @@ class FinanceController < ApplicationController
         batch = sc.receiver.batch.nil? ? '' : sc.receiver.batch.course_section
         type = sc.is_amount == true ? 'BDT'  : '%'
         discount = sc.discount.to_s+type
-        data_row = [sl,sc.receiver.admission_no, sc.receiver.full_name, batch, sc.name, sc.finance_fee_particular_category.name, discount,'' ]
+        data_row = [sl,sc.receiver.admission_no, sc.receiver.full_name, batch, sc.name, sc.finance_fee_particular_category.name, discount,@scholarships_student_ids[sc.receiver.id]]
         new_book.worksheet(0).insert_row(row_loop, data_row)
+        new_book.worksheet(0).row(row_loop).set_format(6, amount_format)
+        new_book.worksheet(0).row(row_loop).set_format(7, amount_format)
         row_loop+=1
         sl+=1
       end

@@ -1311,6 +1311,12 @@ authorization do
       :update_ajax,
       :update_batches,
       :update_fees_collection_dates_defaulters,
+      :update_fees_collection_dates_defaulters_school_college,
+      :update_fees_collection_dates_defaulters_sections,
+      :get_section_data_finance,
+      :get_section_data_single,
+      :get_classes_finance,
+      :get_classes_single_payment,
       :fees_defaulters_students,
       :monthly_report,
       :update_monthly_report,
@@ -1497,8 +1503,13 @@ authorization do
       :bill_generation_report,
       :student_ledger,
       :student_ledger_list,
+      :single_payment_permission,
+      :filter_single_payment_permission,
+      :single_payment_permission_filter,
       :ajax_student_ledger_list,
       :ledger_pdf_fees,
+      :student_ledger_pdf_fees,
+      :student_ledger_xls_fees,
       :ledger_csv_fees,
       :bill_generation_report_batch,
       :bill_generation_report_batch_paid,
@@ -1508,6 +1519,7 @@ authorization do
       :all_monthly_report_fees,
       :update_defaulters_fine_ajax,
       :fee_defaulters_pdf,
+      :fee_defaulters_excel,
       :fee_collection_pdf,
       :donation_receipt_pdf,
       :donors,
@@ -2461,6 +2473,15 @@ authorization do
       :update_ajax,
       :update_batches,
       :update_fees_collection_dates_defaulters,
+      :update_fees_collection_dates_defaulters_school_college,
+      :update_fees_collection_dates_defaulters_sections,
+      :get_section_data_finance,
+      :get_section_data_single,
+      :single_payment_permission,
+      :filter_single_payment_permission,
+      :single_payment_permission_filter,
+      :get_classes_finance,
+      :get_classes_single_payment,
       :fees_defaulters_students,
       :monthly_report,
       :update_monthly_report,
@@ -2655,6 +2676,8 @@ authorization do
       :student_ledger_list,
       :ajax_student_ledger_list,
       :ledger_pdf_fees,
+      :student_ledger_pdf_fees,
+      :student_ledger_xls_fees,
       :ledger_csv_fees,
       :bill_generation_report_batch,
       :bill_generation_report_batch_paid,
@@ -2664,6 +2687,7 @@ authorization do
       :all_monthly_report_fees,
       :update_defaulters_fine_ajax,
       :fee_defaulters_pdf,
+      :fee_defaulters_excel,
       :fee_collection_pdf,
       :donation_receipt_pdf,
       :donors,
@@ -3478,7 +3502,7 @@ authorization do
     has_permission_on [:attendance], :to => [:student_report]
     has_permission_on [:student_attendance], :to => [:student,:month_report,:subject_report,
       :subject_report_pdf,:month_report_data,:download_attachment, :new_calendar,:year_report,:graph_code, :month, :student_report]
-    has_permission_on [:finance], :to => [:student_fees_structure,:refund_student_view,:refund_student_view_pdf]
+    has_permission_on [:finance], :to => [:student_fees_structure,:refund_student_view,:refund_student_view_pdf,:student_ledger_pdf_fees, :student_ledger_xls_fees]
     has_permission_on [:cce_reports], :to => [:student_transcript,:student_report_pdf]
     has_permission_on [:event], :to => [:event_details]
   end
@@ -3615,7 +3639,7 @@ authorization do
     has_permission_on [:attendance], :to => [:student_report]
     has_permission_on [:student_attendance], :to => [:student,:month_report,:subject_report,
       :subject_report_pdf,:month_report_data,:download_attachment, :year_report,:graph_code,:new_calendar, :month, :student_report, :leaves, :leave_history,:individual_leave_applications,:own_leave_application,:cancel_application, :update_leave_history]
-    has_permission_on [:finance], :to => [:student_fees_structure,:student_fee_receipt_pdf,:student_fee_receipt_pdf_multiple,:refund_student_view,:refund_student_view_pdf, :update_ajax]
+    has_permission_on [:finance], :to => [:student_fees_structure,:student_fee_receipt_pdf,:student_fee_receipt_pdf_multiple,:refund_student_view,:refund_student_view_pdf, :update_ajax, :student_ledger_pdf_fees, :student_ledger_xls_fees, :student_ledger]
     has_permission_on [:cce_reports], :to => [:student_transcript,:student_report_pdf]
     has_permission_on [:event], :to => [:event_details]
   end

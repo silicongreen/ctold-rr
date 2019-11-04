@@ -322,10 +322,12 @@ class Subject < ActiveRecord::Base
     
     unless self.elective_group_id.blank?
       elective_group_id = self.elective_group_id
-      elective = ElectiveGroup.find elective_group_id
-      elective_group_name = elective.name
-      elective_active_batch_ids = ElectiveGroup.find(:all, :conditions => ["name like ? and batch_id IN (?) and is_deleted = 0", elective_group_name, batches_ids]).map{|e| e.id}
-      found_elective = true
+      elective = ElectiveGroup.find_by_id(elective_group_id)
+      unless elective.blank?
+        elective_group_name = elective.name
+        elective_active_batch_ids = ElectiveGroup.find(:all, :conditions => ["name like ? and batch_id IN (?) and is_deleted = 0", elective_group_name, batches_ids]).map{|e| e.id}
+        found_elective = true
+      end
     end
     
     no_of_batches = batches_ids.length

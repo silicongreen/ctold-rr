@@ -279,20 +279,6 @@ class ExamConnect extends CActiveRecord
                             }
                             
                         } 
-                        foreach($all_student_this_subject as $svalue)
-                        {
-                            if(!in_array($svalue['student_id'], $students))
-                            {
-                                $students[] = $svalue['student_id'];
-                                $result['students'][$j]['name'] = $svalue['student_name'];
-                                $result['students'][$j]['id'] = $svalue['student_id'];
-                                $result['students'][$j]['class_roll_no'] = $svalue['roll_no'];
-                                $j++;
-                                $result['CT'][$i]['students'][$svalue['student_id']]['score'] = 0.0;
-                                $result['CT'][$i]['students'][$svalue['student_id']]['remarks'] = "";
-                                
-                            }
-                        }
                         $i++;
                          
                         
@@ -338,20 +324,6 @@ class ExamConnect extends CActiveRecord
                                 continue;
                             }
                           
-                        } 
-                        foreach($all_student_this_subject as $svalue)
-                        {
-                            if(!in_array($svalue['student_id'], $students))
-                            {
-                                $students[] = $svalue['student_id'];
-                                $result['students'][$j]['name'] = $svalue['student_name'];
-                                $result['students'][$j]['id'] = $svalue['student_id'];
-                                $result['students'][$j]['class_roll_no'] = $svalue['roll_no'];
-                                $j++;
-                                $result['ST'][$k]['students'][$svalue['student_id']]['score'] = 0.0;
-                                $result['ST'][$k]['students'][$svalue['student_id']]['remarks'] = "";
-                                
-                            }
                         }
                         $k++;
                     
@@ -377,9 +349,9 @@ class ExamConnect extends CActiveRecord
                         if(isset($scores['Students']) && $sub_data->batch_id == $scores['Students']->batch_id )
                         {
                             $std_middle_name = ($scores['Students']->middle_name)?$scores['Students']->middle_name." ":"";
-                            if(!in_array($scores['Students']->id, $students))
+                            if(!in_array($scores['Students']->id, $allstudents))
                             {
-                                $students[] = $scores['Students']->id;
+                                $allstudents[] = $scores['Students']->id;
                                 $result['al_students'][$m]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
                                 $result['al_students'][$m]['id'] = $scores['Students']->id;
                                 $result['al_students'][$m]['class_roll_no'] = $scores['Students']->class_roll_no;
@@ -397,23 +369,32 @@ class ExamConnect extends CActiveRecord
                         
 
                     } 
-                    foreach($all_student_this_subject as $svalue)
-                    {
-                        if(!in_array($svalue['student_id'], $allstudents))
-                        {
-                            $allstudents[] = $svalue['student_id'];
-                            $result['al_students'][$m]['name'] = $svalue['student_name'];
-                            $result['al_students'][$m]['id'] = $svalue['student_id'];
-                            $result['al_students'][$m]['class_roll_no'] = $svalue['roll_no'];
-                            $m++;
-                            $result['ALL'][$f]['students'][$svalue['student_id']]['score'] = 0.0;
-                            $result['ALL'][$f]['students'][$svalue['student_id']]['remarks'] = "";
-
-                        }
-                    }
+                    
                     $f++;
                     
                 } 
+                foreach($all_student_this_subject as $svalue)
+                {
+                    if(!in_array($svalue['student_id'], $allstudents))
+                    {
+                        $allstudents[] = $svalue['student_id'];
+                        $result['al_students'][$m]['name'] = $svalue['student_name'];
+                        $result['al_students'][$m]['id'] = $svalue['student_id'];
+                        $result['al_students'][$m]['class_roll_no'] = $svalue['roll_no'];
+                        $m++;
+                    }
+                }
+                foreach($all_student_this_subject as $svalue)
+                {
+                    if(!in_array($svalue['student_id'], $students))
+                    {
+                        $students[] = $svalue['student_id'];
+                        $result['students'][$j]['name'] = $svalue['student_name'];
+                        $result['students'][$j]['id'] = $svalue['student_id'];
+                        $result['students'][$j]['class_roll_no'] = $svalue['roll_no'];
+                        $j++;
+                    }
+                }
               $result['max_mark_ct'] = $max_mark_ct;
               $result['max_mark_st'] = $max_mark_st;
                if (Yii::app()->user->schoolId == "340" or Yii::app()->user->schoolId == "319")

@@ -323,6 +323,7 @@ class ExamConnect extends CActiveRecord
                                 $std_middle_name = ($scores['Students']->middle_name)?$scores['Students']->middle_name." ":"";
                                 if(!in_array($scores['Students']->id, $students))
                                 {
+                                    
                                     $students[] = $scores['Students']->id;
                                     $result['students'][$j]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
                                     $result['students'][$j]['id'] = $scores['Students']->id;
@@ -376,16 +377,16 @@ class ExamConnect extends CActiveRecord
                         if(isset($scores['Students']) && $sub_data->batch_id == $scores['Students']->batch_id )
                         {
                             $std_middle_name = ($scores['Students']->middle_name)?$scores['Students']->middle_name." ":"";
-                            if(!in_array($scores['Students']->id, $allstudents))
+                            if(!in_array($scores['Students']->id, $students))
                             {
-                                $allstudents[] = $scores['Students']->id;
+                                $students[] = $scores['Students']->id;
                                 $result['al_students'][$m]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
                                 $result['al_students'][$m]['id'] = $scores['Students']->id;
                                 $result['al_students'][$m]['class_roll_no'] = $scores['Students']->class_roll_no;
                                 $m++;
                             }
 
-
+                            $allstudents[] = $scores['Students']->id; 
                             $result['ALL'][$f]['students'][$scores['Students']->id]['score'] = $scores->marks;
                             $result['ALL'][$f]['students'][$scores['Students']->id]['remarks'] = $scores->remarks;
                         }
@@ -400,7 +401,7 @@ class ExamConnect extends CActiveRecord
                     {
                         if(!in_array($svalue['student_id'], $allstudents))
                         {
-                            $students[] = $svalue['student_id'];
+                            $allstudents[] = $svalue['student_id'];
                             $result['al_students'][$m]['name'] = $svalue['student_name'];
                             $result['al_students'][$m]['id'] = $svalue['student_id'];
                             $result['al_students'][$m]['class_roll_no'] = $svalue['roll_no'];

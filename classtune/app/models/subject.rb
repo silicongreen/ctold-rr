@@ -320,7 +320,7 @@ class Subject < ActiveRecord::Base
     
     found_elective = false
     
-    unless self.elective_group_id.nil?
+    unless self.elective_group_id.blank?
       elective_group_id = self.elective_group_id
       elective = ElectiveGroup.find elective_group_id
       elective_group_name = elective.name

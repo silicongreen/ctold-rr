@@ -658,7 +658,7 @@
                       <td class="align-left no-warp" width="15%"><%= present %></td>
                     
                   </tr>
-                  <tr class="odd">
+                  <tr class="odd" class="extra_height">
                       <td class="align-left no-warp" colspan="4" rowspan="2">Remarks : 
                       <% if failed == true %>
                               Failed
@@ -670,9 +670,6 @@
                         <% end %>
                       <% end %> 
                       </td>
-                  </tr>
-                  <tr class="odd">
-                    
                   </tr>
               </table>
               <table id="pdf-table" class="tbl-lign-left-2 top-margin-20 extra-padding" width="20%" cellspacing="0">
@@ -804,6 +801,10 @@
   </script>
 <% end %>
   <style>
+      td.extra_height
+      {
+         height: 60px;
+      }
       div.baf_shaheen
       {
          border:none;

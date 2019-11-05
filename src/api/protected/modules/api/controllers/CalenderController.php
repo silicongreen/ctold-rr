@@ -1735,7 +1735,11 @@ class CalenderController extends Controller
         }
         
         $student['phone'] = "";
-        if($std->phone1)
+        if($std->sms_number)
+        {
+           $student['phone'] =  $std->sms_number; 
+        }
+        else if($std->phone1)
         {
            $student['phone'] =  $std->phone1;
         }

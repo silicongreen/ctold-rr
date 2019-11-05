@@ -172,11 +172,11 @@
         
        <% unless elective_groups_student.blank? %>   
           <% elective_groups_student.each do |esub| %>
-            <% if !elective_group.include?(esub.id) %>
-            <% elective_group << esub.id %>
+            <% if !elective_group.include?(esub.subject.elective_group_id) %>
+            <% elective_group << esub.subject.elective_group_id %>
             <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
               
-             <td class="col-pdf no-warp  align-left" width="40%"> <%= esub.name %></td>
+             <td class="col-pdf no-warp  align-left" width="40%"> <%= esub.subject.elective_group.name %></td>
              <td class="col-pdf" width="30%">
                  AB      
              </td>

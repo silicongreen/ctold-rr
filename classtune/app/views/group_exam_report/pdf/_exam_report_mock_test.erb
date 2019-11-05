@@ -49,13 +49,17 @@
 
   <% exam_score = [] %>
   <% max_mark = [] %>
+  <% exam_subjects = [] %>  
   <% elective_groups_student = StudentsSubject.find_all_by_batch_id_and_student_id(@batch.id,@student.id) %>  
   <% @exams.each do |exam| %>
     <% exam_score.push exam.exam_scores.find_by_student_id(@student.id) unless exam.exam_scores.find_by_student_id(@student.id).nil?  %>
+    <% exam_subjects << exam.subject_id %>
     
   <%   
     exam_score_high = ExamScore.find_by_exam_id(exam.id,:limit=>1, :order => 'marks desc') unless exam.nil?  
   %>
+   
+    
   <% unless exam_score_high.nil? %>
   <% max_mark << exam_score_high.marks %>
   <% end %>
@@ -144,7 +148,7 @@
         <% elective_group = [] %>
         
         <% exam_score.each do |es| %>
-          <% if !elective_group.include?(es.exam.subject.elective_group_id) %>
+          <% if !elective_group.include?(es.exam.subject.elective_group_id)  %>
           <% elective_group << es.exam.subject.elective_group_id %>
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
               
@@ -172,7 +176,7 @@
         
        <% unless elective_groups_student.blank? %>   
           <% elective_groups_student.each do |esub| %>
-            <% if !elective_group.include?(esub.subject.elective_group_id) %>
+            <% if !elective_group.include?(esub.subject.elective_group_id) && exam_subjects.include?(esub.subject.id) %>
             <% elective_group << esub.subject.elective_group_id %>
             <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
               

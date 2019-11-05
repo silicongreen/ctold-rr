@@ -1334,7 +1334,7 @@ class PaymentSettingsController < ApplicationController
                           total_fees = @financefee.balance.to_f+@fine_amount.to_f
 
                           amount_from_gateway = amount
-                          if total_fees > amount_from_gateway
+                          if total_fees.to_f > amount_from_gateway.to_f
                             amount_from_gateway = total_fees - 1
                           end
                           

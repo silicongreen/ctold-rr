@@ -56,7 +56,7 @@ h2.heading{
 }
 #main_info div.std-items div.label, #main_info div.std-items-full div.label,
 #new-main_info div.std-items div.label, #new-main_info div.std-items-full div.label{
-    font-size: 14px;
+    font-size: 17px;
     font-family: verdana;
     font-weight: bold;
     display: inline-block;
@@ -65,14 +65,14 @@ h2.heading{
 #main_info div.std-items div.text, #main_info div.std-items-full div.text,
 #new-main_info div.std-items div.text, #new-main_info div.std-items-full div.text{
     width: 45%;
-    font-size: 14px;
+    font-size: 17px;
     font-family: verdana;
     display: inline-block;
 }
 #new-main_info div.std-items div.roll{
     width: 100%;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 17px;
     font-family: verdana;
     display: inline-block;
 }

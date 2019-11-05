@@ -30,7 +30,7 @@ class FinanceFee < ActiveRecord::Base
   has_one    :fee_refund
   named_scope :active , :joins=>[:finance_fee_collection] ,:conditions=>{:finance_fee_collections=>{:is_deleted=>false}}
   after_create :set_ledger
-  after_update :update_ledger
+  #after_update :update_ledger
   
   
   def check_transaction_done

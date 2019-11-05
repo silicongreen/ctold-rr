@@ -1121,7 +1121,9 @@ class FinanceController < ApplicationController
         #        end
         #        abort(online_id.inspect)
         unless params[:transaction_test].nil?
-          finance_notmatch_transactions = FinanceNotmatchTransaction.all
+          #finance_notmatch_transactions = FinanceNotmatchTransaction.all
+          trans_id = "65070,66179,66182,66423,66848,67167,67716,67723,68337,69339,71033,71386,72322,72303,72300,72296,72197,72152,76695,77324,77482,77502,77512,77538,77550,76327,76789,77013,76330,76567,76568,77179,77247,77255,77257,77260,77262,77264,77270,77272,77277,77280,77282,77286,77288,77293,77294,77296,77300,77308,77312,77314,77316,77318,77320,77322,77327,77330,77336,77343,77345,77349,77351,77353,77355,77359,77361,77365,77370,77372,77374,77376,77378,77380,77381,77384,77387,77389,77393,77395,77398,77400,77405,77406,77408,77409,77411,77413,77417,77419,77421,77423,77427,77430,77434,77436,77438,77440,77442,77444,77451,77452,77453,77456,77458,77460,77465,77469,77471,77473,77475,77477,77479,77483,77485,77487,77489,77496,77498,77500,77504,77506,77514,77517,77523,77526,77529,77541,77543,77545,77555,77558,77560,77561,77563,77564,77567,77569,77571,77575,77577,77580,77582,77587,77589,77594,77595,77597,77600,77608,77610,77612,77614,77616,77618,77621,77629,77631,77635,77890"
+          finance_notmatch_transactions = FinanceTransaction.find(:first, :conditions => "id IN #{trans_id}")
           finance_notmatch_transactions.each do |finance_notmatch_transaction|
             
             transaction = FinanceTransaction.find(:first, :conditions => "id = #{finance_notmatch_transaction.transaction_id}")
@@ -1337,7 +1339,7 @@ class FinanceController < ApplicationController
 
                           if particular_amount.to_f == transaction.amount.to_f
                             finance_notmatch_transaction.destroy
-                            abort('here')
+                            #abort('here')
                           end
                         end
                       end

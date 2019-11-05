@@ -1126,7 +1126,7 @@ class FinanceController < ApplicationController
           finance_notmatch_transactions = FinanceTransaction.find(:all, :conditions => "id IN (#{trans_id})")
           finance_notmatch_transactions.each do |finance_notmatch_transaction|
             
-            transaction = FinanceTransaction.find(:first, :conditions => "id = #{finance_notmatch_transaction.transaction_id}")
+            transaction = FinanceTransaction.find(:first, :conditions => "id = #{finance_notmatch_transactions.id}")
             if transaction.blank?
               finance_notmatch_transaction.destroy
             else

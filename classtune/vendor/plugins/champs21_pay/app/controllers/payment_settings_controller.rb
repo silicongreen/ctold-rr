@@ -1334,9 +1334,7 @@ class PaymentSettingsController < ApplicationController
                           total_fees = @financefee.balance.to_f+@fine_amount.to_f
 
                           amount_from_gateway = amount
-                          if finance_order.order_id.to_s == "O1049432"
-                            abort(amount_from_gateway.to_s + "  " + total_fees.to_s)
-                          end
+                          
                           #abort(amount_from_gateway.to_s + " " + total_fees.to_s + "  " + @fine_amount.to_s)
                           pay_student(amount_from_gateway, total_fees, request_params, finance_order.order_id, verification_trans_date, ref_id)
                         end

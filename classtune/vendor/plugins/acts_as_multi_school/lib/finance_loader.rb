@@ -1144,16 +1144,37 @@ module FinanceLoader
           transaction.payee = @student
           transaction.finance = @financefee
           transaction.amount = total_fees
-          transaction.fine_included = (@fine.to_f + @fine_amount.to_f).zero? ? false : true
-          transaction.fine_amount = @fine.to_f + @fine_amount.to_f
-          transaction.transaction_date = Date.today
+          
+          fine_included = false
+          fine_amount = 0.00
+          unless (@fine.to_f + @fine_amount.to_f).zero?
+              fine_included = true
+              fine_amount = @fine.to_f + @fine_amount.to_f
+          else
+              unless trans_date.nil? or trans_date.empty? or trans_date.blank?
+                require 'date'
+                days=(Date.parse(trans_date)-@date.due_date.to_date).to_i
+              else
+                days=(Date.today-@date.due_date.to_date).to_i
+              end
+
+              auto_fine=@date.fine
+
+              if days > 0 and auto_fine #and @financefee.is_paid == false
+                fine_rule = auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
+                fine_amount = fine_rule.is_amount ? fine_rule.fine_amount : (total_fees*fine_rule.fine_amount)/100 if fine_rule
+                fine_included = true
+              end
+          end
+          if fine_included
+            transaction.fine_included = fine_included
+            transaction.fine_amount = fine_amount
+          end
+          
+          transaction.transaction_date = trans_date.to_date #Date.today
           transaction.payment_mode = "Online Payment"
           transaction.save
           if transaction.save
-            total_fine_amount = 0
-            unless (@fine.to_f + @fine_amount.to_f).zero?
-              total_fine_amount = @fine.to_f + @fine_amount.to_f
-            end
             is_paid =@financefee.balance==0 ? true : false
             @financefee.update_attributes( :is_paid=>is_paid)
 
@@ -1336,45 +1357,18 @@ module FinanceLoader
                   finance_transaction_particular.save
                 end
               end
-
-              unless request_params[:fee_fine].nil?
-                if request_params[:fee_fine] == "on"
-                  fine_amount = request_params[:fine_amount_to_pay].to_f
-                  finance_transaction_particular = FinanceTransactionParticular.new
-                  finance_transaction_particular.finance_transaction_id = transaction.id
-                  finance_transaction_particular.particular_id = 0
-                  finance_transaction_particular.particular_type = 'Fine'
-                  finance_transaction_particular.transaction_type = ''
-                  finance_transaction_particular.amount = fine_amount
-                  finance_transaction_particular.transaction_date = transaction.transaction_date
-                  finance_transaction_particular.save
-                else
-                  if total_fine_amount
-                    fine_amount = total_fine_amount
-                    finance_transaction_particular = FinanceTransactionParticular.new
-                    finance_transaction_particular.finance_transaction_id = transaction.id
-                    finance_transaction_particular.particular_id = 0
-                    finance_transaction_particular.particular_type = 'Fine'
-                    finance_transaction_particular.transaction_type = ''
-                    finance_transaction_particular.amount = fine_amount
-                    finance_transaction_particular.transaction_date = transaction.transaction_date
-                    finance_transaction_particular.save
-                  end
-                end
-              else
-                if total_fine_amount
-                  fine_amount = total_fine_amount
-                  finance_transaction_particular = FinanceTransactionParticular.new
-                  finance_transaction_particular.finance_transaction_id = transaction.id
-                  finance_transaction_particular.particular_id = 0
-                  finance_transaction_particular.particular_type = 'Fine'
-                  finance_transaction_particular.transaction_type = ''
-                  finance_transaction_particular.amount = fine_amount
-                  finance_transaction_particular.transaction_date = transaction.transaction_date
-                  finance_transaction_particular.save
-                end
+              
+              if fine_included
+                finance_transaction_particular = FinanceTransactionParticular.new
+                finance_transaction_particular.finance_transaction_id = transaction.id
+                finance_transaction_particular.particular_id = 0
+                finance_transaction_particular.particular_type = 'Fine'
+                finance_transaction_particular.transaction_type = ''
+                finance_transaction_particular.amount = fine_amount
+                finance_transaction_particular.transaction_date = transaction.transaction_date
+                finance_transaction_particular.save
               end
-
+            
               if @has_fine_discount
                 @discounts_on_lates.each do |fd|
                   unless request_params["fee_fine_discount_" + fd.id.to_s].nil?
@@ -1471,8 +1465,7 @@ module FinanceLoader
                 finance_transaction_particular.save
               end
 
-              if total_fine_amount
-                fine_amount = total_fine_amount
+              if fine_included
                 finance_transaction_particular = FinanceTransactionParticular.new
                 finance_transaction_particular.finance_transaction_id = transaction.id
                 finance_transaction_particular.particular_id = 0
@@ -1611,7 +1604,7 @@ module FinanceLoader
             messages = []
             messages[0] = message
             #sms = Delayed::Job.enqueue(SmsManager.new(message,recipients))
-            send_sms_finance(messages,recipients)
+            #send_sms_finance(messages,recipients)
           end
 
 
@@ -1638,7 +1631,8 @@ module FinanceLoader
         transaction_parent.amount = total_fees
         transaction_parent.fine_included = false
         transaction_parent.fine_amount = 0.00
-        transaction_parent.transaction_date = Date.today
+        #transaction_parent.transaction_date = Date.today
+        transaction_parent.transaction_date = trans_date.to_date
         transaction_parent.payment_mode = "Online Payment"
         transaction_parent.save
 
@@ -1657,18 +1651,46 @@ module FinanceLoader
                   transaction.payee = @student
                   transaction.finance = @financefee[f]
                   transaction.amount = request_params["amount_to_pay_#{f.to_s}"]
-                  transaction.fine_included = (@fine[f].to_f + @fine_amount[f].to_f).zero? ? false : true
-                  transaction.fine_amount = @fine[f].to_f + @fine_amount[f].to_f
-                  transaction.transaction_date = Date.today
+                  
+                  fine_included = false
+                  fine_amount = 0.00
+                  unless (@fine[f].to_f + @fine_amount[f].to_f).zero?
+                      fine_included = true
+                      fine_amount = @fine[f].to_f + @fine_amount[f].to_f
+                  else
+                      unless trans_date.nil? or trans_date.empty? or trans_date.blank?
+                        require 'date'
+                        days=(Date.parse(trans_date)-@date[f].due_date.to_date).to_i
+                      else
+                        days=(Date.today-@date[f].due_date.to_date).to_i
+                      end
+
+                      auto_fine=@date[f].fine
+
+                      if days > 0 and auto_fine #and @financefee.is_paid == false
+                        fine_rule = auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date[f].created_at}'"],:order=>'fine_days ASC')
+                        fine_amount = fine_rule.is_amount ? fine_rule.fine_amount : (bal*fine_rule.fine_amount)/100 if fine_rule
+                        fine_included = true
+                      end
+                  end
+                  if fine_included
+                    transaction_parent.fine_included = fine_included
+                    transaction_parent.fine_amount = fine_amount
+                  end
+                  
+                  #transaction.fine_included = (@fine[f].to_f + @fine_amount[f].to_f).zero? ? false : true
+                  #transaction.fine_amount = @fine[f].to_f + @fine_amount[f].to_f
+                  #transaction.transaction_date = Date.today
+                  transaction.transaction_date = trans_date.to_date #Date.today
                   transaction.payment_mode = "Online Payment"
                   transaction.is_child_transaction = true
                   transaction.parent_transaction_id = transaction_parent.id
                   transaction.save
                   if transaction.save
-                    total_fine_amount = 0
-                    unless (@fine[f].to_f + @fine_amount[f].to_f).zero?
-                      total_fine_amount = @fine[f].to_f + @fine_amount[f].to_f
-                    end
+#                    total_fine_amount = 0
+#                    unless (@fine[f].to_f + @fine_amount[f].to_f).zero?
+#                      total_fine_amount = @fine[f].to_f + @fine_amount[f].to_f
+#                    end
                     is_paid =@financefee[f].balance==0 ? true : false
                     @financefee[f].update_attributes( :is_paid=>is_paid)
 
@@ -1766,18 +1788,29 @@ module FinanceLoader
                         end
                       end
 
-                      unless request_params["fee_fine" + "_" + f.to_s].nil?
-                        if request_params["fee_fine" + "_" + f.to_s] == "on"
-                          fine_amount = request_params["fine_amount_to_pay" + "_" + f.to_s].to_f
-                          finance_transaction_particular = FinanceTransactionParticular.new
-                          finance_transaction_particular.finance_transaction_id = transaction.id
-                          finance_transaction_particular.particular_id = 0
-                          finance_transaction_particular.particular_type = 'Fine'
-                          finance_transaction_particular.transaction_type = ''
-                          finance_transaction_particular.amount = fine_amount
-                          finance_transaction_particular.transaction_date = transaction.transaction_date
-                          finance_transaction_particular.save
-                        end
+#                      unless request_params["fee_fine" + "_" + f.to_s].nil?
+#                        if request_params["fee_fine" + "_" + f.to_s] == "on"
+#                          fine_amount = request_params["fine_amount_to_pay" + "_" + f.to_s].to_f
+#                          finance_transaction_particular = FinanceTransactionParticular.new
+#                          finance_transaction_particular.finance_transaction_id = transaction.id
+#                          finance_transaction_particular.particular_id = 0
+#                          finance_transaction_particular.particular_type = 'Fine'
+#                          finance_transaction_particular.transaction_type = ''
+#                          finance_transaction_particular.amount = fine_amount
+#                          finance_transaction_particular.transaction_date = transaction.transaction_date
+#                          finance_transaction_particular.save
+#                        end
+#                      end
+
+                      if fine_included
+                        finance_transaction_particular = FinanceTransactionParticular.new
+                        finance_transaction_particular.finance_transaction_id = transaction.id
+                        finance_transaction_particular.particular_id = 0
+                        finance_transaction_particular.particular_type = 'Fine'
+                        finance_transaction_particular.transaction_type = ''
+                        finance_transaction_particular.amount = fine_amount
+                        finance_transaction_particular.transaction_date = transaction.transaction_date
+                        finance_transaction_particular.save
                       end
 
                       if @has_fine_discount[f]
@@ -1857,8 +1890,19 @@ module FinanceLoader
                         finance_transaction_particular.save
                       end
 
-                      if total_fine_amount
-                        fine_amount = total_fine_amount
+#                      if total_fine_amount
+#                        fine_amount = total_fine_amount
+#                        finance_transaction_particular = FinanceTransactionParticular.new
+#                        finance_transaction_particular.finance_transaction_id = transaction.id
+#                        finance_transaction_particular.particular_id = 0
+#                        finance_transaction_particular.particular_type = 'Fine'
+#                        finance_transaction_particular.transaction_type = ''
+#                        finance_transaction_particular.amount = fine_amount
+#                        finance_transaction_particular.transaction_date = transaction.transaction_date
+#                        finance_transaction_particular.save
+#                      end
+
+                      if fine_included
                         finance_transaction_particular = FinanceTransactionParticular.new
                         finance_transaction_particular.finance_transaction_id = transaction.id
                         finance_transaction_particular.particular_id = 0

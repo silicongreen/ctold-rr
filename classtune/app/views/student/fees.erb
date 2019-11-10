@@ -254,9 +254,9 @@
                       </div>
                       <% end %>
                   </div>
-                  <% if l < @dates_unpaid.length - 1 %>
+                  <% #if l < @dates_unpaid.length - 1 %>
                   <div style="float: left; width: 3%; height: 300px;"></div>
-                  <% end %>
+                  <% #end %>
                   <% if km % 3 == 0 %>
                   <div style="clear: both; height: 30px;"></div>  
                   <% end %>
@@ -317,7 +317,13 @@
                         <% end %>
                       <% end %>
                       
-                      <div class="fee_name" style="position: relative;"><span style="position: absolute; top: 10px; left: 10px;"><i class="fa <%= checked_class %> <%= cls_rerd %>" style="font-size: 30px; color: #598A3D; "></i></span><%= d.name  %></div>
+                      <div class="fee_name" style="position: relative;">
+                          <% if bal == 0 %>
+                          <span style="position: absolute; top: 10px; left: 10px;"><i class="fa <%= checked_class %> <%= cls_rerd %>" style="font-size: 30px; color: #598A3D; "></i></span><%= d.name  %>
+                          <% else %>
+                          <span style="position: absolute; top: 10px; left: 10px; height: 30px; width: 30px;"><i id="fee_collection_<%= finance_fee.id %>" class="fa <%= checked_class %> <%= cls_rerd %>" style="font-size: 30px; color: #FFFFFF; "></i></span><%= d.name  %>
+                          <% end %>
+                      </div>
                       <div class='fee_details'>
                           <table style='width: 100%;'>
                               <tr><td class="fee_due" colspan="2"><b>Fee Details</b></td></tr>

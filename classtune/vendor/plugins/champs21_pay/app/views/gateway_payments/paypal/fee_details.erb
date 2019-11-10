@@ -955,21 +955,34 @@
         <% @paid_fees.each{|a| paid += a.amount.to_f} %>
         <%
           fine_amount_paid = 0.0
+          paid_fine = 0.0
           unless @paid_fees.blank?
             transaction_ids = @paid_fees.map(&:id)
             unless transaction_ids.blank?
               paidFineFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")")
               unless paidFineFess.blank?
-                fine_amount_paid += paidFineFess.map(&:amount).sum.to_f
+                paid_fine += paidFineFess.map(&:amount).sum.to_f
               end
+            end
+            unless @fine_amount == 0
+              fine_amount_paid = @fine_amount
+            else
+              unless @new_fine_amount.blank?
+                fine_amount_paid = @new_fine_amount
+              else
+                fine_amount_paid = 0
+              end
+            end
+            unless paid_fine.nil?
+              paid_fine = paid_fine - fine_amount_paid
             end
           else
             fine_amount_paid = @fine_amount
           end
           total_payable += fine_amount_paid.to_f
         %>
-        <% if total_payable < paid %>
-        <% amount_advanced = paid - total_payable  %>
+        <% if (total_payable + paid_fine) < paid %>
+        <% amount_advanced = paid - ( total_payable + paid_fine ) %>
         <tr class="tr-blank"></tr>
         <tr class="tr-blank"></tr>
         <tr class="tr-blank"></tr>

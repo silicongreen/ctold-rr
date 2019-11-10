@@ -1086,19 +1086,36 @@
         </tr>
       <% end %>
       <% total_fees += fine_amount_total.to_f %>  
+      <%
+        fine_amount_paid = 0.0
+        paid_fine = 0.0
+      %>  
       <% unless @paid_fees.nil? %>
         <% paid=0 %>
         <% @paid_fees.each{|a| paid += a.amount.to_f} %>
         
         <%
           fine_amount_paid = 0.0
+          paid_fine = 0.0
           unless @paid_fees.blank?
             transaction_ids = @paid_fees.map(&:id)
             unless transaction_ids.blank?
               paidFineFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")")
               unless paidFineFess.blank?
-                fine_amount_paid += paidFineFess.map(&:amount).sum.to_f
+                paid_fine += paidFineFess.map(&:amount).sum.to_f
               end
+            end
+            unless @fine_amount == 0
+              fine_amount_paid = @fine_amount
+            else
+              unless @new_fine_amount.blank?
+                fine_amount_paid = @new_fine_amount
+              else
+                fine_amount_paid = 0
+              end
+            end
+            unless paid_fine.nil?
+              paid_fine = paid_fine - fine_amount_paid
             end
           else
             fine_amount_paid = @fine_amount
@@ -1126,13 +1143,15 @@
         </tr>
       <% end %>
       
-      <%balance=@financefee.balance.to_f+@fine.to_f+@vat.to_f%>
-      <% if balance.to_f < 0 %>  
+      <%# balance=@financefee.balance.to_f+@fine.to_f+@vat.to_f%>
+      <% balance = (total_payable.to_f + paid_fine.to_f) %>
+      <% if balance < paid %>  
+      <% amount_advanced = paid - ( total_payable + paid_fine ) %>  
       <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
-        <td class="col-8" colspan="2"  style="text-align: right; font-weight: bold;"><%= t('advance_payment') %> </td>
+        <td class="col-8" colspan="4"  style="text-align: right; font-weight: bold;"><%= t('advance_payment') %> </td>
         <td class="col-6"  style="text-align: right;">
-            <span id="advance_payment_label" style="color: #000;"><%= precision_label( (balance+@fine_amount.to_f) * -1 ) %></span>
-            <input type="hidden" name="advance_payment" id="advance_payment" value="<%= precision_label( (balance+@fine_amount.to_f) * -1 ) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
+            <span id="advance_payment_label" style="color: #000;"><%= precision_label(amount_advanced) %></span>
+            <input type="hidden" name="advance_payment" id="advance_payment" value="<%= precision_label(amount_advanced) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
         </td>
       </tr>  
       <% else %>  

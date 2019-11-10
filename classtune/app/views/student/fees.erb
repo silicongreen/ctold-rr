@@ -175,13 +175,18 @@
                         end
                       end
                     end
-                    balance = FinanceFee.get_student_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f + fine_amount_paid.to_f
+                    if fine_amount_paid > 0
+                      balance = FinanceFee.get_student_balance(d, @student, finance_fee) + fine_amount_paid.to_f
+                    else
+                      balance = FinanceFee.get_student_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f + fine_amount_paid.to_f
+                    end
+                    
                     bal = balance - paid_amount
                     if bal.to_f < 0 
                       bal = 0.00
                     end
                   %>
-                  <%#= bal %>
+                  <%#= balance %>
                   <% if bal.to_f > 0 %>
                   <% fee_box_class = "unpaid" %>
                   <% else %>
@@ -280,7 +285,13 @@
                       end
                     end
                   
-                    balance = FinanceFee.get_student_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f + fine_amount_paid.to_f
+                    if fine_amount_paid > 0
+                      balance = FinanceFee.get_student_balance(d, @student, finance_fee) + fine_amount_paid.to_f
+                    else
+                      balance = FinanceFee.get_student_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f + fine_amount_paid.to_f
+                    end
+                  
+                    #balance = FinanceFee.get_student_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f + fine_amount_paid.to_f
                     bal = balance - paid_amount
                     if bal < 0
                       bal = 0
@@ -636,6 +647,7 @@
       {
          j("#no_fee_dues").show();
          j("#combined_configuration").hide();
+         j("#combined_pay").hide();
          
          j('.fee_link').each(function(){
             var href = j(this).attr('href');

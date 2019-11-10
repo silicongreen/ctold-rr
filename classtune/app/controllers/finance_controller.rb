@@ -1558,14 +1558,14 @@ class FinanceController < ApplicationController
         @from_student_view = true
       end
       @student = Student.find(params[:id])
-      @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "ledger_date, ledger_title, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid", :order => 'ledger_date ASC', :conditions => ["student_id = #{params[:id]}"], :group => "ledger_date")
+      @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "ledger_date, ledger_title, amount_to_pay, amount_paid", :order => 'ledger_date ASC', :conditions => ["student_id = #{params[:id]}"]) #, :group => "ledger_date"
     end
   end
   
   def student_ledger_pdf_fees
     unless params[:id].nil?
       @student = Student.find(params[:id])
-      @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "ledger_date, ledger_title, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid", :order => 'ledger_date ASC', :conditions => ["student_id = #{params[:id]}"], :order => "ledger_date asc", :group => "ledger_date")
+      @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "ledger_date, ledger_title, amount_to_pay, amount_paid", :order => 'ledger_date ASC', :conditions => ["student_id = #{params[:id]}"], :order => "ledger_date asc") #, :group => "ledger_date"
     end
     
     render :pdf => 'student_ledger_pdf_fees',
@@ -1581,7 +1581,8 @@ class FinanceController < ApplicationController
   def student_ledger_xls_fees
     unless params[:id].nil?
       @student = Student.find(params[:id])
-      @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "ledger_date, ledger_title, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid", :order => 'ledger_date ASC', :conditions => ["student_id = #{params[:id]}"], :order => "ledger_date asc", :group => "ledger_date")
+      #@student_fee_ledgers = StudentFeeLedger.find(:all, :select => "ledger_date, ledger_title, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid", :order => 'ledger_date ASC', :conditions => ["student_id = #{params[:id]}"], :order => "ledger_date asc", :group => "ledger_date")
+      @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "ledger_date, ledger_title, amount_to_pay, amount_paid", :order => 'ledger_date ASC', :conditions => ["student_id = #{params[:id]}"], :order => "ledger_date asc")
       
       require 'spreadsheet'
       Spreadsheet.client_encoding = 'UTF-8'

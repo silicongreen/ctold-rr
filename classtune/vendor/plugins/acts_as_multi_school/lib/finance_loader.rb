@@ -890,6 +890,18 @@ module FinanceLoader
           end
 
         end
+      else
+        if remaining_amount > 0
+          finance_order = FinanceOrder.new()
+          finance_order.finance_fee_id = @financefee.id
+          finance_order.student_id = @financefee.student_id
+          finance_order.batch_id = @financefee.batch_id
+          finance_order.balance = remaining_amount
+          finance_order.save
+          @order_id = "O" + finance_order.id.to_s
+          @order_id_saved = true
+          finance_order.update_attributes(:order_id => @order_id)
+        end
       end
     end
 
@@ -1062,8 +1074,9 @@ module FinanceLoader
 
       if @active_gateway == "trustbank"
         paid_fees = @financefee[f].finance_transactions
+        
         paid_amount = 0.0
-        unless paid_fees.nil? or paid_fees.blank?
+        unless paid_fees.blank?
           paid_fees.each do |pf|
             paid_amount += pf.amount
           end
@@ -1072,7 +1085,7 @@ module FinanceLoader
 
         unless @financefee[f].is_paid
           finance_order = FinanceOrder.find(:first, :conditions => "finance_fee_id = #{@financefee[f].id} and student_id = #{@financefee[f].student_id} and batch_id = #{@financefee[f].batch_id} and status = 0")
-          unless finance_order.nil?
+          unless finance_order.blank?
             if @order_id_saved
               finance_order.update_attributes(:order_id => @order_id)
             else
@@ -1104,19 +1117,30 @@ module FinanceLoader
           end
           
           payment = Payment.find(:first, :conditions => "order_id = '#{@order_id}'")
-          unless payment.nil?
+          unless payment.blank?
             finance_transaction_id = payment.finance_transaction_id
             unless finance_transaction_id.nil?
               finance_order = FinanceOrder.new()
-              finance_order.finance_fee_id = @financefee.id
-              finance_order.student_id = @financefee.student_id
-              finance_order.batch_id = @financefee.batch_id
+              finance_order.finance_fee_id = @financefee[f].id
+              finance_order.student_id = @financefee[f].student_id
+              finance_order.batch_id = @financefee[f].batch_id
               finance_order.balance = remaining_amount
               finance_order.save
               @order_id = "O" + finance_order.id.to_s
               finance_order.update_attributes(:order_id => @order_id)
             end
-
+          end
+        else
+          if remaining_amount > 0
+            finance_order = FinanceOrder.new()
+            finance_order.finance_fee_id = @financefee[f].id
+            finance_order.student_id = @financefee[f].student_id
+            finance_order.batch_id = @financefee[f].batch_id
+            finance_order.balance = remaining_amount
+            finance_order.save
+            @order_id = "O" + finance_order.id.to_s
+            @order_id_saved = true
+            finance_order.update_attributes(:order_id => @order_id)
           end
         end
       end

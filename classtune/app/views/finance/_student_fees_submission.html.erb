@@ -1406,7 +1406,11 @@
             </td>
             <% if @current_user.admin? %>
               <% student_fees = @from_batch_fee ? 0 : 1  %>
-              <td class="col-3" style="width:2%; vertical-align: top;"> <div class="cancel" style="font-weight: bold; border: 1px solid #ccc; border-radius: 5px; padding: 1px 2px 1px 4px; margin-top: 0;"><%=link_to_remote ("&times"),{:url=>{:controller=>:finance,:action=>:delete_transaction_by_batch,:id=>@student.id,:date=>@date.id,:transaction_id=>f.id,:batch_id => @batch.id, :student_fees => student_fees, :from_admin => 1},:confirm=>"#{t('are_you_sure_want_delete_this_transaction')}"},{:class=>"themed_text"}%></div></td>
+              <td class="col-3" style="width:2%; vertical-align: top;"> 
+                  <div class="cancel" style="font-weight: bold; border: 1px solid #ccc; border-radius: 5px; padding: 1px 4px 1px 4px; margin-top: 0; color: #f00;">
+                    <%=link_to_remote ("<i id='trans_id_#{f.id}' class='fa fa-trash'></i>"),{:url=>{:controller=>:finance,:action=>:delete_transaction_by_batch,:id=>@student.id,:date=>@date.id,:transaction_id=>f.id,:batch_id => @batch.id, :student_fees => student_fees, :from_admin => 1},:confirm=>"#{t('are_you_sure_want_delete_this_transaction')}", :before => "j('#trans_id_#{f.id}').removeClass('fa-trash');j('#trans_id_#{f.id}').addClass('fa-spinner');j('#trans_id_#{f.id}').addClass('fa-spin');"},{:style=> "color: #f00;"}%>
+                  </div>
+              </td>
             <% end %>
             <% if MultiSchool.current_school.id == 352 %>
               <td>

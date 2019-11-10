@@ -1357,6 +1357,7 @@ class FinanceController < ApplicationController
             p_amount = 0.00
             a_amount = 0.00
             d_amount = 0.00
+            f_amount = 0.00
             amount = 0.00
             s = []
             i = 0
@@ -1392,6 +1393,11 @@ class FinanceController < ApplicationController
                 @particular_wise_transactions.each do |pt|
                   amount -= pt.amount.to_f
                   d_amount += pt.amount.to_f
+                end
+                @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Fine'"], :group => "finance_transaction_particulars.finance_transaction_id")
+                @particular_wise_transactions.each do |pt|
+                  amount -= pt.amount.to_f
+                  f_amount += pt.amount.to_f
                 end
                 if amount.to_f != pwt.amount.to_f
                   trans_ids << pwt.id

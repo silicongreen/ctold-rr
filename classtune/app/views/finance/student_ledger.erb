@@ -141,7 +141,9 @@
                     <% carried_amount = 0 %>
                     <% current_balance = 0 %>
                     <% i = 0 %>
+                    <% balance_forward = false %>
                     <% @student_fee_ledgers.each_with_index do |student_fee_ledger, ind| %>
+                    <% balance_forward = false %>
                     <% ledger_info = "" %>
                     <% info = "" %>
                     <% trans_type = "" %>
@@ -151,9 +153,10 @@
                     <% particular_name = "" %>
                     <% trans_id = "" %>
                     <% if student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f == 0.00 %>
-                    <% info = "Admission" %>
-                    <% trans_type = "Admission" %>
-                    <% particular_name = "" %>
+                    <% balance_forward = true %>
+                    <% info = "" %>
+                    <% trans_type = "" %>
+                    <% particular_name = "Balance Forward upto " + student_fee_ledger.ledger_date.strftime("%d-%m-%Y") %>
                     <% ledger_info = "(Admission Date)" %>
                     <% elsif student_fee_ledger.amount_to_pay.to_f > 0.00 and student_fee_ledger.amount_paid.to_f == 0.00 %>
                       <% trans_type = "Receivable" %>
@@ -183,6 +186,8 @@
                             <% ledger_info += ", " %>
                             <% end %>
                             <% i += 1 %>
+                          <% else %>  
+                            <% student_ledger.destroy %>  
                           <% end %>
                           <% trans_id = trans.join(", ") %>
                           <% info = for_id.join(", ") %>
@@ -193,7 +198,8 @@
                         <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay = 0.00 and amount_paid > 0.00"]) %>
                         <% unless student_ledgers.nil? %>
                           <% student_ledgers.each do |student_ledger| %>
-                            <% payments = Payment.find(:all, :conditions => "finance_transaction_id = #{student_ledger.transaction_id}") %>
+                            <% payments = Payment.find(:all, :conditions => "finance_transaction_id = #{student_ledger.transaction_id}", :group => "id") %>
+                            <%#= debug payments.map(&:id).inspect  %>
                             <% unless payments.nil? %>
                               <% payments.each do |payment| %>
                                 <% trans << payment.order_id %>
@@ -202,27 +208,52 @@
                                   <% date_id = fee.fee_collection_id %>
                                   <% d = FinanceFeeCollection.find(date_id) %>
                                   <% for_id << d.name %>
-                                  <% particulars << d.name %>    
+                                  <% particulars << d.name %>   
+                                <% else %>  
+                                  <% student_ledger.destroy %>
                                 <% end %>
                                 <% particulars << "Trust Bank Payment" %>  
                                 <% payment_type = (payment.gateway_response[:payment_type] = "MB") ? "Mobile Banking" : "Card Online" %>
                                 <% particulars << payment_type %>    
                                 <% particulars << "Reference ID: " + payment.gateway_response[:ref_id] %>    
+                                <% unless fee.blank? %>
                                 <% ledger_info += "Order Id: #{payment.order_id} <a href='/finance/student_fee_receipt_pdf/#{@student.id}/#{fee.finance_fee_collection.id}?trn_id=#{payment.finance_transaction_id}' target='_blank' style='text-decoration: underline;'>Print receipt</a><Br />" %>
+                                <% else %>
+                                <% ledger_info += "Order Id: #{payment.order_id} <a href='/finance/student_fee_receipt_pdf/#{@student.id}/0?trn_id=#{payment.finance_transaction_id}' target='_blank' style='text-decoration: underline;'>Print receipt</a><Br />" %>
+                                <% end %>
                               <% end %>
                               <% trans_id = trans.join(", ") %>
                               <% info = for_id.join(", ") %>
                               <% particular_name = particulars.join(", ") %>
+                            <% else %>  
+                                <% student_ledger.destroy %>   
                             <% end %>
                           <% end %>
                         <% end %>
                     <% end %>
-                      
-                    <tr class="tr-odd">
+                    
+                    <% ledger_found = true %>
+                    <% if student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f == 0.00 %>
+                    <% elsif student_fee_ledger.amount_to_pay.to_f > 0.00 and student_fee_ledger.amount_paid.to_f == 0.00 %>
+                      <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay > 0.00 and fee_id IS NOT NULL and amount_paid = 0.00 and transaction_id = 0"]) %>
+                      <% if student_ledgers.blank? %>
+                        <% ledger_found = false %>
+                      <% end %>  
+                    <% elsif student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f > 0.00 %>
+                        <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay = 0.00 and amount_paid > 0.00"]) %>
+                        <% if student_ledgers.blank? %>
+                          <% ledger_found = false %>
+                        <% end %>
+                    <% end %>
+                    
+                    <% if ledger_found %>  
+                      <tr class="tr-odd">
                           <td style="text-align: center;"><%= ind + 1 %></td>
                           <th style="vertical-align: middle; text-align: left; color: #555; font-family: verdana; font-size: 12px; line-height: 17px;" class="fixed-side">
-                              <%= student_fee_ledger.ledger_date.strftime("%d %B, %Y") %><br />
-                              <small><%= ledger_info %></small>
+                              <% unless balance_forward %>
+                                <%= student_fee_ledger.ledger_date.strftime("%d %B, %Y") %><br />
+                                <small><%= ledger_info %></small>
+                              <% end %>
                           </th>
                           <td style="text-align: center; vertical-align: middle;"><%= trans_type %></td>
                           <td style="text-align: center; vertical-align: middle;"><%= trans_id %></td>
@@ -241,6 +272,7 @@
                               <% end %>
                           </td>
                       </tr>
+                    <% end %>
                     <% end %>
 
                 </tbody>

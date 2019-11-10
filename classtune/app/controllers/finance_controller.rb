@@ -1603,7 +1603,9 @@ class FinanceController < ApplicationController
       current_balance = 0
       ind = 1;
       
+      balance_forward = false
       @student_fee_ledgers.each_with_index do |student_fee_ledger, i|
+        balance_forward = false
         info = ""
         trans_type = ""
         trans = []
@@ -1612,9 +1614,10 @@ class FinanceController < ApplicationController
         particular_name = ""
         trans_id = ""
         if student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f == 0.00
-        info = "Admission"
-        trans_type = "Admission"
-        particular_name = ""
+          balance_forward = true
+          info = ""
+          trans_type = ""
+          particular_name = "Balance Forward upto " + student_fee_ledger.ledger_date.strftime("%d-%m-%Y")
         elsif student_fee_ledger.amount_to_pay.to_f > 0.00 and student_fee_ledger.amount_paid.to_f == 0.00
           trans_type = "Receivable"
           student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay > 0.00 and fee_id IS NOT NULL and amount_paid = 0.00 and transaction_id = 0"])
@@ -1635,6 +1638,8 @@ class FinanceController < ApplicationController
                
                 fee_particulars = d.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@student.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) }
                 particular_name = fee_particulars.map(&:name).join(",") + " for " + d.name 
+              else
+                student_ledger.destroy
               end
               trans_id = trans.join(",")
               info = for_id.join(",")
@@ -1645,7 +1650,7 @@ class FinanceController < ApplicationController
             student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay = 0.00 and amount_paid > 0.00"])
             unless student_ledgers.nil?
               student_ledgers.each do |student_ledger|
-                payments = Payment.find(:all, :conditions => "finance_transaction_id = #{student_ledger.transaction_id}")
+                payments = Payment.find(:all, :conditions => "finance_transaction_id = #{student_ledger.transaction_id}", :group => "id")
                 unless payments.nil?
                   payments.each do |payment|
                     trans << payment.order_id
@@ -1655,6 +1660,8 @@ class FinanceController < ApplicationController
                       d = FinanceFeeCollection.find(date_id)
                       for_id << d.name
                       particulars << d.name    
+                    else
+                      student_ledger.destroy
                     end
                     particulars << "Trust Bank Payment"  
                     payment_type = (payment.gateway_response[:payment_type] = "MB") ? "Mobile Banking" : "Card Online"
@@ -1664,23 +1671,45 @@ class FinanceController < ApplicationController
                   trans_id = trans.join(", ")
                   info = for_id.join(", ")
                   particular_name = particulars.join(", ")
+                else
+                  student_ledger.destroy
                 end
               end
             end
         end
         
-        current_balance = (carried_amount + student_fee_ledger.amount_to_pay.to_f) - student_fee_ledger.amount_paid.to_f
-        carried_amount = current_balance
-        if current_balance < 0
-          current_balance = current_balance * (-1)
+        ledger_found = true
+        if student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f == 0.00
+        elsif student_fee_ledger.amount_to_pay.to_f > 0.00 and student_fee_ledger.amount_paid.to_f == 0.00
+          student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay > 0.00 and fee_id IS NOT NULL and amount_paid = 0.00 and transaction_id = 0"])
+          if student_ledgers.blank?
+            ledger_found = false
+          end  
+        elsif student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f > 0.00
+          student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay = 0.00 and amount_paid > 0.00"])
+          if student_ledgers.blank?
+            ledger_found = false
+          end
         end
-        title = (student_fee_ledger.ledger_title.blank?) ? particular_name : student_fee_ledger.ledger_title
-        row_new = [i+1, student_fee_ledger.ledger_date.strftime("%d-%m-%Y"), trans_type, trans_id, info, title, student_fee_ledger.amount_to_pay.to_f, student_fee_ledger.amount_paid.to_f, current_balance.to_f]
-        new_book.worksheet(0).insert_row(ind, row_new)
-        new_book.worksheet(0).row(ind).set_format(6, amount_format)
-        new_book.worksheet(0).row(ind).set_format(7, amount_format)
-        new_book.worksheet(0).row(ind).set_format(8, amount_format)
-        ind += 1
+        
+        if ledger_found
+          current_balance = (carried_amount + student_fee_ledger.amount_to_pay.to_f) - student_fee_ledger.amount_paid.to_f
+          carried_amount = current_balance
+          if current_balance < 0
+            current_balance = current_balance * (-1)
+          end
+          title = (student_fee_ledger.ledger_title.blank?) ? particular_name : student_fee_ledger.ledger_title
+          unless balance_forward
+            row_new = [i+1, student_fee_ledger.ledger_date.strftime("%d-%m-%Y"), trans_type, trans_id, info, title, student_fee_ledger.amount_to_pay.to_f, student_fee_ledger.amount_paid.to_f, current_balance.to_f]
+          else
+            row_new = [i+1, "", trans_type, trans_id, info, title, student_fee_ledger.amount_to_pay.to_f, student_fee_ledger.amount_paid.to_f, current_balance.to_f]
+          end
+          new_book.worksheet(0).insert_row(ind, row_new)
+          new_book.worksheet(0).row(ind).set_format(6, amount_format)
+          new_book.worksheet(0).row(ind).set_format(7, amount_format)
+          new_book.worksheet(0).row(ind).set_format(8, amount_format)
+          ind += 1
+        end
       end
       
       spreadsheet = StringIO.new 
@@ -7896,11 +7925,12 @@ class FinanceController < ApplicationController
           
           @new_fine_amount = @fine_amount
           get_fine_discount(@date, @batch, @student)
+          #abort(@new_fine_amount.to_s)
           if @fine_amount < 0
             @fine_amount = 0
           end
         end
-        
+        #abort(@fine_amount.to_s)
         @fine_amount=0 if @financefee.is_paid
         
         unless advance_fee_collection

@@ -100,24 +100,32 @@
     </div>
 
     <div style="clear: both; height:10px;"></div>
-    <% fee_collection_name = "Fees payment for the Month of (" %>
-    <% m = 0 %>
-    <% @fees_collections.reverse.each do |fee| %>
-      <% f = fee.to_i %>
-    <%#= debug  @date[f].inspect %>
-      <% if m == 0 %>
-        <% #fee_collection_name += @date[f].start_date.to_date.strftime('%B, %Y') + " - " %>
-        <% fee_collection_name += @date[f].name + " - " %>
-      <% end %>
-      <% if m == @fees_collections.length - 1 %>
-        <% #fee_collection_name += @date[f].start_date.to_date.strftime('%B, %Y') + ")" %>
-        <% fee_collection_name += @date[f].name + ")" %>
-      <% end %>
-      <% m += 1 %>
-    <% end %>
-    <h2><%= fee_collection_name %></h2>
-    <%#= debug  @date[f].inspect %>
+    <h2>Student Fee Information</h2>
     <hr style="border: 1px solid #ccc;" />
+    <% if @fees_collections.length == 1 %>
+      <% fee_collection_name = ""  %>
+      <% @fees_collections.reverse.each do |fee| %>
+        <% f = fee.to_i %>
+        <% fee_collection_name += @date[f].name %>
+      <% end %>
+    <% else %>
+      <% fee_collection_name = "" %>
+      <% m = 0 %>
+      <% @fees_collections.reverse.each do |fee| %>
+        <% f = fee.to_i %>
+      <%#= debug  @date[f].inspect %>
+        <% if m == 0 %>
+          <% #fee_collection_name += @date[f].start_date.to_date.strftime('%B, %Y') + " - " %>
+          <% fee_collection_name += @date[f].name + " - " %>
+        <% end %>
+        <% if m == @fees_collections.length - 1 %>
+          <% #fee_collection_name += @date[f].start_date.to_date.strftime('%B, %Y') + ")" %>
+          <% fee_collection_name += @date[f].name + "" %>
+        <% end %>
+        <% m += 1 %>
+      <% end %>
+    <% end %>
+    <b style="display: block;">Fee For: <%= fee_collection_name %></b>
 <br />
 <% total_fees =0 %>
 <% total_payable =0 %>
@@ -943,7 +951,7 @@
         <tr class="<%= cycle("odd","even") %> tr_fees_<%= f %>" style="display: none;" cellpadding="1" cellspacing="1" style="display: none;">
           <td class="col-8" colspan="4"  style="text-align: right; font-weight: bold;"><%="Fine Amount" %> </td>
           <td class="col-6" style="text-align: right;">
-              <span id="fine_amount_to_pay_label" style="color: #000;"><%= precision_label(@fine_amount[f]) %></span>
+              <span id="fine_amount_to_pay_label" style="color: #000;"><%= precision_label(@fine_amount[f]) %></span>&nbsp;&nbsp;&nbsp;
               <% if load_fine_amount_to_pay == false %>
               <input type="hidden" name="fine_amount_to_pay_<%= f %>" id="fine_amount_to_pay" value="<%= precision_label(@fine_amount[f]) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
               <% end %>
@@ -956,6 +964,21 @@
       <% unless @paid_fees[f].nil? %>
         <% paid=0 %>
         <% @paid_fees[f].each{|a| paid += a.amount.to_f} %>
+        <%
+          fine_amount_paid = 0.0
+          unless @paid_fees[f].blank?
+            transaction_ids = @paid_fees[f].map(&:id)
+            unless transaction_ids.blank?
+              paidFineFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")")
+              unless paidFineFess.blank?
+                fine_amount_paid += paidFineFess.map(&:amount).sum.to_f
+              end
+            end
+          else
+            fine_amount_paid = @fine_amount[f]
+          end
+          total_payable_individual[f] += fine_amount_paid.to_f
+        %>
         <% if total_payable_individual[f] < paid %>
         <% amount_advanced = paid - total_payable_individual[f]  %>
         <tr class="tr-blank blank_tr_<%= f %>" style="display: none;"></tr>

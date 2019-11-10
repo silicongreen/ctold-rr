@@ -161,12 +161,21 @@
                   <%  paid_fees = finance_fee.finance_transactions %>
                   <%
                     paid_amount = 0.0
+                    fine_amount_paid = 0.0
                     unless paid_fees.nil? or paid_fees.blank?
                       paid_fees.each do |pf|
                         paid_amount += pf.amount
                       end
+                      
+                      transaction_ids = paid_fees.map(&:id)
+                      unless transaction_ids.blank?
+                        paidFineFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")")
+                        unless paidFineFess.blank?
+                          fine_amount_paid += paidFineFess.map(&:amount).sum.to_f
+                        end
+                      end
                     end
-                    balance = FinanceFee.get_student_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f
+                    balance = FinanceFee.get_student_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f + fine_amount_paid.to_f
                     bal = balance - paid_amount
                     if bal.to_f < 0 
                       bal = 0.00
@@ -258,19 +267,26 @@
                   <%  paid_fees = finance_fee.finance_transactions %>
                   <%
                     paid_amount = 0.0
+                    fine_amount_paid = 0.0
                     unless paid_fees.nil? or paid_fees.blank?
                       paid_fees.each do |pf|
                         paid_amount += pf.amount
                       end
+                      
+                      transaction_ids = paid_fees.map(&:id)
+                      paidFineFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")")
+                      unless paidFineFess.blank?
+                        fine_amount_paid += paidFineFess.map(&:amount).sum.to_f
+                      end
                     end
                   
-                    balance = FinanceFee.get_student_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f
+                    balance = FinanceFee.get_student_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f + fine_amount_paid.to_f
                     bal = balance - paid_amount
                     if bal < 0
                       bal = 0
                     end
                   %>
-                  
+                     
                   <% if bal > 0 %>
                   <% fee_box_class = "unpaid" %>
                   <% else %>

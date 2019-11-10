@@ -292,6 +292,32 @@
                 <% end %>
               <% end %>
             <% end %>      
+            <%  k += 1%> 
+            <%
+              fine_amount_paid = 0.0
+              unless @paid_fees.blank?
+                transaction_ids = @paid_fees.map(&:id)
+                unless transaction_ids.blank?
+                  paidFineFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")")
+                  unless paidFineFess.blank?
+                    fine_amount_paid += paidFineFess.map(&:amount).sum.to_f
+                  end
+                end
+              else
+                fine_amount_paid = @fine_amount
+              end
+            %>
+            <% if fine_amount_paid > 0 %>
+              <tr  class="content">
+                  <td style="text-align: center;"><%= k %></td>
+                  <td><%= "Fine Paid" %></td>
+                  <td class="amount">
+                      &nbsp;&nbsp;&nbsp;<%= precision_label(fine_amount_paid) %>
+                      <% total_fees += fine_amount_paid %>
+                  </td>
+              </tr>      
+            <% end %>
+                  
             <tr  class="content">
                 <td colspan="3"></td>
             </tr>      

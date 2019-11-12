@@ -234,7 +234,6 @@ class Students extends CActiveRecord
         $criteria = new CDbCriteria();
         $criteria->select = 'id';
         $criteria->compare('phone2', $phone2);
-        $criteria->compare('t.is_deleted',0);
         $std = $this->find($criteria);
 
         if ($std)
@@ -282,7 +281,6 @@ class Students extends CActiveRecord
     {
         $criteria = new CDbCriteria();
         $criteria->compare('sibling_id', $sibling_id);
-        $criteria->compare('t.is_deleted',0);
         $criteria->with = array(
             'batchDetails' => array(
                 'select' => 'batchDetails.name',
@@ -305,7 +303,6 @@ class Students extends CActiveRecord
 
         $criteria->select = 'count(t.id) as total';
         $criteria->compare('batch_id', $batch_id);
-        $criteria->compare('t.is_deleted',0);
         $students = $this->find($criteria);
 
         return $students->total;
@@ -321,7 +318,7 @@ class Students extends CActiveRecord
         {
             $criteria->compare('courseDetails.section_name', $section_name);
         }
-        $criteria->compare('t.is_deleted',0);
+
 
         $criteria->with = array(
             'batchDetails' => array(
@@ -349,7 +346,7 @@ class Students extends CActiveRecord
             $criteria->compare('courseDetails.section_name', $section_name);
         }
 
-        $criteria->compare('t.is_deleted',0);
+
         $criteria->with = array(
             'batchDetails' => array(
                 'joinType' => "LEFT JOIN",
@@ -390,7 +387,6 @@ class Students extends CActiveRecord
                 $criteria->compare('courseDetails.course_name', $class_name);
             }
         }
-        $criteria->compare('t.is_deleted',0);
         $criteria->with = array(
             'batchDetails' => array(
                 'joinType' => "LEFT JOIN",
@@ -456,7 +452,6 @@ class Students extends CActiveRecord
         $criteria = new CDbCriteria();
         $criteria->select = 't.id,t.first_name,t.middle_name,t.last_name,t.immediate_contact_id,t.class_roll_no';
         $criteria->compare('batch_id', $batch_id);
-        $criteria->compare('t.is_deleted',0);
         if(Yii::app()->user->schoolId == 319)
         {
             $criteria->order = "t.first_name ASC, t.middle_name ASC, t.last_name ASC";
@@ -510,7 +505,6 @@ class Students extends CActiveRecord
         {
             $criteria->compare('batch_id', $batch_id);
         }
-        $criteria->compare('t.is_deleted',0);
         
         if(Yii::app()->user->schoolId == 319)
         {
@@ -551,7 +545,7 @@ class Students extends CActiveRecord
         {
             $criteria->compare('batch_id', $batch_id);
         }
-        $criteria->compare('t.is_deleted',0);
+
         $students = $this->findAll($criteria);
 
         $students_array = array();
@@ -569,6 +563,18 @@ class Students extends CActiveRecord
         $criteria = new CDbCriteria();
         $criteria->select = 't.*';
         $criteria->addInCondition('id', $std_ids);
+        if(Yii::app()->user->schoolId == 319)
+        {
+            $criteria->order = "t.first_name ASC, t.middle_name ASC, t.last_name ASC";
+        }
+        else if(Yii::app()->user->schoolId == 342)
+        {
+            $criteria->order = "LENGTH(t.class_roll_no) ASC,t.class_roll_no ASC";
+        }    
+        else
+        {
+            $criteria->order = "if(t.class_roll_no = '' or t.class_roll_no is null,0,cast(t.class_roll_no as unsigned)),t.first_name ASC";
+        }
         $students = $this->findAll($criteria);
         return $students;
     }

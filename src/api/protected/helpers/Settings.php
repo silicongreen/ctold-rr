@@ -2015,10 +2015,27 @@ class Settings {
                         "batch_id" => $notification->batch_id,
                         "student_id" => $notification->student_id
                     );
+                    
+                    $ios = array
+                        (
+                        'title' => $messege,
+                        "key" => "paid",
+                        'total_unread' => $total_unread,
+                        "user_type" => $user_type,
+                        "text" => $notification->subject,
+                        "rtype" => $notification->rtype,
+                        "rid" => $notification->rid,
+                        "batch_id" => $notification->batch_id,
+                        "student_id" => $notification->student_id,
+                        "badge" => 1,
+                        "sound" => "default"
+                    );
+                    
                     $fields = array
                         (
                         'registration_ids' => $all_fcm_user,
-                        'data' => $msg
+                        'data' => $msg,
+                        'notification' => $ios
                     );
 
                     $headers = array

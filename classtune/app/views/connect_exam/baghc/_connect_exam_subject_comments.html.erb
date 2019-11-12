@@ -245,7 +245,7 @@
                                               <% if exam_marks_entry_allowed(exam.exam_group) or @current_user.admin? %>
                                                 <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", score_now, :onkeyup => "checkValueMax(#{exam.maximum_marks.to_i},this)",:onkeydown => "checkValueMax(#{exam.maximum_marks.to_i},this)", :size => '4', :class=>"marks-box #{extra_class}" %>
                                               <% else %>
-                                                <%= mark %>
+                                                <%= score_now %>
                                               <% end %> 
                                               
                                             <% end %>

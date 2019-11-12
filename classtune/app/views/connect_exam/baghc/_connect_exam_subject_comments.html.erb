@@ -223,6 +223,10 @@
                                     </table>
                                 </td>
                               <% else %>
+                                <% extra_class="" %>
+                                <% if !@exam_score.marks.blank? and @exam_score.marks >  exam.maximum_marks.to_f %>
+                                  <% extra_class="red_class" %>
+                                <% end %> 
                                 <% if !@exam_score.marks.blank? %>
                                   <% total_mark = total_mark.to_f+@exam_score.marks.to_f %>
                                   <% score_now = @exam_score.marks  %>
@@ -238,7 +242,12 @@
                                             <% if exam.exam_group.exam_category == 7 %>
                                               <%= text_field_tag "exam_remarks[#{exam.id}][#{student.id}][remarks]", @exam_score.remarks %>
                                             <% else %>   
-                                              <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]",score_now, :size => '4', :class=>"marks-4box" %> 
+                                              <% if exam_marks_entry_allowed(exam.exam_group) or @current_user.admin? %>
+                                                <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", score_now, :onkeyup => "checkValueMax(#{exam.maximum_marks.to_i},this)",:onkeydown => "checkValueMax(#{exam.maximum_marks.to_i},this)", :size => '4', :class=>"marks-box #{extra_class}" %>
+                                              <% else %>
+                                                <%= mark %>
+                                              <% end %> 
+                                              
                                             <% end %>
                                         </div>
                                     </div>
@@ -264,104 +273,168 @@
     <% end %>
 
 </div>
+<script>
+  var jj = jQuery.noConflict();
+   jj(document).ready(function () {
+ 
+      jj('input').keyup(function (e) {
+        if (e.which == 39) { // right arrow
+          jj(this).closest('td').next().find('input').focus();
+          
+ 
+        } else if (e.which == 37) { // left arrow
+          jj(this).closest('td').prev().find('input').focus();
+         
+ 
+        } else if (e.which == 40) { // down arrow
+         
+          child_number = jj(this).closest('td').index()+1
+          jj(this).closest('tr').next().next().find('td:nth-child('+child_number+')').find('input').focus();
+          
+ 
+        } else if (e.which == 38) { // up arrow
+          child_number = jj(this).closest('td').index()+1
+          jj(this).closest('tr').prev().prev().find('td:nth-child('+child_number+')').find('input').focus();
+          
+        }
+        jj('input').each(function(){
+          if(jj(this).hasClass("input-blocked"))
+          {  
+            jj(this).focus();
+          }
+        });
+     });
+     jj('input').click(function (e) {
+       jj('input').each(function(){
+          if(jj(this).hasClass("input-blocked"))
+          {  
+            jj(this).focus();
+          }
+        });
+     });
+   }); 
+   function checkValueMax(maxvalue,th_is)
+   {
+     if(jj(th_is).val()>maxvalue || jj(th_is).val() < 0)
+     {
+       jj(th_is).css( "color", "red" );
+       jj(th_is).addClass( "input-blocked" );
+     }
+     else
+     {
+       jj(th_is).css( "color", "black" );
+       jj(th_is).removeClass( "input-blocked" );
+     }  
+     
+     
+   }
+</script>  
 <style>
-    #sub-button .submit_button
+    #content_wrapper #content
     {
-        cursor: pointer;
+      width: 95% !important;
     }
-    table#listing {
-        padding: 0px;
+    #page-yield {
+    margin: 0px 0px;
+    float: left;
+    width: 100%;
+}
+    form 
+    {
+        float:left;
         width: 100%;
-        overflow-x: auto;
     }
-    .zui-table {
-        border: none;
-        border-right: solid 1px #DDEFEF;
-        border-collapse: separate;
-        border-spacing: 0;
-        font: normal 13px Arial, sans-serif;
-    }
-    .zui-table thead th {
-        background-color: #DDEFEF;
-        border: none;
-        color: #336B6B;
-        padding: 10px;
-        text-align: left;
-        text-shadow: 1px 1px 1px #fff;
-        white-space: nowrap;
-    }
-    .zui-table tbody td {
-        border-bottom: solid 1px #DDEFEF;
-        color: #333;
-        padding: 10px;
-        text-shadow: 1px 1px 1px #fff;
-        white-space: nowrap;
-        border-left: solid 1px #DDEFEF;
-    }
-    .zui-wrapper {
-        position: relative;
-    }
-    .zui-scroller {
-        overflow-x: auto;
-        overflow-y: auto;
-        padding-bottom: 5px;
-        width: 930px;
-        max-height: 500px;
-    }
-
-    .td-mark .date2{
-        position: relative;
-        left: -172px;
-        top: -73px;
-    }
-    .td-mark .date2 span,.td-name .date2 span{
-        display: none;
-        color: #FFFFFF;
-    }
-    .td-mark:hover .date2 span{
-        display: block;
-        position: absolute;
-        min-width: 150px;
-        background-color: #fff;
-        border:1px solid #c3d9ff;
-        min-height: 30px;
-        left: 20px;
-        top: 0px;
-        color: #FFFFFF;
-        padding-top: 10px;
-        padding: 3px;
-
-        color:#990A10;
-        font-size: 12px;
-    }
-    .td-mark select
+    .red_class
     {
-      width: 120px;
+      color:red;
     }
-
-    .td-mark .date{
-        position: relative;
-        left: -172px;
-        top: -73px;
-    }
-    .td-mark .date span,.td-name .date span{
-        display: none;
-        color: #FFFFFF;
-    }
-    .td-mark:hover .date span{
-        display: block;
-        position: absolute;
-        min-width: 150px;
-        background-color: #fff;
-        border:1px solid #c3d9ff;
-        min-height: 20px;
-        left: 20px;
-        top: 10px;
-        color: #FFFFFF;
-        padding: 3px;
-
-        color:#990A10;
-        font-size: 12px;
-    }
-
+  #sub-button .submit_button
+  {
+    cursor: pointer;
+  }
+  table#listing {
+    padding: 0px;
+    width: 100%;
+    overflow-x: auto;
+}
+.zui-table {
+    border: none;
+    border-right: solid 1px #DDEFEF;
+    border-collapse: separate;
+    border-spacing: 0;
+    font: normal 13px Arial, sans-serif;
+}
+.zui-table thead th {
+    background-color: #DDEFEF;
+    border: none;
+    color: #336B6B;
+    padding: 10px;
+    text-align: left;
+    text-shadow: 1px 1px 1px #fff;
+    white-space: nowrap;
+}
+.zui-table tbody td {
+    border-bottom: solid 1px #DDEFEF;
+    color: #333;
+    padding: 10px;
+    text-shadow: 1px 1px 1px #fff;
+    white-space: nowrap;
+    border-left: solid 1px #DDEFEF;
+}
+.zui-wrapper {
+    position: relative;
+}
+.zui-scroller {
+    overflow-x: auto;
+    overflow-y: auto;
+    padding-bottom: 5px;
+    width: 930px;
+}
+.td-mark .date2{
+    position: relative;
+    left: -172px;
+    top: -73px;
+}
+.td-mark .date2 span,.td-name .date2 span{
+    display: none;
+    color: #FFFFFF;
+}
+.td-mark:hover .date2 span{
+    display: block;
+    position: absolute;
+    min-width: 150px;
+    background-color: #fff;
+    border:1px solid #c3d9ff;
+    min-height: 30px;
+    left: 20px;
+    top: 10px;
+    color: #FFFFFF;
+    padding-top: 10px;
+    padding: 3px;
+    color:#990A10;
+    font-size: 12px;
+}
+.td-mark .date{
+    position: relative;
+    left: -172px;
+    top: -73px;
+}
+.td-mark .date span,.td-name .date span{
+    display: none;
+    color: #FFFFFF;
+}
+.td-mark:hover .date span{
+    display: block;
+    position: absolute;
+    min-width: 150px;
+    background-color: #fff;
+    border:1px solid #c3d9ff;
+    min-height: 20px;
+    left: 20px;
+    top: 10px;
+    color: #FFFFFF;
+    padding: 3px;
+    color:#990A10;
+    font-size: 12px;
+}
 </style>

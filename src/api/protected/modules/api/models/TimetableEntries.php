@@ -1141,7 +1141,7 @@ class TimetableEntries extends CActiveRecord {
                     $_data['subject_icon_name'] = $row['subjectDetails']->icon_number;
                     $_data['subject_icon_path'] = (!empty($row['subjectDetails']->icon_number)) ? Settings::$domain_name . '/images/icons/subjects/' . $row['subjectDetails']->icon_number : null;
                     $_data['class_start_time'] = Settings::formatTime($row['classTimingDetails']->start_time);
-                    $_data['class_start_time_24'] = $row['classTimingDetails']->start_time;
+                    $_data['class_start_time_24'] = str_replace(":","",$row['classTimingDetails']->start_time);
                     $_data['class_end_time'] = Settings::formatTime($row['classTimingDetails']->end_time);
                     $_data['period_name'] = $row['classTimingDetails']->name;
                     

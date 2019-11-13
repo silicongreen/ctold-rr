@@ -17,10 +17,13 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <%
- if @student_list_first_term.blank? && !@student_list_second_term.blank?
-    @student_list_first_term = @student_list_second_term
-    @student_position_first_term_batch = @student_position_second_term_batch
-  end
+if !@student_position.blank?
+  @student_position_first_term_batch = @student_position_batch
+  @student_position_first_term = @student_position
+elsif !@student_position_second_term.blank? 
+  @student_position_first_term_batch = @student_position_second_term_batch
+  @student_position_first_term = @student_position_second_term
+end 
 %>
 <%
 @group_name_upper = @batch.course.group unless @batch.course.group.blank?

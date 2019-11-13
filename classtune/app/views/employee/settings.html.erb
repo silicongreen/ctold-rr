@@ -62,6 +62,11 @@
       <div class="link-heading"><%= link_to "#{t('add_additional_detail')}", :controller=>"employee", :action=>"add_additional_details"%></div>
       <div class="link-descr"><%= "#{t('add_edit_additional_detail')}" %></div>
     </div>
+      
+    <div class="link-box">
+      <div class="link-heading"><%= link_to "Add Deafult Lesson Plan Category", :controller=>"employee", :action=>"add_all_lesson_plan_cat"%></div>
+      <div class="link-descr"><%= "Add default plan category to all employee who does not have one" %></div>
+    </div>
 
    <!-- <div class="link-box">
       <div class="link-heading"><%= link_to "#{t('payslip_settings')}", :controller=>"employee", :action=>""%></div>

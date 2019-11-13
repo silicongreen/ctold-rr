@@ -561,7 +561,9 @@
                               <% end %> 
                             <% end %>
                             <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
-                            <% total_mark = total_mark+subject_obtain_mark.to_f %>
+                            <% if sub['grade_subject'].to_i != 1 %>
+                              <% total_mark = total_mark+subject_obtain_mark.to_f %>
+                            <% end %>          
                             <% fail_grade = false %>
                             <% if subjective == true %>
                               <td>

@@ -1347,6 +1347,12 @@ class EmployeeController < ApplicationController
     #    @additional_details = EmployeeAdditionalDetail.find_all_by_employee_id(@employee.id).select{|a| a.additional_field.status==true}
     render :partial => "additional_details"
   end
+  
+  def add_all_lesson_plan_cat
+    Delayed::Job.enqueue(DelayedEmployeeLesssonPlanCategory.new())
+    flash[:notice]= "Lesson Plan Default Category Creating for all employee process is started. Please Wait some time to complete the process"
+    redirect_to :controller=>"employee", :action=>"settings"
+  end  
 
 
   def profile_payroll_details

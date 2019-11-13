@@ -69,8 +69,13 @@
                   <% total_subject = 0 %>
                   <% full_marks_total = 0 %>
                   <% total_marks_student = 0 %>
+                  <% has_grade_subject = false %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% if subjects['grade_subject'].to_i == 1 %>
+                        <% has_grade_subject = true %>
+                        <% next %>
+                      <% end %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% weightage_mark = 0 %>
                           <% total_mark = 0 %>
@@ -204,7 +209,148 @@
 
                       </tr> 
                     <% end %>  
-                  <% end %>     
+                  <% end %>
+                      
+                  <% if has_grade_subject == true %>
+                    <tr class="page-break-grade">
+                        <td colspan="100"></td>
+                    </tr>
+                  <% end %>
+                    
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% if subjects['grade_subject'].to_i != 1 %>
+                        <% next %>
+                      <% end %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                          <% weightage_mark = 0 %>
+                          <% total_mark = 0 %>
+                          <% full_mark = 0 %>
+                          <% fail_grade = false %>
+
+                          <td class="col-pdf no-warp"><%= subjects['name'] %></td>
+                          <% unless @report_data['report']['exams'].blank? %>  
+                            <% @report_data['report']['exams'].each do |report| %>
+                              <% marks_obtain_single_exam = 0 %>
+                              <% total_marks_single_exam = 0 %>
+                              <% na= false %>
+                              <td class="col-pdf no-warp">
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                    
+                                    <% marks_obtain_single_exam = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                    <%= marks_obtain_single_exam %>
+                                    <% total_mark = total_mark.to_i+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                  <% else %>
+                                    -
+                                  <% end %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                    <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                    <% total_marks_single_exam = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                    <% 
+                                      grade_name_single = ""
+                                      if total_marks_single_exam > 0 
+                                        if marks_obtain_single_exam.to_i == 0
+                                            fail_grade = true
+                                            grade_name_single = "U"
+                                        else
+                                            mark_for_grade = (marks_obtain_single_exam.to_f/total_marks_single_exam.to_f)*100 
+                                            grade_check = GradingLevel.percentage_to_grade(mark_for_grade, @batch.id)
+                                            if !grade_check.blank? and !grade_check.name.blank?
+                                              if grade_check.name.to_s == "U"
+                                                fail_grade = true
+                                              end 
+                                              grade_name_single = grade_check.name
+                                            end
+                                         end
+                                      end
+                                    
+                                      if fail_grade == false and !report['exam_name'].downcase.index('obj').nil? and total_marks_single_exam.to_i == 25
+                                        if marks_obtain_single_exam.to_i < 12
+                                          fail_grade = true
+                                          grade_name_single = "U"
+                                        end
+                                      end
+                                    
+                                      if fail_grade == false and !report['exam_name'].downcase.index('obj').nil? and total_marks_single_exam.to_i == 30
+                                        if marks_obtain_single_exam.to_i < 14
+                                          fail_grade = true
+                                          grade_name_single = "U"
+                                        end
+                                      end
+                                    
+                                      if grade_name_single == "U" and !report['exam_name'].downcase.index('sub').nil? and total_marks_single_exam.to_i == 50
+                                        if marks_obtain_single_exam.to_i >= 22
+                                          fail_grade = false
+                                          grade_name_single = "D"
+                                        end
+                                      end
+                                    
+                                      if grade_name_single == "U" and !report['exam_name'].downcase.index('prac').nil? and total_marks_single_exam.to_i == 25
+                                        if marks_obtain_single_exam.to_i > 11
+                                          fail_grade = false
+                                          grade_name_single = "D"
+                                        end
+                                      end
+                                    
+                                    %>
+                                    [<%= grade_name_single  %>]
+                                    [<%= total_marks_single_exam %>]
+                                    
+                                  <% else %>
+
+                                  <% end %>  
+                                    
+                                    
+
+
+                              </td>
+
+                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['weightage_mark'].blank? %>
+                                <% weightage_mark = weightage_mark+report['result'][report['exam_id']][subjects['id']]['weightage_mark'] %>
+                              <% end %>
+
+                            <% end %>
+                          <% end %>
+
+
+
+
+
+                          <% 
+                          heighst_mark = 0
+                          if !@report_data['report']['max_mark'].blank? and !@report_data['report']['max_mark'][subjects['id']].blank?
+                            heighst_mark = @report_data['report']['max_mark'][subjects['id']].to_f
+                            end  
+
+                          if total_mark.to_f>0 and full_mark.to_f>0
+                            main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                            else
+                            main_mark = 0
+                            end  
+                        %>
+
+                          <% if full_mark.to_f > 0 %>
+                            <td class="col-pdf"><%= total_mark.to_i %></td>
+                            <td class="col-pdf"><%= heighst_mark.to_i %> </td>
+                            
+                            <% grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                            <% if fail_grade == true %>
+                              <td class="col-pdf"><b><%= "U" %></b></td>
+                            <% elsif !grade.blank? and !grade.name.blank? %>
+                              <td class="col-pdf"><b><%= grade.name %></b></td>
+                            <% else %>
+                              <td class="col-pdf"><b>-</b></td>
+                            <% end %>
+                          <% else  %>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
+                          <% end %>      
+
+                      </tr> 
+                    <% end %>  
+                  <% end %>
 
               </table>
 
@@ -326,6 +472,16 @@
   </div>
 
 <% end %>
+
+<style>
+    .page-break-grade td{
+      height: 6px;
+      padding: 0px !important;
+      border: 1px solid #fff;
+      border-top: 1px solid Black;
+      border-bottom: 1px solid Black;
+  }
+</style>
 <%= stylesheet_link_tag 'list_table' %>
 
 <% if params[:page_height] %>

@@ -20,9 +20,11 @@
 if !@student_position.blank?
   @student_position_first_term_batch = @student_position_batch
   @student_position_first_term = @student_position
+  @student_list_first_term_batch = @student_list_batch
 elsif !@student_position_second_term.blank? 
   @student_position_first_term_batch = @student_position_second_term_batch
   @student_position_first_term = @student_position_second_term
+  @student_list_first_term_batch = @student_list_second_term_batch
 end 
 %>
 <%

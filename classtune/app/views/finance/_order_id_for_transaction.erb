@@ -1,0 +1,99 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<% f = @transaction %>
+<% transaction_payment = false %>
+<% transaction_payment_not_assign = false %>
+<% if MultiSchool.current_school.id == 352 %>
+  <% payment = Payment.find_by_finance_transaction_id_and_payment_id(f.id, @finance_fee.id) %>
+  <% unless payment.present? %>
+    <% payment = Payment.find_by_payment_id(@finance_fee.id) %>
+    <% unless payment.nil? %>
+      <% if payment.gateway_response[:amount].to_f == f.amount.to_f %>
+        <% transaction_payment_not_assign = true %>
+      <% else %>  
+        <% payments = Payment.find(:all, :joins => "left join finance_transactions ON finance_transactions.id = payments.finance_transaction_id", :conditions => "payments.payee_id = '#{@student.id}' and finance_transactions.id IS NULL") %>
+      <% end %>
+    <% else %>  
+      <% payments = Payment.find(:all, :joins => "left join finance_transactions ON finance_transactions.id = payments.finance_transaction_id", :conditions => "payments.payee_id = '#{@student.id}' and finance_transactions.id IS NULL") %>
+    <% end %>
+  <% else %>
+    <% transaction_payment = true %>
+  <% end %>
+<% end %>
+
+
+<% payment_mode = f.payment_mode %>
+<% if transaction_payment %>
+  <% payment_mode = "Trust Bank Online Payment" %>
+<% elsif transaction_payment_not_assign %>
+  <% payment_mode = "Trust Bank Online Payment" %>
+  <% payment.update_attributes(:finance_transaction_id=>f.id) %>
+<% end %>
+<%= payment_mode %>
+<hr style="border: 1px solid #ccc;" />
+<div style="font-size: 12px; font-family: verdana;">
+  <h2>Online Payment Info</h2>
+  <p><b>Order ID: </b><%= payment.order_id %></p>
+  <%
+    trans_type = ""
+    if payment.gateway_response[:payment_type] == "MB"
+      trans_type = "TBL Mobile banking"
+    else
+      trans_type = "TBL Card Payment"
+    end
+  %>
+  <p><b>Ref Id: </b><%= payment.gateway_response[:ref_id] %></p>
+  <p><b>Transaction Type: </b><%= trans_type %></p>
+  <hr style="border: 1px solid #ccc;" />
+  <% if payment.gateway_response[:verified].to_i == 1 %>
+    <i class="fa fa-check-circle-o" style="font-size: 18px; color: #49BB4B;"></i>&nbsp;&nbsp;Verified
+  <% else %>
+    <% unless payment.validation_response.nil? %>
+      <% if payment.validation_response[:verified].to_i == 0 %>
+      <div style="width: 100%;">
+        <div style="width: 60%; display: inline-block;">
+          <i class="fa fa-circle-o" style="font-size: 18px; color: #900;"></i>&nbsp;&nbsp;<span style="color: #900;">Not Verified</span>
+        </div>
+        <% if @current_user.admin? %>
+        <div style="width: 35%; display: inline-block; text-align: right;">
+          <%= link_to "(verify Now)", {:controller => "online_payments", :action => "order_verifications", :order_tid => payment.order_id},:target => '_blank' %>
+
+        </div>
+       <% end %>   
+      </div>
+      <% else %>
+      <i class="fa fa-check-circle-o" style="font-size: 18px; color: #49BB4B;"></i>&nbsp;&nbsp;Verified
+      <% end %>
+    <% else %>
+    <div style="width: 100%;">
+      <div style="width: 60%; display: inline-block;">
+        <i class="fa fa-circle-o" style="font-size: 18px; color: #900;"></i>&nbsp;&nbsp;<span style="color: #900;">Not Verified</span>
+      </div>
+      <% if @current_user.admin? %>
+      <div style="width: 35%; display: inline-block; text-align: right;">
+        <%= link_to "(verify Now)", {:controller => "online_payments", :action => "order_verifications", :order_tid => payment.order_id},:target => '_blank' %>
+
+      </div>
+     <% end %>   
+    </div>
+    <% end %>
+    <div style="clear: both; height: 1px;"></div>
+  <% end %>
+</div>

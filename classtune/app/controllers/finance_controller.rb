@@ -789,14 +789,37 @@ class FinanceController < ApplicationController
     new_book.worksheet(0).insert_row(0, row_1)
     ind = 1
     total_amount = 0.00
+    k = 0
     @finance_particular_categories.each_with_index do |fees_particular, i| 
       amt = (particular_wise_fees_amount[fees_particular.id] + particular_wise_adv_amount[fees_particular.id]) - particular_wise_discount_amount[fees_particular.id]
       total_amount += amt
       row_new = [i+1, fees_particular.name, amt]
+      k = i + 1
       new_book.worksheet(0).insert_row(ind, row_new)
       new_book.worksheet(0).row(ind).set_format(2, fmt)
       ind += 1
     end
+    
+    unless @transactions_fine.blank?
+      fine_amount = @transactions_fine.map(&:amount).sum
+      total_amount += fine_amount
+      row_new = [k, "Late Fine", fine_amount]
+      k += 1
+      new_book.worksheet(0).insert_row(ind, row_new)
+      new_book.worksheet(0).row(ind).set_format(2, fmt)
+      ind += 1
+    end
+    
+    unless @transactions_discount_total_fees.blank?
+      discount_amount = @transactions_discount_total_fees.map(&:amount).sum
+      total_amount += discount_amount
+      row_new = [k, "Total Discount", discount_amount]
+      k += 1
+      new_book.worksheet(0).insert_row(ind, row_new)
+      new_book.worksheet(0).row(ind).set_format(2, fmt)
+      ind += 1
+    end
+    
     row_new = ["", "Total Amount", total_amount]
     new_book.worksheet(0).insert_row(ind, row_new)
     new_book.worksheet(0).row(ind).set_format(2, fmt)
@@ -1558,14 +1581,14 @@ class FinanceController < ApplicationController
         @from_student_view = true
       end
       @student = Student.find(params[:id])
-      @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "ledger_date, ledger_title, amount_to_pay, amount_paid", :order => 'ledger_date ASC', :conditions => ["student_id = #{params[:id]}"]) #, :group => "ledger_date"
+      @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "id, ledger_date, ledger_title, amount_to_pay, amount_paid, particular_id", :order => 'ledger_date ASC', :conditions => ["student_id = #{params[:id]}"]) #, :group => "ledger_date"
     end
   end
   
   def student_ledger_pdf_fees
     unless params[:id].nil?
       @student = Student.find(params[:id])
-      @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "ledger_date, ledger_title, amount_to_pay, amount_paid", :order => 'ledger_date ASC', :conditions => ["student_id = #{params[:id]}"], :order => "ledger_date asc") #, :group => "ledger_date"
+      @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "id, ledger_date, ledger_title, amount_to_pay, amount_paid, particular_id", :order => 'ledger_date ASC', :conditions => ["student_id = #{params[:id]}"], :order => "ledger_date asc") #, :group => "ledger_date"
     end
     
     render :pdf => 'student_ledger_pdf_fees',
@@ -1582,7 +1605,7 @@ class FinanceController < ApplicationController
     unless params[:id].nil?
       @student = Student.find(params[:id])
       #@student_fee_ledgers = StudentFeeLedger.find(:all, :select => "ledger_date, ledger_title, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid", :order => 'ledger_date ASC', :conditions => ["student_id = #{params[:id]}"], :order => "ledger_date asc", :group => "ledger_date")
-      @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "ledger_date, ledger_title, amount_to_pay, amount_paid", :order => 'ledger_date ASC', :conditions => ["student_id = #{params[:id]}"], :order => "ledger_date asc")
+      @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "id, ledger_date, ledger_title, amount_to_pay, amount_paid, particular_id", :order => 'ledger_date ASC', :conditions => ["student_id = #{params[:id]}"], :order => "ledger_date asc")
       
       require 'spreadsheet'
       Spreadsheet.client_encoding = 'UTF-8'
@@ -1590,7 +1613,20 @@ class FinanceController < ApplicationController
       amount_format = Spreadsheet::Format.new({
         :number_format    => "0.00"
       });
-
+      title_header_format = Spreadsheet::Format.new({
+        :weight           => :bold,
+        :size             => 10,
+        :horizontal_align => :centre,
+        :pattern_bg_color => :grey,
+        :pattern_fg_color => :grey,
+        :color => :blue
+      })
+      center_format = Spreadsheet::Format.new({
+        :horizontal_align => :centre
+      })
+      right_format = Spreadsheet::Format.new({
+        :horizontal_align => :right
+      })
 
       row_1 = ["Sl No","Transaction Date","Transaction Type","Transaction ID","For","Particulars","Debit","Credit","Balance"]
 
@@ -1602,6 +1638,25 @@ class FinanceController < ApplicationController
 
       # Add row_1
       new_book.worksheet(0).insert_row(0, row_1)
+      new_book.worksheet(0).column(0).width = 10
+      new_book.worksheet(0).column(1).width = 20
+      new_book.worksheet(0).column(2).width = 20
+      new_book.worksheet(0).column(3).width = 20
+      new_book.worksheet(0).column(4).width = 25
+      new_book.worksheet(0).column(5).width = 40
+      new_book.worksheet(0).column(6).width = 12
+      new_book.worksheet(0).column(7).width = 12
+      new_book.worksheet(0).column(8).width = 12
+      new_book.worksheet(0).row(0).set_format(0, title_header_format)
+      new_book.worksheet(0).row(0).set_format(1, title_header_format)
+      new_book.worksheet(0).row(0).set_format(2, title_header_format)
+      new_book.worksheet(0).row(0).set_format(3, title_header_format)
+      new_book.worksheet(0).row(0).set_format(4, title_header_format)
+      new_book.worksheet(0).row(0).set_format(5, title_header_format)
+      new_book.worksheet(0).row(0).set_format(6, title_header_format)
+      new_book.worksheet(0).row(0).set_format(7, title_header_format)
+      new_book.worksheet(0).row(0).set_format(8, title_header_format)
+      
       
       spreadsheet = StringIO.new 
       new_book.write spreadsheet 
@@ -1611,8 +1666,11 @@ class FinanceController < ApplicationController
       ind = 1;
       
       balance_forward = false
+      k = 0
       @student_fee_ledgers.each_with_index do |student_fee_ledger, i|
+        k = i + 1
         balance_forward = false
+        fine_amount = 0.00
         info = ""
         trans_type = ""
         trans = []
@@ -1627,7 +1685,7 @@ class FinanceController < ApplicationController
           particular_name = "Balance Forward upto " + student_fee_ledger.ledger_date.strftime("%d-%m-%Y")
         elsif student_fee_ledger.amount_to_pay.to_f > 0.00 and student_fee_ledger.amount_paid.to_f == 0.00
           trans_type = "Receivable"
-          student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay > 0.00 and fee_id IS NOT NULL and amount_paid = 0.00 and transaction_id = 0"])
+          student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, particular_id", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"])
           unless student_ledgers.nil?
             student_ledgers.each do |student_ledger|
               fee = FinanceFee.find(:first, :conditions => "id = #{student_ledger.fee_id}")
@@ -1642,9 +1700,16 @@ class FinanceController < ApplicationController
                   else
                     exclude_particular_ids = [0]
                   end
-               
+                if student_ledger.particular_id == 0 or student_ledger.particular_id.blank?
                 fee_particulars = d.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@student.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) }
-                particular_name = fee_particulars.map(&:name).join(",") + " for " + d.name 
+                else
+                fee_particulars = d.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and finance_fee_particulars.id = #{student_ledger.particular_id} and is_deleted=#{false} and batch_id=#{@student.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) }
+                end
+                unless fee_particulars.blank?
+                particular_name = fee_particulars.map(&:name).join(", ") + " for " + d.name 
+                end
+                #fee_particulars = d.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@student.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) }
+                #particular_name = fee_particulars.map(&:name).join(",") + " for " + d.name 
               else
                 student_ledger.destroy
               end
@@ -1654,7 +1719,7 @@ class FinanceController < ApplicationController
           end
         elsif student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f > 0.00
             trans_type = "Received"
-            student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay = 0.00 and amount_paid > 0.00"])
+            student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"])
             unless student_ledgers.nil?
               student_ledgers.each do |student_ledger|
                 payments = Payment.find(:all, :conditions => "finance_transaction_id = #{student_ledger.transaction_id}", :group => "id")
@@ -1666,7 +1731,18 @@ class FinanceController < ApplicationController
                       date_id = fee.fee_collection_id
                       d = FinanceFeeCollection.find(date_id)
                       for_id << d.name
-                      particulars << d.name    
+                      particulars << d.name
+                      paid_fees = fee.finance_transactions
+                      fine_amount = 0
+                      unless paid_fees.blank?
+                        transaction_ids = paid_fees.map(&:id) 
+                        unless transaction_ids.blank?
+                          paidFineFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")")
+                          unless paidFineFess.blank? 
+                            fine_amount += paidFineFess.map(&:amount).sum.to_f
+                          end
+                        end
+                      end
                     else
                       student_ledger.destroy
                     end
@@ -1688,12 +1764,12 @@ class FinanceController < ApplicationController
         ledger_found = true
         if student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f == 0.00
         elsif student_fee_ledger.amount_to_pay.to_f > 0.00 and student_fee_ledger.amount_paid.to_f == 0.00
-          student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay > 0.00 and fee_id IS NOT NULL and amount_paid = 0.00 and transaction_id = 0"])
+          student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"])
           if student_ledgers.blank?
             ledger_found = false
           end  
         elsif student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f > 0.00
-          student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay = 0.00 and amount_paid > 0.00"])
+          student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"])
           if student_ledgers.blank?
             ledger_found = false
           end
@@ -1701,6 +1777,7 @@ class FinanceController < ApplicationController
         
         if ledger_found
           current_balance = (carried_amount + student_fee_ledger.amount_to_pay.to_f) - student_fee_ledger.amount_paid.to_f
+          current_balance += fine_amount
           carried_amount = current_balance
           if current_balance < 0
             current_balance = current_balance * (-1)
@@ -1709,15 +1786,51 @@ class FinanceController < ApplicationController
           unless balance_forward
             row_new = [i+1, student_fee_ledger.ledger_date.strftime("%d-%m-%Y"), trans_type, trans_id, info, title, student_fee_ledger.amount_to_pay.to_f, student_fee_ledger.amount_paid.to_f, current_balance.to_f]
           else
-            row_new = [i+1, "", trans_type, trans_id, info, title, student_fee_ledger.amount_to_pay.to_f, student_fee_ledger.amount_paid.to_f, current_balance.to_f]
+            row_new = [i+1, title, trans_type, trans_id, info, title, student_fee_ledger.amount_to_pay.to_f, student_fee_ledger.amount_paid.to_f, current_balance.to_f]
           end
           new_book.worksheet(0).insert_row(ind, row_new)
+          #new_book.worksheet(0).row(ind).column(0).width = 100
+          new_book.worksheet(0).row(ind).set_format(0, center_format)
+          new_book.worksheet(0).row(ind).set_format(1, center_format)
+          new_book.worksheet(0).row(ind).set_format(2, center_format)
           new_book.worksheet(0).row(ind).set_format(6, amount_format)
           new_book.worksheet(0).row(ind).set_format(7, amount_format)
           new_book.worksheet(0).row(ind).set_format(8, amount_format)
+          if balance_forward
+            new_book.worksheet(0).merge_cells(ind, 1, ind, 5)
+            new_book.worksheet(0).row(ind).set_format(1, right_format)
+          else
+            new_book.worksheet(0).row(ind).set_format(1, center_format)
+          end
           ind += 1
         end
       end
+      
+      title_footer_format = Spreadsheet::Format.new({
+        :weight           => :bold,
+        :size             => 10,
+        :horizontal_align => :right
+      })
+      amount_bold_format = Spreadsheet::Format.new({
+        :weight           => :bold,
+        :size             => 10,
+        :number_format    => "0.00"
+      })
+      remaining_amount = 0.00
+      if carried_amount < 0
+        remaining_amount = carried_amount * (-1)
+      else
+        remaining_amount = carried_amount
+      end
+      title = (carried_amount < 0) ? "Advance" : "Current Dues"
+      row_new = [title, "", "", "", "", "", "", "", remaining_amount.to_f]
+      k += 1
+      new_book.worksheet(0).insert_row(ind, row_new)
+      new_book.worksheet(0).row(ind).set_format(0, title_footer_format)
+      new_book.worksheet(0).row(ind).set_format(8, amount_bold_format)
+      new_book.worksheet(0).merge_cells(ind, 0, ind, 7)
+      ind += 1
+      
       
       spreadsheet = StringIO.new 
       new_book.write spreadsheet 
@@ -4604,6 +4717,8 @@ class FinanceController < ApplicationController
                     
                     render :update do |page|
                       page.replace_html "student", :partial => "student_fees_submission"
+                      page << "loadJS();"
+                      page << 'j(".select2-combo").select2();'
                       page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign_student'
                     end
                   else
@@ -4632,6 +4747,8 @@ class FinanceController < ApplicationController
                   
                   render :update do |page|
                     page.replace_html "student", :partial => "student_fees_submission"
+                    page << "loadJS();"
+                    page << 'j(".select2-combo").select2();'
                     page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign_student'
                   end
                 else
@@ -4741,6 +4858,8 @@ class FinanceController < ApplicationController
                     
                     render :update do |page|
                       page.replace_html "student", :partial => "student_fees_submission"
+                      page << "loadJS();"
+                      page << 'j(".select2-combo").select2();'
                       page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign_student'
                     end
                   else
@@ -4781,6 +4900,8 @@ class FinanceController < ApplicationController
                   
                   render :update do |page|
                     page.replace_html "student", :partial => "student_fees_submission"
+                    page << "loadJS();"
+                    page << 'j(".select2-combo").select2();'
                     page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign_student'
                   end
                 else
@@ -5362,6 +5483,8 @@ class FinanceController < ApplicationController
                   
                   render :update do |page|
                     page.replace_html "student", :partial => "student_fees_submission"
+                    page << "loadJS();"
+                    page << 'j(".select2-combo").select2();'
                     page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_remove_student'
                   end
                 else
@@ -5394,6 +5517,8 @@ class FinanceController < ApplicationController
                   
                   render :update do |page|
                     page.replace_html "student", :partial => "student_fees_submission"
+                    page << "loadJS();"
+                    page << 'j(".select2-combo").select2();'
                     page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_remove_student'
                   end
                 else
@@ -5435,6 +5560,8 @@ class FinanceController < ApplicationController
 
                 render :update do |page|
                   page.replace_html "student", :partial => "student_fees_submission"
+                  page << "loadJS();"
+                  page << 'j(".select2-combo").select2();'
                   page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_remove_student'
                 end
               else
@@ -7410,6 +7537,7 @@ class FinanceController < ApplicationController
         @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{@date.id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = '#{@student.id}'")
         
         @particular_id = @particular_category_id
+        #@particular_name = @finance_fee_particular_category.name
         @particular_name = @finance_fee_particular_category.name
         @particular = @batch.finance_fee_particulars.find_by_finance_fee_category_id_and_finance_fee_particular_category_id_and_receiver_type_and_receiver_id_and_amount(@date.fee_category_id, @particular_id, 'Student', @student.id, amt)
         
@@ -7434,11 +7562,23 @@ class FinanceController < ApplicationController
         end
         
         FinanceFee.new_student_fee_with_tmp_particular(@date,@student)
+        fee = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id_and_is_paid(@student.id, @date.id, @student.batch_id, false)
+        unless fee.blank?
+          student_fee_ledger = StudentFeeLedger.new
+          student_fee_ledger.student_id = @student.id
+          student_fee_ledger.ledger_date = Date.today
+          student_fee_ledger.ledger_title = @particular_name
+          student_fee_ledger.amount_to_pay = amt.to_f
+          student_fee_ledger.fee_id = fee.id
+          student_fee_ledger.particular_id = @finance_fee_particular.id
+          student_fee_ledger.save
+        end
       end
 
-      @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id", :conditions=>"finance_fees.fee_collection_id = #{params[:date]} AND finance_fees.batch_id = #{params[:batch_id]}")
+      @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id",:order => "if(students.class_roll_no = '' or students.class_roll_no is null,0,cast(students.class_roll_no as unsigned)),students.first_name ASC", :conditions=>"finance_fees.fee_collection_id = #{params[:date]} AND finance_fees.batch_id = #{params[:batch_id]}")
+      #@finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id", :conditions=>"finance_fees.fee_collection_id = #{params[:date]} AND finance_fees.batch_id = #{params[:batch_id]}")
       render :update do |page|
-        page.replace_html "resultDiv", :partial => "collection_details_view"
+        page.replace_html "resultDiv", :partial => "collection_details_view_inactive"
         page << "j('#absent_fine_clicked').hide();"
         page << "j('#add_absent_fine').trigger('click');"
         page << "j('#fine_name').val('');"
@@ -7963,6 +8103,7 @@ class FinanceController < ApplicationController
           render :update do |page|
             page.replace_html "student", :partial => "student_fees_submission"
             page << "loadJS();"
+            page << 'j(".select2-combo").select2();'
           end
         end
 
@@ -8517,6 +8658,8 @@ class FinanceController < ApplicationController
       if params[:from_admin].to_i == 1
         render :update do |page|
           page.replace_html "student", :partial => "student_fees_submission"
+          page << "loadJS();"
+          page << 'j(".select2-combo").select2();'
         end
       else
         render :update do |page|
@@ -8526,6 +8669,8 @@ class FinanceController < ApplicationController
     else
       render :update do |page|
         page.replace_html "student", :partial => "student_fees_submission"
+        page << "loadJS();"
+        page << 'j(".select2-combo").select2();'
       end
     end
     
@@ -9143,7 +9288,8 @@ class FinanceController < ApplicationController
       
       render :update do |page|
         page.replace_html "student", :partial => "student_fees_submission", :with => @fine
-
+        page << "loadJS();"
+        page << 'j(".select2-combo").select2();'
       end
     end
   end
@@ -9256,7 +9402,8 @@ class FinanceController < ApplicationController
       
       render :update do |page|
         page.replace_html "student", :partial => "student_fees_submission", :with => @fine
-
+        page << "loadJS();"
+        page << 'j(".select2-combo").select2();'  
       end
     end
   end
@@ -10237,6 +10384,43 @@ class FinanceController < ApplicationController
     end
   end
 
+  def set_order_id_with_finance_transaction
+    unless params[:transaction_id].nil? and params[:payment_id].nil?
+      transaction_id = params[:transaction_id]
+      payment_id = params[:payment_id]
+      student_id = params[:student_id]
+      finance_id = params[:finance_id]
+      payment = Payment.find_by_id_and_payee_id(payment_id, student_id)
+      @transaction = FinanceTransaction.find_by_id_and_payee_id(transaction_id, student_id)
+      @finance_fee = FinanceFee.find_by_id_and_student_id(finance_id, student_id)
+      unless payment.blank? and @transaction.blank? and @finance_fee.blank?
+        payment.update_attributes(:finance_transaction_id=>@transaction.id, :payment_id => @finance_fee.id)
+        student_fee_ledger = StudentFeeLedger.find(:first, :conditions => "student_id = #{student_id} and fee_id = #{@finance_fee.id} and transaction_id = #{@transaction.id}")
+        unless student_fee_ledger.blank?
+          amount_paid = student_fee_ledger.amount_paid
+          if amount_paid.to_f != @transaction.amount.to_f
+            student_fee_ledger.update_attributes(:amount_paid => @transaction.amount.to_f)
+          end
+        else
+          student_fee_ledger = StudentFeeLedger.new
+          student_fee_ledger.student_id = student_id
+          student_fee_ledger.ledger_date = @finance_fee.finance_fee_collection.start_date
+          student_fee_ledger.ledger_title = @finance_fee.finance_fee_collection.title  
+          student_fee_ledger.amount_to_pay = 0.00
+          student_fee_ledger.fee_id = @finance_fee.id
+          student_fee_ledger.amount_paid = @transaction.amount.to_f
+          student_fee_ledger.transaction_id = @transaction.id
+          student_fee_ledger.order_id = payment.order_id
+          student_fee_ledger.save
+        end
+        render :update do |page|
+          page.replace_html "payment_mode_order_id", :partial => 'order_id_for_transaction'
+          page << "j('#payment_mode_order_id').css('text-align', 'left')"
+        end
+      end
+    end
+  end
+  
   def update_fees_collection_dates_defaulters
     @batch  = Batch.find(params[:batch_id])
     @dates = @batch.finance_fee_collections
@@ -12239,8 +12423,9 @@ class FinanceController < ApplicationController
       @absent_fine = true
     end
     
+    @option = 0;
     unless params[:batch_id].nil?
-      @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id",:order => "if(students.class_roll_no = '' or students.class_roll_no is null,0,cast(students.class_roll_no as unsigned)),students.first_name ASC", :conditions=>"finance_fees.fee_collection_id = #{params[:id]} AND finance_fees.batch_id = #{params[:batch_id]}")
+      @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.fee_collection_id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id",:order => "if(students.class_roll_no = '' or students.class_roll_no is null,0,cast(students.class_roll_no as unsigned)),students.first_name ASC", :conditions=>"finance_fees.fee_collection_id = #{params[:id]} AND finance_fees.batch_id = #{params[:batch_id]}")
     else
       fee_collection  =  FinanceFeeCollection.find(:first, :conditions => "id IN (#{params[:id]})")
       unless fee_collection.nil?  
@@ -12257,7 +12442,8 @@ class FinanceController < ApplicationController
   end
 
   def collection_details_view_inactive
-    @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id", :conditions=>"finance_fees.fee_collection_id = #{params[:id]} AND finance_fees.batch_id = #{params[:batch_id]}")
+    #@finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id", :conditions=>"finance_fees.fee_collection_id = #{params[:id]} AND finance_fees.batch_id = #{params[:batch_id]}")
+    @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id",:order => "if(students.class_roll_no = '' or students.class_roll_no is null,0,cast(students.class_roll_no as unsigned)),students.first_name ASC", :conditions=>"finance_fees.fee_collection_id = #{params[:id]} AND finance_fees.batch_id = #{params[:batch_id]}")
     @option = params[:option]
     @batch = Batch.find(params[:batch_id])
     @students = @batch.students
@@ -12333,6 +12519,8 @@ class FinanceController < ApplicationController
 
     render :update do |page|
       page.replace_html "student", :partial => "student_fees_submission"
+      page << "loadJS();"
+      page << 'j(".select2-combo").select2();'
     end
   end
   
@@ -13006,9 +13194,138 @@ class FinanceController < ApplicationController
   end
 
   def regenerate_student_fees
+    fee_collection_id = 0
+    fee_id = 0
     student = params[:student_id]
+    if params[:option].blank?
+      finance =  FinanceFee.find_by_id(params[:fee_id])
+      unless finance.blank?
+        fee_collection_id =  finance.fee_collection_id
+        fee_id =  finance.id
+        date_id = finance.fee_collection_id
+        student_id = finance.student_id
+        date = FinanceFeeCollection.find(date_id)
+        student = Student.find(student_id)
+        finance.current_user_id = current_user.id
+        if finance.destroy
+          discounts_on_particulars=date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{student.batch_id} and is_onetime=#{true} and is_late=#{false}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+          discounts_ids = discounts_on_particulars.map(&:id)
+          discounts_ids.each do |did|
+            collection_discount = CollectionDiscount.find_by_finance_fee_collection_id_and_fee_discount_id(date_id, did)
+            collection_discount.destroy
+          end
+          tmp_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{student.batch_id} and is_tmp=#{true}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+          tmp_particulars = tmp_particulars.map(&:id)
+          tmp_particulars.each do |tp|
+            collection_particular = CollectionParticular.find_by_finance_fee_collection_id_and_finance_fee_particular_id(date_id, tp)
+            collection_particular.destroy
+          end
+          unless fee_collection_id == 0
+            fee_collection = FinanceFeeCollection.find(fee_collection_id)
+            student = Student.find_by_id(params[:student_id])
+            FinanceFee.new_student_fee(fee_collection,student)
+            #FinanceFee.new_student_fee_with_tmp_particular(fee_collection,student)
+            fee = FinanceFee.find_by_student_id_and_fee_collection_id(student.id, fee_collection_id)
+            @fee_data = fee
+            balance = FinanceFee.get_student_balance(fee_collection,student,fee)
+
+            bal = (render_to_string :text => "#{balance}")
+            html = (render_to_string :partial => "action_collection_details_view")
+
+            render :update do |page|
+              page << "j('#student_amount_#{student.id}_#{fee_id}').html('#{bal}');"
+              page << 'j("#action_tr_' + student.id.to_s + '_' + fee_id.to_s + '").html("' + escape_javascript(html) + '");'
+              page << "j('#student_amount_#{student.id}_#{fee_id}').attr('id','student_amount_#{student.id}_#{fee.id}')"
+              page << "j('#action_tr_#{student.id}_#{fee_id}').attr('id','action_tr_#{student.id}_#{fee.id}')"
+              page << "update_total();"
+            end
+          else
+            render :update do |page|
+              page << 'j("#student_fee_' + finance.id.to_s + '_' + student_id.to_s + '").after("<tr><td id=\'error_student_' + finance.id.to_s + '_' + student_id.to_s + '\' colspan=\'6\' style=\'text-align: center; border-collapse: separate !important; background: #f9e79f;font-family: verdana; font-size: 12px;font-weight: bold;\'>Finance Fee Can\'t be regenerated, Please try again later</td></tr>");'
+              page << 'setTimeout(function(){ j("#error_student_' + finance.id.to_s + '_' + student_id.to_s + '").remove(); }, 3000);';
+              #page << "searchAjax(1);"
+            end
+          end
+        else
+          render :update do |page|
+            page << 'j("#student_fee_' + finance.id.to_s + '_' + student_id.to_s + '").after("<tr><td id=\'error_student_' + finance.id.to_s + '_' + student_id.to_s + '\' colspan=\'6\' style=\'text-align: center; border-collapse: separate !important; background: #f9e79f;font-family: verdana; font-size: 12px;font-weight: bold;\'>Finance Fee Can\'t be regenerated, Transaction exists for this fee, please remove the transaction and try again</td></tr>");'
+            page << 'setTimeout(function(){ j("#error_student_' + finance.id.to_s + '_' + student_id.to_s + '").remove(); }, 3000);';
+            #page << "searchAjax(1);"
+          end
+        end
+      end
+    else
+      fee_collection_id = params[:fee_id]
+      student_ids = params[:student_ids]
+      student_infos = []
+      if params[:option]
+        if params[:option].to_i == 1
+          student_ids.each do |v|
+            student = Student.find_by_id(v.to_i)
+            fee = FinanceFee.find_by_student_id_and_fee_collection_id(student.id, fee_collection_id)
+            unless fee.blank?
+              fee.current_user_id = current_user.id
+              fee_id =  fee.id
+              date_id = fee.fee_collection_id
+              student_id = fee.student_id
+              date = FinanceFeeCollection.find(date_id)
+              if fee.destroy
+                discounts_on_particulars=date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{student.batch_id} and is_onetime=#{true} and is_late=#{false}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+                discounts_ids = discounts_on_particulars.map(&:id)
+                discounts_ids.each do |did|
+                  collection_discount = CollectionDiscount.find_by_finance_fee_collection_id_and_fee_discount_id(date_id, did)
+                  collection_discount.destroy
+                end
+                tmp_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{student.batch_id} and is_tmp=#{true}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+                tmp_particulars = tmp_particulars.map(&:id)
+                tmp_particulars.each do |tp|
+                  collection_particular = CollectionParticular.find_by_finance_fee_collection_id_and_finance_fee_particular_id(date_id, tp)
+                  collection_particular.destroy
+                end
+                fee_collection = FinanceFeeCollection.find(fee_collection_id)
+                FinanceFee.new_student_fee(fee_collection,student)
+                student_infos[student_id] = 1
+              else
+                student_infos[student_id] = 0
+              end
+            else
+              student_id = student.student_id
+              fee_collection = FinanceFeeCollection.find(fee_collection_id)
+              FinanceFee.new_student_fee(fee_collection,student)
+              student_infos[student_id] = 1
+            end
+          end
+          has_error = student_infos.select{|s| s == 0 }
+          s_data = "Some Student Fees can't be regenerated as transaction exists for those fees, \n\nplease remove the transaction and try again"
+
+          s_data = "Regenerated fees successful." if has_error.blank?
+          render :update do |page|
+            page << 'alert("' + escape_javascript(s_data) + '")'
+            page << "searchAjax(1);"
+          end
+        elsif params[:option].to_i == 2
+          student_ids.each do |v|
+            student = Student.find_by_id(v.to_i)
+            fee_collection = FinanceFeeCollection.find(fee_collection_id)
+            FinanceFee.new_student_fee(fee_collection,student)
+          end
+          s_data = "Regenerated fees successful." 
+          render :update do |page|
+            page << 'alert("' + escape_javascript(s_data) + '")'
+            page << "j('.show_inactive_fa').trigger('click');"
+          end
+        end
+      end
+    end
+
+  end
+
+  def delete_student_fees
     finance =  FinanceFee.find_by_id(params[:fee_id])
     unless finance.blank?
+     finance.current_user_id = current_user.id
+#    paid_fees = finance.finance_transactions
+#    if paid_fees.blank?
       date_id = finance.fee_collection_id
       student_id = finance.student_id
       date = FinanceFeeCollection.find(date_id)
@@ -13019,51 +13336,23 @@ class FinanceController < ApplicationController
         collection_discount = CollectionDiscount.find_by_finance_fee_collection_id_and_fee_discount_id(date_id, did)
         collection_discount.destroy
       end
-      finance.destroy
-    end
-    
-    if params[:option]
-      if params[:option].to_i == 1
-        student.each do |v|
-          fee_collection = FinanceFeeCollection.find(params[:fee_id])
-          student = Student.find_by_id(v)
-          FinanceFee.new_student_fee_with_tmp_particular(fee_collection,student)
+      if finance.destroy
+        render :update do |page|
+          page << 'j("#student_fee_' + finance.id.to_s + '_' + student_id.to_s + ' td").css("background-color", "#FFADAD");'
+          page << 'j("#action_tr_' + student_id.to_s + '_' + finance.id.to_s + '").html("");'
+          page << 'setTimeout(function(){ j("#student_fee_' + finance.id.to_s + '_' + student_id.to_s + '").remove(); resetSN(); }, 3000);';
+          #page << "searchAjax(1);"
         end
-      elsif params[:option].to_i == 2
-        fee_collection = FinanceFeeCollection.find(params[:fee_id])
-        stu = Student.find_by_id(student)
-        FinanceFee.new_student_fee(fee_collection,stu)
+      else
+        render :update do |page|
+          page << 'j("#student_fee_' + finance.id.to_s + '_' + student_id.to_s + '").after("<tr><td id=\'error_student_' + finance.id.to_s + '_' + student_id.to_s + '\' colspan=\'6\' style=\'text-align: center; border-collapse: separate !important; background: #f9e79f;font-family: verdana; font-size: 12px;font-weight: bold;\'>Student Fee can\'t be deleted, Finance Transaction exists for this fee</td></tr>");'
+          page << 'setTimeout(function(){ j("#error_student_' + finance.id.to_s + '_' + student_id.to_s + '").remove(); }, 3000);';
+        end
       end
     else
-      fee_collection = FinanceFeeCollection.find(params[:fee_id])
-      student = Student.find_by_id(params[:student_id])
-      FinanceFee.new_student_fee_with_tmp_particular(fee_collection,student)
-      @amount = FinanceFee.find_by_student_id(params[:student_id])
-
       render :update do |page|
-        page.replace_html "student_amount_#{params[:student_id]}_#{@amount.id}", :text => "#{@amount.balance}"
-        page << "update_total();"
+        page << 'alert("Student Fee can\'t be deleted, An error occur please try again later");'
       end
-
-    end
-
-  end
-
-  def delete_student_fees
-    finance =  FinanceFee.find_by_id(params[:fee_id])
-    date_id = finance.fee_collection_id
-    student_id = finance.student_id
-    date = FinanceFeeCollection.find(date_id)
-    student = Student.find(student_id)
-    discounts_on_particulars=date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{student.batch_id} and is_onetime=#{true} and is_late=#{false}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-    discounts_ids = discounts_on_particulars.map(&:id)
-    discounts_ids.each do |did|
-      collection_discount = CollectionDiscount.find_by_finance_fee_collection_id_and_fee_discount_id(date_id, did)
-      collection_discount.destroy
-    end
-    finance.destroy
-    render :update do |page|
-      page << "searchAjax(1);"
     end
   end
 
@@ -13079,6 +13368,7 @@ class FinanceController < ApplicationController
       collection_discount = CollectionDiscount.find_by_finance_fee_collection_id_and_fee_discount_id(date_id, did)
       collection_discount.destroy
     end
+    finance.current_user_id = current_user.id
     finance.destroy
     load_fees_submission_batch
   end

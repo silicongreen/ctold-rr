@@ -24,7 +24,6 @@
   <div class='sub-header'><%= t('collection_details') %></div>
 </div>
 <div id="page-yield">
-
   <h3>Fee Collection Details</h3>
   <div class="label-field-pair">
     <div class="label-container">
@@ -39,7 +38,7 @@
     <div class="input-container">
       <div style="width: 100%; padding: 20px 0; text-align: center;">
         <input type="checkbox" name="show_inactive" id="show_inactive" class="show_inactive" style="display: none;">
-        <i name="show_inactive_fa" id="show_inactive_fa" class="fa fa-square-o show_inactive_fa" style="font-size: 20px; cursor: pointer; color: #49BB4B; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;">Show Students with no Finance Data</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <i name="show_inactive_fa" id="show_inactive_fa" class="fa fa-square-o show_inactive_fa" style="font-size: 20px; cursor: pointer; color: #49BB4B; " aria-hidden="true"></i>&nbsp;&nbsp;<span  style="color: #000;">Show Students with no Finance Data</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <%= image_tag("Loader-transparant.gif",:align => "absmiddle",:border => 0,:id => "add-loader", :class=>"add-palette-loader", :style =>"display: none;" ) %>
       </div>
     </div>
@@ -58,8 +57,8 @@
 
   </div>
   <br>
-  <div id="absent_fine_panel" style="border: 1px solid #ccc; border-radius: 8px; display: none; padding: 10px; margin: 0 auto;">
-    <div class="label-field-pair">
+  <div id="absent_fine_panel" style="border: 1px solid #ccc; width: 100%; border-radius: 8px; display: none; padding: 10px; margin: 0 auto;">
+      <div class="label-field-pair" style="width: 49%; display: inline-block;">
         <div class="label-container">
           <label for="">Fine Name:</label>
         </div>
@@ -67,7 +66,7 @@
           <input type="text" class="MB_focusable" id="fine_name" placeholder="Fine Name" title="Fine Name">
         </div>
     </div>
-    <div class="label-field-pair">
+    <div class="label-field-pair" style="width: 49%; display: inline-block;">
         <div class="label-container">
           <label for="">Fine Amount:</label>
         </div>
@@ -79,10 +78,11 @@
   <div style="clear: both; height: 20px;"></div>
   <%#= debug @finance_fees_inactive.inspect %>
 
-  <% unless @finance_fees.empty? %>
+  <% unless @finance_fees.blank? %>
 
     <div class="particulars">
       <div id="resultDiv">
+          <input type="hidden" name="option" id="option" value="<%= @option %>" />
       <table class="table table-striped table-bordered" id="myTable" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
         <thead><!-- class="thead-inverse" -->
         <tr>
@@ -102,19 +102,21 @@
           <% @total_fee = 0 %>
           <% i = 0 %>
           <% @finance_fees.each do |fees| %>
+            <%  paid_fees = fees.finance_transactions %>
+            <%
+                @transaction_date = []
+                @payment_mode = []
+                @online_payment = []
+                @paid_amount = 0
+                @op_type = '';
+                @op_order_id = '';
+                @op_ref_id = '';
+            %>  
             <% if fees.student.blank? %>
               <% break %>
             <% end %>  
-            <% if fees.is_paid
-                 @transaction_date = []
-                 @payment_mode = []
-                 @online_payment = []
-                 @paid_amount = 0
-                 @op_type = '';
-                 @op_order_id = '';
-                 @op_ref_id = '';
-                 unless fees.finance_transactions.blank?
-                   fees.finance_transactions.each do |pf|
+            <% unless paid_fees.blank?
+                  paid_fees.each do |pf|
                      @online_payment = Payment.find(:all, :conditions=>"finance_transaction_id = #{pf.id}")
                      unless @online_payment.blank?
                      opc = 0
@@ -157,88 +159,114 @@
                      @payment_mode << pf.payment_mode
                      @paid_amount += pf.amount
                    end
-                 end
-               else
-                 @transaction_date = []
-                 @payment_mode = []
-                 @online_payment = []
-                 @op_type = '-';
-                 @op_order_id = '-';
-                 @op_ref_id = '-';
                end
+             
+               #fine_amount_paid = 0.0
+               #unless paid_fees.blank?
+                  #transaction_ids = paid_fees.map(&:id)
+                  #unless transaction_ids.blank?
+                    #paidFineFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")")
+                    #unless paidFineFess.blank?
+                      #fine_amount_paid += paidFineFess.map(&:amount).sum.to_f
+                    #end
+                  #end
+               #end
+               ##d = FinanceFeeCollection.find()
+               #f = FinanceFee.find(fees.id)
+               #if fine_amount_paid > 0
+                  #balance = FinanceFee.get_student_balance(f.finance_fee_collection, f.student, f) + fine_amount_paid.to_f
+                #else
+                  #balance = FinanceFee.get_student_balance(f.finance_fee_collection, f.student, f) + f.finance_fee_collection.fine_to_pay(f.student).to_f + fine_amount_paid.to_f
+                #end
+               #balance = 0
             %>
-            <tr class="<%= cycle("odd", "even") %>" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="background-color: #ffe6e6" <% end %> >
-            <td class="col-5" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="text-align: center; vertical-align: middle; background-color: #ffe6e6"<% else %>style="text-align: center; vertical-align: middle;"<% end %>>
-                <div class="student_chkbox_panel" style="display: none; padding-right: 5px;"><input type="checkbox" name="student_ids[]" id="student_ids" class="student_ids" value="<%= fees.student.id %>" /></div>
-                <div style="display: inline-block; padding-right: 5px;"><%= i = i + 1 %></div>
-            </td>
-            <td class="col-4" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle; background-color: #ffe6e6"<% else %>style="vertical-align: middle;" <% end %>>
-                <% if MultiSchool.current_school.id == 3 %>
-                <small><strong><%= link_to fees.student.full_name, :controller => 'finance' ,:action => 'fees_student_dates',:id => fees.student.id%></strong></small><br>
-                <% else %>
-                
-                <small><strong><%= link_to fees.student.full_name + " (Roll No: " + fees.student.class_roll_no.to_s + ")", :controller => 'finance' ,:action => 'fees_student_dates',:id => fees.student.id%></strong></small><br>
-                <% end %>
-                <small><%= fees.student.admission_no %></small><br>
-                <small><%= fees.student.batch.full_name %></small>
-                <hr style="border: 1px solid #ccc; display: none;" class="absent_hr_panel" />
-                <div class="label-field-pair absent_days_panel" style="width: 100px; display: none;">
-                  <div class="label-container" style="display: block;">
-                    <label for="">No of Absent Days:</label>
-                  </div>
-                  <div class="input-container" style="clear: both; width: 100%;">
-                      <input type="text" class="MB_focusable absent_days_cls" id="absent_days_<%= fees.student.id %>" name="absent_days_<%= fees.student.id %>" disabled=""  onkeypress="return isNumberKey(event,this)" onkeydown="checkKey(event,this)" placeholder="No of Absent Days">
-                  </div>
-              </div>
-            </td>
-            <td <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle;background-color: #ffe6e6;text-align: center;"<% else %>style="vertical-align: middle; text-align: center;" <% end %>>
-              <% unless @transaction_date.blank? %>
-                <% @transaction_date.each do |date| %>
-                  <%= date.to_date.strftime('%d-%m-%Y') + "<br>" %>
-                <% end %>
-              <% else %>
-                <%= "-" %>
-              <% end %>
-            </td>
-            <td <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle;background-color: #ffe6e6"<% else %>style="vertical-align: middle;" <% end %>>
-              <%= @op_type + "<br>" %>
-              <%= @op_order_id + "<br>" %>
-              <%= @op_ref_id + "<br>" %>
-            </td>
+            <tr id="student_fee_<%= fees.id %>_<%= fees.student.id %>" class="<%= cycle("odd", "even") %>" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="background-color: #ffe6e6" <% end %> >
+              <td class="col-5" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="text-align: center; vertical-align: middle; background-color: #ffe6e6"<% else %>style="text-align: center; vertical-align: middle;"<% end %>>
+                  <div class="student_chkbox_panel" style="display: none; padding-right: 5px;"><input type="checkbox" name="student_ids[]" id="student_ids" class="student_ids" value="<%= fees.student.id %>" /></div>
+                  <div class="sl_no" style="display: inline-block; padding-right: 5px;"><%= i = i + 1 %></div>
+              </td>
+              <td class="col-4" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle; background-color: #ffe6e6"<% else %>style="vertical-align: middle;" <% end %>>
+                  <% if MultiSchool.current_school.id == 3 %>
+                  <small><strong><%= link_to fees.student.full_name, :controller => 'finance' ,:action => 'fees_student_dates',:id => fees.student.id%></strong></small><br>
+                  <% else %>
 
-            <td class="col-3" style="text-align: right; <% unless params[:batch_id].to_i == fees.student.batch.id {}%>vertical-align: middle; background-color: #ffe6e6;<% else %> vertical-align: middle; <% end %>" >
-              <div id="student_amount_<%= fees.student_id %>_<%= fees.id %>" class="student_amount">
-                <% if fees.is_paid %>
-                  <%= precision_label @paid_amount %>
-                  <% @total_fee = @total_fee + @paid_amount %>
-                <% else %>
-                  <%= precision_label fees.balance %>
-                  <% @total_fee = @total_fee + fees.balance %>
-                <% end %>
-              </div>
-            </td>
-
-            <td class="col-3" style="text-align: center;<% unless params[:batch_id].to_i == fees.student.batch.id {}%>vertical-align: middle; background-color: #ffe6e6;<% else %>vertical-align: middle; <% end %>" >
-              <% if fees.is_paid %>
-                <i class="fa fa-check" style="color: #49BB4B; font-size: 14px;"></i><br/>
-              <% else %>
-                <input type="hidden" class="notPaid" name="not_paid[]" value="<%= fees.student.id %>">
-                <% unless params[:batch_id].to_i == fees.student.batch.id %>
-                  <% fee_batch =  FeeCollectionBatch.find_by_batch_id(fees.student.batch.id) %>
-                  <% unless fee_batch.blank? %>
-                      <% if fee_batch.finance_fee_collection_id.to_i == params[:id].to_i %>
-                      <%= link_to_remote '<i class="fa fa-refresh" style="color: #49BB4B;"></i>',:before => "Element.show('add-loader-#{i}')", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'regenerate_student_fees',:fee_id=> params[:id], :student_id => fees.student.id , :delete=> 1, :option=>2,:finance_fee_id=>fees.id},:confirm => "Are You sure to Regenerate?"%>
-                      <br>
-                    <% end %>
+                  <small><strong><%= link_to fees.student.full_name + " (Roll No: " + fees.student.class_roll_no.to_s + ")", :controller => 'finance' ,:action => 'fees_student_dates',:id => fees.student.id%></strong></small><br>
+                  <% end %>
+                  <small><%= fees.student.admission_no %></small><br>
+                  <small><%= fees.student.batch.full_name %></small>
+                  <hr style="border: 1px solid #ccc; display: none;" class="absent_hr_panel" />
+                  <div class="label-field-pair absent_days_panel" style="width: 100px; display: none;">
+                    <div class="label-container" style="display: block;">
+                      <label for="">No of Absent Days:</label>
+                    </div>
+                    <div class="input-container" style="clear: both; width: 100%;">
+                        <input type="text" class="MB_focusable absent_days_cls" id="absent_days_<%= fees.student.id %>" name="absent_days_<%= fees.student.id %>" disabled=""  onkeypress="return isNumberKey(event,this)" onkeydown="checkKey(event,this)" placeholder="No of Absent Days">
+                    </div>
+                </div>
+              </td>
+              <td <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle;background-color: #ffe6e6;text-align: center;"<% else %>style="vertical-align: middle; text-align: center;" <% end %>>
+                <% unless @transaction_date.blank? %>
+                  <% @transaction_date.each do |date| %>
+                    <%= date.to_date.strftime('%d-%m-%Y') + "<br>" %>
                   <% end %>
                 <% else %>
-                  <%= link_to_remote '<i class="fa fa-refresh" style="color: #49BB4B;"></i>',:before => "Element.show('add-loader-#{i}')", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'regenerate_student_fees',:fee_id=> params[:id], :student_id => fees.student.id},:confirm => "Are You sure to Regenerate?"%>
-                  <br>
+                  <%= "-" %>
                 <% end %>
-                <%= link_to_remote '<i class="fa fa-minus-circle" id="deleteFin" style="color:red;"></i>',:before => "Element.show('add-loader-#{i}');", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'delete_student_fees',:fee_id=> fees.id},:confirm => "Are You sure to Delete?"%>
-                <%= image_tag("Loader-transparant.gif",:align => "absmiddle",:border => 0,:id => "add-loader-#{i}", :class=>"add-palette-loader", :style =>"display: none;" ) %>
-              <% end %>
-            </td>
+              </td>
+              <td <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle;background-color: #ffe6e6"<% else %>style="vertical-align: middle;" <% end %>>
+                <%= @op_type + "<br>" %>
+                <%= @op_order_id + "<br>" %>
+                <%= @op_ref_id + "<br>" %>
+              </td>
+
+              <td class="col-3" style="text-align: right; <% unless params[:batch_id].to_i == fees.student.batch.id {}%>vertical-align: middle; background-color: #ffe6e6;<% else %> vertical-align: middle; <% end %>" >
+                <div id="student_amount_<%= fees.student_id %>_<%= fees.id %>" class="student_amount">
+                  <% if fees.is_paid %>
+                    <%= to_comma_seperated_precision_label @paid_amount %>
+                    <% @total_fee = @total_fee + @paid_amount %>
+                  <% else %>
+                    <% if fees.balance == 0.0 %>
+                    <%= to_comma_seperated_precision_label @paid_amount %>
+                    <% @total_fee = @total_fee + @paid_amount %>
+                    <% else %>
+                    <%= to_comma_seperated_precision_label fees.balance %>
+                    <% if @paid_amount.to_f > 0.00 %>
+                    <hr style="border: 1px solid #ccc;" />
+                    <b>Paid Amount</b><br /><%= @paid_amount %>
+                    <% end %>
+                    <% @total_fee = @total_fee + fees.balance %>
+                    <% end %>
+                  <% end %>
+                </div>
+              </td>
+
+              <td id="action_tr_<%= fees.student.id %>_<%= fees.id %>" class="col-3 action_tr" style="text-align: center;<% unless params[:batch_id].to_i == fees.student.batch.id {}%>vertical-align: middle; background-color: #ffe6e6;<% else %>vertical-align: middle; <% end %>" >
+                  <div class="action_div">
+                    <% if fees.is_paid %>
+                      <i class="fa fa-check" style="color: #49BB4B; font-size: 14px;"></i><br/>
+                    <% else %>
+                      <% if fees.balance == 0.0 %>
+                      <i class="fa fa-check" style="color: #49BB4B; font-size: 14px;"></i><br/>
+                      <% else %>
+                      <input type="hidden" class="notPaid" name="not_paid[]" value="<%= fees.student.id %>">
+                      <% unless params[:batch_id].to_i == fees.student.batch.id %>
+                        <% fee_batch =  FeeCollectionBatch.find_by_batch_id(fees.student.batch.id) %>
+                        <% unless fee_batch.blank? %>
+                            <% if fee_batch.finance_fee_collection_id.to_i == params[:id].to_i %>
+                            <%= link_to_remote '<i class="fa fa-refresh" style="color: #49BB4B;"></i>',:before => "Element.show('add-loader-#{i}')", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'regenerate_student_fees',:fee_id=> fees.id, :student_id => fees.student.id , :delete=> 1, :option=>2,:finance_fee_id=>fees.id},:confirm => "Are You sure to Regenerate?"%>
+                            <br>
+                          <% end %>
+                        <% end %>
+                      <% else %>
+                        <%= link_to_remote '<i class="fa fa-refresh" style="color: #49BB4B;"></i>',:before => "Element.show('add-loader-#{i}')", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'regenerate_student_fees',:fee_id=> fees.id, :student_id => fees.student.id},:confirm => "Are You sure to Regenerate?"%>
+                        <br>
+                      <% end %>
+                      <%= link_to_remote '<i class="fa fa-minus-circle" id="deleteFin" style="color:red;"></i>',:before => "Element.show('add-loader-#{i}');", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'delete_student_fees',:fee_id=> fees.id},:confirm => "Are you sure, you want to delete this fee transaction?"%>
+                      <%= image_tag("Loader-transparant.gif",:align => "absmiddle",:border => 0,:id => "add-loader-#{i}", :class=>"add-palette-loader", :style =>"display: none;" ) %>
+                      <% end %>
+                    <% end %>
+                  </div>  
+              </td>
 
           </tr>
           <% end %>
@@ -256,7 +284,7 @@
           <tr>
             <td colspan="3" style="vertical-align: middle;"></td>
             <td style="vertical-align: middle;"><b>Total Amount:</b></td>
-            <td style="text-align: right;vertical-align: middle;"><div id="totalAmount"><%= precision_label @total_fee %></div></td>
+            <td style="text-align: right;vertical-align: middle;"><div id="totalAmount"><%= to_comma_seperated_precision_label @total_fee %></div></td>
             <td></td>
           </tr>
           </tfoot>
@@ -265,7 +293,10 @@
     </div>
     </div>
   <% else %>
-  <div class="particulars"><div id="resultDiv"></div></div>
+      <div class="particulars"><div id="resultDiv">
+              <p style="padding: 10px; border: 1px solid #c00; text-align: center; border-collapse: separate !important; background: #f9e79f;font-family: verdana; font-size: 12px;font-weight: bold;">No Student Assign with this Fee Collection</p>
+      </div></div>
+  
   <% end %>
   <div id="save_absent_fine_panel" style="width:100%; text-align: center; padding-top: 10px; display: none;">
       <i id="absent_fine_clicked" class="fa fa-spin fa-spinner" style="display: none;"></i>
@@ -290,6 +321,14 @@
   }
 </style>
 <script>
+    function resetSN()
+    {
+       var sn = 1;
+       j('.sl_no').each(function(){
+            j(this).html(sn);
+            sn += 1;
+       });
+    }
     function filterTable(field) {
         var input, filter, table, tr, td, i, txtValue;
         input = document.getElementById("myInput"+field);
@@ -461,13 +500,22 @@
         var html = j(this).html();
         if ( j.trim(html) == "Add Absent Fine" )
         {
+            j(".student_ids").each(function(){
+                j(this).removeAttr("checked");
+                var std_id = this.value;
+                j("#absent_days_" + std_id).val("");
+            });
+            j("#fine_name").val("");
+            j("#fine_amount").val("");
             j(this).html("Cancel Absent Fine");
             j("#absent_fine_panel").css('display', 'inline-block');
             j("#save_absent_fine_panel").css('display', 'inline-block');
             j("#chkbox_all_panel").css('display', 'inline-block');
             j(".student_chkbox_panel").css('display', 'inline-block');
             j(".absent_hr_panel").show();
+            j("#regenerateAll").hide();
             j(".absent_days_panel").show();
+            j('.action_tr div.action_div').hide();
         }
         else
         {
@@ -478,6 +526,8 @@
             j(".student_chkbox_panel").css('display', 'none');
             j(".absent_hr_panel").hide();
             j(".absent_days_panel").hide();
+            j("#regenerateAll").show();
+            j('.action_tr div.action_div').show();
         }
         
     });
@@ -502,7 +552,7 @@
         var id = a_id[2];
         if (j(this).hasClass("fa-check-square-o"))
         {
-            j("#regenerateAll").show();
+            j("#add_absent_fine").show();
             j(".show_inactive").removeAttr('checked');
             j(".show_inactive_fa").removeAttr('checked');
             j(".show_inactive_fa").removeClass('fa-check-square-o');
@@ -516,7 +566,7 @@
         }
         else
         {
-            j("#regenerateAll").hide();
+            j("#add_absent_fine").hide();
             j(".show_inactive").removeAttr('checked');
             j(".show_inactive_fa").removeAttr('checked');
             j(".show_inactive_fa").removeClass('fa-check-square-o');
@@ -533,21 +583,49 @@
 
     j(document).on("click","#regenerateAll",function(){
         var notPaidList = [];
-        j('.notPaid').each(function (k,v) {
-            notPaidList[k] = v.value;
-        });
-        j.ajax({
-            url: '/finance/regenerate_student_fees/',
-            data: {fee_id : <%= params[:id] %>, student_id: notPaidList,option:1},
-            type: 'POST',
-            beforeSend : function() {
-                j("#add-loader").show();
-            },
-            success: function(data){
-                j("#add-loader").hide();
-                searchAjax(1);
-            }
-        });
+        var opt = j("#option").val();
+        if (parseInt(opt) < 2)
+        {
+          j('.notPaid').each(function (k,v) {
+              notPaidList[k] = v.value;
+          });
+        }
+        else
+        {
+          j('.students_no_fees').each(function (k,v) {
+              notPaidList[k] = v.value;
+          });
+        }
+        if (parseInt(opt) < 2 && confirm("Do you want to regenerate all Fees? Please keep in mind if transaction is made for a fees then that fee will remain unchange"))
+        {
+          j.ajax({
+              url: '/finance/regenerate_student_fees/',
+              data: {fee_id : <%= params[:id] %>, student_ids: notPaidList,option:1},
+              type: 'POST',
+              beforeSend : function() {
+                  j("#add-loader").show();
+              },
+              success: function(data){
+                  j("#add-loader").hide();
+                  searchAjax(1);
+              }
+          });
+        }
+        else
+        {
+          j.ajax({
+                url: '/finance/regenerate_student_fees/',
+                data: {fee_id : <%= params[:id] %>, student_ids: notPaidList,option:2},
+                type: 'POST',
+                beforeSend : function() {
+                    j("#add-loader").show();
+                },
+                success: function(data){
+                    j("#add-loader").hide();
+                    searchAjax(1);
+                }
+            });
+        }
     });
 </script>
 

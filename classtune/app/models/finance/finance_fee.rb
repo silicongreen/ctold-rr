@@ -17,6 +17,7 @@
 #limitations under the License.
 
 class FinanceFee < ActiveRecord::Base
+  attr_accessor :current_user_id
   
   belongs_to :finance_fee_collection ,:foreign_key => 'fee_collection_id'
   has_many   :finance_transactions ,:as=>:finance
@@ -31,6 +32,7 @@ class FinanceFee < ActiveRecord::Base
   named_scope :active , :joins=>[:finance_fee_collection] ,:conditions=>{:finance_fee_collections=>{:is_deleted=>false}}
   after_create :set_ledger
   #after_update :update_ledger
+  before_destroy :delete_ledger
   
   
   def check_transaction_done
@@ -350,23 +352,21 @@ class FinanceFee < ActiveRecord::Base
       fee.update_attributes(:balance=>bal)
     else
       fee_paid = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id(student.id, date.id, student.batch_id)
-      paid_fees = fee_paid.finance_transactions
-      unless paid_fees.blank?
-        paid_fees_amount = paid_fees.map(&:amount).sum
-        bal = balance.to_f - paid_fees_amount.to_f
+      unless fee_paid.blank?
+        paid_fees = fee_paid.finance_transactions
+        unless paid_fees.blank?
+          paid_fees_amount = paid_fees.map(&:amount).sum
+          bal = balance.to_f - paid_fees_amount.to_f
+        else
+          bal = balance.to_f
+        end
+        
+        bal = 0 if bal.to_i < 0
+        fee_paid.update_attributes(:is_paid=>0,:balance=>bal)
       else
-        bal = balance.to_f
+        FinanceFee.create(:student_id => student.id,:fee_collection_id => date.id,:balance=>balance,:batch_id=>student.batch_id)
       end
-      bal = 0 if bal.to_i < 0
-      # abort(paid_fees_amount)
-      # revised_balance = 0
-      # fee_particulars.each do |fv|
-      #   if fv.is_tmp
-      #     revised_balance = revised_balance.to_f + fv.amount.to_f
-      #   end
-      #
-      # end
-      fee_paid.update_attributes(:is_paid=>0,:balance=>bal)
+      
     end
   end
   
@@ -953,6 +953,31 @@ class FinanceFee < ActiveRecord::Base
     bal
   end
   
+  def delete_ledger
+    paid_fees = finance_transactions
+    if paid_fees.blank?
+      student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{student_id} and fee_id = #{id}")
+      unless student_fee_ledgers.nil?
+        student_fee_ledgers.each do |fee_ledger|
+          student_fee_ledger = StudentFeeLedger.find(fee_ledger.id)
+          student_fee_ledger.destroy
+        end
+      end
+      finance_fee_log = FinanceFeeLog.new
+      finance_fee_log.finance_fee_id = id
+      finance_fee_log.fee_collection_id = finance_fee_collection.id
+      finance_fee_log.student_id = student_id
+      finance_fee_log.batch_id = batch_id
+      unless current_user_id.blank?
+        finance_fee_log.user_id = current_user_id
+      end
+      finance_fee_log.save
+      return true
+    else
+      return false
+    end
+  end
+  
   def set_ledger
     student_fee_ledger = StudentFeeLedger.new
     student_fee_ledger.student_id = student_id
@@ -961,6 +986,27 @@ class FinanceFee < ActiveRecord::Base
     student_fee_ledger.amount_to_pay = balance.to_f
     student_fee_ledger.fee_id = id
     student_fee_ledger.save
+    
+    finance_fee_logs = FinanceFeeLog.find(:all, :conditions => "fee_collection_id = #{finance_fee_collection.id} and student_id = #{student_id}")
+    unless finance_fee_logs.blank?
+      finance_fee_logs.each do |finance_fee_log|
+        payments = Payment.find(:all, :conditions => "payee_id = #{finance_fee_log.student_id} and payment_id = #{finance_fee_log.finance_fee_id}")
+        unless payments.blank?
+          payments.each do |payment|
+            p = Payment.find(payment.id)
+            p.update_attributes(:payment_id=>id)
+          end
+        end
+        
+        finance_orders = FinanceOrder.find(:all, :conditions => "student_id = #{finance_fee_log.student_id} and finance_fee_id = #{finance_fee_log.finance_fee_id}")
+        unless finance_orders.blank?
+          finance_orders.each do |finance_order|
+            f = FinanceOrder.find(finance_order.id)
+            f.update_attributes(:finance_fee_id=>id)
+          end
+        end
+      end
+    end
   end
   
   def update_ledger

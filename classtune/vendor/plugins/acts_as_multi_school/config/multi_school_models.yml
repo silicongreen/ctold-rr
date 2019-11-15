@@ -55,6 +55,7 @@ multi_school_models:
 - FinanceTransactionTrigger
 - FinanceOrder
 - FinanceFeeCategory
+- FinanceFeeLog
 - FinanceFeeParticularCategory
 - FeeDiscountCollection
 - FinanceAdvanceDue

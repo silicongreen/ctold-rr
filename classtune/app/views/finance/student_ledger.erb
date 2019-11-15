@@ -144,6 +144,7 @@
                     <% balance_forward = false %>
                     <% @student_fee_ledgers.each_with_index do |student_fee_ledger, ind| %>
                     <% balance_forward = false %>
+                    <% fine_amount = 0.00 %>
                     <% ledger_info = "" %>
                     <% info = "" %>
                     <% trans_type = "" %>
@@ -160,7 +161,7 @@
                     <% ledger_info = "(Admission Date)" %>
                     <% elsif student_fee_ledger.amount_to_pay.to_f > 0.00 and student_fee_ledger.amount_paid.to_f == 0.00 %>
                       <% trans_type = "Receivable" %>
-                      <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay > 0.00 and fee_id IS NOT NULL and amount_paid = 0.00 and transaction_id = 0"]) %>
+                      <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, particular_id", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"]) %>
                       <% unless student_ledgers.nil? %>
                         <% student_ledgers.each do |student_ledger| %>
                           <% fee = FinanceFee.find(:first, :conditions => "id = #{student_ledger.fee_id}") %>
@@ -177,8 +178,14 @@
                                 exclude_particular_ids = [0]
                               end
                             %>
+                            <% if student_ledger.particular_id == 0 or student_ledger.particular_id.blank? %>
                             <% fee_particulars = d.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@student.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) } %>
+                            <% else %>
+                            <% fee_particulars = d.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and finance_fee_particulars.id = #{student_ledger.particular_id} and is_deleted=#{false} and batch_id=#{@student.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) } %>
+                            <% end %>
+                            <% unless fee_particulars.blank? %>
                             <% particular_name = fee_particulars.map(&:name).join(", ") + " for " + d.name  %>
+                            <% end %>
                             <% ledger_info += "(<a href='/student/fee_details/" + @student.id.to_s + "/" + fee.finance_fee_collection.id.to_s + "?opt=" + Base64.encode64(@student.admission_no.to_s + "-" + fee.finance_fee_collection.id.to_s).reverse + '===' + "' target='_blank' style='text-decoration: underline;'>" + fee.finance_fee_collection.name + '</a>' %>
                             <% if i == student_ledgers.length - 1 %>
                             <% ledger_info += ")" %>
@@ -195,11 +202,14 @@
                       <% end %>
                     <% elsif student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f > 0.00 %>
                         <% trans_type = "Received" %>
-                        <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay = 0.00 and amount_paid > 0.00"]) %>
+                        <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"]) %>
+                        <%#= debug student_ledgers.inspect %>
                         <% unless student_ledgers.nil? %>
                           <% student_ledgers.each do |student_ledger| %>
-                            <% payments = Payment.find(:all, :conditions => "finance_transaction_id = #{student_ledger.transaction_id}", :group => "id") %>
+                            <% payments = Payment.find(:all, :conditions => "finance_transaction_id = #{student_ledger.transaction_id} and payee_id = #{@student.id}") %>
                             <%#= debug payments.map(&:id).inspect  %>
+                            <%#= student_ledger.transaction_id  %>
+                            <%#= student_ledgers.length  %>
                             <% unless payments.nil? %>
                               <% payments.each do |payment| %>
                                 <% trans << payment.order_id %>
@@ -208,7 +218,18 @@
                                   <% date_id = fee.fee_collection_id %>
                                   <% d = FinanceFeeCollection.find(date_id) %>
                                   <% for_id << d.name %>
-                                  <% particulars << d.name %>   
+                                  <% particulars << d.name %>
+                                  <% paid_fees = fee.finance_transactions %>
+                                  <% fine_amount = 0 %>
+                                  <% unless paid_fees.blank? %>
+                                    <% transaction_ids = paid_fees.map(&:id) %> 
+                                    <% unless transaction_ids.blank? %>
+                                      <% paidFineFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")") %>
+                                      <% unless paidFineFess.blank? %> 
+                                        <% fine_amount += paidFineFess.map(&:amount).sum.to_f %>
+                                      <% end %>
+                                    <% end %>
+                                  <% end %>
                                 <% else %>  
                                   <% student_ledger.destroy %>
                                 <% end %>
@@ -235,12 +256,12 @@
                     <% ledger_found = true %>
                     <% if student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f == 0.00 %>
                     <% elsif student_fee_ledger.amount_to_pay.to_f > 0.00 and student_fee_ledger.amount_paid.to_f == 0.00 %>
-                      <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay > 0.00 and fee_id IS NOT NULL and amount_paid = 0.00 and transaction_id = 0"]) %>
+                      <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"]) %>
                       <% if student_ledgers.blank? %>
                         <% ledger_found = false %>
                       <% end %>  
                     <% elsif student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f > 0.00 %>
-                        <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay = 0.00 and amount_paid > 0.00"]) %>
+                        <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"]) %>
                         <% if student_ledgers.blank? %>
                           <% ledger_found = false %>
                         <% end %>
@@ -248,7 +269,7 @@
                     
                     <% if ledger_found %>  
                       <tr class="tr-odd">
-                          <td style="text-align: center;"><%= ind + 1 %></td>
+                          <td style="text-align: center; vertical-align: middle; font-weight: bold; font-family: Roboto;"><%= ind + 1 %></td>
                           <th style="vertical-align: middle; text-align: left; color: #555; font-family: verdana; font-size: 12px; line-height: 17px;" class="fixed-side">
                               <% unless balance_forward %>
                                 <%= student_fee_ledger.ledger_date.strftime("%d %B, %Y") %><br />
@@ -262,6 +283,7 @@
                           <td style="vertical-align: middle; text-align: right; font-size: 12px;"><%= to_comma_seperated_precision_label student_fee_ledger.amount_to_pay %></td>
                           <td style="vertical-align: middle; text-align: right; font-size: 12px;"><%= to_comma_seperated_precision_label student_fee_ledger.amount_paid %></td>
                           <% current_balance = (carried_amount + student_fee_ledger.amount_to_pay.to_f) - student_fee_ledger.amount_paid.to_f %>
+                          <% current_balance += fine_amount %>
                           <% carried_amount = current_balance %>
                           <td style="vertical-align: middle; text-align: right; font-size: 12px;">
                               <% if current_balance < 0 %>

@@ -162,6 +162,7 @@
                     <td style="width: 80px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Amount</td>
                     <td style="width: 200px; text-align: left; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Remarks</td>
                 </tr>
+                <% k = 0 %>
                 <% @finance_particular_categories.each_with_index do |fees_particular, i| %>
                 <% if pg == 1 %>
                   <% if j == 36 %>
@@ -177,22 +178,48 @@
                     <% end %>
                 <% end %>
                 <tr class="even">
+                    <% k = i + 1 %>
                     <td style="text-align: center; padding: 10px;"><%= i + 1 %></td>
                     <td style="text-align: left; padding-left: 20px;"><%= fees_particular.name %></td>
                     <td style="text-align: right; padding-right: 20px;">
                       <% amt = (particular_wise_fees_amount[fees_particular.id] + particular_wise_adv_amount[fees_particular.id]) - particular_wise_discount_amount[fees_particular.id] %>
                       <% tot_amount += amt %> 
-                      <%= precision_label amt %>  
+                      <%= to_comma_seperated_precision_label amt %>  
                     </td>
                     <td>&nbsp;</td>
                 </tr>    
                 <% j += 1 %>
                 <% end %>
+                <% unless @transactions_fine.blank? %>
+                  <% fine_amount = @transactions_fine.map(&:amount).sum %>
+                  <tr class="even">
+                      <td style="text-align: center; padding: 10px;"><%= k + 1 %></td>
+                      <td style="text-align: left; padding-left: 20px;"><%= "Late Fine" %></td>
+                      <td style="text-align: right; padding-right: 20px;">
+                        <% tot_amount += fine_amount %> 
+                        <%= to_comma_seperated_precision_label fine_amount %>  
+                      </td>
+                      <td>&nbsp;</td>
+                  </tr>    
+                <% end %>
+                <% k += 1 %>  
+                <% unless @transactions_discount_total_fees.blank? %>
+                  <% discount_amount = @transactions_discount_total_fees.map(&:amount).sum %>
+                  <tr class="even">
+                      <td style="text-align: center; padding: 10px;"><%= k + 1 %></td>
+                      <td style="text-align: left; padding-left: 20px;"><%= "Total Discount" %></td>
+                      <td style="text-align: right; padding-right: 20px;">
+                        <% tot_amount -= discount_amount %> 
+                        <%= to_comma_seperated_precision_label discount_amount %>  
+                      </td>
+                      <td>&nbsp;</td>
+                  </tr>    
+                <% end %>
                 <tr class="even" style="border-bottom: 2px solid #ccc;">
                     <td style="text-align: center; padding: 10px; border-bottom: 2px solid #ccc;">&nbsp;</td>
                     <td style="text-align: left; padding-left: 20px; border-bottom: 2px solid #ccc;">Total Amount</td>
                     <td style="text-align: right; padding-right: 20px; border-bottom: 2 px solid #ccc;">
-                      <%= precision_label tot_amount %> 
+                      <%= to_comma_seperated_precision_label tot_amount %> 
                     </td>
                     <td>&nbsp;</td>
                 </tr>    

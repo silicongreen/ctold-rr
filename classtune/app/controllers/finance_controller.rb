@@ -7438,7 +7438,17 @@ class FinanceController < ApplicationController
       end
       
       FinanceFee.new_student_fee_with_tmp_particular(@date,@student)
-
+      fee = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id_and_is_paid(@student.id, @date.id, @student.batch_id, false)
+      unless fee.blank?
+        student_fee_ledger = StudentFeeLedger.new
+        student_fee_ledger.student_id = @student.id
+        student_fee_ledger.ledger_date = Date.today
+        student_fee_ledger.ledger_title = @particular_name + " for " + @date.name
+        student_fee_ledger.amount_to_pay = params[:amount].to_f
+        student_fee_ledger.fee_id = fee.id
+        student_fee_ledger.particular_id = @finance_fee_particular.id
+        student_fee_ledger.save
+      end
 
       unless @fee.is_paid
         if @particular_name.downcase == 'vat'
@@ -7570,7 +7580,7 @@ class FinanceController < ApplicationController
           student_fee_ledger = StudentFeeLedger.new
           student_fee_ledger.student_id = @student.id
           student_fee_ledger.ledger_date = Date.today
-          student_fee_ledger.ledger_title = @particular_name
+          student_fee_ledger.ledger_title = @particular_name + " for " + @date.name
           student_fee_ledger.amount_to_pay = amt.to_f
           student_fee_ledger.fee_id = fee.id
           student_fee_ledger.particular_id = @finance_fee_particular.id
@@ -7876,6 +7886,33 @@ class FinanceController < ApplicationController
       end
       
       FinanceFee.new_student_fee_with_tmp_particular(@date,@student)
+      fee = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id_and_is_paid(@student.id, @date.id, @student.batch_id, false)
+      unless fee.blank?
+        student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{@student.id} and fee_id = #{fee.id} and particular_id = #{@particular_id}")
+        unless student_fee_ledgers.blank?
+          student_fee_ledgers.each do |student_fee_ledger|
+            student_fee_ledger.destroy
+          end
+        else
+          bal = FinanceFee.get_student_balance(@date, @student, fee)
+          student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{@student.id} and fee_id = #{fee.id} and amount_to_pay > 0.00 and amount_paid = 0.00 and transaction_id = 0 and particular_id > 0")
+          amt = 0
+          unless student_fee_ledgers.blank?
+            student_fee_ledgers.each do |student_fee_ledger|
+              amt += student_fee_ledger.amount_to_pay.to_f
+            end
+          end
+          bal = bal - amt
+          bal = 0 if bal < 0
+          student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{@student.id} and fee_id = #{fee.id} and amount_to_pay > 0.00 and amount_paid = 0.00 and transaction_id = 0 and particular_id = 0")
+          unless student_fee_ledgers.blank?
+            student_fee_ledgers.each do |student_fee_ledger|
+              student_fee_ledger.update_attributes(:amount_to_pay=>bal)
+            end
+          end
+        end
+        #
+      end
       
       if @particular_name.downcase == "vat"
         render :update do |page|

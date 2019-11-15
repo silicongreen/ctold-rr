@@ -1517,6 +1517,7 @@ module FinanceLoader
           end
           
           transaction_id = transaction.id
+          
           particular_amount = 0.00
           particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{transaction_id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection'"], :group => "finance_transaction_particulars.finance_transaction_id")
           particular_wise_transactions.each do |pt|
@@ -1565,7 +1566,17 @@ module FinanceLoader
             tid=transaction.id
           end
           is_paid = @financefee.balance==0 ? true : false
-
+          
+          student_fee_ledger = StudentFeeLedger.new
+          student_fee_ledger.student_id = @student.id
+          student_fee_ledger.ledger_date = transaction.transaction_date
+          student_fee_ledger.ledger_title = ""
+          student_fee_ledger.amount_to_pay = 0.0
+          student_fee_ledger.fee_id = @financefee.id
+          student_fee_ledger.amount_paid = transaction.amount
+          student_fee_ledger.transaction_id = transaction.id
+          student_fee_ledger.order_id = orderId
+          student_fee_ledger.save
 
 
           @financefee.update_attributes(:transaction_id=>tid, :is_paid=>is_paid)
@@ -1999,6 +2010,17 @@ module FinanceLoader
                   end
 
                   payment.update_attributes(:finance_transaction_id => transaction.id)
+                  
+                  student_fee_ledger = StudentFeeLedger.new
+                  student_fee_ledger.student_id = @student.id
+                  student_fee_ledger.ledger_date = transaction.transaction_date
+                  student_fee_ledger.ledger_title = ""
+                  student_fee_ledger.amount_to_pay = 0.0
+                  student_fee_ledger.fee_id = @financefee[f].id
+                  student_fee_ledger.amount_paid = transaction.amount
+                  student_fee_ledger.transaction_id = transaction.id
+                  student_fee_ledger.order_id = orderId
+                  student_fee_ledger.save
                   
                   unless @financefee[f].transaction_id.nil?
                     tid =   @financefee[f].transaction_id.to_s + ",#{transaction.id}"

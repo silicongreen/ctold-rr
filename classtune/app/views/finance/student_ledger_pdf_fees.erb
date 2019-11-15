@@ -176,44 +176,59 @@
                     <% end %>
                   <% elsif student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f > 0.00 %>
                       <% trans_type = "Received" %>
-                      <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"]) %>
+                      <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id, particular_id", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"]) %>
                       <% unless student_ledgers.nil? %>
                         <% student_ledgers.each do |student_ledger| %>
-                          <% payments = Payment.find(:all, :conditions => "finance_transaction_id = #{student_ledger.transaction_id} and payee_id = #{@student.id}") %>
-                          <% unless payments.nil? %>
-                            <% payments.each do |payment| %>
-                              <% trans << payment.order_id %>
-                              <% fee = FinanceFee.find(:first, :conditions => "id = #{payment.payment_id}") %>
+                          <% if student_ledger.transaction_id == 0 and student_ledger.particular_id > 0 %>
+                              <% trans_type = "Discount" %>
+                              <% fee = FinanceFee.find(:first, :conditions => "id = #{student_ledger.fee_id}") %>
                               <% unless fee.blank? %>
-                                <% date_id = fee.fee_collection_id %>
-                                <% d = FinanceFeeCollection.find(date_id) %>
-                                <% for_id << d.name %>
-                                <% particulars << d.name %>
-                                <% paid_fees = fee.finance_transactions %>
-                                  <% fine_amount = 0 %>
-                                  <% unless paid_fees.blank? %>
-                                    <% transaction_ids = paid_fees.map(&:id) %> 
-                                    <% unless transaction_ids.blank? %>
-                                      <% paidFineFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")") %>
-                                      <% unless paidFineFess.blank? %> 
-                                        <% fine_amount += paidFineFess.map(&:amount).sum.to_f %>
+                                  <% date_id = fee.fee_collection_id %>
+                                  <% d = FinanceFeeCollection.find(date_id) %>
+                                  <% for_id << d.name %>
+                              <% else %>    
+                                  <% student_ledger.destroy %>   
+                              <% end %>
+                              <% trans_id = trans.join(", ") %>
+                              <% info = for_id.join(", ") %>
+                              <% particular_name = particulars.join(", ") %>
+                          <% else %>
+                            <% payments = Payment.find(:all, :conditions => "finance_transaction_id = #{student_ledger.transaction_id} and payee_id = #{@student.id}") %>
+                            <% unless payments.nil? %>
+                              <% payments.each do |payment| %>
+                                <% trans << payment.order_id %>
+                                <% fee = FinanceFee.find(:first, :conditions => "id = #{payment.payment_id}") %>
+                                <% unless fee.blank? %>
+                                  <% date_id = fee.fee_collection_id %>
+                                  <% d = FinanceFeeCollection.find(date_id) %>
+                                  <% for_id << d.name %>
+                                  <% particulars << d.name %>
+                                  <% paid_fees = fee.finance_transactions %>
+                                    <% fine_amount = 0 %>
+                                    <% unless paid_fees.blank? %>
+                                      <% transaction_ids = paid_fees.map(&:id) %> 
+                                      <% unless transaction_ids.blank? %>
+                                        <% paidFineFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")") %>
+                                        <% unless paidFineFess.blank? %> 
+                                          <% fine_amount += paidFineFess.map(&:amount).sum.to_f %>
+                                        <% end %>
                                       <% end %>
                                     <% end %>
-                                  <% end %>
-                              <% else %>  
-                                <% student_ledger.destroy %>
+                                <% else %>  
+                                  <% student_ledger.destroy %>
+                                <% end %>
+                                <% particulars << "Trust Bank Payment" %>  
+                                <% payment_type = (payment.gateway_response[:payment_type] = "MB") ? "Mobile Banking" : "Card Online" %>
+                                <% particulars << payment_type %>    
+                                <% particulars << "Reference ID: " + payment.gateway_response[:ref_id] %>    
                               <% end %>
-                              <% particulars << "Trust Bank Payment" %>  
-                              <% payment_type = (payment.gateway_response[:payment_type] = "MB") ? "Mobile Banking" : "Card Online" %>
-                              <% particulars << payment_type %>    
-                              <% particulars << "Reference ID: " + payment.gateway_response[:ref_id] %>    
-                            <% end %>
-                            <% trans_id = trans.join(", ") %>
-                            <% info = for_id.join(", ") %>
-                            <% particular_name = particulars.join(", ") %>
-                            <% else %>  
-                                <% student_ledger.destroy %>   
-                            <% end %>
+                              <% trans_id = trans.join(", ") %>
+                              <% info = for_id.join(", ") %>
+                              <% particular_name = particulars.join(", ") %>
+                              <% else %>  
+                                  <% student_ledger.destroy %>   
+                              <% end %>
+                          <% end %>
                         <% end %>
                       <% end %>
                   <% end %>

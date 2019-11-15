@@ -4781,6 +4781,30 @@ class FinanceController < ApplicationController
                     if bal >= 0
                       found = true
                       FinanceFee.update_student_fee(@fee_collection, s, @fee)
+                      
+                      exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(s.id,@fee_collection.id).map(&:fee_particular_id)
+                      unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+                        exclude_particular_ids = exclude_particular_ids
+                      else
+                        exclude_particular_ids = [0]
+                      end
+                      if discount.finance_fee_particular_category_id == 0
+                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                      else
+                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                      end
+                      payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
+                      discount_amt = payable_ampt * discount.discount.to_f/ (discount.is_amount?? payable_ampt : 100)
+
+                      student_fee_ledger = StudentFeeLedger.new
+                      student_fee_ledger.student_id = s.id
+                      student_fee_ledger.ledger_date = Date.today
+                      student_fee_ledger.ledger_title = discount.name
+                      student_fee_ledger.amount_to_pay = 0.0
+                      student_fee_ledger.fee_id = @fee.id
+                      student_fee_ledger.particular_id = discount.id
+                      student_fee_ledger.amount_paid = discount_amt
+                      student_fee_ledger.save
                     else
                       found = false
                       collection_discount.destroy
@@ -4804,7 +4828,7 @@ class FinanceController < ApplicationController
                       if fee_discount_ids.blank?
                         fee_discount_ids[0] = 0
                       end
-                      fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
+                      fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
                       fee_discounts.each do |f_discount|
                         is_discount_excluded = false
                         excluded_discounts = StudentExcludeDiscount.find(:all, :conditions => "fee_collection_id = #{@fee_collection_id} and student_id = #{student.id} and fee_discount_id = #{f_discount.id}")
@@ -4820,7 +4844,32 @@ class FinanceController < ApplicationController
                     if remaining_amount >= 0
                       found = true
                       @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{@fee_collection_id} and is_paid=#{false} and students.id = #{discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
+                      s = student
                       FinanceFee.update_student_fee(@fee_collection, student, @fee)
+                      
+                      exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(s.id,@fee_collection.id).map(&:fee_particular_id)
+                      unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+                        exclude_particular_ids = exclude_particular_ids
+                      else
+                        exclude_particular_ids = [0]
+                      end
+                      if discount.finance_fee_particular_category_id == 0
+                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                      else
+                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                      end
+                      payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
+                      discount_amt = payable_ampt * discount.discount.to_f/ (discount.is_amount?? payable_ampt : 100)
+
+                      student_fee_ledger = StudentFeeLedger.new
+                      student_fee_ledger.student_id = s.id
+                      student_fee_ledger.ledger_date = Date.today
+                      student_fee_ledger.ledger_title = discount.name
+                      student_fee_ledger.amount_to_pay = 0.0
+                      student_fee_ledger.fee_id = @fee.id
+                      student_fee_ledger.particular_id = discount.id
+                      student_fee_ledger.amount_paid = discount_amt
+                      student_fee_ledger.save
                     else
                       found = false
                       collection_discount.destroy
@@ -4979,6 +5028,30 @@ class FinanceController < ApplicationController
                     if bal >= 0
                       found = true
                       FinanceFee.update_student_fee(@fee_collection, s, @fee)
+                      
+                      exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(s.id,@fee_collection.id).map(&:fee_particular_id)
+                      unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+                        exclude_particular_ids = exclude_particular_ids
+                      else
+                        exclude_particular_ids = [0]
+                      end
+                      if discount.finance_fee_particular_category_id == 0
+                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                      else
+                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                      end
+                      payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
+                      discount_amt = payable_ampt * discount.discount.to_f/ (discount.is_amount?? payable_ampt : 100)
+
+                      student_fee_ledger = StudentFeeLedger.new
+                      student_fee_ledger.student_id = s.id
+                      student_fee_ledger.ledger_date = Date.today
+                      student_fee_ledger.ledger_title = discount.name
+                      student_fee_ledger.amount_to_pay = 0.0
+                      student_fee_ledger.fee_id = @fee.id
+                      student_fee_ledger.particular_id = discount.id
+                      student_fee_ledger.amount_paid = discount_amt
+                      student_fee_ledger.save
                     else
                       found = true
                       collection_discount.destroy
@@ -5000,7 +5073,7 @@ class FinanceController < ApplicationController
                       if fee_discount_ids.blank?
                         fee_discount_ids[0] = 0
                       end
-                      fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
+                      fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
                       fee_discounts.each do |f_discount|
                         is_discount_excluded = false
                         excluded_discounts = StudentExcludeDiscount.find(:all, :conditions => "fee_collection_id = #{@fee_collection_id} and student_id = #{student.id} and fee_discount_id = #{f_discount.id}")
@@ -5016,7 +5089,32 @@ class FinanceController < ApplicationController
                     if remaining_amount >= 0
                       found = true
                       @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{@fee_collection_id} and is_paid=#{false} and students.id = #{discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
+                      s = student
                       FinanceFee.update_student_fee(@fee_collection, student, @fee)
+                      
+                      exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(s.id,@fee_collection.id).map(&:fee_particular_id)
+                      unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+                        exclude_particular_ids = exclude_particular_ids
+                      else
+                        exclude_particular_ids = [0]
+                      end
+                      if discount.finance_fee_particular_category_id == 0
+                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                      else
+                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                      end
+                      payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
+                      discount_amt = payable_ampt * discount.discount.to_f/ (discount.is_amount?? payable_ampt : 100)
+
+                      student_fee_ledger = StudentFeeLedger.new
+                      student_fee_ledger.student_id = s.id
+                      student_fee_ledger.ledger_date = Date.today
+                      student_fee_ledger.ledger_title = discount.name
+                      student_fee_ledger.amount_to_pay = 0.0
+                      student_fee_ledger.fee_id = @fee.id
+                      student_fee_ledger.particular_id = discount.id
+                      student_fee_ledger.amount_paid = discount_amt
+                      student_fee_ledger.save
                     else
                       found = false
                       collection_discount.destroy
@@ -5098,7 +5196,7 @@ class FinanceController < ApplicationController
                   k = 0
                   @fees.each do |f|
                     s = f.student
-
+                    @fee = f
                     unless s.has_paid_fees
                       bal = FinanceFee.check_update_student_fee(@fee_collection, s, f)
                       if bal < 0
@@ -5110,7 +5208,7 @@ class FinanceController < ApplicationController
                           if fee_discount_ids.blank?
                             fee_discount_ids[0] = 0
                           end
-                          fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
+                          fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
                           fee_discounts.each do |f_discount|
                             discount_amt += bal * f_discount.discount.to_f/ (f_discount.is_amount?? bal : 100)
                           end
@@ -5127,8 +5225,33 @@ class FinanceController < ApplicationController
                   else
                     @fees.each do |f|
                       s = f.student
+                      @fee = f
                       unless s.has_paid_fees
                         FinanceFee.update_student_fee(@fee_collection, s, f)
+                        
+                        exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(s.id,@fee_collection.id).map(&:fee_particular_id)
+                        unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+                          exclude_particular_ids = exclude_particular_ids
+                        else
+                          exclude_particular_ids = [0]
+                        end
+                        if discount.finance_fee_particular_category_id == 0
+                          fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                        else
+                          fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                        end
+                        payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
+                        discount_amt = payable_ampt * discount.discount.to_f/ (discount.is_amount?? payable_ampt : 100)
+
+                        student_fee_ledger = StudentFeeLedger.new
+                        student_fee_ledger.student_id = s.id
+                        student_fee_ledger.ledger_date = Date.today
+                        student_fee_ledger.ledger_title = discount.name
+                        student_fee_ledger.amount_to_pay = 0.0
+                        student_fee_ledger.fee_id = @fee.id
+                        student_fee_ledger.particular_id = discount.id
+                        student_fee_ledger.amount_paid = discount_amt
+                        student_fee_ledger.save
                       end
                     end
                   end
@@ -5150,7 +5273,7 @@ class FinanceController < ApplicationController
                           if fee_discount_ids.blank?
                             fee_discount_ids[0] = 0
                           end
-                          fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
+                          fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
                           fee_discounts.each do |f_discount|
                             is_discount_excluded = false
                             excluded_discounts = StudentExcludeDiscount.find(:all, :conditions => "fee_collection_id = #{@fee_collection.id} and student_id = #{student.id} and fee_discount_id = #{f_discount.id}")
@@ -5284,7 +5407,7 @@ class FinanceController < ApplicationController
                   k = 0
                   @fees.each do |f|
                     s = f.student
-
+                    @fee = f
                     unless s.has_paid_fees
                       bal = FinanceFee.check_update_student_fee(@fee_collection, s, f)
                       if bal < 0
@@ -5296,7 +5419,7 @@ class FinanceController < ApplicationController
                           if fee_discount_ids.blank?
                             fee_discount_ids[0] = 0
                           end
-                          fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
+                          fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
                           fee_discounts.each do |f_discount|
                             discount_amt += bal * f_discount.discount.to_f/ (f_discount.is_amount?? bal : 100)
                           end
@@ -5312,8 +5435,33 @@ class FinanceController < ApplicationController
                   else
                     @fees.each do |f|
                       s = f.student
+                      @fee = f
                       unless s.has_paid_fees
                         FinanceFee.update_student_fee(@fee_collection, s, f)
+                        
+                        exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(s.id,@fee_collection.id).map(&:fee_particular_id)
+                        unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+                          exclude_particular_ids = exclude_particular_ids
+                        else
+                          exclude_particular_ids = [0]
+                        end
+                        if discount.finance_fee_particular_category_id == 0
+                          fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                        else
+                          fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                        end
+                        payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
+                        discount_amt = payable_ampt * discount.discount.to_f/ (discount.is_amount?? payable_ampt : 100)
+
+                        student_fee_ledger = StudentFeeLedger.new
+                        student_fee_ledger.student_id = s.id
+                        student_fee_ledger.ledger_date = Date.today
+                        student_fee_ledger.ledger_title = discount.name
+                        student_fee_ledger.amount_to_pay = 0.0
+                        student_fee_ledger.fee_id = @fee.id
+                        student_fee_ledger.particular_id = discount.id
+                        student_fee_ledger.amount_paid = discount_amt
+                        student_fee_ledger.save
                       end
                     end
                   end
@@ -5334,7 +5482,7 @@ class FinanceController < ApplicationController
                           if fee_discount_ids.blank?
                             fee_discount_ids[0] = 0
                           end
-                          fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
+                          fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
                           fee_discounts.each do |f_discount|
                             is_discount_excluded = false
                             excluded_discounts = StudentExcludeDiscount.find(:all, :conditions => "fee_collection_id = #{@fee_collection.id} and student_id = #{student.id} and fee_discount_id = #{f_discount.id}")
@@ -5465,6 +5613,31 @@ class FinanceController < ApplicationController
                 s = @fee.student
                 unless s.has_paid_fees
                   FinanceFee.update_student_fee(@fee_collection, s, @fee)
+                  student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and particular_id = #{discount.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0")
+                  unless student_fee_ledgers.blank?
+                      student_fee_ledgers.each do |student_fee_ledger|
+                        student_fee_ledger.destroy
+                      end
+                    else
+                      bal = FinanceFee.get_student_balance(@fee_collection, s, @fee)
+                      student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0 and particular_id > 0")
+                      amt = 0
+                      unless student_fee_ledgers.blank?
+                        student_fee_ledgers.each do |student_fee_ledger|
+                          if student_fee_ledger.particular_id == discount.id
+                            amt += student_fee_ledger.amount_paid.to_f
+                          end
+                        end
+                      end
+                      bal = bal + amt
+                      bal = 0 if bal < 0
+                      student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay > 0.00 and amount_paid = 0.00 and transaction_id = 0 and particular_id = 0")
+                      unless student_fee_ledgers.blank?
+                        student_fee_ledgers.each do |student_fee_ledger|
+                          student_fee_ledger.update_attributes(:amount_to_pay=>bal)
+                        end
+                      end
+                    end
                 end
                 
                 @batch   = Batch.find(@batch_id)
@@ -5542,6 +5715,31 @@ class FinanceController < ApplicationController
               s = @fee.student
               unless s.has_paid_fees
                 FinanceFee.update_student_fee(@fee_collection, s, @fee)
+                student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and particular_id = #{discount.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0")
+                unless student_fee_ledgers.blank?
+                    student_fee_ledgers.each do |student_fee_ledger|
+                      student_fee_ledger.destroy
+                    end
+                  else
+                    bal = FinanceFee.get_student_balance(@fee_collection, s, @fee)
+                    student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0 and particular_id > 0")
+                    amt = 0
+                    unless student_fee_ledgers.blank?
+                      student_fee_ledgers.each do |student_fee_ledger|
+                        if student_fee_ledger.particular_id == discount.id
+                          amt += student_fee_ledger.amount_paid.to_f
+                        end
+                      end
+                    end
+                    bal = bal + amt
+                    bal = 0 if bal < 0
+                    student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay > 0.00 and amount_paid = 0.00 and transaction_id = 0 and particular_id = 0")
+                    unless student_fee_ledgers.blank?
+                      student_fee_ledgers.each do |student_fee_ledger|
+                        student_fee_ledger.update_attributes(:amount_to_pay=>bal)
+                      end
+                    end
+                  end
               end
               
               @batch   = Batch.find(@batch_id)
@@ -5620,6 +5818,31 @@ class FinanceController < ApplicationController
                 s = @fee.student
                 unless s.has_paid_fees
                   FinanceFee.update_student_fee(@fee_collection, s, @fee)
+                  student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and particular_id = #{discount.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0")
+                  unless student_fee_ledgers.blank?
+                      student_fee_ledgers.each do |student_fee_ledger|
+                        student_fee_ledger.destroy
+                      end
+                    else
+                      bal = FinanceFee.get_student_balance(@fee_collection, s, @fee)
+                      student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0 and particular_id > 0")
+                      amt = 0
+                      unless student_fee_ledgers.blank?
+                        student_fee_ledgers.each do |student_fee_ledger|
+                          if student_fee_ledger.particular_id == discount.id
+                            amt += student_fee_ledger.amount_paid.to_f
+                          end
+                        end
+                      end
+                      bal = bal + amt
+                      bal = 0 if bal < 0
+                      student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay > 0.00 and amount_paid = 0.00 and transaction_id = 0 and particular_id = 0")
+                      unless student_fee_ledgers.blank?
+                        student_fee_ledgers.each do |student_fee_ledger|
+                          student_fee_ledger.update_attributes(:amount_to_pay=>bal)
+                        end
+                      end
+                    end
                 end
                 
                 render :update do |page|
@@ -5647,6 +5870,31 @@ class FinanceController < ApplicationController
               s = @fee.student
               unless s.has_paid_fees
                 FinanceFee.update_student_fee(@fee_collection, s, @fee)
+                student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and particular_id = #{discount.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0")
+                unless student_fee_ledgers.blank?
+                    student_fee_ledgers.each do |student_fee_ledger|
+                      student_fee_ledger.destroy
+                    end
+                  else
+                    bal = FinanceFee.get_student_balance(@fee_collection, s, @fee)
+                    student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0 and particular_id > 0")
+                    amt = 0
+                    unless student_fee_ledgers.blank?
+                      student_fee_ledgers.each do |student_fee_ledger|
+                        if student_fee_ledger.particular_id == discount.id
+                          amt += student_fee_ledger.amount_paid.to_f
+                        end
+                      end
+                    end
+                    bal = bal + amt
+                    bal = 0 if bal < 0
+                    student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay > 0.00 and amount_paid = 0.00 and transaction_id = 0 and particular_id = 0")
+                    unless student_fee_ledgers.blank?
+                      student_fee_ledgers.each do |student_fee_ledger|
+                        student_fee_ledger.update_attributes(:amount_to_pay=>bal)
+                      end
+                    end
+                  end
               end
               
               render :update do |page|
@@ -5677,8 +5925,34 @@ class FinanceController < ApplicationController
               
                 @fees.each do |f|
                   s = f.student
+                  @fee = f
                   unless s.has_paid_fees
                     FinanceFee.update_student_fee(@fee_collection, s, f)
+                    student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and particular_id = #{discount.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0")
+                    unless student_fee_ledgers.blank?
+                        student_fee_ledgers.each do |student_fee_ledger|
+                          student_fee_ledger.destroy
+                        end
+                      else
+                        bal = FinanceFee.get_student_balance(@fee_collection, s, @fee)
+                        student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0 and particular_id > 0")
+                        amt = 0
+                        unless student_fee_ledgers.blank?
+                          student_fee_ledgers.each do |student_fee_ledger|
+                            if student_fee_ledger.particular_id == discount.id
+                              amt += student_fee_ledger.amount_paid.to_f
+                            end
+                          end
+                        end
+                        bal = bal + amt
+                        bal = 0 if bal < 0
+                        student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay > 0.00 and amount_paid = 0.00 and transaction_id = 0 and particular_id = 0")
+                        unless student_fee_ledgers.blank?
+                          student_fee_ledgers.each do |student_fee_ledger|
+                            student_fee_ledger.update_attributes(:amount_to_pay=>bal)
+                          end
+                        end
+                      end
                   end
                 end
                 
@@ -5706,8 +5980,34 @@ class FinanceController < ApplicationController
 
               @fees.each do |f|
                 s = f.student
+                @fee = f
                 unless s.has_paid_fees
                   FinanceFee.update_student_fee(@fee_collection, s, f)
+                  student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and particular_id = #{discount.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0")
+                  unless student_fee_ledgers.blank?
+                      student_fee_ledgers.each do |student_fee_ledger|
+                        student_fee_ledger.destroy
+                      end
+                    else
+                      bal = FinanceFee.get_student_balance(@fee_collection, s, @fee)
+                      student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0 and particular_id > 0")
+                      amt = 0
+                      unless student_fee_ledgers.blank?
+                        student_fee_ledgers.each do |student_fee_ledger|
+                          if student_fee_ledger.particular_id == discount.id
+                            amt += student_fee_ledger.amount_paid.to_f
+                          end
+                        end
+                      end
+                      bal = bal + amt
+                      bal = 0 if bal < 0
+                      student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay > 0.00 and amount_paid = 0.00 and transaction_id = 0 and particular_id = 0")
+                      unless student_fee_ledgers.blank?
+                        student_fee_ledgers.each do |student_fee_ledger|
+                          student_fee_ledger.update_attributes(:amount_to_pay=>bal)
+                        end
+                      end
+                    end
                 end
               end
               
@@ -5739,8 +6039,34 @@ class FinanceController < ApplicationController
               
                 @fees.each do |f|
                   s = f.student
+                  @fee = f
                   unless s.has_paid_fees
                     FinanceFee.update_student_fee(@fee_collection, s, f)
+                    student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and particular_id = #{discount.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0")
+                    unless student_fee_ledgers.blank?
+                        student_fee_ledgers.each do |student_fee_ledger|
+                          student_fee_ledger.destroy
+                        end
+                      else
+                        bal = FinanceFee.get_student_balance(@fee_collection, s, @fee)
+                        student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0 and particular_id > 0")
+                        amt = 0
+                        unless student_fee_ledgers.blank?
+                          student_fee_ledgers.each do |student_fee_ledger|
+                            if student_fee_ledger.particular_id == discount.id
+                              amt += student_fee_ledger.amount_paid.to_f
+                            end
+                          end
+                        end
+                        bal = bal + amt
+                        bal = 0 if bal < 0
+                        student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay > 0.00 and amount_paid = 0.00 and transaction_id = 0 and particular_id = 0")
+                        unless student_fee_ledgers.blank?
+                          student_fee_ledgers.each do |student_fee_ledger|
+                            student_fee_ledger.update_attributes(:amount_to_pay=>bal)
+                          end
+                        end
+                      end
                   end
                 end
                 
@@ -5768,8 +6094,34 @@ class FinanceController < ApplicationController
 
               @fees.each do |f|
                 s = f.student
+                @fee = f
                 unless s.has_paid_fees
                   FinanceFee.update_student_fee(@fee_collection, s, f)
+                  student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and particular_id = #{discount.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0")
+                  unless student_fee_ledgers.blank?
+                      student_fee_ledgers.each do |student_fee_ledger|
+                        student_fee_ledger.destroy
+                      end
+                    else
+                      bal = FinanceFee.get_student_balance(@fee_collection, s, @fee)
+                      student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0 and particular_id > 0")
+                      amt = 0
+                      unless student_fee_ledgers.blank?
+                        student_fee_ledgers.each do |student_fee_ledger|
+                          if student_fee_ledger.particular_id == discount.id
+                            amt += student_fee_ledger.amount_paid.to_f
+                          end
+                        end
+                      end
+                      bal = bal + amt
+                      bal = 0 if bal < 0
+                      student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay > 0.00 and amount_paid = 0.00 and transaction_id = 0 and particular_id = 0")
+                      unless student_fee_ledgers.blank?
+                        student_fee_ledgers.each do |student_fee_ledger|
+                          student_fee_ledger.update_attributes(:amount_to_pay=>bal)
+                        end
+                      end
+                    end
                 end
               end
               
@@ -7643,6 +7995,30 @@ class FinanceController < ApplicationController
                   s = @fee.student
                   unless s.has_paid_fees
                     FinanceFee.update_student_fee(@fee_collection, s, @fee)
+                    
+                    exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(s.id,@fee_collection.id).map(&:fee_particular_id)
+                    unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+                      exclude_particular_ids = exclude_particular_ids
+                    else
+                      exclude_particular_ids = [0]
+                    end
+                    if discount.finance_fee_particular_category_id == 0
+                      fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                    else
+                      fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                    end
+                    payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
+                    discount_amt = payable_ampt * discount.discount.to_f/ (discount.is_amount?? payable_ampt : 100)
+
+                    student_fee_ledger = StudentFeeLedger.new
+                    student_fee_ledger.student_id = s.id
+                    student_fee_ledger.ledger_date = Date.today
+                    student_fee_ledger.ledger_title = discount.name
+                    student_fee_ledger.amount_to_pay = 0.0
+                    student_fee_ledger.fee_id = @fee.id
+                    student_fee_ledger.particular_id = discount.id
+                    student_fee_ledger.amount_paid = discount_amt
+                    student_fee_ledger.save
                   end
 
                   if discount.is_visible == false
@@ -7670,6 +8046,31 @@ class FinanceController < ApplicationController
                 s = @fee.student
                 unless s.has_paid_fees
                   FinanceFee.update_student_fee(@fee_collection, s, @fee)
+
+                  
+                  exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(s.id,@fee_collection.id).map(&:fee_particular_id)
+                  unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+                    exclude_particular_ids = exclude_particular_ids
+                  else
+                    exclude_particular_ids = [0]
+                  end
+                  if discount.finance_fee_particular_category_id == 0
+                    fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                  else
+                    fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                  end
+                  payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
+                  discount_amt = payable_ampt * discount.discount.to_f/ (discount.is_amount?? payable_ampt : 100)
+                  
+                  student_fee_ledger = StudentFeeLedger.new
+                  student_fee_ledger.student_id = s.id
+                  student_fee_ledger.ledger_date = Date.today
+                  student_fee_ledger.ledger_title = discount.name
+                  student_fee_ledger.amount_to_pay = 0.0
+                  student_fee_ledger.fee_id = @fee.id
+                  student_fee_ledger.particular_id = discount.id
+                  student_fee_ledger.amount_paid = discount_amt
+                  student_fee_ledger.save
                 end
 
                 if discount.is_visible == false
@@ -7690,6 +8091,30 @@ class FinanceController < ApplicationController
             s = @fee.student
             unless s.has_paid_fees
               FinanceFee.update_student_fee(@fee_collection, s, @fee)
+              
+              exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(s.id,@fee_collection.id).map(&:fee_particular_id)
+              unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+                exclude_particular_ids = exclude_particular_ids
+              else
+                exclude_particular_ids = [0]
+              end
+              if discount.finance_fee_particular_category_id == 0
+                fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+              else
+                fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+              end
+              payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
+              discount_amt = payable_ampt * discount.discount.to_f/ (discount.is_amount?? payable_ampt : 100)
+
+              student_fee_ledger = StudentFeeLedger.new
+              student_fee_ledger.student_id = s.id
+              student_fee_ledger.ledger_date = Date.today
+              student_fee_ledger.ledger_title = discount.name
+              student_fee_ledger.amount_to_pay = 0.0
+              student_fee_ledger.fee_id = @fee.id
+              student_fee_ledger.particular_id = discount.id
+              student_fee_ledger.amount_paid = discount_amt
+              student_fee_ledger.save
             end
           end
         end
@@ -7732,6 +8157,29 @@ class FinanceController < ApplicationController
         bal = FinanceFee.check_update_student_fee(@fee_collection, s, @fee)
         if bal >= 0
           FinanceFee.update_student_fee(@fee_collection, s, @fee)
+          
+          exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(s.id,@fee_collection.id).map(&:fee_particular_id)
+          unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+            exclude_particular_ids = exclude_particular_ids
+          else
+            exclude_particular_ids = [0]
+          end
+          if @fee_discount.finance_fee_particular_category_id == 0
+            fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+          else
+            fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{@fee_discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+          end
+          payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
+          discount_amt = payable_ampt * @fee_discount.discount.to_f/ (@fee_discount.is_amount?? payable_ampt : 100)
+          student_fee_ledger = StudentFeeLedger.new
+          student_fee_ledger.student_id = s.id
+          student_fee_ledger.ledger_date = Date.today
+          student_fee_ledger.ledger_title = @fee_discount.name
+          student_fee_ledger.amount_to_pay = 0.0
+          student_fee_ledger.fee_id = @fee.id
+          student_fee_ledger.particular_id = @fee_discount.id
+          student_fee_ledger.amount_paid = discount_amt
+          student_fee_ledger.save
            
           fee_discount_collection = FeeDiscountCollection.new(
             :finance_fee_collection_id => @fee_collection.id,
@@ -7799,6 +8247,33 @@ class FinanceController < ApplicationController
             s = @fee.student
             unless s.has_paid_fees
               FinanceFee.update_student_fee(@fee_collection, s, @fee)
+              
+              student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and particular_id = #{discount.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0")
+              unless student_fee_ledgers.blank?
+                student_fee_ledgers.each do |student_fee_ledger|
+                  student_fee_ledger.destroy
+                end
+              else
+                bal = FinanceFee.get_student_balance(@fee_collection, s, @fee)
+                student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0 and particular_id > 0")
+                amt = 0
+                unless student_fee_ledgers.blank?
+                  student_fee_ledgers.each do |student_fee_ledger|
+                    if student_fee_ledger.particular_id == discount.id
+                      amt += student_fee_ledger.amount_paid.to_f
+                    end
+                  end
+                end
+                bal = bal + amt
+                bal = 0 if bal < 0
+                student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay > 0.00 and amount_paid = 0.00 and transaction_id = 0 and particular_id = 0")
+                unless student_fee_ledgers.blank?
+                  student_fee_ledgers.each do |student_fee_ledger|
+                    student_fee_ledger.update_attributes(:amount_to_pay=>bal)
+                  end
+                end
+              end
+              
             end
 
             if discount.is_visible == false
@@ -7832,6 +8307,32 @@ class FinanceController < ApplicationController
           s = @fee.student
           unless s.has_paid_fees
             FinanceFee.update_student_fee(@fee_collection, s, @fee)
+            
+            student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and particular_id = #{discount.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0")
+            unless student_fee_ledgers.blank?
+                student_fee_ledgers.each do |student_fee_ledger|
+                  student_fee_ledger.destroy
+                end
+              else
+                bal = FinanceFee.get_student_balance(@fee_collection, s, @fee)
+                student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0 and particular_id > 0")
+                amt = 0
+                unless student_fee_ledgers.blank?
+                  student_fee_ledgers.each do |student_fee_ledger|
+                    if student_fee_ledger.particular_id == discount.id
+                      amt += student_fee_ledger.amount_paid.to_f
+                    end
+                  end
+                end
+                bal = bal + amt
+                bal = 0 if bal < 0
+                student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay > 0.00 and amount_paid = 0.00 and transaction_id = 0 and particular_id = 0")
+                unless student_fee_ledgers.blank?
+                  student_fee_ledgers.each do |student_fee_ledger|
+                    student_fee_ledger.update_attributes(:amount_to_pay=>bal)
+                  end
+                end
+              end
           end
 
 #          if discount.is_visible == false
@@ -7859,6 +8360,32 @@ class FinanceController < ApplicationController
       s = @fee.student
       unless s.has_paid_fees
         FinanceFee.update_student_fee(@fee_collection, s, @fee)
+        
+        student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and particular_id = #{discount.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0")
+        unless student_fee_ledgers.blank?
+          student_fee_ledgers.each do |student_fee_ledger|
+            student_fee_ledger.destroy
+          end
+        else
+          bal = FinanceFee.get_student_balance(@fee_collection, s, @fee)
+          student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay = 0.00 and amount_paid > 0.00 and transaction_id = 0 and particular_id > 0")
+          amt = 0
+          unless student_fee_ledgers.blank?
+            student_fee_ledgers.each do |student_fee_ledger|
+              if student_fee_ledger.particular_id == discount.id
+                amt += student_fee_ledger.amount_paid.to_f
+              end
+            end
+          end
+          bal = bal + amt
+          bal = 0 if bal < 0
+          student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{@fee.id} and amount_to_pay > 0.00 and amount_paid = 0.00 and transaction_id = 0 and particular_id = 0")
+          unless student_fee_ledgers.blank?
+            student_fee_ledgers.each do |student_fee_ledger|
+              student_fee_ledger.update_attributes(:amount_to_pay=>bal)
+            end
+          end
+        end
       end
       render :update do |page|
         page << "reload_discount(#{@discount_id});"
@@ -7888,7 +8415,7 @@ class FinanceController < ApplicationController
       FinanceFee.new_student_fee_with_tmp_particular(@date,@student)
       fee = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id_and_is_paid(@student.id, @date.id, @student.batch_id, false)
       unless fee.blank?
-        student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{@student.id} and fee_id = #{fee.id} and particular_id = #{@particular_id}")
+        student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{@student.id} and fee_id = #{fee.id} and particular_id = #{@particular_id} and amount_to_pay > 0.00 and amount_paid = 0.00 and transaction_id = 0")
         unless student_fee_ledgers.blank?
           student_fee_ledgers.each do |student_fee_ledger|
             student_fee_ledger.destroy

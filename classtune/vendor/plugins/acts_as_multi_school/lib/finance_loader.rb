@@ -1154,7 +1154,6 @@ module FinanceLoader
   end
   
   def pay_student(amount_from_gateway, total_fees, request_params, orderId, trans_date, ref_id)
-    abort(request_params["mobile_view"].inspect)
     unless @financefee.is_paid?
       unless amount_from_gateway.to_f < 0
         #if orderId.to_s == "O1049432"
@@ -1207,7 +1206,7 @@ module FinanceLoader
 
             proccess_particulars_category = []
             loop_particular = 0
-            unless request_params.nil?
+            unless request_params.nil? and request_params["mobile_view"].to_i == 1
               @fee_particulars.each do |fp|
                 advanced = false
                 particular_amount = fp.amount.to_f

@@ -1206,7 +1206,7 @@ module FinanceLoader
 
             proccess_particulars_category = []
             loop_particular = 0
-            unless request_params.nil? and request_params["mobile_view"].to_i == 1
+            unless request_params.nil?
               @fee_particulars.each do |fp|
                 advanced = false
                 particular_amount = fp.amount.to_f
@@ -1244,26 +1244,35 @@ module FinanceLoader
                       finance_transaction_particular.save
                     end
                   else
-#                    particular_amount = fp.amount.to_f
-#                    finance_transaction_particular = FinanceTransactionParticular.new
-#                    finance_transaction_particular.finance_transaction_id = transaction.id
-#                    finance_transaction_particular.particular_id = fp.id
-#                    finance_transaction_particular.particular_type = 'Particular'
-#                    finance_transaction_particular.transaction_type = 'Fee Collection'
-#                    finance_transaction_particular.amount = particular_amount
-#                    finance_transaction_particular.transaction_date = transaction.transaction_date
-#                    finance_transaction_particular.save
+                     unless request_params["mobile_view"].blank?
+                       if request_params["mobile_view"].to_i == 1
+                          particular_amount = fp.amount.to_f
+                          finance_transaction_particular = FinanceTransactionParticular.new
+                          finance_transaction_particular.finance_transaction_id = transaction.id
+                          finance_transaction_particular.particular_id = fp.id
+                          finance_transaction_particular.particular_type = 'Particular'
+                          finance_transaction_particular.transaction_type = 'Fee Collection'
+                          finance_transaction_particular.amount = particular_amount
+                          finance_transaction_particular.transaction_date = transaction.transaction_date
+                          finance_transaction_particular.save
+                        end
+                     end
                   end
                 else
-#                  particular_amount = fp.amount.to_f
-#                  finance_transaction_particular = FinanceTransactionParticular.new
-#                  finance_transaction_particular.finance_transaction_id = transaction.id
-#                  finance_transaction_particular.particular_id = fp.id
-#                  finance_transaction_particular.particular_type = 'Particular'
-#                  finance_transaction_particular.transaction_type = 'Fee Collection'
-#                  finance_transaction_particular.amount = particular_amount
-#                  finance_transaction_particular.transaction_date = transaction.transaction_date
-#                  finance_transaction_particular.save
+                  unless request_params["mobile_view"].blank?
+                    if request_params["mobile_view"].to_i == 1
+                        particular_amount = fp.amount.to_f
+                        finance_transaction_particular = FinanceTransactionParticular.new
+                        finance_transaction_particular.finance_transaction_id = transaction.id
+                        finance_transaction_particular.particular_id = fp.id
+                        finance_transaction_particular.particular_type = 'Particular'
+                        finance_transaction_particular.transaction_type = 'Fee Collection'
+                        finance_transaction_particular.amount = particular_amount
+                        finance_transaction_particular.transaction_date = transaction.transaction_date
+                        finance_transaction_particular.save
+                     end
+                  end
+                  
                 end
               end
 
@@ -1281,26 +1290,34 @@ module FinanceLoader
                       finance_transaction_particular.transaction_date = transaction.transaction_date
                       finance_transaction_particular.save
                     else
-#                      discount_amount = @onetime_discounts_amount[od.id].to_f
-#                      finance_transaction_particular = FinanceTransactionParticular.new
-#                      finance_transaction_particular.finance_transaction_id = transaction.id
-#                      finance_transaction_particular.particular_id = od.id
-#                      finance_transaction_particular.particular_type = 'Adjustment'
-#                      finance_transaction_particular.transaction_type = 'Discount'
-#                      finance_transaction_particular.amount = discount_amount
-#                      finance_transaction_particular.transaction_date = transaction.transaction_date
-#                      finance_transaction_particular.save
+                       unless request_params["mobile_view"].blank?
+                          if request_params["mobile_view"].to_i == 1 
+                            discount_amount = @onetime_discounts_amount[od.id].to_f
+                            finance_transaction_particular = FinanceTransactionParticular.new
+                            finance_transaction_particular.finance_transaction_id = transaction.id
+                            finance_transaction_particular.particular_id = od.id
+                            finance_transaction_particular.particular_type = 'Adjustment'
+                            finance_transaction_particular.transaction_type = 'Discount'
+                            finance_transaction_particular.amount = discount_amount
+                            finance_transaction_particular.transaction_date = transaction.transaction_date
+                            finance_transaction_particular.save
+                          end
+                       end
                     end
                   else
-#                    discount_amount = @onetime_discounts_amount[od.id].to_f
-#                    finance_transaction_particular = FinanceTransactionParticular.new
-#                    finance_transaction_particular.finance_transaction_id = transaction.id
-#                    finance_transaction_particular.particular_id = od.id
-#                    finance_transaction_particular.particular_type = 'Adjustment'
-#                    finance_transaction_particular.transaction_type = 'Discount'
-#                    finance_transaction_particular.amount = discount_amount
-#                    finance_transaction_particular.transaction_date = transaction.transaction_date
-#                    finance_transaction_particular.save
+                    unless request_params["mobile_view"].blank?
+                      if request_params["mobile_view"].to_i == 1 
+                        discount_amount = @onetime_discounts_amount[od.id].to_f
+                        finance_transaction_particular = FinanceTransactionParticular.new
+                        finance_transaction_particular.finance_transaction_id = transaction.id
+                        finance_transaction_particular.particular_id = od.id
+                        finance_transaction_particular.particular_type = 'Adjustment'
+                        finance_transaction_particular.transaction_type = 'Discount'
+                        finance_transaction_particular.amount = discount_amount
+                        finance_transaction_particular.transaction_date = transaction.transaction_date
+                        finance_transaction_particular.save
+                      end
+                    end
                   end
                 end
               end
@@ -1319,26 +1336,35 @@ module FinanceLoader
                       finance_transaction_particular.transaction_date = transaction.transaction_date
                       finance_transaction_particular.save
                     else
-#                      discount_amount = @discounts_amount[od.id]
-#                      finance_transaction_particular = FinanceTransactionParticular.new
-#                      finance_transaction_particular.finance_transaction_id = transaction.id
-#                      finance_transaction_particular.particular_id = od.id
-#                      finance_transaction_particular.particular_type = 'Adjustment'
-#                      finance_transaction_particular.transaction_type = 'Discount'
-#                      finance_transaction_particular.amount = discount_amount
-#                      finance_transaction_particular.transaction_date = transaction.transaction_date
-#                      finance_transaction_particular.save
+                       unless request_params["mobile_view"].blank?
+                          if request_params["mobile_view"].to_i == 1 
+                            discount_amount = @discounts_amount[od.id]
+                            finance_transaction_particular = FinanceTransactionParticular.new
+                            finance_transaction_particular.finance_transaction_id = transaction.id
+                            finance_transaction_particular.particular_id = od.id
+                            finance_transaction_particular.particular_type = 'Adjustment'
+                            finance_transaction_particular.transaction_type = 'Discount'
+                            finance_transaction_particular.amount = discount_amount
+                            finance_transaction_particular.transaction_date = transaction.transaction_date
+                            finance_transaction_particular.save
+                          end
+                       end
                     end
                   else
-#                    discount_amount = @discounts_amount[od.id]
-#                    finance_transaction_particular = FinanceTransactionParticular.new
-#                    finance_transaction_particular.finance_transaction_id = transaction.id
-#                    finance_transaction_particular.particular_id = od.id
-#                    finance_transaction_particular.particular_type = 'Adjustment'
-#                    finance_transaction_particular.transaction_type = 'Discount'
-#                    finance_transaction_particular.amount = discount_amount
-#                    finance_transaction_particular.transaction_date = transaction.transaction_date
-#                    finance_transaction_particular.save
+                    unless request_params["mobile_view"].blank?
+                      if request_params["mobile_view"].to_i == 1 
+                        discount_amount = @discounts_amount[od.id]
+                        finance_transaction_particular = FinanceTransactionParticular.new
+                        finance_transaction_particular.finance_transaction_id = transaction.id
+                        finance_transaction_particular.particular_id = od.id
+                        finance_transaction_particular.particular_type = 'Adjustment'
+                        finance_transaction_particular.transaction_type = 'Discount'
+                        finance_transaction_particular.amount = discount_amount
+                        finance_transaction_particular.transaction_date = transaction.transaction_date
+                        finance_transaction_particular.save
+                      end
+                    end
+                    
                   end
                 end
               end
@@ -1355,30 +1381,38 @@ module FinanceLoader
                   finance_transaction_particular.transaction_date = transaction.transaction_date
                   finance_transaction_particular.save
                 else
-#                  if transaction.vat_included?
-#                    vat_amount = transaction.vat_amount
-#                    finance_transaction_particular = FinanceTransactionParticular.new
-#                    finance_transaction_particular.finance_transaction_id = transaction.id
-#                    finance_transaction_particular.particular_id = 0
-#                    finance_transaction_particular.particular_type = 'VAT'
-#                    finance_transaction_particular.transaction_type = ''
-#                    finance_transaction_particular.amount = vat_amount
-#                    finance_transaction_particular.transaction_date = transaction.transaction_date
-#                    finance_transaction_particular.save
-#                  end
+                  unless request_params["mobile_view"].blank?
+                      if request_params["mobile_view"].to_i == 1 
+                        if transaction.vat_included?
+                          vat_amount = transaction.vat_amount
+                          finance_transaction_particular = FinanceTransactionParticular.new
+                          finance_transaction_particular.finance_transaction_id = transaction.id
+                          finance_transaction_particular.particular_id = 0
+                          finance_transaction_particular.particular_type = 'VAT'
+                          finance_transaction_particular.transaction_type = ''
+                          finance_transaction_particular.amount = vat_amount
+                          finance_transaction_particular.transaction_date = transaction.transaction_date
+                          finance_transaction_particular.save
+                        end
+                      end
+                  end
                 end
               else
-#                if transaction.vat_included?
-#                  vat_amount = transaction.vat_amount
-#                  finance_transaction_particular = FinanceTransactionParticular.new
-#                  finance_transaction_particular.finance_transaction_id = transaction.id
-#                  finance_transaction_particular.particular_id = 0
-#                  finance_transaction_particular.particular_type = 'VAT'
-#                  finance_transaction_particular.transaction_type = ''
-#                  finance_transaction_particular.amount = vat_amount
-#                  finance_transaction_particular.transaction_date = transaction.transaction_date
-#                  finance_transaction_particular.save
-#                end
+                unless request_params["mobile_view"].blank?
+                  if request_params["mobile_view"].to_i == 1 
+                      if transaction.vat_included?
+                        vat_amount = transaction.vat_amount
+                        finance_transaction_particular = FinanceTransactionParticular.new
+                        finance_transaction_particular.finance_transaction_id = transaction.id
+                        finance_transaction_particular.particular_id = 0
+                        finance_transaction_particular.particular_type = 'VAT'
+                        finance_transaction_particular.transaction_type = ''
+                        finance_transaction_particular.amount = vat_amount
+                        finance_transaction_particular.transaction_date = transaction.transaction_date
+                        finance_transaction_particular.save
+                      end
+                  end
+                end
               end
               
               if fine_included
@@ -1406,26 +1440,34 @@ module FinanceLoader
                       finance_transaction_particular.transaction_date = transaction.transaction_date
                       finance_transaction_particular.save
                     else
-#                      discount_amount = @discounts_late_amount[od.id]
-#                      finance_transaction_particular = FinanceTransactionParticular.new
-#                      finance_transaction_particular.finance_transaction_id = transaction.id
-#                      finance_transaction_particular.particular_id = fd.id
-#                      finance_transaction_particular.particular_type = 'FineAdjustment'
-#                      finance_transaction_particular.transaction_type = 'Discount'
-#                      finance_transaction_particular.amount = discount_amount
-#                      finance_transaction_particular.transaction_date = transaction.transaction_date
-#                      finance_transaction_particular.save
+                      unless request_params["mobile_view"].blank?
+                        if request_params["mobile_view"].to_i == 1 
+                          discount_amount = @discounts_late_amount[od.id]
+                          finance_transaction_particular = FinanceTransactionParticular.new
+                          finance_transaction_particular.finance_transaction_id = transaction.id
+                          finance_transaction_particular.particular_id = fd.id
+                          finance_transaction_particular.particular_type = 'FineAdjustment'
+                          finance_transaction_particular.transaction_type = 'Discount'
+                          finance_transaction_particular.amount = discount_amount
+                          finance_transaction_particular.transaction_date = transaction.transaction_date
+                          finance_transaction_particular.save
+                        end
+                      end
                     end
                   else
-#                    discount_amount = @discounts_late_amount[od.id]
-#                    finance_transaction_particular = FinanceTransactionParticular.new
-#                    finance_transaction_particular.finance_transaction_id = transaction.id
-#                    finance_transaction_particular.particular_id = fd.id
-#                    finance_transaction_particular.particular_type = 'FineAdjustment'
-#                    finance_transaction_particular.transaction_type = 'Discount'
-#                    finance_transaction_particular.amount = discount_amount
-#                    finance_transaction_particular.transaction_date = transaction.transaction_date
-#                    finance_transaction_particular.save
+                    unless request_params["mobile_view"].blank?
+                        if request_params["mobile_view"].to_i == 1 
+                          discount_amount = @discounts_late_amount[od.id]
+                          finance_transaction_particular = FinanceTransactionParticular.new
+                          finance_transaction_particular.finance_transaction_id = transaction.id
+                          finance_transaction_particular.particular_id = fd.id
+                          finance_transaction_particular.particular_type = 'FineAdjustment'
+                          finance_transaction_particular.transaction_type = 'Discount'
+                          finance_transaction_particular.amount = discount_amount
+                          finance_transaction_particular.transaction_date = transaction.transaction_date
+                          finance_transaction_particular.save
+                        end
+                    end
                   end
                 end
               end

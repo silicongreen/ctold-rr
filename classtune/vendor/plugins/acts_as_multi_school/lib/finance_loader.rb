@@ -1206,7 +1206,7 @@ module FinanceLoader
 
             proccess_particulars_category = []
             loop_particular = 0
-            
+            abort(request_params.inspect)
             unless request_params.nil?
               @fee_particulars.each do |fp|
                 advanced = false

@@ -1418,11 +1418,11 @@ class FinanceController < ApplicationController
                   d_amount += pt.amount.to_f
                 end
                 @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Fine'"], :group => "finance_transaction_particulars.finance_transaction_id")
-                if pwt.id == 79653
-                  abort(@particular_wise_transactions.inspect)
-                end
+                #if pwt.id == 79653
+                #  abort(@particular_wise_transactions.inspect)
+                #end
                 @particular_wise_transactions.each do |pt|
-                  amount -= pt.amount.to_f
+                  amount += pt.amount.to_f
                   f_amount += pt.amount.to_f
                 end
                 if amount.to_f != pwt.amount.to_f

@@ -142,6 +142,7 @@
                     <% current_balance = 0 %>
                     <% i = 0 %>
                     <% balance_forward = false %>
+                    <% already_shown = false %>
                     <% @student_fee_ledgers.each_with_index do |student_fee_ledger, ind| %>
                     <% balance_forward = false %>
                     <% fine_amount = 0.00 %>
@@ -282,7 +283,35 @@
                         <% end %>
                     <% end %>
                     
-                    <% if ledger_found %>  
+                    <% if ledger_found and already_shown and !balance_forward %>  
+                      <tr class="tr-odd">
+                          <td style="text-align: center; vertical-align: middle; font-weight: bold; font-family: Roboto;"><%= ind + 1 %></td>
+                          <th style="vertical-align: middle; text-align: left; color: #555; font-family: verdana; font-size: 12px; line-height: 17px;" class="fixed-side">
+                              <% unless balance_forward %>
+                                <%= student_fee_ledger.ledger_date.strftime("%d %B, %Y") %><br />
+                                <small><%= ledger_info %></small>
+                              <% end %>
+                          </th>
+                          <td style="text-align: center; vertical-align: middle;"><%= trans_type %></td>
+                          <td style="text-align: center; vertical-align: middle;"><%= trans_id %></td>
+                          <td style="text-align: center; vertical-align: middle;"><%= info %></td>
+                          <td style="text-align: left; padding-left: 10px; vertical-align: middle;"><%= (student_fee_ledger.ledger_title.blank?) ? particular_name : student_fee_ledger.ledger_title %></td>
+                          <td style="vertical-align: middle; text-align: right; font-size: 12px;"><%= to_comma_seperated_precision_label student_fee_ledger.amount_to_pay %></td>
+                          <td style="vertical-align: middle; text-align: right; font-size: 12px;"><%= to_comma_seperated_precision_label student_fee_ledger.amount_paid %></td>
+                          <% current_balance = (carried_amount + student_fee_ledger.amount_to_pay.to_f) - student_fee_ledger.amount_paid.to_f %>
+                          <% current_balance += fine_amount %>
+                          <% carried_amount = current_balance %>
+                          <td style="vertical-align: middle; text-align: right; font-size: 12px;">
+                              <% if current_balance < 0 %>
+                                <%= to_comma_seperated_precision_label current_balance * (-1) %><br />
+                                <small style="font-size: 13px;">(Advance)</small>
+                              <% else %>
+                                <%= to_comma_seperated_precision_label current_balance %>
+                              <% end %>
+                          </td>
+                      </tr>
+                    <% elsif ledger_found and !already_shown %>  
+                      <% already_shown = true %>
                       <tr class="tr-odd">
                           <td style="text-align: center; vertical-align: middle; font-weight: bold; font-family: Roboto;"><%= ind + 1 %></td>
                           <th style="vertical-align: middle; text-align: left; color: #555; font-family: verdana; font-size: 12px; line-height: 17px;" class="fixed-side">

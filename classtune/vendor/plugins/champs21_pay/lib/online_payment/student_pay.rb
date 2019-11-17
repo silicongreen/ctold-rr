@@ -893,7 +893,15 @@ module OnlinePayment
             
             #@fine_amount=0 if (@student.finance_fee_by_date @date).is_paid
             unless params[:mobile_view].blank?
-              render 'gateway_payments/paypal/mobile_fee_details',:layout => false
+              unless multiple_param.nil?
+                if multiple_param.to_s == "true"
+                  render 'gateway_payments/paypal/fee_details_multiple_mobile',:layout => false
+                else  
+                  render 'gateway_payments/paypal/mobile_fee_details',:layout => false
+                end
+              else
+                render 'gateway_payments/paypal/mobile_fee_details',:layout => false
+              end
             else
               unless multiple_param.nil?
                 if multiple_param.to_s == "true"

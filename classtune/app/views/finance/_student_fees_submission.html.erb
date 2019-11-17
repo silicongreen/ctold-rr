@@ -157,6 +157,7 @@
     advance_fee_particular = @fee_collection_advances.map(&:particular_id)
   end
 %>
+<%#= debug @batch.inspect %>
 <% form_remote_for :fees, :url => {:action => 'update_ajax',:student => @student.id,:batch_id => @batch.id,:date => @date.id, :fine=>@fine, :vat=>@vat,:special_fine=>@fine_amount, :from_batch => @from_batch_fee, :from_admin => 1}, :html => {:id => "fees_form"}, :before=>"prev_double();$('loader_pay').show();",:complete=>"set_back();$('loader_pay').hide();" do |form| %>
   <% unless @fee_particulars.nil? %>
     <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">

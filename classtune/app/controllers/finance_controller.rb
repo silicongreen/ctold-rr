@@ -1669,6 +1669,7 @@ class FinanceController < ApplicationController
       ind = 1;
       
       balance_forward = false
+      already_shown = false
       k = 0
       @student_fee_ledgers.each_with_index do |student_fee_ledger, i|
         k = i + 1
@@ -1793,7 +1794,36 @@ class FinanceController < ApplicationController
           end
         end
         
-        if ledger_found
+        if ledger_found and already_shown and !balance_forward
+          current_balance = (carried_amount + student_fee_ledger.amount_to_pay.to_f) - student_fee_ledger.amount_paid.to_f
+          current_balance += fine_amount
+          carried_amount = current_balance
+          if current_balance < 0
+            current_balance = current_balance * (-1)
+          end
+          title = (student_fee_ledger.ledger_title.blank?) ? particular_name : student_fee_ledger.ledger_title
+          unless balance_forward
+            row_new = [i+1, student_fee_ledger.ledger_date.strftime("%d-%m-%Y"), trans_type, trans_id, info, title, student_fee_ledger.amount_to_pay.to_f, student_fee_ledger.amount_paid.to_f, current_balance.to_f]
+          else
+            row_new = [i+1, title, trans_type, trans_id, info, title, student_fee_ledger.amount_to_pay.to_f, student_fee_ledger.amount_paid.to_f, current_balance.to_f]
+          end
+          new_book.worksheet(0).insert_row(ind, row_new)
+          #new_book.worksheet(0).row(ind).column(0).width = 100
+          new_book.worksheet(0).row(ind).set_format(0, center_format)
+          new_book.worksheet(0).row(ind).set_format(1, center_format)
+          new_book.worksheet(0).row(ind).set_format(2, center_format)
+          new_book.worksheet(0).row(ind).set_format(6, amount_format)
+          new_book.worksheet(0).row(ind).set_format(7, amount_format)
+          new_book.worksheet(0).row(ind).set_format(8, amount_format)
+          if balance_forward
+            new_book.worksheet(0).merge_cells(ind, 1, ind, 5)
+            new_book.worksheet(0).row(ind).set_format(1, right_format)
+          else
+            new_book.worksheet(0).row(ind).set_format(1, center_format)
+          end
+          ind += 1
+        elsif ledger_found and !already_shown
+          already_shown = true
           current_balance = (carried_amount + student_fee_ledger.amount_to_pay.to_f) - student_fee_ledger.amount_paid.to_f
           current_balance += fine_amount
           carried_amount = current_balance
@@ -4804,9 +4834,9 @@ class FinanceController < ApplicationController
                         exclude_particular_ids = [0]
                       end
                       if discount.finance_fee_particular_category_id == 0
-                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
                       else
-                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
                       end
                       payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
                       discount_amt = payable_ampt * discount.discount.to_f/ (discount.is_amount?? payable_ampt : 100)
@@ -4869,9 +4899,9 @@ class FinanceController < ApplicationController
                         exclude_particular_ids = [0]
                       end
                       if discount.finance_fee_particular_category_id == 0
-                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
                       else
-                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
                       end
                       payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
                       discount_amt = payable_ampt * discount.discount.to_f/ (discount.is_amount?? payable_ampt : 100)
@@ -5051,9 +5081,9 @@ class FinanceController < ApplicationController
                         exclude_particular_ids = [0]
                       end
                       if discount.finance_fee_particular_category_id == 0
-                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
                       else
-                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
                       end
                       payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
                       discount_amt = payable_ampt * discount.discount.to_f/ (discount.is_amount?? payable_ampt : 100)
@@ -5114,9 +5144,9 @@ class FinanceController < ApplicationController
                         exclude_particular_ids = [0]
                       end
                       if discount.finance_fee_particular_category_id == 0
-                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
                       else
-                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
                       end
                       payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
                       discount_amt = payable_ampt * discount.discount.to_f/ (discount.is_amount?? payable_ampt : 100)
@@ -5251,9 +5281,9 @@ class FinanceController < ApplicationController
                           exclude_particular_ids = [0]
                         end
                         if discount.finance_fee_particular_category_id == 0
-                          fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                          fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
                         else
-                          fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                          fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
                         end
                         payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
                         discount_amt = payable_ampt * discount.discount.to_f/ (discount.is_amount?? payable_ampt : 100)
@@ -5461,9 +5491,9 @@ class FinanceController < ApplicationController
                           exclude_particular_ids = [0]
                         end
                         if discount.finance_fee_particular_category_id == 0
-                          fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                          fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
                         else
-                          fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                          fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
                         end
                         payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
                         discount_amt = payable_ampt * discount.discount.to_f/ (discount.is_amount?? payable_ampt : 100)
@@ -8018,9 +8048,9 @@ class FinanceController < ApplicationController
                       exclude_particular_ids = [0]
                     end
                     if discount.finance_fee_particular_category_id == 0
-                      fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                      fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
                     else
-                      fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                      fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
                     end
                     payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
                     discount_amt = payable_ampt * discount.discount.to_f/ (discount.is_amount?? payable_ampt : 100)
@@ -8070,9 +8100,9 @@ class FinanceController < ApplicationController
                     exclude_particular_ids = [0]
                   end
                   if discount.finance_fee_particular_category_id == 0
-                    fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                    fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
                   else
-                    fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                    fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
                   end
                   payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
                   discount_amt = payable_ampt * discount.discount.to_f/ (discount.is_amount?? payable_ampt : 100)
@@ -8114,9 +8144,9 @@ class FinanceController < ApplicationController
                 exclude_particular_ids = [0]
               end
               if discount.finance_fee_particular_category_id == 0
-                fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
               else
-                fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
               end
               payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
               discount_amt = payable_ampt * discount.discount.to_f/ (discount.is_amount?? payable_ampt : 100)
@@ -8167,12 +8197,12 @@ class FinanceController < ApplicationController
         collection_discount.save
                 
         @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{@fee_collection.id} and is_paid=#{false} and students.id = #{@fee_discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
-
+#abort(@fee.inspect)
         s = @fee.student
         bal = FinanceFee.check_update_student_fee(@fee_collection, s, @fee)
         if bal >= 0
           FinanceFee.update_student_fee(@fee_collection, s, @fee)
-          
+          #abort(s.inspect)
           exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(s.id,@fee_collection.id).map(&:fee_particular_id)
           unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
             exclude_particular_ids = exclude_particular_ids
@@ -8180,12 +8210,14 @@ class FinanceController < ApplicationController
             exclude_particular_ids = [0]
           end
           if @fee_discount.finance_fee_particular_category_id == 0
-            fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+            fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
           else
-            fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{s.batch.id} and finance_fee_particular_category_id = #{@fee_discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+            fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id} and finance_fee_particular_category_id = #{@fee_discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==@fee.batch) }
           end
           payable_ampt = fee_particulars.map{|p| p.amount}.sum.to_f
           discount_amt = payable_ampt * @fee_discount.discount.to_f/ (@fee_discount.is_amount?? payable_ampt : 100)
+          discount_amt = 0.0 if discount_amt.to_f.nan?
+          #abort(discount_amt.inspect)
           student_fee_ledger = StudentFeeLedger.new
           student_fee_ledger.student_id = s.id
           student_fee_ledger.ledger_date = Date.today
@@ -8509,11 +8541,15 @@ class FinanceController < ApplicationController
       if params[:student]
         fees = FinanceFee.first(:conditions=>"fee_collection_id = #{params[:date]} and student_id = #{params[:student]}" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id')  
       end
+#      unless params[:batch_id].blank?
+#      else
+#      end
       unless fees.nil?
         batch_id = fees.batch_id
       else
         batch_id = params[:batch_id]
       end
+      #abort(batch_id.to_s)
       @batch   = Batch.find(batch_id)
       @date    =  @fee_collection = FinanceFeeCollection.find(params[:date])
       
@@ -10010,6 +10046,8 @@ class FinanceController < ApplicationController
 
   def fees_student_dates
 #    @students = Student.active
+#    #@students = Student.find(:all, :conditions => "id = 24170")
+#    #abort(@student.inspect)
 #    @students.each do |s|
 #      student_fee_ledger = StudentFeeLedger.new
 #      student_fee_ledger.student_id = s.id
@@ -10019,6 +10057,7 @@ class FinanceController < ApplicationController
 #
 #    
 #    @students = Student.active
+#    #@students = Student.find(:all, :conditions => "id = 24170")
 #    @students.each do |s|
 #      finance_fees = FinanceFee.find(:all, :conditions => "student_id = #{s.id}")
 #      unless finance_fees.nil?
@@ -10039,11 +10078,12 @@ class FinanceController < ApplicationController
 #    end
 
 #    @students = Student.active
+#    #@students = Student.find(:all, :conditions => "id = 24170")
 #    @students.each do |s|
 #      finance_transactions = FinanceTransaction.find(:all, :conditions => "finance_transactions.payee_id = #{s.id} AND finance_transactions.finance_id IS NOT NULL ", :joins => "INNER JOIN payments ON payments.finance_transaction_id = finance_transactions.id")
 #      unless finance_transactions.nil?
 #        finance_transactions.each do |transaction|
-#          payments = Payment.find(:all, :conditions => "finance_transaction_id = #{transaction.id}")
+#          payments = Payment.find(:all, :conditions => "finance_transaction_id = #{transaction.id}", :group => "order_id")
 #          unless payments.nil? or payments.empty? or payments.blank?
 #            fee = FinanceFee.find(:first, :conditions => "id = #{transaction.finance_id}")
 #            unless fee.nil?
@@ -10055,7 +10095,7 @@ class FinanceController < ApplicationController
 #              student_fee_ledger.fee_id = fee.id
 #              student_fee_ledger.amount_paid = balance.to_f
 #              student_fee_ledger.transaction_id = transaction.id
-#              order_ids = payments.map(&:order_id)
+#              order_ids = payments.map(&:order_id).uniq
 #              student_fee_ledger.order_id = order_ids.join(",")
 #              student_fee_ledger.save
 #            end

@@ -160,8 +160,8 @@
           advance_fee_particular = @fee_collection_advances[f].map(&:particular_id)
         end
       %>
-      <tr>
-        <td style="font-weight: normal; width: 8%; text-align: center; cursor: pointer;"><i id="expand_tr_<%= f %>" class="fa fa-plus-square-o expand_tr"></i></td>
+      <tr id="expand_tr_<%= f %>" class="expand_tr">
+        <td id="expand_td_<%= f %>" class="expand_td"  style="font-weight: normal; width: 8%; text-align: center; cursor: pointer;"><i id="expand_i_<%= f %>" class="fa fa-plus-square-o expand_i"></i></td>
         <td style="font-weight: normal; width: 50%; text-align: left; font-weight: bold;"><%= "Fees for Month of " + @date[f].name %></td>
         <td id="fee_amount_<%= f %>" style="font-weight: normal; width: 14%; font-weight: bold; text-align: right;">&nbsp;</td>
         <td id="fee_paid_<%= f %>" style="font-weight: normal; width: 14%; text-align: right; font-weight: bold;">&nbsp;</td>
@@ -1175,6 +1175,44 @@
       
         j(document).on("click", ".expand_tr", function(){
             var id = this.id.replace("expand_tr_", "");
+            if ( j(this).children('td.expand_td').children('i.expand_i').hasClass('fa-plus-square-o') )
+            {
+                j(this).children('td.expand_td').children('i.expand_i').removeClass("fa-plus-square-o");
+                j(this).children('td.expand_td').children('i.expand_i').addClass("fa-minus-square-o");
+                
+                j(".tr_fees_" + id).show();
+                j(".blank_tr_" + id).show();
+            }
+            else
+            {
+                j(this).children('td.expand_td').children('i.expand_i').removeClass("fa-minus-square-o");
+                j(this).children('td.expand_td').children('i.expand_i').addClass("fa-plus-square-o");
+                j(".tr_fees_" + id).hide();
+                j(".blank_tr_" + id).hide();
+            }
+        });
+        
+        j(document).on("click", ".expand_td", function(){
+            var id = this.id.replace("expand_td_", "");
+            if ( j(this).children('i.expand_i').hasClass('fa-plus-square-o') )
+            {
+                j(this).children('i.expand_i').removeClass("fa-plus-square-o");
+                j(this).children('i.expand_i').addClass("fa-minus-square-o");
+                
+                j(".tr_fees_" + id).show();
+                j(".blank_tr_" + id).show();
+            }
+            else
+            {
+                j(this).children('i.expand_i').removeClass("fa-minus-square-o");
+                j(this).children('i.expand_i').addClass("fa-plus-square-o");
+                j(".tr_fees_" + id).hide();
+                j(".blank_tr_" + id).hide();
+            }
+        });
+        
+        j(document).on("click", ".expand_i", function(){
+            var id = this.id.replace("expand_i_", "");
             if ( j(this).hasClass('fa-plus-square-o') )
             {
                 j(this).removeClass("fa-plus-square-o");
@@ -1391,5 +1429,8 @@ a.user_button {
     padding: 10px 50px;
     background: #00FF00;
     color: black;
+}
+.expand_tr{
+  cursor: pointer;
 }
 </style>    

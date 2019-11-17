@@ -9,34 +9,119 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <body>
-        <% if MultiSchool.current_school.id != 340 or !params[:show_fees].blank? %>
-          <div class="alert alert-info" role="alert"><%= @student.full_name %>, Class : <%= @student.batch.course_name %></div>
-          <% unless flash[:notice].nil? %> 
-            <div class="alert alert-success" role="alert"><%= flash[:notice] %></div>
-          <% end %>
-
-          <% unless @dates.blank? %>
-            <div class="list-group list-special">
-                <%- @dates.each do |d| -%>
-
-                  <%finance_fee= @student.finance_fee_by_date(d)%>
-                  <% paid = @student.check_fee_pay(d)  %>
-                  <% unless paid %>
-
-                    <%= link_to "#{d.name} | Due Date : #{d.due_date} | #{currency}: #{precision_label(finance_fee.balance.to_f+d.fine_to_pay(@student).to_f)}", {:action=>:fee_details, :id=>@student.id, :id2=>d.id,:mobile_view=>1}, :class=>"list-group-item list-group-item-action list-group-item-secendery" %>
-
-                  <% end %>  
-
-                <% end %>
-            </div>
-          <% end %> 
-        <% else %>
-          <div class="alert alert-info" role="alert">Coming Soon</div>
+        <% combine_fees_enabled = false %>
+        <% @include_combined_fees = PaymentConfiguration.find_by_config_key("include_combined_fees").try(:config_value)    %>
+        <% unless @include_combined_fees.blank? %>
+        <% combine_fees_enabled = true %>
         <% end %>
+        <% student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and config_key = 'combined_payment_student'") %>
+        <% unless student_fee_configuration.nil? %>
+          <% if student_fee_configuration.config_value.to_i == 1 %>
+            <% combine_fees_enabled = true %>
+          <% else %>
+            <% combine_fees_enabled = false %>
+          <% end %>
+        <% end %>
+        <%#= combine_fees_enabled %>
+        <% if MultiSchool.current_school.id != 340 or !params[:show_fees].blank? %>
+            <div class="alert alert-info header-info" role="alert">
+                <p style="width: 48%; display: inline-block; float: left;"><%= @student.admission_no %> <Br /> <%= @student.full_name %><p>
+                <p style="width: 50%; display: inline-block; float: left;"><%= @student.batch.full_name %></p>
+            </div>
+            <% unless flash[:notice].nil? %> 
+              <div class="alert alert-success" role="alert"><%= flash[:notice] %></div>
+            <% end %>
+            <div style="clear: both;"></div>     
+            <% unless @dates.blank? %>
+              <div class="list-group list-special">
+                <% total_fees = 0 %>  
+                <% fees_multiple = "" %>    
+                <%- @dates.each do |d| -%>
+                  <%  finance_fee = @student.finance_fee_by_date(d) %>
+                  <%  paid_fees = finance_fee.finance_transactions %>
+                  <%
+                    paid_amount = 0.0
+                    fine_amount_paid = 0.0
+                    unless paid_fees.nil? or paid_fees.blank?
+                      paid_fees.each do |pf|
+                        paid_amount += pf.amount
+                      end
+                      
+                      transaction_ids = paid_fees.map(&:id)
+                      unless transaction_ids.blank?
+                        paidFineFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")")
+                        unless paidFineFess.blank?
+                          fine_amount_paid += paidFineFess.map(&:amount).sum.to_f
+                        end
+                      end
+                    end
+                    if fine_amount_paid > 0
+                      balance = FinanceFee.get_student_balance(d, @student, finance_fee) + fine_amount_paid.to_f
+                    else
+                      balance = FinanceFee.get_student_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f + fine_amount_paid.to_f
+                    end
+                    
+                    bal = balance - paid_amount
+                    if bal.to_f < 0 
+                      bal = 0.00
+                    end
+                  %>
+                  <% if bal > 0 %>
+                    <% fees_multiple += finance_fee.id.to_s + "," %>
+                    <% total_fees += bal %>
+                    <% if combine_fees_enabled %>
+                      <div class="list-group-item list-group-item-action list-group-item-secendery" style="float: left; width: 100%; border: 1px solid #ccc; padding: 10px;">
+                        <span style='width: 20%; display: inline-block;'><%= "#{d.name}"%></span> <b>|</b>
+                        <span style='width: 40%; display: inline-block; text-align: center;'>Due Date : <%= "#{d.due_date}" %></span> <b>|</b> 
+                        <span style='width: 33%; display: inline-block; text-align: right;'><%= "#{currency}" %>: <%= "#{to_comma_seperated_precision_label(bal.to_f)}" %></span>
+                      </div>
+                    <% else %>
+                    <%= link_to "<span style='width: 20%; display: inline-block;'>#{d.name}</span> <b>|</b> <span style='width: 40%; display: inline-block; text-align: center;'>Due Date : #{d.due_date}</span> <b>|</b> <span style='width: 33%; display: inline-block; text-align: right;'>#{currency}: #{to_comma_seperated_precision_label(finance_fee.balance.to_f+d.fine_to_pay(@student).to_f)}</span>", {:action=>:fee_details, :id=>@student.id, :id2=>d.id,:mobile_view=>1}, :class=>"list-group-item list-group-item-action list-group-item-secendery", :style => "float: left; width: 100%; border: 1px solid #ccc;" %>
+                    <% end %>
+                  <% end %>  
+                  <% if bal > 0 %>
+                    <% if finance_fee.balance.to_f != bal.to_f %>
+                        <% ffee = FinanceFee.find(finance_fee.id) %>
+                        <% ffee.update_attributes(:balance => bal, :is_paid => false) %>
+                    <% end %>
+                  <% else %>
+                    <% ffee = FinanceFee.find(finance_fee.id) %>
+                    <% ffee.update_attributes(:balance => 0.00, :is_paid => true) %>
+                  <% end %>
+                <% end %>
+               
+              </div>
+              <% if combine_fees_enabled and total_fees > 0 %>  
+                <div class="list-group-item list-group-item-action list-group-item-secendery" style="float: left; width: 100%; border: 1px solid #ccc; padding: 10px;">
+                  <span style='width: 94.5%; display: inline-block; text-align: right;'><%= "#{currency}" %>: <%= "#{to_comma_seperated_precision_label(total_fees.to_f)}" %></span>
+                </div>
+                <div id="combined_pay" style="display: inline-block; width: 100%;">
+                  <div style="padding: 10px; text-align: center; height: 60px; width: 100%;">
+                      <% if fees_multiple.strip.length > 0 %>
+                      <div id="lnk" style="padding-top: 10px;"><%= link_to "► #{t('pay_fees')}",{:action=>:fee_details, :id => @student.id, :multiple=>true, :fees => fees_multiple.strip,:mobile_view=>1}, {:class=> 'user_button_new', :id => "lnk_btn"} %></div>
+                      <% else %>
+                      <div id="lnk" style="padding-top: 10px;"><%= link_to "► #{t('pay_fees')}",{:action=>:fee_details, :id => @student.id, :multiple=>true,:mobile_view=>1}, {:class=> 'user_button_new', :id => "lnk_btn"} %></div>
+                      <% end %>
+                  </div>
+                </div>  
+                <% end %>
+            <% end %> 
+          <% else %>
+            <div class="alert alert-info" role="alert">Coming Soon</div>
+          <% end %>
     </body>
 
 </html>
 <style>
+    .header-info {
+        //background-image: url('/images/backgrounds/top_profile.png'); 
+        background-image: linear-gradient(to bottom,#DB3434 0,#820d0d 100%);
+        color: #fff; 
+        font-size: 16px; 
+        font-weight: bold;
+        float: left;
+        width: 100%;
+    }
     .alert-info
     {
         border-top: 0px;
@@ -53,5 +138,24 @@
     .list-special .list-group-item:last-child {
         border-bottom-right-radius: 0px !important;
         border-bottom-left-radius: 0px !important;
+    }
+    .alert > p + p{
+        margin-top: 0px;
+    }
+    
+    .user_button_new {
+        background: #49bb4b none repeat scroll 0 0 !important;
+        border: medium none;
+        color: #FFFFFF;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        margin: 18px 5px 0 5px;
+        padding: 7px 10px;
+        height: 34px;
+        border-radius: 4px !important;
+        -webkit-border-radius: 4px !important;
+        -moz-border-radius: 4px !important;
+
     }
 </style>    

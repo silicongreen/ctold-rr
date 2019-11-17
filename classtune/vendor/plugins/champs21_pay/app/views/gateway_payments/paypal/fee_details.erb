@@ -1024,7 +1024,7 @@
       <%balance=@financefee.balance.to_f+@fine.to_f+@vat.to_f%>
       <% if balance.to_f < 0 %>  
       <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
-        <td class="col-8" colspan="2"  style="text-align: right; font-weight: bold;"><%= t('advance_payment') %>1 </td>
+        <td class="col-8" colspan="4"  style="text-align: right; font-weight: bold;"><%= t('advance_payment') %>1 </td>
         <td class="col-6"  style="text-align: right;">
             <span id="advance_payment_label" style="color: #000;"><%= precision_label( (balance+@fine_amount.to_f) * -1 ) %></span>
             <input type="hidden" name="advance_payment" id="advance_payment" value="<%= precision_label( (balance+@fine_amount.to_f) * -1 ) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>

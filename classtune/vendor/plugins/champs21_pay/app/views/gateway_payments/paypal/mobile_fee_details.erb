@@ -41,7 +41,7 @@
           </ol>
       </nav>
 
-      <div class="alert alert-info header-info" role="alert">
+      <div class="alert alert-info header-info" role="alert" style="display: none;">
           <p style="width: 48%; display: inline-block; float: left;"><%= @student.admission_no %> <Br /> <%= @student.full_name %><p>
           <p style="width: 50%; display: inline-block; float: right; text-align: right;"><%= @student.batch.full_name %></p>
       </div>
@@ -60,7 +60,7 @@
         <% unless @fee_particulars.nil? %>
           <% total_fees = 0  %>
         
-          <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+          <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 100%;">
           <thead><!-- class="thead-inverse" -->
             <tr>
               <th style="font-weight: normal; width: 8%; text-align: center;"><%= t('sl_no') %> </th>

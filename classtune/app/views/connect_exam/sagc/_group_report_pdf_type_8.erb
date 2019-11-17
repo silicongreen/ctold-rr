@@ -1000,9 +1000,9 @@
                                 sb_main = (sb_marks.to_f/full_sb.to_f)*100
                                 grade = GradingLevel.percentage_to_grade(sb_main, @batch.id)
                                 if !grade.blank? and !grade.name.blank?
-                                  if (grade.credit_points.to_i == 0 && fourth_subject.blank?) or (sb_marks.round().to_i < 32 && full_sb.to_i == 70 && fourth_subject.blank?) or (sb_marks.round().to_i < 45 && full_sb.to_i == 100 && fourth_subject.blank?)
+                                  if (grade.credit_points.to_i == 0 && fourth_subject.blank? && (sb_marks.round().to_i != 11 || full_sb != 25)) or (sb_marks.round().to_i < 32 && full_sb.to_i == 70 && fourth_subject.blank?) or (sb_marks.round().to_i < 45 && full_sb.to_i == 100 && fourth_subject.blank?)
                                     failed_subject3 = true
-                                    elsif (grade.credit_points.to_i == 0 && !fourth_subject.blank?) or (sb_marks.round().to_i < 32 && full_sb.to_i == 70 && !fourth_subject.blank?) or (sb_marks.round().to_i < 45 && full_sb.to_i == 100 && !fourth_subject.blank?)  
+                                    elsif (grade.credit_points.to_i == 0 && !fourth_subject.blank? && (sb_marks.round().to_i != 11 || full_sb != 25)) or (sb_marks.round().to_i < 32 && full_sb.to_i == 70 && !fourth_subject.blank?) or (sb_marks.round().to_i < 45 && full_sb.to_i == 100 && !fourth_subject.blank?)  
                                     failed_subject3_fourth = true
                                   end
                                 end   

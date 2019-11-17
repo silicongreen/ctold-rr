@@ -102,7 +102,7 @@
                           <td><%= "#{d.due_date}"%></td>
                           <td style="text-align: right; padding-right: 1%;"><%= "#{to_comma_seperated_precision_label(bal.to_f)}" %></td>
                           <td style="text-align: center;">
-                            <%= link_to "► #{t('pay_fees')}", {:action=>:fee_details, :id=>@student.id, :id2=>d.id,:mobile_view=>1}, :class=>"user_button_new" %>
+                            <%= link_to "View", {:action=>:fee_details, :id=>@student.id, :id2=>d.id,:mobile_view=>1}, :class=>"user_button_new" %>
                           </td>
                       </tr>
                     <% end %>

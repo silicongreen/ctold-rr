@@ -531,7 +531,7 @@
               count_fees++;
             }
         });
-        
+        //alert(fees)
         if ( count_fees == 0 )
         {
             j("#combined_pay").hide();
@@ -553,7 +553,7 @@
             else
             {
                 j("#combined_pay").show();
-                j('#lnk').html('<%= link_to "Pay All",{:action=>:fee_details, :id => @student.id, :multiple=>true}, :class=> 'user_button' %>');
+                //j('#lnk').html('<%= link_to "Pay All",{:action=>:fee_details, :id => @student.id, :multiple=>true}, :class=> 'user_button' %>');
                 var href = j('#lnk').children('a').attr('href');
                 j('#lnk').children('a').attr('href', href + "&fees=" + fees);
             }

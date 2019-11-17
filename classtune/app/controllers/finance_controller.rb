@@ -3070,17 +3070,17 @@ class FinanceController < ApplicationController
           end
         end
       else
-        @include_combined_fees = PaymentConfiguration.find_by_config_key("include_combined_fees").try(:config_value) 
-        if params[:value].to_i == 0
-          unless @include_combined_fees.blank?
-            student_fee_configuration.destroy
-          else  
-            student_fee_configuration.update_attributes(:config_value => params[:value])
-          end
-        else
-          student_fee_configuration.update_attributes(:config_value => params[:value])
-        end
-        #student_fee_configuration.update_attributes(:config_value => params[:value])
+#        @include_combined_fees = PaymentConfiguration.find_by_config_key("include_combined_fees").try(:config_value) 
+#        if params[:value].to_i == 0
+#          unless @include_combined_fees.blank?
+#            student_fee_configuration.destroy
+#          else  
+#            student_fee_configuration.update_attributes(:config_value => params[:value])
+#          end
+#        else
+#          student_fee_configuration.update_attributes(:config_value => params[:value])
+#        end
+        student_fee_configuration.update_attributes(:config_value => params[:value])
         if params[:value].to_i == 1
           render :update do |page|
             page << "enable_combined_payment();"

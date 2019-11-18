@@ -228,7 +228,7 @@
                     <td class="small-height"><b>Teacher-in-charge</b></td>
                 </tr> 
                 <tr class="even">
-                   <td></td>
+                   <td><%= @sub_count_main %></td>
                 </tr> 
               </table>
 
@@ -240,14 +240,18 @@
 
 
   </div>
+<% 
+padding = 10
+padding_comments = 10
 
+%>
 <% end %>
 <% 
-  padding = (1000-(@sub_count_main.to_i*25))/(@sub_count_main.to_f*2) 
-  padding = padding.round
+  #padding = (1000-(@sub_count_main.to_i*25))/(@sub_count_main.to_f*2) 
+  #padding = padding.round
 
-  padding_comments = (1110-(total_comments_grade.to_i*25))/(total_comments_grade.to_f*2)
-  padding_comments = padding_comments.round
+  #padding_comments = (1110-(total_comments_grade.to_i*25))/(total_comments_grade.to_f*2)
+  #padding_comments = padding_comments.round
   
 %>
 <style>

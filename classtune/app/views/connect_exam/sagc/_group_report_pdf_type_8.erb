@@ -981,6 +981,8 @@
                             sb_marks = 0
                             ob_marks = 0
                             pr_marks = 0
+                            monthly_full_mark_combined1 = 0
+                            monthly_full_mark_combined2 = 0
                             if  total_sb1 > 0 or  total_sb3> 0
                               total_sb5 = (total_sb1+total_sb3)/2.00
                               sb_marks = sb_marks+total_sb5
@@ -1008,10 +1010,12 @@
 
                             if  monthly1 > 0 or  monthly3> 0
                               monthly5 = (monthly1+monthly3)/2.00
+                              monthly_full_mark_combined1 = monthly5*divider
                             end
 
                             if  monthly2 > 0 or  monthly4> 0
                               monthly6 = (monthly2+monthly4)/2.00
+                              monthly_full_mark_combined2 = monthly6*divider
                             end
 
                             full_sb = full_sb1+full_sb2
@@ -1022,16 +1026,18 @@
                             fob = ""
                             fpr = ""
                             
-                            if monthly5.round() < pass_mark_monthly && fourth_subject.blank?
+                            
+                            
+                            if monthly_full_mark_combined1.round() < pass_mark_monthly && fourth_subject.blank?
                                 failed_subject3 = true
-                            elsif monthly5.round() < pass_mark_monthly && !fourth_subject.blank?
+                            elsif monthly_full_mark_combined1.round() < pass_mark_monthly && !fourth_subject.blank?
                                 failed_subject3_fourth = true
                             end
                           
                             if subjects['subject_group_id'].to_i > 0
-                              if monthly6.round() < pass_mark_monthly && fourth_subject.blank?
+                              if monthly_full_mark_combined2.round() < pass_mark_monthly && fourth_subject.blank?
                                 failed_subject3 = true
-                              elsif monthly6.round() < pass_mark_monthly && !fourth_subject.blank?
+                              elsif monthly_full_mark_combined2.round() < pass_mark_monthly && !fourth_subject.blank?
                                 failed_subject3_fourth = true
                               end
                             end

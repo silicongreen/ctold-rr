@@ -247,11 +247,14 @@ padding_comments = 10
 %>
 <% end %>
 <% 
-  #padding = (1000-(@sub_count_main.to_i*25))/(@sub_count_main.to_f*2) 
-  #padding = padding.round
-
-  #padding_comments = (1110-(total_comments_grade.to_i*25))/(total_comments_grade.to_f*2)
-  #padding_comments = padding_comments.round
+  if @sub_count_main.to_i > 0
+    padding = (1000-(@sub_count_main.to_i*25))/(@sub_count_main.to_f*2) 
+    padding = padding.round
+  end
+  if total_comments_grade.to_i > 0
+    padding_comments = (1110-(total_comments_grade.to_i*25))/(total_comments_grade.to_f*2)
+    padding_comments = padding_comments.round
+  end
   
 %>
 <style>

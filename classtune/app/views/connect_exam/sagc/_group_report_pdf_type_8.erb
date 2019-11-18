@@ -487,6 +487,12 @@
                                     <% end %>
                                   <% end %>
                                 <% end %>
+                                <% if class_test_mark < pass_mark_monthly && fourth_subject.blank? %>
+                                  <% failed1 = true %>
+                                  <% failed_subject1 = true %>
+                                <% elsif class_test_mark < pass_mark_monthly && !fourth_subject.blank? %> 
+                                  <% failed_subject1_fourth = true %>
+                                <% end %>
                                 <% class_test_mark = (class_test_mark.to_f/divider.to_f) %>
                                 <% class_test_mark = class_test_mark.round() %>
                                 <% monthly2 = class_test_mark %>
@@ -677,6 +683,12 @@
                                 <% end %>
                               <% end %>
                             <% end %>
+                            <% if class_test_mark2 < pass_mark_monthly && fourth_subject.blank? %>
+                              <% failed2 = true %>
+                              <% failed_subject2 = true %>
+                            <% elsif class_test_mark2 < pass_mark_monthly && !fourth_subject.blank? %> 
+                              <% failed_subject2_fourth = true %>
+                            <% end %>
                             <% class_test_mark2 = (class_test_mark2.to_f/divider.to_f) %>
                             <% monthly3 = class_test_mark2 = class_test_mark2.round() %>
                             <% class_test_mark_all = class_test_mark_all+class_test_mark2 %>
@@ -782,6 +794,13 @@
                                       <% end %>
                                     <% end %>
                                   <% end %>
+                                <% end %>
+                            
+                                <% if class_test_mark < pass_mark_monthly && fourth_subject.blank? %>
+                                  <% failed2 = true %>
+                                  <% failed_subject2 = true %>
+                                <% elsif class_test_mark < pass_mark_monthly && !fourth_subject.blank? %> 
+                                  <% failed_subject2_fourth = true %>
                                 <% end %>
                                 <% class_test_mark = (class_test_mark.to_f/divider.to_f) %>
                                 <% class_test_mark = class_test_mark.round() %>
@@ -989,11 +1008,11 @@
 
                             if  monthly1 > 0 or  monthly3> 0
                               monthly5 = (monthly1+monthly3)/2.00
-                              end
+                            end
 
                             if  monthly2 > 0 or  monthly4> 0
                               monthly6 = (monthly2+monthly4)/2.00
-                              end
+                            end
 
                             full_sb = full_sb1+full_sb2
                             full_ob = full_ob1+full_ob2
@@ -1002,6 +1021,20 @@
                             fsb = ""
                             fob = ""
                             fpr = ""
+                            
+                            if monthly5.round() < pass_mark_monthly && fourth_subject.blank?
+                                failed_subject3 = true
+                            elsif monthly5.round() < pass_mark_monthly && !fourth_subject.blank?
+                                failed_subject3_fourth = true
+                            end
+                          
+                            if subjects['subject_group_id'].to_i > 0
+                              if monthly6.round() < pass_mark_monthly && fourth_subject.blank?
+                                failed_subject3 = true
+                              elsif monthly6.round() < pass_mark_monthly && !fourth_subject.blank?
+                                failed_subject3_fourth = true
+                              end
+                            end
 
 
 

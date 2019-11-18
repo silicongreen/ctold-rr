@@ -7733,13 +7733,66 @@ class ExamController < ApplicationController
                     end
                     if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['at'] = at_total_mark1+at_total_mark2
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = monthly_total_main_mark1+monthly_total_main_mark2
+                      
+                      if monthly_full_mark1 > 0 || monthly_full_mark2 > 0
+                        if monthly_total_main_mark1 > 0 || monthly_total_main_mark2 > 0
+                          ct_round = monthly_total_main_mark1+monthly_total_main_mark2
+                          ct_round = ct_round.round()
+                          if monthly_full_mark1 > 0 && monthly_full_mark2 > 0
+                            ct_round = (monthly_total_main_mark1+monthly_total_main_mark2)/2
+                            ct_round = ct_round.round()
+                          end
+                          @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = ct_round
+                        else
+                          @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = "AB"
+                        end  
+                      end
 
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = total_ob12+total_ob22
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = total_sb12+total_sb22
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = total_pr12+total_pr22
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = total_ob12+total_ob22+total_sb12+total_sb22+total_pr12+total_pr22
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = total_mark1+total_mark2
+                      if full_ob1 > 0 || full_ob2 > 0
+                        if total_ob12 > 0 || total_ob22 > 0 
+                          ob_round = total_ob12+total_ob22
+                          ob_round = ob_round.round()
+                          if full_ob1 > 0 && full_ob2 > 0
+                            ob_round = (total_ob12+total_ob22)/2
+                            ob_round = ob_round.round()
+                          end
+
+                          @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = ob_round
+                        else
+                          @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = "AB"
+                        end  
+                      end
+                      if full_sb1 > 0 || full_sb2 > 0
+                        if total_sb12 > 0 && total_sb22 > 0
+                          sb_round = total_sb12+total_sb22
+                          sb_round = sb_round.round()
+                          if full_sb1 > 0 && full_sb2 > 0
+                            sb_round = (total_sb12+total_sb22)/2
+                            sb_round = sb_round.round()
+                          end
+                          @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = sb_round
+                        else
+                          @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = "AB"
+                        end  
+                      end
+                      if full_pr1 > 0 || full_pr2 > 0
+                        pr_round = total_pr12+total_pr22
+                        pr_round = pr_round.round()
+                        if total_pr12 > 0 && total_pr22 > 0
+                          pr_round = (total_pr12+total_pr22)/2
+                          pr_round = pr_round.round()
+                        end
+                        if total_pr12 > 0 || total_pr22 > 0
+                          @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = pr_round
+                        else
+                          @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = "AB"
+                        end  
+                      end
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = ob_round+sb_round+pr_round
+
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = subject_full_marks
+                      
+                   
                       if @subject_result[main_sub_id].blank?
                         @subject_result[main_sub_id] = {}
                         @subject_result[main_sub_id]['id'] = main_sub_id

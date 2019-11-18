@@ -141,13 +141,6 @@
             <% end %>
             <p id="no_fee_dues" style="display: none; font-size: 14px; font-family: verdana;">No Fee dues found</p>
             <p id="no_fee_history" style="display: none; font-size: 14px; font-family: verdana;">No Previous Fee History</p>
-            <% found_fees = false %>
-            <% if @dates_unpaid.present? %>
-            <% found_fees = true %>
-            <% end %>
-            <% if @dates_paid.present? %>
-            <% found_fees = true %>
-            <% end %>
             <div style="width: 100%; text-align: right;"></div>
           </div>
           
@@ -235,12 +228,12 @@
                     <td style="font-weight: normal; vertical-align: middle; font-weight: normal; text-align: right; font-size: 14px;"><%= to_comma_seperated_precision_label(balance.to_f)  %>&nbsp;&nbsp;</td>
                     <td style="font-weight: normal; vertical-align: middle; text-align: right; font-weight: normal; font-size: 14px;"><%= to_comma_seperated_precision_label(paid_amount.to_f)  %>&nbsp;&nbsp;</td>
                     <td style="font-weight: normal; vertical-align: middle; text-align: right; font-weight: normal; font-size: 14px;"><%= to_comma_seperated_precision_label(bal.to_f)  %>&nbsp;&nbsp;</td>
-                    <td style="font-weight: normal; vertical-align: middle; text-align: center; font-weight: normal; font-size: 14px;">
+                    <td class="button_td" style="font-weight: normal; vertical-align: middle; text-align: center; font-weight: normal; font-size: 14px;">
                         <% if MultiSchool.current_school.id != 352 %>  
-                            <%= link_to "Print Receipt", {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>d.id}, :class=>"details_button" %>
-                            <%= link_to "Pay Fees", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"details_button" %>
+                            <%= link_to "Print Receipt", {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>d.id}, :class=>"details_button details_button_color" %>
+                            <%= link_to "Pay Fees", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"details_button details_button_color" %>
                         <% else %>
-                        <%= link_to "Details", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"details_button", :id => "fee_link_" + Base64.encode64(@student.id.to_s + "-" + d.id.to_s).reverse + '===' + "" %>
+                        <%= link_to "Details", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"details_button details_button_color", :id => "fee_link_" + Base64.encode64(@student.id.to_s + "-" + d.id.to_s).reverse + '===' + "" %>
                         <% end %>
                     </td>
                   </tr>
@@ -271,12 +264,7 @@
           </table>
           
             
-              <% if found_fees %>
-              <% display = "none" %>
-              <% if fees_multiple.strip.length > 0 %>
-                <% display = "block" %>
-              <% end %>
-              <div id="combined_pay" style="display: <%= display %>;">
+              <div id="combined_pay_1" style="display: none;">
                 <div style="clear: both; height: 4px; background: #FBFBFB; "></div>
                 
                 <div style="padding: 10px; text-align: center; height: 60px;">
@@ -287,7 +275,6 @@
                     <% end %>
                 </div>
               </div>
-              <% end %>
               
             </div>
       </div>
@@ -362,11 +349,23 @@
         background:#fff;
         display: inline-block;
         margin-bottom: 5px;
+        background: #49BB4B none repeat scroll 0 0;
+        color: #fff; 
+        font-family: verdana;
+        font-size: 14px;
+    }
+    .details_button_color{
+        background: #FFF;
+        color: #000; 
     }
     .details_button:hover{
         text-decoration: none;
-        background: #1C4F04;
+        background: #145214;
         color: #fff;
+    }
+    .details_button_color:hover{
+        background: #ccc;
+        color: #000; 
     }
 </style>
 <script>

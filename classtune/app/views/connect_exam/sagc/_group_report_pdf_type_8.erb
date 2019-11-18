@@ -265,6 +265,12 @@
                       monthly2 = 0
                       monthly3 = 0
                       monthly4 = 0
+                      
+                      
+                      ct1 = 0
+                      ct2 = 0
+                      ct3 = 0
+                      ct4 = 0
 
                       monthly5 = 0
                       monthly6 = 0
@@ -365,7 +371,7 @@
                                 <% end %>
                               <% end %>
                             <% end %>
-                              
+                            <% ct1 = class_test_mark1 %>
                             <% if class_test_mark1 < pass_mark_monthly && fourth_subject.blank? %>
                               <% failed1 = true %>
                               <% failed_subject1 = true %>
@@ -487,6 +493,7 @@
                                     <% end %>
                                   <% end %>
                                 <% end %>
+                                <% ct2 = class_test_mark %>
                                 <% if class_test_mark < pass_mark_monthly && fourth_subject.blank? %>
                                   <% failed1 = true %>
                                   <% failed_subject1 = true %>
@@ -689,6 +696,7 @@
                             <% elsif class_test_mark2 < pass_mark_monthly && !fourth_subject.blank? %> 
                               <% failed_subject2_fourth = true %>
                             <% end %>
+                            <% ct3 = class_test_mark2 %>
                             <% class_test_mark2 = (class_test_mark2.to_f/divider.to_f) %>
                             <% monthly3 = class_test_mark2 = class_test_mark2.round() %>
                             <% class_test_mark_all = class_test_mark_all+class_test_mark2 %>
@@ -802,6 +810,7 @@
                                 <% elsif class_test_mark < pass_mark_monthly && !fourth_subject.blank? %> 
                                   <% failed_subject2_fourth = true %>
                                 <% end %>
+                                <% ct4 = class_test_mark %>
                                 <% class_test_mark = (class_test_mark.to_f/divider.to_f) %>
                                 <% class_test_mark = class_test_mark.round() %>
                                 <% monthly4 = class_test_mark %>
@@ -1010,12 +1019,14 @@
 
                             if  monthly1 > 0 or  monthly3> 0
                               monthly5 = (monthly1+monthly3)/2.00
-                              monthly_full_mark_combined1 = monthly5*divider
+                              monthly_full_mark_combined1 = ct1+ct3
+                              monthly_full_mark_combined1 = monthly_full_mark_combined1/2.00
                             end
 
                             if  monthly2 > 0 or  monthly4> 0
                               monthly6 = (monthly2+monthly4)/2.00
-                              monthly_full_mark_combined2 = monthly6*divider
+                              monthly_full_mark_combined2 = ct2+ct4
+                              monthly_full_mark_combined2 = monthly_full_mark_combined2/2.00
                             end
 
                             full_sb = full_sb1+full_sb2

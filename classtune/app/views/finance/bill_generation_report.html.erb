@@ -17,46 +17,114 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/stylesheets/select2.min.css">
+<link rel="stylesheet" href="/stylesheets/select2-finance.css">
+
+<%= javascript_include_tag 'select2.full.min.js' %>
+<%= javascript_include_tag 'select2-finance.js' %>
+
 <div id="content-header">
   <%= show_header_icon %>
   <h1><%= "Bill Generation Report" %></h1>
   <div class='header-sep'>|</div>
   <div class='sub-header'><%= "Bill Generation Report" %></div>
 </div>
-<div id="page-yield">
 
-  <div id="batchs1">
+<div id="page-yield" style="padding-top: 30px;">
+    <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
+  <% form_for :fees_defaulters do %>
+    <div id="batchs1">
     <% form_for :fees_submission_batch do %>
-      <div class="label-field-pair" id="hide1">
-        <div class="label-container"><label><%= t('select_a_batch') %></label></div>
-        <div class="input-container"> <%= select :fees_submission, :batch_id, @batches.map { |c| [c.full_name, c.id] },
-            {:prompt => "#{t('select_a_batch')}"},
-            {:onChange => "#{remote_function(:url => {:action => "update_bill_generation_dates"},
-            :with => "'batch_id='+value",
-            :before => "Element.show('loader')",
-            :success => "Element.hide('loader')")}", :style=>"width: 90% !important; float: left;"
+      <div style="clear: both; border: 1px solid #ccc; border-radius: 5px; float: left; width: 33%;">
+        <span style="padding: 8px 15px 2px 13px; font-weight: bold; display: block;">Filter By School/College:</span>  
+        <div class="label-field-pair" style="width: 100%; display: block; float: left; margin-top: 6px; margin-right: 1%;">
+          <%= select :bill_generation, :filter_by_course, [["School", 1],["College", 2]],
+            {:prompt => "Select"},
+            {:class => "select2-combo", :onChange => "#{remote_function(:url => {:action => "update_fees_collection_bill_generation_school_college"},
+            :with => "'filter_by_course='+value",
+            :before => "Element.show('loader_school_ccollege')",
+            :success => "Element.hide('loader_school_ccollege');load_select();")}", :autocomplete => "off", :style=>"width: 98% !important; float: left;"
           }%>
           <%= image_tag("loader.gif",
             :align => "absmiddle",
             :border => 0,
-            :id => "loader",
+            :id => "loader_school_ccollege",
             :style =>"display: none; " ) %>  
-        </div>
-        <%#=link_to_function "show inactive batches","show_inactive_batches()",{:class=>'user_button'}%>
+        </div>  
+        <div class="label-field-pair" style="width: 100%; display: block; float: left; margin-bottom: 6px; margin-right: 1%;">
+          <div class="input-container" style='width: 100%;'>
+            <div id="fees_collection_bill_school_college" style='width: 100%;'>
+              <%= render :partial => "fees_collection_bill_school_college"  %>
+            </div>
+          </div>
+        </div>  
+      </div>  
+        
+      <div style="border: 1px solid #ccc; border-radius: 5px; float: left; width: 65%; margin-left: 1%;">
+        <span style="padding: 8px 15px 2px 13px; font-weight: bold; display: block;">Filter By Shift/Class or Section:</span>  
+        <div class="label-field-pair" style="width: 49%; display: inline-block; float: left; margin-top: 6px; margin-right: 1%;">
+          <%= select :bill_generation, :batch_name, Batch.active.find(:all, :group => "name").map { |c| [c.name, c.id] },
+            {:prompt => "#{t('select_a_batch')}"},
+            {:class => "select2-combo", :autocomplete=> "off", :onChange => "#{remote_function(:url => {:controller => "finance", :action => "get_classes_finance_for_bill"}, :with => "'batch_id='+value" ,:before => "$('loading_2').show();",
+            :success => "$('loading_2').hide();")}"} %>
+          <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
+        </div>  
+        <div class="label-field-pair" style="width: 49%; display: inline-block; float: left; margin-top: 6px;">
+          <div id="course_data_for_bill" style='width: 100%;'> <%= render :partial => 'courses_data_for_bill', :object => @courses %></div>
+        </div>  
+        <div class="label-field-pair" style="width: 49%; display: inline-block; float: left; margin-top: 6px; margin-right: 1%;">
+          <div id="batches">
+              <%= render :partial => 'batches_finance_for_bill' %>
+          </div>
+        </div>  
+        <div class="label-field-pair" style="width: 49%; display: block; float: left; margin-bottom: 6px;">
+          <div class="input-container" style='width: 100%;'>
+            <div id="fees_collection_bill_generation_sections" style='width: 100%;'>
+              <%= render :partial => "fees_collection_bill_generation_sections"  %>
+            </div>
+          </div>
+        </div>  
+      </div> 
+      
+      <div style="clear: both; height: 10px;"></div>
+      
+      <div style="border: 1px solid #ccc; border-radius: 5px; float: left; width: 99%; ">
+        <span style="padding: 8px 15px 2px 13px; font-weight: bold; display: block;">Filter By Batch:</span>  
+        <div class="label-field-pair" style="padding-top: 10px; padding-bottom: 10px; float: left; width: 49%; margin: 0 0;">
+          <div class="input-container" style="width: 100%;"> <%= select :fees_submission, :batch_id, @batches.map { |c| [c.full_name, c.id] },
+              {:prompt => "#{t('select_a_batch')}"},
+              {:class => "select2-combo", :onChange => "#{remote_function(:url => {:action => "update_bill_generation_dates"},
+              :with => "'batch_id='+value",
+              :before => "Element.show('loader')",
+              :success => "Element.hide('loader');load_select();")}", :autocomplete => "off", :style=>"width: 90% !important; float: left;"
+            }%>
+            <%= image_tag("loader.gif",
+              :align => "absmiddle",
+              :border => 0,
+              :id => "loader",
+              :style =>"display: none; " ) %>  
+          </div>
+          <%#=link_to_function "show inactive batches","show_inactive_batches()",{:class=>'user_button'}%>
 
-      </div>
-      <div class="label-field-pair">
-        <div class="label-container"><label><%= t('select_fee_collection_date') %></label></div>
-        <div class="input-container">
-          <div id="fees_collection_dates">
-            <%= render :partial => "bill_generation_dates"  %>
+        </div>
+
+        <div class="label-field-pair" style="padding-top: 10px; padding-bottom: 10px; float: left; width: 50%; margin: 0 0; ">
+          <div class="input-container" style="width: 100%;">
+            <div id="fees_collection_dates">
+              <%= render :partial => "bill_generation_dates"  %>
+            </div>
           </div>
         </div>
-      </div>
+      </div>      
     <% end %>
-    <div id="student"> </div>
+      
+    <div style="clear: both; height: 10px;"></div>
+    <div id="student" style="border: 1px solid #ccc; width: 99%; border-radius: 6px; display: none; padding-top: 5px;"> </div>
 
     <div id="modal-box" style="display:none;"></div>
   </div>
-  <div class="extender"></div>
+  <%  end %>  
+    
+    
 </div>

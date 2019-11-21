@@ -92,6 +92,10 @@
               end
 
             @top_exam_group_count = @all_group_exams.count
+            
+            if @top_exam_group_count > 3
+              @top_exam_group_count = 3
+            end  
 
           %>
             <% unless @report_data.blank? %>

@@ -475,8 +475,12 @@ class StudentController < ApplicationController
         end  
         unless course_data.blank? 
           unless @batch_name_pdf.blank? 
-            @batch = Batch.find_by_course_id(course_data.id,:conditions=>["name like ?",@batch_name_pdf])
+            @batch = Batch.find_by_course_id(course_data.id,:conditions=>["name LIKE ?",@batch_name_pdf])
           else
+            @batch = Batch.find_by_course_id(course_data.id)
+          end
+          
+          if @batch.blank?
             @batch = Batch.find_by_course_id(course_data.id)
           end
           batch_split = @batch.name.split(" ")

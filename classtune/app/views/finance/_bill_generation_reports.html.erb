@@ -37,6 +37,7 @@
 #under the License. -%>
 
 <%# particular = @bill_generations.map{|s| [s['particular']]}  %>
+<%#= debug @particulars.inspect %>
 <%#= debug @bill_generations.inspect %>
 <span style="padding: 8px 15px 20px 13px; font-weight: bold; display: block; font-size: 18px; font-family: verdana; text-align: left;">Bill Generation Report</span>
   <div id="table-scroll" class="table-scroll" style="max-height: 500px; overflow-y: auto;">
@@ -47,12 +48,11 @@
                   <th class="fixed-side" scope="col" style="width: 200px; text-align: center; vertical-align: middle;">Student info</th>
                   <% unless @particulars.blank? %>
                     <% @particulars.each do |particular| %>
-                      <% unless @bill_generations.map{|s| s[particular['name']] unless s[particular['name']].blank?}.blank? %>
-                      <% particular['amount'] = 0.0 %>
-                      <th style=" background: #f9f9f9; width: 140px; text-align: center; vertical-align: middle; background: #f9f9f9;"><%= particular['name'] %></th>
-                      <% end %>
+                      <th style=" background: #f9f9f9; width: 140px; text-align: center; vertical-align: middle; background: #f9f9f9;"><%= particular %></th>
                     <% end %>
                   <% end %>
+                  <th style="width: 100px; text-align: center; vertical-align: middle; background: #f9f9f9;">Discount</th>    
+                  <th style="width: 100px; text-align: center; vertical-align: middle; background: #f9f9f9;">Fine</th>    
                   <th style="width: 100px; text-align: center; vertical-align: middle; background: #f9f9f9;">Total Fees</th>
                   <th style="width: 100px; text-align: center; vertical-align: middle; background: #f9f9f9;">Paid Amount</th>
                   <th style="width: 100px; text-align: center; vertical-align: middle; background: #f9f9f9;">Remaining</th>
@@ -61,74 +61,78 @@
               <% grand_total = 0.0 %>
               <% grand_paid = 0.0 %>
               <tbody>
-                <% particulars_with_amount = [] %>
+                <% particulars_with_amount = {} %>
+                <% discount_total = 0.00 %>
+                <% fine_total = 0.00 %>
+                <% paid_total = 0.00 %>
+                <% remaining_total = 0.00 %>
                 <% unless @bill_generations.blank? %>
                   <% @bill_generations.each do |fee_data| %>
-                    <% style = "" %>
-                    <% txt = "-" %>
-                    <% if fee_data['is_paid'] %>  
-                    <% #style = "border-left: 10px solid #090;" %>  
-                    <% style = "" %>  
-                    <% txt = "[+]" %>  
-                    <% end %> 
+                    <% unless fee_data['particular'].blank? %>
+                    <% total_fee = 0 %>
                     <tr class="tr-odd">
                         <th style="vertical-align: middle; text-align: left;" class="fixed-side">
-                          <% student = Student.find(:first, :conditions => "id = #{fee_data['id']}") %>
-                          <a href="/finance/fees_student_dates/<%= student.id %>" target="_blank"  style="font-weight: normal;">
-                            <%= student.full_name unless student.full_name.nil? %><br />
-                            <small>ID: <%= student.admission_no unless student.admission_no.nil? %></small>
+                          <a href="/finance/fees_student_dates/<%= fee_data['id'] %>" target="_blank"  style="font-weight: normal;">
+                            <%= fee_data['name'] unless fee_data['name'].nil? %><br />
+                            <small>ID: <%= fee_data['admission_no'] unless fee_data['admission_no'].nil? %></small>
                           </a>
                         </th>
                         <% total_fee = 0.0 %>
                         <% unless @particulars.blank? %>
                           <% @particulars.each_with_index do |particular, i| %>
-                            <% unless @bill_generations.map{|s| s[particular['name']] unless s[particular['name']].blank?}.blank? %>
-                              <% if particular['plusminus'] && particular['opt'].to_i == 1 %>
-                                <% total_fee += fee_data[particular['name']] unless fee_data[particular['name']].nil? %>
-                                <% particular['amount'] += fee_data[particular['name']] unless fee_data[particular['name']].nil? %>
-                              <% elsif particular['plusminus'] && particular['opt'].to_i == 2 %>
-                                <% total_fee = total_fee - fee_data[particular['name']] unless fee_data[particular['name']].nil? %>
-                                <% particular['amount'] = particular['amount'] - fee_data[particular['name']] unless fee_data[particular['name']].nil? %>  
-                                <% if total_fee < 0 %>
-                                <% total_fee = 0 %>
-                                <% end %>
-                                <% if particular['amount'] < 0 %>
-                                <% particular['amount'] = 0 %>
-                                <% end %>
-                              <% end %>
-                                <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label fee_data[particular['name']] %></td>
-                                <% particulars_with_amount[i] = particular %>
+                            <% particular_amount = fee_data['particular'].map{|p| p['amount'].to_f if p['name'] == particular}.compact.sum  %>
+                            <% if particulars_with_amount[particular].blank? %>
+                              <%
+                                particulars_with_amount[particular] = []
+                                tmp = {}
+                                tmp['amount'] = particular_amount
+                                particulars_with_amount[particular] << tmp
+                              %>
+                            <% else %>  
+                              <%
+                                tmp = {}
+                                tmp['amount'] = particular_amount
+                                particulars_with_amount[particular] << tmp
+                              %>
                             <% end %>
+                            <% total_fee += particular_amount %>
+                            <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label particular_amount %></td>
                           <% end %>
                         <% end %>
+                        <% total_fee -= fee_data['discount'].to_f %>
+                        <% discount_total += fee_data['discount'].to_f %>
+                        <% total_fee += fee_data['fine'].to_f %>
+                        <% fine_total += fee_data['fine'].to_f %>
+                        <% paid_total += fee_data['paid'].to_f %>
                         <% grand_total += total_fee  %>
-                        <%#= grand_total += total_fee  %>    
+                        <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label fee_data['discount'].to_f %></td>
+                        <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label fee_data['fine'].to_f %></td>
                         <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label total_fee %></td>
-                        <% paid_amount = 0 %>
-                        <% unless fee_data['paid_fees'].blank? and total_fee == 0 %>
-                          <% paid_amount = fee_data['paid_fees'].map(&:amount).sum.to_f %>
-                          <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label paid_amount %></td>
-                        <% else %>  
-                          <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label 0.00 %></td>
-                        <% end %>
-                        <% remaining = total_fee - paid_amount  %>  
-                        <% grand_paid += paid_amount  %>
+                        <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label fee_data['paid'].to_f %></td>
+                        <% remaining = total_fee - fee_data['paid'].to_f  %>  
+                        <% remaining_total += remaining.to_f  %>  
                         <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label remaining %></td>
                     </tr>
+                    <% end %>
                   <% end %>  
                     <tr>  
                       <th style="vertical-align: middle; text-align: left; color: #000; background: #f9f9f9; height: 40px;" class="fixed-side"> Grand Total </th>
                       <% total_fee = 0.0 %>
-                      <% unless particulars_with_amount.blank? %>
-                        <% particulars_with_amount.each do |particular| %>
-                          <% total_fee += particular['amount'] unless particular['amount'].nil? %>
-                          <td class="align-right" style="vertical-align: middle; font-weight: bold; background: #f9f9f9;"><%= precision_label particular['amount'] %></td>
+                        <% unless @particulars.blank? %>
+                          <% @particulars.each_with_index do |particular, i| %>
+                            <% particular_amount = particulars_with_amount[particular].map{|p| p['amount']}.compact.sum  %>
+                            <% total_fee += particular_amount %>
+                            <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label particular_amount %></td>
+                          <% end %>
                         <% end %>
-                      <% end %>
-                      <% grand_total += total_fee  %>    
-                      <td class="align-right" style="vertical-align: middle; font-weight: bold; background: #f9f9f9;"><%= precision_label total_fee %></td>
-                      <td class="align-right" style="vertical-align: middle; font-weight: bold; background: #f9f9f9;"><%= precision_label grand_paid %></td>
-                      <td class="align-right" style="vertical-align: middle; font-weight: bold; background: #f9f9f9;"><%= precision_label total_fee - grand_paid %></td>
+                        <% total_fee -= discount_total.to_f %>
+                        <% total_fee += fine_total.to_f %>
+                        <% grand_total += total_fee  %>
+                        <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label discount_total.to_f %></td>
+                        <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label fine_total.to_f %></td>
+                        <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label total_fee %></td>
+                        <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label paid_total.to_f %></td>
+                        <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label remaining_total %></td>
                     </tr>
                 <% end %>  
               </tbody>
@@ -139,7 +143,7 @@
       <%#= link_to " ► #{t('pdf_report')}",
         {:controller => "finance", :action => "fee_collection_pdf", :batch_id => @batch.id, :date => @date.id},:target => '_blank', :class=> 'user_button' %>
   </div>
-
+<%#= debug particulars_with_amount.inspect %>
 <style>
     #page-yield {
       margin: 0;

@@ -7211,56 +7211,536 @@ class FinanceController < ApplicationController
         end
       end
       #student_ids=@date.finance_fees.find(:all,:conditions=>"batch_id IN (#{batches.join(',')})").collect(&:student_id)
-      student_ids = FinanceFee.find(:all,:conditions=>"batch_id IN (#{batches.join(',')}) and fee_collection_id IN (#{@dates_data_id.join(',')})").collect(&:student_id)
-      #abort(student_ids.length.to_s)
-      tmp_particulars = FinanceFeeParticular.all(:conditions=>"finance_fee_particulars.is_deleted=#{false} and collection_particulars.finance_fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN collection_particulars ON collection_particulars.finance_fee_particular_id = finance_fee_particulars.id", :group => "name")
-      particulars_name = tmp_particulars.map(&:name)
-      #abort(particulars_name.inspect)
+      student_ids = FinanceFee.find(:all,:conditions=>"batch_id IN (#{batches.join(',')}) and fee_collection_id IN (#{@dates_data_id.join(',')})")
+      t = {}
+      #abort(student_ids.map(&:student_id).inspect)
+      student_particular_category_ids = student_ids.map{|si| {"student_category_id" => si.student.student_category_id, "student_id" => si.student.id} unless si.student.blank?}
+      student_particula_batch_ids = student_ids.map{|si| {"batch_id" => si.student.batch_id, "student_id" => si.student.id} unless si.student.blank?}
+      student_batch_ids = student_ids.map(&:batch_id).uniq
+      #abort(student_batch_ids.inspect)
+      @student_particulars = FinanceFeeParticular.all(:conditions=>"batch_id IN (#{batches.join(',')}) and finance_fee_particulars.is_deleted=#{false} and collection_particulars.finance_fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN collection_particulars ON collection_particulars.finance_fee_particular_id = finance_fee_particulars.id")
+      @student_discounts = FeeDiscount.all(:conditions=>"scholarship_id = 0 and batch_id IN (#{batches.join(',')}) and fee_discounts.is_deleted=#{false} and collection_discounts.finance_fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN collection_discounts ON collection_discounts.fee_discount_id = fee_discounts.id")
+      
+      tmp_pars = {}
+      tmp_pars_categories = {}
+      tmp_pars_batches = {}
+      tmp_discounts = {}
+      tmp_discounts_categories = {}
+      tmp_discounts_batches = {}
+      tmp_paid_fees = {}
+      tmp_fine = {}
       @particulars = []
-      i = 1
-      unless tmp_particulars.blank?
-        tmp_particulars.each_with_index do |particular, j|
+      student_particulars = @student_particulars.select{ |sp| sp.receiver_type == 'Student' }
+      unless student_particulars.blank?
+        student_particulars.each do |student_particular|
           tmp = {}
-          tmp['id'] = j+1
-          tmp['name'] = particular.name
-          tmp['amount'] = 0.00
-          tmp['plusminus'] = true
-          tmp['opt'] = 1
-          tmp['particular_category'] = particular.finance_fee_particular_category_id
-          @particulars << tmp
-          i += 1
+          if student_particular.receiver_type == 'Student'
+            tmp['id'] = student_particular.id
+            tmp['name'] = student_particular.name
+            tmp['amount'] = student_particular.amount
+            tmp['particular_category'] = student_particular.finance_fee_particular_category_id
+            tmp['student_id'] = student_particular.receiver_id
+            if tmp_pars[student_particular.receiver_id].blank?
+                tmp_pars[student_particular.receiver_id] = []
+            end
+            tmp_pars[student_particular.receiver_id] << tmp
+            unless @particulars.include?(student_particular.name)
+              @particulars << student_particular.name
+            end
+          end
         end
-
-        tmp = {}
-        tmp['id'] = i
-        tmp['name'] = "Total Payable"
-        tmp['amount'] = 0.00
-        tmp['plusminus'] = false
-        tmp['opt'] = 0
-        tmp['particular_category'] = 0
-        @particulars << tmp
-        i += 1
-
-        tmp = {}
-        tmp['id'] = i
-        tmp['name'] = "Discount"
-        tmp['amount'] = 0.00
-        tmp['plusminus'] = true
-        tmp['opt'] = 2
-        tmp['particular_category'] = 0
-        @particulars << tmp
-        i += 1
-
-        tmp = {}
-        tmp['id'] = i
-        tmp['name'] = "Fine"
-        tmp['amount'] = 0.00
-        tmp['plusminus'] = true
-        tmp['opt'] = 1
-        tmp['particular_category'] = 0
-        @particulars << tmp
-        i += 1
       end
+        
+      student_discounts = @student_discounts.select{ |sp| sp.receiver_type == 'Student' }
+      unless student_discounts.blank?
+        student_discounts.each do |student_discount|
+          tmp = {}
+          if student_discount.receiver_type == 'Student'
+            tmp['id'] = student_discount.id
+            tmp['name'] = student_discount.name
+            tmp['amount'] = student_discount.discount
+            tmp['discount_particular_category'] = student_discount.finance_fee_particular_category_id
+            tmp['is_amount'] = student_discount.is_amount
+            tmp['student_id'] = student_discount.receiver_id
+            if tmp_discounts[student_discount.receiver_id].blank?
+                tmp_discounts[student_discount.receiver_id] = []
+            end
+            tmp_discounts[student_discount.receiver_id] << tmp
+          end
+        end
+      end
+      
+      student_particulars = @student_particulars.select{ |sp| sp.receiver_type == 'StudentCategory' }
+      unless student_particulars.blank?
+        student_particulars.each do |student_particular|
+          tmp = {}
+          if student_particular.receiver_type == 'StudentCategory'
+            tmp['id'] = student_particular.id
+            tmp['name'] = student_particular.name
+            tmp['amount'] = student_particular.amount
+            tmp['particular_category'] = student_particular.finance_fee_particular_category_id
+            tmp['batch_id'] = student_particular.batch_id
+            if tmp_pars_categories[student_particular.receiver_id].blank?
+                tmp_pars_categories[student_particular.receiver_id] = []
+            end
+            tmp_pars_categories[student_particular.receiver_id] << tmp
+            unless @particulars.include?(student_particular.name)
+              @particulars << student_particular.name
+            end
+          end
+        end
+      end
+        
+      student_discounts = @student_discounts.select{ |sp| sp.receiver_type == 'StudentCategory' }
+      unless student_discounts.blank?
+        student_discounts.each do |student_discount|
+          tmp = {}
+          if student_discount.receiver_type == 'StudentCategory'
+            tmp['id'] = student_discount.id
+            tmp['name'] = student_discount.name
+            tmp['amount'] = student_discount.discount
+            tmp['discount_particular_category'] = student_discount.finance_fee_particular_category_id
+            tmp['is_amount'] = student_discount.is_amount
+            tmp['student_id'] = student_discount.receiver_id
+            tmp['batch_id'] = student_discount.batch_id
+            if tmp_discounts_categories[student_discount.receiver_id].blank?
+                tmp_discounts_categories[student_discount.receiver_id] = []
+            end
+            tmp_discounts_categories[student_discount.receiver_id] << tmp
+          end
+        end
+      end
+      
+      student_particulars = @student_particulars.select{ |sp| sp.receiver_type == 'Batch' }
+      unless student_particulars.blank?
+        student_particulars.each do |student_particular|
+          tmp = {}
+          if student_particular.receiver_type == 'Batch'
+            tmp['id'] = student_particular.id
+            tmp['name'] = student_particular.name
+            tmp['amount'] = student_particular.amount
+            tmp['particular_category'] = student_particular.finance_fee_particular_category_id
+            tmp['batch_id'] = student_particular.batch_id
+            if tmp_pars_batches[student_particular.receiver_id].blank?
+                tmp_pars_batches[student_particular.receiver_id] = []
+            end
+            tmp_pars_batches[student_particular.receiver_id] << tmp
+            unless @particulars.include?(student_particular.name)
+              @particulars << student_particular.name
+            end
+          end
+        end
+      end
+        
+      student_discounts = @student_discounts.select{ |sp| sp.receiver_type == 'Batch' }
+      unless student_discounts.blank?
+        student_discounts.each do |student_discount|
+          tmp = {}
+          if student_discount.receiver_type == 'Batch'
+            tmp['id'] = student_discount.id
+            tmp['name'] = student_discount.name
+            tmp['amount'] = student_discount.discount
+            tmp['discount_particular_category'] = student_discount.finance_fee_particular_category_id
+            tmp['is_amount'] = student_discount.is_amount
+            tmp['batch_id'] = student_discount.batch_id
+            if tmp_discounts_batches[student_discount.receiver_id].blank?
+                tmp_discounts_batches[student_discount.receiver_id] = []
+            end
+            tmp_discounts_batches[student_discount.receiver_id] << tmp
+          end
+        end
+      end
+      
+#      student_discounts = @student_discounts.select{ |sp| sp.receiver_type == 'StudentCategory' }
+#      tmp_std_discounts = []
+#      tmp_std_discounts = tmp_discounts.map{|k, s| k.to_i}
+#      unless student_discounts.blank?
+#        student_discounts.each do |student_discount|
+#          tmp = {}
+#          if student_discount.receiver_type == 'StudentCategory'
+#              #particular_ids = student_particular_category_ids.compact.map{|s| s["student_id"] if s["student_category_id"].to_i == student_discount.receiver_id}
+#              student_particular_category_ids.compact.map{|s| tmp_discounts[s["student_id"].to_i] = [] if  s["student_category_id"].to_i == student_discount.receiver_id and tmp_discounts[s["student_id"].to_i].blank? and !tmp_std_discounts.include?(s["student_id"].to_i)}
+#              student_particular_category_ids.compact.map{|s| tmp_discounts[s["student_id"].to_i] << {'id' => student_discount.id, 'name' => student_discount.name, 'amount' => student_discount.amount, 'discount_particular_category' => student_discount.finance_fee_particular_category_id, 'is_amount' => student_discount.is_amount, 'student_id' => s["student_id"].to_i} if s["student_category_id"].to_i == student_discount.receiver_id and !tmp_std_discounts.include?(s["student_id"].to_i)}
+##              unless particular_ids.blank?
+##                particular_ids.each do |pi|
+##                  student_id = pi["student_id"].to_i
+##                  tmp['id'] = student_discount.id
+##                  tmp['name'] = student_discount.name
+##                  tmp['amount'] = student_discount.discount
+##                  tmp['discount_particular_category'] = student_discount.finance_fee_particular_category_id
+##                  tmp['is_amount'] = student_discount.is_amount
+##                  tmp['student_id'] = student_id
+##                  found = false
+##                  if tmp_discounts[student_id].blank?
+##                      tmp_discounts[student_id] = []
+##                  else
+##                    tmp_discounts[student_id].each do |sp|
+##                      if sp['discount_particular_category'].to_i == student_discount.finance_fee_particular_category_id and sp['id'].to_i == student_discount.id
+##                        found = true
+##                      end
+##                    end
+##                  end
+##                  if found == false
+##                    tmp_discounts[student_id] << tmp
+##                  end
+##                end
+##              end
+#            end
+#        end
+#      end
+#      
+#      student_particulars = @student_particulars.select{ |sp| sp.receiver_type == 'StudentCategory' }
+#      tmp_std_pars = []
+#      tmp_std_pars = tmp_pars.map{|k, s| k.to_i}
+#      unless student_particulars.blank?
+#        student_particulars.each do |student_particular|
+#          tmp = {}
+#          if student_particular.receiver_type == 'StudentCategory'
+#              student_particular_category_ids.compact.map{|s| tmp_pars[s["student_id"].to_i] = [] if  s["student_category_id"].to_i == student_particular.receiver_id and tmp_pars[s["student_id"].to_i].blank? and !tmp_std_pars.include?(s["student_id"].to_i)}
+#              student_particular_category_ids.compact.map{|s| tmp_pars[s["student_id"].to_i] << {'id' => student_particular.id, 'name' => student_particular.name, 'amount' => student_particular.amount, 'particular_category' => student_particular.finance_fee_particular_category_id, 'student_id' => s["student_id"].to_i} if s["student_category_id"].to_i == student_particular.receiver_id and !tmp_std_pars.include?(s["student_id"].to_i)}
+#              #particular_ids = student_particular_category_ids.compact.map{|s| s["student_id"] if s["student_category_id"].to_i == student_particular.receiver_id and !tmp_std_pars.include?(s["student_id"].to_i)}
+#              
+##             
+##              particular_ids = student_particular_category_ids.compact.select{|s| s["student_category_id"].to_i == student_particular.receiver_id}
+##              unless particular_ids.blank?
+##                particular_ids.each do |pi|
+##                  student_id = pi["student_id"].to_i
+##                  tmp['id'] = student_particular.id
+##                  tmp['name'] = student_particular.name
+##                  tmp['amount'] = student_particular.amount
+##                  tmp['particular_category'] = student_particular.finance_fee_particular_category_id
+##                  tmp['student_id'] = student_id
+##                  found = false
+##                  if tmp_pars[student_id].blank?
+##                      tmp_pars[student_id] = []
+##                  else
+##                    tmp_pars[student_id].each do |sp|
+##                      if sp['particular_category'].to_i == student_particular.finance_fee_particular_category_id and sp['id'].to_i == student_particular.id
+##                        found = true
+##                      end
+##                    end
+##                  end
+##                  if found == false
+##                    tmp_pars[student_id] << tmp
+##                  end
+##                end
+##              end
+#              unless @particulars.include?(student_particular.name)
+#                @particulars << student_particular.name
+#              end
+#            end
+#        end
+#      end
+#      
+#      #abort(tmp_pars[24711].inspect)
+#      #particular_ids = student_particular_category_ids.compact.select{|s| s["student_category_id"].to_i == 487}
+#      
+#      tmp_std_discounts = []
+#      tmp_std_discounts = tmp_discounts.map{|k, s| k.to_i}
+#      student_discounts = @student_discounts.select{ |sp| sp.receiver_type == 'Batch' }
+#      unless student_discounts.blank?
+#        student_discounts.each do |student_discount|
+#          tmp = {}
+#          if student_discount.receiver_type == 'Batch'
+#            #particular_ids = student_particula_batch_ids.compact.select{|s| s["batch_id"].to_i == student_discount.receiver_id}
+#            student_particula_batch_ids.compact.map{|s| tmp_discounts[s["student_id"].to_i] = [] if  s["batch_id"].to_i == student_discount.receiver_id and tmp_discounts[s["student_id"].to_i].blank? and !tmp_std_discounts.include?(s["student_id"].to_i)}
+#            student_particula_batch_ids.compact.map{|s| tmp_discounts[s["student_id"].to_i] << {'id' => student_discount.id, 'name' => student_discount.name, 'amount' => student_discount.amount, 'discount_particular_category' => student_discount.finance_fee_particular_category_id, 'is_amount' => student_discount.is_amount, 'student_id' => s["student_id"].to_i} if s["batch_id"].to_i == student_discount.receiver_id and !tmp_std_discounts.include?(s["student_id"].to_i)}
+##            unless particular_ids.blank?
+##              particular_ids.each do |pi|
+##                student_id = pi["student_id"].to_i
+##                tmp['id'] = student_discount.id
+##                tmp['name'] = student_discount.name
+##                tmp['amount'] = student_discount.discount
+##                tmp['discount_particular_category'] = student_discount.finance_fee_particular_category_id
+##                tmp['is_amount'] = student_discount.is_amount
+##                tmp['student_id'] = student_id
+##                found = false
+##                if tmp_discounts[student_id].blank?
+##                    tmp_discounts[student_id] = []
+##                else
+##                  tmp_discounts[student_id].each do |sp|
+##                    if sp['discount_particular_category'].to_i == tmp_discounts.finance_fee_particular_category_id and sp['id'].to_i == tmp_discounts.id
+##                      found = true
+##                    end
+##                  end
+##                end
+##                if found == false
+##                  tmp_discounts[student_id] << tmp
+##                end
+##              end
+##            end
+#          end
+#        end
+#      end
+#      
+#      tmp_std_pars = []
+#      tmp_std_pars = tmp_pars.map{|k, s| k.to_i}
+#      student_particulars = @student_particulars.select{ |sp| sp.receiver_type == 'Batch' }
+#      unless student_particulars.blank?
+#        student_particulars.each do |student_particular|
+#          tmp = {}
+#          if student_particular.receiver_type == 'Batch'
+#            particular_ids = student_particula_batch_ids.compact.select{|s| s["batch_id"].to_i == student_particular.receiver_id}
+#            student_particular_category_ids.compact.map{|s| tmp_pars[s["student_id"].to_i] = [] if  s["batch_id"].to_i == student_particular.receiver_id and tmp_pars[s["student_id"].to_i].blank? and !tmp_std_pars.include?(s["student_id"].to_i)}
+#            student_particular_category_ids.compact.map{|s| tmp_pars[s["student_id"].to_i] << {'id' => student_particular.id, 'name' => student_particular.name, 'amount' => student_particular.amount, 'particular_category' => student_particular.finance_fee_particular_category_id, 'student_id' => s["student_id"].to_i} if s["batch_id"].to_i == student_particular.receiver_id and !tmp_std_pars.include?(s["student_id"].to_i)}
+##            unless particular_ids.blank?
+##              particular_ids.each do |pi|
+##                student_id = pi["student_id"].to_i
+##                tmp['id'] = student_particular.id
+##                tmp['name'] = student_particular.name
+##                tmp['amount'] = student_particular.amount
+##                tmp['particular_category'] = student_particular.finance_fee_particular_category_id
+##                tmp['student_id'] = student_id
+##                found = false
+##                if tmp_pars[student_id].blank?
+##                    tmp_pars[student_id] = []
+##                else
+##                  tmp_pars[student_id].each do |sp|
+##                    if sp['particular_category'].to_i == student_particular.finance_fee_particular_category_id and sp['id'].to_i == student_particular.id
+##                      found = true
+##                    end
+##                  end
+##                end
+##                if found == false
+##                  tmp_pars[student_id] << tmp
+##                end
+##              end
+##            end
+#            unless @particulars.include?(student_particular.name)
+#              @particulars << student_particular.name
+#            end
+#          end
+#        end
+#      end
+      
+      paid_fees = FinanceTransaction.find(:all, :conditions => "finance_id IN (#{student_ids.map(&:id).join(',')})")
+      unless paid_fees.blank?
+        paid_fines = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + paid_fees.map(&:id).join(",") + ")")
+        tmp_paid_fines = []
+        unless paid_fines.nil?
+          paid_fines.each do |pf|
+            amount = pf.amount
+            finance_transaction_id = pf.finance_transaction_id
+            #abort(finance_transaction_id.inspect)
+            paid_fee = paid_fees.select{|pff| pff.id == finance_transaction_id.to_i}
+            student_id = paid_fee[0].payee_id
+            tmp = {}
+            tmp['student_id'] = student_id
+            tmp['amount'] = amount
+            tmp_paid_fines << tmp
+          end
+        end
+      end
+      unless paid_fees.blank?
+        paid_fees.each do |paid_fee|
+          tmp = {}
+          student_id = paid_fee.payee_id
+          if tmp_paid_fees[student_id].blank?
+             tmp_paid_fees[student_id] = []
+             tmp['amount'] = paid_fee.amount
+             tmp['student_id'] = student_id
+             tmp_paid_fees[student_id] << tmp
+          else
+            amount = paid_fee.amount.to_f
+            tmp_paid_fees[student_id].each do |sp|
+              unless sp['amount'].blank?
+                amount += sp['amount'].to_f
+              end
+            end
+            #abort(tmp_paid_fees[student_id].inspect)
+            tmp_paid_fees[student_id][0]['amount'] = amount
+          end
+        end
+      end
+      unless tmp_paid_fines.blank?
+        tmp_paid_fines.each do |tmp_paid_fine|
+          tmp = {}
+          student_id = tmp_paid_fine['student_id']
+          if tmp_fine[student_id].blank?
+             tmp_fine[student_id] = []
+             tmp['amount'] = tmp_paid_fine['amount']
+             tmp['student_id'] = student_id
+             tmp_fine[student_id] << tmp
+          else
+            amount = tmp_paid_fine['amount']
+            tmp_fine[student_id].each do |sp|
+              amount += sp['amount']
+            end
+            tmp_fine[student_id][0]['amount'] = amount
+          end
+        end
+      end
+#      
+#      #abort(tmp_pars[38553].inspect)
+##      tmp_pars = tmp_pars.compact
+##      tmp_discounts = tmp_discounts.compact
+##      tmp_paid_fees = tmp_paid_fees.compact
+##      tmp_fine = tmp_fine.compact
+      tt_discount = {}
+#      tmp_discounts.each do |key, discounts|
+#        tt_discount[key] = []
+#        tmp = {}
+#        d_amount = 0
+#        #abort(discounts.inspect)
+#        discounts.each do |d|
+#          unless d['is_amount']
+#            student_particulars = tmp_pars[d['student_id']]
+#            particular_category_id = d['discount_particular_category']
+#            
+#            particular_amount = 0.00
+#            if particular_category_id > 0
+#              particular_amount = student_particulars.select{|sp| sp['particular_category'].to_i == particular_category_id.to_i}.map{|a| a['amount']}.sum
+#            elsif particular_category_id == 0
+#              particular_amount = student_particulars.map{|a| a['amount']}.sum
+#            end
+#            amt = d['amount']
+#            discount_amt = particular_amount * amt.to_f/ 100
+#            d_amount += discount_amt
+#          else
+#            d_amount += d['amount']
+#          end
+#        end
+#        tmp['amount'] = d_amount
+#        tt_discount[key] << tmp
+#      end
+#      
+      t_paid = {}
+      tmp_paid_fees.each do |key, paid_fees|
+        t_paid[key] = []
+        p_amount = 0
+        tmp = {}
+        #abort(discounts.inspect)
+        paid_fees.each do |p|
+          p_amount += p['amount']
+        end
+        tmp['amount'] = p_amount
+        t_paid[key] << tmp
+      end
+#      
+      t_fine = {}
+      tmp_fine.each do |key, fines|
+        t_fine[key] = []
+        f_amount = 0
+        tmp = {}
+        #abort(discounts.inspect)
+        fines.each do |f|
+          f_amount += f['amount']
+        end
+        tmp['amount'] = f_amount
+        t_fine[key] << tmp
+      end
+#      #abort(t_paid.inspect)
+#      tmp_discounts = tt_discount
+      
+      @bill_generations = []
+      students = student_ids.map{|s| [s.student.id, s.student.full_name, s.student.admission_no, s.student.student_category_id, s.batch_id] unless s.student.blank?}
+      students = students.compact
+      #abort('here')
+      #abort(students.inspect)
+      unless students.blank?
+        students.each do |s|
+          tmp = {}
+          unless s.blank?
+            tmp['id'] = s[0]
+            tmp['name'] = s[1]
+            tmp['admission_no'] = s[2]
+            #tmp['particular'] = tmp_pars[s[0]]
+            particular_categories = []
+            particular_student = []
+            particular_category = []
+            particular_batch = []
+            unless tmp_pars[s[0]].blank?
+              particular_categories = tmp_pars[s[0]].map{|l| l['particular_category']}
+              particular_student = tmp_pars[s[0]]
+            end
+            #particular = tmp_pars[s[0]]
+            unless tmp_pars_categories[s[3]].blank?
+              particular_category = tmp_pars_categories[s[3]].select{|n| n['batch_id'].to_i == s[4] and !particular_categories.include?(n['particular_category'].to_i)}
+              particular_tmp = particular_student + particular_category
+              particular_categories = particular_tmp.map{|l| l['particular_category']}
+            end
+            
+            unless tmp_pars_batches[s[4]].blank?
+              particular_batch = tmp_pars_batches[s[4]].select{|n| n['batch_id'].to_i == s[4] and !particular_categories.include?(n['particular_category'].to_i)}
+              particular = particular_student + particular_category + particular_batch
+            end
+            tmp['particular'] = particular
+            
+#            discount_categories = []
+#            discount_student = []
+#            discount_category = []
+#            discount_batch = []
+#            
+#            tmp_discounts = {}
+#      tmp_discounts_categories = {}
+#      tmp_discounts_batches = {}
+#            unless tmp_discounts[s[0]].blank?
+#              discount_categories = tmp_discounts[s[0]].map{|l| l['discount_particular_category']}
+#              discount_student_is_amount = tmp_discounts[s[0]].map{|l| l['is_amount'] if l['is_amount'] == true}.sum
+#              discount_student_is_percentages = tmp_discounts[s[0]].select{|l| l['is_amount'] == false}
+#              unless discount_student_is_percentages.blank?
+#                discount_student_is_percentages.each do |discount_student_is_percentage|
+#                  
+#                end
+#              end
+#            end
+#            #particular = tmp_pars[s[0]]
+#            unless tmp_pars_categories[s[3]].blank?
+#              particular_category = tmp_pars_categories[s[3]].select{|n| n['batch_id'].to_i == s[4] and !particular_categories.include?(n['particular_category'].to_i)}
+#              particular_tmp = particular_student + particular_category
+#              particular_categories = particular_tmp.map{|l| l['particular_category']}
+#            end
+#            
+#            unless tmp_pars_batches[s[4]].blank?
+#              particular_batch = tmp_pars_batches[s[4]].select{|n| n['batch_id'].to_i == s[4] and !particular_categories.include?(n['particular_category'].to_i)}
+#              particular = particular_student + particular_category + particular_batch
+#            end
+#            tmp['particular'] = particular
+            
+            #discount_particular_category
+            
+            if tt_discount[s[0]].blank?
+              tmp['discount'] = 0.00
+            else
+              tmp['discount'] = tt_discount[s[0]].map{|tp| tp['amount']}.sum
+            end
+            if t_paid[s[0]].blank?
+              tmp['paid'] = 0.00
+            else
+              tmp['paid'] = t_paid[s[0]].map{|tp| tp['amount']}.sum
+            end
+            if t_paid[s[0]].blank?
+              tmp['paid'] = 0.00
+            else
+              tmp['paid'] = t_paid[s[0]].map{|tp| tp['amount']}.sum
+            end
+            if t_fine[s[0]].blank?
+              tmp['fine'] = 0.00
+            else
+              tmp['fine'] = t_fine[s[0]].map{|tp| tp['amount']}.sum
+            end
+            #tmp['paid'] = if t_paid[s[0]].blank?? 0.00 : t_paid[s[0]].map{|tp| tp['amount']}.sum
+            #tmp['fine'] = if t_fine[s[0]].blank?? 0.00 : t_fine[s[0]].map{|tp| tp['amount']}.sum
+
+            @bill_generations << tmp
+          end
+        end
+      else
+        render :update do |page|
+          page << "j('#student').hide();"
+          page.replace_html "student", :text => ''
+        end
+      end
+#      abort(student_ids.length.to_s)
+#      #abort(student_ids.length.to_s)
+#      #tmp_particulars = FinanceFeeParticular.all(:conditions=>"finance_fee_particulars.is_deleted=#{false} and collection_particulars.finance_fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN collection_particulars ON collection_particulars.finance_fee_particular_id = finance_fee_particulars.id", :group => "name")
+#      
+#      particulars_name = tmp_particulars.map(&:name)
+      #abort(particulars_name.inspect)
+      
+
+#        
+#      end
 #      
 #      exclude_particular_ids = StudentExcludeParticular.find(:all, :conditions => "student_id IN (#{student_ids.join(',')}) and fee_collection_id IN (#{@dates_data_id.join(',')})").map(&:fee_particular_id)
 #      unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
@@ -7273,74 +7753,73 @@ class FinanceController < ApplicationController
 
       #@student = Student.find(21780)
       #abort(@student.finance_fees.select{|f| @dates_data_id.include?(f.fee_collection_id)}.map(&:batch).inspect)
-      #@student_particulars = FinanceFeeParticular.all(:conditions=>"finance_fee_particulars.is_deleted=#{false} and collection_particulars.finance_fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN collection_particulars ON collection_particulars.finance_fee_particular_id = finance_fee_particulars.id")
       #s = tmp_particulars.select{|par|  @student.finance_fees.select{|f| @dates_data_id.include?(f.fee_collection_id)}.map(&:batch_id).include?(par.batch_id) and  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or @student.finance_fees.select{|f| @dates_data_id.include?(f.fee_collection_id)}.map(&:batch_id).include?(par.receiver_id)) }
       
       #abort(s.map(&:id).inspect)
-      @bill_generations = []
+      
 
-      unless student_ids.blank?
-        student_ids.each do |sid|
-          tmp = {}
-          #tmp['id'] = sid
-          @fee = FinanceFee.first(:conditions=>"fee_collection_id IN (#{@dates_data_id.join(',')})" ,:joins=>"INNER JOIN students ON finance_fees.student_id = '#{sid}'")
-          #tmp['fee'] = @fee
-          #@bill_generations << tmp
-          unless @fee.blank?
-#            tmp['id'] = sid
-#            tmp['fee'] = @fee
-            @date = FinanceFeeCollection.find(@fee.fee_collection_id)
-            advance_fee_collection = false
-            @self_advance_fee = false
-            @fee_has_advance_particular = false
-
-            @student = @fee.student
-            unless @student.nil?
-              tmp['id'] = sid
-              #unless @student.nil?
-              tmp['name'] = @student.full_name
-
-#              @financefee = @student.finance_fee_by_date @date
-
-              exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-              unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-                exclude_particular_ids = exclude_particular_ids
-              else
-                exclude_particular_ids = [0]
-              end
-
-              fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@fee.batch) }
-              #abort(fee_particulars.map(&:id).join(',') + "  " + sid.to_s)
-              #abort(sid.inspect)
-              
-              fee_particulars.each do |fee_particular|
-                if particulars_name.include?(fee_particular.name)
-                  t = {}
-                  t[fee_particular.name] = fee_particular.amount
-                  tmp[fee_particular.name] = fee_particular.amount
-                  tmp['particular'] = t
-                end
-              end
-
-              tmp['is_paid'] = false
-
-              @paid_fees = @fee.finance_transactions
-              tmp['paid_fees'] = @paid_fees
-
-              unless @paid_fees.blank?
-                tmp['is_paid'] = true
-              end
-
-              @bill_generations << tmp
-            end
-          end
-        end
-      else
-         render :update do |page|
-          page << "j('#student').hide();"
-          page.replace_html "student", :text => ''
-        end
-      end
+#      unless student_ids.blank?
+#        student_ids.each do |sid|
+#          tmp = {}
+#          #tmp['id'] = sid
+#          @fee = FinanceFee.first(:conditions=>"fee_collection_id IN (#{@dates_data_id.join(',')})" ,:joins=>"INNER JOIN students ON finance_fees.student_id = '#{sid}'")
+#          #tmp['fee'] = @fee
+#          #@bill_generations << tmp
+#          unless @fee.blank?
+##            tmp['id'] = sid
+##            tmp['fee'] = @fee
+#            @date = FinanceFeeCollection.find(@fee.fee_collection_id)
+#            advance_fee_collection = false
+#            @self_advance_fee = false
+#            @fee_has_advance_particular = false
+#
+#            @student = @fee.student
+#            unless @student.nil?
+#              tmp['id'] = sid
+#              #unless @student.nil?
+#              tmp['name'] = @student.full_name
+#
+##              @financefee = @student.finance_fee_by_date @date
+#
+#              exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+#              unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+#                exclude_particular_ids = exclude_particular_ids
+#              else
+#                exclude_particular_ids = [0]
+#              end
+#
+#              fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@fee.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@fee.batch) }
+#              #abort(fee_particulars.map(&:id).join(',') + "  " + sid.to_s)
+#              #abort(sid.inspect)
+#              
+#              fee_particulars.each do |fee_particular|
+#                if particulars_name.include?(fee_particular.name)
+#                  t = {}
+#                  t[fee_particular.name] = fee_particular.amount
+#                  tmp[fee_particular.name] = fee_particular.amount
+#                  tmp['particular'] = t
+#                end
+#              end
+#
+#              tmp['is_paid'] = false
+#
+#              @paid_fees = @fee.finance_transactions
+#              tmp['paid_fees'] = @paid_fees
+#
+#              unless @paid_fees.blank?
+#                tmp['is_paid'] = true
+#              end
+#
+#              @bill_generations << tmp
+#            end
+#          end
+#        end
+#      else
+#         render :update do |page|
+#          page << "j('#student').hide();"
+#          page.replace_html "student", :text => ''
+#        end
+#      end
       #abort(@bill_generations.inspect)
       render :update do |page|
         page << "j('#student').show();"

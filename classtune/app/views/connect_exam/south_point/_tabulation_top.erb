@@ -1,9 +1,13 @@
 <table width="100%" >
             <thead>
                 <tr>
+                    <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
                     
-                    <td><b>Year : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></b></td>
-                    
+                    <% if month_number.to_i>6 %>
+                      <td><b>Year : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %></b></td>
+                    <% else %>
+                      <td><b>Year : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></b></td>
+                    <% end %> 
                     
                     <td align="right"><b>Class :  
                         <% if @batch.name == "General" %>

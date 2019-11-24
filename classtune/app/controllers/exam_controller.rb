@@ -6799,12 +6799,15 @@ class ExamController < ApplicationController
                 end  
 
                 subject_full_marks = main_mark_no_round.round()
+                ct_marks_main = (main_mark_no_round/100)*full_mark1
                 if sub['grade_subject'].to_i != 1
                   if @student_subject_marks[sub['id'].to_i].blank?
                     @student_subject_marks[sub['id'].to_i] = {}
                   end
 
                   @student_subject_marks[sub['id'].to_i][std['id'].to_i] = subject_full_marks
+                  
+                  
 
 
                   grand_total1 = grand_total1+total_mark1
@@ -6887,8 +6890,11 @@ class ExamController < ApplicationController
 
                 end
                 ob_round = 0
+                ob_not_round = 0
                 sb_round = 0
+                sb_not_round = 0
                 pr_round = 0
+                pr_not_round = 0
                 if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['at'] = at_total_mark1+at_total_mark2
                   
@@ -6902,6 +6908,8 @@ class ExamController < ApplicationController
                         ct_round = ct_round.round()
                       end
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = ct_round
+                      
+                      
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = "AB"
                     end  
@@ -6909,48 +6917,61 @@ class ExamController < ApplicationController
 
                   if full_ob1 > 0 || full_ob2 > 0
                     if appeared_ob
-                      ob_round = total_ob1+total_ob2
+                      
+                      ob_not_round = ob_round = total_ob1+total_ob2
                       ob_round = ob_round.round()
                       if full_ob1 > 0 && full_ob2 > 0
-                        ob_round = (total_ob1+total_ob2)/2
+                        ob_not_round = ob_round = (total_ob1+total_ob2)/2
                         ob_round = ob_round.round()
                       end
+                      if @connect_exam_obj.result_type < 5
+                        @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = ob_not_round
+                      else
+                        @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = ob_round
+                      end 
                       
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = ob_round
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = "AB"
                     end  
                   end
                   if full_sb1 > 0 || full_sb2 > 0
                     if appeared_sb
-                      sb_round = total_sb1+total_sb2
+                      sb_not_round = sb_round = total_sb1+total_sb2
                       sb_round = sb_round.round()
                       if full_sb1 > 0 && full_sb2 > 0
-                        sb_round = (total_sb1+total_sb2)/2
+                        sb_not_round = sb_round = (total_sb1+total_sb2)/2
                         sb_round = sb_round.round()
                       end
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = sb_round
+                      if @connect_exam_obj.result_type < 5
+                        @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = sb_not_round
+                      else
+                        @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = sb_round
+                      end 
+                      
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = "AB"
                     end  
                   end
                   if full_pr1 > 0 || full_pr2 > 0
-                    pr_round = total_pr1+total_pr2
+                    pr_not_round = pr_round = total_pr1+total_pr2
                     pr_round = pr_round.round()
                     if full_sb1 > 0 && full_sb2 > 0
-                      pr_round = (total_pr1+total_pr2)/2
+                      pr_not_round = pr_round = (total_pr1+total_pr2)/2
                       pr_round = pr_round.round()
                     end
                     if appeared_pr
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = pr_round
+                      if @connect_exam_obj.result_type < 5
+                        @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = pr_not_round
+                      else
+                        @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = pr_round
+                      end    
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = "AB"
                     end  
                   end
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = ob_round+sb_round+pr_round
                   
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = subject_full_marks
-                 
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
                   
                   
                   if @subject_result[main_sub_id].blank?

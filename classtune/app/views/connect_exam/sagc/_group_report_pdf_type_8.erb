@@ -2079,6 +2079,26 @@
 
 
               </table>
+              <% 
+                total_att = ""
+                absent = ""
+                if !@exam_comment.blank?
+                  all_comments = @exam_comment.comments
+                  if !all_comments.blank?
+                    all_comments_array = all_comments.split("|")
+                    @report_data['total_first_term'] = all_comments_array[0]
+                    if !all_comments_array[1].nil?
+                      @report_data['present_first_term'] = all_comments_array[1]
+                      if !all_comments_array[2].nil?
+                        @report_data['total'] = all_comments_array[2]
+                        if !all_comments_array[3].nil?
+                          @report_data['present'] = all_comments_array[3]
+                        end
+                      end
+                    end
+                  end
+                end
+              %>
               <% grade_point_avg1 = (grade_point_avg1.to_f*100).round() %>
               <% grade_point_avg1 = grade_point_avg1.to_f/100 %>
               <table id="pdf-table" class="tbl-lign-left-2 first_table top-margin-20" width="26%" cellspacing="0">
@@ -2387,7 +2407,7 @@
                           <br/><br/><%= extra_br %>
                       </td>
                       <td class="col-pdf" width="25%">
-                          <br/><br/><%= extra_br %>
+                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/"+batch_split[0].downcase+".png")), :width=>"90%" %>
                       </td> 
                       <td class="col-pdf " width="25%" style="vertical-align: bottom;">
                           <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/principal-sir-signature-2019.jpg")), :width=>"40%" %>

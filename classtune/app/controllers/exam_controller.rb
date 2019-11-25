@@ -6901,13 +6901,17 @@ class ExamController < ApplicationController
                   
                   if monthly_full_mark1 > 0 || monthly_full_mark2 > 0
                     if appeared_ct
-                      ct_round = monthly_total_main_mark1+monthly_total_main_mark2
+                      ct_not_round = ct_round = monthly_total_main_mark1+monthly_total_main_mark2
                       ct_round = ct_round.round()
                       if monthly_full_mark1 > 0 && monthly_full_mark2 > 0
-                        ct_round = (monthly_total_main_mark1+monthly_total_main_mark2)/2
+                        ct_not_round = ct_round = (monthly_total_main_mark1+monthly_total_main_mark2)/2
                         ct_round = ct_round.round()
                       end
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = ct_round
+                      if @connect_exam_obj.result_type < 5
+                        @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = ct_not_round
+                      else
+                        @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = ct_round
+                      end 
                       
                       
                     else

@@ -111,12 +111,21 @@
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
+                          <% all_mark = 0 %>
+                          <% @report_data['report']['exams'].each do |rs| %>
+                            <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
+                              <% all_mark = all_mark+rs['result'][rs['exam_id']][sub['id']]['full_mark'] %>
+                            <% end %>
+                          <% end %>
+                          <% if all_mark > 0 %>
                           <td>
                               <%=  sub['code'] %><hr/>Grade<hr/>
-                              <% pass_mark = 50*@top_exam_group_count %>
+                              <% pass_mark = all_mark.to_f/2.00  %>
+                              <% pass_mark = pass_mark.round() %>
                               <%= "P-"+pass_mark.to_s  %>
 
                           </td>
+                          <% end %>
                         <% end %>
                       <% end %>
                       <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>

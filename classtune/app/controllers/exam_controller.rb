@@ -3186,28 +3186,29 @@ class ExamController < ApplicationController
         @report_data = student_response['data']
       end
     end
-    row_first = ['Roll','Name','Exam Name']
-    new_book.worksheet(0).merge_cells(0,0,2,0)
-    new_book.worksheet(0).merge_cells(0,1,2,1)
-    new_book.worksheet(0).merge_cells(0,2,2,2)
-    row_second = ['','','']
-    row_third = ['','','']
-    i = 3
-    j = 3 
+    row_first = ['Roll','Name','Exam Name','']
+    new_book.worksheet(0).merge_cells(0,0,3,0)
+    new_book.worksheet(0).merge_cells(0,1,3,1)
+    new_book.worksheet(0).merge_cells(0,2,3,2)
+    new_book.worksheet(0).merge_cells(0,3,0,4)
+    
+    row_second = ['','','','Full Marks']
+    row_third = ['','','','']
+    row_fourth = ['','','','']
+    
+    new_book.worksheet(0).merge_cells(1,3,3,3)
+    
+    i = 4
+    j = 4 
     t_subject = 0
     
     rotate_90 = []
     unless @report_data.blank?
       @report_data['report']['subjects'].each do |sub|
         row_first << sub['name']
-        row_first << ""
-        row_first << ""
-        row_first << ""
-        new_book.worksheet(0).merge_cells(0,j,0,j+3)
         row_second << "CQ/SQ"
-        row_second << "MCQ"
-        row_second << "MTT/Prac"
-        row_second << "GP"
+        row_third << "MCQ"
+        row_fourth << "MTT/Prac"
         cq_max = ""
         mcq_max = ""
         mtt_max = ""
@@ -3223,17 +3224,9 @@ class ExamController < ApplicationController
             mtt_max = report['result'][report['exam_id']][sub['id']]['full_mark'].to_i.to_s
           end
         end  
-        row_third << cq_max
+        row_second << cq_max
         row_third << mcq_max
-        row_third << mtt_max
-        row_third << ""
-        
-        rotate_90 << j
-        rotate_90 << j+1
-        rotate_90 << j+2
-        
-        
-        new_book.worksheet(0).merge_cells(1,j+3,2,j+3)
+        row_fourth << mtt_max
         i = i+1
         j = j+4
         t_subject = t_subject+1
@@ -3241,30 +3234,34 @@ class ExamController < ApplicationController
       end
     end
     
-    row_first << "Total Subject = "+t_subject.to_s
-    row_second << "Fail Subject"
-    row_third << ""
-    
-    row_first <<  "Comment"
+    row_first << "GPA"
+    row_first << '"F" Grade Count count'
+    row_second << ""
     row_second << ""
     row_third << ""
+    row_third << ""
+    row_fourth << ""
+    row_fourth << "Total Sub :"+t_subject.to_s
     
-    new_book.worksheet(0).merge_cells(1,j,2,j)
-    new_book.worksheet(0).merge_cells(0,j+1,2,j+1)
+    new_book.worksheet(0).merge_cells(0,i,3,i)
+    new_book.worksheet(0).merge_cells(0,i+1,2,i+1)
+   
     
     new_book.worksheet(0).insert_row(0, row_first)
     new_book.worksheet(0).insert_row(1, row_second)
     new_book.worksheet(0).insert_row(2, row_third)
+    new_book.worksheet(0).insert_row(3, row_fourth)
     sheet1.row(0).default_format = center_align_format
     sheet1.row(1).default_format = center_align_format
     sheet1.row(2).default_format = center_align_format
+    sheet1.row(3).default_format = center_align_format
+ 
     
-    rotate_90.each do |n|
-      sheet1.row(1).set_format(n,center_align_format_90)
-    end  
+    sheet1.row(0).set_format(2,center_align_format_90)
+    sheet1.row(1).set_format(3,center_align_format_90)
     
-    k = 3
-    k3 = 3
+    k = 4
+    k3 = 4
     
     
     total_std = 0
@@ -3278,18 +3275,31 @@ class ExamController < ApplicationController
       row_first = []
       row_second = ['','']
       row_third = ['','']
+      row_fourth = ['','']
+      row_fifth = ['','']
       row_first << std['class_roll_no']
       row_first << std['first_name'].to_s+" "+std['last_name'].to_s
-      row_first <<  "Half Yearly/Pre-Test"
-      row_second << "Yearly Final/Test"
-      row_third <<  "Average"
+      
+      new_book.worksheet(0).merge_cells(k3,0,k3+4,0)
+      new_book.worksheet(0).merge_cells(k3,1,k3+4,1)
+      
+      row_first <<  "CQ/SQ"
+      row_second << "MCQ"
+      row_third <<  "MTT/Prac"
+      row_fourth << "Total(%)"
+      row_fifth <<  "GP"
+      
+      new_book.worksheet(0).merge_cells(k3,2,k3,4)
+      new_book.worksheet(0).merge_cells(k3+1,2,k3+1,4)
+      new_book.worksheet(0).merge_cells(k3+2,2,k3+2,4)
+      new_book.worksheet(0).merge_cells(k3+3,2,k3+3,4)
+      new_book.worksheet(0).merge_cells(k3+4,2,k3+4,4)
       
       fail_half = 0
       fail_final = 0
       fail_avg = 0
       
-      new_book.worksheet(0).merge_cells(k3,0,k3+2,0)
-      new_book.worksheet(0).merge_cells(k3,1,k3+2,1)
+      
       
       @report_data['report']['subjects'].each do |sub|
         if final_pass[sub['id']].blank?
@@ -3861,7 +3871,7 @@ class ExamController < ApplicationController
       tmp_row << std_result['sid'].to_s
       tmp_row << std_result['roll'].to_s
       tmp_row << std_result['name'].to_s
-      tmp_row << std_result['grand_total'].to_s
+      tmp_row << std_result['grand_total_with_fraction'].to_f.round().to_s
       tmp_row << std_result['gp'].to_s+"("+std_result['gpa'].to_s+")"
       if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank?
         tmp_row << std_result['lg']

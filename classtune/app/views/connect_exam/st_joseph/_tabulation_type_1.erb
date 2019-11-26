@@ -92,10 +92,10 @@
               end
 
             @top_exam_group_count = @all_group_exams.count
-            
+
             if @top_exam_group_count > 3
               @top_exam_group_count = 3
-            end  
+              end  
 
           %>
             <% unless @report_data.blank? %>
@@ -107,25 +107,28 @@
                       <td class="col-pdf">Roll</td>
                       <td class="col-pdf">Students Name</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
+                        <% if sub['grade_subject'].to_i == 1 %>
+                          <% next %>
+                        <% end %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
-                          
+
                           <% @report_data['report']['exams'].each do |rs| %>
                             <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
                               <% all_mark = all_mark+rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                             <% end %>
                           <% end %>
                           <% if all_mark > 0 %>
-                          <td>
-                              <%=  sub['code'] %><hr/>Grade<hr/>
-                              <% pass_mark = all_mark.to_f/2.00  %>
-                              <% pass_mark = pass_mark.round() %>
-                              <%= "P-"+pass_mark.to_s  %>
+                            <td>
+                                <%=  sub['code'] %><hr/>Grade<hr/>
+                                <% pass_mark = all_mark.to_f/2.00  %>
+                                <% pass_mark = pass_mark.round() %>
+                                <%= "P-"+pass_mark.to_s  %>
 
-                          </td>
+                            </td>
                           <% end %>
                         <% end %>
                       <% end %>
@@ -133,7 +136,34 @@
                         <td><%=  sub['code'] %></td>
                       <% end %>
 
+
                       <td>Total</td>
+                      <% @report_data['report']['subjects'].each do |sub| %>
+                        <% if sub['grade_subject'].to_i != 1 %>
+                          <% next %>
+                        <% end %>
+                        <% has_exam = false %>
+                        <% if @all_subject_id.include?(sub['id'].to_i) %>
+                          <% has_exam = true %>
+                        <% end %>
+                        <% if has_exam == true %>
+
+                          <% @report_data['report']['exams'].each do |rs| %>
+                            <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
+                              <% all_mark = all_mark+rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
+                            <% end %>
+                          <% end %>
+                          <% if all_mark > 0 %>
+                            <td>
+                                <%=  sub['code'] %><hr/>Grade<hr/>
+                                <% pass_mark = all_mark.to_f/2.00  %>
+                                <% pass_mark = pass_mark.round() %>
+                                <%= "P-"+pass_mark.to_s  %>
+
+                            </td>
+                          <% end %>
+                        <% end %>
+                      <% end %>
                       <td>Grade Count</td>
                       <td class="col-pdf">Ranking</td>
 
@@ -153,22 +183,32 @@
                           <td colspan="100">&nbsp;</td>
                       </tr>  
                       <tr class="table-header">
+
                           <td class="col-pdf">Roll</td>
                           <td class="col-pdf">Students Name</td>
                           <% @report_data['report']['subjects'].each do |sub| %>
+                            <% if sub['grade_subject'].to_i == 1 %>
+                              <% next %>
+                            <% end %>
                             <% has_exam = false %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
                             <% if has_exam == true %>
-                              <% if all_mark > 0 %>
-                              <td>
-                                  <%=  sub['code'] %><hr/>Grade<hr/>
-                                  <% pass_mark = all_mark.to_f/2.00  %>
-                                  <% pass_mark = pass_mark.round() %>
-                                  <%= "P-"+pass_mark.to_s  %>
 
-                              </td>
+                              <% @report_data['report']['exams'].each do |rs| %>
+                                <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
+                                  <% all_mark = all_mark+rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
+                                <% end %>
+                              <% end %>
+                              <% if all_mark > 0 %>
+                                <td>
+                                    <%=  sub['code'] %><hr/>Grade<hr/>
+                                    <% pass_mark = all_mark.to_f/2.00  %>
+                                    <% pass_mark = pass_mark.round() %>
+                                    <%= "P-"+pass_mark.to_s  %>
+
+                                </td>
                               <% end %>
                             <% end %>
                           <% end %>
@@ -176,7 +216,34 @@
                             <td><%=  sub['code'] %></td>
                           <% end %>
 
+
                           <td>Total</td>
+                          <% @report_data['report']['subjects'].each do |sub| %>
+                            <% if sub['grade_subject'].to_i != 1 %>
+                              <% next %>
+                            <% end %>
+                            <% has_exam = false %>
+                            <% if @all_subject_id.include?(sub['id'].to_i) %>
+                              <% has_exam = true %>
+                            <% end %>
+                            <% if has_exam == true %>
+
+                              <% @report_data['report']['exams'].each do |rs| %>
+                                <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
+                                  <% all_mark = all_mark+rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
+                                <% end %>
+                              <% end %>
+                              <% if all_mark > 0 %>
+                                <td>
+                                    <%=  sub['code'] %><hr/>Grade<hr/>
+                                    <% pass_mark = all_mark.to_f/2.00  %>
+                                    <% pass_mark = pass_mark.round() %>
+                                    <%= "P-"+pass_mark.to_s  %>
+
+                                </td>
+                              <% end %>
+                            <% end %>
+                          <% end %>
                           <td>Grade Count</td>
                           <td class="col-pdf">Ranking</td>
 
@@ -188,30 +255,67 @@
                           <td colspan="100">&nbsp;</td>
                       </tr> 
                       <tr class="table-header">
+
                           <td class="col-pdf">Roll</td>
                           <td class="col-pdf">Students Name</td>
                           <% @report_data['report']['subjects'].each do |sub| %>
+                            <% if sub['grade_subject'].to_i == 1 %>
+                              <% next %>
+                            <% end %>
                             <% has_exam = false %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
                             <% if has_exam == true %>
-                              <% if all_mark > 0 %>
-                              <td>
-                                  <%=  sub['code'] %><hr/>Grade<hr/>
-                                  <% pass_mark = all_mark.to_f/2.00  %>
-                                  <% pass_mark = pass_mark.round() %>
-                                  <%= "P-"+pass_mark.to_s  %>
 
-                              </td>
+                              <% @report_data['report']['exams'].each do |rs| %>
+                                <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
+                                  <% all_mark = all_mark+rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
+                                <% end %>
+                              <% end %>
+                              <% if all_mark > 0 %>
+                                <td>
+                                    <%=  sub['code'] %><hr/>Grade<hr/>
+                                    <% pass_mark = all_mark.to_f/2.00  %>
+                                    <% pass_mark = pass_mark.round() %>
+                                    <%= "P-"+pass_mark.to_s  %>
+
+                                </td>
                               <% end %>
                             <% end %>
-                          <% end %> 
+                          <% end %>
                           <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
                             <td><%=  sub['code'] %></td>
                           <% end %>
 
+
                           <td>Total</td>
+                          <% @report_data['report']['subjects'].each do |sub| %>
+                            <% if sub['grade_subject'].to_i != 1 %>
+                              <% next %>
+                            <% end %>
+                            <% has_exam = false %>
+                            <% if @all_subject_id.include?(sub['id'].to_i) %>
+                              <% has_exam = true %>
+                            <% end %>
+                            <% if has_exam == true %>
+
+                              <% @report_data['report']['exams'].each do |rs| %>
+                                <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
+                                  <% all_mark = all_mark+rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
+                                <% end %>
+                              <% end %>
+                              <% if all_mark > 0 %>
+                                <td>
+                                    <%=  sub['code'] %><hr/>Grade<hr/>
+                                    <% pass_mark = all_mark.to_f/2.00  %>
+                                    <% pass_mark = pass_mark.round() %>
+                                    <%= "P-"+pass_mark.to_s  %>
+
+                                </td>
+                              <% end %>
+                            <% end %>
+                          <% end %>
                           <td>Grade Count</td>
                           <td class="col-pdf">Ranking</td>
 
@@ -224,11 +328,11 @@
 
                         <td class="name"><%= std['class_roll_no'] %></td>
                         <% if !std['first_name'].blank? and !std['last_name'].blank?  %>
-                        <td class="name-std"><%= std['first_name']+" "+std['last_name'] %></td>
+                          <td class="name-std"><%= std['first_name']+" "+std['last_name'] %></td>
                         <% elsif !std['first_name'].blank? %>
-                        <td class="name-std"><%= std['first_name'] %></td>
+                          <td class="name-std"><%= std['first_name'] %></td>
                         <% else %>
-                        <td class="name-std"><%= "-" %></td>
+                          <td class="name-std"><%= "-" %></td>
                         <% end %>
                         <% total_mark = 0 %>
                         <% grades = [] %>
@@ -404,27 +508,27 @@
 </div>
 
 <style>
-.even td{
+    .even td{
 
-    padding: 3px 5px 3px 8px;
-    border: 1px solid #000000;
-    border-top: 0px solid #fff;
-    text-align: center;
-    font-size:13px;
+        padding: 3px 5px 3px 8px;
+        border: 1px solid #000000;
+        border-top: 0px solid #fff;
+        text-align: center;
+        font-size:13px;
 
-}
+    }
 
-.odd td{
-    padding: 3px 5px 3px 8px;
-    border: 1px solid #000000;
-    border-top: 0px solid #fff;
-    text-align: center;
-    font-size:13px;
+    .odd td{
+        padding: 3px 5px 3px 8px;
+        border: 1px solid #000000;
+        border-top: 0px solid #fff;
+        text-align: center;
+        font-size:13px;
 
-}
-.table-header td{
-    padding: 3px 5px 3px 8px;
-    font-size:13px;
+    }
+    .table-header td{
+        padding: 3px 5px 3px 8px;
+        font-size:13px;
 
-}
+    }
 </style>    

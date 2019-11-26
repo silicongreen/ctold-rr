@@ -114,7 +114,7 @@
                           <% all_mark = 0 %>
                           <% @report_data['report']['exams'].each do |rs| %>
                             <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
-                              <% all_mark = all_mark+rs['result'][rs['exam_id']][sub['id']]['full_mark'] %>
+                              <% all_mark = all_mark+rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                             <% end %>
                           <% end %>
                           <% if all_mark > 0 %>

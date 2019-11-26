@@ -100,7 +100,7 @@
           %>
             <% unless @report_data.blank? %>
               <% c = 'even' %>
-              <% all_mark = 0 %>
+              
               <table id="pdf-table" width="100%" cellspacing="0">
                   <tr class="table-header">
 
@@ -147,7 +147,7 @@
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
-
+                          <% all_mark = 0 %>
                           <% @report_data['report']['exams'].each do |rs| %>
                             <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
                               <% all_mark = all_mark+rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
@@ -176,7 +176,7 @@
                   <% @report_data['report']['students'].each do |std| %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
-                    <% if std_count>10 && extender ==0 %>
+                    <% if std_count>11 && extender ==0 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -195,7 +195,7 @@
                               <% has_exam = true %>
                             <% end %>
                             <% if has_exam == true %>
-
+                              <% all_mark = 0 %>
                               <% @report_data['report']['exams'].each do |rs| %>
                                 <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
                                   <% all_mark = all_mark+rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
@@ -227,7 +227,7 @@
                               <% has_exam = true %>
                             <% end %>
                             <% if has_exam == true %>
-
+                              <% all_mark = 0 %>
                               <% @report_data['report']['exams'].each do |rs| %>
                                 <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
                                   <% all_mark = all_mark+rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>

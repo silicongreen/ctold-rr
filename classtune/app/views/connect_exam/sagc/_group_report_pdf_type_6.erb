@@ -336,8 +336,10 @@
                                     <% end %>
                                      <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" %>
                                       <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
-                                        <% failed1 = true %>
-                                        <% failed_subject1 = true %>
+                                        <%  if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 22 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 50) %>  
+                                          <% failed1 = true %>
+                                          <% failed_subject1 = true %>
+                                        <% end %>
                                       <% end %>
                                     <% end %>
                                 <% else %>
@@ -470,8 +472,10 @@
                                     <% end %>
                                      <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" %>
                                       <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
+                                      <%  if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 22 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 50) %>   
                                         <% failed2 = true %>
                                         <% failed_subject2 = true %>
+                                      <% end %>
                                       <% end %>
                                     <% end %>
                                 <% else %>
@@ -557,7 +561,7 @@
                               
                               grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
                               if !grade.blank? and !grade.name.blank?
-                                if grade.credit_points.to_i == 0 && (sb_full_marks2.to_i != 30 || sb_marks_main.round() != 13) && (sb_full_marks2.to_i != 25 || sb_marks_main.round() != 11)
+                                if grade.credit_points.to_i == 0 && (sb_full_marks2.to_i != 50 || sb_marks_main.round() != 22) && (sb_full_marks2.to_i != 30 || sb_marks_main.round() != 13) && (sb_full_marks2.to_i != 25 || sb_marks_main.round() != 11)
                                   failed_subject3 = true
                                 end
                               end

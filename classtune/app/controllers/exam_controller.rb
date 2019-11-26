@@ -6334,8 +6334,10 @@ class ExamController < ApplicationController
                           unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
                             if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
                               if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)  
+                               if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 50 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 22)
                                 u_grade1 = u_grade1+1
                                 subject_failed = true
+                               end 
                               end  
                             end
                           end
@@ -6365,8 +6367,10 @@ class ExamController < ApplicationController
                           unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
                             if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
                               if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)  
-                                u_grade2 = u_grade2+1
-                                subject_failed = true
+                                if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 50 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 22)
+                                  u_grade2 = u_grade2+1
+                                  subject_failed = true
+                                end
                               end  
                             end
                           end
@@ -6619,7 +6623,7 @@ class ExamController < ApplicationController
                   
                   if full_sb1 > 0 && full_sb2 > 0 && sub['subject_group_id'].to_i == 0 && @connect_exam_obj.result_type != 1  && @connect_exam_obj.result_type != 2 && @connect_exam_obj.result_type != 12 && @connect_exam_obj.result_type != 3 && @connect_exam_obj.result_type != 4  && sub['grade_subject'].to_i != 1
                     mark = (total_sb1+total_sb2)/2
-                    if ( full_sb1 != 25 || mark.round() != 11) && ( full_sb1 != 25 || mark.round() != 8 || @connect_exam_obj.result_type != 9)
+                    if ( full_sb1 != 25 || mark.round() != 11) && ( full_sb1 != 50 || mark.round() != 22 ) && ( full_sb1 != 25 || mark.round() != 8 || @connect_exam_obj.result_type != 9)
                       grade_mark = (mark.to_f/full_sb1.to_f)*100
                       grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
                       if !grade.blank? and !grade.name.blank?

@@ -13008,7 +13008,7 @@ class FinanceController < ApplicationController
       sheet1.add_header(Configuration.get_config_value('InstitutionName'))
       spreadsheet = StringIO.new 
       new_book.write spreadsheet 
-      send_data spreadsheet.string, :filename => "Student_scholarship.xls", :type =>  "application/vnd.ms-excel"
+      send_data spreadsheet.string, :filename => "bill_generation_report.xls", :type =>  "application/vnd.ms-excel"
     end
 
     

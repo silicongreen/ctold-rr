@@ -8134,8 +8134,7 @@ class ExamController < ApplicationController
           @student_position[s[2].to_i] = position
         end 
       end
-      
-      abort(@student_position.inspect)
+
       
       last_grade = 0.0
       last_total = 0.0

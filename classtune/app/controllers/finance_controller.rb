@@ -12600,7 +12600,7 @@ class FinanceController < ApplicationController
           @student_summaries[fee.student.id] << {"total_fee" => total_fees, "discount" => @total_discount, 'fine' => paid_fine, "paid_amount" => paid_amount}
         end
         
-        ar_particular_categories = particular_categories.uniq
+        ar_particular_categories = particular_categories
         pt = []
         ar_particular_categories.each_with_index do |particular_categories, i|
           particular_categories.each do |particular_category|
@@ -12854,7 +12854,7 @@ class FinanceController < ApplicationController
           @student_summaries[fee.student.id] << {"total_fee" => total_fees, "discount" => @total_discount, 'fine' => paid_fine, "paid_amount" => paid_amount}
         end
         
-        ar_particular_categories = particular_categories.uniq
+        ar_particular_categories = particular_categories
         pt = []
         ar_particular_categories.each_with_index do |particular_categories, i|
           particular_categories.each do |particular_category|

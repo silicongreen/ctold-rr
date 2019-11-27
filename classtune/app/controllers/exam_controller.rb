@@ -8135,7 +8135,7 @@ class ExamController < ApplicationController
         end 
       end
       
-      abort(@student_position.inspect)
+      abort(@sorted_students.inspect)
 
       
       last_grade = 0.0

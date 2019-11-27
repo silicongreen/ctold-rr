@@ -7955,6 +7955,12 @@ class ExamController < ApplicationController
               end
             end
 
+            grand_total_with_fraction = sprintf( "%0.02f", grand_total_with_fraction)
+            grand_total_with_fraction = grand_total_with_fraction.to_f
+            grand_total1_with_fraction = sprintf( "%0.02f", grand_total1_with_fraction)
+            grand_total1_with_fraction = grand_total1_with_fraction.to_f
+            grand_total2_with_fraction = sprintf( "%0.02f", grand_total2_with_fraction)
+            grand_total2_with_fraction = grand_total2_with_fraction.to_f
             if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
               @total_std_batch = @total_std_batch+1
               
@@ -7965,8 +7971,7 @@ class ExamController < ApplicationController
               end
               
               if exam_type == 3
-                grand_total_with_fraction = sprintf( "%0.02f", grand_total_with_fraction)
-                grand_total_with_fraction = grand_total_with_fraction.to_f
+                
                 grade_point_avg = grand_grade_point.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
@@ -7977,8 +7982,7 @@ class ExamController < ApplicationController
                 @student_result[loop_std]['grand_total_with_fraction'] = grand_total_with_fraction
               end
               if exam_type == 1
-                grand_total1_with_fraction = sprintf( "%0.02f", grand_total1_with_fraction)
-                grand_total1_with_fraction = grand_total1_with_fraction.to_f
+                
                 grade_point_avg = grand_grade_point1.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
@@ -7989,8 +7993,7 @@ class ExamController < ApplicationController
                 @student_result[loop_std]['grand_total_with_fraction'] = grand_total1_with_fraction
               end
               if exam_type == 2
-                grand_total2_with_fraction = sprintf( "%0.02f", grand_total2_with_fraction)
-                grand_total2_with_fraction = grand_total2_with_fraction.to_f
+                
                 grade_point_avg = grand_grade_point2.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
@@ -8134,8 +8137,7 @@ class ExamController < ApplicationController
           @student_position[s[2].to_i] = position
         end 
       end
-      
-      abort(@sorted_students.inspect)
+
 
       
       last_grade = 0.0

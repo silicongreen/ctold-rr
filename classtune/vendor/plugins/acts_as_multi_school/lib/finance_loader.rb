@@ -1155,9 +1155,12 @@ module FinanceLoader
   
   def pay_student(amount_from_gateway, total_fees, request_params, orderId, trans_date, ref_id)
     #abort(request_params.to_s)
-    abort(@fee_particulars.map(&:id).join(","))
+    #abort(@fee_particulars.map(&:id).join(","))
     unless @financefee.is_paid?
       unless amount_from_gateway.to_f < 0
+        if @financefee.id == 183077
+        abort('here')
+        end
         #if orderId.to_s == "O1049432"
                             #abort(amount_from_gateway.to_s + "  " + total_fees.to_s)
                           #end

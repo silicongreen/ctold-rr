@@ -8134,6 +8134,21 @@ class ExamController < ApplicationController
           @student_position[s[2].to_i] = position
         end 
       end
+      
+      last_grade = 0.0
+      last_total = 0.0
+      unless @student_list_batch.blank?
+        position = 0
+        @sorted_students = @student_list_batch.sort
+        @sorted_students.each do|s|
+          if last_grade != s[0] or last_total != s[1]
+            position = position+1
+          end
+          last_grade = s[0]
+          last_total = s[1]
+          @student_position_batch[s[2].to_i] = position
+        end 
+      end
     
       last_grade = 0.0
       last_total = 0.0
@@ -8161,6 +8176,9 @@ class ExamController < ApplicationController
       end
       
       
+      last_grade = 0.0
+      last_total = 0.0
+      
       unless @section_wise_position_final_exam.blank?
         @section_wise_position_final_exam.each do|key,value|
           position = 0
@@ -8181,6 +8199,9 @@ class ExamController < ApplicationController
         end
       end
       
+      
+      last_grade = 0.0
+      last_total = 0.0
       
       unless @section_wise_position_2nd_term.blank?
         @section_wise_position_2nd_term.each do|key,value|
@@ -8237,20 +8258,7 @@ class ExamController < ApplicationController
         end 
       end
     
-      last_grade = 0.0
-      last_total = 0.0
-      unless @student_list_batch.blank?
-        position = 0
-        @sorted_students = @student_list_batch.sort
-        @sorted_students.each do|s|
-          if last_grade != s[0] or last_total != s[1]
-            position = position+1
-          end
-          last_grade = s[0]
-          last_total = s[1]
-          @student_position_batch[s[2].to_i] = position
-        end 
-      end
+      
     
       last_grade = 0.0
       last_total = 0.0

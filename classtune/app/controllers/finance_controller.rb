@@ -7293,7 +7293,7 @@ class FinanceController < ApplicationController
             pt << particular_category
           end
         end
-        @particular_categories = particular_categories
+        @particular_categories = pt
         #if fee.student_id == 28046
             #abort(pt.inspect)
          # end
@@ -12607,7 +12607,7 @@ class FinanceController < ApplicationController
             pt << particular_category
           end
         end
-        @particular_categories = particular_categories
+        @particular_categories = pt
         #if fee.student_id == 28046
             #abort(pt.inspect)
          # end
@@ -12861,7 +12861,7 @@ class FinanceController < ApplicationController
             pt << particular_category
           end
         end
-        @particular_categories = particular_categories
+        @particular_categories = pt
         #if fee.student_id == 28046
             #abort(pt.inspect)
          # end

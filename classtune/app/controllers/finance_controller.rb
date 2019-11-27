@@ -7285,7 +7285,8 @@ class FinanceController < ApplicationController
           @student_summaries[fee.student.id] << {"discount" => @total_discount, 'fine' => paid_fine, "paid_amount" => paid_amount}
         end
         
-        ar_particular_categories = particular_categories.uniq
+        #abort(particular_categories.inspect)
+        ar_particular_categories = particular_categories
         pt = []
         ar_particular_categories.each_with_index do |particular_categories, i|
           particular_categories.each do |particular_category|

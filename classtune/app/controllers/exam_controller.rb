@@ -6037,6 +6037,8 @@ class ExamController < ApplicationController
       @subject_code = {}
       @absent_in_all_subject = 0
       @section_wise_position = {}	
+      @section_wise_position_2nd_term = {}
+      @section_wise_position_final_exam = {}
       @failed_partial_absent = {}	
       @failed_appeared_absent = {}	
       @grade_count = {}
@@ -8029,6 +8031,10 @@ class ExamController < ApplicationController
               end 
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                if @section_wise_position_final_exam[batch_data.id].blank?
+                  @section_wise_position_final_exam[batch_data.id] = []
+                end
+                @section_wise_position_final_exam[batch_data.id] << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
             end  
         
@@ -8073,6 +8079,10 @@ class ExamController < ApplicationController
               end
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_second_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                if @section_wise_position_2nd_term[batch_data.id].blank?
+                  @section_wise_position_2nd_term[batch_data.id] = []
+                end
+                @section_wise_position_2nd_term[batch_data.id] << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
             end  
             
@@ -8107,6 +8117,8 @@ class ExamController < ApplicationController
       @student_position_batch = {}
       
       @section_all_position_batch = {}
+      @section_all_position_batch_2nd_term = {}
+      @section_all_position_batch_final_term = {}
       last_grade = 0.0
       last_total = 0.0
       
@@ -8125,6 +8137,9 @@ class ExamController < ApplicationController
     
       last_grade = 0.0
       last_total = 0.0
+      
+      
+      
       unless @section_wise_position.blank?
         @section_wise_position.each do|key,value|
           position = 0
@@ -8141,6 +8156,48 @@ class ExamController < ApplicationController
               @section_all_position_batch[key] = {}
             end
             @section_all_position_batch[key][s[2].to_i] = position
+          end 
+        end
+      end
+      
+      
+      unless @section_wise_position_final_exam.blank?
+        @section_wise_position_final_exam.each do|key,value|
+          position = 0
+         
+          @sorted_students = @section_wise_position_final_exam[key].sort
+          @sorted_students.each do|s|
+            
+            if last_grade != s[0] or last_total != s[1]
+              position = position+1
+            end
+            last_grade = s[0]
+            last_total = s[1]
+            if @section_all_position_batch_final_term[key].blank?
+              @section_all_position_batch_final_term[key] = {}
+            end
+            @section_all_position_batch_final_term[key][s[2].to_i] = position
+          end 
+        end
+      end
+      
+      
+      unless @section_wise_position_2nd_term.blank?
+        @section_wise_position_2nd_term.each do|key,value|
+          position = 0
+         
+          @sorted_students = @section_wise_position_2nd_term[key].sort
+          @sorted_students.each do|s|
+            
+            if last_grade != s[0] or last_total != s[1]
+              position = position+1
+            end
+            last_grade = s[0]
+            last_total = s[1]
+            if @section_all_position_batch_2nd_term[key].blank?
+              @section_all_position_batch_2nd_term[key] = {}
+            end
+            @section_all_position_batch_2nd_term[key][s[2].to_i] = position
           end 
         end
       end

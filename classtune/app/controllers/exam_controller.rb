@@ -7963,6 +7963,7 @@ class ExamController < ApplicationController
               end
               
               if exam_type == 3
+                grand_total_with_fraction = grand_total_with_fraction.round(2)
                 grade_point_avg = grand_grade_point.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
@@ -7973,6 +7974,7 @@ class ExamController < ApplicationController
                 @student_result[loop_std]['grand_total_with_fraction'] = grand_total_with_fraction
               end
               if exam_type == 1
+                grand_total1_with_fraction = grand_total1_with_fraction.round(2)
                 grade_point_avg = grand_grade_point1.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
@@ -7983,6 +7985,7 @@ class ExamController < ApplicationController
                 @student_result[loop_std]['grand_total_with_fraction'] = grand_total1_with_fraction
               end
               if exam_type == 2
+                grand_total2_with_fraction = grand_total2_with_fraction.round(2)
                 grade_point_avg = grand_grade_point2.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
@@ -8108,7 +8111,6 @@ class ExamController < ApplicationController
         position = 0
         @sorted_students = @student_list.sort
         @sorted_students.each do|s|
-          s[1] = s[1].round(2)
           if last_grade != s[0] or last_total != s[1]
             position = position+1
           end
@@ -8126,7 +8128,7 @@ class ExamController < ApplicationController
          
           @sorted_students = @section_wise_position[key].sort
           @sorted_students.each do|s|
-            s[1] = s[1].round(2)
+            
             if last_grade != s[0] or last_total != s[1]
               position = position+1
             end
@@ -8147,7 +8149,6 @@ class ExamController < ApplicationController
         position = 0
         @sorted_students = @student_list_first_term.sort
         @sorted_students.each do|s|
-          s[1] = s[1].round(2)
           if last_grade != s[0] or last_total != s[1]
             position = position+1
           end
@@ -8167,7 +8168,6 @@ class ExamController < ApplicationController
         position = 0
         @sorted_students = @student_list_second_term.sort
         @sorted_students.each do|s|
-          s[1] = s[1].round(2)
           if last_grade != s[0] or last_total != s[1]
             position = position+1
           end
@@ -8183,7 +8183,6 @@ class ExamController < ApplicationController
         position = 0
         @sorted_students = @student_list_batch.sort
         @sorted_students.each do|s|
-          s[1] = s[1].round(2)
           if last_grade != s[0] or last_total != s[1]
             position = position+1
           end
@@ -8199,7 +8198,6 @@ class ExamController < ApplicationController
         position = 0
         @sorted_students = @student_list_first_term_batch.sort
         @sorted_students.each do|s|
-          s[1] = s[1].round(2)
           if last_grade != s[0] or last_total != s[1]
             position = position+1
           end
@@ -8216,7 +8214,6 @@ class ExamController < ApplicationController
         position = 0
         @sorted_students = @student_list_second_term_batch.sort
         @sorted_students.each do|s|
-          s[1] = s[1].round(2)
           if last_grade != s[0] or last_total != s[1]
             position = position+1
           end

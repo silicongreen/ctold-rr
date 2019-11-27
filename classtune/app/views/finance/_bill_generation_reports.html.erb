@@ -124,7 +124,7 @@
 
                           <% fine = student_summaries['fine'].to_f %>
                           <% total_fee += student_summaries['fine'].to_f %>
-                          <% fine += student_summaries['fine'].to_f %>
+                          <% fine_total += student_summaries['fine'].to_f %>
 
                           <% paid_amount = student_summaries['paid_amount'].to_f %>
                           <% paid_total += student_summaries['paid_amount'].to_f %>
@@ -160,9 +160,9 @@
             <% page = params[:page] %>
           <% end %>
           <%= link_to "Download PDF (Page #{page})",
-            {:controller => "finance", :action => "bill_generation_report_pdf",  :opt => @opt, :filter_by_course => @filter_by_course, :date => @date.id},:target => '_blank', :class=> 'user_button' %>
+              {:controller => "finance", :action => "bill_generation_report_pdf",  :opt => @opt, :filter_by_course => @filter_by_course, :date => @date.id, :page => page},:target => '_blank', :class=> 'user_button' %>
           <%= link_to "Download Excel (Page #{page})",
-            {:controller => "finance", :action => "bill_generation_report_xls",  :opt => @opt, :filter_by_course => @filter_by_course, :date => @date.id},:target => '_blank', :class=> 'user_button' %>
+            {:controller => "finance", :action => "bill_generation_report_xls",  :opt => @opt, :filter_by_course => @filter_by_course, :date => @date.id, :page => page},:target => '_blank', :class=> 'user_button' %>
       </div>
   </div>
   
@@ -183,10 +183,10 @@
             <% page = params[:page] %>
           <% end %>
           <%= link_to "Download PDF (Page #{page})",
-            {:controller => "finance", :action => "bill_generation_report_pdf", :opt => @opt, :section_id => @section_id, :course_name => @course_name, :batch_id => @b_id, :date => @d_id},:target => '_blank', :class=> 'user_button' %>
+            {:controller => "finance", :action => "bill_generation_report_pdf", :opt => @opt, :section_id => @section_id, :course_name => @course_name, :batch_id => @b_id, :date => @d_id, :page => page},:target => '_blank', :class=> 'user_button' %>
           
           <%= link_to "Download Excel (Page #{page})",
-            {:controller => "finance", :action => "bill_generation_report_xls", :opt => @opt, :section_id => @section_id, :course_name => @course_name, :batch_id => @b_id, :date => @d_id},:target => '_blank', :class=> 'user_button' %>
+            {:controller => "finance", :action => "bill_generation_report_xls", :opt => @opt, :section_id => @section_id, :course_name => @course_name, :batch_id => @b_id, :date => @d_id, :page => page},:target => '_blank', :class=> 'user_button' %>
       </div>
   </div>
   <% else %>
@@ -206,9 +206,9 @@
             <% page = params[:page] %>
           <% end %>
           <%= link_to "Download PDF (Page #{page})",
-            {:controller => "finance", :action => "bill_generation_report_pdf", :batch_id => @b_id, :date => @d_id},:target => '_blank', :class=> 'user_button' %>
+            {:controller => "finance", :action => "bill_generation_report_pdf", :batch_id => @b_id, :date => @d_id, :page => page},:target => '_blank', :class=> 'user_button' %>
           <%= link_to "Download Excel (Page #{page})",
-            {:controller => "finance", :action => "bill_generation_report_xls", :batch_id => @b_id, :date => @d_id},:target => '_blank', :class=> 'user_button' %>
+            {:controller => "finance", :action => "bill_generation_report_xls", :batch_id => @b_id, :date => @d_id, :page => page},:target => '_blank', :class=> 'user_button' %>
       </div>
   </div>
   <% end %>

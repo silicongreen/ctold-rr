@@ -471,7 +471,8 @@ class FinanceController < ApplicationController
           if params[:filter_by_course].to_i == 1
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
               college_courses_id[0] = 0
@@ -492,7 +493,8 @@ class FinanceController < ApplicationController
           elsif params[:filter_by_course].to_i == 2
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
@@ -593,7 +595,8 @@ class FinanceController < ApplicationController
           if params[:filter_by_course].to_i == 1
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
               college_courses_id[0] = 0
@@ -614,7 +617,8 @@ class FinanceController < ApplicationController
           elsif params[:filter_by_course].to_i == 2
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
@@ -864,7 +868,8 @@ class FinanceController < ApplicationController
           if params[:filter_by_course].to_i == 1
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
               college_courses_id[0] = 0
@@ -885,7 +890,8 @@ class FinanceController < ApplicationController
           elsif params[:filter_by_course].to_i == 2
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
@@ -1041,7 +1047,8 @@ class FinanceController < ApplicationController
           if params[:filter_by_course].to_i == 1
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
               college_courses_id[0] = 0
@@ -1062,7 +1069,8 @@ class FinanceController < ApplicationController
           elsif params[:filter_by_course].to_i == 2
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
               college_courses_id[0] = 0
@@ -1466,7 +1474,8 @@ class FinanceController < ApplicationController
           if params[:filter_by_course].to_i == 1
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
               college_courses_id[0] = 0
@@ -1487,7 +1496,8 @@ class FinanceController < ApplicationController
           elsif params[:filter_by_course].to_i == 2
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
               college_courses_id[0] = 0
@@ -1905,7 +1915,8 @@ class FinanceController < ApplicationController
           if @filter_by_course.to_i == 1
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
               college_courses_id[0] = 0
@@ -1925,7 +1936,8 @@ class FinanceController < ApplicationController
           elsif @filter_by_course.to_i == 2
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
@@ -2078,7 +2090,8 @@ class FinanceController < ApplicationController
       if @filter_by_course.to_i == 1
         eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
         tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-        college_courses_id = eleven_courses_id + tweleve_courses_id
+        hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
         college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
         if college_courses_id.blank?
           college_courses_id[0] = 0
@@ -2101,7 +2114,8 @@ class FinanceController < ApplicationController
       elsif @filter_by_course.to_i == 2
         eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
         tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-        college_courses_id = eleven_courses_id + tweleve_courses_id
+        hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+        college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
         #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
         college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
         if college_courses_id.blank?
@@ -2214,7 +2228,8 @@ class FinanceController < ApplicationController
       if @filter_by_course.to_i == 1
         eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
         tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-        college_courses_id = eleven_courses_id + tweleve_courses_id
+        hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+        college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
         college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
         if college_courses_id.blank?
           college_courses_id[0] = 0
@@ -2237,7 +2252,8 @@ class FinanceController < ApplicationController
       elsif @filter_by_course.to_i == 2
         eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
         tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-        college_courses_id = eleven_courses_id + tweleve_courses_id
+        hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+        college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
         #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
         college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
         if college_courses_id.blank?
@@ -2330,7 +2346,8 @@ class FinanceController < ApplicationController
       if @filter_by_course.to_i == 1
         eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
         tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-        college_courses_id = eleven_courses_id + tweleve_courses_id
+        hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+        college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
         college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
         if college_courses_id.blank?
           college_courses_id[0] = 0
@@ -2353,7 +2370,8 @@ class FinanceController < ApplicationController
       elsif @filter_by_course.to_i == 2
         eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
         tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-        college_courses_id = eleven_courses_id + tweleve_courses_id
+        hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+        college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
         #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
         college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
         if college_courses_id.blank?
@@ -2509,7 +2527,8 @@ class FinanceController < ApplicationController
           if params[:filter_by_course].to_i == 1
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
               college_courses_id[0] = 0
@@ -2530,7 +2549,8 @@ class FinanceController < ApplicationController
           elsif params[:filter_by_course].to_i == 2
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
@@ -7071,7 +7091,8 @@ class FinanceController < ApplicationController
           if params[:filter_by_course].to_i == 1
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
               college_courses_id[0] = 0
@@ -7089,7 +7110,8 @@ class FinanceController < ApplicationController
           elsif params[:filter_by_course].to_i == 2
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
               college_courses_id[0] = 0
@@ -7218,7 +7240,7 @@ class FinanceController < ApplicationController
       @students = {}
       particulars = []
       particular_categories = []
-      @student_finance_fees = FinanceFee.paginate(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id",:page => params[:page], :per_page => 500)
+      @student_finance_fees = FinanceFee.paginate(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id",:page => params[:page], :per_page => 10)
       #student_finance_fees = FinanceFee.find(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id")
       
       unless @student_finance_fees.blank?
@@ -10939,7 +10961,8 @@ class FinanceController < ApplicationController
         if params[:filter_by_course].to_i == 1
           eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
           tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-          college_courses_id = eleven_courses_id + tweleve_courses_id
+          hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
           college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
           if college_courses_id.blank?
             college_courses_id[0] = 0
@@ -10957,7 +10980,8 @@ class FinanceController < ApplicationController
         elsif params[:filter_by_course].to_i == 2
           eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
           tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-          college_courses_id = eleven_courses_id + tweleve_courses_id
+          hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
           college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
           if college_courses_id.blank?
             college_courses_id[0] = 0
@@ -11104,7 +11128,8 @@ class FinanceController < ApplicationController
     if params[:filter_by_course].to_i == 1
       eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
       tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-      college_courses_id = eleven_courses_id + tweleve_courses_id
+      hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+      college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
       college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
       if college_courses_id.blank?
         college_courses_id[0] = 0
@@ -11122,7 +11147,8 @@ class FinanceController < ApplicationController
     elsif params[:filter_by_course].to_i == 2
       eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
       tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-      college_courses_id = eleven_courses_id + tweleve_courses_id
+      hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+      college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
       college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
       if college_courses_id.blank?
         college_courses_id[0] = 0
@@ -11158,7 +11184,8 @@ class FinanceController < ApplicationController
     if params[:filter_by_course].to_i == 1
       eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
       tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-      college_courses_id = eleven_courses_id + tweleve_courses_id
+      hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+      college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
       college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
       if college_courses_id.blank?
         college_courses_id[0] = 0
@@ -11176,7 +11203,8 @@ class FinanceController < ApplicationController
     elsif params[:filter_by_course].to_i == 2
       eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
       tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-      college_courses_id = eleven_courses_id + tweleve_courses_id
+      hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+      college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
       college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
       if college_courses_id.blank?
         college_courses_id[0] = 0
@@ -11698,7 +11726,8 @@ class FinanceController < ApplicationController
         if params[:filter_by_course].to_i == 1
           eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
           tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-          college_courses_id = eleven_courses_id + tweleve_courses_id
+          hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
           college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
           if college_courses_id.blank?
             college_courses_id[0] = 0
@@ -11716,7 +11745,8 @@ class FinanceController < ApplicationController
         elsif params[:filter_by_course].to_i == 2
           eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
           tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-          college_courses_id = eleven_courses_id + tweleve_courses_id
+          hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
           college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
           if college_courses_id.blank?
             college_courses_id[0] = 0
@@ -11905,7 +11935,8 @@ class FinanceController < ApplicationController
         if params[:filter_by_course].to_i == 1
           eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
           tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-          college_courses_id = eleven_courses_id + tweleve_courses_id
+          hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
           college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
           if college_courses_id.blank?
             college_courses_id[0] = 0
@@ -11923,7 +11954,8 @@ class FinanceController < ApplicationController
         elsif params[:filter_by_course].to_i == 2
           eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
           tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-          college_courses_id = eleven_courses_id + tweleve_courses_id
+          hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
           college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
           if college_courses_id.blank?
             college_courses_id[0] = 0
@@ -12097,7 +12129,8 @@ class FinanceController < ApplicationController
         if params[:filter_by_course].to_i == 1
           eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
           tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-          college_courses_id = eleven_courses_id + tweleve_courses_id
+          hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
           college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
           if college_courses_id.blank?
             college_courses_id[0] = 0
@@ -12115,7 +12148,8 @@ class FinanceController < ApplicationController
         elsif params[:filter_by_course].to_i == 2
           eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
           tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-          college_courses_id = eleven_courses_id + tweleve_courses_id
+          hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
           college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
           if college_courses_id.blank?
             college_courses_id[0] = 0
@@ -12368,7 +12402,8 @@ class FinanceController < ApplicationController
           if params[:filter_by_course].to_i == 1
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
               college_courses_id[0] = 0
@@ -12386,7 +12421,8 @@ class FinanceController < ApplicationController
           elsif params[:filter_by_course].to_i == 2
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
               college_courses_id[0] = 0
@@ -12515,7 +12551,7 @@ class FinanceController < ApplicationController
       @students = {}
       particulars = []
       particular_categories = []
-      @student_finance_fees = FinanceFee.paginate(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id",:page => params[:page], :per_page => 500)
+      @student_finance_fees = FinanceFee.paginate(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id",:page => params[:page], :per_page => 10)
       #student_finance_fees = FinanceFee.find(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id")
       
       unless @student_finance_fees.blank?
@@ -12620,7 +12656,8 @@ class FinanceController < ApplicationController
           if params[:filter_by_course].to_i == 1
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
               college_courses_id[0] = 0
@@ -12638,7 +12675,8 @@ class FinanceController < ApplicationController
           elsif params[:filter_by_course].to_i == 2
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-            college_courses_id = eleven_courses_id + tweleve_courses_id
+            hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
             college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
             if college_courses_id.blank?
               college_courses_id[0] = 0
@@ -12767,7 +12805,7 @@ class FinanceController < ApplicationController
       @students = {}
       particulars = []
       particular_categories = []
-      @student_finance_fees = FinanceFee.paginate(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id",:page => params[:page], :per_page => 500)
+      @student_finance_fees = FinanceFee.paginate(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id",:page => params[:page], :per_page => 10)
       #student_finance_fees = FinanceFee.find(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id")
       
       unless @student_finance_fees.blank?

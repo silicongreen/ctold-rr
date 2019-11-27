@@ -8108,6 +8108,7 @@ class ExamController < ApplicationController
         position = 0
         @sorted_students = @student_list.sort
         @sorted_students.each do|s|
+          s[1] = s[1].round(2)
           if last_grade != s[0] or last_total != s[1]
             position = position+1
           end
@@ -8125,7 +8126,7 @@ class ExamController < ApplicationController
          
           @sorted_students = @section_wise_position[key].sort
           @sorted_students.each do|s|
-            
+            s[1] = s[1].round(2)
             if last_grade != s[0] or last_total != s[1]
               position = position+1
             end
@@ -8146,6 +8147,7 @@ class ExamController < ApplicationController
         position = 0
         @sorted_students = @student_list_first_term.sort
         @sorted_students.each do|s|
+          s[1] = s[1].round(2)
           if last_grade != s[0] or last_total != s[1]
             position = position+1
           end
@@ -8165,6 +8167,7 @@ class ExamController < ApplicationController
         position = 0
         @sorted_students = @student_list_second_term.sort
         @sorted_students.each do|s|
+          s[1] = s[1].round(2)
           if last_grade != s[0] or last_total != s[1]
             position = position+1
           end
@@ -8180,6 +8183,7 @@ class ExamController < ApplicationController
         position = 0
         @sorted_students = @student_list_batch.sort
         @sorted_students.each do|s|
+          s[1] = s[1].round(2)
           if last_grade != s[0] or last_total != s[1]
             position = position+1
           end
@@ -8195,6 +8199,7 @@ class ExamController < ApplicationController
         position = 0
         @sorted_students = @student_list_first_term_batch.sort
         @sorted_students.each do|s|
+          s[1] = s[1].round(2)
           if last_grade != s[0] or last_total != s[1]
             position = position+1
           end
@@ -8211,6 +8216,7 @@ class ExamController < ApplicationController
         position = 0
         @sorted_students = @student_list_second_term_batch.sort
         @sorted_students.each do|s|
+          s[1] = s[1].round(2)
           if last_grade != s[0] or last_total != s[1]
             position = position+1
           end

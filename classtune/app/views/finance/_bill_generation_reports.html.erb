@@ -37,114 +37,204 @@
 #under the License. -%>
 
 <%# particular = @bill_generations.map{|s| [s['particular']]}  %>
-<%#= debug @particulars.inspect %>
+<%#= debug @particular_categories[0].inspect %>
 <%#= debug @bill_generations.inspect %>
+<%#= debug @particular_categories.uniq.inspect %>
+<% @particular_categories = @particular_categories.uniq %>
 <span style="padding: 8px 15px 20px 13px; font-weight: bold; display: block; font-size: 18px; font-family: verdana; text-align: left;">Bill Generation Report</span>
-  <div id="table-scroll" class="table-scroll" style="max-height: 500px; overflow-y: auto;">
-      <div class="table-wrap">
-          <table class="table-bordered main-table" id="table-scroll" cellspacing="0" cellpadding="0" border="0" style="width: 98%; table-layout:fixed;">
-              <thead><!-- class="thead-inverse" -->
-                <tr>
-                  <th class="fixed-side" scope="col" style="width: 200px; text-align: center; vertical-align: middle;">Student info</th>
-                  <% unless @particulars.blank? %>
-                    <% @particulars.each do |particular| %>
-                      <th style=" background: #f9f9f9; width: 140px; text-align: center; vertical-align: middle; background: #f9f9f9;"><%= particular %></th>
-                    <% end %>
+  <div class="table-wrap">
+        <table class="table-bordered main-table" id="table-scroll" cellspacing="0" cellpadding="0" border="0">
+            <thead><!-- class="thead-inverse" -->
+              <tr>
+                <th class="fixed-side" scope="col" style="width: 200px; text-align: center; vertical-align: middle;">Student info</th>
+                <% unless @particular_categories.blank? %>
+                  <% @particular_categories.each do |particular| %>
+                    <th style=" background: #f9f9f9; width: 140px; text-align: center; vertical-align: middle; background: #f9f9f9;"><%= particular %></th>
                   <% end %>
-                  <th style="width: 100px; text-align: center; vertical-align: middle; background: #f9f9f9;">Discount</th>    
-                  <th style="width: 100px; text-align: center; vertical-align: middle; background: #f9f9f9;">Fine</th>    
-                  <th style="width: 100px; text-align: center; vertical-align: middle; background: #f9f9f9;">Total Fees</th>
-                  <th style="width: 100px; text-align: center; vertical-align: middle; background: #f9f9f9;">Paid Amount</th>
-                  <th style="width: 100px; text-align: center; vertical-align: middle; background: #f9f9f9;">Remaining</th>
-                </tr>
-              </thead>
-              <% grand_total = 0.0 %>
-              <% grand_paid = 0.0 %>
-              <tbody>
-                <% particulars_with_amount = {} %>
-                <% discount_total = 0.00 %>
-                <% fine_total = 0.00 %>
-                <% paid_total = 0.00 %>
-                <% remaining_total = 0.00 %>
-                <% unless @bill_generations.blank? %>
-                  <% @bill_generations.each do |fee_data| %>
-                    <% unless fee_data['particular'].blank? %>
-                    <% total_fee = 0 %>
-                    <tr class="tr-odd">
-                        <th style="vertical-align: middle; text-align: left;" class="fixed-side">
-                          <a href="/finance/fees_student_dates/<%= fee_data['id'] %>" target="_blank"  style="font-weight: normal;">
-                            <%= fee_data['name'] unless fee_data['name'].nil? %><br />
-                            <small>ID: <%= fee_data['admission_no'] unless fee_data['admission_no'].nil? %></small>
-                          </a>
-                        </th>
-                        <% total_fee = 0.0 %>
-                        <% unless @particulars.blank? %>
-                          <% @particulars.each_with_index do |particular, i| %>
-                            <% particular_amount = fee_data['particular'].map{|p| p['amount'].to_f if p['name'] == particular}.compact.sum  %>
-                            <% if particulars_with_amount[particular].blank? %>
-                              <%
-                                particulars_with_amount[particular] = []
-                                tmp = {}
-                                tmp['amount'] = particular_amount
-                                particulars_with_amount[particular] << tmp
-                              %>
-                            <% else %>  
-                              <%
-                                tmp = {}
-                                tmp['amount'] = particular_amount
-                                particulars_with_amount[particular] << tmp
-                              %>
-                            <% end %>
-                            <% total_fee += particular_amount %>
-                            <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label particular_amount %></td>
-                          <% end %>
-                        <% end %>
-                        <% total_fee -= fee_data['discount'].to_f %>
-                        <% discount_total += fee_data['discount'].to_f %>
-                        <% total_fee += fee_data['fine'].to_f %>
-                        <% fine_total += fee_data['fine'].to_f %>
-                        <% paid_total += fee_data['paid'].to_f %>
-                        <% grand_total += total_fee  %>
-                        <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label fee_data['discount'].to_f %></td>
-                        <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label fee_data['fine'].to_f %></td>
-                        <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label total_fee %></td>
-                        <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label fee_data['paid'].to_f %></td>
-                        <% remaining = total_fee - fee_data['paid'].to_f  %>  
-                        <% remaining_total += remaining.to_f  %>  
-                        <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label remaining %></td>
-                    </tr>
-                    <% end %>
-                  <% end %>  
-                    <tr>  
-                      <th style="vertical-align: middle; text-align: left; color: #000; background: #f9f9f9; height: 40px;" class="fixed-side"> Grand Total </th>
+                <% end %>
+                <th style="width: 100px; text-align: center; vertical-align: middle; background: #f9f9f9;">Discount</th>    
+                <th style="width: 100px; text-align: center; vertical-align: middle; background: #f9f9f9;">Fine</th>    
+                <th style="width: 100px; text-align: center; vertical-align: middle; background: #f9f9f9;">Total Fees</th>
+                <th style="width: 100px; text-align: center; vertical-align: middle; background: #f9f9f9;">Paid Amount</th>
+                <th style="width: 100px; text-align: center; vertical-align: middle; background: #f9f9f9;">Remaining</th>
+              </tr>
+            </thead>
+            <% grand_total = 0.0 %>
+            <% grand_paid = 0.0 %>
+            <tbody>
+              <% particulars_with_amount = {} %>
+              <% discount_total = 0.00 %>
+              <% fine_total = 0.00 %>
+              <% paid_total = 0.00 %>
+              <% remaining_total = 0.00 %>
+              <% unless @students.blank? %>
+                <% @students.each do |k, fee_data| %>
+                  <% total_fee = 0 %>
+                  <tr class="tr-odd">
+                      <td style="vertical-align: middle; text-align: left;">
+                        <a href="/finance/fees_student_dates/<%= fee_data[0].id %>" target="_blank"  style="font-weight: normal;">
+                          <%= fee_data[0].full_name unless fee_data[0].full_name.nil? %><br />
+                          <small>ID: <%= fee_data[0].admission_no unless fee_data[0].admission_no.nil? %></small>
+                        </a>
+                      </td>
                       <% total_fee = 0.0 %>
-                        <% unless @particulars.blank? %>
-                          <% @particulars.each_with_index do |particular, i| %>
-                            <% particular_amount = particulars_with_amount[particular].map{|p| p['amount']}.compact.sum  %>
-                            <% total_fee += particular_amount %>
-                            <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label particular_amount %></td>
+                      <% unless @student_particulars[k].blank? %>
+                        <% unless @particular_categories.blank? %>
+                          <% @particular_categories.each do |particular| %>
+                            <% sp_amounts = @student_particulars[k][0].map{|sp| sp.amount if sp.finance_fee_particular_category.name == particular } %>
+                            <%#= debug sp_amounts.inspect %>
+                            <% particular_amount = 0 %>
+                            <% sp_amounts.each do |sp_amount| %>
+                              <% particular_amount += sp_amount.to_f %>
+                            <% end %>
+                            <% if particulars_with_amount[particular].blank? %>
+                            <%
+                              particulars_with_amount[particular] = []
+                              tmp = {}
+                              tmp['amount'] = particular_amount
+                              particulars_with_amount[particular] << tmp
+                            %>
+                          <% else %>  
+                            <%
+                              tmp = {}
+                              tmp['amount'] = particular_amount
+                              particulars_with_amount[particular] << tmp
+                            %>
                           <% end %>
+                          <% total_fee += particular_amount %>
+                          <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label particular_amount %></td>
+                          <% end %>
+                        <% else %>    
+                          <td class="align-right" style=" z-index: 1; position: relative;" colspan="<%= @particular_categories.length %>">&nbsp;</td>
                         <% end %>
-                        <% total_fee -= discount_total.to_f %>
-                        <% total_fee += fine_total.to_f %>
-                        <% grand_total += total_fee  %>
-                        <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label discount_total.to_f %></td>
-                        <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label fine_total.to_f %></td>
-                        <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label total_fee %></td>
-                        <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label paid_total.to_f %></td>
-                        <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label remaining_total %></td>
-                    </tr>
+                      <% else %>    
+                          <td class="align-right" style=" z-index: 1; position: relative;" colspan="<%= @particular_categories.length %>">&nbsp;</td>
+                      <% end %>
+                      <% discount = 0.0 %>    
+                      <% discount_total = 0.0 %>    
+                      <% fine = 0.0 %>    
+                      <% fine_total = 0.0 %>    
+                      <% paid_amount = 0.0 %>    
+                      <% paid_total = 0.0 %>    
+                      <% unless @student_summaries[k].blank? %>
+                          <% student_summaries = @student_summaries[k][0] %>
+                          <% discount = student_summaries['discount'].to_f %>
+                          <% total_fee -= student_summaries['discount'].to_f %>
+                          <% discount_total += student_summaries['discount'].to_f %>
+
+                          <% fine = student_summaries['fine'].to_f %>
+                          <% total_fee += student_summaries['fine'].to_f %>
+                          <% fine += student_summaries['fine'].to_f %>
+
+                          <% paid_amount = student_summaries['paid_amount'].to_f %>
+                          <% paid_total += student_summaries['paid_amount'].to_f %>
+                      <% end %>
+                      <% grand_total += total_fee  %>
+                      <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label discount.to_f %></td>
+                      <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label fine.to_f %></td>
+                      <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label total_fee %></td>
+                      <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label paid_amount.to_f %></td>
+                      <% remaining = total_fee - paid_amount.to_f  %>  
+                      <% remaining_total += remaining.to_f  %>  
+                      <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label remaining %></td>
+                  </tr>
                 <% end %>  
-              </tbody>
-          </table>
+              <% end %>  
+            </tbody>
+        </table>
+    </div>
+  <% if @opt == 1 %>
+  <div class="pagination_div" style="margin-top: 100px;">
+      <div class="div1">
+          <%= will_paginate @student_finance_fees, :previous_label=>"<", :next_label=>">", :renderer => 'RemoteLinkRenderer' ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader_paginate').hide();"  }, :params => {:controller=>:finance,:action => "load_bill_generation_reports", :opt => @opt, :filter_by_course => @filter_by_course, :date => @date.id} %>
+      </div>
+      <div class="div2"><%= image_tag("loader.gif",
+        :align => "absmiddle",
+        :border => 0,
+        :id => "loader_paginate",
+        :style =>"display: none;" ) %></div>
+      
+      <div class="pdf_link" style="text-align: center;">
+          <% page = 1 %>
+          <% unless params[:page].blank? %>
+            <% page = params[:page] %>
+          <% end %>
+          <%= link_to "Download PDF (Page #{page})",
+            {:controller => "finance", :action => "bill_generation_report_pdf",  :opt => @opt, :filter_by_course => @filter_by_course, :date => @date.id},:target => '_blank', :class=> 'user_button' %>
+          <%= link_to "Download Excel (Page #{page})",
+            {:controller => "finance", :action => "bill_generation_report_xls",  :opt => @opt, :filter_by_course => @filter_by_course, :date => @date.id},:target => '_blank', :class=> 'user_button' %>
       </div>
   </div>
-  <div class="pdf_link" style="text-align: center;">
-      <%#= link_to " ► #{t('pdf_report')}",
-        {:controller => "finance", :action => "fee_collection_pdf", :batch_id => @batch.id, :date => @date.id},:target => '_blank', :class=> 'user_button' %>
+  
+  <% elsif @opt == 2 %>
+  <div class="pagination_div" style="margin-top: 100px;">
+      <div class="div1">
+          <%= will_paginate @student_finance_fees, :previous_label=>"<", :next_label=>">", :renderer => 'RemoteLinkRenderer' ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader_paginate').hide();"  }, :params => {:controller=>:finance,:action => "load_bill_generation_reports", :opt => @opt, :section_id => @section_id, :course_name => @course_name, :batch_id => @b_id, :date => @d_id} %>
+      </div>
+      <div class="div2"><%= image_tag("loader.gif",
+        :align => "absmiddle",
+        :border => 0,
+        :id => "loader_paginate",
+        :style =>"display: none;" ) %></div>
+      
+      <div class="pdf_link" style="text-align: center;">
+          <% page = 1 %>
+          <% unless params[:page].blank? %>
+            <% page = params[:page] %>
+          <% end %>
+          <%= link_to "Download PDF (Page #{page})",
+            {:controller => "finance", :action => "bill_generation_report_pdf", :opt => @opt, :section_id => @section_id, :course_name => @course_name, :batch_id => @b_id, :date => @d_id},:target => '_blank', :class=> 'user_button' %>
+          
+          <%= link_to "Download Excel (Page #{page})",
+            {:controller => "finance", :action => "bill_generation_report_xls", :opt => @opt, :section_id => @section_id, :course_name => @course_name, :batch_id => @b_id, :date => @d_id},:target => '_blank', :class=> 'user_button' %>
+      </div>
   </div>
+  <% else %>
+  <div class="pagination_div" style="margin-top: 100px;">
+      <div class="div1">
+          <%= will_paginate @student_finance_fees, :previous_label=>"<", :next_label=>">", :renderer => 'RemoteLinkRenderer' ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader_paginate').hide();"  }, :params => {:controller=>:finance,:action => "load_bill_generation_reports", :batch_id => @b_id, :date => @d_id} %>
+      </div>
+      <div class="div2"><%= image_tag("loader.gif",
+        :align => "absmiddle",
+        :border => 0,
+        :id => "loader_paginate",
+        :style =>"display: none;" ) %></div>
+      
+      <div class="pdf_link" style="text-align: center;">
+          <% page = 1 %>
+          <% unless params[:page].blank? %>
+            <% page = params[:page] %>
+          <% end %>
+          <%= link_to "Download PDF (Page #{page})",
+            {:controller => "finance", :action => "bill_generation_report_pdf", :batch_id => @b_id, :date => @d_id},:target => '_blank', :class=> 'user_button' %>
+          <%= link_to "Download Excel (Page #{page})",
+            {:controller => "finance", :action => "bill_generation_report_xls", :batch_id => @b_id, :date => @d_id},:target => '_blank', :class=> 'user_button' %>
+      </div>
+  </div>
+  <% end %>
 <%#= debug particulars_with_amount.inspect %>
 <style>
+    .pdf_link {
+        text-align: center;
+        padding-bottom: 20px;
+        float: left;
+        width: 100%;
+        margin-top: -45px; 
+    }
+    .user_button{
+        display: inline-block !important;
+        float: none;
+        margin-left: 0;
+        margin-top: 0;
+    }
+    .div2{
+      float: right;
+      margin-top: -35px;
+      margin-right: 5px;
+    }
+    .pagination {
+        margin-top: -85px;
+    }
     #page-yield {
       margin: 0;
       float: left;
@@ -152,75 +242,44 @@
       background-color: #fff;
       padding: 7px 30px;
     }
-    .table-scroll {
-	position:relative;
-	max-width:1000px;
-	margin:auto;
-	overflow:hidden;
-	border:1px solid #ddd;
-    }
     .table-wrap {
-            width:100%;
-            overflow:auto;
+          overflow:auto;
+          width:100%;
+          height:500px;
     }
-    .table-scroll table {
-            width:100%;
-            margin:auto;
-            border-collapse:separate;
-            border-spacing:0;
+    table.main-table {
+        table-layout: fixed;
+        width:100%;
     }
-    .table-scroll th, .table-scroll td {
-            padding:5px 10px;
-            border:1px solid #000;
-            background:#fff;
-            vertical-align:top;
+    td:first-child{
+      position:sticky;
+      left:0;
+      z-index:2;
+      background-color: #f9f9f9;
     }
-    .table-scroll th {
-            padding:10px 6px;
+    thead tr th {
+      position:sticky;
+      top:0;
+      z-index: 2;
+      background-color:#f9f9f9;
+      padding: 10px;
     }
-    .table-scroll thead, .table-scroll tfoot {
-            background:#f9f9f9;
+    thead tr th:first-child {
+      position:sticky;
+      top:0;
+      left: 0;
+      z-index: 3;
+      background-color:#f9f9f9;
+      padding: 10px;
     }
-    .clone {
-            position:absolute;
-            top:0;
-            left:0;
+    tbody tr td {
+      padding: 10px;
+      text-align: right;
     }
-    .clone th, .clone td {
-            visibility:hidden
+    tbody tr td:first-child {
+      padding: 10px;
     }
-    .clone td, .clone th {
-            border-color:transparent
-    }
-    .clone tbody th {
-            visibility:visible;
-            color:red;
-    }
-    /*.clone tbody{
-      overflow:auto;
-      height:200px;
-      width:100%;
-    }*/
-    .clone .fixed-side {
-            background:#f9f9f9;
-            visibility:visible;
-            z-index: 1;
-            border-left: 1px solid #ccc;
-            position: relative;
-            border-bottom: 1px solid #AAA;
-    }
-    .clone .fixed-side:not(:last-child) {
-            background:#f9f9f9;
-            visibility:visible;
-            z-index: 1;
-            border-left: 1px solid #ccc;
-            position: relative;
-            border-bottom: 1px solid #AAA;
-    }
-    a:hover {
-        text-decoration: none !important;
-    }
-    .clone thead, .clone tfoot{background:transparent;}
+    
 </style>   
 
 <script>
@@ -232,69 +291,7 @@
   });
   
   j(document).ready(function() {
-    j(".main-table").clone(true).appendTo('#table-scroll').addClass('clone');   
+    //j(".main-table").clone(true).appendTo('#table-scroll').addClass('clone');   
   });
   
 </script>  
-
-<style>
-    .pdf_link .user_button {
-        display: inline-block;
-        float: none;
-    }
-    tr.tr-odd td, tr.tr-even td
-    {
-       text-align:right;
-    }
-    tr.inverse {
-    }
-    tr.inverse td {
-        font-weight: bold;
-    }
-    td.align-center
-    {
-       text-align:center !important;
-    }
-    .date span{
-        display: none;
-        color: #FFFFFF;
-        text-align: left;
-    }
-    .date{
-        position: relative;
-    }
-    td:hover .date span{
-        display: block;
-        position: absolute;
-        background-color: black;
-        border:1px solid #ccc;
-        min-height: 20px;
-        min-width: 100px;
-        left: 0px;
-        top: -60px;
-        color: #FFFFFF;
-        padding: 5px;
-        font-size: 13px;
-        text-align: center;
-    }
-    td
-    {
-      cursor: pointer;
-    }
-    .align-right
-    {
-        text-align:right !important;
-    }
-    .align-center
-    {
-        text-align:center !important;
-    }
-    .align-left
-    {
-        text-align:left !important;
-    }
-    .show_collection{
-       z-index: 1;
-    }
-    
-</style>   

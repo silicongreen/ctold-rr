@@ -135,8 +135,13 @@
                       <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label total_fee %></td>
                       <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label paid_amount.to_f %></td>
                       <% remaining = total_fee - paid_amount.to_f  %>  
+                      <% advance = false %>
+                      <% if remaining < 0  %>  
+                        <% remaining = remaining * -1 %>
+                        <% advance = true %>
+                      <% end %>
                       <% remaining_total += remaining.to_f  %>  
-                      <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label remaining %></td>
+                      <td class="align-right" style=" z-index: 1; position: relative;"><%= precision_label remaining %><%= "<br/><b><small>(Advance)</small></b>" if advance %></td>
                   </tr>
                 <% end %>  
               <% end %>  

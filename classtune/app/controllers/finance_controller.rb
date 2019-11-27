@@ -7240,7 +7240,7 @@ class FinanceController < ApplicationController
       @students = {}
       particulars = []
       particular_categories = []
-      @student_finance_fees = FinanceFee.paginate(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id",:page => params[:page], :per_page => 500)
+      @student_finance_fees = FinanceFee.paginate(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id",:page => params[:page], :per_page => 10)
       #student_finance_fees = FinanceFee.find(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id")
       
       unless @student_finance_fees.blank?
@@ -7280,20 +7280,31 @@ class FinanceController < ApplicationController
                 paid_fine = pf.amount
               end
             end
+            paid_discounts = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND finance_transaction_id IN (" + paid_fees.map(&:id).join(",") + ")")
+            discount = 0
+            unless paid_discounts.nil?
+              paid_discounts.each do |pf|
+                discount = pf.amount
+              end
+            end
+            @total_discount = discount
             paid_amount += paid_fees.map(&:amount).sum.to_f
           end
           @student_summaries[fee.student.id] << {"discount" => @total_discount, 'fine' => paid_fine, "paid_amount" => paid_amount}
         end
         
-        #abort(particular_categories.inspect)
-        ar_particular_categories = particular_categories
-        pt = []
-        ar_particular_categories.each_with_index do |particular_categories, i|
-          particular_categories.each do |particular_category|
-            pt << particular_category
-          end
-        end
-        @particular_categories = pt
+#        #abort(particular_categories.inspect)
+#        ar_particular_categories = particular_categories
+#        pt = []
+#        ar_particular_categories.each_with_index do |particular_categories, i|
+#          particular_categories.each do |particular_category|
+#            pt << particular_category
+#          end
+#        end
+#        @particular_categories = pt
+        
+        fee_cateroies = FinanceFeeParticularCategory.active
+        @particular_categories = fee_cateroies.map{|p| p.name}
         #if fee.student_id == 28046
             #abort(pt.inspect)
          # end
@@ -12593,6 +12604,15 @@ class FinanceController < ApplicationController
                 paid_fine = pf.amount
               end
             end
+            
+            paid_discounts = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND finance_transaction_id IN (" + paid_fees.map(&:id).join(",") + ")")
+            discount = 0
+            unless paid_discounts.nil?
+              paid_discounts.each do |pf|
+                discount = pf.amount
+              end
+            end
+            @total_discount = discount
             paid_amount += paid_fees.map(&:amount).sum.to_f
           end
           #abort(@total_payable.to_s + "  " + paid_fine.to_s + "  " + @total_discount.to_s)
@@ -12600,14 +12620,17 @@ class FinanceController < ApplicationController
           @student_summaries[fee.student.id] << {"total_fee" => total_fees, "discount" => @total_discount, 'fine' => paid_fine, "paid_amount" => paid_amount}
         end
         
-        ar_particular_categories = particular_categories
-        pt = []
-        ar_particular_categories.each_with_index do |particular_categories, i|
-          particular_categories.each do |particular_category|
-            pt << particular_category
-          end
-        end
-        @particular_categories = pt
+#        ar_particular_categories = particular_categories
+#        pt = []
+#        ar_particular_categories.each_with_index do |particular_categories, i|
+#          particular_categories.each do |particular_category|
+#            pt << particular_category
+#          end
+#        end
+#        @particular_categories = pt
+#        
+        fee_cateroies = FinanceFeeParticularCategory.active
+        @particular_categories = fee_cateroies.map{|p| p.name}
         #if fee.student_id == 28046
             #abort(pt.inspect)
          # end
@@ -12847,6 +12870,15 @@ class FinanceController < ApplicationController
                 paid_fine = pf.amount
               end
             end
+            
+            paid_discounts = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND finance_transaction_id IN (" + paid_fees.map(&:id).join(",") + ")")
+            discount = 0
+            unless paid_discounts.nil?
+              paid_discounts.each do |pf|
+                discount = pf.amount
+              end
+            end
+            @total_discount = discount
             paid_amount += paid_fees.map(&:amount).sum.to_f
           end
           #abort(@total_payable.to_s + "  " + paid_fine.to_s + "  " + @total_discount.to_s)
@@ -12854,14 +12886,19 @@ class FinanceController < ApplicationController
           @student_summaries[fee.student.id] << {"total_fee" => total_fees, "discount" => @total_discount, 'fine' => paid_fine, "paid_amount" => paid_amount}
         end
         
-        ar_particular_categories = particular_categories
-        pt = []
-        ar_particular_categories.each_with_index do |particular_categories, i|
-          particular_categories.each do |particular_category|
-            pt << particular_category
-          end
-        end
-        @particular_categories = pt
+#        fee_cateroies = FinanceFeeParticularCategory.active
+#        @particular = fee_cateroies.map{|p| p.name}
+#        ar_particular_categories = particular_categories
+#        pt = []
+#        ar_particular_categories.each_with_index do |particular_categories, i|
+#          particular_categories.each do |particular_category|
+#            pt << particular_category
+#          end
+#        end
+#        @particular_categories = pt
+#        
+        fee_cateroies = FinanceFeeParticularCategory.active
+        @particular_categories = fee_cateroies.map{|p| p.name}
         #if fee.student_id == 28046
             #abort(pt.inspect)
          # end
@@ -12899,7 +12936,8 @@ class FinanceController < ApplicationController
       row_1 << 'Fine'
       row_1 << 'Total Fees'
       row_1 << 'Paid Amount'
-      row_1 << 'Remaining'
+      row_1 << 'Due'
+      row_1 << 'Advance'
       new_book.worksheet(0).insert_row(0, row_1)
       new_book.worksheet(0).row(0).set_format(0, title_format)
       new_book.worksheet(0).column(0).width = 15
@@ -12917,6 +12955,9 @@ class FinanceController < ApplicationController
         new_book.worksheet(0).column(k).width = particular.length + 5
         k += 1
       end
+      new_book.worksheet(0).row(0).set_format(k, title_format)
+      new_book.worksheet(0).column(k).width = 15
+      k += 1
       new_book.worksheet(0).row(0).set_format(k, title_format)
       new_book.worksheet(0).column(k).width = 15
       k += 1
@@ -12973,12 +13014,18 @@ class FinanceController < ApplicationController
             
             paid_amount = student_summaries['paid_amount'].to_f
           end
+          advance = 0.0
           tmp << discount
           tmp << fine
           tmp << total_fee
           tmp << paid_amount
           remaining = total_fee - paid_amount.to_f
+          if remaining < 0
+            advance = remaining * -1
+            remaining = 0.0
+          end
           tmp << remaining
+          tmp << advance
           
           new_book.worksheet(0).insert_row(ind, tmp)
           new_book.worksheet(0).row(ind).set_format(0, center_format)
@@ -12991,6 +13038,8 @@ class FinanceController < ApplicationController
             new_book.worksheet(0).row(ind).set_format(m, amount_format)
             m += 1
           end
+          new_book.worksheet(0).row(ind).set_format(m, amount_format)
+          m += 1
           new_book.worksheet(0).row(ind).set_format(m, amount_format)
           m += 1
           new_book.worksheet(0).row(ind).set_format(m, amount_format)

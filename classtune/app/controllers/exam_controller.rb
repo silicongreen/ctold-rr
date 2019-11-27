@@ -8135,6 +8135,8 @@ class ExamController < ApplicationController
         end 
       end
       
+      abort(@student_position.inspect)
+      
       last_grade = 0.0
       last_total = 0.0
       unless @student_list_batch.blank?

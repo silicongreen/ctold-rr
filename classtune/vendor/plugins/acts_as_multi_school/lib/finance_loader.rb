@@ -1158,9 +1158,7 @@ module FinanceLoader
     #abort(@fee_particulars.map(&:id).join(","))
     unless @financefee.is_paid?
       unless amount_from_gateway.to_f < 0
-        if @financefee.id == 183077
-        abort('here')
-        end
+        
         #if orderId.to_s == "O1049432"
                             #abort(amount_from_gateway.to_s + "  " + total_fees.to_s)
                           #end
@@ -1212,13 +1210,35 @@ module FinanceLoader
             proccess_particulars_category = []
             loop_particular = 0
             unless request_params.nil?
-              
-              @fee_particulars.each do |fp|
-                advanced = false
-                particular_amount = fp.amount.to_f
-                unless request_params["fee_particular_" + fp.id.to_s].nil?
-                  if request_params["fee_particular_" + fp.id.to_s] == "on"
-                    paid_amount = request_params["fee_particular_amount_" + fp.id.to_s].to_f
+              unless @fee_particulars.blank?
+                @fee_particulars.each do |fp|
+                  advanced = false
+                  particular_amount = fp.amount.to_f
+                  found = false
+                  unless request_params["fee_particular_" + fp.id.to_s].blank?
+                    if request_params["fee_particular_" + fp.id.to_s] == "on"
+                      found = true
+                    end
+                  else  
+                    unless request_params["fee_particular_" + fp.id.to_s + "_" + @financefee.id.to_s].blank?
+                      if request_params["fee_particular_" + fp.id.to_s + "_" + @financefee.id.to_s] == "on"
+                        found = true
+                      end
+                    end
+                  end
+                  if found
+                    paid_amount = 0
+                    unless request_params["fee_particular_" + fp.id.to_s].blank?
+                      if request_params["fee_particular_" + fp.id.to_s] == "on"
+                        paid_amount = request_params["fee_particular_amount_" + fp.id.to_s].to_f
+                      end
+                    else  
+                      unless request_params["fee_particular_" + fp.id.to_s + "_" + @financefee.id.to_s].blank?
+                        if request_params["fee_particular_" + fp.id.to_s + "_" + @financefee.id.to_s] == "on"
+                          paid_amount = request_params["fee_particular_amount_" + fp.id.to_s + "_" + @financefee.id.to_s].to_f
+                        end
+                      end
+                    end
                     left_amount = particular_amount - paid_amount
                     amount_paid = 0
                     if  left_amount == 0
@@ -1249,128 +1269,88 @@ module FinanceLoader
                       finance_transaction_particular.transaction_date = transaction.transaction_date
                       finance_transaction_particular.save
                     end
-                  else
-                     unless request_params["mobile_view"].blank?
-                       if request_params["mobile_view"].to_i == 1
-                          particular_amount = fp.amount.to_f
-                          finance_transaction_particular = FinanceTransactionParticular.new
-                          finance_transaction_particular.finance_transaction_id = transaction.id
-                          finance_transaction_particular.particular_id = fp.id
-                          finance_transaction_particular.particular_type = 'Particular'
-                          finance_transaction_particular.transaction_type = 'Fee Collection'
-                          finance_transaction_particular.amount = particular_amount
-                          finance_transaction_particular.transaction_date = transaction.transaction_date
-                          finance_transaction_particular.save
-                        end
-                     end
                   end
-                else
-                  unless request_params["mobile_view"].blank?
-                    if request_params["mobile_view"].to_i == 1
-                        particular_amount = fp.amount.to_f
-                        finance_transaction_particular = FinanceTransactionParticular.new
-                        finance_transaction_particular.finance_transaction_id = transaction.id
-                        finance_transaction_particular.particular_id = fp.id
-                        finance_transaction_particular.particular_type = 'Particular'
-                        finance_transaction_particular.transaction_type = 'Fee Collection'
-                        finance_transaction_particular.amount = particular_amount
-                        finance_transaction_particular.transaction_date = transaction.transaction_date
-                        finance_transaction_particular.save
-                     end
-                  end
-                  
                 end
               end
 
               unless @onetime_discounts.blank?
                 @onetime_discounts.each do |od|
-                  unless request_params["fee_discount_" + od.id.to_s].nil?
+                  found = false
+                  unless request_params["fee_discount_" + od.id.to_s].blank?
                     if request_params["fee_discount_" + od.id.to_s] == "on"
-                      discount_amount = request_params["fee_discount_amount_" + od.id.to_s].to_f
-                      finance_transaction_particular = FinanceTransactionParticular.new
-                      finance_transaction_particular.finance_transaction_id = transaction.id
-                      finance_transaction_particular.particular_id = od.id
-                      finance_transaction_particular.particular_type = 'Adjustment'
-                      finance_transaction_particular.transaction_type = 'Discount'
-                      finance_transaction_particular.amount = discount_amount
-                      finance_transaction_particular.transaction_date = transaction.transaction_date
-                      finance_transaction_particular.save
-                    else
-                       unless request_params["mobile_view"].blank?
-                          if request_params["mobile_view"].to_i == 1 
-                            discount_amount = @onetime_discounts_amount[od.id].to_f
-                            finance_transaction_particular = FinanceTransactionParticular.new
-                            finance_transaction_particular.finance_transaction_id = transaction.id
-                            finance_transaction_particular.particular_id = od.id
-                            finance_transaction_particular.particular_type = 'Adjustment'
-                            finance_transaction_particular.transaction_type = 'Discount'
-                            finance_transaction_particular.amount = discount_amount
-                            finance_transaction_particular.transaction_date = transaction.transaction_date
-                            finance_transaction_particular.save
-                          end
-                       end
+                      found = true
                     end
-                  else
-                    unless request_params["mobile_view"].blank?
-                      if request_params["mobile_view"].to_i == 1 
-                        discount_amount = @onetime_discounts_amount[od.id].to_f
-                        finance_transaction_particular = FinanceTransactionParticular.new
-                        finance_transaction_particular.finance_transaction_id = transaction.id
-                        finance_transaction_particular.particular_id = od.id
-                        finance_transaction_particular.particular_type = 'Adjustment'
-                        finance_transaction_particular.transaction_type = 'Discount'
-                        finance_transaction_particular.amount = discount_amount
-                        finance_transaction_particular.transaction_date = transaction.transaction_date
-                        finance_transaction_particular.save
+                  else  
+                    unless request_params["fee_discount_" + od.id.to_s + "_" + @financefee.id.to_s].blank?
+                      if request_params["fee_discount_" + od.id.to_s + "_" + @financefee.id.to_s] == "on"
+                        found = true
                       end
                     end
+                  end
+                
+                  if found
+                    discount_amount = 0
+                    unless request_params["fee_discount_" + od.id.to_s].blank?
+                      if request_params["fee_discount_" + od.id.to_s] == "on"
+                        discount_amount = request_params["fee_discount_amount_" + od.id.to_s].to_f
+                      end
+                    else  
+                      unless request_params["fee_discount_" + od.id.to_s + "_" + @financefee.id.to_s].blank?
+                        if request_params["fee_discount_" + od.id.to_s + "_" + @financefee.id.to_s] == "on"
+                          discount_amount = request_params["fee_discount_amount_" + od.id.to_s + "_" + @financefee.id.to_s].to_f
+                        end
+                      end
+                    end
+                    #discount_amount = request_params["fee_discount_amount_" + od.id.to_s].to_f
+                    finance_transaction_particular = FinanceTransactionParticular.new
+                    finance_transaction_particular.finance_transaction_id = transaction.id
+                    finance_transaction_particular.particular_id = od.id
+                    finance_transaction_particular.particular_type = 'Adjustment'
+                    finance_transaction_particular.transaction_type = 'Discount'
+                    finance_transaction_particular.amount = discount_amount
+                    finance_transaction_particular.transaction_date = transaction.transaction_date
+                    finance_transaction_particular.save
                   end
                 end
               end
 
               unless @discounts.blank?
                 @discounts.each do |od|
-                  unless request_params["fee_discount_" + od.id.to_s].nil?
+                  found = false
+                  unless request_params["fee_discount_" + od.id.to_s].blank?
                     if request_params["fee_discount_" + od.id.to_s] == "on"
-                      discount_amount = request_params["fee_discount_amount_" + od.id.to_s].to_f
-                      finance_transaction_particular = FinanceTransactionParticular.new
-                      finance_transaction_particular.finance_transaction_id = transaction.id
-                      finance_transaction_particular.particular_id = od.id
-                      finance_transaction_particular.particular_type = 'Adjustment'
-                      finance_transaction_particular.transaction_type = 'Discount'
-                      finance_transaction_particular.amount = discount_amount
-                      finance_transaction_particular.transaction_date = transaction.transaction_date
-                      finance_transaction_particular.save
-                    else
-                       unless request_params["mobile_view"].blank?
-                          if request_params["mobile_view"].to_i == 1 
-                            discount_amount = @discounts_amount[od.id]
-                            finance_transaction_particular = FinanceTransactionParticular.new
-                            finance_transaction_particular.finance_transaction_id = transaction.id
-                            finance_transaction_particular.particular_id = od.id
-                            finance_transaction_particular.particular_type = 'Adjustment'
-                            finance_transaction_particular.transaction_type = 'Discount'
-                            finance_transaction_particular.amount = discount_amount
-                            finance_transaction_particular.transaction_date = transaction.transaction_date
-                            finance_transaction_particular.save
-                          end
-                       end
+                      found = true
                     end
-                  else
-                    unless request_params["mobile_view"].blank?
-                      if request_params["mobile_view"].to_i == 1 
-                        discount_amount = @discounts_amount[od.id]
-                        finance_transaction_particular = FinanceTransactionParticular.new
-                        finance_transaction_particular.finance_transaction_id = transaction.id
-                        finance_transaction_particular.particular_id = od.id
-                        finance_transaction_particular.particular_type = 'Adjustment'
-                        finance_transaction_particular.transaction_type = 'Discount'
-                        finance_transaction_particular.amount = discount_amount
-                        finance_transaction_particular.transaction_date = transaction.transaction_date
-                        finance_transaction_particular.save
+                  else  
+                    unless request_params["fee_discount_" + od.id.to_s + "_" + @financefee.id.to_s].blank?
+                      if request_params["fee_discount_" + od.id.to_s + "_" + @financefee.id.to_s] == "on"
+                        found = true
                       end
                     end
-                    
+                  end
+                
+                  if found
+                    discount_amount = 0
+                    unless request_params["fee_discount_" + od.id.to_s].blank?
+                      if request_params["fee_discount_" + od.id.to_s] == "on"
+                        discount_amount = request_params["fee_discount_amount_" + od.id.to_s].to_f
+                      end
+                    else  
+                      unless request_params["fee_discount_" + od.id.to_s + "_" + @financefee.id.to_s].blank?
+                        if request_params["fee_discount_" + od.id.to_s + "_" + @financefee.id.to_s] == "on"
+                          discount_amount = request_params["fee_discount_amount_" + od.id.to_s + "_" + @financefee.id.to_s].to_f
+                        end
+                      end
+                    end
+                    #discount_amount = request_params["fee_discount_amount_" + od.id.to_s].to_f
+                    finance_transaction_particular = FinanceTransactionParticular.new
+                    finance_transaction_particular.finance_transaction_id = transaction.id
+                    finance_transaction_particular.particular_id = od.id
+                    finance_transaction_particular.particular_type = 'Adjustment'
+                    finance_transaction_particular.transaction_type = 'Discount'
+                    finance_transaction_particular.amount = discount_amount
+                    finance_transaction_particular.transaction_date = transaction.transaction_date
+                    finance_transaction_particular.save
                   end
                 end
               end
@@ -1386,38 +1366,6 @@ module FinanceLoader
                   finance_transaction_particular.amount = vat_amount
                   finance_transaction_particular.transaction_date = transaction.transaction_date
                   finance_transaction_particular.save
-                else
-                  unless request_params["mobile_view"].blank?
-                      if request_params["mobile_view"].to_i == 1 
-                        if transaction.vat_included?
-                          vat_amount = transaction.vat_amount
-                          finance_transaction_particular = FinanceTransactionParticular.new
-                          finance_transaction_particular.finance_transaction_id = transaction.id
-                          finance_transaction_particular.particular_id = 0
-                          finance_transaction_particular.particular_type = 'VAT'
-                          finance_transaction_particular.transaction_type = ''
-                          finance_transaction_particular.amount = vat_amount
-                          finance_transaction_particular.transaction_date = transaction.transaction_date
-                          finance_transaction_particular.save
-                        end
-                      end
-                  end
-                end
-              else
-                unless request_params["mobile_view"].blank?
-                  if request_params["mobile_view"].to_i == 1 
-                      if transaction.vat_included?
-                        vat_amount = transaction.vat_amount
-                        finance_transaction_particular = FinanceTransactionParticular.new
-                        finance_transaction_particular.finance_transaction_id = transaction.id
-                        finance_transaction_particular.particular_id = 0
-                        finance_transaction_particular.particular_type = 'VAT'
-                        finance_transaction_particular.transaction_type = ''
-                        finance_transaction_particular.amount = vat_amount
-                        finance_transaction_particular.transaction_date = transaction.transaction_date
-                        finance_transaction_particular.save
-                      end
-                  end
                 end
               end
               
@@ -1434,46 +1382,41 @@ module FinanceLoader
             
               if @has_fine_discount
                 @discounts_on_lates.each do |fd|
-                  unless request_params["fee_fine_discount_" + fd.id.to_s].nil?
+                  found = false
+                  unless request_params["fee_fine_discount_" + fd.id.to_s].blank?
                     if request_params["fee_fine_discount_" + fd.id.to_s] == "on"
-                      discount_amount = request_params["fee_fine_discount_amount_" + fd.id.to_s].to_f
-                      finance_transaction_particular = FinanceTransactionParticular.new
-                      finance_transaction_particular.finance_transaction_id = transaction.id
-                      finance_transaction_particular.particular_id = fd.id
-                      finance_transaction_particular.particular_type = 'FineAdjustment'
-                      finance_transaction_particular.transaction_type = 'Discount'
-                      finance_transaction_particular.amount = discount_amount
-                      finance_transaction_particular.transaction_date = transaction.transaction_date
-                      finance_transaction_particular.save
-                    else
-                      unless request_params["mobile_view"].blank?
-                        if request_params["mobile_view"].to_i == 1 
-                          discount_amount = @discounts_late_amount[od.id]
-                          finance_transaction_particular = FinanceTransactionParticular.new
-                          finance_transaction_particular.finance_transaction_id = transaction.id
-                          finance_transaction_particular.particular_id = fd.id
-                          finance_transaction_particular.particular_type = 'FineAdjustment'
-                          finance_transaction_particular.transaction_type = 'Discount'
-                          finance_transaction_particular.amount = discount_amount
-                          finance_transaction_particular.transaction_date = transaction.transaction_date
-                          finance_transaction_particular.save
+                      found = true
+                    end
+                  else  
+                    unless request_params["fee_fine_discount_" + fd.id.to_s + "_" + @financefee.id.to_s].blank?
+                      if request_params["fee_fine_discount_" + fd.id.to_s + "_" + @financefee.id.to_s] == "on"
+                        found = true
+                      end
+                    end
+                  end
+                
+                  if found
+                    discount_amount = 0
+                    unless request_params["fee_fine_discount_" + fd.id.to_s].blank?
+                      if request_params["fee_fine_discount_" + fd.id.to_s] == "on"
+                        discount_amount = request_params["fee_fine_discount_amount_" + fd.id.to_s].to_f
+                      end
+                    else  
+                      unless request_params["fee_fine_discount_" + fd.id.to_s + "_" + @financefee.id.to_s].blank?
+                        if request_params["fee_fine_discount_" + fd.id.to_s + "_" + @financefee.id.to_s] == "on"
+                          discount_amount = request_params["fee_fine_discount_amount_" + fd.id.to_s + "_" + @financefee.id.to_s].to_f
                         end
                       end
                     end
-                  else
-                    unless request_params["mobile_view"].blank?
-                        if request_params["mobile_view"].to_i == 1 
-                          discount_amount = @discounts_late_amount[od.id]
-                          finance_transaction_particular = FinanceTransactionParticular.new
-                          finance_transaction_particular.finance_transaction_id = transaction.id
-                          finance_transaction_particular.particular_id = fd.id
-                          finance_transaction_particular.particular_type = 'FineAdjustment'
-                          finance_transaction_particular.transaction_type = 'Discount'
-                          finance_transaction_particular.amount = discount_amount
-                          finance_transaction_particular.transaction_date = transaction.transaction_date
-                          finance_transaction_particular.save
-                        end
-                    end
+                    #discount_amount = request_params["fee_discount_amount_" + od.id.to_s].to_f
+                    finance_transaction_particular = FinanceTransactionParticular.new
+                    finance_transaction_particular.finance_transaction_id = transaction.id
+                    finance_transaction_particular.particular_id = fd.id
+                    finance_transaction_particular.particular_type = 'FineAdjustment'
+                    finance_transaction_particular.transaction_type = 'Discount'
+                    finance_transaction_particular.amount = discount_amount
+                    finance_transaction_particular.transaction_date = transaction.transaction_date
+                    finance_transaction_particular.save
                   end
                 end
               end
@@ -1482,85 +1425,6 @@ module FinanceLoader
               @finance_order = FinanceOrder.find_by_order_id(orderId)
               @finance_order.update_attributes(:status => 1)
 
-            else
-              @fee_particulars.each do |fp|
-                particular_amount = fp.amount.to_f
-                finance_transaction_particular = FinanceTransactionParticular.new
-                finance_transaction_particular.finance_transaction_id = transaction.id
-                finance_transaction_particular.particular_id = fp.id
-                finance_transaction_particular.particular_type = 'Particular'
-                finance_transaction_particular.transaction_type = 'Fee Collection'
-                finance_transaction_particular.amount = particular_amount
-                finance_transaction_particular.transaction_date = transaction.transaction_date
-                finance_transaction_particular.save
-              end
-
-              unless @onetime_discounts.blank?
-                @onetime_discounts.each do |od|
-                  discount_amount = @onetime_discounts_amount[od.id].to_f
-                  finance_transaction_particular = FinanceTransactionParticular.new
-                  finance_transaction_particular.finance_transaction_id = transaction.id
-                  finance_transaction_particular.particular_id = od.id
-                  finance_transaction_particular.particular_type = 'Adjustment'
-                  finance_transaction_particular.transaction_type = 'Discount'
-                  finance_transaction_particular.amount = discount_amount
-                  finance_transaction_particular.transaction_date = transaction.transaction_date
-                  finance_transaction_particular.save
-                end
-              end
-
-
-              unless @discounts.blank?
-                @discounts.each do |od|
-                  discount_amount = @discounts_amount[od.id]
-                  finance_transaction_particular = FinanceTransactionParticular.new
-                  finance_transaction_particular.finance_transaction_id = transaction.id
-                  finance_transaction_particular.particular_id = od.id
-                  finance_transaction_particular.particular_type = 'Adjustment'
-                  finance_transaction_particular.transaction_type = 'Discount'
-                  finance_transaction_particular.amount = discount_amount
-                  finance_transaction_particular.transaction_date = transaction.transaction_date
-                  finance_transaction_particular.save
-                end
-              end
-
-              if transaction.vat_included?
-                vat_amount = transaction.vat_amount
-                finance_transaction_particular = FinanceTransactionParticular.new
-                finance_transaction_particular.finance_transaction_id = transaction.id
-                finance_transaction_particular.particular_id = 0
-                finance_transaction_particular.particular_type = 'VAT'
-                finance_transaction_particular.transaction_type = ''
-                finance_transaction_particular.amount = vat_amount
-                finance_transaction_particular.transaction_date = transaction.transaction_date
-                finance_transaction_particular.save
-              end
-
-              if fine_included
-                finance_transaction_particular = FinanceTransactionParticular.new
-                finance_transaction_particular.finance_transaction_id = transaction.id
-                finance_transaction_particular.particular_id = 0
-                finance_transaction_particular.particular_type = 'Fine'
-                finance_transaction_particular.transaction_type = ''
-                finance_transaction_particular.amount = fine_amount
-                finance_transaction_particular.transaction_date = transaction.transaction_date
-                finance_transaction_particular.save
-              end
-
-
-              if @has_fine_discount
-                @discounts_on_lates.each do |fd|
-                  discount_amount = @discounts_late_amount[od.id]
-                  finance_transaction_particular = FinanceTransactionParticular.new
-                  finance_transaction_particular.finance_transaction_id = transaction.id
-                  finance_transaction_particular.particular_id = fd.id
-                  finance_transaction_particular.particular_type = 'FineAdjustment'
-                  finance_transaction_particular.transaction_type = 'Discount'
-                  finance_transaction_particular.amount = discount_amount
-                  finance_transaction_particular.transaction_date = transaction.transaction_date
-                  finance_transaction_particular.save
-                end
-              end
             end
           end
           

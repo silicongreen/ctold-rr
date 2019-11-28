@@ -961,7 +961,10 @@ class PaymentSettingsController < ApplicationController
               if found_paid
                 childs = xml_transaction_infos[paidId].children
               else
-                childs = xml_transaction_infos[xml_transaction_infos.length - 1].children
+                childs = []
+                unless xml_transaction_infos.blank?
+                  childs = xml_transaction_infos[xml_transaction_infos.length - 1].children
+                end
               end
             end
 

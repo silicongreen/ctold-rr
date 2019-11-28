@@ -770,7 +770,7 @@
               <i class="fa fa-check" style="font-size: 20px; color: #49BB4B;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
           </td>
           <td class="col-2"><span class="themed_text">
-            <%= t('fine_on') %> <%= @paid_fees.first.transaction_date %></span>
+            <%= t('fine_on') + " " + total_fees.to_s %> <%= @paid_fees.first.transaction_date %></span>
           </td>
           <td class="col-2"  style="text-align: right;"><%= precision_label @fine.to_f %></td>
           <td class="col-2"  style="text-align: right;"><%= precision_label @fine.to_f %></td>
@@ -784,7 +784,7 @@
               <i name="fee_fine" id="fee_fine" class="fa fa-check-square-o fee_fine_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
           </td>
           <td class="col-2"><span class="themed_text">
-            <%= t('fine_on') %> <%= Date.today %></span>
+            <%= t('fine_on') + " " + total_fees.to_s %> <%= Date.today %></span>
             <span id="rm_fine" style="float: right; cursor: pointer;">
                 <i class="fa fa-minus-circle remove_fine" style="font-size: 20px; color: #990A10; " aria-hidden="true"></i>
             </span>
@@ -834,7 +834,7 @@
              <i class="fa fa-check" style="font-size: 20px; color: #49BB4B;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
           </td>
           <td class="col-2">
-            <span class="themed_text"><%= t('fine_on') %> <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></span>
+            <span class="themed_text"><%= t('fine_on') + " " + total_fees.to_s %> <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></span>
           </td>
           <td class="col-6"  style="text-align: right;"><%= precision_label new_fine %></td>
           <td class="col-6"  style="text-align: right;"><%= precision_label paidAmount %></td>
@@ -848,7 +848,7 @@
               <i name="fee_fine" id="fee_fine" class="fa fa-check-square-o fee_fine_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
           </td>
           <td class="col-2">
-            <span class="themed_text"><%= t('fine_on') %> <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></span>
+            <span class="themed_text"><%= t('fine_on') + " " + total_fees.to_s %> <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></span>
           </td>
           <td class="col-6"  style="text-align: right;"><%= precision_label @new_fine_amount %></td>
           <td class="col-6"  style="text-align: right;"><%= precision_label paidAmount %></td>
@@ -865,7 +865,7 @@
               <i name="fee_fine" id="fee_fine" class="fa fa-check-square-o fee_fine_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
           </td>
           <td class="col-2">
-            <span class="themed_text"><%= t('fine_on') %> <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></span>
+            <span class="themed_text"><%= t('fine_on') + " " + total_fees.to_s %> <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></span>
           </td>
           <td class="col-6"  style="text-align: right;"><%= precision_label @new_fine_amount %></td>
           <td class="col-6"  style="text-align: right;"><%= precision_label paidAmount %></td>

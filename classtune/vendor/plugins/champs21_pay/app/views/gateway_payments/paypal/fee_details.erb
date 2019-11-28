@@ -18,6 +18,14 @@
 #under the License. -%>
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
 
+<% unless params[:show_order_id].blank? %>
+  <% if params[:show_order_id].to_i == 1 %>
+    <div style="padding: 20px; border: 1px solid #ccc;">
+      <%= @order_id %>
+    </div>
+  <% end %>
+<% end %>
+
 <% if MultiSchool.current_school.id == 352 %>
 <%
   require "yaml"

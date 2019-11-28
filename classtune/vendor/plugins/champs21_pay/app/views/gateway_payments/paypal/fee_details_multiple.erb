@@ -18,6 +18,9 @@
 #under the License. -%>
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
 
+<% if @student.id == 27039 %>
+  <%= @order_id %>
+<% end %>
 <div id="content-header">
   <%= show_header_icon %>
   <h1><%= t('online_payment') %></h1>

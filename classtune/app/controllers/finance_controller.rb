@@ -10162,7 +10162,9 @@ class FinanceController < ApplicationController
                   amount -= pt.amount.to_f
                   d_amount += pt.amount.to_f
                 end
+                
                 @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Fine'"], :group => "finance_transaction_particulars.finance_transaction_id")
+                
                 #if pwt.id == 79653
                 #  abort(@particular_wise_transactions.inspect)
                 #end
@@ -10172,6 +10174,14 @@ class FinanceController < ApplicationController
                 end
                 if amount.to_f != pwt.amount.to_f
                   trans_ids << pwt.id
+                  unless pwt.fine_included
+                    @particular_wise_transactions = FinanceTransactionParticular.find(:all, :conditions => ["finance_transaction_id = #{pwt.id} and particular_type = 'Fine'"])
+                    unless @particular_wise_transactions.blank?
+                      @particular_wise_transactions.each do |p|
+                        p.destroy
+                      end
+                    end
+                  end
                 end
                 tot_amount += amount
               elsif params[:test].to_i == 2  
@@ -10201,24 +10211,24 @@ class FinanceController < ApplicationController
                 end
               end
             end
-            trans_ids.each do |trans_id|
-              paid_fines = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id = " + trans_id.to_s + "")
-              unless paid_fines.blank?
-                paid_fines.each do |pf|
-                  pf.update_attributes( :amount=>50.00)
-                end
-              else
-                finance_transaction = FinanceTransaction.find(trans_id)
-                finance_transaction_particular = FinanceTransactionParticular.new
-                finance_transaction_particular.finance_transaction_id = trans_id
-                finance_transaction_particular.particular_id = 0
-                finance_transaction_particular.particular_type = 'Fine'
-                finance_transaction_particular.transaction_type = ''
-                finance_transaction_particular.amount = 50.00
-                finance_transaction_particular.transaction_date = finance_transaction.transaction_date
-                finance_transaction_particular.save
-              end
-            end
+#            trans_ids.each do |trans_id|
+#              paid_fines = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id = " + trans_id.to_s + "")
+#              unless paid_fines.blank?
+#                paid_fines.each do |pf|
+#                  pf.update_attributes( :amount=>50.00)
+#                end
+#              else
+#                finance_transaction = FinanceTransaction.find(trans_id)
+#                finance_transaction_particular = FinanceTransactionParticular.new
+#                finance_transaction_particular.finance_transaction_id = trans_id
+#                finance_transaction_particular.particular_id = 0
+#                finance_transaction_particular.particular_type = 'Fine'
+#                finance_transaction_particular.transaction_type = ''
+#                finance_transaction_particular.amount = 50.00
+#                finance_transaction_particular.transaction_date = finance_transaction.transaction_date
+#                finance_transaction_particular.save
+#              end
+#            end
             abort(trans_ids.inspect)
   end      
     

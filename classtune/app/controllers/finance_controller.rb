@@ -10197,27 +10197,27 @@ class FinanceController < ApplicationController
                     end
                   end
                   
-                  ptt = FinanceTransaction.find(pwt.id)
-                  @student = Student.find(ptt.payee_id)
-                  @financefee = FinanceFee.find(ptt.finance_id)
-                  @date = FinanceFeeCollection.find(@financefee.fee_collection_id)
-                  @financetransaction=FinanceTransaction.find(pwt.id)
-                  balance=FinanceFee.get_student_balance(@date, @student, @financefee)
-                  @financefee.update_attributes(:is_paid=>false,:balance=>balance)
-                  FeeTransaction.destroy_all(:finance_transaction_id=>pwt.id)
-
-                  if @financetransaction
-                    transaction_attributes=@financetransaction.attributes
-                    transaction_attributes.delete "id"
-                    transaction_attributes.delete "created_at"
-                    transaction_attributes.delete "updated_at"
-                    transaction_attributes.merge!(:user_id=>current_user.id,:collection_name=>@date.name)
-                    cancelled_transaction=CancelledFinanceTransaction.new(transaction_attributes)
-                    if @financetransaction.destroy
-                      cancelled_transaction.save
-                    end
-
-                  end
+#                  ptt = FinanceTransaction.find(pwt.id)
+#                  @student = Student.find(ptt.payee_id)
+#                  @financefee = FinanceFee.find(ptt.finance_id)
+#                  @date = FinanceFeeCollection.find(@financefee.fee_collection_id)
+#                  @financetransaction=FinanceTransaction.find(pwt.id)
+#                  balance=FinanceFee.get_student_balance(@date, @student, @financefee)
+#                  @financefee.update_attributes(:is_paid=>false,:balance=>balance)
+#                  FeeTransaction.destroy_all(:finance_transaction_id=>pwt.id)
+#
+#                  if @financetransaction
+#                    transaction_attributes=@financetransaction.attributes
+#                    transaction_attributes.delete "id"
+#                    transaction_attributes.delete "created_at"
+#                    transaction_attributes.delete "updated_at"
+#                    transaction_attributes.merge!(:user_id=>current_user.id,:collection_name=>@date.name)
+#                    cancelled_transaction=CancelledFinanceTransaction.new(transaction_attributes)
+#                    if @financetransaction.destroy
+#                      cancelled_transaction.save
+#                    end
+#
+#                  end
                   
             
                 end
@@ -10267,7 +10267,7 @@ class FinanceController < ApplicationController
 #                finance_transaction_particular.save
 #              end
 #            end
-            abort(order_ids.inspect)
+            abort(trans_ids.inspect)
   end      
     
 #    @students = Student.active

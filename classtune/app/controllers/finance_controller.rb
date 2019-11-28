@@ -10173,7 +10173,9 @@ class FinanceController < ApplicationController
                   f_amount += pt.amount.to_f
                 end
                 if amount.to_f != pwt.amount.to_f
-                  trans_ids << pwt.id
+                  if amount.to_f == 0
+                    trans_ids << pwt.id
+                  end
                   unless pwt.fine_included
                     @particular_wise_transactions = FinanceTransactionParticular.find(:all, :conditions => ["finance_transaction_id = #{pwt.id} and particular_type = 'Fine'"])
                     unless @particular_wise_transactions.blank?

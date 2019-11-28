@@ -441,9 +441,7 @@
                           
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
-                              <% if grade.credit_points.to_i == 0 %>
-                                <% failed2 = true %>
-                              <% end %>
+                              
                               <td class="col-pdf"><%= grade.name %></td>
                             <% else %>
                               <td class="col-pdf">-</td>
@@ -474,9 +472,7 @@
                             main_mark = (total_marks_ag.to_f/full_mark_all.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                             if !grade.blank? and !grade.name.blank?
-                              if grade.credit_points.to_i == 0
-                                failed = true
-                              end
+                              
                               total_grade = total_grade.to_f+grade.credit_points.to_f 
                               letter_grade_name = grade.name
                               letter_grade_point = grade.credit_points

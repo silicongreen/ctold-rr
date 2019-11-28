@@ -10199,7 +10199,7 @@ class FinanceController < ApplicationController
                   
                   ptt = FinanceTransaction.find(pwt.id)
                   @student = Student.find(ptt.payee_id)
-                  @financefee = Student.find(ptt.finance_id)
+                  @financefee = FinanceFee.find(ptt.finance_id)
                   @date = FinanceFeeCollection.find(@financefee.fee_collection_id)
                   @financetransaction=FinanceTransaction.find(pwt.id)
                   balance=FinanceFee.get_student_balance(@date, @student, @financefee)

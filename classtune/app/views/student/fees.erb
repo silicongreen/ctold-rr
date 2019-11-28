@@ -151,7 +151,8 @@
                   <th style="font-weight: normal; width: 32%; text-align: left;"><%= "Fee Name" %></th>
                   <th style="font-weight: normal; width: 15%; text-align: right;"><%= t('amount') %></th>
                   <th style="font-weight: normal; width: 15%; text-align: right;"><%= "Paid" %></th>
-                  <th style="font-weight: normal; width: 15%; text-align: right;"><%= "Remaining" %></th>
+                  <th style="font-weight: normal; width: 15%; text-align: right;"><%= "Due" %></th>
+                  <th class="paid_class" style="font-weight: normal; width: 15%; text-align: right;"><%= "Advance" %></th>
                   <th style="font-weight: normal; width: 15%; text-align: right;"><%= "" %></th>
                 </tr>
               </thead>
@@ -189,8 +190,10 @@
                       balance = FinanceFee.get_student_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f + fine_amount_paid.to_f
                     end
                     
+                    advance = 0.0
                     bal = balance - paid_amount
                     if bal.to_f < 0 
+                      advance = bal * -1
                       bal = 0.00
                     end
                   %>
@@ -228,6 +231,7 @@
                     <td style="font-weight: normal; vertical-align: middle; font-weight: normal; text-align: right; font-size: 14px;"><%= to_comma_seperated_precision_label(balance.to_f)  %>&nbsp;&nbsp;</td>
                     <td style="font-weight: normal; vertical-align: middle; text-align: right; font-weight: normal; font-size: 14px;"><%= to_comma_seperated_precision_label(paid_amount.to_f)  %>&nbsp;&nbsp;</td>
                     <td style="font-weight: normal; vertical-align: middle; text-align: right; font-weight: normal; font-size: 14px;"><%= to_comma_seperated_precision_label(bal.to_f)  %>&nbsp;&nbsp;</td>
+                    <td class="paid_class" style="font-weight: normal; vertical-align: middle; text-align: right; font-weight: normal; font-size: 14px;"><%= to_comma_seperated_precision_label(advance.to_f)  %>&nbsp;&nbsp;</td>
                     <td class="button_td" style="font-weight: normal; vertical-align: middle; text-align: center; font-weight: normal; font-size: 14px;">
                         <% if MultiSchool.current_school.id != 352 %>  
                             <%= link_to "Print Receipt", {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>d.id}, :class=>"details_button details_button_color" %>

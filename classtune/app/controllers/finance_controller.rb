@@ -10139,7 +10139,7 @@ class FinanceController < ApplicationController
             s = []
             i = 0
             tot_amount = 0.00
-    @transactions = FinanceTransaction.find(:all, :conditions => ["finance_transactions.fine_included = 1 and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' "], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id ")
+    @transactions = FinanceTransaction.find(:all, :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' "], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id ")
     #abort(@transactions.inspect)
             #abort("payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'")
             #@transactions = FinanceTransaction.find(:all, :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")

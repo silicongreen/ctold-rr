@@ -10131,6 +10131,7 @@ class FinanceController < ApplicationController
     @start_date = "2019-11-01"
     @end_date = "2019-11-30"
     trans_ids = []
+    order_ids = []
             p_amount = 0.00
             a_amount = 0.00
             d_amount = 0.00
@@ -10175,6 +10176,17 @@ class FinanceController < ApplicationController
                 if amount.to_f != pwt.amount.to_f
                   if amount.to_f == 0
                     trans_ids << pwt.id
+                    
+                    online_payments = Payment.find(:all, :conditions => "finance_transaction_id = #{pwt.id}", :group => "order_id")
+                    unless online_payments.blank?
+                      online_payments.each do |online_payment|
+                        order_ids << online_payment.order_id
+                      end
+                    end
+                    if online_payments.length > 1
+                      trans_ids << pwt.id
+                    end
+              
                   end
                   unless pwt.fine_included
                     @particular_wise_transactions = FinanceTransactionParticular.find(:all, :conditions => ["finance_transaction_id = #{pwt.id} and particular_type = 'Fine'"])
@@ -10184,6 +10196,26 @@ class FinanceController < ApplicationController
                       end
                     end
                   end
+                  
+#                  @financetransaction=FinanceTransaction.find(params[:transaction_id])
+#                  balance=FinanceFee.get_student_balance(@date, @student, @financefee)
+#                  @financefee.update_attributes(:is_paid=>false,:balance=>balance)
+#                  FeeTransaction.destroy_all(:finance_transaction_id=>params[:transaction_id])
+#
+#                  if @financetransaction
+#                    transaction_attributes=@financetransaction.attributes
+#                    transaction_attributes.delete "id"
+#                    transaction_attributes.delete "created_at"
+#                    transaction_attributes.delete "updated_at"
+#                    transaction_attributes.merge!(:user_id=>current_user.id,:collection_name=>@fee_collection.name)
+#                    cancelled_transaction=CancelledFinanceTransaction.new(transaction_attributes)
+#                    if @financetransaction.destroy
+#                      cancelled_transaction.save
+#                    end
+#
+#                  end
+                  
+            
                 end
                 tot_amount += amount
               elsif params[:test].to_i == 2  
@@ -10231,7 +10263,7 @@ class FinanceController < ApplicationController
 #                finance_transaction_particular.save
 #              end
 #            end
-            abort(trans_ids.inspect)
+            abort(order_ids.inspect)
   end      
     
 #    @students = Student.active

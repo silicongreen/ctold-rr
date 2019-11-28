@@ -894,27 +894,29 @@
           <td class="col-6"  style="text-align: right;"><%= precision_label 0 %>&nbsp;&nbsp;&nbsp;</td>
         </tr>
         <% else %>
-        <% total_fees += @fine.to_f %>
-        <tr id="extra_fine" class="<%= cycle("odd","even") %>">
-          <td class="col-1" style="text-align: center;">
-              <input type="checkbox" name="fee_fine" id="fee_fine" class="fee_fine" style="display: none;" checked="" data-fee_amount="<%= precision_label @fine.to_f %>">
-              <i name="fee_fine" id="fee_fine" class="fa fa-check-square-o fee_fine_fa" style="font-size: 16px; cursor: pointer;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
-          </td>
-          <td class="col-2"><span class="themed_text">
-            <%= t('fine_on') %> <%= Date.today %></span>
-            <span id="rm_fine" style="float: right; cursor: pointer;">
-                <i class="fa fa-minus-circle remove_fine" style="font-size: 16px; color: #990A10; cursor: pointer;" aria-hidden="true"></i>
-            </span>
-          </td>
-          <td class="col-2"  style="text-align: right;"><%= precision_label @fine.to_f %></td>
-          <td class="col-2"  style="text-align: right;"><%= precision_label 0 %></td>
-          <td class="col-6"  style="text-align: right;">
-              <span class="fee_amount_fine editable"  name="fee_amount_fine" id="fee_amount_fine"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label @fine.to_f %></span></span>
-              <input type="hidden" name="fee_fine_amount" id="fee_fine_amount" value="<%= precision_label @fine.to_f %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'fine')" onkeydown="checkKey(event,this, 'fine')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_fine" name="fee_fine_chk" id="fee_fine_chk" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
-              <input type="hidden" name="fine_amount_to_pay" id="fine_amount_to_pay" value="<%= precision_label(@fine.to_f) %>" /><i class="fa fa-check-square" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
-              <% load_fine_amount_to_pay = true %>
-          </td>
-        </tr>
+        <% if total_fees > 0 %>
+          <% total_fees += @fine.to_f %>
+          <tr id="extra_fine" class="<%= cycle("odd","even") %>">
+            <td class="col-1" style="text-align: center;">
+                <input type="checkbox" name="fee_fine" id="fee_fine" class="fee_fine" style="display: none;" checked="" data-fee_amount="<%= precision_label @fine.to_f %>">
+                <i name="fee_fine" id="fee_fine" class="fa fa-check-square-o fee_fine_fa" style="font-size: 16px; cursor: pointer;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+            </td>
+            <td class="col-2"><span class="themed_text">
+              <%= t('fine_on') %> <%= Date.today %></span>
+              <span id="rm_fine" style="float: right; cursor: pointer;">
+                  <i class="fa fa-minus-circle remove_fine" style="font-size: 16px; color: #990A10; cursor: pointer;" aria-hidden="true"></i>
+              </span>
+            </td>
+            <td class="col-2"  style="text-align: right;"><%= precision_label @fine.to_f %></td>
+            <td class="col-2"  style="text-align: right;"><%= precision_label 0 %></td>
+            <td class="col-6"  style="text-align: right;">
+                <span class="fee_amount_fine editable"  name="fee_amount_fine" id="fee_amount_fine"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label @fine.to_f %></span></span>
+                <input type="hidden" name="fee_fine_amount" id="fee_fine_amount" value="<%= precision_label @fine.to_f %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'fine')" onkeydown="checkKey(event,this, 'fine')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_fine" name="fee_fine_chk" id="fee_fine_chk" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
+                <input type="hidden" name="fine_amount_to_pay" id="fine_amount_to_pay" value="<%= precision_label(@fine.to_f) %>" /><i class="fa fa-check-square" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
+                <% load_fine_amount_to_pay = true %>
+            </td>
+          </tr>
+          <% end %>
         <% end %>
       <% end %>
       <% end %>
@@ -988,24 +990,26 @@
           </td>
         </tr>
         <% else %>
-        <tr id="extra_fine" class="<%= cycle("odd","even") %>">
-          <td class="col-1" style="text-align: center;">
-              <input type="checkbox" name="fee_fine" id="fee_fine" class="fee_fine" style="display: none;" checked="" data-fee_amount="<%= precision_label @new_fine_amount %>">
-              <i name="fee_fine" id="fee_fine" class="fa fa-check-square-o fee_fine_fa" style="font-size: 16px; cursor: pointer;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
-          </td>
-          <td class="col-2">
-            <span class="themed_text"><%= t('fine_on') %> <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></span>
-          </td>
-          <td class="col-6"  style="text-align: right;"><%= precision_label @new_fine_amount %></td>
-          <td class="col-6"  style="text-align: right;"><%= precision_label paidAmount %></td>
-          <td class="col-6"  style="text-align: right;">
-              <span class="fee_amount_fine editable"  name="fee_amount_fine" id="fee_amount_fine"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label @new_fine_amount %></span></span>
-              <input type="hidden" name="fee_fine_amount" id="fee_fine_amount" value="<%= precision_label @new_fine_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'fine')" onkeydown="checkKey(event,this, 'fine')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_fine" name="fee_fine_chk" id="fee_fine_chk" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
-              <input type="hidden" name="fine_amount_to_pay" id="fine_amount_to_pay" value="<%= precision_label(@new_fine_amount) %>" /><i class="fa fa-check-square" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
-              <% load_fine_amount_to_pay = true %>
-              <% fine_amount_total += @new_fine_amount %>  
-          </td>
-        </tr>
+          <% if total_fees > 0 %>
+          <tr id="extra_fine" class="<%= cycle("odd","even") %>">
+            <td class="col-1" style="text-align: center;">
+                <input type="checkbox" name="fee_fine" id="fee_fine" class="fee_fine" style="display: none;" checked="" data-fee_amount="<%= precision_label @new_fine_amount %>">
+                <i name="fee_fine" id="fee_fine" class="fa fa-check-square-o fee_fine_fa" style="font-size: 16px; cursor: pointer;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+            </td>
+            <td class="col-2">
+              <span class="themed_text"><%= t('fine_on') %> <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></span>
+            </td>
+            <td class="col-6"  style="text-align: right;"><%= precision_label @new_fine_amount %></td>
+            <td class="col-6"  style="text-align: right;"><%= precision_label paidAmount %></td>
+            <td class="col-6"  style="text-align: right;">
+                <span class="fee_amount_fine editable"  name="fee_amount_fine" id="fee_amount_fine"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label @new_fine_amount %></span></span>
+                <input type="hidden" name="fee_fine_amount" id="fee_fine_amount" value="<%= precision_label @new_fine_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'fine')" onkeydown="checkKey(event,this, 'fine')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_fine" name="fee_fine_chk" id="fee_fine_chk" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
+                <input type="hidden" name="fine_amount_to_pay" id="fine_amount_to_pay" value="<%= precision_label(@new_fine_amount) %>" /><i class="fa fa-check-square" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
+                <% load_fine_amount_to_pay = true %>
+                <% fine_amount_total += @new_fine_amount %>  
+            </td>
+          </tr>
+          <% end %>
         <% end %>
         <% end %>
       <%end%>

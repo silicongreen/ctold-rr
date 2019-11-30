@@ -290,21 +290,58 @@ INNER JOIN students on students.id=finance_fees.student_id",:conditions=>["finan
   end
 
   def fine_to_pay(student)
-    financefee = student.finance_fee_by_date(self)
-     fee_particulars = finance_fee_particulars.all(:conditions=>"batch_id=#{financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==financefee.batch) }
-      discounts=fee_discounts.all(:conditions=>"batch_id=#{financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==financefee.batch) }
-
-      total_discount = 0
-      total_payable=fee_particulars.map{|s| s.amount}.sum.to_f
-      total_discount =discounts.map{|d| total_payable * d.discount.to_f/(d.is_amount? ? total_payable : 100)}.sum.to_f unless discounts.nil?
-      bal=(total_payable-total_discount).to_f
-      days=(Date.today-due_date.to_date).to_i
-      auto_fine=fine
-      if days > 0 and auto_fine
-        fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{created_at}'"],:order=>'fine_days ASC')
-        fine_amount=fine_rule.is_amount ? fine_rule.fine_amount : (bal*fine_rule.fine_amount)/100 if fine_rule
+      fine_amount=0
+      fine_enabled = true
+      student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{student.id} and date_id = #{id} and config_key = 'fine_payment_student'")
+      unless student_fee_configuration.blank?
+        if student_fee_configuration.config_value.to_i == 1
+          fine_enabled = true
+        else
+          fine_enabled = false
+        end
       end
-      fine_amount=0 if financefee.is_paid
+    
+      if fine_enabled
+        financefee = student.finance_fee_by_date(self)
+        fee_particulars = finance_fee_particulars.all(:conditions=>"batch_id=#{financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==financefee.batch) }
+        discounts=fee_discounts.all(:conditions=>"batch_id=#{financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==financefee.batch) }
+
+        total_discount = 0
+        total_payable=fee_particulars.map{|s| s.amount}.sum.to_f
+        total_discount =discounts.map{|d| total_payable * d.discount.to_f/(d.is_amount? ? total_payable : 100)}.sum.to_f unless discounts.nil?
+        bal=(total_payable-total_discount).to_f
+        days=(Date.today-due_date.to_date).to_i
+        auto_fine=fine
+        if days > 0 and auto_fine
+          fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{created_at}'"],:order=>'fine_days ASC')
+          fine_amount=fine_rule.is_amount ? fine_rule.fine_amount : (bal*fine_rule.fine_amount)/100 if fine_rule
+        end
+        fine_amount=0 if financefee.is_paid
+      end
+      return fine_amount
+  end
+
+  def actual_fine_to_pay(student)
+      fine_amount=0
+      fine_enabled = true
+      
+      if fine_enabled
+        financefee = student.finance_fee_by_date(self)
+        fee_particulars = finance_fee_particulars.all(:conditions=>"batch_id=#{financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==financefee.batch) }
+        discounts=fee_discounts.all(:conditions=>"batch_id=#{financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==financefee.batch) }
+
+        total_discount = 0
+        total_payable=fee_particulars.map{|s| s.amount}.sum.to_f
+        total_discount =discounts.map{|d| total_payable * d.discount.to_f/(d.is_amount? ? total_payable : 100)}.sum.to_f unless discounts.nil?
+        bal=(total_payable-total_discount).to_f
+        days=(Date.today-due_date.to_date).to_i
+        auto_fine=fine
+        if days > 0 and auto_fine
+          fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{created_at}'"],:order=>'fine_days ASC')
+          fine_amount=fine_rule.is_amount ? fine_rule.fine_amount : (bal*fine_rule.fine_amount)/100 if fine_rule
+        end
+        fine_amount=0 if financefee.is_paid
+      end
       return fine_amount
   end
 

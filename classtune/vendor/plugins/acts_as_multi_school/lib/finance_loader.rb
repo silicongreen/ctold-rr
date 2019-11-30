@@ -819,10 +819,20 @@ module FinanceLoader
       end
     end
 
+    fine_enabled = true
+    student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+    unless student_fee_configuration.blank?
+      if student_fee_configuration.config_value.to_i == 1
+        fine_enabled = true
+      else
+        fine_enabled = false
+      end
+    end
+    
     auto_fine=@date.fine
 
     @has_fine_discount = false
-    if days > 0 and auto_fine #and @financefee.is_paid == false
+    if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
       @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
       @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
 
@@ -834,8 +844,9 @@ module FinanceLoader
          @fine_amount = 0
       end
     end
-
-    @fine_amount=0 if @financefee.is_paid
+    #@fine_amount=0 if @financefee.is_paid
+#    @fine_amount = 0
+#    @new_fine_amount = 0
 
     unless advance_fee_collection
       if @total_discount == 0
@@ -1044,10 +1055,19 @@ module FinanceLoader
         end
       end
 
+      fine_enabled = true
+      student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date[f].id} and config_key = 'fine_payment_student'")
+      unless student_fee_configuration.blank?
+        if student_fee_configuration.config_value.to_i == 1
+          fine_enabled = true
+        else
+          fine_enabled = false
+        end
+      end
       auto_fine=@date[f].fine
 
       @has_fine_discount[f] = false
-      if days > 0 and auto_fine #and @financefee[f].is_paid == false
+      if days > 0 and auto_fine and fine_enabled #and @financefee[f].is_paid == false
         @fine_rule[f]=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date[f].created_at}'"],:order=>'fine_days ASC')
         @fine_amount[f]=@fine_rule[f].is_amount ? @fine_rule[f].fine_amount : (bal*@fine_rule[f].fine_amount)/100 if @fine_rule[f]
 
@@ -1185,9 +1205,18 @@ module FinanceLoader
                 days=(Date.today-@date.due_date.to_date).to_i
               end
 
+              fine_enabled = true
+              student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+              unless student_fee_configuration.blank?
+                if student_fee_configuration.config_value.to_i == 1
+                  fine_enabled = true
+                else
+                  fine_enabled = false
+                end
+              end
               auto_fine=@date.fine
 
-              if days > 0 and auto_fine #and @financefee.is_paid == false
+              if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
                 fine_rule = auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
                 fine_amount = fine_rule.is_amount ? fine_rule.fine_amount : (total_fees*fine_rule.fine_amount)/100 if fine_rule
                 fine_included = true
@@ -1613,7 +1642,16 @@ module FinanceLoader
 
                       auto_fine=@date[f].fine
 
-                      if days > 0 and auto_fine #and @financefee.is_paid == false
+                      fine_enabled = true
+                      student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date[f].id} and config_key = 'fine_payment_student'")
+                      unless student_fee_configuration.blank?
+                        if student_fee_configuration.config_value.to_i == 1
+                          fine_enabled = true
+                        else
+                          fine_enabled = false
+                        end
+                      end
+                      if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
                         fine_rule = auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date[f].created_at}'"],:order=>'fine_days ASC')
                         fine_amount = fine_rule.is_amount ? fine_rule.fine_amount : (bal*fine_rule.fine_amount)/100 if fine_rule
                         fine_included = true

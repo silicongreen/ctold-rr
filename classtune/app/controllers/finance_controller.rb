@@ -3096,16 +3096,6 @@ class FinanceController < ApplicationController
           end
         end
       else
-#        @include_combined_fees = PaymentConfiguration.find_by_config_key("include_combined_fees").try(:config_value) 
-#        if params[:value].to_i == 0
-#          unless @include_combined_fees.blank?
-#            student_fee_configuration.destroy
-#          else  
-#            student_fee_configuration.update_attributes(:config_value => params[:value])
-#          end
-#        else
-#          student_fee_configuration.update_attributes(:config_value => params[:value])
-#        end
         student_fee_configuration.update_attributes(:config_value => params[:value])
         if params[:value].to_i == 1
           render :update do |page|
@@ -3120,6 +3110,55 @@ class FinanceController < ApplicationController
     else
       render :update do |page|
         page << "remove_combined_payment();"
+      end
+    end
+  end
+  
+  def set_fine_payment_configuration
+    unless params[:student].blank?
+      unless params[:date_id].blank?
+        student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{params[:student].to_i} and date_id = #{params[:date_id]} and config_key = '#{params[:key]}'")
+        if student_fee_configuration.nil?
+          student_fee_configuration = StudentFeeConfiguration.new
+          student_fee_configuration.student_id = params[:student].to_i
+          student_fee_configuration.date_id = params[:date_id].to_i
+          student_fee_configuration.config_key = params[:key]
+          student_fee_configuration.config_value = params[:value]
+          if student_fee_configuration.save
+            if params[:value].to_i == 1
+              render :update do |page|
+                page << "update_user_amount_with_fine(#{params[:date_id].to_i});"
+              end
+            else
+              render :update do |page|
+                page << "update_user_amount_without_fine(#{params[:date_id].to_i});"
+              end
+            end
+          else
+            render :update do |page|
+              page << "alert('An error occur while enable/disabled fine for this student, Please try again later')"
+            end
+          end
+        else
+          student_fee_configuration.update_attributes(:config_value => params[:value])
+          if params[:value].to_i == 1
+            render :update do |page|
+              page << "update_user_amount_with_fine(#{params[:date_id].to_i});"
+            end
+          else
+            render :update do |page|
+              page << "update_user_amount_without_fine(#{params[:date_id].to_i});"
+            end
+          end
+        end
+      else
+        render :update do |page|
+          page << "alert('An error occur while enable/disabled fine for this student, Please try again later')"
+        end
+      end
+    else
+      render :update do |page|
+        page << "alert('An error occur while enable/disabled fine for this student, Please try again later')"
       end
     end
   end
@@ -6726,10 +6765,20 @@ class FinanceController < ApplicationController
                   days=(Date.today-@date.due_date.to_date).to_i
                 end
 
+                fine_enabled = true
+                student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+                unless student_fee_configuration.blank?
+                  if student_fee_configuration.config_value.to_i == 1
+                    fine_enabled = true
+                  else
+                    fine_enabled = false
+                  end
+                end
+                
                 auto_fine=@date.fine
 
                 @has_fine_discount = false
-                if days > 0 and auto_fine #and @financefee.is_paid == false
+                if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
                   @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
                   @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
 
@@ -6965,10 +7014,20 @@ class FinanceController < ApplicationController
                   days=(Date.today-@date.due_date.to_date).to_i
                 end
 
+                fine_enabled = true
+                student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+                unless student_fee_configuration.blank?
+                  if student_fee_configuration.config_value.to_i == 1
+                    fine_enabled = true
+                  else
+                    fine_enabled = false
+                  end
+                end
+                
                 auto_fine=@date.fine
 
                 @has_fine_discount = false
-                if days > 0 and auto_fine #and @financefee.is_paid == false
+                if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
                   @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
                   @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
 
@@ -7463,10 +7522,20 @@ class FinanceController < ApplicationController
             days=(Date.today-@date.due_date.to_date).to_i
           end
 
+          fine_enabled = true
+          student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+          unless student_fee_configuration.blank?
+            if student_fee_configuration.config_value.to_i == 1
+              fine_enabled = true
+            else
+              fine_enabled = false
+            end
+          end
+          
           auto_fine=@date.fine
 
           @has_fine_discount = false
-          if days > 0 and auto_fine #and @financefee.is_paid == false
+          if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
             @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
             @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
 
@@ -7644,10 +7713,20 @@ class FinanceController < ApplicationController
             days=(Date.today-@date.due_date.to_date).to_i
           end
 
+          fine_enabled = true
+          student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+          unless student_fee_configuration.blank?
+            if student_fee_configuration.config_value.to_i == 1
+              fine_enabled = true
+            else
+              fine_enabled = false
+            end
+          end
+          
           auto_fine=@date.fine
 
           @has_fine_discount = false
-          if days > 0 and auto_fine #and @financefee.is_paid == false
+          if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
             @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
             @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
 
@@ -7829,10 +7908,20 @@ class FinanceController < ApplicationController
             days=(Date.today-@date.due_date.to_date).to_i
           end
 
+          fine_enabled = true
+          student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+          unless student_fee_configuration.blank?
+            if student_fee_configuration.config_value.to_i == 1
+              fine_enabled = true
+            else
+              fine_enabled = false
+            end
+          end
+          
           auto_fine=@date.fine
 
           @has_fine_discount = false
-          if days > 0 and auto_fine #and @financefee.is_paid == false
+          if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
             @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
             @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
 
@@ -8761,10 +8850,20 @@ class FinanceController < ApplicationController
           end
         end
         
+        fine_enabled = true
+        student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+        unless student_fee_configuration.blank?
+          if student_fee_configuration.config_value.to_i == 1
+            fine_enabled = true
+          else
+            fine_enabled = false
+          end
+        end
+        
         auto_fine=@date.fine
         
         @has_fine_discount = false
-        if days > 0 and auto_fine #and @financefee.is_paid == false
+        if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
           @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
           @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
           
@@ -8935,10 +9034,20 @@ class FinanceController < ApplicationController
       end
     end
 
+    fine_enabled = true
+    student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+    unless student_fee_configuration.blank?
+      if student_fee_configuration.config_value.to_i == 1
+        fine_enabled = true
+      else
+        fine_enabled = false
+      end
+    end
+    
     auto_fine=@date.fine
 
     @has_fine_discount = false
-    if days > 0 and auto_fine #and @financefee.is_paid == false
+    if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
       @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
       @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
 
@@ -9478,9 +9587,21 @@ class FinanceController < ApplicationController
         
         bal=(@all_total_payable[@iloop]-@all_total_discount[@iloop]).to_f
         days=(Date.today-@date.due_date.to_date).to_i
+        
+        fine_enabled = true
+        student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+        unless student_fee_configuration.blank?
+          if student_fee_configuration.config_value.to_i == 1
+            fine_enabled = true
+          else
+            fine_enabled = false
+          end
+        end
+        
         auto_fine=@date.fine
+        
         @all_has_fine_discount[@iloop] = false
-        if days > 0 and auto_fine and @all_financefee[@iloop].is_paid == false
+        if days > 0 and auto_fine and @all_financefee[@iloop].is_paid == false and fine_enabled
 
           @all_fine_rule[@iloop]=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
           @all_fine_amount[@iloop]=@all_fine_rule[@iloop].is_amount ? @all_fine_rule[@iloop].fine_amount : (bal*@all_fine_rule[@iloop].fine_amount)/100 if @all_fine_rule[@iloop]
@@ -9627,6 +9748,17 @@ class FinanceController < ApplicationController
       
       
       days=(Date.today-@date.due_date.to_date).to_i
+      
+      fine_enabled = true
+      student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+      unless student_fee_configuration.blank?
+        if student_fee_configuration.config_value.to_i == 1
+          fine_enabled = true
+        else
+          fine_enabled = false
+        end
+      end
+      
       auto_fine=@date.fine
       
       bal=(@total_payable-@total_discount).to_f
@@ -9644,10 +9776,20 @@ class FinanceController < ApplicationController
         end
       end
 
+      fine_enabled = true
+      student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+      unless student_fee_configuration.blank?
+        if student_fee_configuration.config_value.to_i == 1
+          fine_enabled = true
+        else
+          fine_enabled = false
+        end
+      end
+      
       auto_fine=@date.fine
 
       @has_fine_discount = false
-      if days > 0 and auto_fine #and @financefee.is_paid == false
+      if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
         @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
         @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
 
@@ -9804,9 +9946,21 @@ class FinanceController < ApplicationController
         
         bal=(@total_payable[@iloop]-@total_discount[@iloop]).to_f
         days=(Date.today-@date[@iloop].due_date.to_date).to_i
+        
+        fine_enabled = true
+        student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date[@iloop].id} and config_key = 'fine_payment_student'")
+        unless student_fee_configuration.blank?
+          if student_fee_configuration.config_value.to_i == 1
+            fine_enabled = true
+          else
+            fine_enabled = false
+          end
+        end
+        
         auto_fine=@date[@iloop].fine
+        
         @has_fine_discount[@iloop] = false
-        if days > 0 and auto_fine and @financefee[@iloop].is_paid == false
+        if days > 0 and auto_fine and @financefee[@iloop].is_paid == false and fine_enabled
           @fine_rule[@iloop]=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date[@iloop].created_at}'"],:order=>'fine_days ASC')
           @fine_amount[@iloop]=@fine_rule[@iloop].is_amount ? @fine_rule[@iloop].fine_amount : (bal*@fine_rule[@iloop].fine_amount)/100 if @fine_rule[@iloop]
           calculate_extra_fine_index(@date[@iloop], @financefee[@iloop].batch, @student, @fine_rule[@iloop],@iloop)
@@ -9970,10 +10124,22 @@ class FinanceController < ApplicationController
       
       bal=(@total_payable-@total_discount).to_f
       days=(Date.today-@date.due_date.to_date).to_i
+      
+      fine_enabled = true
+      student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+      unless student_fee_configuration.blank?
+        if student_fee_configuration.config_value.to_i == 1
+          fine_enabled = true
+        else
+          fine_enabled = false
+        end
+      end
+      
       auto_fine=@date.fine
+      
       @has_fine_discount = false
       
-      if days > 0 and auto_fine and @financefee.is_paid == false
+      if days > 0 and auto_fine and @financefee.is_paid == false and fine_enabled
         @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
         @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
         calculate_extra_fine(@date, @batch, @student, @fine_rule)
@@ -10085,9 +10251,21 @@ class FinanceController < ApplicationController
       end
       bal=(@total_payable-@total_discount).to_f
       days=(Date.today-@date.due_date.to_date).to_i
+      
+      fine_enabled = true
+      student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+      unless student_fee_configuration.blank?
+        if student_fee_configuration.config_value.to_i == 1
+          fine_enabled = true
+        else
+          fine_enabled = false
+        end
+      end
+      
       auto_fine=@date.fine
+      
       @has_fine_discount = false
-      if days > 0 and auto_fine and @financefee.is_paid == false
+      if days > 0 and auto_fine and @financefee.is_paid == false and fine_enabled
         @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
         @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
         calculate_extra_fine(@date, @batch, @student, @fine_rule)
@@ -10419,9 +10597,20 @@ class FinanceController < ApplicationController
           end
         end 
         
+        fine_enabled = true
+        student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+        unless student_fee_configuration.blank?
+          if student_fee_configuration.config_value.to_i == 1
+            fine_enabled = true
+          else
+            fine_enabled = false
+          end
+        end
+        
         auto_fine=@date.fine
+        
         @has_fine_discount = false
-        if days > 0 and auto_fine and @financefee.is_paid == false
+        if days > 0 and auto_fine and @financefee.is_paid == false and fine_enabled
           @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
           @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
           calculate_extra_fine(@date, @financefee.batch, @student, @fine_rule)
@@ -10514,9 +10703,21 @@ class FinanceController < ApplicationController
           
           bal=(@total_payable[@iloop]-@total_discount[@iloop]).to_f
           days=(Date.today-@date[@iloop].due_date.to_date).to_i
+          
+          fine_enabled = true
+          student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date[@iloop].id} and config_key = 'fine_payment_student'")
+          unless student_fee_configuration.blank?
+            if student_fee_configuration.config_value.to_i == 1
+              fine_enabled = true
+            else
+              fine_enabled = false
+            end
+          end
+          
           auto_fine=@date[@iloop].fine
+          
           @has_fine_discount[@iloop] = false
-          if days > 0 and auto_fine and @financefee[@iloop].is_paid == false
+          if days > 0 and auto_fine and @financefee[@iloop].is_paid == false and fine_enabled
             @fine_rule[@iloop]=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date[@iloop].created_at}'"],:order=>'fine_days ASC')
             @fine_amount[@iloop]=@fine_rule[@iloop].is_amount ? @fine_rule[@iloop].fine_amount : (bal*@fine_rule[@iloop].fine_amount)/100 if @fine_rule[@iloop]
             calculate_extra_fine_index(@date[@iloop], @financefee[@iloop].batch, @student, @fine_rule[@iloop],@iloop)
@@ -10615,9 +10816,21 @@ class FinanceController < ApplicationController
       
     bal=(@total_payable-@total_discount).to_f
     days=(Date.today-@date.due_date.to_date).to_i
+    
+    fine_enabled = true
+    student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+    unless student_fee_configuration.blank?
+      if student_fee_configuration.config_value.to_i == 1
+        fine_enabled = true
+      else
+        fine_enabled = false
+      end
+    end
+    
     auto_fine=@date.fine
+    
     @has_fine_discount = false
-    if days > 0 and auto_fine and @financefee.is_paid == false
+    if days > 0 and auto_fine and @financefee.is_paid == false and fine_enabled
       @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
       @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
       calculate_extra_fine(@date, @batch, @student, @fine_rule)
@@ -10706,9 +10919,21 @@ class FinanceController < ApplicationController
     
     bal=(@total_payable-@total_discount).to_f
     days=(Date.today-@date.due_date.to_date).to_i
+    
+    fine_enabled = true
+    student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+    unless student_fee_configuration.blank?
+      if student_fee_configuration.config_value.to_i == 1
+        fine_enabled = true
+      else
+        fine_enabled = false
+      end
+    end
+    
     auto_fine=@date.fine
+    
     @has_fine_discount = false 
-    if days > 0 and auto_fine and @financefee.is_paid == false
+    if days > 0 and auto_fine and @financefee.is_paid == false and fine_enabled
       @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
       @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
       calculate_extra_fine(@date, @batch, @student, @fine_rule)
@@ -10807,9 +11032,21 @@ class FinanceController < ApplicationController
     end
     bal=(@total_payable-@total_discount).to_f
     days=(Date.today-@date.due_date.to_date).to_i
+    
+    fine_enabled = true
+    student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+    unless student_fee_configuration.blank?
+      if student_fee_configuration.config_value.to_i == 1
+        fine_enabled = true
+      else
+        fine_enabled = false
+      end
+    end
+    
     auto_fine=@date.fine
+    
     @has_fine_discount = false
-    if days > 0 and auto_fine and @financefee.is_paid == false
+    if days > 0 and auto_fine and @financefee.is_paid == false and fine_enabled
       @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
       @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
       calculate_extra_fine(@date, @batch, @student, @fine_rule)
@@ -11074,6 +11311,15 @@ class FinanceController < ApplicationController
     @sections = []
   end
 
+  def fine_configuration
+    @batches = Batch.find(:all,:conditions=>{:is_deleted=>false,:is_active=>true},:joins=>:course,:select=>"`batches`.*,CONCAT(courses.code,'-',batches.name) as course_full_name",:order=>"course_full_name")
+    batches = @batches.map{|b| b.course_id}
+    #@courses = Course.find(:all, :conditions => ["id IN (?)", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+    @courses = []
+    @dates = []
+    @sections = []
+  end
+
   def single_payment_permission
     @batches = Batch.find(:all,:conditions=>{:is_deleted=>false,:is_active=>true},:joins=>:course,:select=>"`batches`.*,CONCAT(courses.code,'-',batches.name) as course_full_name",:order=>"course_full_name")
     batches = @batches.map{|b| b.course_id}
@@ -11272,124 +11518,216 @@ class FinanceController < ApplicationController
   
   def update_fees_collection_dates_defaulters
     @batch  = Batch.find(params[:batch_id])
-    @dates = @batch.finance_fee_collections
+    @dates = @batch.finance_fee_collections.all(:order => "start_date DESC")
     render :update do |page|
       page.replace_html "fees_collection_dates", :partial => "fees_collection_dates_defaulters"
       page << "j('#fees_defaulters_dates_id').select2();"
     end
   end
+  
+  def update_fine_configurations_date
+    @batch  = Batch.find(params[:batch_id])
+    @dates = @batch.finance_fee_collections.all(:order => "start_date DESC", :conditions => "fine_id is not null")
+    render :update do |page|
+      page.replace_html "fine_configuration_dates_div", :partial => "fine_configuration_dates"
+      page << "j('#fine_configuration_dates_id').select2();"
+    end
+  end
 
   def update_fees_collection_dates_defaulters_school_college
-    if params[:filter_by_course].to_i == 1
-      eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
-      tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-      hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
-      college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
-      college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
-      if college_courses_id.blank?
-        college_courses_id[0] = 0
+    unless params[:filter_by_course].blank?
+      if params[:filter_by_course].to_i == 1
+        eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+        tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+        hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+        college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
+        college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+        if college_courses_id.blank?
+          college_courses_id[0] = 0
+        end
+        school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+        school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+        if school_course_id.blank?
+          school_course_id[0] = 0
+        end
+        batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+        batches = batches.reject { |b| b.to_s.empty? }
+        if batches.blank?
+          batches[0] = 0
+        end
+      elsif params[:filter_by_course].to_i == 2
+        eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+        tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+        hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+        college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
+        college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+        if college_courses_id.blank?
+          college_courses_id[0] = 0
+        end
+        #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+        batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+        batches = batches.reject { |b| b.to_s.empty? }
+        if batches.blank?
+          batches[0] = 0
+        end
+      else
+        batches = Batch.all.map(&:id)
+        batches = batches.reject { |b| b.to_s.empty? }
+        if batches.blank?
+          batches[0] = 0
+        end
       end
-      school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
-      school_course_id = school_course_id.reject { |s| s.to_s.empty? }
-      if school_course_id.blank?
-        school_course_id[0] = 0
+
+      @fee_collection_batches = FeeCollectionBatch.find(:all, :conditions => "fee_collection_batches.batch_id IN (#{batches.join(",")}) and finance_fee_collections.is_deleted = #{false}", :joins => "INNER JOIN finance_fee_collections ON finance_fee_collections.id = fee_collection_batches.finance_fee_collection_id", :group => "fee_collection_batches.finance_fee_collection_id")
+      finance_fee_collection_ids = @fee_collection_batches.map(&:finance_fee_collection_id)
+      if finance_fee_collection_ids.blank?
+        finance_fee_collection_ids[0] = 0
       end
-      batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
-      batches = batches.reject { |b| b.to_s.empty? }
-      if batches.blank?
-        batches[0] = 0
-      end
-    elsif params[:filter_by_course].to_i == 2
-      eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
-      tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-      hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
-      college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
-      college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
-      if college_courses_id.blank?
-        college_courses_id[0] = 0
-      end
-      #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
-      batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
-      batches = batches.reject { |b| b.to_s.empty? }
-      if batches.blank?
-        batches[0] = 0
+      @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name", :order => "start_date desc")
+
+      render :update do |page|
+        page.replace_html "fees_collection_dates_school_college", :partial => "fees_collection_dates_defaulters_school_college"
+        page << "j('#fees_defaulters_dates_id_school_college').select2();"
       end
     else
-      batches = Batch.all.map(&:id)
-      batches = batches.reject { |b| b.to_s.empty? }
-      if batches.blank?
-        batches[0] = 0
+      @dates = []
+      render :update do |page|
+        page.replace_html "fees_collection_dates_school_college", :partial => "fees_collection_dates_defaulters_school_college"
+        page << "j('#fees_defaulters_dates_id_school_college').select2();"
       end
     end
-    
-    @fee_collection_batches = FeeCollectionBatch.find(:all, :conditions => "fee_collection_batches.batch_id IN (#{batches.join(",")}) and finance_fee_collections.is_deleted = #{false}", :joins => "INNER JOIN finance_fee_collections ON finance_fee_collections.id = fee_collection_batches.finance_fee_collection_id", :group => "fee_collection_batches.finance_fee_collection_id")
-    finance_fee_collection_ids = @fee_collection_batches.map(&:finance_fee_collection_id)
-    if finance_fee_collection_ids.blank?
-      finance_fee_collection_ids[0] = 0
-    end
-    @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}")
-    
-    render :update do |page|
-      page.replace_html "fees_collection_dates_school_college", :partial => "fees_collection_dates_defaulters_school_college"
-      page << "j('#fees_defaulters_dates_id_school_college').select2();"
+  end
+  
+  def update_fine_configuration_school_college
+    unless params[:filter_by_course].blank?
+      if params[:filter_by_course].to_i == 1
+        eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+        tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+        hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+        college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
+        college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+        if college_courses_id.blank?
+          college_courses_id[0] = 0
+        end
+        school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+        school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+        if school_course_id.blank?
+          school_course_id[0] = 0
+        end
+        batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+        batches = batches.reject { |b| b.to_s.empty? }
+        if batches.blank?
+          batches[0] = 0
+        end
+      elsif params[:filter_by_course].to_i == 2
+        eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+        tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+        hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+        college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
+        college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+        if college_courses_id.blank?
+          college_courses_id[0] = 0
+        end
+        #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+        batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+        batches = batches.reject { |b| b.to_s.empty? }
+        if batches.blank?
+          batches[0] = 0
+        end
+      else
+        batches = Batch.all.map(&:id)
+        batches = batches.reject { |b| b.to_s.empty? }
+        if batches.blank?
+          batches[0] = 0
+        end
+      end
+
+      @fee_collection_batches = FeeCollectionBatch.find(:all, :conditions => "fee_collection_batches.batch_id IN (#{batches.join(",")}) and finance_fee_collections.is_deleted = #{false} and finance_fee_collections.fine_id is not null", :joins => "INNER JOIN finance_fee_collections ON finance_fee_collections.id = fee_collection_batches.finance_fee_collection_id", :group => "fee_collection_batches.finance_fee_collection_id")
+      finance_fee_collection_ids = @fee_collection_batches.map(&:finance_fee_collection_id)
+      if finance_fee_collection_ids.blank?
+        finance_fee_collection_ids[0] = 0
+      end
+      @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false} and fine_id is not null", :group => "name", :order => "start_date desc")
+
+      render :update do |page|
+        page.replace_html "fine_configuration_dates_school_college", :partial => "fine_configuration_school_college"
+        page << "j('#fine_configuration_dates_id_school_college').select2();"
+      end
+    else
+      @dates = []
+      render :update do |page|
+        page.replace_html "fine_configuration_dates_school_college", :partial => "fine_configuration_school_college"
+        page << "j('#fine_configuration_dates_id_school_college').select2();"
+      end
     end
   end
 
   def update_fees_collection_bill_generation_school_college
-    if params[:filter_by_course].to_i == 1
-      eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
-      tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-      hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
-      college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
-      college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
-      if college_courses_id.blank?
-        college_courses_id[0] = 0
+    unless params[:filter_by_course].blank?
+      if params[:filter_by_course].to_i == 1
+        eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+        tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+        hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+        college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
+        college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+        if college_courses_id.blank?
+          college_courses_id[0] = 0
+        end
+        school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+        school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+        if school_course_id.blank?
+          school_course_id[0] = 0
+        end
+        batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+        batches = batches.reject { |b| b.to_s.empty? }
+        if batches.blank?
+          batches[0] = 0
+        end
+      elsif params[:filter_by_course].to_i == 2
+        eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+        tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+        hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+        college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
+        college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+        if college_courses_id.blank?
+          college_courses_id[0] = 0
+        end
+        #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+        batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+        batches = batches.reject { |b| b.to_s.empty? }
+        if batches.blank?
+          batches[0] = 0
+        end
+      else
+        batches = Batch.all.map(&:id)
+        batches = batches.reject { |b| b.to_s.empty? }
+        if batches.blank?
+          batches[0] = 0
+        end
       end
-      school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
-      school_course_id = school_course_id.reject { |s| s.to_s.empty? }
-      if school_course_id.blank?
-        school_course_id[0] = 0
+
+      @fee_collection_batches = FeeCollectionBatch.find(:all, :conditions => "fee_collection_batches.batch_id IN (#{batches.join(",")}) and finance_fee_collections.is_deleted = #{false}", :joins => "INNER JOIN finance_fee_collections ON finance_fee_collections.id = fee_collection_batches.finance_fee_collection_id", :group => "fee_collection_batches.finance_fee_collection_id")
+      finance_fee_collection_ids = @fee_collection_batches.map(&:finance_fee_collection_id)
+      if finance_fee_collection_ids.blank?
+        finance_fee_collection_ids[0] = 0
       end
-      batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
-      batches = batches.reject { |b| b.to_s.empty? }
-      if batches.blank?
-        batches[0] = 0
-      end
-    elsif params[:filter_by_course].to_i == 2
-      eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
-      tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-      hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
-      college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
-      college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
-      if college_courses_id.blank?
-        college_courses_id[0] = 0
-      end
-      #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
-      batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
-      batches = batches.reject { |b| b.to_s.empty? }
-      if batches.blank?
-        batches[0] = 0
+      @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name", :order => "start_date desc")
+      #abort(@dates.map(&:id).inspect)
+      render :update do |page|
+        page.replace_html "fees_collection_bill_school_college", :partial => "fees_collection_bill_school_college"
+        page << "j('#bill_generation_dates_id_school_college').select2();"
+        page.replace_html "student", :text => ""
+        page << "j('#student').hide()"
       end
     else
-      batches = Batch.all.map(&:id)
-      batches = batches.reject { |b| b.to_s.empty? }
-      if batches.blank?
-        batches[0] = 0
+      @dates = []
+      #abort(@dates.map(&:id).inspect)
+      render :update do |page|
+        page.replace_html "fees_collection_bill_school_college", :partial => "fees_collection_bill_school_college"
+        page << "j('#bill_generation_dates_id_school_college').select2();"
+        page.replace_html "student", :text => ""
+        page << "j('#student').hide()"
       end
-    end
-    
-    @fee_collection_batches = FeeCollectionBatch.find(:all, :conditions => "fee_collection_batches.batch_id IN (#{batches.join(",")}) and finance_fee_collections.is_deleted = #{false}", :joins => "INNER JOIN finance_fee_collections ON finance_fee_collections.id = fee_collection_batches.finance_fee_collection_id", :group => "fee_collection_batches.finance_fee_collection_id")
-    finance_fee_collection_ids = @fee_collection_batches.map(&:finance_fee_collection_id)
-    if finance_fee_collection_ids.blank?
-      finance_fee_collection_ids[0] = 0
-    end
-    @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name")
-    #abort(@dates.map(&:id).inspect)
-    render :update do |page|
-      page.replace_html "fees_collection_bill_school_college", :partial => "fees_collection_bill_school_college"
-      page << "j('#bill_generation_dates_id_school_college').select2();"
-      page.replace_html "student", :text => ""
-      page << "j('#student').hide()"
     end
   end
 
@@ -11451,11 +11789,77 @@ class FinanceController < ApplicationController
     if finance_fee_collection_ids.blank?
       finance_fee_collection_ids[0] = 0
     end
-    @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}")
+    @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name", :order => "start_date desc")
     
     render :update do |page|
       page.replace_html "fees_collection_dates_defaulters_sections", :partial => "fees_collection_dates_defaulters_sections"
       page << "j('#fees_defaulters_sections').select2();"
+    end
+  end
+
+  def update_fine_configuration_sections
+    batch_id = 0
+    course_id = 0
+    section_id = 0
+    unless params[:section_id].blank?
+      section_id = params[:section_id]
+    end
+    
+    unless params[:course_id].blank?
+      course_id = params[:course_id]
+    end
+    
+    unless params[:batch_id].blank?
+      batch_id = params[:batch_id]
+    end
+    
+    batch_name = ""
+    batches = [0]
+    if batch_id.to_i > 0
+      batch = Batch.find batch_id
+      batch_name = batch.name
+    end
+    
+    class_name = ""
+    if course_id.to_i > 0
+      course = Course.find course_id
+      class_name = course.course_name
+    end
+
+    unless batch_name.blank?
+      if section_id == 0
+        batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+        unless course_id == 0
+          courses = batches_all.map{|b| b.course_id}    
+          #batches = batches_all.map{|b| b.id}
+          @sections = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0 and id in (?)",class_name, courses])      
+
+          @dates = []
+          unless @sections.blank?
+            batches_all = Batch.find(:all, :conditions => "name = '#{batch_name}' and is_deleted = '#{false}' and course_id IN (#{@sections.map(&:id).join(",")})")
+            #batches = batches_all.map{|b| b.id}
+          end
+        end
+      else
+        batches_all = Batch.find_all_by_name_and_is_deleted_and_course_id(batch_name,false, section_id)
+      end
+
+      batches = batches_all.map{|b| b.id}    
+    end
+    if batches.blank?
+      batches[0] = 0
+    end
+    
+    @fee_collection_batches = FeeCollectionBatch.find(:all, :conditions => "fee_collection_batches.batch_id IN (#{batches.join(",")}) and finance_fee_collections.is_deleted = #{false} and finance_fee_collections.fine_id is not null", :joins => "INNER JOIN finance_fee_collections ON finance_fee_collections.id = fee_collection_batches.finance_fee_collection_id", :group => "fee_collection_batches.finance_fee_collection_id")
+    finance_fee_collection_ids = @fee_collection_batches.map(&:finance_fee_collection_id)
+    if finance_fee_collection_ids.blank?
+      finance_fee_collection_ids[0] = 0
+    end
+    @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false} and fine_id is not null", :group => "name", :order => "start_date desc")
+    
+    render :update do |page|
+      page.replace_html "fine_configuration_sections_div", :partial => "fine_configuration_sections"
+      page << "j('#fine_configuration_sections').select2();"
     end
   end
 
@@ -11517,7 +11921,7 @@ class FinanceController < ApplicationController
     if finance_fee_collection_ids.blank?
       finance_fee_collection_ids[0] = 0
     end
-    @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name")
+    @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name", :order => "start_date desc")
     
     render :update do |page|
       page.replace_html "fees_collection_bill_generation_sections", :partial => "fees_collection_bill_generation_sections"
@@ -11576,7 +11980,7 @@ class FinanceController < ApplicationController
           if finance_fee_collection_ids.blank?
             finance_fee_collection_ids[0] = 0
           end
-          @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name")
+          @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name", :order => "start_date desc")
         end
       else 
         batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
@@ -11590,7 +11994,7 @@ class FinanceController < ApplicationController
         if finance_fee_collection_ids.blank?
           finance_fee_collection_ids[0] = 0
         end
-        @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name")
+        @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name", :order => "start_date desc")
         
         #@sections =  Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0",class_name]) 
         #@dates = []
@@ -11600,6 +12004,82 @@ class FinanceController < ApplicationController
       page.replace_html 'batches', :partial => 'batches_finance', :object => @sections
       page.replace_html "fees_collection_dates_defaulters_sections", :partial => "fees_collection_dates_defaulters_sections"
       page << "j('#fees_defaulters_sections').select2();"
+    end
+  end
+  
+  def get_section_data_finance_for_fine_settings
+    @batch_name = ""
+    @class_name = ""
+    @sections = []
+    @dates = []
+    
+    unless params[:batch_id].blank?
+      batch_id = 0
+      unless params[:batch_id].nil?
+        batch_id = params[:batch_id]
+      end
+      
+      class_id = 0
+      unless params[:class_name].nil?
+        class_id = params[:class_name]
+      end
+
+      batch_name = ""
+      if batch_id.to_i > 0
+        batch = Batch.find batch_id
+        batch_name = batch.name
+        @batch_name = batch_name
+      end
+      
+      class_name = ""
+      if class_id.to_i > 0
+        course = Course.find class_id
+        class_name = course.course_name
+        @class_name = class_name
+      end
+
+      unless params[:class_name].blank?
+        batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+
+        courses = batches_all.map{|b| b.course_id}    
+        #batches = batches_all.map{|b| b.id}
+        @sections = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0 and id in (?)",class_name, courses])      
+        
+        @dates = []
+        unless @sections.blank?
+          batches_all = Batch.find(:all, :conditions => "name = '#{batch_name}' and is_deleted = '#{false}' and course_id IN (#{@sections.map(&:id).join(",")})")
+          batches = batches_all.map{|b| b.id}
+          #abort(batches.inspect)
+          
+          @fee_collection_batches = FeeCollectionBatch.find(:all, :conditions => "fee_collection_batches.batch_id IN (#{batches.join(",")}) and finance_fee_collections.is_deleted = #{false} and finance_fee_collections.fine_id is not null", :joins => "INNER JOIN finance_fee_collections ON finance_fee_collections.id = fee_collection_batches.finance_fee_collection_id", :group => "fee_collection_batches.finance_fee_collection_id")
+          finance_fee_collection_ids = @fee_collection_batches.map(&:finance_fee_collection_id)
+          if finance_fee_collection_ids.blank?
+            finance_fee_collection_ids[0] = 0
+          end
+          @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false} and fine_id is not null", :group => "name", :order => "start_date desc")
+        end
+      else 
+        batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+
+        #courses = batches_all.map{|b| b.course_id}    
+        batches = batches_all.map{|b| b.id}
+        @sections = []
+
+        @fee_collection_batches = FeeCollectionBatch.find(:all, :conditions => "fee_collection_batches.batch_id IN (#{batches.join(",")}) and finance_fee_collections.is_deleted = #{false} and finance_fee_collections.fine_id is not null", :joins => "INNER JOIN finance_fee_collections ON finance_fee_collections.id = fee_collection_batches.finance_fee_collection_id", :group => "fee_collection_batches.finance_fee_collection_id")
+        finance_fee_collection_ids = @fee_collection_batches.map(&:finance_fee_collection_id)
+        if finance_fee_collection_ids.blank?
+          finance_fee_collection_ids[0] = 0
+        end
+        @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false} and fine_id is not null", :group => "name", :order => "start_date desc")
+        
+        #@sections =  Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0",class_name]) 
+        #@dates = []
+      end
+    end
+    render :update do |page|
+      page.replace_html 'batches', :partial => 'batches_finance_for_fine_settings', :object => @sections
+      page.replace_html "fine_configuration_sections_div", :partial => "fine_configuration_sections"
+      page << "j('#fine_configuration_sections').select2();"
     end
   end
   
@@ -11652,7 +12132,7 @@ class FinanceController < ApplicationController
           if finance_fee_collection_ids.blank?
             finance_fee_collection_ids[0] = 0
           end
-          @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name")
+          @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name", :order => "start_date desc")
         end
       else 
         batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
@@ -11666,7 +12146,7 @@ class FinanceController < ApplicationController
         if finance_fee_collection_ids.blank?
           finance_fee_collection_ids[0] = 0
         end
-        @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name")
+        @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name", :order => "start_date desc")
         
         #@sections =  Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0",class_name]) 
         #@dates = []
@@ -11766,7 +12246,7 @@ class FinanceController < ApplicationController
       if finance_fee_collection_ids.blank?
         finance_fee_collection_ids[0] = 0
       end
-      @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name")
+      @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name", :order => "start_date desc")
 
       @courses = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", courses], :group => "course_name", :select => "id,course_name,no_call", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
       #abort(@courses.inspect)
@@ -11777,6 +12257,39 @@ class FinanceController < ApplicationController
       page.replace_html 'batches', :partial => 'batches_finance', :object => @sections
       page.replace_html "fees_collection_dates_defaulters_sections", :partial => "fees_collection_dates_defaulters_sections"
       page << "j('#fees_defaulters_sections').select2();"
+    end
+  end
+  
+  def get_classes_finance_for_fine_settings
+    @courses = []
+    @dates = []
+    unless params[:batch_id].blank?
+      @batch_name = false
+      unless params[:batch_id].empty?
+        batch_data = Batch.find params[:batch_id]
+        batch_name = batch_data.name
+      end 
+
+      batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+
+      courses = batches_all.map{|b| b.course_id}
+      batches = batches_all.map{|b| b.id}
+
+      @fee_collection_batches = FeeCollectionBatch.find(:all, :conditions => "fee_collection_batches.batch_id IN (#{batches.join(",")}) and finance_fee_collections.is_deleted = #{false}", :joins => "INNER JOIN finance_fee_collections ON finance_fee_collections.id = fee_collection_batches.finance_fee_collection_id", :group => "fee_collection_batches.finance_fee_collection_id")
+      finance_fee_collection_ids = @fee_collection_batches.map(&:finance_fee_collection_id)
+      if finance_fee_collection_ids.blank?
+        finance_fee_collection_ids[0] = 0
+      end
+      @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false} and fine_id is not null", :group => "name", :order => "start_date desc")
+      @courses = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", courses], :group => "course_name", :select => "id,course_name,no_call", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+      #abort(@courses.inspect)
+    end
+    @sections = []
+    render :update do |page|
+      page.replace_html "course_data", :partial => 'courses_data_for_fine_settings', :object => @courses
+      page.replace_html 'batches', :partial => 'batches_finance_for_fine_settings', :object => @sections
+      page.replace_html "fine_configuration_sections_div", :partial => "fine_configuration_sections"
+      page << "j('#fine_configuration_sections').select2();"
     end
   end
   
@@ -11800,7 +12313,7 @@ class FinanceController < ApplicationController
       if finance_fee_collection_ids.blank?
         finance_fee_collection_ids[0] = 0
       end
-      @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name")
+      @dates = FinanceFeeCollection.find(:all, :conditions => "id IN (#{finance_fee_collection_ids.join(",")}) and is_deleted = #{false}", :group => "name", :order => "start_date desc")
 
       @courses = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", courses], :group => "course_name", :select => "id,course_name,no_call", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
       #abort(@courses.inspect)
@@ -12044,6 +12557,224 @@ class FinanceController < ApplicationController
           render :update do |page|
             page << "j('#student').show();"
             page.replace_html "student", :partial => "student_defaulters"
+          end
+        else
+          render :update do |page|
+            page << "j('#student').hide();"
+          end
+        end
+      end
+    end
+  end
+  
+  def fine_configuration_students
+    @multi_date = false
+    @defaulters = []
+    if params[:opt].nil?
+      @opt = 0;
+      @b_id = params[:batch_id];
+      @d_id = params[:date];
+      @batch   = Batch.find(params[:batch_id])
+      #@students = @batch.students
+      unless params[:date].blank?
+        @date = FinanceFeeCollection.find(params[:date])
+        @dates_id = [@date.id]
+        extra_conditions = ""
+        @student_admission_no = ""
+        unless params[:student_admission_no].blank?
+          @student_admission_no = params[:student_admission_no]
+          extra_conditions = " AND students.admission_no LIKE '#{params[:student_admission_no]}%%'"
+        end
+        @fine_configurations = Student.paginate(:all, :joins => "INNER JOIN finance_fees on finance_fees.student_id = students.id",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.balance > 0 and students.batch_id='#{@batch.id}'" + extra_conditions],:order=>"students.admission_no ASC",:page => params[:page], :per_page => 50).uniq
+        #abort(@fine_configurations.inspect)
+        render :update do |page|
+          page << "j('#student').show();"
+          page.replace_html "student", :partial => "student_fine_configurations"
+        end
+      else
+        render :update do |page|
+          page << "j('#student').hide();"
+        end
+      end
+    else
+      if params[:opt].to_i == 1
+        @opt = 1;
+        @filter_by_course = params[:filter_by_course];
+        @d_id = params[:date];
+        if params[:filter_by_course].to_i == 1
+          eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+          tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+          hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
+          college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+          if college_courses_id.blank?
+            college_courses_id[0] = 0
+          end
+          school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+          school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+          if school_course_id.blank?
+            school_course_id[0] = 0
+          end
+          batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          if batches.blank?
+            batches[0] = 0
+          end
+        elsif params[:filter_by_course].to_i == 2
+          eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+          tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+          hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
+          college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+          if college_courses_id.blank?
+            college_courses_id[0] = 0
+          end
+          #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+          batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          if batches.blank?
+            batches[0] = 0
+          end
+        else
+          batches = Batch.all.map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          if batches.blank?
+            batches[0] = 0
+          end
+        end
+        #@students = Student.find(:all,:conditions=>["batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+        unless params[:date].blank?
+          @multi_date = true
+          @date = FinanceFeeCollection.find(params[:date])
+          unless @date.blank?
+            @date_name = @date.name
+            @dates = FinanceFeeCollection.find_all_by_name(@date_name)
+            unless @dates.blank?
+              @dates_id = @dates.map(&:id)
+              if @dates_id.blank?
+                @dates_id[0] = 0
+              end
+            else
+              @dates_id[0] = 0
+            end
+            #abort(@dates.map(&:id).inspect)
+            extra_conditions = ""
+            @student_admission_no = ""
+            unless params[:student_admission_no].blank?
+              @student_admission_no = params[:student_admission_no]
+              extra_conditions = " AND students.admission_no LIKE '#{params[:student_admission_no]}%%'"
+            end
+            @fine_configurations = Student.paginate(:all, :joins => "INNER JOIN finance_fees on finance_fees.student_id = students.id",:conditions=>["finance_fees.fee_collection_id IN (#{@dates_id.join(",")}) and finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})" + extra_conditions],:order=>"students.admission_no ASC",:page => params[:page], :per_page => 50).uniq
+          end
+          render :update do |page|
+            page << "j('#student').show();"
+            page.replace_html "student", :partial => "student_fine_configurations"
+          end
+        else
+          render :update do |page|
+            page << "j('#student').hide();"
+          end
+        end
+      else
+        @opt = 2;
+        @b_id = params[:batch_id]
+        @section_id = params[:section_id]
+        @course_name = params[:course_name]
+        @d_id = params[:date]
+        batch_id = 0
+        course_id = 0
+        class_id = 0
+        unless params[:batch_id].nil?
+          batch_id = params[:batch_id]
+        end
+        
+        unless params[:course_name].nil?
+          class_id = params[:course_name]
+        end
+
+        unless params[:section_id].blank?
+          course_id = params[:section_id]
+        end
+
+        batch_name = ""
+        batches = [0]
+        if batch_id.to_i > 0
+          batch = Batch.find batch_id
+          batch_name = batch.name
+        end
+        
+        class_name = ""
+        if class_id.to_i > 0
+          course = Course.find class_id
+          class_name = course.course_name
+        end
+
+        unless batch_name.blank?
+          if course_id == 0
+            batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+            #abort(bclass_name.)
+            unless class_id == 0
+              courses = batches_all.map{|b| b.course_id}   
+              #abort(courses.inspect)
+              #batches = batches_all.map{|b| b.id}
+              @sections = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0 and id in (?)",class_name, courses])      
+
+              @dates = []
+              unless @sections.blank?
+                batches_all = Batch.find(:all, :conditions => "name = '#{batch_name}' and is_deleted = '#{false}' and course_id IN (#{@sections.map(&:id).join(",")})")
+                #batches = batches_all.map{|b| b.id}
+              end
+            end
+          else
+            batches_all = Batch.find_all_by_name_and_is_deleted_and_course_id(batch_name,false, course_id)
+          end
+
+          batches = batches_all.map{|b| b.id}    
+        end
+        if batches.blank?
+          batches[0] = 0
+        end
+        #abort(batches.inspect)
+        #@students = Student.find(:all,:conditions=>["batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+        unless params[:date].blank?
+          if course_id == 0
+            @multi_date = true
+            @date = FinanceFeeCollection.find(params[:date])
+            unless @date.blank?
+              @date_name = @date.name
+              @dates = FinanceFeeCollection.find_all_by_name(@date_name)
+              unless @dates.blank?
+                @dates_id = @dates.map(&:id)
+                if @dates_id.blank?
+                  @dates_id[0] = 0
+                end
+              else
+                @dates_id[0] = 0
+              end
+              extra_conditions = ""
+              @student_admission_no = ""
+              unless params[:student_admission_no].blank?
+                @student_admission_no = params[:student_admission_no]
+                extra_conditions = " AND students.admission_no LIKE '#{params[:student_admission_no]}%%'"
+              end
+              @fine_configurations = Student.paginate(:all, :joins => "INNER JOIN finance_fees on finance_fees.student_id = students.id",:conditions=>["finance_fees.fee_collection_id IN (#{@dates_id.join(",")}) and finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})" + extra_conditions],:order=>"students.admission_no ASC",:page => params[:page], :per_page => 50).uniq
+            end
+          else  
+            @date = FinanceFeeCollection.find(params[:date])
+            @dates_id = [@date.id]
+            #student_ids = FinanceFee.paginate(:all,:conditions=>"batch_id IN (#{batches.join(',')}) and fee_collection_id IN (#{@dates_data_id.join(',')})")
+            extra_conditions = ""
+            @student_admission_no = ""
+            unless params[:student_admission_no].blank?
+              @student_admission_no = params[:student_admission_no]
+              extra_conditions = " AND students.admission_no LIKE '#{params[:student_admission_no]}%%'"
+            end
+            @fine_configurations = Student.paginate(:all, :joins => "INNER JOIN finance_fees on finance_fees.student_id = students.id",:conditions=>["finance_fees.fee_collection_id ='#{@date.id}' and finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})" + extra_conditions],:order=>"students.admission_no ASC",:page => params[:page], :per_page => 50).uniq
+            #@defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+          end
+          render :update do |page|
+            page << "j('#student').show();"
+            page.replace_html "student", :partial => "student_fine_configurations"
           end
         else
           render :update do |page|
@@ -13276,9 +14007,21 @@ class FinanceController < ApplicationController
     
     bal=(@total_payable-@total_discount).to_f
     days=(Date.today-@date.due_date.to_date).to_i
+    
+    fine_enabled = true
+    student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+    unless student_fee_configuration.blank?
+      if student_fee_configuration.config_value.to_i == 1
+        fine_enabled = true
+      else
+        fine_enabled = false
+      end
+    end
+    
     auto_fine=@date.fine
+    
     @has_fine_discount = false
-    if days > 0 and auto_fine and @financefee.is_paid == false
+    if days > 0 and auto_fine and @financefee.is_paid == false and fine_enabled
       @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
       @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
       calculate_extra_fine(@date, @batch, @student, @fine_rule)
@@ -14429,9 +15172,20 @@ class FinanceController < ApplicationController
       end
     end
     
+    fine_enabled = true
+    student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+    unless student_fee_configuration.blank?
+      if student_fee_configuration.config_value.to_i == 1
+        fine_enabled = true
+      else
+        fine_enabled = false
+      end
+    end
+    
     auto_fine=@date.fine
+    
     @has_fine_discount = false
-    if days > 0 and auto_fine #and @financefee.is_paid == false
+    if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
       @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
       @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
 
@@ -14682,9 +15436,21 @@ class FinanceController < ApplicationController
       
       bal=(@total_payable-@total_discount).to_f
       days=(Date.today-@date.due_date.to_date).to_i
+      
+      fine_enabled = true
+      student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+      unless student_fee_configuration.blank?
+        if student_fee_configuration.config_value.to_i == 1
+          fine_enabled = true
+        else
+          fine_enabled = false
+        end
+      end
+      
       auto_fine=@date.fine
+      
       @has_fine_discount = false
-      if days > 0 and auto_fine and @financefee.is_paid == false
+      if days > 0 and auto_fine and @financefee.is_paid == false and fine_enabled
         @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
         @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
         calculate_extra_fine(@date, @batch, @student, @fine_rule)
@@ -15481,10 +16247,20 @@ class FinanceController < ApplicationController
       end
     end
 
+    fine_enabled = true
+    student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+    unless student_fee_configuration.blank?
+      if student_fee_configuration.config_value.to_i == 1
+        fine_enabled = true
+      else
+        fine_enabled = false
+      end
+    end
+    
     auto_fine=@date.fine
 
     @has_fine_discount = false
-    if days > 0 and auto_fine #and @financefee.is_paid == false
+    if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
       @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
       @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
 

@@ -55,6 +55,7 @@ class Student < ActiveRecord::Base
   has_many   :exam_scores
   has_many   :previous_exam_scores
   has_many   :student_fee_configurations
+  delegate   :config_value, :to => :student_fee_configurations, :prefix => true, :allow_nil => true
   has_many   :student_exclude_particulars
   #has_many   :siblings,:class_name=>'Student',:primary_key=>:sibling_id
 

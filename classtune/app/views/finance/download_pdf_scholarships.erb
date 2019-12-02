@@ -7,17 +7,21 @@
     <div class="extender"> </div>
     <div class="report">
     
+    <div id ="main_info">
+        <h4 style="width: 25%; display: inline-block;"> &nbsp;</h4>
+    </div>
+        
     <div id="pdf-info" style="padding-bottom: 40px;">
       <table id="pdf-table" width="100%" cellspacing="0">
         <tr class="table-header">
-            <td style="text-align: center;">#</th>
-            <td style="text-align: center;">Student ID</th>
-            <td style="width: 10%;">Student Name</th>
-            <td style="text-align: center;">Class & Section</td>
+            <td style="text-align: center; width: 10%;">#</th>
+            <td style="text-align: center; width: 10%;">Student ID</th>
+            <td style="width: 20%;">Student Name</th>
+            <td style="text-align: center; width: 10%;">Class & Section</td>
             <%#*<td style="text-align: center;">Scholarship Name</td>%>
-            <td style="text-align: center;">Scholarship On</td>
-            <td style="text-align: center;">Discount</td>
-            <td style="text-align: center;">Amount</td>
+            <td style="text-align: center; width: 10%;">Scholarship On</td>
+            <td style="text-align: center; width: 10%;">Discount</td>
+            <td style="text-align: center; width: 10%;">Amount</td>
         </tr>
         <% i = 0 %>
         <% page = 1 %>  
@@ -30,7 +34,7 @@
               <% if page == 1 and i== 40 %>
                   <% i= 0 %>
                   <% page += 1 %>
-                  <tr style="padding: 10px; height: 1px;"><td colspan="8">&nbsp;</td></tr>
+                  <tr style="padding: 10px; height: 1px;"><td colspan="7">&nbsp;</td></tr>
                   <tr class="table-header">
                       <td style="text-align: center;">#</th>
                       <td style="text-align: center;">Student ID</th>
@@ -44,7 +48,7 @@
               <% elsif page > 1 and i== 40 %>
                   <% i= 0 %>
                   <% page += 1 %>
-                  <tr style="padding: 10px; height: 1px;"><td colspan="8">&nbsp;</td></tr>
+                  <tr style="padding: 10px; height: 1px;"><td colspan="7">&nbsp;</td></tr>
 
                   <tr class="table-header">
                     <td style="text-align: center;">#</th>
@@ -66,8 +70,8 @@
                   <td><%= sc.receiver.batch.course_section unless sc.receiver.batch.nil? %></td>
                   <!--td><%#= sc.name %></td-->
                   <td><%= sc.finance_fee_particular_category.name %></td>
-                  <td><span id="editID-<%= sc.id %>"><%= precision_label sc.discount %> <%= sc.is_amount == true ? 'BDT'  : '%' %></span></td>
-                  <td><%= precision_label @scholarships_student_ids[sc.receiver.id] %></td>
+                  <td style="text-align: right;"><span id="editID-<%= sc.id %>"><%= precision_label sc.discount %> <%= sc.is_amount == true ? 'BDT'  : '%' %></span></td>
+                  <td style="text-align: right;"><%= precision_label @scholarships_student_ids[sc.receiver.id] %></td>
               </tr>
             <% end %>
 
@@ -76,7 +80,7 @@
           <% end %>
         <% else %>
           <tr>
-              <td colspan="5" style="text-align: center;"><h3>No Scholarship Students Available</h3></td>
+              <td colspan="7" style="text-align: center;"><h3>No Scholarship Students Available</h3></td>
           </tr>
         <% end %>
     </table>

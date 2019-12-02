@@ -16,8 +16,8 @@
             <td style="text-align: center;">Class & Section</td>
             <%#*<td style="text-align: center;">Scholarship Name</td>%>
             <td style="text-align: center;">Scholarship On</td>
-            <td style="text-align: center; padding-right: 10px;">Discount</td>
-            <td style="text-align: center; padding-right: 10px;">Amount</td>
+            <td style="text-align: center;">Discount</td>
+            <td style="text-align: center;">Amount</td>
         </tr>
         <% i = 0 %>
         <% page = 1 %>  
@@ -66,8 +66,8 @@
                   <td><%= sc.receiver.batch.course_section unless sc.receiver.batch.nil? %></td>
                   <!--td><%#= sc.name %></td-->
                   <td><%= sc.finance_fee_particular_category.name %></td>
-                  <td style="text-align: right;"><span id="editID-<%= sc.id %>"><%= precision_label sc.discount %> <%= sc.is_amount == true ? 'BDT'  : '%' %></span></td>
-                  <td style="text-align: right;"><%= precision_label @scholarships_student_ids[sc.receiver.id] %></td>
+                  <td><span id="editID-<%= sc.id %>"><%= precision_label sc.discount %> <%= sc.is_amount == true ? 'BDT'  : '%' %></span></td>
+                  <td><%= precision_label @scholarships_student_ids[sc.receiver.id] %></td>
               </tr>
             <% end %>
 

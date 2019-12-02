@@ -2410,29 +2410,33 @@ class FinanceController < ApplicationController
       unless extra_params.blank?
         @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id")
       else
-        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id")
+        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :joins => extra_joins, :group => "student_id")
       end
     elsif @filter_by_dues.to_i == 1
       unless extra_params.blank?
         @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) = sum( amount_paid )", :conditions => [extra_params], :joins => extra_joins, :group => "student_id")
       else
-        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) = sum( amount_paid )", :conditions => [extra_params], :joins => extra_joins, :group => "student_id")
+        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) = sum( amount_paid )", :joins => extra_joins, :group => "student_id")
       end
     elsif @filter_by_dues.to_i == 2
-      @count_students = StudentFeeLedger.find(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) > sum( amount_paid )").count
-      @students = StudentFeeLedger.paginate(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) > sum( amount_paid )",:page => params[:page],:per_page => 10)
       unless extra_params.blank?
+        @count_students = StudentFeeLedger.find(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) > sum( amount_paid )").count
+        @students = StudentFeeLedger.paginate(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) > sum( amount_paid )",:page => params[:page],:per_page => 10)
         @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) > sum( amount_paid )", :conditions => [extra_params], :joins => extra_joins, :group => "student_id")
       else
-        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) > sum( amount_paid )", :conditions => [extra_params], :joins => extra_joins, :group => "student_id")
+        @count_students = StudentFeeLedger.find(:all, :select => "student_id", :order => 'student_id ASC', :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) > sum( amount_paid )").count
+        @students = StudentFeeLedger.paginate(:all, :select => "student_id", :order => 'student_id ASC', :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) > sum( amount_paid )",:page => params[:page],:per_page => 10)
+        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) > sum( amount_paid )", :joins => extra_joins, :group => "student_id")
       end
     elsif @filter_by_dues.to_i == 3
-      @count_students = StudentFeeLedger.find(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) < sum( amount_paid )").count
-      @students = StudentFeeLedger.paginate(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) < sum( amount_paid )",:page => params[:page],:per_page => 10)
       unless extra_params.blank?
+        @count_students = StudentFeeLedger.find(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) < sum( amount_paid )").count
+        @students = StudentFeeLedger.paginate(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) < sum( amount_paid )",:page => params[:page],:per_page => 10)
         @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) < sum( amount_paid )", :conditions => [extra_params], :joins => extra_joins, :group => "student_id")
       else
-        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) < sum( amount_paid )", :conditions => [extra_params], :joins => extra_joins, :group => "student_id")
+        @count_students = StudentFeeLedger.find(:all, :select => "student_id", :order => 'student_id ASC',  :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) < sum( amount_paid )").count
+        @students = StudentFeeLedger.paginate(:all, :select => "student_id", :order => 'student_id ASC',  :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) < sum( amount_paid )",:page => params[:page],:per_page => 10)
+        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) < sum( amount_paid )", :joins => extra_joins, :group => "student_id")
       end
     end
     
@@ -2483,10 +2487,11 @@ class FinanceController < ApplicationController
       end
       dues = 0.00
       advance = 0.00
-      unless student_fee_ledger.diff_amount.to_f <= 0
+      if student_fee_ledger.diff_amount.to_f >= 0
         dues = student_fee_ledger.diff_amount.to_f
       end
-      unless student_fee_ledger.diff_amount.to_f <= 0
+      if student_fee_ledger.diff_amount.to_f < 0
+        dues = 0.00
         advance = student_fee_ledger.diff_amount.to_f * -1
       end
       row_new = [i+1, student.full_name, student.admission_no, student_fee_ledger.amount_to_pay.to_f, student_fee_ledger.amount_paid.to_f, dues.to_f, advance.to_f]

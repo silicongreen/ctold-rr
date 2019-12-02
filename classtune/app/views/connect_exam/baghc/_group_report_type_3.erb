@@ -806,7 +806,7 @@
                                 <td colspan="1">Absent</td>
                                 <td colspan="2">Attendance</td>
                                 <% else %>
-                                <td colspan="2">Total Working day's<br/><%= @report_data['total'] %></td>
+                                <td colspan="2">Working day's<br/><%= @report_data['total'] %></td>
                                 <td colspan="2">Present<br/>
                                 <% unless @report_data['total_new_std'].blank?  %>
                                     <% present2 = @report_data['total_new_std'].to_i-@report_data['absent'].to_i %>

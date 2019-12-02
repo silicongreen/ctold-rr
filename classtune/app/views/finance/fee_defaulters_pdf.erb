@@ -71,10 +71,10 @@
           <% b = Batch.find(s.batch_id)  %>
           <% sc = StudentCategory.find(s.student_category_id)  %>
           <% b_v = b.name.split(" ") %>
-          <% if page == 1 and i== 34 %>
+          <% if page == 1 and i== 35 %>
               <% i= 0 %>
               <% page += 1 %>
-              <tr style="padding: 10px; height: 35px;"><td colspan="8">&nbsp;</td></tr>
+              <tr style="padding: 10px; height: 30px;"><td colspan="8">&nbsp;</td></tr>
               <tr class="table-header">
                 <td style="text-align: center;">SL</td>
                 <td style="text-align: center;"><%= t('student_id') %></td>

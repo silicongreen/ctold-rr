@@ -71,10 +71,10 @@
           <% b = Batch.find(s.batch_id)  %>
           <% sc = StudentCategory.find(s.student_category_id)  %>
           <% b_v = b.name.split(" ") %>
-          <% if page == 1 and i== 36 %>
+          <% if page == 1 and i== 34 %>
               <% i= 0 %>
               <% page += 1 %>
-              <tr style="padding: 10px; height: 40px;"><td colspan="8">&nbsp;</td></tr>
+              <tr style="padding: 10px; height: 35px;"><td colspan="8">&nbsp;</td></tr>
               <tr class="table-header">
                 <td style="text-align: center;">SL</td>
                 <td style="text-align: center;"><%= t('student_id') %></td>
@@ -85,10 +85,10 @@
                 <td style="text-align: center;"><%= t('contact_number') %></td>
                 <td style="text-align: center;"><%= "Remarks" %></td>
               </tr>
-          <% elsif page > 1 and i== 41 %>
+          <% elsif page > 1 and i== 40 %>
               <% i= 0 %>
               <% page += 1 %>
-              <tr style="padding: 10px; height: 40px;"><td colspan="8">&nbsp;</td></tr>
+              <tr style="padding: 10px; height: 35px;"><td colspan="8">&nbsp;</td></tr>
               
               <tr class="table-header">
                 <td style="text-align: center;">SL</td>
@@ -129,7 +129,7 @@
               <td style="text-align: right;"><%= to_comma_seperated_precision_label fees.map(&:balance).sum %> (<%= cnt %>)</td>
               
               <td style="text-align: center;"><%= s.sms_number %></td>
-              <td class="col-pdf remarks" style="text-align: center;;"><%= truncate(fee_remarks, :length => 25) %></td>
+              <td class="col-pdf remarks" style="text-align: center;;"><%= truncate(fee_remarks, :length => 20) %></td>
           </tr>
         <% end %>
       </table>

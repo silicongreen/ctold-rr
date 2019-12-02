@@ -81,3 +81,39 @@
     </table>
     </div>
 </div>
+<style>
+    #pdf-table tr.table-header td {
+      color: #000;
+      font-weight: bold;
+      font-family: verdana;
+      font-size: 10px;
+    }
+    #pdf-table tr.td-body td.name {
+      width: 5% !important;
+    }
+    #pdf-table tr.td-body td:not(.remarks) {
+        padding: 4px 4px;
+        color: #000;
+        font-weight: normal;
+        font-family: verdana;
+        font-size: 12px;
+        background: #fff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    #pdf-table tr.td-body td.remarks {
+        padding: 4px 10px;
+        color: #000;
+        font-weight: normal;
+        font-family: verdana;
+        font-size: 9px;
+        background: #fff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    #pdf-table tr.td-body td:last {
+        border-bottom: 1px solid #000;
+    }
+</style>

@@ -25,61 +25,59 @@
 .page_break{width: 100%; height: 70px;}
 </style>
 <div id="page">
-    <h2 style="text-align: center;"><%=Configuration.get_config_value('InstitutionName'); %></h2>
-    <hr/>
-    <h2 style="text-align: center;">Scholarship Students</h2>
-    <hr/>
-    <table id="customers">
-        <thead>
-            <tr>
-                <th style="text-align: center;">#</th>
-                <th style="text-align: center;">Student ID</th>
-                <th>Student Name</th>
-                <th style="text-align: center;">Class & Section</th>
-                <th style="text-align: center;">Scholarship Name</th>
-                <th style="text-align: center;">Scholarship On</th>
-                <th style="text-align: center;">Discount</th>
-                <th style="text-align: center;">Amount</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% unless @scholarships.blank? %>
-              <%  page_no = 1 %>
-              <%  page_sl = 1 %>
-              <%  slno = 1 %>
-              <% @scholarships.each do |sc| %>
-                <% unless sc.receiver.nil? %>
-                  <tr id="deleteID-<%= sc.id %>">
-                      <td> <%= slno %></td>
-                      <td><%= sc.receiver.admission_no %></td>
-                      <td><%= sc.receiver.full_name %></td>
-                      <td><%= sc.receiver.batch.course_section unless sc.receiver.batch.nil? %></td>
-                      <td><%= sc.name %></td>
-                      <td><%= sc.finance_fee_particular_category.name %></td>
-                      <td><span id="editID-<%= sc.id %>"><%= precision_label sc.discount %> <%= sc.is_amount == true ? 'BDT'  : '%' %></span></td>
-                      <td><%= precision_label @scholarships_student_ids[sc.receiver.id] %></td>
-                  </tr>
-                <% end %>
-                
-                <%  if(page_no == 1 and page_sl == 24) %>
-                    <tr class="page_break"></tr>
-                    <%  page_no = 2 %>
-                    <%  page_sl = 0 %>
-                <%  end %>
-                    
-                <%  if(page_no == 2 and page_sl == 27) %>
-                    <tr class="page_break"></tr>
-                    <%  page_sl = 0 %>
-                <%  end %>
-                    
-                <%  slno += 1 %>
-                <%  page_sl += 1 %>
-              <% end %>
-            <% else %>
-              <tr>
-                  <td colspan="5" style="text-align: center;"><h3>No Scholarship Students Available</h3></td>
+    <div class="hor_line"></div>
+    <h4 align="center"><%= "Scholarship Students" %></h4>
+    <div class="hor_line"></div>
+    
+    <div id="pdf-info" style="padding-bottom: 40px;">
+      <table id="pdf-table" width="100%" cellspacing="0">
+        <tr class="table-header">
+            <td style="text-align: center;">#</th>
+            <td style="text-align: center;">Student ID</th>
+            <td>Student Name</th>
+            <td style="text-align: center;">Class & Section</td>
+            <td style="text-align: center;">Scholarship Name</td>
+            <td style="text-align: center;">Scholarship On</td>
+            <td style="text-align: center;">Discount</td>
+            <td style="text-align: center;">Amount</td>
+        </tr>
+        <% unless @scholarships.blank? %>
+          <%  page_no = 1 %>
+          <%  page_sl = 1 %>
+          <%  slno = 1 %>
+          <% @scholarships.each do |sc| %>
+            <% unless sc.receiver.nil? %>
+              <tr id="deleteID-<%= sc.id %>">
+                  <td> <%= slno %></td>
+                  <td><%= sc.receiver.admission_no %></td>
+                  <td><%= sc.receiver.full_name %></td>
+                  <td><%= sc.receiver.batch.course_section unless sc.receiver.batch.nil? %></td>
+                  <td><%= sc.name %></td>
+                  <td><%= sc.finance_fee_particular_category.name %></td>
+                  <td><span id="editID-<%= sc.id %>"><%= precision_label sc.discount %> <%= sc.is_amount == true ? 'BDT'  : '%' %></span></td>
+                  <td><%= precision_label @scholarships_student_ids[sc.receiver.id] %></td>
               </tr>
             <% end %>
-        </tbody>
+
+            <%  if(page_no == 1 and page_sl == 24) %>
+                <tr class="page_break"></tr>
+                <%  page_no = 2 %>
+                <%  page_sl = 0 %>
+            <%  end %>
+
+            <%  if(page_no == 2 and page_sl == 27) %>
+                <tr class="page_break"></tr>
+                <%  page_sl = 0 %>
+            <%  end %>
+
+            <%  slno += 1 %>
+            <%  page_sl += 1 %>
+          <% end %>
+        <% else %>
+          <tr>
+              <td colspan="5" style="text-align: center;"><h3>No Scholarship Students Available</h3></td>
+          </tr>
+        <% end %>
     </table>
+    </div>
 </div>

@@ -1,33 +1,11 @@
-<style>
-#page{ width: 900px;}
-#customers {
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-#customers td, #customers th {
-  border: 1px solid #ccc;
-  padding: 8px;
-}
-
-#customers th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #ddd;
-  color: 000;
-  font-size: 14px;
-}
-#customers tr td {
-  font-size: 14px;
-}
-.page_break{width: 100%; height: 70px;}
-</style>
-<div id="page">
+</div>
+<div id="page-yield">
     <div class="hor_line"></div>
     <h4 align="center"><%= "Scholarship Students" %></h4>
     <div class="hor_line"></div>
+    
+    <div class="extender"> </div>
+    <div class="report">
     
     <div id="pdf-info" style="padding-bottom: 40px;">
       <table id="pdf-table" width="100%" cellspacing="0">
@@ -47,7 +25,8 @@
           <%  slno = 1 %>
           <% @scholarships.each do |sc| %>
             <% unless sc.receiver.nil? %>
-              <tr id="deleteID-<%= sc.id %>">
+              <% c =cycle('even','odd ') %>
+              <tr id="deleteID-<%= sc.id %>" class="<%= "#{c}" %> td-body">
                   <td> <%= slno %></td>
                   <td><%= sc.receiver.admission_no %></td>
                   <td><%= sc.receiver.full_name %></td>
@@ -79,6 +58,8 @@
           </tr>
         <% end %>
     </table>
+    </div>
+        
     </div>
 </div>
 <style>

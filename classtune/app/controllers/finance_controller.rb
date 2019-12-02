@@ -15997,9 +15997,8 @@ class FinanceController < ApplicationController
     end
     
     render :pdf => "download_pdf_scholarships",
-      :orientation => 'Portrait',
-      :page_size => 'Legal',
-      :margin => {:top=> 10,
+      :orientation => 'Portrait', :zoom => 1.00,
+      :margin => {:top=> 22,
       :bottom => 10,
       :left=> 10,
       :right => 10},

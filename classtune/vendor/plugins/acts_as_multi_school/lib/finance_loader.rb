@@ -1658,8 +1658,8 @@ module FinanceLoader
                       end
                   end
                   if fine_included
-                    transaction_parent.fine_included = fine_included
-                    transaction_parent.fine_amount = fine_amount
+                    transaction.fine_included = fine_included
+                    transaction.fine_amount = fine_amount
                   end
                   
                   #transaction.fine_included = (@fine[f].to_f + @fine_amount[f].to_f).zero? ? false : true

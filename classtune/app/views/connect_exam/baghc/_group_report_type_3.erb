@@ -747,7 +747,7 @@
                             %>
                             <tr class="table-header">
                                 <% if @report_data['total_first_term'].nil? %>
-                                <td colspan="2">Total Working day<br/><%= @report_data['total'] %></td>
+                                <td colspan="2">Working day<br/><%= @report_data['total'] %></td>
                                 <td colspan="2">Present<br/>
                                     <% unless @report_data['total_new_std'].blank?  %>
                                         <% present = @report_data['total_new_std'].to_i-@report_data['absent'].to_i  %>
@@ -769,7 +769,7 @@
                                 <% else %>
                                 <% total = total+@report_data['total_first_term'] %>
                                 <% total1 = @report_data['total_first_term'] %>
-                                <td colspan="2">Total Working day's<br/><%= @report_data['total_first_term'] %></td>
+                                <td colspan="2">Working day's<br/><%= @report_data['total_first_term'] %></td>
                                 <td colspan="2">Present<br/>
                                 <% unless @report_data['total_new_std_first_term'].blank?  %>
                                     <% present = present+@report_data['total_new_std_first_term'].to_i-@report_data['absent_first_term'].to_i  %>
@@ -801,7 +801,7 @@
                                 </td>
                                 
                                 <% if @report_data['total_first_term'].nil? %>
-                                <td colspan="2">Total Working day</td>
+                                <td colspan="2">Working day's</td>
                                 <td colspan="2">Present</td>
                                 <td colspan="1">Absent</td>
                                 <td colspan="2">Attendance</td>
@@ -833,7 +833,7 @@
                                 
                                 
                                 
-                                <td colspan="2">Total Working day's<br/><%= total %></td>
+                                <td colspan="2">Working day's<br/><%= total %></td>
                                 <td colspan="2">Present<br/><%= present %></td>
                                 <td colspan="1">Absent<br/><%= absent %></td>
                                 <% percent = (present.to_f/total.to_f)*100 %>

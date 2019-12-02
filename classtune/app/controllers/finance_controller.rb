@@ -4377,6 +4377,11 @@ class FinanceController < ApplicationController
       sent_remainder = true
     end
     
+    auto_adjust_advance = false
+    unless params[:auto_adjust_advance].nil?
+      auto_adjust_advance = true
+    end
+    #abort(auto_adjust_advance.inspect)
     particular_ids = []
     unless params[:particular_id].nil?
       particular_ids = params[:particular_id]
@@ -4416,7 +4421,9 @@ class FinanceController < ApplicationController
     category =[]
     @finance_fee_collection = FinanceFeeCollection.new
     if request.post?
-      Delayed::Job.enqueue(DelayedFeeCollectionJob.new(@user,params[:finance_fee_collection],params[:fee_collection], sent_remainder, particular_ids, particular_names, transport_particular_id, transport_particular_name, default_particular_names, default_transport_particular_name))
+      
+      
+      Delayed::Job.enqueue(DelayedFeeCollectionJob.new(@user,params[:finance_fee_collection],params[:fee_collection], sent_remainder, particular_ids, particular_names, transport_particular_id, transport_particular_name, default_particular_names, default_transport_particular_name, auto_adjust_advance))
       
       flash[:notice]="#{t('collection_is_in_queue')}" + " <a href='/scheduled_jobs/FinanceFeeCollection/1'>" + "#{t('cick_here_to_view_the_scheduled_job')}"
       #flash[:notice] = t('flash_msg33')

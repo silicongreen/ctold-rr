@@ -519,6 +519,11 @@ unless @ranked_student.blank?
                       </tr>
                     <% end %>
                   <% end %>
+                      <% if std_count>5 %>
+                        <tr class="page-break">
+                            <td colspan="100">&nbsp;</td>
+                        </tr>
+                      <% end %>
                       <tr class="table-header">
                           <td colspan="2" rowspan="8">Subjective Report</td>
                           <td>Average Marks(%)</td>

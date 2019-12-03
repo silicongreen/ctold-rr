@@ -557,7 +557,7 @@ unless @ranked_student.blank?
                         <% end %> 
                         <% if first == true %>
                           <td colspan="2" rowspan="7" >
-                              <table>
+                              <table class="no-border">
                                   <tr><td>F[0] = <%= f_grade[0] %></td><td>F[7] = <%= f_grade[7] %></td></tr>
                                   <tr><td>F[1] = <%= f_grade[1] %></td><td>F[8] = <%= f_grade[8] %></td></tr>
                                   <tr><td>F[2] = <%= f_grade[2] %></td><td>F[9] = <%= f_grade[9] %></td></tr>
@@ -605,4 +605,8 @@ unless @ranked_student.blank?
     tr.table-header td, tr.even td,tr.odd td{
         padding: 2px 5px !important;
     }   
+    .table-header td table.no-border tr td
+    {
+        border: none !important;
+    }
 </style>

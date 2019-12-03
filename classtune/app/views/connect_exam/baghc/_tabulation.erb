@@ -511,7 +511,7 @@ unless @ranked_student.blank?
                           </td>
                           <td>
                               F[<%= f_grade_count %>]
-                              f_grade[f_grade_count] = f_grade[f_grade_count]+1
+                              <%  f_grade[f_grade_count] = f_grade[f_grade_count]+1 %>
                           </td> 
 
 
@@ -519,7 +519,7 @@ unless @ranked_student.blank?
                       </tr>
                     <% end %>
                   <% end %>
-                      <tr>
+                      <tr class="table-header">
                           <td colspan="2" rowspan="8">Subjective Report</td>
                           <td>Average Marks(%)</td>
                           
@@ -545,7 +545,7 @@ unless @ranked_student.blank?
                       unless @grading_levels.empty?
                               @grading_levels.each_with_index do |grade,index|
                       %>
-                      <tr>
+                      <tr class="table-header">
                        <td><%= grade.name %></td>  
                         <% @report_data['report']['subjects'].each do |sub| %>
                           <td><% subject_grades[sub['id'].to_i][grade.name] %></td>

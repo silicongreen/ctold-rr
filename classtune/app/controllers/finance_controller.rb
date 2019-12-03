@@ -6787,6 +6787,19 @@ class FinanceController < ApplicationController
                   end
                 end
                 
+                if @tmp_paid_fees.blank?
+                  @tmp_paid_fees = @financefee.finance_transactions
+                end
+                unless @tmp_paid_fees.blank?
+                  @tmp_paid_fees.each do |paid_fee|
+                    transaction_id = paid_fee.id
+                    online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+                    unless online_payments.blank?
+                      fine_enabled = false
+                    end
+                  end
+                end
+                
                 auto_fine=@date.fine
 
                 @has_fine_discount = false
@@ -7033,6 +7046,19 @@ class FinanceController < ApplicationController
                     fine_enabled = true
                   else
                     fine_enabled = false
+                  end
+                end
+                
+                if @tmp_paid_fees.blank?
+                  @tmp_paid_fees = @financefee.finance_transactions
+                end
+                unless @tmp_paid_fees.blank?
+                  @tmp_paid_fees.each do |paid_fee|
+                    transaction_id = paid_fee.id
+                    online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+                    unless online_payments.blank?
+                      fine_enabled = false
+                    end
                   end
                 end
                 
@@ -7544,6 +7570,20 @@ class FinanceController < ApplicationController
             end
           end
           
+          if @tmp_paid_fees.blank?
+            @tmp_paid_fees = @financefee.finance_transactions
+          end
+          
+          unless @tmp_paid_fees.blank?
+            @tmp_paid_fees.each do |paid_fee|
+              transaction_id = paid_fee.id
+              online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+              unless online_payments.blank?
+                fine_enabled = false
+              end
+            end
+          end
+          
           auto_fine=@date.fine
 
           @has_fine_discount = false
@@ -7732,6 +7772,20 @@ class FinanceController < ApplicationController
               fine_enabled = true
             else
               fine_enabled = false
+            end
+          end
+          
+          if @tmp_paid_fees.blank?
+            @tmp_paid_fees = @financefee.finance_transactions
+          end
+          
+          unless @tmp_paid_fees.blank?
+            @tmp_paid_fees.each do |paid_fee|
+              transaction_id = paid_fee.id
+              online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+              unless online_payments.blank?
+                fine_enabled = false
+              end
             end
           end
           
@@ -7927,6 +7981,20 @@ class FinanceController < ApplicationController
               fine_enabled = true
             else
               fine_enabled = false
+            end
+          end
+          
+          if @tmp_paid_fees.blank?
+            @tmp_paid_fees = @financefee.finance_transactions
+          end
+          
+          unless @tmp_paid_fees.blank?
+            @tmp_paid_fees.each do |paid_fee|
+              transaction_id = paid_fee.id
+              online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+              unless online_payments.blank?
+                fine_enabled = false
+              end
             end
           end
           
@@ -8872,6 +8940,20 @@ class FinanceController < ApplicationController
           end
         end
         
+        if @tmp_paid_fees.blank?
+          @tmp_paid_fees = @financefee.finance_transactions
+        end
+        #abort(@tmp_paid_fees.inspect)
+        unless @tmp_paid_fees.blank?
+          @tmp_paid_fees.each do |paid_fee|
+            transaction_id = paid_fee.id
+            online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+            unless online_payments.blank?
+              fine_enabled = false
+            end
+          end
+        end
+        
         auto_fine=@date.fine
         
         @has_fine_discount = false
@@ -9053,6 +9135,20 @@ class FinanceController < ApplicationController
         fine_enabled = true
       else
         fine_enabled = false
+      end
+    end
+    
+    if @tmp_paid_fees.blank?
+      @tmp_paid_fees = @financefee.finance_transactions
+    end
+    
+    unless @tmp_paid_fees.blank?
+      @tmp_paid_fees.each do |paid_fee|
+        transaction_id = paid_fee.id
+        online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+        unless online_payments.blank?
+          fine_enabled = false
+        end
       end
     end
     
@@ -9610,6 +9706,20 @@ class FinanceController < ApplicationController
           end
         end
         
+        unless @tmp_paid_fees.blank?
+          @tmp_paid_fees = @all_financefee[@iloop].finance_transactions
+        end
+        
+        unless @tmp_paid_fees.blank?
+          @tmp_paid_fees.each do |paid_fee|
+            transaction_id = paid_fee.id
+            online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+            unless online_payments.blank?
+              fine_enabled = false
+            end
+          end
+        end
+        
         auto_fine=@date.fine
         
         @all_has_fine_discount[@iloop] = false
@@ -9771,6 +9881,20 @@ class FinanceController < ApplicationController
         end
       end
       
+      if @tmp_paid_fees.blank?
+        @tmp_paid_fees = @financefee.finance_transactions
+      end
+      
+      unless @tmp_paid_fees.blank?
+        @tmp_paid_fees.each do |paid_fee|
+          transaction_id = paid_fee.id
+          online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+          unless online_payments.blank?
+            fine_enabled = false
+          end
+        end
+      end
+      
       auto_fine=@date.fine
       
       bal=(@total_payable-@total_discount).to_f
@@ -9795,6 +9919,20 @@ class FinanceController < ApplicationController
           fine_enabled = true
         else
           fine_enabled = false
+        end
+      end
+      
+      if @tmp_paid_fees.blank?
+        @tmp_paid_fees = @financefee.finance_transactions
+      end
+      
+      unless @tmp_paid_fees.blank?
+        @tmp_paid_fees.each do |paid_fee|
+          transaction_id = paid_fee.id
+          online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+          unless online_payments.blank?
+            fine_enabled = false
+          end
         end
       end
       
@@ -9966,6 +10104,20 @@ class FinanceController < ApplicationController
             fine_enabled = true
           else
             fine_enabled = false
+          end
+        end
+        
+        unless @tmp_paid_fees.blank?
+          @tmp_paid_fees = @financefee[@iloop].finance_transactions
+        end
+        
+        unless @tmp_paid_fees.blank?
+          @tmp_paid_fees.each do |paid_fee|
+            transaction_id = paid_fee.id
+            online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+            unless online_payments.blank?
+              fine_enabled = false
+            end
           end
         end
         
@@ -10147,6 +10299,20 @@ class FinanceController < ApplicationController
         end
       end
       
+      if @tmp_paid_fees.blank?
+        @tmp_paid_fees = @financefee.finance_transactions
+      end
+      
+      unless @tmp_paid_fees.blank?
+        @tmp_paid_fees.each do |paid_fee|
+          transaction_id = paid_fee.id
+          online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+          unless online_payments.blank?
+            fine_enabled = false
+          end
+        end
+      end
+      
       auto_fine=@date.fine
       
       @has_fine_discount = false
@@ -10271,6 +10437,20 @@ class FinanceController < ApplicationController
           fine_enabled = true
         else
           fine_enabled = false
+        end
+      end
+      
+      if @tmp_paid_fees.blank?
+        @tmp_paid_fees = @financefee.finance_transactions
+      end
+      
+      unless @tmp_paid_fees.blank?
+        @tmp_paid_fees.each do |paid_fee|
+          transaction_id = paid_fee.id
+          online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+          unless online_payments.blank?
+            fine_enabled = false
+          end
         end
       end
       
@@ -10619,6 +10799,20 @@ class FinanceController < ApplicationController
           end
         end
         
+        if @tmp_paid_fees.blank?
+          @tmp_paid_fees = @financefee.finance_transactions
+        end
+        
+        unless @tmp_paid_fees.blank?
+          @tmp_paid_fees.each do |paid_fee|
+            transaction_id = paid_fee.id
+            online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+            unless online_payments.blank?
+              fine_enabled = false
+            end
+          end
+        end
+        
         auto_fine=@date.fine
         
         @has_fine_discount = false
@@ -10723,6 +10917,20 @@ class FinanceController < ApplicationController
               fine_enabled = true
             else
               fine_enabled = false
+            end
+          end
+          
+          unless @tmp_paid_fees.blank?
+            @tmp_paid_fees = @financefee[@iloop].finance_transactions
+          end
+          
+          unless @tmp_paid_fees.blank?
+            @tmp_paid_fees.each do |paid_fee|
+              transaction_id = paid_fee.id
+              online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+              unless online_payments.blank?
+                fine_enabled = false
+              end
             end
           end
           
@@ -10839,6 +11047,20 @@ class FinanceController < ApplicationController
       end
     end
     
+    if @tmp_paid_fees.blank?
+      @tmp_paid_fees = @financefee.finance_transactions
+    end
+    
+    unless @tmp_paid_fees.blank?
+      @tmp_paid_fees.each do |paid_fee|
+        transaction_id = paid_fee.id
+        online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+        unless online_payments.blank?
+          fine_enabled = false
+        end
+      end
+    end
+    
     auto_fine=@date.fine
     
     @has_fine_discount = false
@@ -10939,6 +11161,20 @@ class FinanceController < ApplicationController
         fine_enabled = true
       else
         fine_enabled = false
+      end
+    end
+    
+    if @tmp_paid_fees.blank?
+      @tmp_paid_fees = @financefee.finance_transactions
+    end
+    
+    unless @tmp_paid_fees.blank?
+      @tmp_paid_fees.each do |paid_fee|
+        transaction_id = paid_fee.id
+        online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+        unless online_payments.blank?
+          fine_enabled = false
+        end
       end
     end
     
@@ -11052,6 +11288,20 @@ class FinanceController < ApplicationController
         fine_enabled = true
       else
         fine_enabled = false
+      end
+    end
+    
+    if @tmp_paid_fees.blank?
+      @tmp_paid_fees = @financefee.finance_transactions
+    end
+    
+    unless @tmp_paid_fees.blank?
+      @tmp_paid_fees.each do |paid_fee|
+        transaction_id = paid_fee.id
+        online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+        unless online_payments.blank?
+          fine_enabled = false
+        end
       end
     end
     
@@ -14030,6 +14280,20 @@ class FinanceController < ApplicationController
       end
     end
     
+    if @tmp_paid_fees.blank?
+      @tmp_paid_fees = @financefee.finance_transactions
+    end
+    
+    unless @tmp_paid_fees.blank?
+      @tmp_paid_fees.each do |paid_fee|
+        transaction_id = paid_fee.id
+        online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+        unless online_payments.blank?
+          fine_enabled = false
+        end
+      end
+    end
+    
     auto_fine=@date.fine
     
     @has_fine_discount = false
@@ -15194,6 +15458,20 @@ class FinanceController < ApplicationController
       end
     end
     
+    if @tmp_paid_fees.blank?
+      @tmp_paid_fees = @financefee.finance_transactions
+    end
+    
+    unless @tmp_paid_fees.blank?
+      @tmp_paid_fees.each do |paid_fee|
+        transaction_id = paid_fee.id
+        online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+        unless online_payments.blank?
+          fine_enabled = false
+        end
+      end
+    end
+    
     auto_fine=@date.fine
     
     @has_fine_discount = false
@@ -15456,6 +15734,20 @@ class FinanceController < ApplicationController
           fine_enabled = true
         else
           fine_enabled = false
+        end
+      end
+      
+      if @tmp_paid_fees.blank?
+        @tmp_paid_fees = @financefee.finance_transactions
+      end
+      
+      unless @tmp_paid_fees.blank?
+        @tmp_paid_fees.each do |paid_fee|
+          transaction_id = paid_fee.id
+          online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+          unless online_payments.blank?
+            fine_enabled = false
+          end
         end
       end
       
@@ -16265,6 +16557,20 @@ class FinanceController < ApplicationController
         fine_enabled = true
       else
         fine_enabled = false
+      end
+    end
+    
+    if @tmp_paid_fees.blank?
+      @tmp_paid_fees = @financefee.finance_transactions
+    end
+    
+    unless @tmp_paid_fees.blank?
+      @tmp_paid_fees.each do |paid_fee|
+        transaction_id = paid_fee.id
+        online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+        unless online_payments.blank?
+          fine_enabled = false
+        end
       end
     end
     

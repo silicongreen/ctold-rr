@@ -829,6 +829,15 @@ module FinanceLoader
       end
     end
     
+    unless @paid_fees.blank?
+      @paid_fees.each do |paid_fee|
+        transaction_id = paid_fee.id
+        online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+        unless online_payments.blank?
+          fine_enabled = false
+        end
+      end
+    end
     auto_fine=@date.fine
 
     @has_fine_discount = false
@@ -1065,6 +1074,16 @@ module FinanceLoader
         end
       end
       auto_fine=@date[f].fine
+      
+      unless @paid_fees[f].blank?
+        @paid_fees[f].each do |paid_fee|
+          transaction_id = paid_fee.id
+          online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+          unless online_payments.blank?
+            fine_enabled = false
+          end
+        end
+      end
 
       @has_fine_discount[f] = false
       if days > 0 and auto_fine and fine_enabled #and @financefee[f].is_paid == false
@@ -1214,6 +1233,18 @@ module FinanceLoader
                   fine_enabled = false
                 end
               end
+              
+              @paid_fees = @financefee.finance_transactions
+              unless @paid_fees.blank?
+                @paid_fees.each do |paid_fee|
+                  transaction_id = paid_fee.id
+                  online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+                  unless online_payments.blank?
+                    fine_enabled = false
+                  end
+                end
+              end
+          
               auto_fine=@date.fine
 
               if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
@@ -1651,6 +1682,18 @@ module FinanceLoader
                           fine_enabled = false
                         end
                       end
+                      
+                      @tmp_paid_fees = @financefee[f].finance_transactions
+                      unless @tmp_paid_fees.blank?
+                        @tmp_paid_fees.each do |paid_fee|
+                          transaction_id = paid_fee.id
+                          online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
+                          unless online_payments.blank?
+                            fine_enabled = false
+                          end
+                        end
+                      end
+                    
                       if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
                         fine_rule = auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date[f].created_at}'"],:order=>'fine_days ASC')
                         fine_amount = fine_rule.is_amount ? fine_rule.fine_amount : (bal*fine_rule.fine_amount)/100 if fine_rule

@@ -459,6 +459,9 @@ unless @ranked_student.blank?
                                         f_grade_count = f_grade_count+1
                                       end 
                                       total_grade = total_grade+grade.credit_points
+                                      if subject_grades[sub['id'].to_i][grade.name].blank?
+                                        subject_grades[sub['id'].to_i][grade.name] = 0
+                                      end  
                                       subject_grades[sub['id'].to_i][grade.name] = subject_grades[sub['id'].to_i][grade.name]+1
                                       if grades.include?(grade.name.to_s)
                                         grade_count[grade.name.to_s] = grade_count[grade.name.to_s]+1

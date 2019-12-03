@@ -574,6 +574,28 @@ unless @ranked_student.blank?
                       end
                      end
                     %>
+                    <% colspan = @report_data['report']['subjects'].count %>
+                    <% colspan = colspan+2 %>
+                    <tr class="table-header">
+                       
+                        <td colspan="<%= colspan %>" class="no-border-td" ></td> 
+                        <td colspan="2">Total Student = <%= total_student_numbers %></td>
+                    </tr>
+                    <tr class="table-header">
+                       
+                        <td colspan="<%= colspan %>" class="no-border-td" ></td> 
+                        <td colspan="2">Failed = <%= total_student_numbers-passed_student %></td>
+                    </tr>
+                    <tr class="table-header">
+                       
+                        <td colspan="<%= colspan %>" class="no-border-td" ></td> 
+                        
+                        <% pass = 100  %>
+                        <% if total_student_numbers > 0 && passed_student < total_student_numbers  %>
+                        <% pass = (passed_student/total_student_numbers)*100  %>
+                        <% end %>
+                        <td colspan="2">Pass = <%= sprintf( "%0.02f", pass) %></td>
+                    </tr>
                       
               </table>
             <% end %>
@@ -615,5 +637,9 @@ unless @ranked_student.blank?
     {
         text-align: right;
         padding: 1px 5px !important;
-    }    
+    } 
+    .table-header td.no-border-td
+    {
+      border: none !important;
+    }
 </style>

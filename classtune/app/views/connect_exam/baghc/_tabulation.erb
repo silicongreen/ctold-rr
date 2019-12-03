@@ -520,7 +520,7 @@ unless @ranked_student.blank?
                     <% end %>
                   <% end %>
                       <% if std_count>4 %>
-                        <tr class="page-break">
+                        <tr class="page-break-low">
                             <td colspan="100">&nbsp;</td>
                         </tr>
                       <% end %>
@@ -557,13 +557,15 @@ unless @ranked_student.blank?
                         <% end %> 
                         <% if first == true %>
                           <td colspan="2" rowspan="7" >
-                              F[0] = <%= f_grade[0] %>&nbsp;&nbsp;F[7] = <%= f_grade[7] %><br/>
-                              F[1] = <%= f_grade[1] %>&nbsp;&nbsp;F[8] = <%= f_grade[8] %><br/>
-                              F[2] = <%= f_grade[2] %>&nbsp;&nbsp;F[9] = <%= f_grade[9] %><br/>
-                              F[3] = <%= f_grade[3] %>&nbsp;&nbsp;F[10] = <%= f_grade[10] %><br/>
-                              F[4] = <%= f_grade[4] %>&nbsp;&nbsp;F[11] = <%= f_grade[11] %><br/>
-                              F[5] = <%= f_grade[5] %>&nbsp;&nbsp;F[12] = <%= f_grade[12] %><br/>
-                              F[6] = <%= f_grade[6] %>&nbsp;&nbsp;F[12+] = <%= f_grade[13] %><br/>
+                              <table>
+                                  <tr><td>F[0] = <%= f_grade[0] %></td><td>F[7] = <%= f_grade[7] %></td></tr>
+                                  <tr><td>F[1] = <%= f_grade[1] %></td><td>F[8] = <%= f_grade[8] %></td></tr>
+                                  <tr><td>F[2] = <%= f_grade[2] %></td><td>F[9] = <%= f_grade[9] %></td></tr>
+                                  <tr><td>F[3] = <%= f_grade[3] %></td><td>F[10] = <%= f_grade[10] %></td></tr>
+                                  <tr><td>F[4] = <%= f_grade[4] %></td><td>F[11] = <%= f_grade[11] %></td></tr>
+                                  <tr><td>F[5] = <%= f_grade[5] %></td><td>F[12] = <%= f_grade[12] %></td></tr>
+                                  <tr><td>F[6] = <%= f_grade[6] %></td><td>F[12+] = <%= f_grade[13] %></td></tr>
+                              </table>
                           </td> 
                           <% first = false %>
                         <% end %>  
@@ -584,6 +586,12 @@ unless @ranked_student.blank?
 <style>
     .page-break120 td{
         height: 150px;
+        border: 1px solid #fff;
+        border-top: 1px solid #000000;
+        border-bottom: 1px solid #000000;
+    }
+    .page-break-low td{
+        height: 80px;
         border: 1px solid #fff;
         border-top: 1px solid #000000;
         border-bottom: 1px solid #000000;

@@ -156,7 +156,7 @@ unless @ranked_student.blank?
 
                       <td class="col-pdf">Roll</td>
                       <td class="col-pdf">Students Name</td>
-                      <td class="col-pdf">Exams<hr/>CQ<hr/>MCQ<hr/>MTT</td>
+                      <td class="col-pdf">Exams<hr/>CQ/SQ<hr/>MCQ<hr/>MTT/Prac</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% cq = 0 %>
                         <% mtt = 0 %>
@@ -238,7 +238,7 @@ unless @ranked_student.blank?
 
                             <td class="col-pdf">Roll</td>
                             <td class="col-pdf">Students Name</td>
-                            <td class="col-pdf">Exams<hr/>CQ<hr/>MCQ<hr/>MTT</td>
+                            <td class="col-pdf">Exams<hr/>CQ/SQ<hr/>MCQ<hr/>MTT/Prac</td>
                             <% @report_data['report']['subjects'].each do |sub| %>
                               <% cq = 0 %>
                               <% mtt = 0 %>
@@ -281,7 +281,7 @@ unless @ranked_student.blank?
 
                             <td class="col-pdf">Roll</td>
                             <td class="col-pdf">Students Name</td>
-                            <td class="col-pdf">Exams<hr/>CQ<hr/>MCQ<hr/>MTT</td>
+                            <td class="col-pdf">Exams<hr/>CQ/SQ<hr/>MCQ<hr/>MTT/Prac</td>
                             <% @report_data['report']['subjects'].each do |sub| %>
                               <% cq = 0 %>
                               <% mtt = 0 %>
@@ -328,7 +328,7 @@ unless @ranked_student.blank?
                           <% else %>
                             <td class="name-std"><%= "-" %></td>
                           <% end %>
-                          <td >CQ<hr/>MCQ<hr/>MTT<hr/>Total(%)<hr/>GP</td>
+                          <td >CQ/SQ<hr/>MCQ<hr/>MTT/Prac<hr/>Total(%)<hr/>GP</td>
                           <% total_mark = 0 %>
                           <% grades = [] %>
                           <% grade_count = {} %>
@@ -594,7 +594,7 @@ unless @ranked_student.blank?
                         <% if total_student_numbers > 0 && passed_student < total_student_numbers  %>
                           <% pass = (passed_student.to_f/total_student_numbers.to_f)*100  %>
                         <% end %>
-                        <td colspan="2" class="align-right">Pass = <%= sprintf( "%0.02f", pass) %></td>
+                        <td colspan="2" class="align-right">Pass = <%= sprintf( "%0.02f", pass) %>%</td>
                     </tr>
                       
               </table>

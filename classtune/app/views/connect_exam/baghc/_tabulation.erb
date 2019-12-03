@@ -181,7 +181,7 @@ unless @ranked_student.blank?
                             unless @grading_levels.empty?
                               @grading_levels.each_with_index do |grade,index|
                                 subject_grades[sub['id'].to_i] = {}
-                                subject_grades[sub['id'].to_i][grade.name] = 0
+                                subject_grades[sub['id'].to_i][grade.id.to_i] = 0
                               end
                             end
                         
@@ -459,10 +459,10 @@ unless @ranked_student.blank?
                                         f_grade_count = f_grade_count+1
                                       end 
                                       total_grade = total_grade+grade.credit_points
-                                      if subject_grades[sub['id'].to_i][grade.name].blank?
-                                        subject_grades[sub['id'].to_i][grade.name] = 0
+                                      if subject_grades[sub['id'].to_i][grade.id.to_i].blank?
+                                        subject_grades[sub['id'].to_i][grade.id.to_i] = 0
                                       end  
-                                      subject_grades[sub['id'].to_i][grade.name] = subject_grades[sub['id'].to_i][grade.name]+1
+                                      subject_grades[sub['id'].to_i][grade.id.to_i] = subject_grades[sub['id'].to_i][grade.id.to_i]+1
                                       if grades.include?(grade.name.to_s)
                                         grade_count[grade.name.to_s] = grade_count[grade.name.to_s]+1
                                       else
@@ -548,7 +548,7 @@ unless @ranked_student.blank?
                       <tr class="table-header">
                        <td><%= grade.name %></td>  
                         <% @report_data['report']['subjects'].each do |sub| %>
-                          <td><% subject_grades[sub['id'].to_i][grade.name] %></td>
+                          <td><%= subject_grades[sub['id'].to_i][grade.id.to_i] %></td>
                         <% end %> 
                         <% if first == true %>
                           <td colspan="2" rowspan="7" >

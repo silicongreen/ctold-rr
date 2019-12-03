@@ -448,7 +448,7 @@ unless @ranked_student.blank?
                                     if subject_total_marks[sub['id'].to_i].blank?
                                       subject_total_marks[sub['id'].to_i] = 0
                                     end  
-                                    subject_total_marks[sub['id'].to_i] = subject_total_marks[sub['id']]+main_mark
+                                    subject_total_marks[sub['id'].to_i] = subject_total_marks[sub['id'].to_i]+main_mark
                                     %>
                                     <%= sprintf( "%0.02f", main_mark) %>
                                     <hr/>

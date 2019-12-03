@@ -1578,10 +1578,19 @@ class SmsController < ApplicationController
     end
     sms_setting = SmsSetting.new()
     student_ids.each do |s|
-      fee = fees_students.select{|f| f.student_id.to_i == s.to_i}
-      unless fee.blank?
+      fees = fees_students.select{|f| f.student_id.to_i == s.to_i}
+      unless fees.blank?
         #abort(fee.inspect)
-        balance = fee.map{|f|f.balance.to_f}.sum
+        balance = 0.0
+        fees.each do |fee|
+          student_info = fee.student
+          date = FinanceFeeCollection.find(fee.fee_collection_id)
+          unless date.blank?
+            bal = FinanceFee.get_student_balance(date, student_info, fee)
+            balance += bal
+          end
+        end
+        #balance = fee.map{|f|f.balance.to_f}.sum
         #balance = fee.total_balance
 
         if sent_to.to_i == 2
@@ -1593,7 +1602,7 @@ class SmsController < ApplicationController
             tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
             tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
             tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
-            tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee[0].due_date.to_date.strftime("%d-%b-%Y"))
+            tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fees[0].due_date.to_date.strftime("%d-%b-%Y"))
             i += 1
             @recipients.push std.sms_number
           else
@@ -1602,7 +1611,7 @@ class SmsController < ApplicationController
               tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
               tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
               tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
-              tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee[0].due_date.to_date.strftime("%d-%b-%Y"))
+              tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fees[0].due_date.to_date.strftime("%d-%b-%Y"))
               i += 1
               @recipients.push std.phone2
             end
@@ -1619,7 +1628,7 @@ class SmsController < ApplicationController
             tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
             tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
             tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
-            tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee[0].due_date.to_date.strftime("%d-%b-%Y"))
+            tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fees[0].due_date.to_date.strftime("%d-%b-%Y"))
             i += 1
             @recipients.push std.sms_number
           else
@@ -1628,7 +1637,7 @@ class SmsController < ApplicationController
               tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
               tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
               tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
-              tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee[0].due_date.to_date.strftime("%d-%b-%Y"))
+              tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fees[0].due_date.to_date.strftime("%d-%b-%Y"))
               i += 1
               @recipients.push std.phone2
             end

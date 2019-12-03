@@ -552,6 +552,27 @@ p.flash-msg
              }
           }
       });
+      
+      j(document).on("change","#fee_collections",function(){
+          var fee_collection_id = parseInt(j("#fee_collections").val());
+          if ( fee_collection_id != 0 )
+          {
+            if (j("#sms_to_all_fa").hasClass("fa-check-square-o"))
+            {
+
+            }
+            else
+            {
+                new Ajax.Request('/sms/show_option_student_feedues', 
+                    {
+                      asynchronous:true, 
+                      evalScripts:true,
+                      parameters:'fee_id='+j("#fee_collections").val()
+                    }
+               );
+            }
+          }
+      });
       j(document).on("click",".sms_to_options_fa_em",function(){
           var a_id = this.id.split('_');
           var id = a_id[2];

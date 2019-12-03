@@ -592,7 +592,7 @@ unless @ranked_student.blank?
                         
                         <% pass = 100  %>
                         <% if total_student_numbers > 0 && passed_student < total_student_numbers  %>
-                        <% pass = (passed_student/total_student_numbers)*100  %>
+                          <% pass = (passed_student.to_f/total_student_numbers.to_f)*100  %>
                         <% end %>
                         <td colspan="2">Pass = <%= sprintf( "%0.02f", pass) %></td>
                     </tr>

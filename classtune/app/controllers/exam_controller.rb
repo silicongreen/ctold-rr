@@ -6238,6 +6238,9 @@ class ExamController < ApplicationController
                 full_sb2 = 0
                 total_sb1 = 0
                 total_sb2 = 0
+                
+                total_sb1_main = 0
+                total_sb2_main = 0
 
                 full_ob1 = 0
                 full_ob2 = 0
@@ -6757,6 +6760,10 @@ class ExamController < ApplicationController
 
                 total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
                 
+                
+                total_sb1_main = total_sb1
+                total_sb2_main = total_sb2
+                
                 if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6
                   full_mark_sb1_converted = full_mark1-full_pr1-full_ob1-monthly_full_mark1
                   full_mark_sb2_converted = full_mark2-full_pr2-full_ob2-monthly_full_mark2
@@ -6956,10 +6963,10 @@ class ExamController < ApplicationController
                   end
                   if full_sb1 > 0 || full_sb2 > 0
                     if appeared_sb
-                      sb_not_round = sb_round = total_sb1+total_sb2
+                      sb_not_round = sb_round = total_sb1_main+total_sb2_main
                       sb_round = sb_round.round()
                       if full_sb1 > 0 && full_sb2 > 0
-                        sb_not_round = sb_round = (total_sb1+total_sb2)/2
+                        sb_not_round = sb_round = (total_sb1_main+total_sb2_main)/2
                         sb_round = sb_round.round()
                       end
                       if @connect_exam_obj.result_type < 5
@@ -7155,6 +7162,9 @@ class ExamController < ApplicationController
                     full_sb22 = 0
                     total_sb12 = 0
                     total_sb22 = 0
+                    
+                    total_sb12_main = 0
+                    total_sb22_main = 0
 
                     full_ob12 = 0
                     full_ob22 = 0

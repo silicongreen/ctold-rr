@@ -579,12 +579,12 @@ unless @ranked_student.blank?
                     <tr class="table-header">
                        
                         <td colspan="<%= colspan %>" class="no-border-td" ></td> 
-                        <td colspan="2">Total Student = <%= total_student_numbers %></td>
+                        <td colspan="2" class="align-right">Total Student = <%= total_student_numbers %></td>
                     </tr>
                     <tr class="table-header">
                        
                         <td colspan="<%= colspan %>" class="no-border-td" ></td> 
-                        <td colspan="2">Failed = <%= total_student_numbers-passed_student %></td>
+                        <td colspan="2" class="align-right">Failed = <%= total_student_numbers-passed_student %></td>
                     </tr>
                     <tr class="table-header">
                        
@@ -594,7 +594,7 @@ unless @ranked_student.blank?
                         <% if total_student_numbers > 0 && passed_student < total_student_numbers  %>
                           <% pass = (passed_student.to_f/total_student_numbers.to_f)*100  %>
                         <% end %>
-                        <td colspan="2">Pass = <%= sprintf( "%0.02f", pass) %></td>
+                        <td colspan="2" class="align-right">Pass = <%= sprintf( "%0.02f", pass) %></td>
                     </tr>
                       
               </table>

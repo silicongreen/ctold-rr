@@ -168,7 +168,7 @@
                     <td class="col-pdf aling-left no-warp"><%= std_category %></td>
                     <td class="col-pdf aling-left"><%= monthly_fee %></td>
                     <td class="col-pdf aling-left"><%= student.sms_number %></td>
-                    <td class="col-pdf aling-left"></td>
+                    <td class="col-pdf aling-left remarks-td"></td>
                 </tr>
               <% end %>  
             <% end %>
@@ -196,6 +196,10 @@
         background: #ffffff;
         font-size: 20px;
         text-align:center;
+    }
+    .remarks-td
+    {
+      width: 200px;
     }
     .table-header td{
         padding: 5px 3px;

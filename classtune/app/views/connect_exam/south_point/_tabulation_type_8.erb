@@ -480,6 +480,9 @@
                   <% end %>
               </table>
             <% end %>
+            <% if std_count>9 %>
+              <div class="page-break-main"></div>
+            <% end %>
             <%= render  :partial=>"/connect_exam/south_point/sign_south_2" %>
         </center>
     </div>
@@ -522,4 +525,5 @@
         text-align: center;
         font-size: 11px;
     }
+    .page-break-main { display:block; clear:both; page-break-after:always; }
 </style>

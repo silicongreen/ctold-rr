@@ -1581,16 +1581,16 @@ class SmsController < ApplicationController
       fees = fees_students.select{|f| f.student_id.to_i == s.to_i}
       unless fees.blank?
         #abort(fee.inspect)
-        balance = 0.0
-        fees.each do |fee|
-          student_info = fee.student
-          date = FinanceFeeCollection.find(fee.fee_collection_id)
-          unless date.blank?
-            bal = FinanceFee.get_student_balance(date, student_info, fee)
-            balance += bal
-          end
-        end
-        #balance = fee.map{|f|f.balance.to_f}.sum
+#        balance = 0.0
+#        fees.each do |fee|
+#          student_info = fee.student
+#          date = FinanceFeeCollection.find(fee.fee_collection_id)
+#          unless date.blank?
+#            bal = FinanceFee.get_student_balance(date, student_info, fee)
+#            balance += bal
+#          end
+#        end
+        balance = fees.map{|f|f.balance.to_f}.sum
         #balance = fee.total_balance
 
         if sent_to.to_i == 2

@@ -10613,6 +10613,7 @@ class FinanceController < ApplicationController
     unless params[:test].blank?
       if params[:test].to_i == 1
         finance_fees = FinanceFee.find(:all, :conditions => "id > 201090")
+        abort(finance_fees.inspect)
         unless finance_fees.blank?
           finance_fees.each do |fee|
             student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{fee.student_id} and fee_id = #{fee.id}")

@@ -1,0 +1,529 @@
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+  <p>&nbsp;</p>
+  <div id="page-yield"  class="available_sections1 sis sis-final landscape">
+      <div class="section1 row" >
+         
+              
+                  <table id="pdf-table"  width="100%" class="no-border left-clear-both margin-bottom-20"  cellspacing="0" >
+                      <tr>
+                          <td class="align-left width-33 height-50">&nbsp;</td>
+                          <td class="width-33"><h2 align="center"><font size="6" color="#36346B">&nbsp;</font></h2></td>
+                          <td class="align-right width-33"><font color="#BF1E2D" size="6"><b>Class - <%= @batch.course.course_name %></b></font></td>
+                     </tr>
+                     <tr><td colspan="3">&nbsp;</td></tr>
+                  </table>
+            
+      </div>
+      <div class="student_information">
+          <table class="std_info_table" width="100%" cellspacing="0">
+              <tr>
+                  <td class="align-left">NAME </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= @student.full_name %></td>
+                  <td class="align-left">SHIFT </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= @batch.name %></td>
+                  <td class="align-left">SECTION </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= @batch.course.section_name %></td>
+              </tr>
+              <tr>
+                  <td class="align-left">ROLL </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= @student.class_roll_no %></td>
+                  <td class="align-left">DATE OF BIRTH </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>"%d %B %Y") unless @student.date_of_birth.nil? %></td>
+                  <td class="align-left">DATE </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= I18n.l(@connect_exam_obj.published_date,:format=>"%d %B %Y") %></td>
+              </tr>
+          </table>
+      </div>
+      <% total_subject = 0 %>
+      <% total_comments_grade = 3 %>
+      <div class ="current_batch" style="margin-left:0px;">
+          <div id="grouped_exam_report">
+              <table id="pdf-table"  width="30%" class="left-table even-table exam-marks" cellspacing="0" >
+                  <% c = 'even'  %>
+                  <tr class="odd">
+                      <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII" %>
+                        <td class="col-pdf" rowspan="2"><%= "Subject" %></td>
+                      <% else %>
+                        <td class="col-pdf"><%= "Subject" %></td>
+                      <% end %>
+                      <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII" %>
+                        <% if @connect_exam_obj.quarter_number == 5 %>
+                          <td class="col-pdf height-18" colspan="2">First Term</td>
+                        <% else %>
+                          <td class="col-pdf height-18" colspan="2">Final Term</td>
+                        <% end %>
+                      <% else %>  
+                        <% if @connect_exam_obj.quarter_number == 5 %>
+                          <td class="col-pdf height-18">First Term<br/>(Grade)</td>
+                        <% else %>
+                          <td class="col-pdf height-18">Final Term<br/>(Grade)</td>
+                        <% end %>
+                      <% end %>  
+                  </tr>
+                  <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII" %>
+                  <tr class="even">
+                    <td class="col-pdf height-18">Marks</td>
+                    <td class="col-pdf height-18">Grade</td>
+                  </tr>
+                  <% end %>
+
+                  <% total_marks_obtain = 0 %>
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% if subjects['no_exams_sjws'].to_i == 1  %>
+                        <% next %>
+                      <% end %>
+                        <% q1_mark = 0 %>
+                        <% q2_mark = 0 %>
+                        <% q3_mark = 0 %>
+                        <% q4_mark = 0 %>
+                        <% first_term_mark = 0 %>
+                        <% final_term_mark = 0 %>
+                        <% q1_fullmark = 0 %>
+                        <% q2_fullmark = 0 %>
+                        <% q3_fullmark = 0 %>
+                        <% q4_fullmark = 0 %>
+                        <% first_term_fullmark = 0 %>
+                        <% final_term_fullmark = 0 %>
+                        <% total_mark = 0 %>
+                        <% total_mark_all = 0 %>
+                        <% has_mark = false %>
+                        <% if @connect_exam_obj.id == 2231 && subjects['name'] == "Reading" %>
+                          <% next %>
+                        <% end %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+
+                          <td class="col-pdf no-warp  align-left"><%= subjects['name'] %></td>
+                          <% 
+                          unless @report_data['report']['exams'].blank?   
+                            @report_data['report']['exams'].each do |report| 
+                              if report['exam_category'] == '7'
+                                 next
+                              end
+                              if report['quarter'] == '1'
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
+                                  q1_mark = q1_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                  if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
+                                    has_mark = true
+                                  end
+                                end
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
+                                  q1_fullmark = q1_fullmark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                end
+                              end
+                              if report['quarter'] == '2'
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
+                                  q2_mark = q2_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                  if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
+                                    has_mark = true
+                                  end
+                                end
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
+                                  q2_fullmark = q2_fullmark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                end
+                              end
+                              if report['quarter'] == '3'
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
+                                  q3_mark = q3_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                  if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
+                                    has_mark = true
+                                  end
+                                end
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
+                                  q3_fullmark = q3_fullmark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                end
+                              end
+                              if report['quarter'] == '4'
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
+                                  q4_mark = q4_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                  if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
+                                    has_mark = true
+                                  end
+                                end
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
+                                  q4_fullmark = q4_fullmark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                end
+                              end
+                              if report['quarter'] == '5'
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
+                                  first_term_mark = first_term_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                  if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
+                                    has_mark = true
+                                  end
+                                end
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
+                                  first_term_fullmark = first_term_fullmark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                end
+                              end
+                              if report['quarter'] == '6'
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
+                                  final_term_mark = final_term_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                  if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
+                                    has_mark = true
+                                  end
+                                end
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
+                                  final_term_fullmark = final_term_fullmark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                end
+                              end
+                            end 
+                          end 
+                        
+                          full_mark_term = 0
+                          if first_term_fullmark > 0 or q1_fullmark > 0 or q2_fullmark > 0
+                            q1_mark_20 = 0
+                            q2_mark_20 = 0
+                            first_term_mark_60 = 0 
+                            if q1_fullmark > 0 && q1_mark > 0
+                              q1_mark_20 = (q1_mark.to_f/q1_fullmark.to_f)*25
+                              q1_mark_20 = q1_mark_20.round()
+                            end 
+                            if q2_fullmark > 0 && q2_mark > 0
+                              q2_mark_20 = (q2_mark.to_f/q2_fullmark.to_f)*25
+                              q2_mark_20 = q2_mark_20.round()
+                            end 
+                            if first_term_fullmark > 0 && first_term_mark > 0
+                              full_mark_term = first_term_fullmark
+                              first_term_mark_60 = first_term_mark.to_f
+                            end
+                            total_mark = q1_mark_20+q2_mark_20+first_term_mark_60
+                            unless first_term_fullmark > 0	
+                              total_mark = total_mark*2	
+                            end
+                            total_mark_all = total_mark_all+total_mark.round()
+                          end 
+                          if final_term_fullmark > 0 or q3_fullmark > 0 or q4_fullmark > 0
+                            q3_mark_20 = 0
+                            q4_mark_20 = 0
+                            final_term_mark_60 = 0 
+                            if q3_fullmark > 0 && q3_mark > 0
+                              q3_mark_20 = (q3_mark.to_f/q3_fullmark.to_f)*25
+                              q3_mark_20 = q3_mark_20.round()
+                            end 
+                            if q4_fullmark > 0 && q4_mark > 0
+                              q4_mark_20 = (q4_mark.to_f/q4_fullmark.to_f)*25
+                              q4_mark_20 = q4_mark_20.round()
+                            end 
+                            if final_term_fullmark > 0 && final_term_mark > 0
+                              full_mark_term = first_term_fullmark
+                              final_term_mark_60 = final_term_mark.to_f
+                            end
+                            total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
+                            unless final_term_fullmark > 0	
+                              total_mark = total_mark*2	
+                            end
+                            total_mark_all = total_mark_all+total_mark.round()
+                          end
+                          total_mark = total_mark.round()
+                          full_mark_all = full_mark_term+50
+                          main_mark = 0
+                          if total_mark > 0 && full_mark_all > 0
+                            main_mark = (total_mark.to_f/full_mark_all.to_f)*100
+                          end
+                          grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                          total_marks_obtain = total_marks_obtain+total_mark_all
+                           
+                          if has_mark == true
+                          %>
+                          <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII" %>
+                          <td class="col-pdf"><b><%= total_mark %></b></td>
+                          <% end %>
+                          <% if !grade.blank? and !grade.name.blank? %>
+                            <td class="col-pdf"><b><%= grade.name %></b></td>
+                          <% else %>
+                            <td class="col-pdf"><b>-</b></td>
+                          <% end %> 
+                          <% else %>
+                            <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII" %>
+                              <td class="col-pdf"><b>-</b></td>
+                            <% end %>
+                            <td class="col-pdf"<b>-</b></td>
+                          <% end %> 
+                          
+
+                      </tr> 
+                      <% total_subject = total_subject+1 %>
+                    <% end %>  
+                  <% end %>   
+                  <%  
+                    
+                    group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
+                    
+                    @all_subjects = []
+                    group_exams.each do |group_exam|
+                      allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
+                      allexams.each do |exam|
+                        if !@all_subjects.include?(exam.subject.id)
+                          @all_subjects << exam.subject.id
+                        end
+                      end
+                    end 
+                  %>
+                  <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                    <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
+                      <%  if @all_subjects.include?(report['id'].to_i) && !report['subject_comment'].blank? %>
+                      <% total_subject = total_subject+1 %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                          <td class="col-pdf no-warp  align-left"><%= report['subject_name'] %></td>
+                          <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII" %>
+                            <td class="col-pdf"><b>-</b></td>
+                          <% end %>
+                          <td class="col-pdf"><b><%= report['subject_comment'] %></b></td>
+                      </tr>
+                      <% end %>
+                    <% end %>
+                  <% end %>    
+
+              </table>
+              <table id="pdf-table"  width="66%" class="left-table odd-table height-exam" cellspacing="0" >
+                  <tr class="odd">
+                      <td class="col-pdf"><%= "Assessment" %></td>
+                      <td class="col-pdf width-15">Excellent</td>
+                      <td class="col-pdf width-15">Good</td>
+                      <td class="col-pdf width-15">Satisfactory</td>
+                      <td class="col-pdf width-15">Needs Improvement</td>
+                      <td class="col-pdf width-15">Causing Concern</td>
+                  </tr>
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% if subjects['no_exams_sjws'].to_i == 0  or !has_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
+                        <% next %>
+                      <% end %>
+                      <% wordString_main = "" %>
+                  
+                      <% @report_data['report']['exams'].each do |report| %>
+                         <% if subjects['no_exams_sjws'].to_i == 0  or !has_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
+                           <% next %>
+                         <% end %>
+                         <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
+                          <% if @connect_exam_obj.quarter_number.to_i == report['quarter'].to_i %>
+                            <% wordString_main = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
+                            <% break %>
+                          <% end %>
+                         <% end %>
+                      <% end %> 
+                      <% wordString = wordString_main.split("|") %>
+                      
+                        <% subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
+                        <% iloop = 0 %>
+                        <% subject_groups.each do |group_name| %>
+                            <% if !wordString.blank? and !wordString[iloop].blank? %>
+                           <tr class="odd">
+                               <td class="col-pdf align-left"><%= group_name.name %></td>
+                               <td class="col-pdf"><%  if wordString[iloop].to_i == 1 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
+                               <td class="col-pdf"><%  if wordString[iloop].to_i == 2 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
+                               <td class="col-pdf"><%  if wordString[iloop].to_i == 3 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
+                               <td class="col-pdf"><%  if wordString[iloop].to_i == 4 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
+                               <td class="col-pdf"><%  if wordString[iloop].to_i == 5 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
+                           </tr>
+                           <% else %>
+                           <tr class="even">
+                               <td class="col-pdf align-left"><%= group_name.name %></td>
+                               <td class="col-pdf"></td>
+                               <td class="col-pdf"></td>
+                               <td class="col-pdf"></td>
+                               <td class="col-pdf"></td>
+                               <td class="col-pdf"></td>
+                           </tr>
+                           <% end %>
+                          <% iloop = iloop+1 %> 
+                        <% end %> 
+                      
+                    <% end %>
+                  <% end %>
+                  
+                 
+              </table>
+              <% 
+                not_promoted = "false"
+                if total_marks_obtain > 0 
+                  total_marks_obtain = (total_marks_obtain.to_f/2.00)
+                  total_marks_obtain = total_marks_obtain.round()
+                end
+                marks_from_string = total_marks_obtain.to_s
+                if !@exam_comment.blank?
+                  all_comments = @exam_comment.comments
+                  if !all_comments.blank?
+                    all_comments_array = all_comments.split("|")
+                    @report_data['total'] = all_comments_array[0]
+                    if !all_comments_array[1].nil?
+                      @report_data['present'] = all_comments_array[1]
+                      if !all_comments_array[2].nil?
+                        if @student_position.blank?
+                          @student_position = {}
+                        end
+                        @student_position[@student.id.to_i] = all_comments_array[2]
+                        if !all_comments_array[3].nil?
+                         not_promoted = all_comments_array[3]
+                         if !all_comments_array[4].nil?
+                          marks_from_string = all_comments_array[4]
+                         end
+                        end
+                      else
+                        if @student_position.blank?
+                          @student_position = {}
+                        end  
+                        @student_position[@student.id.to_i] = ""
+                      end
+                    end
+                  end
+                end
+              %>
+              <table id="pdf-table"  width="30%" class="left-table even-table signature" cellspacing="0" >
+                  <tr class="even">
+                      <td class="align-left">Total Working Days</td>
+                      <td><%= @report_data['total'] %></td>
+                  </tr>    
+                  <tr class="even">    
+                      <td class="align-left">Attendance</td>
+                      <td><%= @report_data['present'] %></td>
+                  </tr>
+                  
+              </table>
+              <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+              <% if @grading_levels.blank? %>
+              <% @grading_levels = GradingLevel.default %>
+              <% end %>
+              <table id="pdf-table"  width="42%" class="left-table odd-table signature" cellspacing="0" >
+                  <tr class="even">
+                      <%  unless @grading_levels.empty? %>
+                        <% i = 0 %>
+                        <% @grading_levels.each_with_index do |grade,index| %>
+                        <% if i<3 %>
+                          <td class="align-left">
+                            <% if grade.max_score.nil? %>  
+                              <%= '%i%' % grade.min_score %>
+                            <% else %> 
+                              <%= grade.min_score.to_i.to_s + "-" + grade.max_score.to_i.to_s %>
+                            <% end %>
+                          </td>
+                          <td class="align-left"><%= grade.name %></td>
+                        <% end %>
+                        <% i = i+1 %>
+                        <% end %>
+                      <% end %>
+                  </tr>    
+                  <tr class="even">    
+                      <%  unless @grading_levels.empty? %>
+                        <% i = 0 %>
+                        <% @grading_levels.each_with_index do |grade,index| %>
+                        <% if i>=3 && i<6 %>
+                          <td class="align-left">
+                            <% if grade.max_score.nil? %>  
+                              <%= '%i%' % grade.min_score %>
+                            <% else %> 
+                              <%= grade.min_score.to_i.to_s + "-" + grade.max_score.to_i.to_s %>
+                            <% end %>
+                          </td>
+                          <td class="align-left"><%= grade.name %></td>
+                        <% end %>
+                        <% i = i+1 %>
+                        <% end %>
+                      <% end %>
+                  </tr>
+                  
+              </table>
+              <% if @connect_exam_obj.quarter_number == 6 %>
+              <table id="pdf-table"  width="20%" class="left-table  odd-table signature" cellspacing="0" >
+                  <tr class="even">
+                      <td class="align-left">Total Marks Obtained</td>
+                      <td><%= marks_from_string %></td>
+                  </tr>    
+                  <tr class="even">    
+                      <td class="align-left">Position In Class</td>
+                      <td>
+                      <% if !@student_position.blank? && !@student_position[@student.id.to_i].blank? %>
+                          <%= @student_position[@student.id.to_i] %>
+                      <% end %>
+                      </td>
+                  </tr>
+                  
+              </table>
+              
+              <% end %>
+              <table id="pdf-table"  width="100%" class="left-table even-table signature2" cellspacing="0" >
+                  <tr class="even">
+                      <td class="width-20 align-left">Class Teacher</td>
+                      <td class="width-30"></td>
+                      <td class="width-20 align-left">Principal</td>
+                      <td class="width-30"></td>
+                  </tr>    
+                  <tr class="even">    
+                      <td class="width-20 align-left">Teacher-in-charge</td>
+                      <td class="width-30"></td>
+                      <td class="width-20 align-left">Parent</td>
+                      <td class="width-30"></td>
+                  </tr>
+                  
+              </table>
+              <table id="pdf-table"  width="100%" class="left-table even-table signature" cellspacing="0" >
+                  <% if @connect_exam_obj.quarter_number == 5 %>
+                  <tr class="even">
+                      <td class="width-30 align-left">The next term begins on</td>
+                      <td><%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %></td>
+                  </tr> 
+                  <% else %>
+                  <tr class="even">
+                      <td class="width-20 align-left">Promoted to Class</td>
+                      <% if not_promoted == "false" %>
+                        <td class="width-20"><%= @connect_exam_obj.promoted_to %></td>
+                      <% else %>
+                        <td class="width-20"></td>
+                      <% end %>
+                      <td class="width-30 align-left">The next session begins on</td>
+                      <td class="width-30"><%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %></td>
+                  </tr>
+                  <% end %>
+                  
+              </table>
+
+
+          </div>
+      </div>
+
+
+
+  </div>
+
+<% end %>
+<% 
+  subject_gap = total_subject.to_i*25;
+  if subject_gap > 400
+    padding = 0
+  else
+    padding = (400-(total_subject.to_i*25))/(total_subject.to_f*2) 
+    padding = padding.round
+  end
+  
+%>
+
+<style>
+.sis-final #grouped_exam_report table.exam-marks tr.odd td.col-pdf, .sis-final #grouped_exam_report table.exam-marks tr.even td.col-pdf
+  {
+     padding: 1px 5px !important;
+     font-size: 14px !important;
+  }
+.landscape table tr.odd td, .landscape table tr.even td
+{
+    padding: 1px 5px !important;
+
+} 
+.landscape table.signature tr.odd td, .landscape table.signature tr.even td
+{
+    padding: 1px 5px !important;
+
+}
+.landscape table.signature2 tr.odd td, .landscape table.signature2 tr.even td
+{
+    padding: 14px 5px !important;
+
+}
+.height-18
+{
+    height: 18px !important; 
+}
+</style> 
+
+<style>
+<% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII" %>
+table.height-exam tr td
+{
+    height: 33px !important;
+    
+}
+<% end %>
+</style>    

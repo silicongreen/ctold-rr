@@ -223,15 +223,15 @@
 
                                      
                                     
-                                      if !report['exam_name'].downcase.index('obj').nil? && ob_failed == true && count_obj>1
-                                        marks_check = (obj.to_f/obj_full.to_f)*100
-                                        grade_check = GradingLevel.percentage_to_grade(marks_check, @batch.id)
-                                        if !grade_check.blank? and !grade_check.name.blank?
-                                          if grade_check.name.to_s != "U"
-                                            ob_failed = false
-                                          end
+                                    if !report['exam_name'].downcase.index('obj').nil? && ob_failed == true && count_obj>1
+                                      marks_check = (obj.to_f/obj_full.to_f)*100
+                                      grade_check = GradingLevel.percentage_to_grade(marks_check, @batch.id)
+                                      if !grade_check.blank? and !grade_check.name.blank?
+                                        if grade_check.name.to_s != "U" && ( obj.round >= 24  || obj_full != 50) && ( obj.round >= 36 || obj_full != 75)
+                                          ob_failed = false
                                         end
                                       end
+                                    end
                                     if !report['exam_name'].downcase.index('sub').nil? && sub_failed == true && count_sub>1
                                         marks_check = (sub.to_f/sub_full.to_f)*100
                                         grade_check = GradingLevel.percentage_to_grade(marks_check, @batch.id)

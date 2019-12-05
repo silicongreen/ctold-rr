@@ -10611,148 +10611,31 @@ class FinanceController < ApplicationController
 
   def fees_student_dates
     unless params[:test].blank?
-    @start_date = "2019-11-01"
-    @end_date = "2019-11-30"
-    trans_ids = []
-    order_ids = []
-            p_amount = 0.00
-            a_amount = 0.00
-            d_amount = 0.00
-            f_amount = 0.00
-            amount = 0.00
-            s = []
-            i = 0
-            tot_amount = 0.00
-    @transactions = FinanceTransaction.find(:all, :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' "], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id ")
-    #abort(@transactions.inspect)
-            #abort("payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'")
-            #@transactions = FinanceTransaction.find(:all, :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
-            #abort(@transactions.length.to_s)
-            @transactions.each do |pwt|
-              if params[:test].to_i == 1
-                amount = 0.00
-                @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection'"], :group => "finance_transaction_particulars.finance_transaction_id")
-                @particular_wise_transactions.each do |pt|
-                  amount += pt.amount.to_f
-                  p_amount += pt.amount.to_f
-                end
-                @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Advance'"], :group => "finance_transaction_particulars.finance_transaction_id")
-                @particular_wise_transactions.each do |pt|
-                  amount += pt.amount.to_f
-                  a_amount += pt.amount.to_f
-                end
-                @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount'"], :group => "finance_transaction_particulars.finance_transaction_id")
-                @particular_wise_transactions.each do |pt|
-                  amount -= pt.amount.to_f
-                  d_amount += pt.amount.to_f
-                end
-                
-                @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Fine'"], :group => "finance_transaction_particulars.finance_transaction_id")
-                
-                #if pwt.id == 79653
-                #  abort(@particular_wise_transactions.inspect)
-                #end
-                @particular_wise_transactions.each do |pt|
-                  amount += pt.amount.to_f
-                  f_amount += pt.amount.to_f
-                end
-                if amount.to_f != pwt.amount.to_f
-                  if amount.to_f == 0
-                    trans_ids << pwt.id
-                    
-                    online_payments = Payment.find(:all, :conditions => "finance_transaction_id = #{pwt.id}", :group => "order_id")
-                    unless online_payments.blank?
-                      online_payments.each do |online_payment|
-                        order_ids << online_payment.order_id
-                      end
-                    end
-                    if online_payments.length > 1
-                      trans_ids << pwt.id
-                    end
-              
-                  end
-                  unless pwt.fine_included
-                    @particular_wise_transactions = FinanceTransactionParticular.find(:all, :conditions => ["finance_transaction_id = #{pwt.id} and particular_type = 'Fine'"])
-                    unless @particular_wise_transactions.blank?
-                      @particular_wise_transactions.each do |p|
-                        p.destroy
-                      end
-                    end
-                  end
-                  
-#                  ptt = FinanceTransaction.find(pwt.id)
-#                  @student = Student.find(ptt.payee_id)
-#                  @financefee = FinanceFee.find(ptt.finance_id)
-#                  @date = FinanceFeeCollection.find(@financefee.fee_collection_id)
-#                  @financetransaction=FinanceTransaction.find(pwt.id)
-#                  balance=FinanceFee.get_student_balance(@date, @student, @financefee)
-#                  @financefee.update_attributes(:is_paid=>false,:balance=>balance)
-#                  FeeTransaction.destroy_all(:finance_transaction_id=>pwt.id)
-#
-#                  if @financetransaction
-#                    transaction_attributes=@financetransaction.attributes
-#                    transaction_attributes.delete "id"
-#                    transaction_attributes.delete "created_at"
-#                    transaction_attributes.delete "updated_at"
-#                    transaction_attributes.merge!(:user_id=>current_user.id,:collection_name=>@date.name)
-#                    cancelled_transaction=CancelledFinanceTransaction.new(transaction_attributes)
-#                    if @financetransaction.destroy
-#                      cancelled_transaction.save
-#                    end
-#
-#                  end
-                  
-            
-                end
-                tot_amount += amount
-              elsif params[:test].to_i == 2  
-                online_payment = Payment.find(:first, :conditions => "finance_transaction_id = #{pwt.id}")
-                if pwt.amount.to_f != online_payment.gateway_response[:amount].to_f
-                  order_id = online_payment.order_id
-                  online_amount = online_payment.gateway_response[:amount].to_f
-                  online_payments = Payment.find(:all, :conditions => "order_id = '#{order_id}'")
-                  transaction_ids = online_payments.map(&:finance_transaction_id)
-                  transaction_ids = transaction_ids.reject { |t| t.to_s.empty? }
-                  if transaction_ids.blank?
-                    transaction_ids[0] = 0
-                  end
-                  @online_payment_transactions = FinanceTransaction.find(:all, :conditions => ["id IN (#{transaction_ids.join(",")})"])
-                  amt = 0.0
-                  @online_payment_transactions.each do |opt|
-                    amt += opt.amount.to_f
-                  end
-                  if amt.to_f != online_amount
-                    trans_ids << pwt.id
-                  end
-                end
-              elsif params[:test].to_i == 3  
-                online_payments = Payment.find(:all, :conditions => "finance_transaction_id = #{pwt.id}")
-                if online_payments.length > 1
-                  trans_ids << pwt.id
+      if params[:test].to_i == 1
+        finance_fees = FinanceFee.find(:all, :conditions => "id > 201090")
+        unless finance_fees.blank?
+          finance_fees.each do |fee|
+            student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{fee.student_id} and fee_id = #{fee.id}")
+            if student_fee_ledgers.blank?
+              s = Student.find(fee.student_id)
+              unless s.blank?
+                date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
+                unless date.blank?
+                  balance = FinanceFee.get_student_balance(date, s, fee)
+                  ledger_date = date.start_date
+                  student_fee_ledger = StudentFeeLedger.new
+                  student_fee_ledger.student_id = s.id
+                  student_fee_ledger.ledger_date = ledger_date
+                  student_fee_ledger.amount_to_pay = balance.to_f
+                  student_fee_ledger.fee_id = fee.id
+                  student_fee_ledger.save
                 end
               end
             end
-#            trans_ids.each do |trans_id|
-#              paid_fines = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id = " + trans_id.to_s + "")
-#              unless paid_fines.blank?
-#                paid_fines.each do |pf|
-#                  pf.update_attributes( :amount=>50.00)
-#                end
-#              else
-#                finance_transaction = FinanceTransaction.find(trans_id)
-#                finance_transaction_particular = FinanceTransactionParticular.new
-#                finance_transaction_particular.finance_transaction_id = trans_id
-#                finance_transaction_particular.particular_id = 0
-#                finance_transaction_particular.particular_type = 'Fine'
-#                finance_transaction_particular.transaction_type = ''
-#                finance_transaction_particular.amount = 50.00
-#                finance_transaction_particular.transaction_date = finance_transaction.transaction_date
-#                finance_transaction_particular.save
-#              end
-#            end
-            abort(trans_ids.inspect)
-  end      
-    
+          end
+        end
+      end
+    end
 #    @students = Student.active
 #    #@students = Student.find(:all, :conditions => "id = 24170")
 #    #abort(@student.inspect)

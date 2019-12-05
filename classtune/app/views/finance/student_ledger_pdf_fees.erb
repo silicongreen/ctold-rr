@@ -128,14 +128,15 @@
                 <% already_shown = false %>
                 <% @student_fee_ledgers.each_with_index do |student_fee_ledger, ind| %>
                   <% balance_forward = false %>
-                  <% fine_amount = 0.00 %>
                   <% info = "" %>
                   <% trans_type = "" %>
                   <% trans = [] %>
+                  <% finance_transaction_id = [] %>
                   <% for_id = [] %>
                   <% particulars = [] %>
                   <% particular_name = "" %>
                   <% trans_id = "" %>
+                  <% finance_transaction_ids = "" %>
                   <% if student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f == 0.00 %>
                   <% balance_forward = true %>
                   <% info = "" %>
@@ -161,9 +162,9 @@
                             end
                           %>
                           <% if student_ledger.particular_id == 0 or student_ledger.particular_id.blank? %>
-                          <% fee_particulars = d.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@student.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) } %>
+                          <% fee_particulars = d.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{fee.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==fee.batch) } %>
                           <% else %>
-                          <% fee_particulars = d.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and finance_fee_particulars.id = #{student_ledger.particular_id} and is_deleted=#{false} and batch_id=#{@student.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) } %>
+                          <% fee_particulars = d.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and finance_fee_particulars.id = #{student_ledger.particular_id} and is_deleted=#{false} and batch_id=#{fee.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==fee.batch) } %>
                           <% end %>
                           <% unless fee_particulars.blank? %>
                           <% particular_name = fee_particulars.map(&:name).join(", ") + " for " + d.name  %>
@@ -198,23 +199,13 @@
                             <% unless payments.nil? %>
                               <% payments.each do |payment| %>
                                 <% trans << payment.order_id %>
+                                <% finance_transaction_id << payment.finance_transaction_id %>
                                 <% fee = FinanceFee.find(:first, :conditions => "id = #{payment.payment_id}") %>
                                 <% unless fee.blank? %>
                                   <% date_id = fee.fee_collection_id %>
                                   <% d = FinanceFeeCollection.find(date_id) %>
                                   <% for_id << d.name %>
                                   <% particulars << d.name %>
-                                  <% paid_fees = fee.finance_transactions %>
-                                    <% fine_amount = 0 %>
-                                    <% unless paid_fees.blank? %>
-                                      <% transaction_ids = paid_fees.map(&:id) %> 
-                                      <% unless transaction_ids.blank? %>
-                                        <% paidFineFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")") %>
-                                        <% unless paidFineFess.blank? %> 
-                                          <% fine_amount += paidFineFess.map(&:amount).sum.to_f %>
-                                        <% end %>
-                                      <% end %>
-                                    <% end %>
                                 <% else %>  
                                   <% student_ledger.destroy %>
                                 <% end %>
@@ -224,6 +215,7 @@
                                 <% particulars << "Reference ID: " + payment.gateway_response[:ref_id] %>    
                               <% end %>
                               <% trans_id = trans.join(", ") %>
+                              <% finance_transaction_ids = finance_transaction_id.join(", ") %>
                               <% info = for_id.join(", ") %>
                               <% particular_name = particulars.join(", ") %>
                               <% else %>  
@@ -235,18 +227,78 @@
                   <% end %>
                 
                   <% ledger_found = true %>
-                  <% if student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f == 0.00 %>
-                  <% elsif student_fee_ledger.amount_to_pay.to_f > 0.00 and student_fee_ledger.amount_paid.to_f == 0.00 %>
-                    <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"]) %>
-                    <% if student_ledgers.blank? %>
+                  <% is_fine = false %>
+                  <% student_ledger = StudentFeeLedger.find(:first, :select => "is_fine", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"]) %>
+                  <% unless student_ledger.blank? %>
+                    <% if student_ledger.is_fine %>
+                      <% is_fine = true %>
                       <% ledger_found = false %>
-                    <% end %>  
-                  <% elsif student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f > 0.00 %>
-                      <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"]) %>
+                    <% end %>
+                  <% end %>
+                
+                  <% unless is_fine %>
+                    <% if student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f == 0.00 %>
+                    <% elsif student_fee_ledger.amount_to_pay.to_f > 0.00 and student_fee_ledger.amount_paid.to_f == 0.00 %>
+                      <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"]) %>
                       <% if student_ledgers.blank? %>
                         <% ledger_found = false %>
-                      <% end %>
+                      <% end %>  
+                    <% elsif student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f > 0.00 %>
+                        <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"]) %>
+                        <% if student_ledgers.blank? %>
+                          <% ledger_found = false %>
+                        <% end %>
+                    <% end %>
                   <% end %>
+                
+                  <% if trans_type == "Received" %>
+                      <% unless finance_transaction_ids.blank? %>
+                        <% amt = 0 %>
+                        <% amt_paid = 0 %>
+                        <% ledger_date = '' %>
+                        <% fee_id = '' %>
+                        <% info_fine = '' %>
+                        <% fine_title = '' %>
+                        <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id, amount_to_pay, amount_paid, ledger_date, ledger_title", :conditions => ["transaction_id IN (#{finance_transaction_ids}) and student_id = #{@student.id} and is_fine = #{true}"]) %>
+                        <% unless student_ledgers.blank? %>
+                          <% student_ledgers.each do |student_ledger| %>
+                            <% amt += student_ledger.amount_to_pay %>
+                            <% amt_paid += student_ledger.amount_paid %>
+                            <% ledger_date = student_ledger.ledger_date %>
+                            <% fee_id = student_ledger.fee_id %>
+                            <% fee = FinanceFee.find(:first, :conditions => "id = #{student_ledger.fee_id}") %>
+                            <% unless fee.blank? %>
+                               <% date_id = fee.fee_collection_id %>
+                                <% d = FinanceFeeCollection.find(date_id) %>
+                                <% info_fine = d.name %>
+                            <% end %>
+                            <% fine_title = student_ledger.ledger_title %>
+                          <% end %>
+                        <% end %>
+                        <% if amt > 0 %>
+                          <tr class="even">
+                              <td style="text-align: center;"><%= ind + 1 %></td>
+                              <td  style="text-align: center;"><%= ledger_date.strftime("%d %B, %Y") unless ledger_date.blank? %></td>
+                              <td style="text-align: center;"><%= "Fine" %></td>
+                              <td style="text-align: center;"><%= fee_id %></td>
+                              <td style="text-align: center;"><%= info_fine unless info_fine.blank? %></td>
+                              <td style="text-align: left;"><%= fine_title %></td>
+                              <td style="text-align: right;"><%= to_comma_seperated_precision_label amt %></td>
+                              <td style="text-align: right;"><%= to_comma_seperated_precision_label amt_paid %></td>
+                              <% current_balance = (carried_amount + amt.to_f) - amt_paid.to_f %>
+                              <% carried_amount = current_balance %>
+                              <td style="text-align: right;">
+                                  <% if current_balance < 0 %>
+                                    <%= to_comma_seperated_precision_label current_balance * (-1) %><br />
+                                    <small style="font-size: 13px;">(Advance)</small>
+                                  <% else %>
+                                    <%= to_comma_seperated_precision_label current_balance %>
+                                  <% end %>
+                              </td>
+                          </tr>
+                        <% end %>
+                      <% end %>
+                    <% end %>
                 
                     <% if ledger_found and already_shown and !balance_forward %>  
                       <tr class="even">
@@ -259,7 +311,6 @@
                         <td style="text-align: right; padding-right: 10px;"><%= to_comma_seperated_precision_label student_fee_ledger.amount_to_pay %></td>
                         <td style="text-align: right; padding-right: 10px;"><%= to_comma_seperated_precision_label student_fee_ledger.amount_paid %></td>
                         <% current_balance = (carried_amount + student_fee_ledger.amount_to_pay.to_f) - student_fee_ledger.amount_paid.to_f %>
-                        <% current_balance += fine_amount %>
                         <% carried_amount = current_balance %>
                         <td style="text-align: right;">
                           <% if current_balance < 0 %>
@@ -282,7 +333,6 @@
                         <td style="text-align: right; padding-right: 10px;"><%= to_comma_seperated_precision_label student_fee_ledger.amount_to_pay %></td>
                         <td style="text-align: right; padding-right: 10px;"><%= to_comma_seperated_precision_label student_fee_ledger.amount_paid %></td>
                         <% current_balance = (carried_amount + student_fee_ledger.amount_to_pay.to_f) - student_fee_ledger.amount_paid.to_f %>
-                        <% current_balance += fine_amount %>
                         <% carried_amount = current_balance %>
                         <td style="text-align: right;">
                           <% if current_balance < 0 %>

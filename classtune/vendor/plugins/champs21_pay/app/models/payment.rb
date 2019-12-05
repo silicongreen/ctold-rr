@@ -6,8 +6,8 @@ class Payment < ActiveRecord::Base
   serialize :gateway_response
   serialize :validation_response
   
-  after_create :set_ledger
-  after_update :update_ledger
+  #after_create :set_ledger
+  #after_update :update_ledger
 
 #  def before_create
 #    if payment_type == "FinanceFee"
@@ -68,6 +68,7 @@ class Payment < ActiveRecord::Base
   end
   
   def set_ledger
+    abort('here1')
     unless finance_transaction_id.nil? 
       unless finance_transaction_id.blank?
         finance_transaction = FinanceTransaction.find(:first, :conditions => "id = #{finance_transaction_id}")
@@ -88,9 +89,9 @@ class Payment < ActiveRecord::Base
     unless finance_transaction_id.nil? 
       unless finance_transaction_id.blank?
         finance_transaction = FinanceTransaction.find(:first, :conditions => "id = #{finance_transaction_id}")
-        unless finance_transaction.nil?
-          student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{payee_id} and transaction_id = #{finance_transaction.id}")
-          unless student_fee_ledgers.nil?
+        unless finance_transaction.blank?
+          student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{payee_id} and transaction_id = #{finance_transaction.id} and is_fine = #{false}")
+          unless student_fee_ledgers.blank?
             student_fee_ledgers.each do |fee_ledger|
               student_fee_ledger = StudentFeeLedger.find(fee_ledger.id)
                 student_fee_ledger.update_attributes(:amount_paid => finance_transaction.amount.to_f)
@@ -98,7 +99,11 @@ class Payment < ActiveRecord::Base
           else
             student_fee_ledger = StudentFeeLedger.new
             student_fee_ledger.student_id = payee_id
-            student_fee_ledger.ledger_date = finance_transaction.transaction_date
+            unless transaction_datetime.blank?
+              student_fee_ledger.ledger_date = transaction_datetime.strftime("%Y-%m-%d")
+            else
+              student_fee_ledger.ledger_date = finance_transaction.transaction_date
+            end
             student_fee_ledger.amount_paid = finance_transaction.amount.to_f
             student_fee_ledger.fee_id = payment_id
             student_fee_ledger.transaction_id = finance_transaction.id

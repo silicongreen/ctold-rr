@@ -32,6 +32,7 @@
         </thead>
         <tbody>
             <% @student_fee_ledgers.each do |student_fee_ledger| %>
+            <%= debug student_fee_ledger.inspect %>
               <tr class="tr-odd">
                   <% student = Student.find(:first, :conditions => "id = #{student_fee_ledger.student_id}") %>
                   <% if student.nil?  %>

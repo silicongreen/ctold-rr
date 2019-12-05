@@ -1438,6 +1438,21 @@ module FinanceLoader
                 finance_transaction_particular.amount = fine_amount
                 finance_transaction_particular.transaction_date = transaction.transaction_date
                 finance_transaction_particular.save
+                
+                payment = Payment.find_by_order_id_and_payee_id_and_payment_id(orderId, @student.id, f)
+                transaction_date = transaction.transaction_date
+                unless payment.blank?
+                  transaction_date = payment.transaction_datetime
+                end
+                student_fee_ledger = StudentFeeLedger.new
+                student_fee_ledger.student_id = @student.id
+                student_fee_ledger.ledger_title = "Fine On " + transaction_date.strftime("%d %B, %Y")
+                student_fee_ledger.ledger_date = transaction_date.strftime("%Y-%m-%d")
+                student_fee_ledger.amount_to_pay = fine_amount.to_f
+                student_fee_ledger.transaction_id = transaction.id
+                student_fee_ledger.fee_id = @financefee.id
+                student_fee_ledger.is_fine = 1
+                student_fee_ledger.save
               end
             
               if @has_fine_discount
@@ -1838,6 +1853,22 @@ module FinanceLoader
                         finance_transaction_particular.amount = fine_amount
                         finance_transaction_particular.transaction_date = transaction.transaction_date
                         finance_transaction_particular.save
+                        
+                        payment = Payment.find_by_order_id_and_payee_id_and_payment_id(orderId, @student.id, f)
+                        transaction_date = transaction.transaction_date
+                        unless payment.blank?
+                          transaction_date = payment.transaction_datetime
+                        end
+                        student_fee_ledger = StudentFeeLedger.new
+                        student_fee_ledger.student_id = @student.id
+                        student_fee_ledger.ledger_title = "Fine On " + transaction_date.strftime("%d %B, %Y")
+                        student_fee_ledger.ledger_date = transaction_date.strftime("%Y-%m-%d")
+                        student_fee_ledger.amount_to_pay = fine_amount.to_f
+                        student_fee_ledger.transaction_id = transaction.id
+                        student_fee_ledger.fee_id = @financefee[f].id
+                        student_fee_ledger.is_fine = 1
+                        student_fee_ledger.save
+                        
                       end
 
                       if @has_fine_discount[f]
@@ -1938,6 +1969,21 @@ module FinanceLoader
                         finance_transaction_particular.amount = fine_amount
                         finance_transaction_particular.transaction_date = transaction.transaction_date
                         finance_transaction_particular.save
+                        
+                        payment = Payment.find_by_order_id_and_payee_id_and_payment_id(orderId, @student.id, f)
+                        transaction_date = transaction.transaction_date
+                        unless payment.blank?
+                          transaction_date = payment.transaction_datetime
+                        end
+                        student_fee_ledger = StudentFeeLedger.new
+                        student_fee_ledger.student_id = @student.id
+                        student_fee_ledger.ledger_title = "Fine On " + transaction_date.strftime("%d %B, %Y")
+                        student_fee_ledger.ledger_date = transaction_date.strftime("%Y-%m-%d")
+                        student_fee_ledger.amount_to_pay = fine_amount.to_f
+                        student_fee_ledger.transaction_id = transaction.id
+                        student_fee_ledger.fee_id = @financefee[f].id
+                        student_fee_ledger.is_fine = 1
+                        student_fee_ledger.save
                       end
 
 

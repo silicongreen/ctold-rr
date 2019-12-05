@@ -1346,6 +1346,42 @@
             <% elsif transaction_payment_not_assign %>
               <% payment_mode = "Trust Bank Online Payment" %>
               <% payment.update_attributes(:finance_transaction_id=>f.id) %>
+              <%
+                student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{@student.id} and fee_id = #{@finance_fee.id} and transaction_id = #{f.id} and is_fine = #{true}")
+                unless student_fee_ledgers.blank?
+                  student_fee_ledgers.each do |student_fee_ledger|
+                    unless payment.transaction_datetime.blank?
+                      student_fee_ledger.update_attributes(:ledger_date => payment.transaction_datetime.strftime("%Y-%m-%d"), :ledger_title => "Fine On " + payment.transaction_datetime.strftime("%d %B, %Y"))
+                    else
+                      student_fee_ledger.update_attributes(:ledger_date => f.transaction_date.strftime("%Y-%m-%d"), :ledger_title => "Fine On " + f.transaction_date.strftime("%d %B, %Y"))
+                    end
+                  end
+                end
+              
+                student_fee_ledger = StudentFeeLedger.find(:first, :conditions => "student_id = #{@student.id} and fee_id = #{@financefee.id} and transaction_id = #{f.id} and is_fine = #{false}")
+                unless student_fee_ledger.blank?
+                  amount_paid = student_fee_ledger.amount_paid
+                  if amount_paid.to_f != f.amount.to_f
+                    student_fee_ledger.update_attributes(:amount_paid => f.amount.to_f)
+                  end
+                else
+                  student_fee_ledger = StudentFeeLedger.new
+                  student_fee_ledger.student_id = @student.id
+                  unless payment.transaction_datetime.blank?
+                    student_fee_ledger.ledger_date = payment.transaction_datetime.strftime("%Y-%m-%d")
+                  else
+                    student_fee_ledger.ledger_date = f.transaction_date.strftime("%Y-%m-%d")
+                  end
+                  student_fee_ledger.ledger_title = @financefee.finance_fee_collection.title  
+                  student_fee_ledger.amount_to_pay = 0.00
+                  student_fee_ledger.fee_id = @financefee.id
+                  student_fee_ledger.amount_paid = f.amount.to_f
+                  student_fee_ledger.transaction_id = f.id
+                  student_fee_ledger.order_id = payment.order_id
+                  student_fee_ledger.save
+                end
+              
+              %>
             <% end %>
             <td class="col-1"><%= i +=1 %></td>
             <% if transaction_payment || transaction_payment_not_assign %>

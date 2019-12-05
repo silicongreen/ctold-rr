@@ -1599,7 +1599,60 @@ class FinanceController < ApplicationController
   end
   
   def student_ledger_pdf_fees
+    
     unless params[:id].nil?
+      if params[:id].to_i == 0
+        paidFines = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND amount > 0.0")
+        unless paidFines.blank?
+          paidFines.each do |paidFine|
+            transaction_id = paidFine.finance_transaction_id
+            finance_transaction = FinanceTransaction.find(transaction_id)
+            unless finance_transaction.blank?
+              payment = Payment.find(:first, :conditions => "finance_transaction_id = #{transaction_id}", :group => "order_id")
+              unless payment.blank?
+                student_id = finance_transaction.payee_id
+                s = Student.find(:first, :conditions => "id = #{student_id}")
+                if s.blank?
+                  s = ArchivedStudent.find(:first, :conditions => "former_id = #{student_id}")
+                  unless s.blank?
+                    student_id = s.former_id
+                  end
+                else
+                  student_id = s.id
+                end
+                unless s.blank?
+                  fee_id = finance_transaction.finance_id
+
+                  unless fee_id.blank?
+                    fee = FinanceFee.find(fee_id)
+                    unless fee.blank?
+                      date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
+                      unless date.nil?
+                          balance = paidFine.amount
+                          ledger_date = date.start_date
+                          student_fee_ledger = StudentFeeLedger.new
+                          student_fee_ledger.student_id = student_id
+                          student_fee_ledger.ledger_title = "Fine On " + payment.transaction_datetime.strftime("%d %B, %Y")
+                          unless payment.transaction_datetime.blank?
+                            student_fee_ledger.ledger_date = payment.transaction_datetime.strftime("%Y-%m-%d")
+                          else
+                            student_fee_ledger.ledger_date = ledger_date
+                          end
+                          student_fee_ledger.amount_to_pay = balance.to_f
+                          student_fee_ledger.transaction_id = transaction_id
+                          student_fee_ledger.fee_id = fee.id
+                          student_fee_ledger.is_fine = 1
+                          student_fee_ledger.save
+                      end
+                    end
+                  end
+                end
+              end
+            end
+          end
+          #abort(paidFines.inspect)
+        end
+      end
       @student = Student.find(params[:id])
       @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "id, ledger_date, ledger_title, amount_to_pay, amount_paid, particular_id", :order => 'ledger_date ASC', :conditions => ["student_id = #{params[:id]}"], :order => "ledger_date asc") #, :group => "ledger_date"
     end
@@ -1684,14 +1737,15 @@ class FinanceController < ApplicationController
       @student_fee_ledgers.each_with_index do |student_fee_ledger, i|
         k = i + 1
         balance_forward = false
-        fine_amount = 0.00
         info = ""
         trans_type = ""
         trans = []
+        finance_transaction_id = []
         for_id = []
         particulars = []
         particular_name = ""
         trans_id = ""
+        finance_transaction_ids = ""
         if student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f == 0.00
           balance_forward = true
           info = ""
@@ -1715,9 +1769,9 @@ class FinanceController < ApplicationController
                     exclude_particular_ids = [0]
                   end
                 if student_ledger.particular_id == 0 or student_ledger.particular_id.blank?
-                fee_particulars = d.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@student.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) }
+                fee_particulars = d.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{fee.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==fee.batch) }
                 else
-                fee_particulars = d.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and finance_fee_particulars.id = #{student_ledger.particular_id} and is_deleted=#{false} and batch_id=#{@student.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) }
+                fee_particulars = d.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and finance_fee_particulars.id = #{student_ledger.particular_id} and is_deleted=#{false} and batch_id=#{fee.batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==fee.batch) }
                 end
                 unless fee_particulars.blank?
                 particular_name = fee_particulars.map(&:name).join(", ") + " for " + d.name 
@@ -1754,23 +1808,13 @@ class FinanceController < ApplicationController
                   unless payments.nil?
                     payments.each do |payment|
                       trans << payment.order_id
+                      finance_transaction_id << payment.finance_transaction_id
                       fee = FinanceFee.find(:first, :conditions => "id = #{payment.payment_id}")
                       unless fee.blank?
                         date_id = fee.fee_collection_id
                         d = FinanceFeeCollection.find(date_id)
                         for_id << d.name
                         particulars << d.name
-                        paid_fees = fee.finance_transactions
-                        fine_amount = 0
-                        unless paid_fees.blank?
-                          transaction_ids = paid_fees.map(&:id) 
-                          unless transaction_ids.blank?
-                            paidFineFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")")
-                            unless paidFineFess.blank? 
-                              fine_amount += paidFineFess.map(&:amount).sum.to_f
-                            end
-                          end
-                        end
                       else
                         student_ledger.destroy
                       end
@@ -1780,6 +1824,7 @@ class FinanceController < ApplicationController
                       particulars << "Reference ID: " + payment.gateway_response[:ref_id]    
                     end
                     trans_id = trans.join(", ")
+                    finance_transaction_ids = finance_transaction_id.join(", ")
                     info = for_id.join(", ")
                     particular_name = particulars.join(", ")
                   else
@@ -1791,22 +1836,77 @@ class FinanceController < ApplicationController
         end
         
         ledger_found = true
-        if student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f == 0.00
-        elsif student_fee_ledger.amount_to_pay.to_f > 0.00 and student_fee_ledger.amount_paid.to_f == 0.00
-          student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"])
-          if student_ledgers.blank?
-            ledger_found = false
-          end  
-        elsif student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f > 0.00
-          student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"])
-          if student_ledgers.blank?
-            ledger_found = false
+        is_fine = false 
+        student_ledger = StudentFeeLedger.find(:first, :select => "is_fine", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"]) 
+        unless student_ledger.blank? 
+          if student_ledger.is_fine 
+            is_fine = true 
+            ledger_found = false 
+          end 
+        end 
+        
+        unless is_fine
+          if student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f == 0.00
+          elsif student_fee_ledger.amount_to_pay.to_f > 0.00 and student_fee_ledger.amount_paid.to_f == 0.00
+            student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"])
+            if student_ledgers.blank?
+              ledger_found = false
+            end  
+          elsif student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f > 0.00
+            student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["id = #{student_fee_ledger.id} and student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}'"])
+            if student_ledgers.blank?
+              ledger_found = false
+            end
           end
         end
         
+        if trans_type == "Received" 
+          unless finance_transaction_ids.blank? 
+            amt = 0 
+            amt_paid = 0 
+            ledger_date = '' 
+            fee_id = '' 
+            info_fine = '' 
+            fine_title = '' 
+            student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id, amount_to_pay, amount_paid, ledger_date, ledger_title", :conditions => ["transaction_id IN (#{finance_transaction_ids}) and student_id = #{@student.id} and is_fine = #{true}"]) 
+            unless student_ledgers.blank? 
+              student_ledgers.each do |student_ledger| 
+                amt += student_ledger.amount_to_pay 
+                amt_paid += student_ledger.amount_paid 
+                ledger_date = student_ledger.ledger_date 
+                fee_id = student_ledger.fee_id 
+                fee = FinanceFee.find(:first, :conditions => "id = #{student_ledger.fee_id}") 
+                unless fee.blank? 
+                   date_id = fee.fee_collection_id 
+                    d = FinanceFeeCollection.find(date_id) 
+                    info_fine = d.name 
+                end 
+                fine_title = student_ledger.ledger_title 
+              end 
+            end
+            if amt > 0
+              current_balance = (carried_amount + amt.to_f) - amt_paid.to_f
+              carried_amount = current_balance
+              if current_balance < 0
+                current_balance = current_balance * (-1)
+              end
+              row_new = [i+1, ledger_date.strftime("%d-%m-%Y"), "Fine", fee_id.to_s, info_fine, fine_title, amt.to_f, amt_paid.to_f, current_balance.to_f]
+              
+              new_book.worksheet(0).insert_row(ind, row_new)
+              #new_book.worksheet(0).row(ind).column(0).width = 100
+              new_book.worksheet(0).row(ind).set_format(0, center_format)
+              new_book.worksheet(0).row(ind).set_format(1, center_format)
+              new_book.worksheet(0).row(ind).set_format(2, center_format)
+              new_book.worksheet(0).row(ind).set_format(6, amount_format)
+              new_book.worksheet(0).row(ind).set_format(7, amount_format)
+              new_book.worksheet(0).row(ind).set_format(8, amount_format)
+              ind += 1
+            end
+          end 
+        end 
+        
         if ledger_found and already_shown and !balance_forward
           current_balance = (carried_amount + student_fee_ledger.amount_to_pay.to_f) - student_fee_ledger.amount_paid.to_f
-          current_balance += fine_amount
           carried_amount = current_balance
           if current_balance < 0
             current_balance = current_balance * (-1)
@@ -1835,7 +1935,6 @@ class FinanceController < ApplicationController
         elsif ledger_found and !already_shown
           already_shown = true
           current_balance = (carried_amount + student_fee_ledger.amount_to_pay.to_f) - student_fee_ledger.amount_paid.to_f
-          current_balance += fine_amount
           carried_amount = current_balance
           if current_balance < 0
             current_balance = current_balance * (-1)
@@ -8986,7 +9085,10 @@ class FinanceController < ApplicationController
         @finance_fee_particular_categories_all = FinanceFeeParticularCategory.active
 
         @finance_fee_particular_categories = @finance_fee_particular_categories_all.select{|fp| !fee_particulars_categories.include?(fp.id) }
-
+        
+        #Enable Duplicate Particular
+        #@finance_fee_particular_categories = []
+        @finance_fee_particular_categories = @finance_fee_particular_categories_all
 
         unless params[:option].nil?
           render :update do |page|
@@ -9509,6 +9611,17 @@ class FinanceController < ApplicationController
               finance_transaction_particular.amount = fine_amount
               finance_transaction_particular.transaction_date = transaction.transaction_date
               finance_transaction_particular.save
+              
+              transaction_date = transaction.transaction_date
+              student_fee_ledger = StudentFeeLedger.new
+              student_fee_ledger.student_id = @student.id
+              student_fee_ledger.ledger_title = "Fine On " + transaction_date.strftime("%d %B, %Y")
+              student_fee_ledger.ledger_date = transaction_date.strftime("%Y-%m-%d")
+              student_fee_ledger.amount_to_pay = fine_amount.to_f
+              student_fee_ledger.transaction_id = transaction.id
+              student_fee_ledger.fee_id = @financefee.id
+              student_fee_ledger.is_fine = 1
+              student_fee_ledger.save
             end
           end
             
@@ -11435,6 +11548,17 @@ class FinanceController < ApplicationController
               finance_transaction_particular.amount = total_fine_amount
               finance_transaction_particular.transaction_date = transaction.transaction_date
               finance_transaction_particular.save
+              
+              transaction_date = transaction.transaction_date
+              student_fee_ledger = StudentFeeLedger.new
+              student_fee_ledger.student_id = @student.id
+              student_fee_ledger.ledger_title = "Fine On " + transaction_date.strftime("%d %B, %Y")
+              student_fee_ledger.ledger_date = transaction_date.strftime("%Y-%m-%d")
+              student_fee_ledger.amount_to_pay = total_fine_amount.to_f
+              student_fee_ledger.transaction_id = transaction.id
+              student_fee_ledger.fee_id = @financefee.id
+              student_fee_ledger.is_fine = 1
+              student_fee_ledger.save
             end
 
             if @has_fine_discount
@@ -11752,7 +11876,18 @@ class FinanceController < ApplicationController
       @finance_fee = FinanceFee.find_by_id_and_student_id(finance_id, student_id)
       unless payment.blank? and @transaction.blank? and @finance_fee.blank?
         payment.update_attributes(:finance_transaction_id=>@transaction.id, :payment_id => @finance_fee.id)
-        student_fee_ledger = StudentFeeLedger.find(:first, :conditions => "student_id = #{student_id} and fee_id = #{@finance_fee.id} and transaction_id = #{@transaction.id}")
+        student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{student_id} and fee_id = #{@finance_fee.id} and transaction_id = #{@transaction.id} and is_fine = #{true}")
+        unless student_fee_ledgers.blank?
+          student_fee_ledgers.each do |student_fee_ledger|
+            unless payment.transaction_datetime.blank?
+              student_fee_ledger.update_attributes(:ledger_date => payment.transaction_datetime.strftime("%Y-%m-%d"), :ledger_title => "Fine On " + payment.transaction_datetime.strftime("%d %B, %Y"))
+            else
+              student_fee_ledger.update_attributes(:ledger_date => @transaction.transaction_date.strftime("%Y-%m-%d"), :ledger_title => "Fine On " + @transaction.transaction_date.strftime("%d %B, %Y"))
+            end
+          end
+        end
+        
+        student_fee_ledger = StudentFeeLedger.find(:first, :conditions => "student_id = #{student_id} and fee_id = #{@finance_fee.id} and transaction_id = #{@transaction.id} and is_fine = #{false}")
         unless student_fee_ledger.blank?
           amount_paid = student_fee_ledger.amount_paid
           if amount_paid.to_f != @transaction.amount.to_f
@@ -11761,7 +11896,11 @@ class FinanceController < ApplicationController
         else
           student_fee_ledger = StudentFeeLedger.new
           student_fee_ledger.student_id = student_id
-          student_fee_ledger.ledger_date = @finance_fee.finance_fee_collection.start_date
+          unless payment.transaction_datetime.blank?
+            student_fee_ledger.ledger_date = payment.transaction_datetime.strftime("%Y-%m-%d")
+          else
+            student_fee_ledger.ledger_date = @transaction.transaction_date.strftime("%Y-%m-%d")
+          end
           student_fee_ledger.ledger_title = @finance_fee.finance_fee_collection.title  
           student_fee_ledger.amount_to_pay = 0.00
           student_fee_ledger.fee_id = @finance_fee.id
@@ -13444,9 +13583,38 @@ class FinanceController < ApplicationController
       :size             => 12,
       :number_format    => "0.00"
     });
+  
+    title_format = Spreadsheet::Format.new({
+      :weight           => :bold,
+      :size             => 10,
+      :horizontal_align => :centre
+    })
+  
+    center_format = Spreadsheet::Format.new({
+      :size             => 10,
+      :horizontal_align => :centre
+    })
     
     row_1 = ['#','Student ID','Student Name', 'Roll No','Student Category', 'Due Amount(BDT)','Contact Number','Remarks']
     new_book.worksheet(0).insert_row(0, row_1)
+    
+    new_book.worksheet(0).row(0).set_format(0, title_format)
+    new_book.worksheet(0).column(0).width = 10
+    new_book.worksheet(0).row(0).set_format(1, title_format)
+    new_book.worksheet(0).column(1).width = 15
+    new_book.worksheet(0).row(0).set_format(2, title_format)
+    new_book.worksheet(0).column(2).width = 30
+    new_book.worksheet(0).row(0).set_format(3, title_format)
+    new_book.worksheet(0).column(3).width = 12
+    new_book.worksheet(0).row(0).set_format(4, title_format)
+    new_book.worksheet(0).column(4).width = 'Student Category'.length + 5
+    new_book.worksheet(0).row(0).set_format(5, title_format)
+    new_book.worksheet(0).column(5).width = 'Due Amount(BDT)'.length + 5
+    new_book.worksheet(0).row(0).set_format(6, title_format)
+    new_book.worksheet(0).column(6).width = 'Contact Number'.length + 5
+    new_book.worksheet(0).row(0).set_format(7, title_format)
+    new_book.worksheet(0).column(7).width = 25
+    
     
     row_loop = 1
     sl = 1
@@ -13488,6 +13656,11 @@ class FinanceController < ApplicationController
         #unless sc.receiver.blank?
           data_row = [sl, s.admission_no, s.full_name, s.class_roll_no, sc.name, fees.map(&:balance).sum, s.sms_number,fee_remarks ]
           new_book.worksheet(0).insert_row(row_loop, data_row)
+          new_book.worksheet(0).row(row_loop).set_format(0, center_format)
+          new_book.worksheet(0).row(row_loop).set_format(1, center_format)
+          new_book.worksheet(0).row(row_loop).set_format(3, center_format)
+          new_book.worksheet(0).row(row_loop).set_format(4, center_format)
+          new_book.worksheet(0).row(row_loop).set_format(6, center_format)
           new_book.worksheet(0).row(row_loop).set_format(5, amount_format)
           row_loop+=1
           sl+=1

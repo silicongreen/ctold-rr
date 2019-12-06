@@ -10615,7 +10615,7 @@ class FinanceController < ApplicationController
       created = 0
       particular_wise_found = 0
       if params[:test].to_i == 1
-        finance_fees = FinanceFee.find(:all, :conditions => "created_at > '2019-11-14 07:27:45'")
+        finance_fees = FinanceFee.find(:all, :conditions => "updated_at > '2019-11-14 07:27:45'")
         #abort(finance_fees.inspect)
         unless finance_fees.blank?
           finance_fees.each do |fee|

@@ -99,9 +99,9 @@
               <tr id="deleteID-<%= sc.id %>" class="<%= "#{c}" %> td-body">
                   <td> <%= slno %></td>
                   <td><%= sc.receiver.admission_no %></td>
-                  <td><%= sc.receiver.full_name %></td>
+                  <td><%= truncate(sc.receiver.full_name, :length => 50) %></td>
                   <td><%= sc.receiver.batch.course_section unless sc.receiver.batch.nil? %></td>
-                  <td><%= sc.name %></td>
+                  <td><%= truncate(sc.name, :length => 50) %></td>
                   <td><%= sc.finance_fee_particular_category.name %></td>
                   <td style="text-align: right;"><span id="editID-<%= sc.id %>"><%= precision_label sc.discount %> <%= sc.is_amount == true ? 'BDT'  : '%' %></span></td>
                   <td style="text-align: right;"><%= precision_label @scholarships_student_ids[sc.receiver.id] %></td>

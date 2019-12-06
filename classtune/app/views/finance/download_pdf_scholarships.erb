@@ -18,17 +18,30 @@
 #under the License. -%>
 
 <title>Scholarship Report</title>
+
+<%#*<div style="border: 1px solid #000; width: 900px; text-align: center; margin: 0 auto; ">%>
+    <%#*<div style="width: 50px; float: left; border: 1px solid #000; display: inline-block;"></div>%>
+    <%#*%>
+<%#*</div>%>
+<div style="width: 900px; text-align: center; margin: 0 auto; "></div>
+<div style="width: 900px; text-align: center; margin: 0 auto; ">
+    <table style="width: 50%; margin: 0 auto;">
+        <tr>
+            <td style="width: 100px;"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '50px' %></td>
+            <td style="text-align: left;"><h2 align="center" style="width: 400px; margin: 0 auto; float: left;"><%=Configuration.get_config_value('InstitutionName'); %></h2></td>
+        </tr>
+    </table>
 </div>
 <div id="page-yield">
     <div class="hor_line"></div>
-    <h4 align="center"><%= "Scholarship Students" %></h4>
+    <h4 align="center" style="width: 900px;"><%= "Scholarship Students" %></h4>
     <div class="hor_line"></div>
     
     <div class="extender"> </div>
     <div class="report">
     
     <div id ="main_info">
-        <h4 style="width: 25%; display: inline-block;"> &nbsp;</h4>
+        <h4 style="width: 25%; display: inline-block;">&nbsp;</h4>
     </div>
         
     <div id="pdf-info" style="padding-bottom: 40px;">
@@ -36,9 +49,9 @@
         <tr class="table-header">
             <td style="text-align: center; width: 10%;">#</th>
             <td style="text-align: center; width: 10%;">Student ID</th>
-            <td style="width: 20%;">Student Name</th>
+            <td>Student Name</th>
             <td style="text-align: center; width: 10%;">Class & Section</td>
-            <%#*<td style="text-align: center;">Scholarship Name</td>%>
+            <td style="text-align: center;">Scholarship Name</td>
             <td style="text-align: center; width: 10%;">Scholarship On</td>
             <td style="text-align: center; width: 10%;">Discount</td>
             <td style="text-align: center; width: 10%;">Amount</td>
@@ -60,7 +73,7 @@
                       <td style="text-align: center;">Student ID</th>
                       <td style="width: 10%;">Student Name</th>
                       <td style="text-align: center;">Class & Section</td>
-                      <%#*<td style="text-align: center;">Scholarship Name</td>%>
+                      <td style="text-align: center;">Scholarship Name</td>
                       <td style="text-align: center;">Scholarship On</td>
                       <td style="text-align: center;">Discount</td>
                       <td style="text-align: center;">Amount</td>
@@ -75,7 +88,7 @@
                     <td style="text-align: center;">Student ID</th>
                     <td style="width: 10%;">Student Name</th>
                     <td style="text-align: center;">Class & Section</td>
-                    <%#*<td style="text-align: center;">Scholarship Name</td>%>
+                    <td style="text-align: center;">Scholarship Name</td>
                     <td style="text-align: center;">Scholarship On</td>
                     <td style="text-align: center;">Discount</td>
                     <td style="text-align: center;">Amount</td>
@@ -88,7 +101,7 @@
                   <td><%= sc.receiver.admission_no %></td>
                   <td><%= sc.receiver.full_name %></td>
                   <td><%= sc.receiver.batch.course_section unless sc.receiver.batch.nil? %></td>
-                  <!--td><%#= sc.name %></td-->
+                  <td><%= sc.name %></td>
                   <td><%= sc.finance_fee_particular_category.name %></td>
                   <td style="text-align: right;"><span id="editID-<%= sc.id %>"><%= precision_label sc.discount %> <%= sc.is_amount == true ? 'BDT'  : '%' %></span></td>
                   <td style="text-align: right;"><%= precision_label @scholarships_student_ids[sc.receiver.id] %></td>

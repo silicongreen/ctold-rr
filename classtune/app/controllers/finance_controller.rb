@@ -16410,11 +16410,11 @@ class FinanceController < ApplicationController
     
     render :pdf => "download_pdf_scholarships",
       :orientation => 'Portrait', :zoom => 1.00,
-      :margin => {:top=> 22,
+      :margin => {:top=> 10,
       :bottom => 10,
       :left=> 10,
       :right => 10},
-      :header => {:html => { :template=> 'layouts/pdf_header_defaulters.html'}},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
       :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
   

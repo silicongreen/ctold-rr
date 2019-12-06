@@ -10615,36 +10615,74 @@ class FinanceController < ApplicationController
       created = 0
       particular_wise_found = 0
       if params[:test].to_i == 1
-        finance_fees = FinanceFee.find(:all, :conditions => "updated_at > '2019-11-14 07:27:45'")
+#        finance_fees = FinanceFee.find(:all, :conditions => "updated_at > '2019-11-14 07:27:45'")
+#        #abort(finance_fees.inspect)
+#        unless finance_fees.blank?
+#          finance_fees.each do |fee|
+#            student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{fee.student_id} and fee_id = #{fee.id} and amount_to_pay > 0 and amount_paid = 0 and particular_id = 0")
+#            if student_fee_ledgers.blank?
+#              s = Student.find(fee.student_id)
+#              student_fee_ledgers_particulars = StudentFeeLedger.find(:all, :conditions => "student_id = #{fee.student_id} and fee_id = #{fee.id} and amount_to_pay > 0 and amount_paid = 0 and particular_id > 0")
+#              particular_amount = 0.0
+#              unless student_fee_ledgers_particulars.blank?
+#                student_fee_ledgers_particulars.each do |student_fee_ledgers_particular|
+#                  particular_amount += student_fee_ledgers_particular.amount_to_pay
+#                  particular_wise_found += 1
+#                end
+#              end
+#              unless s.blank?
+#                date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
+#                unless date.blank?
+#                  balance = FinanceFee.get_student_balance(date, s, fee)
+#                  balance = balance - particular_amount
+#                  if balance < 0
+#                    balance = 0
+#                  end
+#                  ledger_date = date.start_date
+#                  student_fee_ledger = StudentFeeLedger.new
+#                  student_fee_ledger.student_id = s.id
+#                  student_fee_ledger.ledger_date = ledger_date
+#                  student_fee_ledger.amount_to_pay = balance.to_f
+#                  student_fee_ledger.fee_id = fee.id
+#                  student_fee_ledger.save
+#                  created += 1
+#                end
+#              end
+#            else
+#              updated += 1
+#              #student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{fee.student_id} and fee_id = #{fee.id} and amount_to_pay > 0 and amount ")
+#            end
+#          end
+#        end
+        finance_transactions = FinanceTransaction.find(:all, :conditions => "created_at > '2019-11-14 07:27:45' and finance_id IS NOT NULL")
         #abort(finance_fees.inspect)
-        unless finance_fees.blank?
-          finance_fees.each do |fee|
-            student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{fee.student_id} and fee_id = #{fee.id} and amount_to_pay > 0 and amount_paid = 0 and particular_id = 0")
+        unless finance_transactions.blank?
+          finance_transactions.each do |finance_transaction|
+            student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{finance_transaction.payee_id} and fee_id = #{finance_transaction.finance_id} and amount_to_pay = 0 and amount_paid > 0 and particular_id = 0")
             if student_fee_ledgers.blank?
-              s = Student.find(fee.student_id)
-              student_fee_ledgers_particulars = StudentFeeLedger.find(:all, :conditions => "student_id = #{fee.student_id} and fee_id = #{fee.id} and amount_to_pay > 0 and amount_paid = 0 and particular_id > 0")
-              particular_amount = 0.0
-              unless student_fee_ledgers_particulars.blank?
-                student_fee_ledgers_particulars.each do |student_fee_ledgers_particular|
-                  particular_amount += student_fee_ledgers_particular.amount_to_pay
-                  particular_wise_found += 1
-                end
-              end
+              s = Student.find(finance_transaction.payee_id)
               unless s.blank?
-                date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
-                unless date.blank?
-                  balance = FinanceFee.get_student_balance(date, s, fee)
-                  balance = balance - particular_amount
-                  if balance < 0
-                    balance = 0
+                payments = Payment.find(:all, :conditions => "finance_transaction_id = #{finance_transaction.id}", :group => "order_id")
+                unless payments.blank?
+                  fee = FinanceFee.find(:first, :conditions => "id = #{finance_transaction.finance_id}")
+                  unless fee.nil?
+                    payment = payments[0]
+                    balance = finance_transaction.amount
+                    unless payment.transaction_datetime.blank?
+                      ledger_date = payment.transaction_datetime.strftime("%Y-%m-%d")
+                    else
+                      ledger_date = f.transaction_date.strftime("%Y-%m-%d")
+                    end
+                    student_fee_ledger = StudentFeeLedger.new
+                    student_fee_ledger.student_id = s.id
+                    student_fee_ledger.ledger_date = ledger_date
+                    student_fee_ledger.fee_id = fee.id
+                    student_fee_ledger.amount_paid = balance.to_f
+                    student_fee_ledger.transaction_id = finance_transaction.id
+                    order_ids = payments.map(&:order_id).uniq
+                    student_fee_ledger.order_id = order_ids.join(",")
+                    student_fee_ledger.save
                   end
-                  ledger_date = date.start_date
-                  student_fee_ledger = StudentFeeLedger.new
-                  student_fee_ledger.student_id = s.id
-                  student_fee_ledger.ledger_date = ledger_date
-                  student_fee_ledger.amount_to_pay = balance.to_f
-                  student_fee_ledger.fee_id = fee.id
-                  student_fee_ledger.save
                   created += 1
                 end
               end

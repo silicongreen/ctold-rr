@@ -10660,7 +10660,7 @@ class FinanceController < ApplicationController
           finance_transactions.each do |finance_transaction|
             student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{finance_transaction.payee_id} and fee_id = #{finance_transaction.finance_id} and amount_to_pay = 0 and amount_paid > 0 and particular_id = 0")
             if student_fee_ledgers.blank?
-              s = Student.find(finance_transaction.payee_id)
+              s = Student.find(:furst, :conditions => "id = #{finance_transaction.payee_id}")
               unless s.blank?
                 payments = Payment.find(:all, :conditions => "finance_transaction_id = #{finance_transaction.id}", :group => "order_id")
                 unless payments.blank?

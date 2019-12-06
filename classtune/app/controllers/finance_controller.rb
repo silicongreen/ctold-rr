@@ -10654,7 +10654,7 @@ class FinanceController < ApplicationController
 #            end
 #          end
 #        end
-        finance_transactions = FinanceTransaction.find(:all, :conditions => "created_at > '2019-11-14 07:27:45' and finance_id IS NOT NULL")
+        finance_transactions = FinanceTransaction.find(:all, :conditions => "updated_at > '2019-11-14 07:27:45' and finance_id IS NOT NULL")
         #abort(finance_fees.inspect)
         unless finance_transactions.blank?
           finance_transactions.each do |finance_transaction|

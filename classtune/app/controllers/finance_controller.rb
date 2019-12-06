@@ -10611,18 +10611,33 @@ class FinanceController < ApplicationController
 
   def fees_student_dates
     unless params[:test].blank?
+      updated = 0
+      created = 0
+      particular_wise_found = 0
       if params[:test].to_i == 1
-        finance_fees = FinanceFee.find(:all, :conditions => "id > 200619")
+        finance_fees = FinanceFee.find(:all, :conditions => "created_at > '2019-11-14 07:27:45'")
         #abort(finance_fees.inspect)
         unless finance_fees.blank?
           finance_fees.each do |fee|
-            student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{fee.student_id} and fee_id = #{fee.id}")
+            student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{fee.student_id} and fee_id = #{fee.id} and amount_to_pay > 0 and amount_paid = 0 and particular_id = 0")
             if student_fee_ledgers.blank?
               s = Student.find(fee.student_id)
+              student_fee_ledgers_particulars = StudentFeeLedger.find(:all, :conditions => "student_id = #{fee.student_id} and fee_id = #{fee.id} and amount_to_pay > 0 and amount_paid = 0 and particular_id > 0")
+              particular_amount = 0.0
+              unless student_fee_ledgers_particulars.blank?
+                student_fee_ledgers_particulars.each do |student_fee_ledgers_particular|
+                  particular_amount += student_fee_ledgers_particular.amount_to_pay
+                  particular_wise_found += 1
+                end
+              end
               unless s.blank?
                 date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
                 unless date.blank?
                   balance = FinanceFee.get_student_balance(date, s, fee)
+                  balance = balance - particular_amount
+                  if balance < 0
+                    balance = 0
+                  end
                   ledger_date = date.start_date
                   student_fee_ledger = StudentFeeLedger.new
                   student_fee_ledger.student_id = s.id
@@ -10630,11 +10645,16 @@ class FinanceController < ApplicationController
                   student_fee_ledger.amount_to_pay = balance.to_f
                   student_fee_ledger.fee_id = fee.id
                   student_fee_ledger.save
+                  created += 1
                 end
               end
+            else
+              updated += 1
+              #student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{fee.student_id} and fee_id = #{fee.id} and amount_to_pay > 0 and amount ")
             end
           end
         end
+        abort(updated.to_s + "  " + created.to_s + "  " + particular_wise_found.to_s)
       end
     end
 #    @students = Student.active

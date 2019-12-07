@@ -13526,39 +13526,157 @@ class FinanceController < ApplicationController
       :number_format    => "0.00"
     });
   
+    format = Spreadsheet::Format.new
+    format.bottom = :thin
+    format.top = :thin
+  
     title_format = Spreadsheet::Format.new({
       :weight           => :bold,
-      :size             => 10,
-      :horizontal_align => :centre
+      :size             => 11,
+      :horizontal_align => :centre,
+      :vertical_align   => :centre
+    })
+    header_title_format = Spreadsheet::Format.new({
+      :weight           => :bold,
+      :size             => 18,
+      :horizontal_align => :centre,
+      :vertical_align   => :centre,
+#      :color            => :blue, 
+#      :pattern_fg_color => :ash, 
+#      :pattern          => 1,
+    })
+    sub_header_title_format = Spreadsheet::Format.new({
+      :weight           => :bold,
+      :size             => 11,
+      :horizontal_align => :centre,
+      :vertical_align   => :centre,
+      :top              =>  :thin,
+      :bottom           =>  :thin
+#      :color            => :blue, 
+#      :pattern_fg_color => :ash, 
+#      :pattern          => 1,
+    })
+    top_border_format = Spreadsheet::Format.new({
+      :top              =>  :thin,
+    })
+    bottom_border_format = Spreadsheet::Format.new({
+      :bottom           =>  :thin
     })
   
     center_format = Spreadsheet::Format.new({
       :size             => 10,
       :horizontal_align => :centre
     })
+  
+    row_loop = 0
+    row_1 = [Configuration.get_config_value('InstitutionName')]
+    new_book.worksheet(0).insert_row(row_loop, row_1)
+    #new_book.worksheet(0).row(row_loop).border(0)
     
-    row_1 = ['#','Student ID','Student Name', 'Roll No','Student Category', 'Due Amount(BDT)','Contact Number','Remarks']
-    new_book.worksheet(0).insert_row(0, row_1)
+    row_loop += 1
+    new_book.worksheet(0).insert_row(row_loop, row_1)
+    row_loop += 1
+    new_book.worksheet(0).insert_row(row_loop, row_1)
+    new_book.worksheet(0).merge_cells(0, 0, row_loop, 7)
+    new_book.worksheet(0).row(0).set_format(0, header_title_format)
+    #new_book.worksheet(0).format.border(1, 1, 1, 1)
     
-    new_book.worksheet(0).row(0).set_format(0, title_format)
+    row_loop += 1
+    unless @batch.blank?
+      batch_version = @batch.name.split(" ")
+      current_row = row_loop
+      
+      row_1 = ["#{t('shift')} :"+ " " "#{batch_version[0].strip}",'',"#{t('version')} :"+ " " "#{batch_version[1].strip}", "","#{t('class')} :"+ " " "#{@batch.course.course_name}", "", "#{t('section')} :"+ " " "#{@batch.course.section_name}",'']
+      new_book.worksheet(0).insert_row(row_loop, row_1)
+      row_loop += 1
+      
+      row_1 = [""]
+      new_book.worksheet(0).insert_row(row_loop, row_1)
+      row_loop += 1
+      
+      row_1 = [""]
+      new_book.worksheet(0).insert_row(row_loop, row_1)
+      
+      new_book.worksheet(0).merge_cells(current_row, 0, row_loop, 1)
+      new_book.worksheet(0).merge_cells(current_row, 2, row_loop, 3)
+      new_book.worksheet(0).merge_cells(current_row, 4, row_loop, 5)
+      new_book.worksheet(0).merge_cells(current_row, 6, row_loop, 7)
+      new_book.worksheet(0).row(current_row).set_format(0, sub_header_title_format)
+      new_book.worksheet(0).row(current_row).set_format(1, sub_header_title_format)
+      new_book.worksheet(0).row(current_row).set_format(2, sub_header_title_format)
+      new_book.worksheet(0).row(current_row).set_format(3, sub_header_title_format)
+      new_book.worksheet(0).row(current_row).set_format(4, sub_header_title_format)
+      new_book.worksheet(0).row(current_row).set_format(5, sub_header_title_format)
+      new_book.worksheet(0).row(current_row).set_format(6, sub_header_title_format)
+      new_book.worksheet(0).row(current_row).set_format(7, sub_header_title_format)
+      
+      new_book.worksheet(0).row(row_loop).set_format(0, bottom_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(1, bottom_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(2, bottom_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(3, bottom_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(4, bottom_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(5, bottom_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(6, bottom_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(7, bottom_border_format)
+      row_loop += 1
+    else
+      row_1 = [""]
+      new_book.worksheet(0).insert_row(row_loop, row_1)
+      new_book.worksheet(0).merge_cells(row_loop, 0, row_loop, 7)
+      new_book.worksheet(0).row(row_loop).set_format(0, top_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(1, top_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(2, top_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(3, top_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(4, top_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(5, top_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(6, top_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(7, top_border_format)
+      
+      row_loop += 1
+    end
+    
+    current_row = row_loop
+    row_1 = ['#','Student ID','Student Name', 'Roll No','Student Category', 'Due Amount','Contact Number','Remarks']
+    new_book.worksheet(0).insert_row(row_loop, row_1)
+    row_loop += 1
+    
+    row_1 = [""]
+    new_book.worksheet(0).insert_row(row_loop, row_1)
+    row_loop += 1
+
+    row_1 = [""]
+    new_book.worksheet(0).insert_row(row_loop, row_1)
+    
+    new_book.worksheet(0).merge_cells(current_row, 0, row_loop, 0)
+    new_book.worksheet(0).merge_cells(current_row, 1, row_loop, 1)
+    new_book.worksheet(0).merge_cells(current_row, 2, row_loop, 2)
+    new_book.worksheet(0).merge_cells(current_row, 3, row_loop, 3)
+    new_book.worksheet(0).merge_cells(current_row, 4, row_loop, 4)
+    new_book.worksheet(0).merge_cells(current_row, 5, row_loop, 5)
+    new_book.worksheet(0).merge_cells(current_row, 6, row_loop, 6)
+    new_book.worksheet(0).merge_cells(current_row, 7, row_loop, 7)
+    
+    
+    new_book.worksheet(0).row(current_row).set_format(0, title_format)
+    new_book.worksheet(0).row(current_row).set_format(1, title_format)
+    new_book.worksheet(0).row(current_row).set_format(2, title_format)
+    new_book.worksheet(0).row(current_row).set_format(3, title_format)
+    new_book.worksheet(0).row(current_row).set_format(4, title_format)
+    new_book.worksheet(0).row(current_row).set_format(5, title_format)
+    new_book.worksheet(0).row(current_row).set_format(6, title_format)
+    new_book.worksheet(0).row(current_row).set_format(7, title_format)
+    
     new_book.worksheet(0).column(0).width = 10
-    new_book.worksheet(0).row(0).set_format(1, title_format)
     new_book.worksheet(0).column(1).width = 15
-    new_book.worksheet(0).row(0).set_format(2, title_format)
     new_book.worksheet(0).column(2).width = 30
-    new_book.worksheet(0).row(0).set_format(3, title_format)
     new_book.worksheet(0).column(3).width = 12
-    new_book.worksheet(0).row(0).set_format(4, title_format)
-    new_book.worksheet(0).column(4).width = 'Student Category'.length + 5
-    new_book.worksheet(0).row(0).set_format(5, title_format)
-    new_book.worksheet(0).column(5).width = 'Due Amount(BDT)'.length + 5
-    new_book.worksheet(0).row(0).set_format(6, title_format)
-    new_book.worksheet(0).column(6).width = 'Contact Number'.length + 5
-    new_book.worksheet(0).row(0).set_format(7, title_format)
+    new_book.worksheet(0).column(4).width = 'Student Category'.length + 10
+    new_book.worksheet(0).column(5).width = 'Due Amount(BDT)'.length + 10
+    new_book.worksheet(0).column(6).width = 'Contact Number'.length + 10
     new_book.worksheet(0).column(7).width = 25
     
     
-    row_loop = 1
+    row_loop += 1
     sl = 1
     unless @defaulters.blank?
       @defaulters.each do |s|

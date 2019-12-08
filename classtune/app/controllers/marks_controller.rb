@@ -161,13 +161,13 @@ class MarksController < ApplicationController
           data[k] = "<a href='javascript:void(0);' id='exams_id_"+exam_connect.id.to_s+"' onclick='get_exam_subject("+exam_connect.id.to_s+")' >"+exam_connect.name.to_s+"</a>"
           k = k+1
         elsif data_type.to_i == 6
-          if exam_connect.result_type == 1 or exam_connect.result_type == 2
+          if exam_connect.result_type == 1 or exam_connect.result_type == 2 or exam_connect.result_type == 8 or exam_connect.result_type == 9
             data[k] = "<a href='javascript:void(0);' id='exams_id_"+exam_connect.id.to_s+"' onclick='get_exam_subject_participation("+exam_connect.id.to_s+")' >"+exam_connect.name.to_s+"</a>"
             k = k+1
           end
           
         else
-          if exam_connect.result_type == 1 or exam_connect.result_type == 2
+          if exam_connect.result_type == 1 or exam_connect.result_type == 2 or exam_connect.result_type == 8 or exam_connect.result_type == 9
             data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'class_performance_student/' +exam_connect.id.to_s+"#view=FitH", :id=>"exams_id_"+exam_connect.id.to_s)
             k = k+1
           end

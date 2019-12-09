@@ -8002,9 +8002,9 @@ class ExamController < ApplicationController
                 @student_result[loop_std]['gpa'] = grand_grade_point
                 @student_result[loop_std]['grand_total'] = grand_total
                 @student_result[loop_std]['grand_total_with_fraction'] = grand_total_with_fraction
+                
                 gradeObj = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
                 if !gradeObj.blank? and !gradeObj.name.blank?
-                  @student_result[loop_std]['lg'] = gradeObj.name
                   if !gradeObj.blank? and !gradeObj.name.blank?
                     if @grade_count[gradeObj.name].blank?
                       @grade_count[gradeObj.name] = 1
@@ -8013,6 +8013,7 @@ class ExamController < ApplicationController
                     end
                   end
                 end
+                
               end
               if exam_type == 1
                 
@@ -8024,9 +8025,9 @@ class ExamController < ApplicationController
                 @student_result[loop_std]['gpa'] = grand_grade_point1
                 @student_result[loop_std]['grand_total'] = grand_total1
                 @student_result[loop_std]['grand_total_with_fraction'] = grand_total1_with_fraction
+                
                 gradeObj = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
                 if !gradeObj.blank? and !gradeObj.name.blank?
-                  @student_result[loop_std]['lg'] = gradeObj.name
                   if !gradeObj.blank? and !gradeObj.name.blank?
                     if @grade_count[gradeObj.name].blank?
                       @grade_count[gradeObj.name] = 1
@@ -8035,6 +8036,7 @@ class ExamController < ApplicationController
                     end
                   end
                 end
+                
               end
               if exam_type == 2
                 
@@ -8046,9 +8048,9 @@ class ExamController < ApplicationController
                 @student_result[loop_std]['gpa'] = grand_grade_point2
                 @student_result[loop_std]['grand_total'] = grand_total2
                 @student_result[loop_std]['grand_total_with_fraction'] = grand_total2_with_fraction
+                
                 gradeObj = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
                 if !gradeObj.blank? and !gradeObj.name.blank?
-                  @student_result[loop_std]['lg'] = gradeObj.name
                   if !gradeObj.blank? and !gradeObj.name.blank?
                     if @grade_count[gradeObj.name].blank?
                       @grade_count[gradeObj.name] = 1
@@ -8057,9 +8059,9 @@ class ExamController < ApplicationController
                     end
                   end
                 end
+                
               end
               @student_result[loop_std]['gp'] = grade_point_avg
-              
               gradeObj = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
               if !gradeObj.blank? and !gradeObj.name.blank?
                 @student_result[loop_std]['lg'] = gradeObj.nam

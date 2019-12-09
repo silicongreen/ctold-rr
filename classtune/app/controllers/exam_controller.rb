@@ -6093,6 +6093,8 @@ class ExamController < ApplicationController
      
         connect_exam = 0
         batch_loop = 0
+        
+        
         @tabulation_data['report'].each do |tab|
           batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
           batch_subject_id = batch_subject.map(&:id)
@@ -6113,6 +6115,16 @@ class ExamController < ApplicationController
 
           if tab.kind_of?(Array) or tab.blank? or tab['students'].blank?
             next
+          end
+        
+          std_list = []
+          tab['students'].each do |std| 
+            std_list << std['id'].to_i
+          end
+          @student_all_tab = []
+          unless std_list.blank?
+            @student_all_tab = Student.find_all_by_id(std_list)
+            all_total_std_subject = StudentsSubject.find_all_by_student_id(std_list)
           end
           tab['students'].each do |std| 
             total_failed = 0	
@@ -6146,7 +6158,7 @@ class ExamController < ApplicationController
 
             grand_total_main = 0
             grade_poin_main = 0
-            @student_tab = Student.find_by_id(std['id'].to_i)
+            @student_tab = @student_all_tab.find{|val| val.id.to_i == std['id'].to_i }
             if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
               if @student_result[loop_std].blank?
                 @student_result[loop_std] = {}
@@ -6165,7 +6177,7 @@ class ExamController < ApplicationController
             if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
               @total_std = @total_std+1
             end
-            total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
+            total_std_subject = all_total_std_subject.select{|val| val.student_id.to_i == std['id'].to_i }
             std_subject_id = total_std_subject.map(&:subject_id)
             total_subject = 0
             subject_array = []

@@ -6042,6 +6042,7 @@ class ExamController < ApplicationController
       @failed_partial_absent = {}	
       @failed_appeared_absent = {}	
       @grade_count = {}
+      @exam_type_array = []
       loop_std = 0
       batchobj = Batch.find_by_id(@batch.id) 
       courseObj = Course.find_by_id(batchobj.course_id)
@@ -8044,7 +8045,7 @@ class ExamController < ApplicationController
               
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
-                if !gradeObj.blank? and !gradeObj.name.blank? and exam_type == 3
+                if exam_type == 3
                   if !gradeObj.blank? and !gradeObj.name.blank?
                     if @grade_count[gradeObj.name].blank?
                       @grade_count[gradeObj.name] = 1
@@ -8064,12 +8065,15 @@ class ExamController < ApplicationController
               end
             end  
         
+            
+            
             if u_grade1 == 0  
               grand_total_new = 55500-grand_total1_with_fraction
               grand_grade_new = 50000-grand_grade_point1
               if connect_exam_id.to_i == @connect_exam_obj.id || (std_group_name == group_name && !@class.blank?)
                 @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
-                if !gradeObj.blank? and !gradeObj.name.blank? and exam_type == 1
+                @exam_type_array << exam_type
+                if exam_type == 1
                   if !gradeObj.blank? and !gradeObj.name.blank?
                     if @grade_count[gradeObj.name].blank?
                       @grade_count[gradeObj.name] = 1
@@ -8093,7 +8097,7 @@ class ExamController < ApplicationController
               grand_grade_new = 50000-grand_grade_point2
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_second_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
-                if !gradeObj.blank? and !gradeObj.name.blank? and exam_type == 2
+                if exam_type == 2
                   if !gradeObj.blank? and !gradeObj.name.blank?
                     if @grade_count[gradeObj.name].blank?
                       @grade_count[gradeObj.name] = 1
@@ -8134,6 +8138,7 @@ class ExamController < ApplicationController
         end
       end
 
+      abort(@exam_type_array.inspect)
       @student_position_first_term = {}
       @student_position_second_term = {}
       @student_position = {}

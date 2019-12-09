@@ -24,6 +24,8 @@
       @subject_code = {}
       @absent_in_all_subject = 0
       @section_wise_position = {}	
+      @section_wise_position_2nd_term = {}
+      @section_wise_position_final_exam = {}
       @failed_partial_absent = {}	
       @failed_appeared_absent = {}	
       @grade_count = {}
@@ -78,6 +80,8 @@
      
         connect_exam = 0
         batch_loop = 0
+        
+        
         @tabulation_data['report'].each do |tab|
           batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
           batch_subject_id = batch_subject.map(&:id)
@@ -98,6 +102,16 @@
 
           if tab.kind_of?(Array) or tab.blank? or tab['students'].blank?
             next
+          end
+        
+          std_list = []
+          tab['students'].each do |std| 
+            std_list << std['id'].to_i
+          end
+          @student_all_tab = []
+          unless std_list.blank?
+            @student_all_tab = Student.find_all_by_id(std_list)
+            all_total_std_subject = StudentsSubject.find_all_by_student_id(std_list)
           end
           tab['students'].each do |std| 
             total_failed = 0	
@@ -131,7 +145,7 @@
 
             grand_total_main = 0
             grade_poin_main = 0
-            @student_tab = Student.find_by_id(std['id'].to_i)
+            @student_tab = @student_all_tab.find{|val| val.id.to_i == std['id'].to_i }
             if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
               if @student_result[loop_std].blank?
                 @student_result[loop_std] = {}
@@ -150,7 +164,7 @@
             if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
               @total_std = @total_std+1
             end
-            total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
+            total_std_subject = all_total_std_subject.select{|val| val.student_id.to_i == std['id'].to_i }
             std_subject_id = total_std_subject.map(&:subject_id)
             total_subject = 0
             subject_array = []
@@ -223,6 +237,9 @@
                 full_sb2 = 0
                 total_sb1 = 0
                 total_sb2 = 0
+                
+                total_sb1_main = 0
+                total_sb2_main = 0
 
                 full_ob1 = 0
                 full_ob2 = 0
@@ -742,6 +759,10 @@
 
                 total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
                 
+                
+                total_sb1_main = total_sb1
+                total_sb2_main = total_sb2
+                
                 if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6
                   full_mark_sb1_converted = full_mark1-full_pr1-full_ob1-monthly_full_mark1
                   full_mark_sb2_converted = full_mark2-full_pr2-full_ob2-monthly_full_mark2
@@ -941,10 +962,10 @@
                   end
                   if full_sb1 > 0 || full_sb2 > 0
                     if appeared_sb
-                      sb_not_round = sb_round = total_sb1+total_sb2
+                      sb_not_round = sb_round = total_sb1_main+total_sb2_main
                       sb_round = sb_round.round()
                       if full_sb1 > 0 && full_sb2 > 0
-                        sb_not_round = sb_round = (total_sb1+total_sb2)/2
+                        sb_not_round = sb_round = (total_sb1_main+total_sb2_main)/2
                         sb_round = sb_round.round()
                       end
                       if @connect_exam_obj.result_type < 5
@@ -1140,6 +1161,9 @@
                     full_sb22 = 0
                     total_sb12 = 0
                     total_sb22 = 0
+                    
+                    total_sb12_main = 0
+                    total_sb22_main = 0
 
                     full_ob12 = 0
                     full_ob22 = 0
@@ -1940,6 +1964,12 @@
               end
             end
 
+            grand_total_with_fraction = sprintf( "%0.02f", grand_total_with_fraction)
+            grand_total_with_fraction = grand_total_with_fraction.to_f
+            grand_total1_with_fraction = sprintf( "%0.02f", grand_total1_with_fraction)
+            grand_total1_with_fraction = grand_total1_with_fraction.to_f
+            grand_total2_with_fraction = sprintf( "%0.02f", grand_total2_with_fraction)
+            grand_total2_with_fraction = grand_total2_with_fraction.to_f
             if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
               @total_std_batch = @total_std_batch+1
               
@@ -1950,7 +1980,7 @@
               end
               
               if exam_type == 3
-                grand_total_with_fraction = grand_total_with_fraction.round(2)
+                
                 grade_point_avg = grand_grade_point.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
@@ -1961,7 +1991,7 @@
                 @student_result[loop_std]['grand_total_with_fraction'] = grand_total_with_fraction
               end
               if exam_type == 1
-                grand_total1_with_fraction = grand_total1_with_fraction.round(2)
+                
                 grade_point_avg = grand_grade_point1.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
@@ -1972,7 +2002,7 @@
                 @student_result[loop_std]['grand_total_with_fraction'] = grand_total1_with_fraction
               end
               if exam_type == 2
-                grand_total2_with_fraction = grand_total2_with_fraction.round(2)
+                
                 grade_point_avg = grand_grade_point2.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
@@ -2013,6 +2043,10 @@
               end 
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                if @section_wise_position_final_exam[batch_data.id].blank?
+                  @section_wise_position_final_exam[batch_data.id] = []
+                end
+                @section_wise_position_final_exam[batch_data.id] << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
             end  
         
@@ -2057,6 +2091,10 @@
               end
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_second_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                if @section_wise_position_2nd_term[batch_data.id].blank?
+                  @section_wise_position_2nd_term[batch_data.id] = []
+                end
+                @section_wise_position_2nd_term[batch_data.id] << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
             end  
             
@@ -2091,6 +2129,8 @@
       @student_position_batch = {}
       
       @section_all_position_batch = {}
+      @section_all_position_batch_2nd_term = {}
+      @section_all_position_batch_final_term = {}
       last_grade = 0.0
       last_total = 0.0
       
@@ -2106,9 +2146,29 @@
           @student_position[s[2].to_i] = position
         end 
       end
+
+
+      
+      last_grade = 0.0
+      last_total = 0.0
+      unless @student_list_batch.blank?
+        position = 0
+        @sorted_students = @student_list_batch.sort
+        @sorted_students.each do|s|
+          if last_grade != s[0] or last_total != s[1]
+            position = position+1
+          end
+          last_grade = s[0]
+          last_total = s[1]
+          @student_position_batch[s[2].to_i] = position
+        end 
+      end
     
       last_grade = 0.0
       last_total = 0.0
+      
+      
+      
       unless @section_wise_position.blank?
         @section_wise_position.each do|key,value|
           position = 0
@@ -2125,6 +2185,54 @@
               @section_all_position_batch[key] = {}
             end
             @section_all_position_batch[key][s[2].to_i] = position
+          end 
+        end
+      end
+      
+      
+      last_grade = 0.0
+      last_total = 0.0
+      
+      unless @section_wise_position_final_exam.blank?
+        @section_wise_position_final_exam.each do|key,value|
+          position = 0
+         
+          @sorted_students = @section_wise_position_final_exam[key].sort
+          @sorted_students.each do|s|
+            
+            if last_grade != s[0] or last_total != s[1]
+              position = position+1
+            end
+            last_grade = s[0]
+            last_total = s[1]
+            if @section_all_position_batch_final_term[key].blank?
+              @section_all_position_batch_final_term[key] = {}
+            end
+            @section_all_position_batch_final_term[key][s[2].to_i] = position
+          end 
+        end
+      end
+      
+      
+      last_grade = 0.0
+      last_total = 0.0
+      
+      unless @section_wise_position_2nd_term.blank?
+        @section_wise_position_2nd_term.each do|key,value|
+          position = 0
+         
+          @sorted_students = @section_wise_position_2nd_term[key].sort
+          @sorted_students.each do|s|
+            
+            if last_grade != s[0] or last_total != s[1]
+              position = position+1
+            end
+            last_grade = s[0]
+            last_total = s[1]
+            if @section_all_position_batch_2nd_term[key].blank?
+              @section_all_position_batch_2nd_term[key] = {}
+            end
+            @section_all_position_batch_2nd_term[key][s[2].to_i] = position
           end 
         end
       end
@@ -2164,20 +2272,7 @@
         end 
       end
     
-      last_grade = 0.0
-      last_total = 0.0
-      unless @student_list_batch.blank?
-        position = 0
-        @sorted_students = @student_list_batch.sort
-        @sorted_students.each do|s|
-          if last_grade != s[0] or last_total != s[1]
-            position = position+1
-          end
-          last_grade = s[0]
-          last_total = s[1]
-          @student_position_batch[s[2].to_i] = position
-        end 
-      end
+      
     
       last_grade = 0.0
       last_total = 0.0

@@ -8138,7 +8138,7 @@ class ExamController < ApplicationController
         end
       end
 
-      abort(@exam_type_array.inspect)
+      
       @student_position_first_term = {}
       @student_position_second_term = {}
       @student_position = {}

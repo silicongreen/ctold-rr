@@ -8064,7 +8064,7 @@ class ExamController < ApplicationController
               @student_result[loop_std]['gp'] = grade_point_avg
               gradeObj = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
               if !gradeObj.blank? and !gradeObj.name.blank?
-                @student_result[loop_std]['lg'] = gradeObj.nam
+                @student_result[loop_std]['lg'] = gradeObj.name
               end
               loop_std = loop_std+1
             end

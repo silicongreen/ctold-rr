@@ -154,10 +154,7 @@
                                       <% failed_subject = true %>
                                       
                                   <% end %>
-                                     <% if failed_subject == true %> 
-                                      <%= "F" %>
                                       
-                                     <% end %>  
                                   </td>    
                                 <% else %>
                                   <td class="col-pdf">-</td>
@@ -194,13 +191,17 @@
                                 <% end %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                   <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                  <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                  <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %>
                                   <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" %>
                                     <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
                                       <% failed = true %>
                                       <% failed_subject = true %>
                                     <% end %>
                                   <% end %>
+                                  <% if failed_subject == true %> 
+                                      <%= "F" %>
+                                      
+                                     <% end %> 
                                   <% if report['exam_category'] == '3'  %>
                                     <% sb = sb+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% elsif report['exam_category'] == '4' %>
@@ -208,6 +209,7 @@
                                   <% elsif report['exam_category'] == '5' %>
                                     <% pr = pr+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% end %>
+                                  </td>
                                 <% else %>
                                   <td class="col-pdf">-</td>
                                 <% end %>

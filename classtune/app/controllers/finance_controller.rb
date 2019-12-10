@@ -16,7 +16,7 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 
-
+ 
 class FinanceController < ApplicationController
   before_filter :login_required,:configuration_settings_for_finance
   #before_filter :check_permission,:only=>[:index,:fees_index,:categories,:transactions,:donation,:automatic_transactions,:payslip_index,:asset_liability,:finance_reports]
@@ -15469,6 +15469,23 @@ class FinanceController < ApplicationController
   #   @discounts = @fee_collection.fee_discounts.all(:conditions=>["batch_id='#{params[:batch_id]}'"])
   #   end
   def collection_details_view
+    fee_collection  =  FinanceFeeCollection.find(:first, :conditions => "id IN (#{params[:id]})")
+    unless fee_collection.blank?
+      for_admission = false
+      if fee_collection.for_admission.type.to_s == "FalseClass" or fee_collection.for_admission.type.to_s == "TrueClass"
+        if fee_collection.for_admission
+          for_admission = true
+        end
+      else
+        if fee_collection.for_admission.to_i == 1
+          for_admission = true
+        end
+      end
+      if for_admission
+        redirect_to  :action => "collection_details_view_admission",:id => params[:id]
+      end
+    end
+      
     require "yaml"
     finance_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/finance_absent_fine.yml")['school']
     all_schools = finance_config['ids'].split(",")
@@ -16519,14 +16536,38 @@ class FinanceController < ApplicationController
     finance_fee = FinanceFee.find(:first, :conditions => "student_id = #{student.id} and fee_collection_id = #{params[:fee_id]} and batch_id = #{student.batch.id}")
     if finance_fee.blank?
       FinanceFee.new_student_fee(fee_collection,student)
-      if fee_collection.for_admission
+      for_admission = false
+      if fee_collection.for_admission.type.to_s == "FalseClass" or fee_collection.for_admission.type.to_s == "TrueClass"
+        if fee_collection.for_admission
+          for_admission = true
+        end
+      else
+        if fee_collection.for_admission.to_i == 1
+          for_admission = true
+        end
+      end
+      if for_admission
         @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id",:order => "if(students.class_roll_no = '' or students.class_roll_no is null,0,cast(students.class_roll_no as unsigned)),students.first_name ASC", :conditions=>"finance_fees.fee_collection_id = #{params[:fee_id]}")
         render :update do |page|
           page.replace_html "particulars", :partial => "collection_details_view_admission"
         end
+#      else
+#        render :update do |page|
+#          page.replace_html "particulars", :partial => "collection_details_view_admission"
+#        end
       end
     else
-      if fee_collection.for_admission
+      for_admission = false
+      if fee_collection.for_admission.type.to_s == "FalseClass" or fee_collection.for_admission.type.to_s == "TrueClass"
+        if fee_collection.for_admission
+          for_admission = true
+        end
+      else
+        if fee_collection.for_admission.to_i == 1
+          for_admission = true
+        end
+      end
+      if for_admission
         @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id",:order => "if(students.class_roll_no = '' or students.class_roll_no is null,0,cast(students.class_roll_no as unsigned)),students.first_name ASC", :conditions=>"finance_fees.fee_collection_id = #{params[:fee_id]}")
         render :update do |page|
           page << "alert('Student already assign to this fee')"

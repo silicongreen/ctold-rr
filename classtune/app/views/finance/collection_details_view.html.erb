@@ -321,6 +321,18 @@
   }
 </style>
 <script>
+    function resetDiv()
+    {
+       var sn = 0;
+       j('.sl_no').each(function(){
+            sn += 1;
+       });
+       if ( sn == 0 )
+       {
+          j("#resultDiv").html('<p style="padding: 10px; border: 1px solid #c00; text-align: center; border-collapse: separate !important; background: #f9e79f;font-family: verdana; font-size: 12px;font-weight: bold;">No Student Assign with this Fee Collection</p>');
+       }
+    }
+    
     function resetSN()
     {
        var sn = 1;
@@ -364,7 +376,9 @@
         var total = 0;
         j('.student_amount').each(function (k,v) {
             // console.log(v.innerHTML);
-            total += parseFloat(v.innerHTML);
+            //total += parseFloat(v.innerHTML);
+            var bal = j.trim(v.innerHTML).replace(/,/g, '')
+            total += parseFloat(bal);
         });
 
         j('#totalAmount').html(numberWithCommas(total.toFixed(2)));

@@ -198,10 +198,7 @@
                                       <% failed_subject = true %>
                                     <% end %>
                                   <% end %>
-                                  <% if failed_subject == true %> 
-                                      <%= "F" %>
-                                      
-                                     <% end %> 
+                             
                                   <% if report['exam_category'] == '3'  %>
                                     <% sb = sb+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% elsif report['exam_category'] == '4' %>

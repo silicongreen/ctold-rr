@@ -78,7 +78,11 @@
     <% end %>
     </tbody>   
   </table>
+  <% if @is_common_particular %>
+  <%= will_paginate @particulars, :renderer => 'RemoteLinkRenderer', :params => {:controller => 'finance', :action => 'master_category_particulars', :batch_id=>@batch.id} %>
+  <% else %>
   <%= will_paginate @particulars, :renderer => 'RemoteLinkRenderer', :params => {:controller => 'finance', :action => 'master_category_particulars', :id => fee_category.id,:batch_id=>@batch.id} %>
+  <% end %>
 <% else %>
   <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
     <thead><!-- class="thead-inverse" -->

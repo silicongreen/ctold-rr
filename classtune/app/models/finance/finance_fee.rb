@@ -172,7 +172,10 @@ class FinanceFee < ActiveRecord::Base
     
     total_discount += scholarship_discount_amount
     balance=Champs21Precision.set_and_modify_precision(total_payable-total_discount)
-    FinanceFee.create(:student_id => student.id,:fee_collection_id => date.id,:balance=>balance,:batch_id=>student.batch_id)
+    finance_fee = FinanceFee.find(:first, :conditions => "student_id = #{student.id} and fee_collection_id = #{date.id} and batch_id = #{student.batch.id}")
+    if finance_fee.blank?
+      FinanceFee.create(:student_id => student.id,:fee_collection_id => date.id,:balance=>balance,:batch_id=>student.batch_id)
+    end
   end
   
   def self.new_student_fee_advance(date,student,no_of_month, particular_id, advance_id)
@@ -364,7 +367,10 @@ class FinanceFee < ActiveRecord::Base
         bal = 0 if bal.to_i < 0
         fee_paid.update_attributes(:is_paid=>0,:balance=>bal)
       else
-        FinanceFee.create(:student_id => student.id,:fee_collection_id => date.id,:balance=>balance,:batch_id=>student.batch_id)
+        fee_paid = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id(student.id, date.id, student.batch_id)
+        if fee_paid.blank?
+          FinanceFee.create(:student_id => student.id,:fee_collection_id => date.id,:balance=>balance,:batch_id=>student.batch_id)
+        end
       end
       
     end

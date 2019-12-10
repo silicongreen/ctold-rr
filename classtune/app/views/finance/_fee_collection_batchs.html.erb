@@ -48,4 +48,12 @@
         </div>
     </div>
   </div>
+<div class="label-field-pair" style="border: 1px solid #ccc; width: 95%; margin-left: 6%; border-radius: 6px; padding-bottom: 10px;">
+    <div class="input-container-for-admission" style="width: 100%;">
+        <div class="each_batch" style="border-bottom: 0; width: 100%; overflow: hidden;">
+          <div class="checkbox_inline" style="width: 10%;"><%= check_box_tag "for_admission", 1, false, :class=>'batches_box' %></div> 
+          <div class="checkbox_label" style="width: 85%;"><label style="width: 100%;">Set for Admission (No Student will assign any fees by default)</label></div>
+        </div>
+      </div>
+  </div>
 <% end %>

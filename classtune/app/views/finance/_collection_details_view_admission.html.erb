@@ -1,0 +1,246 @@
+<%- # Champs21
+    #Copyright 2010 teamCreative Private Limited
+    #
+    #This product includes software developed at
+    #Project Champs21 - http://www.champs21.com/
+    #
+    #Licensed under the Apache License, Version 2.0 (the "License");
+    #you may not use this file except in compliance with the License.
+    #You may obtain a copy of the License at
+    #
+    #  http://www.apache.org/licenses/LICENSE-2.0
+    #
+    #Unless required by applicable law or agreed to in writing,
+    #software distributed under the License is distributed on an
+    #"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    #KIND, either express or implied.  See the License for the
+    #specific language governing permissions and limitations
+    #under the License.  -%>
+
+<% unless @finance_fees.blank? %>
+    <button type="button" class="button submit_button" id="add_absent_fine" style="margin-left: 0%; margin-bottom: 10px;">Add Absent Fine</button>
+    <div id="absent_fine_panel" style="border: 1px solid #ccc; width: 95.6%; border-radius: 8px; display: none; padding: 10px; margin: 0 auto;">
+        <div class="label-field-pair" style="width: 49%; display: inline-block;">
+          <div class="label-container">
+            <label for="">Fine Name:</label>
+          </div>
+          <div class="input-container">
+            <input type="text" class="MB_focusable" id="fine_name" placeholder="Fine Name" title="Fine Name">
+          </div>
+      </div>
+      <div class="label-field-pair" style="width: 49%; display: inline-block;">
+          <div class="label-container">
+            <label for="">Fine Amount:</label>
+          </div>
+          <div class="input-container">
+            <input type="text" class="MB_focusable" id="fine_amount"  onkeypress="return isNumberKey(event,this)" onkeydown="checkKey(event,this)" placeholder="Fine Amount">
+          </div>
+      </div>
+    </div>
+  
+    <div id="resultDiv">
+          <input type="hidden" name="option" id="option" value="<%= @option %>" />
+      <table class="table table-striped table-bordered" id="myTable" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+        <thead><!-- class="thead-inverse" -->
+        <tr>
+          <th style="vertical-align: middle">
+              <div id="chkbox_all_panel" style="display: none; padding-right: 5px;"><input type="checkbox" name="check_all" id="check_all" class="check_all" /></div>
+              <div style="display: inline-block; padding-right: 5px;">Sl.</div>
+          </th>
+          <th style="vertical-align: middle">Name<br>Admission No<br>Batch</th>
+          <th style="vertical-align: middle">Trn. Date</th>
+          <th style="vertical-align: middle">Pay Type<br>Order Id<br>Ref. ID</th>
+          <th style="vertical-align: middle">Amount</th>
+          <th style="vertical-align: middle">Status</th>
+        </tr>
+        </thead> 
+          <tbody>
+          <% unless @finance_fees.blank?%>
+          <% @total_fee = 0 %>
+          <% i = 0 %>
+          <% @finance_fees.each do |fees| %>
+            <%  paid_fees = fees.finance_transactions %>
+            <%
+                @transaction_date = []
+                @payment_mode = []
+                @online_payment = []
+                @paid_amount = 0
+                @op_type = '';
+                @op_order_id = '';
+                @op_ref_id = '';
+            %>  
+            <% if fees.student.blank? %>
+              <% break %>
+            <% end %>  
+            <% unless paid_fees.blank?
+                  paid_fees.each do |pf|
+                     @online_payment = Payment.find(:all, :conditions=>"finance_transaction_id = #{pf.id}")
+                     unless @online_payment.blank?
+                     opc = 0
+                     @online_payment.each do |op|
+                      @transaction_date << op.transaction_datetime.to_date.strftime('%Y-%m-%d')
+
+                      if opc === 0
+                       if op.gateway_response[:payment_type] === "MB"
+                      @op_type += "MB"
+                       elsif op.gateway_response[:payment_type] == "ITCL"
+                      @op_type += "ITCL"
+                       else
+                      @op_type += "#{op.gateway_response[:payment_type] }"
+                       end
+
+                      @op_ref_id += "#{op.gateway_response[:ref_id] }"
+                      @op_order_id += "#{op.order_id.to_s}"
+                      else
+                       if op.gateway_response[:payment_type] === "MB"
+                       @op_type += ", MB"
+                       elsif op.gateway_response[:payment_type] == "ITCL"
+                       @op_type += ", ITCL"
+                       else
+                      @op_type += ", #{op.gateway_response[:payment_type] }"
+                      end
+                      @op_ref_id += ", #{op.gateway_response[:ref_id] }"
+                      @op_order_id += ",#{op.order_id.to_s}"
+                      end
+                      opc += 1
+
+                     end
+
+                     else
+                     @transaction_date << pf.transaction_date.to_date.strftime('%Y-%m-%d')
+                     @op_type = '-';
+                     @op_order_id = '-';
+                     @op_ref_id = '-';
+                     end
+
+                     @payment_mode << pf.payment_mode
+                     @paid_amount += pf.amount
+                   end
+               end
+             
+               #fine_amount_paid = 0.0
+               #unless paid_fees.blank?
+                  #transaction_ids = paid_fees.map(&:id)
+                  #unless transaction_ids.blank?
+                    #paidFineFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")")
+                    #unless paidFineFess.blank?
+                      #fine_amount_paid += paidFineFess.map(&:amount).sum.to_f
+                    #end
+                  #end
+               #end
+               ##d = FinanceFeeCollection.find()
+               #f = FinanceFee.find(fees.id)
+               #if fine_amount_paid > 0
+                  #balance = FinanceFee.get_student_balance(f.finance_fee_collection, f.student, f) + fine_amount_paid.to_f
+                #else
+                  #balance = FinanceFee.get_student_balance(f.finance_fee_collection, f.student, f) + f.finance_fee_collection.fine_to_pay(f.student).to_f + fine_amount_paid.to_f
+                #end
+               #balance = 0
+            %>
+            <tr id="student_fee_<%= fees.id %>_<%= fees.student.id %>" class="<%= cycle("odd", "even") %> student_fees_list">
+              <td class="col-5" style="text-align: center; vertical-align: middle;">
+                  <div class="student_chkbox_panel" style="display: none; padding-right: 5px;"><input type="checkbox" name="student_ids[]" id="student_ids" class="student_ids" value="<%= fees.student.id %>" /></div>
+                  <div class="sl_no" style="display: inline-block; padding-right: 5px;"><%= i = i + 1 %></div>
+              </td>
+              <td class="col-4"style="vertical-align: middle;">
+                  <% if MultiSchool.current_school.id == 3 %>
+                  <small><strong><%= link_to fees.student.full_name, :controller => 'finance' ,:action => 'fees_student_dates',:id => fees.student.id%></strong></small><br>
+                  <% else %>
+
+                  <small><strong><%= link_to fees.student.full_name + " (Roll No: " + fees.student.class_roll_no.to_s + ")", :controller => 'finance' ,:action => 'fees_student_dates',:id => fees.student.id%></strong></small><br>
+                  <% end %>
+                  <small><%= fees.student.admission_no %></small><br>
+                  <small><%= fees.student.batch.full_name %></small>
+                  <hr style="border: 1px solid #ccc; display: none;" class="absent_hr_panel" />
+                  <div class="label-field-pair absent_days_panel" style="width: 100px; display: none;">
+                    <div class="label-container" style="display: block;">
+                      <label for="">No of Absent Days:</label>
+                    </div>
+                    <div class="input-container" style="clear: both; width: 100%;">
+                        <input type="text" class="MB_focusable absent_days_cls" id="absent_days_<%= fees.student.id %>" name="absent_days_<%= fees.student.id %>" disabled=""  onkeypress="return isNumberKey(event,this)" onkeydown="checkKey(event,this)" placeholder="No of Absent Days">
+                    </div>
+                </div>
+              </td>
+              <td style="vertical-align: middle; text-align: center;">
+                <% unless @transaction_date.blank? %>
+                  <% @transaction_date.each do |date| %>
+                    <%= date.to_date.strftime('%d-%m-%Y') + "<br>" %>
+                  <% end %>
+                <% else %>
+                  <%= "-" %>
+                <% end %>
+              </td>
+              <td style="vertical-align: middle;">
+                <%= @op_type + "<br>" %>
+                <%= @op_order_id + "<br>" %>
+                <%= @op_ref_id + "<br>" %>
+              </td>
+
+              <td class="col-3" style="text-align: right; vertical-align: middle;" >
+                <div id="student_amount_<%= fees.student_id %>_<%= fees.id %>" class="student_amount">
+                  <% if fees.is_paid %>
+                    <%= to_comma_seperated_precision_label @paid_amount %>
+                    <% @total_fee = @total_fee + @paid_amount %>
+                  <% else %>
+                    <% if fees.balance == 0.0 %>
+                    <%= to_comma_seperated_precision_label @paid_amount %>
+                    <% @total_fee = @total_fee + @paid_amount %>
+                    <% else %>
+                    <%= to_comma_seperated_precision_label fees.balance %>
+                    <% if @paid_amount.to_f > 0.00 %>
+                    <hr style="border: 1px solid #ccc;" />
+                    <b>Paid Amount</b><br /><%= @paid_amount %>
+                    <% end %>
+                    <% @total_fee = @total_fee + fees.balance %>
+                    <% end %>
+                  <% end %>
+                </div>
+              </td>
+
+              <td id="action_tr_<%= fees.student.id %>_<%= fees.id %>" class="col-3 action_tr" style="text-align: center;vertical-align: middle;" >
+                  <div class="action_div">
+                    <% if fees.is_paid %>
+                      <i class="fa fa-check" style="color: #49BB4B; font-size: 14px;"></i><br/>
+                    <% else %>
+                      <% if fees.balance == 0.0 %>
+                      <i class="fa fa-check" style="color: #49BB4B; font-size: 14px;"></i><br/>
+                      <% else %>
+                      <input type="hidden" class="notPaid" name="not_paid[]" value="<%= fees.student.id %>">
+                      <%= link_to_remote '<i class="fa fa-refresh" style="color: #49BB4B;"></i>',:before => "Element.show('add-loader-#{i}')", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'regenerate_student_fees',:fee_id=> fees.id, :student_id => fees.student.id},:confirm => "Are You sure to Regenerate?"%>
+                      <%= link_to_remote '<i class="fa fa-minus-circle" id="deleteFin" style="color:red;"></i>',:before => "Element.show('add-loader-#{i}');", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'delete_student_fees',:fee_id=> fees.id},:confirm => "Are you sure, you want to delete this fee transaction?"%>
+                      <%= image_tag("Loader-transparant.gif",:align => "absmiddle",:border => 0,:id => "add-loader-#{i}", :class=>"add-palette-loader", :style =>"display: none;" ) %>
+                      <% end %>
+                    <% end %>
+                  </div>  
+              </td>
+
+          </tr>
+          <% end %>
+          <% else %>
+            <tr>
+              <td colspan="6" style="text-align: center;vertical-align: middle;">
+                No Student Found
+              </td>
+
+            </tr>
+            </tbody>
+          <% end %>
+          </tbody>
+          <tfoot>
+          <tr>
+            <td colspan="3" style="vertical-align: middle;"></td>
+            <td style="vertical-align: middle;"><b>Total Amount:</b></td>
+            <td style="text-align: right;vertical-align: middle;"><div id="totalAmount"><%= to_comma_seperated_precision_label @total_fee %></div></td>
+            <td></td>
+          </tr>
+          </tfoot>
+
+      </table>
+    </div>
+<% else %>
+    <div id="resultDiv">
+          <p style="padding: 10px; border: 1px solid #c00; text-align: center; border-collapse: separate !important; background: #f9e79f;font-family: verdana; font-size: 12px;font-weight: bold;">No Student Assign with this Fee Collection</p>
+    </div>
+<% end %>
+
+

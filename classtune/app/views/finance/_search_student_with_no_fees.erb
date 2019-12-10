@@ -1,0 +1,53 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<table id="fees_for_students_table" class="table" align="center" width="100%" cellpadding="1" cellspacing="1">
+  <% unless @students.blank? %>
+    <thead>
+      <tr>
+        <th scope="col"><%= t('sl_no') %></th>
+        <th style="text-align: left;" scope="col">Student Name</th>
+        <th style="text-align: left;" scope="col">Batch</th>
+        <th scope="col">Admission No</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @students.each_with_index do |student, i| %>
+      <tr class="fees_for_students" id="student_id_fee_<%= student.id %>">
+          <td style="text-align: center;"><%= i+1 %></td>
+          <td><%= student.full_name unless student.full_name.blank? %></td>
+          <td><%= student.batch.full_name unless student.batch.blank? %></td>
+          <td style="text-align: center;"><%= student.admission_no unless student.admission_no.blank? %></td>
+          <td style="text-align: center;">
+            <%= student.admission_no unless student.admission_no.blank? %>
+          </td>
+          <td style="text-align: center;">
+              <%= link_to_remote '<div style="border: 1px solid #ccc; padding: 1px 0px; background: #f5f5f5; cursor: pointer;"><i id="student_id_fee_loader_' + student.id.to_s + '" class="fa fa-plus plus-fees"></i></div>',:before => "j('#student_id_fee_loader_#{student.id}').removeClass('fa-plus');j('#student_id_fee_loader_#{student.id}').addClass('fa-spin');j('#student_id_fee_loader_#{student.id}').addClass('fa-spinner');", :success => "j('#student_id_fee_loader_#{student.id}').addClass('fa-plus');j('#student_id_fee_loader_#{student.id}').removeClass('fa-spin');j('#student_id_fee_loader_#{student.id}').removeClass('fa-spinner'); j('#student_id_fee_#{student.id}').remove(); resetSearch();",:url => {:action => 'generate_student_fees',:fee_id=> @fee_id, :student_id => student.id},:confirm => "Are You sure to Generate?" %>
+          </td>
+      </tr>
+    <% end %>
+    </tbody>  
+  <% else %>
+  <thead>
+    <tr>
+        <th scope="col" style="border-bottom: 0px;"><%= t('no_students_found') %></th>
+    </tr>
+   </thead>  
+  <% end %>
+</table>

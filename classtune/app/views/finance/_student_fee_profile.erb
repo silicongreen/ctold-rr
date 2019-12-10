@@ -1,0 +1,259 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<% combine_fees_enabled = false %>
+<% @include_combined_fees = PaymentConfiguration.find_by_config_key("include_combined_fees").try(:config_value)    %>
+<% unless @include_combined_fees.blank? %>
+<% combine_fees_enabled = true %>
+<% end %>
+<% student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and config_key = 'combined_payment_student'") %>
+<% unless student_fee_configuration.nil? %>
+  <% if student_fee_configuration.config_value.to_i == 1 %>
+    <% combine_fees_enabled = true %>
+  <% else %>
+    <% combine_fees_enabled = false %>
+  <% end %>
+<% end %>
+          
+<div class="extender"> </div>
+<div class="line" style=""></div>
+<% hide_style = "" %>
+<% if @dates_all.blank? %>
+  <% hide_style = "display: none;" %>
+<% end %>
+<div id="fees_list" style="background: #FBFBFB; padding: 20px; <%= hide_style %>">
+  <% if @current_user.admin?  %>
+  <div id="combined_configuration" style="padding: 20px 0; ">
+      <% if combine_fees_enabled %>
+      <i id="combined_payment_student" name="combined_payment_student" class="fa fa-check-square-o" style="font-size: 20px; "></i>&nbsp;&nbsp;&nbsp;Enable Combined payment for this student
+      <% else %>
+      <i id="combined_payment_student" name="combined_payment_student" class="fa fa-square-o" style="font-size: 20px; "></i>&nbsp;&nbsp;&nbsp;Enable Combined payment for this student
+      <% end %>
+  </div>
+  <% end %>
+  <p id="no_fee_dues" style="display: none; font-size: 14px; font-family: verdana;">No Fee dues found</p>
+  <p id="no_fee_history" style="display: none; font-size: 14px; font-family: verdana;">No Previous Fee History</p>
+  <div style="width: 100%; text-align: right;"></div>
+</div>
+          
+<table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 100%;">
+    <thead><!-- class="thead-inverse" -->
+      <tr>
+        <th style="font-weight: normal; width: 8%; text-align: center;"><%= "" %> </th>
+        <th style="font-weight: normal; width: 32%; text-align: left;"><%= "Fee Name" %></th>
+        <th style="font-weight: normal; width: 15%; text-align: right;"><%= t('amount') %></th>
+        <th style="font-weight: normal; width: 15%; text-align: right;"><%= "Paid" %></th>
+        <th style="font-weight: normal; width: 15%; text-align: right;"><%= "Due" %></th>
+        <th class="paid_class_advance" style="font-weight: normal; width: 15%; text-align: right;"><%= "Advance" %></th>
+        <th style="font-weight: normal; width: 15%; text-align: right;"><%= "" %></th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr class="unpaid_empty_class">
+            <td style="font-weight: normal;" colspan="6">No fees dues</td>
+        </tr>
+        <tr class="paid_empty_class">
+            <td style="font-weight: normal;" colspan="6">No Previous Fee History</td>
+        </tr>
+    <% fees_multiple = "" %>  
+    <% amount = 0.0 %>    
+    <% fees_to_paid = 0 %>    
+    <% fine_amount_user = 0.00 %>    
+    <% amount_to_pay_without_fine = 0.00 %>    
+    <%- @dates_all.each do |d| -%>
+        <% fine_enabled = true %>
+        <% student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{d.id} and config_key = 'fine_payment_student'") %>
+        <% unless student_fee_configuration.blank? %>
+          <% if student_fee_configuration.config_value.to_i == 1 %>
+            <% fine_enabled = true %>
+          <% else %>
+            <% fine_enabled = false %>
+          <% end %>
+        <% end %>
+        <%  finance_fee = @student.finance_fee_by_date(d) %>
+        <%  paid_fees = finance_fee.finance_transactions %>
+        <%
+          paid_amount = 0.0
+          fine_amount_paid = 0.0
+          unless paid_fees.nil? or paid_fees.blank?
+            paid_fees.each do |pf|
+              paid_amount += pf.amount
+            end
+
+            transaction_ids = paid_fees.map(&:id)
+            unless transaction_ids.blank?
+              paidFineFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")")
+              unless paidFineFess.blank?
+                fine_amount_paid += paidFineFess.map(&:amount).sum.to_f
+              end
+            end
+          end
+          if fine_amount_paid > 0
+            balance = FinanceFee.get_student_balance(d, @student, finance_fee) + fine_amount_paid.to_f
+          else
+            balance = FinanceFee.get_student_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f + fine_amount_paid.to_f
+          end
+
+          if fine_amount_paid > 0
+            balance_with_fine = FinanceFee.get_student_balance(d, @student, finance_fee) + fine_amount_paid.to_f
+          else
+            balance_with_fine = FinanceFee.get_student_balance(d, @student, finance_fee) + d.actual_fine_to_pay(@student).to_f + fine_amount_paid.to_f
+          end
+
+          fine_amount_user = d.actual_fine_to_pay(@student).to_f
+          amount_to_pay_without_fine = balance_with_fine - fine_amount_user
+          if amount_to_pay_without_fine < 0
+            amount_to_pay_without_fine = 0
+          end
+
+          advance = 0.0
+          bal = balance - paid_amount
+          if bal.to_f > 0
+            fees_to_paid += 1
+          end
+          if bal.to_f < 0 
+            advance = bal * -1
+            bal = 0.00
+          end
+        %>
+        <% class_name = "unpaid_class" %>
+        <% if bal.to_f <= 0  %>
+          <% class_name = "paid_class" %>
+        <% end %>
+        <% checked_class = "fa-square-o" %>
+        <% cls_rerd = "finance_fees_collection_chk finance_fees_collection_all" %>
+        <% if combine_fees_enabled %>
+          <% checked_class  = "fa-check-square-o" %>
+          <% color_check = "#999" %>
+          <% if bal.to_f > 0  %>
+          <% fees_multiple += finance_fee.id.to_s + "," %>
+          <% color_check = "#000" %>
+          <% amount += bal %>   
+          <% elsif bal.to_f <= 0  %>
+          <% cls_rerd = "finance_fees_collection_all" %>
+          <% end %>
+        <% else %>
+          <% if bal.to_f <= 0  %>
+            <% checked_class  = "fa-check-square-o" %>
+            <% cls_rerd = "finance_fees_collection_all" %>
+          <% end %>
+          <% color_check = "#999" %>
+          <% if bal.to_f > 0  %>
+          <% fees_multiple += finance_fee.id.to_s + "," %>
+          <% color_check = "#000" %>
+          <% amount += bal %>    
+          <% end %>
+        <% end %>
+        <tr  id="finance_fee_<%= finance_fee.id %>" class="<%= class_name %>">
+          <td style="font-weight: normal; vertical-align: middle; text-align: center; cursor: pointer;"><i id="fee_collection_<%= finance_fee.id %>" class="fa <%= checked_class %> <%= cls_rerd %>" style="font-size: 16px; color: <%= color_check %>; "></i></td>
+          <td style="font-weight: normal; vertical-align: middle; text-align: left; font-weight: bold;">
+              <%= d.name %><br /><%=  '<small>Due Date:' + d.due_date.strftime("%d %b, %Y") + '</small>'  if bal.to_f > 0  %> 
+              <% if @current_user.admin? and bal > 0 %>
+                <% unless d.fine_id.blank? %>
+                <input type="hidden" id="fine_amount_to_pay_<%= d.id %>" name="fine_amount_to_pay" value="<%= fine_amount_user %>" />
+                <input type="hidden" id="amount_to_pay_without_fine_<%= d.id %>" name="amount_to_pay_without_fine" value="<%= amount_to_pay_without_fine %>" />
+                <input type="hidden" id="paid_amount_user_<%= d.id %>" name="paid_amount_user" value="<%= paid_amount %>" />
+                <hr style="border: 1px solid #ccc;" />
+                <div id="fine_configuration">
+                    <% if fine_enabled %>
+                    <i id="fine_payment_student" name="fine_payment_student" class="fa fa-check-square-o" style="font-size: 14px; " data-date_id="<%= d.id %>"></i>&nbsp;&nbsp;&nbsp;<span style="font-weight: normal;">Enable Fine for this student</span>
+                    <% else %>
+                    <i id="fine_payment_student" name="fine_payment_student" class="fa fa-square-o" style="font-size: 14px; " data-date_id="<%= d.id %>"></i>&nbsp;&nbsp;&nbsp;<span style="font-weight: normal;">Enable Fine for this student</span>
+                    <% end %>
+                </div>
+                <% end %>
+              <% end %>
+          </td>
+          <td id="amount_user_<%= d.id %>" style="font-weight: normal; vertical-align: middle; font-weight: normal; text-align: right; font-size: 14px;"><%= to_comma_seperated_precision_label(balance.to_f)  %>&nbsp;&nbsp;</td>
+          <td id="paid_user_<%= d.id %>" style="font-weight: normal; vertical-align: middle; text-align: right; font-weight: normal; font-size: 14px;"><%= to_comma_seperated_precision_label(paid_amount.to_f)  %>&nbsp;&nbsp;</td>
+          <td id="bal_user_<%= d.id %>" style="font-weight: normal; vertical-align: middle; text-align: right; font-weight: normal; font-size: 14px;"><%= to_comma_seperated_precision_label(bal.to_f)  %>&nbsp;&nbsp;</td>
+          <td id="advance_user_<%= d.id %>" class="paid_class_advance" style="font-weight: normal; vertical-align: middle; text-align: right; font-weight: normal; font-size: 14px;"><%= to_comma_seperated_precision_label(advance.to_f)  %>&nbsp;&nbsp;</td>
+          <td class="button_td" style="font-weight: normal; vertical-align: middle; text-align: center; font-weight: normal; font-size: 14px;">
+              <% if MultiSchool.current_school.id != 352 %>  
+                  <%= link_to "Print Receipt", {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>d.id}, :class=>"details_button details_button_color" %>
+                  <%= link_to "Pay Fees", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"details_button details_button_color" %>
+              <% else %>
+              <%= link_to "Details", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"details_button details_button_color", :id => "fee_link_" + Base64.encode64(@student.id.to_s + "-" + d.id.to_s).reverse + '===' + "" %>
+              <% end %>
+          </td>
+        </tr>
+        <% if bal > 0 %>
+          <% if finance_fee.balance.to_f != bal.to_f %>
+              <% ffee = FinanceFee.find(finance_fee.id) %>
+              <% ffee.update_attributes(:balance => bal, :is_paid => false) %>
+          <% end %>
+        <% else %>
+          <% ffee = FinanceFee.find(finance_fee.id) %>
+          <% ffee.update_attributes(:balance => 0.00, :is_paid => true) %>
+        <% end %>
+    <% end %>
+        <% if amount > 0 %>
+        <tr class="total_fees">
+            <td colspan="4" style="font-weight: normal; vertical-align: middle; text-align: right; cursor: pointer;">Total Fees</td>
+            <td style="font-weight: normal; vertical-align: middle; text-align: right; font-weight: normal; font-size: 14px;"><%= to_comma_seperated_precision_label(amount.to_f)  %>&nbsp;&nbsp;</td>
+            <td style="font-weight: normal; vertical-align: middle; text-align: center; font-weight: normal; font-size: 14px;">
+                <% if fees_to_paid > 0 %>
+                  <% style = 'display: block;' %>
+                  <% unless combine_fees_enabled %>
+                    <% style = 'display: none;' %>
+                  <% end %>
+                  <% if fees_multiple.strip.length > 0 %>
+                  <div id="lnk_all" style="padding-top: 10px; <%= style %>"><%= link_to "Pay All Fees",{:action=>:fee_details, :id => @student.id, :multiple=>true, :fees => fees_multiple.strip}, {:class=> 'details_button', :id => "lnk_btn"} %></div>
+                  <% else %>
+                  <div id="lnk_all" style="padding-top: 10px; <%= style %>"><%= link_to "Pay All Fees",{:action=>:fee_details, :id => @student.id, :multiple=>true}, {:class=> 'details_button', :id => "lnk_btn"} %></div>
+                  <% end %>
+                <% end %>
+            </td>
+        </tr>
+        <% end %>
+        <% if @dates_all.blank? %>
+          <% unless @dates_admission.blank? %>
+            <tr class="unpaid_class">
+              <td style="font-weight: normal; vertical-align: middle; text-align: center; cursor: pointer;">&nbsp;</td>
+              <td style="font-weight: normal; vertical-align: middle; text-align: left; font-weight: bold;">
+                  <select id="fees_for_admission" autocomplete="off">
+                      <option value="" selected="">Select</option>
+                      <% @dates_admission.each do |dates_admission| %>
+                        <option value="<%= dates_admission.id %>"><%= dates_admission.name %></option>
+                      <% end %>
+                  </select>
+              </td>
+              <td colspan="3" style="font-weight: normal; vertical-align: middle; font-weight: normal; text-align: right; font-size: 14px;">&nbsp;&nbsp;</td>
+              <td class="paid_class_advance" style="font-weight: normal; vertical-align: middle; text-align: right; font-weight: normal; font-size: 14px;">&nbsp;&nbsp;</td>
+              <td class="button_td" style="font-weight: normal; vertical-align: middle; text-align: center; font-weight: normal; font-size: 14px;">
+                  <div id="generate_fee" style="display: none; border: 1px solid #ccc; padding: 1px 0px; background: #f5f5f5; cursor: pointer; width: 20px; margin: 0 auto;"><i class="fa fa-plus plus-fees"></i></div>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+    </tbody>
+</table>
+          
+            
+<div id="combined_pay_1" style="display: none;">
+  <div style="clear: both; height: 4px; background: #FBFBFB; "></div>
+
+  <div style="padding: 10px; text-align: center; height: 60px;">
+      <% if fees_multiple.strip.length > 0 %>
+      <div id="lnk" style="padding-top: 10px;"><%= link_to "Pay Fees",{:action=>:fee_details, :id => @student.id, :multiple=>true, :fees => fees_multiple.strip}, {:class=> 'user_button_new', :id => "lnk_btn"} %></div>
+      <% else %>
+      <div id="lnk" style="padding-top: 10px;"><%= link_to "Pay Fees",{:action=>:fee_details, :id => @student.id, :multiple=>true}, {:class=> 'user_button_new', :id => "lnk_btn"} %></div>
+      <% end %>
+  </div>
+</div>

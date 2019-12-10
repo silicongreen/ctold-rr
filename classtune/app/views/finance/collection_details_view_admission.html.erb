@@ -17,6 +17,10 @@
     #specific language governing permissions and limitations
     #under the License.  -%>
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/stylesheets/select2.min.css">
+<link rel="stylesheet" href="/stylesheets/select2-finance.css">
+
 <div id="content-header">
   <%= show_header_icon %>
   <h1><%= t('fees_text') %></h1>
@@ -24,65 +28,43 @@
   <div class='sub-header'><%= t('collection_details') %></div>
 </div>
 <div id="page-yield">
-  <h3>Fee Collection Details</h3>
-  <div class="label-field-pair">
-    <div class="label-container">
-      <label for="">Search By Name / ID:</label>
+  <h3>Fee Collection Details (Admission)</h3>
+  <div class="label-field-pair" style="padding-top: 10px; padding-bottom: 10px; width: 40%; margin: 0 auto; ">
+    <div class="input-container" style="width: 100%; position: relative;">
+        <input autocomplete="off" type="text" name="student_admission_no_fees" id="student_admission_no_fees" placeholder="Student Admission No" />
+        <div class="group-checked search-student"><i class="fa fa-search search-student search-filter-student" aria-hidden="true"></i></div>
     </div>
-    <div class="input-container">
-      <input type="text" class="MB_focusable" id="myInput1" onchange="filterTable(1)" onkeyup="filterTable(1)" placeholder="Search for names or admission no." title="Type in a name or Admission No.">
-    </div>
-    <div class="label-container">
-      <label for=""></label>
-    </div>
-    <div class="input-container">
-      <div style="width: 100%; padding: 20px 0; text-align: center;">
-        <input type="checkbox" name="show_inactive" id="show_inactive" class="show_inactive" style="display: none;">
-        <i name="show_inactive_fa" id="show_inactive_fa" class="fa fa-square-o show_inactive_fa" style="font-size: 20px; cursor: pointer; color: #49BB4B; " aria-hidden="true"></i>&nbsp;&nbsp;<span  style="color: #000;">Show Students with no Finance Data</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <%= image_tag("Loader-transparant.gif",:align => "absmiddle",:border => 0,:id => "add-loader", :class=>"add-palette-loader", :style =>"display: none;" ) %>
-      </div>
-    </div>
-    <div class="label-container">
-      <label for=""></label>
-    </div>
-    <div class="input-container">
-      <div style="width: 100%; padding:0px 0px 48px 0px; text-align: center;">
-        <button type="button" class="button submit_button" id="regenerateAll" >Regenerate All</button>
-        <% if @absent_fine %>
-        <button type="button" class="button submit_button" id="add_absent_fine" >Add Absent Fine</button>
-        <% end %>
-        <%= image_tag("Loader-transparant.gif",:align => "absmiddle",:border => 0,:id => "add-loader", :class=>"add-palette-loader", :style =>"display: none;" ) %>
-      </div>
-    </div>
-
   </div>
   <br>
-  <div id="absent_fine_panel" style="border: 1px solid #ccc; width: 100%; border-radius: 8px; display: none; padding: 10px; margin: 0 auto;">
-      <div class="label-field-pair" style="width: 49%; display: inline-block;">
-        <div class="label-container">
-          <label for="">Fine Name:</label>
-        </div>
-        <div class="input-container">
-          <input type="text" class="MB_focusable" id="fine_name" placeholder="Fine Name" title="Fine Name">
-        </div>
-    </div>
-    <div class="label-field-pair" style="width: 49%; display: inline-block;">
-        <div class="label-container">
-          <label for="">Fine Amount:</label>
-        </div>
-        <div class="input-container">
-          <input type="text" class="MB_focusable" id="fine_amount"  onkeypress="return isNumberKey(event,this)" onkeydown="checkKey(event,this)" placeholder="Fine Amount">
-        </div>
-    </div>
+  <div id="student-list" style="border: 1px solid #ccc; border-radius: 5px; display: none;">
   </div>
   <div style="clear: both; height: 20px;"></div>
   <%#= debug @finance_fees_inactive.inspect %>
 
   <% unless @finance_fees.blank? %>
-
-    <div class="particulars">
+    <div class="particulars" id="particulars">
+      <button type="button" class="button submit_button" id="add_absent_fine" style="margin-left: 0%; margin-bottom: 10px;">Add Absent Fine</button>
+      <div id="absent_fine_panel" style="border: 1px solid #ccc; width: 95.6%; border-radius: 8px; display: none; padding: 10px; margin: 0 auto;">
+          <div class="label-field-pair" style="width: 49%; display: inline-block;">
+            <div class="label-container">
+              <label for="">Fine Name:</label>
+            </div>
+            <div class="input-container">
+              <input type="text" class="MB_focusable" id="fine_name" placeholder="Fine Name" title="Fine Name">
+            </div>
+        </div>
+        <div class="label-field-pair" style="width: 49%; display: inline-block;">
+            <div class="label-container">
+              <label for="">Fine Amount:</label>
+            </div>
+            <div class="input-container">
+              <input type="text" class="MB_focusable" id="fine_amount"  onkeypress="return isNumberKey(event,this)" onkeydown="checkKey(event,this)" placeholder="Fine Amount">
+            </div>
+        </div>
+      </div>
+  
       <div id="resultDiv">
-          <input type="hidden" name="option" id="option" value="<%= @option %>" />
+        <input type="hidden" name="option" id="option" value="<%= @option %>" />
       <table class="table table-striped table-bordered" id="myTable" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
         <thead><!-- class="thead-inverse" -->
         <tr>
@@ -96,7 +78,7 @@
           <th style="vertical-align: middle">Amount</th>
           <th style="vertical-align: middle">Status</th>
         </tr>
-        </thead>
+        </thead> 
           <tbody>
           <% unless @finance_fees.blank?%>
           <% @total_fee = 0 %>
@@ -180,12 +162,12 @@
                 #end
                #balance = 0
             %>
-            <tr id="student_fee_<%= fees.id %>_<%= fees.student.id %>" class="<%= cycle("odd", "even") %>" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="background-color: #ffe6e6" <% end %> >
-              <td class="col-5" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="text-align: center; vertical-align: middle; background-color: #ffe6e6"<% else %>style="text-align: center; vertical-align: middle;"<% end %>>
+            <tr id="student_fee_<%= fees.id %>_<%= fees.student.id %>" class="<%= cycle("odd", "even") %> student_fees_list">
+              <td class="col-5" style="text-align: center; vertical-align: middle;">
                   <div class="student_chkbox_panel" style="display: none; padding-right: 5px;"><input type="checkbox" name="student_ids[]" id="student_ids" class="student_ids" value="<%= fees.student.id %>" /></div>
                   <div class="sl_no" style="display: inline-block; padding-right: 5px;"><%= i = i + 1 %></div>
               </td>
-              <td class="col-4" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle; background-color: #ffe6e6"<% else %>style="vertical-align: middle;" <% end %>>
+              <td class="col-4"style="vertical-align: middle;">
                   <% if MultiSchool.current_school.id == 3 %>
                   <small><strong><%= link_to fees.student.full_name, :controller => 'finance' ,:action => 'fees_student_dates',:id => fees.student.id%></strong></small><br>
                   <% else %>
@@ -204,7 +186,7 @@
                     </div>
                 </div>
               </td>
-              <td <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle;background-color: #ffe6e6;text-align: center;"<% else %>style="vertical-align: middle; text-align: center;" <% end %>>
+              <td style="vertical-align: middle; text-align: center;">
                 <% unless @transaction_date.blank? %>
                   <% @transaction_date.each do |date| %>
                     <%= date.to_date.strftime('%d-%m-%Y') + "<br>" %>
@@ -213,13 +195,13 @@
                   <%= "-" %>
                 <% end %>
               </td>
-              <td <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle;background-color: #ffe6e6"<% else %>style="vertical-align: middle;" <% end %>>
+              <td style="vertical-align: middle;">
                 <%= @op_type + "<br>" %>
                 <%= @op_order_id + "<br>" %>
                 <%= @op_ref_id + "<br>" %>
               </td>
 
-              <td class="col-3" style="text-align: right; <% unless params[:batch_id].to_i == fees.student.batch.id {}%>vertical-align: middle; background-color: #ffe6e6;<% else %> vertical-align: middle; <% end %>" >
+              <td class="col-3" style="text-align: right; vertical-align: middle;" >
                 <div id="student_amount_<%= fees.student_id %>_<%= fees.id %>" class="student_amount">
                   <% if fees.is_paid %>
                     <%= to_comma_seperated_precision_label @paid_amount %>
@@ -240,7 +222,7 @@
                 </div>
               </td>
 
-              <td id="action_tr_<%= fees.student.id %>_<%= fees.id %>" class="col-3 action_tr" style="text-align: center;<% unless params[:batch_id].to_i == fees.student.batch.id {}%>vertical-align: middle; background-color: #ffe6e6;<% else %>vertical-align: middle; <% end %>" >
+              <td id="action_tr_<%= fees.student.id %>_<%= fees.id %>" class="col-3 action_tr" style="text-align: center;vertical-align: middle;" >
                   <div class="action_div">
                     <% if fees.is_paid %>
                       <i class="fa fa-check" style="color: #49BB4B; font-size: 14px;"></i><br/>
@@ -249,18 +231,7 @@
                       <i class="fa fa-check" style="color: #49BB4B; font-size: 14px;"></i><br/>
                       <% else %>
                       <input type="hidden" class="notPaid" name="not_paid[]" value="<%= fees.student.id %>">
-                      <% unless params[:batch_id].to_i == fees.student.batch.id %>
-                        <% fee_batch =  FeeCollectionBatch.find_by_batch_id(fees.student.batch.id) %>
-                        <% unless fee_batch.blank? %>
-                            <% if fee_batch.finance_fee_collection_id.to_i == params[:id].to_i %>
-                            <%= link_to_remote '<i class="fa fa-refresh" style="color: #49BB4B;"></i>',:before => "Element.show('add-loader-#{i}')", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'regenerate_student_fees',:fee_id=> fees.id, :student_id => fees.student.id , :delete=> 1, :option=>2,:finance_fee_id=>fees.id},:confirm => "Are You sure to Regenerate?"%>
-                            <br>
-                          <% end %>
-                        <% end %>
-                      <% else %>
-                        <%= link_to_remote '<i class="fa fa-refresh" style="color: #49BB4B;"></i>',:before => "Element.show('add-loader-#{i}')", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'regenerate_student_fees',:fee_id=> fees.id, :student_id => fees.student.id},:confirm => "Are You sure to Regenerate?"%>
-                        <br>
-                      <% end %>
+                      <%= link_to_remote '<i class="fa fa-refresh" style="color: #49BB4B;"></i>',:before => "Element.show('add-loader-#{i}')", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'regenerate_student_fees',:fee_id=> fees.id, :student_id => fees.student.id},:confirm => "Are You sure to Regenerate?"%>
                       <%= link_to_remote '<i class="fa fa-minus-circle" id="deleteFin" style="color:red;"></i>',:before => "Element.show('add-loader-#{i}');", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'delete_student_fees',:fee_id=> fees.id},:confirm => "Are you sure, you want to delete this fee transaction?"%>
                       <%= image_tag("Loader-transparant.gif",:align => "absmiddle",:border => 0,:id => "add-loader-#{i}", :class=>"add-palette-loader", :style =>"display: none;" ) %>
                       <% end %>
@@ -293,16 +264,51 @@
     </div>
     </div>
   <% else %>
-      <div class="particulars"><div id="resultDiv">
-              <p style="padding: 10px; border: 1px solid #c00; text-align: center; border-collapse: separate !important; background: #f9e79f;font-family: verdana; font-size: 12px;font-weight: bold;">No Student Assign with this Fee Collection</p>
+      <div class="particulars" id="particulars"><div id="resultDiv">
+          <p style="padding: 10px; border: 1px solid #c00; text-align: center; border-collapse: separate !important; background: #f9e79f;font-family: verdana; font-size: 12px;font-weight: bold;">No Student Assign with this Fee Collection</p>
       </div></div>
   
   <% end %>
   <div id="save_absent_fine_panel" style="width:100%; text-align: center; padding-top: 10px; display: none;">
       <i id="absent_fine_clicked" class="fa fa-spin fa-spinner" style="display: none;"></i>
       <button type="button" class="button submit_button" id="save_absent_fine" style="float: none;">Save Absent Fine</button>
-  </div>
+  </div>  
 </div>
+<style>
+  .table {
+      width: 100%;
+      margin-bottom: 0px;
+
+  }
+  .label-field-pair .label-container {
+    width: 37%;
+    padding-top: 4px;
+    float: left;
+  }
+  .select2-container {
+    width: 92% !important;
+  }
+  .course_area .select2-container {
+    width: 100% !important;
+  }
+  .label-field-pair input{
+    margin: 0;
+    width: 92%;
+  }
+  .group-checked{
+    position: absolute;
+    right: 0;
+    top: 2px;
+    height: 26px;
+    width: 50px;
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+    vertical-align: middle;
+    padding-top: 6px;
+    cursor: pointer;
+  }
+</style>
 <style>
   .submit_button {
     margin-top: 65px;
@@ -321,6 +327,27 @@
   }
 </style>
 <script>
+    function resetDiv()
+    {
+       var sn = 0;
+       j('.sl_no').each(function(){
+            sn += 1;
+       });
+       if ( sn == 0 )
+       {
+          j("#particulars").html('<div id="resultDiv"><p style="padding: 10px; border: 1px solid #c00; text-align: center; border-collapse: separate !important; background: #f9e79f;font-family: verdana; font-size: 12px;font-weight: bold;">No Student Assign with this Fee Collection</p></div>');
+       }
+    }
+    
+    function resetSearch()
+    {
+       if ( j(".fees_for_students").length == 0 )
+       {
+          j("#fees_for_students_table").remove();
+          j("#student-list").hide();
+       }
+    }
+    
     function resetSN()
     {
        var sn = 1;
@@ -329,6 +356,7 @@
             sn += 1;
        });
     }
+    
     function filterTable(field) {
         var input, filter, table, tr, td, i, txtValue;
         input = document.getElementById("myInput"+field);
@@ -364,24 +392,11 @@
         var total = 0;
         j('.student_amount').each(function (k,v) {
             // console.log(v.innerHTML);
-            total += parseFloat(v.innerHTML);
+            var bal = j.trim(v.innerHTML).replace(/,/g, '')
+            total += parseFloat(bal);
         });
 
         j('#totalAmount').html(numberWithCommas(total.toFixed(2)));
-    }
-
-    function searchAjax(opt){
-        j.ajax({
-            url: '/finance/collection_details_view_inactive/',
-            data: {batch_id : <%= params[:batch_id] %>, id: <%= params[:id] %>,option: opt},
-            type: 'POST',
-            beforeSend : function() {
-                j("#add-loader").show();
-            },
-            success: function(data){
-                j("#add-loader").hide();
-            }
-        });
     }
     
     function isNumberKey(evt, obj) 
@@ -412,87 +427,200 @@
         }
     }
     
+    function runSpinner(e)
+    {
+        e.preventDefault(); 
+        j(".search-filter-student").removeClass("search-student");
+        j(".search-filter-student").removeClass("fa-search");
+        j(".search-filter-student").addClass("fa-spinner");
+        j(".search-filter-student").addClass("fa-spin");
+    }
     
-    j(document).on("click","#save_absent_fine",function(){
-        var student_cnt = 0;
-        var student_amt_empty_or_null = 0;
-        var student_ids_n_amount = "";
-        var found = false;
-        j(".student_ids").each(function(){
-            if (j(this).prop("checked"))
+    function stopSpinner(e)
+    {
+        e.preventDefault(); 
+        j(".search-filter-student").addClass("search-student");
+        j(".search-filter-student").removeClass("fa-spin");
+        j(".search-filter-student").removeClass("fa-spinner");
+        j(".search-filter-student").addClass("fa-search");
+    }
+    
+    var string_filters = ""
+    j(document).ready(function(){
+        j(document).on("click","#add_absent_fine",function(){
+            var html = j(this).html();
+            if ( j.trim(html) == "Add Absent Fine" )
             {
-                found = false;
-                var std_id = this.value;
-                var amt = j("#absent_days_" + std_id).val();
-                if ( j.trim(amt).length == 0 )
-                {
-                      student_amt_empty_or_null++;
-                      found = true;
-                }
-                else
-                {
-                  if ( parseInt(amt) == 0 )
-                  {
-                      student_amt_empty_or_null++;
-                      found = true;
-                  }
-                }
-                if ( !found )
-                {
-                  student_cnt++;
-                  student_ids_n_amount +=  std_id + "-" + amt + ",";
-                }
+                j(".student_ids").each(function(){
+                    j(this).removeAttr("checked");
+                    var std_id = this.value;
+                    j("#absent_days_" + std_id).val("");
+                });
+                j("#fine_name").val("");
+                j("#fine_amount").val("");
+                j(this).html("Cancel Absent Fine");
+                j("#absent_fine_panel").css('display', 'inline-block');
+                j("#save_absent_fine_panel").css('display', 'inline-block');
+                j("#chkbox_all_panel").css('display', 'inline-block');
+                j(".student_chkbox_panel").css('display', 'inline-block');
+                j(".absent_hr_panel").show();
+                j("#regenerateAll").hide();
+                j(".absent_days_panel").show();
+                j('.action_tr div.action_div').hide();
             }
+            else
+            {
+                j(this).html("Add Absent Fine");
+                j("#absent_fine_panel").css('display', 'none');
+                j("#save_absent_fine_panel").css('display', 'none');
+                j("#chkbox_all_panel").css('display', 'none');
+                j(".student_chkbox_panel").css('display', 'none');
+                j(".absent_hr_panel").hide();
+                j(".absent_days_panel").hide();
+                j("#regenerateAll").show();
+                j('.action_tr div.action_div').show();
+            }
+
         });
         
-        if ( student_cnt == 0 )
-        {
-            alert("No Student Selected");
-            return ;
-        }
-        /*if ( student_amt_empty_or_null > 0 )
-        {
-            alert("some Student Absent days is empty or Zero,Please correct this before continue");
-            return ;
-        }*/
-    
-        var fine_amount = j.trim(j("#fine_amount").val());
-        
-        var fine_name = j.trim(j("#fine_name").val());
-        
-        var batch_id = '<%= params[:batch_id] %>';
-        
-        var fee_id = '<%= params[:id] %>';
-        
-        if ( j.trim(fine_amount).length == 0 )
-        {
-              alert("Please enter fine amount before continue");
-              return ;
-        }
-        else
-        {
-          if ( parseInt(fine_amount) == 0 )
-          {
-              alert("Fine Amount is zero or empty, Please correct this before continue");
-              return ;
-          }
-        }
-        if ( j.trim(fine_name).length == 0 )
-        {
-              alert("Please enter fine Name before continue");
-              return ;
-        }
-        
-        j("#absent_fine_clicked").show();
-        j(this).attr('disabled', 'true');
-        new Ajax.Request('/finance/create_absent_fine_particular_multiple', 
+        j(document).on("click","#save_absent_fine",function(){
+            var student_cnt = 0;
+            var student_amt_empty_or_null = 0;
+            var student_ids_n_amount = "";
+            var found = false;
+            j(".student_ids").each(function(){
+                if (j(this).prop("checked"))
+                {
+                    found = false;
+                    var std_id = this.value;
+                    var amt = j("#absent_days_" + std_id).val();
+                    if ( j.trim(amt).length == 0 )
+                    {
+                          student_amt_empty_or_null++;
+                          found = true;
+                    }
+                    else
+                    {
+                      if ( parseInt(amt) == 0 )
+                      {
+                          student_amt_empty_or_null++;
+                          found = true;
+                      }
+                    }
+                    if ( !found )
+                    {
+                      student_cnt++;
+                      student_ids_n_amount +=  std_id + "-" + amt + ",";
+                    }
+                }
+            });
+
+            if ( student_cnt == 0 )
+            {
+                alert("No Student Selected");
+                return ;
+            }
+            /*if ( student_amt_empty_or_null > 0 )
+            {
+                alert("some Student Absent days is empty or Zero,Please correct this before continue");
+                return ;
+            }*/
+
+            var fine_amount = j.trim(j("#fine_amount").val());
+
+            var fine_name = j.trim(j("#fine_name").val());
+
+            var fee_id = '<%= params[:id] %>';
+
+            if ( j.trim(fine_amount).length == 0 )
+            {
+                  alert("Please enter fine amount before continue");
+                  return ;
+            }
+            else
+            {
+              if ( parseInt(fine_amount) == 0 )
               {
-                asynchronous:true, 
-                evalScripts:true, 
-                parameters:'batch_id='+batch_id+'&date='+fee_id+'&students='+student_ids_n_amount+'&fine_amount='+fine_amount+'&fine_name='+fine_name
+                  alert("Fine Amount is zero or empty, Please correct this before continue");
+                  return ;
               }
-        )
+            }
+            if ( j.trim(fine_name).length == 0 )
+            {
+                  alert("Please enter fine Name before continue");
+                  return ;
+            }
+
+            j("#absent_fine_clicked").show();
+            j(this).attr('disabled', 'true');
+            new Ajax.Request('/finance/create_absent_fine_particular_multiple', 
+                  {
+                    asynchronous:true, 
+                    evalScripts:true, 
+                    parameters:'date='+fee_id+'&students='+student_ids_n_amount+'&fine_amount='+fine_amount+'&fine_name='+fine_name
+                  }
+            )
+        });
+      
+        j(document).off('click', '.search-student').on('click', '.search-student', function(e){
+            e.preventDefault();
+            var student_id = j("#student_admission_no_fees").val();
+            
+            if (j.trim(student_id).length > 0)
+            {
+                  new Ajax.Request('/finance/search_student_no_fees', 
+                        {
+                          asynchronous:true, 
+                          evalScripts:true, 
+                          before: runSpinner(e),
+                          success: stopSpinner(e),
+                          parameters:'query='+ student_id + '&fee_id='+<%= @fee_id %>
+                        }
+                  )
+            }
+            e.stopPropagation();
+        });
+        
+        j(document).off('keyup', '#student_admission_no_fees').on('keyup', '#student_admission_no_fees', function(e){
+            var student_id = j(this).val();
+            
+            if (j.trim(student_id).length == 0 )
+            {
+                j("#student-list").hide();
+            }
+            
+            if (j.trim(student_id).length > 0 && e.keyCode == 13)
+            {
+                e.preventDefault();
+                new Ajax.Request('/finance/search_student_no_fees', 
+                      {
+                        asynchronous:true, 
+                        evalScripts:true, 
+                        before: runSpinner(e),
+                        success: stopSpinner(e),
+                        parameters:'query='+ student_id + '&fee_id='+<%= @fee_id %>
+                      }
+                )
+            }
+            else if (j.trim(student_id).length > 3)
+            {
+              if ( string_filters != student_id )
+              {
+                string_filters = student_id
+                new Ajax.Request('/finance/search_student_no_fees', 
+                        {
+                          asynchronous:true, 
+                          evalScripts:true, 
+                          before: runSpinner(e),
+                          success: stopSpinner(e),
+                          parameters:'query='+ student_id + '&fee_id='+<%= @fee_id %>
+                        }
+                )
+              }
+            }
+        });
     });
+    
     
     j(document).on("click",".check_all",function(){
         if (j(this).prop("checked"))
@@ -506,42 +634,6 @@
             j(".absent_days_cls").attr('disabled', true);
 
         }
-    });
-    
-    j(document).on("click","#add_absent_fine",function(){
-        var html = j(this).html();
-        if ( j.trim(html) == "Add Absent Fine" )
-        {
-            j(".student_ids").each(function(){
-                j(this).removeAttr("checked");
-                var std_id = this.value;
-                j("#absent_days_" + std_id).val("");
-            });
-            j("#fine_name").val("");
-            j("#fine_amount").val("");
-            j(this).html("Cancel Absent Fine");
-            j("#absent_fine_panel").css('display', 'inline-block');
-            j("#save_absent_fine_panel").css('display', 'inline-block');
-            j("#chkbox_all_panel").css('display', 'inline-block');
-            j(".student_chkbox_panel").css('display', 'inline-block');
-            j(".absent_hr_panel").show();
-            j("#regenerateAll").hide();
-            j(".absent_days_panel").show();
-            j('.action_tr div.action_div').hide();
-        }
-        else
-        {
-            j(this).html("Add Absent Fine");
-            j("#absent_fine_panel").css('display', 'none');
-            j("#save_absent_fine_panel").css('display', 'none');
-            j("#chkbox_all_panel").css('display', 'none');
-            j(".student_chkbox_panel").css('display', 'none');
-            j(".absent_hr_panel").hide();
-            j(".absent_days_panel").hide();
-            j("#regenerateAll").show();
-            j('.action_tr div.action_div').show();
-        }
-        
     });
     
     j(document).on("click",".student_ids",function(){
@@ -559,85 +651,5 @@
         }
     });
     
-    j(document).on("click",".show_inactive_fa",function(){
-        var a_id = this.id.split('_');
-        var id = a_id[2];
-        if (j(this).hasClass("fa-check-square-o"))
-        {
-            j("#add_absent_fine").show();
-            j(".show_inactive").removeAttr('checked');
-            j(".show_inactive_fa").removeAttr('checked');
-            j(".show_inactive_fa").removeClass('fa-check-square-o');
-            j(".show_inactive_fa").addClass('fa-square-o');
-
-            j("#show_inactive").removeAttr('checked');
-            j(this).removeClass("fa-check-square-o");
-            j(this).addClass("fa-square-o");
-            searchAjax(1)
-
-        }
-        else
-        {
-            j("#add_absent_fine").hide();
-            j(".show_inactive").removeAttr('checked');
-            j(".show_inactive_fa").removeAttr('checked');
-            j(".show_inactive_fa").removeClass('fa-check-square-o');
-            j(".show_inactive_fa").addClass('fa-square-o');
-
-            j("#show_inactive").prop('checked', true);
-            j(this).removeClass("fa-square-o");
-            j(this).addClass("fa-check-square-o");
-
-            searchAjax(2)
-
-        }
-    });
-
-    j(document).on("click","#regenerateAll",function(){
-        var notPaidList = [];
-        var opt = j("#option").val();
-        if (parseInt(opt) < 2)
-        {
-          j('.notPaid').each(function (k,v) {
-              notPaidList[k] = v.value;
-          });
-        }
-        else
-        {
-          j('.students_no_fees').each(function (k,v) {
-              notPaidList[k] = v.value;
-          });
-        }
-        if (parseInt(opt) < 2 && confirm("Do you want to regenerate all Fees? Please keep in mind if transaction is made for a fees then that fee will remain unchange"))
-        {
-          j.ajax({
-              url: '/finance/regenerate_student_fees/',
-              data: {fee_id : <%= params[:id] %>, student_ids: notPaidList,option:1},
-              type: 'POST',
-              beforeSend : function() {
-                  j("#add-loader").show();
-              },
-              success: function(data){
-                  j("#add-loader").hide();
-                  searchAjax(1);
-              }
-          });
-        }
-        else
-        {
-          j.ajax({
-                url: '/finance/regenerate_student_fees/',
-                data: {fee_id : <%= params[:id] %>, student_ids: notPaidList,option:2},
-                type: 'POST',
-                beforeSend : function() {
-                    j("#add-loader").show();
-                },
-                success: function(data){
-                    j("#add-loader").hide();
-                    searchAjax(1);
-                }
-            });
-        }
-    });
 </script>
 

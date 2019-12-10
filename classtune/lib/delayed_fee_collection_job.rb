@@ -1,7 +1,7 @@
 require 'i18n'
 class DelayedFeeCollectionJob
   attr_accessor :user,:collection,:fee_collection, :sent_remainder, :particular_ids, :particular_names, :transport_particular_id, :transport_particular_name
-  def initialize(user,collection,fee_collection, sent_remainder, particular_ids, particular_names,transport_particular_id, transport_particular_name, default_particular_names, default_transport_particular_name, auto_adjust_advance)
+  def initialize(user,collection,fee_collection, sent_remainder, particular_ids, particular_names,transport_particular_id, transport_particular_name, default_particular_names, default_transport_particular_name, auto_adjust_advance, for_admission)
     @user = user
     @collection = collection
     @fee_collection = fee_collection
@@ -13,6 +13,7 @@ class DelayedFeeCollectionJob
     @transport_particular_name = transport_particular_name
     @default_transport_particular_name = default_transport_particular_name
     @auto_adjust_advance = auto_adjust_advance
+    @for_admission = for_admission
   end
   include I18n
   def t(obj)
@@ -54,7 +55,8 @@ class DelayedFeeCollectionJob
           :end_date => @collection[:end_date],
           :due_date => @collection[:due_date],
           :fee_category_id => @collection[:fee_category_id],
-          :fine_id=>@collection[:fine_id]
+          :fine_id=>@collection[:fine_id],
+          :for_admission=>@for_admission
         )
         FinanceFeeCollection.transaction do
           if @finance_fee_collection.save
@@ -213,66 +215,151 @@ class DelayedFeeCollectionJob
 
 
               recipient_ids = []
+              
+              unless @for_admission
+                @students.each do |s|
 
-              @students.each do |s|
-
-                unless s.has_paid_fees
-                  due = 0.0
-                  if @auto_adjust_advance
-                    amount_to_pay = 0.0
-                    amount_paid = 0.0
-                    student_fee_ledgers = StudentFeeLedger.find(:all, :select => "sum( amount_to_pay ) as amount_to_pay,  sum( amount_paid ) as  amount_paid ", :conditions => "student_id = #{s.id}")
-                    unless student_fee_ledgers.blank?
-                        student_fee_ledgers.each do |student_fee_ledger|
-                          amount_to_pay += student_fee_ledger.amount_to_pay
-                          amount_paid += student_fee_ledger.amount_paid
-                        end
-                    end
-                    due = amount_to_pay - amount_paid
-                    advance_amount_paid_listed = 0.0
-                    advance = 0.0
-                  end
-
-
-                  FinanceFee.new_student_fee(@finance_fee_collection,s)
-                  date = FinanceFeeCollection.find(@finance_fee_collection.id)
-                  finance_fee = s.finance_fee_by_date(@finance_fee_collection)
-
-                  if due < 0 and @auto_adjust_advance
-                    advance = due * -1
-
-                    exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(s.id,date.id).map(&:fee_particular_id)
-                    unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-                      exclude_particular_ids = exclude_particular_ids
-                    else
-                      exclude_particular_ids = [0]
+                  unless s.has_paid_fees
+                    due = 0.0
+                    if @auto_adjust_advance
+                      amount_to_pay = 0.0
+                      amount_paid = 0.0
+                      student_fee_ledgers = StudentFeeLedger.find(:all, :select => "sum( amount_to_pay ) as amount_to_pay,  sum( amount_paid ) as  amount_paid ", :conditions => "student_id = #{s.id}")
+                      unless student_fee_ledgers.blank?
+                          student_fee_ledgers.each do |student_fee_ledger|
+                            amount_to_pay += student_fee_ledger.amount_to_pay
+                            amount_paid += student_fee_ledger.amount_paid
+                          end
+                      end
+                      due = amount_to_pay - amount_paid
+                      advance_amount_paid_listed = 0.0
+                      advance = 0.0
                     end
 
-                    transaction = FinanceTransaction.new
-                    transaction.title = "#{t('receipt_no')}. F#{finance_fee.id}"
-                    transaction.category = FinanceTransactionCategory.find_by_name("Fee")
-                    transaction.payee = s
-                    transaction.finance = finance_fee
-                    transaction.amount = advance
-                    transaction.fine_included = false
-                    transaction.fine_amount = 0.00
-                    transaction.transaction_date = Date.today
-                    transaction.payment_mode = "Advance Adjustment"
-                    transaction.save
 
-                    @transaction_ids = FinanceTransaction.find(:all, :conditions => ["payee_id = '#{s.id}'"]).map(&:id)
-                    unless  @transaction_ids.blank?
-                      paid_advances = FinanceTransactionParticular.find(:all, :conditions => "particular_id = 0 and particular_type = 'Particular' AND transaction_type = 'Advance' AND finance_transaction_id IN (" + @transaction_ids.join(",") + ")")
-                      unless paid_advances.blank?
-                        advance_amount_paid = 0.0
-                        paid_advances.each do |paid_advance|
-                          advance_amount_paid += paid_advance.amount
-                        end
-                        if advance_amount_paid > advance
-                          advance_amount_paid = advance
-                        end
-                        advance_amount_paid_listed += advance_amount_paid
+                    FinanceFee.new_student_fee(@finance_fee_collection,s)
+                    date = FinanceFeeCollection.find(@finance_fee_collection.id)
+                    finance_fee = s.finance_fee_by_date(@finance_fee_collection)
 
+                    if due < 0 and @auto_adjust_advance
+                      advance = due * -1
+
+                      exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(s.id,date.id).map(&:fee_particular_id)
+                      unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+                        exclude_particular_ids = exclude_particular_ids
+                      else
+                        exclude_particular_ids = [0]
+                      end
+
+                      transaction = FinanceTransaction.new
+                      transaction.title = "#{t('receipt_no')}. F#{finance_fee.id}"
+                      transaction.category = FinanceTransactionCategory.find_by_name("Fee")
+                      transaction.payee = s
+                      transaction.finance = finance_fee
+                      transaction.amount = advance
+                      transaction.fine_included = false
+                      transaction.fine_amount = 0.00
+                      transaction.transaction_date = Date.today
+                      transaction.payment_mode = "Advance Adjustment"
+                      transaction.save
+
+                      @transaction_ids = FinanceTransaction.find(:all, :conditions => ["payee_id = '#{s.id}'"]).map(&:id)
+                      unless  @transaction_ids.blank?
+                        paid_advances = FinanceTransactionParticular.find(:all, :conditions => "particular_id = 0 and particular_type = 'Particular' AND transaction_type = 'Advance' AND finance_transaction_id IN (" + @transaction_ids.join(",") + ")")
+                        unless paid_advances.blank?
+                          advance_amount_paid = 0.0
+                          paid_advances.each do |paid_advance|
+                            advance_amount_paid += paid_advance.amount
+                          end
+                          if advance_amount_paid > advance
+                            advance_amount_paid = advance
+                          end
+                          advance_amount_paid_listed += advance_amount_paid
+
+                          particular_category_id = 0
+                          if MultiSchool.current_school.id == 352
+                            particular_category_id = 54
+                          else
+                            @finance_fee_category = FinanceFeeParticularCategory.find(:first,:conditions => ["is_deleted = ? and (name = 'Tuition Fees' or name = 'Tuition Fee')", false])
+                            unless @finance_fee_category.blank?
+                              particular_category_id = @finance_fee_category.id
+                            end
+                          end
+                          unless particular_category_id == 0
+                            fee_particulars = date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.finance_fee_particular_category_id = '#{particular_category_id}' and finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_tmp=#{false} and is_deleted=#{false} and batch_id=#{s.batch_id}").select{|par| (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                            unless fee_particulars.blank?
+                              fee_particular = fee_particulars[0]
+                              fee_transaction_particular_id = fee_particular.id
+                            end
+                            finance_transaction_particular = FinanceTransactionParticular.new
+                            finance_transaction_particular.finance_transaction_id = transaction.id
+                            finance_transaction_particular.particular_id = fee_transaction_particular_id
+                            finance_transaction_particular.particular_type = 'Particular'
+                            finance_transaction_particular.transaction_type = 'Advance'
+                            finance_transaction_particular.amount = advance_amount_paid
+                            finance_transaction_particular.transaction_date = transaction.transaction_date
+                            finance_transaction_particular.save
+                          else
+                            finance_transaction_particular = FinanceTransactionParticular.new
+                            finance_transaction_particular.finance_transaction_id = transaction.id
+                            finance_transaction_particular.particular_id = 0
+                            finance_transaction_particular.particular_type = 'Particular'
+                            finance_transaction_particular.transaction_type = 'Advance'
+                            finance_transaction_particular.amount = advance_amount_paid
+                            finance_transaction_particular.transaction_date = transaction.transaction_date
+                            finance_transaction_particular.save
+                          end
+                        end
+
+                        remaining_amount = advance - advance_amount_paid_listed
+                        if remaining_amount > 0
+                          paid_advances = FinanceTransactionParticular.find(:all, :conditions => "particular_id > 0 and particular_type = 'Particular' AND transaction_type = 'Advance' AND finance_transaction_id IN (" + @transaction_ids.join(",") + ")")
+                          unless paid_advances.blank?
+                            paid_advances.each do |paid_advance|
+                              particular_id = paid_advance.particular_id
+                              particular = FinanceFeeParticular.find(particular_id)
+                              unless particular.blank?
+                                particular_category_id = particular.finance_fee_particular_category_id
+                                fee_particulars = date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.finance_fee_particular_category_id = '#{particular_category_id}' and finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_tmp=#{false} and is_deleted=#{false} and batch_id=#{s.batch_id}").select{|par| (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+                                unless fee_particulars.blank?
+                                  fee_particular = fee_particulars[0]
+                                  paid_particular = FinanceTransactionParticular.find(:first, :conditions => "particular_id = #{fee_particular.id} and particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id = #{transaction.id}")
+                                  unless paid_particular.blank?
+                                    advance_amount_paid_listed += particular.amount
+                                    amt = paid_particular.amount
+                                    amt += particular.amount
+                                    if amt > advance
+                                      amt = advance
+                                    end
+                                    paid_particular.update_attributes(:amount=>amt)
+                                  else
+                                    adv_amount = particular.amount
+                                    if adv_amount > advance
+                                      adv_amount = advance
+                                    end
+                                    finance_transaction_particular = FinanceTransactionParticular.new
+                                    finance_transaction_particular.finance_transaction_id = transaction.id
+                                    finance_transaction_particular.particular_id = fee_particular.id
+                                    finance_transaction_particular.particular_type = 'Particular'
+                                    finance_transaction_particular.transaction_type = 'Fee Collection'
+                                    finance_transaction_particular.amount = adv_amount
+                                    finance_transaction_particular.transaction_date = transaction.transaction_date
+                                    finance_transaction_particular.save
+                                    advance_amount_paid_listed += adv_amount
+                                  end
+                                else  
+                                  advance_amount_paid_listed += particular.amount
+                                end
+                              else
+                                advance_amount_paid_listed += particular.amount
+                              end
+                            end
+                          end
+                        end
+                      end
+
+                      remaining_amount = advance - advance_amount_paid_listed
+                      if remaining_amount > 0
                         particular_category_id = 0
                         if MultiSchool.current_school.id == 352
                           particular_category_id = 54
@@ -286,133 +373,53 @@ class DelayedFeeCollectionJob
                           fee_particulars = date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.finance_fee_particular_category_id = '#{particular_category_id}' and finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_tmp=#{false} and is_deleted=#{false} and batch_id=#{s.batch_id}").select{|par| (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
                           unless fee_particulars.blank?
                             fee_particular = fee_particulars[0]
-                            fee_transaction_particular_id = fee_particular.id
-                          end
-                          finance_transaction_particular = FinanceTransactionParticular.new
-                          finance_transaction_particular.finance_transaction_id = transaction.id
-                          finance_transaction_particular.particular_id = fee_transaction_particular_id
-                          finance_transaction_particular.particular_type = 'Particular'
-                          finance_transaction_particular.transaction_type = 'Advance'
-                          finance_transaction_particular.amount = advance_amount_paid
-                          finance_transaction_particular.transaction_date = transaction.transaction_date
-                          finance_transaction_particular.save
-                        else
-                          finance_transaction_particular = FinanceTransactionParticular.new
-                          finance_transaction_particular.finance_transaction_id = transaction.id
-                          finance_transaction_particular.particular_id = 0
-                          finance_transaction_particular.particular_type = 'Particular'
-                          finance_transaction_particular.transaction_type = 'Advance'
-                          finance_transaction_particular.amount = advance_amount_paid
-                          finance_transaction_particular.transaction_date = transaction.transaction_date
-                          finance_transaction_particular.save
-                        end
-                      end
-
-                      remaining_amount = advance - advance_amount_paid_listed
-                      if remaining_amount > 0
-                        paid_advances = FinanceTransactionParticular.find(:all, :conditions => "particular_id > 0 and particular_type = 'Particular' AND transaction_type = 'Advance' AND finance_transaction_id IN (" + @transaction_ids.join(",") + ")")
-                        unless paid_advances.blank?
-                          paid_advances.each do |paid_advance|
-                            particular_id = paid_advance.particular_id
-                            particular = FinanceFeeParticular.find(particular_id)
-                            unless particular.blank?
-                              particular_category_id = particular.finance_fee_particular_category_id
-                              fee_particulars = date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.finance_fee_particular_category_id = '#{particular_category_id}' and finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_tmp=#{false} and is_deleted=#{false} and batch_id=#{s.batch_id}").select{|par| (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
-                              unless fee_particulars.blank?
-                                fee_particular = fee_particulars[0]
-                                paid_particular = FinanceTransactionParticular.find(:first, :conditions => "particular_id = #{fee_particular.id} and particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id = #{transaction.id}")
-                                unless paid_particular.blank?
-                                  advance_amount_paid_listed += particular.amount
-                                  amt = paid_particular.amount
-                                  amt += particular.amount
-                                  if amt > advance
-                                    amt = advance
-                                  end
-                                  paid_particular.update_attributes(:amount=>amt)
-                                else
-                                  adv_amount = particular.amount
-                                  if adv_amount > advance
-                                    adv_amount = advance
-                                  end
-                                  finance_transaction_particular = FinanceTransactionParticular.new
-                                  finance_transaction_particular.finance_transaction_id = transaction.id
-                                  finance_transaction_particular.particular_id = fee_particular.id
-                                  finance_transaction_particular.particular_type = 'Particular'
-                                  finance_transaction_particular.transaction_type = 'Fee Collection'
-                                  finance_transaction_particular.amount = adv_amount
-                                  finance_transaction_particular.transaction_date = transaction.transaction_date
-                                  finance_transaction_particular.save
-                                  advance_amount_paid_listed += adv_amount
-                                end
-                              else  
-                                advance_amount_paid_listed += particular.amount
+                            paid_particular = FinanceTransactionParticular.first(:conditions => "particular_id = #{fee_particular.id} and particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id = #{transaction.id}")
+                            unless paid_particular.blank?
+                              amt = paid_particular.amount
+                              amt += remaining_amount
+                              if amt > advance
+                                amt = advance
                               end
+                              paid_particular.update_attributes(:amount=>amt)
                             else
-                              advance_amount_paid_listed += particular.amount
+                              finance_transaction_particular = FinanceTransactionParticular.new
+                              finance_transaction_particular.finance_transaction_id = transaction.id
+                              finance_transaction_particular.particular_id = fee_particular.id
+                              finance_transaction_particular.particular_type = 'Particular'
+                              finance_transaction_particular.transaction_type = 'Fee Collection'
+                              finance_transaction_particular.amount = remaining_amount
+                              finance_transaction_particular.transaction_date = transaction.transaction_date
+                              finance_transaction_particular.save
                             end
                           end
                         end
                       end
-                    end
 
-                    remaining_amount = advance - advance_amount_paid_listed
-                    if remaining_amount > 0
-                      particular_category_id = 0
-                      if MultiSchool.current_school.id == 352
-                        particular_category_id = 54
+                      bal = finance_fee.balance
+                      bal = bal - transaction.amount
+                      if bal < 0
+                        bal = 0
+                        finance_fee.update_attributes( :is_paid=>true, :balance => 0.0)
                       else
-                        @finance_fee_category = FinanceFeeParticularCategory.find(:first,:conditions => ["is_deleted = ? and (name = 'Tuition Fees' or name = 'Tuition Fee')", false])
-                        unless @finance_fee_category.blank?
-                          particular_category_id = @finance_fee_category.id
-                        end
-                      end
-                      unless particular_category_id == 0
-                        fee_particulars = date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.finance_fee_particular_category_id = '#{particular_category_id}' and finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_tmp=#{false} and is_deleted=#{false} and batch_id=#{s.batch_id}").select{|par| (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
-                        unless fee_particulars.blank?
-                          fee_particular = fee_particulars[0]
-                          paid_particular = FinanceTransactionParticular.first(:conditions => "particular_id = #{fee_particular.id} and particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id = #{transaction.id}")
-                          unless paid_particular.blank?
-                            amt = paid_particular.amount
-                            amt += remaining_amount
-                            if amt > advance
-                              amt = advance
-                            end
-                            paid_particular.update_attributes(:amount=>amt)
-                          else
-                            finance_transaction_particular = FinanceTransactionParticular.new
-                            finance_transaction_particular.finance_transaction_id = transaction.id
-                            finance_transaction_particular.particular_id = fee_particular.id
-                            finance_transaction_particular.particular_type = 'Particular'
-                            finance_transaction_particular.transaction_type = 'Fee Collection'
-                            finance_transaction_particular.amount = remaining_amount
-                            finance_transaction_particular.transaction_date = transaction.transaction_date
-                            finance_transaction_particular.save
-                          end
-                        end
+                        finance_fee.update_attributes(:balance => bal)
                       end
                     end
 
-                    bal = finance_fee.balance
-                    bal = bal - transaction.amount
-                    if bal < 0
-                      bal = 0
-                      finance_fee.update_attributes( :is_paid=>true, :balance => 0.0)
-                    else
-                      finance_fee.update_attributes(:balance => bal)
-                    end
+                    recipient_ids << s.user.id if s.user
+                    recipient_ids << s.immediate_contact.user_id if s.immediate_contact.present?
                   end
-
-                  recipient_ids << s.user.id if s.user
-                  recipient_ids << s.immediate_contact.user_id if s.immediate_contact.present?
                 end
               end
-              recipient_ids = recipient_ids.compact
-              BatchEvent.create(:event_id => new_event.id, :batch_id => b )
-              if  @sent_remainder
-                Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => @user.id,
-                    :recipient_ids => recipient_ids,
-                    :subject=>subject,
-                    :body=>body ))
+              
+              unless @for_admission
+                recipient_ids = recipient_ids.compact
+                BatchEvent.create(:event_id => new_event.id, :batch_id => b )
+                if  @sent_remainder
+                  Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => @user.id,
+                      :recipient_ids => recipient_ids,
+                      :subject=>subject,
+                      :body=>body ))
+                end
               end
               #abort('here')
               prev_record = Configuration.find_by_config_key("job/FinanceFeeCollection/1")

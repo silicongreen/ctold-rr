@@ -151,7 +151,7 @@ class ExamScores extends CActiveRecord
                         'select' => 'Students.*'
                     )
             );
-            $criteria->addCondition('Subjects.grade_subject',1); 
+            //$criteria->addCondition('Subjects.grade_subject',1); 
             $criteria->addInCondition('Exams.exam_group_id',$exam_group_ids); 
 
             $criteria->group = 't.student_id';

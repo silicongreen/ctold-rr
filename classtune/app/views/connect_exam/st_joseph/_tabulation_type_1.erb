@@ -138,8 +138,12 @@
             end
           
             @report_data['report']['students'].each do |std|
-              
-            end  
+              unless all_std_id.include?(std['id'].to_i)
+                all_std[] = std
+              end  
+            end 
+          
+            @report_data['report']['students'] = all_std
 
           %>
             <% unless @report_data.blank? %>

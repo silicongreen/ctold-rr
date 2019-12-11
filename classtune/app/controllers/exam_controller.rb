@@ -7817,11 +7817,11 @@ class ExamController < ApplicationController
                     if total_mark1.to_f>0 and full_mark1.to_f>0
                       main_mark1 = main_mark1+((total_mark1.to_f/full_mark1.to_f)*100)
                     end 
-                    if exam_type == 3
+                    if exam_type == 3 && @connect_exam_obj.result_type != 11
                       main_mark = main_mark+((total_mark1.to_f+total_mark2.to_f)/(full_mark1.to_f+full_mark2.to_f)*100)
                       main_mark = main_mark.round()
                       main_mark_no_round = (total_mark1_no_round.to_f+total_mark2_no_round.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
-                    elsif  exam_type == 2
+                    elsif  exam_type == 2 && @connect_exam_obj.result_type != 11
                       main_mark = main_mark+(total_mark2.to_f/full_mark2.to_f*100)
                       main_mark = main_mark.round()
                       main_mark_no_round = total_mark2_no_round.to_f/full_mark2.to_f*100

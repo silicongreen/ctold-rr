@@ -992,7 +992,7 @@
                             <% if subjective == true %>
                               <td>
                                   <%= subject_subjective_obtain_mark.round() %>
-                                  
+                                  <% subject_subjective_obtain_mark = subject_subjective_obtain_mark.round() %>
                                   <%  
                                     grade_name_single = ""
                                     if subject_subjective_full_mark > 0 
@@ -1032,12 +1032,14 @@
                               <td>
                                 
                                   <%= subject_objective_obtain_mark.round() %>
+                                  <% subject_objective_obtain_mark = subject_objective_obtain_mark.round() %>
                                   <%  
                                     grade_name_single = ""
                                     obb_failed = false
                                     if subject_objective_full_mark > 0 
                                         if subject_objective_obtain_mark.to_i == 0
                                             fail_grade = true
+                                            obb_failed = true
                                             grade_name_single = "U"
                                         else
                                             mark_for_grade = (subject_objective_obtain_mark.to_f/subject_objective_full_mark.to_f)*100 
@@ -1073,6 +1075,7 @@
                             <% if practical == true %>
                               <td> 
                                   <%= subject_prac_obtain_mark.round() %>
+                                  <% subject_prac_obtain_mark = subject_prac_obtain_mark.round() %>
                                   <%  
                                     grade_name_single = ""
                                     pr_failed = false
@@ -1080,6 +1083,7 @@
                                       if subject_prac_obtain_mark.to_i == 0
                                           fail_grade = true
                                           grade_name_single = "U"
+                                          pr_failed = true
                                       else
                                           mark_for_grade = (subject_prac_obtain_mark.to_f/subject_prac_full_mark.to_f)*100 
                                           grade_check = GradingLevel.percentage_to_grade(mark_for_grade, @batch.id)

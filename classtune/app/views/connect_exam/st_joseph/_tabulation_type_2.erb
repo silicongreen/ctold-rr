@@ -180,6 +180,10 @@
                       end   
                     end
                   
+                    sub_failed = false
+                    obb_failed = false
+                    prac_failed = false
+                    
                     if subject_subjective_full_mark > 0 
                       subject_subjective_obtain_mark = subject_subjective_obtain_mark.round()
                       if subject_subjective_obtain_mark.to_i == 0
@@ -190,10 +194,11 @@
                           if !grade_check.blank? and !grade_check.name.blank?
                             if grade_check.name.to_s == "U"
                               failed = true
+                              sub_failed = true
                             end 
                           end
 
-                          if failed == true  and subject_subjective_full_mark_single.to_i == 50
+                          if sub_failed == true  and subject_subjective_full_mark_single.to_i == 50
                             if mark_for_grade.to_f >= 44.00
                               failed = false
                             end
@@ -211,10 +216,11 @@
                           if !grade_check.blank? and !grade_check.name.blank?
                             if grade_check.name.to_s == "U"
                               failed = true
+                              obb_failed = true
                             end
                           end
 
-                          if failed == false  and subject_objective_full_mark_single.to_i == 25
+                          if obb_failed == false  and subject_objective_full_mark_single.to_i == 25
                             if mark_for_grade.to_f < 48.00
                               failed = true
                             end
@@ -232,10 +238,11 @@
                           if !grade_check.blank? and !grade_check.name.blank?
                             if grade_check.name.to_s == "U"
                               failed = true
+                              prac_failed = true
                             end 
                           end
 
-                          if failed == true  and subject_prac_full_mark_single.to_i == 25
+                          if prac_failed == true  and subject_prac_full_mark_single.to_i == 25
                             if mark_for_grade.to_f >= 44.00
                               failed = false
                             end

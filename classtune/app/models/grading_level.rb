@@ -97,6 +97,7 @@ class GradingLevel < ActiveRecord::Base
           percent_score = 0
       end
       percent_score = sprintf( "%0.02f", percent_score)
+      percent_score = percent_score.to_f
       batch_grades = GradingLevel.for_batch(batch_id)
       grade = {}
       if batch_grades.empty?

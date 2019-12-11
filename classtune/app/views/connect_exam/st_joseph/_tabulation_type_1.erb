@@ -98,6 +98,7 @@
               end 
             
             all_std = []
+            all_std_id = []
             @report_data['report']['students'].each do |std|
               failed = false
               @report_data['report']['subjects'].each do |sub|
@@ -114,15 +115,31 @@
                     
                     if subject_obtain_mark > 0
                       main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100
+                      grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                      if !grade.blank? and !grade.name.blank?
+                        if grade.name == "U"
+                          failed = true
+                        end  
+                      end  
                     else
                       failed = true
                     end  
                     
                   end
-                end  
-              end  
+                end 
+                 
+                
+              end 
+              if failed == false
+                all_std[] = std
+                all_std_id << std['id'].to_i
+              end 
             
             end
+          
+            @report_data['report']['students'].each do |std|
+              
+            end  
 
           %>
             <% unless @report_data.blank? %>

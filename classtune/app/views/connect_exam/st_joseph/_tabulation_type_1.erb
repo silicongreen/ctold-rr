@@ -131,7 +131,7 @@
                 
               end 
               if failed == false
-                all_std[] = std
+                all_std << std
                 all_std_id << std['id'].to_i
               end 
             
@@ -139,7 +139,7 @@
           
             @report_data['report']['students'].each do |std|
               unless all_std_id.include?(std['id'].to_i)
-                all_std[] = std
+                all_std << std
               end  
             end 
           

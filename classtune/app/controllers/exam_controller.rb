@@ -7827,7 +7827,7 @@ class ExamController < ApplicationController
                         end  
                       end
                       if full_sb1 > 0 || full_sb2 > 0
-                        if total_sb12 > 0 && total_sb22 > 0
+                        if total_sb12 > 0 || total_sb22 > 0
                           sb_round = total_sb12+total_sb22
                           sb_round = sb_round.round()
                           if full_sb1 > 0 && full_sb2 > 0

@@ -95,7 +95,34 @@
 
             if @top_exam_group_count > 3
               @top_exam_group_count = 3
+              end 
+            
+            all_std = []
+            @report_data['report']['students'].each do |std|
+              failed = false
+              @report_data['report']['subjects'].each do |sub|
+                if sub['grade_subject'].to_i == 0
+                  if @all_subject_id.include?(sub['id'].to_i)
+                    subject_obtain_mark = 0
+                    subject_full_mark = 0
+                    @report_data['report']['exams'].each do |rs|
+                      if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                        subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                        subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                      end   
+                    end
+                    
+                    if subject_obtain_mark > 0
+                      main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100
+                    else
+                      failed = true
+                    end  
+                    
+                  end
+                end  
               end  
+            
+            end
 
           %>
             <% unless @report_data.blank? %>

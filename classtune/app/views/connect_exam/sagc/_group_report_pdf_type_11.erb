@@ -220,10 +220,14 @@
                             
                                   
                             <% main_exam_mark = 0 %>
+                            <% exam_mark_single = 0 %>
+                            <% exam_full_mark_single = 0 %>
                             <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
                               <% if report['exam_category'] != '1' %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
+                                  <% exam_full_mark_single = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                  <% exam_mark_single = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% if report['exam_category'] == '3' %>
                                     <% total_sb = total_sb+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
@@ -241,8 +245,10 @@
                                   <% end %>
                                     
                                   <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
-                                      <% failed = true %>
-                                      <% failed_subject = true %>
+                                      <% if exam_full_mark_single != 25 || exam_mark_single.to_i != 8 %>
+                                        <% failed = true %>
+                                        <% failed_subject = true %>
+                                      <% end %>
                                   <% end %>
                                     
                                     
@@ -330,7 +336,7 @@
                                       sb_main = (total_sb.to_f/full_sb.to_f)*100
                                       grade = GradingLevel.percentage_to_grade(sb_main, @batch.id)
                                       if !grade.blank? and !grade.name.blank?
-                                        if (grade.credit_points.to_i == 0 && fourth_subject.blank?)
+                                        if (grade.credit_points.to_i == 0 && fourth_subject.blank?) || ((total_sb != 34 || full_ob != 100) && fourth_subject.blank? )
                                           failed_subject = true
                                         end
                                       end   
@@ -346,7 +352,7 @@
                                     if total_ob > 0
                                       ob_main = (total_ob.to_f/full_ob.to_f)*100
                                       grade = GradingLevel.percentage_to_grade(ob_main, @batch.id)
-                                      if !grade.blank? and !grade.name.blank? && (total_ob != 22 || full_ob != 25)
+                                      if !grade.blank? and !grade.name.blank? && (total_ob != 16 || full_ob != 50)
                                         if (grade.credit_points.to_i == 0 && fourth_subject.blank?)
                                           failed_subject = true
                                         end
@@ -363,7 +369,7 @@
                                     if total_pr > 0
                                       pr_main = (total_pr.to_f/full_pr.to_f)*100
                                       grade = GradingLevel.percentage_to_grade(pr_main, @batch.id)
-                                      if !grade.blank? and !grade.name.blank?
+                                      if !grade.blank? and !grade.name.blank? && (total_ob != 16 || full_ob != 50)
                                         if grade.credit_points.to_i == 0 && fourth_subject.blank?
                                           failed_subject = true
                                         end

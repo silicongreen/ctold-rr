@@ -1034,7 +1034,7 @@
                                   <%= subject_objective_obtain_mark.round() %>
                                   <%  
                                     grade_name_single = ""
-                                    
+                                    obb_failed = false
                                     if subject_objective_full_mark > 0 
                                         if subject_objective_obtain_mark.to_i == 0
                                             fail_grade = true
@@ -1045,11 +1045,12 @@
                                             if !grade_check.blank? and !grade_check.name.blank?
                                               if grade_check.name.to_s == "U"
                                                 fail_grade = true
+                                                obb_failed = true
                                               end 
                                               grade_name_single = grade_check.name
                                             end
                                           
-                                            if fail_grade == false  and subject_objective_full_mark_single.to_i == 25
+                                            if obb_failed == false  and subject_objective_full_mark_single.to_i == 25
                                               if mark_for_grade.to_f < 48.00
                                                 fail_grade = true
                                                 grade_name_single = "D"
@@ -1074,6 +1075,7 @@
                                   <%= subject_prac_obtain_mark.round() %>
                                   <%  
                                     grade_name_single = ""
+                                    pr_failed = false
                                     if subject_prac_full_mark > 0 
                                       if subject_prac_obtain_mark.to_i == 0
                                           fail_grade = true
@@ -1084,11 +1086,12 @@
                                           if !grade_check.blank? and !grade_check.name.blank?
                                             if grade_check.name.to_s == "U"
                                               fail_grade = true
+                                              pr_failed = true
                                             end 
                                             grade_name_single = grade_check.name
                                           end
 
-                                          if fail_grade == true  and subject_prac_full_mark_single.to_i == 25
+                                          if pr_failed == true  and subject_prac_full_mark_single.to_i == 25
                                             if mark_for_grade.to_f >= 44.00
                                               fail_grade = false
                                               grade_name_single = "D"

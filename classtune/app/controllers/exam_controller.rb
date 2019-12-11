@@ -7967,7 +7967,7 @@ class ExamController < ApplicationController
                       if full_pr1 > 0 || full_pr2 > 0
                         pr_round = total_pr12+total_pr22
                         pr_round = pr_round.round()
-                        if total_pr12 > 0 || total_pr22 > 0
+                        if total_pr12 > 0 && total_pr22 > 0
                           pr_round = (total_pr12+total_pr22)/2
                           pr_round = pr_round.round()
                         end

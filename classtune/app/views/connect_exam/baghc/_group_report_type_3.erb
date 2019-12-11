@@ -701,7 +701,7 @@
                             </tr>
                             
                             <tr class="table-header">
-                                <td colspan="2" rowspan="5">Meirtocarcy Comment</td>
+                                <td colspan="2" rowspan="5">Meritocracy/Comment</td>
                             </tr>
                             <tr class="table-header">
                               <td colspan="3">Position: <% if !@student_position.blank? && !@student_position[@student.id.to_i].blank?  %><%= @student_position[@student.id.to_i] %><% else %>N/A<% end %></td>
@@ -728,9 +728,9 @@
                               
                                 %>
                                 
-                                <td colspan="7">Attendance Report duration : <%=  start_date_first_term %> to <%=  end_date_first_term %> </td> 
-                                <td colspan="7">Attendance Report duration : <%=@connect_exam_obj.attandence_start_date.strftime("%B-%Y")%> to <%=@connect_exam_obj.attandence_end_date.strftime("%B-%Y")%> </td> 
-                                <td colspan="7">Attendance Report duration : <%=  start_date_first_term %> to <%=@connect_exam_obj.attandence_end_date.strftime("%B-%Y")%> </td>
+                                <td colspan="7">Attendance Report Duration : <%=  start_date_first_term %> to <%=  end_date_first_term %> </td> 
+                                <td colspan="7">Attendance Report Duration : <%=@connect_exam_obj.attandence_start_date.strftime("%B-%Y")%> to <%=@connect_exam_obj.attandence_end_date.strftime("%B-%Y")%> </td> 
+                                <td colspan="7">Attendance Report Duration : <%=  start_date_first_term %> to <%=@connect_exam_obj.attandence_end_date.strftime("%B-%Y")%> </td>
                             </tr>
                             
                             <%

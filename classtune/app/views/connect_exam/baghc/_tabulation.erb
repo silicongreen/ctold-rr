@@ -380,13 +380,7 @@ unless @ranked_student.blank?
                                 <% end %>
                               <% end %>
 
-                              <% unless subject_ct_full_mark.blank?  %>
-                                <% subject_full_mark = subject_full_mark+subject_ct_full_mark %>
-                                <% unless subject_ct_marks.blank?  %>
-                                  <% subject_ct_marks.sort! {|x,y| y <=> x } %>
-                                  <% cq_obtain_mark = subject_ct_obtain_mark = subject_ct_obtain_mark+subject_ct_marks[0] %>
-                                <% end %>
-                              <% end %>
+                            
 
                               <% @report_data['report']['exams'].each do |rs| %>
                                 <% if rs['exam_category'] != '1' %>
@@ -397,6 +391,10 @@ unless @ranked_student.blank?
 
                                     subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                     subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    if rs['exam_category'] == '1'
+                                      has_cq = true
+                                      cq_obtain_mark = cq_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    end
                                     if rs['exam_category'] == '2'
                                       has_mcq = true
                                       mcq_obtain_mark = mcq_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f

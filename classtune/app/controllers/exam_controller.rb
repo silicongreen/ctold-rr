@@ -6329,7 +6329,7 @@ class ExamController < ApplicationController
                       if rs['quarter'] == '2'
                         monthly_total_mark2 = monthly_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       end
-                      if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 5 && !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? &&  @connect_exam_obj.result_type == 5 && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 13
+                      if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 5 && !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? &&  @connect_exam_obj.result_type == 5 &&  @connect_exam_obj.result_type == 6 && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 13
                         u_grade1 = u_grade1+1
                         subject_failed = true
                       end
@@ -6706,7 +6706,7 @@ class ExamController < ApplicationController
                   if monthly_full_mark1 > 5 && monthly_full_mark2 > 5  && @connect_exam_obj.result_type == 6
                     monthly_mark = (monthly_total_mark1+monthly_total_mark2)/2
                     if monthly_mark != 13
-                      grade_mark = (monthly_mark.to_f/monthly_total_mark1.to_f)*100
+                      grade_mark = (monthly_mark.to_f/monthly_full_mark1.to_f)*100
                       grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
                       if !grade.blank? and !grade.name.blank?
                         if grade.credit_points.to_i == 0

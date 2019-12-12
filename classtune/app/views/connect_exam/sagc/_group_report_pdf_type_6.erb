@@ -1025,7 +1025,7 @@
                               grade_mark = (monthly_marks.round().to_f/class_test_full_mark2)*100
                               grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
                               if !grade.blank? and !grade.name.blank?
-                                if grade.credit_points.to_i == 0 && class_test_full_mark2.to_i != 5
+                                if grade.credit_points.to_i == 0 && class_test_full_mark2.to_i != 5 && monthly_marks.round() != 13
                                   failed_subject3 = true
                                 end
                               end

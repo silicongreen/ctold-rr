@@ -133,8 +133,18 @@
               end
               @top_exam_group_count = @top_exam_group.count
               
-              all_std = []
+            all_std = []
             all_std_id = []
+            all_subject = []
+            all_subject_id = []
+            @report_data['report']['subjects'].each do |sub|
+              unless all_subject_id.include?(sub['id'].to_i)
+                all_subject << sub
+                all_subject_id << sub['id'].to_i
+              end  
+            end 
+            @report_data['report']['subjects'] = all_subject
+            
             @report_data['report']['students'].each do |std|
               failed = false
               @report_data['report']['subjects'].each do |sub|

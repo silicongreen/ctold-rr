@@ -1,4 +1,10 @@
-<% 
+<%
+if @tabulation_data.nil?
+  student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id)
+  @tabulation_data = []
+  if student_response['status']['code'].to_i == 200
+    @tabulation_data = student_response['data']
+  end
   @all_subject_id = []
   @has_exam_score = []
   @all_group_exams = GroupedExam.find(
@@ -49,7 +55,7 @@
     last_total_score = 0
     @ranked_student.each do |ras|
       continue = false
-      @report_data['report']['students'].each do |std|
+      @tabulation_data['report']['students'].each do |std|
         std_info = Student.find_by_id(std['id'].to_i)
         if std_info.batch_id != @batch.id
           next
@@ -63,7 +69,7 @@
         next
       end
       ranked_std = true
-      @report_data['report']['subjects'].each do |sub|
+      @tabulation_data['report']['subjects'].each do |sub|
         if ranked_std == false
           break
         end
@@ -72,7 +78,7 @@
         subjectdata = Subject.find(sub['id'].to_i)
         check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(ras.student_id,sub['id'].to_i)
         if @all_subject_id.include?(sub['id'].to_i) and (!check_std_subject.blank? or subjectdata.elective_group_id.blank?)
-          @report_data['report']['exams'].each do |rs|
+          @tabulation_data['report']['exams'].each do |rs|
             %>
             <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
             <%
@@ -116,6 +122,7 @@
   if @batch.course.course_name == "Early I"
     @ranked_positions = {}
   end  
+end
   
 %>
 <%= render  :partial=>"/connect_exam/mirpur_english/group_report_pdf_type_"+@connect_exam_obj.result_type.to_s %>

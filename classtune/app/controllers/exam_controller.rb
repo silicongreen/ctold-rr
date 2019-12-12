@@ -6859,7 +6859,12 @@ class ExamController < ApplicationController
                 
                 subject_mark = 0
                 if exam_type == 3
-                  main_mark = (total_mark1_no_round.to_f+total_mark2_no_round.to_f)/(full_mark1.to_f+full_mark2.to_f)*100 
+                  if @connect_exam_obj.result_type == 8
+                    main_mark = (total_mark1_no_round.to_f+total_mark2_no_round.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
+                  else
+                    main_mark = (total_mark1.to_f+total_mark2.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
+                  end  
+                   
                   main_mark = main_mark.round()
                   mark_1_half = total_mark1_no_round.to_f/2.00
                   mark_2_half = total_mark2_no_round.to_f/2.00
@@ -7714,7 +7719,11 @@ class ExamController < ApplicationController
                       main_mark1 = main_mark1+((total_mark1.to_f/full_mark1.to_f)*100)
                     end 
                     if exam_type == 3
-                      main_mark = main_mark+((total_mark1_no_round.to_f+total_mark2_no_round.to_f)/(full_mark1.to_f+full_mark2.to_f)*100)
+                      if @connect_exam_obj.result_type == 8
+                        main_mark = main_mark+(total_mark1_no_round.to_f+total_mark2_no_round.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
+                      else
+                        main_mark = main_mark+(total_mark1.to_f+total_mark2.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
+                      end 
                       main_mark = main_mark.round()
                       main_mark_no_round = (total_mark1_no_round.to_f+total_mark2_no_round.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
                     elsif  exam_type == 2

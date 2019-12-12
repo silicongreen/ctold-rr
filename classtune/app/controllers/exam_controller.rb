@@ -6325,14 +6325,19 @@ class ExamController < ApplicationController
                       end
                       if rs['quarter'] == '1'
                         monthly_total_mark1 = monthly_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 5 && !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? &&  (@connect_exam_obj.result_type == 5 ||  @connect_exam_obj.result_type == 6) && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 13
+                          u_grade1 = u_grade1+1
+                          subject_failed = true
+                        end
                       end  
                       if rs['quarter'] == '2'
                         monthly_total_mark2 = monthly_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 5 && !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? &&  (@connect_exam_obj.result_type == 5 ||  @connect_exam_obj.result_type == 6) && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 13
+                          u_grade2 = u_grade2+1
+                          subject_failed = true
+                        end
                       end
-                      if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 5 && !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? &&  @connect_exam_obj.result_type == 5 &&  @connect_exam_obj.result_type == 6 && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 13
-                        u_grade1 = u_grade1+1
-                        subject_failed = true
-                      end
+                      
                     elsif rs['exam_category'] == '2'
                       if rs['quarter'] == '1'
                         at_total_mark1 = at_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f

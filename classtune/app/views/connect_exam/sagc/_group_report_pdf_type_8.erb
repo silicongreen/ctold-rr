@@ -1262,9 +1262,7 @@
                                   <% third_subject = "(3rd)" %>
                                 <% end %>
                               <% end %>
-                              <% if fourth_subject.blank? %>
-                                <% total_subject = total_subject+1 %>
-                              <% end %>
+                              
                               <% subject_count = subject_count+1 %>
                               <td class="col-pdf"><%= subject_count %></td>
                               <td class="col-pdf no-warp align-left-baf"><%= subjects2['name'] %><%= fourth_subject %><%= third_subject %></td>

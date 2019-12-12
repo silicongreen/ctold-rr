@@ -322,7 +322,7 @@
                                <% if class_test_ab1 == true %>
                                 AB
                                <% else %> 
-                                <%= class_test_mark1.to_i %>
+                                <%= sprintf( "%0.02f", class_test_mark1.to_f)%>
                                <% end %>
                             </td>
                             <% unless @report_data['report']['exams'].blank? %>  
@@ -458,7 +458,7 @@
                                <% if class_test_ab2 == true %>
                                 AB
                                <% else %> 
-                                <%= class_test_mark2.to_i %>
+                                <%= sprintf( "%0.02f", class_test_mark2.to_f)%>
                                <% end %>
                             </td>
                             <% unless @report_data['report']['exams'].blank? %>  

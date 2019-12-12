@@ -8164,7 +8164,7 @@ class ExamController < ApplicationController
             end
             
           
-            if u_grade == 0 && exam_type == 3 
+            if u_grade == 0
               grand_total_new = 50000-grand_total_with_fraction
               grand_grade_new = 50000-grand_grade_point
               
@@ -8192,12 +8192,11 @@ class ExamController < ApplicationController
         
             
             
-            if u_grade1 == 0 && exam_type == 1
+            if u_grade1 == 0
               grand_total_new = 55500-grand_total1_with_fraction
               grand_grade_new = 50000-grand_grade_point1
               if connect_exam_id.to_i == @connect_exam_obj.id || (std_group_name == group_name && !@class.blank?)
                 @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
-                @exam_type_array << exam_type
                 if exam_type == 1
                   if !gradeObj.blank? and !gradeObj.name.blank?
                     if @grade_count[gradeObj.name].blank?
@@ -8217,7 +8216,7 @@ class ExamController < ApplicationController
               end
             end  
         
-            if u_grade2 == 0  && exam_type == 2 
+            if u_grade2 == 0
               grand_total_new = 50000-grand_total2_with_fraction
               grand_grade_new = 50000-grand_grade_point2
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)

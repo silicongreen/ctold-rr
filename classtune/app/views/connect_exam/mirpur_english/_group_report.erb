@@ -73,19 +73,16 @@
         check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(ras.student_id,sub['id'].to_i)
         if @all_subject_id.include?(sub['id'].to_i) and (!check_std_subject.blank? or subjectdata.elective_group_id.blank?)
           @report_data['report']['exams'].each do |rs|
-            if (rs['quarter'] == '1' && @connect_exam_obj.result_type == 1) || (rs['quarter'] == '2' && @connect_exam_obj.result_type == 2) || (rs['quarter'] == '3' && @connect_exam_obj.result_type == 3)
             %>
             <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
             <%
-              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s].blank?
-
-                  subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['marks_obtained'].to_f
-              end
-              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank?
-                subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i
-              end 
-            
+            if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s].blank?
+                
+                subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['marks_obtained'].to_f
             end
+            if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank?
+              subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i
+            end  
              
           end
           if subject_full_mark>0

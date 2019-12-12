@@ -79,7 +79,7 @@
                         <% has_grade_subject = true %>
                         <% next %>
                       <% end %>
-                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <tr  class="table-header">
                           <% weightage_mark = 0 %>
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
@@ -334,7 +334,7 @@
                       <% if subjects['grade_subject'].to_i != 1 %>
                         <% next %>
                       <% end %>
-                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <tr  class="table-header">
                           <% weightage_mark = 0 %>
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>

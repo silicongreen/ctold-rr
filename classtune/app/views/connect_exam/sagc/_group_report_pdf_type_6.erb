@@ -867,6 +867,9 @@
                             <td><%=  highest_mark1.round() %></td>
                             <%
                               main_mark = (tota_mark_with_monthly1.to_f.round/full_mark_all.to_f)*100
+                              if (full_mark_all == 50 && main_mark == 44)
+                                main_mark = 45
+                              end
                             %>
                            
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
@@ -1001,6 +1004,9 @@
                             <td><%=  highest_mark2.round() %></td>
                             <%
                               main_mark = (tota_mark_with_monthly2.to_f.round/full_mark_all.to_f)*100
+                              if (full_mark_all == 50 && main_mark == 44)
+                                main_mark = 45
+                              end
                             %>
                            
                            
@@ -1091,6 +1097,9 @@
                             letter_grade_point = 0.0
                             letter_grade_name = "-"
                             main_mark = (total_marks_ag.to_f/full_mark_all.to_f)*100
+                            if (full_mark_all == 50 && main_mark == 44)
+                              main_mark = 45
+                            end
                             grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                             if !grade.blank? and !grade.name.blank?
                               if grade.credit_points.to_i == 0|| failed_subject3 == true

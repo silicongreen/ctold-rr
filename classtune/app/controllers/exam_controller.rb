@@ -6678,7 +6678,7 @@ class ExamController < ApplicationController
                   if monthly_full_mark1 > 5 && monthly_full_mark2 > 5  && @connect_exam_obj.result_type == 6
                     monthly_mark = (monthly_total_mark1+monthly_total_mark2)/2
                     if monthly_mark.round() != 13
-                      grade_mark = (monthly_mark.to_f/monthly_full_mark1.to_f)*100
+                      grade_mark = (monthly_mark.round().to_f/monthly_full_mark1.to_f)*100
                       grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
                       if !grade.blank? and !grade.name.blank?
                         if grade.credit_points.to_i == 0

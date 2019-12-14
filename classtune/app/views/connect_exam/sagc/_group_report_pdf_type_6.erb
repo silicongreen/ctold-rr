@@ -872,7 +872,7 @@
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <% if grade.credit_points.to_i == 0 || failed_subject1 == true %>
-                                <% failed1 = true %>
+                               
                                 <% grade.name = "F" %>
                                 <% grade.credit_points = "0.00" %>  
                               <% end %>

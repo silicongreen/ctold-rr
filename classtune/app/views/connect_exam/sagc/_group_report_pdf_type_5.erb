@@ -194,8 +194,10 @@
                                   <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %>
                                   <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" %>
                                     <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
-                                      <% failed = true %>
-                                      <% failed_subject = true %>
+                                      <%  if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 22 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 50) %> 
+                                        <% failed = true %>
+                                        <% failed_subject = true %>
+                                      <% end %>
                                     <% end %>
                                   <% end %>
                              
@@ -235,6 +237,9 @@
                             </td>
                             <%
                               main_mark = (tota_mark_with_monthly.to_f.round/full_mark_all.to_f)*100
+                              if (full_mark_all == 50 && main_mark.round() == 44)
+                                main_mark = 45
+                              end
                             %>
                             <% grand_total_fraction = grand_total_fraction+tota_mark_with_monthly.to_f %>
                             <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
@@ -402,6 +407,9 @@
                             </td>
                             <%
                               main_mark = (tota_mark_with_monthly.to_f.round/full_mark_all.to_f)*100
+                              if (full_mark_all == 50 && main_mark.round() == 44)
+                                main_mark = 45
+                              end
                             %>
                             <td class="col-pdf no-warp">
                                <%= highest_mark.to_f.round.to_i %>

@@ -845,6 +845,17 @@ class FinanceFee < ActiveRecord::Base
         paid_amount += pf.amount
       end
     end
+    advance_amount_paid = 0.0
+    unless paid_fees.blank?
+      transaction_ids = paid_fees.map(&:id)
+      unless transaction_ids.blank?
+        paidAdvanceFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Advance' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")")
+        unless paidAdvanceFess.blank?
+          advance_amount_paid += paidAdvanceFess.map(&:amount).sum.to_f
+        end
+      end
+    end
+    paid_amount -= advance_amount_paid
     bal = bal - paid_amount
     bal = 0 if bal < 0
     bal

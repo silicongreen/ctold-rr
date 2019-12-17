@@ -134,8 +134,10 @@
           <% if @dates_all.blank? %>
             <% hide_style = "display: none;" %>
           <% end %>
+          <% unless @current_user.admin?  %>
+            <% hide_style = "display: none;" %>
+          <% end %>
           <div id="fees_list" style="background: #FBFBFB; padding: 20px; <%= hide_style %>">
-            <% if @current_user.admin?  %>
             <div id="combined_configuration" style="padding: 20px 0; ">
                 <% if combine_fees_enabled %>
                 <i id="combined_payment_student" name="combined_payment_student" class="fa fa-check-square-o" style="font-size: 20px; "></i>&nbsp;&nbsp;&nbsp;Enable Combined payment for this student
@@ -143,7 +145,6 @@
                 <i id="combined_payment_student" name="combined_payment_student" class="fa fa-square-o" style="font-size: 20px; "></i>&nbsp;&nbsp;&nbsp;Enable Combined payment for this student
                 <% end %>
             </div>
-            <% end %>
             <p id="no_fee_dues" style="display: none; font-size: 14px; font-family: verdana;">No Fee dues found</p>
             <p id="no_fee_history" style="display: none; font-size: 14px; font-family: verdana;">No Previous Fee History</p>
             <div style="width: 100%; text-align: right;"></div>
@@ -157,7 +158,7 @@
                   <th style="font-weight: normal; width: 15%; text-align: right;"><%= t('amount') %></th>
                   <th style="font-weight: normal; width: 15%; text-align: right;"><%= "Paid" %></th>
                   <th style="font-weight: normal; width: 15%; text-align: right;"><%= "Due" %></th>
-                  <th class="paid_class_advance" style="font-weight: normal; width: 15%; text-align: right;"><%= "Advance" %></th>
+                  <th style="font-weight: normal; width: 15%; text-align: right;"><%= "Advance" %></th>
                   <th style="font-weight: normal; width: 15%; text-align: right;"><%= "" %></th>
                 </tr>
               </thead>
@@ -220,9 +221,23 @@
                     end
                   
                     advance = 0.0
+                    
+                    advance_amount_paid = 0.0
+                    unless paid_fees.nil? or paid_fees.blank?
+                      transaction_ids = paid_fees.map(&:id)
+                      unless transaction_ids.blank?
+                        paidAdvanceFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Advance' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")")
+                        unless paidAdvanceFess.blank?
+                          advance_amount_paid += paidAdvanceFess.map(&:amount).sum.to_f
+                        end
+                      end
+                    end
+                    paid_amount -= advance_amount_paid  
                     bal = balance - paid_amount
+                    
                     if bal.to_f > 0
                       fees_to_paid += 1
+                      advance = advance_amount_paid
                     end
                     if bal.to_f < 0 
                       advance = bal * -1
@@ -237,13 +252,12 @@
                   <% cls_rerd = "finance_fees_collection_chk finance_fees_collection_all" %>
                   <% if combine_fees_enabled %>
                     <% checked_class  = "fa-check-square-o" %>
+                    <% cls_rerd = "finance_fees_collection_all" %>
                     <% color_check = "#999" %>
                     <% if bal.to_f > 0  %>
                     <% fees_multiple += finance_fee.id.to_s + "," %>
                     <% color_check = "#000" %>
                     <% amount += bal %>   
-                    <% elsif bal.to_f <= 0  %>
-                    <% cls_rerd = "finance_fees_collection_all" %>
                     <% end %>
                   <% else %>
                     <% if bal.to_f <= 0  %>
@@ -257,6 +271,7 @@
                     <% amount += bal %>    
                     <% end %>
                   <% end %>
+                  <%#= cls_rerd %>
                   <tr  id="finance_fee_<%= finance_fee.id %>" class="<%= class_name %>">
                     <td style="font-weight: normal; vertical-align: middle; text-align: center; cursor: pointer;"><i id="fee_collection_<%= finance_fee.id %>" class="fa <%= checked_class %> <%= cls_rerd %>" style="font-size: 16px; color: <%= color_check %>; "></i></td>
                     <td style="font-weight: normal; vertical-align: middle; text-align: left; font-weight: bold;">
@@ -279,8 +294,8 @@
                     </td>
                     <td id="amount_user_<%= d.id %>" style="font-weight: normal; vertical-align: middle; font-weight: normal; text-align: right; font-size: 14px;"><%= to_comma_seperated_precision_label(balance.to_f)  %>&nbsp;&nbsp;</td>
                     <td id="paid_user_<%= d.id %>" style="font-weight: normal; vertical-align: middle; text-align: right; font-weight: normal; font-size: 14px;"><%= to_comma_seperated_precision_label(paid_amount.to_f)  %>&nbsp;&nbsp;</td>
-                    <td id="bal_user_<%= d.id %>" style="font-weight: normal; vertical-align: middle; text-align: right; font-weight: normal; font-size: 14px;"><%= to_comma_seperated_precision_label(bal.to_f)  %>&nbsp;&nbsp;</td>
-                    <td id="advance_user_<%= d.id %>" class="paid_class_advance" style="font-weight: normal; vertical-align: middle; text-align: right; font-weight: normal; font-size: 14px;"><%= to_comma_seperated_precision_label(advance.to_f)  %>&nbsp;&nbsp;</td>
+                    <td id="bal_user_<%= finance_fee.id %>" style="font-weight: normal; vertical-align: middle; text-align: right; font-weight: normal; font-size: 14px;"><span class="bal"><%= to_comma_seperated_precision_label(bal.to_f)  %></span>&nbsp;&nbsp;</td>
+                    <td id="advance_user_<%= d.id %>" style="font-weight: normal; vertical-align: middle; text-align: right; font-weight: normal; font-size: 14px;"><%= to_comma_seperated_precision_label(advance.to_f)  %>&nbsp;&nbsp;</td>
                     <td class="button_td" style="font-weight: normal; vertical-align: middle; text-align: center; font-weight: normal; font-size: 14px;">
                         <% if MultiSchool.current_school.id != 352 %>  
                             <%= link_to "Print Receipt", {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>d.id}, :class=>"details_button details_button_color" %>
@@ -303,7 +318,7 @@
                   <% if amount > 0 %>
                   <tr class="total_fees">
                       <td colspan="4" style="font-weight: normal; vertical-align: middle; text-align: right; cursor: pointer;">Total Fees</td>
-                      <td style="font-weight: normal; vertical-align: middle; text-align: right; font-weight: normal; font-size: 14px;"><%= to_comma_seperated_precision_label(amount.to_f)  %>&nbsp;&nbsp;</td>
+                      <td style="font-weight: normal; vertical-align: middle; text-align: right; font-weight: normal; font-size: 14px;"><span id="total_fees_bal"><%= to_comma_seperated_precision_label(amount.to_f)  %></span>&nbsp;&nbsp;</td>
                       <td style="font-weight: normal; vertical-align: middle; text-align: center; font-weight: normal; font-size: 14px;">
                           <% if fees_to_paid > 0 %>
                             <% style = 'display: block;' %>
@@ -620,29 +635,35 @@
         j("#combined_payment_student").removeClass('fa-square-o');
         j("#combined_payment_student").addClass('fa-check-square-o');
         
-        j('.finance_fees_collection_chk').each(function(){
+        j('.finance_fees_collection_all').each(function(){
             j(this).removeClass('fa-square-o');
             j(this).addClass('fa-check-square-o');
         });
         
-        j('.finance_fees_collection_chk').each(function(){
+        j('.finance_fees_collection_all').each(function(){
+            j(this).removeClass('finance_fees_collection_chk');
+            
             if ( j(this).hasClass('fa-check-square-o') )
             {
               var fee_id = this.id.replace('fee_collection_','');
               fees += fee_id + ",";
+              j("#bal_user_" + fee_id).children('.bal').css("color", "#000");
               count_fees++;
             } 
         }); 
+        
         //alert(fees)
         if ( count_fees > 0 )
         {
-            fees = fees.substr(0, fees.length - 1);
+             fees = fees.substr(0, fees.length - 1);
              j("#combined_pay").show();
              j("#lnk_all").show();
               //j('#lnk').html('<%= link_to "Pay All",{:action=>:fee_details, :id => @student.id, :multiple=>true}, :class=> 'user_button' %>');
               var href = j('#lnk').children('a').attr('href');
               j('#lnk').children('a').attr('href', href + "&fees=" + fees);
               j('#lnk_all').children('a').attr('href', j('#lnk').children('a').attr('href'));
+              
+              j("#total_fees_bal").css("color", "#000");
             
         }
         else
@@ -660,20 +681,55 @@
         j("#combined_payment_student").addClass('fa-square-o');
         j("#combined_payment_student").removeClass('fa-check-square-o');
         
-        j('.finance_fees_collection_chk').each(function(){
+        j('.finance_fees_collection_all').each(function(){
+            var fee_id = this.id.replace('fee_collection_','');
+            fees += fee_id + ",";
+              
+            j(this).addClass('finance_fees_collection_chk');
             j(this).addClass('fa-square-o');
             j(this).removeClass('fa-check-square-o');
+            j("#bal_user_" + fee_id).children('.bal').css("color", "#ccc");
         });
         
         j("#combined_pay").hide();
         j("#lnk_all").hide();
-        
+        j("#total_fees_bal").css("color", "#999");
     }
   </script>  
 
 <% end %>
 <script>
+  function numberWithCommas(x) {
+      var parts = x.toString().split(".");
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return parts.join(".");
+  }
   j(document).ready(function(){
+      if ( !j("#combined_payment_student").hasClass('fa-check-square-o') )
+      {
+          j('.finance_fees_collection_all').each(function(){
+              var fee_id = this.id.replace('fee_collection_','');
+              
+              j(this).addClass('finance_fees_collection_chk');
+              j(this).addClass('fa-square-o');
+              j(this).removeClass('fa-check-square-o');
+              j("#bal_user_" + fee_id).children('.bal').css("color", "#999");
+          });
+          j("#total_fees_bal").css("color", "#999");
+      }
+      else
+      {
+          j('.finance_fees_collection_all').each(function(){
+              var fee_id = this.id.replace('fee_collection_','');
+              
+              j(this).removeClass('finance_fees_collection_chk');
+              j(this).removeClass('fa-square-o');
+              j(this).addClass('fa-check-square-o');
+              j("#bal_user_" + fee_id).children('.bal').css("color", "#000");
+          });
+          j("#total_fees_bal").css("color", "#000");
+      }
+      
       if ( j(".unpaid_class").length == 0 )
       {
           j('.unpaid_empty_class').show();
@@ -720,6 +776,7 @@
           }
           else
           {
+              <% if @current_user.admin?  %>
               j("#fees_list").show();
               if ( j("#combined_payment_student").hasClass('fa-check-square-o')  )
               {
@@ -739,6 +796,7 @@
                   j("#combined_pay").hide();
                   j("#lnk_all").hide();
               }
+              <% end %>
           }
           
           j(this).removeClass("live");
@@ -749,6 +807,7 @@
       j(document).on('click', '.finance_fees_collection_chk', function(){
           var count_fees = 0;
           var fees = "";
+          var amount = 0.0
           
           if (j("#combined_payment_student").hasClass('fa-check-square-o') == false)
           {
@@ -762,18 +821,37 @@
                 j(this).removeClass('fa-square-o');
                 j(this).addClass('fa-check-square-o');
             }
+            
+            fee_bal = new Number(0)
+            not_active_fee_bal = new Number(0)
             j('.finance_fees_collection_chk').each(function(){
                 if ( j(this).hasClass('fa-check-square-o') )
                 {
                   var fee_id = this.id.replace('fee_collection_','');
+                  var amt_str = j.trim(j("#bal_user_" + fee_id).children('.bal').html().split("&nbsp;").join(""));
+                  var bal = parseFloat(j.trim(amt_str).replace(/,/g, ''))
+                  j("#bal_user_" + fee_id).children('.bal').css("color", "#000");
+                  fee_bal += bal
                   fees += fee_id + ",";
                   count_fees++;
-                } 
+                }
+                else
+                {
+                  var fee_id = this.id.replace('fee_collection_','');
+                  j("#bal_user_" + fee_id).children('.bal').css("color", "#999");
+                  
+                  var amt_str = j.trim(j("#bal_user_" + fee_id).children('.bal').html().split("&nbsp;").join(""));
+                  var bal = parseFloat(j.trim(amt_str).replace(/,/g, ''))
+                  not_active_fee_bal += bal
+                }
             }); 
-            //alert(fees)
+            
             if ( count_fees > 0 )
             {
-                fees = fees.substr(0, fees.length - 1);
+                 j("#total_fees_bal").html(numberWithCommas(fee_bal.toFixed(2)));
+                 j("#total_fees_bal").css("color", "#000");
+                 
+                 fees = fees.substr(0, fees.length - 1);
                  j("#combined_pay").show();
                  j("#lnk_all").show();
                   //j('#lnk').html('<%= link_to "Pay All",{:action=>:fee_details, :id => @student.id, :multiple=>true}, :class=> 'user_button' %>');
@@ -786,6 +864,9 @@
             {
                 j("#combined_pay").hide();
                 j("#lnk_all").hide();
+                
+                j("#total_fees_bal").html(numberWithCommas(not_active_fee_bal.toFixed(2)));
+                j("#total_fees_bal").css("color", "#999");
             }
           }
       });

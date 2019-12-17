@@ -875,8 +875,22 @@
           end
           total_payable_individual[f] += fine_amount_paid.to_f
         %>
-        <% if total_payable_individual[f] < paid %>
-        <% amount_advanced = paid - total_payable_individual[f]  %>
+        <%
+          advance_amount_paid = 0.0
+          unless @paid_fees[f].nil? or @paid_fees[f].blank?
+            transaction_ids = @paid_fees[f].map(&:id)
+            unless transaction_ids.blank?
+              paidAdvanceFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Advance' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")")
+              unless paidAdvanceFess.blank?
+                advance_amount_paid += paidAdvanceFess.map(&:amount).sum.to_f
+              end
+            end
+          end
+          amount_advanced = advance_amount_paid
+        %>
+        <%# if total_payable_individual[f] < paid %>
+        <%# amount_advanced = paid - total_payable_individual[f]  %>
+        <% if amount_advanced > 0 %>
         <tr class="tr-blank blank_tr_<%= f %>" style="display: none;"></tr>
         <tr class="tr-blank blank_tr_<%= f %>" style="display: none;"></tr>
         <tr class="tr-blank blank_tr_<%= f %>" style="display: none;"></tr>

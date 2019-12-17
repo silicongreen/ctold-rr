@@ -990,8 +990,21 @@
           end
           total_payable_individual[f] += fine_amount_paid.to_f
         %>
-        <% if total_payable_individual[f] < paid %>
-        <% amount_advanced = paid - total_payable_individual[f]  %>
+        <%
+          advance_amount_paid = 0.0
+          unless @paid_fees[f].nil? or @paid_fees[f].blank?
+            transaction_ids = @paid_fees[f].map(&:id)
+            unless transaction_ids.blank?
+              paidAdvanceFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Advance' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")")
+              unless paidAdvanceFess.blank?
+                advance_amount_paid += paidAdvanceFess.map(&:amount).sum.to_f
+              end
+            end
+          end
+          amount_advanced = advance_amount_paid
+        %>
+        <% if amount_advanced > 0 %>
+        <%# amount_advanced = paid - total_payable_individual[f]  %>
         <tr class="tr-blank blank_tr_<%= f %>" style="display: none;"></tr>
         <tr class="tr-blank blank_tr_<%= f %>" style="display: none;"></tr>
         <tr class="tr-blank blank_tr_<%= f %>" style="display: none;"></tr>
@@ -1017,7 +1030,12 @@
               <input type="hidden" name="total_payable_<%= f %>" id="total_payable" value="<%= precision_label(total_payable_individual[f]) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
           </td>  
           <td class="col-6"  style="text-align: right;">
+              <span id="payment_done_label" style="color: #000;"><%= precision_label(paid - amount_advanced) %></span>
+              <% if amount_advanced > 0 %>
+              &nbsp;&nbsp;&nbsp;<br />
+              <span id="payment_done_label" style="color: #000;">&nbsp;+&nbsp;<%= precision_label(amount_advanced) %></span>&nbsp;&nbsp;&nbsp;<br /><hr style="border: 1px solid #ccc;" />
               <span id="payment_done_label" style="color: #000;"><%= precision_label(paid) %></span>
+              <% end %>
               <input type="hidden" name="payment_done_<%= f %>" id="payment_done" value="<%= precision_label(paid) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
           </td>  
           <td class="col-6"  style="text-align: right;">

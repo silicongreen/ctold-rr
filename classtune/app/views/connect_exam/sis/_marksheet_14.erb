@@ -58,7 +58,7 @@
                       <% end %> 
                       <% @report_data['result']['ALL'].each do |rs| %>
                         <%  if (exam_type == 1 and rs['quarter'] == '5') or (rs['quarter'] == '6' && exam_type == 2) %>  
-                          <td><%=  rs['name'] %> (20)</td>
+                          <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
                         <% end %>
                       <% end %> 
                       <td>Total (70)</td>
@@ -248,7 +248,11 @@
 
                         %>
                           <td><%= sprintf( "%0.02f", quarter_mark) %></td>
-                          <td><%= sprintf( "%0.02f", term_mark) %></td>
+                          <% @report_data['result']['ALL'].each do |rs| %>
+                            <% if rs['quarter'] == '5' or rs['quarter'] == '6' %>
+                              <td><%= rs['students'][std['id']]['score'].to_f %></td>
+                            <% end %>
+                          <% end %>
                           <td><%= total_mark.round() %></td>
 
                           <% if !grade.blank? and !grade.name.blank? %>

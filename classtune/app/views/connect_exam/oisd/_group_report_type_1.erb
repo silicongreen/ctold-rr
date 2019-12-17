@@ -42,16 +42,20 @@
                       </td>
                   </tr>
                   <tr class="table-header">
+                      <% count = 0 %>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
                           <td class="col-pdf">
                               <%= report['exam_name'] %>
                           </td> 
+                          <% count = count+1 %>
                         <% end %>
                       <% end %>
+                      <% if count > 1 %>
                       <td class="col-pdf" colspan="100">
                           Letter Grade
                       </td>
+                      <% end %>
                   </tr>
 
                   
@@ -101,11 +105,13 @@
                             end 
                             grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                           %>
-                          <% if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank? %>
-                            <td><b><%= grade.name %></b></td>
-                          <% else %>
-                            <td><b>-</b></td>
-                          <% end %>
+                          <% if count > 1 %>
+                            <% if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank? %>
+                              <td><b><%= grade.name %></b></td>
+                            <% else %>
+                              <td><b>-</b></td>
+                            <% end %>
+                          <% end %>  
 
       
 

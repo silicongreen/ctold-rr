@@ -401,24 +401,24 @@ unless @ranked_student.blank?
                                     <%
                                    
                                     subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                    subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].round().to_f
+                                    subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
                                     if rs['exam_category'] == '1'
                                       has_cq = true
-                                      grade_mark_cq = grade_mark_cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].round().to_f
+                                      grade_mark_cq = grade_mark_cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
                                       full_mark_cq = full_mark_cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                      cq_obtain_mark = cq_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].round().to_f
+                                      cq_obtain_mark = cq_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
                                     end
                                     if rs['exam_category'] == '2'
                                       has_mcq = true
-                                      grade_mark_mcq = grade_mark_mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].round().to_f
+                                      grade_mark_mcq = grade_mark_mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
                                       full_mark_mcq = full_mark_mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                      mcq_obtain_mark = mcq_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].round().to_f
+                                      mcq_obtain_mark = mcq_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
                                     end
                                     if rs['exam_category'] == '3'
                                       has_mtt = true
-                                      grade_mark_mtt = grade_mark_mtt+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].round().to_f
+                                      grade_mark_mtt = grade_mark_mtt+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
                                       full_mark_mtt = full_mark_mtt+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                      mtt_obtain_mark = mtt_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].round().to_f
+                                      mtt_obtain_mark = mtt_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
                                     end
 
 

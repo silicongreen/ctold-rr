@@ -85,10 +85,7 @@
                         <% if @connect_exam_obj.id == 2231 && subjects['name'] == "Reading" %>
                           <% next %>
                         <% end %>
-                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-
-                          <td class="col-pdf no-warp  align-left"><%= subjects['name'] %></td>
-                          <% 
+                        <%
                           unless @report_data['report']['exams'].blank?   
                             @report_data['report']['exams'].each do |report| 
                               if report['exam_category'] == '7'
@@ -162,6 +159,15 @@
                               end
                             end 
                           end 
+                        %>
+                      <% if first_term_fullmark == 0 and final_term_fullmark == 0 %>
+                        <% next %>
+                      <% end %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+
+                          <td class="col-pdf no-warp  align-left"><%= subjects['name'] %></td>
+                          <% 
+                          
                         
                           full_mark_term = 0
                           if first_term_fullmark > 0 or q1_fullmark > 0 or q2_fullmark > 0

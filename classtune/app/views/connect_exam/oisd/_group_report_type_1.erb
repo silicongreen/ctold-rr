@@ -143,14 +143,28 @@
                       <td class="col-pdf width-18 sjws_table_intro"><span class="tickbox_uncheck2"></span></td>
                       <td class="col-pdf width-18 sjws_table_intro"><span class="tickbox_uncheck2"></span></td>
                   </tr>
+                  <% 
+                    total_att = ""
+                    present = ""
+                    if !@exam_comment.blank?
+                      all_comments = @exam_comment.comments
+                      if !all_comments.blank?
+                        all_comments_array = all_comments.split("|")
+                        total_att = all_comments_array[0]
+                        if !all_comments_array[1].nil?
+                          present = all_comments_array[1]
+                        end
+                      end
+                    end
+                  %>
                   <tr class="table-header">
                       <% unless @present_total.blank? %>
-                        <td class="col-pdf">Number of working days : <%= @total_day %></td>
-                        <td colspan="3">Attendance : <%= @present_total %></td>
+                        <td class="col-pdf">Number of working days : <%= total_att.to_i %></td>
+                        <td colspan="3">Attendance : <%= present.to_i %></td>
                       <% else %>
                         <% @comment_from_split = @total_day  %>
-                        <td class="col-pdf">Number of working days : <%= @report_data['total'] %></td>
-                        <td colspan="3">Attendance : <%= @report_data['present'] %></td>
+                        <td class="col-pdf">Number of working days : <%= total_att.to_i %></td>
+                        <td colspan="3">Attendance : <%= present.to_i %></td>
                       <% end %>
                   </tr>
                   

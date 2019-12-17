@@ -250,7 +250,11 @@
                           <td><%= sprintf( "%0.02f", quarter_mark) %></td>
                           <% @report_data['result']['ALL'].each do |rs| %>
                             <% if rs['quarter'] == '5' or rs['quarter'] == '6' %>
-                              <td><%= rs['students'][std['id']]['score'].to_f %></td>
+                              <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
+                                <td><%= rs['students'][std['id']]['score'].to_f %></td>
+                              <% else %>
+                                <td>-</td>
+                              <% end %>  
                             <% end %>
                           <% end %>
                           <td><%= total_mark.round() %></td>

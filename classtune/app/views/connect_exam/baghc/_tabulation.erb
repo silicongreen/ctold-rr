@@ -477,22 +477,28 @@ unless @ranked_student.blank?
                                 end  
                               end 
                               
-                              subject_obtain_mark = subject_obtain_mark
+                              
                               
                               if @connect_exam_obj.result_type == 3
                                 if cq_obtain_mark > 0
                                   cq_obtain_mark = cq_obtain_mark.to_f/2.00
+                                  full_mark_cq = full_mark_cq.to_f/2.00
                                   cq_obtain_mark = cq_obtain_mark.round()
                                 end  
                                 if mcq_obtain_mark > 0
                                   mcq_obtain_mark = mcq_obtain_mark.to_f/2.00
+                                  full_mark_mcq = full_mark_mcq.to_f/2.00
                                   mcq_obtain_mark = mcq_obtain_mark.round()
                                 end
                                 if mtt_obtain_mark > 0
                                   mtt_obtain_mark = mtt_obtain_mark.to_f/2.00
+                                  full_mark_mtt = full_mark_mtt.to_f/2.00
                                   mtt_obtain_mark = mtt_obtain_mark.round()
                                 end
                               end  
+                            
+                              subject_obtain_mark = cq_obtain_mark+mcq_obtain_mark+mtt_obtain_mark
+                              subject_full_mark = full_mark_cq+full_mark_mcq+full_mark_mtt
 
                             %>
                               <% if subject_obtain_mark.to_i > 0 and subject_full_mark.to_i > 0 %>

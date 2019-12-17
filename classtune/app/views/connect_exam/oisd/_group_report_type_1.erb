@@ -49,6 +49,9 @@
                           </td> 
                         <% end %>
                       <% end %>
+                      <td class="col-pdf" colspan="100">
+                          Letter Grade
+                      </td>
                   </tr>
 
                   
@@ -59,7 +62,8 @@
                           <% next %>
                         <% end %>
                          
-
+                          <% total_mark = 0 %>
+                          <% full_mark = 0 %>
                           <td class="col-pdf align-left"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
@@ -67,6 +71,8 @@
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                         <% main_mark = 0 %>
                                         <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f > 0 %>
+                                          <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f %>
+                                          <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                           <% main_mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f/report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f)*100 %>
                                         <% end %>
                                         <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
@@ -85,6 +91,20 @@
 
 
                             <% end %>
+                          <% end %>
+                          <%
+                            if total_mark.to_f>0 and full_mark.to_f>0
+                              main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                              main_mark = main_mark.round
+                            else
+                              main_mark = 0
+                            end 
+                            grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                          %>
+                          <% if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank? %>
+                            <td><b><%= grade.name %></b></td>
+                          <% else %>
+                            <td><b>-</b></td>
                           <% end %>
 
       

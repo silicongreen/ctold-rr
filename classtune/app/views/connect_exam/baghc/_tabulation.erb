@@ -477,7 +477,7 @@ unless @ranked_student.blank?
                                 end  
                               end 
                               
-                              subject_obtain_mark = subject_obtain_mark+subject_ct_obtain_mark
+                              subject_obtain_mark = subject_obtain_mark
                               
                               if @connect_exam_obj.result_type == 3
                                 if cq_obtain_mark > 0
@@ -502,7 +502,7 @@ unless @ranked_student.blank?
                                 <td>
                                     <% total_mark = total_mark+subject_obtain_mark.to_f %>
                                     <%= sprintf( "%0.02f", cq_obtain_mark) %>
-                                    <%= sprintf( "%0.02f", subject_full_mark) %>
+                                    <%= sprintf( "%0.02f", subject_obtain_mark) %>
                                     <hr/>
                                     <%= sprintf( "%0.02f", mcq_obtain_mark) %>
                                     <hr/>

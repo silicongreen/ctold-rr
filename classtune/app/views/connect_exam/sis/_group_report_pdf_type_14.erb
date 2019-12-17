@@ -254,7 +254,9 @@
                       allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
                       allexams.each do |exam|
                         if !@all_subjects.include?(exam.subject.id)
-                          @all_subjects << exam.subject.id
+                          if exam.exam_group.quarter.to_i == 5 or exam.exam_group.quarter.to_i == 6
+                            @all_subjects << exam.subject.id
+                          end
                         end
                       end
                     end 

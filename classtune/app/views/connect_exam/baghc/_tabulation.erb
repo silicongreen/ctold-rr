@@ -392,7 +392,7 @@ unless @ranked_student.blank?
                                     grade_mark_mtt = 0
                                     full_mark_mtt = 0
                                   %>
-                              <td>
+                             
                               <% @report_data['report']['exams'].each do |rs| %>
                                  
                                   <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
@@ -423,14 +423,14 @@ unless @ranked_student.blank?
 
 
                                   %>
-                                  <%= rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round() %>
+                                  
                                   <%
                                     
                                 
                                   %>
                                   <% end %>
                               <% end %> 
-                              </td>
+                             
 
                               <% main_mark = 0 %>
                               <%

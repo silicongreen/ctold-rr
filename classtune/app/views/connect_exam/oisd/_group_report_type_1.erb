@@ -183,6 +183,7 @@
                   
 
               </table>
+              <% if @connect_exam_obj.quarter_number == 6 %>
               <table id="pdf-table" class="margin-top-bottom-10 font-size-20" width="99.8%" >
                     <tr  class="table-header">
                       <td class="col-pdf no-warp align-left"><b><span class="tickbox_uncheck2"></span> Promoted to </b></td>
@@ -193,6 +194,7 @@
                       <td class="col-pdf no-warp align-left width-60"><%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %></td>
                      </tr>
               </table>
+              <% end %>
               
                <table id="pdf-table" width="99.8%" class="left-table even-table signature" cellspacing="0">
                   <tr class="even">

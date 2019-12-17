@@ -479,20 +479,20 @@ unless @ranked_student.blank?
                               
                               subject_obtain_mark = subject_obtain_mark+subject_ct_obtain_mark
                               
-                              #if @connect_exam_obj.result_type == 3
-                                #if cq_obtain_mark > 0
-                                  #cq_obtain_mark = cq_obtain_mark/2
-                                  #cq_obtain_mark = cq_obtain_mark.round()
-                                #end  
-                                #if mcq_obtain_mark > 0
-                                  #mcq_obtain_mark = mcq_obtain_mark/2
-                                  #mcq_obtain_mark = mcq_obtain_mark.round()
-                                #end
-                                #if mtt_obtain_mark > 0
-                                  #mtt_obtain_mark = mtt_obtain_mark/2
-                                  #mtt_obtain_mark = mtt_obtain_mark.round()
-                                #end
-                              #end  
+                              if @connect_exam_obj.result_type == 3
+                                if cq_obtain_mark > 0
+                                  cq_obtain_mark = cq_obtain_mark.to_f/2.00
+                                  cq_obtain_mark = cq_obtain_mark.round()
+                                end  
+                                if mcq_obtain_mark > 0
+                                  mcq_obtain_mark = mcq_obtain_mark.to_f/2.00
+                                  mcq_obtain_mark = mcq_obtain_mark.round()
+                                end
+                                if mtt_obtain_mark > 0
+                                  mtt_obtain_mark = mtt_obtain_mark.to_f/2.00
+                                  mtt_obtain_mark = mtt_obtain_mark.round()
+                                end
+                              end  
 
                             %>
                               <% if subject_obtain_mark.to_i > 0 and subject_full_mark.to_i > 0 %>

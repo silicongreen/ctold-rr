@@ -355,6 +355,7 @@ unless @ranked_student.blank?
                               <% subject_ct_full_mark = 0 %>
                               <% subject_ct_obtain_mark = 0 %>
                               <% subject_ct_marks = [] %>
+                              <% failed_grade = false %>
 
                               <% has_exam = false %>
                               <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -380,7 +381,7 @@ unless @ranked_student.blank?
                                 <% end %>
                               <% end %>
 
-                              <% failed_grade = false %>
+                              
 
                               <% @report_data['report']['exams'].each do |rs| %>
                                   <%
@@ -391,21 +392,27 @@ unless @ranked_student.blank?
                                   <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
 
                                     <%
-                                    full_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                    grade_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    
+                                    
                                     
                                     subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                     subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                     if rs['exam_category'] == '1'
                                       has_cq = true
+                                      grade_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                      full_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                       cq_obtain_mark = cq_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                     end
                                     if rs['exam_category'] == '2'
                                       has_mcq = true
+                                      grade_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                      full_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                       mcq_obtain_mark = mcq_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                     end
                                     if rs['exam_category'] == '3'
                                       has_mtt = true
+                                      grade_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                      full_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                       mtt_obtain_mark = mtt_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                     end
 

@@ -579,6 +579,9 @@ unless @ranked_student.blank?
                           </td>
                           <td>
                               F[<%= f_grade_count %>]
+                              <% if f_grade[f_grade_count].blank? %>
+                              <% f_grade[f_grade_count] = 0 %>
+                              <% end %>
                               <%  f_grade[f_grade_count] = f_grade[f_grade_count]+1 %>
                           </td> 
 

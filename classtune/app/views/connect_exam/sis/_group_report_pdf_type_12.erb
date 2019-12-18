@@ -399,6 +399,22 @@
                         <% i = i+1 %>
                         <% end %>
                       <% end %>
+                      <%  unless @grading_levels.empty? %>
+                        <% i = 0 %>
+                        <% @grading_levels.each_with_index do |grade,index| %>
+                        <% if i>6 %>
+                          <td class="align-left" rowspan="2">
+                            <% if grade.max_score.nil? %>  
+                              <%= '%i%' % grade.min_score %>
+                            <% else %> 
+                              <%= grade.min_score.to_i.to_s + "-" + grade.max_score.to_i.to_s %>
+                            <% end %>
+                          </td>
+                          <td class="align-left"><%= grade.name %></td>
+                        <% end %>
+                        <% i = i+1 %>
+                        <% end %>
+                      <% end %>
                   </tr>    
                   <tr class="even">    
                       <%  unless @grading_levels.empty? %>

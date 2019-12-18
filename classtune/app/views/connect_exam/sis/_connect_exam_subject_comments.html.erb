@@ -197,14 +197,7 @@
                                                         <% exam_group_remarks = exam_score_split[@group_loop.to_i] %>
                                                       <% end %>
                                                     <% end %>
-                                                    
-                                                    <% if (group_name.name.upcase == "ATTENDANCE" or group_name.name.upcase == "HOMEWORK") %>
-                                                      <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
-                                                        <option value="NA" >Select</option>
-                                                        <option value="R" <% if exam_group_remarks.to_s == 'R' %> selected="selected" <% end %>  >Regular</option>
-                                                        <option value="IR" <% if exam_group_remarks.to_s == 'IR' %> selected="selected" <% end %>  >Irregular</option>
-                                                      </select>
-                                                    <% elsif (@exam_connect.result_type == 8 or @exam_connect.result_type == 14) and (@batch.course.course_name == "KG-I" or @batch.course.course_name == "KG-II" or @batch.course.course_name == "KG I" or @batch.course.course_name == "KG II") %>
+                                                    <% if (@exam_connect.result_type == 8 or @exam_connect.result_type == 14) and (@batch.course.course_name == "KG-I" or @batch.course.course_name == "KG-II" or @batch.course.course_name == "KG I" or @batch.course.course_name == "KG II") %>
                                                       <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
                                                           <option value="0" >Select</option>
                                                           <option value="1" <% if exam_group_remarks.to_i == 1 %> selected="selected" <% end %> >Excellent</option>
@@ -212,6 +205,13 @@
                                                           <option value="3" <% if exam_group_remarks.to_i == 3 %> selected="selected" <% end %>  >Good</option>
                                                           <option value="4" <% if exam_group_remarks.to_i == 4 %> selected="selected" <% end %>  >Needs Improvement</option>
                                                       </select>
+                                                    <% elsif (group_name.name.upcase == "ATTENDANCE" or group_name.name.upcase == "HOMEWORK") %>
+                                                      <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
+                                                        <option value="NA" >Select</option>
+                                                        <option value="R" <% if exam_group_remarks.to_s == 'R' %> selected="selected" <% end %>  >Regular</option>
+                                                        <option value="IR" <% if exam_group_remarks.to_s == 'IR' %> selected="selected" <% end %>  >Irregular</option>
+                                                      </select>
+                                                    
                                                     <% elsif @exam_connect.result_type == 9 or @exam_connect.result_type == 14 %>
                                                      <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
                                                           <option value="0" >Select</option>

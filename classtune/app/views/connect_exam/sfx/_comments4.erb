@@ -36,7 +36,7 @@ if !@report_data['total'].blank? and @report_data['total'].to_i>0 and !@report_d
             <% customatt = "100" %>
           <% end %>
         <% end %>
-        <% if customatt %>
+        <% if !customatt.blank? %>
           <td class="no-warp" colspan="1"><%= customatt %> %</td>
         <% elsif !@total_subject_attendance.blank? and @total_subject_attendance>0 %>
           <% avg = (@attendance_parcentage.to_f/@total_subject_attendance.to_f)*100 %>

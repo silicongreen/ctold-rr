@@ -1546,6 +1546,13 @@ module FinanceLoader
             end
           end
           
+          payment_all = Payment.find(:all, :conditions => "finance_transaction_id = #{transaction.id}")
+          unless payment_all.blank?
+            payment_all.each do |pay_data|
+              pay_data.update_attributes(:finance_transaction_id => nil)
+            end
+          end
+        
           payment.update_attributes(:finance_transaction_id => transaction.id)
           unless @financefee.transaction_id.nil?
             tid =   @financefee.transaction_id.to_s + ",#{transaction.id}"
@@ -2045,6 +2052,13 @@ module FinanceLoader
                       transaction_datetime = dt[0]
 
                       payment.update_attributes(:transaction_datetime => transaction_datetime)
+                    end
+                  end
+                  
+                  payment_all = Payment.find(:all, :conditions => "finance_transaction_id = #{transaction.id}")
+                  unless payment_all.blank?
+                    payment_all.each do |pay_data|
+                      pay_data.update_attributes(:finance_transaction_id => nil)
                     end
                   end
 

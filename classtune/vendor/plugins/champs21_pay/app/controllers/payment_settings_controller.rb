@@ -661,6 +661,12 @@ class PaymentSettingsController < ApplicationController
                       end
                     end
 
+                    payment_all = Payment.find(:all, :conditions => "finance_transaction_id = #{transaction.id}")
+                    unless payment_all.blank?
+                      payment_all.each do |pay_data|
+                        pay_data.update_attributes(:finance_transaction_id => nil)
+                      end
+                    end
                     payment.update_attributes(:finance_transaction_id => transaction.id)
                     
                     unless @financefee.transaction_id.nil?
@@ -1207,7 +1213,7 @@ class PaymentSettingsController < ApplicationController
               :service_charge=>verification_service_charge,
               :pan=>verification_pan
             }
-
+            #abort('here')
             verify_order = false
             if verified.to_i == 1 or verification_verified.to_i == 1
               if verified.to_i == 0
@@ -1219,10 +1225,47 @@ class PaymentSettingsController < ApplicationController
               order_ids_new << o
               verified_no += 1
             end
+            verify_order = true
             
+            finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and request_params is null")
+            unless finance_orders.blank? 
+              finance_orders.each do |finance_order|
+                finance_order.destroy
+              end
+            end
             if verify_order
+              @student = Student.find(29341)
               unless @student.nil?
-                finance_orders = FinanceOrder.find_all_by_order_id(o)
+                finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and request_params is not null")
+                unless finance_orders.blank?
+                  request_params = finance_orders[0].request_params
+                  fees = request_params["fees"].split(",")
+                  unless fees.blank?
+                    fees.each do |fee|
+                      finance_order = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and finance_fee_id = #{fee} and request_params is not null")
+                      unless finance_order.blank?
+                        if finance_order.length > 1
+                          finance_order_attributes = finance_order[0].attributes
+                          finance_order.each do |fo|
+                            fo.destroy
+                          end
+                          finance_order_new = FinanceOrder.new(finance_order_attributes)
+                          finance_order_new.save
+                        end
+                      else
+                        finance_order_attributes = finance_orders[0].attributes
+                        finance_order_attributes.delete "finance_fee_id"
+                        finance_order_attributes.merge!(:finance_fee_id=>fee)
+                        #finance_order_attributes.finance_fee_id = fee
+                        finance_order_new = FinanceOrder.new(finance_order_attributes)
+                        finance_order_new.save
+                      end
+                    end
+                  end
+                end
+                
+                finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and request_params is not null")
+                #abort(finance_orders.map(&:id).inspect)
                 unless finance_orders.nil?
                   
                   finance_orders.each do |finance_order|
@@ -1345,6 +1388,12 @@ class PaymentSettingsController < ApplicationController
                         paid_fees = fee.finance_transactions
                         unless paid_fees.nil?
                           paid_fees.each do |paid_fee|
+                            payment_all = Payment.find(:all, :conditions => "finance_transaction_id = #{paid_fee.id}")
+                            unless payment_all.blank?
+                              payment_all.each do |pay_data|
+                                pay_data.update_attributes(:finance_transaction_id => nil)
+                              end
+                            end
                             payment.update_attributes(:finance_transaction_id => paid_fee.id)
                           end
                         end

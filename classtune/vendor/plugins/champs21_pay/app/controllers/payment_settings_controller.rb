@@ -1225,7 +1225,7 @@ class PaymentSettingsController < ApplicationController
               order_ids_new << o
               verified_no += 1
             end
-            verify_order = true
+            #verify_order = true
             
             finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and request_params is null")
             unless finance_orders.blank? 
@@ -1234,7 +1234,7 @@ class PaymentSettingsController < ApplicationController
               end
             end
             if verify_order
-              @student = Student.find(29341)
+              #@student = Student.find(29341)
               unless @student.nil?
                 finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and request_params is not null")
                 unless finance_orders.blank?

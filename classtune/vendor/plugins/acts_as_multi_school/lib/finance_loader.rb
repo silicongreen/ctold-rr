@@ -1439,7 +1439,7 @@ module FinanceLoader
                 finance_transaction_particular.transaction_date = transaction.transaction_date
                 finance_transaction_particular.save
                 
-                payment = Payment.find_by_order_id_and_payee_id_and(orderId, @student.id)
+                payment = Payment.find_by_order_id_and_payee_id_and_payment_id(orderId, @student.id, @financefee)
                 transaction_date = transaction.transaction_date
                 unless payment.blank?
                   transaction_date = payment.transaction_datetime

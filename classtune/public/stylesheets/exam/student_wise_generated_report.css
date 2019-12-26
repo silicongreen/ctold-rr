@@ -361,7 +361,7 @@ table.teacher_remarks tr td
 }
 .baf_shaheen h4
 {
-    border-bottom: 2px solid black;
+    border-bottom: 0px solid black;
     font-size: 17px;
     padding: 0px;
     width: auto;

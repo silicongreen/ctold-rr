@@ -276,7 +276,7 @@ table.teacher_remarks tr td
 
 
 
-///baf shaheen
+
 .baf_shaheen table td
 {
     font-size:16px;
@@ -326,18 +326,20 @@ table.teacher_remarks tr td
     background: #EEEEEE;
     font-weight: bold;
     text-align: center;
+    font-size: 16px;
+    padding: 3px; 
 }
 
 
 .baf_shaheen tr.odd td
 {
-    padding: 2px 2px 7px 5px;  
+    padding: 3px;  
     border: 1px solid #000000;
     font-size: 16px;
 }
 .baf_shaheen tr.even td
 {
-    padding: 2px 2px 7px 5px;
+    padding: 3px; 
     border: 1px solid #000000;
     font-size: 16px;
 }
@@ -355,7 +357,7 @@ table.teacher_remarks tr td
 }
 .baf_shaheen h4.h4-evaluation
 {
-   margin: 10px 0px 10px 5px; 
+   margin: 8px 0px 8px 5px; 
 }
 .baf_shaheen h4
 {

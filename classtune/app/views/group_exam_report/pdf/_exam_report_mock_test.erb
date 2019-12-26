@@ -112,18 +112,21 @@
       <% total_credit_points=0 %>
       <% total_credit_hours=0 %>
       <% elective_group_mark = {} %>
+      <% elective_group_mark_total = {} %>
       <% 
    
       exam_score.each do |es|
-        if es.marks.present?
-             
+          if es.marks.present?
             if elective_group_mark[es.exam.subject.elective_group_id].nil?
               elective_group_mark[es.exam.subject.elective_group_id] = (((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
+              elective_group_mark_total[es.exam.subject.elective_group_id] = es.marks.to_f
             else
               if elective_group_mark[es.exam.subject.elective_group_id] == -1
                 elective_group_mark[es.exam.subject.elective_group_id] = 0
+                elective_group_mark_total[es.exam.subject.elective_group_id] = 0
               end 
               elective_group_mark[es.exam.subject.elective_group_id] = elective_group_mark[es.exam.subject.elective_group_id]+(((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
+              elective_group_mark_total[es.exam.subject.elective_group_id] = elective_group_mark_total[es.exam.subject.elective_group_id]+es.marks.to_f
             end
           else
             if elective_group_mark[es.exam.subject.elective_group_id].nil?
@@ -136,9 +139,11 @@
       <table id="pdf-table" width="99.8%" class="table_99" cellspacing="0">
         <% c = 'even'  %>
         <tr class="table-header">  
-          <td class="col-pdf no-warp align-left" width="40%"><%= "SUBJECT" %></td>
-          <td class="col-pdf" width="30%"><%= "SCORE" %></td>
-          <td class="col-pdf " width="30%"><%= "GRADE" %></td> 
+          <td class="col-pdf no-warp align-left" width="30%"><%= "Subject" %></td>
+          <td class="col-pdf" width="20%"><%= "Attainment" %></td>
+          <td class="col-pdf" width="20%"><%= "Weighted Average" %></td>
+          <td class="col-pdf " width="15%"><%= "GRADE" %></td> 
+          <td class="col-pdf " width="15%"><%= "Attendance" %></td> 
         </tr>
         <tr class="tr-blank"></tr>
         <% j = 0; %>
@@ -148,12 +153,19 @@
         <% elective_group = [] %>
         
         <% exam_score.each do |es| %>
-          <% if !elective_group.include?(es.exam.subject.elective_group_id)  %>
+          <% if !es.exam.subject.elective_group_id.blank? && !elective_group.include?(es.exam.subject.elective_group_id)  %>
           <% elective_group << es.exam.subject.elective_group_id %>
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
               
-             <td class="col-pdf no-warp  align-left" width="40%"> <%= es.exam.subject.elective_group.name %></td>
-             <td class="col-pdf" width="30%">
+             <td class="col-pdf no-warp  align-left" width="30%"> <%= es.exam.subject.elective_group.name %></td>
+             <td class="col-pdf" width="20%">
+                  <% if elective_group_mark[es.exam.subject.elective_group_id] == -1 %>
+                    AB
+                  <% else %>   
+                    <%= elective_group_mark_total[es.exam.subject.elective_group_id].round() %>
+                  <% end %>       
+             </td>
+             <td class="col-pdf" width="20%">
                   <% if elective_group_mark[es.exam.subject.elective_group_id] == -1 %>
                     AB
                   <% else %>   
@@ -162,11 +174,37 @@
              </td>
               <%  grade = GradingLevel.percentage_to_grade(elective_group_mark[es.exam.subject.elective_group_id].round(), @batch.id) %>
               <% if !grade.blank? and !grade.name.blank? %>
-                            <td class="col-pdf  " width="30%"><%= grade.name %></td>
-                            <% else %>
-                            <td class="col-pdf  " width="30%">-</td>
-                            <% end %>
+              <td class="col-pdf  " width="15%"><%= grade.name %></td>
+              <% else %>
+              <td class="col-pdf  " width="15%">-</td>
+              <% end %>
               
+              <%  %>
+              
+              <% total_att = 0 %>
+              <% absent_att = 0 %>
+              <% if !@exam_group.attandence_start_date.blank? && !@exam_group.attandence_end_date.blank? %>
+                <% all_subject_elective_group = Subject.find_all_by_elective_group_id(es.exam.subject.elective_group_id) %>
+                <% unless all_subject_elective_group.blank?  %>
+                  <% all_subject_elective_group.each do |e_subject_id| %>
+                    <% total_att = total_att+SubjectAttendanceRegister.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:attendance_date => @exam_group.attandence_start_date..@exam_group.attandence_end_date}) %>
+                    <% absent_att = absent_att+SubjectAttendance.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:is_late=>0,:student_id=>@student.id,:attendance_date => @exam_group.attandence_start_date..@exam_group.attandence_end_date}) %>
+                  <% end %>
+                <% end %>
+              <% end %>
+              <% if total_att > 0 %>
+                <% percent = 100 %>
+                <% if absent_att > 0 %>
+                  <% percent = 0 %>
+                  <% diff = total_att-absent_att %>
+                  <% if diff > 0 %>
+                    <% percent = (diff.to_f/total_att.to_f)*100 %>
+                  <% end %>
+                <% end %>
+                <td class="col-pdf  " width="15%"><%= sprintf( "%0.02f", percent) %> %</td>
+              <% else %>
+                <td class="col-pdf  " width="15%">-</td>
+              <% end %>
    
           </tr>
           
@@ -180,20 +218,78 @@
             <% elective_group << esub.subject.elective_group_id %>
             <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
               
-             <td class="col-pdf no-warp  align-left" width="40%"> <%= esub.subject.elective_group.name %></td>
-             <td class="col-pdf" width="30%">
+             <td class="col-pdf no-warp  align-left" width="30%"> <%= esub.subject.elective_group.name %></td>
+             <td class="col-pdf" width="20%">
                  AB      
              </td>
-             <td class="col-pdf  " width="30%">-</td>
+             <td class="col-pdf" width="20%">
+                 AB      
+             </td>
+             <td class="col-pdf  " width="15%">-</td>
+             <td class="col-pdf  " width="15%">-</td>
           </tr>
           
           <% end %>
           <% end %>
-       <% end %>   
+       <% end %>
+          
+      
           
  
       </table>
-
+      
+      <h4 class="h4-evaluation"><b>Personal& Social Development</b></h4>
+      <table id="pdf-table" width="99.8%" class="table_99" cellspacing="0">
+        <% c = 'even'  %>
+        <tr class="table-header">  
+          <td class="col-pdf no-warp align-left" width="25%"></td>
+          <td class="col-pdf" width="15%"><%= "Always" %></td>
+          <td class="col-pdf" width="15%"><%= "Mostly" %></td>
+          <td class="col-pdf " width="15%"><%= "Usually" %></td> 
+          <td class="col-pdf " width="15%"><%= "Occasionally" %></td>
+          <td class="col-pdf " width="15%"><%= "Rearly" %></td>
+        </tr>
+        <tr class="odd">
+          <td class="col-pdf no-warp align-left" width="25%">Complies with school Rules</td>
+          <td class="col-pdf" width="15%"></td>
+          <td class="col-pdf" width="15%"></td>
+          <td class="col-pdf " width="15%"></td> 
+          <td class="col-pdf " width="15%"></td>
+          <td class="col-pdf " width="15%"></td>
+        </tr>
+        <tr class="odd">
+            <td class="col-pdf no-warp align-left" width="25%">Shows good behavior & attitude</td>
+          <td class="col-pdf" width="15%"></td>
+          <td class="col-pdf" width="15%"></td>
+          <td class="col-pdf " width="15%"></td> 
+          <td class="col-pdf " width="15%"></td>
+          <td class="col-pdf " width="15%"></td>
+        </tr>
+        <tr class="odd">
+          <td class="col-pdf no-warp align-left" width="25%">Sincere about attire</td>
+          <td class="col-pdf" width="15%"></td>
+          <td class="col-pdf" width="15%"></td>
+          <td class="col-pdf " width="15%"></td> 
+          <td class="col-pdf " width="15%"></td>
+          <td class="col-pdf " width="15%"></td>
+        </tr>
+        <tr class="odd">
+          <td class="col-pdf no-warp align-left" width="25%">Maintains good peer relation</td>
+          <td class="col-pdf" width="15%"></td>
+          <td class="col-pdf" width="15%"></td>
+          <td class="col-pdf " width="15%"></td> 
+          <td class="col-pdf " width="15%"></td>
+          <td class="col-pdf " width="15%"></td>
+        </tr>
+        <tr class="odd">
+          <td class="col-pdf no-warp align-left" width="25%">Punctuality</td>
+          <td class="col-pdf" width="15%"></td>
+          <td class="col-pdf" width="15%"></td>
+          <td class="col-pdf " width="15%"></td> 
+          <td class="col-pdf " width="15%"></td>
+          <td class="col-pdf " width="15%"></td>
+        </tr>
+      </table>  
         
       <h5 class="h4-evaluation"><b>&nbsp;</b></h5>
       <table id="pdf-table" class="evaluation table_99"  width="99.8%" >

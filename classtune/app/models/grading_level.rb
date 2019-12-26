@@ -96,26 +96,13 @@ class GradingLevel < ActiveRecord::Base
       if percent_score.to_s == "NaN"
           percent_score = 0
       end
-      percent_score = sprintf( "%0.02f", percent_score)
-      percent_score = percent_score.to_f
       batch_grades = GradingLevel.for_batch(batch_id)
       grade = {}
       if batch_grades.empty?
         grades = GradingLevel.default
-        grades.each do |gradevalue|
-          if gradevalue.min_score <= percent_score.round
-            grade = gradevalue
-            break
-          end  
-        end
+        grade = grades.find{|val| val.min_score <= percent_score.round }
       else
-        grades = GradingLevel.for_batch(batch_id)
-        grades.each do |gradevalue|
-          if gradevalue.min_score <= percent_score.round
-            grade = gradevalue
-            break
-          end  
-        end
+        grade = batch_grades.find{|val| val.min_score <= percent_score.round }
       end
       grade
     end
@@ -125,20 +112,9 @@ class GradingLevel < ActiveRecord::Base
       grade = {}
       if batch_grades.empty?
         grades = GradingLevel.default
-        grades.each do |gradevalue|
-          if gradevalue.credit_points <= grade_point
-            grade = gradevalue
-            break
-          end  
-        end
+        grade = grades.find{|val| val.credit_points <= grade_point }
       else
-        grades = GradingLevel.for_batch(batch_id)
-        grades.each do |gradevalue|
-          if gradevalue.credit_points <= grade_point
-            grade = gradevalue
-            break
-          end  
-        end
+        grade = batch_grades.find{|val| val.credit_points <= grade_point }
       end
       grade
     end

@@ -3993,23 +3993,20 @@ class ExamController < ApplicationController
     unless File.directory?(dirname)
       FileUtils.mkdir_p(dirname)
     end
-    FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s))
+#    FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s))
     file_name = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"continues","0"+@connect_exam_obj.id.to_s,pdf_name)
     champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
     api_from = champs21_config['from']
-    if File.file?(file_name) && Rails.cache.exist?("continues_#{@id}_#{@batch.id}") && api_from != "local" && api_from != "remote" && MultiSchool.current_school.id != 312
-      FileUtils.chown 'champs21','champs21',file_name
-      redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/continues/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
-    else
-      @assigned_employee=@batch.all_class_teacher
-      get_continues(@id,@batch.id)
-      @report_data = []
-      if @student_response['status']['code'].to_i == 200
-        @report_data = @student_response['data']
-      end 
-      @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
-      render_connect_exam("continues",false,file_name)
-    end
+   
+    @assigned_employee=@batch.all_class_teacher
+    get_continues(@id,@batch.id)
+    @report_data = []
+    if @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end 
+    @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
+    render_connect_exam("continues",false,file_name)
+   
   end
   
   def add_comments_connect_exam
@@ -4133,45 +4130,41 @@ class ExamController < ApplicationController
     unless File.directory?(dirname)
       FileUtils.mkdir_p(dirname)
     end
-    FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s))
+#    FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s))
     file_name = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"tabulation","0"+@connect_exam_obj.id.to_s,pdf_name)
     champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
     api_from = champs21_config['from']
-    if File.file?(file_name) && Rails.cache.exist?("tabulation_#{@id}_#{@batch.id}") && api_from != "local" && MultiSchool.current_school.id != 312 && MultiSchool.current_school.id != 346
-      FileUtils.chown 'champs21','champs21',file_name
-      redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/tabulation/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
+   
+    if  MultiSchool.current_school.id == 312
+      get_tabulation(@id,@batch.id)
+      @report_data = []
+      if @student_response['status']['code'].to_i == 200
+        @report_data = @student_response['data']
+      end 
     else
-      if  MultiSchool.current_school.id == 312
+      @report_data = Rails.cache.fetch("tabulation_#{@id}_#{@batch.id}"){
         get_tabulation(@id,@batch.id)
-        @report_data = []
+        report_data = []
         if @student_response['status']['code'].to_i == 200
-          @report_data = @student_response['data']
-        end 
-      else
-        @report_data = Rails.cache.fetch("tabulation_#{@id}_#{@batch.id}"){
-          get_tabulation(@id,@batch.id)
-          report_data = []
-          if @student_response['status']['code'].to_i == 200
-            report_data = @student_response['data']
-          end
-          report_data
-        }
-      end
-      @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id) 
-      @student_exam_comment = {}
-
-      @exam_comment.each do |cmt|
-        @student_exam_comment[cmt.student_id.to_s] = cmt.comments
-      end
-      render :pdf => 'comment_tabulation_pdf',
-        :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
-        :margin => {    :top=> 10,
-        :bottom => 10,
-        :left=> 10,
-        :right => 10},
-        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+          report_data = @student_response['data']
+        end
+        report_data
+      }
     end
+    @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id) 
+    @student_exam_comment = {}
+
+    @exam_comment.each do |cmt|
+      @student_exam_comment[cmt.student_id.to_s] = cmt.comments
+    end
+    render :pdf => 'comment_tabulation_pdf',
+      :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
+      :margin => {    :top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
     
   end 
 
@@ -4229,14 +4222,11 @@ class ExamController < ApplicationController
     unless File.directory?(dirname)
       FileUtils.mkdir_p(dirname)
     end
-    FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s))
+#    FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s))
     file_name = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"tabulation","0"+@connect_exam_obj.id.to_s,pdf_name)
     champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
     api_from = champs21_config['real_from']
-    if File.file?(file_name) && Rails.cache.exist?("tabulation_#{@id}_#{@batch.id}") && api_from != "local" && MultiSchool.current_school.id != 312 && MultiSchool.current_school.id == 312
-      FileUtils.chown 'champs21','champs21',file_name
-      redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/tabulation/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
-    else
+  
       
       if  MultiSchool.current_school.id == 312
         get_tabulation(@id,@batch.id)
@@ -4279,7 +4269,7 @@ class ExamController < ApplicationController
           :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
           :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
       end
-    end  
+    
   end
   
   def marksheet    

@@ -51,6 +51,9 @@ website/system/
 classtune/config/app.yml
 classtune/config/environments/production.rb
 classtune/public/result_pdf/
+classtune/public/all_result_pdf/
+classtune/public/assets/
+classtune/public/result_pdf_archive/
 classtune/public/uploads/
 classtune/tmp/
 classtune/config/database.yml

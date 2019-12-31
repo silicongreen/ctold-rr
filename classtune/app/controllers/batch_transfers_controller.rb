@@ -21,14 +21,36 @@ class BatchTransfersController < ApplicationController
   filter_access_to :all
    
   def index
-    
     @batches = Batch.find(:all,:select=>"courses.course_name as course_name_batch",:conditions=>["batches.is_deleted = ? and courses.is_deleted = ?",false,false],:group=>"courses.course_name",:joins=>[:course]) 
-
     @show_pdf_save_button = false
-   
-    
   end
-
+  
+  def promotion
+    @classes = []
+    @courses = []
+  end
+  def promote
+    if request.post? 
+      if params[:transfer][:to].present? and params[:session].present?
+        unless params[:transfer][:students].nil?         
+          Delayed::Job.enqueue(DelayedBatchTranferNew.new(params[:transfer][:students].join(","),params[:transfer][:to],params[:session],false,"","",@local_tzone_time,current_user))
+        end
+        flash[:notice] = "Successfully Promoted"
+        redirect_to :controller => 'promotion'
+      else
+        flash[:notice] = "Select A Class"
+        render :template=> "promotion"
+      end
+    else
+      redirect_to :action=>"promotion"
+    end
+  end
+  def search_student
+    student_ids = params[:std_ids].split("|")
+    @students = Student.find_all_by_admission_no(student_ids)
+    
+    render :partial => "search_student"
+  end
   def show
     flash[:notice] = nil
     @classes = []

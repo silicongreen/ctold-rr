@@ -48,10 +48,6 @@ class DelayedBatchTranfer
    
     @connect_exam_done = []
     if !@students.blank?
-      
-     
-      
-      
       @batch = Batch.find @from, :include => [:students],:order => "students.first_name ASC"
       @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch.id)
       @connect_exam = ExamConnect.active.find_all_by_batch_id(@batch.id) 

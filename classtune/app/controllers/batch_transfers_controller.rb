@@ -33,15 +33,21 @@ class BatchTransfersController < ApplicationController
     if request.post? 
       if params[:transfer][:to].present? and params[:session].present?
         unless params[:transfer][:students].nil?         
-          Delayed::Job.enqueue(DelayedBatchTranferNew.new(params[:transfer][:students].join(","),params[:transfer][:to],params[:session],false,"","",@local_tzone_time,current_user))
+          Delayed::Job.enqueue(DelayedBatchTranferNew.new(params[:transfer][:students].join(","),params[:transfer][:to],params[:session],@local_tzone_time,current_user))
         end
-        flash[:notice] = "Successfully Promoted"
-        redirect_to :controller => 'promotion'
+        if params[:complete].present? and params[:complete].to_i == 1
+          Delayed::Job.enqueue(DelayedBatchTranferComplete.new(@local_tzone_time))
+        end
+        flash[:notice] = "Successfully Promoted. process Will take some time to complete"
+        redirect_to :action=>'promotion'
+      elsif params[:complete].present? and params[:complete].to_i == 1
+        Delayed::Job.enqueue(DelayedBatchTranferComplete.new(@local_tzone_time))
       else
         flash[:notice] = "Select A Class"
-        render :template=> "promotion"
+        redirect_to :action=>'promotion'
       end
     else
+      flash[:notice] = "Noting Posted"
       redirect_to :action=>"promotion"
     end
   end

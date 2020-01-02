@@ -1,0 +1,165 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/dataTables.material.min.css"/>
+<link rel="stylesheet" href="/stylesheets/select2.min.css">
+<%= javascript_include_tag 'select2.full.min.js' %>
+
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'form-bootstrap' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
+
+
+<div class="header-wrapper">
+
+    <div class="header-title">
+        <div class="header-icon">
+            <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+        </div>
+        <div class="header-title-text-wrapper">
+            <div class="header-title-main-text f2">
+                Promotion
+            </div>
+            <div class="clearfix"></div>
+            <div class="header-title-sub-text">
+                <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+</div>
+<div id="page-yield">
+          <% form_for(:transfer, :url => {:action=> 'promote'},:method=>"post", :html=> {:id=>'new_student'}) do |s| %>
+          <% unless flash[:notice].nil? %>
+            <p class="flash-msg"> <%= flash[:notice] %> </p>
+          <% end %>
+
+
+            <fieldset class="scheduler-border">
+              <legend class="scheduler-border">Promote to Class</legend>
+              <div class="form-group col-sm-4 p-0">
+                  <label for="student_grade"><%= t('shift_label') %></label>
+                      <%= select :student, :batch_name, options_for_select(Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]}, @batch_no.to_i),
+                      {:prompt => "#{t('select')}"},
+                      {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&section_page=section_data&section_partial=sections_transfer&page_batch=batches_data&partial_view_batch=batches_transfer'" ,:before => "$('loading_2').show();",
+                      :success => "$('loading_2').hide();")}"} %>
+                      <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
+              </div>
+
+              <div class="form-group col-sm-4 p-0">
+                  <label for="student_grade"><%= t('class_label') %></label>
+                  <div id="course"> <%= render :partial => 'student/courses', :object => @courses %></div>
+              </div>
+              <div class="form-group col-sm-4 p-0">
+                  <label for="student_grade"><%= t('section_label') %></label>
+                  <div id="section_data"> <%= render :partial => 'student/sections_transfer', :object => @classes %></div>
+              </div>
+              <div class="label-field-pair" style="display: none;">
+                <label for="student_grade"><%= t('course_and_batch') %></label>
+                <div id="batches_data"> <%= render :partial => 'student/batches_transfer', :object => @batch_id %></div>
+              </div>
+            </fieldset> 
+            <fieldset class="scheduler-border">
+              <legend class="scheduler-border">Select Student</legend>
+              <div class="form-group col-sm-8 p-0">
+                <input type="text" id="student_ids" class="form-control" placeholder="Admission Id" />
+              </div>
+              <div class="form-group col-sm-4 p-0">
+                <input type="text" name="session" class="form-control" placeholder="New Session" />
+              </div>
+              <div class="form-group col-sm-4 p-0">
+                  <font color="red">Finish Batch Transfer</font> <input type="checkbox" name="complete" value="1" />
+              </div>
+            </fieldset>
+        
+        <hr/>
+        
+        <input type="hidden" value="" id="student_list_hidden" />
+        <div id="image_loading" style="display:none;"><%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_3" ) %></div>
+        <div id="students" style="float:left; width:100%;">
+            
+        </div>
+        <%= submit_tag "", :value => "► Promote", :class => "submit_button" %>
+        <% end %>
+      
+  
+
+</div>
+
+<script>
+  j('#student_ids').keydown(function (e){
+    if(e.keyCode == 13){
+        e.preventDefault();
+        var value = j('#student_ids').val();
+        var value2 = j('#student_list_hidden').val();
+       
+        if(value)
+        {
+            Element.show('image_loading');
+          
+            if(value2)
+            {
+              value2 = value2+ "|"+value
+            }
+            else
+            {
+              value2 = value
+            }  
+            j('#student_list_hidden').val(value2);
+            j.post( "/batch_transfers/search_student", { std_ids: value2 })
+            .done(function( data ) {
+              j("#students").html(data);
+              j('#student_ids').val("");
+              Element.hide('image_loading');
+            });
+        }
+    }
+  });
+ 
+</script>
+
+<style>
+    .select2-container .select2-selection--single
+    {
+        height:32px;
+    }
+    .mdl-data-table td, .mdl-data-table th
+    {
+        text-align:left;
+        white-space: normal;
+        padding:10px 3px 10px 7px;
+        font-size: 12px;
+    }
+    table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_desc_disabled:before
+    {
+        content: initial !important;
+    }
+    .p-0
+    {
+       padding: 0px !important;
+    }
+</style>

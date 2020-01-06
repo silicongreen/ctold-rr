@@ -329,7 +329,10 @@ table.teacher_remarks tr td
     font-size: 16px;
     padding: 3px; 
 }
-
+.baf_shaheen .tbl-td-center tr td 
+{
+    text-align: center !important;
+}
 
 .baf_shaheen tr.odd td
 {

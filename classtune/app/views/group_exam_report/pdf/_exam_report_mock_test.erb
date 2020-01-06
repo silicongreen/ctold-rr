@@ -7,7 +7,15 @@
 
         <table class="std_info_table" width="100%" cellspacing="0">
             <tr>
-                <td>Student's ID </td><td colspan="4" class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @student.admission_no %></td>
+                  <td>Student's ID </td><td  class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @student.admission_no %></td>
+                  <td>&nbsp;&nbsp;</td>
+                 <% month_number =@exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%-m"):@exam_group.exam_date.strftime("%-m") %>
+                 
+                  <% if month_number.to_i>6 %>
+                    <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y"):@exam_group.exam_date.strftime("%Y") %>-<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y").to_i+1:@exam_group.exam_date.strftime("%Y").to_i+1 %></td>
+                  <% else %>
+                    <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y").to_i-1:@exam_group.exam_date.strftime("%Y").to_i-1 %>-<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y"):@exam_group.exam_date.strftime("%Y") %></td>
+                  <% end %> 
             </tr>
             <tr>
                 <td>Student's Name </td><td colspan="4" class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.full_name.upcase %></td>
@@ -18,13 +26,7 @@
                 <td>Gender </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= t("#{@student.gender_as_text.downcase}") %></td>
             </tr> 
              <tr>
-                  <% month_number =@exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%-m"):@exam_group.exam_date.strftime("%-m") %>
-                 
-                  <% if month_number.to_i>6 %>
-                    <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y"):@exam_group.exam_date.strftime("%Y") %>-<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y").to_i+1:@exam_group.exam_date.strftime("%Y").to_i+1 %></td>
-                  <% else %>
-                    <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y").to_i-1:@exam_group.exam_date.strftime("%Y").to_i-1 %>-<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y"):@exam_group.exam_date.strftime("%Y") %></td>
-                  <% end %>  
+                <td>Enrollment Date </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.admission_date,:format=>"%d %b, %Y")%></td> 
                 <td>&nbsp;&nbsp;</td>
                 <td>Roll </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.class_roll_no %></td>
             </tr> 
@@ -238,7 +240,7 @@
  
       </table>
       
-      <h4 class="h4-evaluation"><b>Personal& Social Development</b></h4>
+      <h4 class="h4-evaluation"><b>Personal & Social Development</b></h4>
       <table id="pdf-table" width="99.8%" class="table_99" cellspacing="0">
         <% c = 'even'  %>
         <tr class="table-header">  
@@ -290,7 +292,7 @@
           <td class="col-pdf " width="15%"></td>
         </tr>
       </table>  
-       <h4 class="h4-evaluation"><b></b></h4>
+      <h4 class="h4-evaluation"><b></b></h4>
       <table id="pdf-table" class="evaluation table_99"  width="99.8%" >
 
               <tr class="even">
@@ -310,7 +312,26 @@
                   </td>
               </tr>
 
-      </table>  
+      </table>
+      <h4 class="h4-evaluation"><b></b></h4>
+      <table id="pdf-table" class="evaluation table_99"  width="99.8%" >
+          <tr>
+            <td>
+              <%=  @exam_group.updated_at.strftime("%b-%Y") %>
+            <td>
+            <td>
+              <%= Time.now.strftime("%b-%Y") %>
+            <td>
+          </tr>
+           <tr>
+            <td>
+              Date of Publish
+            <td>
+            <td>
+              Date of Issue
+            <td>
+          </tr>
+      </table>
 
     <% else %>
       <% total_marks_attained = 0 %>

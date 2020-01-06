@@ -22,10 +22,11 @@ require 'yaml'
 require 'translator'
 
 class DelayedBatchTranferNew
-  attr_accessor :students,:to,:session,:local_tzone_time,:current_user
+  attr_accessor :students,:to,:session,:local_tzone_time,:current_user,:rolls
 
-  def initialize(students, to, session, local_tzone_time,current_user)
+  def initialize(students, to, session, local_tzone_time,current_user,rolls)
     @students = students.split(",")
+    @rolls = rolls.split(",")
     @to = to
     @session = session
     @local_tzone_time = local_tzone_time
@@ -43,8 +44,10 @@ class DelayedBatchTranferNew
       connect_exam = {}
       batches = {}
       batch_transfer_ids = {}
-      students = Student.find(@students)
+      std_string = @students.join(",")
+      students = Student.find_all_by_id(@students,:order=>"FIELD(id,"+std_string+")")
       reminder_recipient_ids = []
+      iloop = 0
       students.each do |student|
         unless done_batches.include?(student.batch_id)
           done_batches << student.batch_id
@@ -114,12 +117,14 @@ class DelayedBatchTranferNew
         student.update_attribute(:session, @session)
         student.update_attribute(:has_paid_fees,0)
         student.update_attribute(:is_promoted,1)
+        student.update_attribute(:class_roll_no,@rolls[iloop])
 
         reminder_recipient_ids << student.user_id            
         unless student.immediate_contact.nil? 
           reminder_recipient_ids << student.immediate_contact.user_id
         end
         
+        iloop = iloop+1
       end
       unless reminder_recipient_ids.empty?
         Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => @current_user.id,

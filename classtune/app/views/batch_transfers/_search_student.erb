@@ -51,7 +51,7 @@
         <tr>
             <td><input type="checkbox" class="std_check_box" value="<%= student.id %>" name="transfer[students][]" checked="checked" /></td>
             <td><%= student.admission_no %></td>
-            <td><%= student.class_roll_no %></td>
+            <td><input type="text" value="<%= student.class_roll_no %>" name="transfer[roll][]" /></td>
             <td><%= student.full_name %></td>
             <td><%= student.batch.course.course_name %></td>
             <td><%= student.batch.course.section_name %></td>

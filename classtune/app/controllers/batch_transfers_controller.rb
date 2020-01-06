@@ -33,7 +33,7 @@ class BatchTransfersController < ApplicationController
     if request.post? 
       if params[:transfer][:to].present? and params[:session].present?
         unless params[:transfer][:students].nil?         
-          Delayed::Job.enqueue(DelayedBatchTranferNew.new(params[:transfer][:students].join(","),params[:transfer][:to],params[:session],@local_tzone_time,current_user))
+          Delayed::Job.enqueue(DelayedBatchTranferNew.new(params[:transfer][:students].join(","),params[:transfer][:to],params[:session],@local_tzone_time,current_user,params[:transfer][:roll].join(",")))
         end
         if params[:complete].present? and params[:complete].to_i == 1
           Delayed::Job.enqueue(DelayedBatchTranferComplete.new(@local_tzone_time))
@@ -42,6 +42,9 @@ class BatchTransfersController < ApplicationController
         redirect_to :action=>'promotion'
       elsif params[:complete].present? and params[:complete].to_i == 1
         Delayed::Job.enqueue(DelayedBatchTranferComplete.new(@local_tzone_time))
+      elsif !params[:session].present?
+        flash[:notice] = "Please provide a session"
+        redirect_to :action=>'promotion'
       else
         flash[:notice] = "Select A Class"
         redirect_to :action=>'promotion'
@@ -52,8 +55,9 @@ class BatchTransfersController < ApplicationController
     end
   end
   def search_student
-    student_ids = params[:std_ids].split("|")
-    @students = Student.find_all_by_admission_no(student_ids)
+    student_ids = params[:std_ids].split(",")
+    string_std = params[:std_ids]
+    @students = Student.find_all_by_admission_no(student_ids,:order=>"FIELD(admission_no,"+string_std+")")
     
     render :partial => "search_student"
   end

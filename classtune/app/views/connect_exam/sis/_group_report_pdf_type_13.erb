@@ -149,7 +149,7 @@
                         <% if grade.max_score.nil? %>  
                           <%= '%i%' % grade.min_score %>
                         <% else %> 
-                          <%= grade.min_score.to_i.to_s + "-" + grade.max_score.to_i.to_s %>
+                          <%= '%i%' % grade.min_score %>-<%=  '%i%' % grade.max_score %>
                         <% end %>
                       </td>
                       <td><%= grade.name %></td>
@@ -186,7 +186,7 @@
     
     .sis-final #grouped_exam_report table.extra_padding tr.odd td.col-pdf
     {
-       padding: 10px 10px !important;
+       padding: 20px 10px !important;
     }
     .left-td
     {

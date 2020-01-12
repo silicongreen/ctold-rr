@@ -206,7 +206,7 @@
                         ag_cw = sprintf( "%0.01f", ag_cw)
                       end
                     end
-                    total_mark = total_mark+ag_assessment+ag_hw+ag_cw
+                    total_mark = total_mark+ag_assessment.to_f+ag_hw.to_f+ag_cw.to_f
 
                   %>
                   <tr class="even">
@@ -252,7 +252,7 @@
                         <% end %>
                       <% end %>   
                       <% sub_mark = sprintf( "%0.01f", sub_mark) %>
-                      <% total_mark_life = total_mark_life+sub_mark %>     
+                      <% total_mark_life = total_mark_life+sub_mark.to_f %>     
                             
                       <% if sub == 2  %>
                         <% finish = true %>
@@ -269,7 +269,7 @@
                       <td class="col-pdf"><b>Total of Life Skills:</b></td>
                       <td class="col-pdf border-right-none"><%= total_mark_life %></td>
                     </tr>
-                    <% total_mark = total_mark+total_mark_life %>
+                    <% total_mark = total_mark+total_mark_life.to_f %>
                 <% end %>  
               </table>
               

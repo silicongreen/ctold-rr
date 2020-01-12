@@ -183,7 +183,6 @@ class StudentController < ApplicationController
               end
             end  
           end
-        end
       end
     end
     
@@ -4835,9 +4834,6 @@ class StudentController < ApplicationController
     #@dates_paid = FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} and ((finance_fees.balance = 0))", :order=>'finance_fee_collections.due_date DESC').uniq # and finance_fees.batch_id = #{@student.batch_id}
     #@dates_unpaid = FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} and ((finance_fees.balance > 0)  )", :order=>'finance_fee_collections.due_date DESC').uniq # and finance_fees.batch_id = #{@student.batch_id}
     @dates_all = FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} ", :order=>'finance_fee_collections.due_date DESC').uniq # and finance_fees.batch_id = #{@student.batch_id}
-    @dates_admission = @student.batch.finance_fee_collections.find(:all,:conditions=>"finance_fee_collections.is_deleted=#{false} and finance_fee_collections.for_admission = #{true}", :order=>'finance_fee_collections.due_date DESC').uniq # and finance_fees.batch_id = #{@student.batch_id}
-    
-    #@finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id",:order => "if(students.class_roll_no = '' or students.class_roll_no is null,0,cast(students.class_roll_no as unsigned)),students.first_name ASC", :conditions=>"finance_fees.fee_collection_id = #{fee_collection.id}")
     
     if request.post?
       @student.update_attribute(:has_paid_fees,params[:fee][:has_paid_fees]) unless params[:fee].nil?

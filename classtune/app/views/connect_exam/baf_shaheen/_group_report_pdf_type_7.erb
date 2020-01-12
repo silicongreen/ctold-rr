@@ -210,7 +210,7 @@
 
                   %>
                   <tr class="even">
-                      <td class="col-pdf border-left-none  no-warp align-left-baf">Aggregate Score:</td>
+                      <td class="col-pdf border-left-none  no-warp align-left-baf"><b>Aggregate Score:</b></td>
                       <td class="col-pdf"><%= ag_assessment %></td>
                       <td class="col-pdf"><%= ag_hw %></td>
                       <td class="col-pdf  border-right-none"><%= ag_cw %></td> 
@@ -328,25 +328,32 @@
                   <tr class="odd">
                       <td class="col-pdf border-left-none border-right-none">
                           <b>Comment:</b>
-                          <br/>
-                          <br/>
+                          <% if !@exam_comment.blank? %>
+                            <%= @exam_comment %>
+                            <br/>
+                            <br/>
+                          <% else %>
+                            <br/>
+                            <br/>
+                            <br/>
+                          <% end %>
                       </td>
                   </tr>
               <table>
                   
               <table id="pdf-table" class="evaluation" width="99.8%" >
                       <tr class="odd">
-                          <td class="col-pdf border-left-none" width="25%">
+                          <td class="col-pdf border-left-none no-warp" width="25%">
                               <b>Class Teacher's signature:<b>
                           </td> 
                           <td class="col-pdf align-center" width="25%">
-                              <br/><br/>
+                              <br/><br/><br/>  
                           </td> 
-                          <td class="col-pdf"  width="25%">
+                          <td class="col-pdf no-warp"  width="25%">
                               <b>Principal's Signature</b>
                           </td>
                           <td class="col-pdf border-right-none"  width="25%">
-                              <br/><br/>        
+                              <br/><br/> <br/>         
                           </td>
                       </tr>
                       

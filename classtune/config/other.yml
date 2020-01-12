@@ -1,6 +1,6 @@
 resulttype:
  numbers: "323,2,325,340,312,348,3,352,346,355,356,324"
- type_323: "Mid Term,Final Term,Class 10 Mid Term,Class 10 Final Term,Class Test,Final Term Legal"
+ type_323: "Mid Term,Final Term,Class 10 Mid Term,Class 10 Final Term,Class Test,Final Term Legal,Assessment"
  type_325: "Summer,Spring,Fall,Test,Final"
  type_356: "Type1,Type2,Type3"
  type_2: "Final Term,First Term,Mock Test,Quarter,KG First Term,KG Final Term"
@@ -17,7 +17,7 @@ resulttype2:
  numbers: "323,2,325,340,342,352,348,356,324"
  type_340: "1_Class Test,2_Term Test,3_Written,4_Assesment,5_Mock Test"
  type_325: "1_Class Test,2_Project,3_Term,4_Attendance"
- type_323: "1_Class Test,2_Project,3_Term,5_Mock Test"
+ type_323: "1_Class Test,2_Project,3_Term,5_Mock Test,6_Assessment,7_H.W & Assignment,8_C.W OR S.T"
  type_342: "1_Class Test,2_Project,3_Term,5_Mock Test"
  type_348: "1_Class Test,2_Project,3_Term,4_Practical,5_Assessment,6_N/A,7_Group Project"
  type_352: "1_ME/CW/SBA,2_AT,3_SB,4_OB,5_PR"

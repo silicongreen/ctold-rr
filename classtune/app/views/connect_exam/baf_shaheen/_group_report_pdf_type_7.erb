@@ -266,7 +266,7 @@
                       <% end %>   
                     <% end %>
                     <% total_mark_life = sprintf( "%0.01f", total_mark_life) %>
-                      <td class="col-pdf"><b>Total of Life Skills:</b></td>
+                      <td class="col-pdf align-left-baf"><b>Total of Life Skills:</b></td>
                       <td class="col-pdf border-right-none"><%= total_mark_life %></td>
                     </tr>
                     <% total_mark = total_mark+total_mark_life.to_f %>
@@ -285,7 +285,7 @@
               <table id="pdf-table" class="evaluation" width="99.8%" >
                       <tr class="odd">
                           <td class="col-pdf border-left-none" width="25%">
-                              <b>Attendance:<b>
+                              <b>Attendance:</b>
                           </td> 
                           <td class="col-pdf align-center" width="25%">
                               <b> <%= @report_data['present'] %>/<%= @report_data['total'] %> </b>
@@ -366,10 +366,12 @@
   .baf_shaheen tr.odd td
   {
       padding: 4px 4px 4px 9px !important;  
+      font-size: 18px !important; 
   }
   .baf_shaheen tr.even td
   {
       padding: 4px 4px 4px 9px !important; 
+      font-size: 18px !important;
   }
 </style>
 

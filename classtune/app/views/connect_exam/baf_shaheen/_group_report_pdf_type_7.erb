@@ -300,7 +300,8 @@
                       
               </table>
               <% total_mark = sprintf( "%0.01f", total_mark) %>
-              <%  grade = GradingLevel.percentage_to_grade(total_mark, @batch.id) %>
+              
+              <%  grade = GradingLevel.percentage_to_grade(total_mark.to_f, @batch.id) %>
               
               
               <h4><b>Accumulated Result</b></h4>

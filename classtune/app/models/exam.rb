@@ -21,7 +21,7 @@ class Exam < ActiveRecord::Base
   validates_numericality_of :maximum_marks, :minimum_marks, :allow_nil => true
   validates_presence_of :maximum_marks, :minimum_marks, :if => :validation_should_present?, :on=>:update
   validates_uniqueness_of :exam_group_id, :scope=>[:subject_id],:message=>'Subject Already Added to This Exam'
-  belongs_to :exam_group, :conditions => { :is_deleted => false }
+  belongs_to :exam_group
   belongs_to :subject, :conditions => { :is_deleted => false }
   before_save :update_exam_group_date
   

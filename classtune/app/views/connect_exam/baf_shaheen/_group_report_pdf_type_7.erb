@@ -73,11 +73,11 @@
       
       <table class="std_info_table" width="100%" cellspacing="0">
         <tr>
-              <td width='20%'>Name of Examination </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.name %></td>
+              <td width='25%'>Name of Examination </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.name %></td>
               <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %></td>
           </tr>
           <tr>
-              <td width='20%'>Enrollment Date </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.admission_date,:format=>"%d %b %Y") unless @student.admission_date.nil? %></td>
+              <td width='25%'>Enrollment Date </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.admission_date,:format=>"%d %b %Y") unless @student.admission_date.nil? %></td>
               <td>Class of Enrollment </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @student.admission_class %></td>
           </tr>
       </table>

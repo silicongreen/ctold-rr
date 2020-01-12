@@ -140,7 +140,6 @@ class StudentController < ApplicationController
     @iloop = 0
     unless @previous_batches.blank?
       @previous_batches.each do |pv|
-        unless pv.batch_id == @student.batch_id
           @previous_exam = ExamConnectStudent.find_all_by_batch_student_id(pv.id)
           @previous_group_exam = GroupExamStudent.find_all_by_batch_student_id(pv.id)
           if !@previous_exam.blank? or !@previous_group_exam.blank?

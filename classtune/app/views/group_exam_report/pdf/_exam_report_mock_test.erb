@@ -142,10 +142,14 @@
         <% c = 'even'  %>
         <tr class="table-header">  
           <td class="col-pdf no-warp align-left" width="30%"><%= "Subject" %></td>
-          <td class="col-pdf" width="20%"><%= "Attainment" %></td>
+          <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
+            <td class="col-pdf" width="20%"><%= "Attainment" %></td>
+          <% end %>
           <td class="col-pdf" width="20%"><%= "Weighted Average" %></td>
           <td class="col-pdf " width="15%"><%= "GRADE" %></td> 
+          <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
           <td class="col-pdf " width="15%"><%= "Attendance" %></td> 
+          <% end %>
         </tr>
         <tr class="tr-blank"></tr>
         <% j = 0; %>
@@ -160,6 +164,7 @@
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
               
              <td class="col-pdf no-warp  align-left" width="30%"> <%= es.exam.subject.elective_group.name %></td>
+             <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
              <td class="col-pdf" width="20%">
                   <% if elective_group_mark[es.exam.subject.elective_group_id] == -1 %>
                     AB
@@ -167,6 +172,7 @@
                     <%= elective_group_mark_total[es.exam.subject.elective_group_id].round() %>
                   <% end %>       
              </td>
+             <% end %>
              <td class="col-pdf" width="20%">
                   <% if elective_group_mark[es.exam.subject.elective_group_id] == -1 %>
                     AB
@@ -181,33 +187,33 @@
               <td class="col-pdf  " width="15%">-</td>
               <% end %>
               
-              <%  %>
-              
-              <% total_att = 0 %>
-              <% absent_att = 0 %>
-              <% if !@exam_group.attandence_start_date.blank? && !@exam_group.attandence_end_date.blank? %>
-                <% all_subject_elective_group = Subject.find_all_by_elective_group_id(es.exam.subject.elective_group_id) %>
-                <% unless all_subject_elective_group.blank?  %>
-                  <% all_subject_elective_group.each do |e_subject_id| %>
-                    <% total_att = total_att+SubjectAttendanceRegister.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:attendance_date => @exam_group.attandence_start_date..@exam_group.attandence_end_date}) %>
-                    <% absent_att = absent_att+SubjectAttendance.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:is_late=>0,:student_id=>@student.id,:attendance_date => @exam_group.attandence_start_date..@exam_group.attandence_end_date}) %>
+              <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
+                <% total_att = 0 %>
+                <% absent_att = 0 %>
+                <% if !@exam_group.attandence_start_date.blank? && !@exam_group.attandence_end_date.blank? %>
+                  <% all_subject_elective_group = Subject.find_all_by_elective_group_id(es.exam.subject.elective_group_id) %>
+                  <% unless all_subject_elective_group.blank?  %>
+                    <% all_subject_elective_group.each do |e_subject_id| %>
+                      <% total_att = total_att+SubjectAttendanceRegister.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:attendance_date => @exam_group.attandence_start_date..@exam_group.attandence_end_date}) %>
+                      <% absent_att = absent_att+SubjectAttendance.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:is_late=>0,:student_id=>@student.id,:attendance_date => @exam_group.attandence_start_date..@exam_group.attandence_end_date}) %>
+                    <% end %>
                   <% end %>
                 <% end %>
-              <% end %>
-              <% if total_att > 0 %>
-                <% percent = 100 %>
-                <% if absent_att > 0 %>
-                  <% percent = 0 %>
-                  <% diff = total_att-absent_att %>
-                  <% if diff > 0 %>
-                    <% percent = (diff.to_f/total_att.to_f)*100 %>
+                <% if total_att > 0 %>
+                  <% percent = 100 %>
+                  <% if absent_att > 0 %>
+                    <% percent = 0 %>
+                    <% diff = total_att-absent_att %>
+                    <% if diff > 0 %>
+                      <% percent = (diff.to_f/total_att.to_f)*100 %>
+                    <% end %>
                   <% end %>
+                  <td class="col-pdf  " width="15%"><%= sprintf( "%0.02f", percent) %> %</td>
+                <% else %>
+                  <td class="col-pdf  " width="15%">-</td>
                 <% end %>
-                <td class="col-pdf  " width="15%"><%= sprintf( "%0.02f", percent) %> %</td>
-              <% else %>
-                <td class="col-pdf  " width="15%">-</td>
-              <% end %>
-   
+                
+              <% end %>  
           </tr>
           
         <% j = j+1; %>   
@@ -221,14 +227,18 @@
             <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
               
              <td class="col-pdf no-warp  align-left" width="30%"> <%= esub.subject.elective_group.name %></td>
+             <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
              <td class="col-pdf" width="20%">
                  AB      
              </td>
+             <% end %>
              <td class="col-pdf" width="20%">
                  AB      
              </td>
              <td class="col-pdf  " width="15%">-</td>
+             <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
              <td class="col-pdf  " width="15%">-</td>
+             <% end %>
           </tr>
           
           <% end %>
@@ -239,7 +249,7 @@
           
  
       </table>
-      
+      <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
       <h4 class="h4-evaluation"><b>Personal & Social Development</b></h4>
       <table id="pdf-table" width="99.8%" class="table_99" cellspacing="0">
         <% c = 'even'  %>
@@ -292,6 +302,7 @@
           <td class="col-pdf " width="15%"></td>
         </tr>
       </table>  
+      <% end %>
       <h4 class="h4-evaluation"><b></b></h4>
       <table id="pdf-table" class="evaluation table_99"  width="99.8%" >
 
@@ -313,6 +324,7 @@
               </tr>
 
       </table>
+      <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
       <h4 class="h4-evaluation"><b></b></h4><h4 class="h4-evaluation"><b></b></h4><h4 class="h4-evaluation"><b></b></h4>
       <h4 class="h4-evaluation"><b></b></h4><h4 class="h4-evaluation"><b></b></h4><h4 class="h4-evaluation"><b></b></h4>
       <table id="pdf-table" class="evaluation table_99 tbl-td-center"  width="99.8%" >
@@ -333,6 +345,7 @@
             <td>
           </tr>
       </table>
+      <% end %>
 
     <% else %>
       <% total_marks_attained = 0 %>

@@ -25,19 +25,7 @@
                       <% if @has_exam_student == false %>
                          <% next %>
                       <% end %>
-                      <% has_exam = false %>
-                      <% loop=0 %>
-                      <% unless @report_data['report']['exams'].blank? %>
-                        <% @report_data['report']['exams'].each do |report| %>
-                          <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                            <% has_exam = true %>
-                            <% break %>
-                          <% end %>
-                        <% end %>
-                      <% end %>
-                      <% if has_exam == false %>
-                         <% next %>
-                      <% end %>
+                      
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% sub_assessment = 0 %>
                           <% sub_hw = 0 %>

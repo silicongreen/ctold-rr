@@ -344,26 +344,8 @@
                       
               </table>
               <% else %>
-              <% if total_u == 0 or (@batch.course.course_name!="VIII" and @batch.course.course_name!="IX" and @batch.course.course_name!="X" and  total_u<2) %>
-              <% if total_u > 0   %>
-               <% result = "Passed Under Consideration" %>
-              <% else %>
-               <% result = "Passed" %>
-              <% end %>
-              <% else %>
-              <% result = "Failed" %>
-              <% end %>
-             
-              
               <table id="pdf-table" class="evaluation" width="99.8%" >
-                      <tr class="odd">
-                          <td class="col-pdf border-left-none" width="50%">
-                              Result
-                          </td> 
-                          <td class="col-pdf align-center border-right-none" width="50%">
-                              <b> <%= result %> </b>
-                          </td>
-                      </tr>
+                     
                       
                       <tr class="odd">
                           <td class="col-pdf border-left-none" width="50%">

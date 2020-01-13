@@ -271,11 +271,11 @@
           <% if es.exam.subject.no_exams %>
           <tr class="even">
             <td class="col-pdf no-warp align-left" width="25%"><%= es.exam.subject.name %></td>
-            <td class="col-pdf" width="15%"><% if es.remarks.to_i == 1 %>✔ h<% end %></td>
-            <td class="col-pdf" width="15%"><% if es.remarks.to_i == 2 %>✔<% end %></td>
-            <td class="col-pdf " width="15%"><% if es.remarks.to_i == 3 %>✔<% end %></td> 
-            <td class="col-pdf " width="15%"><% if es.remarks.to_i == 4 %>✔<% end %></td>
-            <td class="col-pdf " width="15%"><% if es.remarks.to_i == 5 %>✔<% end %></td>
+            <td class="col-pdf" width="15%"><% if es.remarks.to_i == 1 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
+            <td class="col-pdf" width="15%"><% if es.remarks.to_i == 2 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
+            <td class="col-pdf " width="15%"><% if es.remarks.to_i == 3 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td> 
+            <td class="col-pdf " width="15%"><% if es.remarks.to_i == 4 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
+            <td class="col-pdf " width="15%"><% if es.remarks.to_i == 5 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
           </tr>
           <% end %>
         <% end %>

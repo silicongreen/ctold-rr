@@ -51,7 +51,7 @@
           <% iloop = 1 %>
           <% @report_data['result']['ALL'].each do |rs| %>
             <% if rs['exam_category'] == "1" %>
-              <td>CT<%= iloop %> (7.5)</td>
+              <td>CT<%= iloop %>(7.5)</td>
               <% iloop = iloop+1 %>
             <% end %>
             <% colspan = colspan+1 %>
@@ -59,7 +59,7 @@
           <td>Best 3(22.5)</td>
           <% @report_data['result']['ALL'].each do |rs| %>
             <% if rs['exam_category'] != "1" && rs['exam_category'] != "3" %>
-              <td><%=  rs['name'] %> (2.5)</td>
+              <td><%=  rs['name'] %>(2.5)</td>
             <% end %>
             <% colspan = colspan+1 %>
           <% end %> 
@@ -156,7 +156,7 @@
             <% end %> 
               
 
-           <td><%= sprintf( "%0.02f", total_mark) %> %</td>
+           <td><%= total_mark.round() %> %</td>
 
         </tr>
         <% end %>
@@ -176,10 +176,10 @@
     }
     .even td{
 
-      padding: 4px;
+      padding: 4px 2px;
     }
 
     .odd td{
-        padding: 4px;
+        padding: 4px 2px;
     }
 </style>    

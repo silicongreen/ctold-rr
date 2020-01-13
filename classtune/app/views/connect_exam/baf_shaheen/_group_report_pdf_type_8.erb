@@ -280,10 +280,22 @@
                       <% end %>
                     <% end %>
                         
+                    <tr class="odd">
+                          <td class="col-pdf border-left-none"><b>Total Marks</b></td>
+                          <% unless @report_data['report']['exams'].blank? %>  
+                            <% @report_data['report']['exams'].each do |report| %>
+                                <td></td>
+                            <% end %>
+                          <% end %> 
+                         <td class="col-pdf"></td>
+                         <td class="col-pdf"><b><%= total_mark_all_subject %></b></td>
+                         <td class="col-pdf border-right-none"></td>
+                      </tr>
                       
 
               </table>
 
+                <% unless @current_user.student? or @current_user.parent? %>
                 <% 
                   result = ""
                   if !@exam_comment.blank?
@@ -298,6 +310,105 @@
                     end
                   end
                 %>
+              
+              <h4 class="h4-evaluation"><b>Evaluation</b></h4>
+              <% unless result.blank?  %>
+              <table id="pdf-table" class="evaluation" width="99.8%" >
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="50%">
+                              Result
+                          </td> 
+                          <td class="col-pdf align-center border-right-none" width="50%">
+                              <b> <%= result %> </b>
+                          </td>
+                      </tr>
+                      
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="50%">
+                              No. of Working Days
+                          </td> 
+                          <td class="col-pdf align-center border-right-none" width="50%">
+                              94
+                          </td>
+                      </tr>
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="50%">
+                              Attendance
+                          </td> 
+                          <td class="col-pdf align-center  border-right-none" width="50%">
+                              <%#= @report_data['present'] %>
+                              <%= promotion_status %>
+                          </td>
+                      </tr>
+                     
+                      
+              </table>
+              <% else %>
+              <% if total_u == 0 or (@batch.course.course_name!="VIII" and @batch.course.course_name!="IX" and @batch.course.course_name!="X" and  total_u<2) %>
+              <% if total_u > 0   %>
+               <% result = "Passed Under Consideration" %>
+              <% else %>
+               <% result = "Passed" %>
+              <% end %>
+              <% else %>
+              <% result = "Failed" %>
+              <% end %>
+             
+              
+              <table id="pdf-table" class="evaluation" width="99.8%" >
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="50%">
+                              Result
+                          </td> 
+                          <td class="col-pdf align-center border-right-none" width="50%">
+                              <b> <%= result %> </b>
+                          </td>
+                      </tr>
+                      
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="50%">
+                              No. of Working Days
+                          </td> 
+                          <td class="col-pdf align-center border-right-none" width="50%">
+                              <%= @report_data['total'] %>
+                          </td>
+                      </tr>
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="50%">
+                              Attendance
+                          </td> 
+                          <td class="col-pdf align-center  border-right-none" width="50%">
+                              <%#= @report_data['present'] %>
+                              <%= @report_data['present'] %>
+                          </td>
+                      </tr>
+                     
+                      
+              </table>
+              <% end %>
+              
+              <h5><b>&nbsp;</b></h5>
+              <table id="pdf-table" class="evaluation table_99"  width="99.8%" >
+
+                      <tr class="even">
+                          <td class="col-pdf  border-left-none" width="33%">
+                              Class Teacher's Signature
+                          </td> 
+                          <td class="col-pdf  border-right-none" width="67%">
+                              <br/><br/>
+                          </td>
+                      </tr>
+                      <tr class="even">
+                          <td class="col-pdf  border-left-none" width="33%">
+                              Principal's Signature
+                          </td> 
+                          <td class="col-pdf  border-right-none" width="67%">
+                              <br/><br/>
+                          </td>
+                      </tr>
+
+              </table> 
+              <% end %>
               
               
 

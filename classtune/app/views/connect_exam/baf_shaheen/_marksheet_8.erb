@@ -51,12 +51,12 @@
           <% iloop = 1 %>
           <% @report_data['result']['ALL'].each do |rs| %>
             <% if rs['exam_category'] == "1" %>
-              <td>CT-<%= iloop %> (7.5)</td>
+              <td>CT<%= iloop %> (7.5)</td>
               <% iloop = iloop+1 %>
             <% end %>
             <% colspan = colspan+1 %>
           <% end %> 
-          <td>Best 3 CTs Out 0f 22.5</td>
+          <td>Best 3(22.5)</td>
           <% @report_data['result']['ALL'].each do |rs| %>
             <% if rs['exam_category'] != "1" && rs['exam_category'] != "3" %>
               <td><%=  rs['name'] %> (2.5)</td>
@@ -84,7 +84,7 @@
 
           <%  std_count = std_count+1; %>
           <% colspan = colspan+4 %>
-          <% if std_count>38 && extender ==0 %>
+          <% if std_count>39 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">

@@ -176,7 +176,7 @@
                     <% if !std.blank? and !std['first_name'].blank? %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
-                    <% if std_count>12 && extender ==0 %>
+                    <% if std_count>8 && extender ==0 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -203,7 +203,7 @@
                           <td>Grade Count</td>
 
                       </tr>
-                    <% elsif std_count>13 && extender ==1 %>
+                    <% elsif std_count>9 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -227,7 +227,6 @@
                           <% end %>
 
                           <td>Total</td>
-                          <td>Grade Count</td>
 
                       </tr>
                     <% end %>    
@@ -254,6 +253,8 @@
                             <td>&nbsp;</td>
                           <% else %>
 
+                            <% a_mark = 0 %>
+                            <% h_mark = 0 %>
                             <% subject_full_mark = 22.5 %>
                             <% subject_obtain_mark = 0 %>
                             <% has_exam = false %>
@@ -296,7 +297,7 @@
                               %>
                               <% end %>
                             <% end %> 
-                            
+                            <% a_mark = subject_obtain_mark %>
                             <% @report_data['report']['exams'].each do |rs| %>
                               <% if rs['exam_category'] != '3' %>
                                 <% next %>
@@ -305,6 +306,7 @@
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
 
                                 <%
+                                h_mark = h_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                 subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                                 subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
 
@@ -320,7 +322,8 @@
                             <% if has_exam == true %>
                               <td>
                                   <% total_mark = total_mark+subject_obtain_mark.to_f %>
-                                  <%= sprintf( "%0.02f", subject_obtain_mark) %><hr/>
+                                  A: <%= sprintf( "%0.02f", a_mark) %><hr/>H: <%= sprintf( "%0.02f", h_mark) %><hr/>
+                                  T: <%= sprintf( "%0.02f", subject_obtain_mark) %>
                                   <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                   <% if !grade.blank? and !grade.name.blank? %>
                                     <%
@@ -330,10 +333,7 @@
                                       grades << grade.name.to_s
                                       grade_count[grade.name.to_s] = 1
                                       end  
-                                  %>
-                                    <%= grade.name %>  
-                                  <% else %>
-                                    -  
+                                  %>  
                                   <% end %>
                               </td> 
                             <% end %>
@@ -363,17 +363,7 @@
                         <td>
                             <%= sprintf( "%0.02f", total_mark) %>    
                         </td>
-                        <td>
-                            <% i = 1 %>
-                            <% total_grade_std = grades.count  %>
-                            <% grades.each do |grade| %>
-                              <%= grade.to_s+"-"+grade_count[grade].to_s %>
-                              <% if i!=total_grade_std %>
-                                ,
-                              <% end %>
-                              <% i = i+1 %>
-                            <% end %>
-                        </td> 
+                       
                        
 
 

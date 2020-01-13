@@ -51,25 +51,25 @@
           <% iloop = 1 %>
           <% @report_data['result']['ALL'].each do |rs| %>
             <% if rs['exam_category'] == "1" %>
-              <td class="center-text">CT<%= iloop %>(7.5)</td>
+              <td class="center-text">CT<%= iloop %><br/>(7.5)</td>
               <% iloop = iloop+1 %>
             <% end %>
             <% colspan = colspan+1 %>
           <% end %> 
-          <td>Best 3(22.5)</td>
+          <td>Best 3<br/>(22.5)</td>
           <% @report_data['result']['ALL'].each do |rs| %>
             <% if rs['exam_category'] != "1" && rs['exam_category'] != "3" %>
-              <td class="center-text"><%=  rs['name'] %>(2.5)</td>
+              <td class="center-text"><%=  rs['name'] %><br/>(2.5)</td>
             <% end %>
             <% colspan = colspan+1 %>
           <% end %> 
           <% @report_data['result']['ALL'].each do |rs| %>
             <% if rs['exam_category'] == "3" %>
-              <td class="center-text"><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
+              <td class="center-text"><%=  rs['name'] %><br/>(<%=  rs['maximum_marks'] %>)</td>
             <% end %>
             <% colspan = colspan+1 %>
           <% end %> 
-          <td class="center-text">Total</td>
+          <td class="center-text">Total<br/>100</td>
         </tr>
         
         <% extender = 0 %>
@@ -175,15 +175,15 @@
         font-size: 21px !important;
     }
     .even td{
-      padding: 4px 2px;
+      padding: 4px 4px;
     }
 
     .odd td{
-        padding: 4px 2px;
+        padding: 4px 4px;
     }
     #pdf-table tr.table-header td
     {
-      padding: 4px 2px;
+      padding: 4px 4px;
     }
     #pdf-table tr td.center-text
     {

@@ -304,15 +304,14 @@
 
       </table>
       <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
-      <h4 class="h4-evaluation"><b></b></h4><h4 class="h4-evaluation"><b></b></h4><h4 class="h4-evaluation"><b></b></h4>
-      <h4 class="h4-evaluation"><b></b></h4><h4 class="h4-evaluation"><b></b></h4><h4 class="h4-evaluation"><b></b></h4>
+      <h4 class="h4-evaluation"></h4>
       <table id="pdf-table" class="evaluation table_99 tbl-td-center"  width="99.8%" >
           <tr>
-            <td class="font-light">
-                <b>Published On <%=  @exam_group.updated_at.strftime("%d/%m/%Y") %></b>
+            <td class="font-light align-left">
+                <font size="2">Published On <%=  @exam_group.updated_at.strftime("%d/%m/%Y") %></font>
             <td>
-            <td class="font-light">
-                <b>Issued On <%= Time.now.strftime("%d/%m/%Y") %></b>
+            <td class="font-light align-right">
+                <font size="2">Issued On <%= Time.now.strftime("%d/%m/%Y") %></font>
             <td>
           </tr>
       </table>
@@ -398,6 +397,14 @@
   .baf_shaheen div.student_information table tr td
   {
       padding: 10px 4px;  
+  }
+  .baf_shaheen tr.even td.align-left
+  {
+     text-align: left;
+  }
+  .baf_shaheen tr.even td.align-right
+  {
+     text-align: right;
   }
      
 </style>

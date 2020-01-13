@@ -56,7 +56,7 @@
             <% end %>
             <% colspan = colspan+1 %>
           <% end %> 
-          <td>Best 3<br/>(22.5)</td>
+          <td class="center-text">Best 3 CT<br/>(22.5)</td>
           <% @report_data['result']['ALL'].each do |rs| %>
             <% if rs['exam_category'] != "1" && rs['exam_category'] != "3" %>
               <td class="center-text"><%=  rs['name'] %><br/>(2.5)</td>

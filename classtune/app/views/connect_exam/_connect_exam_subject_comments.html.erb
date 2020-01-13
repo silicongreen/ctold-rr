@@ -188,7 +188,7 @@
                             end
                         %>
                         <div class="text-input-bg2">
-                          <% if exam.exam_group.exam_category == 7 %>
+                          <% if exam.exam_group.exam_category == 7 && MultiSchool.current_school.id != 323 %>
                             <%= text_field_tag "exam_remarks[#{exam.id}][#{student.id}][remarks]", @exam_score.remarks %>
                           <% else %>   
                             <% if exam_marks_entry_allowed(exam.exam_group) or @current_user.admin? %>

@@ -246,7 +246,7 @@
                   <% else %>
                     <td class="col-2">
                     <% if MultiSchool.current_school.id == 323 && @exam_group.exam_category == 5 && @exam.subject.no_exams %>   
-                      <select name="exam[#{student.id}][remarks]" >
+                      <select name="exam[<%=student.id%>][remarks]" >
                           <option value="0" >Select</option>
                           <option value="1" <% if @exam_score.remarks.to_i == 1 %> selected="selected" <% end %>>Always</option>
                           <option value="2" <% if @exam_score.remarks.to_i == 2 %> selected="selected" <% end %>>Mostly</option>

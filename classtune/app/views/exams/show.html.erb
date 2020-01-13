@@ -245,10 +245,22 @@
                                  
                   <% else %>
                     <td class="col-2">
-                    <% if exam_marks_entry_allowed(@exam_group) or @current_user.admin? %>
-                        <%= text_field_tag "exam[#{student.id}][remarks]", @exam_score.remarks, :size => '40' %>
+                    <% if MultiSchool.current_school.id == 323 && @exam_group.exam_category == 5 && @exam.subject.no_exams %>   
+                      <select name="exam[#{student.id}][remarks]" >
+                          <option value="0" >Select</option>
+                          <option value="1" <% if @exam_score.remarks.to_i == 1 %> selected="selected" <% end %>>Always</option>
+                          <option value="2" <% if @exam_score.remarks.to_i == 2 %> selected="selected" <% end %>>Mostly</option>
+                          <option value="3" <% if @exam_score.remarks.to_i == 3 %> selected="selected" <% end %>>Usually</option>
+                          <option value="4" <% if @exam_score.remarks.to_i == 4 %> selected="selected" <% end %>>Occasionally</option>
+                          <option value="5" <% if @exam_score.remarks.to_i == 5 %> selected="selected" <% end %>>Rarely</option>
+                      </select>
+                    
                     <% else %>
-                        <%= @exam_score.remarks %>
+                      <% if exam_marks_entry_allowed(@exam_group) or @current_user.admin? %>
+                          <%= text_field_tag "exam[#{student.id}][remarks]", @exam_score.remarks, :size => '40' %>
+                      <% else %>
+                          <%= @exam_score.remarks %>
+                      <% end %> 
                     <% end %>    
                     </td>    
                   <% end %>

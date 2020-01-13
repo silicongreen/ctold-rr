@@ -3,19 +3,25 @@
 <div id="page-yield" class="available_sections1 baf_shaheen">
    
       <div class="student_information">
-        <h4><b>Student's Information</b></h4>
 
         <table class="std_info_table" width="100%" cellspacing="0">
             <tr>
-                  <td>Student's ID </td><td  class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @student.admission_no %></td>
-                  <td>&nbsp;&nbsp;</td>
-                 <% month_number =@exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%-m"):@exam_group.exam_date.strftime("%-m") %>
+                <td colspan="2"><b>Student's Information</b></td>
+                <td>&nbsp;&nbsp;</td>
+                <% month_number =@exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%-m"):@exam_group.exam_date.strftime("%-m") %>
+
+                <% if month_number.to_i>6 %>
+                  <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y"):@exam_group.exam_date.strftime("%Y") %>-<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y").to_i+1:@exam_group.exam_date.strftime("%Y").to_i+1 %></td>
+                <% else %>
+                  <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y").to_i-1:@exam_group.exam_date.strftime("%Y").to_i-1 %>-<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y"):@exam_group.exam_date.strftime("%Y") %></td>
+                <% end %> 
+            </tr>
+            <tr>
+                  <td colspan="5">&nbsp;&nbsp;&nbsp;</td> 
+            </tr>
+            <tr>
+                  <td>Student's ID </td><td colspan="4"  class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @student.admission_no %></td>
                  
-                  <% if month_number.to_i>6 %>
-                    <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y"):@exam_group.exam_date.strftime("%Y") %>-<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y").to_i+1:@exam_group.exam_date.strftime("%Y").to_i+1 %></td>
-                  <% else %>
-                    <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y").to_i-1:@exam_group.exam_date.strftime("%Y").to_i-1 %>-<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y"):@exam_group.exam_date.strftime("%Y") %></td>
-                  <% end %> 
             </tr>
             <tr>
                 <td>Student's Name </td><td colspan="4" class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.full_name.upcase %></td>
@@ -141,14 +147,14 @@
       <table id="pdf-table" width="99.8%" class="table_99" cellspacing="0">
         <% c = 'even'  %>
         <tr class="table-header">  
-          <td class="col-pdf no-warp align-left" width="30%"><%= "Subject" %></td>
+          <td class="col-pdf no-warp align-left"><%= "Subject" %></td>
           <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
-            <td class="col-pdf" width="20%"><%= "Attainment" %></td>
+            <td class="col-pdf"><%= "Attainment" %></td>
           <% end %>
-          <td class="col-pdf" width="20%"><%= "Weighted Average" %></td>
-          <td class="col-pdf " width="15%"><%= "GRADE" %></td> 
-          <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
-          <td class="col-pdf " width="15%"><%= "Attendance" %></td> 
+          <td class="col-pdf"><%= "Weighted Average" %></td>
+          <td class="col-pdf "><%= "GRADE" %></td> 
+          <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" && @batch.course.course_name == "IX"%>
+          <td class="col-pdf "><%= "Attendance" %></td> 
           <% end %>
         </tr>
         <tr class="tr-blank"></tr>
@@ -163,9 +169,9 @@
           <% elective_group << es.exam.subject.elective_group_id %>
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
               
-             <td class="col-pdf no-warp  align-left" width="30%"> <%= es.exam.subject.elective_group.name %></td>
+             <td class="col-pdf no-warp  align-left"> <%= es.exam.subject.elective_group.name %></td>
              <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
-             <td class="col-pdf" width="20%">
+             <td class="col-pdf">
                   <% if elective_group_mark[es.exam.subject.elective_group_id] == -1 %>
                     AB
                   <% else %>   
@@ -173,7 +179,7 @@
                   <% end %>       
              </td>
              <% end %>
-             <td class="col-pdf" width="20%">
+             <td class="col-pdf">
                   <% if elective_group_mark[es.exam.subject.elective_group_id] == -1 %>
                     AB
                   <% else %>   
@@ -182,12 +188,12 @@
              </td>
               <%  grade = GradingLevel.percentage_to_grade(elective_group_mark[es.exam.subject.elective_group_id].round(), @batch.id) %>
               <% if !grade.blank? and !grade.name.blank? %>
-              <td class="col-pdf  " width="15%"><%= grade.name %></td>
+              <td class="col-pdf  "><%= grade.name %></td>
               <% else %>
-              <td class="col-pdf  " width="15%">-</td>
+              <td class="col-pdf  ">-</td>
               <% end %>
               
-              <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
+              <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" && @batch.course.course_name == "IX" %>
                 <% total_att = 0 %>
                 <% absent_att = 0 %>
                 <% if !@exam_group.attandence_start_date.blank? && !@exam_group.attandence_end_date.blank? %>
@@ -208,9 +214,9 @@
                       <% percent = (diff.to_f/total_att.to_f)*100 %>
                     <% end %>
                   <% end %>
-                  <td class="col-pdf  " width="15%"><%= sprintf( "%0.02f", percent) %> %</td>
+                  <td class="col-pdf  "><%= sprintf( "%0.02f", percent) %> %</td>
                 <% else %>
-                  <td class="col-pdf  " width="15%">-</td>
+                  <td class="col-pdf  ">-</td>
                 <% end %>
                 
               <% end %>  
@@ -226,18 +232,18 @@
             <% elective_group << esub.subject.elective_group_id %>
             <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
               
-             <td class="col-pdf no-warp  align-left" width="30%"> <%= esub.subject.elective_group.name %></td>
+             <td class="col-pdf no-warp  align-left"> <%= esub.subject.elective_group.name %></td>
              <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
-             <td class="col-pdf" width="20%">
+             <td class="col-pdf">
                  AB      
              </td>
              <% end %>
-             <td class="col-pdf" width="20%">
+             <td class="col-pdf">
                  AB      
              </td>
-             <td class="col-pdf  " width="15%">-</td>
-             <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
-             <td class="col-pdf  " width="15%">-</td>
+             <td class="col-pdf  ">-</td>
+             <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" && @batch.course.course_name == "IX" %>
+             <td class="col-pdf  ">-</td>
              <% end %>
           </tr>
           
@@ -254,71 +260,44 @@
       <table id="pdf-table" width="99.8%" class="table_99" cellspacing="0">
         <% c = 'even'  %>
         <tr class="table-header">  
-          <td class="col-pdf no-warp align-left" width="25%"></td>
+          <td class="col-pdf no-warp align-left" width="25%">Follows</td>
           <td class="col-pdf" width="15%"><%= "Always" %></td>
           <td class="col-pdf" width="15%"><%= "Mostly" %></td>
           <td class="col-pdf " width="15%"><%= "Usually" %></td> 
           <td class="col-pdf " width="15%"><%= "Occasionally" %></td>
-          <td class="col-pdf " width="15%"><%= "Rearly" %></td>
+          <td class="col-pdf " width="15%"><%= "Rarely" %></td>
         </tr>
-        <tr class="even">
-          <td class="col-pdf no-warp align-left" width="25%">Complies with school Rules</td>
-          <td class="col-pdf" width="15%"></td>
-          <td class="col-pdf" width="15%"></td>
-          <td class="col-pdf " width="15%"></td> 
-          <td class="col-pdf " width="15%"></td>
-          <td class="col-pdf " width="15%"></td>
-        </tr>
-        <tr class="even">
-            <td class="col-pdf no-warp align-left" width="25%">Shows good behavior & attitude</td>
-          <td class="col-pdf" width="15%"></td>
-          <td class="col-pdf" width="15%"></td>
-          <td class="col-pdf " width="15%"></td> 
-          <td class="col-pdf " width="15%"></td>
-          <td class="col-pdf " width="15%"></td>
-        </tr>
-        <tr class="even">
-          <td class="col-pdf no-warp align-left" width="25%">Sincere about attire</td>
-          <td class="col-pdf" width="15%"></td>
-          <td class="col-pdf" width="15%"></td>
-          <td class="col-pdf " width="15%"></td> 
-          <td class="col-pdf " width="15%"></td>
-          <td class="col-pdf " width="15%"></td>
-        </tr>
-        <tr class="even">
-          <td class="col-pdf no-warp align-left" width="25%">Maintains good peer relation</td>
-          <td class="col-pdf" width="15%"></td>
-          <td class="col-pdf" width="15%"></td>
-          <td class="col-pdf " width="15%"></td> 
-          <td class="col-pdf " width="15%"></td>
-          <td class="col-pdf " width="15%"></td>
-        </tr>
-        <tr class="even">
-          <td class="col-pdf no-warp align-left" width="25%">Punctuality</td>
-          <td class="col-pdf" width="15%"></td>
-          <td class="col-pdf" width="15%"></td>
-          <td class="col-pdf " width="15%"></td> 
-          <td class="col-pdf " width="15%"></td>
-          <td class="col-pdf " width="15%"></td>
-        </tr>
+        <% exam_score.each do |es| %>
+          <% if es.exam.subject.no_exams %>
+          <tr class="even">
+            <td class="col-pdf no-warp align-left" width="25%"><%= es.exam.subject.name %></td>
+            <td class="col-pdf" width="15%"><% if es.remarks.to_i == 1 %>✔<% end %></td>
+            <td class="col-pdf" width="15%"><% if es.remarks.to_i == 2 %>✔<% end %></td>
+            <td class="col-pdf " width="15%"><% if es.remarks.to_i == 3 %>✔<% end %></td> 
+            <td class="col-pdf " width="15%"><% if es.remarks.to_i == 4 %>✔<% end %></td>
+            <td class="col-pdf " width="15%"><% if es.remarks.to_i == 5 %>✔<% end %></td>
+          </tr>
+          <% end %>
+        <% end %>
+        
       </table>  
       <% end %>
       <h4 class="h4-evaluation"><b></b></h4>
       <table id="pdf-table" class="evaluation table_99"  width="99.8%" >
 
               <tr class="even">
-                  <td class="col-pdf " width="33%">
+                  <td class="col-pdf " width="25%">
                       Class Teacher's Signature
                   </td> 
-                  <td class="col-pdf" width="67%">
+                  <td class="col-pdf" width="75%">
                       <br/><br/>
                   </td>
               </tr>
               <tr class="even">
-                  <td class="col-pdf " width="33%">
+                  <td class="col-pdf " width="25%">
                       Principal's Signature
                   </td> 
-                  <td class="col-pdf" width="67%">
+                  <td class="col-pdf" width="75%">
                       <br/><br/>
                   </td>
               </tr>
@@ -330,18 +309,10 @@
       <table id="pdf-table" class="evaluation table_99 tbl-td-center"  width="99.8%" >
           <tr>
             <td class="font-light">
-              <%=  @exam_group.updated_at.strftime("%Y/%m/%d") %>
+                <b>Published On <%=  @exam_group.updated_at.strftime("%d/%m/%Y") %></b>
             <td>
             <td class="font-light">
-              <%= Time.now.strftime("%Y/%m/%d") %>
-            <td>
-          </tr>
-           <tr>
-            <td class="font-dark">
-              Date of Publish
-            <td>
-            <td class="font-dark">
-              Date of Issue
+                <b>Issued On <%= Time.now.strftime("%d/%m/%Y") %></b>
             <td>
           </tr>
       </table>

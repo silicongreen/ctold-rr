@@ -51,7 +51,7 @@
           <% iloop = 1 %>
           <% @report_data['result']['ALL'].each do |rs| %>
             <% if rs['exam_category'] == "1" %>
-              <td>CT<%= iloop %>(7.5)</td>
+              <td class="center-text">CT<%= iloop %>(7.5)</td>
               <% iloop = iloop+1 %>
             <% end %>
             <% colspan = colspan+1 %>
@@ -59,17 +59,17 @@
           <td>Best 3(22.5)</td>
           <% @report_data['result']['ALL'].each do |rs| %>
             <% if rs['exam_category'] != "1" && rs['exam_category'] != "3" %>
-              <td><%=  rs['name'] %>(2.5)</td>
+              <td class="center-text"><%=  rs['name'] %>(2.5)</td>
             <% end %>
             <% colspan = colspan+1 %>
           <% end %> 
           <% @report_data['result']['ALL'].each do |rs| %>
             <% if rs['exam_category'] == "3" %>
-              <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
+              <td class="center-text"><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
             <% end %>
             <% colspan = colspan+1 %>
           <% end %> 
-          <td>Total</td>
+          <td class="center-text">Total</td>
         </tr>
         
         <% extender = 0 %>
@@ -108,7 +108,7 @@
             <% class_test = [] %>
             <% @report_data['result']['ALL'].each do |rs| %>
               <% if rs['exam_category'] == "1" %>
-                <td>
+                <td class="center-text">
                   <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
                     <% obt_mark = (rs['students'][std['id']]['score'].to_f/rs['maximum_marks'].to_f)*7.5 %>
                     <%= sprintf( "%0.02f", obt_mark)%>
@@ -122,10 +122,10 @@
             <% end %>
             <% class_test.sort! {|x,y| y <=> x } %> 
             <% total_mark = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f %>
-            <td><%= sprintf( "%0.02f", total_mark)%></td>
+            <td class="center-text"><%= sprintf( "%0.02f", total_mark)%></td>
             <% @report_data['result']['ALL'].each do |rs| %>
               <% if rs['exam_category'] != "1" && rs['exam_category'] != "3"  %>
-                <td>
+                <td class="center-text">
                   <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
                     <% obt_mark = (rs['students'][std['id']]['score'].to_f/rs['maximum_marks'].to_f)*2.5 %>
                     <%= sprintf( "%0.02f", obt_mark)%>
@@ -138,7 +138,7 @@
             <% end %>
             <% @report_data['result']['ALL'].each do |rs| %>
               <% if rs['exam_category'] == "3"  %>
-                  <td>
+                  <td class="center-text">
                     <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
                         <%= rs['students'][std['id']]['score'] %>
                         <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
@@ -156,7 +156,7 @@
             <% end %> 
               
 
-           <td><%= total_mark.round() %> %</td>
+           <td class="center-text"><%= total_mark.round() %></td>
 
         </tr>
         <% end %>
@@ -175,7 +175,6 @@
         font-size: 21px !important;
     }
     .even td{
-
       padding: 4px 2px;
     }
 
@@ -185,5 +184,9 @@
     #pdf-table tr.table-header td
     {
       padding: 4px 2px;
+    }
+    #pdf-table tr td.center-text
+    {
+      text-align: center;
     }
 </style>    

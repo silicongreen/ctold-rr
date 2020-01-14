@@ -1,38 +1,13 @@
 
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-              <table id="pdf-table" width="99.8%" cellspacing="0">
+             <table id="pdf-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
                  
                   <tr class="table-header">
                       <td class="col-pdf border-left-none no-warp  align-left-baf"><%= "SUBJECT" %></b></td>
-                      <% unless @report_data['report']['exams'].blank? %>  
-                        <% @report_data['report']['exams'].each do |report| %>
-                          <% if report['exam_category'] == '1' %>
-                          <td class="col-pdf">
-                              <%= report['exam_name'].upcase %>
-                              <hr/>
-                              Out of 7.5                       
-                          </td>
-                          <% end %>
-                        <% end %>
-                      <% end %>
-                      <td class="col-pdf">
-                          Best 3 CTs
-                          Out 0f
-                          22.5  
-                      </td>  
-                      <% unless @report_data['report']['exams'].blank? %>  
-                        <% @report_data['report']['exams'].each do |report| %>
-                          <% if report['exam_category'] != '1' && report['exam_category'] != '3'  %>
-                          <td class="col-pdf">
-                              <%= report['exam_name'].upcase %>
-                              <hr/>
-                              Out of 2.5   
-                          </td> 
-                          <% end %>
-                        <% end %>
-                      <% end %>
+                      <td>Assessment<hr/>Out Of 30</td>
+                      
                           
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
@@ -73,20 +48,19 @@
                               <% if report['exam_category'] != '1'  %>
                                 <% next %>
                               <% end %>
-                              <td class="col-pdf no-warp">
+                              
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <% obt_mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f/report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f)*7.5 %>
-                                    <%= sprintf( "%0.02f", obt_mark)%>
+                                    
                                     
                                     <% class_test << obt_mark.round(2) %>
                                   <% else %>
-                                    -
                                     <% class_test << 0 %>
                                   <% end %>  
 
 
 
-                              </td>
+                           
 
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['weightage_mark'].blank? %>
                                 <% weightage_mark = weightage_mark+report['result'][report['exam_id']][subjects['id']]['weightage_mark'] %>
@@ -96,16 +70,16 @@
                           <% end %>
                           <% class_test.sort! {|x,y| y <=> x } %> 
                           <% total_mark = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f %>
-                          <td class="col-pdf no-warp"><%= sprintf( "%0.02f", total_mark)%></td>
+                          
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
                               <% if report['exam_category'] == '1' or report['exam_category'] == '3'  %>
                                 <% next %>
                               <% end %>
-                              <td class="col-pdf no-warp">
+                              
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <% obt_mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f/report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f)*2.5 %>
-                                    <%= sprintf( "%0.02f", obt_mark)%>
+                                    
                                     <% total_mark = total_mark.to_f+obt_mark.to_f %>
                                   <% else %>
                                     -
@@ -118,7 +92,7 @@
 
 
 
-                              </td>
+                              
 
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['weightage_mark'].blank? %>
                                 <% weightage_mark = weightage_mark+report['result'][report['exam_id']][subjects['id']]['weightage_mark'] %>
@@ -126,6 +100,7 @@
 
                             <% end %>
                           <% end %>
+                          <td class="col-pdf no-warp"><%= sprintf( "%0.02f", total_mark)%></td>
                               
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
@@ -214,11 +189,8 @@
                           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
                           <td class="col-pdf border-left-none  align-left-baf"><%= report['subject_name'].upcase %></td>
-                          <% unless @report_data['report']['exams'].blank? %>  
-                              <% @report_data['report']['exams'].each do |report1| %>
-                                  <td></td>
-                              <% end %>
-                           <% end %> 
+                         
+                          <td class="col-pdf"></td>
                           <td class="col-pdf"></td>
                           <td class="col-pdf"></td>
                           <td class="col-pdf border-right-none"><b><%= report['subject_comment'] %></b></td>
@@ -226,20 +198,16 @@
                         <% end %>
                       <% end %>
                     <% end %>
-                          
+                        
                     <tr class="odd">
                           <td class="col-pdf border-left-none"><b>Total Marks</b></td>
-                          <% unless @report_data['report']['exams'].blank? %>  
-                            <% @report_data['report']['exams'].each do |report| %>
-                                <td></td>
-                            <% end %>
-                          <% end %> 
+                          
+                         <td class="col-pdf"></td>
                          <td class="col-pdf"></td>
                          <td class="col-pdf"><b><%= total_mark_all_subject %></b></td>
                          <td class="col-pdf border-right-none"></td>
                       </tr>
-                        
                       
 
-              </table>        
+              </table>       
 <% end %>

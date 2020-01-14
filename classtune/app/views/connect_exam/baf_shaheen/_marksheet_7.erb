@@ -101,7 +101,7 @@
             <td class="name-std"><%= std['name'] %></td>
             <% class_test = [] %>
             <% @report_data['result']['ALL'].each do |rs| %>
-              <% if rs['exam_category'] == "3" %>
+              <% if rs['exam_category'] == "6" %>
                 <td class="center-text">
                   <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
                     <% obt_mark = rs['students'][std['id']]['score'].to_f %>

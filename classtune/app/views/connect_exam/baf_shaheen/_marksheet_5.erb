@@ -48,15 +48,20 @@
         <tr class="table-header">
           <td>Roll</td>
           <td>Name</td>
+          <% iloop = 1 %>
           <% @report_data['result']['ALL'].each do |rs| %>
-            <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
-            
+            <% if rs['exam_category'] == "1" %>
+              <td class="center-text">CT<%= iloop %><br/>(<%=  rs['maximum_marks'] %>)</td>
+              <% iloop = iloop+1 %>
+            <% end %>
             <% colspan = colspan+1 %>
-          <% end %>  
-          
-          <td>Total</td>
-          <td>Grade</td>
-        
+          <% end %> 
+          <% @report_data['result']['ALL'].each do |rs| %>
+            <% if rs['exam_category'] != "1" && rs['exam_category'] != "3" %>
+              <td class="center-text"><%=  rs['name'] %><br/>(<%=  rs['maximum_marks'] %>)</td>
+            <% end %>
+            <% colspan = colspan+1 %>
+          <% end %> 
         </tr>
         
         <% extender = 0 %>
@@ -107,21 +112,7 @@
               <% end %>    
               </td>
               
-            <% end %> 
-             
-           <% main_mark = 0 %>
-           <% if total_mark.to_i > 0 %>   
-            <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
-           <% end %>    
-
-           <td><%= sprintf( "%0.02f", main_mark) %> %</td>
-
-           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
-           <% if !grade.blank? and !grade.name.blank? %>
-            <td class="col-2"><b><%= grade.name %></b></td>
-          <% else %>
-            <td class="col-2"><b>-</b></td>
-          <% end %>
+            <% end %>
         </tr>
         <% end %>
         <% end %>

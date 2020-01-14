@@ -48,12 +48,22 @@
         <tr class="table-header">
           <td>Roll</td>
           <td>Name</td>
+          <% iloop = 1 %>
           <% @report_data['result']['ALL'].each do |rs| %>
-            <td class="center-text"><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
-            
+            <% if rs['exam_category'] == "6" %>
+              <td class="center-text">CT<%= iloop %><br/>(10)</td>
+              <% iloop = iloop+1 %>
+            <% end %>
             <% colspan = colspan+1 %>
           <% end %> 
-        
+          <td class="center-text">Best 3 CT<br/>(50)</td>
+          <% @report_data['result']['ALL'].each do |rs| %>
+              <% if rs['exam_category'] != "6" %>
+                <td class="center-text"><%=  rs['name'] %><br/>(<%=  rs['maximum_marks'] %>)</td>
+                <% colspan = colspan+1 %>
+              <% end %>
+          <% end %> 
+          <td class="center-text">Total<br/>80</td>
         </tr>
         
         <% extender = 0 %>
@@ -89,27 +99,46 @@
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
             <td><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['name'] %></td>
+            <% class_test = [] %>
             <% @report_data['result']['ALL'].each do |rs| %>
-              <td class="center-text">
-              <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
-                  <%= rs['students'][std['id']]['score'] %>
-                  <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
-                  
-                 
-              <% else %>
-                  -
+              <% if rs['exam_category'] == "3" %>
+                <td class="center-text">
+                  <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
+                    <% obt_mark = rs['students'][std['id']]['score'].to_f %>
+                    <%= sprintf( "%0.02f", obt_mark)%>
+                    <% class_test << obt_mark.round(2) %>
+                  <% else %>
+                    -
+                    <% class_test << 0 %>
+                  <% end %>
+                </td>   
               <% end %>
-              <% if !rs['maximum_marks'].blank? %>    
-                <% full_mark = full_mark+rs['maximum_marks'].to_i %> 
-              <% end %>    
-              </td>
+            <% end %>
+            <% class_test.sort! {|x,y| y <=> x } %> 
+            <% total_mark = ((class_test[0].to_f+class_test[1].to_f+class_test[2].to_f)/30.00)*50.00 %>
+            <td class="center-text"><%= sprintf( "%0.02f", total_mark)%></td>
+            <% @report_data['result']['ALL'].each do |rs| %>
+              <% if rs['exam_category'] != "6"  %>
+                  <td class="center-text">
+                    <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
+                        <%= rs['students'][std['id']]['score'] %>
+                        <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
+
+
+                    <% else %>
+                        -
+                    <% end %>
+                    <% if !rs['maximum_marks'].blank? %>    
+                      <% full_mark = full_mark+rs['maximum_marks'].to_i %> 
+                    <% end %>    
+                  </td>
+              <% end %>
               
             <% end %> 
-             
-           <% main_mark = 0 %>
-           <% if total_mark.to_i > 0 %>   
-            <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
-           <% end %>
+              
+
+           <td class="center-text"><%= total_mark.round() %></td>
+
         </tr>
         <% end %>
         <% end %>
@@ -127,12 +156,11 @@
         font-size: 21px !important;
     }
     .even td{
-
-      padding: 4px;
+      padding: 4px 4px;
     }
 
     .odd td{
-        padding: 4px;
+        padding: 4px 4px;
     }
     #pdf-table tr.table-header td
     {

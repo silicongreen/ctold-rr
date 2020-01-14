@@ -49,13 +49,10 @@
           <td>Roll</td>
           <td>Name</td>
           <% @report_data['result']['ALL'].each do |rs| %>
-            <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
+            <td class="center-text"><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
             
             <% colspan = colspan+1 %>
-          <% end %>  
-          
-          <td>Total</td>
-          <td>Grade</td>
+          <% end %> 
         
         </tr>
         
@@ -71,7 +68,7 @@
 
           <%  std_count = std_count+1; %>
           <% colspan = colspan+4 %>
-          <% if std_count>38 && extender ==0 %>
+          <% if std_count>39 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
@@ -93,7 +90,7 @@
             <td><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['name'] %></td>
             <% @report_data['result']['ALL'].each do |rs| %>
-              <td>
+              <td class="center-text">
               <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
                   <%= rs['students'][std['id']]['score'] %>
                   <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
@@ -112,16 +109,7 @@
            <% main_mark = 0 %>
            <% if total_mark.to_i > 0 %>   
             <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
-           <% end %>    
-
-           <td><%= sprintf( "%0.02f", main_mark) %> %</td>
-
-           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
-           <% if !grade.blank? and !grade.name.blank? %>
-            <td class="col-2"><b><%= grade.name %></b></td>
-          <% else %>
-            <td class="col-2"><b>-</b></td>
-          <% end %>
+           <% end %>
         </tr>
         <% end %>
         <% end %>
@@ -145,5 +133,13 @@
 
     .odd td{
         padding: 4px;
+    }
+    #pdf-table tr.table-header td
+    {
+      padding: 4px 4px;
+    }
+    #pdf-table tr td.center-text
+    {
+      text-align: center;
     }
 </style>    

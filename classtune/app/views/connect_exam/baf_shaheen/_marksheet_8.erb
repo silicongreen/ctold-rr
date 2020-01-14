@@ -63,6 +63,7 @@
             <% end %>
             <% colspan = colspan+1 %>
           <% end %> 
+          <td class="center-text">Out Of<br/>(30)</td>
           <% @report_data['result']['ALL'].each do |rs| %>
             <% if rs['exam_category'] == "3" %>
               <td class="center-text"><%=  rs['name'] %><br/>(<%=  rs['maximum_marks'] %>)</td>
@@ -136,6 +137,7 @@
                 </td>   
               <% end %>
             <% end %>
+            <td class="center-text"><%= sprintf( "%0.02f", total_mark)%></td>
             <% @report_data['result']['ALL'].each do |rs| %>
               <% if rs['exam_category'] == "3"  %>
                   <td class="center-text">

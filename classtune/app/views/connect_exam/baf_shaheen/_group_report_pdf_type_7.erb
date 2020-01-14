@@ -95,7 +95,7 @@
                       <td class="col-pdf border-left-none no-warp  align-left-baf"><%= "SUBJECTS" %></b></td>
                       <td class="col-pdf"><b>Assessment<br/>Out Of 50</b></td>
                       <td class="col-pdf"><b>H.W. & Assignment<br/>Out Of 20</b></td>
-                      <td class="col-pdf  border-right-none"><b>C.w. / S.T<br/>Out Of 10</b></td>
+                      <td class="col-pdf  border-right-none"><b>C.W. / S.T<br/>Out Of 10</b></td>
                   </tr>
 
                   <% assessment = 0 %>
@@ -130,18 +130,15 @@
                           <% sub_assessment = 0 %>
                           <% sub_hw = 0 %>
                           <% sub_cw = 0 %>
-                          
-                          <% sub_assessment_full_mark = 0 %>
                           <% sub_hw_full_mark = 0 %>
                           <% sub_cw_full_mark = 0 %>
                           <% total_subject = total_subject+1 %>
+                          <% class_test = [] %>
                           <td class="col-pdf border-left-none  no-warp align-left-baf"><%= subjects['name'].upcase %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                  <% if report['exam_category'] == '6' %>
-                                    <% sub_assessment = sub_assessment.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                  <% end %> 
+                                 
                                   <% if report['exam_category'] == '7' %>
                                     <% sub_hw = sub_hw.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% end %>
@@ -150,9 +147,7 @@
                                   <% end %>
                                 <% end %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
-                                  <% if report['exam_category'] == '6' %>
-                                    <% sub_assessment_full_mark = sub_assessment_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
-                                  <% end %>
+                                  
                                   <% if report['exam_category'] == '7' %>
                                     <% sub_hw_full_mark = sub_hw_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                   <% end %>
@@ -162,6 +157,20 @@
                                 <% end %> 
                             <% end %>
                           <% end %>
+                          
+                          <% unless @report_data['report']['exams'].blank? %>  
+                            <% @report_data['report']['exams'].each do |report| %>
+                            <% if report['exam_category'] == '6' %>
+                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                  <% class_test << report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                  <% sub_assessment = sub_assessment.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                              <% else %>
+                                  <% class_test << 0 %>
+                              <% end %>
+                          
+                            <% end %>
+                            <% end %>
+                          <% end %>
 
                           <% 
                             hw_avg = 0
@@ -169,7 +178,9 @@
                             cw_avg = 0
                             
                             if sub_assessment > 0
-                              assessment_avg = (sub_assessment.to_f/sub_assessment_full_mark.to_f)*50
+                              class_test.sort! {|x,y| y <=> x }
+                              ass_total_mark = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f
+                              assessment_avg = (ass_total_mark.to_f/30.00)*50
                               assessment_avg = assessment_avg.round()
                               assessment = assessment+assessment_avg
                             end

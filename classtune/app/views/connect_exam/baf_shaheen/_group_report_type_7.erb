@@ -65,10 +65,10 @@
                                   <% if report['exam_category'] == '6' %>
                                     <% sub_assessment_full_mark = sub_assessment_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                   <% end %>
-                                  <% if report['exam_category'] == '6' %>
+                                  <% if report['exam_category'] == '7' %>
                                     <% sub_hw_full_mark = sub_hw_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                   <% end %>
-                                  <% if report['exam_category'] == '6' %>
+                                  <% if report['exam_category'] == '8' %>
                                     <% sub_cw_full_mark = sub_cw_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                   <% end %>
                                 <% end %> 
@@ -90,7 +90,7 @@
                               hw_avg = hw_avg.round()
                               hw = hw+hw_avg
                             end
-                            if sub_assessment > 0
+                            if sub_cw > 0
                               cw_avg = (sub_cw.to_f/sub_cw_full_mark.to_f)*10
                               cw_avg = cw_avg.round()
                               cw = cw+cw_avg
@@ -121,7 +121,7 @@
                         ag_hw = hw.to_f/total_subject.to_f
                         ag_hw = sprintf( "%0.01f", ag_hw)
                       end
-                      if assessment > 0
+                      if cw > 0
                         ag_cw = cw.to_f/total_subject.to_f
                         ag_cw = sprintf( "%0.01f", ag_cw)
                       end

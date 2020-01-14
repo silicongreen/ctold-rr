@@ -25,7 +25,7 @@
           @elective_subjects = []
           @elective_subjects_name = []
           @exams.each do |exam|
-            if !@elective_subjects.include?(exam.subject.elective_group_id) 
+            if !exam.subject.elective_group_id.blank? && !@elective_subjects.include?(exam.subject.elective_group_id) 
               @elective_subjects <<  exam.subject.elective_group_id
               @elective_subjects_name << exam.subject.elective_group.name
             end  

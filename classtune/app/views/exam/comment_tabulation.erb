@@ -37,6 +37,8 @@
       <%= render  :partial=>"/connect_exam/south_point/comment_tabulation" %>  
     <% elsif MultiSchool.current_school.id == 340 %>
       <%= render  :partial=>"/connect_exam/sir_john_wilson_school/comment_tabulation" %>
+    <% elsif MultiSchool.current_school.id == 323 %>
+      <%= render  :partial=>"/connect_exam/baf_shaheen/comment_tabulation" %>
     <% elsif File.exists?(Rails.root.join("app", "views", "connect_exam",MultiSchool.current_school.code, "_comment_tabulation.erb")) %>
       <%= render  :partial=>"/connect_exam/#{MultiSchool.current_school.code}/comment_tabulation" %>
     <% else %>

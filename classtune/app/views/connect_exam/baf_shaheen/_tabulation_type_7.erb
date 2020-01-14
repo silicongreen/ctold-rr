@@ -150,6 +150,11 @@
                       <td class="col-pdf">Roll</td>
                       <td class="col-pdf">Students Name</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
+                        <%
+                          if sub['grade_subject'].to_i != 1
+                            next
+                          end
+                        %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
                           <% has_exam = true %>
@@ -184,6 +189,11 @@
                           <td class="col-pdf">Roll</td>
                           <td class="col-pdf">Students Name</td>
                           <% @report_data['report']['subjects'].each do |sub| %>
+                            <%
+                              if sub['grade_subject'].to_i != 1
+                                next
+                              end
+                            %>
                             <% has_exam = false %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
@@ -208,6 +218,11 @@
                           <td class="col-pdf">Roll</td>
                           <td class="col-pdf">Students Name</td>
                           <% @report_data['report']['subjects'].each do |sub| %>
+                            <%
+                              if sub['grade_subject'].to_i != 1
+                                next
+                              end
+                            %>
                             <% has_exam = false %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
@@ -271,7 +286,7 @@
 
                                   <%
 
-                                  obt_mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*7.5
+                                  obt_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                   class_test << obt_mark
 
 
@@ -288,9 +303,7 @@
                             
                             %>
                             <% @report_data['report']['exams'].each do |rs| %>
-                              <% if rs['exam_category'] == '6' %>
-                                <% next %>
-                              <% end %>
+                             
                               <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
 
@@ -311,7 +324,7 @@
                               <td>
                                   <% total_mark = a_mark+h_mark.to_f+c_mark.to_f %>
                                   A: <%= sprintf( "%0.02f", a_mark) %><hr/>H: <%= sprintf( "%0.02f", h_mark) %><hr/>
-                                  C: <%= sprintf( "%0.02f", c_mark) %> %>
+                                  C: <%= sprintf( "%0.02f", c_mark) %>
                               </td> 
                           <% end %>   
                         <% end %> 

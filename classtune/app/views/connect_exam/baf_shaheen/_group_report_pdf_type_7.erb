@@ -348,7 +348,7 @@
                       <td class="col-pdf border-left-none border-right-none">
                           <b>Comment:</b>
                           <% if !@exam_comment.blank? %>
-                            <%= @exam_comment %>
+                            <%= @exam_comment.comments %>
                             <br/>
                             <br/>
                           <% else %>

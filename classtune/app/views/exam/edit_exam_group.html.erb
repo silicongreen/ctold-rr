@@ -62,6 +62,18 @@
           <%= select :exam_group,:quarter,options_from_collection_for_select(exam_quarter, :first, :last,@examgroup.quarter.to_s) %>
         </div>
       </div>
+      <div class="label-field-pair"  style="float:left; clear:both;">
+        <label for="duedate"><%= "Publish Date"%></label>
+        <div  class="text-input-bg">
+            <% unless @examgroup.publish_date.blank? %>
+                <%= calendar_date_select_tag "exam_group[publish_date]",
+                I18n.l(@examgroup.publish_date,:format=>"%d %b %Y") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+            <% else %>
+                <%= calendar_date_select_tag "exam_group[publish_date]",
+                I18n.l(1.week.since,:format=>"%d %b %Y") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+            <% end %>
+        </div>
+      </div>
       <div class="label-field-pair">
                       
         <label >Marks Entry Enable?</label>

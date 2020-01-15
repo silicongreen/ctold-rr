@@ -304,19 +304,18 @@
               </tr>
 
       </table>
-      <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
+      
       <h4 class="h4-evaluation"></h4>
       <table id="pdf-table" class="evaluation table_99 tbl-td-center"  width="99.8%" >
           <tr>
             <td class="font-light align-left">
-                <font size="2">Published On <%=  @exam_group.updated_at.strftime("%d/%m/%Y") %></font>
+                <font size="2">Published On <%=  @exam_group.publish_date.strftime("%d/%m/%Y") unless @exam_group.publish_date.blank? %></font>
             <td>
             <td class="font-light align-right">
                 <font size="2">Issued On <%= Time.now.strftime("%d/%m/%Y") %></font>
             <td>
           </tr>
       </table>
-      <% end %>
 
     <% else %>
       <% total_marks_attained = 0 %>
@@ -401,11 +400,11 @@
   }
   .baf_shaheen tr td.align-left
   {
-     text-align: left;
+     text-align: left !important;
   }
   .baf_shaheen tr td.align-right
   {
-     text-align: right;
+     text-align: right !important;
   }
      
 </style>

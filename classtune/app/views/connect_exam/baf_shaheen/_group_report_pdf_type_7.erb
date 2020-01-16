@@ -326,22 +326,24 @@
               <h4><b>Accumulated Result</b></h4>
               <table id="pdf-table" class="evaluation" width="99.8%" >
                       <tr class="odd">
-                          <td class="col-pdf border-left-none" width="25%">
+                          <td class="col-pdf border-left-none" width="20%">
                               <b>Score<b>
                           </td> 
-                          <td class="col-pdf align-center" width="25%">
+                          <td class="col-pdf align-center" width="20%">
                               <b><%= total_mark %></b>
                           </td> 
-                          <td class="col-pdf"  width="25%">
+                          <td class="col-pdf"  width="20%">
                               <b>Grade</b>
                           </td>
-                          <td class="col-pdf border-right-none"  width="25%">
+                          <td class="col-pdf border-right-none"  width="20%">
                               <% if !grade.blank? and !grade.name.blank? %>
-                                <b><%= grade.name %><b>
-                                <% if !grade.description.blank? %>
-                                | <%= grade.description %>  
-                                <% end %>        
+                                <b><%= grade.name %><b>  
                               <% end %>        
+                          </td>
+                          <td class="col-pdf border-right-none"  width="20%">
+                            <% if !grade.description.blank? %>
+                              <%= grade.description %>  
+                            <% end %> 
                           </td>
                       </tr>
                       

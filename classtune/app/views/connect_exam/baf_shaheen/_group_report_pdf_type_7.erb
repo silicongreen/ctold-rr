@@ -303,16 +303,16 @@
               <h4></h4>
               <table id="pdf-table" class="evaluation" width="99.8%" >
                       <tr class="odd">
-                          <td class="col-pdf border-left-none" width="55%">
+                          <td class="col-pdf border-left-none" width="40%">
                               <b>Attendance ( Out of 100 )</b>
                           </td> 
                           <td class="col-pdf align-center" width="25%">
                               <b> <%= @report_data['present'] %>/<%= @report_data['total'] %> </b>
                           </td> 
-                          <td class="col-pdf"  width="10%">
+                          <td class="col-pdf"  width="20%">
                               <b>Score</b>
                           </td>
-                          <td class="col-pdf border-right-none"  width="10%">
+                          <td class="col-pdf border-right-none"  width="15%">
                               <b><%= att_mark %><b>
                           </td>
                       </tr>
@@ -342,7 +342,7 @@
                           </td>
                           <td class="col-pdf border-right-none"  width="20%">
                             <% if !grade.description.blank? %>
-                              <%= grade.description %>  
+                              <b><%= grade.description %></b>  
                             <% end %> 
                           </td>
                       </tr>

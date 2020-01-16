@@ -37,6 +37,11 @@
               <td>Section </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @batch.course.section_name %></td>
               
           </tr>
+          <tr>
+              <td>Exam Name </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.name %></td>
+              <td>Enrollment </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.admission_date,:format=>"%d %b %Y") unless @student.admission_date.nil? %></td>
+              
+          </tr>
           
       </table>
       </div>
@@ -70,13 +75,6 @@
 
         <% end %> 
       </div>
-      
-      <table class="std_info_table" width="100%" cellspacing="0">
-        <tr>
-              <td width='24.5%'>Name of Examination </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.name %></td>
-              <td>Enrollment Date </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.admission_date,:format=>"%d %b %Y") unless @student.admission_date.nil? %></td>
-          </tr>
-      </table>
 
 
     

@@ -142,7 +142,7 @@
             grade_poin_main = 0
             @student_tab = @student_all_tab.find{|val| val.id.to_i == std['id'].to_i }
             if @student_tab.blank?
-              @student_tab = ArchivedStudent.fin_by_former_id(std['id'].to_i)
+              @student_tab = ArchivedStudent.find_by_former_id(std['id'].to_i)
             end
           
             if @student_tab.blank?

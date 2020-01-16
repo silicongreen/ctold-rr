@@ -93,9 +93,9 @@
                  
                   <tr class="table-header">
                       <td class="col-pdf border-left-none no-warp  align-left-baf"><%= "SUBJECTS" %></b></td>
-                      <td class="col-pdf"><b>Assessment<br/>Out Of 50</b></td>
-                      <td class="col-pdf"><b>H.W. & Assignment<br/>Out Of 20</b></td>
-                      <td class="col-pdf  border-right-none"><b>C.W. / S.T<br/>Out Of 10</b></td>
+                      <td class="col-pdf"><b>Assessment<br/>( Out Of 50 )</b></td>
+                      <td class="col-pdf"><b>H.W. & Assignment<br/>( Out Of 20 )</b></td>
+                      <td class="col-pdf  border-right-none"><b>C.W. / S.T<br/>( Out Of 10 )</b></td>
                   </tr>
 
                   <% assessment = 0 %>
@@ -236,7 +236,7 @@
                   </tr>    
 
               </table>
-              <h4><b>Life Skills</b></h4>
+              <h4><b>Life Skills ( Out of 10 )</b></h4>
               <table id="pdf-table" width="99.8%" cellspacing="0">
                 <% unless @report_data['report']['subjects'].blank? %> 
                     <% finish = false %>
@@ -303,16 +303,16 @@
               <h4></h4>
               <table id="pdf-table" class="evaluation" width="99.8%" >
                       <tr class="odd">
-                          <td class="col-pdf border-left-none" width="25%">
-                              <b>Attendance:</b>
+                          <td class="col-pdf border-left-none" width="55%">
+                              <b>Attendance: (Out of 10)</b>
                           </td> 
                           <td class="col-pdf align-center" width="25%">
                               <b> <%= @report_data['present'] %>/<%= @report_data['total'] %> </b>
                           </td> 
-                          <td class="col-pdf"  width="25%">
+                          <td class="col-pdf"  width="10%">
                               <b>Score</b>
                           </td>
-                          <td class="col-pdf border-right-none"  width="25%">
+                          <td class="col-pdf border-right-none"  width="10%">
                               <b><%= att_mark %><b>
                           </td>
                       </tr>
@@ -338,6 +338,9 @@
                           <td class="col-pdf border-right-none"  width="25%">
                               <% if !grade.blank? and !grade.name.blank? %>
                                 <b><%= grade.name %><b>
+                                <% if !grade.description.blank? %>
+                                | <%= grade.description %>  
+                                <% end %>        
                               <% end %>        
                           </td>
                       </tr>

@@ -6754,7 +6754,7 @@ class ExamController < ApplicationController
                   term_mark_multiplier = 0.90
                 end
                 
-                if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6
+                if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6 or sub['grade_subject'].to_i == 1
                   term_mark_multiplier = 1.00
                 end
                 

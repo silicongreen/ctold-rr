@@ -1769,7 +1769,7 @@
                             <td class="col-pdf no-warp">
                                 <%= main_exam_mark1.to_f.round.to_i %>
                             </td>   
-                            <% avg_mark = main_exam_mark1.to_f*0.9 %>
+                            <% avg_mark = main_exam_mark1.to_f*1 %>
 
                             <td class="col-pdf no-warp">
                                 <%= sprintf( "%0.02f", avg_mark)%>
@@ -1878,7 +1878,7 @@
                             <td class="col-pdf no-warp">
                                 <%= main_exam_mark2.to_f.round.to_i %>
                             </td>   
-                            <% avg_mark = main_exam_mark2.to_f*0.9 %>
+                            <% avg_mark = main_exam_mark2.to_f*1 %>
 
                             <td class="col-pdf no-warp">
                                 <%= sprintf( "%0.02f", avg_mark)%>
@@ -2009,7 +2009,7 @@
                               end 
                               end
 
-                            total_mark_all = (total_sb5+total_ob5+total_pr5)*0.9
+                            total_mark_all = (total_sb5+total_ob5+total_pr5)*1
                             total_marks_ag = total_mark_all+monthly5
 
                             total_marks_ag = total_marks_ag.round()

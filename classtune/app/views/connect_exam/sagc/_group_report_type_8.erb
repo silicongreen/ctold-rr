@@ -845,14 +845,12 @@
                   <% if total_grade1 > 0 && total_subject > 0 %>
                       <% grade_point_avg1 = total_grade1.to_f/total_subject.to_f %>
                       <% if grade_point_avg1 > 5 %>
-                          <% total_grade1 = total_subject.to_f*5.00 %>
                           <% grade_point_avg1 = 5.00 %>
                       <% end %>
                   <% end %> 
                   <% if total_grade2 > 0 && total_subject > 0 %>
                       <% grade_point_avg2 = total_grade2.to_f/total_subject.to_f %>
                       <% if grade_point_avg2 > 5 %>
-                          <% total_grade2 = total_subject.to_f*5.00 %>
                           <% grade_point_avg2 = 5.00 %>
                       <% end %>
                   <% end %>

@@ -2333,6 +2333,9 @@ class StudentController < ApplicationController
     @user = current_user
     @student = Student.find(params[:id])
     
+    @student_electives =StudentsSubject.all(:conditions=>{:student_id=>@student.id,:batch_id=>@student.batch.id,:subjects=>{:is_deleted=>false}},:joins=>[:subject])
+    @std_sub_map = @student_electives.map(&:subject_id)
+    @elective_subjects = Subject.find_all_by_batch_id(@student.batch_id,:conditions=>["elective_group_id IS NOT NULL AND is_deleted = false"])
     guardians = @student.student_guardian
     unless guardians.blank?
       iloop = 0
@@ -2401,6 +2404,22 @@ class StudentController < ApplicationController
       if !params[:m_first_name].blank? && !@guardian_mother.blank?
         @guardian_mother.first_name = params[:m_first_name]
         @guardian_mother.save
+      end
+      
+      unless params[:subject_ids].blank? or @elective_subjects.blank?
+        unless @student_electives.blank?
+          @student_electives.each do |e_sub|
+              e_sub.destroy()
+          end
+        end
+        params[:subject_ids].each do |subject_id|
+            student_sub = StudentsSubject.new
+            student_sub.subject_id = subject_id
+            student_sub.elective_type = params["elective_type_#{subject_id}"]
+            student_sub.batch_id = @student.batch_id
+            student_sub.student_id = @student.id
+            student_sub.save 
+        end
       end
       
       if !params[:f_first_name].blank? && @guardian_father.blank?

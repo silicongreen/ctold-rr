@@ -235,7 +235,7 @@
               </div>
               <div class="form-group col-sm-6 even">
                   <label for="student_religion"><%= t('religion') %></label>
-                  <%= s.text_field :religion, :class=>"form-control", :value =>@student.religion %>
+                  <%= select :student, :religion, ["Islam", "Hindu", "Christian", "Buddhist", "Other"],:selected=> @student.religion %>
               </div>
               <div class="form-group col-sm-6">
                   <label for="student_nationality"><%= t("dual_nationality") %></label>
@@ -273,6 +273,35 @@
              </fieldset>
             </div>
           <% end %>
+      <% unless @elective_subjects.blank? %> 
+          <div class="col-sm-12" style="padding:0px;">
+            <fieldset>
+            <legend><%= "Elective Subjects" %></legend>
+             <table  id="example" class="table table-striped table-bordered" style="width:100%">
+              <% @elective_subjects.each do |e_sub| %>
+                 <% e_sub_std = @student_electives.find{|val| val.subject_id.to_i == e_sub.id.to_i } %>
+                 <%
+                  check_string = ""
+                  unless e_sub_std.blank?
+                    check_string = e_sub_std.elective_type
+                  end 
+                  %>
+                 <tr>
+                     <td><input <% if @std_sub_map.include?(e_sub.id) %>checked="checked"<% end %> type="checkbox" name="subject_ids[]" value="<%= e_sub.id %>" /></td>
+                     <td><%= e_sub.name %></td>
+                     <td>
+                       <select name="elective_type_<%=  e_sub.id %>">
+                           <option value="0" <% if check_string.to_i == 0 %> selected="selected"<% end %>>N/A</option>
+                          <option value="3" <% if check_string.to_i == 3 %> selected="selected"<% end %>>3rd</option>
+                          <option value="4" <% if check_string.to_i == 4 %> selected="selected"<% end %>>4th</option>
+                        </select> 
+                     </td>
+                 </tr>
+              <% end %>   
+            </table>
+              
+          </div>    
+      <% end %>     
       <div class="col-sm-12" style="padding:0px;">
             <fieldset>
             <legend><%= t('contact_details') %></legend>

@@ -3795,6 +3795,8 @@ class ExamController < ApplicationController
   
     @batch = Batch.find(@connect_exam_obj.batch_id)
     
+    std_subject = StudentsSubject.find_all_by_batch_id_and_elective_type(@batch.id,4,:include=>[:subject])
+    
     if @tabulation_data.nil?
       student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
       @tabulation_data = []
@@ -3843,6 +3845,7 @@ class ExamController < ApplicationController
       new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)
       starting_row = starting_row+8
     end
+    row_first << "4th Subject Name"
     new_book.worksheet(0).insert_row(0, row_first)
     
     new_book.worksheet(0).merge_cells(0,0,1,0)
@@ -3868,6 +3871,7 @@ class ExamController < ApplicationController
       row_first << "+CT"
       row_first << "LG"
     end
+    row_first << ""
     new_book.worksheet(0).insert_row(1, row_first)
     
     std_loop = 2
@@ -3953,6 +3957,14 @@ class ExamController < ApplicationController
           end  
         end
       end
+      subject_std = std_subject.find{|val| val.subject_id.to_i == std_result['id'].to_i }
+      
+      unless subject_std.blank?
+        tmp_row << subject_std.subject.name
+      else
+        tmp_row << "-"
+      end  
+      
       new_book.worksheet(0).insert_row(std_loop, tmp_row)
       
       

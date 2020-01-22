@@ -3957,7 +3957,7 @@ class ExamController < ApplicationController
           end  
         end
       end
-      subject_std = std_subject.find{|val| val.subject_id.to_i == std_result['id'].to_i }
+      subject_std = std_subject.find{|val| val.student_id.to_i == std_result['id'].to_i }
       
       unless subject_std.blank?
         tmp_row << subject_std.subject.name

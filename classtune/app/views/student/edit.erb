@@ -301,7 +301,71 @@
             </table>
               
           </div>    
-      <% end %>     
+      <% end %> 
+      <div class="col-sm-12" style="padding:0px;">
+              
+          <legend><%= t('additional_detail') %></legend>
+              <% @additional_fields.each do |additional| %>
+                <% prev_record = @student_additional_details.find_by_additional_field_id(additional.id) %>
+                <% unless prev_record.nil? %>
+                  <% if additional.input_type=="has_many" %>
+                    <% prev_value = prev_record.additional_info.split(", ") %>
+                  <% else %>
+                    <% prev_value = prev_record.additional_info %>
+                  <% end %>
+                <% end %>
+                <% input_val = ((params[:student_additional_details].present? and params[:student_additional_details][additional.id.to_s.to_sym].present? and params[:student_additional_details][additional.id.to_s.to_sym][:additional_info].present?) ? (params[:student_additional_details][additional.id.to_s.to_sym][:additional_info]) : (prev_value.present? ? prev_value : nil))%>
+                <% if additional.input_type=="belongs_to" %>
+                  <div class="form-group col-sm-6">
+                      <label><%= additional.name %>
+                          <% if additional.is_mandatory %>
+                            <span class="necessary-field">*</span>
+                          <% end %>
+                      </label>
+                      <%= select_tag "student_additional_details[#{additional.id}][additional_info]", options_for_select(additional.student_additional_field_options.map{|b| [b.field_option,b.field_option]}, input_val)%>
+                  </div>
+                <% elsif additional.input_type=="has_many" %>
+                      <div class="form-group col-sm-6">
+                          <label><%= additional.name %>
+                              <% if additional.is_mandatory %>
+                                <span class="necessary-field">*</span>
+                              <% end %></label>
+                      <div class="fee_category_scroll">
+                          <div class="sel-list">
+                              <%= t('select') %>: <%= link_to_function t('all'), "$$('input.check#{i}').each(function(checkbox) { checkbox.checked = true; });" %>,
+                              <%= link_to_function t('none'), "$$('input.batches_box').each(function(checkbox) { checkbox.checked = false; });" %>
+                          </div>
+                          <% additional.student_additional_field_options.each do |k| %>
+                            <div class="each_batch">
+                                <%= check_box_tag "student_additional_details[#{additional.id}][additional_info][]", k.field_option,(!(input_val.nil?) and input_val.include?(k.field_option)), :class=>"batches_box check#{i}" %> <label><%= k.field_option %></label>
+                            </div>
+                          <% end %>
+                      </div>
+                      </div>      
+                  <% i+=1 %>
+                <% elsif additional.input_type=="text_area" %>
+                  <div class="form-group col-sm-6">
+                      <label><%= additional.name %>
+                          <% if additional.is_mandatory %>
+                            <span class="necessary-field">*</span>
+                          <% end %></label>
+                      <%= text_area_tag "student_additional_details[#{additional.id}][additional_info]", input_val, :class=>"form-control"%>
+                  </div>
+                <% else %>
+                  <div class="form-group col-sm-6">
+                      <label><%= additional.name %>
+                          <% if additional.is_mandatory %>
+                            <span class="necessary-field">*</span>
+                          <% end %></label>
+                          <%= text_field_tag "student_additional_details[#{additional.id}][additional_info]", input_val, :class=>"form-control" %>
+                  </div>
+                <% end %>
+
+              <% end %>
+              
+           </fieldset>
+        </div>
+          
       <div class="col-sm-12" style="padding:0px;">
             <fieldset>
             <legend><%= t('contact_details') %></legend>

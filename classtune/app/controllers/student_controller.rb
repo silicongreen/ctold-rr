@@ -2349,6 +2349,9 @@ class StudentController < ApplicationController
         iloop = iloop+1
       end
     end
+    
+    @additional_fields = StudentAdditionalField.find(:all, :conditions=> "status = true", :order=>"priority ASC")
+    @student_additional_details = StudentAdditionalDetail.find_all_by_student_id(@student.id)
    
     
     @previous_batch_id = @student.batch_id
@@ -2465,6 +2468,52 @@ class StudentController < ApplicationController
           @error=true
         end  
       end
+      
+      mandatory_fields = StudentAdditionalField.find(:all, :conditions=>{:is_mandatory=>true, :status=>true})
+      mandatory_fields.each do|m|
+        unless params[:student_additional_details][m.id.to_s.to_sym].present?
+          @student.errors.add_to_base("#{m.name} must contain atleast one selected option.")
+          @error=true
+        else
+          if params[:student_additional_details][m.id.to_s.to_sym][:additional_info]==""
+            @student.errors.add_to_base("#{m.name} cannot be blank.")
+            @error=true
+          end
+        end
+      end
+      
+      unless @error==true
+        additional_field_ids_posted = []
+        additional_field_ids = @additional_fields.map(&:id)
+        if params[:student_additional_details].present?
+          params[:student_additional_details].each_pair do |k, v|
+            addl_info = v['additional_info']
+            additional_field_ids_posted << k.to_i
+            addl_field = StudentAdditionalField.find_by_id(k)
+            if addl_field.input_type == "has_many"
+              addl_info = addl_info.join(", ")
+            end
+            prev_record = StudentAdditionalDetail.find_by_student_id_and_additional_field_id( @student.id, k)
+            unless prev_record.nil?
+              unless addl_info.present?
+                prev_record.destroy
+              else
+                prev_record.update_attributes(:additional_info => addl_info)
+              end
+            else
+              addl_detail = StudentAdditionalDetail.new(:student_id =>  @student.id,
+                :additional_field_id => k,:additional_info => addl_info)
+              addl_detail.save if addl_detail.valid?
+            end
+          end
+        end
+        if additional_field_ids.present?
+          StudentAdditionalDetail.find_all_by_student_id_and_additional_field_id(@student.id,(additional_field_ids - additional_field_ids_posted)).each do |additional_info|
+            additional_info.destroy unless additional_info.student_additional_field.is_mandatory == true
+          end
+        end
+      end
+      
       
       params[:student].delete "pass"
       if params[:student][:student_category_id] != "433"

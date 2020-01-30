@@ -164,15 +164,19 @@
               </table>
               
           </div>
-          <div class="page-break-main"></div>
-          <div id="grouped_exam_report">
-            <%= render  :partial=>"/connect_exam/sfx/comments5", :locals=>{:grand_total=>grand_total} %>
-          </div>    
+             
       </div>
 
 
 
   </div>
+  <div class="page-break-main"></div>
+  <div id="page-yield"  class="available_sections1 sfx sfx-with-comment">
+      <div class ="current_batch" style="margin-left:0px;">
+         <%= render  :partial=>"/connect_exam/sfx/comments5", :locals=>{:grand_total=>grand_total} %>
+      </div>   
+   </div> 
+ 
 
 <% end %>
 <%= stylesheet_link_tag 'list_table' %>

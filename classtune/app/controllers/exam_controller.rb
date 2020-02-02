@@ -3273,7 +3273,7 @@ class ExamController < ApplicationController
             end
             row << grand_total_mark
             row << gradn_obtain_mark
-            new_book.worksheet(0).insert_row(loop, row)
+            new_book.worksheet(0).insert_row(iloop, row)
           end
         end
 

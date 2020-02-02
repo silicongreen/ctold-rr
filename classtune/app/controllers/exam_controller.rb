@@ -3243,11 +3243,7 @@ class ExamController < ApplicationController
                   midterm_30 = 0
                   total_70 = 0
                   @report_data['report']['exams'].each do |report|
-                    loop = loop+1  
-                    if loop>2
-                      break
-                    end
-
+                    loop = loop+1
                     if loop>2
                       if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                         midterm_total = midterm_total.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
@@ -3262,7 +3258,7 @@ class ExamController < ApplicationController
                     midterm_30  = (midterm_total.to_f*30)/100
                   end
                   if total_mark > 0
-                    total_70  = (midterm_total.to_f*70)/100
+                    total_70  = (total_mark.to_f*70)/100
                   end
                   sub_total = midterm_30+total_70
                   sub_total = sub_total.round

@@ -132,7 +132,8 @@
 
                           </div>
                           <%
-                                    unless classwork.subject.employees.nil?
+                                    emp_name = ""
+                                    unless classwork.subject.employees[0].nil?
                                       emp_name = classwork.subject.employees[0].first_name
                                       unless classwork.subject.employees[0].middle_name.nil?
                                         emp_name += ' ' + classwork.subject.employees[0].middle_name

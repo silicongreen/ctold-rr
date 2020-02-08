@@ -1097,8 +1097,6 @@
               <td colspan="5" style="padding-bottom: 30px;">
                   <div class="pay_fees"><div class="pay_fees_buttons">
                           
-                          <%= @active_gateway %>
-                          <% end %>
                 <% if @active_gateway == "Paypal" %>
                   <%= paypal_pay_button(@certificate,@merchant_id,"FEE #{@fee_collection.name}",total_fees,"http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1",@paid_fees,"float: right;margin: 18px 0 0;") %>
                 <% elsif @active_gateway == "Authorize.net" %>

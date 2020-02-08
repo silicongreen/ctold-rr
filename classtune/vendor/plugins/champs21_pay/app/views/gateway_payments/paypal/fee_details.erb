@@ -1096,7 +1096,7 @@
             <tr>
               <td colspan="5" style="padding-bottom: 30px;">
                   <div class="pay_fees"><div class="pay_fees_buttons">
-                          <% if MultiSchool.current_school.id == 2 %>  
+                          
                           <%= @active_gateway %>
                           <% end %>
                 <% if @active_gateway == "Paypal" %>
@@ -1124,7 +1124,11 @@
                 <% if MultiSchool.current_school.id != 352 %>  
                 <%= link_to "► #{t('print_receipt')}",
                   {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id},:target => '_blank', :class=> 'user_button' %>
-                </div></div>  
+                </div>
+                  <% if MultiSchool.current_school.id == 2 %>  
+                      <img src="/images/bkash.gif" />
+                   <% end %>   
+                  </div>  
                 <% end %>  
               </td>
             </tr>

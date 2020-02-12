@@ -671,11 +671,7 @@ class UserController < ApplicationController
       elsif  request.get? and params[:username] and params[:password] and params[:auth_id] and params[:user_id]
       
         username = params[:username]
-	if MultiSchool.current_school.id = 348
-        	password = params[:password].gsub!('---', '#')
-        else
-		password = params[:password] #.gsub!('---', '#')
-        end
+	password = params[:password]
         session[:access_token] = params[:acess_token]
         
         champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']

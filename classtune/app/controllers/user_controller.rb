@@ -671,7 +671,7 @@ class UserController < ApplicationController
       elsif  request.get? and params[:username] and params[:password] and params[:auth_id] and params[:user_id]
       
         username = params[:username]
-        password = params[:password].gsub!('---', '#')
+        password = params[:password] #.gsub!('---', '#')
         session[:access_token] = params[:acess_token]
         
         champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
@@ -715,7 +715,7 @@ class UserController < ApplicationController
           "user_cookie_exp" => ar_user_cookie[3].split('=')[1].to_time.to_i
         ]
         else
-          
+         #abort() 
         user_info = [ 
           "user_secret" => auth_response['data']['paid_user']['secret'],
           "user_cookie" => ar_user_cookie[1].split(",")[1],

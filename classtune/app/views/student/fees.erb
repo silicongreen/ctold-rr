@@ -259,6 +259,9 @@
                         else
                           bal = balance - paid_amount
                           advance = bal * -1
+                          if bal.to_f < 0 
+                            bal = 0.00
+                          end
                         end
                         advance = advance_amount_paid
                       else

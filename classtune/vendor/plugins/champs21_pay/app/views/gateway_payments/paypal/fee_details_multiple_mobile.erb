@@ -1030,8 +1030,9 @@
             </td>  
           </tr>
           <% found = true %>
+          <% under_maintenance = false %>
           <% if has_dues == false %>
-            <% if total_fees > 0 and found %>
+            <% if total_fees > 0 and found and under_maintenance == false %>
                 <tr>
                   <td colspan="5" style="padding-bottom: 30px;">
                       <div class="pay_fees"><div class="pay_fees_buttons" style="text-align: center;">
@@ -1064,6 +1065,14 @@
                         </div></div>  
                   </td>
                 </tr>
+            <% else %>    
+                <% if under_maintenance %>
+                  <tr><td colspan="5" style="padding-bottom: 30px;">
+                      <div class="pay_fees"><div class="pay_fees_buttons">
+                      <img src="/images/under-maintenance.png" style="width: 150px; float: right;" /> 
+                      </div></div>  
+                  </td></tr> 
+                <% end %>
             <% end %>
           <% else %>
             <% if found == false and total_fees > 0 %>

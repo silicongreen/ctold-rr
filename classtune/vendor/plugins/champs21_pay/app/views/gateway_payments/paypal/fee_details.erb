@@ -1085,12 +1085,13 @@
             }
         });
       </script>
+      <% under_maintenance = false %>
       <% if MultiSchool.current_school.id == 352 %>
       <% @student_has_due = false %>
       <% end %>
       <% if @student_has_due == false #and @financefee.batch_id == @student.batch_id %>
         <%#= total_fees.to_s + " DID DID DID" %>
-        <% if total_fees > 0  %>
+        <% if total_fees > 0 and under_maintenance == false  %>
             <% @amount_to_pay = precision_label(balance+@fine_amount.to_f) %>
             <% unless combine_fees_enabled %>
             <tr>
@@ -1133,20 +1134,28 @@
               </td>
             </tr>
             <% end %>
+        <% else %>
+            <% if under_maintenance %>
+            <tr><td colspan="5" style="padding-bottom: 30px;">
+                <div class="pay_fees"><div class="pay_fees_buttons">
+                <img src="/images/under-maintenance.png" style="width: 150px; float: right;" /> 
+                </div></div>  
+            </td></tr>
+            <% end %>
         <% end %>
       <% else %>
             <% if @financefee.batch_id != @student.batch_id and total_fees > 0 %>
-            <tr>
-                <td colspan="5">
-                  <center><font color="red">***Your class or Section has been changes, Please contact admin to update your payment info***</font></center> 
-                </td>
-            </tr>    
-            <% elsif total_fees > 0 %>
-            <tr>
-                <td colspan="5">
-                  <center><font color="red">***Student Has Previous Due***</font></center> 
-                </td>
-            </tr> 
+              <tr>
+                  <td colspan="5">
+                    <center><font color="red">***Your class or Section has been changes, Please contact admin to update your payment info***</font></center> 
+                  </td>
+              </tr>    
+              <% elsif total_fees > 0 %>
+              <tr>
+                  <td colspan="5">
+                    <center><font color="red">***Student Has Previous Due***</font></center> 
+                  </td>
+              </tr> 
             <% end %>
       <% end %>    
     </table>

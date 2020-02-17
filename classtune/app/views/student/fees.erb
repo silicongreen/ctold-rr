@@ -200,6 +200,14 @@
                         unless paidFineFess.blank?
                           fine_amount_paid += paidFineFess.map(&:amount).sum.to_f
                         end
+                        
+                        paidTransactionFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")")
+                        unless paidTransactionFess.blank?
+                          particulars = FinanceFeeParticular.find(:all, :conditions => "id IN (#{paidTransactionFess.map(&:particular_id).join(",")})")
+                          unless particulars.blank?
+                            particulars_category_ids = particulars.map(&:finance_fee_particular_category_id)
+                          end
+                        end
                       end
                     end
                     if fine_amount_paid > 0
@@ -240,8 +248,25 @@
                       advance = advance_amount_paid
                     end
                     if bal.to_f < 0 
-                      advance = bal * -1
-                      bal = 0.00
+                      unless particulars_category_ids.blank?
+                        if fine_amount_paid > 0
+                          bal = FinanceFee.get_student_balance_custom(d, @student, finance_fee, particulars_category_ids) + fine_amount_paid.to_f
+                        else
+                          bal = FinanceFee.get_student_balance_custom(d, @student, finance_fee, particulars_category_ids) + d.fine_to_pay(@student).to_f + fine_amount_paid.to_f
+                        end
+                        if bal > 0
+                          fees_to_paid += 1
+                        else
+                          bal = balance - paid_amount
+                          advance = bal * -1
+                        end
+                        advance = advance_amount_paid
+                      else
+                        advance = bal * -1
+                        bal = 0.00
+                      end
+                      #advance = bal * -1
+                      #bal = 0.00
                     end
                   %>
                   <% class_name = "unpaid_class" %>

@@ -4531,6 +4531,8 @@ class FinanceController < ApplicationController
     @finance_fee_collection = FinanceFeeCollection.new
     if request.post?
       
+      #Delayed::Job.enqueue(DelayedFeeCollectionJob.new(@user,params[:finance_fee_collection],params[:fee_collection], sent_remainder, particular_ids, particular_names, transport_particular_id, transport_particular_name, default_particular_names, default_transport_particular_name, auto_adjust_advance, for_admission))
+      
       
       Delayed::Job.enqueue(DelayedFeeCollectionJob.new(@user,params[:finance_fee_collection],params[:fee_collection], sent_remainder, particular_ids, particular_names, transport_particular_id, transport_particular_name, default_particular_names, default_transport_particular_name, auto_adjust_advance, for_admission))
       

@@ -248,8 +248,33 @@ module OnlinePayment
               request_params = @finance_order.request_params
               
               multiple_param = request_params[:multiple]
+              unless multiple_param.nil?
+                if multiple_param.to_s == "true"
+                  @collection_fees = request_params[:fees]
+                  fees = request_params[:fees].split(",")
+                  #abort('here1')
+                  arrange_multiple_pay(params[:id], fees, params[:submission_date])
+                else  
+                  arrange_pay(params[:id], params[:id2], params[:submission_date])
+                end
+              else
+                arrange_pay(params[:id], params[:id2], params[:submission_date])
+              end
             else
               multiple_param = params[:multiple]
+              unless multiple_param.nil?
+                #abort('here-1')
+                if multiple_param.to_s == "true"
+                  @collection_fees = params[:fees]
+                  fees = params[:fees].split(",")
+                  arrange_multiple_pay(params[:id], fees, params[:submission_date])
+                else  
+                  arrange_pay(params[:id], params[:id2], params[:submission_date])
+                end
+              else
+                #abort('here')
+                arrange_pay(params[:id], params[:id2], params[:submission_date])
+              end
             end
             validate_payment_types(params)
             

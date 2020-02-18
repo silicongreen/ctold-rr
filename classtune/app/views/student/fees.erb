@@ -248,25 +248,23 @@
                       advance = advance_amount_paid
                     end
                     if bal.to_f < 0 
+                      advance = bal * -1
+                      bal = 0.00
                       unless particulars_category_ids.blank?
                         if fine_amount_paid > 0
-                          bal = FinanceFee.get_student_balance_custom(d, @student, finance_fee, particulars_category_ids) + fine_amount_paid.to_f
+                          bal_1 = FinanceFee.get_student_balance_custom(d, @student, finance_fee, particulars_category_ids) + fine_amount_paid.to_f
                         else
-                          bal = FinanceFee.get_student_balance_custom(d, @student, finance_fee, particulars_category_ids) + d.fine_to_pay(@student).to_f + fine_amount_paid.to_f
+                          bal_1 = FinanceFee.get_student_balance_custom(d, @student, finance_fee, particulars_category_ids) + d.fine_to_pay(@student).to_f + fine_amount_paid.to_f
                         end
-                        if bal > 0
-                          fees_to_paid += 1
-                        else
-                          bal = balance - paid_amount
-                          advance = bal * -1
-                          if bal.to_f < 0 
-                            bal = 0.00
-                          end
+                        if bal_1 > 0
+                           advance = advance - bal_1
+                           if advance < 0
+                             advance = 0
+                           end
+                           bal = bal_1
                         end
-                        advance = advance_amount_paid
                       else
-                        advance = bal * -1
-                        bal = 0.00
+                        
                       end
                       #advance = bal * -1
                       #bal = 0.00

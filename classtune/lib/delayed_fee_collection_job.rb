@@ -1,6 +1,6 @@
 require 'i18n'
 class DelayedFeeCollectionJob
-  attr_accessor :user,:collection,:fee_collection, :sent_remainder, :particular_ids, :particular_names, :transport_particular_id, :transport_particular_name
+  attr_accessor :user,:collection,:fee_collection, :sent_remainder, :particular_ids, :particular_names, :transport_particular_id, :transport_particular_name, :auto_adjust_advance, :for_admission
   def initialize(user,collection,fee_collection, sent_remainder, particular_ids, particular_names,transport_particular_id, transport_particular_name, default_particular_names, default_transport_particular_name, auto_adjust_advance, for_admission)
     @user = user
     @collection = collection
@@ -444,6 +444,12 @@ class DelayedFeeCollectionJob
                         finance_fee.update_attributes( :is_paid=>true, :balance => 0.0)
                       else
                         finance_fee.update_attributes(:balance => bal)
+                      end
+                      
+                      transaction.update_attributes(:user_id=>@user.id)
+                      if transaction.finance_type=="FinanceFee"
+                        transaction.update_attributes(:batch_id=>"#{s.batch_id}")
+                        FeeTransaction.create(:finance_fee_id=>finance_fee.id,:finance_transaction_id=>transaction.id)
                       end
                     end
 

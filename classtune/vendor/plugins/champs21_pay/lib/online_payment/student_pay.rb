@@ -125,7 +125,7 @@ module OnlinePayment
               end
             end
           else
-            if params[:create_transaction].present?
+            if params[:create_transaction].present? and @active_gateway == "trustbank"
               result = Base64.decode64(params[:CheckoutXmlMsg])
               #result = '<Response date="2016-06-20 10:14:53.213">  <RefID>133783A000129D</RefID>  <OrderID>O100010</OrderID>  <Name> Customer1</Name>  <Email> mr.customer@gmail.com </Email>  <Amount>2090.00</Amount>  <ServiceCharge>0.00</ServiceCharge>  <Status>1</Status>  <StatusText>PAID</StatusText>  <Used>0</Used>  <Verified>0</Verified>  <PaymentType>ITCL</PaymentType>  <PAN>712300XXXX1277</PAN>  <TBMM_Account></TBMM_Account>  <MarchentID>SAGC</MarchentID>  <OrderDateTime>2016-06-20 10:14:24.700</OrderDateTime>  <PaymentDateTime>2016-06-20 10:21:34.303</PaymentDateTime>  <EMI_No>0</EMI_No>  <InterestAmount>0.00</InterestAmount>  <PayWithCharge>1</PayWithCharge>  <CardResponseCode>00</CardResponseCode>  <CardResponseDescription>APPROVED</CardResponseDescription>  <CardOrderStatus>APPROVED</CardOrderStatus> </Response> '
               xml_res = Nokogiri::XML(result)
@@ -248,33 +248,8 @@ module OnlinePayment
               request_params = @finance_order.request_params
               
               multiple_param = request_params[:multiple]
-              unless multiple_param.nil?
-                if multiple_param.to_s == "true"
-                  @collection_fees = request_params[:fees]
-                  fees = request_params[:fees].split(",")
-                  #abort('here1')
-                  arrange_multiple_pay(params[:id], fees, params[:submission_date])
-                else  
-                  arrange_pay(params[:id], params[:id2], params[:submission_date])
-                end
-              else
-                arrange_pay(params[:id], params[:id2], params[:submission_date])
-              end
             else
               multiple_param = params[:multiple]
-              unless multiple_param.nil?
-                #abort('here-1')
-                if multiple_param.to_s == "true"
-                  @collection_fees = params[:fees]
-                  fees = params[:fees].split(",")
-                  arrange_multiple_pay(params[:id], fees, params[:submission_date])
-                else  
-                  arrange_pay(params[:id], params[:id2], params[:submission_date])
-                end
-              else
-                #abort('here')
-                arrange_pay(params[:id], params[:id2], params[:submission_date])
-              end
             end
             validate_payment_types(params)
             

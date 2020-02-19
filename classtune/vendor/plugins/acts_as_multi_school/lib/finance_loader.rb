@@ -2870,7 +2870,7 @@ module FinanceLoader
       archived = true
       @student = ArchivedStudent.find_by_admission_no(admission_no)
     end
-abort(@student.inspect)
+
 
     request_url = @verification_url + '/Transaction_Verify_Details'
     uri = URI(request_url)

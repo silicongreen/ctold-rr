@@ -3204,7 +3204,7 @@ module FinanceLoader
                     end
                   end
                   #abort(@fine_amount.inspect)
-                  total_fees = fee.balance.to_f #+@fine_amount.to_f
+                  total_fees = fee.balance.to_f+@fine_amount.to_f
 
                   amount_from_gateway = amount
 abort(amount_from_gateway.inspect)

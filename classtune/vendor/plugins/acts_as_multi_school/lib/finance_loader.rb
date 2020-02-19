@@ -3202,6 +3202,7 @@ module FinanceLoader
   end
   
   def validate_payment_types(params)
+    orderId = ""
     if params[:create_cancel_transaction].present?
         gateway_response = {
           :amount => params[:amount],

@@ -2646,7 +2646,7 @@ module FinanceLoader
   end
   
   def order_verify_trust_bank(o)
-    abort(o.inspect)
+    
     testtrustbank = false
     if PaymentConfiguration.config_value('is_test_testtrustbank').to_i == 1
       if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config_tcash.yml")
@@ -2870,7 +2870,7 @@ module FinanceLoader
       archived = true
       @student = ArchivedStudent.find_by_admission_no(admission_no)
     end
-
+abort(@student.inspect)
 
     request_url = @verification_url + '/Transaction_Verify_Details'
     uri = URI(request_url)

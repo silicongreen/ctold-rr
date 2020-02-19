@@ -3162,7 +3162,7 @@ module FinanceLoader
                   end
 
                   bal=(@total_payable-@total_discount).to_f
-abort(bal.inspect)
+
                   @fine_amount=0 if @financefee.is_paid
 
                   unless advance_fee_collection
@@ -3176,7 +3176,7 @@ abort(bal.inspect)
                   total_fees = @financefee.balance.to_f+@fine_amount.to_f
 
                   amount_from_gateway = amount
-
+abort(amount_from_gateway.inspect)
                   #abort(amount_from_gateway.to_s + " " + total_fees.to_s + "  " + @fine_amount.to_s)
                   pay_student(amount_from_gateway, total_fees, request_params, finance_order.order_id, verification_trans_date, ref_id)
                 end

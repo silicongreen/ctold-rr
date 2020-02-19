@@ -3064,7 +3064,7 @@ module FinanceLoader
         unless finance_orders.nil?
 
           finance_orders.each do |finance_order|
-            abort(finance_order.inspect)
+            #abort(finance_order.inspect)
             request_params = finance_order.request_params
 
             fee_id = finance_order.finance_fee_id
@@ -3078,7 +3078,7 @@ module FinanceLoader
               else
                 payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
               end
-
+              abort(fee.inspect)
               unless fee.is_paid
                 date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
                 unless date.nil?

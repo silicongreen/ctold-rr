@@ -3078,7 +3078,7 @@ module FinanceLoader
               else
                 payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
               end
-              abort(fee.inspect)
+              
               unless fee.is_paid
                 date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
                 unless date.nil?
@@ -3144,7 +3144,7 @@ module FinanceLoader
                   else  
                     @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
                   end
-
+abort(@total_payable.inspect)
                   @total_discount = 0
 
                   #calculate_discount(@date, @financefee.batch, @student, @financefee.is_paid)

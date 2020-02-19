@@ -3028,6 +3028,7 @@ module FinanceLoader
         finance_order.destroy
       end
     end
+    abort(verify_order.inspect)
     if verify_order
       #@student = Student.find(29341)
       unless @student.nil?

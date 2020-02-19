@@ -3172,9 +3172,9 @@ module FinanceLoader
                       calculate_discount(@date, fee.batch, @student, false, nil, @fee_has_advance_particular)
                     end
                   end
-                  abort(fee.inspect)
+                  
                   total_fees = fee.balance.to_f+@fine_amount.to_f
-
+abort(total_fees.inspect)
                   amount_from_gateway = amount
 abort(amount_from_gateway.inspect)
                   #abort(amount_from_gateway.to_s + " " + total_fees.to_s + "  " + @fine_amount.to_s)

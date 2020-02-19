@@ -3164,7 +3164,7 @@ module FinanceLoader
                   bal=(@total_payable-@total_discount).to_f
                   
                   
-                  days=(transaction_datetime.to_date-@date.due_date.to_date).to_i
+                  days=(verification_trans_date.to_date-@date.due_date.to_date).to_i
                   
                   fine_enabled = true
                   student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
@@ -3207,7 +3207,7 @@ module FinanceLoader
                   total_fees = fee.balance.to_f+@fine_amount.to_f
 
                   amount_from_gateway = amount
-abort(amount_from_gateway.inspect)
+
                   #abort(amount_from_gateway.to_s + " " + total_fees.to_s + "  " + @fine_amount.to_s)
                   pay_student(amount_from_gateway, total_fees, request_params, finance_order.order_id, verification_trans_date, ref_id)
                 end
@@ -3576,6 +3576,7 @@ abort(amount_from_gateway.inspect)
             end
           end
         elsif @active_gateway == "trustbank"
+          @fine = 0
           unless order_verify_trust_bank(orderId)
             msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
             gateway_status = false

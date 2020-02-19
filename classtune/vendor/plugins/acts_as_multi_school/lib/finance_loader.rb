@@ -3144,7 +3144,7 @@ module FinanceLoader
                   else  
                     @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
                   end
-#abort(@total_payable.inspect)
+abort(@total_payable.inspect)
                   @total_discount = 0
 
                   #calculate_discount(@date, @financefee.batch, @student, @financefee.is_paid)

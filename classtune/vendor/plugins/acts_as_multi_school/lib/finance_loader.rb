@@ -3165,28 +3165,36 @@ module FinanceLoader
                   
                   
                   days=(transaction_datetime.to_date-@date.due_date.to_date).to_i
-                  abort(days.to_s)
+                  
+                  fine_enabled = true
+                  student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+                  unless student_fee_configuration.blank?
+                    if student_fee_configuration.config_value.to_i == 1
+                      fine_enabled = true
+                    else
+                      fine_enabled = false
+                    end
+                  end
+                  
 
-#                  auto_fine=@date.fine
-#                  
-#                  @has_fine_discount = false
-#                  if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
-#                    @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
-#                    @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
-#
-#                    calculate_extra_fine(@date, @batch, @student, @fine_rule)
-#
-#                    @new_fine_amount = @fine_amount
-#                    get_fine_discount(@date, @batch, @student)
-#                    #abort(@new_fine_amount.to_s)
-#                    if @fine_amount < 0
-#                      @fine_amount = 0
-#                    end
-#                  end
-#                  #abort(@fine_amount.to_s)
-#                  @fine_amount=0 if @financefee.is_paid
-#                  
-#                  @fine_amount=0 if fee.is_paid
+                  auto_fine=@date.fine
+#                 
+                  @fine_amount = 0
+                  @has_fine_discount = false
+                  if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
+                    @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
+                    @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
+
+                    calculate_extra_fine(@date, fee.batch, @student, @fine_rule)
+
+                    @new_fine_amount = @fine_amount
+                    get_fine_discount(@date, @batch, @student)
+                    #abort(@new_fine_amount.to_s)
+                    if @fine_amount < 0
+                      @fine_amount = 0
+                    end
+                  end
+                  
 
                   unless advance_fee_collection
                     if @total_discount == 0
@@ -3196,7 +3204,7 @@ module FinanceLoader
                     end
                   end
                   #abort(@fine_amount.inspect)
-                  total_fees = fee.balance.to_f #+@fine_amount.to_f
+                  total_fees = fee.balance.to_f+@fine_amount.to_f
 
                   amount_from_gateway = amount
 abort(amount_from_gateway.inspect)

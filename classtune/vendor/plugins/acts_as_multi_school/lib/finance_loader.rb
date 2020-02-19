@@ -3064,6 +3064,7 @@ module FinanceLoader
         unless finance_orders.nil?
 
           finance_orders.each do |finance_order|
+            abort(finance_order.inspect)
             request_params = finance_order.request_params
 
             fee_id = finance_order.finance_fee_id

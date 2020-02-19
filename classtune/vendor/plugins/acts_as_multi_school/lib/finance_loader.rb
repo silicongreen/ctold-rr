@@ -3543,33 +3543,12 @@ module FinanceLoader
             end
           end
         elsif @active_gateway == "trustbank"
-          gateway_status = true if status_post.to_i == 1
-
-          if gateway_status == true
-            unless order_verify_trust_bank(orderId)
-              msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
-              gateway_status = false
-            else
-              gateway_status = true
-            end
+          unless order_verify_trust_bank(orderId)
+            msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
+            gateway_status = false
+          else
+            gateway_status = true
           end
-        end
-
-        amount_from_gateway = 0
-        if @active_gateway == "Paypal"
-          amount_from_gateway = params[:amt]
-        elsif @active_gateway == "Authorize.net"
-          amount_from_gateway = params[:x_amount]
-        elsif @active_gateway == "ssl.commerce"
-          amount_from_gateway=params[:amount]
-        elsif @active_gateway == "trustbank"
-          amount_from_gateway=amount
-        end
-
-        #trans_id=@financefee.fee_transactions.collect(&:finance_transaction_id).join(",")
-
-        unless request_params.nil?
-          total_fees = request_params[:amount_to_pay]
         end
 
         if gateway_status == false

@@ -3163,7 +3163,26 @@ module FinanceLoader
 
                   bal=(@total_payable-@total_discount).to_f
 
-                  @fine_amount=0 if fee.is_paid
+#                  auto_fine=@date.fine
+#                  
+#                  @has_fine_discount = false
+#                  if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
+#                    @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
+#                    @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
+#
+#                    calculate_extra_fine(@date, @batch, @student, @fine_rule)
+#
+#                    @new_fine_amount = @fine_amount
+#                    get_fine_discount(@date, @batch, @student)
+#                    #abort(@new_fine_amount.to_s)
+#                    if @fine_amount < 0
+#                      @fine_amount = 0
+#                    end
+#                  end
+#                  #abort(@fine_amount.to_s)
+#                  @fine_amount=0 if @financefee.is_paid
+#                  
+#                  @fine_amount=0 if fee.is_paid
 
                   unless advance_fee_collection
                     if @total_discount == 0
@@ -3172,9 +3191,9 @@ module FinanceLoader
                       calculate_discount(@date, fee.batch, @student, false, nil, @fee_has_advance_particular)
                     end
                   end
-                  
-                  total_fees = fee.balance.to_f+@fine_amount.to_f
-abort(total_fees.inspect)
+                  #abort(@fine_amount.inspect)
+                  total_fees = fee.balance.to_f #+@fine_amount.to_f
+
                   amount_from_gateway = amount
 abort(amount_from_gateway.inspect)
                   #abort(amount_from_gateway.to_s + " " + total_fees.to_s + "  " + @fine_amount.to_s)

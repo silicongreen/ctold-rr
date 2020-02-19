@@ -3144,7 +3144,7 @@ module FinanceLoader
                   else  
                     @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
                   end
-abort(@total_payable.inspect)
+
                   @total_discount = 0
 
                   #calculate_discount(@date, @financefee.batch, @student, @financefee.is_paid)
@@ -3162,7 +3162,7 @@ abort(@total_payable.inspect)
                   end
 
                   bal=(@total_payable-@total_discount).to_f
-
+abort(bal.inspect)
                   @fine_amount=0 if @financefee.is_paid
 
                   unless advance_fee_collection

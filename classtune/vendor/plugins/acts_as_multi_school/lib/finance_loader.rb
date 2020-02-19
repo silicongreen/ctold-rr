@@ -3163,7 +3163,7 @@ module FinanceLoader
 
                   bal=(@total_payable-@total_discount).to_f
 
-                  @fine_amount=0 if @financefee.is_paid
+                  @fine_amount=0 if fee.is_paid
 
                   unless advance_fee_collection
                     if @total_discount == 0
@@ -3173,7 +3173,7 @@ module FinanceLoader
                     end
                   end
                   #abort(@financefee.inspect)
-                  total_fees = @financefee.balance.to_f+@fine_amount.to_f
+                  total_fees = fee.balance.to_f+@fine_amount.to_f
 
                   amount_from_gateway = amount
 abort(amount_from_gateway.inspect)

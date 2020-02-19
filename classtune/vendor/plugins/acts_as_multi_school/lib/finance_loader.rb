@@ -3162,6 +3162,10 @@ module FinanceLoader
                   end
 
                   bal=(@total_payable-@total_discount).to_f
+                  
+                  
+                  days=(transaction_datetime.to_date-@date.due_date.to_date).to_i
+                  abort(days.to_s)
 
 #                  auto_fine=@date.fine
 #                  

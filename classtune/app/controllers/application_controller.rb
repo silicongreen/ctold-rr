@@ -45,6 +45,8 @@ class ApplicationController < ActionController::Base
   helper_method :can_access_plugin?
   helper_method :can_access_feature?
 
+  after_filter :activity_check
+  
   helper_method :currency
   protect_from_forgery # :secret => '434571160a81b5595319c859d32060c1'
   filter_parameter_logging :password
@@ -229,7 +231,7 @@ class ApplicationController < ActionController::Base
   end
   
   def get_exam_result_type2()
-    require "yaml"
+    require "yaml"  
     vreturn = {}
     type_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/other.yml")['resulttype2']
     all_schools = type_config['numbers'].split(",")
@@ -422,6 +424,7 @@ class ApplicationController < ActionController::Base
   end  
   
   def activity_check
+    #abort('here')
     @session_end_time_diff = 15
     now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
     if session[:user_id].present? and params[:action] != 'show_quick_links'
@@ -441,12 +444,14 @@ class ApplicationController < ActionController::Base
                 activity_log_update = ActivityLog.find(@last_log.id)
                 activity_log_update.session_end = 1
                 activity_log_update.session_time = @sesstion_time
+                activity_log.post_requests = params
                 activity_log_update.save
               else
                 @sesstion_time =  now.to_time-@last_session_log.created_at.to_time
                 activity_log_update = ActivityLog.find(@last_log.id)
                 activity_log_update.session_end = 1
                 activity_log_update.session_time = @sesstion_time
+                activity_log.post_requests = params
                 activity_log_update.save
               end
             else
@@ -456,18 +461,20 @@ class ApplicationController < ActionController::Base
                 activity_log_update = ActivityLog.find(@last_log.id)
                 activity_log_update.session_end = 1
                 activity_log_update.session_time = @sesstion_time
+                activity_log.post_requests = params
                 activity_log_update.save
               end
             end  
           end
         end
         
-        
+         
         
         activity_log = ActivityLog.new
         activity_log.user_id = current_user.id
         activity_log.controller = params[:controller]
         activity_log.action = params[:action]
+        activity_log.post_requests = params
         activity_log.ip = request.remote_ip
         activity_log.user_agent = request.user_agent
         activity_log.created_at = now
@@ -624,6 +631,14 @@ class ApplicationController < ActionController::Base
         format.xml  { head :not_found }
         format.any  { head :not_found }
       end
+    end
+    
+    rescue_from ActionController::RoutingError do |exception|
+#      respond_to do |format|
+#        format.html { render :file => "#{Rails.root}/public/404.html", :status => :not_found }
+#        format.xml  { head :not_found }
+#        format.any  { head :not_found }
+#      end
     end
   end
 

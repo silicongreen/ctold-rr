@@ -17,7 +17,7 @@
 #limitations under the License.
 
 class FinanceFee < ActiveRecord::Base
-  attr_accessor :current_user_id
+  attr_accessor :current_user_id, :update_bal_data
   
   belongs_to :finance_fee_collection ,:foreign_key => 'fee_collection_id'
   has_many   :finance_transactions ,:as=>:finance
@@ -31,7 +31,7 @@ class FinanceFee < ActiveRecord::Base
   has_one    :fee_refund
   named_scope :active , :joins=>[:finance_fee_collection] ,:conditions=>{:finance_fee_collections=>{:is_deleted=>false}}
   after_create :set_ledger
-  #after_update :update_ledger
+  after_update :regenerate_balance
   before_destroy :delete_ledger
   
   
@@ -740,6 +740,31 @@ class FinanceFee < ActiveRecord::Base
     
     bal = ( total_payable - total_discount )
     bal
+  end
+  
+  def regenerate_balance
+    if student
+      if update_bal_data
+        finance_fee = self
+        date = FinanceFeeCollection.find(fee_collection_id)
+
+        bal = FinanceFee.get_student_balance(finance_fee_collection, student, self)
+        paid_fees = finance_fee.finance_transactions
+        paid_amount = 0
+        unless paid_fees.blank?
+          paid_fees.each do |pf|
+            paid_amount += pf.amount
+          end
+        end
+        bal = bal - paid_amount
+        if bal < 0
+          bal = 0
+          finance_fee.update_attributes( :is_paid=>true, :balance => 0.0, :update_bal_data => true)
+        else
+          finance_fee.update_attributes(:balance => bal, :update_bal_data => true)
+        end
+      end
+    end
   end
   
   def self.get_student_balance_custom(date, s, fee, exclude_particular_categories)

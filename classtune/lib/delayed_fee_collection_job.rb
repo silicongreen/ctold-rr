@@ -453,6 +453,22 @@ class DelayedFeeCollectionJob
                       end
                     end
 
+                    bal = FinanceFee.get_student_balance(@finance_fee_collection, s, finance_fee)
+                    paid_fees = finance_fee.finance_transactions
+                    paid_amount = 0
+                    unless paid_fees.blank?
+                      paid_fees.each do |pf|
+                        paid_amount += pf.amount
+                      end
+                    end
+                    bal = bal - paid_amount
+                    if bal < 0
+                      bal = 0
+                      finance_fee.update_attributes( :is_paid=>true, :balance => 0.0)
+                    else
+                      finance_fee.update_attributes(:balance => bal)
+                    end
+                    
                     recipient_ids << s.user.id if s.user
                     recipient_ids << s.immediate_contact.user_id if s.immediate_contact.present?
                   end

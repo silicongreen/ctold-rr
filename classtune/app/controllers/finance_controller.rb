@@ -1462,6 +1462,11 @@ class FinanceController < ApplicationController
                 if online_payments.length > 1
                   trans_ids << pwt.id
                 end
+              elsif params[:test].to_i == 4  
+                online_payments = Payment.find(:all, :conditions => "finance_transaction_id = #{pwt.id}")
+                if online_payments.length > 1
+                  trans_ids << pwt.id
+                end
               end
             end
             abort(trans_ids.inspect)

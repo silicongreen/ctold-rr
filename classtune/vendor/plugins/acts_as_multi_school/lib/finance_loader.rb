@@ -3079,6 +3079,7 @@ module FinanceLoader
                 payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
               end
               
+              
               unless fee.is_paid
                 date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
                 unless date.nil?
@@ -3577,6 +3578,25 @@ module FinanceLoader
           end
         elsif @active_gateway == "trustbank"
           @fine = 0
+          
+          @finance_order = FinanceOrder.find_by_order_id(orderId.strip)
+          #abort(@finance_order.inspect)
+          request_params = @finance_order.request_params
+
+          multiple_param = request_params[:multiple]
+          unless multiple_param.nil?
+            if multiple_param.to_s == "true"
+              @collection_fees = request_params[:fees]
+              fees = request_params[:fees].split(",")
+              #abort('here1')
+              arrange_multiple_pay(params[:id], fees, params[:submission_date])
+            else  
+              arrange_pay(params[:id], params[:id2], params[:submission_date])
+            end
+          else
+            arrange_pay(params[:id], params[:id2], params[:submission_date])
+          end
+          
           unless order_verify_trust_bank(orderId)
             msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
             gateway_status = false

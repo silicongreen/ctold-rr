@@ -6,6 +6,7 @@ module Champs21Pay
   AUTHORIZENET_CONFIG_KEYS = ["authorize_net_merchant_id","authorize_net_transaction_password"]
   SSL_COMMERCE_CONFIG_KEYS = ["is_test_sslcommerz", "store_id","store_password"]
   TRUST_BANK_CONFIG_KEYS = ["is_test_testtrustbank", "merchant_id","keycode_verification"]
+  BKASH_CONFIG_KEYS = ["is_test_bkash", "merchant_id","keycode_verification"]
 
   def self.attach_overrides
     Dispatcher.to_prepare :champs21_pay do

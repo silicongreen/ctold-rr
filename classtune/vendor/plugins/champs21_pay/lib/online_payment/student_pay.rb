@@ -76,21 +76,6 @@ module OnlinePayment
           
           current_school_name = Configuration.find_by_config_key('InstitutionName').try(:config_value)
           
-#          multiple_param_new = params[:multiple]
-#          unless multiple_param_new.nil?
-#            #abort('here-1')
-#            if multiple_param_new.to_s == "true"
-#              @collection_fees = params[:fees]
-#              fees = params[:fees].split(",")
-#              arrange_multiple_pay(params[:id], fees, params[:submission_date])
-#            else  
-#              arrange_pay(params[:id], params[:id2], params[:submission_date])
-#            end
-#          else
-#            #abort('here')
-#            arrange_pay(params[:id], params[:id2], params[:submission_date])
-#          end
-          
           #@fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }
           #@total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
           

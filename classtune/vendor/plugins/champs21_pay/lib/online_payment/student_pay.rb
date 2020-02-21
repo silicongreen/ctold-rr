@@ -295,7 +295,7 @@ module OnlinePayment
               if multiple_param.to_s == "true"
                 collection_fees = fee_requests
                 #fees = collection_fees.split(",")
-                abort(fees.inspect)
+                #abort(fees.inspect)
                 @typ = 4
                 arrange_multiple_pay(params[:id], fees, params[:submission_date])
               else  

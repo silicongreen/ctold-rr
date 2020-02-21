@@ -480,17 +480,19 @@ class ApplicationController < ActionController::Base
           activity_log.user_agent = request.user_agent
           activity_log.created_at = now
           activity_log.updated_at = now
-          if current_user.admin?
-            activity_log.user_type_paid = 4
-          end
-          if current_user.employee?
-            activity_log.user_type_paid = 3
-          end
-          if current_user.parent?
-            activity_log.user_type_paid = 2
-          end
-          if current_user.student?
-            activity_log.user_type_paid = 1
+          unless current_user.blank?
+            if current_user.admin?
+              activity_log.user_type_paid = 4
+            end
+            if current_user.employee?
+              activity_log.user_type_paid = 3
+            end
+            if current_user.parent?
+              activity_log.user_type_paid = 2
+            end
+            if current_user.student?
+              activity_log.user_type_paid = 1
+            end
           end
           activity_log.save
         end  

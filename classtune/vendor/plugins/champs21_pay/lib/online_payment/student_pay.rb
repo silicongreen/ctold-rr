@@ -12,7 +12,6 @@ module OnlinePayment
       require "yaml"
       require 'nokogiri'
       fee_requests = ""
-      @typ = 0
       msg = ""
       orderId = ""
       ref_id = ""
@@ -255,17 +254,20 @@ module OnlinePayment
                   fees = request_params[:fees].split(",")
                   fee_requests = fees
                   #abort('here1')
-                  @typ = 1
-                  arrange_multiple_pay(params[:id], fees, params[:submission_date])
+                  if params[:id].to_i != 25403
+                    arrange_multiple_pay(params[:id], fees, params[:submission_date])
+                  end
                 else  
-                  @typ = 2
                   fee_requests = params[:id2]
-                  arrange_pay(params[:id], params[:id2], params[:submission_date])
+                  if params[:id].to_i != 25403
+                    arrange_pay(params[:id], params[:id2], params[:submission_date])
+                  end
                 end
               else
-                @typ = 3
                 fee_requests = params[:id2]
-                arrange_pay(params[:id], params[:id2], params[:submission_date])
+                if params[:id].to_i != 25403
+                  arrange_pay(params[:id], params[:id2], params[:submission_date])
+                end
               end
             else
               multiple_param = params[:multiple]
@@ -275,18 +277,20 @@ module OnlinePayment
                   @collection_fees = params[:fees]
                   fees = params[:fees].split(",")
                   fee_requests = fees
-                  @typ = 4
-                  arrange_multiple_pay(params[:id], fees, params[:submission_date])
+                  if params[:id].to_i != 25403
+                    arrange_multiple_pay(params[:id], fees, params[:submission_date])
+                  end
                 else  
-                  @typ = 5
                   fee_requests = params[:id2]
-                  arrange_pay(params[:id], params[:id2], params[:submission_date])
+                  if params[:id].to_i != 25403
+                    arrange_pay(params[:id], params[:id2], params[:submission_date])
+                  end
                 end
               else
-                #abort('here')
-                @typ = 6
                 fee_requests = params[:id2]
-                arrange_pay(params[:id], params[:id2], params[:submission_date])
+                if params[:id].to_i != 25403
+                  arrange_pay(params[:id], params[:id2], params[:submission_date])
+                end
               end
             end
             
@@ -294,12 +298,8 @@ module OnlinePayment
             unless multiple_param.nil?
               if multiple_param.to_s == "true"
                 collection_fees = fee_requests
-                #fees = collection_fees.split(",")
-                #abort(fees.inspect)
-                @typ = 4
                 arrange_multiple_pay(params[:id], fees, params[:submission_date])
               else  
-                @typ = 5
                 arrange_pay(params[:id], fee_requests, params[:submission_date])
               end
             end

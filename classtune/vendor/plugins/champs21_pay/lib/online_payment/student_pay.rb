@@ -299,7 +299,7 @@ module OnlinePayment
                 arrange_multiple_pay(params[:id], fees, params[:submission_date])
               else  
                 @typ = 5
-                arrange_pay(params[:id], fee_requests, params[:submission_date])
+                arrange_pay(params[:id], params[:id2], params[:submission_date])
               end
             end
             

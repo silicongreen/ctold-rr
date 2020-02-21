@@ -428,7 +428,7 @@ class ApplicationController < ActionController::Base
     @session_end_time_diff = 15
     now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
     if session[:user_id].present? and params[:action] != 'show_quick_links' and session[:user_id].to_i != 60257 and MultiSchool.current_school.id = 352
-      if params[:controller] != 'data_palettes' or current_user.admin?
+      if params[:controller] != 'data_palettes' #or current_user.admin?
         
         
         @sesstion_time = 0

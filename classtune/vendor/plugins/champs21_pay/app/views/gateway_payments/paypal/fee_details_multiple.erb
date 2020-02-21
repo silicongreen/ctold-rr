@@ -113,6 +113,9 @@
       <% fee_collection_name = ""  %>
       <% @fees_collections.reverse.each do |fee| %>
         <% f = fee.to_i %>
+        <% if @date[f].nil? %>
+        <%= abort(@fees_collections.inspect) %>
+        <% end %>
         <% fee_collection_name += @date[f].name %>
       <% end %>
     <% else %>

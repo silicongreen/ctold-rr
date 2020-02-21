@@ -427,72 +427,74 @@ class ApplicationController < ActionController::Base
     #abort('here')
     @session_end_time_diff = 15
     now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
-    if session[:user_id].present? and params[:action] != 'show_quick_links' and session[:user_id].to_i != 60257 and MultiSchool.current_school.id = 352
-      if params[:controller] != 'data_palettes' #or current_user.admin?
-        
-        
-        @sesstion_time = 0
-        @last_log = ActivityLog.find(:first,:conditions=>{:user_id=>current_user.id},:order=>"created_at DESC",:limit=>1)
-        if !@last_log.nil?
-          @time_last_log =  ((now.to_time-@last_log.created_at.to_time)/60).round
-          if @time_last_log>@session_end_time_diff and @last_log.session_end!=1
-            @last_session_log = ActivityLog.find(:first,:conditions=>{:user_id=>current_user.id,:session_end=>1},:order=>"created_at DESC",:limit=>1)
-            if !@last_session_log.nil?
-              @session_start_log = ActivityLog.find(:first,:conditions=>["user_id =#{current_user.id} and created_at >'#{@last_session_log.created_at}'"],:order=>"created_at ASC",:limit=>1)
-              if !@session_start_log.nil?
-                @sesstion_time =  now.to_time-@session_start_log.created_at.to_time
-                activity_log_update = ActivityLog.find(@last_log.id)
-                activity_log_update.session_end = 1
-                activity_log_update.session_time = @sesstion_time
-                activity_log_update.post_requests = params
-                activity_log_update.save
-              else
-                @sesstion_time =  now.to_time-@last_session_log.created_at.to_time
-                activity_log_update = ActivityLog.find(@last_log.id)
-                activity_log_update.session_end = 1
-                activity_log_update.session_time = @sesstion_time
-                activity_log_update.post_requests = params
-                activity_log_update.save
-              end
-            else
-              @last_session_log = ActivityLog.find(:first,:conditions=>{:user_id=>current_user.id},:order=>"created_at ASC",:limit=>1)
+    unless current_user.blank?
+      if session[:user_id].present? and params[:action] != 'show_quick_links' and session[:user_id].to_i != 60257 and MultiSchool.current_school.id = 352
+        if params[:controller] != 'data_palettes' #or current_user.admin?
+
+
+          @sesstion_time = 0
+          @last_log = ActivityLog.find(:first,:conditions=>{:user_id=>current_user.id},:order=>"created_at DESC",:limit=>1)
+          if !@last_log.nil?
+            @time_last_log =  ((now.to_time-@last_log.created_at.to_time)/60).round
+            if @time_last_log>@session_end_time_diff and @last_log.session_end!=1
+              @last_session_log = ActivityLog.find(:first,:conditions=>{:user_id=>current_user.id,:session_end=>1},:order=>"created_at DESC",:limit=>1)
               if !@last_session_log.nil?
-                @sesstion_time =  now.to_time-@last_session_log.created_at.to_time
-                activity_log_update = ActivityLog.find(@last_log.id)
-                activity_log_update.session_end = 1
-                activity_log_update.session_time = @sesstion_time
-                activity_log_update.post_requests = params
-                activity_log_update.save
-              end
-            end  
+                @session_start_log = ActivityLog.find(:first,:conditions=>["user_id =#{current_user.id} and created_at >'#{@last_session_log.created_at}'"],:order=>"created_at ASC",:limit=>1)
+                if !@session_start_log.nil?
+                  @sesstion_time =  now.to_time-@session_start_log.created_at.to_time
+                  activity_log_update = ActivityLog.find(@last_log.id)
+                  activity_log_update.session_end = 1
+                  activity_log_update.session_time = @sesstion_time
+                  activity_log_update.post_requests = params
+                  activity_log_update.save
+                else
+                  @sesstion_time =  now.to_time-@last_session_log.created_at.to_time
+                  activity_log_update = ActivityLog.find(@last_log.id)
+                  activity_log_update.session_end = 1
+                  activity_log_update.session_time = @sesstion_time
+                  activity_log_update.post_requests = params
+                  activity_log_update.save
+                end
+              else
+                @last_session_log = ActivityLog.find(:first,:conditions=>{:user_id=>current_user.id},:order=>"created_at ASC",:limit=>1)
+                if !@last_session_log.nil?
+                  @sesstion_time =  now.to_time-@last_session_log.created_at.to_time
+                  activity_log_update = ActivityLog.find(@last_log.id)
+                  activity_log_update.session_end = 1
+                  activity_log_update.session_time = @sesstion_time
+                  activity_log_update.post_requests = params
+                  activity_log_update.save
+                end
+              end  
+            end
           end
-        end
-        
-         
-        
-        activity_log = ActivityLog.new
-        activity_log.user_id = current_user.id
-        activity_log.controller = params[:controller]
-        activity_log.action = params[:action]
-        activity_log.post_requests = params
-        activity_log.ip = request.remote_ip
-        activity_log.user_agent = request.user_agent
-        activity_log.created_at = now
-        activity_log.updated_at = now
-        if current_user.admin?
-          activity_log.user_type_paid = 4
-        end
-        if current_user.employee?
-          activity_log.user_type_paid = 3
-        end
-        if current_user.parent?
-          activity_log.user_type_paid = 2
-        end
-        if current_user.student?
-          activity_log.user_type_paid = 1
-        end
-        activity_log.save
-      end  
+
+
+
+          activity_log = ActivityLog.new
+          activity_log.user_id = current_user.id
+          activity_log.controller = params[:controller]
+          activity_log.action = params[:action]
+          activity_log.post_requests = params
+          activity_log.ip = request.remote_ip
+          activity_log.user_agent = request.user_agent
+          activity_log.created_at = now
+          activity_log.updated_at = now
+          if current_user.admin?
+            activity_log.user_type_paid = 4
+          end
+          if current_user.employee?
+            activity_log.user_type_paid = 3
+          end
+          if current_user.parent?
+            activity_log.user_type_paid = 2
+          end
+          if current_user.student?
+            activity_log.user_type_paid = 1
+          end
+          activity_log.save
+        end  
+      end
     end
   end
   
@@ -716,7 +718,10 @@ class ApplicationController < ActionController::Base
   end
   
   def current_user
-    User.active.find(session[:user_id]) unless session[:user_id].nil?
+    unless session[:user_id].nil?
+      user = User.active.find(:first, :conditions => "id = #{session[:user_id]}") 
+      user
+    end
   end
 
   def main_user_data

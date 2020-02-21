@@ -300,11 +300,10 @@ module OnlinePayment
                 collection_fees = fee_requests
                 arrange_multiple_pay(params[:id], fees, params[:submission_date])
               else  
-                if params[:id].to_i == 25403
-                abort(fee_requests.inspect)
-                end
                 arrange_pay(params[:id], fee_requests, params[:submission_date])
               end
+            else
+              arrange_pay(params[:id], fee_requests, params[:submission_date])
             end
             
 #            

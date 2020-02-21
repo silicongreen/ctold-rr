@@ -11,7 +11,7 @@ module OnlinePayment
       require 'uri'
       require "yaml"
       require 'nokogiri'
-      
+      @typ = 0
       msg = ""
       orderId = ""
       ref_id = ""
@@ -253,11 +253,14 @@ module OnlinePayment
                   @collection_fees = request_params[:fees]
                   fees = request_params[:fees].split(",")
                   #abort('here1')
+                  @typ = 1
                   arrange_multiple_pay(params[:id], fees, params[:submission_date])
                 else  
+                  @typ = 2
                   arrange_pay(params[:id], params[:id2], params[:submission_date])
                 end
               else
+                @typ = 3
                 arrange_pay(params[:id], params[:id2], params[:submission_date])
               end
             else
@@ -267,12 +270,15 @@ module OnlinePayment
                 if multiple_param.to_s == "true"
                   @collection_fees = params[:fees]
                   fees = params[:fees].split(",")
+                  @typ = 4
                   arrange_multiple_pay(params[:id], fees, params[:submission_date])
                 else  
+                  @typ = 5
                   arrange_pay(params[:id], params[:id2], params[:submission_date])
                 end
               else
                 #abort('here')
+                @typ = 6
                 arrange_pay(params[:id], params[:id2], params[:submission_date])
               end
             end
@@ -286,15 +292,19 @@ module OnlinePayment
                   unless params[:fees].blank?
                     @collection_fees = params[:fees]
                     fees = params[:fees].split(",")
+                    @typ = 7
                     arrange_multiple_pay(params[:id], fees, params[:submission_date])
                   else
+                    @typ = 8
                     arrange_pay(params[:id], params[:id2], params[:submission_date])
                   end
                 else  
+                  @typ = 9
                   arrange_pay(params[:id], params[:id2], params[:submission_date])
                 end
               else
                 #abort('here')
+                @typ = 10
                 arrange_pay(params[:id], params[:id2], params[:submission_date])
               end
             else
@@ -311,14 +321,18 @@ module OnlinePayment
                       @collection_fees = request_params[:fees]
                       fees = request_params[:fees].split(",")
                       #abort('here1')
+                      @typ = 11
                       arrange_multiple_pay(params[:id], fees, params[:submission_date])
                     else
+                      @typ = 12
                       arrange_pay(params[:id], params[:id2], params[:submission_date])
                     end
                   else  
+                    @typ = 13
                     arrange_pay(params[:id], params[:id2], params[:submission_date])
                   end
                 else
+                  @typ = 14
                   arrange_pay(params[:id], params[:id2], params[:submission_date])
                 end
               end

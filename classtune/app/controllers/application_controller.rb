@@ -444,14 +444,14 @@ class ApplicationController < ActionController::Base
                 activity_log_update = ActivityLog.find(@last_log.id)
                 activity_log_update.session_end = 1
                 activity_log_update.session_time = @sesstion_time
-                activity_log.post_requests = params
+                activity_log_update.post_requests = params
                 activity_log_update.save
               else
                 @sesstion_time =  now.to_time-@last_session_log.created_at.to_time
                 activity_log_update = ActivityLog.find(@last_log.id)
                 activity_log_update.session_end = 1
                 activity_log_update.session_time = @sesstion_time
-                activity_log.post_requests = params
+                activity_log_update.post_requests = params
                 activity_log_update.save
               end
             else
@@ -461,7 +461,7 @@ class ApplicationController < ActionController::Base
                 activity_log_update = ActivityLog.find(@last_log.id)
                 activity_log_update.session_end = 1
                 activity_log_update.session_time = @sesstion_time
-                activity_log.post_requests = params
+                activity_log_update.post_requests = params
                 activity_log_update.save
               end
             end  

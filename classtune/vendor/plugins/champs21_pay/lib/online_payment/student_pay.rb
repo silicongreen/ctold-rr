@@ -291,18 +291,18 @@ module OnlinePayment
             end
             
             validate_payment_types(params)
-            unless multiple_param.nil?
-              if multiple_param.to_s == "true"
-                collection_fees = fee_requests
-                fees = collection_fees.split(",")
-                @typ = 4
-                arrange_multiple_pay(params[:id], fees, params[:submission_date])
-              else  
-                @typ = 5
-                arrange_pay(params[:id], params[:id2], params[:submission_date])
-              end
-            end
-            
+#            unless multiple_param.nil?
+#              if multiple_param.to_s == "true"
+#                collection_fees = fee_requests
+#                fees = collection_fees.split(",")
+#                @typ = 4
+#                arrange_multiple_pay(params[:id], fees, params[:submission_date])
+#              else  
+#                @typ = 5
+#                arrange_pay(params[:id], params[:id2], params[:submission_date])
+#              end
+#            end
+#            
             
             #@fine_amount=0 if (@student.finance_fee_by_date @date).is_paid
             unless params[:mobile_view].blank?

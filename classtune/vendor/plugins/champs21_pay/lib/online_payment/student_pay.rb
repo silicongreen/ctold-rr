@@ -253,21 +253,11 @@ module OnlinePayment
                   @collection_fees = request_params[:fees]
                   fees = request_params[:fees].split(",")
                   fee_requests = fees
-                  #abort('here1')
-                  if params[:id].to_i != 25403
-                    arrange_multiple_pay(params[:id], fees, params[:submission_date])
-                  end
                 else  
                   fee_requests = params[:id2]
-                  if params[:id].to_i != 25403
-                    arrange_pay(params[:id], params[:id2], params[:submission_date])
-                  end
                 end
               else
                 fee_requests = params[:id2]
-                if params[:id].to_i != 25403
-                  arrange_pay(params[:id], params[:id2], params[:submission_date])
-                end
               end
             else
               multiple_param = params[:multiple]

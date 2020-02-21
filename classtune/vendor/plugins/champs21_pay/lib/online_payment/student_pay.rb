@@ -11,6 +11,7 @@ module OnlinePayment
       require 'uri'
       require "yaml"
       require 'nokogiri'
+      fee_requests = ""
       @typ = 0
       msg = ""
       orderId = ""
@@ -252,15 +253,18 @@ module OnlinePayment
                 if multiple_param.to_s == "true"
                   @collection_fees = request_params[:fees]
                   fees = request_params[:fees].split(",")
+                  fee_requests = fees
                   #abort('here1')
                   @typ = 1
                   arrange_multiple_pay(params[:id], fees, params[:submission_date])
                 else  
                   @typ = 2
+                  fee_requests = params[:id2]
                   arrange_pay(params[:id], params[:id2], params[:submission_date])
                 end
               else
                 @typ = 3
+                fee_requests = params[:id2]
                 arrange_pay(params[:id], params[:id2], params[:submission_date])
               end
             else
@@ -270,73 +274,35 @@ module OnlinePayment
                 if multiple_param.to_s == "true"
                   @collection_fees = params[:fees]
                   fees = params[:fees].split(",")
+                  fee_requests = fees
                   @typ = 4
                   arrange_multiple_pay(params[:id], fees, params[:submission_date])
                 else  
                   @typ = 5
+                  fee_requests = params[:id2]
                   arrange_pay(params[:id], params[:id2], params[:submission_date])
                 end
               else
                 #abort('here')
                 @typ = 6
+                fee_requests = params[:id2]
                 arrange_pay(params[:id], params[:id2], params[:submission_date])
               end
             end
             
             validate_payment_types(params)
-            unless params[:multiple].blank?
-              multiple_param = params[:multiple]
-              unless multiple_param.nil?
-                #abort('here-1')
-                if multiple_param.to_s == "true"
-                  unless params[:fees].blank?
-                    @collection_fees = params[:fees]
-                    fees = params[:fees].split(",")
-                    @typ = 7
-                    arrange_multiple_pay(params[:id], fees, params[:submission_date])
-                  else
-                    @typ = 8
-                    arrange_pay(params[:id], params[:id2], params[:submission_date])
-                  end
-                else  
-                  @typ = 9
-                  arrange_pay(params[:id], params[:id2], params[:submission_date])
-                end
-              else
-                #abort('here')
-                @typ = 10
-                arrange_pay(params[:id], params[:id2], params[:submission_date])
-              end
-            else
-              unless params[:order_id].blank?
-                orderId = params[:order_id]
-                @finance_order = FinanceOrder.find_by_order_id(orderId.strip)
-                #abort(@finance_order.inspect)
-                request_params = @finance_order.request_params
-
-                multiple_param = request_params[:multiple]
-                unless multiple_param.nil?
-                  if multiple_param.to_s == "true"
-                    unless params[:fees].blank?
-                      @collection_fees = request_params[:fees]
-                      fees = request_params[:fees].split(",")
-                      #abort('here1')
-                      @typ = 11
-                      arrange_multiple_pay(params[:id], fees, params[:submission_date])
-                    else
-                      @typ = 12
-                      arrange_pay(params[:id], params[:id2], params[:submission_date])
-                    end
-                  else  
-                    @typ = 13
-                    arrange_pay(params[:id], params[:id2], params[:submission_date])
-                  end
-                else
-                  @typ = 14
-                  arrange_pay(params[:id], params[:id2], params[:submission_date])
-                end
+            unless multiple_param.nil?
+              if multiple_param.to_s == "true"
+                collection_fees = fee_requests
+                fees = collection_fees.split(",")
+                @typ = 4
+                arrange_multiple_pay(params[:id], fees, params[:submission_date])
+              else  
+                @typ = 5
+                arrange_pay(params[:id], fee_requests, params[:submission_date])
               end
             end
+            
             
             #@fine_amount=0 if (@student.finance_fee_by_date @date).is_paid
             unless params[:mobile_view].blank?

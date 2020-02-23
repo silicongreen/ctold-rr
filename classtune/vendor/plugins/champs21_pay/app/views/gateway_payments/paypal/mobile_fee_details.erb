@@ -985,27 +985,11 @@
                   <tr>
                     <td colspan="5" style="padding-bottom: 30px;">
                         <div class="pay_fees"><div class="pay_fees_buttons" style="text-align: center;">
-                      <% if @active_gateway == "Paypal" %>
-                        <%= paypal_pay_button(@certificate,@merchant_id,"FEE #{@fee_collection.name}",total_fees,"http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1",@paid_fees,"float: right;margin: 18px 0 0;") %>
-                      <% elsif @active_gateway == "Authorize.net" %>
-                        <%= authorize_net_pay_button(@merchant_id,@certificate,total_fees,"Fee (#{@student.full_name}-#{@student.admission_no}-#{@fee_collection.name})","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&only_path=false",@paid_fees,"float: right;margin: 18px 0 0;") %>
-                      <% elsif @active_gateway == "ssl.commerce" %>
-                        <%= ssl_commerce_pay_button(@store_id,@store_password,total_fees,"Fee (#{@student.full_name}-#{@student.admission_no}-#{@fee_collection.name})","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_cancel_transaction=1","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_fail_transaction=3",@trans_id_ssl_commerce,@paid_fees,"float: right;margin: 18px 0 0;") %>
-                      <% elsif @active_gateway == "trustbank" %>
+                      <% if @gateway_settings.length == 1 %>
                         <input type="hidden" name="order_id" id="order_id" value="<%= @order_id %>" />
-                        <%= submit_tag "► #{t('pay_fees')}",:class=>'user_button_new' , :id => 'submit_button' %>
-                        <% 
-                        require 'securerandom'
-                        o = [('a'..'z'), (1..9)].map(&:to_a).flatten
-                        string = (0...8).map { o[rand(o.length)] }.join 
-                        %>
-                        <% email = '-' %>
-                        <% unless @student.immediate_contact.nil? or @student.immediate_contact.blank? %>
-                             <% unless @student.immediate_contact.email.blank? %>
-                                <% email = @student.immediate_contact.email %>
-                             <% end %>
-                        <% end %>      
-                        <%#= trustbank_pay_button(@merchant_id,total_fees,@student.admission_no, email, "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1", SecureRandom.random_number(1000000)) %>
+                        <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button' %>
+                      <% else %>
+
                       <% end %>
                       <% if MultiSchool.current_school.id != 352 %>  
                       <%= link_to "► #{t('print_receipt')}",
@@ -1045,7 +1029,7 @@
 
 <style>
     .header-info {
-        //background-image: url('/images/backgrounds/top_profile.png'); 
+        /*background-image: url('/images/backgrounds/top_profile.png'); */
         background-image: linear-gradient(to bottom,#DB3434 0,#820d0d 100%);
         color: #fff; 
         font-size: 16px; 

@@ -79,9 +79,11 @@
       <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
       <div class="value" style="max-width: 75%; width: 75%; float: left;">
         <% Champs21Pay::GATEWAYS.each do |gateway| %>
+          <% constant_val = gateway + "_CONFIG_KEYS" %>
+          <% if Champs21Pay.const_defined?(constant_val.upcase) %>
           <div style="width: 49%;float: left; padding-bottom: 20px;">
             <div style="float: left; width: 5%;">
-            <%= check_box_tag("payment_settings[champs21_gateway][]",gateway, (@active_gateway == gateway) ? true : false,{:autocomplete => "off", :onchange => "#{remote_function(:url => {:controller => "payment_settings",:action => "show_gateway_fields",:gateway => gateway}, :with => "'is_check='+j(this).prop('checked')",
+            <%= check_box_tag("payment_settings[champs21_gateway][]",gateway, (@active_gateway.include?(gateway)) ? true : false,{:autocomplete => "off", :onchange => "#{remote_function(:url => {:controller => "payment_settings",:action => "show_gateway_fields",:gateway => gateway}, :with => "'is_check='+j(this).prop('checked')",
                 :before => "Element.show('loader')",
                 :success => "Element.hide('loader')")}"}) %>
             </div>    
@@ -89,18 +91,27 @@
             <%= image_tag "/images/gateway_images/#{gateway}.png", :class => "gateway_image" %>
             </div>
           </div>
+          <% end %>
         <% end %> 
       </div>
     </div>
     
     <h1>Setting: </h1>
+    <% if @active_gateway.blank? %>
+    <div id="no_gatway">[No Payment Gateway Selected]</div>
+    <% end %>  
     <% Champs21Pay::GATEWAYS.each do |gateway| %>
-    <div id ="gateway_fields_<%= gateway %>" style="padding-bottom: 20px;">
-        <% if @active_gateway == gateway %>
-          <%= render :partial => "gateway_fields" %>
-        <% end %>
-    </div>
-    <div style="clear: both; height: 10px;"></div>
+      <% constant_val = gateway + "_CONFIG_KEYS" %>
+      <% if Champs21Pay.const_defined?(constant_val.upcase) %>
+        <div id ="gateway_fields_<%= gateway %>">
+            <% style = "display: none;" %>
+            <% if @active_gateway.include?(gateway) %>
+              <% style = "" %>
+              <%= render :partial => "gateway_fields", :locals => {:active_gateway => gateway, :active_gateway_fields => Champs21Pay.const_get(constant_val.upcase)} %>
+            <% end %>
+        </div>
+        <div id="gateway_fields_clear_<%= gateway %>" class="gateway_fields_settings_clear" style="clear: both; height: 10px;<%= style %>"></div>
+      <% end %>  
     <% end %>  
     <div style="width: 100%; text-align: center;">
       <%= submit_tag t("save"),:class => "submit-button" %>
@@ -117,5 +128,17 @@
     .submit-button{
       float: none;
       margin: 0;
+    }
+    .label-field-pair input {
+      padding: 10px;
+      border-radius: 4px;
+      background: #fDfDfD;
+    }
+    .label-field-pair-gateway-new label {
+        padding: 20px 30px;
+    }
+    .submit-button {
+        width: 100px;
+        border-radius: 4px;
     }
 </style>

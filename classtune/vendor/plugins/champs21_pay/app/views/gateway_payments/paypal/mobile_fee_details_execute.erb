@@ -37,6 +37,42 @@
        <% unless @student.immediate_contact.email.blank? %>
           <% email = @student.immediate_contact.email %>
        <% end %>
-  <% end %>       
-  <%= trustbank_pay_button(@merchant_id, @total_amount,@student.admission_no, email, "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1", @finance_order.order_id) %>  
+  <% end %>      
+    
+    
+  <% extra_string = "" %>
+  <% unless params[:mobile_view].blank? %>
+    <% extra_string = "&mobile_view=1" %>
+  <% end %>
+      
+    
+  <% gateway = @gateway_settings.keys[0].to_s %>
+  <% if gateway == "Paypal" %>
+    <%= paypal_pay_button(@certificate, @merchant_id,"FEE #{fee_collection_name}",total_fees,"http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1",paid_fee,"float: right;margin: 18px 0 0;") %>
+  <% elsif gateway == "Authorize.net" %>
+    <%= authorize_net_pay_button(@merchant_id,@certificate,total_fees,"Fee (#{@student.full_name}-#{@student.admission_no}-#{fee_collection_name})","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&only_path=false",paid_fee,"float: right;margin: 18px 0 0;") %>
+  <% elsif gateway == "sslcommerce" %>
+    <% options = {} %>
+    <% options['tran_id'] = @finance_order.order_id %>
+    <% options['store_id'] = @gateway_settings[gateway]['store_id'] %>
+    <% options['store_passwd'] = @gateway_settings[gateway]['store_password'] %>
+    <% options['amount'] = 1 %>
+    <% options['product'] = "Fee (#{@student.full_name}-#{@student.admission_no}-#{@fee_collection_name})" %>
+    <% options['total_amount'] = sprintf("%0.2f",@total_amount).to_f  %>
+    <% options['success_url'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&target_gateway=#{gateway}" + extra_string %>
+    <% options['fail_url'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_fail_transaction=3&target_gateway=#{gateway}" + extra_string %>
+    <% options['ret_url'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}" + extra_string %>
+    <% options['cancel_url'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_cancel_transaction=1&target_gateway=#{gateway}" + extra_string %>
+    <% options['version'] = "2.00" %>
+    <%= pay_button(options) %>  
+  <% elsif gateway == "trustbank" %>  
+    <% options = {} %>
+    <% options['MerchantID'] = @gateway_settings[gateway]['merchant_id'] %>
+    <% options['Amount'] = sprintf("%0.2f",@total_amount).to_f  %>
+    <% options['FullName'] = @student.admission_no %>
+    <% options['Email'] = email %>
+    <% options['orderID'] = @finance_order.order_id %>
+    <% options['PaymentSuccessUrl'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&target_gateway=#{gateway}" + extra_string %>
+    <%= pay_button(options) %>  
+  <% end %>
 </body>

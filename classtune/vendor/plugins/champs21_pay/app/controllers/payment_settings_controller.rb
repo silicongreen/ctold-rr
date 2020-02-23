@@ -169,21 +169,9 @@ class PaymentSettingsController < ApplicationController
   end
   
   def settings  
-    
-    @active_gateway = PaymentConfiguration.config_value("champs21_gateway")
-    if @active_gateway == "Paypal"  
-      @gateway_fields = Champs21Pay::PAYPAL_CONFIG_KEYS
-    elsif @active_gateway == "Authorize.net"
-      @gateway_fields = Champs21Pay::AUTHORIZENET_CONFIG_KEYS
-    elsif @active_gateway == "sslcommerce"
-      @gateway_fields = Champs21Pay::SSL_COMMERCE_CONFIG_KEYS
-    elsif @active_gateway == "trustbank"
-      @gateway_fields = Champs21Pay::TRUST_BANK_CONFIG_KEYS
-    elsif @active_gateway == "bkash"
-      @gateway_fields = Champs21Pay::BKASH_CONFIG_KEYS  
-    elsif @active_gateway == "citybank"
-      @gateway_fields = Champs21Pay::CITY_BANK_CONFIG_KEYS  
-    end
+    @active_gateways = PaymentConfiguration.config_value("champs21_gateway")
+    @active_gateway = @active_gateways.split(",") unless @active_gateways.blank?
+    @active_gateway ||= Array.new
     @enabled_fees = PaymentConfiguration.find_by_config_key("enabled_fees").try(:config_value)  
     @enabled_fees ||= Array.new
     
@@ -191,79 +179,86 @@ class PaymentSettingsController < ApplicationController
     @include_combined_fees ||= Array.new
 
     if request.post?
+      configurations = PaymentConfiguration.all
+      unless configurations.blank?
+        configurations.each do |con|
+          con.destroy
+        end
+      end
+      #abort(configurations.inspect)
       payment_settings = params[:payment_settings]
       champs21_gateway = payment_settings[:champs21_gateway]
-      configuration = PaymentConfiguration.find_or_initialize_by_config_key("champs21_gateway")
-      configuration.update_attributes(:config_value => champs21_gateway.join(","))
-      champs21_gateway.each do |gateway|
-        abort(gateway.to_s)
-      end
-      abort(payment_settings.inspect)
-      configuration = PaymentConfiguration.find_or_initialize_by_config_key('is_test_sslcommerz')
-      configuration.update_attributes(:config_value => 0)
-      configuration = PaymentConfiguration.find_or_initialize_by_config_key('is_test_testtrustbank')
-      configuration.update_attributes(:config_value => 0)
-      payment_settings.each_pair do |key,value|
-        if key == 'is_test_sslcommerz' && value == 'on'
-          value = 1
-        elsif key == 'is_test_sslcommerz' && value != 'on'
+      unless champs21_gateway.blank?
+        configuration = PaymentConfiguration.find_or_initialize_by_config_key("champs21_gateway")
+        configuration.update_attributes(:config_value => champs21_gateway.join(","))
+        champs21_gateway.each do |gateway|
+          configuration = PaymentConfiguration.find_or_initialize_by_config_key('is_test_' + gateway.to_s)
+          configuration.update_attributes(:config_value => 0)
+          is_test = 'is_test_' + gateway.to_s
           value = 0
-        end
-        if key == 'is_test_testtrustbank' && value == 'on'
-          value = 1
-        elsif key == 'is_test_testtrustbank' && value != 'on'
-          value = 0
-        end
-        configuration = PaymentConfiguration.find_or_initialize_by_config_key(key)
-        if configuration.update_attributes(:config_value => value)
-          flash[:notice] = "Payment setting has been saved successfully."
-        else
-          flash[:notice] = "#{configuration.errors.full_messages.join("\n")}"
+          unless payment_settings[gateway.to_sym][is_test.to_sym].blank?
+            value = 1
+          end
+          configuration.update_attributes(:config_value => value)
+          gateway_sym = payment_settings[gateway.to_sym]
+          gateway_sym.each_pair do |key,value|
+            if key != is_test
+              configuration = PaymentConfiguration.find_or_initialize_by_config_key(gateway.to_s + "_" + key)
+              configuration.update_attributes(:config_value => value)
+            end
+          end
         end
       end
+      
+      #abort(payment_settings[:enabled_fees].inspect)
       unless payment_settings.keys.include? "enabled_fees"
         configuration = PaymentConfiguration.find_or_initialize_by_config_key("enabled_fees")
         configuration.update_attributes(:config_value => Array.new)
+      else
+        configuration = PaymentConfiguration.find_or_initialize_by_config_key("enabled_fees")
+        configuration.update_attributes(:config_value => payment_settings[:enabled_fees])
       end
       unless payment_settings.keys.include? "include_combined_fees"
         configuration = PaymentConfiguration.find_or_initialize_by_config_key("include_combined_fees")
         configuration.update_attributes(:config_value => Array.new)
       else  
+        configuration = PaymentConfiguration.find_or_initialize_by_config_key("include_combined_fees")
+        configuration.update_attributes(:config_value => payment_settings[:include_combined_fees])
+        
         student_fee_configurations = StudentFeeConfiguration.find(:all, :conditions => "config_key = 'combined_payment_student' and config_value = '#{0}'")
         student_fee_configurations.each do |sfc|
           sfc.destroy
         end
       end
+      flash[:notice] = "Payment setting has been saved successfully."
       redirect_to settings_online_payments_path
     end
   end
 
   def show_gateway_fields
-    @active_gateway = params[:gateway]
-    @is_check = params[:is_check]
-    if @active_gateway == "Paypal"
-      @gateway_fields = Champs21Pay::PAYPAL_CONFIG_KEYS
-    elsif @active_gateway == "Authorize.net"
-      @gateway_fields = Champs21Pay::AUTHORIZENET_CONFIG_KEYS
-    elsif @active_gateway == "sslcommerce"
-      @gateway_fields = Champs21Pay::SSL_COMMERCE_CONFIG_KEYS
-    elsif @active_gateway == "trustbank"
-      @gateway_fields = Champs21Pay::TRUST_BANK_CONFIG_KEYS
-    elsif @active_gateway == "bkash"
-      @gateway_fields = Champs21Pay::BKASH_CONFIG_KEYS  
-    elsif @active_gateway == "citybank"
-      @gateway_fields = Champs21Pay::CITY_BANK_CONFIG_KEYS  
-    end
-    
-    if @is_check == "true"
-      render :update do |page|
-        if @gateway_fields.present?
-          page.replace_html 'gateway_fields_' + @active_gateway,:partial => "gateway_fields"
+    active_gateway = params[:gateway]
+    constant_val = active_gateway + "_CONFIG_KEYS"
+    if Champs21Pay.const_defined?(constant_val.upcase)
+        active_gateway_fields = Champs21Pay.const_get(constant_val.upcase)
+        @is_check = params[:is_check] 
+        if @is_check == "true"
+          render :update do |page|
+            page.replace_html 'gateway_fields_' + active_gateway, :partial => "gateway_fields", :locals => {:active_gateway => active_gateway, :active_gateway_fields => active_gateway_fields}
+            page << "j('#gateway_fields_clear_#{active_gateway}').show();"
+            page << "j('#no_gatway').hide();"
+          end
+        else
+          render :update do |page|
+            page.replace_html 'gateway_fields_' + active_gateway, :text => ""
+            page << "j('#gateway_fields_clear_#{active_gateway}').hide();"
+            page << "var fnd = 0; j('.gateway_fields_settings_clear').each(function(){ if ( j(this).css('display') != 'none' ){ fnd++; }; if (fnd == 0){j('#no_gatway').show();} });"
+          end
         end
-      end
-    else
+    else  
       render :update do |page|
-        page.replace_html 'gateway_fields_' + @active_gateway,:text => ""
+        page.replace_html 'gateway_fields_' + active_gateway,:text => ""
+        page << "j('#gateway_fields_clear_#{active_gateway}').hide();"
+        page << "var fnd = 0; j('.gateway_fields_settings_clear').each(function(){ if ( j(this).css('display') != 'none' ){ fnd++; }; if (fnd == 0){j('#no_gatway').show();} });"
       end
     end
   end

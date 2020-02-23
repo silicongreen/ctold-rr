@@ -20,57 +20,28 @@ module OnlinePayment
       transaction_datetime = now
       if Champs21Plugin.can_access_plugin?("champs21_pay")
         if (PaymentConfiguration.config_value("enabled_fees").present? and PaymentConfiguration.config_value("enabled_fees").include? "Student Fee") 
-          @active_gateway = PaymentConfiguration.config_value("champs21_gateway")
-          if @active_gateway == "Paypal"
-            @merchant_id = PaymentConfiguration.config_value("paypal_id")
-            @merchant_id ||= String.new
-            @certificate = PaymentConfiguration.config_value("paypal_certificate")
-            @certificate ||= String.new
-          elsif @active_gateway == "Authorize.net"
-            @merchant_id = PaymentConfiguration.config_value("authorize_net_merchant_id")
-            @merchant_id ||= String.new
-            @certificate = PaymentConfiguration.config_value("authorize_net_transaction_password")
-            @certificate ||= String.new
-          elsif @active_gateway == "ssl.commerce"
-            testssl = false
-            if PaymentConfiguration.config_value('is_test_sslcommerz').to_i == 1
-              if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config.yml")
-                payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config.yml"))
-                unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
-                  testssl = payment_configs["testsslcommer"]
+          @payment_gateways = PaymentConfiguration.config_value("champs21_gateway")
+          @payment_gateway = @payment_gateways.split(",") unless @payment_gateways.blank?
+          @payment_gateway ||= Array.new
+          unless @payment_gateway.blank?
+            @gateway_settings = {}
+            @payment_gateway.each do |active_gateway|
+              constant_val = active_gateway + "_CONFIG_KEYS"
+              if Champs21Pay.const_defined?(constant_val.upcase)
+                tmp = Hash.new
+                active_gateway_fields = Champs21Pay.const_get(constant_val.upcase)
+                active_gateway_fields.each do |field|
+                  if field.index("is_").nil?
+                    config_val = PaymentConfiguration.config_value(active_gateway + "_" + field)
+                    config_val ||= String.new
+                    tmp[field] = config_val
+                    config_val = String.new
+                  end
                 end
+                @gateway_settings[active_gateway] = tmp
               end
             end
-            if testssl
-              store_info = payment_configs["store_info_" + MultiSchool.current_school.id.to_s]
-              @store_id = store_info["store_id"]
-              @store_password = store_info["store_password"]
-              @store_password ||= String.new
-            else
-              @store_id = PaymentConfiguration.config_value("store_id")
-              @store_id ||= String.new
-              @store_password = PaymentConfiguration.config_value("store_password")
-              @store_password ||= String.new
-            end
-          elsif @active_gateway == "trustbank"
-            testtrustbank = false
-            if PaymentConfiguration.config_value('is_test_testtrustbank').to_i == 1
-              if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config_tcash.yml")
-                payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config_tcash.yml"))
-                unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
-                  testtrustbank = payment_configs["testtrustbank"]
-                end
-              end
-            end
-            if testtrustbank
-              merchant_info = payment_configs["merchant_info_" + MultiSchool.current_school.id.to_s]
-              @merchant_id = merchant_info["merchant_id"]
-              @merchant_id ||= String.new
-            else  
-              @merchant_id = PaymentConfiguration.config_value("merchant_id")
-              @merchant_id ||= String.new
-            end
-          elsif @active_gateway.nil?
+          else  
             fee_details_without_gateway and return
           end
           
@@ -125,7 +96,7 @@ module OnlinePayment
               end
             end
           else
-            if params[:create_transaction].present? and @active_gateway == "trustbank"
+            if params[:create_transaction].present? and params[:target_gateway] == "trustbank"
               result = Base64.decode64(params[:CheckoutXmlMsg])
               #result = '<Response date="2016-06-20 10:14:53.213">  <RefID>133783A000129D</RefID>  <OrderID>O100010</OrderID>  <Name> Customer1</Name>  <Email> mr.customer@gmail.com </Email>  <Amount>2090.00</Amount>  <ServiceCharge>0.00</ServiceCharge>  <Status>1</Status>  <StatusText>PAID</StatusText>  <Used>0</Used>  <Verified>0</Verified>  <PaymentType>ITCL</PaymentType>  <PAN>712300XXXX1277</PAN>  <TBMM_Account></TBMM_Account>  <MarchentID>SAGC</MarchentID>  <OrderDateTime>2016-06-20 10:14:24.700</OrderDateTime>  <PaymentDateTime>2016-06-20 10:21:34.303</PaymentDateTime>  <EMI_No>0</EMI_No>  <InterestAmount>0.00</InterestAmount>  <PayWithCharge>1</PayWithCharge>  <CardResponseCode>00</CardResponseCode>  <CardResponseDescription>APPROVED</CardResponseDescription>  <CardOrderStatus>APPROVED</CardOrderStatus> </Response> '
               xml_res = Nokogiri::XML(result)
@@ -337,8 +308,8 @@ module OnlinePayment
 
     def student_fee_receipt_pdf_with_gateway
       if Champs21Plugin.can_access_plugin?("champs21_pay")
-        @active_gateway = PaymentConfiguration.config_value("champs21_gateway")
-        if @active_gateway.nil?
+        @payment_gateways = PaymentConfiguration.config_value("champs21_gateway")
+        if @payment_gateways.blank?
           student_fee_receipt_pdf_without_gateway and return
         end
         if (PaymentConfiguration.config_value("enabled_fees").present? and PaymentConfiguration.config_value("enabled_fees").include? "Student Fee")

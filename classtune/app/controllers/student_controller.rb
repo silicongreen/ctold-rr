@@ -87,32 +87,46 @@ class StudentController < ApplicationController
           flash[:notice] = "Authentication Failed, Please contact with System Admin"
           redirect_to params[:fee_url]
         elsif response_ssl["responseCode"].to_i == 100
-            data_params = {"merchantId"=>params[:merchantId],"amount"=> params[:amount],"currency"=> params[:currency],"description"=>params[:description],"approveUrl"=>params[:approveUrl],"cancelUrl"=>params[:cancelUrl],"declineUrl"=>params[:declineUrl],"userName"=>params[:userName],"passWord"=>params[:password],"transactionId"=>params[:transactionId],"secureToken"=>response_ssl["transactionId"]}
-            #abort(data_params.inspect)
+            data_params = {
+              "merchantId"  => params[:merchantId],
+              "amount"      => params[:amount],
+              "currency"    => params[:currency],
+              "description" => params[:description],
+              "approveUrl"  => params[:approveUrl],
+              "cancelUrl"   => params[:cancelUrl],
+              "declineUrl"  => params[:declineUrl],
+              "userName"    => params[:userName],
+              "passWord"    => params[:password],
+              "secureToken" => response_ssl["transactionId"]
+            }
+            
             is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
             extra_string = (is_test_citybank) ? '_sandbox' : ''
-            payment_url = URI(payment_urls["citybank_create_order_url" + extra_string])
-            payment_url ||= URI("https://sandbox.thecitybank.com:7788/transaction/createorder")
-#abort(data_params.to_json.inspect)
-            http = Net::HTTP.new(payment_url.host, payment_url.port)
-            http.use_ssl = (payment_url.scheme == 'https')
-            http.cert = OpenSSL::X509::Certificate.new(rootCAData)
-            http.key  = OpenSSL::PKey::RSA.new(keyCAData)
-            http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
-            #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+            order_payment_url = URI(payment_urls["citybank_create_order_url" + extra_string])
+            order_payment_url ||= URI("https://sandbox.thecitybank.com:7788/transaction/createorder")
 
-            request = Net::HTTP::Post.new(payment_url.path,  {"Content-Type" => "application/json", "Accept" => "application/json"})
-            #request.set_form_data({"userName"=>params[:userName],"password"=>params[:password]}.to_json)
-            request.body = {"userName"=>params[:userName],"password"=>params[:password]}.to_json
+            http_order = Net::HTTP.new(order_payment_url.host, order_payment_url.port)
+            http_order.use_ssl = (order_payment_url.scheme == 'https')
+            http_order.cert = OpenSSL::X509::Certificate.new(rootCAData)
+            http_order.key  = OpenSSL::PKey::RSA.new(keyCAData)
+            http_order.verify_mode = OpenSSL::SSL::VERIFY_NONE 
+            #http_order.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+            request = Net::HTTP::Post.new(order_payment_url.path,  {"Content-Type" => "application/json", "Accept" => "application/json"})
+            request.body = data_params.to_json
             #request.set_form_data(data_params)
-            response = http.request(request)
+            response = http_order.request(request)
             response_ssl = JSON::parse(response.body)
-            abort(response_ssl.inspect)
              if response_ssl["responseCode"].to_i == 107
                 flash[:notice] = "Authentication Failed, Please contact with System Admin"
                 redirect_to params[:fee_url]
              elsif response_ssl["responseCode"].to_i == 100
-               abort(response_ssl['items'].inspect)
+               checkout_url = response_ssl["items"]['url'];
+               session_id = response_ssl["items"]['sessionId'];
+               order_id = response_ssl["items"]['orderId'];
+               redirect_Url = checkout_url + "?ORDERID=" + order_id + "&SESSIONID=" + session_id
+               redirect_to redirect_Url
+                #abort(response_ssl['items'].inspect)
                 #order_url = response_ssl['items']['url']; $orderId = $cblEcomm['items']['orderId']; $sessionId = $cblEcomm['items']['sessionId']; $redirectUrl = $URL."?ORDERID=".$orderId."&SESSIONID=".$sessionId; 
              else
                flash[:notice] = response_ssl['message']

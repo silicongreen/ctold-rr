@@ -71,7 +71,8 @@
     <% options['FullName'] = @student.admission_no %>
     <% options['Email'] = email %>
     <% options['orderID'] = @finance_order.order_id %>
-    <% options['PaymentSuccessUrl'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&target_gateway=#{gateway}" + extra_string %>
+    <% success_url = "http://#{request.host_with_port}#{request.fullpath}" %>
+    <% options['PaymentSuccessUrl'] = "#{success_url}&create_transaction=1&target_gateway=#{gateway}" + extra_string %>
     <%= pay_button(options, gateway) %>  
   <% elsif gateway == "citybank" %>  
     <% options = {} %>
@@ -81,9 +82,12 @@
     <% options['amount'] = sprintf("%0.2f",@total_amount).to_f  %>
     <% options['currency'] = "050" %>
     <% options['description'] = @fee_collection_name %>
-    <% options['approveUrl'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&target_gateway=#{gateway}" + extra_string %>
-    <% options['declineUrl'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_fail_transaction=3&target_gateway=#{gateway}" + extra_string %>
-    <% options['cancelUrl'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_cancel_transaction=1&target_gateway=#{gateway}" + extra_string %>
+    <% unless params[:mobile_view].blank? %>
+      <% extra_string = "-mobile_view" %>
+    <% end %>
+    <% options['approveUrl'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=2" + extra_string %>
+    <% options['declineUrl'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_fail_transaction=4" + extra_string %>
+    <% options['cancelUrl'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_cancel_transaction=5" + extra_string %>
     <% options['transactionId'] = @finance_order.order_id %>
     <% options['fee_url'] = "http://#{request.host_with_port}/#{request.fullpath}" %>
     <% options['gateway'] = gateway %>

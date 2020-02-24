@@ -18,7 +18,7 @@ class Sms
     public static $sms_school_param = array(2 => "param_ssd", 296 => "param_ssd", 319 => "param_ssd", 312 => "param_ssd", 352 => "param_ssd", 346 => "param_ssd", 356 => "param_ssd");
     public static $sms_school_hosts_return = array(2 => "host_return_ssd", 296 => "host_return_ssd", 319 => "host_return_ssd", 312 => "host_return_ssd", 346 => "host_return_ssd", 352 => "host_return_ssd", 356 => "host_return_ssd");
     public static $param_ssd = array("msisdn", "sms");
-    public static $host_ssd = "http://sms.sslwireless.com/pushapi/dynamic/server.php?user=classtune&pass=ssl@123&sid=ClassTune";
+    public static $host_ssd = "http://sms.sslwireless.com/pushapi/dynamic/server.php?user=ctune&pass=84Y148r?&sid=ClassTune";
     public static $host_return_ssd = "Success";
   
     public static function send_sms($sms_data, $school_id, $msg_id)
@@ -307,8 +307,8 @@ class Sms
                 if ($sms_params)
                 {
                     
-                    $user = "classtune";
-                    $pass = "ssl@123";
+                    $user = "ctune";
+                    $pass = "84Y148r?";
                     $sid = "ClassTune";
                     $url = "http://sms.sslwireless.com/pushapi/dynamic/server.php";
                     $param = "user=$user&pass=$pass";

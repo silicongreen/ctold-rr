@@ -25,7 +25,7 @@ class ApiModule extends CWebModule {
             
             $call_from_web = Yii::app()->request->getPost('call_from_web');
 
-            if ((!isset($call_from_web) || $call_from_web!=1) && !in_array($controller->id, $controller_widthout_session) && isset(Yii::app()->user->user_secret) && Yii::app()->user->user_secret && isset(Yii::app()->user->schoolId) && Yii::app()->user->schoolId &&
+            if ((!isset($call_from_web) || $call_from_web!=1) && !in_array($controller->id, $controller_widthout_session) && in_array($controller->id, $controller_widthout_session) && isset(Yii::app()->user->user_secret) && Yii::app()->user->user_secret && isset(Yii::app()->user->schoolId) && Yii::app()->user->schoolId &&
                     isset(Yii::app()->user->id) && Yii::app()->user->id) {
                 $array_to_search = array();
                 foreach (Settings::$change_name_cm as $key => $value) {

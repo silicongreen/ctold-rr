@@ -5867,7 +5867,9 @@ class StudentController < ApplicationController
                       exam_new = all_exam_new.find{|v| v.subject_id == subject_id_new}
                       unless exam_new.blank?
                         exam_score = ExamScore.find_by_exam_id_and_student_id(exam_prev.id,student.id)
-                        exam_score.update_attribute("exam_id",exam_new.id)
+                        unless exam_score.blank?
+                          exam_score.update_attribute("exam_id",exam_new.id)
+                        end
                       end  
                     end
                   end   

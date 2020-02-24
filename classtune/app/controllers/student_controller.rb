@@ -50,38 +50,110 @@ class StudentController < ApplicationController
   
   def generate_ssl_url
     require 'net/http'
+    require 'net/https'
     require 'uri'
     require "yaml"
     
-    testssl = false
-    if PaymentConfiguration.config_value('is_test_sslcommerce').to_i == 1
-      if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config.yml")
-        payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config.yml"))
-        unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
-          testssl = payment_configs["testsslcommer"]
+    unless params[:gateway].blank?
+      payment_urls = Hash.new
+      if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+        payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+      end
+      
+      if params[:gateway] == "citybank"
+        rootCA = "#{Rails.root}/certs/createorder.crt"
+        rootCAData = File.read(rootCA)
+        
+        keyCA = "#{Rails.root}/certs/createorder.key"
+        keyCAData = File.read(keyCA)
+        is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
+        extra_string = (is_test_citybank) ? '_sandbox' : ''
+        payment_url = URI(payment_urls["citybank_token_url" + extra_string])
+        payment_url ||= URI("https://sandbox.thecitybank.com:7788/transaction/token")
+        
+        http = Net::HTTP.new(payment_url.host, payment_url.port)
+        http.use_ssl = (payment_url.scheme == 'https')
+        http.cert = OpenSSL::X509::Certificate.new(rootCAData)
+        http.key  = OpenSSL::PKey::RSA.new(keyCAData)
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
+        #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        
+        request = Net::HTTP::Post.new(payment_url.path,  {"Content-Type" => "application/json", "Accept" => "application/json"})
+        #request.set_form_data({"userName"=>params[:userName],"password"=>params[:password]}.to_json)
+        request.body = {"userName"=>params[:userName],"password"=>params[:password]}.to_json
+        response = http.request(request)
+        response_ssl = JSON::parse(response.body)
+        if response_ssl["responseCode"].to_i == 107
+          flash[:notice] = "Authentication Failed, Please contact with System Admin"
+          redirect_to params[:fee_url]
+        elsif response_ssl["responseCode"].to_i == 100
+            data_params = {"merchantId"=>params[:merchantId],"amount"=> params[:amount],"currency"=> params[:currency],"description"=>params[:description],"approveUrl"=>params[:approveUrl],"cancelUrl"=>params[:cancelUrl],"declineUrl"=>params[:declineUrl],"userName"=>params[:userName],"passWord"=>params[:password],"transactionId"=>params[:transactionId],"secureToken"=>response_ssl["transactionId"]}
+            #abort(data_params.inspect)
+            is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
+            extra_string = (is_test_citybank) ? '_sandbox' : ''
+            payment_url = URI(payment_urls["citybank_create_order_url" + extra_string])
+            payment_url ||= URI("https://sandbox.thecitybank.com:7788/transaction/createorder")
+#abort(data_params.to_json.inspect)
+            http = Net::HTTP.new(payment_url.host, payment_url.port)
+            http.use_ssl = (payment_url.scheme == 'https')
+            http.cert = OpenSSL::X509::Certificate.new(rootCAData)
+            http.key  = OpenSSL::PKey::RSA.new(keyCAData)
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
+            #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+            request = Net::HTTP::Post.new(payment_url.path,  {"Content-Type" => "application/json", "Accept" => "application/json"})
+            #request.set_form_data({"userName"=>params[:userName],"password"=>params[:password]}.to_json)
+            request.body = {"userName"=>params[:userName],"password"=>params[:password]}.to_json
+            #request.set_form_data(data_params)
+            response = http.request(request)
+            response_ssl = JSON::parse(response.body)
+            abort(response_ssl.inspect)
+             if response_ssl["responseCode"].to_i == 107
+                flash[:notice] = "Authentication Failed, Please contact with System Admin"
+                redirect_to params[:fee_url]
+             elsif response_ssl["responseCode"].to_i == 100
+               abort(response_ssl['items'].inspect)
+                #order_url = response_ssl['items']['url']; $orderId = $cblEcomm['items']['orderId']; $sessionId = $cblEcomm['items']['sessionId']; $redirectUrl = $URL."?ORDERID=".$orderId."&SESSIONID=".$sessionId; 
+             else
+               flash[:notice] = response_ssl['message']
+               redirect_to params[:fee_url]
+             end
+        else
+          flash[:notice] = response_ssl['message']
+          redirect_to params[:fee_url]
         end
       end
     end
-    if testssl
-      api_uri = URI(payment_configs["session_api_to_generate_transaction"])
-    else  
-      api_uri = URI("https://securepay.sslcommerz.com/gwprocess/v3/api_convenient_fee.php")
-    end
     
-    http = Net::HTTP.new(api_uri.host, api_uri.port)
-    http.use_ssl = true
-    request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded' })
-    request.set_form_data({"tran_id"=>params[:tran_id],"store_id"=>params[:store_id],"store_passwd"=>params[:store_passwd],"cart[0][product]"=>params[:product],"cart[0][amount]"=>params[:amount],"total_amount"=>params[:total_amount],"success_url"=>params[:success_url],"fail_url"=>params[:fail_url],"cancel_url"=>params[:cancel_url],"version"=>params[:version]})
-    response = http.request(request)
-    @response_ssl = JSON::parse(response.body)
-    
-    if @response_ssl['status'] == "FAILED" 
-      flash[:notice] = @response_ssl['failedreason']
-      redirect_to params[:ret_url]
-      #redirect_to :controller => "student", :action => "fee_details", :id=>13429, :id2=>1569
-    else
-      redirect_to @response_ssl['GatewayPageURL']
-    end
+#    testssl = false
+#    if PaymentConfiguration.config_value('is_test_sslcommerz').to_i == 1
+#      if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config.yml")
+#        payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config.yml"))
+#        unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
+#          testssl = payment_configs["testsslcommer"]
+#        end
+#      end
+#    end
+#    if testssl
+#      api_uri = URI(payment_configs["session_api_to_generate_transaction"])
+#    else  
+#      api_uri = URI("https://securepay.sslcommerz.com/gwprocess/v3/api_convenient_fee.php")
+#    end
+#    
+#    http = Net::HTTP.new(api_uri.host, api_uri.port)
+#    http.use_ssl = true
+#    request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded' })
+#    request.set_form_data({"tran_id"=>params[:tran_id],"store_id"=>params[:store_id],"store_passwd"=>params[:store_passwd],"cart[0][product]"=>params[:product],"cart[0][amount]"=>params[:amount],"total_amount"=>params[:total_amount],"success_url"=>params[:success_url],"fail_url"=>params[:fail_url],"cancel_url"=>params[:cancel_url],"version"=>params[:version]})
+#    response = http.request(request)
+#    @response_ssl = JSON::parse(response.body)
+#    
+#    if @response_ssl['status'] == "FAILED" 
+#      flash[:notice] = @response_ssl['failedreason']
+#      redirect_to params[:ret_url]
+#      #redirect_to :controller => "student", :action => "fee_details", :id=>13429, :id2=>1569
+#    else
+#      redirect_to @response_ssl['GatewayPageURL']
+#    end
     
   end
   

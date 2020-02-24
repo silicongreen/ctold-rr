@@ -1,4 +1,4 @@
-<% form_for :ssl_online_pay ,:url => get_payment_url,:method => :post do |f| %>
+<% form_for :ssl_online_pay ,:url => get_payment_url(gateway),:method => :post do |f| %>
   <% @options.each do |key, value| %>
     <%= hidden_field_tag key.to_sym,value %>
   <% end %>

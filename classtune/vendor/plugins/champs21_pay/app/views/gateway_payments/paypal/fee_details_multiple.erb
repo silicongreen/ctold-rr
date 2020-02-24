@@ -17,6 +17,24 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<style>
+  * {
+      -webkit-box-sizing: content-box !important;
+      -moz-box-sizing: content-box-box !important;
+      box-sizing: content-box !important;
+  }
+  .modal{
+    top: 20% !important;
+  }
+</style>
 
 <% unless params[:show_order_id].blank? %>
   <% if params[:show_order_id].to_i == 1 %>
@@ -1148,11 +1166,13 @@
             <tr>
               <td colspan="5" style="padding-bottom: 30px;">
                   <div class="pay_fees"><div class="pay_fees_buttons">
+                  <input type="hidden" name="user_gateway" id="user_gateway" value="<%= @gateway_settings.keys[0].to_s %>" />
+                  <input type="hidden" name="order_id" id="order_id" value="<%= @order_id %>" />        
                   <% if @gateway_settings.length == 1 %>
-                      <input type="hidden" name="order_id" id="order_id" value="<%= @order_id %>" />
                       <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button' %>
                   <% else %>
-                  
+                      <button type="button" id="pay_fees_multiple" class="submit_button"  data-toggle="modal" data-target="#paymentModal"><%= "► #{t('pay_fees')}" %></button>
+                      <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button_multiple', :style=>"display: none;" %>
                   <% end %>
                 <% if MultiSchool.current_school.id != 352 %>    
                 <%= link_to "► #{t('print_receipt')}",
@@ -1193,8 +1213,73 @@
     <div style="clear: both; height: 10px;"></div>
     <% end %>
 <% end %>
+    <% if @gateway_settings.length > 1 %>
+    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+              <div style="width: 100%; text-align: center;">
+                  <h1>Pay Summary</h1>
+                  <hr />
+                  <div style=" text-align: left; padding: 10px;">
+                      <div style="width: 24%; text-align: left; display: inline-block;font-size: 15px;padding: 6px;font-weight: bold; border: 1px solid #ccc;">Fees Name:</div>
+                      <div style="width: 70%; text-align: left; display: inline-block;font-size: 15px;padding: 6px;font-weight: bold; border: 1px solid #ccc;"><%= fee_collection_name %></div>
+                  </div>
+                  
+                  <div style=" text-align: left; padding: 10px;">
+                      <div style="width: 70%; text-align: right; display: inline-block;font-size: 18px;padding: 6px;font-weight: bold; border: 1px solid #ccc;">Fees Summary:</div>
+                      <div style="width: 24%; text-align: right; display: inline-block;font-size: 18px;padding: 6px;font-weight: bold; border: 1px solid #ccc;"><%= to_comma_seperated_precision_label(total_fees) %></div>
+                  </div>
+                  <div style="width: 98%; text-align: right; ">
+                    <% @gateway_settings.each do |key,value| %>
+                        <div class="gateway_image_panel" data-gateway="<%= key %>" style="position: relative;">
+                            <input type="radio" id="radio_<%= key %>" name="gateway_radio" class="gateway_radio" value="<%= key %>" style="position: absolute; top: 0; right: 4px;" autocomplete="off" />
+                            <%= image_tag "/images/gateway_images/#{key}.png", :class => "gateway_image", :id => "#{key}" %>
+                        </div>
+                    <% end %>
+                  </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" id="pay_now_multi" class="btn btn-primary" disabled=""><%= "► #{t('pay_fees')}" %></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+<style>
+    .gateway_image_panel{
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 150px;
+      display: inline-block;
+      /*-webkit-box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);
+      -moz-box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);
+      box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);*/
+      cursor: pointer;
+    }
+    .gateway_image{
+      width: 100%;
+      /*-webkit-box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);
+      -moz-box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);
+      box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);*/
+      cursor: pointer;
+    }
+</style>
 <script>
     j(document).ready(function(){
+      
+        j(document).on("click", "#pay_now_multi", function(){
+            j("#submit_button_multiple").trigger('click');
+        });
+      
+        j(document).on("click", ".gateway_image_panel", function(){
+            var gateway = j(this).data('gateway');
+            j("#radio_" + gateway).prop('checked', true);
+            j("#user_gateway").val(gateway);
+            j("#pay_now_multi").removeAttr('disabled');
+        });
       
         j(document).on("click", ".expand_tr", function(){
             var id = this.id.replace("expand_tr_", "");

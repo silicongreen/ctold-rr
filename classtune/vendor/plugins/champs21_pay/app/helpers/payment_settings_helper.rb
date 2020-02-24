@@ -40,9 +40,9 @@ module PaymentSettingsHelper
     render :partial => "gateway_payments/trustbank/trustbank_form"
   end
   
-  def pay_button(options)
+  def pay_button(options, pay_button_gateway)
     @options = options
-    render :partial => "gateway_payments/payment_form"
+    render :partial => "gateway_payments/payment_form", :locals => {:gateway => pay_button_gateway}
   end
 
   def authorize_net_pay_button(merchant_id,certificate,amount,item_name,return_url,paid_fees = Array.new,button_style = String.new)
@@ -60,12 +60,12 @@ module PaymentSettingsHelper
     render :partial => "gateway_payments/authorize_net/authorize_net_form"
   end
 
-  def get_payment_url
+  def get_payment_url(active_gateway = 'trustbank')
     payment_urls = Hash.new
     if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
       payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
     end
-    active_gateway = PaymentConfiguration.config_value("champs21_gateway")
+    #active_gateway = PaymentConfiguration.config_value("champs21_gateway")
     if active_gateway == "Paypal"
       payment_url = payment_urls["paypal_url"]
       payment_url ||= "https://www.sandbox.paypal.com/cgi-bin/webscr"
@@ -80,6 +80,12 @@ module PaymentSettingsHelper
         payment_url = payment_urls["ssl_commerce_url"]
         payment_url ||= "https://securepay.sslcommerz.com/gwprocess/testbox/v3/process.php"
       end
+    elsif active_gateway == "citybank"
+#      is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
+#      extra_string = (is_test_citybank) ? '_sandbox' : ''
+#      payment_url = payment_urls["citybank_token_url" + extra_string]
+#      payment_url ||= "https://sandbox.thecitybank.com:7788/transaction/token"
+      payment_url ||= "/student/generate_ssl_url"
     elsif active_gateway == "trustbank"
       testtrustbank = false
       if PaymentConfiguration.config_value('is_test_trustbank').to_i == 1

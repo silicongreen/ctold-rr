@@ -51,6 +51,10 @@ module OnlinePayment
           #@total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
           
           if request.post? and params[:order_id].present?
+            @user_gateway = @gateway_settings.keys[0].to_s
+            unless params[:user_gateway].blank?
+              @user_gateway = params[:user_gateway].to_s
+            end
             unless params[:multiple].nil?
               if params[:multiple].to_s == "true"
                 order_id = params[:order_id]

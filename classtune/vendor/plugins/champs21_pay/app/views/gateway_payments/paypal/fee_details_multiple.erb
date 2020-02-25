@@ -1213,7 +1213,24 @@
           
       <% end %>
     </table>
-    <button id="bKash_button" style="display:none;">Pay with bKash</button>
+    <% if @gateway_settings.keys.include?('bkash')  %>
+      <button id="bKash_button" style="display:none;">Pay with bKash</button>
+      <% unless params[:multiple].nil? %>
+        <% if params[:multiple].to_s == "true" %>
+          <input type="hidden" name="fees" id="fees" value="<%= params[:fees] %>" />
+          <input type="hidden" name="student_fees" id="student_fees" value="<%= params[:id] %>" />
+          <input type="hidden" name="multiple" id="multiple" value="1" />
+        <% else %>
+          <input type="hidden" name="fees" id="fees" value="<%= params[:id2] %>" />
+          <input type="hidden" name="student_fees" id="student_fees" value="<%= params[:id] %>" />
+          <input type="hidden" name="multiple" id="multiple" value="0" />
+        <% end %>
+      <% else %>
+        <input type="hidden" name="fees" id="fees" value="<%= params[:id2] %>" />
+        <input type="hidden" name="student_fees" id="student_fees" value="<%= params[:id] %>" />
+        <input type="hidden" name="multiple" id="multiple" value="0" />
+      <% end %> 
+    <% end %>
     <% if @student.has_dues %>
     <div style="clear: both; height: 4px;"></div>
     <div style="width: 100%; text-align: center; color: #f00;">***Student has previous Dues***</div>
@@ -1305,7 +1322,7 @@
             j.ajax({
                 url: '/student/complete_bkash_payment',
                 type: 'POST',
-                data: {gateway: j("#user_gateway").val(),id_token: id_token, payment_id: paymentID},
+                data: {gateway: j("#user_gateway").val(),id_token: id_token, payment_id: paymentID, order_id: '<%=  @order_id %>', student_id: <%= @student.id %>},
                 success: function (data) {
                       if (data && data.paymentID != null) 
                       {
@@ -1332,7 +1349,7 @@
                 j.ajax({
                     url: '/student/generate_bkash_token',
                     type: 'POST',
-                    data: {gateway: j("#user_gateway").val()},
+                    data: j("#fees_form").serialize() + "&student_id=<%= @student.id %>",
                     success: function (data) {
                           if ( ! data.id_token )
                           {
@@ -1355,11 +1372,11 @@
                                         } 
                                         else 
                                         { 
-                                          bKash.create().onError(); 
+                                          alert(data.errorMessage);
                                         } 
                                   },
                                   error: function () {
-                                      bKash.create().onError(); 
+                                      alert(data.errorMessage);
                                   }
                               });
                           }

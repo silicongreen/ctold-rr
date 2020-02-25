@@ -18,9 +18,9 @@ module OnlinePayment
       merchant_id = ""
       now = I18n.l(Time.now, :format=>'%Y-%m-%d %H:%M:%S')
       
-#      require 'DateTime'
+#      require 'date'
 #      s = "2020-02-25T13:22:32:790 GMT+0000"
-#      abort(Date.parse(s).to_date.strftime("%Y-%m-%d %H:%M:%S"))
+#      abort(DateTime.parse(s).to_datetime.strftime("%Y-%m-%d %H:%M:%S"))
       
       transaction_datetime = now
       if Champs21Plugin.can_access_plugin?("champs21_pay")

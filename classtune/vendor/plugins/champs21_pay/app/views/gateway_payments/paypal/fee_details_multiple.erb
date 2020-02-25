@@ -25,6 +25,11 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<% if @gateway_settings.keys.include?('bkash')  %>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> 
+<script src="https://scripts.sandbox.bka.sh/versions/1.2.0-beta/checkout/bKash-checkout-sandbox.js"></script>
+<% end %>
+
 <style>
   * {
       -webkit-box-sizing: content-box !important;
@@ -1208,6 +1213,7 @@
           
       <% end %>
     </table>
+    <button id="bKash_button" style="display:none;">Pay with bKash</button>
     <% if @student.has_dues %>
     <div style="clear: both; height: 4px;"></div>
     <div style="width: 100%; text-align: center; color: #f00;">***Student has previous Dues***</div>
@@ -1238,11 +1244,12 @@
                             <%= image_tag "/images/gateway_images/#{key}.png", :class => "gateway_image", :id => "#{key}" %>
                         </div>
                     <% end %>
+                      
                   </div>
               </div>
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" id="close_pop" class="btn btn-secondary" data-dismiss="modal">Close</button>
               <button type="button" id="pay_now_multi" class="btn btn-primary" disabled=""><%= "► #{t('pay_fees')}" %></button>
           </div>
         </div>
@@ -1250,6 +1257,15 @@
     </div>
     <% end %>
 <style>
+    <% if @gateway_settings.keys.include?('bkash')  %>
+    #bKashFrameWrapper{
+        display:none;
+        position: fixed;
+        overflow-y: scroll;
+        z-index: 50000;
+        inset: 0px;
+    }
+    <% end %>
     .gateway_image_panel{
       border: 1px solid #ccc;
       border-radius: 5px;
@@ -1269,10 +1285,97 @@
     }
 </style>
 <script>
+  
     j(document).ready(function(){
+      var paymentID;
+      var id_token;
       
+      bKash.init({ 
+          paymentMode: 'checkout', //fixed value ‘checkout’ 
+          //paymentRequest format: {amount: AMOUNT, intent: INTENT} 
+          //intent options 
+          //1) ‘sale’ – immediate transaction (2 API calls) 
+          //2) ‘authorization’ – deferred transaction (3 API calls) 
+          paymentRequest: { 
+            amount: <%= precision_label total_fees %>, //max two decimal points allowed 
+            intent: 'sale' 
+          }, 
+          executeRequestOnAuthorization: function() { 
+            j("#bKashFrameWrapper").css('display','none');
+            j.ajax({
+                url: '/student/complete_bkash_payment',
+                type: 'POST',
+                data: {gateway: j("#user_gateway").val(),id_token: id_token, payment_id: paymentID},
+                success: function (data) {
+                      if (data && data.paymentID != null) 
+                      {
+                        j("#bKashFrameWrapper").css('display','none');
+                        //location.reload();
+                      } 
+                      else 
+                      { 
+                        bKash.create().onError(); 
+                        alert(data.errorMessage);
+                      } 
+                },
+                error: function () {
+                    bKash.create().onError(); 
+
+                }
+            });
+          } 
+        });
+  
         j(document).on("click", "#pay_now_multi", function(){
-            j("#submit_button_multiple").trigger('click');
+            if ( j("#user_gateway").val() == 'bkash' )
+            {
+                j.ajax({
+                    url: '/student/generate_bkash_token',
+                    type: 'POST',
+                    data: {gateway: j("#user_gateway").val()},
+                    success: function (data) {
+                          if ( ! data.id_token )
+                          {
+                              alert(data.errorMessage);
+                          }
+                          else
+                          {
+                              id_token = data.id_token;
+                              j.ajax({
+                                  url: '/student/generate_bkash_payment',
+                                  type: 'POST',
+                                  data: {gateway: j("#user_gateway").val(),id_token: id_token, total_fees: <%= precision_label total_fees %>, order_id: '<%=  @order_id %>'},
+                                  success: function (data) {
+                                        if (data && data.paymentID != null) 
+                                        {
+                                          j("#bKashFrameWrapper").css('display','block');
+                                          j("#close_pop").trigger('click');
+                                          paymentID = data.paymentID; 
+                                          bKash.create().onSuccess(data); //pass the whole response data in bKash.create().onSucess() method as a parameter 
+                                        } 
+                                        else 
+                                        { 
+                                          bKash.create().onError(); 
+                                        } 
+                                  },
+                                  error: function () {
+                                      bKash.create().onError(); 
+                                  }
+                              });
+                          }
+                    },
+                    error: function () {
+                        //bKash.create().onError();//run clean up code
+                        alert(data.errorMessage);
+
+                    }
+                });
+
+            }
+            else
+            {
+              j("#submit_button_multiple").trigger('click');
+            }
         });
       
         j(document).on("click", ".gateway_image_panel", function(){

@@ -88,3 +88,5 @@ en:
   keycode_verification: "Keycode"
   order_verification: "Order Verification"
   verify_order: "Verify Order"
+  app_key: "App Key"
+  app_secret: "App Secret"

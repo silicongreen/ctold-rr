@@ -6,7 +6,7 @@ module Champs21Pay
   AUTHORIZENET_CONFIG_KEYS = ["authorize_net_merchant_id","authorize_net_transaction_password"]
   SSLCOMMERCE_CONFIG_KEYS = ["is_test_sslcommerce", "store_id","store_password"]
   TRUSTBANK_CONFIG_KEYS = ["is_test_trustbank", "merchant_id","keycode_verification"]
-  BKASH_CONFIG_KEYS = ["is_test_bkash", "merchant_id","keycode_verification"]
+  BKASH_CONFIG_KEYS = ["is_test_bkash", "app_key","app_secret","username","password"]
   CITYBANK_CONFIG_KEYS = ["is_test_citybank","merchant_id", "api_user_name","api_password"]
 
   def self.attach_overrides 

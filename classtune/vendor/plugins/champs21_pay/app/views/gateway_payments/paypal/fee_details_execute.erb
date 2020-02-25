@@ -92,5 +92,23 @@
     <% options['fee_url'] = "http://#{request.host_with_port}/#{request.fullpath}" %>
     <% options['gateway'] = gateway %>
     <%= pay_button(options, gateway) %>  
+  <% elsif gateway == "bkash" %>  
+    <% options = {} %>
+    <% options['merchantId'] = @gateway_settings[gateway]['merchant_id'] %>
+    <% options['userName'] = @gateway_settings[gateway]['api_user_name'] %>
+    <% options['password'] = @gateway_settings[gateway]['api_password'] %>
+    <% options['amount'] = sprintf("%0.2f",@total_amount).to_f  %>
+    <% options['currency'] = "050" %>
+    <% options['description'] = @fee_collection_name %>
+    <% unless params[:mobile_view].blank? %>
+      <% extra_string = "-mobile_view" %>
+    <% end %>
+    <% options['approveUrl'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=2" + extra_string %>
+    <% options['declineUrl'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_fail_transaction=4" + extra_string %>
+    <% options['cancelUrl'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_cancel_transaction=5" + extra_string %>
+    <% options['transactionId'] = @finance_order.order_id %>
+    <% options['fee_url'] = "http://#{request.host_with_port}/#{request.fullpath}" %>
+    <% options['gateway'] = gateway %>
+    <%= pay_button(options, gateway) %>  
   <% end %>
 </body>

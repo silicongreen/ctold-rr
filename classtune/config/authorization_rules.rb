@@ -2997,6 +2997,9 @@ authorization do
       :advanced_search_pdf,
       :previous_data,
       :generate_ssl_url,
+      :generate_bkash_token,
+      :complete_bkash_payment,
+      :generate_bkash_payment,
       :previous_data_from_profile,
       :category_log,
       :batch_log,
@@ -3608,6 +3611,9 @@ authorization do
       :edit_student_security,
       :create_student_security,
       :generate_ssl_url,
+      :generate_bkash_token,
+      :complete_bkash_payment,
+      :generate_bkash_payment,
       :fee_details
     ]
     has_permission_on [:detention],

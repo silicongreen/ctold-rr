@@ -22,7 +22,7 @@ class StudentController < ApplicationController
   before_filter :login_required
   before_filter :check_permission, :only=>[:index,:admission1,:profile,:reports,:categories,:add_additional_details]
   before_filter :set_precision
-  before_filter :protect_other_student_data, :except =>[:edit_guardian_own,:generate_ssl_url,:get_previous_exam,:update_is_promoted,:insert_into_new_parent_student_table,:show,:class_test_report,:previous_batch_report,:combined_exam,:progress_report,:class_test_report_single,:term_test_report]
+  before_filter :protect_other_student_data, :except =>[:edit_guardian_own, :generate_bkash_payment,:generate_ssl_url, :complete_bkash_payment, :generate_bkash_token,:get_previous_exam,:update_is_promoted,:insert_into_new_parent_student_table,:show,:class_test_report,:previous_batch_report,:combined_exam,:progress_report,:class_test_report_single,:term_test_report]
   before_filter :default_time_zone_present_time
   before_filter :only_allowed_when_parmitted , :only=>[:edit_guardian_own,:edit_student_guardian]
   
@@ -46,6 +46,150 @@ class StudentController < ApplicationController
   def graduation_lists
     @schoo_batch_id = Batch.all.map(&:id)
     @graduation_session = BatchTransfer.find(:all,:conditions=>["from_id IN (?) and to_id = ?",@schoo_batch_id,0],:limit=>100,:order=>'created_at DESC')
+  end
+  
+  def generate_bkash_token
+    require 'net/http'
+    require 'net/https'
+    require 'uri'
+    require "yaml"
+    unless params[:gateway].blank?
+      @user_gateway = params[:gateway]
+      payment_urls = Hash.new
+      if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+        payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+      end
+
+      is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
+      extra_string = (is_test_bkash) ? '_sandbox' : ''
+      payment_url = URI(payment_urls["bkash_token_url" + extra_string])
+      payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/token/grant")
+
+      http = Net::HTTP.new(payment_url.host, payment_url.port)
+      http.use_ssl = (payment_url.scheme == 'https')
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
+      #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      @app_key = PaymentConfiguration.config_value(@user_gateway + "_app_key")
+      @app_secret = PaymentConfiguration.config_value(@user_gateway + "_app_secret")
+      @app_username = PaymentConfiguration.config_value(@user_gateway + "_username")
+      @app_password = PaymentConfiguration.config_value(@user_gateway + "_password")
+
+      request = Net::HTTP::Post.new(payment_url.path, {"username" => @app_username, "password" => @app_password, "Content-Type" => "application/json", "Accept" => "application/json"})
+      request.body = {"app_key"=>@app_key,"app_secret"=>@app_secret}.to_json
+      response = http.request(request)
+      response_ssl = JSON::parse(response.body)
+      render :json => response_ssl
+    else
+      flash[:notice] = "Invalid Request for token"
+      render :text=> "Invalid Request for token"
+    end
+  end
+  
+  def generate_bkash_payment
+    require 'net/http'
+    require 'net/https'
+    require 'uri'
+    require "yaml"
+    unless params[:gateway].blank?
+      unless params[:id_token].blank?
+        @user_gateway = params[:gateway]
+        id_token = params[:id_token]
+        payment_urls = Hash.new
+        if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+          payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+        end
+
+        is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
+        extra_string = (is_test_bkash) ? '_sandbox' : ''
+        payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "create")
+        payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "create")
+
+        http = Net::HTTP.new(payment_url.host, payment_url.port)
+        http.use_ssl = (payment_url.scheme == 'https')
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
+        #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        @app_key = PaymentConfiguration.config_value(@user_gateway + "_app_key")
+        @app_secret = PaymentConfiguration.config_value(@user_gateway + "_app_secret")
+        @app_username = PaymentConfiguration.config_value(@user_gateway + "_username")
+        @app_password = PaymentConfiguration.config_value(@user_gateway + "_password")
+
+        request = Net::HTTP::Post.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
+        request.body = {"amount"=> params[:total_fees],"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>params[:order_id]}.to_json
+        response = http.request(request)
+        response_ssl = JSON::parse(response.body)
+        render :json => response_ssl
+      else
+        flash[:notice] = "Invalid Request for Payment"
+        render :text=> "Invalid Request for Payment"
+      end
+    else
+      flash[:notice] = "Invalid Request for Payment"
+      render :text=> "Invalid Request for Payment"
+    end
+  end
+  
+  def complete_bkash_payment
+    require 'net/http'
+    require 'net/https'
+    require 'uri'
+    require "yaml"
+    unless params[:gateway].blank?
+      unless params[:id_token].blank?
+        @user_gateway = params[:gateway]
+        id_token = params[:id_token]
+        payment_id = params[:payment_id]
+        payment_urls = Hash.new
+        if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+          payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+        end
+
+        is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
+        extra_string = (is_test_bkash) ? '_sandbox' : ''
+        payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "execute/" + payment_id.to_s)
+        payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "execute/" + payment_id.to_s)
+
+        http = Net::HTTP.new(payment_url.host, payment_url.port)
+        http.use_ssl = (payment_url.scheme == 'https')
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
+        #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        @app_key = PaymentConfiguration.config_value(@user_gateway + "_app_key")
+        @app_secret = PaymentConfiguration.config_value(@user_gateway + "_app_secret")
+        @app_username = PaymentConfiguration.config_value(@user_gateway + "_username")
+        @app_password = PaymentConfiguration.config_value(@user_gateway + "_password")
+
+        request = Net::HTTP::Post.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
+        #request.body = {"amount"=> params[:total_fees],"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>params[:order_id]}.to_json
+        response = http.request(request)
+        response_ssl = JSON::parse(response.body)
+        transactionStatus = ""
+        createTime = ""
+        response_ssl.each do |key,value|
+          if key == "transactionStatus"
+            transactionStatus = value
+          elsif key == "createTime"
+            createTime = value
+          end
+        end
+        
+        if response_ssl.keys.include?("transactionStatus") and transactionStatus == 'Completed'
+          require 'date'
+          gateway_response = {}
+          response_ssl.each do |key,value|
+            gateway_response[key] = value
+          end
+          abort(Date.parse(createTime).to_date.strftime("%Y-%m-%d %H:%M:%S"))
+        else
+          render :json => response_ssl
+        end
+        
+      else
+        flash[:notice] = "Invalid Request for Payment"
+        render :text=> "Invalid Request for Payment"
+      end
+    else
+      flash[:notice] = "Invalid Request for Payment"
+      render :text=> "Invalid Request for Payment"
+    end
   end
   
   def generate_ssl_url

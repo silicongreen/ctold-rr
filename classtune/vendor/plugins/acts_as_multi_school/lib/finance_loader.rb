@@ -867,37 +867,24 @@ module FinanceLoader
 
     total_fees =@financefee.balance.to_f+@fine_amount.to_f
 
-    paid_fees = @financefee.finance_transactions
-    paid_amount = 0.0
-    unless paid_fees.nil? or paid_fees.blank?
-      paid_fees.each do |pf|
-        paid_amount += pf.amount
+    if @active_gateway == "trustbank"
+      paid_fees = @financefee.finance_transactions
+      paid_amount = 0.0
+      unless paid_fees.nil? or paid_fees.blank?
+        paid_fees.each do |pf|
+          paid_amount += pf.amount
+        end
       end
-    end
-    remaining_amount = bal - paid_amount
+      remaining_amount = bal - paid_amount
 
-    remaining_amount = total_fees - paid_amount
+      remaining_amount = total_fees - paid_amount
 
-    unless @financefee.is_paid
-      finance_order = FinanceOrder.find(:first, :conditions => "finance_fee_id = #{@financefee.id} and student_id = #{@financefee.student_id} and batch_id = #{@financefee.batch_id} and status = 0")
-      unless finance_order.nil?
-        @order_id = "O" + finance_order.id.to_s
-        finance_order.update_attributes(:order_id => @order_id)
-      else
-        finance_order = FinanceOrder.new()
-        finance_order.finance_fee_id = @financefee.id
-        finance_order.student_id = @financefee.student_id
-        finance_order.batch_id = @financefee.batch_id
-        finance_order.balance = remaining_amount
-        finance_order.save
-        @order_id = "O" + finance_order.id.to_s
-        finance_order.update_attributes(:order_id => @order_id)
-      end
-
-      payment = Payment.find(:first, :conditions => "order_id = '#{@order_id}'")
-      unless payment.nil?
-        finance_transaction_id = payment.finance_transaction_id
-        unless finance_transaction_id.nil?
+      unless @financefee.is_paid
+        finance_order = FinanceOrder.find(:first, :conditions => "finance_fee_id = #{@financefee.id} and student_id = #{@financefee.student_id} and batch_id = #{@financefee.batch_id} and status = 0")
+        unless finance_order.nil?
+          @order_id = "O" + finance_order.id.to_s
+          finance_order.update_attributes(:order_id => @order_id)
+        else
           finance_order = FinanceOrder.new()
           finance_order.finance_fee_id = @financefee.id
           finance_order.student_id = @financefee.student_id
@@ -907,23 +894,38 @@ module FinanceLoader
           @order_id = "O" + finance_order.id.to_s
           finance_order.update_attributes(:order_id => @order_id)
         end
+        
+        payment = Payment.find(:first, :conditions => "order_id = '#{@order_id}'")
+        unless payment.nil?
+          finance_transaction_id = payment.finance_transaction_id
+          unless finance_transaction_id.nil?
+            finance_order = FinanceOrder.new()
+            finance_order.finance_fee_id = @financefee.id
+            finance_order.student_id = @financefee.student_id
+            finance_order.batch_id = @financefee.batch_id
+            finance_order.balance = remaining_amount
+            finance_order.save
+            @order_id = "O" + finance_order.id.to_s
+            finance_order.update_attributes(:order_id => @order_id)
+          end
 
-      end
-    else
-      if remaining_amount > 0
-        finance_order = FinanceOrder.new()
-        finance_order.finance_fee_id = @financefee.id
-        finance_order.student_id = @financefee.student_id
-        finance_order.batch_id = @financefee.batch_id
-        finance_order.balance = remaining_amount
-        finance_order.save
-        @order_id = "O" + finance_order.id.to_s
-        @order_id_saved = true
-        finance_order.update_attributes(:order_id => @order_id)
+        end
+      else
+        if remaining_amount > 0
+          finance_order = FinanceOrder.new()
+          finance_order.finance_fee_id = @financefee.id
+          finance_order.student_id = @financefee.student_id
+          finance_order.batch_id = @financefee.batch_id
+          finance_order.balance = remaining_amount
+          finance_order.save
+          @order_id = "O" + finance_order.id.to_s
+          @order_id_saved = true
+          finance_order.update_attributes(:order_id => @order_id)
+        end
       end
     end
 
-    if @gateway_settings.keys.include?("Authorize.net")
+    if @active_gateway == "Authorize.net"
       @sim_transaction = AuthorizeNet::SIM::Transaction.new(@merchant_id,@certificate, total_fees,{:hosted_payment_form => true,:x_description => "Fee-#{@student.admission_no}-#{@fee_collection.name}"})
       @sim_transaction.instance_variable_set("@custom_fields",{:x_description => "Fee (#{@student.full_name}-#{@student.admission_no}-#{@fee_collection.name})"})
       @sim_transaction.set_hosted_payment_receipt(AuthorizeNet::SIM::HostedReceiptPage.new(:link_method => AuthorizeNet::SIM::HostedReceiptPage::LinkMethod::GET, :link_text => "Back to #{current_school_name}", :link_url => URI.parse("http://#{request.host_with_port}/student/fee_details/#{student_id}/#{fee_collection_id}?create_transaction=1&only_path=false")))
@@ -1109,37 +1111,66 @@ module FinanceLoader
 
       total_fees =@financefee[f].balance.to_f+@fine_amount[f].to_f
 
-      paid_fees = @financefee[f].finance_transactions
+      #if @active_gateway == "trustbank"
+        paid_fees = @financefee[f].finance_transactions
         
-      paid_amount = 0.0
-      unless paid_fees.blank?
-        paid_fees.each do |pf|
-          paid_amount += pf.amount
-        end
-      end
-      remaining_amount = total_fees - paid_amount
-
-      unless @financefee[f].is_paid
-        finance_order = FinanceOrder.find(:first, :conditions => "finance_fee_id = #{@financefee[f].id} and student_id = #{@financefee[f].student_id} and batch_id = #{@financefee[f].batch_id} and status = 0")
-        unless finance_order.blank?
-          if @order_id_saved
-            finance_order.update_attributes(:order_id => @order_id)
-          else
-            @order_id = "O" + finance_order.id.to_s
-            finance_order.update_attributes(:order_id => @order_id)
-            @order_id_saved = true
+        paid_amount = 0.0
+        unless paid_fees.blank?
+          paid_fees.each do |pf|
+            paid_amount += pf.amount
           end
+        end
+        remaining_amount = total_fees - paid_amount
 
+        unless @financefee[f].is_paid
+          finance_order = FinanceOrder.find(:first, :conditions => "finance_fee_id = #{@financefee[f].id} and student_id = #{@financefee[f].student_id} and batch_id = #{@financefee[f].batch_id} and status = 0")
+          unless finance_order.blank?
+            if @order_id_saved
+              finance_order.update_attributes(:order_id => @order_id)
+            else
+              @order_id = "O" + finance_order.id.to_s
+              finance_order.update_attributes(:order_id => @order_id)
+              @order_id_saved = true
+            end
+
+          else
+            if @order_id_saved
+              finance_order = FinanceOrder.new()
+              finance_order.finance_fee_id = @financefee[f].id
+              finance_order.order_id = @order_id
+              finance_order.student_id = @financefee[f].student_id
+              finance_order.batch_id = @financefee[f].batch_id
+              finance_order.balance = remaining_amount
+              finance_order.save
+            else
+              finance_order = FinanceOrder.new()
+              finance_order.finance_fee_id = @financefee[f].id
+              finance_order.student_id = @financefee[f].student_id
+              finance_order.batch_id = @financefee[f].batch_id
+              finance_order.balance = remaining_amount
+              finance_order.save
+              @order_id = "O" + finance_order.id.to_s
+              @order_id_saved = true
+              finance_order.update_attributes(:order_id => @order_id)
+            end
+          end
+          
+          payment = Payment.find(:first, :conditions => "order_id = '#{@order_id}'")
+          unless payment.blank?
+            finance_transaction_id = payment.finance_transaction_id
+            unless finance_transaction_id.nil?
+              finance_order = FinanceOrder.new()
+              finance_order.finance_fee_id = @financefee[f].id
+              finance_order.student_id = @financefee[f].student_id
+              finance_order.batch_id = @financefee[f].batch_id
+              finance_order.balance = remaining_amount
+              finance_order.save
+              @order_id = "O" + finance_order.id.to_s
+              finance_order.update_attributes(:order_id => @order_id)
+            end
+          end
         else
-          if @order_id_saved
-            finance_order = FinanceOrder.new()
-            finance_order.finance_fee_id = @financefee[f].id
-            finance_order.order_id = @order_id
-            finance_order.student_id = @financefee[f].student_id
-            finance_order.batch_id = @financefee[f].batch_id
-            finance_order.balance = remaining_amount
-            finance_order.save
-          else
+          if remaining_amount > 0
             finance_order = FinanceOrder.new()
             finance_order.finance_fee_id = @financefee[f].id
             finance_order.student_id = @financefee[f].student_id
@@ -1151,36 +1182,9 @@ module FinanceLoader
             finance_order.update_attributes(:order_id => @order_id)
           end
         end
+      #end
 
-        payment = Payment.find(:first, :conditions => "order_id = '#{@order_id}'")
-        unless payment.blank?
-          finance_transaction_id = payment.finance_transaction_id
-          unless finance_transaction_id.nil?
-            finance_order = FinanceOrder.new()
-            finance_order.finance_fee_id = @financefee[f].id
-            finance_order.student_id = @financefee[f].student_id
-            finance_order.batch_id = @financefee[f].batch_id
-            finance_order.balance = remaining_amount
-            finance_order.save
-            @order_id = "O" + finance_order.id.to_s
-            finance_order.update_attributes(:order_id => @order_id)
-          end
-        end
-      else
-        if remaining_amount > 0
-          finance_order = FinanceOrder.new()
-          finance_order.finance_fee_id = @financefee[f].id
-          finance_order.student_id = @financefee[f].student_id
-          finance_order.batch_id = @financefee[f].batch_id
-          finance_order.balance = remaining_amount
-          finance_order.save
-          @order_id = "O" + finance_order.id.to_s
-          @order_id_saved = true
-          finance_order.update_attributes(:order_id => @order_id)
-        end
-      end
-
-      if @gateway_settings.keys.include?("Authorize.net")
+      if @active_gateway == "Authorize.net"
         @sim_transaction = AuthorizeNet::SIM::Transaction.new(@merchant_id,@certificate, total_fees,{:hosted_payment_form => true,:x_description => "Fee-#{@student.admission_no}-#{@fee_collection[f].name}"})
         @sim_transaction.instance_variable_set("@custom_fields",{:x_description => "Fee (#{@student.full_name}-#{@student.admission_no}-#{@fee_collection[f].name})"})
         @sim_transaction.set_hosted_payment_receipt(AuthorizeNet::SIM::HostedReceiptPage.new(:link_method => AuthorizeNet::SIM::HostedReceiptPage::LinkMethod::GET, :link_text => "Back to #{current_school_name}", :link_url => URI.parse("http://#{request.host_with_port}/student/fee_details/#{student_id}/#{fee_collection_id}?create_transaction=1&only_path=false")))
@@ -2644,7 +2648,7 @@ module FinanceLoader
   def order_verify_trust_bank(o)
     
     testtrustbank = false
-    if PaymentConfiguration.config_value('is_test_trustbank').to_i == 1
+    if PaymentConfiguration.config_value('is_test_testtrustbank').to_i == 1
       if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config_tcash.yml")
         payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config_tcash.yml"))
         unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
@@ -2668,8 +2672,598 @@ module FinanceLoader
       else
         @verification_url ||= "https://ibanking.tblbd.com/Checkout/Services/Payment_Info.asmx"
       end
-      @merchant_id = PaymentConfiguration.config_value("trustbank_merchant_id")
-      @keycode = PaymentConfiguration.config_value("trustbank_keycode_verification")
+      @merchant_id = PaymentConfiguration.config_value("merchant_id")
+      @keycode = PaymentConfiguration.config_value("keycode_verification")
+      @merchant_id ||= String.new
+      @keycode ||= String.new
+    end
+    request_url = @verification_url + '/Get_Transaction_Ref'
+    #requested_url = request_url + "?OrderID=" + payment.gateway_response[:order_id] + "&MerchantID=" + @merchant_id + "&KeyCode=" + @keycode  
+
+    uri = URI(request_url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+    auth_req.set_form_data({"OrderID" => o.to_s, "MerchantID" => @merchant_id, "KeyCode" => @keycode})
+
+    http.use_ssl = true
+    auth_res = http.request(auth_req)
+
+    xml_res = Nokogiri::XML(auth_res.body)
+
+
+
+    status = ""
+    unless xml_res.xpath("/").empty?
+      status = xml_res.xpath("/").text
+    end
+
+    result = Base64.decode64(status)
+
+    ref_id = ""
+    orderId = ""
+    name = ""
+    email = ""
+    amount = 0.00
+    service_charge = 0.00
+    total_amount = 0.00
+    status = 0
+    status_text = ""
+    used = ""
+    verified = 0
+    payment_type = ""
+    pan = ""
+    tbbmm_account = ""
+    merchant_id = ""
+    order_datetime = ""
+    trans_date = ""
+    emi_no = ""
+    interest_amount = ""
+    pay_with_charge = ""
+    card_response_code = ""
+    card_response_desc = ""
+    card_order_status = ""
+
+    xml_str = Nokogiri::XML(result)
+
+    verifiedId = 0 
+    found_verified = false 
+    xmlind = 0
+    xml_transaction_infos = xml_str.xpath("//Response/TransactionInfo")
+    xml_transaction_infos.each do |xml_transaction_info|
+      childs = xml_transaction_info.children
+      childs.each do |c|
+        if c.name == "Verified"
+          v = c.text
+          if v.to_i == 1
+            verifiedId = xmlind
+            found_verified = true
+          end
+        end
+      end
+      xmlind += 1
+    end
+    if found_verified
+      childs = xml_transaction_infos[verifiedId].children
+    else  
+      found_paid = false 
+      paidId = 0
+      xmlind = 0
+      xml_transaction_infos.each do |xml_transaction_info|
+        childs = xml_transaction_info.children
+        childs.each do |c|
+          if c.name == "Status"
+            v = c.text
+            if v.to_i == 1
+              paidId = xmlind
+              found_paid = true
+            end
+          end
+        end
+        xmlind += 1
+      end
+      if found_paid
+        childs = xml_transaction_infos[paidId].children
+      else
+        childs = []
+        unless xml_transaction_infos.blank?
+          childs = xml_transaction_infos[xml_transaction_infos.length - 1].children
+        end
+      end
+    end
+
+    #abort(childs.inspect)
+    childs.each do |c|
+      if c.name == "RefID"
+        ref_id = c.text
+      elsif c.name == "OrderID"
+        orderId = c.text
+      elsif c.name == "Name"
+        name = c.text
+      elsif c.name == "Email"
+        email = c.text
+      elsif c.name == "Amount"
+        amount = c.text
+      elsif c.name == "ServiceCharge"
+        service_charge = c.text
+      elsif c.name == "TotalAmount"
+        total_amount = c.text
+      elsif c.name == "Status"
+        status = c.text
+      elsif c.name == "StatusText"
+        status_text = c.text
+      elsif c.name == "Used"
+        used = c.text
+      elsif c.name == "Verified"
+        verified = c.text
+      elsif c.name == "PaymentType"
+        payment_type = c.text
+      elsif c.name == "PAN"
+        pan = c.text
+      elsif c.name == "TBMM_Account"
+        tbbmm_account = c.text
+      elsif c.name == "MarchentID"
+        merchant_id = c.text
+      elsif c.name == "OrderDateTime"
+        order_datetime = c.text
+      elsif c.name == "PaymentDateTime"
+        trans_date = c.text
+      elsif c.name == "EMI_No"
+        emi_no = c.text
+      elsif c.name == "InterestAmount"
+        interest_amount = c.text
+      elsif c.name == "PayWithCharge"
+        pay_with_charge = c.text
+      elsif c.name == "CardResponseCode"
+        card_response_code = c.text
+      elsif c.name == "CardResponseDescription"
+        card_response_desc = c.text
+      elsif c.name == "CardOrderStatus"
+        card_order_status = c.text
+      end
+
+    end
+
+
+    gateway_response = {
+      :total_amount => total_amount,
+      :amount => amount,
+      :name => name,
+      :email => email,
+      :merchant_id => merchant_id,
+      :order_datetime => order_datetime,
+      :emi_no => emi_no,
+      :tbbmm_account => tbbmm_account,
+      :interest_amount => interest_amount,
+      :pay_with_charge => pay_with_charge,
+      :card_response_code => card_response_code,
+      :card_response_desc => card_response_desc,
+      :card_order_status => card_order_status,
+      :used => used,
+      :verified => verified,
+      :status_text => status_text,
+      :status => status,
+      :ref_id => ref_id,
+      :order_id=>orderId,
+      :tran_date=>trans_date,
+      :payment_type=>payment_type,
+      :service_charge=>service_charge,
+      :pan=>pan
+    }
+
+    dt = trans_date.split(".")
+    transaction_datetime = dt[0]
+
+    if verified.to_i == 0
+      if transaction_datetime.nil?
+        dt = order_datetime.split(".")
+        transaction_datetime = dt[0]
+      end
+    end
+
+    archived = false
+    #admission_no = admission_nos[i]
+    admission_no = name
+    @student = Student.find_by_admission_no(admission_no)
+
+
+    if @student.nil?
+      archived = true
+      @student = ArchivedStudent.find_by_admission_no(admission_no)
+    end
+
+
+    request_url = @verification_url + '/Transaction_Verify_Details'
+    uri = URI(request_url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+    auth_req.set_form_data({"OrderID" => orderId, "MerchantID" => @merchant_id, "RefID" => ref_id})
+
+    http.use_ssl = true
+    auth_res = http.request(auth_req)
+
+    xml_res = Nokogiri::XML(auth_res.body)
+    status = ""
+    unless xml_res.xpath("/").empty?
+      status = xml_res.xpath("/").text
+    end
+
+    result = Base64.decode64(status)
+    #abort(result.inspect)
+    verification_ref_id = ""
+    verification_orderId = ""
+    verification_name = ""
+    verification_email = ""
+    verification_amount = 0.00
+    verification_service_charge = 0.00
+    verification_total_amount = 0.00
+    verification_status = 0
+    verification_status_text = ""
+    verification_used = ""
+    verification_verified = 0
+    verification_payment_type = ""
+    verification_pan = ""
+    verification_tbbmm_account = ""
+    verification_merchant_id = ""
+    verification_order_datetime = ""
+    verification_trans_date = ""
+    verification_emi_no = ""
+    verification_interest_amount = ""
+    verification_pay_with_charge = ""
+    verification_card_response_code = ""
+    verification_card_response_desc = "" 
+    verification_card_order_status = ""
+
+    xml_str = Nokogiri::XML(result)
+
+    unless xml_str.xpath("//Response/RefID").empty?
+      verification_ref_id = xml_str.xpath("//Response/RefID").text
+    end
+    unless xml_str.xpath("//Response/OrderID").empty?
+      verification_orderId = xml_str.xpath("//Response/OrderID").text
+    end
+    unless xml_str.xpath("//Response/Name").empty?
+      verification_name = xml_str.xpath("//Response/Name").text
+    end
+    unless xml_str.xpath("//Response/Email").empty?
+      verification_email = xml_str.xpath("//Response/Email").text
+    end
+    unless xml_str.xpath("//Response/Amount").empty?
+      verification_amount = xml_str.xpath("//Response/Amount").text
+    end
+    unless xml_str.xpath("//Response/ServiceCharge").empty?
+      verification_service_charge = xml_str.xpath("//Response/ServiceCharge").text
+    end
+    unless xml_str.xpath("//Response/TotalAmount").empty?
+      verification_total_amount = xml_str.xpath("//Response/TotalAmount").text
+    end
+    unless xml_str.xpath("//Response/Status").empty?
+      verification_status = xml_str.xpath("//Response/Status").text
+    end
+    unless xml_str.xpath("//Response/StatusText").empty?
+      verification_status_text = xml_str.xpath("//Response/StatusText").text
+    end
+    unless xml_str.xpath("//Response/Used").empty?
+      verification_used = xml_str.xpath("//Response/Used").text
+    end
+    unless xml_str.xpath("//Response/Verified").empty?
+      verification_verified = xml_str.xpath("//Response/Verified").text
+    end
+    unless xml_str.xpath("//Response/PaymentType").empty?
+      verification_payment_type = xml_str.xpath("//Response/PaymentType").text
+    end
+    unless xml_str.xpath("//Response/PAN").empty?
+      verification_pan = xml_str.xpath("//Response/PAN").text
+    end
+    unless xml_str.xpath("//Response/TBMM_Account").empty?
+      verification_tbbmm_account = xml_str.xpath("//Response/TBMM_Account").text
+    end
+    unless xml_str.xpath("//Response/MarchentID").empty?
+      verification_merchant_id = xml_str.xpath("//Response/MarchentID").text
+    end
+    unless xml_str.xpath("//Response/OrderDateTime").empty?
+      verification_order_datetime = xml_str.xpath("//Response/OrderDateTime").text
+    end
+    unless xml_str.xpath("//Response/PaymentDateTime").empty?
+      verification_trans_date = xml_str.xpath("//Response/PaymentDateTime").text
+    end
+    unless xml_str.xpath("//Response/EMI_No").empty?
+      verification_emi_no = xml_str.xpath("//Response/EMI_No").text
+    end
+    unless xml_str.xpath("//Response/InterestAmount").empty?
+      verification_interest_amount = xml_str.xpath("//Response/InterestAmount").text
+    end
+    unless xml_str.xpath("//Response/PayWithCharge").empty?
+      verification_pay_with_charge = xml_str.xpath("//Response/PayWithCharge").text
+    end
+    unless xml_str.xpath("//Response/CardResponseCode").empty?
+      verification_card_response_code = xml_str.xpath("//Response/CardResponseCode").text
+    end
+    unless xml_str.xpath("//Response/CardResponseDescription").empty?
+      verification_card_response_desc = xml_str.xpath("//Response/CardResponseDescription").text
+    end
+    unless xml_str.xpath("//Response/CardOrderStatus").empty?
+      verification_card_order_status = xml_str.xpath("//Response/CardOrderStatus").text
+    end
+
+    validation_response = {
+      :total_amount => verification_total_amount,
+      :amount => verification_amount,
+      :name => verification_name,
+      :email => verification_email,
+      :merchant_id => verification_merchant_id,
+      :order_datetime => verification_order_datetime,
+      :emi_no => verification_emi_no,
+      :tbbmm_account => verification_tbbmm_account,
+      :interest_amount => verification_interest_amount,
+      :pay_with_charge => verification_pay_with_charge,
+      :card_response_code => verification_card_response_code,
+      :card_response_desc => verification_card_response_desc,
+      :card_order_status => verification_card_order_status,
+      :used => verification_used,
+      :verified => verification_verified,
+      :status_text => verification_status_text,
+      :status => verification_status,
+      :ref_id => verification_ref_id,
+      :order_id=>verification_orderId,
+      :tran_date=>verification_trans_date,
+      :payment_type=>verification_payment_type,
+      :service_charge=>verification_service_charge,
+      :pan=>verification_pan
+    }
+    #abort('here')
+    verify_order = false
+    if verified.to_i == 1 or verification_verified.to_i == 1
+      if verified.to_i == 0
+        if verification_verified.to_i == 1
+          gateway_response = validation_response
+        end
+      end
+      verify_order = true
+    end
+    #verify_order = true
+
+    finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and request_params is null")
+    unless finance_orders.blank? 
+      finance_orders.each do |finance_order|
+        finance_order.destroy
+      end
+    end
+    if verify_order
+      #@student = Student.find(29341)
+      unless @student.nil?
+        finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and request_params is not null")
+        unless finance_orders.blank?
+          request_params = finance_orders[0].request_params
+          fees = request_params["fees"].split(",")
+          unless fees.blank?
+            fees.each do |fee|
+              finance_order = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and finance_fee_id = #{fee} and request_params is not null")
+              unless finance_order.blank?
+                if finance_order.length > 1
+                  finance_order_attributes = finance_order[0].attributes
+                  finance_order.each do |fo|
+                    fo.destroy
+                  end
+                  finance_order_new = FinanceOrder.new(finance_order_attributes)
+                  finance_order_new.save
+                end
+              else
+                finance_order_attributes = finance_orders[0].attributes
+                finance_order_attributes.delete "finance_fee_id"
+                finance_order_attributes.merge!(:finance_fee_id=>fee)
+                #finance_order_attributes.finance_fee_id = fee
+                finance_order_new = FinanceOrder.new(finance_order_attributes)
+                finance_order_new.save
+              end
+            end
+          end
+        end
+
+        finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and request_params is not null")
+        #abort(finance_orders.map(&:id).inspect)
+        unless finance_orders.nil?
+
+          finance_orders.each do |finance_order|
+            #abort(finance_order.inspect)
+            request_params = finance_order.request_params
+
+            fee_id = finance_order.finance_fee_id
+
+            fee = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and id = #{fee_id}")
+            unless fee.nil?
+              payment = Payment.find(:first, :conditions => "order_id = '#{finance_order.order_id}' and payee_id = #{@student.id} and payment_id = #{fee.id}")
+              if payment.nil?
+                payment = Payment.new(:payee => @student,:payment => fee, :order_id => finance_order.order_id,:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
+                payment.save
+              else
+                payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
+              end
+              
+              
+              unless fee.is_paid
+                date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
+                unless date.nil?
+                  @financefee = FinanceFee.find(fee.id)
+
+
+                  fee_collection_id = fee.fee_collection_id
+                  advance_fee_collection = false
+                  @self_advance_fee = false
+                  @fee_has_advance_particular = false
+
+                  @date = @fee_collection = FinanceFeeCollection.find(fee_collection_id)
+                  @student_has_due = false
+                  @std_finance_fee_due = FinanceFee.find(:first,:conditions=>["finance_fee_collections.due_date < ? and finance_fees.is_paid = 0 and finance_fees.student_id = ?", @date.due_date,@student.id],:include=>"finance_fee_collection")
+                  unless @std_finance_fee_due.blank?
+                    @student_has_due = true
+                  end
+                  unless archived
+                    @financefee = @student.finance_fee_by_date(@date)
+                  else
+                    @financefee = FinanceFee.find_by_fee_collection_id_and_student_id(@date.id, @student.former_id)
+                  end
+
+                  if @financefee.has_advance_fee_id
+                    if @date.is_advance_fee_collection
+                      @self_advance_fee = true
+                      advance_fee_collection = true
+                    end
+                    @fee_has_advance_particular = true
+                    @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+                    @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
+                  end
+
+                  @due_date = @fee_collection.due_date
+                  @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
+
+                  @paid_fees = @financefee.finance_transactions
+
+                  if advance_fee_collection
+                    fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
+                    if fee_collection_advances_particular.include?(0)
+                      @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{fee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==fee.batch) }
+                    else
+                      @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{fee.batch_id} and finance_fee_particular_category_id IN (#{fee_collection_advances_particular.join(",")})").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==fee.batch) }
+                    end
+                  else
+                    @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{fee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==fee.batch) }
+                  end
+
+                  if advance_fee_collection
+                    month = 1
+                    payable = 0
+                    @fee_collection_advances.each do |fee_collection_advance|
+                      @fee_particulars.each do |particular|
+                        if fee_collection_advance.particular_id == particular.finance_fee_particular_category_id
+                          payable += particular.amount * fee_collection_advance.no_of_month.to_i
+                        else
+                          payable += particular.amount
+                        end
+                      end
+                    end
+                    @total_payable=payable.to_f
+                  else  
+                    @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
+                  end
+
+                  @total_discount = 0
+
+                  #calculate_discount(@date, @financefee.batch, @student, @financefee.is_paid)
+                  @adv_fee_discount = false
+                  @actual_discount = 1
+
+                  if advance_fee_collection
+                    calculate_discount(@date, fee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+                  else
+                    if @fee_has_advance_particular
+                      calculate_discount(@date, fee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+                    else
+                      calculate_discount(@date, fee.batch, @student, false, nil, @fee_has_advance_particular)
+                    end
+                  end
+
+                  bal=(@total_payable-@total_discount).to_f
+                  
+                  
+                  days=(verification_trans_date.to_date-@date.due_date.to_date).to_i
+                  
+                  fine_enabled = true
+                  student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+                  unless student_fee_configuration.blank?
+                    if student_fee_configuration.config_value.to_i == 1
+                      fine_enabled = true
+                    else
+                      fine_enabled = false
+                    end
+                  end
+                  
+
+                  auto_fine=@date.fine
+#                 
+                  @fine_amount = 0
+                  @has_fine_discount = false
+                  if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
+                    @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
+                    @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
+
+                    calculate_extra_fine(@date, fee.batch, @student, @fine_rule)
+
+                    @new_fine_amount = @fine_amount
+                    get_fine_discount(@date, @batch, @student)
+                    #abort(@new_fine_amount.to_s)
+                    if @fine_amount < 0
+                      @fine_amount = 0
+                    end
+                  end
+                  
+
+                  unless advance_fee_collection
+                    if @total_discount == 0
+                      @adv_fee_discount = true
+                      @actual_discount = 0
+                      calculate_discount(@date, fee.batch, @student, false, nil, @fee_has_advance_particular)
+                    end
+                  end
+                  #abort(@fine_amount.inspect)
+                  total_fees = fee.balance.to_f+@fine_amount.to_f
+
+                  amount_from_gateway = amount
+
+                  #abort(amount_from_gateway.to_s + " " + total_fees.to_s + "  " + @fine_amount.to_s)
+                  pay_student(amount_from_gateway, total_fees, request_params, finance_order.order_id, verification_trans_date, ref_id)
+                end
+              else
+                paid_fees = fee.finance_transactions
+                unless paid_fees.nil?
+                  paid_fees.each do |paid_fee|
+                    payment_all = Payment.find(:all, :conditions => "finance_transaction_id = #{paid_fee.id}")
+                    unless payment_all.blank?
+                      payment_all.each do |pay_data|
+                        pay_data.update_attributes(:finance_transaction_id => nil)
+                      end
+                    end
+                    payment.update_attributes(:finance_transaction_id => paid_fee.id)
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+    
+    verify_order
+  end
+  
+  def order_verify(o,gateway)
+    
+    testtrustbank = false
+    if PaymentConfiguration.config_value('is_test_testtrustbank').to_i == 1
+      if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config_tcash.yml")
+        payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config_tcash.yml"))
+        unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
+          testtrustbank = payment_configs["testtrustbank"]
+        end
+      end
+    end
+    if testtrustbank
+      merchant_info = payment_configs["merchant_info_" + MultiSchool.current_school.id.to_s]
+      @merchant_id = merchant_info["merchant_id"]
+      @keycode = merchant_info["keycode"]
+      @verification_url = merchant_info["validation_api"]
+      @merchant_id ||= String.new
+      @keycode ||= String.new
+      @verification_url ||= "https://ibanking.tblbd.com/TestCheckout/Services/Payment_Info.asmx"
+    else  
+      if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+        payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+        @verification_url = payment_urls["trustbank_verification_url"]
+        @verification_url ||= "https://ibanking.tblbd.com/Checkout/Services/Payment_Info.asmx"
+      else
+        @verification_url ||= "https://ibanking.tblbd.com/Checkout/Services/Payment_Info.asmx"
+      end
+      @merchant_id = PaymentConfiguration.config_value("merchant_id")
+      @keycode = PaymentConfiguration.config_value("keycode_verification")
       @merchant_id ||= String.new
       @keycode ||= String.new
     end
@@ -3265,13 +3859,13 @@ module FinanceLoader
         flash[:notice] = "#{t('payment_failed')} : #{params[:error]}"      
     elsif params[:create_transaction].present?
       gateway_response = Hash.new
-      if params[:target_gateway] == "Paypal"
+      if @active_gateway == "Paypal"
           gateway_response = {
             :amount => params[:amt],
             :status => params[:st],
             :transaction_id => params[:tx]
           }
-      elsif params[:target_gateway] == "Authorize.net"
+      elsif @active_gateway == "Authorize.net"
           gateway_response = {
             :x_response_code => params[:x_response_code],
             :x_response_reason_code => params[:x_response_reason_code],
@@ -3314,7 +3908,7 @@ module FinanceLoader
             :x_cavv_response => params[:x_cavv_response],
             :x_method_available => params[:x_method_available],
           }    
-      elsif params[:target_gateway] == "sslcommerce"
+      elsif @active_gateway == "ssl.commerce"
           gateway_response = {
             :amount => params[:amount],
             :status => params[:status],
@@ -3333,7 +3927,7 @@ module FinanceLoader
             :card_issuer_country_code=>params[:card_issuer_country_code],
             :val_id => params[:val_id]
           }    
-      elsif params[:target_gateway] == "trustbank"
+      elsif @active_gateway == "trustbank"
         result = Base64.decode64(params[:CheckoutXmlMsg])
         #result = '<Response date="2016-06-20 10:14:53.213">  <RefID>133783A000129D</RefID>  <OrderID>O1052536</OrderID>  <Name> Customer1</Name>  <Email> mr.customer@gmail.com </Email>  <Amount>2090.00</Amount>  <ServiceCharge>0.00</ServiceCharge>  <Status>1</Status>  <StatusText>PAID</StatusText>  <Used>0</Used>  <Verified>0</Verified>  <PaymentType>ITCL</PaymentType>  <PAN>712300XXXX1277</PAN>  <TBMM_Account></TBMM_Account>  <MarchentID>SAGC</MarchentID>  <OrderDateTime>2016-06-20 10:14:24.700</OrderDateTime>  <PaymentDateTime>2016-06-20 10:21:34.303</PaymentDateTime>  <EMI_No>0</EMI_No>  <InterestAmount>0.00</InterestAmount>  <PayWithCharge>1</PayWithCharge>  <CardResponseCode>00</CardResponseCode>  <CardResponseDescription>APPROVED</CardResponseDescription>  <CardOrderStatus>APPROVED</CardOrderStatus> </Response> '
         xml_res = Nokogiri::XML(result)
@@ -3512,15 +4106,15 @@ module FinanceLoader
       
       if payment_saved
         gateway_status = false
-        if params[:target_gateway] == "Paypal"
+        if @active_gateway == "Paypal"
           gateway_status = true if params[:st] == "Completed"
-        elsif params[:target_gateway] == "Authorize.net"
+        elsif @active_gateway == "Authorize.net"
           gateway_status = true if params[:x_response_reason_code] == "1"
-        elsif params[:target_gateway] == "sslcommerce"
+        elsif @active_gateway == "ssl.commerce"
           gateway_status = true if params[:status] == "VALID"
           if gateway_status == true
             testssl = false
-            if PaymentConfiguration.config_value('is_test_sslcommerce').to_i == 1
+            if PaymentConfiguration.config_value('is_test_sslcommerz').to_i == 1
               if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config.yml")
                 payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config.yml"))
                 unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
@@ -3572,7 +4166,7 @@ module FinanceLoader
               gateway_status = false
             end
           end
-        elsif params[:target_gateway] == "trustbank"
+        elsif @active_gateway == "trustbank"
           @fine = 0
           @fine_amount = 0
 #          @finance_order = FinanceOrder.find_by_order_id(orderId.strip)
@@ -3602,7 +4196,7 @@ module FinanceLoader
         end
 
         if gateway_status == false
-          if params[:target_gateway] == "trustbank"
+          if @active_gateway == "trustbank"
             flash[:notice] = msg
           else
             flash[:notice] = "#{t('payment_failed')}"

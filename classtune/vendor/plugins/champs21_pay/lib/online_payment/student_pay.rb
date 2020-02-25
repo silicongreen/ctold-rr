@@ -17,6 +17,11 @@ module OnlinePayment
       ref_id = ""
       merchant_id = ""
       now = I18n.l(Time.now, :format=>'%Y-%m-%d %H:%M:%S')
+      
+#      require 'DateTime'
+#      s = "2020-02-25T13:22:32:790 GMT+0000"
+#      abort(Date.parse(s).to_date.strftime("%Y-%m-%d %H:%M:%S"))
+      
       transaction_datetime = now
       if Champs21Plugin.can_access_plugin?("champs21_pay")
         if (PaymentConfiguration.config_value("enabled_fees").present? and PaymentConfiguration.config_value("enabled_fees").include? "Student Fee") 

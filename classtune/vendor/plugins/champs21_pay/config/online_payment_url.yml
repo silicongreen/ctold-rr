@@ -18,3 +18,8 @@ citybank_token_url_sandbox: "https://sandbox.thecitybank.com:7788/transaction/to
 citybank_create_order_url_sandbox: "https://sandbox.thecitybank.com:7788/transaction/createorder"
 citybank_token_url: "https://ecomm-webservice.thecitybank.com:7788/transaction/token"
 citybank_create_order_url: "https://ecomm-webservice.thecitybank.com:7788/transaction/createorder"
+
+bkash_token_url_sandbox: "https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/token/grant"
+bkash_payment_url_sandbox: "https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/"
+bkash_token_url: "https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/token/grant"
+bkash_payment_url: "https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/"

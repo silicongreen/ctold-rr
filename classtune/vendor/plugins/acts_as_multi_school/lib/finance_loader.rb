@@ -2672,12 +2672,12 @@ module FinanceLoader
       else
         @verification_url ||= "https://ibanking.tblbd.com/Checkout/Services/Payment_Info.asmx"
       end
-      @merchant_id = PaymentConfiguration.config_value("merchant_id")
-      @keycode = PaymentConfiguration.config_value("keycode_verification")
+      @merchant_id = PaymentConfiguration.config_value("trustbank_merchant_id")
+      @keycode = PaymentConfiguration.config_value("trustbank_keycode_verification")
       @merchant_id ||= String.new
       @keycode ||= String.new
     end
-    abort(@verification_url + "  " + @merchant_id.to_s + " " + @keycode.to_s)
+    #abort(@verification_url + "  " + @merchant_id.to_s + " " + @keycode.to_s)
     request_url = @verification_url + '/Get_Transaction_Ref'
     #requested_url = request_url + "?OrderID=" + payment.gateway_response[:order_id] + "&MerchantID=" + @merchant_id + "&KeyCode=" + @keycode  
 
@@ -3029,7 +3029,7 @@ module FinanceLoader
         finance_order.destroy
       end
     end
-    abort(verify_order.inspect)
+    #abort(verify_order.inspect)
     if verify_order
       #@student = Student.find(29341)
       unless @student.nil?

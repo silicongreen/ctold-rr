@@ -36,94 +36,112 @@ class PaymentSettingsController < ApplicationController
   end
   
   def transactions
-    start_date = params[:start_date]
-    start_date ||= Date.today
-    end_date = params[:end_date]
-    end_date ||= Date.today
-    
-    extra_query = ""
-    unless params[:payment_status].nil? or params[:payment_status].empty? or params[:payment_status].blank?
-      payment_status = 0
-      if params[:payment_status].to_i == 1
-        payment_status = params[:payment_status].to_i
-      end
-      extra_query += ' and gateway_response like \'%:status: "' + payment_status.to_s + '%\''
-    end
-    unless params[:order_id].nil? or params[:order_id].empty? or params[:order_id].blank?
-      extra_query += ' and gateway_response like \'%' + params[:order_id].to_s + '%\''
-    end
-    unless params[:ref_no].nil? or params[:ref_no].empty? or params[:ref_no].blank?
-      extra_query += ' and gateway_response like \'%' + params[:ref_no].to_s + '%\''
-    end
-    unless params[:payment_type].nil? or params[:payment_type].empty? or params[:payment_type].blank?
-      extra_query += ' and gateway_response like \'%:payment_type: ' + params[:payment_type].to_s + '%\''
-    end
-    #@online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
-    
-    ###.paginate()
-    
-    unless params[:export].nil?
-      if params[:export].to_i == 1
-        if MultiSchool.current_school.id == 352
-          @online_payments = Payment.find(:all, :conditions=>"CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}", :order => "transaction_datetime DESC", :group => "order_id")
-        else
-          @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}
-        end
-        require 'spreadsheet'
-        Spreadsheet.client_encoding = 'UTF-8'
-    
-        date = Spreadsheet::Format.new :number_format => 'MM/DD/YYYY'
-    
-        row_1 = ["Ref ID","Order ID","Name","Marchent ID","Amount","Fees","Service Charge","Status","Verified","Trn Date"]
-        
-        # Create a new Workbook
-        new_book = Spreadsheet::Workbook.new
+    if Champs21Plugin.can_access_plugin?("champs21_pay")
+      if (PaymentConfiguration.config_value("enabled_fees").present? and PaymentConfiguration.config_value("enabled_fees").include? "Student Fee") 
+          @payment_gateways = PaymentConfiguration.config_value("champs21_gateway")
+          @payment_gateway = @payment_gateways.split(",") unless @payment_gateways.blank?
+          @payment_gateway ||= Array.new
+          unless @payment_gateway.blank?
+            start_date = params[:start_date]
+            start_date ||= Date.today
+            end_date = params[:end_date]
+            end_date ||= Date.today
 
-        # Create the worksheet
-        new_book.create_worksheet :name => 'Online Transaction'
-
-        # Add row_1
-        new_book.worksheet(0).insert_row(0, row_1)
-
-        ind = 1
-        @online_payments.each do |payment|
-          amt = payment.gateway_response[:amount].to_f
-          service_change = payment.gateway_response[:service_charge].to_f
-          tot_amt = amt + service_change
-          verified = "false"
-          unless payment.gateway_response[:verified].nil?
-            if payment.gateway_response[:verified].to_i == 1
-              verified = "true"
+            extra_query = ""
+            unless params[:payment_status].nil? or params[:payment_status].empty? or params[:payment_status].blank?
+              payment_status = 0
+              if params[:payment_status].to_i == 1
+                payment_status = params[:payment_status].to_i
+              end
+              extra_query += ' and gateway_response like \'%:status: "' + payment_status.to_s + '%\''
             end
-          end
-          row_new = [payment.gateway_response[:ref_id], payment.gateway_response[:order_id], payment.gateway_response[:name], payment.gateway_response[:merchant_id], Champs21Precision.set_and_modify_precision(tot_amt), Champs21Precision.set_and_modify_precision(amt), Champs21Precision.set_and_modify_precision(service_change), payment.gateway_response[:status], verified, I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y")]
-          new_book.worksheet(0).insert_row(ind, row_new)
-          ind += 1
-        end
-        spreadsheet = StringIO.new 
-        new_book.write spreadsheet 
+            unless params[:order_id].nil? or params[:order_id].empty? or params[:order_id].blank?
+              extra_query += ' and gateway_response like \'%' + params[:order_id].to_s + '%\''
+            end
+            unless params[:ref_no].nil? or params[:ref_no].empty? or params[:ref_no].blank?
+              extra_query += ' and gateway_response like \'%' + params[:ref_no].to_s + '%\''
+            end
+            unless params[:payment_type].nil? or params[:payment_type].empty? or params[:payment_type].blank?
+              extra_query += ' and gateway_response like \'%:payment_type: ' + params[:payment_type].to_s + '%\''
+            end
+            #@online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
 
-        send_data spreadsheet.string, :filename => "online_transactions.xls", :type =>  "application/vnd.ms-excel"
+            ###.paginate()
+
+            unless params[:export].nil?
+              if params[:export].to_i == 1
+                if MultiSchool.current_school.id == 352
+                  @online_payments = Payment.find(:all, :conditions=>"CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}", :order => "transaction_datetime DESC", :group => "order_id")
+                else
+                  @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}
+                end
+                require 'spreadsheet'
+                Spreadsheet.client_encoding = 'UTF-8'
+
+                date = Spreadsheet::Format.new :number_format => 'MM/DD/YYYY'
+
+                row_1 = ["Ref ID","Order ID","Name","Marchent ID","Amount","Fees","Service Charge","Status","Verified","Trn Date"]
+
+                # Create a new Workbook
+                new_book = Spreadsheet::Workbook.new
+
+                # Create the worksheet
+                new_book.create_worksheet :name => 'Online Transaction'
+
+                # Add row_1
+                new_book.worksheet(0).insert_row(0, row_1)
+
+                ind = 1
+                @online_payments.each do |payment|
+                  amt = payment.gateway_response[:amount].to_f
+                  service_change = payment.gateway_response[:service_charge].to_f
+                  tot_amt = amt + service_change
+                  verified = "false"
+                  unless payment.gateway_response[:verified].nil?
+                    if payment.gateway_response[:verified].to_i == 1
+                      verified = "true"
+                    end
+                  end
+                  row_new = [payment.gateway_response[:ref_id], payment.gateway_response[:order_id], payment.gateway_response[:name], payment.gateway_response[:merchant_id], Champs21Precision.set_and_modify_precision(tot_amt), Champs21Precision.set_and_modify_precision(amt), Champs21Precision.set_and_modify_precision(service_change), payment.gateway_response[:status], verified, I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y")]
+                  new_book.worksheet(0).insert_row(ind, row_new)
+                  ind += 1
+                end
+                spreadsheet = StringIO.new 
+                new_book.write spreadsheet 
+
+                send_data spreadsheet.string, :filename => "online_transactions.xls", :type =>  "application/vnd.ms-excel"
+              else
+                if MultiSchool.current_school.id == 352
+                  @online_payments = Payment.paginate(:conditions=>"CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "order_id")
+                else
+                  @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
+                end
+                #abort(@online_payments.inspect)
+                respond_to do |format|
+                  format.html #transctions.html.erb
+                end
+              end
+            else
+              if MultiSchool.current_school.id == 352
+                @online_payments = Payment.paginate(:conditions=>"CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "order_id")
+              else
+                @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
+              end
+              respond_to do |format|
+                format.html #transctions.html.erb
+              end
+            end
+          else
+            flash[:notice] = "No Payment gateway is active"
+            redirect_to :controller => "user", :action => "dashboard"
+          end
       else
-        if MultiSchool.current_school.id == 352
-          @online_payments = Payment.paginate(:conditions=>"CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "order_id")
-        else
-          @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
-        end
-        #abort(@online_payments.inspect)
-        respond_to do |format|
-          format.html #transctions.html.erb
-        end
+        flash[:notice] = "Online Payment is not active"
+        redirect_to :controller => "user", :action => "dashboard"
       end
     else
-      if MultiSchool.current_school.id == 352
-        @online_payments = Payment.paginate(:conditions=>"CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "order_id")
-      else
-        @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
-      end
-      respond_to do |format|
-        format.html #transctions.html.erb
-      end
+      flash[:notice] = "Online Payment is not active"
+      redirect_to :controller => "user", :action => "dashboard"
     end
   end
   

@@ -52,6 +52,10 @@
       <p class="flash-msg"> <%= flash[:notice] %> </p>
     <% end %>
   </div>
+  <div id="payment_gatway_settings">  
+    <% if @payment_gateway.length > 1 %>
+      sdl;fsdf
+    <% end %>  
   <% form_for :payment_transaction,:url => transactions_online_payments_url do %>
     <div class="filter">
       <div class="label-field-pair" style="width: 25%;">
@@ -236,7 +240,8 @@
     <div style="width: 100%; text-align: center; padding-top: 20px;">
         <%= submit_tag 'Export Transaction',:name => "export_transaction",:class => "submit-button", :onclick => "j('#export').val(1)", :style => "float: none;", :target => "_blank" %>
     </div>  
-    <% end %>
+  <% end %>
+  </div>
 </div>
 <style>
     .filter {

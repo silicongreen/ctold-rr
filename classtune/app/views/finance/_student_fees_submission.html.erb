@@ -1320,7 +1320,7 @@
           <tr class="<%= cycle("odd","even") %>">
             <% transaction_payment = false %>
             <% transaction_payment_not_assign = false %>
-            <% if MultiSchool.current_school.id == 352 %>
+            <% #if MultiSchool.current_school.id == 352 %>
               <% payment = Payment.find_by_finance_transaction_id_and_payment_id(f.id, @financefee.id) %>
               <% unless payment.present? %>
                 <% payment = Payment.find_by_payment_id(@financefee.id) %>
@@ -1336,15 +1336,23 @@
               <% else %>
                 <% transaction_payment = true %>
               <% end %>
-            <% end %>
+            <% #end %>
               
               
             <%#= transaction_payment %>  
             <% payment_mode = f.payment_mode %>
             <% if transaction_payment %>
+              <% if payment.gateway_txt == "TrustBank" %>
               <% payment_mode = "Trust Bank Online Payment" %>
+              <% elsif payment.gateway_txt == "bkash" %>
+              <% payment_mode = "bKash Online Payment" %>
+              <% end %>
             <% elsif transaction_payment_not_assign %>
+              <% if payment.gateway_txt == "TrustBank" %>
               <% payment_mode = "Trust Bank Online Payment" %>
+              <% elsif payment.gateway_txt == "bkash" %>
+              <% payment_mode = "bKash Online Payment" %>
+              <% end %>
               <% payment.update_attributes(:finance_transaction_id=>f.id) %>
               <%
                 student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{@student.id} and fee_id = #{@finance_fee.id} and transaction_id = #{f.id} and is_fine = #{true}")
@@ -1395,23 +1403,51 @@
                 <hr style="border: 1px solid #ccc;" />
                 <div style="font-size: 12px; font-family: verdana;">
                   <h2>Online Payment Info</h2>
+                  <% if payment.gateway_txt == "TrustBank" %>
                   <p><b>Order ID: </b><%= payment.order_id %></p>
+                  <% elsif payment.gateway_txt == "bkash" %>
+                  <p><b>Payment Id: </b><%= payment.gateway_response[:paymentID] unless payment.gateway_response[:paymentID].blank? %></p>
+                  <% end %>
                   <%
                     trans_type = ""
-                    if payment.gateway_response[:payment_type] == "MB"
-                      trans_type = "TBL Mobile banking"
-                    else
-                      trans_type = "TBL Card Payment"
+                    if payment.gateway_txt == "TrustBank"
+                      if payment.gateway_response[:payment_type] == "MB"
+                        trans_type = "TBL Mobile banking"
+                      else
+                        trans_type = "TBL Card Payment"
+                      end
                     end
                   %>
+                  <% if payment.gateway_txt == "TrustBank" %>
                   <p><b>Ref Id: </b><%= payment.gateway_response[:ref_id] %></p>
+                  <% elsif payment.gateway_txt == "bkash" %>
+                  <p><b>Transaction Id: </b><%= payment.gateway_response[:trxID] unless payment.gateway_response[:trxID].blank? %></p>
+                  <% end %>
+                  <% if payment.gateway_txt == "TrustBank" %>
                   <p><b>Transaction Type: </b><%= trans_type %></p>
+                  <% end %>
                   <hr style="border: 1px solid #ccc;" />
-                  <% if payment.gateway_response[:verified].to_i == 1 %>
-                    <i class="fa fa-check-circle-o" style="font-size: 18px; color: #49BB4B;"></i>&nbsp;&nbsp;Verified
-                  <% else %>
-                    <% unless payment.validation_response.nil? %>
-                      <% if payment.validation_response[:verified].to_i == 0 %>
+                  <% if payment.gateway_txt == "TrustBank" %>
+                    <% if payment.gateway_response[:verified].to_i == 1 %>
+                      <i class="fa fa-check-circle-o" style="font-size: 18px; color: #49BB4B;"></i>&nbsp;&nbsp;Verified
+                    <% else %>
+                      <% unless payment.validation_response.nil? %>
+                        <% if payment.validation_response[:verified].to_i == 0 %>
+                        <div style="width: 100%;">
+                          <div style="width: 60%; display: inline-block;">
+                            <i class="fa fa-circle-o" style="font-size: 18px; color: #900;"></i>&nbsp;&nbsp;<span style="color: #900;">Not Verified</span>
+                          </div>
+                          <% if @current_user.admin? %>
+                          <div style="width: 35%; display: inline-block; text-align: right;">
+                            <%= link_to "(verify Now)", {:controller => "online_payments", :action => "order_verifications", :order_tid => payment.order_id},:target => '_blank' %>
+
+                          </div>
+                         <% end %>   
+                        </div>
+                        <% else %>
+                        <i class="fa fa-check-circle-o" style="font-size: 18px; color: #49BB4B;"></i>&nbsp;&nbsp;Verified
+                        <% end %>
+                      <% else %>
                       <div style="width: 100%;">
                         <div style="width: 60%; display: inline-block;">
                           <i class="fa fa-circle-o" style="font-size: 18px; color: #900;"></i>&nbsp;&nbsp;<span style="color: #900;">Not Verified</span>
@@ -1423,24 +1459,16 @@
                         </div>
                        <% end %>   
                       </div>
-                      <% else %>
-                      <i class="fa fa-check-circle-o" style="font-size: 18px; color: #49BB4B;"></i>&nbsp;&nbsp;Verified
                       <% end %>
-                    <% else %>
-                    <div style="width: 100%;">
-                      <div style="width: 60%; display: inline-block;">
-                        <i class="fa fa-circle-o" style="font-size: 18px; color: #900;"></i>&nbsp;&nbsp;<span style="color: #900;">Not Verified</span>
+                      <% end %>
+                       <% elsif payment.gateway_txt == "bkash" %>
+                      <div style="width: 100%;">
+                          <div style="width: 60%; display: inline-block;">
+                            <i class="fa fa-circle-o" style="font-size: 18px; color: <%= (payment.gateway_response[:transactionStatus] == "Completed") ? "#49BB4B" : "#900" %>;"></i>&nbsp;&nbsp;<span style="color: <%= (payment.gateway_response[:transactionStatus] == "Completed") ? "#145214" : "#900" %>;"><%= payment.gateway_response[:transactionStatus]  unless payment.gateway_response[:transactionStatus].blank?  %></span>
+                          </div>  
                       </div>
-                      <% if @current_user.admin? %>
-                      <div style="width: 35%; display: inline-block; text-align: right;">
-                        <%= link_to "(verify Now)", {:controller => "online_payments", :action => "order_verifications", :order_tid => payment.order_id},:target => '_blank' %>
-
-                      </div>
-                     <% end %>   
-                    </div>
-                    <% end %>
+                    <% end %>      
                     <div style="clear: both; height: 1px;"></div>
-                  <% end %>
                 </div>
               </td>
             <% else %>

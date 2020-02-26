@@ -217,7 +217,7 @@ class StudentController < ApplicationController
           require 'date'
           gateway_response = {}
           response_ssl.each do |key,value|
-            gateway_response[key] = value
+            gateway_response[key.to_sym] = value
           end
           transaction_datetime = DateTime.parse(createTime).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
           orderId = params[:order_id]

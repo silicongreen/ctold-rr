@@ -11,10 +11,15 @@
       <%= javascript_include_tag 'jquery/jquery-1.9.1.min.js' %>
       <!-- Latest compiled and minified JavaScript -->
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
+      
+      <% if @gateway_settings.keys.include?('bkash')  %>
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> 
+      <script src="https://scripts.sandbox.bka.sh/versions/1.2.0-beta/checkout/bKash-checkout-sandbox.js"></script>
+      <% end %>
+      
       <%#= javascript_include_tag 'finance.js' %>
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
+      
       <title>Pay Fees</title>
       <script>
         var j = jQuery.noConflict();
@@ -55,7 +60,7 @@
 
       <% total_fees =0 %>
       <% total_payable =0 %>  
-      
+      <% fee_collection_name = @date.name %>
       <% form_remote_for :fees, :url => {:controller => 'student',:action => 'fee_details',:id => @student.id,:id2 => @date.id,:mobile_view=>1}, :html => {:id => "fees_form"}, :before=>"prev_double();$('loader_pay').show();",:complete=>"set_back();$('loader_pay').hide();" do |form| %>
         <% unless @fee_particulars.nil? %>
           <% total_fees = 0  %>
@@ -984,12 +989,32 @@
                   <% @amount_to_pay = precision_label(balance+@fine_amount.to_f) %>
                   <tr>
                     <td colspan="5" style="padding-bottom: 30px;">
-                        <div class="pay_fees"><div class="pay_fees_buttons" style="text-align: center;">
+                      <div class="pay_fees"><div class="pay_fees_buttons" style="text-align: center;">
+                      <input type="hidden" name="user_gateway" id="user_gateway" value="<%= @gateway_settings.keys[0].to_s %>" />
+                      <input type="hidden" name="order_id" id="order_id" value="<%= @order_id %>" />
                       <% if @gateway_settings.length == 1 %>
-                        <input type="hidden" name="order_id" id="order_id" value="<%= @order_id %>" />
                         <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button' %>
                       <% else %>
-
+                        <div style="width: 100%; float: right; text-align: right;">
+                          <% @gateway_settings.keys.each do |key| %>
+                              <% if key == "citybank" %>
+                              <div class="gateway_image_panel" data-gateway="<%= key %>" style="position: relative;">
+                                  <input type="radio" id="radio_<%= key %>" name="gateway_radio" class="gateway_radio" value="<%= key %>" style="position: absolute; top: 0; right: 4px;" autocomplete="off" />
+                                  <%= image_tag "/images/gateway_images/#{key}-ico.png", :class => "gateway_image", :id => "#{key}", :style => "#{key == 'citybank' ? 'height:70px;' : 'height: 65px;'}" %>
+                              </div>
+                              <% end %>
+                          <% end %>
+                          <% @gateway_settings.keys.each do |key| %>
+                              <% unless key == "citybank" %>
+                              <div class="gateway_image_panel" data-gateway="<%= key %>" style="position: relative;">
+                                  <input type="radio" id="radio_<%= key %>" name="gateway_radio" class="gateway_radio" value="<%= key %>" style="position: absolute; top: 0; right: 4px;" autocomplete="off" />
+                                  <%= image_tag "/images/gateway_images/#{key}-ico.png", :class => "gateway_image", :id => "#{key}", :style => "#{key == 'citybank' ? 'height:70px;' : 'height: 65px;'}" %>
+                              </div>
+                              <% end %>
+                          <% end %>
+                        </div>    
+                        <button type="button" id="pay_fees_multiple" class="submit_button" disabled><%= "► #{t('pay_fees')}" %></button>
+                        <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button_multiple', :style=>"display: none;" %>
                       <% end %>
                       <% if MultiSchool.current_school.id != 352 %>  
                       <%= link_to "► #{t('print_receipt')}",
@@ -1024,9 +1049,99 @@
             <% end %>
         <% end %>
       <% end %>
+      <% if @gateway_settings.keys.include?('bkash')  %>
+      <button id="bKash_button" style="display:none;">Pay with bKash</button>
+      <% unless params[:multiple].nil? %>
+        <% if params[:multiple].to_s == "true" %>
+          <input type="hidden" name="fees" id="fees" value="<%= params[:fees] %>" />
+          <input type="hidden" name="student_fees" id="student_fees" value="<%= params[:id] %>" />
+          <input type="hidden" name="multiple" id="multiple" value="1" />
+        <% else %>
+          <input type="hidden" name="fees" id="fees" value="<%= params[:id2] %>" />
+          <input type="hidden" name="student_fees" id="student_fees" value="<%= params[:id] %>" />
+          <input type="hidden" name="multiple" id="multiple" value="0" />
+        <% end %>
+      <% else %>
+        <input type="hidden" name="fees" id="fees" value="<%= params[:id2] %>" />
+        <input type="hidden" name="student_fees" id="student_fees" value="<%= params[:id] %>" />
+        <input type="hidden" name="multiple" id="multiple" value="0" />
+      <% end %> 
+    <% end %>
+    
+    <% if @gateway_settings.length > 1 %>
+      <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+                <div style="width: 100%; text-align: center;">
+                    <h1>Pay Summary</h1>
+                    <hr />
+                    <div style=" text-align: left; padding: 10px;">
+                        <div style="width: 24%; text-align: left; display: inline-block;font-size: 15px;padding: 6px;font-weight: bold; border: 1px solid #ccc;">Fees Name:</div>
+                        <div style="width: 70%; text-align: left; display: inline-block;font-size: 15px;padding: 6px;font-weight: bold; border: 1px solid #ccc;"><%= fee_collection_name %></div>
+                    </div>
+
+                    <div style=" text-align: left; padding: 10px;">
+                        <div style="width: 70%; text-align: right; display: inline-block;font-size: 18px;padding: 6px;font-weight: bold; border: 1px solid #ccc;">Fees Summary:</div>
+                        <div style="width: 24%; text-align: right; display: inline-block;font-size: 18px;padding: 6px;font-weight: bold; border: 1px solid #ccc;"><%= to_comma_seperated_precision_label(total_fees) %></div>
+                    </div>
+                    <div style="width: 98%; text-align: right; ">
+                      <% @gateway_settings.each do |key,value| %>
+                          <div class="gateway_image_panel-new" data-gateway="<%= key %>" style="position: relative;">
+                              <input type="radio" id="radio_<%= key %>_new" name="gateway_radio_new" class="gateway_radio_new" value="<%= key %>" style="position: absolute; top: 0; right: 4px;" autocomplete="off" />
+                              <%= image_tag "/images/gateway_images/#{key}-ico.png", :class => "gateway_image_new", :id => "#{key}" %>
+                          </div>
+                      <% end %>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="close_pop_" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="pay_now_multi_new" class="btn btn-primary" disabled=""><%= "► #{t('pay_fees')}" %></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>    
   </body>
 </html>
-
+<style>
+    button[disabled]{
+        background: #ccc !important;
+        color: #000 !important;
+    }
+    button[disabled]:hover{
+        background: #ccc !important;
+    }
+    <% if @gateway_settings.keys.include?('bkash')  %>
+    #bKashFrameWrapper{
+        display:none;
+        position: fixed;
+        overflow-y: scroll;
+        z-index: 50000;
+        inset: 0px;
+    }
+    <% end %>
+    .gateway_image_panel{
+      /*border: 1px solid #ccc;*/
+      border-radius: 5px;
+      margin-right: 5px;
+      display: inline-block;
+      /*-webkit-box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);
+      -moz-box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);
+      box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);*/
+      cursor: pointer;
+    }
+    .gateway_image{
+      height: 65px;
+      /*width: 100%;
+      -webkit-box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);
+      -moz-box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);
+      box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);*/
+      cursor: pointer;
+    }
+</style>
 <style>
     .header-info {
         /*background-image: url('/images/backgrounds/top_profile.png'); */
@@ -1100,3 +1215,137 @@
       cursor: pointer;
     }
 </style>
+<script>
+  
+    j(document).ready(function(){
+        var paymentID;
+        var id_token;
+        var bkashLoad = false;
+      
+        bKash.init({ 
+          paymentMode: 'checkout', //fixed value ‘checkout’ 
+          //paymentRequest format: {amount: AMOUNT, intent: INTENT} 
+          //intent options 
+          //1) ‘sale’ – immediate transaction (2 API calls) 
+          //2) ‘authorization’ – deferred transaction (3 API calls) 
+          paymentRequest: { 
+            amount: <%= precision_label total_fees %>, //max two decimal points allowed 
+            intent: 'sale' 
+          }, 
+          onClose : function () {
+              bkashLoad = false;
+              j("#radio_bkash").prop('check',false);
+              j("#bKashFrameWrapper").css('display','none');
+              j("#pay_fees_multiple").prop('disabled',false);
+              j("#pay_fees_multiple").html("<%= "► #{t('pay_fees')}" %>");
+          },
+          executeRequestOnAuthorization: function() { 
+            j("#bKashFrameWrapper").css('display','none');
+            j("#pay_fees_multiple").prop('disabled',true);
+            j("#pay_fees_multiple").html("<i class='fa fa-spin fa-spinner'></i> Executing Payment, please wait...");
+            j.ajax({
+                url: '/student/complete_bkash_payment',
+                type: 'POST',
+                data: {gateway: j("#user_gateway").val(),id_token: id_token, payment_id: paymentID, order_id: '<%=  @order_id %>', student_id: <%= @student.id %>},
+                success: function (data) {
+                      bkashLoad = false;
+                      if (data && data.paymentID != null) 
+                      {
+                        j("#bKashFrameWrapper").css('display','none');
+                        location.reload();
+                      } 
+                      else 
+                      { 
+                        bKash.create().onError(); 
+                        alert(data.errorMessage);
+                        j("#pay_fees_multiple").prop('disabled',false);
+                        j("#pay_fees_multiple").html("<%= "► #{t('pay_fees')}" %>");
+
+                      } 
+                },
+                error: function () {
+                    j("#pay_fees_multiple").prop('disabled',false);
+                    j("#pay_fees_multiple").html("<%= "► #{t('pay_fees')}" %>");
+                    
+                    bKash.create().onError(); 
+
+                }
+            });
+          } 
+        });
+        
+        j(document).on('click', "#close_pop", function(){
+            if ( bkashLoad == false )
+            {
+              j("#pay_fees_multiple").prop('disabled',false);
+              j("#pay_fees_multiple").html("<%= "► #{t('pay_fees')}" %>");
+
+            }
+        });
+        
+        j(document).on("click", "#pay_fees_multiple", function(){
+            if ( j("#user_gateway").val() == 'bkash' )
+            {
+                j(this).prop('disabled',true);
+                j(this).html("<i class='fa fa-spin fa-spinner'></i> Please wait...");
+            
+                j(this).prop('disabled',true);
+                j(this).html("<i class='fa fa-spin fa-spinner'></i> Pay Fees");
+                j.ajax({
+                    url: '/student/generate_bkash_token',
+                    type: 'POST',
+                    data: j("#fees_form").serialize() + "&student_id=<%= @student.id %>",
+                    success: function (data) {
+                          if ( ! data.id_token )
+                          {
+                              alert(data.errorMessage);
+                          }
+                          else
+                          {
+                              id_token = data.id_token;
+                              j.ajax({
+                                  url: '/student/generate_bkash_payment',
+                                  type: 'POST',
+                                  data: {gateway: j("#user_gateway").val(),id_token: id_token, total_fees: <%= precision_label total_fees %>, order_id: '<%=  @order_id %>'},
+                                  success: function (data) {
+                                        if (data && data.paymentID != null) 
+                                        {
+                                          bkashLoad = true;
+                                          j("#bKashFrameWrapper").css('display','block');
+                                          j("#close_pop").trigger('click');
+                                          paymentID = data.paymentID; 
+                                          bKash.create().onSuccess(data); //pass the whole response data in bKash.create().onSucess() method as a parameter 
+                                        } 
+                                        else 
+                                        { 
+                                          alert(data.errorMessage);
+                                        } 
+                                  },
+                                  error: function () {
+                                      alert(data.errorMessage);
+                                  }
+                              });
+                          }
+                    },
+                    error: function () {
+                        //bKash.create().onError();//run clean up code
+                        alert(data.errorMessage);
+
+                    }
+                });
+
+            }
+            else
+            {
+              j("#submit_button_multiple").trigger('click');
+            }
+        });
+      
+        j(document).on("click", ".gateway_image_panel", function(){
+            var gateway = j(this).data('gateway');
+            j("#radio_" + gateway).prop('checked', true);
+            j("#user_gateway").val(gateway);
+            j("#pay_fees_multiple").removeAttr('disabled');
+        });
+    });
+</script>

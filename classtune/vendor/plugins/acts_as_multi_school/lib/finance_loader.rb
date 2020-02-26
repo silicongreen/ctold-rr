@@ -2648,7 +2648,7 @@ module FinanceLoader
   def order_verify_trust_bank(o)
     
     testtrustbank = false
-    if PaymentConfiguration.config_value('is_test_testtrustbank').to_i == 1
+    if PaymentConfiguration.config_value('is_test_trustbank').to_i == 1
       if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config_tcash.yml")
         payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config_tcash.yml"))
         unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?

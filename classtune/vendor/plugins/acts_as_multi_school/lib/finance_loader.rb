@@ -1632,7 +1632,7 @@ module FinanceLoader
             messages = []
             messages[0] = message
             #sms = Delayed::Job.enqueue(SmsManager.new(message,recipients))
-            #send_sms_finance(messages,recipients)
+            send_sms_finance(messages,recipients)
           end
 
 
@@ -2143,7 +2143,7 @@ module FinanceLoader
                     messages = []
                     messages[0] = message
                     #sms = Delayed::Job.enqueue(SmsManager.new(message,recipients))
-                    #send_sms_finance(messages,recipients)
+                    send_sms_finance(messages,recipients)
                   end
 
 

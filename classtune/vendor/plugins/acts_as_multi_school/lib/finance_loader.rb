@@ -2677,6 +2677,7 @@ module FinanceLoader
       @merchant_id ||= String.new
       @keycode ||= String.new
     end
+    abort(@verification_url + "  " + @merchant_id.to_s + " " + @keycode.to_s)
     request_url = @verification_url + '/Get_Transaction_Ref'
     #requested_url = request_url + "?OrderID=" + payment.gateway_response[:order_id] + "&MerchantID=" + @merchant_id + "&KeyCode=" + @keycode  
 
@@ -3028,7 +3029,7 @@ module FinanceLoader
         finance_order.destroy
       end
     end
-    #abort(verify_order.inspect)
+    abort(verify_order.inspect)
     if verify_order
       #@student = Student.find(29341)
       unless @student.nil?

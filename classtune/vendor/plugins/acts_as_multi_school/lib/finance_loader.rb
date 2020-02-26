@@ -3791,7 +3791,7 @@ module FinanceLoader
 #          else
 #            arrange_pay(params[:id], params[:id2], params[:submission_date])
 #          end
-          
+          abort(orderId.inspect)
           unless order_verify_trust_bank(orderId)
             msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
             gateway_status = false

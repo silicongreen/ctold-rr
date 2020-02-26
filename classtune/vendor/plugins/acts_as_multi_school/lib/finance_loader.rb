@@ -867,63 +867,63 @@ module FinanceLoader
 
     total_fees =@financefee.balance.to_f+@fine_amount.to_f
 
-    if @active_gateway == "trustbank"
-      paid_fees = @financefee.finance_transactions
-      paid_amount = 0.0
-      unless paid_fees.nil? or paid_fees.blank?
-        paid_fees.each do |pf|
-          paid_amount += pf.amount
-        end
-      end
-      remaining_amount = bal - paid_amount
-
-      remaining_amount = total_fees - paid_amount
-
-      unless @financefee.is_paid
-        finance_order = FinanceOrder.find(:first, :conditions => "finance_fee_id = #{@financefee.id} and student_id = #{@financefee.student_id} and batch_id = #{@financefee.batch_id} and status = 0")
-        unless finance_order.nil?
-          @order_id = "O" + finance_order.id.to_s
-          finance_order.update_attributes(:order_id => @order_id)
-        else
-          finance_order = FinanceOrder.new()
-          finance_order.finance_fee_id = @financefee.id
-          finance_order.student_id = @financefee.student_id
-          finance_order.batch_id = @financefee.batch_id
-          finance_order.balance = remaining_amount
-          finance_order.save
-          @order_id = "O" + finance_order.id.to_s
-          finance_order.update_attributes(:order_id => @order_id)
-        end
-        
-        payment = Payment.find(:first, :conditions => "order_id = '#{@order_id}'")
-        unless payment.nil?
-          finance_transaction_id = payment.finance_transaction_id
-          unless finance_transaction_id.nil?
-            finance_order = FinanceOrder.new()
-            finance_order.finance_fee_id = @financefee.id
-            finance_order.student_id = @financefee.student_id
-            finance_order.batch_id = @financefee.batch_id
-            finance_order.balance = remaining_amount
-            finance_order.save
-            @order_id = "O" + finance_order.id.to_s
-            finance_order.update_attributes(:order_id => @order_id)
-          end
-
-        end
-      else
-        if remaining_amount > 0
-          finance_order = FinanceOrder.new()
-          finance_order.finance_fee_id = @financefee.id
-          finance_order.student_id = @financefee.student_id
-          finance_order.batch_id = @financefee.batch_id
-          finance_order.balance = remaining_amount
-          finance_order.save
-          @order_id = "O" + finance_order.id.to_s
-          @order_id_saved = true
-          finance_order.update_attributes(:order_id => @order_id)
-        end
+    #if @active_gateway == "trustbank"
+    paid_fees = @financefee.finance_transactions
+    paid_amount = 0.0
+    unless paid_fees.nil? or paid_fees.blank?
+      paid_fees.each do |pf|
+        paid_amount += pf.amount
       end
     end
+    remaining_amount = bal - paid_amount
+
+    remaining_amount = total_fees - paid_amount
+
+    unless @financefee.is_paid
+      finance_order = FinanceOrder.find(:first, :conditions => "finance_fee_id = #{@financefee.id} and student_id = #{@financefee.student_id} and batch_id = #{@financefee.batch_id} and status = 0")
+      unless finance_order.nil?
+        @order_id = "O" + finance_order.id.to_s
+        finance_order.update_attributes(:order_id => @order_id)
+      else
+        finance_order = FinanceOrder.new()
+        finance_order.finance_fee_id = @financefee.id
+        finance_order.student_id = @financefee.student_id
+        finance_order.batch_id = @financefee.batch_id
+        finance_order.balance = remaining_amount
+        finance_order.save
+        @order_id = "O" + finance_order.id.to_s
+        finance_order.update_attributes(:order_id => @order_id)
+      end
+
+      payment = Payment.find(:first, :conditions => "order_id = '#{@order_id}'")
+      unless payment.nil?
+        finance_transaction_id = payment.finance_transaction_id
+        unless finance_transaction_id.nil?
+          finance_order = FinanceOrder.new()
+          finance_order.finance_fee_id = @financefee.id
+          finance_order.student_id = @financefee.student_id
+          finance_order.batch_id = @financefee.batch_id
+          finance_order.balance = remaining_amount
+          finance_order.save
+          @order_id = "O" + finance_order.id.to_s
+          finance_order.update_attributes(:order_id => @order_id)
+        end
+
+      end
+    else
+      if remaining_amount > 0
+        finance_order = FinanceOrder.new()
+        finance_order.finance_fee_id = @financefee.id
+        finance_order.student_id = @financefee.student_id
+        finance_order.batch_id = @financefee.batch_id
+        finance_order.balance = remaining_amount
+        finance_order.save
+        @order_id = "O" + finance_order.id.to_s
+        @order_id_saved = true
+        finance_order.update_attributes(:order_id => @order_id)
+      end
+    end
+    #end
 
     if @active_gateway == "Authorize.net"
       @sim_transaction = AuthorizeNet::SIM::Transaction.new(@merchant_id,@certificate, total_fees,{:hosted_payment_form => true,:x_description => "Fee-#{@student.admission_no}-#{@fee_collection.name}"})
@@ -1112,65 +1112,37 @@ module FinanceLoader
       total_fees =@financefee[f].balance.to_f+@fine_amount[f].to_f
 
       #if @active_gateway == "trustbank"
-        paid_fees = @financefee[f].finance_transactions
-        
-        paid_amount = 0.0
-        unless paid_fees.blank?
-          paid_fees.each do |pf|
-            paid_amount += pf.amount
-          end
+      paid_fees = @financefee[f].finance_transactions
+
+      paid_amount = 0.0
+      unless paid_fees.blank?
+        paid_fees.each do |pf|
+          paid_amount += pf.amount
         end
-        remaining_amount = total_fees - paid_amount
+      end
+      remaining_amount = total_fees - paid_amount
 
-        unless @financefee[f].is_paid
-          finance_order = FinanceOrder.find(:first, :conditions => "finance_fee_id = #{@financefee[f].id} and student_id = #{@financefee[f].student_id} and batch_id = #{@financefee[f].batch_id} and status = 0")
-          unless finance_order.blank?
-            if @order_id_saved
-              finance_order.update_attributes(:order_id => @order_id)
-            else
-              @order_id = "O" + finance_order.id.to_s
-              finance_order.update_attributes(:order_id => @order_id)
-              @order_id_saved = true
-            end
-
+      unless @financefee[f].is_paid
+        finance_order = FinanceOrder.find(:first, :conditions => "finance_fee_id = #{@financefee[f].id} and student_id = #{@financefee[f].student_id} and batch_id = #{@financefee[f].batch_id} and status = 0")
+        unless finance_order.blank?
+          if @order_id_saved
+            finance_order.update_attributes(:order_id => @order_id)
           else
-            if @order_id_saved
-              finance_order = FinanceOrder.new()
-              finance_order.finance_fee_id = @financefee[f].id
-              finance_order.order_id = @order_id
-              finance_order.student_id = @financefee[f].student_id
-              finance_order.batch_id = @financefee[f].batch_id
-              finance_order.balance = remaining_amount
-              finance_order.save
-            else
-              finance_order = FinanceOrder.new()
-              finance_order.finance_fee_id = @financefee[f].id
-              finance_order.student_id = @financefee[f].student_id
-              finance_order.batch_id = @financefee[f].batch_id
-              finance_order.balance = remaining_amount
-              finance_order.save
-              @order_id = "O" + finance_order.id.to_s
-              @order_id_saved = true
-              finance_order.update_attributes(:order_id => @order_id)
-            end
+            @order_id = "O" + finance_order.id.to_s
+            finance_order.update_attributes(:order_id => @order_id)
+            @order_id_saved = true
           end
-          
-          payment = Payment.find(:first, :conditions => "order_id = '#{@order_id}'")
-          unless payment.blank?
-            finance_transaction_id = payment.finance_transaction_id
-            unless finance_transaction_id.nil?
-              finance_order = FinanceOrder.new()
-              finance_order.finance_fee_id = @financefee[f].id
-              finance_order.student_id = @financefee[f].student_id
-              finance_order.batch_id = @financefee[f].batch_id
-              finance_order.balance = remaining_amount
-              finance_order.save
-              @order_id = "O" + finance_order.id.to_s
-              finance_order.update_attributes(:order_id => @order_id)
-            end
-          end
+
         else
-          if remaining_amount > 0
+          if @order_id_saved
+            finance_order = FinanceOrder.new()
+            finance_order.finance_fee_id = @financefee[f].id
+            finance_order.order_id = @order_id
+            finance_order.student_id = @financefee[f].student_id
+            finance_order.batch_id = @financefee[f].batch_id
+            finance_order.balance = remaining_amount
+            finance_order.save
+          else
             finance_order = FinanceOrder.new()
             finance_order.finance_fee_id = @financefee[f].id
             finance_order.student_id = @financefee[f].student_id
@@ -1182,6 +1154,34 @@ module FinanceLoader
             finance_order.update_attributes(:order_id => @order_id)
           end
         end
+
+        payment = Payment.find(:first, :conditions => "order_id = '#{@order_id}'")
+        unless payment.blank?
+          finance_transaction_id = payment.finance_transaction_id
+          unless finance_transaction_id.nil?
+            finance_order = FinanceOrder.new()
+            finance_order.finance_fee_id = @financefee[f].id
+            finance_order.student_id = @financefee[f].student_id
+            finance_order.batch_id = @financefee[f].batch_id
+            finance_order.balance = remaining_amount
+            finance_order.save
+            @order_id = "O" + finance_order.id.to_s
+            finance_order.update_attributes(:order_id => @order_id)
+          end
+        end
+      else
+        if remaining_amount > 0
+          finance_order = FinanceOrder.new()
+          finance_order.finance_fee_id = @financefee[f].id
+          finance_order.student_id = @financefee[f].student_id
+          finance_order.batch_id = @financefee[f].batch_id
+          finance_order.balance = remaining_amount
+          finance_order.save
+          @order_id = "O" + finance_order.id.to_s
+          @order_id_saved = true
+          finance_order.update_attributes(:order_id => @order_id)
+        end
+      end
       #end
 
       if @active_gateway == "Authorize.net"
@@ -3464,13 +3464,13 @@ module FinanceLoader
         flash[:notice] = "#{t('payment_failed')} : #{params[:error]}"      
     elsif params[:create_transaction].present?
       gateway_response = Hash.new
-      if @active_gateway == "Paypal"
+      if params[:target_gateway] == "Paypal"
           gateway_response = {
             :amount => params[:amt],
             :status => params[:st],
             :transaction_id => params[:tx]
           }
-      elsif @active_gateway == "Authorize.net"
+      elsif params[:target_gateway] == "Authorize.net"
           gateway_response = {
             :x_response_code => params[:x_response_code],
             :x_response_reason_code => params[:x_response_reason_code],
@@ -3513,7 +3513,7 @@ module FinanceLoader
             :x_cavv_response => params[:x_cavv_response],
             :x_method_available => params[:x_method_available],
           }    
-      elsif @active_gateway == "ssl.commerce"
+      elsif params[:target_gateway] == "ssl.commerce"
           gateway_response = {
             :amount => params[:amount],
             :status => params[:status],
@@ -3532,7 +3532,7 @@ module FinanceLoader
             :card_issuer_country_code=>params[:card_issuer_country_code],
             :val_id => params[:val_id]
           }    
-      elsif @active_gateway == "trustbank"
+      elsif params[:target_gateway] == "trustbank"
         result = Base64.decode64(params[:CheckoutXmlMsg])
         #result = '<Response date="2016-06-20 10:14:53.213">  <RefID>133783A000129D</RefID>  <OrderID>O1052536</OrderID>  <Name> Customer1</Name>  <Email> mr.customer@gmail.com </Email>  <Amount>2090.00</Amount>  <ServiceCharge>0.00</ServiceCharge>  <Status>1</Status>  <StatusText>PAID</StatusText>  <Used>0</Used>  <Verified>0</Verified>  <PaymentType>ITCL</PaymentType>  <PAN>712300XXXX1277</PAN>  <TBMM_Account></TBMM_Account>  <MarchentID>SAGC</MarchentID>  <OrderDateTime>2016-06-20 10:14:24.700</OrderDateTime>  <PaymentDateTime>2016-06-20 10:21:34.303</PaymentDateTime>  <EMI_No>0</EMI_No>  <InterestAmount>0.00</InterestAmount>  <PayWithCharge>1</PayWithCharge>  <CardResponseCode>00</CardResponseCode>  <CardResponseDescription>APPROVED</CardResponseDescription>  <CardOrderStatus>APPROVED</CardOrderStatus> </Response> '
         xml_res = Nokogiri::XML(result)
@@ -3711,11 +3711,11 @@ module FinanceLoader
       
       if payment_saved
         gateway_status = false
-        if @active_gateway == "Paypal"
+        if params[:target_gateway] == "Paypal"
           gateway_status = true if params[:st] == "Completed"
-        elsif @active_gateway == "Authorize.net"
+        elsif params[:target_gateway] == "Authorize.net"
           gateway_status = true if params[:x_response_reason_code] == "1"
-        elsif @active_gateway == "ssl.commerce"
+        elsif params[:target_gateway] == "ssl.commerce"
           gateway_status = true if params[:status] == "VALID"
           if gateway_status == true
             testssl = false
@@ -3771,7 +3771,7 @@ module FinanceLoader
               gateway_status = false
             end
           end
-        elsif @active_gateway == "trustbank"
+        elsif params[:target_gateway] == "trustbank"
           @fine = 0
           @fine_amount = 0
 #          @finance_order = FinanceOrder.find_by_order_id(orderId.strip)
@@ -3801,7 +3801,7 @@ module FinanceLoader
         end
 
         if gateway_status == false
-          if @active_gateway == "trustbank"
+          if params[:target_gateway] == "trustbank"
             flash[:notice] = msg
           else
             flash[:notice] = "#{t('payment_failed')}"

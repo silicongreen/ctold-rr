@@ -3832,8 +3832,6 @@ module FinanceLoader
           activity_log.controller = params[:controller]
           activity_log.action = params[:action]
           activity_log.post_requests = params
-          activity_log.ip = request.remote_ip
-          activity_log.user_agent = request.user_agent
           activity_log.user_type_paid = 9
           activity_log.save
         end
@@ -3864,8 +3862,6 @@ module FinanceLoader
           activity_log.controller = params[:controller]
           activity_log.action = params[:action]
           activity_log.post_requests = params
-          activity_log.ip = request.remote_ip
-          activity_log.user_agent = request.user_agent
           activity_log.user_type_paid = 10
           activity_log.save
         end

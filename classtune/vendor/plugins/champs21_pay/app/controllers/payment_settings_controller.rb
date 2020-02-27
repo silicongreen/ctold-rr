@@ -235,11 +235,12 @@ class PaymentSettingsController < ApplicationController
         @order_id = params[:order_tid]
       end
       render :update do |page|
-        page.replace_html 'order_id_panel',:partial => "order_verification"
+        page.replace_html 'order_panel',:partial => "order_verifications"
+        page << "alert(j('#order_panel').html())"
       end
     else
       render :update do |page|
-        page.replace_html 'order_id_panel',:text => '<p class="flash-msg"> invalid Request. </p>'
+        page.replace_html 'order_panel',:text => '<p class="flash-msg"> invalid Request. </p>'
       end
     end
   end

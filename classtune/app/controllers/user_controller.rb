@@ -771,45 +771,45 @@ class UserController < ApplicationController
 
       now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
       
-      @sesstion_time = 0
-      @last_session_log = ActivityLog.find(:first,:conditions=>{:user_id=>current_user.id,:session_end=>1},:order=>"created_at DESC",:limit=>1)
-      if !@last_session_log.nil?
-        @session_start_log = ActivityLog.find(:first,:conditions=>["user_id =#{current_user.id} and created_at >'#{@last_session_log.created_at}'"],:order=>"created_at ASC",:limit=>1)
-        unless @session_start_log.blank? 
-          @sesstion_time =  now.to_time-@session_start_log.created_at.to_time
-        end
-      else
-        @last_session_log = ActivityLog.find(:first,:conditions=>{:user_id=>current_user.id},:order=>"created_at ASC",:limit=>1)
-        if !@last_session_log.nil?
-          @sesstion_time =  now.to_time-@last_session_log.created_at.to_time
-        end
-      end  
-  
-      
-      
-      activity_log = ActivityLog.new
-      activity_log.user_id = current_user.id
-      activity_log.controller = params[:controller]
-      activity_log.action = params[:action]
-      activity_log.ip = request.remote_ip
-      activity_log.user_agent = request.user_agent
-      activity_log.created_at = now
-      activity_log.updated_at = now
-      activity_log.session_end = 1
-      activity_log.session_time = @sesstion_time
-      if current_user.admin?
-        activity_log.user_type_paid = 4
-      end
-      if current_user.employee?
-        activity_log.user_type_paid = 3
-      end
-      if current_user.parent?
-        activity_log.user_type_paid = 2
-      end
-      if current_user.student?
-        activity_log.user_type_paid = 1
-      end
-      activity_log.save
+#      @sesstion_time = 0
+#      @last_session_log = ActivityLog.find(:first,:conditions=>{:user_id=>current_user.id,:session_end=>1},:order=>"created_at DESC",:limit=>1)
+#      if !@last_session_log.nil?
+#        @session_start_log = ActivityLog.find(:first,:conditions=>["user_id =#{current_user.id} and created_at >'#{@last_session_log.created_at}'"],:order=>"created_at ASC",:limit=>1)
+#        unless @session_start_log.blank? 
+#          @sesstion_time =  now.to_time-@session_start_log.created_at.to_time
+#        end
+#      else
+#        @last_session_log = ActivityLog.find(:first,:conditions=>{:user_id=>current_user.id},:order=>"created_at ASC",:limit=>1)
+#        if !@last_session_log.nil?
+#          @sesstion_time =  now.to_time-@last_session_log.created_at.to_time
+#        end
+#      end  
+#  
+#      
+#      
+#      activity_log = ActivityLog.new
+#      activity_log.user_id = current_user.id
+#      activity_log.controller = params[:controller]
+#      activity_log.action = params[:action]
+#      activity_log.ip = request.remote_ip
+#      activity_log.user_agent = request.user_agent
+#      activity_log.created_at = now
+#      activity_log.updated_at = now
+#      activity_log.session_end = 1
+#      activity_log.session_time = @sesstion_time
+#      if current_user.admin?
+#        activity_log.user_type_paid = 4
+#      end
+#      if current_user.employee?
+#        activity_log.user_type_paid = 3
+#      end
+#      if current_user.parent?
+#        activity_log.user_type_paid = 2
+#      end
+#      if current_user.student?
+#        activity_log.user_type_paid = 1
+#      end
+#      activity_log.save
 
       session[:user_id] = nil if session[:user_id]
       session[:access_token] = nil if session[:access_token]

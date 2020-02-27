@@ -82,6 +82,34 @@ class MultiSchoolController < ActionController::Base
       flash[:notice] = "Some error occured, please contact the support."
       logger.info "[Champs21Rescue] No method error #{exception.to_s}"
       log_error exception
+      
+      activity_log = ActivityLog.new
+      activity_log.user_id = current_user.id
+      activity_log.controller = params[:controller]
+      activity_log.action = params[:action]
+      activity_log.post_requests = params
+      activity_log.ip = request.remote_ip
+      activity_log.user_agent = request.user_agent
+      activity_log.created_at = now
+      activity_log.updated_at = now
+      unless current_user.blank?
+        if current_user.admin?
+          activity_log.user_type_paid = 4
+        end
+        if current_user.employee?
+          activity_log.user_type_paid = 3
+        end
+        if current_user.parent?
+          activity_log.user_type_paid = 2
+        end
+        if current_user.student?
+          activity_log.user_type_paid = 1
+        end
+      end
+      activity_log.school_name = "[Champs21Rescue] No Method Error Token #{exception.to_s}"
+      activity_log.save
+      
+      
       redirect_to :controller=>:admin_users ,:action=>:dashboard
     end
 
@@ -89,6 +117,34 @@ class MultiSchoolController < ActionController::Base
       flash[:notice] = "Authentication not valid"
       logger.info "[Champs21Rescue] Invalid Authenticity Token #{exception.to_s}"
       log_error exception
+      
+      
+      activity_log = ActivityLog.new
+      activity_log.user_id = current_user.id
+      activity_log.controller = params[:controller]
+      activity_log.action = params[:action]
+      activity_log.post_requests = params
+      activity_log.ip = request.remote_ip
+      activity_log.user_agent = request.user_agent
+      activity_log.created_at = now
+      activity_log.updated_at = now
+      unless current_user.blank?
+        if current_user.admin?
+          activity_log.user_type_paid = 4
+        end
+        if current_user.employee?
+          activity_log.user_type_paid = 3
+        end
+        if current_user.parent?
+          activity_log.user_type_paid = 2
+        end
+        if current_user.student?
+          activity_log.user_type_paid = 1
+        end
+      end
+      activity_log.school_name = "[Champs21Rescue] Invalid Authenticity Token #{exception.to_s}"
+      activity_log.save
+      
       if request.xhr?
         render(:update) do|page|
           page.redirect_to :controller => 'admin_users', :action => 'dashboard'

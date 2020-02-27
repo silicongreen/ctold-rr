@@ -1286,8 +1286,13 @@ class DashboardsController < ApplicationController
       homework_uri = URI(api_endpoint + "api/homework")
       http = Net::HTTP.new(homework_uri.host, homework_uri.port)
       homework_req = Net::HTTP::Post.new(homework_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
-      form_data['batch_id'] = student.batch_id
-      form_data['student_id'] = student.id
+      unless student.blank?
+        form_data['batch_id'] = student.batch_id
+        form_data['student_id'] = student.id
+      else
+        form_data['batch_id'] = 0
+        form_data['student_id'] = 0
+      end
     end
     
     if subject_id.to_i > 0

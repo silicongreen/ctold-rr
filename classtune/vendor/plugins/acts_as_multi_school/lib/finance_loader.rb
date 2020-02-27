@@ -3543,8 +3543,6 @@ module FinanceLoader
           activity_log.post_requests = params
           activity_log.ip = request.remote_ip
           activity_log.user_agent = request.user_agent
-          activity_log.created_at = now
-          activity_log.updated_at = now
           activity_log.user_type_paid = 4
           activity_log.save
         end
@@ -3646,8 +3644,6 @@ module FinanceLoader
           activity_log.post_requests = params
           activity_log.ip = request.remote_ip
           activity_log.user_agent = request.user_agent
-          activity_log.created_at = now
-          activity_log.updated_at = now
           activity_log.user_type_paid = 5
           activity_log.save
         end
@@ -3700,8 +3696,6 @@ module FinanceLoader
           activity_log.post_requests = params
           activity_log.ip = request.remote_ip
           activity_log.user_agent = request.user_agent
-          activity_log.created_at = now
-          activity_log.updated_at = now
           activity_log.user_type_paid = 6
           activity_log.save
         end
@@ -3755,8 +3749,6 @@ module FinanceLoader
           activity_log.post_requests = params
           activity_log.ip = request.remote_ip
           activity_log.user_agent = request.user_agent
-          activity_log.created_at = now
-          activity_log.updated_at = now
           activity_log.user_type_paid = 7
           activity_log.save
         end
@@ -3769,8 +3761,6 @@ module FinanceLoader
           activity_log.post_requests = params
           activity_log.ip = request.remote_ip
           activity_log.user_agent = request.user_agent
-          activity_log.created_at = now
-          activity_log.updated_at = now
           activity_log.user_type_paid = 8
           activity_log.save
         end
@@ -3844,8 +3834,6 @@ module FinanceLoader
           activity_log.post_requests = params
           activity_log.ip = request.remote_ip
           activity_log.user_agent = request.user_agent
-          activity_log.created_at = now
-          activity_log.updated_at = now
           activity_log.user_type_paid = 9
           activity_log.save
         end
@@ -3878,8 +3866,6 @@ module FinanceLoader
           activity_log.post_requests = params
           activity_log.ip = request.remote_ip
           activity_log.user_agent = request.user_agent
-          activity_log.created_at = now
-          activity_log.updated_at = now
           activity_log.user_type_paid = 10
           activity_log.save
         end

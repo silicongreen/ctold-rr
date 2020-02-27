@@ -227,44 +227,86 @@ class PaymentSettingsController < ApplicationController
     end
   end
   
-  def order_verifications  
-    
-    #admission_nos = []
-    if request.post?
-      unless params[:order_id].blank?
-        order_id_vals =  params[:order_id]
-        order_ids = order_id_vals.split(",").map{ |s| s.strip }
-        
-        num_orders = order_ids.length
-        verified_no = 0
-        
-        order_ids_new = []
-        order_ids.each_with_index do |o, i|
-            if order_verify_trust_bank(o)
-              verified_no += 1
-            else
-              order_ids_new << o
-            end
-
-        end
-        
-        if verified_no.to_i == num_orders.to_i
-          flash[:notice] = "All Orders has been changed successfully"
-        else
-          if verified_no.to_i == 0
-            flash[:notice] = "Orders has not verify yet"
-          else
-            flash[:notice] = verified_no.to_s + " of " + num_orders.to_s + " Order has been verified, Order IDs are: " + order_ids.reject{|x| order_ids_new.include?(x)}.join(", ")
-          end
-        end
-      else
-        flash[:notice] = "Order ID can't be blank"
-      end
-    else
+  def order_verifications_partials
+    unless params[:gateway].blank?
+      @gateway = params[:gateway]
       @order_id = ""
       unless params[:order_tid].nil?
         @order_id = params[:order_tid]
       end
+      render :update do |page|
+        page.replace_html 'order_id_panel',:partial => "order_verification"
+      end
+    else
+      render :update do |page|
+        page.replace_html 'order_id_panel',:text => '<p class="flash-msg"> invalid Request. </p>'
+      end
+    end
+  end
+  
+  def order_verifications  
+    if Champs21Plugin.can_access_plugin?("champs21_pay")
+      if (PaymentConfiguration.config_value("enabled_fees").present? and PaymentConfiguration.config_value("enabled_fees").include? "Student Fee") 
+        @payment_gateways = PaymentConfiguration.config_value("champs21_gateway")
+        @payment_gateway = @payment_gateways.split(",") unless @payment_gateways.blank?
+        @payment_gateway ||= Array.new
+        unless @payment_gateway.blank?
+          unless params[:gateway].blank?
+            @gateway = params[:gateway]
+          else
+            if @payment_gateway.include?('citybank')
+              @gateway = 'citybank'
+            else
+              @gateway = @payment_gateway[0]
+            end
+          end
+          if request.post?
+            unless params[:order_id].blank?
+              order_id_vals =  params[:order_id]
+              order_ids = order_id_vals.split(",").map{ |s| s.strip }
+
+              num_orders = order_ids.length
+              verified_no = 0
+
+              order_ids_new = []
+              order_ids.each_with_index do |o, i|
+                  if order_verify_trust_bank(o)
+                    verified_no += 1
+                  else
+                    order_ids_new << o
+                  end
+
+              end
+
+              if verified_no.to_i == num_orders.to_i
+                flash[:notice] = "All Orders has been changed successfully"
+              else
+                if verified_no.to_i == 0
+                  flash[:notice] = "Orders has not verify yet"
+                else
+                  flash[:notice] = verified_no.to_s + " of " + num_orders.to_s + " Order has been verified, Order IDs are: " + order_ids.reject{|x| order_ids_new.include?(x)}.join(", ")
+                end
+              end
+            else
+              flash[:notice] = "Order ID can't be blank"
+            end
+          else
+            @order_id = ""
+            unless params[:order_tid].nil?
+              @order_id = params[:order_tid]
+            end
+          end
+        else
+          flash[:notice] = "No Payment gateway is active"
+          redirect_to :controller => "user", :action => "dashboard"
+        end
+      else
+        flash[:notice] = "Online Payment is not active"
+        redirect_to :controller => "user", :action => "dashboard"
+      end
+    else
+      flash[:notice] = "Online Payment is not active"
+      redirect_to :controller => "user", :action => "dashboard"
     end
   end
   

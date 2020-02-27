@@ -45,28 +45,70 @@
   <% unless flash[:notice].nil? %>
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
-  
-  <h2>Order Verification</h2>  
-  <hr style="border: 1px solid #ccc;" />
-  <% form_for :payment_settings,:url => {:action => :order_verifications} do |f| %>
-      <div class="form-group col-sm-6">
-          <label>(TBL) Order Id<span class="necessary-field">*</span> :</label>
-          <%= text_area_tag "order_id", @order_id, :class=>"form-control"%>
-          <small>(Comma Seperated Value)</small>
-      </div>
-  
-      <div class="form-group col-sm-6 even">
-          <%= submit_tag "", :value => "► #{t('verify_order')}", :class => "btn btn-success", :disable_with => "► #{t('please_wait')}" %>
-      </div>
+  <% if @payment_gateway.length > 1 %>
+    <div style="width: 100%; text-align: center; border: 1px solid #ccc; margin-bottom: 10px; padding: 10px 0; border-radius: 10px;">
+        <% if @payment_gateway.include?('citybank') %>
+          <% @payment_gateway.each do |key| %>
+              <% if key == "citybank" %>
+              <div class="gateway_image_panel" data-gateway="<%= key %>" style="position: relative;">
+                  <input type="radio" id="radio_<%= key %>" name="gateway_radio" <%= (@gateway == key) ? "checked" : "" %> class="gateway_radio" value="<%= key %>" style="position: absolute; top: 0; right: 4px;" autocomplete="off" />
+                  <%= image_tag "/images/gateway_images/#{key}-ico.png", :class => "gateway_image", :id => "#{key}", :style => "#{key == 'citybank' ? 'height:70px;' : 'height: 65px;'}" %>
+              </div>
+              <% end %>
+          <% end %>
+        <% end %>
+        <% @payment_gateway.each do |key| %>
+            <% unless key == "citybank" %>
+            <div class="gateway_image_panel" data-gateway="<%= key %>" style="position: relative;">
+                <input type="radio" id="radio_<%= key %>" name="gateway_radio" <%= (@gateway == key) ? "checked" : "" %> class="gateway_radio" value="<%= key %>" style="position: absolute; top: 0; right: 4px;" autocomplete="off" />
+                <%= image_tag "/images/gateway_images/#{key}-ico.png", :class => "gateway_image", :id => "#{key}", :style => "#{key == 'citybank' ? 'height:70px;' : 'height: 65px;'}" %>
+            </div>
+            <% end %>
+        <% end %>
+      </div>    
   <% end %>
+  <div id='order_id_panel'>
+    <%= render :partial => "order_verification"  %>
+  </div>  
 </div>
 <%= stylesheet_link_tag 'tadded-header' %>
 <%= stylesheet_link_tag 'form-bootstrap' %>
 <% content_for :head do %>
   <%= javascript_include_tag "custom/tabbed-header" %>
 <% end %> 
+
 <style>
+    .gateway_image_panel{
+      /*border: 1px solid #ccc;*/
+      border-radius: 5px;
+      margin-right: 5px;
+      display: inline-block;
+      /*-webkit-box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);
+      -moz-box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);
+      box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);*/
+      cursor: pointer;
+    }
     .gateway_image{
-      border: 1px solid #ccc;
+      height: 65px;
+      /*width: 100%;
+      -webkit-box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);
+      -moz-box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);
+      box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);*/
+      cursor: pointer;
     }
 </style>
+<script>
+  j(document).ready(function(){
+      j(document).on("click", ".gateway_image_panel", function(){
+          var gateway = j(this).data('gateway');
+          j("#radio_" + gateway).prop('checked', true);
+          new Ajax.Request('/online_payments/order_verifications_partials',
+                  {
+                      asynchronous: true,
+                      evalScripts: true,
+                      parameters: 'gateway=' + gateway
+                  }
+          )
+      });
+  });
+</script>

@@ -12,7 +12,8 @@ authorization do
       :order_verifications,
       :verify_payment,
       :transactions,
-      :transaction_list
+      :transaction_list,
+      :order_verifications_partials
     ]
   end
 

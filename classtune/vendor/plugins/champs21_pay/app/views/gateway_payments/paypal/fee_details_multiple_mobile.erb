@@ -1298,7 +1298,7 @@
         var paymentID;
         var id_token;
         var bkashLoad = false;
-      
+        <% if @gateway_settings.keys.include?('bkash')  %>
         bKash.init({ 
           paymentMode: 'checkout', //fixed value ‘checkout’ 
           //paymentRequest format: {amount: AMOUNT, intent: INTENT} 
@@ -1350,7 +1350,7 @@
             });
           } 
         });
-        
+        <% end %>
         j(document).on('click', "#close_pop", function(){
             if ( bkashLoad == false )
             {

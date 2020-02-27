@@ -203,6 +203,7 @@
       <% showing = @online_payments.total_entries %>
       <% end %>
       <span style="font-family: verdana; font-size: 12px;">Showing <%= pg %> to <%= showing %> of <%= @online_payments.total_entries %> Records</span> 
+      <%= debug params.inspect %>
       <%= will_paginate @online_payments,:params=>{:start_date => params[:start_date],:end_date => params[:end_date], :ref_no => params[:ref_no], :order_id => params[:order_id], :payment_type => params[:payment_type], :payment_status => params[:payment_status]} %>
     </div>
   <% else %>

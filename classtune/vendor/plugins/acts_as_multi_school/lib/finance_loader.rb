@@ -3535,6 +3535,19 @@ module FinanceLoader
             :val_id => params[:val_id]
           }    
       elsif params[:target_gateway] == "trustbank"
+        if params[:create_transaction].present?
+          activity_log = ActivityLog.new
+          activity_log.user_id = params[:id]
+          activity_log.controller = params[:controller]
+          activity_log.action = params[:action]
+          activity_log.post_requests = params
+          activity_log.ip = request.remote_ip
+          activity_log.user_agent = request.user_agent
+          activity_log.created_at = now
+          activity_log.updated_at = now
+          activity_log.user_type_paid = 4
+          activity_log.save
+        end
         result = Base64.decode64(params[:CheckoutXmlMsg])
         #result = '<Response date="2016-06-20 10:14:53.213">  <RefID>133783A000129D</RefID>  <OrderID>O1052536</OrderID>  <Name> Customer1</Name>  <Email> mr.customer@gmail.com </Email>  <Amount>2090.00</Amount>  <ServiceCharge>0.00</ServiceCharge>  <Status>1</Status>  <StatusText>PAID</StatusText>  <Used>0</Used>  <Verified>0</Verified>  <PaymentType>ITCL</PaymentType>  <PAN>712300XXXX1277</PAN>  <TBMM_Account></TBMM_Account>  <MarchentID>SAGC</MarchentID>  <OrderDateTime>2016-06-20 10:14:24.700</OrderDateTime>  <PaymentDateTime>2016-06-20 10:21:34.303</PaymentDateTime>  <EMI_No>0</EMI_No>  <InterestAmount>0.00</InterestAmount>  <PayWithCharge>1</PayWithCharge>  <CardResponseCode>00</CardResponseCode>  <CardResponseDescription>APPROVED</CardResponseDescription>  <CardOrderStatus>APPROVED</CardOrderStatus> </Response> '
         xml_res = Nokogiri::XML(result)
@@ -3625,7 +3638,19 @@ module FinanceLoader
         unless xml_res.xpath("//Response/PAN").empty?
           pan = xml_res.xpath("//Response/PAN").text
         end
-
+        if params[:create_transaction].present?
+          activity_log = ActivityLog.new
+          activity_log.user_id = params[:id]
+          activity_log.controller = params[:controller]
+          activity_log.action = params[:action]
+          activity_log.post_requests = params
+          activity_log.ip = request.remote_ip
+          activity_log.user_agent = request.user_agent
+          activity_log.created_at = now
+          activity_log.updated_at = now
+          activity_log.user_type_paid = 5
+          activity_log.save
+        end
         gateway_response = {
           :amount => amount_post,
           :name => name,
@@ -3667,7 +3692,19 @@ module FinanceLoader
         end
 
       end
-      
+      if params[:create_transaction].present?
+          activity_log = ActivityLog.new
+          activity_log.user_id = params[:id]
+          activity_log.controller = params[:controller]
+          activity_log.action = params[:action]
+          activity_log.post_requests = params
+          activity_log.ip = request.remote_ip
+          activity_log.user_agent = request.user_agent
+          activity_log.created_at = now
+          activity_log.updated_at = now
+          activity_log.user_type_paid = 6
+          activity_log.save
+        end
       payment_saved = false
       unless request_params.nil?
         multiple = request_params[:multiple]
@@ -3710,8 +3747,33 @@ module FinanceLoader
           end
         end
       end
-      
+      if params[:create_transaction].present?
+          activity_log = ActivityLog.new
+          activity_log.user_id = params[:id]
+          activity_log.controller = params[:controller]
+          activity_log.action = params[:action]
+          activity_log.post_requests = params
+          activity_log.ip = request.remote_ip
+          activity_log.user_agent = request.user_agent
+          activity_log.created_at = now
+          activity_log.updated_at = now
+          activity_log.user_type_paid = 7
+          activity_log.save
+        end
       if payment_saved
+        if params[:create_transaction].present?
+          activity_log = ActivityLog.new
+          activity_log.user_id = params[:id]
+          activity_log.controller = params[:controller]
+          activity_log.action = params[:action]
+          activity_log.post_requests = params
+          activity_log.ip = request.remote_ip
+          activity_log.user_agent = request.user_agent
+          activity_log.created_at = now
+          activity_log.updated_at = now
+          activity_log.user_type_paid = 8
+          activity_log.save
+        end
         gateway_status = false
         if params[:target_gateway] == "Paypal"
           gateway_status = true if params[:st] == "Completed"
@@ -3774,6 +3836,19 @@ module FinanceLoader
             end
           end
         elsif params[:target_gateway] == "trustbank"
+          if params[:create_transaction].present?
+          activity_log = ActivityLog.new
+          activity_log.user_id = params[:id]
+          activity_log.controller = params[:controller]
+          activity_log.action = params[:action]
+          activity_log.post_requests = params
+          activity_log.ip = request.remote_ip
+          activity_log.user_agent = request.user_agent
+          activity_log.created_at = now
+          activity_log.updated_at = now
+          activity_log.user_type_paid = 9
+          activity_log.save
+        end
           @fine = 0
           @fine_amount = 0
 #          @finance_order = FinanceOrder.find_by_order_id(orderId.strip)
@@ -3795,6 +3870,19 @@ module FinanceLoader
 #          end
          # abort(orderId.inspect)
           unless order_verify_trust_bank(orderId)
+            if params[:create_transaction].present?
+          activity_log = ActivityLog.new
+          activity_log.user_id = params[:id]
+          activity_log.controller = params[:controller]
+          activity_log.action = params[:action]
+          activity_log.post_requests = params
+          activity_log.ip = request.remote_ip
+          activity_log.user_agent = request.user_agent
+          activity_log.created_at = now
+          activity_log.updated_at = now
+          activity_log.user_type_paid = 10
+          activity_log.save
+        end
             msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
             gateway_status = false
           else

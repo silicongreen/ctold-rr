@@ -155,9 +155,11 @@ class PaymentSettingsController < ApplicationController
                 Spreadsheet.client_encoding = 'UTF-8'
 
                 date = Spreadsheet::Format.new :number_format => 'MM/DD/YYYY'
-
-                row_1 = ["Ref ID","Order ID","Name","Marchent ID","Amount","Fees","Service Charge","Status","Verified","Trn Date"]
-
+                if @gateway != "bkash"
+                  row_1 = ["Ref ID","Order ID","Name","Merchant ID","Amount","Fees","Service Charge","Status","Verified","Trn Date"]
+                elsif @gateway == "bkash"
+                  row_1 = ["trxID","Payment ID","Order ID","Student ID","Full Name","Amount","Fees","Status","Trn Date"]
+                end
                 # Create a new Workbook
                 new_book = Spreadsheet::Workbook.new
 
@@ -178,14 +180,18 @@ class PaymentSettingsController < ApplicationController
                       verified = "true"
                     end
                   end
-                  row_new = [payment.gateway_response[:ref_id], payment.gateway_response[:order_id], payment.gateway_response[:name], payment.gateway_response[:merchant_id], Champs21Precision.set_and_modify_precision(tot_amt), Champs21Precision.set_and_modify_precision(amt), Champs21Precision.set_and_modify_precision(service_change), payment.gateway_response[:status], verified, I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y")]
+                  if @gateway != "bkash"
+                    row_new = [payment.gateway_response[:ref_id], payment.gateway_response[:order_id], payment.gateway_response[:name], payment.gateway_response[:merchant_id], Champs21Precision.set_and_modify_precision(tot_amt), Champs21Precision.set_and_modify_precision(amt), Champs21Precision.set_and_modify_precision(service_change), payment.gateway_response[:status], verified, I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y")]
+                  elsif @gateway == "bkash"
+                    row_new = [payment.gateway_response[:trxID], payment.gateway_response[:paymentID], payment.gateway_response[:merchantInvoiceNumber], payment.payee.admission_no, payment.payee.full_name, Champs21Precision.set_and_modify_precision(tot_amt), Champs21Precision.set_and_modify_precision(amt), payment.gateway_response[:transactionStatus], I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y")]
+                  end
                   new_book.worksheet(0).insert_row(ind, row_new)
                   ind += 1
                 end
                 spreadsheet = StringIO.new 
                 new_book.write spreadsheet 
 
-                send_data spreadsheet.string, :filename => "online_transactions.xls", :type =>  "application/vnd.ms-excel"
+                send_data spreadsheet.string, :filename => "online_transactions-#{@gateway}.xls", :type =>  "application/vnd.ms-excel"
               else
                 #if MultiSchool.current_school.id == 352
                   @online_payments = Payment.paginate(:conditions=>"gateway_txt = '#{@gateway}' and CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "order_id")

@@ -35,6 +35,59 @@ class PaymentSettingsController < ApplicationController
     end
   end
   
+  def transaction_list
+    unless params[:gateway].blank?
+      @gateway = params[:gateway]
+      start_date = params[:start_date]
+      start_date ||= Date.today
+      end_date = params[:end_date]
+      end_date ||= Date.today
+
+      extra_query = ""
+      unless params[:payment_status].nil? or params[:payment_status].empty? or params[:payment_status].blank?
+        payment_status = 0
+        if params[:payment_status].to_i == 1
+          payment_status = params[:payment_status].to_i
+        end
+        extra_query += ' and gateway_response like \'%:status: "' + payment_status.to_s + '%\''
+      end
+      unless params[:transactionStatus].nil? or params[:transactionStatus].empty? or params[:transactionStatus].blank?
+        extra_query += ' and gateway_response like \'%:transactionStatus: "' + params[:transactionStatus].to_s + '%\''
+      end
+      unless params[:trxID].nil? or params[:trxID].empty? or params[:trxID].blank?
+        extra_query += ' and gateway_response like \'%:trxID: "' + params[:trxID].to_s + '%\''
+      end
+      unless params[:paymentID].nil? or params[:paymentID].empty? or params[:paymentID].blank?
+        extra_query += ' and gateway_response like \'%:paymentID: "' + params[:paymentID].to_s + '%\''
+      end
+      unless params[:order_id].nil? or params[:order_id].empty? or params[:order_id].blank?
+        if @gateway != "bkash"
+          extra_query += ' and gateway_response like \'%' + params[:order_id].to_s + '%\''
+        elsif @gateway == "bkash"
+          extra_query += ' and gateway_response like \'%:merchantInvoiceNumb: "' + params[:order_id].to_s + '%\''
+        end
+      end
+      unless params[:ref_no].nil? or params[:ref_no].empty? or params[:ref_no].blank?
+        extra_query += ' and gateway_response like \'%' + params[:ref_no].to_s + '%\''
+      end
+      unless params[:payment_type].nil? or params[:payment_type].empty? or params[:payment_type].blank?
+        extra_query += ' and gateway_response like \'%:payment_type: ' + params[:payment_type].to_s + '%\''
+      end
+      #@online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
+
+      ###.paginate()
+
+      @online_payments = Payment.paginate(:conditions=>"gateway_txt = '#{@gateway}' and CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "order_id")
+      render :update do |page|
+        page.replace_html 'payment_gatway_settings',:partial => "transaction"
+      end
+    else
+      render :update do |page|
+        page.replace_html 'payment_gatway_settings',:text => '<p class="flash-msg"> invalid Request. </p>'
+      end
+    end
+  end
+  
   def transactions
     if Champs21Plugin.can_access_plugin?("champs21_pay")
       if (PaymentConfiguration.config_value("enabled_fees").present? and PaymentConfiguration.config_value("enabled_fees").include? "Student Fee") 
@@ -42,6 +95,16 @@ class PaymentSettingsController < ApplicationController
           @payment_gateway = @payment_gateways.split(",") unless @payment_gateways.blank?
           @payment_gateway ||= Array.new
           unless @payment_gateway.blank?
+            unless params[:gateway].blank?
+              @gateway = params[:gateway]
+            else
+              if @payment_gateway.include?('citybank')
+                @gateway = 'citybank'
+              else
+                @gateway = @payment_gateway[0]
+              end
+            end
+            
             start_date = params[:start_date]
             start_date ||= Date.today
             end_date = params[:end_date]
@@ -55,8 +118,21 @@ class PaymentSettingsController < ApplicationController
               end
               extra_query += ' and gateway_response like \'%:status: "' + payment_status.to_s + '%\''
             end
+            unless params[:transactionStatus].nil? or params[:transactionStatus].empty? or params[:transactionStatus].blank?
+              extra_query += ' and gateway_response like \'%:transactionStatus: "' + params[:transactionStatus].to_s + '%\''
+            end
+            unless params[:trxID].nil? or params[:trxID].empty? or params[:trxID].blank?
+              extra_query += ' and gateway_response like \'%:trxID: "' + params[:trxID].to_s + '%\''
+            end
+            unless params[:paymentID].nil? or params[:paymentID].empty? or params[:paymentID].blank?
+              extra_query += ' and gateway_response like \'%:paymentID: "' + params[:paymentID].to_s + '%\''
+            end
             unless params[:order_id].nil? or params[:order_id].empty? or params[:order_id].blank?
-              extra_query += ' and gateway_response like \'%' + params[:order_id].to_s + '%\''
+              if @gateway != "bkash"
+                extra_query += ' and gateway_response like \'%' + params[:order_id].to_s + '%\''
+              elsif @gateway == "bkash"
+                extra_query += ' and gateway_response like \'%:merchantInvoiceNumb: "' + params[:order_id].to_s + '%\''
+              end
             end
             unless params[:ref_no].nil? or params[:ref_no].empty? or params[:ref_no].blank?
               extra_query += ' and gateway_response like \'%' + params[:ref_no].to_s + '%\''
@@ -70,11 +146,11 @@ class PaymentSettingsController < ApplicationController
 
             unless params[:export].nil?
               if params[:export].to_i == 1
-                if MultiSchool.current_school.id == 352
-                  @online_payments = Payment.find(:all, :conditions=>"CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}", :order => "transaction_datetime DESC", :group => "order_id")
-                else
-                  @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}
-                end
+                #if MultiSchool.current_school.id == 352
+                  @online_payments = Payment.find(:all, :conditions=>"gateway_txt = '#{@gateway}' and CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}", :order => "transaction_datetime DESC", :group => "order_id")
+                #else
+                #  @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}
+                #end
                 require 'spreadsheet'
                 Spreadsheet.client_encoding = 'UTF-8'
 
@@ -111,22 +187,22 @@ class PaymentSettingsController < ApplicationController
 
                 send_data spreadsheet.string, :filename => "online_transactions.xls", :type =>  "application/vnd.ms-excel"
               else
-                if MultiSchool.current_school.id == 352
-                  @online_payments = Payment.paginate(:conditions=>"CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "order_id")
-                else
-                  @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
-                end
+                #if MultiSchool.current_school.id == 352
+                  @online_payments = Payment.paginate(:conditions=>"gateway_txt = '#{@gateway}' and CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "order_id")
+                #else
+                #  @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
+                #end
                 #abort(@online_payments.inspect)
                 respond_to do |format|
                   format.html #transctions.html.erb
                 end
               end
             else
-              if MultiSchool.current_school.id == 352
-                @online_payments = Payment.paginate(:conditions=>"CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "order_id")
-              else
-                @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
-              end
+              #if MultiSchool.current_school.id == 352
+              @online_payments = Payment.paginate(:conditions=>"gateway_txt = '#{@gateway}' and CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "order_id")
+              #else
+              #  @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
+              #end
               respond_to do |format|
                 format.html #transctions.html.erb
               end

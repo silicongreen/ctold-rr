@@ -11,7 +11,8 @@ authorization do
       :index,
       :order_verifications,
       :verify_payment,
-      :transactions
+      :transactions,
+      :transaction_list
     ]
   end
 

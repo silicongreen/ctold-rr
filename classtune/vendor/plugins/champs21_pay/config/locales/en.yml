@@ -12,6 +12,7 @@ en:
   online_transaction_id: "Online Transaction ID"
   gateway: "Gateway"
   payment_type: "Payment Type"
+  payment_id: "Payment ID"
   user_id_name: "User ID & Name"
   ref_id: "Reference ID"
   order_id: "Order ID"

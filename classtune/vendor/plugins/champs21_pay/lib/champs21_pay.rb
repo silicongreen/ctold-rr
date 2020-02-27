@@ -8,6 +8,10 @@ module Champs21Pay
   TRUSTBANK_CONFIG_KEYS = ["is_test_trustbank", "merchant_id","keycode_verification"]
   BKASH_CONFIG_KEYS = ["is_test_bkash", "app_key","app_secret","username","password"]
   CITYBANK_CONFIG_KEYS = ["is_test_citybank","merchant_id", "api_user_name","api_password"]
+  SSLCOMMERCE = "SSL COMMERCE"
+  TRUSTBANK = "Trust Bank"
+  BKASH = "bKash Mobile Payment"
+  CITYBANK = "City Bank"
 
   def self.attach_overrides 
     Dispatcher.to_prepare :champs21_pay do

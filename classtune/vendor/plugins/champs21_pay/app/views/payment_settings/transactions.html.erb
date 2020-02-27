@@ -29,6 +29,26 @@
         padding: .3rem !important;
     }
 </style>
+<style>
+    .gateway_image_panel{
+      /*border: 1px solid #ccc;*/
+      border-radius: 5px;
+      margin-right: 5px;
+      display: inline-block;
+      /*-webkit-box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);
+      -moz-box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);
+      box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);*/
+      cursor: pointer;
+    }
+    .gateway_image{
+      height: 65px;
+      /*width: 100%;
+      -webkit-box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);
+      -moz-box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);
+      box-shadow: 5px 6px 6px -3px rgba(0,0,0,0.42);*/
+      cursor: pointer;
+    }
+</style>
 <div id="content-header">
 <%= show_header_icon %>
   <h1><%= t('online_payment') %></h1>
@@ -52,195 +72,30 @@
       <p class="flash-msg"> <%= flash[:notice] %> </p>
     <% end %>
   </div>
-  <div id="payment_gatway_settings">  
-    <% if @payment_gateway.length > 1 %>
-      sdl;fsdf
-    <% end %>  
-  <% form_for :payment_transaction,:url => transactions_online_payments_url do %>
-    <div class="filter">
-      <div class="label-field-pair" style="width: 25%;">
-        <div class="label-container" style="padding-top: 15px;"><%= "Start" %>:</div>
-        <div class="input-container calendar-input"><%= calendar_date_select_tag 'start_date', params[:start_date].present? ? params[:start_date] : I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
-      </div>
-      <div class="label-field-pair" style="width: 25%; padding-left: 20px;"">
-          <div class="label-container" style="padding-top: 15px;"><%= "To" %>:</div>
-        <div class="input-container calendar-input"><%= calendar_date_select_tag 'end_date', params[:end_date].present? ? params[:end_date] : I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
-      </div>
-      <div class="label-field-pair" style="width: 25%; padding-top: 0;">
-          <div class="label-container" style="padding-top: 15px;">Status:</div>
-          <div class="input-container" style="padding-top: 10px;">
-              <select name="payment_status" id="payment_status">
-                  <option value="">Select a Status</option>
-                  <option value="1" <%= 'selected' if params[:payment_status].to_i == 1 %>>Completed</option>
-                  <option value="2" <%= 'selected' if params[:payment_status].to_i == 2 %>>Failed</option>
-              </select>
-          </div>
-      </div>
-      <div style="clear: both; height: 20px;"></div>
-      <hr style="border: 1px solid #ccc;" />  
-      <div class="label-field-pair" style="width: 25%;">
-          <div class="label-container" style="padding-top: 15px;">Ref No.:</div>
-          <div class="input-container"><input type="text" name="ref_no" id="ref_no" value="<%= params[:ref_no] %>" /></div>
-      </div>
-      <div class="label-field-pair" style="width: 25%; padding-left: 20px;">
-          <div class="label-container" style="padding-top: 15px;">Order ID:</div>
-          <div class="input-container"><input type="text" name="order_id" id="order_id" value="<%= params[:order_id] %>" /></div>
-      </div>
-      <div class="label-field-pair" style="width: 25%; padding-top: 0;">
-          <div class="label-container" style="padding-top: 15px;">Type:</div>
-          <div class="input-container" style="padding-top: 10px;">
-              <select name="payment_type" id="payment_type">
-                  <option value="">Select a Payment Type</option>
-                  <option value="MB" <%= 'selected' if params[:payment_type] == "MB" %>>Mobile Banking</option>
-                  <option value="ITCL" <%= 'selected' if params[:payment_type] == "ITCL" %>>Card Online</option>
-              </select>
-          </div>
-      </div>
-      <div style="clear: both; height: 20px;"></div>
-      <input type="hidden" name="export" id="export" value="0" />
-      <div style="margin-left: 40%;">
-        <%= submit_tag 'Search',:name => "search",:class => "submit-button", :onclick => "j('#export').val(0)" %>
-      </div>
-      <div style="clear: both; height: 20px;"></div>
-    </div>
-  
-  <% unless @online_payments.empty? %>
-    <div class="box" style="padding-top: 20px;">
-      <h2 style="font-size: 14px;">Total Records: <%= @online_payments.total_entries %></h2>  
-      <table class="table table-sm table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
-        <thead><!-- class="thead-inverse" -->
-        <tr>
-            <th style="width: 3%;"><%= "#" %></th>
-            <th style="width: 10%;"><%= t("gateway_name") %></th>
-            <th style="width: 30%;"><%= t("user_id_name") %></th>
-            <% if MultiSchool.current_school.id == 352 %>
-            <th style="width: 10%;"><%= t("payment_type") %></th>
-            <th style="width: 10%;"><%= t("ref_id") %></th>
-            <th style="width: 10%;"><%= t("order_id") %></th>
-            <% end %>
-            <th style="width: 10%;"><%= t("amount") %></th>
-            <% if MultiSchool.current_school.id == 352 %>
-            <th style="width: 10%;"><%= t("service_charge") %></th>
-            <% end %>
-            <th style="width: 10%;"><%= t("gateway_status") %></th>
-            <% unless MultiSchool.current_school.id == 352 %>
-            <th style="width: 10%;"><%= t("online_transaction_id") %></th>
-            <% end %>
-            <th style="width: 10%;"><%= t("transaction_date") %></th>
-            <% if MultiSchool.current_school.id == 352 %>
-            <th style="width: 10%;"><%= "Verified" %></th>
-            <% end %>
-        </tr>
-        </thead>
-        <tbody>
-        <% @online_payments.each_with_index do |payment,index| %>
-          <tr>
-            <td style="vertical-align: middle;"><%= ((@online_payments.current_page - 1) * @online_payments.per_page) + index + 1 %></td>
-            <td style="text-align: center;">
-              <% gateway_name = "Online Payment"  %>  
-              <% gateway_name_data = "Online Payment"  %>  
-              <% if (payment.gateway_response.keys.include? :x_trans_id) %>  
-                <% gateway_name = "Authorize.net"  %>
-                <% gateway_name_data = "Authorize.net"  %>
-              <% elsif (payment.gateway_response.keys.include? :val) %>  
-                <% gateway_name = "SSL Commerz"  %>
-                <% gateway_name_data = "SSL Commerz"  %>
-              <% elsif (payment.gateway_response.keys.include? :order_id) %>  
-                <% gateway_name = '<img src="/images/gateway_images/trustbank.png" height="64px" />'  %>
-                <% gateway_name_data = 'trustbank'  %>
-              <% else %>
-                <% gateway_name = "Paypal"  %>
-                <% gateway_name_data = "Paypal"  %>
-              <% end %>  
-              <%= gateway_name %>  
-            </td>
-            <% payee_user = payment.payee.try(:user).try(:username) unless payment.payee.class.name == "Applicant" %>
-            <td style="vertical-align: middle; text-align: left; padding-left: 10px;"><%= "#{payment.payee_admission_no}" %><br /><%= "#{payment.payee_name}" %></td>
-            <% if MultiSchool.current_school.id == 352 %>
-            <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:payment_type]}" %></td>
-            <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:ref_id]}" %></td>
-            <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:order_id]}" %></td>
-            <% end %>
-            <% 
-              amount = payment.gateway_response[:amount]
-              amount ||= payment.gateway_response[:x_amount]
-            %>
-
-            <td style="vertical-align: middle; text-align: right; padding-right: 4px;"><%= precision_label(amount.to_f) %></td>
-            <% if MultiSchool.current_school.id == 352 %>
-            <% 
-              service_charge = payment.gateway_response[:service_charge]
-            %>
-            <td style="vertical-align: middle; text-align: right; padding-right: 4px;"><%= precision_label(service_charge) %></td>
-            <% end %>
-            <td style="vertical-align: middle; text-align: center;">
-              <% 
-                b_pos = 0
-                gateway_status = "Failed"
-                if gateway_name_data == "Paypal"
-                  gateway_status = "Completed" if payment.gateway_response[:status] == "Completed"
-                  b_pos = 1 if payment.gateway_response[:status] == "Completed"
-                elsif gateway_name_data == "trustbank"  
-                  gateway_status = "Completed" if payment.gateway_response[:status].to_i == 1
-                  b_pos = 1 if payment.gateway_response[:status].to_i == 1
-                elsif gateway_name_data == "SSL Commerz"  
-                  gateway_status = "Completed" if payment.gateway_response[:status] == "VALID"
-                  b_pos = 1 if payment.gateway_response[:status] == "VALID"
-                elsif gateway_name == "Authorize.net"
-                  gateway_status = "Completed" if payment.gateway_response[:x_response_reason_code] == "1"
-                  b_pos = 1 if payment.gateway_response[:x_response_reason_code] == "1"
-                end 
-              %>
-              <% if b_pos == 1 %>  
-                <i class="fa fa-check" style="color: #49BB4B; font-size: 14px;"></i><br />
-              <% else %>  
-                <i class="fa fa-close" style="color: #AB0D14; font-size: 14px;"></i><br />
-              <% end %>  
-              <%= gateway_status %>
-            </td>
-            <td style="vertical-align: middle; text-align: center;">
-              <%= I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y %I:%M %P") %>
-            </td>
-            <% if MultiSchool.current_school.id == 352 %>
-              <% if payment.gateway_response[:verified].to_i == 0 %>
-              <% unless payment.validation_response.nil? %>
-                <% if payment.validation_response[:verified].to_i == 0 %>
-                  <td style="text-align: center; vertical-align: middle;"><i id="payment<%= payment.id %>" class="fa fa-square-o payment_verify" style="color: #49BB4B; font-size: 24px; cursor: pointer;"></i><br /></td>
-                <% else %>
-                  <td style="text-align: center; vertical-align: middle;"><i class="fa fa-check-square-o" style="color: #49BB4B; font-size: 24px;"></i><br /></td>
-                <% end %>
-              <% else %>
-              <td style="text-align: center; vertical-align: middle;"><i id="payment<%= payment.id %>" class="fa fa-square-o payment_verify" style="color: #49BB4B; font-size: 24px; cursor: pointer;"></i><br /></td>
+  <% if @payment_gateway.length > 1 %>
+    <div style="width: 100%; text-align: center; border: 1px solid #ccc; margin-bottom: 10px; border-radius: 10px;">
+        <% if @payment_gateway.include?('citybank') %>
+          <% @payment_gateway.each do |key| %>
+              <% if key == "citybank" %>
+              <div class="gateway_image_panel" data-gateway="<%= key %>" style="position: relative;">
+                  <input type="radio" id="radio_<%= key %>" name="gateway_radio" <%= (@gateway == key) ? "checked" : "" %> class="gateway_radio" value="<%= key %>" style="position: absolute; top: 0; right: 4px;" autocomplete="off" />
+                  <%= image_tag "/images/gateway_images/#{key}-ico.png", :class => "gateway_image", :id => "#{key}", :style => "#{key == 'citybank' ? 'height:70px;' : 'height: 65px;'}" %>
+              </div>
               <% end %>
-              <% else %>
-              <td style="text-align: center; vertical-align: middle;"><i class="fa fa-check-square-o" style="color: #49BB4B; font-size: 24px;"></i><br /></td>
-              <% end %>
-            <% end %>
-          </tr>
+          <% end %>
         <% end %>
-        </tbody> 
-      </table>
-      <% unless params[:page].blank?  %>
-        <% pg = ( (params[:page].to_i - 1) * 30) + 1 %>
-      <% else %>
-        <% pg = 1 %>
-      <% end %>
-      <% showing = (pg + 30) - 1 %>
-      <% if showing.to_i > @online_payments.total_entries.to_i %>
-      <% showing = @online_payments.total_entries %>
-      <% end %>
-      <span style="font-family: verdana; font-size: 12px;">Showing <%= pg %> to <%= showing %> of <%= @online_payments.total_entries %> Records</span> 
-      <%= will_paginate @online_payments,:params=>{:start_date => params[:start_date],:end_date => params[:end_date], :ref_no => params[:ref_no], :order_id => params[:order_id], :payment_type => params[:payment_type], :payment_status => params[:payment_status]} %>
-    </div>
-  <% else %>
-    <div id="flash-box">
-      <p class="flash-msg"  style="float: left;margin-top: 50px;width: 100%;">No Payments present</p>
-    </div>
-  <% end %>
-    <div style="width: 100%; text-align: center; padding-top: 20px;">
-        <%= submit_tag 'Export Transaction',:name => "export_transaction",:class => "submit-button", :onclick => "j('#export').val(1)", :style => "float: none;", :target => "_blank" %>
-    </div>  
-  <% end %>
+        <% @payment_gateway.each do |key| %>
+            <% unless key == "citybank" %>
+            <div class="gateway_image_panel" data-gateway="<%= key %>" style="position: relative;">
+                <input type="radio" id="radio_<%= key %>" name="gateway_radio" <%= (@gateway == key) ? "checked" : "" %> class="gateway_radio" value="<%= key %>" style="position: absolute; top: 0; right: 4px;" autocomplete="off" />
+                <%= image_tag "/images/gateway_images/#{key}-ico.png", :class => "gateway_image", :id => "#{key}", :style => "#{key == 'citybank' ? 'height:70px;' : 'height: 65px;'}" %>
+            </div>
+            <% end %>
+        <% end %>
+      </div>    
+  <% end %>    
+  <div id="payment_gatway_settings">
+      <%= render :partial => "transaction"  %>
   </div>
 </div>
 <style>
@@ -265,6 +120,18 @@
                   evalScripts:true, 
                   parameters:'payment_id='+id
                 }
+          )
+      });
+      
+      j(document).on("click", ".gateway_image_panel", function(){
+          var gateway = j(this).data('gateway');
+          j("#radio_" + gateway).prop('checked', true);
+          new Ajax.Request('/online_payments/transaction_list',
+                  {
+                      asynchronous: true,
+                      evalScripts: true,
+                      parameters: 'gateway=' + gateway
+                  }
           )
       });
   });

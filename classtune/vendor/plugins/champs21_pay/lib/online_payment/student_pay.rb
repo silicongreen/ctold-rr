@@ -23,18 +23,6 @@ module OnlinePayment
 #      abort(DateTime.parse(s).to_datetime.strftime("%Y-%m-%d %H:%M:%S"))
 
       
-      activity_log = ActivityLog.new
-          activity_log.user_id = 60257
-          activity_log.controller = params[:controller]
-          activity_log.action = params[:action]
-          activity_log.post_requests = params
-          activity_log.ip = request.remote_ip
-          activity_log.user_agent = request.user_agent
-          activity_log.created_at = now
-          activity_log.updated_at = now
-          activity_log.user_type_paid = 4
-          activity_log.save
-      
       transaction_datetime = now
       if Champs21Plugin.can_access_plugin?("champs21_pay")
         if (PaymentConfiguration.config_value("enabled_fees").present? and PaymentConfiguration.config_value("enabled_fees").include? "Student Fee") 
@@ -62,50 +50,18 @@ module OnlinePayment
           else  
             fee_details_without_gateway and return
           end
-          activity_log = ActivityLog.new
-          activity_log.user_id = 60257
-          activity_log.controller = params[:controller]
-          activity_log.action = params[:action]
-          activity_log.post_requests = params
-          activity_log.ip = request.remote_ip
-          activity_log.user_agent = request.user_agent
-          activity_log.created_at = now
-          activity_log.updated_at = now
-          activity_log.user_type_paid = 4
-          activity_log.save
+          
           current_school_name = Configuration.find_by_config_key('InstitutionName').try(:config_value)
           
           #@fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }
           #@total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
           
           if request.post? and params[:order_id].present?
-            activity_log = ActivityLog.new
-          activity_log.user_id = 60257
-          activity_log.controller = params[:controller]
-          activity_log.action = params[:action]
-          activity_log.post_requests = params
-          activity_log.ip = request.remote_ip
-          activity_log.user_agent = request.user_agent
-          activity_log.created_at = now
-          activity_log.updated_at = now
-          activity_log.user_type_paid = 4
-          activity_log.save
             @fee_collection_name = ( params[:fee_collection_name].blank? ) ? "Student Fees" : params[:fee_collection_name]
             @user_gateway = @gateway_settings.keys[0].to_s
             unless params[:user_gateway].blank?
               @user_gateway = params[:user_gateway].to_s
             end
-            activity_log = ActivityLog.new
-          activity_log.user_id = 60257
-          activity_log.controller = params[:controller]
-          activity_log.action = params[:action]
-          activity_log.post_requests = params
-          activity_log.ip = request.remote_ip
-          activity_log.user_agent = request.user_agent
-          activity_log.created_at = now
-          activity_log.updated_at = now
-          activity_log.user_type_paid = 4
-          activity_log.save
             unless params[:multiple].nil?
               if params[:multiple].to_s == "true"
                 order_id = params[:order_id]
@@ -118,17 +74,7 @@ module OnlinePayment
                 
                 @student = Student.find(params[:id])
                 @total_amount = params[:amount_to_pay]
-                activity_log = ActivityLog.new
-          activity_log.user_id = 60257
-          activity_log.controller = params[:controller]
-          activity_log.action = params[:action]
-          activity_log.post_requests = params
-          activity_log.ip = request.remote_ip
-          activity_log.user_agent = request.user_agent
-          activity_log.created_at = now
-          activity_log.updated_at = now
-          activity_log.user_type_paid = 4
-          activity_log.save
+                
                 unless params[:mobile_view].blank?
                   render 'gateway_payments/paypal/mobile_fee_details_execute',:layout => false
                 else
@@ -140,17 +86,7 @@ module OnlinePayment
 
                 @student = Student.find(params[:id])
                 @total_amount = params[:amount_to_pay]
-activity_log = ActivityLog.new
-          activity_log.user_id = 60257
-          activity_log.controller = params[:controller]
-          activity_log.action = params[:action]
-          activity_log.post_requests = params
-          activity_log.ip = request.remote_ip
-          activity_log.user_agent = request.user_agent
-          activity_log.created_at = now
-          activity_log.updated_at = now
-          activity_log.user_type_paid = 4
-          activity_log.save
+
                 unless params[:mobile_view].blank?
                   render 'gateway_payments/paypal/mobile_fee_details_execute',:layout => false
                 else
@@ -163,17 +99,7 @@ activity_log = ActivityLog.new
 
               @student = Student.find(params[:id])
               @total_amount = params[:amount_to_pay]
-activity_log = ActivityLog.new
-          activity_log.user_id = 60257
-          activity_log.controller = params[:controller]
-          activity_log.action = params[:action]
-          activity_log.post_requests = params
-          activity_log.ip = request.remote_ip
-          activity_log.user_agent = request.user_agent
-          activity_log.created_at = now
-          activity_log.updated_at = now
-          activity_log.user_type_paid = 4
-          activity_log.save
+
               unless params[:mobile_view].blank?
                 render 'gateway_payments/paypal/mobile_fee_details_execute',:layout => false
               else
@@ -182,16 +108,16 @@ activity_log = ActivityLog.new
             end
           else
             activity_log = ActivityLog.new
-          activity_log.user_id = 60257
-          activity_log.controller = params[:controller]
-          activity_log.action = params[:action]
-          activity_log.post_requests = params
-          activity_log.ip = request.remote_ip
-          activity_log.user_agent = request.user_agent
-          activity_log.created_at = now
-          activity_log.updated_at = now
-          activity_log.user_type_paid = 4
-          activity_log.save
+            activity_log.user_id = params[:id]
+            activity_log.controller = params[:controller]
+            activity_log.action = params[:action]
+            activity_log.post_requests = params
+            activity_log.ip = request.remote_ip
+            activity_log.user_agent = request.user_agent
+            activity_log.created_at = now
+            activity_log.updated_at = now
+            activity_log.user_type_paid = 1
+            activity_log.save
             if params[:create_transaction].present? and params[:target_gateway] == "trustbank"
               result = Base64.decode64(params[:CheckoutXmlMsg])
               #result = '<Response date="2016-06-20 10:14:53.213">  <RefID>133783A000129D</RefID>  <OrderID>O100010</OrderID>  <Name> Customer1</Name>  <Email> mr.customer@gmail.com </Email>  <Amount>2090.00</Amount>  <ServiceCharge>0.00</ServiceCharge>  <Status>1</Status>  <StatusText>PAID</StatusText>  <Used>0</Used>  <Verified>0</Verified>  <PaymentType>ITCL</PaymentType>  <PAN>712300XXXX1277</PAN>  <TBMM_Account></TBMM_Account>  <MarchentID>SAGC</MarchentID>  <OrderDateTime>2016-06-20 10:14:24.700</OrderDateTime>  <PaymentDateTime>2016-06-20 10:21:34.303</PaymentDateTime>  <EMI_No>0</EMI_No>  <InterestAmount>0.00</InterestAmount>  <PayWithCharge>1</PayWithCharge>  <CardResponseCode>00</CardResponseCode>  <CardResponseDescription>APPROVED</CardResponseDescription>  <CardOrderStatus>APPROVED</CardOrderStatus> </Response> '
@@ -341,8 +267,29 @@ activity_log = ActivityLog.new
                 fee_requests = params[:id2]
               end
             end
-            
+            activity_log = ActivityLog.new
+            activity_log.user_id = params[:id]
+            activity_log.controller = params[:controller]
+            activity_log.action = params[:action]
+            activity_log.post_requests = params
+            activity_log.ip = request.remote_ip
+            activity_log.user_agent = request.user_agent
+            activity_log.created_at = now
+            activity_log.updated_at = now
+            activity_log.user_type_paid = 2
+            activity_log.save
             validate_payment_types(params)
+            activity_log = ActivityLog.new
+            activity_log.user_id = params[:id]
+            activity_log.controller = params[:controller]
+            activity_log.action = params[:action]
+            activity_log.post_requests = params
+            activity_log.ip = request.remote_ip
+            activity_log.user_agent = request.user_agent
+            activity_log.created_at = now
+            activity_log.updated_at = now
+            activity_log.user_type_paid = 3
+            activity_log.save
             unless multiple_param.nil?
               if multiple_param.to_s == "true"
                 collection_fees = fee_requests
@@ -353,7 +300,17 @@ activity_log = ActivityLog.new
             else
               arrange_pay(params[:id], fee_requests, params[:submission_date])
             end
-            
+            activity_log = ActivityLog.new
+            activity_log.user_id = params[:id]
+            activity_log.controller = params[:controller]
+            activity_log.action = params[:action]
+            activity_log.post_requests = params
+            activity_log.ip = request.remote_ip
+            activity_log.user_agent = request.user_agent
+            activity_log.created_at = now
+            activity_log.updated_at = now
+            activity_log.user_type_paid = 4
+            activity_log.save
 #            
             
             #@fine_amount=0 if (@student.finance_fee_by_date @date).is_paid

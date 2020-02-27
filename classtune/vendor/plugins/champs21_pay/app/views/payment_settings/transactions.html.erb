@@ -74,6 +74,7 @@
   </div>
   <% if @payment_gateway.length > 1 %>
     <div style="width: 100%; text-align: center; border: 1px solid #ccc; margin-bottom: 10px; border-radius: 10px;">
+        <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
         <% if @payment_gateway.include?('citybank') %>
           <% @payment_gateway.each do |key| %>
               <% if key == "citybank" %>
@@ -128,6 +129,8 @@
           j("#radio_" + gateway).prop('checked', true);
           new Ajax.Request('/online_payments/transaction_list',
                   {
+                      before: $('loader').show(),
+                      complete: $('loader').hide(),
                       asynchronous: true,
                       evalScripts: true,
                       parameters: 'gateway=' + gateway

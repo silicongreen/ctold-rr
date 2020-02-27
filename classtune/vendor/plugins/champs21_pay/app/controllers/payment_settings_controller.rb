@@ -236,7 +236,6 @@ class PaymentSettingsController < ApplicationController
       end
       render :update do |page|
         page.replace_html 'order_panel',:partial => "order_verifications"
-        page << "alert(j('#order_panel').html())"
       end
     else
       render :update do |page|

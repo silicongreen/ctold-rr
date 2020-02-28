@@ -91,17 +91,18 @@ class DashboardsController < ApplicationController
         @subject_id = 0
         @due_date = ''  
         if current_user.student? or current_user.parent?
-          @batch = student.batch      
-          @normal_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>"elective_group_id IS NULL AND is_deleted = false", :include => [:employees])
-          @student_electives =StudentsSubject.all(:conditions=>{:student_id=>@student.id,:batch_id=>@batch.id,:subjects=>{:is_deleted=>false}},:joins=>[:subject])
-          @elective_subjects = []
-          @student_electives.each do |e|
-            @elective_subjects.push Subject.find(e.subject_id)
+          unless student.blank?
+            @batch = student.batch       
+            @normal_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>"elective_group_id IS NULL AND is_deleted = false", :include => [:employees])
+            @student_electives =StudentsSubject.all(:conditions=>{:student_id=>@student.id,:batch_id=>@batch.id,:subjects=>{:is_deleted=>false}},:joins=>[:subject])
+            @elective_subjects = []
+            @student_electives.each do |e|
+              @elective_subjects.push Subject.find(e.subject_id)
+            end
+            @subjects = @normal_subjects+@elective_subjects
+
+            @news = News.find(:all,:conditions=>["is_published = 1 AND (batch_news.batch_id = ? or user_news.user_id = ? or news.is_common = 1)", student.batch_id,student.user_id], :limit=>4,:include=>[:batch_news,:user_news]) 
           end
-          @subjects = @normal_subjects+@elective_subjects
-
-          @news = News.find(:all,:conditions=>["is_published = 1 AND (batch_news.batch_id = ? or user_news.user_id = ? or news.is_common = 1)", student.batch_id,student.user_id], :limit=>4,:include=>[:batch_news,:user_news]) 
-
 
         end
 

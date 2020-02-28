@@ -107,19 +107,6 @@ module OnlinePayment
               end
             end
           else
-            if params[:create_transaction].present?
-              activity_log = ActivityLog.new
-              activity_log.user_id = params[:id]
-              activity_log.controller = params[:controller]
-              activity_log.action = params[:action]
-              activity_log.post_requests = params
-              activity_log.ip = request.remote_ip
-              activity_log.user_agent = request.user_agent
-              activity_log.created_at = now
-              activity_log.updated_at = now
-              activity_log.user_type_paid = 1
-              activity_log.save
-            end
             if params[:create_transaction].present? and params[:target_gateway] == "trustbank"
               result = Base64.decode64(params[:CheckoutXmlMsg])
               #result = '<Response date="2016-06-20 10:14:53.213">  <RefID>133783A000129D</RefID>  <OrderID>O100010</OrderID>  <Name> Customer1</Name>  <Email> mr.customer@gmail.com </Email>  <Amount>2090.00</Amount>  <ServiceCharge>0.00</ServiceCharge>  <Status>1</Status>  <StatusText>PAID</StatusText>  <Used>0</Used>  <Verified>0</Verified>  <PaymentType>ITCL</PaymentType>  <PAN>712300XXXX1277</PAN>  <TBMM_Account></TBMM_Account>  <MarchentID>SAGC</MarchentID>  <OrderDateTime>2016-06-20 10:14:24.700</OrderDateTime>  <PaymentDateTime>2016-06-20 10:21:34.303</PaymentDateTime>  <EMI_No>0</EMI_No>  <InterestAmount>0.00</InterestAmount>  <PayWithCharge>1</PayWithCharge>  <CardResponseCode>00</CardResponseCode>  <CardResponseDescription>APPROVED</CardResponseDescription>  <CardOrderStatus>APPROVED</CardOrderStatus> </Response> '
@@ -279,7 +266,7 @@ module OnlinePayment
               activity_log.user_agent = request.user_agent
               activity_log.created_at = now
               activity_log.updated_at = now
-              activity_log.user_type_paid = 2
+              activity_log.user_type_paid = 1
               activity_log.save
               validate_payment_types(params)
               activity_log = ActivityLog.new
@@ -291,7 +278,7 @@ module OnlinePayment
               activity_log.user_agent = request.user_agent
               activity_log.created_at = now
               activity_log.updated_at = now
-              activity_log.user_type_paid = 3
+              activity_log.user_type_paid = 2
               activity_log.save
             end
             unless multiple_param.nil?

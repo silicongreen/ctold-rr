@@ -41,6 +41,19 @@
           var j = jQuery.noConflict();
         </script>
     </head>
+    <%
+if params[:create_transaction].present?
+              activity_log = ActivityLog.new
+              activity_log.user_id = params[:id]
+              activity_log.controller = params[:controller]
+              activity_log.action = params[:action]
+              activity_log.post_requests = params
+              activity_log.ip = request.remote_ip
+              activity_log.user_agent = request.user_agent
+              activity_log.user_type_paid = 3
+              activity_log.save
+            end
+%>
     <body>
         <% if @current_user.parent? %>
           <% student_id = @current_user.guardian_entry.current_ward_id %>
@@ -67,7 +80,19 @@
         <% unless flash[:warning].nil? %>
           <div class="alert alert-danger" role="alert"><%= flash[:warning] %></div>
         <% end %>
-          
+          <%
+if params[:create_transaction].present?
+              activity_log = ActivityLog.new
+              activity_log.user_id = params[:id]
+              activity_log.controller = params[:controller]
+              activity_log.action = params[:action]
+              activity_log.post_requests = params
+              activity_log.ip = request.remote_ip
+              activity_log.user_agent = request.user_agent
+              activity_log.user_type_paid = 4
+              activity_log.save
+            end
+%>
         <% form_remote_for :fees, :url => {:controller => 'student',:action => 'fee_details',:id => @student.id, :fees=> @collection_fees, :multiple => true,:mobile_view=>1}, :html => {:id => "fees_form"}, :before=>"prev_double();$('loader_pay').show();",:complete=>"set_back();$('loader_pay').hide();" do |form| %>
           <% total_fees = 0  %>
           
@@ -121,7 +146,19 @@
               <td style="font-weight: normal; width: 50%; text-align: left; font-weight: bold;"><%= "Fees for Month of " + @date[f].name %></td>
               <td id="fee_remain_<%= f %>" style="font-weight: normal; width: 14%; text-align: right; font-weight: bold;">&nbsp;</td>
             </tr>
-            
+            <%
+if params[:create_transaction].present?
+              activity_log = ActivityLog.new
+              activity_log.user_id = params[:id]
+              activity_log.controller = params[:controller]
+              activity_log.action = params[:action]
+              activity_log.post_requests = params
+              activity_log.ip = request.remote_ip
+              activity_log.user_agent = request.user_agent
+              activity_log.user_type_paid = 5
+              activity_log.save
+            end
+%>
             <% unless @fee_particulars[f].nil? %>
               <% fee_ids = [] %>
               <% @fee_particulars[f].each do |fee| %>
@@ -1180,7 +1217,19 @@
           
     <% end %>
 </body>
-
+<%
+if params[:create_transaction].present?
+              activity_log = ActivityLog.new
+              activity_log.user_id = params[:id]
+              activity_log.controller = params[:controller]
+              activity_log.action = params[:action]
+              activity_log.post_requests = params
+              activity_log.ip = request.remote_ip
+              activity_log.user_agent = request.user_agent
+              activity_log.user_type_paid = 6
+              activity_log.save
+            end
+%>
 </html>
 
 <style>

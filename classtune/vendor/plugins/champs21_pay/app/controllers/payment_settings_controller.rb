@@ -236,10 +236,12 @@ class PaymentSettingsController < ApplicationController
       end
       render :update do |page|
         page.replace_html 'order_panel',:partial => "order_verifications"
+        page << "j('#loader').hide();"
       end
     else
       render :update do |page|
         page.replace_html 'order_panel',:text => '<p class="flash-msg"> invalid Request. </p>'
+        page << "j('#loader').hide();"
       end
     end
   end
@@ -288,7 +290,17 @@ class PaymentSettingsController < ApplicationController
                 end
               end
             else
-              flash[:notice] = "Order ID can't be blank"
+              query_type = "Order ID"
+              if @gateway == "bkash"
+                unless params[:query_type].blank?
+                  if params[:query_type] == "payment_id"
+                    query_type = "Payment ID"
+                  elsif params[:query_type] == "trx_id"  
+                    query_type = "Transaction ID"
+                  end
+                end
+              end
+              flash[:notice] = "#{query_type} can't be blank"
             end
           else
             @order_id = ""

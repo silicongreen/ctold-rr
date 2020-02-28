@@ -257,29 +257,7 @@ module OnlinePayment
               end
             end
             if params[:create_transaction].present?
-              activity_log = ActivityLog.new
-              activity_log.user_id = params[:id]
-              activity_log.controller = params[:controller]
-              activity_log.action = params[:action]
-              activity_log.post_requests = params
-              activity_log.ip = request.remote_ip
-              activity_log.user_agent = request.user_agent
-              activity_log.created_at = now
-              activity_log.updated_at = now
-              activity_log.user_type_paid = 1
-              activity_log.save
               validate_payment_types(params)
-              activity_log = ActivityLog.new
-              activity_log.user_id = params[:id]
-              activity_log.controller = params[:controller]
-              activity_log.action = params[:action]
-              activity_log.post_requests = params
-              activity_log.ip = request.remote_ip
-              activity_log.user_agent = request.user_agent
-              activity_log.created_at = now
-              activity_log.updated_at = now
-              activity_log.user_type_paid = 2
-              activity_log.save
             end
             unless multiple_param.nil?
               if multiple_param.to_s == "true"
@@ -291,20 +269,6 @@ module OnlinePayment
             else
               arrange_pay(params[:id], fee_requests, params[:submission_date])
             end
-            if params[:create_transaction].present?
-              activity_log = ActivityLog.new
-              activity_log.user_id = params[:id]
-              activity_log.controller = params[:controller]
-              activity_log.action = params[:action]
-              activity_log.post_requests = params
-              activity_log.ip = request.remote_ip
-              activity_log.user_agent = request.user_agent
-              activity_log.created_at = now
-              activity_log.updated_at = now
-              activity_log.user_type_paid = 41
-              activity_log.save
-            end
-#            
             
             #@fine_amount=0 if (@student.finance_fee_by_date @date).is_paid
             unless params[:mobile_view].blank?

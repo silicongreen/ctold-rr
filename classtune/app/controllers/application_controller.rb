@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
   helper_method :can_access_plugin?
   helper_method :can_access_feature?
 
-  #after_filter :activity_check
+  after_filter :activity_check
   
   helper_method :currency
   protect_from_forgery # :secret => '434571160a81b5595319c859d32060c1'
@@ -475,7 +475,7 @@ class ApplicationController < ActionController::Base
           activity_log.user_id = current_user.id
           activity_log.controller = params[:controller]
           activity_log.action = params[:action]
-          activity_log.post_requests = params
+          activity_log.post_requests = flash
           activity_log.ip = request.remote_ip
           activity_log.user_agent = request.user_agent
           activity_log.created_at = now

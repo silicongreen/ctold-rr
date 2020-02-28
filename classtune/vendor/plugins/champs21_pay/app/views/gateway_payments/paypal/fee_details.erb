@@ -49,19 +49,6 @@
       margin-bottom: 10px !important;
   }
 </style>
-<%
-if params[:create_transaction].present?
-              activity_log = ActivityLog.new
-              activity_log.user_id = params[:id]
-              activity_log.controller = params[:controller]
-              activity_log.action = params[:action]
-              activity_log.post_requests = params
-              activity_log.ip = request.remote_ip
-              activity_log.user_agent = request.user_agent
-              activity_log.user_type_paid = 3
-              activity_log.save
-            end
-%>
 <% unless params[:show_order_id].blank? %>
   <% if params[:show_order_id].to_i == 1 %>
     <div style="padding: 20px; border: 1px solid #ccc;">
@@ -94,19 +81,6 @@ if params[:create_transaction].present?
     </ul>
   </div>
 </div>
-<%
-if params[:create_transaction].present?
-              activity_log = ActivityLog.new
-              activity_log.user_id = params[:id]
-              activity_log.controller = params[:controller]
-              activity_log.action = params[:action]
-              activity_log.post_requests = params
-              activity_log.ip = request.remote_ip
-              activity_log.user_agent = request.user_agent
-              activity_log.user_type_paid = 4
-              activity_log.save
-            end
-%>
 <% combine_fees_enabled = false %>
 <% @include_combined_fees = PaymentConfiguration.find_by_config_key("include_combined_fees").try(:config_value)    %>
 <% unless @include_combined_fees.blank? %>
@@ -131,19 +105,7 @@ if params[:create_transaction].present?
     <% end %>
   <% end %>
 <% end %>
-<%
-if params[:create_transaction].present?
-              activity_log = ActivityLog.new
-              activity_log.user_id = params[:id]
-              activity_log.controller = params[:controller]
-              activity_log.action = params[:action]
-              activity_log.post_requests = params
-              activity_log.ip = request.remote_ip
-              activity_log.user_agent = request.user_agent
-              activity_log.user_type_paid = 5
-              activity_log.save
-            end
-%>
+
 <div id="page-yield">
 <% unless flash[:notice].nil? %>
   <div id="errorExplanation" class="errorExplanation"><p><%= t('there_were_pblm') %></p><ul><li><%= flash[:notice] %></li></ul></div>
@@ -152,19 +114,7 @@ if params[:create_transaction].present?
 <% unless flash[:success].nil? %>
   <div id="success" class="success" style="margin-bottom: 20px;"><%= flash[:success] %></div>
 <% end %>
-<%
-if params[:create_transaction].present?
-              activity_log = ActivityLog.new
-              activity_log.user_id = params[:id]
-              activity_log.controller = params[:controller]
-              activity_log.action = params[:action]
-              activity_log.post_requests = params
-              activity_log.ip = request.remote_ip
-              activity_log.user_agent = request.user_agent
-              activity_log.user_type_paid = 6
-              activity_log.save
-            end
-%>
+
 <% unless flash[:warning].nil? %><p class="flash-msg"><%= flash[:warning] %></p><% end %>
 <% flash[:notice] = nil %>
  <div id="student_profile_heading">
@@ -191,19 +141,7 @@ if params[:create_transaction].present?
             <% end %>
 
         </div>
-<%
-if params[:create_transaction].present?
-              activity_log = ActivityLog.new
-              activity_log.user_id = params[:id]
-              activity_log.controller = params[:controller]
-              activity_log.action = params[:action]
-              activity_log.post_requests = params
-              activity_log.ip = request.remote_ip
-              activity_log.user_agent = request.user_agent
-              activity_log.user_type_paid = 7
-              activity_log.save
-            end
-%>
+
         <div id ="student_main_info">
             <div id="student_name" class="f2"><%= @student.full_name %></div>
             <div id="student_class"><%= @student.batch.course.course_name %></div>
@@ -239,19 +177,6 @@ if params[:create_transaction].present?
     <hr style="border: 1px solid #ccc;" />
     <b style="display: block;">Fee For: <%= @date.name %></b>
 <br />
-<%
-if params[:create_transaction].present?
-              activity_log = ActivityLog.new
-              activity_log.user_id = params[:id]
-              activity_log.controller = params[:controller]
-              activity_log.action = params[:action]
-              activity_log.post_requests = params
-              activity_log.ip = request.remote_ip
-              activity_log.user_agent = request.user_agent
-              activity_log.user_type_paid = 8
-              activity_log.save
-            end
-%>
 <% total_fees =0 %>
 <% total_payable =0 %>
 <%
@@ -259,19 +184,6 @@ if params[:create_transaction].present?
   unless @fee_collection_advances.nil?
     advance_fee_particular = @fee_collection_advances.map(&:particular_id)
   end
-%>
-<%
-if params[:create_transaction].present?
-              activity_log = ActivityLog.new
-              activity_log.user_id = params[:id]
-              activity_log.controller = params[:controller]
-              activity_log.action = params[:action]
-              activity_log.post_requests = params
-              activity_log.ip = request.remote_ip
-              activity_log.user_agent = request.user_agent
-              activity_log.user_type_paid = 9
-              activity_log.save
-            end
 %>
 <% fee_collection_name = @date.name %>
   <% if @student.has_dues %>
@@ -1538,19 +1450,6 @@ if params[:create_transaction].present?
     </div>
   </div>
 <% end %>
-<%
-if params[:create_transaction].present?
-              activity_log = ActivityLog.new
-              activity_log.user_id = params[:id]
-              activity_log.controller = params[:controller]
-              activity_log.action = params[:action]
-              activity_log.post_requests = params
-              activity_log.ip = request.remote_ip
-              activity_log.user_agent = request.user_agent
-              activity_log.user_type_paid = 10
-              activity_log.save
-            end
-%>
 <style>
     button[disabled]{
         background: #ccc !important;

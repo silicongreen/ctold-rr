@@ -40,19 +40,7 @@
     top: 20% !important;
   }
 </style>
-<%
-if params[:create_transaction].present?
-              activity_log = ActivityLog.new
-              activity_log.user_id = params[:id]
-              activity_log.controller = params[:controller]
-              activity_log.action = params[:action]
-              activity_log.post_requests = params
-              activity_log.ip = request.remote_ip
-              activity_log.user_agent = request.user_agent
-              activity_log.user_type_paid = 3
-              activity_log.save
-            end
-%>
+
 <% unless params[:show_order_id].blank? %>
   <% if params[:show_order_id].to_i == 1 %>
     <div style="padding: 20px; border: 1px solid #ccc;">
@@ -73,19 +61,7 @@ if params[:create_transaction].present?
     </ul>
   </div>
 </div>
-<%
-if params[:create_transaction].present?
-              activity_log = ActivityLog.new
-              activity_log.user_id = params[:id]
-              activity_log.controller = params[:controller]
-              activity_log.action = params[:action]
-              activity_log.post_requests = params
-              activity_log.ip = request.remote_ip
-              activity_log.user_agent = request.user_agent
-              activity_log.user_type_paid = 4
-              activity_log.save
-            end
-%>
+
 <div id="page-yield">
 <% unless flash[:notice].nil? %>
   <div id="errorExplanation" class="errorExplanation"><p><%= t('there_were_pblm') %></p><ul><li><%= flash[:notice] %></li></ul></div>
@@ -1661,19 +1637,7 @@ if params[:create_transaction].present?
 <% end %>
 
 </div>
-<%
-if params[:create_transaction].present?
-              activity_log = ActivityLog.new
-              activity_log.user_id = params[:id]
-              activity_log.controller = params[:controller]
-              activity_log.action = params[:action]
-              activity_log.post_requests = params
-              activity_log.ip = request.remote_ip
-              activity_log.user_agent = request.user_agent
-              activity_log.user_type_paid = 5
-              activity_log.save
-            end
-%>
+
 <style>
 .name{
     color: #999999;

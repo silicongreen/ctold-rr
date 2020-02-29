@@ -2894,7 +2894,11 @@ module FinanceLoader
     xml_str = Nokogiri::XML(result)
     xml_response = Hash.from_xml(xml_str.to_s)
     xml_response_data = xml_response[:Response]
-    validation_response = xml_response_data.each { |k,v| k.underscore.to_sym = v }
+    validation_response = {}
+    xml_response_data.each do |k,v|
+      validation_response[k.underscore.to_sym] = v
+    end
+    #xml_response_data.each { |k,v| k.underscore.to_sym = v }
     verification_verified = validation_response[:Verified]
     verification_trans_date = validation_response[:PaymentDateTime]
 

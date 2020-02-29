@@ -313,10 +313,10 @@ class StudentController < ApplicationController
       end
       
       if params[:gateway] == "citybank"
-        rootCA = "#{Rails.root}/certs/chs.classtune.com.crt"
+        rootCA = "#{Rails.root}/certs/createorder.crt"
         rootCAData = File.read(rootCA)
         
-        keyCA = "#{Rails.root}/certs/chs.classtune.com.key"
+        keyCA = "#{Rails.root}/certs/createorder.key"
         keyCAData = File.read(keyCA)
         is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
         extra_string = (is_test_citybank) ? '_sandbox' : ''

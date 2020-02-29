@@ -3780,6 +3780,7 @@ module FinanceLoader
         verified = xml_response_data[:Verified]
         orderId = xml_response_data[:OrderID]
         order_datetime = xml_response_data[:OrderDateTime]
+        trans_date = xml_response_data[:PaymentDateTime]
         
         #order_datetime = gateway_response[:OrderDateTime]
 

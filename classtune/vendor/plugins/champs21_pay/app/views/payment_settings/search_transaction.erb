@@ -1,0 +1,115 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+    // Put jQuery 1.10.2 into noConflict mode.
+    var $jq1 = jQuery.noConflict(true);
+</script>
+<style>
+  * {
+      -webkit-box-sizing: content-box !important;
+      -moz-box-sizing: content-box-box !important;
+      box-sizing: content-box !important;
+  }
+</style>
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('online_payment') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= t('search_transaction') %></div>
+</div>
+<div id="page-yield">
+  <h1 style="font-size: 24px;">Search bkash Transaction</h1>
+  <hr />
+  <form name="search_form" action="" style="margin-left: 30%;;">
+    <%= hidden_field_tag("option", params['option'], :value => "active") %>
+    <div class="form-group col-sm-6">
+      <label for="user_name"><%= t('search_text') %> Transaction ( trxID ):
+        <%= image_tag("loader.gif",
+                      :align => "absmiddle",
+                      :border => 0,
+                      :id => "loader",
+                      :style =>"display: none;" ) %>
+      </label>
+      <%= text_field_tag("query", params['query'], :autocomplete => 'off',:class=>"form-control") %>
+      <div class="form-group col-sm-6" style=" text-align: center; padding-top: 15px; width: 96%;">
+          <input type="button" name="search-transaction" id="search-transaction" class="submit-button" style="margin: 0; float: none;" value="Search Transaction" />
+      </div>
+    </div>
+    <div class="extender"></div>
+  </form>
+
+  <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
+
+  <div id="view_all">
+
+  </div>
+
+  <script type="text/javascript">
+      
+      j(document).ready(function(){
+          j(document).on('click','#search-transaction',function(){
+              new Ajax.Request('/online_payments/search_transaction_bkash',
+                      {
+                          before: $('loader').show(),
+                          asynchronous: true,
+                          evalScripts: true,
+                          parameters: 'query=' + j("#query").val()
+                      }
+              )
+          });
+      });
+
+  </script>
+
+  <div id="information"></div>
+
+</div>
+<style>
+  
+
+  #view_all {margin-left:50px;}
+  #view_all a {font-weight:bold;color:#000;}
+
+  #information{height:auto;width:100%;margin:0px auto;padding-left:0px; margin-top:30px;}
+  #no_result{font-weight:bold;color:#b00}
+  #ajax_result {padding:10px 0 10px 0;width:204px;float:left;}
+  #ajax_result a{color:#000;font-weight:bold; text-decoration:none;}
+  #ajax_result a:hover{color:#9E0F15; text-decoration:underline;}
+
+  /* ALL STUDENT CSS */
+
+  #all_students{margin:0px; padding:0px; height:300px; width:725px; margin:20px 0 0 40px;}
+  #student_name{padding:10px 10px 10px 0;text-decoration:none;width:230px;float:left;background:#fff url(../../images/student_details/ajax_result_underline.jpg) bottom left no-repeat}
+  #student_name a {text-decoration:none;color:#000;font-weight:bold}
+  .students-on-one-line {
+      background : #fff url(../../images/student_details/ajax_result_underline.jpg) bottom left repeat-x;
+      overflow: auto;
+      width:816px;
+      margin-bottom: 20px;
+  }
+</style>

@@ -2895,6 +2895,7 @@ module FinanceLoader
     xml_response = Hash.from_xml(xml_str.to_s)
     validation_response = xml_response[:Response]
     verification_verified = validation_response[:Verified]
+    verification_trans_date = validation_response[:PaymentDateTime]
 
     verify_order = false
     if verified.to_i == 1 or verification_verified.to_i == 1
@@ -3768,8 +3769,10 @@ module FinanceLoader
         gateway_response = xml_response[:Response]
         verified = gateway_response[:Verified]
         orderId = gateway_response[:OrderID]
-        
+        order_datetime = gateway_response[:OrderDateTime]
+
         @finance_order = FinanceOrder.find_by_order_id(orderId.strip)
+        #abort(@finance_order.inspect)
         request_params = @finance_order.request_params
 
         dt = trans_date.split(".")

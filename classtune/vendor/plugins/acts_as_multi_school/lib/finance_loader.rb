@@ -2899,8 +2899,8 @@ module FinanceLoader
       validation_response[k.underscore.to_sym] = v
     end
     #xml_response_data.each { |k,v| k.underscore.to_sym = v }
-    verification_verified = validation_response[:Verified]
-    verification_trans_date = validation_response[:PaymentDateTime]
+    verification_verified = xml_response_data[:Verified]
+    verification_trans_date = xml_response_data[:PaymentDateTime]
 
     verify_order = false
     if verified.to_i == 1 or verification_verified.to_i == 1

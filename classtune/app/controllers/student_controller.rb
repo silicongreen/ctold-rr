@@ -334,7 +334,12 @@ class StudentController < ApplicationController
         request = Net::HTTP::Post.new(payment_url.path,  {"Content-Type" => "application/json", "Accept" => "application/json"})
         #request.set_form_data({"userName"=>params[:userName],"password"=>params[:password]}.to_json)
         request.body = {"userName"=>params[:userName],"password"=>params[:password]}.to_json
-        response = http.request(request)
+        begin
+          response = http.request(request)
+          rescue Errno::ECONNREFUSED
+            flash[:notice] = "Connection Refused by server....."
+            redirect_to params[:fee_url]
+        end
         response_ssl = JSON::parse(response.body)
         if response_ssl["responseCode"].to_i == 107
           flash[:notice] = "Authentication Failed, Please contact with System Admin"

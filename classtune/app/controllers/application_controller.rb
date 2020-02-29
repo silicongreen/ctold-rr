@@ -66,7 +66,6 @@ class ApplicationController < ActionController::Base
   include CustomInPlaceEditing
   
 
-
   def get_student_all_type(id)
     std = Student.find_by_id(id)
     if std.blank?

@@ -24,4 +24,12 @@ class FinanceOrder < ActiveRecord::Base
   
   serialize :request_params
   
+  after_initialize do |finance_order|
+    unless MultiSchool.current_school.nil?
+      if MultiSchool.current_school.id != 352
+        self.table_name = MultiSchool.current_school.code + "_finance_orders"
+      end
+    end
+  end
+  
 end

@@ -6,9 +6,14 @@ class Payment < ActiveRecord::Base
   serialize :gateway_response
   serialize :validation_response
   
-  #after_create :set_ledger
-  #after_update :update_ledger
-
+  after_initialize do |payment|
+    unless MultiSchool.current_school.nil?
+      if MultiSchool.current_school.id != 352
+        self.table_name = MultiSchool.current_school.code + "_payments"
+      end
+    end
+  end
+  
 #  def before_create
 #    if payment_type == "FinanceFee"
 ##      if Payment.find_by_payee_id_and_payment_id_and_payment_type(payee_id,payment_id,'FinanceFee').present?
@@ -68,7 +73,7 @@ class Payment < ActiveRecord::Base
   end
   
   def set_ledger
-    abort('here1')
+    
     unless finance_transaction_id.nil? 
       unless finance_transaction_id.blank?
         finance_transaction = FinanceTransaction.find(:first, :conditions => "id = #{finance_transaction_id}")

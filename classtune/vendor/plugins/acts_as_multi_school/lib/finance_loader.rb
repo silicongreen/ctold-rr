@@ -3781,7 +3781,7 @@ module FinanceLoader
         orderId = xml_response_data[:OrderID]
         order_datetime = xml_response_data[:OrderDateTime]
         
-        order_datetime = gateway_response[:OrderDateTime]
+        #order_datetime = gateway_response[:OrderDateTime]
 
         @finance_order = FinanceOrder.find_by_order_id(orderId.strip)
         #abort(@finance_order.inspect)

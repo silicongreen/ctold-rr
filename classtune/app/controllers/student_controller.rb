@@ -238,6 +238,7 @@ class StudentController < ApplicationController
                   feenew = FinanceFee.find(f)
                   payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{feenew.id}")
                   unless payment.nil?
+                    payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
                     payment_saved = true
                   else  
                     payment = Payment.new(:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
@@ -250,6 +251,7 @@ class StudentController < ApplicationController
                 financefee = FinanceFee.find(@finance_order.finance_fee_id)
                 payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id}")
                 unless payment.nil?
+                  payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
                   payment_saved = true
                 else  
                   payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
@@ -262,6 +264,7 @@ class StudentController < ApplicationController
               financefee = FinanceFee.find(@finance_order.finance_fee_id)
               payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id}")
               unless payment.nil?
+                payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
                 payment_saved = true
               else  
                 payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
@@ -317,7 +320,7 @@ class StudentController < ApplicationController
         keyCAData = File.read(keyCA)
         is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
         extra_string = (is_test_citybank) ? '_sandbox' : ''
-        payment_url = URI(payment_urls["citybank_token_url" + extra_string])
+        payment_url = URI(payment_urls["citybank_app_url" + extra_string] + "token")
         payment_url ||= URI("https://sandbox.thecitybank.com:7788/transaction/token")
         
         http = Net::HTTP.new(payment_url.host, payment_url.port)
@@ -351,7 +354,7 @@ class StudentController < ApplicationController
             
             is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
             extra_string = (is_test_citybank) ? '_sandbox' : ''
-            order_payment_url = URI(payment_urls["citybank_create_order_url" + extra_string])
+            order_payment_url = URI(payment_urls["citybank_app_url" + extra_string] + "createorder")
             order_payment_url ||= URI("https://sandbox.thecitybank.com:7788/transaction/createorder")
 
             http_order = Net::HTTP.new(order_payment_url.host, order_payment_url.port)

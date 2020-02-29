@@ -88,11 +88,14 @@
     <% unless params[:mobile_view].blank? %>
       <% extra_string = "-mobile_view" %>
     <% end %>
-    <% options['approveUrl'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=2" + extra_string %>
-    <% options['declineUrl'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_fail_transaction=4" + extra_string %>
-    <% options['cancelUrl'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_cancel_transaction=5" + extra_string %>
+    <% success_url = "http://#{request.host_with_port}#{request.fullpath}" %>
+    <%#= debug params.inspect %>
+    <% success_url += success_url.index("?").nil? ? '?t=1' : "" %>
+    <% options['approveUrl'] = ("#{success_url}&order_id_in_trans=#{params[:order_id]}&create_transaction=1&target_gateway=#{gateway}" + extra_string).gsub("&","--") %>
+    <% options['declineUrl'] = ("#{success_url}&create_fail_transaction=4&target_gateway=#{gateway}" + extra_string).gsub("&","--") %>
+    <% options['cancelUrl'] = ("#{success_url}&create_cancel_transaction=5&target_gateway=#{gateway}" + extra_string).gsub("&","--") %>
     <% options['transactionId'] = @finance_order.order_id %>
-    <% options['fee_url'] = "http://#{request.host_with_port}/#{request.fullpath}" %>
+    <% options['fee_url'] = ("#{success_url}").gsub("&","--") %>
     <% options['gateway'] = gateway %>
     <%= pay_button(options, gateway) %>  
   <% elsif gateway == "bkash" %>  

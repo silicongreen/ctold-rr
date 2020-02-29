@@ -4,7 +4,53 @@ class PaymentSettingsController < ApplicationController
   filter_access_to :all
 
   def index
-    
+    @payment_gateways = PaymentConfiguration.config_value("champs21_gateway")
+    @payment_gateway = @payment_gateways.split(",") unless @payment_gateways.blank?
+    @payment_gateway ||= Array.new
+  end
+
+  def search_transaction
+    if Champs21Plugin.can_access_plugin?("champs21_pay")
+      if (PaymentConfiguration.config_value("enabled_fees").present? and PaymentConfiguration.config_value("enabled_fees").include? "Student Fee") 
+        @payment_gateways = PaymentConfiguration.config_value("champs21_gateway")
+        @payment_gateway = @payment_gateways.split(",") unless @payment_gateways.blank?
+        @payment_gateway ||= Array.new
+        unless @payment_gateways.include?("bkash")
+          flash[:notice] = "Only available if bkash payment is enabled"
+          redirect_to :action => "index"
+        end
+      else
+        flash[:notice] = "Online Payment is not active"
+        redirect_to :action => "index"
+      end
+    else
+      flash[:notice] = "Online Payment is not active"
+      redirect_to :action => "index"
+    end
+  end
+  
+  def search_transaction_bkash
+    unless params[:query].blank?
+      trx_id = params[:query]
+      tokens = get_bkash_token()
+      unless tokens.blank?
+        @payment_infos = search_bkash_payment(tokens[:id_token], trx_id)
+        render :update do |page|
+          page.replace_html 'information', :partial => "order_info"
+          page << "j('#loader').hide();"
+        end
+      else
+        render :update do |page|
+          page.replace_html 'information', :text => ""
+          page << "j('#loader').hide();"
+        end
+      end
+    else
+      render :update do |page|
+        page.replace_html 'information', :text => ""
+        page << "j('#loader').hide();"
+      end
+    end
   end
 
   def verify_payment
@@ -54,17 +100,28 @@ class PaymentSettingsController < ApplicationController
       unless params[:transactionStatus].nil? or params[:transactionStatus].empty? or params[:transactionStatus].blank?
         extra_query += ' and gateway_response like \'%:transactionStatus: "' + params[:transactionStatus].to_s + '%\''
       end
+      unless params[:citybank_order_id].nil? or params[:citybank_order_id].empty? or params[:citybank_order_id].blank?
+        extra_query += ' and gateway_response like \'%OrderID: "' + params[:citybank_order_id].to_s + '%\''
+      end
       unless params[:trxID].nil? or params[:trxID].empty? or params[:trxID].blank?
         extra_query += ' and gateway_response like \'%:trxID: "' + params[:trxID].to_s + '%\''
       end
       unless params[:paymentID].nil? or params[:paymentID].empty? or params[:paymentID].blank?
         extra_query += ' and gateway_response like \'%:paymentID: "' + params[:paymentID].to_s + '%\''
       end
+      unless params[:session_id].nil? or params[:session_id].empty? or params[:session_id].blank?
+        extra_query += ' and gateway_response like \'%SessionID: ' + params[:session_id].to_s + '%\''
+      end
+      unless params[:order_status].nil? or params[:order_status].empty? or params[:order_status].blank?
+        extra_query += ' and gateway_response like \'%OrderStatus: ' + params[:order_status].to_s + '%\''
+      end
       unless params[:order_id].nil? or params[:order_id].empty? or params[:order_id].blank?
-        if @gateway != "bkash"
+        if @gateway == "trustbank"
           extra_query += ' and gateway_response like \'%' + params[:order_id].to_s + '%\''
+        elsif @gateway == "citybank"
+          extra_query += ' and order_id like \'%' + params[:order_id].to_s + '%\''
         elsif @gateway == "bkash"
-          extra_query += ' and gateway_response like \'%:merchantInvoiceNumb: "' + params[:order_id].to_s + '%\''
+          extra_query += ' and gateway_response like \'%:merchantInvoiceNumber: "' + params[:order_id].to_s + '%\''
         end
       end
       unless params[:ref_no].nil? or params[:ref_no].empty? or params[:ref_no].blank?
@@ -80,10 +137,12 @@ class PaymentSettingsController < ApplicationController
       @online_payments = Payment.paginate(:conditions=>"gateway_txt = '#{@gateway}' and CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "order_id")
       render :update do |page|
         page.replace_html 'payment_gatway_settings',:partial => "transaction"
+        page << "j('#loader').hide();"
       end
     else
       render :update do |page|
         page.replace_html 'payment_gatway_settings',:text => '<p class="flash-msg"> invalid Request. </p>'
+        page << "j('#loader').hide();"
       end
     end
   end
@@ -121,17 +180,28 @@ class PaymentSettingsController < ApplicationController
             unless params[:transactionStatus].nil? or params[:transactionStatus].empty? or params[:transactionStatus].blank?
               extra_query += ' and gateway_response like \'%:transactionStatus: "' + params[:transactionStatus].to_s + '%\''
             end
+            unless params[:citybank_order_id].nil? or params[:citybank_order_id].empty? or params[:citybank_order_id].blank?
+              extra_query += ' and gateway_response like \'%OrderID: "' + params[:citybank_order_id].to_s + '%\''
+            end
             unless params[:trxID].nil? or params[:trxID].empty? or params[:trxID].blank?
               extra_query += ' and gateway_response like \'%:trxID: "' + params[:trxID].to_s + '%\''
             end
             unless params[:paymentID].nil? or params[:paymentID].empty? or params[:paymentID].blank?
               extra_query += ' and gateway_response like \'%:paymentID: "' + params[:paymentID].to_s + '%\''
             end
+            unless params[:session_id].nil? or params[:session_id].empty? or params[:session_id].blank?
+              extra_query += ' and gateway_response like \'%SessionID: ' + params[:session_id].to_s + '%\''
+            end
+            unless params[:order_status].nil? or params[:order_status].empty? or params[:order_status].blank?
+              extra_query += ' and gateway_response like \'%OrderStatus: ' + params[:order_status].to_s + '%\''
+            end
             unless params[:order_id].nil? or params[:order_id].empty? or params[:order_id].blank?
-              if @gateway != "bkash"
+              if @gateway == "trustbank"
                 extra_query += ' and gateway_response like \'%' + params[:order_id].to_s + '%\''
+              elsif @gateway == "citybank"
+                extra_query += ' and order_id like \'%' + params[:order_id].to_s + '%\''
               elsif @gateway == "bkash"
-                extra_query += ' and gateway_response like \'%:merchantInvoiceNumb: "' + params[:order_id].to_s + '%\''
+                extra_query += ' and gateway_response like \'%:merchantInvoiceNumber: "' + params[:order_id].to_s + '%\''
               end
             end
             unless params[:ref_no].nil? or params[:ref_no].empty? or params[:ref_no].blank?
@@ -153,10 +223,17 @@ class PaymentSettingsController < ApplicationController
                 #end
                 require 'spreadsheet'
                 Spreadsheet.client_encoding = 'UTF-8'
+                
+                amount_format = Spreadsheet::Format.new({
+                    :horizontal_align => :right,
+                    :number_format    => "0.00"
+                });
 
                 date = Spreadsheet::Format.new :number_format => 'MM/DD/YYYY'
-                if @gateway != "bkash"
+                if @gateway == "trustbank"
                   row_1 = ["Ref ID","Order ID","Name","Merchant ID","Amount","Fees","Service Charge","Status","Verified","Trn Date"]
+                elsif @gateway == "citybank"
+                  row_1 = ["Ref ID","Order ID","Student ID","Full Name","Session ID","Amount","Fees","Status","Trn Date"]
                 elsif @gateway == "bkash"
                   row_1 = ["trxID","Payment ID","Order ID","Student ID","Full Name","Amount","Fees","Status","Trn Date"]
                 end
@@ -171,27 +248,39 @@ class PaymentSettingsController < ApplicationController
 
                 ind = 1
                 @online_payments.each do |payment|
-                  amt = payment.gateway_response[:amount].to_f
-                  service_change = payment.gateway_response[:service_charge].to_f
-                  tot_amt = amt + service_change
+                  if @gateway != "citybank"
+                    amt = payment.gateway_response[:amount].to_f
+                    service_change = payment.gateway_response[:service_charge].to_f
+                    tot_amt = amt + service_change
+                  else
+                    amt = payment.gateway_response[:Message][:TotalAmount].to_f
+                    #service_change = payment.gateway_response[:service_charge].to_f
+                    tot_amt = amt 
+                  end
                   verified = "false"
                   unless payment.gateway_response[:verified].nil?
                     if payment.gateway_response[:verified].to_i == 1
                       verified = "true"
                     end
                   end
-                  if @gateway != "bkash"
+                  if @gateway == "trustbank"
                     row_new = [payment.gateway_response[:ref_id], payment.gateway_response[:order_id], payment.gateway_response[:name], payment.gateway_response[:merchant_id], Champs21Precision.set_and_modify_precision(tot_amt), Champs21Precision.set_and_modify_precision(amt), Champs21Precision.set_and_modify_precision(service_change), payment.gateway_response[:status], verified, I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y")]
+                  elsif @gateway == "citybank"
+                    row_new = [payment.gateway_response[:Message][:OrderID], payment.order_id, payment.payee.admission_no, payment.payee.full_name, payment.gateway_response[:Message][:SessionID], Champs21Precision.set_and_modify_precision(tot_amt), Champs21Precision.set_and_modify_precision(amt), payment.gateway_response[:Message][:OrderStatus], I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y %H:%M:%S")]
                   elsif @gateway == "bkash"
-                    row_new = [payment.gateway_response[:trxID], payment.gateway_response[:paymentID], payment.gateway_response[:merchantInvoiceNumber], payment.payee.admission_no, payment.payee.full_name, Champs21Precision.set_and_modify_precision(tot_amt), Champs21Precision.set_and_modify_precision(amt), payment.gateway_response[:transactionStatus], I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y")]
+                    row_new = [payment.gateway_response[:trxID], payment.gateway_response[:paymentID], payment.gateway_response[:merchantInvoiceNumber], payment.payee.admission_no, payment.payee.full_name, Champs21Precision.set_and_modify_precision(tot_amt), Champs21Precision.set_and_modify_precision(amt), payment.gateway_response[:transactionStatus], I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y %H:%M:%S")]
                   end
                   new_book.worksheet(0).insert_row(ind, row_new)
+                  new_book.worksheet(0).row(ind).set_format(5, amount_format)
+                  new_book.worksheet(0).row(ind).set_format(6, amount_format)
+                  
                   ind += 1
                 end
                 spreadsheet = StringIO.new 
                 new_book.write spreadsheet 
 
                 send_data spreadsheet.string, :filename => "online_transactions-#{@gateway}.xls", :type =>  "application/vnd.ms-excel"
+                
               else
                 #if MultiSchool.current_school.id == 352
                   @online_payments = Payment.paginate(:conditions=>"gateway_txt = '#{@gateway}' and CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "order_id")
@@ -269,24 +358,146 @@ class PaymentSettingsController < ApplicationController
 
               num_orders = order_ids.length
               verified_no = 0
+              
+              get_the_token = true
+              
+              if @gateway == "citybank"
+                citybank_token = get_citybank_token()
+                unless citybank_token[:responseCode].to_i == 100
+                  get_the_token = false
+                else
+                  flash[:notice] = citybank_token[:responseMessage]
+                end
+              end
+              
+              if get_the_token
+                order_ids_new = []
+                order_ids.each_with_index do |o, i|
+                    if @gateway == "trustbank"
+                      if order_verify_trust_bank(o)
+                        verified_no += 1
+                      else
+                        order_ids_new << o
+                      end
+                    elsif @gateway == "citybank"
+                       payments = Payment.find(:all, :conditions => "order_id = '#{o}' and gateway_txt = 'citybank'") 
+                       unless payments.blank?
+                          payments.each do |payment|
+                              session_id = payment.gateway_response[:Message][:SessionID] unless payment.gateway_response[:Message][:SessionID].nil?
+                              order_id = payment.gateway_response[:Message][:OrderID] unless payment.gateway_response[:Message][:OrderID].nil?
+                              result = validate_citybank_transaction(citybank_token[:transactionId], order_id, session_id)
+                              if result[:orderStatus].present?
+                                if result[:orderStatus] == "APPROVED"
+                                  trans_date_time = payment.gateway_response[:Message][:TranDateTime]
+                                  a_trans_date_time = trans_date_time.split(' ')
+                                  trans_date = a_trans_date_time[0].split('/').reverse.join('-')
+                                  trans_date_time = trans_date + " " + a_trans_date_time[1]
+                                  @student = payment.payee
+                                  require 'date'
+                                  transaction_datetime = DateTime.parse(trans_date_time).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
+                
+                                  validation_response = result
+                                  payment.update_attributes(:validation_response => validation_response)
+                                  unless order_verify(o, 'citybank', transaction_datetime, order_id, payment.gateway_response[:Message][:TotalAmount])
+                                    order_ids_new << o
+                                  else
+                                    verified_no += 1
+                                  end
+                                else
+                                  order_ids_new << o
+                                end
+                              else
+                                order_ids_new << o
+                              end
+                          end
+                       else  
+                         order_ids_new << o
+                       end
+                    elsif @gateway == "bkash"
+                      paymentID = []
+                      unless params[:query_type].blank?
+                        if params[:query_type] == "order_id"
+                          payments = Payment.find(:all, :conditions => "order_id IN (#{order_ids.map{ |l| "'" + l + "'" }.join(",")})")
+                          unless payments.blank?
+                            payments.each do |payment|
+                              unless payment.gateway_response[:paymentID].nil?
+                                paymentID << payment.gateway_response[:paymentID]
+                              end
+                            end
+                            if paymentID.blank?
+                              if order_ids.length > 1
+                                flash[:notice] = "No Order found with these order IDs"
+                              else
+                                flash[:notice] = "No Order found with this order ID"
+                              end
+                            end
+                          else
+                            if order_ids.length > 1
+                              flash[:notice] = "No Order found with these order IDs"
+                            else
+                              flash[:notice] = "No Order found with this order ID"
+                            end
+                          end
+                        elsif params[:query_type] == "payment_id"
+                          paymentID = order_ids
+                        elsif params[:query_type] == "trx_id"
+                          order_ids.each do |order_id|
+                            payments = Payment.find(:all, :conditions => 'gateway_response like \'%:trxID: ' + order_id.to_s + '%\'')
+                            unless payments.blank?
+                              payments.each do |payment|
+                                unless payment.gateway_response[:paymentID].nil?
+                                  paymentID << payment.gateway_response[:paymentID]
+                                end
+                              end
+                            end
+                          end
+                          if paymentID.blank?
+                            if order_ids.length > 1
+                              flash[:notice] = "No Order found with these Transaction IDs"
+                            else
+                              flash[:notice] = "No Order found with this Transaction ID"
+                            end
+                          end
+                        end
+                        unless paymentID.blank?
+                          paymentID = paymentID.uniq
+                          tokens = get_bkash_token()
+                          cnt = 0
+                          paymentID.each do |pid|
+                            #abort(tokens[:id_token].inspect)
+                            if verify_bkash_payment(tokens[:id_token], pid)
+                              cnt += 1
+                            end
+                          end
+                          if cnt == 0
+                            flash[:notice] = "Orders has not verify yet"
+                          else  
+                            unless cnt == order_ids.length
+                              flash[:notice] = "There are some problem to verify some orders, Few orders successfully verified"
+                            else
+                              flash[:notice] = "All Orders has been verified successfully"
+                            end
+                          end
+                        end
+                      else
+                        flash[:notice] = "Invalid Request"
+                      end
+                    end
 
-              order_ids_new = []
-              order_ids.each_with_index do |o, i|
-                  if order_verify_trust_bank(o)
-                    verified_no += 1
-                  else
-                    order_ids_new << o
-                  end
-
+                end
               end
 
-              if verified_no.to_i == num_orders.to_i
-                flash[:notice] = "All Orders has been changed successfully"
-              else
-                if verified_no.to_i == 0
-                  flash[:notice] = "Orders has not verify yet"
+              if get_the_token
+                if @gateway != "bkash" and verified_no.to_i == num_orders.to_i
+                  flash[:notice] = "All Orders has been changed successfully"
                 else
-                  flash[:notice] = verified_no.to_s + " of " + num_orders.to_s + " Order has been verified, Order IDs are: " + order_ids.reject{|x| order_ids_new.include?(x)}.join(", ")
+                  if @gateway != "bkash"
+                    if verified_no.to_i == 0
+                      flash[:notice] = "Orders has not verify yet"
+                    else
+                      flash[:notice] = verified_no.to_s + " of " + num_orders.to_s + " Order has been verified, Order IDs are: " + order_ids.reject{|x| order_ids_new.include?(x)}.join(", ")
+                    end
+                  end
                 end
               end
             else

@@ -13,7 +13,9 @@ authorization do
       :verify_payment,
       :transactions,
       :transaction_list,
-      :order_verifications_partials
+      :order_verifications_partials,
+      :search_transaction,
+      :search_transaction_bkash
     ]
   end
 

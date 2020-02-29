@@ -14,10 +14,8 @@ trustbank_url: "https://ibanking.tblbd.com/Checkout/Checkout_Payment.aspx"
 trustbank_verification_url: "https://ibanking.tblbd.com/Checkout/Services/Payment_Info.asmx"
 
 
-citybank_token_url_sandbox: "https://sandbox.thecitybank.com:7788/transaction/token"
-citybank_create_order_url_sandbox: "https://sandbox.thecitybank.com:7788/transaction/createorder"
-citybank_token_url: "https://ecomm-webservice.thecitybank.com:7788/transaction/token"
-citybank_create_order_url: "https://ecomm-webservice.thecitybank.com:7788/transaction/createorder"
+citybank_app_url_sandbox: "https://sandbox.thecitybank.com:7788/transaction/"
+citybank_app_url_url: "https://ecomm-webservice.thecitybank.com:7788/transaction/"
 
 bkash_token_url_sandbox: "https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/token/grant"
 bkash_payment_url_sandbox: "https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/"

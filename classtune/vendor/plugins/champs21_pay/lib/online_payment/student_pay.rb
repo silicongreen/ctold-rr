@@ -107,123 +107,46 @@ module OnlinePayment
               end
             end
           else
-            if params[:create_transaction].present? and params[:target_gateway] == "trustbank"
-              result = Base64.decode64(params[:CheckoutXmlMsg])
-              #result = '<Response date="2016-06-20 10:14:53.213">  <RefID>133783A000129D</RefID>  <OrderID>O100010</OrderID>  <Name> Customer1</Name>  <Email> mr.customer@gmail.com </Email>  <Amount>2090.00</Amount>  <ServiceCharge>0.00</ServiceCharge>  <Status>1</Status>  <StatusText>PAID</StatusText>  <Used>0</Used>  <Verified>0</Verified>  <PaymentType>ITCL</PaymentType>  <PAN>712300XXXX1277</PAN>  <TBMM_Account></TBMM_Account>  <MarchentID>SAGC</MarchentID>  <OrderDateTime>2016-06-20 10:14:24.700</OrderDateTime>  <PaymentDateTime>2016-06-20 10:21:34.303</PaymentDateTime>  <EMI_No>0</EMI_No>  <InterestAmount>0.00</InterestAmount>  <PayWithCharge>1</PayWithCharge>  <CardResponseCode>00</CardResponseCode>  <CardResponseDescription>APPROVED</CardResponseDescription>  <CardOrderStatus>APPROVED</CardOrderStatus> </Response> '
-              xml_res = Nokogiri::XML(result)
-              status_post = 0
-              status_text_post = ""
-              amount_post = 0.00
-              service_charge_post = 0.00
-              trans_date = 0.00
-              payment_type = ""
-              pan = ""
-              ref_id = ""
-              used = ""
-              verified = ""
-              name = ""
-              email = ""
-              tbbmm_account = ""
-              merchant_id = ""
-              order_datetime = ""
-              emi_no = ""
-              interest_amount = ""
-              pay_with_charge = ""
-              card_response_code = ""
-              card_response_desc = ""
-              card_order_status = ""
-              unless xml_res.xpath("//Response/Name").empty?
-                name = xml_res.xpath("//Response/Name").text
+            #
+            #if params[:create_transaction].present? and params[:target_gateway] == "citybank"
+              unless params[:target_gateway] == "trustbank"
+                unless params[:fees].blank?
+                  city_fees = "fees=" + params[:fees].gsub("--","&")
+                  kparams = {}
+                  city_fees.split(/&/).inject({}) do |hash, setting|
+                    key, val = setting.split(/=/)
+                    params[key.to_sym] = val
+                  end
+                else
+                  if params[:t].present?
+                    city_fees = "t=" + params[:t].gsub("--","&")
+                    kparams = {}
+                    city_fees.split(/&/).inject({}) do |hash, setting|
+                      key, val = setting.split(/=/)
+                      params[key.to_sym] = val
+                    end
+                  end
+                end
+                if params[:target_gateway] == "citybank" and params[:create_fail_transaction].present?
+                  flash[:notice] = "Payment unsuccessful"
+                elsif params[:target_gateway] == "citybank" and params[:create_cancel_transaction].present?
+                  flash[:notice] = "Payment cancel by user"
+                end
               end
-              unless xml_res.xpath("//Response/Email").empty?
-                email = xml_res.xpath("//Response/Email").text
+              #abort(params.inspect)
+            #end
+            if params[:create_transaction].present?
+              if params[:target_gateway] == "trustbank"
+                result = Base64.decode64(params[:CheckoutXmlMsg])
+                #result = '<Response date="2016-06-20 10:14:53.213">  <RefID>133783A000129D</RefID>  <OrderID>O100010</OrderID>  <Name> Customer1</Name>  <Email> mr.customer@gmail.com </Email>  <Amount>2090.00</Amount>  <ServiceCharge>0.00</ServiceCharge>  <Status>1</Status>  <StatusText>PAID</StatusText>  <Used>0</Used>  <Verified>0</Verified>  <PaymentType>ITCL</PaymentType>  <PAN>712300XXXX1277</PAN>  <TBMM_Account></TBMM_Account>  <MarchentID>SAGC</MarchentID>  <OrderDateTime>2016-06-20 10:14:24.700</OrderDateTime>  <PaymentDateTime>2016-06-20 10:21:34.303</PaymentDateTime>  <EMI_No>0</EMI_No>  <InterestAmount>0.00</InterestAmount>  <PayWithCharge>1</PayWithCharge>  <CardResponseCode>00</CardResponseCode>  <CardResponseDescription>APPROVED</CardResponseDescription>  <CardOrderStatus>APPROVED</CardOrderStatus> </Response> '
+                xml_res = Nokogiri::XML(result)
+                orderId = ""
+                unless xml_res.xpath("//Response/OrderID").empty?
+                  orderId = xml_res.xpath("//Response/OrderID").text
+                end
+              elsif params[:target_gateway] == "citybank"
+                orderId = params[:order_id_in_trans]
               end
-              unless xml_res.xpath("//Response/MarchentID").empty?
-                merchant_id = xml_res.xpath("//Response/MarchentID").text
-              end
-              unless xml_res.xpath("//Response/OrderDateTime").empty?
-                order_datetime = xml_res.xpath("//Response/OrderDateTime").text
-              end
-              unless xml_res.xpath("//Response/EMI_No").empty?
-                emi_no = xml_res.xpath("//Response/EMI_No").text
-              end
-              unless xml_res.xpath("//Response/TBMM_Account").empty?
-                tbbmm_account = xml_res.xpath("//Response/TBMM_Account").text
-              end
-              unless xml_res.xpath("//Response/InterestAmount").empty?
-                interest_amount = xml_res.xpath("//Response/InterestAmount").text
-              end
-              unless xml_res.xpath("//Response/PayWithCharge").empty?
-                pay_with_charge = xml_res.xpath("//Response/PayWithCharge").text
-              end
-              unless xml_res.xpath("//Response/CardResponseCode").empty?
-                card_response_code = xml_res.xpath("//Response/CardResponseCode").text
-              end
-              unless xml_res.xpath("//Response/CardResponseDescription").empty?
-                card_response_desc = xml_res.xpath("//Response/CardResponseDescription").text
-              end
-              unless xml_res.xpath("//Response/CardOrderStatus").empty?
-                card_order_status = xml_res.xpath("//Response/CardOrderStatus").text
-              end
-              unless xml_res.xpath("//Response/Status").empty?
-                status_post = xml_res.xpath("//Response/Status").text
-              end
-              unless xml_res.xpath("//Response/StatusText").empty?
-                status_text_post = xml_res.xpath("//Response/StatusText").text
-              end
-              unless xml_res.xpath("//Response/Used").empty?
-                used = xml_res.xpath("//Response/Used").text
-              end
-              unless xml_res.xpath("//Response/Verified").empty?
-                verified = xml_res.xpath("//Response/Verified").text
-              end
-              unless xml_res.xpath("//Response/Amount").empty?
-                amount_post = xml_res.xpath("//Response/Amount").text
-              end
-              unless xml_res.xpath("//Response/ServiceCharge").empty?
-                service_charge_post = xml_res.xpath("//Response/ServiceCharge").text
-              end
-              unless xml_res.xpath("//Response/OrderID").empty?
-                orderId = xml_res.xpath("//Response/OrderID").text
-              end
-              unless xml_res.xpath("//Response/RefID").empty?
-                ref_id = xml_res.xpath("//Response/RefID").text
-              end
-              unless xml_res.xpath("//Response/PaymentDateTime").empty?
-                trans_date = xml_res.xpath("//Response/PaymentDateTime").text
-              end
-              unless xml_res.xpath("//Response/PaymentType").empty?
-                payment_type = xml_res.xpath("//Response/PaymentType").text
-              end
-              unless xml_res.xpath("//Response/PAN").empty?
-                pan = xml_res.xpath("//Response/PAN").text
-              end
-
-              gateway_response = {
-                :amount => amount_post,
-                :name => name,
-                :email => email,
-                :merchant_id => merchant_id,
-                :order_datetime => order_datetime,
-                :emi_no => emi_no,
-                :tbbmm_account => tbbmm_account,
-                :interest_amount => interest_amount,
-                :pay_with_charge => pay_with_charge,
-                :card_response_code => card_response_code,
-                :card_response_desc => card_response_desc,
-                :card_order_status => card_order_status,
-                :used => used,
-                :verified => verified,
-                :status_text => status_text_post,
-                :status => status_post,
-                :ref_id => ref_id,
-                :order_id=>orderId,
-                :tran_date=>trans_date,
-                :payment_type=>payment_type,
-                :service_charge=>service_charge_post,
-                :pan=>pan
-              }
-              return_order_id = orderId.strip
 
               @finance_order = FinanceOrder.find_by_order_id(orderId.strip)
               #abort(@finance_order.inspect)

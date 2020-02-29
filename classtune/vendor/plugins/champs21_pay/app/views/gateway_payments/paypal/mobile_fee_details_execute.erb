@@ -67,15 +67,24 @@
     <%= pay_button(options, gateway) %>  
   <% elsif gateway == "trustbank" %>  
     <% options = {} %>
-    <% options['MerchantID'] = @gateway_settings[gateway]['merchant_id'] %>
-    <% options['Amount'] = sprintf("%0.2f",@total_amount).to_f  %>
-    <% options['FullName'] = @student.admission_no %>
-    <% options['Email'] = email %>
-    <% options['orderID'] = @finance_order.order_id %>
+    <% options['merchantId'] = @gateway_settings[gateway]['merchant_id'] %>
+    <% options['userName'] = @gateway_settings[gateway]['api_user_name'] %>
+    <% options['password'] = @gateway_settings[gateway]['api_password'] %>
+    <% options['amount'] = sprintf("%0.2f",@total_amount).to_f  %>
+    <% options['currency'] = "050" %>
+    <% options['description'] = @fee_collection_name %>
+    <% unless params[:mobile_view].blank? %>
+      <% extra_string = "-mobile_view" %>
+    <% end %>
     <% success_url = "http://#{request.host_with_port}#{request.fullpath}" %>
+    <%#= debug params.inspect %>
     <% success_url += success_url.index("?").nil? ? '?t=1' : "" %>
-    <% options['PaymentSuccessUrl'] = "#{success_url}&create_transaction=1&target_gateway=#{gateway}" + extra_string %>
-    <%# options['PaymentSuccessUrl'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&target_gateway=#{gateway}" + extra_string %>
+    <% options['approveUrl'] = ("#{success_url}&order_id_in_trans=#{params[:order_id]}&create_transaction=1&target_gateway=#{gateway}" + extra_string).gsub("&","--") %>
+    <% options['declineUrl'] = ("#{success_url}&create_fail_transaction=4&target_gateway=#{gateway}" + extra_string).gsub("&","--") %>
+    <% options['cancelUrl'] = ("#{success_url}&create_cancel_transaction=5&target_gateway=#{gateway}" + extra_string).gsub("&","--") %>
+    <% options['transactionId'] = @finance_order.order_id %>
+    <% options['fee_url'] = ("#{success_url}").gsub("&","--") %>
+    <% options['gateway'] = gateway %>
     <%= pay_button(options, gateway) %>  
   <% elsif gateway == "citybank" %>  
     <% options = {} %>

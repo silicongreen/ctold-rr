@@ -2889,129 +2889,13 @@ module FinanceLoader
     end
 
     result = Base64.decode64(status)
-    #abort(result.inspect)
-    verification_ref_id = ""
-    verification_orderId = ""
-    verification_name = ""
-    verification_email = ""
-    verification_amount = 0.00
-    verification_service_charge = 0.00
-    verification_total_amount = 0.00
-    verification_status = 0
-    verification_status_text = ""
-    verification_used = ""
     verification_verified = 0
-    verification_payment_type = ""
-    verification_pan = ""
-    verification_tbbmm_account = ""
-    verification_merchant_id = ""
-    verification_order_datetime = ""
-    verification_trans_date = ""
-    verification_emi_no = ""
-    verification_interest_amount = ""
-    verification_pay_with_charge = ""
-    verification_card_response_code = ""
-    verification_card_response_desc = "" 
-    verification_card_order_status = ""
-
+    
     xml_str = Nokogiri::XML(result)
+    xml_response = Hash.from_xml(xml_str.to_s)
+    validation_response = xml_response[:Response]
+    verification_verified = validation_response[:Verified]
 
-    unless xml_str.xpath("//Response/RefID").empty?
-      verification_ref_id = xml_str.xpath("//Response/RefID").text
-    end
-    unless xml_str.xpath("//Response/OrderID").empty?
-      verification_orderId = xml_str.xpath("//Response/OrderID").text
-    end
-    unless xml_str.xpath("//Response/Name").empty?
-      verification_name = xml_str.xpath("//Response/Name").text
-    end
-    unless xml_str.xpath("//Response/Email").empty?
-      verification_email = xml_str.xpath("//Response/Email").text
-    end
-    unless xml_str.xpath("//Response/Amount").empty?
-      verification_amount = xml_str.xpath("//Response/Amount").text
-    end
-    unless xml_str.xpath("//Response/ServiceCharge").empty?
-      verification_service_charge = xml_str.xpath("//Response/ServiceCharge").text
-    end
-    unless xml_str.xpath("//Response/TotalAmount").empty?
-      verification_total_amount = xml_str.xpath("//Response/TotalAmount").text
-    end
-    unless xml_str.xpath("//Response/Status").empty?
-      verification_status = xml_str.xpath("//Response/Status").text
-    end
-    unless xml_str.xpath("//Response/StatusText").empty?
-      verification_status_text = xml_str.xpath("//Response/StatusText").text
-    end
-    unless xml_str.xpath("//Response/Used").empty?
-      verification_used = xml_str.xpath("//Response/Used").text
-    end
-    unless xml_str.xpath("//Response/Verified").empty?
-      verification_verified = xml_str.xpath("//Response/Verified").text
-    end
-    unless xml_str.xpath("//Response/PaymentType").empty?
-      verification_payment_type = xml_str.xpath("//Response/PaymentType").text
-    end
-    unless xml_str.xpath("//Response/PAN").empty?
-      verification_pan = xml_str.xpath("//Response/PAN").text
-    end
-    unless xml_str.xpath("//Response/TBMM_Account").empty?
-      verification_tbbmm_account = xml_str.xpath("//Response/TBMM_Account").text
-    end
-    unless xml_str.xpath("//Response/MarchentID").empty?
-      verification_merchant_id = xml_str.xpath("//Response/MarchentID").text
-    end
-    unless xml_str.xpath("//Response/OrderDateTime").empty?
-      verification_order_datetime = xml_str.xpath("//Response/OrderDateTime").text
-    end
-    unless xml_str.xpath("//Response/PaymentDateTime").empty?
-      verification_trans_date = xml_str.xpath("//Response/PaymentDateTime").text
-    end
-    unless xml_str.xpath("//Response/EMI_No").empty?
-      verification_emi_no = xml_str.xpath("//Response/EMI_No").text
-    end
-    unless xml_str.xpath("//Response/InterestAmount").empty?
-      verification_interest_amount = xml_str.xpath("//Response/InterestAmount").text
-    end
-    unless xml_str.xpath("//Response/PayWithCharge").empty?
-      verification_pay_with_charge = xml_str.xpath("//Response/PayWithCharge").text
-    end
-    unless xml_str.xpath("//Response/CardResponseCode").empty?
-      verification_card_response_code = xml_str.xpath("//Response/CardResponseCode").text
-    end
-    unless xml_str.xpath("//Response/CardResponseDescription").empty?
-      verification_card_response_desc = xml_str.xpath("//Response/CardResponseDescription").text
-    end
-    unless xml_str.xpath("//Response/CardOrderStatus").empty?
-      verification_card_order_status = xml_str.xpath("//Response/CardOrderStatus").text
-    end
-
-    validation_response = {
-      :total_amount => verification_total_amount,
-      :amount => verification_amount,
-      :name => verification_name,
-      :email => verification_email,
-      :merchant_id => verification_merchant_id,
-      :order_datetime => verification_order_datetime,
-      :emi_no => verification_emi_no,
-      :tbbmm_account => verification_tbbmm_account,
-      :interest_amount => verification_interest_amount,
-      :pay_with_charge => verification_pay_with_charge,
-      :card_response_code => verification_card_response_code,
-      :card_response_desc => verification_card_response_desc,
-      :card_order_status => verification_card_order_status,
-      :used => verification_used,
-      :verified => verification_verified,
-      :status_text => verification_status_text,
-      :status => verification_status,
-      :ref_id => verification_ref_id,
-      :order_id=>verification_orderId,
-      :tran_date=>verification_trans_date,
-      :payment_type=>verification_payment_type,
-      :service_charge=>verification_service_charge,
-      :pan=>verification_pan
-    }
-    #abort('here')
     verify_order = false
     if verified.to_i == 1 or verification_verified.to_i == 1
       if verified.to_i == 0
@@ -3237,7 +3121,264 @@ module FinanceLoader
     verify_order
   end
   
-  def order_verify(o,gateway,transaction_datetime, ref_id, amount)
+  def get_citybank_token()
+    payment_urls = Hash.new
+    if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+      payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+    end
+    
+    rootCA = "#{Rails.root}/certs/createorder.crt"
+    rootCAData = File.read(rootCA)
+
+    keyCA = "#{Rails.root}/certs/createorder.key"
+    keyCAData = File.read(keyCA)
+    
+    is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
+    extra_string = (is_test_citybank) ? '_sandbox' : ''
+    payment_url = URI(payment_urls["citybank_app_url" + extra_string] + 'token')
+    payment_url ||= URI("https://sandbox.thecitybank.com:7788/transaction/token")
+
+    @merchant_id = PaymentConfiguration.config_value("citybank_merchant_id")
+    @app_username = PaymentConfiguration.config_value("citybank_api_user_name")
+    @app_password = PaymentConfiguration.config_value("citybank_api_password")
+    
+    http = Net::HTTP.new(payment_url.host, payment_url.port)
+    http.use_ssl = (payment_url.scheme == 'https')
+    http.cert = OpenSSL::X509::Certificate.new(rootCAData)
+    http.key  = OpenSSL::PKey::RSA.new(keyCAData)
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
+    #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+    request = Net::HTTP::Post.new(payment_url.path,  {"Content-Type" => "application/json", "Accept" => "application/json"})
+    #request.set_form_data({"userName"=>params[:userName],"password"=>params[:password]}.to_json)
+    request.body = {"userName"=>@app_username,"password"=>@app_password}.to_json
+    response = http.request(request)
+    tmp_response_ssl = JSON::parse(response.body)
+    response_ssl = {}
+    tmp_response_ssl.each do |key,value|
+      response_ssl[key.to_sym] = value
+    end
+    response_ssl
+  end
+  
+  def validate_citybank_transaction(token, order_id, session_id)
+    payment_urls = Hash.new
+    if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+      payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+    end
+    
+    rootCA = "#{Rails.root}/certs/createorder.crt"
+    rootCAData = File.read(rootCA)
+
+    keyCA = "#{Rails.root}/certs/createorder.key"
+    keyCAData = File.read(keyCA)
+    
+    is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
+    extra_string = (is_test_citybank) ? '_sandbox' : ''
+    payment_url = URI(payment_urls["citybank_app_url" + extra_string] + 'getorderdetailsapi')
+    payment_url ||= URI("https://sandbox.thecitybank.com:7788/transaction/getorderdetailsapi")
+
+    @merchant_id = PaymentConfiguration.config_value("citybank_merchant_id")
+    @app_username = PaymentConfiguration.config_value("citybank_api_user_name")
+    @app_password = PaymentConfiguration.config_value("citybank_api_password")
+    
+    http = Net::HTTP.new(payment_url.host, payment_url.port)
+    http.use_ssl = (payment_url.scheme == 'https')
+    http.cert = OpenSSL::X509::Certificate.new(rootCAData)
+    http.key  = OpenSSL::PKey::RSA.new(keyCAData)
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
+    #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    
+    data_params = {
+      "merchantId"  => @merchant_id,
+      "orderID"     => order_id,
+      "sessionID"   => session_id,
+      "userName"    => @app_username,
+      "passWord"    => @app_password,
+      "secureToken" => token
+    }
+
+    request = Net::HTTP::Post.new(payment_url.path,  {"Content-Type" => "application/json", "Accept" => "application/json"})
+    #request.set_form_data({"userName"=>params[:userName],"password"=>params[:password]}.to_json)
+    request.body = data_params.to_json
+    response = http.request(request)
+    tmp_response_ssl = JSON::parse(response.body)
+    response_ssl = {}
+    tmp_response_ssl.each do |key,value|
+      response_ssl[key.to_sym] = value
+    end
+    response_ssl
+  end
+  
+  def get_bkash_token()
+    payment_urls = Hash.new
+    if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+      payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+    end
+
+    is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
+    extra_string = (is_test_bkash) ? '_sandbox' : ''
+    payment_url = URI(payment_urls["bkash_token_url" + extra_string])
+    payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/token/grant")
+
+    http = Net::HTTP.new(payment_url.host, payment_url.port)
+    http.use_ssl = (payment_url.scheme == 'https')
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
+    #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    @app_key = PaymentConfiguration.config_value("bkash_app_key")
+    @app_secret = PaymentConfiguration.config_value("bkash_app_secret")
+    @app_username = PaymentConfiguration.config_value("bkash_username")
+    @app_password = PaymentConfiguration.config_value("bkash_password")
+
+    request = Net::HTTP::Post.new(payment_url.path, {"username" => @app_username, "password" => @app_password, "Content-Type" => "application/json", "Accept" => "application/json"})
+    request.body = {"app_key"=>@app_key,"app_secret"=>@app_secret}.to_json
+    response = http.request(request)
+    response_ssl = JSON::parse(response.body)
+    gateway_response = {}
+    response_ssl.each do |key,value|
+      gateway_response[key.to_sym] = value
+    end
+    gateway_response
+  end
+  
+  def search_bkash_payment(id_token, payment_id)
+    payment_urls = Hash.new
+    if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+      payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+    end
+
+    is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
+    extra_string = (is_test_bkash) ? '_sandbox' : ''
+    payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "search/" + payment_id.to_s)
+    payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "search/" + payment_id.to_s)
+#abort("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "query/" + payment_id.to_s)
+    http = Net::HTTP.new(payment_url.host, payment_url.port)
+    http.use_ssl = (payment_url.scheme == 'https')
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
+    #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    @app_key = PaymentConfiguration.config_value("bkash_app_key")
+    @app_secret = PaymentConfiguration.config_value("bkash_app_secret")
+    @app_username = PaymentConfiguration.config_value("bkash_username")
+    @app_password = PaymentConfiguration.config_value("bkash_password")
+
+    request = Net::HTTP::Get.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
+    #request.body = {"amount"=> params[:total_fees],"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>params[:order_id]}.to_json
+    response = http.request(request)
+    tmp_response_ssl = JSON::parse(response.body)
+    response_ssl = {}
+    tmp_response_ssl.each do |key,value|
+      response_ssl[key.to_sym] = value
+    end
+    response_ssl 
+  end
+  
+  def verify_bkash_payment(id_token, payment_id)
+    payment_urls = Hash.new
+    if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+      payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+    end
+
+    is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
+    extra_string = (is_test_bkash) ? '_sandbox' : ''
+    payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "query/" + payment_id.to_s)
+    payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "query/" + payment_id.to_s)
+#abort("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "query/" + payment_id.to_s)
+    http = Net::HTTP.new(payment_url.host, payment_url.port)
+    http.use_ssl = (payment_url.scheme == 'https')
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
+    #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    @app_key = PaymentConfiguration.config_value("bkash_app_key")
+    @app_secret = PaymentConfiguration.config_value("bkash_app_secret")
+    @app_username = PaymentConfiguration.config_value("bkash_username")
+    @app_password = PaymentConfiguration.config_value("bkash_password")
+
+    request = Net::HTTP::Get.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
+    #request.body = {"amount"=> params[:total_fees],"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>params[:order_id]}.to_json
+    response = http.request(request)
+    tmp_response_ssl = JSON::parse(response.body)
+    response_ssl = {}
+    tmp_response_ssl.each do |key,value|
+      response_ssl[key.to_sym] = value
+    end
+ #   abort(response_ssl.inspect)
+    if response_ssl[:transactionStatus] == 'Completed'
+      require 'date'
+      gateway_response = response_ssl
+      
+      transaction_datetime = DateTime.parse(response_ssl[:createTime]).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
+      orderId = response_ssl[:merchantInvoiceNumber].to_s
+      @finance_order = FinanceOrder.find_by_order_id(orderId.strip)
+      
+      unless @finance_order.blank?
+        student_id = @finance_order.student_id
+        request_params = @finance_order.request_params
+        @student = Student.find(student_id)
+        payment_saved = false
+        unless request_params.nil?
+          multiple = request_params[:multiple]
+          unless multiple.nil?
+            if multiple.to_s == "true"
+              fees = request_params[:fees].split(",")
+              fees.each do |fee|
+                f = fee.to_i
+                feenew = FinanceFee.find(f)
+                payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{feenew.id} and gateway_txt = 'bkash'")
+                unless payment.nil?
+                  payment_saved = true
+                  payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
+                else  
+                  payment = Payment.new(:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
+                  if payment.save
+                    payment_saved = true
+                  end 
+                end
+              end
+            else
+              financefee = FinanceFee.find(@finance_order.finance_fee_id)
+              payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id} and gateway_txt = 'bkash'")
+              unless payment.nil?
+                payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
+                payment_saved = true
+              else  
+                payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
+                if payment.save
+                  payment_saved = true
+                end 
+              end
+            end
+          else
+            financefee = FinanceFee.find(@finance_order.finance_fee_id)
+            payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id} and gateway_txt = 'bkash'")
+            unless payment.nil?
+              payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
+              payment_saved = true
+            else  
+              payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
+              if payment.save
+                payment_saved = true
+              end 
+            end
+          end
+          
+          if payment_saved
+            unless order_verify(orderId, 'bkash', transaction_datetime, response_ssl[:trxID], response_ssl[:amount])
+              false
+            else
+              true
+            end
+          end
+        else
+          false
+        end
+      else
+        false
+      end
+    else
+      false
+    end
+  end
+  
+  def order_verify(o, gateway, transaction_datetime, ref_id, amount)
     verify_order = false
     unless @student.nil?
       finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and request_params is not null")
@@ -3411,18 +3552,14 @@ module FinanceLoader
                 verify_order = true
               end
             else
-              paid_fees = fee.finance_transactions
-              unless paid_fees.nil?
-                paid_fees.each do |paid_fee|
-                  payment_all = Payment.find(:all, :conditions => "finance_transaction_id = #{paid_fee.id}")
-                  unless payment_all.blank?
-                    payment_all.each do |pay_data|
-                      pay_data.update_attributes(:finance_transaction_id => nil)
-                    end
-                  end
-                  payment.update_attributes(:finance_transaction_id => paid_fee.id)
+              payment = Payment.find(:first, :conditions => "order_id = '#{o}' and payee_id = #{@student.id} and payment_id = #{fee.id} and gateway_txt = '#{gateway}'")
+              unless payment.nil?
+                trans = fee.finance_transactions
+                unless trans.blank?
+                  payment.update_attributes(:finance_transaction_id => trans[0].id)
                 end
               end
+              verify_order = true
             end
           end
         end
@@ -3534,125 +3671,105 @@ module FinanceLoader
             :card_issuer_country_code=>params[:card_issuer_country_code],
             :val_id => params[:val_id]
           }    
+      elsif params[:target_gateway] == "citybank"
+        xml_res = Nokogiri::XML(params[:xmlmsg])
+        require 'active_support/core_ext/hash/conversions'
+        gateway_response = Hash.from_xml(xml_res.to_s)
+        citybank_token = get_citybank_token()
+        
+        if citybank_token[:responseCode].to_i == 100
+            result = validate_citybank_transaction(citybank_token[:transactionId], gateway_response[:Message][:OrderID], gateway_response[:Message][:SessionID])
+            if result[:orderStatus].present?
+              if result[:orderStatus] == "APPROVED"
+                trans_date_time = gateway_response[:Message][:TranDateTime]
+                a_trans_date_time = trans_date_time.split(' ')
+                trans_date = a_trans_date_time[0].split('/').reverse.join('-')
+                trans_date_time = trans_date + " " + a_trans_date_time[1]
+                gateway_response[:Message][:TranDateTime] = trans_date_time
+                require 'date'
+                transaction_datetime = DateTime.parse(gateway_response[:Message][:TranDateTime]).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
+                validation_response = result
+                
+                orderId = params[:order_id_in_trans]
+                student_id = params[:id]
+                
+                @student = Student.find(student_id)
+                @finance_order = FinanceOrder.find_by_order_id_and_student_id(orderId.strip, student_id)
+                #abort(@finance_order.inspect)
+                request_params = @finance_order.request_params
+                
+                payment_saved = false
+                unless request_params.nil?
+                  multiple = request_params[:multiple]
+                  unless multiple.nil?
+                    if multiple.to_s == "true"
+                      fees = request_params[:fees].split(",")
+                      fees.each do |fee|
+                        f = fee.to_i
+                        feenew = FinanceFee.find(f)
+                        payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{feenew.id}")
+                        unless payment.nil?
+                          payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :validation_response => validation_response, :gateway_txt => "citybank")
+                          payment_saved = true
+                        else  
+                          payment = Payment.new(:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "citybank", :validation_response => validation_response)
+                          if payment.save
+                            payment_saved = true
+                          end 
+                        end
+                      end
+                    else
+                      financefee = FinanceFee.find(@finance_order.finance_fee_id)
+                      payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id}")
+                      unless payment.nil?
+                        payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :validation_response => validation_response, :gateway_txt => "citybank")
+                        payment_saved = true
+                      else  
+                        payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "citybank", :validation_response => validation_response)
+                        if payment.save
+                          payment_saved = true
+                        end 
+                      end
+                    end
+                  else
+                    financefee = FinanceFee.find(@finance_order.finance_fee_id)
+                    payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id}")
+                    unless payment.nil?
+                      payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :validation_response => validation_response, :gateway_txt => "citybank")
+                      payment_saved = true
+                    else  
+                      payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "citybank", :validation_response => validation_response)
+                      if payment.save
+                        payment_saved = true
+                      end 
+                    end
+                  end
+
+                  if payment_saved
+                    unless order_verify(orderId, 'citybank', transaction_datetime, gateway_response[:Message][:OrderID], gateway_response[:Message][:TotalAmount])
+                      flash[:notice] = "Payment unsuccessful!! Invalid Transaction, Amount mismatch"
+                    end
+                  end
+                end
+              else
+                flash[:notice] = "Can't verify the payment now please contact system admin"
+              end
+            else
+              flash[:notice] = "Can't verify the payment now please contact system admin"
+            end
+        else
+          flash[:notice] = citybank_token[:responseMessage]
+        end
       elsif params[:target_gateway] == "trustbank"
         result = Base64.decode64(params[:CheckoutXmlMsg])
         #result = '<Response date="2016-06-20 10:14:53.213">  <RefID>133783A000129D</RefID>  <OrderID>O1052536</OrderID>  <Name> Customer1</Name>  <Email> mr.customer@gmail.com </Email>  <Amount>2090.00</Amount>  <ServiceCharge>0.00</ServiceCharge>  <Status>1</Status>  <StatusText>PAID</StatusText>  <Used>0</Used>  <Verified>0</Verified>  <PaymentType>ITCL</PaymentType>  <PAN>712300XXXX1277</PAN>  <TBMM_Account></TBMM_Account>  <MarchentID>SAGC</MarchentID>  <OrderDateTime>2016-06-20 10:14:24.700</OrderDateTime>  <PaymentDateTime>2016-06-20 10:21:34.303</PaymentDateTime>  <EMI_No>0</EMI_No>  <InterestAmount>0.00</InterestAmount>  <PayWithCharge>1</PayWithCharge>  <CardResponseCode>00</CardResponseCode>  <CardResponseDescription>APPROVED</CardResponseDescription>  <CardOrderStatus>APPROVED</CardOrderStatus> </Response> '
         xml_res = Nokogiri::XML(result)
-        status_post = 0
-        status_text_post = ""
-        amount_post = 0.00
-        service_charge_post = 0.00
-        trans_date = 0.00
-        payment_type = ""
-        pan = ""
-        ref_id = ""
-        used = ""
-        verified = ""
-        name = ""
-        email = ""
-        tbbmm_account = ""
-        merchant_id = ""
-        order_datetime = ""
-        emi_no = ""
-        interest_amount = ""
-        pay_with_charge = ""
-        card_response_code = ""
-        card_response_desc = ""
-        card_order_status = ""
-        unless xml_res.xpath("//Response/Name").empty?
-          name = xml_res.xpath("//Response/Name").text
-        end
-        unless xml_res.xpath("//Response/Email").empty?
-          email = xml_res.xpath("//Response/Email").text
-        end
-        unless xml_res.xpath("//Response/MarchentID").empty?
-          merchant_id = xml_res.xpath("//Response/MarchentID").text
-        end
-        unless xml_res.xpath("//Response/OrderDateTime").empty?
-          order_datetime = xml_res.xpath("//Response/OrderDateTime").text
-        end
-        unless xml_res.xpath("//Response/EMI_No").empty?
-          emi_no = xml_res.xpath("//Response/EMI_No").text
-        end
-        unless xml_res.xpath("//Response/TBMM_Account").empty?
-          tbbmm_account = xml_res.xpath("//Response/TBMM_Account").text
-        end
-        unless xml_res.xpath("//Response/InterestAmount").empty?
-          interest_amount = xml_res.xpath("//Response/InterestAmount").text
-        end
-        unless xml_res.xpath("//Response/PayWithCharge").empty?
-          pay_with_charge = xml_res.xpath("//Response/PayWithCharge").text
-        end
-        unless xml_res.xpath("//Response/CardResponseCode").empty?
-          card_response_code = xml_res.xpath("//Response/CardResponseCode").text
-        end
-        unless xml_res.xpath("//Response/CardResponseDescription").empty?
-          card_response_desc = xml_res.xpath("//Response/CardResponseDescription").text
-        end
-        unless xml_res.xpath("//Response/CardOrderStatus").empty?
-          card_order_status = xml_res.xpath("//Response/CardOrderStatus").text
-        end
-        unless xml_res.xpath("//Response/Status").empty?
-          status_post = xml_res.xpath("//Response/Status").text
-        end
-        unless xml_res.xpath("//Response/StatusText").empty?
-          status_text_post = xml_res.xpath("//Response/StatusText").text
-        end
-        unless xml_res.xpath("//Response/Used").empty?
-          used = xml_res.xpath("//Response/Used").text
-        end
-        unless xml_res.xpath("//Response/Verified").empty?
-          verified = xml_res.xpath("//Response/Verified").text
-        end
-        unless xml_res.xpath("//Response/Amount").empty?
-          amount_post = xml_res.xpath("//Response/Amount").text
-        end
-        unless xml_res.xpath("//Response/ServiceCharge").empty?
-          service_charge_post = xml_res.xpath("//Response/ServiceCharge").text
-        end
-        unless xml_res.xpath("//Response/OrderID").empty?
-          orderId = xml_res.xpath("//Response/OrderID").text
-        end
-        unless xml_res.xpath("//Response/RefID").empty?
-          ref_id = xml_res.xpath("//Response/RefID").text
-        end
-        unless xml_res.xpath("//Response/PaymentDateTime").empty?
-          trans_date = xml_res.xpath("//Response/PaymentDateTime").text
-        end
-        unless xml_res.xpath("//Response/PaymentType").empty?
-          payment_type = xml_res.xpath("//Response/PaymentType").text
-        end
-        unless xml_res.xpath("//Response/PAN").empty?
-          pan = xml_res.xpath("//Response/PAN").text
-        end
-        gateway_response = {
-          :amount => amount_post,
-          :name => name,
-          :email => email,
-          :merchant_id => merchant_id,
-          :order_datetime => order_datetime,
-          :emi_no => emi_no,
-          :tbbmm_account => tbbmm_account,
-          :interest_amount => interest_amount,
-          :pay_with_charge => pay_with_charge,
-          :card_response_code => card_response_code,
-          :card_response_desc => card_response_desc,
-          :card_order_status => card_order_status,
-          :used => used,
-          :verified => verified,
-          :status_text => status_text_post,
-          :status => status_post,
-          :ref_id => ref_id,
-          :order_id=>orderId,
-          :tran_date=>trans_date,
-          :payment_type=>payment_type,
-          :service_charge=>service_charge_post,
-          :pan=>pan
-        }
-        return_order_id = orderId.strip
-
+        xml_response = Hash.from_xml(xml_str.to_s)
+        gateway_response = xml_response[:Response]
+        verified = gateway_response[:Verified]
+        orderId = gateway_response[:OrderID]
+        
         @finance_order = FinanceOrder.find_by_order_id(orderId.strip)
-        #abort(@finance_order.inspect)
         request_params = @finance_order.request_params
 
         dt = trans_date.split(".")
@@ -3798,16 +3915,20 @@ module FinanceLoader
             gateway_status = true
           end
         end
-
-        if gateway_status == false
-          if params[:target_gateway] == "trustbank"
-            flash[:notice] = msg
-          else
-            flash[:notice] = "#{t('payment_failed')}"
-          end
-        end 
+        
+        if params[:target_gateway] != "citybank"  
+          if gateway_status == false
+            if params[:target_gateway] == "trustbank"
+              flash[:notice] = msg
+            else
+              flash[:notice] = "#{t('payment_failed')}"
+            end
+          end 
+        end
       else
-        flash[:notice] = "#{t('payment_failed')}"
+        if params[:target_gateway] != "citybank" 
+          flash[:notice] = "#{t('payment_failed')}"
+        end
       end 
     end
     

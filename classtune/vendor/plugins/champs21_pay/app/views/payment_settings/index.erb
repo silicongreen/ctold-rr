@@ -38,11 +38,16 @@
       <div class="link-descr"><%= t('list_online_transaction') %></div>
     </div>
       
-    <% if MultiSchool.current_school.id == 352 %>  
-        <div class="link-box">
-          <div class="link-heading"><%= link_to "#{t('order_verification')}", {:controller => "online_payments", :action => "order_verifications"} %> </div>
-          <div class="link-descr"><%= t('order_verification') %></div>
-        </div>
+    <div class="link-box">
+        <div class="link-heading"><%= link_to "#{t('order_verification')}", {:controller => "online_payments", :action => "order_verifications"} %> </div>
+        <div class="link-descr"><%= t('order_verification') %></div>
+    </div>
+    
+     <% if @payment_gateways.include?("bkash") %>
+      <div class="link-box" style="display: none;">
+        <div class="link-heading"><%= link_to "#{t('search_transaction')}", {:controller => "online_payments", :action => "search_transaction"} %> </div>
+        <div class="link-descr"><%= t('search_transaction') %></div>
+      </div>
     <% end %>  
   </div>
 </div>

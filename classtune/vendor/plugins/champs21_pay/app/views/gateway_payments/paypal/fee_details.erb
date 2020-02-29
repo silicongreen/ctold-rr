@@ -1252,16 +1252,20 @@
             <% #end %>
             <% payment_mode = f.payment_mode %>
             <% if transaction_payment %>
-              <% if payment.gateway_txt == "TrustBank" %>
+              <% if payment.gateway_txt == "trustbank" %>
               <% payment_mode = "Trust Bank Online Payment" %>
               <% elsif payment.gateway_txt == "bkash" %>
               <% payment_mode = "bKash Online Payment" %>
+              <% elsif payment.gateway_txt == "citybank" %>
+              <% payment_mode = "Citybank Online Payment" %>
               <% end %>
             <% elsif transaction_payment_not_assign %>
-              <% if payment.gateway_txt == "TrustBank" %>
+              <% if payment.gateway_txt == "trustbank" %>
               <% payment_mode = "Trust Bank Online Payment" %>
               <% elsif payment.gateway_txt == "bkash" %>
               <% payment_mode = "bKash Online Payment" %>
+              <% elsif payment.gateway_txt == "citybank" %>
+              <% payment_mode = "Citybank Online Payment" %>
               <% end %>
               <% payment.update_attributes(:finance_transaction_id=>f.id) %>
               <%
@@ -1316,7 +1320,7 @@
                   <p><b>Order ID: </b><%= payment.order_id %></p>
                   <%
                     trans_type = ""
-                    if payment.gateway_txt == "TrustBank"
+                    if payment.gateway_txt == "trustbank"
                       if payment.gateway_response[:payment_type] == "MB"
                         trans_type = "TBL Mobile banking"
                       else
@@ -1324,16 +1328,20 @@
                       end
                     end
                   %>
-                  <% if payment.gateway_txt == "TrustBank" %>
+                  <% if payment.gateway_txt == "trustbank" %>
                   <p><b>Ref Id: </b><%= payment.gateway_response[:ref_id] %></p>
+                  <% elsif payment.gateway_txt == "citybank" %>
+                  <p><b>ApprovalCode: </b><%= payment.gateway_response[:Message][:ApprovalCode] %></p>
+                  <p><b>Ref Id: </b><%= payment.gateway_response[:Message][:OrderID] %></p>
                   <% elsif payment.gateway_txt == "bkash" %>
+                  <p><b>Payment Id: </b><%= payment.gateway_response[:paymentID] unless payment.gateway_response[:paymentID].blank? %></p>
                   <p><b>Transaction Id: </b><%= payment.gateway_response[:trxID] unless payment.gateway_response[:trxID].blank? %></p>
                   <% end %>
-                  <% if payment.gateway_txt == "TrustBank" %>
+                  <% if payment.gateway_txt == "trustbank" %>
                   <p><b>Transaction Type: </b><%= trans_type %></p>
                   <% end %>
                   <hr style="border: 1px solid #ccc;" />
-                  <% if payment.gateway_txt == "TrustBank" %>
+                  <% if payment.gateway_txt == "trustbank" %>
                     <% if payment.gateway_response[:verified].to_i == 1 %>
                       <i class="fa fa-check-circle-o" style="font-size: 18px; color: #49BB4B;"></i>&nbsp;&nbsp;Verified
                     <% else %>
@@ -1371,6 +1379,12 @@
                       <div style="width: 100%;">
                           <div style="width: 60%; display: inline-block;">
                             <i class="fa fa-circle-o" style="font-size: 18px; color: <%= (payment.gateway_response[:transactionStatus] == "Completed") ? "#49BB4B" : "#900" %>;"></i>&nbsp;&nbsp;<span style="color: <%= (payment.gateway_response[:transactionStatus] == "Completed") ? "#145214" : "#900" %>;"><%= payment.gateway_response[:transactionStatus]  unless payment.gateway_response[:transactionStatus].blank?  %></span>
+                          </div>  
+                      </div>
+                    <% elsif payment.gateway_txt == "citybank" %>
+                      <div style="width: 100%;">
+                          <div style="width: 60%; display: inline-block;">
+                            <i class="fa fa-circle-o" style="font-size: 18px; color: <%= (payment.gateway_response[:Message][:OrderStatus] == "APPROVED") ? "#49BB4B" : "#900" %>;"></i>&nbsp;&nbsp;<span style="color: <%= (payment.gateway_response[:Message][:OrderStatus] == "APPROVED") ? "#145214" : "#900" %>;"><%= payment.gateway_response[:Message][:OrderStatus]  unless payment.gateway_response[:Message][:OrderStatus].blank?  %></span>
                           </div>  
                       </div>
                     <% end %>    

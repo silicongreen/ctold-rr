@@ -2,7 +2,7 @@
 <h2>Transaction List</h2>
 <hr style="border: 1px solid #ccc;" />
 <%= gateway_name %>
-<% form_for :payment_transaction,:url => transactions_online_payments_url do %>
+<% form_for :payment_transaction,:url => transactions_online_payments_url, :html => {:id => "transaction_form"} do %>
     <input type="hidden" name="gateway" id="gateway" value="<%= @gateway %>" />
     <div class="filter">
       <div class="label-field-pair" style="width: 25%;">
@@ -16,11 +16,17 @@
       <div class="label-field-pair" style="width: 25%; padding-top: 0;">
           <div class="label-container" style="padding-top: 15px;">Status:</div>
           <div class="input-container" style="padding-top: 10px;">
-              <% if @gateway != "bkash" %>
+              <% if @gateway == "trustbank" %>
               <select name="payment_status" id="payment_status">
                   <option value="">Select a Status</option>
                   <option value="1" <%= 'selected' if params[:payment_status].to_i == 1 %>>Completed</option>
                   <option value="2" <%= 'selected' if params[:payment_status].to_i == 2 %>>Failed</option>
+              </select>
+              <% elsif @gateway == "citybank" %>
+              <select name="order_status" id="order_status">
+                  <option value="">Select a Status</option>
+                  <option value="APPROVED" <%= 'selected' if params[:order_status] == "APPROVED" %>>Approved</option>
+                  <option value="DECLINED" <%= 'selected' if params[:order_status] == "DECLINED" %>>Declined</option>
               </select>
               <% elsif @gateway == "bkash" %>
               <select name="transactionStatus" id="transactionStatus">
@@ -39,9 +45,15 @@
       <div style="clear: both; height: 20px;"></div>
       <hr style="border: 1px solid #ccc;" />  
       <div class="label-field-pair" style="width: 25%;">
-          <% if @gateway != "bkash" %>
+          <% if @gateway == "trustbank" %>
           <div class="label-container" style="padding-top: 15px;">Ref No.:</div>
           <div class="input-container"><input type="text" name="ref_no" id="ref_no" value="<%= params[:ref_no] %>" /></div>
+          <% elsif @gateway == "citybank" %>
+          <div class="label-container" style="padding-top: 15px;">Ref No.:</div>
+          <div class="input-container">
+              <input type="text" name="citybank_order_id" id="citybank_order_id" value="<%= params[:citybank_order_id] %>" />
+              <small style="margin-left: 10%; padding-top: 2px;">(Citybank Order ID)</small>
+          </div>
           <% elsif @gateway == "bkash" %>
           <div class="label-container" style="padding-top: 15px;">trxID.:</div>
           <div class="input-container"><input type="text" name="trxID" id="trxID" value="<%= params[:trxID] %>" /></div>
@@ -51,7 +63,7 @@
           <div class="label-container" style="padding-top: 15px;">Order ID:</div>
           <div class="input-container"><input type="text" name="order_id" id="order_id" value="<%= params[:order_id] %>" /></div>
       </div>
-      <% if @gateway != "bkash" %>
+      <% if @gateway == "trustbank" %>
       <div class="label-field-pair" style="width: 25%; padding-top: 0;">
           <div class="label-container" style="padding-top: 15px;">Type:</div>
           <div class="input-container" style="padding-top: 10px;">
@@ -61,6 +73,11 @@
                   <option value="ITCL" <%= 'selected' if params[:payment_type] == "ITCL" %>>Card Online</option>
               </select>
           </div>
+      </div>
+      <% elsif @gateway == "citybank" %>
+      <div class="label-field-pair" style="width: 33%; padding-left: 20px;">
+          <div class="label-container" style="padding-top: 15px; ">Session ID:</div>
+          <div class="input-container"><input type="text" name="session_id" id="session_id" value="<%= params[:session_id] %>" /></div>
       </div>
       <% elsif @gateway == "bkash" %>
       <div class="label-field-pair" style="width: 33%; padding-left: 20px;">
@@ -84,8 +101,11 @@
         <tr>
             <th style="width: 3%;"><%= "#" %></th>
             <th style="width: 30%;"><%= t("user_id_name") %></th>
-            <% if @gateway != "bkash" %>
+            <% if @gateway == "trustbank" %>
             <th style="width: 10%;"><%= t("payment_type") %></th>
+            <th style="width: 10%;"><%= t("ref_id") %></th>
+            <% elsif @gateway == "citybank" %>
+            <th style="width: 20%;"><%= t("payment_info") %></th>
             <th style="width: 10%;"><%= t("ref_id") %></th>
             <% elsif @gateway == "bkash" %>
             <th style="width: 10%;"><%= "Payment Id" %></th>
@@ -93,7 +113,7 @@
             <% end %>
             <th style="width: 10%;"><%= t("order_id") %></th>
             <th style="width: 10%;"><%= t("amount") %></th>
-            <% if @gateway != "bkash" %>
+            <% if @gateway == "trustbank" %>
             <th style="width: 10%;"><%= t("service_charge") %></th>
             <% end %>
             <th style="width: 10%;"><%= t("gateway_status") %></th>
@@ -101,7 +121,7 @@
             <th style="width: 10%;"><%= t("online_transaction_id") %></th>
             <% end %>
             <th style="width: 10%;"><%= t("transaction_date") %></th>
-            <% if @gateway != "bkash" %>
+            <% if @gateway == "trustbank" %>
             <th style="width: 10%;"><%= "Verified" %></th>
             <% end %>
         </tr>
@@ -111,8 +131,16 @@
           <tr>
             <td style="vertical-align: middle;"><%= ((@online_payments.current_page - 1) * @online_payments.per_page) + index + 1 %></td>
             <% payee_user = payment.payee.try(:user).try(:username) unless payment.payee.class.name == "Applicant" %>
-            <td style="vertical-align: middle; text-align: left; padding-left: 10px;"><%= "#{payment.payee_admission_no}" %><br /><%= "#{payment.payee_name}" %></td>
-            <% if @gateway != "bkash" %>
+            <td style="vertical-align: middle; text-align: left; padding-left: 20px !important;"><%= "#{payment.payee_admission_no}" %><br /><%= "#{payment.payee_name}" %></td>
+            <% if @gateway == "trustbank" %>
+            <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:payment_type]}" %></td>
+            <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:ref_id]}" %></td>
+            <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:order_id]}" %></td>
+            <% elsif @gateway == "citybank" %>
+            <td style="vertical-align: middle; text-align: left;"><%= "Card Holder Name: <br />#{payment.gateway_response[:Message][:CardHolderName]}<hr style='border:1px solid #ccc;' />Card No.: <br />#{payment.gateway_response[:Message][:PAN]}" %></td>
+            <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:Message][:OrderID]}" %></td>
+            <td style="vertical-align: middle; text-align: center;"><%= "#{payment.order_id}" %></td>
+            <% elsif @gateway == "citybank" %>
             <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:payment_type]}" %></td>
             <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:ref_id]}" %></td>
             <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:order_id]}" %></td>
@@ -124,18 +152,23 @@
             
             
             <% 
-              amount = payment.gateway_response[:amount]
-              amount ||= payment.gateway_response[:x_amount]
+              if @gateway == "trustbank" or @gateway == "bkash"
+                amount = payment.gateway_response[:amount]
+                amount ||= payment.gateway_response[:x_amount]
+              elsif @gateway == "citybank"
+                amount = payment.gateway_response[:Message][:TotalAmount]
+                amount ||= payment.gateway_response[:Message][:PurchaseAmount]
+              end
             %>
 
             <td style="vertical-align: middle; text-align: right; padding-right: 4px;"><%= to_comma_seperated_precision_label(amount.to_f) %></td>
-            <% if @gateway != "bkash" %>
+            <% if @gateway == "trustbank" %>
             <% 
               service_charge = payment.gateway_response[:service_charge]
             %>
             <td style="vertical-align: middle; text-align: right; padding-right: 4px;"><%= precision_label(service_charge) %></td>
             <% end %>
-            <% if @gateway != "bkash" %>
+            <% if @gateway == "trustbank" %>
             <td style="vertical-align: middle; text-align: center;">
               <% 
                 b_pos = 0
@@ -161,6 +194,15 @@
               <% end %>  
               <%= gateway_status %>
             </td>
+            <% elsif @gateway == "citybank" %>
+              <td style="vertical-align: middle; text-align: center;">
+                <% if payment.gateway_response[:Message][:OrderStatus] == "APPROVED" %>  
+                  <i class="fa fa-check" style="color: #49BB4B; font-size: 14px;"></i><br />
+                <% else %>  
+                  <i class="fa fa-close" style="color: #AB0D14; font-size: 14px;"></i><br />
+                <% end %>  
+                <%= payment.gateway_response[:Message][:OrderStatus] %>
+              </td>
             <% elsif @gateway == "bkash" %>
               <td style="vertical-align: middle; text-align: center;">
                 <% if payment.gateway_response[:transactionStatus] == "Completed" %>  
@@ -174,7 +216,7 @@
             <td style="vertical-align: middle; text-align: center;">
               <%= I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y %I:%M %P") %>
             </td>
-            <% if @gateway != "bkash" %>
+            <% if @gateway == "trustbank" %>
               <% if payment.gateway_response[:verified].to_i == 0 %>
               <% unless payment.validation_response.nil? %>
                 <% if payment.validation_response[:verified].to_i == 0 %>
@@ -213,6 +255,6 @@
     </div>
   <% end %>
     <div style="width: 100%; text-align: center; padding-top: 20px;">
-        <%= submit_tag 'Export Transaction',:name => "export_transaction",:class => "submit-button", :onclick => "j('#export').val(1)", :style => "float: none;", :target => "_blank" %>
+      <%= submit_tag 'Export Transaction',:name => "export_transaction",:class => "submit-button", :onclick => "j('#export').val(1);", :style => "float: none;" %>
     </div>  
   <% end %>

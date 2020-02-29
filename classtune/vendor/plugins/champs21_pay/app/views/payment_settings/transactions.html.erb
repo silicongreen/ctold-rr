@@ -130,7 +130,6 @@
           new Ajax.Request('/online_payments/transaction_list',
                   {
                       before: $('loader').show(),
-                      complete: $('loader').hide(),
                       asynchronous: true,
                       evalScripts: true,
                       parameters: 'gateway=' + gateway

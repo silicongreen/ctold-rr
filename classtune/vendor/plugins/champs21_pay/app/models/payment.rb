@@ -6,9 +6,9 @@ class Payment < ActiveRecord::Base
   serialize :gateway_response
   serialize :validation_response
   
-  before_create :change_table
-  before_save :change_table
-  before_update :change_table
+#  before_create :change_table
+#  before_save :change_table
+#  before_update :change_table
   
   def change_table
     unless MultiSchool.current_school.nil?

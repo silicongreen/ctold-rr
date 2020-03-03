@@ -24,9 +24,9 @@ class FinanceOrder < ActiveRecord::Base
   
   serialize :request_params
   
-  before_create :change_table
-  before_save :change_table
-  before_update :change_table
+#  before_create :change_table
+#  before_save :change_table
+#  before_update :change_table
   
 #  def create
 #    unless MultiSchool.current_school.nil?

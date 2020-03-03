@@ -20,11 +20,15 @@ module MultiSchool
         if self.table_name == "payments"
           if MultiSchool.current_school.id != 352
             self.table_name = MultiSchool.current_school.code + "_payments"
+          else
+            self.table_name = "payments"  
           end
         end 
         if self.table_name == "finance_orders"
           if MultiSchool.current_school.id != 352
             self.table_name = MultiSchool.current_school.code + "_finance_orders"
+          else
+            self.table_name = "finance_orders"  
           end
         end 
         #abort(self.inspect)
@@ -44,11 +48,15 @@ module MultiSchool
         if self.table_name == "payments"
           if MultiSchool.current_school.id != 352
             self.table_name = MultiSchool.current_school.code + "_payments"
+          else
+            self.table_name = "payments"  
           end
         end 
         if self.table_name == "finance_orders"
           if MultiSchool.current_school.id != 352
             self.table_name = MultiSchool.current_school.code + "_finance_orders"
+          else
+            self.table_name = "finance_orders"  
           end
         end 
         with_scope(:find => {:conditions  => {:school_id  => target_school.id}}) do
@@ -67,11 +75,15 @@ module MultiSchool
         if self.table_name == "payments"
           if MultiSchool.current_school.id != 352
             self.table_name = MultiSchool.current_school.code + "_payments"
+          else
+            self.table_name = "payments"  
           end
         end 
         if self.table_name == "finance_orders"
           if MultiSchool.current_school.id != 352
             self.table_name = MultiSchool.current_school.code + "_finance_orders"
+          else
+            self.table_name = "finance_orders"  
           end
         end 
         with_scope(:find => {:conditions  => {:school_id  => target_school.id}}) do
@@ -89,11 +101,15 @@ module MultiSchool
         if self.table_name == "payments"
           if MultiSchool.current_school.id != 352
             self.table_name = MultiSchool.current_school.code + "_payments"
+          else
+            self.table_name = "payments"  
           end
         end 
         if self.table_name == "finance_orders"
           if MultiSchool.current_school.id != 352
             self.table_name = MultiSchool.current_school.code + "_finance_orders"
+          else
+            self.table_name = "finance_orders"  
           end
         end 
         with_scope(:find => {:conditions  => {:school_id  => target_school.id}}) do

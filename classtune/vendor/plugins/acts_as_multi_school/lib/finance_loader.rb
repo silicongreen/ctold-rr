@@ -2850,7 +2850,7 @@ module FinanceLoader
       :service_charge=>service_charge,
       :pan=>pan
     }
-
+abort(trans_date.to_s + "  " + order_datetime.to_s)
     dt = trans_date.split(".")
     transaction_datetime = dt[0]
 

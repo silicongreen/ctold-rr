@@ -744,7 +744,7 @@ class FinanceFee < ActiveRecord::Base
   
   def regenerate_balance
     if student
-      if update_bal_data
+      if update_bal_data.nil? or update_bal_data == false
         finance_fee = self
         date = FinanceFeeCollection.find(fee_collection_id)
 

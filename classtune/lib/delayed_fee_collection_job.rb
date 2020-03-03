@@ -437,15 +437,6 @@ class DelayedFeeCollectionJob
                         end
                       end
 
-                      bal = finance_fee.balance
-                      bal = bal - transaction.amount
-                      if bal < 0
-                        bal = 0
-                        finance_fee.update_attributes( :is_paid=>true, :balance => 0.0)
-                      else
-                        finance_fee.update_attributes(:balance => bal)
-                      end
-                      
                       transaction.update_attributes(:user_id=>@user.id)
                       if transaction.finance_type=="FinanceFee"
                         transaction.update_attributes(:batch_id=>"#{s.batch_id}")
@@ -464,9 +455,9 @@ class DelayedFeeCollectionJob
                     bal = bal - paid_amount
                     if bal < 0
                       bal = 0
-                      finance_fee.update_attributes( :is_paid=>true, :balance => 0.0)
+                      finance_fee.update_attributes( :is_paid=>true, :balance => 0.0, :update_bal_data => true)
                     else
-                      finance_fee.update_attributes(:balance => bal)
+                      finance_fee.update_attributes(:balance => bal, :update_bal_data => true)
                     end
                     
                     recipient_ids << s.user.id if s.user

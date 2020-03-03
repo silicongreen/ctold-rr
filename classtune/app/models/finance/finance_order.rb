@@ -24,21 +24,31 @@ class FinanceOrder < ActiveRecord::Base
   
   serialize :request_params
   
-#  before_create :change_table
-#  before_save :change_table
-#  before_update :change_table
-#  
-#  def change_table
+  before_create :change_table
+  before_save :change_table
+  before_update :change_table
+  
+#  def create
 #    unless MultiSchool.current_school.nil?
-#      if MultiSchool.current_school.id != 352
+#      if MultiSchool.current_school.id == 352
+#        abort(self.inspect)
 #        self.table_name = MultiSchool.current_school.code + "_payments"
 #      end
 #    end
 #  end
   
+  def change_table
+    unless MultiSchool.current_school.nil?
+      if MultiSchool.current_school.id != 352
+        Payment.table_name = MultiSchool.current_school.code + "_payments"
+      end
+    end
+  end
+  
 #  after_initialize do |finance_order|
 #    unless MultiSchool.current_school.nil?
-#      if MultiSchool.current_school.id != 352
+#      if MultiSchool.current_school.id == 352
+#        #abort('here')
 #        self.table_name = MultiSchool.current_school.code + "_finance_orders"
 #      end
 #    end

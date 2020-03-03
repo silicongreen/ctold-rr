@@ -1294,6 +1294,7 @@
   <div style="clear: both; height: 10px;"></div>
   <% end %>
 <% end %>
+<% payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments" %>  
 <% if @show_only_structure == false %>  
   <% unless @paid_fees.empty? %>
     <div id="payments_details" style="padding-top: 10px;">
@@ -1328,10 +1329,10 @@
                   <% if payment.gateway_response[:amount].to_f == f.amount.to_f %>
                     <% transaction_payment_not_assign = true %>
                   <% else %>  
-                    <% payments = Payment.find(:all, :joins => "left join finance_transactions ON finance_transactions.id = payments.finance_transaction_id", :conditions => "payments.payee_id = '#{@student.id}' and finance_transactions.id IS NULL") %>
+                    <% payments = Payment.find(:all, :joins => "left join finance_transactions ON finance_transactions.id = #{payment_table}.finance_transaction_id", :conditions => "#{payment_table}.payee_id = '#{@student.id}' and finance_transactions.id IS NULL") %>
                   <% end %>
                 <% else %>  
-                  <% payments = Payment.find(:all, :joins => "left join finance_transactions ON finance_transactions.id = payments.finance_transaction_id", :conditions => "payments.payee_id = '#{@student.id}' and finance_transactions.id IS NULL") %>
+                  <% payments = Payment.find(:all, :joins => "left join finance_transactions ON finance_transactions.id = #{payment_table}.finance_transaction_id", :conditions => "#{payment_table}.payee_id = '#{@student.id}' and finance_transactions.id IS NULL") %>
                 <% end %>
               <% else %>
                 <% transaction_payment = true %>

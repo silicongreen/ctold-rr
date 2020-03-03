@@ -1065,7 +1065,11 @@
                           <input type="hidden" name="user_gateway" id="user_gateway" value="<%= @gateway_settings.keys[0].to_s %>" />
                           <input type="hidden" name="order_id" id="order_id" value="<%= @order_id %>" />    
                           <% if @gateway_settings.length == 1 %>
+                            <% if @gateway_settings.keys.include?('bkash') %>
+                            <button type="button" id="pay_fees_multiple" class="submit_button"><%= "► #{t('pay_fees')}" %></button>
+                            <% else %>
                             <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button' %>
+                            <% end %>
                           <% else %>
                             <div style="width: 100%; float: right; text-align: right;">
                               <% @gateway_settings.keys.each do |key| %>

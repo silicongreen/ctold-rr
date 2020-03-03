@@ -2,16 +2,6 @@ module MultiSchool
 
   module Read
     
-    def self.included(base)
-      #abort(base.table_name)
-      if base.table_name == "payments"
-        if MultiSchool.current_school.id != 352
-          base.table_name = MultiSchool.current_school.code + "_payments"
-        end
-        #abort(table_name.inspect)
-      end 
-    end
-    
     def find(*args)
       target_school = MultiSchool.current_school
       if target_school.nil?    

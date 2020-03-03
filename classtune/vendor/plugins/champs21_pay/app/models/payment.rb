@@ -10,10 +10,12 @@ class Payment < ActiveRecord::Base
 #  before_save :change_table
 #  before_update :change_table
   
-  def change_table
+  after_initialize do |payment|
     unless MultiSchool.current_school.nil?
       if MultiSchool.current_school.id != 352
-        Payment.table_name = MultiSchool.current_school.code + "_payments"
+        self.table_name = MultiSchool.current_school.code + "_payments"
+      else
+        self.table_name = "payments"  
       end
     end
   end

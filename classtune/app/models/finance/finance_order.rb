@@ -45,13 +45,15 @@ class FinanceOrder < ActiveRecord::Base
     end
   end
   
-#  after_initialize do |finance_order|
-#    unless MultiSchool.current_school.nil?
-#      if MultiSchool.current_school.id == 352
-#        #abort('here')
-#        self.table_name = MultiSchool.current_school.code + "_finance_orders"
-#      end
-#    end
-#  end
+  after_initialize do |finance_order|
+    unless MultiSchool.current_school.nil?
+      if MultiSchool.current_school.id == 352
+        #abort('here')
+        self.table_name = MultiSchool.current_school.code + "_finance_orders"
+      else
+        self.table_name = "finance_orders"
+      end
+    end
+  end
   
 end

@@ -43,11 +43,13 @@
         <div class="link-descr"><%= t('order_verification') %></div>
     </div>
     
-     <% if @payment_gateways.include?("bkash") %>
-      <div class="link-box" style="display: none;">
-        <div class="link-heading"><%= link_to "#{t('search_transaction')}", {:controller => "online_payments", :action => "search_transaction"} %> </div>
-        <div class="link-descr"><%= t('search_transaction') %></div>
-      </div>
+     <% unless @payment_gateways.blank? %>  
+      <% if @payment_gateways.include?("bkash") %>
+       <div class="link-box" style="display: none;">
+         <div class="link-heading"><%= link_to "#{t('search_transaction')}", {:controller => "online_payments", :action => "search_transaction"} %> </div>
+         <div class="link-descr"><%= t('search_transaction') %></div>
+       </div>
+     <% end %>  
     <% end %>  
   </div>
 </div>

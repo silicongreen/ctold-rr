@@ -47,7 +47,7 @@ class FinanceOrder < ActiveRecord::Base
   
   after_initialize do |finance_order|
     unless MultiSchool.current_school.nil?
-      if MultiSchool.current_school.id == 352
+      if MultiSchool.current_school.id != 352
         #abort('here')
         self.table_name = MultiSchool.current_school.code + "_finance_orders"
       else

@@ -3308,6 +3308,7 @@ module FinanceLoader
     #request.body = {"amount"=> params[:total_fees],"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>params[:order_id]}.to_json
     response = http.request(request)
     tmp_response_ssl = JSON::parse(response.body)
+    abort(response_ssl.inspect)
     response_ssl = {}
     tmp_response_ssl.each do |key,value|
       response_ssl[key.to_sym] = value

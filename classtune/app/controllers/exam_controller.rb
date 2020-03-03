@@ -367,7 +367,7 @@ class ExamController < ApplicationController
       else  
         @normal_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>"elective_group_id IS NULL AND is_deleted = false")
         @elective_subjects = []
-        elective_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>"elective_group_id IS NOT NULL AND is_deleted = false")
+        elective_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>"elective_group_id IS NOT NULL AND subjects.is_deleted = false and elective_groups.is_deleted = false and elective_groups.batch_id ="+@batch.id,:include=>["elective_group"])
         elective_subjects.each do |e|
           is_assigned = StudentsSubject.find_all_by_subject_id(e.id)
           unless is_assigned.empty?

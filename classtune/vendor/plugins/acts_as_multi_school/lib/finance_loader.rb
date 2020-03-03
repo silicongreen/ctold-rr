@@ -2850,7 +2850,7 @@ module FinanceLoader
       :service_charge=>service_charge,
       :pan=>pan
     }
-abort(trans_date.to_s + "  " + order_datetime.to_s)
+#abort(trans_date.to_s + "  " + order_datetime.to_s)
     dt = trans_date.split(".")
     transaction_datetime = dt[0]
 
@@ -2926,7 +2926,12 @@ abort(trans_date.to_s + "  " + order_datetime.to_s)
         finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and request_params is not null")
         unless finance_orders.blank?
           request_params = finance_orders[0].request_params
-          fees = request_params["fees"].split(",")
+          unless request_params["fees"].blank?
+            fees = request_params["fees"].split(",")
+          else
+            fees = []
+            fees << request_params["id2"]
+          end
           unless fees.blank?
             fees.each do |fee|
               finance_order = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and finance_fee_id = #{fee} and request_params is not null")

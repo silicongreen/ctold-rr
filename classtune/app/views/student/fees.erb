@@ -184,7 +184,10 @@
                       <% fine_enabled = false %>
                     <% end %>
                   <% end %>
-                  <%  finance_fee = @student.finance_fee_by_date(d) %>
+                  <% finance_fee = @student.finance_fee_by_date(d) %>
+                  <% if @student.id == 39183 %>
+                  <%= debug finance_fee.inspect %>
+                  <% end %>
                   <%  paid_fees = finance_fee.finance_transactions %>
                   <%
                     paid_amount = 0.0

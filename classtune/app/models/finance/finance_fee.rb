@@ -686,12 +686,7 @@ class FinanceFee < ActiveRecord::Base
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
-    if s.id == 39183
-      abort(fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.inspect)
-    end
-    total_payable=fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.sum.to_f
-    
-    
+    total_payable=fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     
     total_discount = 0
 

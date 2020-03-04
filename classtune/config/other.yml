@@ -1,7 +1,8 @@
 resulttype:
- numbers: "323,2,325,340,312,348,3,352,346,355,356,324"
+ numbers: "323,2,325,340,312,348,3,352,346,355,356,324,357"
  type_323: "Mid Term,Final Term,Class 10 Mid Term,Class 10 Final Term,Class Test,Final Term Legal,Assessment,Mid Term New"
  type_325: "Summer,Spring,Fall,Test,Final"
+ type_357: "Mid Term"
  type_356: "Type1,Type2,Type3"
  type_2: "Final Term,First Term,Mock Test,Quarter,KG First Term,KG Final Term"
  type_3: "Term Exam"
@@ -14,7 +15,8 @@ resulttype:
  type_355: "Junior Section,Senior Section"
  default: "Type 1,Type 2,Type 3,Type 4,Type 5,Type 6,Type 7,Type 8"
 resulttype2:
- numbers: "323,2,325,340,342,352,348,356,324"
+ numbers: "323,2,325,340,342,352,348,356,324,357"
+ type_357: "1_SUB,2_OB,3_PR,4_AT,5_CT"
  type_340: "1_Class Test,2_Term Test,3_Written,4_Assesment,5_Mock Test"
  type_325: "1_Class Test,2_Project,3_Term,4_Attendance"
  type_323: "1_Class Test,2_Project,3_Term,5_Mock Test,6_Assessment,7_H.W & Assignment,8_C.W OR S.T"

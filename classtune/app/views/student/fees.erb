@@ -185,9 +185,6 @@
                     <% end %>
                   <% end %>
                   <% finance_fee = @student.finance_fee_by_date(d) %>
-                  <% if @student.id == 39183 %>
-                  <%= debug finance_fee.inspect %>
-                  <% end %>
                   <%  paid_fees = finance_fee.finance_transactions %>
                   <%
                     paid_amount = 0.0
@@ -213,6 +210,11 @@
                         end
                       end
                     end
+                  %>
+                  <% if @student.id == 39183 %>
+                  <%= debug paid_amount.inspect %>
+                  <% end %>
+                  <%
                     if fine_amount_paid > 0
                       balance = FinanceFee.get_student_balance(d, @student, finance_fee) + fine_amount_paid.to_f
                     else

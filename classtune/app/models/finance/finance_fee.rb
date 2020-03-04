@@ -659,9 +659,31 @@ class FinanceFee < ActiveRecord::Base
       exclude_particular_ids = [0]
     end
     
+    particular_exclude = []
     fee_particulars = date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{fee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==fee.batch) }
     if s.id == 39183
-      abort(fee_particulars.map(&:id).inspect)
+      fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+        finance_fee_category_id = fp.finance_fee_category_id
+        finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+        ff = fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+        unless ff.blank?
+          particular_exclude << fp.id
+        else
+          ff = fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              particular_exclude << fp.id
+            end
+        end
+      end
+      fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
+        finance_fee_category_id = fp.finance_fee_category_id
+        finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+        ff = fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+        unless ff.blank?
+          particular_exclude << fp.id
+        end
+      end
+      abort(particular_exclude.inspect)
     end
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)

@@ -660,7 +660,7 @@ class FinanceFee < ActiveRecord::Base
     end
     
     fee_particulars = date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{fee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==fee.batch) }
-    if @student.id == 39183
+    if s.id == 39183
       abort(fee_particulars.map(&:id).inspect)
     end
     #if date.id == 1719

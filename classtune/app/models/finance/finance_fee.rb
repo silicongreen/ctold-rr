@@ -688,6 +688,11 @@ class FinanceFee < ActiveRecord::Base
     #end
     
     total_payable=fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.sum.to_f
+    
+    if s.id == 39183
+      abort(total_payable.to_s)
+    end
+    
     total_discount = 0
 
     if MultiSchool.current_school.id == 312

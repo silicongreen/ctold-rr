@@ -766,7 +766,35 @@ module FinanceLoader
     else
       @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }
     end
-
+    
+    particular_exclude = []
+    @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+      finance_fee_category_id = fp.finance_fee_category_id
+      finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+      unless ff.blank?
+        particular_exclude << fp.id
+      else
+        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+          unless ff.blank?
+            particular_exclude << fp.id
+          end
+      end
+    end
+    @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
+      finance_fee_category_id = fp.finance_fee_category_id
+      finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+      unless ff.blank?
+        particular_exclude << fp.id
+      end
+    end
+    
+    #if date.id == 1719
+    #  abort(fee_particulars.map(&:id).inspect)
+    #end
+    total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
+    @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     if advance_fee_collection
       month = 1
       payable = 0
@@ -2269,7 +2297,33 @@ module FinanceLoader
       exclude_particular_ids = [0]
     end
     fee_particulars = date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{student.batch_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-    total_payable=fee_particulars.map{|st| st.amount}.sum.to_f
+    particular_exclude = []
+    fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+      finance_fee_category_id = fp.finance_fee_category_id
+      finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+      ff = fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+      unless ff.blank?
+        particular_exclude << fp.id
+      else
+        ff = fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+          unless ff.blank?
+            particular_exclude << fp.id
+          end
+      end
+    end
+    fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
+      finance_fee_category_id = fp.finance_fee_category_id
+      finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+      ff = fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+      unless ff.blank?
+        particular_exclude << fp.id
+      end
+    end
+    
+    #if date.id == 1719
+    #  abort(fee_particulars.map(&:id).inspect)
+    #end
+    total_payable=fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     
     discount_amount = []
     discounts = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{student.batch_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
@@ -2387,7 +2441,33 @@ module FinanceLoader
       exclude_particular_ids = [0]
     end
     fee_particulars = date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{student.batch_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-    total_payable=fee_particulars.map{|st| st.amount}.sum.to_f
+    particular_exclude = []
+    fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+      finance_fee_category_id = fp.finance_fee_category_id
+      finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+      ff = fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+      unless ff.blank?
+        particular_exclude << fp.id
+      else
+        ff = fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+          unless ff.blank?
+            particular_exclude << fp.id
+          end
+      end
+    end
+    fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
+      finance_fee_category_id = fp.finance_fee_category_id
+      finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+      ff = fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+      unless ff.blank?
+        particular_exclude << fp.id
+      end
+    end
+    
+    #if date.id == 1719
+    #  abort(fee_particulars.map(&:id).inspect)
+    #end
+    total_payable=fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     
     discount_amount = []
     discounts = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{student.batch_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
@@ -3026,6 +3106,35 @@ module FinanceLoader
                     @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{fee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==fee.batch) }
                   end
 
+                  particular_exclude = []
+                  @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+                    finance_fee_category_id = fp.finance_fee_category_id
+                    finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+                    ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                    unless ff.blank?
+                      particular_exclude << fp.id
+                    else
+                      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                        unless ff.blank?
+                          particular_exclude << fp.id
+                        end
+                    end
+                  end
+                  @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
+                    finance_fee_category_id = fp.finance_fee_category_id
+                    finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+                    ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                    unless ff.blank?
+                      particular_exclude << fp.id
+                    end
+                  end
+
+                  #if date.id == 1719
+                  #  abort(fee_particulars.map(&:id).inspect)
+                  #end
+                  total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
+                  @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
+                  
                   if advance_fee_collection
                     month = 1
                     payable = 0
@@ -3477,6 +3586,35 @@ module FinanceLoader
                 else
                   @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{fee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==fee.batch) }
                 end
+                
+                particular_exclude = []
+                @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+                  finance_fee_category_id = fp.finance_fee_category_id
+                  finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+                  ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                  unless ff.blank?
+                    particular_exclude << fp.id
+                  else
+                    ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                      unless ff.blank?
+                        particular_exclude << fp.id
+                      end
+                  end
+                end
+                @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
+                  finance_fee_category_id = fp.finance_fee_category_id
+                  finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+                  ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                  unless ff.blank?
+                    particular_exclude << fp.id
+                  end
+                end
+
+                #if date.id == 1719
+                #  abort(fee_particulars.map(&:id).inspect)
+                #end
+                total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
+                @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
 
                 if advance_fee_collection
                   month = 1

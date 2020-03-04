@@ -865,6 +865,14 @@ class FinanceFee < ActiveRecord::Base
         else
           finance_fee.update_attributes(:balance => bal, :update_bal_data => true)
         end
+        
+        student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{student_id} and fee_id = #{id} and particular_id = #{0} and amount_to_pay > 0 and amount_paid = 0 and transaction_id = 0 and is_fine = 0")
+        unless student_fee_ledgers.nil?
+          student_fee_ledgers.each do |fee_ledger|
+            student_fee_ledger = StudentFeeLedger.find(fee_ledger.id)
+            student_fee_ledger.update_attributes(:amount_to_pay => bal)
+          end
+        end
       end
     end
   end

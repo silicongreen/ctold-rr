@@ -406,7 +406,13 @@ class FinanceFee < ActiveRecord::Base
       else
         bal = balance.to_f
       end
-      fee.update_attributes(:balance=>bal)
+      bal = 0 if bal.to_i < 0
+      if bal == 0
+         fee.update_attributes(:is_paid=>true,:balance=>bal)
+      else  
+        fee.update_attributes(:balance=>bal)
+      end
+      
     else
       fee_paid = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id(student.id, date.id, student.batch_id)
       unless fee_paid.blank?
@@ -419,12 +425,33 @@ class FinanceFee < ActiveRecord::Base
         end
         
         bal = 0 if bal.to_i < 0
-        fee_paid.update_attributes(:is_paid=>0,:balance=>bal)
+        if bal == 0
+            fee.update_attributes(:is_paid=>true,:balance=>bal)
+         else  
+           fee.update_attributes(:balance=>bal)
+         end
+        #fee_paid.update_attributes(:is_paid=>0,:balance=>bal)
       else
-        fee_paid = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id(student.id, date.id, student.batch_id)
-        if fee_paid.blank?
+        fee_paid = FinanceFee.find_by_student_id_and_fee_collection_id(student.id, date.id)
+        unless fee_paid.blank?
+          paid_fees = fee_paid.finance_transactions
+          unless paid_fees.blank?
+            paid_fees_amount = paid_fees.map(&:amount).sum
+            bal = balance.to_f - paid_fees_amount.to_f
+          else
+            bal = balance.to_f
+          end
+
+          bal = 0 if bal.to_i < 0
+          if bal == 0
+              fee.update_attributes(:is_paid=>true,:balance=>bal)
+           else  
+             fee.update_attributes(:balance=>bal)
+           end
+        else
           FinanceFee.create(:student_id => student.id,:fee_collection_id => date.id,:balance=>balance,:batch_id=>student.batch_id)
         end
+        
       end
       
     end

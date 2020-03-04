@@ -858,6 +858,7 @@ class FinanceFee < ActiveRecord::Base
             paid_amount += pf.amount
           end
         end
+        balance = bal
         bal = bal - paid_amount
         if bal < 0
           bal = 0
@@ -870,7 +871,7 @@ class FinanceFee < ActiveRecord::Base
         unless student_fee_ledgers.nil?
           student_fee_ledgers.each do |fee_ledger|
             student_fee_ledger = StudentFeeLedger.find(fee_ledger.id)
-            student_fee_ledger.update_attributes(:amount_to_pay => bal)
+            student_fee_ledger.update_attributes(:amount_to_pay => balance)
           end
         end
       end

@@ -216,9 +216,6 @@
                       balance = FinanceFee.get_student_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f + fine_amount_paid.to_f
                     end
                   %>
-                  <% if @student.id == 39183 %>
-                  <%= debug balance.inspect %>
-                  <% end %>
                   <%
                     if fine_amount_paid > 0
                       balance_with_fine = FinanceFee.get_student_balance(d, @student, finance_fee) + fine_amount_paid.to_f

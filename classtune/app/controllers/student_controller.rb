@@ -3183,7 +3183,7 @@ class StudentController < ApplicationController
     @previous_batch_id = params[:previous_batch_id]
     
     @fees = params[:fee_id].split(",")
-    
+    abort(@fees.inspect)
     @finance_fees = FinanceFee.find(:all, :conditions => "id IN (#{@fees.map(&:to_i).join(",")})")
     
     unless @finance_fees.blank?

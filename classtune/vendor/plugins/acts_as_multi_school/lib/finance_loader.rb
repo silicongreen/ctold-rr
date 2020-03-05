@@ -3552,8 +3552,9 @@ module FinanceLoader
 
     is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
     extra_string = (is_test_bkash) ? '_sandbox' : ''
-    payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "query/" + payment_id.to_s)
-    payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "query/" + payment_id.to_s)
+    payment_id = "7C5701X355"
+    payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "search/" + payment_id.to_s)
+    payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "search/" + payment_id.to_s)
 #abort("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "query/" + payment_id.to_s)
     http = Net::HTTP.new(payment_url.host, payment_url.port)
     http.use_ssl = (payment_url.scheme == 'https')

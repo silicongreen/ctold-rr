@@ -101,7 +101,7 @@ class StudentController < ApplicationController
           request.body = {"app_key"=>@app_key,"app_secret"=>@app_secret}.to_json
           response = http.request(request)
           response_ssl = JSON::parse(response.body)
-          abort(response_ssl.inspect)
+          #abort(response_ssl.inspect)
           render :json => response_ssl
         else
           error = {:errorMessage => "No student selected, Please contact adnin"}
@@ -152,6 +152,7 @@ class StudentController < ApplicationController
         request.body = {"amount"=> params[:total_fees],"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>params[:order_id]}.to_json
         response = http.request(request)
         response_ssl = JSON::parse(response.body)
+        abort(response_ssl.inspect)
         render :json => response_ssl
       else
         error = {:errorMessage => "Invalid Request for token"}

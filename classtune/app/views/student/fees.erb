@@ -216,6 +216,12 @@
                       balance = FinanceFee.get_student_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f + fine_amount_paid.to_f
                     end
                   %>
+                  <% if params[:target] == "huffas" %>
+                  <%
+                    fee_particulars = d.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{finance_fee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==finance_fee.batch) }
+                  %>
+                  <%= debug fee_particulars.map(&:id).inspect %>
+                  <% end %>
                   <%
                     if fine_amount_paid > 0
                       balance_with_fine = FinanceFee.get_student_balance(d, @student, finance_fee) + fine_amount_paid.to_f

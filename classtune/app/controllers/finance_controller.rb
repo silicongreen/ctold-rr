@@ -9482,63 +9482,76 @@ class FinanceController < ApplicationController
         end
         
         particular_exclude = []
-        @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+        @fee_particulars.select{ |stt| stt.receiver_type == 'Student' }.each do |fp|
           finance_fee_category_id = fp.finance_fee_category_id
           finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-          ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-          unless ff.blank?
-            particular_exclude << fp.id
-          else
-            ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+          parent_id = fp.parent_id
+          change_for = fp.change_for
+          if change_for > 0
+            fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+            unless fchange_for.blank?
+              receiver_type = fchange_for.receiver_type
+              ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
               unless ff.blank?
-                particular_exclude << fp.id
+                ff.each do |fo|
+                  particular_exclude << fo.id
+                end
               end
-          end
-        end
-        particular_exclude = []
-        @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
-          finance_fee_category_id = fp.finance_fee_category_id
-          finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-          ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-          unless ff.blank?
-            particular_exclude << fp.id
-          end
-        end
-        
-        #if date.id == 1719
-        #  abort(fee_particulars.map(&:id).inspect)
-        #end
-        particular_exclude = []
-        total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
-        @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
-        
-        particular_exclude = []
-        @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
-          finance_fee_category_id = fp.finance_fee_category_id
-          finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-          ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-          unless ff.blank?
-            particular_exclude << fp.id
-          else
-            ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-              unless ff.blank?
-                particular_exclude << fp.id
+            else
+              fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+              unless fchange_for.blank?
+                receiver_type = fchange_for.receiver_type
+                ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                unless ff.blank?
+                  ff.each do |fo|
+                    particular_exclude << fo.id
+                  end
+                end
               end
+            end
           end
         end
         @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
           finance_fee_category_id = fp.finance_fee_category_id
           finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-          ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-          unless ff.blank?
-            particular_exclude << fp.id
+          parent_id = fp.parent_id
+          change_for = fp.change_for
+          if change_for > 0
+            fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+            unless fchange_for.blank?
+              receiver_type = fchange_for.receiver_type
+              ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+              unless ff.blank?
+                ff.each do |fo|
+                  particular_exclude << fo.id
+                end
+              end
+            else
+              fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+              unless fchange_for.blank?
+                receiver_type = fchange_for.receiver_type
+                ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                unless ff.blank?
+                  ff.each do |fo|
+                    particular_exclude << fo.id
+                  end
+                end
+              end
+            end
           end
         end
+        
+#        #if date.id == 1719
+#        #  abort(fee_particulars.map(&:id).inspect)
+#        #end
+#        #particular_exclude = []
+#        total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
+#        @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
         
         #if date.id == 1719
         #  abort(fee_particulars.map(&:id).inspect)
         #end
-        particular_exclude = []
+        #particular_exclude = []
         total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
         @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
         
@@ -9751,62 +9764,69 @@ class FinanceController < ApplicationController
     end
     
     particular_exclude = []
-    @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+    @fee_particulars.select{ |stt| stt.receiver_type == 'Student' }.each do |fp|
       finance_fee_category_id = fp.finance_fee_category_id
       finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
-      else
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+      parent_id = fp.parent_id
+      change_for = fp.change_for
+      if change_for > 0
+        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+        unless fchange_for.blank?
+          receiver_type = fchange_for.receiver_type
+          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
           unless ff.blank?
-            particular_exclude << fp.id
+            ff.each do |fo|
+              particular_exclude << fo.id
+            end
           end
+        else
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          end
+        end
       end
     end
     @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
       finance_fee_category_id = fp.finance_fee_category_id
       finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
+      parent_id = fp.parent_id
+      change_for = fp.change_for
+      if change_for > 0
+        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+        unless fchange_for.blank?
+          receiver_type = fchange_for.receiver_type
+          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+          unless ff.blank?
+            ff.each do |fo|
+              particular_exclude << fo.id
+            end
+          end
+        else
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          end
+        end
       end
     end
     
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
-    particular_exclude = []
-    total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
-    @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
-    
-    particular_exclude = []
-    @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
-      finance_fee_category_id = fp.finance_fee_category_id
-      finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
-      else
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-          unless ff.blank?
-            particular_exclude << fp.id
-          end
-      end
-    end
-    @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
-      finance_fee_category_id = fp.finance_fee_category_id
-      finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
-      end
-    end
-    
-    #if date.id == 1719
-    #  abort(fee_particulars.map(&:id).inspect)
-    #end
-    particular_exclude = []
+    #particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     
@@ -10596,62 +10616,69 @@ class FinanceController < ApplicationController
       end
       
       particular_exclude = []
-      @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+      @fee_particulars.select{ |stt| stt.receiver_type == 'Student' }.each do |fp|
         finance_fee_category_id = fp.finance_fee_category_id
         finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-        unless ff.blank?
-          particular_exclude << fp.id
-        else
-          ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+        parent_id = fp.parent_id
+        change_for = fp.change_for
+        if change_for > 0
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
             unless ff.blank?
-              particular_exclude << fp.id
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
             end
+          else
+            fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+            unless fchange_for.blank?
+              receiver_type = fchange_for.receiver_type
+              ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+              unless ff.blank?
+                ff.each do |fo|
+                  particular_exclude << fo.id
+                end
+              end
+            end
+          end
         end
       end
       @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
         finance_fee_category_id = fp.finance_fee_category_id
         finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-        unless ff.blank?
-          particular_exclude << fp.id
+        parent_id = fp.parent_id
+        change_for = fp.change_for
+        if change_for > 0
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          else
+            fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+            unless fchange_for.blank?
+              receiver_type = fchange_for.receiver_type
+              ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+              unless ff.blank?
+                ff.each do |fo|
+                  particular_exclude << fo.id
+                end
+              end
+            end
+          end
         end
       end
       
       #if date.id == 1719
       #  abort(fee_particulars.map(&:id).inspect)
       #end
-      particular_exclude = []
-      total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
-      @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
-      
-      particular_exclude = []
-      @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
-        finance_fee_category_id = fp.finance_fee_category_id
-        finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-        unless ff.blank?
-          particular_exclude << fp.id
-        else
-          ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-            unless ff.blank?
-              particular_exclude << fp.id
-            end
-        end
-      end
-      @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
-        finance_fee_category_id = fp.finance_fee_category_id
-        finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-        unless ff.blank?
-          particular_exclude << fp.id
-        end
-      end
-      
-      #if date.id == 1719
-      #  abort(fee_particulars.map(&:id).inspect)
-      #end
-      particular_exclude = []
+      #particular_exclude = []
       total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
       @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
       
@@ -11087,61 +11114,69 @@ class FinanceController < ApplicationController
       end
       
       particular_exclude = []
-      @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+      @fee_particulars.select{ |stt| stt.receiver_type == 'Student' }.each do |fp|
         finance_fee_category_id = fp.finance_fee_category_id
         finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-        unless ff.blank?
-          particular_exclude << fp.id
-        else
-          ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+        parent_id = fp.parent_id
+        change_for = fp.change_for
+        if change_for > 0
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
             unless ff.blank?
-              particular_exclude << fp.id
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
             end
+          else
+            fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+            unless fchange_for.blank?
+              receiver_type = fchange_for.receiver_type
+              ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+              unless ff.blank?
+                ff.each do |fo|
+                  particular_exclude << fo.id
+                end
+              end
+            end
+          end
         end
       end
       @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
         finance_fee_category_id = fp.finance_fee_category_id
         finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-        unless ff.blank?
-          particular_exclude << fp.id
+        parent_id = fp.parent_id
+        change_for = fp.change_for
+        if change_for > 0
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          else
+            fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+            unless fchange_for.blank?
+              receiver_type = fchange_for.receiver_type
+              ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+              unless ff.blank?
+                ff.each do |fo|
+                  particular_exclude << fo.id
+                end
+              end
+            end
+          end
         end
       end
       
       #if date.id == 1719
       #  abort(fee_particulars.map(&:id).inspect)
       #end
-      particular_exclude = []
-      total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
-      @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
-      
-      particular_exclude = []
-      @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
-        finance_fee_category_id = fp.finance_fee_category_id
-        finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-        unless ff.blank?
-          particular_exclude << fp.id
-        else
-          ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-            unless ff.blank?
-              particular_exclude << fp.id
-            end
-        end
-      end
-      @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
-        finance_fee_category_id = fp.finance_fee_category_id
-        finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-        unless ff.blank?
-          particular_exclude << fp.id
-        end
-      end
-      #if date.id == 1719
-      #  abort(fee_particulars.map(&:id).inspect)
-      #end
-      particular_exclude = []
+      #particular_exclude = []
       total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
       @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
       
@@ -11291,62 +11326,68 @@ class FinanceController < ApplicationController
       end
       
       particular_exclude = []
-      @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+      @fee_particulars.select{ |stt| stt.receiver_type == 'Student' }.each do |fp|
         finance_fee_category_id = fp.finance_fee_category_id
         finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-        unless ff.blank?
-          particular_exclude << fp.id
-        else
-          ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+        parent_id = fp.parent_id
+        change_for = fp.change_for
+        if change_for > 0
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
             unless ff.blank?
-              particular_exclude << fp.id
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
             end
+          else
+            fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+            unless fchange_for.blank?
+              receiver_type = fchange_for.receiver_type
+              ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+              unless ff.blank?
+                ff.each do |fo|
+                  particular_exclude << fo.id
+                end
+              end
+            end
+          end
         end
       end
       @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
         finance_fee_category_id = fp.finance_fee_category_id
         finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-        unless ff.blank?
-          particular_exclude << fp.id
-        end
-      end
-
-      #if date.id == 1719
-      #  abort(fee_particulars.map(&:id).inspect)
-      #end
-      particular_exclude = []
-      total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
-      @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
-      
-      particular_exclude = []
-      @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
-        finance_fee_category_id = fp.finance_fee_category_id
-        finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-        unless ff.blank?
-          particular_exclude << fp.id
-        else
-          ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+        parent_id = fp.parent_id
+        change_for = fp.change_for
+        if change_for > 0
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
             unless ff.blank?
-              particular_exclude << fp.id
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
             end
+          else
+            fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+            unless fchange_for.blank?
+              receiver_type = fchange_for.receiver_type
+              ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+              unless ff.blank?
+                ff.each do |fo|
+                  particular_exclude << fo.id
+                end
+              end
+            end
+          end
         end
       end
-      @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
-        finance_fee_category_id = fp.finance_fee_category_id
-        finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-        unless ff.blank?
-          particular_exclude << fp.id
-        end
-      end
-
-      #if date.id == 1719
+    #if date.id == 1719
       #  abort(fee_particulars.map(&:id).inspect)
       #end
-      particular_exclude = []
+      #particular_exclude = []
       total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
       @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
       
@@ -11638,62 +11679,69 @@ class FinanceController < ApplicationController
         end
         
         particular_exclude = []
-        @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+        @fee_particulars.select{ |stt| stt.receiver_type == 'Student' }.each do |fp|
           finance_fee_category_id = fp.finance_fee_category_id
           finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-          ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-          unless ff.blank?
-            particular_exclude << fp.id
-          else
-            ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+          parent_id = fp.parent_id
+          change_for = fp.change_for
+          if change_for > 0
+            fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+            unless fchange_for.blank?
+              receiver_type = fchange_for.receiver_type
+              ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
               unless ff.blank?
-                particular_exclude << fp.id
+                ff.each do |fo|
+                  particular_exclude << fo.id
+                end
               end
+            else
+              fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+              unless fchange_for.blank?
+                receiver_type = fchange_for.receiver_type
+                ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                unless ff.blank?
+                  ff.each do |fo|
+                    particular_exclude << fo.id
+                  end
+                end
+              end
+            end
           end
         end
         @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
           finance_fee_category_id = fp.finance_fee_category_id
           finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-          ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-          unless ff.blank?
-            particular_exclude << fp.id
+          parent_id = fp.parent_id
+          change_for = fp.change_for
+          if change_for > 0
+            fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+            unless fchange_for.blank?
+              receiver_type = fchange_for.receiver_type
+              ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+              unless ff.blank?
+                ff.each do |fo|
+                  particular_exclude << fo.id
+                end
+              end
+            else
+              fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+              unless fchange_for.blank?
+                receiver_type = fchange_for.receiver_type
+                ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                unless ff.blank?
+                  ff.each do |fo|
+                    particular_exclude << fo.id
+                  end
+                end
+              end
+            end
           end
         end
 
         #if date.id == 1719
         #  abort(fee_particulars.map(&:id).inspect)
         #end
-        particular_exclude = []
-        total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
-        @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
-        
-        particular_exclude = []
-        @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
-          finance_fee_category_id = fp.finance_fee_category_id
-          finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-          ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-          unless ff.blank?
-            particular_exclude << fp.id
-          else
-            ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-              unless ff.blank?
-                particular_exclude << fp.id
-              end
-          end
-        end
-        @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
-          finance_fee_category_id = fp.finance_fee_category_id
-          finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-          ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-          unless ff.blank?
-            particular_exclude << fp.id
-          end
-        end
-
-        #if date.id == 1719
-        #  abort(fee_particulars.map(&:id).inspect)
-        #end
-        particular_exclude = []
+        #particular_exclude = []
         total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
         @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
         
@@ -11960,64 +12008,71 @@ class FinanceController < ApplicationController
     end
     
     particular_exclude = []
-    @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+    @fee_particulars.select{ |stt| stt.receiver_type == 'Student' }.each do |fp|
       finance_fee_category_id = fp.finance_fee_category_id
       finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
-      else
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+      parent_id = fp.parent_id
+      change_for = fp.change_for
+      if change_for > 0
+        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+        unless fchange_for.blank?
+          receiver_type = fchange_for.receiver_type
+          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
           unless ff.blank?
-            particular_exclude << fp.id
+            ff.each do |fo|
+              particular_exclude << fo.id
+            end
           end
+        else
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          end
+        end
       end
     end
     @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
       finance_fee_category_id = fp.finance_fee_category_id
       finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
+      parent_id = fp.parent_id
+      change_for = fp.change_for
+      if change_for > 0
+        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+        unless fchange_for.blank?
+          receiver_type = fchange_for.receiver_type
+          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+          unless ff.blank?
+            ff.each do |fo|
+              particular_exclude << fo.id
+            end
+          end
+        else
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          end
+        end
       end
     end
     
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
-    particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     
-    particular_exclude = []
-    @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
-      finance_fee_category_id = fp.finance_fee_category_id
-      finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
-      else
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-          unless ff.blank?
-            particular_exclude << fp.id
-          end
-      end
-    end
-    @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
-      finance_fee_category_id = fp.finance_fee_category_id
-      finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
-      end
-    end
-    
-    #if date.id == 1719
-    #  abort(fee_particulars.map(&:id).inspect)
-    #end
-    particular_exclude = []
-    total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
-    @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     
     @total_discount = 0
     if advance_fee_collection
@@ -12137,32 +12192,69 @@ class FinanceController < ApplicationController
     end
     
     particular_exclude = []
-    @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+    @fee_particulars.select{ |stt| stt.receiver_type == 'Student' }.each do |fp|
       finance_fee_category_id = fp.finance_fee_category_id
       finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
-      else
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+      parent_id = fp.parent_id
+      change_for = fp.change_for
+      if change_for > 0
+        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+        unless fchange_for.blank?
+          receiver_type = fchange_for.receiver_type
+          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
           unless ff.blank?
-            particular_exclude << fp.id
+            ff.each do |fo|
+              particular_exclude << fo.id
+            end
           end
+        else
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          end
+        end
       end
     end
     @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
       finance_fee_category_id = fp.finance_fee_category_id
       finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
+      parent_id = fp.parent_id
+      change_for = fp.change_for
+      if change_for > 0
+        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+        unless fchange_for.blank?
+          receiver_type = fchange_for.receiver_type
+          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+          unless ff.blank?
+            ff.each do |fo|
+              particular_exclude << fo.id
+            end
+          end
+        else
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          end
+        end
       end
     end
     
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
-    particular_exclude = []
+    #particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     
@@ -12287,32 +12379,69 @@ class FinanceController < ApplicationController
     end
     
     particular_exclude = []
-    @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+    @fee_particulars.select{ |stt| stt.receiver_type == 'Student' }.each do |fp|
       finance_fee_category_id = fp.finance_fee_category_id
       finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
-      else
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+      parent_id = fp.parent_id
+      change_for = fp.change_for
+      if change_for > 0
+        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+        unless fchange_for.blank?
+          receiver_type = fchange_for.receiver_type
+          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
           unless ff.blank?
-            particular_exclude << fp.id
+            ff.each do |fo|
+              particular_exclude << fo.id
+            end
           end
+        else
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          end
+        end
       end
     end
     @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
       finance_fee_category_id = fp.finance_fee_category_id
       finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
+      parent_id = fp.parent_id
+      change_for = fp.change_for
+      if change_for > 0
+        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+        unless fchange_for.blank?
+          receiver_type = fchange_for.receiver_type
+          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+          unless ff.blank?
+            ff.each do |fo|
+              particular_exclude << fo.id
+            end
+          end
+        else
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          end
+        end
       end
     end
     
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
-    particular_exclude = []
+    #particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     
@@ -12607,33 +12736,71 @@ class FinanceController < ApplicationController
       @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and batch_id=#{@finance_fee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@finance_fee.batch) }
     end
     
+    #particular_exclude = []
     particular_exclude = []
-    @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+    @fee_particulars.select{ |stt| stt.receiver_type == 'Student' }.each do |fp|
       finance_fee_category_id = fp.finance_fee_category_id
       finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
-      else
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+      parent_id = fp.parent_id
+      change_for = fp.change_for
+      if change_for > 0
+        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+        unless fchange_for.blank?
+          receiver_type = fchange_for.receiver_type
+          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
           unless ff.blank?
-            particular_exclude << fp.id
+            ff.each do |fo|
+              particular_exclude << fo.id
+            end
           end
+        else
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          end
+        end
       end
     end
     @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
       finance_fee_category_id = fp.finance_fee_category_id
       finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
+      parent_id = fp.parent_id
+      change_for = fp.change_for
+      if change_for > 0
+        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+        unless fchange_for.blank?
+          receiver_type = fchange_for.receiver_type
+          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+          unless ff.blank?
+            ff.each do |fo|
+              particular_exclude << fo.id
+            end
+          end
+        else
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          end
+        end
       end
     end
     
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
-    particular_exclude = []
+    #particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     
@@ -15521,32 +15688,69 @@ class FinanceController < ApplicationController
     end
     
     particular_exclude = []
-    @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+    @fee_particulars.select{ |stt| stt.receiver_type == 'Student' }.each do |fp|
       finance_fee_category_id = fp.finance_fee_category_id
       finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
-      else
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+      parent_id = fp.parent_id
+      change_for = fp.change_for
+      if change_for > 0
+        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+        unless fchange_for.blank?
+          receiver_type = fchange_for.receiver_type
+          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
           unless ff.blank?
-            particular_exclude << fp.id
+            ff.each do |fo|
+              particular_exclude << fo.id
+            end
           end
+        else
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          end
+        end
       end
     end
     @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
       finance_fee_category_id = fp.finance_fee_category_id
       finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
+      parent_id = fp.parent_id
+      change_for = fp.change_for
+      if change_for > 0
+        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+        unless fchange_for.blank?
+          receiver_type = fchange_for.receiver_type
+          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+          unless ff.blank?
+            ff.each do |fo|
+              particular_exclude << fo.id
+            end
+          end
+        else
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          end
+        end
       end
     end
     
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
-    particular_exclude = []
+    #particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     
@@ -16754,32 +16958,69 @@ class FinanceController < ApplicationController
     @total_discount = 0
     
     particular_exclude = []
-    @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+    @fee_particulars.select{ |stt| stt.receiver_type == 'Student' }.each do |fp|
       finance_fee_category_id = fp.finance_fee_category_id
       finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
-      else
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+      parent_id = fp.parent_id
+      change_for = fp.change_for
+      if change_for > 0
+        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+        unless fchange_for.blank?
+          receiver_type = fchange_for.receiver_type
+          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
           unless ff.blank?
-            particular_exclude << fp.id
+            ff.each do |fo|
+              particular_exclude << fo.id
+            end
           end
+        else
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          end
+        end
       end
     end
     @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
       finance_fee_category_id = fp.finance_fee_category_id
       finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
+      parent_id = fp.parent_id
+      change_for = fp.change_for
+      if change_for > 0
+        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+        unless fchange_for.blank?
+          receiver_type = fchange_for.receiver_type
+          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+          unless ff.blank?
+            ff.each do |fo|
+              particular_exclude << fo.id
+            end
+          end
+        else
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          end
+        end
       end
     end
     
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
-    particular_exclude = []
+    #particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     
@@ -17080,32 +17321,69 @@ class FinanceController < ApplicationController
       end
       
       particular_exclude = []
-      @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+      @fee_particulars.select{ |stt| stt.receiver_type == 'Student' }.each do |fp|
         finance_fee_category_id = fp.finance_fee_category_id
         finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-        unless ff.blank?
-          particular_exclude << fp.id
-        else
-          ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+        parent_id = fp.parent_id
+        change_for = fp.change_for
+        if change_for > 0
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
             unless ff.blank?
-              particular_exclude << fp.id
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
             end
+          else
+            fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+            unless fchange_for.blank?
+              receiver_type = fchange_for.receiver_type
+              ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+              unless ff.blank?
+                ff.each do |fo|
+                  particular_exclude << fo.id
+                end
+              end
+            end
+          end
         end
       end
       @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
         finance_fee_category_id = fp.finance_fee_category_id
         finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-        unless ff.blank?
-          particular_exclude << fp.id
+        parent_id = fp.parent_id
+        change_for = fp.change_for
+        if change_for > 0
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          else
+            fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+            unless fchange_for.blank?
+              receiver_type = fchange_for.receiver_type
+              ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+              unless ff.blank?
+                ff.each do |fo|
+                  particular_exclude << fo.id
+                end
+              end
+            end
+          end
         end
       end
 
       #if date.id == 1719
       #  abort(fee_particulars.map(&:id).inspect)
       #end
-      particular_exclude = []
+      #particular_exclude = []
       total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
       @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
       
@@ -17264,32 +17542,69 @@ class FinanceController < ApplicationController
     end
     
     particular_exclude = []
-    @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+    @fee_particulars.select{ |stt| stt.receiver_type == 'Student' }.each do |fp|
       finance_fee_category_id = fp.finance_fee_category_id
       finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
-      else
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+      parent_id = fp.parent_id
+      change_for = fp.change_for
+      if change_for > 0
+        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+        unless fchange_for.blank?
+          receiver_type = fchange_for.receiver_type
+          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
           unless ff.blank?
-            particular_exclude << fp.id
+            ff.each do |fo|
+              particular_exclude << fo.id
+            end
           end
+        else
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          end
+        end
       end
     end
     @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
       finance_fee_category_id = fp.finance_fee_category_id
       finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
+      parent_id = fp.parent_id
+      change_for = fp.change_for
+      if change_for > 0
+        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+        unless fchange_for.blank?
+          receiver_type = fchange_for.receiver_type
+          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+          unless ff.blank?
+            ff.each do |fo|
+              particular_exclude << fo.id
+            end
+          end
+        else
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          end
+        end
       end
     end
     
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
-    particular_exclude = []
+    #particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     @total_discount = 0
@@ -18013,32 +18328,69 @@ class FinanceController < ApplicationController
     end
     
     particular_exclude = []
-    @fee_particulars.select{ |stt| stt.receiver_type == 'Batch' }.each do |fp|
+    @fee_particulars.select{ |stt| stt.receiver_type == 'Student' }.each do |fp|
       finance_fee_category_id = fp.finance_fee_category_id
       finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
-      else
-        ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+      parent_id = fp.parent_id
+      change_for = fp.change_for
+      if change_for > 0
+        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+        unless fchange_for.blank?
+          receiver_type = fchange_for.receiver_type
+          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
           unless ff.blank?
-            particular_exclude << fp.id
+            ff.each do |fo|
+              particular_exclude << fo.id
+            end
           end
+        else
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          end
+        end
       end
     end
     @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
       finance_fee_category_id = fp.finance_fee_category_id
       finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-      ff = @fee_particulars.select{ |stt| stt.receiver_type == 'Student' and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
-      unless ff.blank?
-        particular_exclude << fp.id
+      parent_id = fp.parent_id
+      change_for = fp.change_for
+      if change_for > 0
+        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+        unless fchange_for.blank?
+          receiver_type = fchange_for.receiver_type
+          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+          unless ff.blank?
+            ff.each do |fo|
+              particular_exclude << fo.id
+            end
+          end
+        else
+          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+          unless fchange_for.blank?
+            receiver_type = fchange_for.receiver_type
+            ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+            unless ff.blank?
+              ff.each do |fo|
+                particular_exclude << fo.id
+              end
+            end
+          end
+        end
       end
     end
     
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
-    particular_exclude = []
+    #particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
 

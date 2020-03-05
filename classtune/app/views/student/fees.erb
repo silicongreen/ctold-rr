@@ -233,7 +233,7 @@
                           %>
                           <%
                           unless ff.blank?
-                            ff.each do fo
+                            ff.each do |fo|
                               particular_exclude << fo.id
                             end
                           end
@@ -243,7 +243,7 @@
                             receiver_type = fchange_for.receiver_type
                             ff = fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
                             unless ff.blank?
-                              ff.each do fo
+                              ff.each do |fo|
                                 particular_exclude << fo.id
                               end
                             end
@@ -262,7 +262,7 @@
                           receiver_type = fchange_for.receiver_type
                           ff = fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
                           unless ff.blank?
-                            ff.each do fo
+                            ff.each do |fo|
                               particular_exclude << fo.id
                             end
                           end
@@ -272,7 +272,7 @@
                             receiver_type = fchange_for.receiver_type
                             ff = fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
                             unless ff.blank?
-                              ff.each do fo
+                              ff.each do |fo|
                                 particular_exclude << fo.id
                               end
                             end

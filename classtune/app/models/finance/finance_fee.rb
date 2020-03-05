@@ -103,6 +103,7 @@ class FinanceFee < ActiveRecord::Base
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     #total_payable = fee_particulars.map{|sp| sp.amount}.sum.to_f
     
@@ -331,6 +332,7 @@ class FinanceFee < ActiveRecord::Base
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     
     total_discount = 0
@@ -673,6 +675,7 @@ class FinanceFee < ActiveRecord::Base
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     total_discount = 0
 
@@ -793,6 +796,7 @@ class FinanceFee < ActiveRecord::Base
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     
     total_discount = 0
@@ -948,6 +952,7 @@ class FinanceFee < ActiveRecord::Base
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     total_discount = 0
 
@@ -1072,6 +1077,7 @@ class FinanceFee < ActiveRecord::Base
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     total_discount = 0
 
@@ -1212,6 +1218,7 @@ class FinanceFee < ActiveRecord::Base
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     total_discount = 0
 
@@ -1324,6 +1331,7 @@ class FinanceFee < ActiveRecord::Base
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     total_discount = 0
 

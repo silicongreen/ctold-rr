@@ -793,6 +793,7 @@ module FinanceLoader
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     if advance_fee_collection
@@ -2323,6 +2324,7 @@ module FinanceLoader
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     
     discount_amount = []
@@ -2467,6 +2469,7 @@ module FinanceLoader
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     
     discount_amount = []
@@ -3132,6 +3135,7 @@ module FinanceLoader
                   #if date.id == 1719
                   #  abort(fee_particulars.map(&:id).inspect)
                   #end
+                  particular_exclude = []
                   total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
                   @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
                   
@@ -3613,6 +3617,7 @@ module FinanceLoader
                 #if date.id == 1719
                 #  abort(fee_particulars.map(&:id).inspect)
                 #end
+                particular_exclude = []
                 total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
                 @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
 

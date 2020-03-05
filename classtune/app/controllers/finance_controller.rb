@@ -9495,6 +9495,7 @@ class FinanceController < ApplicationController
               end
           end
         end
+        particular_exclude = []
         @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
           finance_fee_category_id = fp.finance_fee_category_id
           finance_fee_particular_category_id = fp.finance_fee_particular_category_id
@@ -9503,10 +9504,11 @@ class FinanceController < ApplicationController
             particular_exclude << fp.id
           end
         end
-
+        
         #if date.id == 1719
         #  abort(fee_particulars.map(&:id).inspect)
         #end
+        particular_exclude = []
         total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
         @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
         
@@ -9532,10 +9534,11 @@ class FinanceController < ApplicationController
             particular_exclude << fp.id
           end
         end
-
+        
         #if date.id == 1719
         #  abort(fee_particulars.map(&:id).inspect)
         #end
+        particular_exclude = []
         total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
         @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
         
@@ -9773,6 +9776,7 @@ class FinanceController < ApplicationController
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     
@@ -9802,6 +9806,7 @@ class FinanceController < ApplicationController
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     
@@ -10612,10 +10617,11 @@ class FinanceController < ApplicationController
           particular_exclude << fp.id
         end
       end
-
+      
       #if date.id == 1719
       #  abort(fee_particulars.map(&:id).inspect)
       #end
+      particular_exclude = []
       total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
       @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
       
@@ -10641,10 +10647,11 @@ class FinanceController < ApplicationController
           particular_exclude << fp.id
         end
       end
-
+      
       #if date.id == 1719
       #  abort(fee_particulars.map(&:id).inspect)
       #end
+      particular_exclude = []
       total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
       @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
       
@@ -11101,10 +11108,11 @@ class FinanceController < ApplicationController
           particular_exclude << fp.id
         end
       end
-
+      
       #if date.id == 1719
       #  abort(fee_particulars.map(&:id).inspect)
       #end
+      particular_exclude = []
       total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
       @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
       
@@ -11130,10 +11138,10 @@ class FinanceController < ApplicationController
           particular_exclude << fp.id
         end
       end
-
       #if date.id == 1719
       #  abort(fee_particulars.map(&:id).inspect)
       #end
+      particular_exclude = []
       total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
       @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
       
@@ -11308,6 +11316,7 @@ class FinanceController < ApplicationController
       #if date.id == 1719
       #  abort(fee_particulars.map(&:id).inspect)
       #end
+      particular_exclude = []
       total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
       @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
       
@@ -11337,6 +11346,7 @@ class FinanceController < ApplicationController
       #if date.id == 1719
       #  abort(fee_particulars.map(&:id).inspect)
       #end
+      particular_exclude = []
       total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
       @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
       
@@ -11653,6 +11663,7 @@ class FinanceController < ApplicationController
         #if date.id == 1719
         #  abort(fee_particulars.map(&:id).inspect)
         #end
+        particular_exclude = []
         total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
         @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
         
@@ -11682,6 +11693,7 @@ class FinanceController < ApplicationController
         #if date.id == 1719
         #  abort(fee_particulars.map(&:id).inspect)
         #end
+        particular_exclude = []
         total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
         @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
         
@@ -11973,6 +11985,7 @@ class FinanceController < ApplicationController
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     
@@ -12002,6 +12015,7 @@ class FinanceController < ApplicationController
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     
@@ -12148,6 +12162,7 @@ class FinanceController < ApplicationController
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     
@@ -12297,6 +12312,7 @@ class FinanceController < ApplicationController
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     
@@ -12617,6 +12633,7 @@ class FinanceController < ApplicationController
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     
@@ -15529,6 +15546,7 @@ class FinanceController < ApplicationController
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     
@@ -16761,6 +16779,7 @@ class FinanceController < ApplicationController
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     
@@ -17086,6 +17105,7 @@ class FinanceController < ApplicationController
       #if date.id == 1719
       #  abort(fee_particulars.map(&:id).inspect)
       #end
+      particular_exclude = []
       total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
       @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
       
@@ -17269,6 +17289,7 @@ class FinanceController < ApplicationController
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
     @total_discount = 0
@@ -18017,6 +18038,7 @@ class FinanceController < ApplicationController
     #if date.id == 1719
     #  abort(fee_particulars.map(&:id).inspect)
     #end
+    particular_exclude = []
     total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
     @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
 

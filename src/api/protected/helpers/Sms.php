@@ -9,14 +9,14 @@
 class Sms
 {
 
-    public static $sms_attendence_school = [2, 296,319,352,356,312];
+    public static $sms_attendence_school = [2, 296,319,352,356,312,357];
     public static $sms_all_guardian = [2];
     public static $sms_subject_attendence_school = [2];
     //296
 
-    public static $sms_school_host = array(2 => "host_ssd", 296 => "host_ssd", 319 => "host_ssd", 312 => "host_ssd", 352 => "host_ssd", 346 => "host_ssd", 356 => "host_ssd");
-    public static $sms_school_param = array(2 => "param_ssd", 296 => "param_ssd", 319 => "param_ssd", 312 => "param_ssd", 352 => "param_ssd", 346 => "param_ssd", 356 => "param_ssd");
-    public static $sms_school_hosts_return = array(2 => "host_return_ssd", 296 => "host_return_ssd", 319 => "host_return_ssd", 312 => "host_return_ssd", 346 => "host_return_ssd", 352 => "host_return_ssd", 356 => "host_return_ssd");
+    public static $sms_school_host = array(2 => "host_ssd",357 => "host_ssd", 296 => "host_ssd", 319 => "host_ssd", 312 => "host_ssd", 352 => "host_ssd", 346 => "host_ssd", 356 => "host_ssd");
+    public static $sms_school_param = array(2 => "param_ssd",357 => "param_ssd", 296 => "param_ssd", 319 => "param_ssd", 312 => "param_ssd", 352 => "param_ssd", 346 => "param_ssd", 356 => "param_ssd");
+    public static $sms_school_hosts_return = array(2 => "host_return_ssd",357 => "host_return_ssd", 296 => "host_return_ssd", 319 => "host_return_ssd", 312 => "host_return_ssd", 346 => "host_return_ssd", 352 => "host_return_ssd", 356 => "host_return_ssd");
     public static $param_ssd = array("msisdn", "sms");
     public static $host_ssd = "http://sms.sslwireless.com/pushapi/dynamic/server.php?user=ctune&pass=84Y148r?&sid=ClassTune";
     public static $host_return_ssd = "Success";

@@ -219,7 +219,60 @@
                   <% if params[:target] == "huffas" %>
                   <%
                     fee_particulars = d.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{finance_fee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==finance_fee.batch) }
+                    particular_exclude = []
+                    fee_particulars.select{ |stt| stt.receiver_type == 'Student' }.each do |fp|
+                      finance_fee_category_id = fp.finance_fee_category_id
+                      finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+                      parent_id = fp.parent_id
+                      change_for = fp.change_for
+                      if change_for > 0
+                        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+                        unless fchange_for.blank?
+                          receiver_type = fchange_for.receiver_type
+                          ff = fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                          unless ff.blank?
+                            particular_exclude << fp.id
+                          end
+                        else
+                          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+                          unless fchange_for.blank?
+                            receiver_type = fchange_for.receiver_type
+                            ff = fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                            unless ff.blank?
+                              particular_exclude << fp.id
+                            end
+                          end
+                        end
+                      end
+                    end
+                    fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
+                      finance_fee_category_id = fp.finance_fee_category_id
+                      finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+                      parent_id = fp.parent_id
+                      change_for = fp.change_for
+                      if change_for > 0
+                        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+                        unless fchange_for.blank?
+                          receiver_type = fchange_for.receiver_type
+                          ff = fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                          unless ff.blank?
+                            particular_exclude << fp.id
+                          end
+                        else
+                          fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+                          unless fchange_for.blank?
+                            receiver_type = fchange_for.receiver_type
+                            ff = fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                            unless ff.blank?
+                              particular_exclude << fp.id
+                            end
+                          end
+                        end
+                      end
+                    end
+                    
                   %>
+                  <%= debug particular_exclude.inspect %>
                   <%= debug fee_particulars.map(&:id).inspect %>
                   <% end %>
                   <%

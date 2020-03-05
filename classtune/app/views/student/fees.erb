@@ -231,7 +231,7 @@
                           receiver_type = fchange_for.receiver_type
                           ff = fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
                           %>
-                          <%= debug ff.inspect %>
+                          <%= debug ff['id'].inspect %>
                           <%
                           unless ff.blank?
                             particular_exclude << ff.id

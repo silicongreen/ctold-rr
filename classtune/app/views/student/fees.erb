@@ -231,7 +231,7 @@
                           receiver_type = fchange_for.receiver_type
                           ff = fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
                           unless ff.blank?
-                            particular_exclude << fp.id
+                            particular_exclude << ff.id
                           end
                         else
                           fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
@@ -239,7 +239,7 @@
                             receiver_type = fchange_for.receiver_type
                             ff = fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
                             unless ff.blank?
-                              particular_exclude << fp.id
+                              particular_exclude << ff.id
                             end
                           end
                         end
@@ -256,7 +256,7 @@
                           receiver_type = fchange_for.receiver_type
                           ff = fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
                           unless ff.blank?
-                            particular_exclude << fp.id
+                            particular_exclude << ff.id
                           end
                         else
                           fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
@@ -264,7 +264,7 @@
                             receiver_type = fchange_for.receiver_type
                             ff = fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
                             unless ff.blank?
-                              particular_exclude << fp.id
+                              particular_exclude << ff.id
                             end
                           end
                         end

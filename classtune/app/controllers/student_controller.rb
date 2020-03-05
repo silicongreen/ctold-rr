@@ -3096,11 +3096,21 @@ class StudentController < ApplicationController
                         end
                       end
                       bal = FinanceFee.get_student_actual_balance(date, s, f)
+                      bal = 0 if bal < 0
                       f.update_attributes(:balance=>bal)
                       if bal.to_f == 0.00
                         f.update_attributes(:is_paid=>true)
                       elsif bal.to_f > 0.00
                         f.update_attributes(:is_paid=>false)
+                      end
+                      
+                      balance = FinanceFee.get_student_actual_balance(date, s, f)
+                      student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{f.id} and particular_id = #{0} and amount_to_pay > 0 and amount_paid = 0 and transaction_id = 0 and is_fine = 0")
+                      unless student_fee_ledgers.nil?
+                        student_fee_ledgers.each do |fee_ledger|
+                          student_fee_ledger = StudentFeeLedger.find(fee_ledger.id)
+                          student_fee_ledger.update_attributes(:amount_to_pay => balance)
+                        end
                       end
                     end
                   end
@@ -3207,11 +3217,21 @@ class StudentController < ApplicationController
             end
           end
           bal = FinanceFee.get_student_actual_balance(date, s, f)
+          bal = 0 if bal < 0
           f.update_attributes(:balance=>bal)
           if bal.to_f == 0.00
             f.update_attributes(:is_paid=>true)
           elsif bal.to_f > 0.00
             f.update_attributes(:is_paid=>false)
+          end
+          
+          balance = FinanceFee.get_student_actual_balance(date, s, f)
+          student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{f.id} and particular_id = #{0} and amount_to_pay > 0 and amount_paid = 0 and transaction_id = 0 and is_fine = 0")
+          unless student_fee_ledgers.nil?
+            student_fee_ledgers.each do |fee_ledger|
+              student_fee_ledger = StudentFeeLedger.find(fee_ledger.id)
+              student_fee_ledger.update_attributes(:amount_to_pay => balance)
+            end
           end
         end
       end

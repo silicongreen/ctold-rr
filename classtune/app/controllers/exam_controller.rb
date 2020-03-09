@@ -4397,7 +4397,74 @@ class ExamController < ApplicationController
     end
     
   end
-  
+  def marksheet_excell
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    new_book = Spreadsheet::Workbook.new
+    sheet1 = new_book.create_worksheet :name => 'marksheet'
+    
+    @id = params[:id]
+    @subject_id = params[:subject_id]
+    @connect_exam_obj = ExamConnect.active.find(@id)
+    @batch = Batch.find(@connect_exam_obj.batch_id) 
+    @subject = Subject.find(@subject_id)
+    @assigned_employee=@batch.all_class_teacher
+    @grades = @batch.grading_level_list
+
+    @employee_sub = EmployeesSubject.find_by_subject_id(@subject_id)
+    if !@employee_sub.nil?
+      @employee = Employee.find(@employee_sub.employee_id)
+    end
+    
+    get_subject_mark_sheet(@id,@subject_id)
+    @report_data = []
+    if @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end
+    
+    row_first = ['Roll','Student Name']
+    @report_data['result']['ALL'].each do |rs|
+      row_first << rs['name']+"( "+rs['maximum_marks']+" ) "
+    end
+    new_book.worksheet(0).insert_row(0, row_first)
+    iloop = 0
+    unless @report_data['result']['al_students'].blank?
+      @report_data['result']['al_students'].each do |std|
+        iloop = iloop+1
+        rows = [std['class_roll_no'],std['name']]
+        @report_data['result']['ALL'].each do |rs|
+          if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
+            rows << rs['students'][std['id']]['score']
+          else
+            rows << ""
+          end
+        end
+        new_book.worksheet(0).insert_row(iloop, rows)
+      end
+    end
+    
+    batch_split = @batch.name.split(" ")
+    
+    group_name = ""
+    unless @batch.course.group.blank?
+      group_split = @batch.course.group.split(" ")
+      unless group_split[2].blank?
+        group_split[0] = group_split[0]+" "+group_split[1]
+      end
+      group_name = group_split[0]
+    end
+    shift = ""
+    version= ""
+    unless batch_split[1].blank?
+      version = batch_split[1]
+    end
+    sheet1.add_header("SHAHEED BIR UTTAM LT. ANWAR GIRLS' COLLEGE (Mark Sheet : "+@subject.name.to_s+")
+ Program :"+@batch.course.course_name.to_s+" || Group :"+group_name.to_s+" || Section :"+@batch.course.section_name.to_s+" || Shift :"+batch_split[0]+" || Session :"+@batch.course.session.to_s+" || Version :"+version+"
+      ")
+    spreadsheet = StringIO.new 
+    new_book.write spreadsheet 
+    send_data spreadsheet.string, :filename => @batch.full_name + "-" + @subject.name + ".xls", :type =>  "application/vnd.ms-excel"
+  end
   def marksheet    
     @id = params[:id]
     @subject_id = params[:subject_id]

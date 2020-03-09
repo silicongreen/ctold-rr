@@ -372,7 +372,7 @@ class MarksController < ApplicationController
                 data[k][2] = @template.link_to(exam.subject_name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject_id.to_s, :target => "_blank")
               end
               if MultiSchool.current_school.id != 340
-                data[k][3] = @template.link_to("Marksheet", '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam.subject_id.to_s, :target => "_blank")
+                data[k][3] = @template.link_to("Marksheet", '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam.subject_id.to_s, :target => "_blank")+" "+@template.link_to("Excell", '/exam/' + 'marksheet_excell/' +exam_connect.id.to_s+"?subject_id="+exam.subject_id.to_s, :target => "_blank")
               end 
               k = k+1
             end

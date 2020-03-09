@@ -332,10 +332,15 @@
 <% if MultiSchool.current_school.id == 352 %>
 .marks-box 
 {
-   width: 200px;
+   width: 100px;
    height: 30px;
    border: 1px solid black;
    text-align: center;
+}
+@media only screen and (max-width: 600px) {
+ .marks-box  {
+    height: 50px;
+  }
 }
 <% end %>
 .zui-table {

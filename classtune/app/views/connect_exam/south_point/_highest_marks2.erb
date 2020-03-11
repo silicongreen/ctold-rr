@@ -247,6 +247,8 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
         obtained_mark2 = avg_mark_ct2.to_f+avg_mark_st2.to_f
         full_mark2 = ct_full_mark2.to_i+st_full_mark2.to_i
 
+      
+
         if full_mark2 == 100
           obtained_mark2 = obtained_mark2/2
           obtained_mark2 = obtained_mark2.round()
@@ -262,18 +264,38 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
         
         if ct_full_mark3.to_i == 20 
           avg_mark_ct3 = ct_marks3[0].to_f+ct_marks3[1].to_f+ct_marks3[2].to_f
+          ct_full_mark3 = ct_full_mark3*3
         else 
           avg_mark_ct3 = ct_marks3[0].to_f+ct_marks3[1].to_f
+          ct_full_mark3 = ct_full_mark3*2
         end 
 
         if st_full_mark3.to_i == 10 
           avg_mark_st3 = st_marks3[0].to_f+st_marks3[1].to_f+st_marks3[2].to_f+st_marks3[3].to_f
+          st_full_mark3 = st_full_mark3*4
         else st_full_mark2.to_i == 5  
           avg_mark_st3 = st_marks3[0].to_f+st_marks3[1].to_f+st_marks3[2].to_f
+          st_full_mark3 = st_full_mark3*3
+        end
+      
+        full_mark3 = ct_full_mark3.to_i+st_full_mark3.to_i
+        
+        obtained_mark3 = avg_mark_ct3.to_f+avg_mark_st3.to_f
+
+      
+
+        if full_mark3 == 100
+          obtained_mark3 = obtained_mark3/2
+          obtained_mark3 = obtained_mark3.round()
+          full_mark3 = 50
+        else
+          obtained_mark3 = (obtained_mark3/35)*25
+          obtained_mark3 = obtained_mark3.round()
+          full_mark3 = 25
         end
 
 
-        obtained_mark3 = avg_mark_ct3.to_f+avg_mark_st3.to_f
+        
         
         st_marks4.sort! {|x,y| y <=> x }
         ct_marks4.sort! {|x,y| y <=> x }
@@ -290,7 +312,7 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
           avg_mark_st4 = st_marks4[0].to_f+st_marks4[1].to_f+st_marks4[2].to_f
         end
 
-      
+        obtained_mark4 = avg_mark_ct4.to_f+avg_mark_st4.to_f
 
         #Calculation First Term (40/20) Mark
         full_mark = full_mark1+full_mark2

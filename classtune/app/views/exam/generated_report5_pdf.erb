@@ -21,7 +21,9 @@
     @report_data['total'] = @report_data['total_new_std']
   end
 %>
-<%= render  :partial=>"connect_result_reformate" %>
+<% if MultiSchool.current_school.id != 357 %>
+  <%= render  :partial=>"connect_result_reformate" %>
+<% end %>
 <% if MultiSchool.current_school.id == 283 %>
   <%= render  :partial=>"/connect_exam/academia/group_report" %>
 <% elsif MultiSchool.current_school.id == 246 %>
@@ -65,6 +67,8 @@
   <% end %>
 <% elsif MultiSchool.current_school.id == 324 or MultiSchool.current_school.id == 2  %>
   <%= render  :partial=>"/connect_exam/sjis/group_report" %>
+<% elsif MultiSchool.current_school.id == 357  %>
+  <%= render  :partial=>"/connect_exam/bncd/group_report" %>
 <% elsif File.exists?(Rails.root.join("app", "views", "connect_exam",MultiSchool.current_school.code, "_group_report.erb")) %>
     <%= render  :partial=>"/connect_exam/#{MultiSchool.current_school.code}/group_report" %>
 <% else %>

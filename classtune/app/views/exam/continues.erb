@@ -45,7 +45,7 @@
         next
       end  
     end  
-    @student = Student.find_by_id(std['id'].to_i)
+    @student = Student.find_by_id(std['id'].to_i,:include=>["student_category"])
 
     unless @student.blank?
       

@@ -4111,7 +4111,7 @@ class ExamController < ApplicationController
     @student_main_id = params[:student]
     
     @connect_exam_obj = ExamConnect.find_by_id(@id)
-    @batch = Batch.find(@connect_exam_obj.batch_id)
+    @batch = Batch.find(@connect_exam_obj.batch_id,:include=>["course"])
    
     
     pdf_name = "continues_connect_exam_"+@connect_exam_obj.id.to_s+".pdf"

@@ -259,42 +259,38 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
       
         st_marks3.sort! {|x,y| y <=> x }
         ct_marks3.sort! {|x,y| y <=> x }
-
+        
         if ct_full_mark3.to_i == 20 
-          avg_mark_ct3 = (ct_marks3[0].to_f+ct_marks3[1].to_f)/2
-          else 
-          avg_mark_ct3 = ct_marks3[0].to_f
-          end 
+          avg_mark_ct3 = ct_marks3[0].to_f+ct_marks3[1].to_f+ct_marks3[2].to_f
+        else 
+          avg_mark_ct3 = ct_marks3[0].to_f+ct_marks3[1].to_f
+        end 
 
         if st_full_mark3.to_i == 10 
-          avg_mark_st3 = (st_marks3[0].to_f+st_marks3[1].to_f+st_marks3[2].to_f)/3
-          else st_full_mark3.to_i == 5  
-          avg_mark_st3 = (st_marks3[0].to_f+st_marks3[1].to_f)/2
-          end
+          avg_mark_st3 = st_marks3[0].to_f+st_marks3[1].to_f+st_marks3[2].to_f+st_marks3[3].to_f
+        else st_full_mark2.to_i == 5  
+          avg_mark_st3 = st_marks3[0].to_f+st_marks3[1].to_f+st_marks3[2].to_f
+        end
+
 
         obtained_mark3 = avg_mark_ct3.to_f+avg_mark_st3.to_f
         
         st_marks4.sort! {|x,y| y <=> x }
         ct_marks4.sort! {|x,y| y <=> x }
-
+        
         if ct_full_mark4.to_i == 20 
-          avg_mark_ct4 = (ct_marks4[0].to_f+ct_marks4[1].to_f)/2
-          else 
-          avg_mark_ct4 = ct_marks4[0].to_f
-          end 
+          avg_mark_ct4 = ct_marks4[0].to_f+ct_marks4[1].to_f+ct_marks4[2].to_f
+        else 
+          avg_mark_ct4 = ct_marks4[0].to_f+ct_marks4[1].to_f
+        end 
 
-        if st_full_mark4.to_i == 10 
-          avg_mark_st4 = (st_marks4[0].to_f+st_marks4[1].to_f+st_marks4[2].to_f)/3
-          else st_full_mark4.to_i == 5  
-          avg_mark_st4 = (st_marks4[0].to_f+st_marks4[1].to_f)/2
-          end
-        mock_test_mark = 0
-        if mock_test_total > 0
-          mock_test_mark = (mock_test_total.to_f/mock_test_full_mark.to_f)*100
-          mock_test_mark = mock_test_mark.round()
-        end  
+        if st_full_mark3.to_i == 10 
+          avg_mark_st4 = st_marks4[0].to_f+st_marks4[1].to_f+st_marks4[2].to_f+st_marks4[3].to_f
+        else st_full_mark2.to_i == 5  
+          avg_mark_st4 = st_marks4[0].to_f+st_marks4[1].to_f+st_marks4[2].to_f
+        end
 
-        obtained_mark4 = avg_mark_ct4.to_f+avg_mark_st4.to_f
+      
 
         #Calculation First Term (40/20) Mark
         full_mark = full_mark1+full_mark2

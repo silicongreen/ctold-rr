@@ -302,17 +302,31 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
         
         if ct_full_mark4.to_i == 20 
           avg_mark_ct4 = ct_marks4[0].to_f+ct_marks4[1].to_f+ct_marks4[2].to_f
+          ct_full_mark4 = ct_full_mark4*3
         else 
           avg_mark_ct4 = ct_marks4[0].to_f+ct_marks4[1].to_f
+          ct_full_mark4 = ct_full_mark4*2
         end 
 
         if st_full_mark3.to_i == 10 
           avg_mark_st4 = st_marks4[0].to_f+st_marks4[1].to_f+st_marks4[2].to_f+st_marks4[3].to_f
+          st_full_mark4 = st_full_mark4*4
         else st_full_mark2.to_i == 5  
           avg_mark_st4 = st_marks4[0].to_f+st_marks4[1].to_f+st_marks4[2].to_f
+          st_full_mark4 = st_full_mark4*3
         end
-
+        full_mark4 = ct_full_mark4.to_i+st_full_mark4.to_i
         obtained_mark4 = avg_mark_ct4.to_f+avg_mark_st4.to_f
+        
+        if full_mark4 == 100
+          obtained_mark4 = obtained_mark4/2
+          obtained_mark4 = obtained_mark4.round()
+          full_mark4 = 50
+        else
+          obtained_mark4 = (obtained_mark4/35)*25
+          obtained_mark4 = obtained_mark4.round()
+          full_mark4 = 25
+        end
 
         #Calculation First Term (40/20) Mark
         full_mark = full_mark1+full_mark2

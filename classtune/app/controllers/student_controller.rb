@@ -82,12 +82,13 @@ class StudentController < ApplicationController
           if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
             payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
           end
-
+          
           is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
-          extra_string = (is_test_bkash) ? '_sandbox' : ''
+          extra_string = (is_test_bkash.to_i == 1) ? '_sandbox' : ''
+          
           payment_url = URI(payment_urls["bkash_token_url" + extra_string])
           payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/token/grant")
-
+#abort(payment_url.inspect)
           http = Net::HTTP.new(payment_url.host, payment_url.port)
           http.use_ssl = (payment_url.scheme == 'https')
           http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
@@ -96,7 +97,7 @@ class StudentController < ApplicationController
           @app_secret = PaymentConfiguration.config_value(@user_gateway + "_app_secret")
           @app_username = PaymentConfiguration.config_value(@user_gateway + "_username")
           @app_password = PaymentConfiguration.config_value(@user_gateway + "_password")
-
+#abort(@app_key.to_s + "  " + @app_secret.to_s  + "  " + @app_username.to_s  + "  " + @app_username.to_s )
           request = Net::HTTP::Post.new(payment_url.path, {"username" => @app_username, "password" => @app_password, "Content-Type" => "application/json", "Accept" => "application/json"})
           request.body = {"app_key"=>@app_key,"app_secret"=>@app_secret}.to_json
           response = http.request(request)
@@ -135,7 +136,8 @@ class StudentController < ApplicationController
         end
 
         is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
-        extra_string = (is_test_bkash) ? '_sandbox' : ''
+        extra_string = (is_test_bkash.to_i == 1) ? '_sandbox' : ''
+        
         payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "create")
         payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "create")
 
@@ -181,7 +183,8 @@ class StudentController < ApplicationController
         end
 
         is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
-        extra_string = (is_test_bkash) ? '_sandbox' : ''
+        extra_string = (is_test_bkash.to_i == 1) ? '_sandbox' : ''
+        
         payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "execute/" + payment_id.to_s)
         payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "execute/" + payment_id.to_s)
 

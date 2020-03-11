@@ -3489,7 +3489,8 @@ module FinanceLoader
     end
 
     is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
-    extra_string = (is_test_bkash) ? '_sandbox' : ''
+    extra_string = (is_test_bkash.to_i == 1) ? '_sandbox' : ''
+    
     payment_url = URI(payment_urls["bkash_token_url" + extra_string])
     payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/token/grant")
 
@@ -3520,7 +3521,8 @@ module FinanceLoader
     end
 
     is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
-    extra_string = (is_test_bkash) ? '_sandbox' : ''
+    extra_string = (is_test_bkash.to_i == 1) ? '_sandbox' : ''
+    
     payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "search/" + payment_id.to_s)
     payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "search/" + payment_id.to_s)
 #abort("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "query/" + payment_id.to_s)
@@ -3551,7 +3553,8 @@ module FinanceLoader
     end
 
     is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
-    extra_string = (is_test_bkash) ? '_sandbox' : ''
+    extra_string = (is_test_bkash.to_i == 1) ? '_sandbox' : ''
+    
     payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "query/" + payment_id.to_s)
     payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "query/" + payment_id.to_s)
 #abort("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "query/" + payment_id.to_s)

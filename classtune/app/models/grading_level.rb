@@ -100,9 +100,19 @@ class GradingLevel < ActiveRecord::Base
       grade = {}
       if batch_grades.empty?
         grades = GradingLevel.default
-        grade = grades.find{|val| val.min_score <= percent_score.round }
+        grades.each do |val|
+          if val.min_score <= percent_score.round
+            grade = val
+            break
+          end
+        end
       else
-        grade = batch_grades.find{|val| val.min_score <= percent_score.round }
+        batch_grades.each do |val|
+          if val.min_score <= percent_score.round
+            grade = val
+            break
+          end
+        end
       end
       grade
     end
@@ -112,9 +122,19 @@ class GradingLevel < ActiveRecord::Base
       grade = {}
       if batch_grades.empty?
         grades = GradingLevel.default
-        grade = grades.find{|val| val.credit_points <= grade_point }
+        grades.each do |val|
+          if val.credit_points <= grade_point
+            grade = val
+            break
+          end
+        end
       else
-        grade = batch_grades.find{|val| val.credit_points <= grade_point }
+        batch_grades.each do |val|
+          if val.credit_points <= grade_point 
+            grade = val
+            break
+          end
+        end
       end
       grade
     end

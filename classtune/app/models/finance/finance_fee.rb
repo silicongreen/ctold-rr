@@ -565,10 +565,11 @@ class FinanceFee < ActiveRecord::Base
           end
 
           bal = 0 if bal.to_i < 0
+          fee_update = FinanceFee.find(id)
           if bal == 0
-              fee.update_attributes(:is_paid=>true,:balance=>bal)
+              fee_update.update_attributes(:is_paid=>true,:balance=>bal)
            else  
-             fee.update_attributes(:balance=>bal)
+             fee_update.update_attributes(:balance=>bal)
            end
         else
           FinanceFee.create(:student_id => student.id,:fee_collection_id => date.id,:balance=>balance,:batch_id=>student.batch_id)

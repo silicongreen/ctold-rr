@@ -482,6 +482,18 @@
                   <div class="clearfix"></div>
                 <% end %>
                   
+                  <% unless @student.permanent_address.nil? or @student.permanent_address.blank? %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= "Permanent Address" %></div>
+                      </div>
+                      <div class="row_data">
+                          <div><%= @student.permanent_address.to_s %></div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
+                  
                  
 
                 

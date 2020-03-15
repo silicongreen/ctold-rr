@@ -306,10 +306,12 @@
           <td class="col-pdf" colspan="1"><%= "Present" %></td>
           <td class="col-pdf" colspan="3">:&nbsp;&nbsp;&nbsp;<%= @student.address_line1 %></td>
         </tr>
+        <% unless @student.permanent_address.nil? or @student.permanent_address.blank? %>
         <tr>
-          <td class="col-pdf" colspan="1"><%= "Parmanent" %></td>
-          <td class="col-pdf" colspan="3">:&nbsp;&nbsp;&nbsp;<%= @student.address_line2 %></td>
+          <td class="col-pdf" colspan="1"><%= "Permanent" %></td>
+          <td class="col-pdf" colspan="3">:&nbsp;&nbsp;&nbsp;<%= @student.permanent_address %></td>
         </tr>
+        <% end %>
         <% unless @subjects.blank? %>
           <tr class="odd">
             <td class="col-pdf" colspan="4"><%= "Subject Course Information" %></td>

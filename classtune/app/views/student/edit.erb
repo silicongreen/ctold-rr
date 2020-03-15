@@ -416,6 +416,10 @@
                   <label for="biometric_id"><%= t('biometric_id') %></label>
                   <%= s.text_field :biometric_id, :class=>"form-control" %></div>
           </div>
+          <div class="form-group col-sm-12 even">
+              <label for="student_permanent_address"><%= "Permanent Address" %></label>
+              <%= s.text_field :permanent_address, :class=>"form-control" %>
+          </div>
           <div class="form-group col-sm-6 even">
               <label for="student_image_file"><%= t('upload_photo') %> (<%= t('max_size') %>)</label>
               <%= s.file_field :photo, :size=>12, :class=>"form-control" %>
@@ -451,6 +455,15 @@
   #staff_id
   {
       display:none;
+  }
+  .col-sm-12
+  {
+      padding-right: 0px;
+      padding-left: 0px;
+  }
+  .col-sm-12 > .form-control
+  {
+      width: 95%;
   }
 </style>
 

@@ -469,6 +469,7 @@ class StudentController < ApplicationController
     params[:student].each_pair do |student_id, details|
       @std = Student.find(student_id)
       @std.update_attribute("class_roll_no",details[:class_roll_no])
+      @std.update_attribute("gpa",details[:gpa])
     end
     render :text=> "Save Succesfully"
   end

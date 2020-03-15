@@ -34,13 +34,11 @@
         <% else %>
         <td style='white-space:nowrap;'><%= t('date_of_birth') %></td>
         <% end %>
+        <% if MultiSchool.current_school.id == 352 or MultiSchool.current_school.id == 347 %>
+          <td style='white-space:nowrap;'><%= "GPA" %></td>
+        <% end %>
+        
         <td><%= t('adm_no') %></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
         <td></td>
       </tr>
       <% @students.each_with_index do |r, i| %>
@@ -68,6 +66,11 @@
               <%= I18n.l(r.date_of_birth,:format=>"%d %b %Y") unless r.date_of_birth.nil? %>
             <% end %>  
           </td>
+          <% if MultiSchool.current_school.id == 352 or MultiSchool.current_school.id == 347 %>
+          <td class="col-1">
+            <%= text_field_tag "student[#{r.id}][gpa]", r.gpa, :class=>"marks-box" %>
+          </td>
+          <% end %>
 
           <td class="col-1">
             <%= r.admission_no %>

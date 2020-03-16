@@ -1012,6 +1012,17 @@ class DashboardController extends Controller
                         {
                             $merging_data['class_tommrow'] = true;
                         }
+                        
+                        //Notice start
+                        $newsobj = new News();
+                        $notice = $newsobj->getNews($school_id, $date, $date);
+                        $merging_data['notice'] = false;
+                        if ($notice)
+                        {
+                            $merging_data['notice'] = true;
+                        }
+                        $merging_data['notice_total'] = $newsobj->getNoticeCount(1, $date, $date);
+                        //Notice end
 
                         //tomomorow class end
                         //homework start
@@ -1119,16 +1130,7 @@ class DashboardController extends Controller
 
 
 
-                        //Notice start
-                        $newsobj = new News();
-                        $notice = $newsobj->getNews($school_id, $date, $date);
-                        $merging_data['notice'] = false;
-                        if ($notice)
-                        {
-                            $merging_data['notice'] = true;
-                        }
-                        $merging_data['notice_total'] = $newsobj->getNoticeCount(1, $date, $date);
-                        //Notice end
+                        
                         //Quiz start
                         $onlineExamObj = new OnlineExamGroups();
                         $onlineexamData = $onlineExamObj->getOnlineExamSubject($batch_id,$date);

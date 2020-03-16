@@ -17,7 +17,6 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-<% unless @master_categories.empty? %>
 <div style="border: 1px solid #ccc; padding: 20px; border-radius: 8px;">
   <h2>Master Fee Categories</h2>
   <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0">
@@ -37,7 +36,8 @@
         <td class="col-7" colspan="2">
             &nbsp;
         </td>
-      </tr>    
+      </tr>
+    <% unless @master_categories.blank? %>  
     <% @master_categories.each_with_index do |fees,i| %>
       <tr class="<%= cycle("odd","even") %>">
         <td class="col-1"><%= i+2 %></td>
@@ -52,14 +52,12 @@
               <span class="small-strike"><%= t('delete_text') %></span>
                <span class="small-strike"><%= t('edit_text') %></span>
             <% end %>
-            
           </div>
         </td>
       </tr>
+      <% end %>
     <% end %>
     </tbody>  
   </table>
 </div>
-<% else %>
-<div style="border: 1px solid #ccc; padding: 20px; font-weight: bold; border-radius: 8px;"><%= t('no_categories_to_display') %>!</div>
 <% end%>

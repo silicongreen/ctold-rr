@@ -157,22 +157,23 @@
                             next
                           %>
                       <% end %>
+                        <%
+                            third_subject = "";
+                            fourth_subject = "";
+                        %>
+                        <% if !@std_subject_hash_type.blank? %>
+                          <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||4") %>
+                            <% fourth_subject = "(4th)" %>
+                            <% next %>
+                          <% end %>
+                          <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||3") %>
+                          <% end %>
+                        <% end %>
                       <% subjects_done << subjects['id'].to_i %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
-                          <%
-                            third_subject = "";
-                            fourth_subject = "";
-                          %>
-                          <% if !@std_subject_hash_type.blank? %>
-                            <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||4") %>
-                              <% fourth_subject = "(4th)" %>
-                              <% next %>
-                            <% end %>
-                            <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||3") %>
-                            <% end %>
-                          <% end %>
+                          
                           <% if fourth_subject.blank? %>
                             <% total_subject = total_subject+1 %>
                           <% end %>
@@ -583,11 +584,7 @@
                             next
                           %>
                       <% end %>
-                      <% subjects_done << subjects['id'].to_i %>
-                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                          <% total_mark = 0 %>
-                          <% full_mark = 0 %>
-                          <%
+                      <%
                             third_subject = "";
                             fourth_subject = "";
                           %>
@@ -600,6 +597,11 @@
                             <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||3") %>
                             <% end %>
                           <% end %>
+                      <% subjects_done << subjects['id'].to_i %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                          <% total_mark = 0 %>
+                          <% full_mark = 0 %>
+                          
                           <% if fourth_subject.blank? %>
                             <% total_subject = total_subject+1 %>
                           <% end %>

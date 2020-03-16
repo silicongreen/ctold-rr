@@ -1578,8 +1578,11 @@ class StudentController < ApplicationController
           #          @fee_collection_dates = @fee_collection_dates.select{|d| d.due_date>=@student.admission_date }
           @fee_collection_dates = FinanceFeeParticular.find(:all,:joins=>"INNER JOIN collection_particulars on collection_particulars.finance_fee_particular_id=finance_fee_particulars.id INNER JOIN finance_fee_collections on finance_fee_collections.id=collection_particulars.finance_fee_collection_id",:conditions=>"finance_fee_particulars.batch_id='#{@student.batch_id}' and finance_fee_particulars.receiver_type='Batch' and finance_fee_collections.due_date>='#{@student.admission_date}'",:select=>"finance_fee_collections.*").uniq
           @fee_collection_dates.each do |date|
-            d = FinanceFeeCollection.find(date.id)
-            FinanceFee.new_student_fee(d,@student)
+            fee_collection_batches = FeeCollectionBatch.find_by_finance_fee_collection_id_and_batch_id(date.id, @student.batch_id)
+            unless fee_collection_batches.blank?
+              d = FinanceFeeCollection.find(date.id)
+              FinanceFee.new_student_fee(d,@student)
+            end
           end
             
           student_category_log = StudentCategoryLog.find(:first, :conditions => "student_id = #{@student.id}")

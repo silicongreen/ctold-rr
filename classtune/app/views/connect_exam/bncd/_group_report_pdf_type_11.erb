@@ -473,7 +473,6 @@
                                   <% fourth_subject = "(4th)" %>
                                 <% end %>
                                 <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects2['id'].to_s+"|||3") %>
-                                  <% third_subject = "(3rd)" %>
                                 <% end %>
                               <% end %>
                             <% total_subject_main = total_subject_main+1 %>
@@ -560,7 +559,7 @@
                     <% end %>  
                   <% end %>
                   <tr class="even">
-                      <td colspan="100" ><b>Additional Subject</b></td>
+                      <td colspan="100" class="align-left-baf" ><b>Additional Subject</b></td>
                   </tr>     
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>

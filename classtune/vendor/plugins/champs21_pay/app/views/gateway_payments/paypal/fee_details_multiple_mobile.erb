@@ -1062,6 +1062,9 @@
           </tr>
           <% found = true %>
           <% under_maintenance = false %>
+          <% if MultiSchool.current_school.id == 357 and !@current_user.admin? %>
+          <% has_dues = true %>
+          <% end %>
           <% if has_dues == false %>
             <% if total_fees > 0 and found and under_maintenance == false %>
                 <tr>
@@ -1114,20 +1117,28 @@
                 <% end %>
             <% end %>
           <% else %>
-            <% if found == false and total_fees > 0 %>
-                <tr>
-                    <td colspan="5">
-                      <center><font color="red">***Your class or Section has been changes, Please contact admin to update your payment info***</font></center> 
-                    </td>
-                </tr>    
-                <% elsif total_fees > 0 %>
-                <tr>
-                    <td colspan="5">
-                      <center><font color="red">***Student Has Previous Due***</font></center> 
-                    </td>
-                </tr> 
-                <% end %>    
+            <% if MultiSchool.current_school.id == 357 and !@current_user.admin? %>
+             <tr>
+                <td colspan="5">
+                  <center><font color="red">***Online Payment is currently Disabled***</font></center> 
+                </td>
+            </tr>  
+            <% else %>      
+              <% if found == false and total_fees > 0 %>
+                  <tr>
+                      <td colspan="5">
+                        <center><font color="red">***Your class or Section has been changes, Please contact admin to update your payment info***</font></center> 
+                      </td>
+                  </tr>    
+                  <% elsif total_fees > 0 %>
+                  <tr>
+                      <td colspan="5">
+                        <center><font color="red">***Student Has Previous Due***</font></center> 
+                      </td>
+                  </tr> 
+                  <% end %>    
 
+            <% end %>
           <% end %>
         </tbody>    
       </table>

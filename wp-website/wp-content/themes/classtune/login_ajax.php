@@ -17,7 +17,7 @@ if($username && $password)
     $url = check_login_paid($username, $password);
     if($url)
     {
-        echo $url;
+        echo str_replace("http://bncd","https://bncd",$url);
     }
     else
     {

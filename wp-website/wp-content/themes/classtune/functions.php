@@ -1,4 +1,4 @@
-<?php
+lo<?php
 /**
  * Twenty Sixteen functions and definitions
  *
@@ -414,7 +414,14 @@ function check_login_paid($user_name,$password)
                      $insert['expire'] = date("Y-m-d H:i:s", strtotime("+1 Day"));
                      $mydb->insert("tds_user_auth", $insert);
                      $params = "?username=" . $user_name . "&password=" . $password . "&auth_id=" . $random . "&user_id=" . $users->id;
-                     $url = "http://" . $domain->domain . $params;
+                     if ( $domain->domain == "bncd.classtune.com" )
+                     {
+                        $url = "https://" . $domain->domain . $params;
+                     }
+                     else
+                     {
+                        $url = "http://" . $domain->domain . $params;
+                     }
                   
                      return $url;
                 }

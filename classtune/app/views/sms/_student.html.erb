@@ -34,8 +34,10 @@
         <div style="width: 100%; padding: 20px 0; text-align: center; border-bottom: 1px solid #ccc;">
           <input type="checkbox" name="sms_student_upassword" id="sms_student_upassword" class="sms_options_student" style="display: none;">
           <i name="sms_student_upassword_fa" id="sms_student_upassword_fa" class="fa fa-square-o sms_options_student_fa" style="font-size: 20px; cursor: pointer; color: #49BB4B; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;">SMS Username/Password</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <% if MultiSchool.current_school.id != 319 %>
           <input type="checkbox" name="sms_student_feedues" id="sms_student_feedues" class="sms_options_student" style="display: none;">
           <i name="sms_student_feedues_fa" id="sms_student_feedues_fa" class="fa fa-square-o sms_options_student_fa" style="font-size: 20px; cursor: pointer; color: #49BB4B;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;">SMS Fees Dues</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <% end %>
           <input type="checkbox" name="sms_student_general" id="sms_student_general" class="sms_options_student" style="display: none;">
           <i name="sms_student_general_fa" id="sms_student_general_fa" class="fa fa-square-o sms_options_student_fa" style="font-size: 20px; cursor: pointer; color: #49BB4B;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;">General SMS</span>
         </div>

@@ -14,9 +14,6 @@
  <% total_u = 0 %>
   <div id="page-yield"  class="available_sections1 baf_shaheen">
       <%= render  :partial=>"/connect_exam/bncd/header" %>
-      <h2 align="center" class="font-24"><%= @connect_exam_obj.name %></h2>
-      
-     
       <table id="pdf-table" class="tbl-lign-left" width="52%" cellspacing="0">
           <tr class="even">
               <td class="align-right col-pdf" width="20%">Student ID </td>
@@ -101,7 +98,6 @@
                   
                       <td class="col-pdf" colspan="<%= colspan %>" rowspan="1"><b>Examination</b></td>
                       <td class="col-pdf" rowspan="2"><b>Total Marks</b></td>
-                      <td class="col-pdf" rowspan="2"><b>Highest Marks</b></td>
                       <td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
                       <td class="col-pdf" rowspan="2"><b>Grade Point</b></td>
                       
@@ -266,9 +262,7 @@
                             %>
                             <% grand_total_fraction = grand_total_fraction+tota_mark_with_monthly.to_f %>
                             <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
-                            <td class="col-pdf no-warp">
-                               <%= highest_mark.to_f.round.to_i %>
-                            </td>
+                           
                             <% if subjects['subject_group_id'].to_i > 0 %>
                               
                               <% @report_data['report']['subjects'].each do |subjects2| %>
@@ -532,9 +526,7 @@
                               %>
                               <% grand_total_fraction = grand_total_fraction+tota_mark_with_monthly.to_f %>
                               <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
-                              <td class="col-pdf no-warp">
-                                 <%= highest_mark.to_f.round.to_i %>
-                              </td>
+                            
                               <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                               <% if !grade.blank? and !grade.name.blank? %>
                                 <% if grade.credit_points.to_i == 0 && fourth_subject.blank? %>
@@ -693,9 +685,7 @@
                             %>
                             <% grand_total_fraction = grand_total_fraction+tota_mark_with_monthly.to_f %>
                             <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
-                            <td class="col-pdf no-warp">
-                               <%= highest_mark.to_f.round.to_i %>
-                            </td>
+                       
                             <% if subjects['subject_group_id'].to_i > 0 %>
                               
                               <% @report_data['report']['subjects'].each do |subjects2| %>
@@ -960,9 +950,7 @@
                               %>
                               <% grand_total_fraction = grand_total_fraction+tota_mark_with_monthly.to_f %>
                               <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
-                              <td class="col-pdf no-warp">
-                                 <%= highest_mark.to_f.round.to_i %>
-                              </td>
+                          
                               <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                               <% if !grade.blank? and !grade.name.blank? %>
                                 <% if grade.credit_points.to_i == 0 && fourth_subject.blank? %>
@@ -992,7 +980,7 @@
                       <% colspan = colspan+3 %>
                       <td class="col-pdf align-left-baf" colspan="<%= colspan %>"><b>Total Marks & Total GP</b></td>
                       <td class="col-pdf no-warp"><b><%= grand_total %></b></td>
-                      <td class="col-pdf no-warp" colspan="2"></b></td>
+                      <td class="col-pdf no-warp"></b></td>
                       <td class="col-pdf"><b><%= total_grade %></b></td>
                   </tr> 
                   <tr class="page-break-grade">
@@ -1070,9 +1058,7 @@
                               main_mark = (tota_mark_with_monthly.to_f.round/full_mark_all.to_f)*100
                             %>
                             
-                            <td class="col-pdf no-warp">
-                               <%= highest_mark.to_f.round.to_i %>
-                            </td>
+                          
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <% if grade.credit_points.to_i == 0 %>
@@ -1130,7 +1116,7 @@
                               <% end %></b>
                       </td>
                       <td class="align-left no-warp" colspan="2"><b>Position in Merit List</b></td>
-                      <td class="align-left no-warp" colspan="2"><b>Attendance</b></td>
+                      
                   </tr> 
                   <tr class="odd">
                       <%
@@ -1160,12 +1146,6 @@
                           <% end %> 
 
                       </td>
-                      <td class="col-pdf align-left">
-                          Working Days
-                      </td> 
-                      <td class="col-pdf align-center">
-                          <%= total_att %>
-                      </td>
                   </tr>
                   <tr class="odd">
 
@@ -1181,12 +1161,6 @@
                                 -
                               <% end %> 
                           </b>  
-                      </td> 
-                      <td class="col-pdf align-left">
-                          Attendance
-                      </td> 
-                      <td class="col-pdf align-center" >
-                          <%= absent %>
                       </td>
                   </tr>
                   
@@ -1198,24 +1172,16 @@
                       <td>
 
                           <b>Remarks : </b> 
-                            <% if @student_position_first_term_batch[@student.id.to_i].blank? %>
-                              Failed
-                           <% else %>
-                            <% if !grade.blank? and !grade.name.blank? %>
-                              <%= grade.description %>
-                            <% else %>
-                              
-                            <% end %>
-                        <% end %>
+                          <br/><br/><br/>
 
                       </td>
                   </tr>
               </table>
 
               <div class='fine'></div>
-              <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
+              <table id="pdf-table" class="evaluation table_99 top-left-center"  width="99.8%" >
 
-                  <tr class="even border-bottom-1-px">
+                  <tr class="even">
                       <td class="col-pdf " width="33%">
                           <br/><br/><br/>
                       </td> 
@@ -1226,16 +1192,16 @@
                           <br/><br/><br/>
                       </td>
                   </tr>
-                  <tr class="even">
+                  <tr class="even text-align-center">
 
                       <td class="col-pdf" width="33%">
-                          Class Teacher
+                          Class Teacher's Sign & Date
                       </td>
                       <td class="col-pdf " width="33%">
-                          Parents/Guardian
+                          Guardian's Sign & Date
                       </td>
                       <td class="col-pdf" width="33%">
-                          Principal
+                          Principal's Sign & Date
                       </td> 
 
                   </tr>

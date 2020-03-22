@@ -126,35 +126,113 @@ class StudentController < ApplicationController
     require 'net/https'
     require 'uri'
     require "yaml"
+    
+    require "openssl"
+    require 'digest/sha2'
+    require 'base64'
+    
     unless params[:gateway].blank?
       unless params[:id_token].blank?
-        @user_gateway = params[:gateway]
-        id_token = params[:id_token]
-        payment_urls = Hash.new
-        if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
-          payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+        unless params[:mmsec].nil?
+          #order_id = params[:order_id]
+          
+          alg = "AES-256-CBC"
+          decode_cipher = OpenSSL::Cipher::Cipher.new(alg)
+          decode_cipher.decrypt
+          decode_cipher.key = params[:kmsee].unpack('m')[0]
+          decode_cipher.iv = params[:imsee].unpack('m')[0]
+          plain = decode_cipher.update(params[:mmsec].unpack('m')[0])
+          plain << decode_cipher.final
+          
+          if plain.index('---') != false
+            a_data = plain.split("---")
+            if a_data.length == 3
+              student_id = a_data[0]
+              fees = a_data[1]
+              order_id = a_data[2]
+              #abort(order_id.to_s  + "  " + params[:order_id])
+              if order_id.to_s == params[:order_id].to_s
+                student = Student.find(:first, :conditions => "id = '#{student_id.to_s}'")
+                unless student.blank?
+                  @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{order_id}' and student_id = '#{student.id}'")
+                  unless @finance_orders.blank?
+                    total_fees = 0.00
+                    @finance_orders.each do |finance_order|
+
+                      finance_fee_id = finance_order.finance_fee_id
+                      finance_fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{student.id}")
+                      unless finance_fee.blank?
+                        fee_collection_id = finance_fee.fee_collection_id
+                        d = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}")
+                        unless d.blank?
+                          bal = FinanceFee.get_student_actual_balance(d, student, finance_fee)
+                          total_fees += bal.to_f
+                        end
+                      end
+                    end
+                    if total_fees.to_f == params[:total_fees].to_f
+                      @user_gateway = params[:gateway]
+                      id_token = params[:id_token]
+                      payment_urls = Hash.new
+                      if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+                        payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+                      end
+
+                      is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
+                      extra_string = (is_test_bkash.to_i == 1) ? '_sandbox' : ''
+
+                      payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "create")
+                      payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "create")
+
+                      http = Net::HTTP.new(payment_url.host, payment_url.port)
+                      http.use_ssl = (payment_url.scheme == 'https')
+                      http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
+                      #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+                      @app_key = PaymentConfiguration.config_value(@user_gateway + "_app_key")
+                      @app_secret = PaymentConfiguration.config_value(@user_gateway + "_app_secret")
+                      @app_username = PaymentConfiguration.config_value(@user_gateway + "_username")
+                      @app_password = PaymentConfiguration.config_value(@user_gateway + "_password")
+
+                      request = Net::HTTP::Post.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
+                      request.body = {"amount"=> total_fees,"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>order_id}.to_json
+                      response = http.request(request)
+                      response_ssl = JSON::parse(response.body)
+                      render :json => response_ssl
+                    else
+                      error = {:errorMessage => "Fees not matched"}
+                      response_ssl = JSON::parse(error.to_json)
+                      render :json => response_ssl
+                    end
+                  else
+                    error = {:errorMessage => "Invalid Invoice No."}
+                    response_ssl = JSON::parse(error.to_json)
+                    render :json => response_ssl
+                  end
+                else
+                  error = {:errorMessage => "Invalid Request"}
+                  response_ssl = JSON::parse(error.to_json)
+                  render :json => response_ssl
+                end
+              else
+                error = {:errorMessage => "Invoice No. not matched"}
+                response_ssl = JSON::parse(error.to_json)
+                render :json => response_ssl
+              end
+            else
+              error = {:errorMessage => "Invalid Request"}
+              response_ssl = JSON::parse(error.to_json)
+              render :json => response_ssl
+            end
+          else
+            error = {:errorMessage => "Invalid Request"}
+            response_ssl = JSON::parse(error.to_json)
+            render :json => response_ssl
+          end
+        else
+          error = {:errorMessage => "Missing Invoice No."}
+          response_ssl = JSON::parse(error.to_json)
+          render :json => response_ssl
         end
-
-        is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
-        extra_string = (is_test_bkash.to_i == 1) ? '_sandbox' : ''
-        
-        payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "create")
-        payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "create")
-
-        http = Net::HTTP.new(payment_url.host, payment_url.port)
-        http.use_ssl = (payment_url.scheme == 'https')
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
-        #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-        @app_key = PaymentConfiguration.config_value(@user_gateway + "_app_key")
-        @app_secret = PaymentConfiguration.config_value(@user_gateway + "_app_secret")
-        @app_username = PaymentConfiguration.config_value(@user_gateway + "_username")
-        @app_password = PaymentConfiguration.config_value(@user_gateway + "_password")
-
-        request = Net::HTTP::Post.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
-        request.body = {"amount"=> params[:total_fees],"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>params[:order_id]}.to_json
-        response = http.request(request)
-        response_ssl = JSON::parse(response.body)
-        render :json => response_ssl
       else
         error = {:errorMessage => "Invalid Request for token"}
         response_ssl = JSON::parse(error.to_json)
@@ -174,124 +252,167 @@ class StudentController < ApplicationController
     require "yaml"
     unless params[:gateway].blank?
       unless params[:id_token].blank?
-        @user_gateway = params[:gateway]
-        id_token = params[:id_token]
-        payment_id = params[:payment_id]
-        payment_urls = Hash.new
-        if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
-          payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
-        end
-
-        is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
-        extra_string = (is_test_bkash.to_i == 1) ? '_sandbox' : ''
-        
-        payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "execute/" + payment_id.to_s)
-        payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "execute/" + payment_id.to_s)
-
-        http = Net::HTTP.new(payment_url.host, payment_url.port)
-        http.use_ssl = (payment_url.scheme == 'https')
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
-        #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-        @app_key = PaymentConfiguration.config_value(@user_gateway + "_app_key")
-        @app_secret = PaymentConfiguration.config_value(@user_gateway + "_app_secret")
-        @app_username = PaymentConfiguration.config_value(@user_gateway + "_username")
-        @app_password = PaymentConfiguration.config_value(@user_gateway + "_password")
-
-        request = Net::HTTP::Post.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
-        #request.body = {"amount"=> params[:total_fees],"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>params[:order_id]}.to_json
-        response = http.request(request)
-        response_ssl = JSON::parse(response.body)
-        transactionStatus = ""
-        createTime = ""
-        trxID = ""
-        amount = ""
-        response_ssl.each do |key,value|
-          if key == "transactionStatus"
-            transactionStatus = value
-          elsif key == "createTime"
-            createTime = value
-          elsif key == "trxID"
-            trxID = value
-          elsif key == "amount"
-            amount = value
-          end
-        end
-        
-        if response_ssl.keys.include?("transactionStatus") and transactionStatus == 'Completed'
-          require 'date'
-          gateway_response = {}
-          response_ssl.each do |key,value|
-            gateway_response[key.to_sym] = value
-          end
-          transaction_datetime = DateTime.parse(createTime).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
-          orderId = params[:order_id]
-          student_id = params[:student_id]
-          @student = Student.find(student_id)
-          @finance_order = FinanceOrder.find_by_order_id_and_student_id(orderId.strip, student_id)
-          #abort(@finance_order.inspect)
-          request_params = @finance_order.request_params
+        unless params[:mmsec].nil?
           
-          payment_saved = false
-          unless request_params.nil?
-            multiple = request_params[:multiple]
-            unless multiple.nil?
-              if multiple.to_s == "true"
-                fees = request_params[:fees].split(",")
-                fees.each do |fee|
-                  f = fee.to_i
-                  feenew = FinanceFee.find(f)
-                  payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{feenew.id}")
-                  unless payment.nil?
-                    payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
-                    payment_saved = true
-                  else  
-                    payment = Payment.new(:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
-                    if payment.save
-                      payment_saved = true
-                    end 
+          alg = "AES-256-CBC"
+          decode_cipher = OpenSSL::Cipher::Cipher.new(alg)
+          decode_cipher.decrypt
+          decode_cipher.key = params[:kmsee].unpack('m')[0]
+          decode_cipher.iv = params[:imsee].unpack('m')[0]
+          plain = decode_cipher.update(params[:mmsec].unpack('m')[0])
+          plain << decode_cipher.final
+          
+          if plain.index('---') != false
+            a_data = plain.split("---")
+            if a_data.length == 3
+              student_id = a_data[0]
+              fees = a_data[1]
+              order_id = a_data[2]
+              #abort(order_id.to_s  + "  " + params[:order_id])
+              if order_id.to_s == params[:order_id].to_s
+                student = Student.find(:first, :conditions => "id = '#{student_id.to_s}'")
+                unless student.blank?
+                  @user_gateway = params[:gateway]
+                  id_token = params[:id_token]
+                  payment_id = params[:payment_id]
+                  payment_urls = Hash.new
+                  if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+                    payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
                   end
+
+                  is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
+                  extra_string = (is_test_bkash.to_i == 1) ? '_sandbox' : ''
+
+                  payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "execute/" + payment_id.to_s)
+                  payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "execute/" + payment_id.to_s)
+
+                  http = Net::HTTP.new(payment_url.host, payment_url.port)
+                  http.use_ssl = (payment_url.scheme == 'https')
+                  http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
+                  #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+                  @app_key = PaymentConfiguration.config_value(@user_gateway + "_app_key")
+                  @app_secret = PaymentConfiguration.config_value(@user_gateway + "_app_secret")
+                  @app_username = PaymentConfiguration.config_value(@user_gateway + "_username")
+                  @app_password = PaymentConfiguration.config_value(@user_gateway + "_password")
+
+                  request = Net::HTTP::Post.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
+                  #request.body = {"amount"=> params[:total_fees],"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>params[:order_id]}.to_json
+                  response = http.request(request)
+                  response_ssl = JSON::parse(response.body)
+                  transactionStatus = ""
+                  createTime = ""
+                  trxID = ""
+                  amount = ""
+                  response_ssl.each do |key,value|
+                    if key == "transactionStatus"
+                      transactionStatus = value
+                    elsif key == "createTime"
+                      createTime = value
+                    elsif key == "trxID"
+                      trxID = value
+                    elsif key == "amount"
+                      amount = value
+                    end
+                  end
+
+                  if response_ssl.keys.include?("transactionStatus") and transactionStatus == 'Completed'
+                    require 'date'
+                    gateway_response = {}
+                    response_ssl.each do |key,value|
+                      gateway_response[key.to_sym] = value
+                    end
+                    transaction_datetime = DateTime.parse(createTime).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
+                    orderId = order_id.to_s
+                    @student = Student.find(student_id)
+                    @finance_order = FinanceOrder.find_by_order_id_and_student_id(orderId.strip, student_id)
+                    #abort(@finance_order.inspect)
+                    request_params = @finance_order.request_params
+
+                    payment_saved = false
+                    unless request_params.nil?
+                      multiple = request_params[:multiple]
+                      unless multiple.nil?
+                        if multiple.to_s == "true"
+                          fees = request_params[:fees].split(",")
+                          fees.each do |fee|
+                            f = fee.to_i
+                            feenew = FinanceFee.find(f)
+                            payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{feenew.id}")
+                            unless payment.nil?
+                              payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
+                              payment_saved = true
+                            else  
+                              payment = Payment.new(:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
+                              if payment.save
+                                payment_saved = true
+                              end 
+                            end
+                          end
+                        else
+                          financefee = FinanceFee.find(@finance_order.finance_fee_id)
+                          payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id}")
+                          unless payment.nil?
+                            payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
+                            payment_saved = true
+                          else  
+                            payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
+                            if payment.save
+                              payment_saved = true
+                            end 
+                          end
+                        end
+                      else
+                        financefee = FinanceFee.find(@finance_order.finance_fee_id)
+                        payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id}")
+                        unless payment.nil?
+                          payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
+                          payment_saved = true
+                        else  
+                          payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
+                          if payment.save
+                            payment_saved = true
+                          end 
+                        end
+                      end
+
+                      if payment_saved
+                        unless order_verify(orderId, 'bkash', transaction_datetime, trxID, amount)
+                          error = {:errorMessage => "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"}
+                          response_ssl = JSON::parse(error.to_json)
+                          render :json => response_ssl
+                        else
+                          render :json => response_ssl
+                        end
+                      end
+                    end
+                  else
+                    render :json => response_ssl
+                  end
+                else
+                  error = {:errorMessage => "Invalid payment Request, Invoice No. Not match"}
+                  response_ssl = JSON::parse(error.to_json)
+                  render :json => response_ssl
                 end
               else
-                financefee = FinanceFee.find(@finance_order.finance_fee_id)
-                payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id}")
-                unless payment.nil?
-                  payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
-                  payment_saved = true
-                else  
-                  payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
-                  if payment.save
-                    payment_saved = true
-                  end 
-                end
-              end
-            else
-              financefee = FinanceFee.find(@finance_order.finance_fee_id)
-              payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id}")
-              unless payment.nil?
-                payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
-                payment_saved = true
-              else  
-                payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
-                if payment.save
-                  payment_saved = true
-                end 
-              end
-            end
-            
-            if payment_saved
-              unless order_verify(orderId, 'bkash', transaction_datetime, trxID, amount)
-                error = {:errorMessage => "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"}
+                error = {:errorMessage => "Invalid payment Request, Invoice No. Not match"}
                 response_ssl = JSON::parse(error.to_json)
                 render :json => response_ssl
-              else
-                render :json => response_ssl
               end
+            else
+              error = {:errorMessage => "Invalid payment Request, Data Not match"}
+              response_ssl = JSON::parse(error.to_json)
+              render :json => response_ssl
             end
+          else
+            error = {:errorMessage => "Invalid payment Request, Data Not match"}
+            response_ssl = JSON::parse(error.to_json)
+            render :json => response_ssl
           end
         else
+          error = {:errorMessage => "Invalid payment Request, Data Not match"}
+          response_ssl = JSON::parse(error.to_json)
           render :json => response_ssl
         end
-        
       else
         error = {:errorMessage => "Invalid Request for token"}
         response_ssl = JSON::parse(error.to_json)

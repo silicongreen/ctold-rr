@@ -1129,7 +1129,9 @@
       <% @student_has_due = false %>
       <% end %>
       <% if MultiSchool.current_school.id == 357 and !@current_user.admin? %>
-      <% @student_has_due = true %>
+        <% if @student.id != 44129 %>
+        <% @student_has_due = true %>
+        <% end %>
       <% end %>
       <% if @student_has_due == false #and @financefee.batch_id == @student.batch_id %>
         <%#= total_fees.to_s + " DID DID DID" %>

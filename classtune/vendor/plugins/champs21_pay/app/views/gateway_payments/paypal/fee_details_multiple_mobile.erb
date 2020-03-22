@@ -1063,8 +1063,11 @@
           <% found = true %>
           <% under_maintenance = false %>
           <% if MultiSchool.current_school.id == 357 and !@current_user.admin? %>
-          <% has_dues = true %>
+            <% if @student.id != 44129 %>
+            <% has_dues = true %>
+            <% end %>
           <% end %>
+          
           <% if has_dues == false %>
             <% if total_fees > 0 and found and under_maintenance == false %>
                 <tr>

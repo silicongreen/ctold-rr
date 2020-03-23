@@ -45,7 +45,12 @@
     top: 20% !important;
   }
 </style>
-
+<%
+llo = "sakd_payments"
+unless llo.index('payments').blank?
+%>
+<div style="display:none;">HERE I try</div>
+<% end %>
 <% unless params[:show_order_id].blank? %>
   <% if params[:show_order_id].to_i == 1 %>
     <div style="padding: 20px; border: 1px solid #ccc;">

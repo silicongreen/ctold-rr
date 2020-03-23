@@ -1381,7 +1381,7 @@ encrypted = [cipher].pack('m')
 %>
 <form id="data-form-val">
   <input type="hidden" name="total_fees" id="total_fees" value="<%= precision_label total_fees %>" />
-  <input type="hidden" name="order_id" id="order_id" value="<%= @order_id.strip %>" />
+  <input type="hidden" name="order_id" id="order_id" value="<%= @order_id.strip unless @order_id.blank? %>" />
   <input type="hidden" name="kmsee" id="kmsee" value="<%= kkp.strip %>" />
   <input type="hidden" name="imsee" id="imsee" value="<%= iip.strip %>" />
   <input type="hidden" name="mmsec" id="mmsec" value="<%= encrypted.strip %>" />

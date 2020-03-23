@@ -16876,6 +16876,7 @@ class FinanceController < ApplicationController
     render :update do |page|
       page.replace_html "student", :partial => "student_fees_submission"
       page << "loadJS();"
+      page << "j('#paid_fees_tr_#{params[:transaction_id]}').remove(); if ( j('.paid_fees_tr').length == 0 ) { j('#payments_details').remove(); }"
       page << 'j(".select2-combo").select2();'
     end
   end

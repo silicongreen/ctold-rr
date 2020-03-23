@@ -1318,7 +1318,7 @@
         </tr>
         <tbody>
         <% @paid_fees.each_with_index do |f , i| %>
-          <tr class="<%= cycle("odd","even") %>">
+          <tr id="paid_fees_tr_<%= f.id %>" class="<%= cycle("odd","even") %> paid_fees_tr">
             <% transaction_payment = false %>
             <% transaction_payment_not_assign = false %>
             <% #if MultiSchool.current_school.id == 352 %>

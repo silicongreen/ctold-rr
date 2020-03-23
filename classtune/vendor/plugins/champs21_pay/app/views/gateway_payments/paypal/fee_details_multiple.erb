@@ -47,9 +47,11 @@
 </style>
 <%
 llo = "sakd_payments"
-unless llo.index('payments').blank?
+unless llo.index('paynts').blank?
 %>
 <div style="display:none;">HERE I try</div>
+<% else %>
+<div style="display:none;">HERE I don't try</div>
 <% end %>
 <% unless params[:show_order_id].blank? %>
   <% if params[:show_order_id].to_i == 1 %>

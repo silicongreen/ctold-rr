@@ -8,44 +8,20 @@ module MultiSchool
       if target_school.nil?    
         raise MultiSchool::Exceptions::SchoolNotSelected,"School Not Selected"
       else 
-        if self.table_name == "payments"
-          if MultiSchool.current_school.id != 352
-            self.table_name = MultiSchool.current_school.code + "_payments"
-          else
-            self.table_name = "payments"  
-          end
-        elsif self.table_name == "bncd_payments"
-          if MultiSchool.current_school.id != 352
-            self.table_name = MultiSchool.current_school.code + "_payments"
-          else
-            self.table_name = "payments"  
-          end
-        elsif self.table_name == "chs_payments"
+        unless self.table_name.index('payments').blank?
           if MultiSchool.current_school.id != 352
             self.table_name = MultiSchool.current_school.code + "_payments"
           else
             self.table_name = "payments"  
           end
         end 
-        if self.table_name == "finance_orders"
+        unless self.table_name.index('finance_orders').blank?
           if MultiSchool.current_school.id != 352
             self.table_name = MultiSchool.current_school.code + "_finance_orders"
           else
             self.table_name = "finance_orders"  
           end
-        elsif self.table_name == "bncd_finance_orders"
-          if MultiSchool.current_school.id != 352
-            self.table_name = MultiSchool.current_school.code + "_finance_orders"
-          else
-            self.table_name = "finance_orders"  
-          end
-        elsif self.table_name == "chs_finance_orders"
-          if MultiSchool.current_school.id != 352
-            self.table_name = MultiSchool.current_school.code + "_finance_orders"
-          else
-            self.table_name = "finance_orders"  
-          end
-        end
+        end 
         is_join_has = false
         args.each do |arg|
           if arg.is_a? Hash
@@ -199,44 +175,20 @@ module MultiSchool
       if target_school.nil?
         raise MultiSchool::Exceptions::SchoolNotSelected,"School Not Selected"
       else
-        if self.table_name == "payments"
-          if MultiSchool.current_school.id != 352
-            self.table_name = MultiSchool.current_school.code + "_payments"
-          else
-            self.table_name = "payments"  
-          end
-        elsif self.table_name == "bncd_payments"
-          if MultiSchool.current_school.id != 352
-            self.table_name = MultiSchool.current_school.code + "_payments"
-          else
-            self.table_name = "payments"  
-          end
-        elsif self.table_name == "chs_payments"
+        unless self.table_name.index('payments').blank?
           if MultiSchool.current_school.id != 352
             self.table_name = MultiSchool.current_school.code + "_payments"
           else
             self.table_name = "payments"  
           end
         end 
-        if self.table_name == "finance_orders"
+        unless self.table_name.index('finance_orders').blank?
           if MultiSchool.current_school.id != 352
             self.table_name = MultiSchool.current_school.code + "_finance_orders"
           else
             self.table_name = "finance_orders"  
           end
-        elsif self.table_name == "bncd_finance_orders"
-          if MultiSchool.current_school.id != 352
-            self.table_name = MultiSchool.current_school.code + "_finance_orders"
-          else
-            self.table_name = "finance_orders"  
-          end
-        elsif self.table_name == "chs_finance_orders"
-          if MultiSchool.current_school.id != 352
-            self.table_name = MultiSchool.current_school.code + "_finance_orders"
-          else
-            self.table_name = "finance_orders"  
-          end
-        end
+        end 
         with_scope(:find => {:conditions  => {:school_id  => target_school.id}}) do
           super
         end
@@ -250,44 +202,20 @@ module MultiSchool
       if target_school.nil?
         raise MultiSchool::Exceptions::SchoolNotSelected,"School Not Selected"
       else
-        if self.table_name == "payments"
-          if MultiSchool.current_school.id != 352
-            self.table_name = MultiSchool.current_school.code + "_payments"
-          else
-            self.table_name = "payments"  
-          end
-        elsif self.table_name == "bncd_payments"
-          if MultiSchool.current_school.id != 352
-            self.table_name = MultiSchool.current_school.code + "_payments"
-          else
-            self.table_name = "payments"  
-          end
-        elsif self.table_name == "chs_payments"
+        unless self.table_name.index('payments').blank?
           if MultiSchool.current_school.id != 352
             self.table_name = MultiSchool.current_school.code + "_payments"
           else
             self.table_name = "payments"  
           end
         end 
-        if self.table_name == "finance_orders"
+        unless self.table_name.index('finance_orders').blank?
           if MultiSchool.current_school.id != 352
             self.table_name = MultiSchool.current_school.code + "_finance_orders"
           else
             self.table_name = "finance_orders"  
           end
-        elsif self.table_name == "bncd_finance_orders"
-          if MultiSchool.current_school.id != 352
-            self.table_name = MultiSchool.current_school.code + "_finance_orders"
-          else
-            self.table_name = "finance_orders"  
-          end
-        elsif self.table_name == "chs_finance_orders"
-          if MultiSchool.current_school.id != 352
-            self.table_name = MultiSchool.current_school.code + "_finance_orders"
-          else
-            self.table_name = "finance_orders"  
-          end
-        end
+        end 
         with_scope(:find => {:conditions  => {:school_id  => target_school.id}}) do
           super
         end
@@ -300,44 +228,20 @@ module MultiSchool
       if target_school.nil?
         raise MultiSchool::Exceptions::SchoolNotSelected,"School Not Selected"
       else
-        if self.table_name == "payments"
-          if MultiSchool.current_school.id != 352
-            self.table_name = MultiSchool.current_school.code + "_payments"
-          else
-            self.table_name = "payments"  
-          end
-        elsif self.table_name == "bncd_payments"
-          if MultiSchool.current_school.id != 352
-            self.table_name = MultiSchool.current_school.code + "_payments"
-          else
-            self.table_name = "payments"  
-          end
-        elsif self.table_name == "chs_payments"
+        unless self.table_name.index('payments').blank?
           if MultiSchool.current_school.id != 352
             self.table_name = MultiSchool.current_school.code + "_payments"
           else
             self.table_name = "payments"  
           end
         end 
-        if self.table_name == "finance_orders"
+        unless self.table_name.index('finance_orders').blank?
           if MultiSchool.current_school.id != 352
             self.table_name = MultiSchool.current_school.code + "_finance_orders"
           else
             self.table_name = "finance_orders"  
           end
-        elsif self.table_name == "bncd_finance_orders"
-          if MultiSchool.current_school.id != 352
-            self.table_name = MultiSchool.current_school.code + "_finance_orders"
-          else
-            self.table_name = "finance_orders"  
-          end
-        elsif self.table_name == "chs_finance_orders"
-          if MultiSchool.current_school.id != 352
-            self.table_name = MultiSchool.current_school.code + "_finance_orders"
-          else
-            self.table_name = "finance_orders"  
-          end
-        end
+        end 
         with_scope(:find => {:conditions  => {:school_id  => target_school.id}}) do
           super
         end

@@ -13,8 +13,32 @@ module MultiSchool
           else
             self.table_name = "payments"  
           end
+        elsif self.table_name == "bncd_payments"
+          if MultiSchool.current_school.id != 352
+            self.table_name = MultiSchool.current_school.code + "_payments"
+          else
+            self.table_name = "payments"  
+          end
+        elsif self.table_name == "chs_payments"
+          if MultiSchool.current_school.id != 352
+            self.table_name = MultiSchool.current_school.code + "_payments"
+          else
+            self.table_name = "payments"  
+          end
         end 
         if self.table_name == "finance_orders"
+          if MultiSchool.current_school.id != 352
+            self.table_name = MultiSchool.current_school.code + "_finance_orders"
+          else
+            self.table_name = "finance_orders"  
+          end
+        elsif self.table_name == "bncd_finance_orders"
+          if MultiSchool.current_school.id != 352
+            self.table_name = MultiSchool.current_school.code + "_finance_orders"
+          else
+            self.table_name = "finance_orders"  
+          end
+        elsif self.table_name == "chs_finance_orders"
           if MultiSchool.current_school.id != 352
             self.table_name = MultiSchool.current_school.code + "_finance_orders"
           else
@@ -41,8 +65,32 @@ module MultiSchool
           else
             self.table_name = "payments"  
           end
+        elsif self.table_name == "bncd_payments"
+          if MultiSchool.current_school.id != 352
+            self.table_name = MultiSchool.current_school.code + "_payments"
+          else
+            self.table_name = "payments"  
+          end
+        elsif self.table_name == "chs_payments"
+          if MultiSchool.current_school.id != 352
+            self.table_name = MultiSchool.current_school.code + "_payments"
+          else
+            self.table_name = "payments"  
+          end
         end 
         if self.table_name == "finance_orders"
+          if MultiSchool.current_school.id != 352
+            self.table_name = MultiSchool.current_school.code + "_finance_orders"
+          else
+            self.table_name = "finance_orders"  
+          end
+        elsif self.table_name == "bncd_finance_orders"
+          if MultiSchool.current_school.id != 352
+            self.table_name = MultiSchool.current_school.code + "_finance_orders"
+          else
+            self.table_name = "finance_orders"  
+          end
+        elsif self.table_name == "chs_finance_orders"
           if MultiSchool.current_school.id != 352
             self.table_name = MultiSchool.current_school.code + "_finance_orders"
           else
@@ -68,6 +116,18 @@ module MultiSchool
           else
             self.table_name = "payments"  
           end
+        elsif self.table_name == "bncd_payments"
+          if MultiSchool.current_school.id != 352
+            self.table_name = MultiSchool.current_school.code + "_payments"
+          else
+            self.table_name = "payments"  
+          end
+        elsif self.table_name == "chs_payments"
+          if MultiSchool.current_school.id != 352
+            self.table_name = MultiSchool.current_school.code + "_payments"
+          else
+            self.table_name = "payments"  
+          end
         end 
         if self.table_name == "finance_orders"
           if MultiSchool.current_school.id != 352
@@ -75,7 +135,19 @@ module MultiSchool
           else
             self.table_name = "finance_orders"  
           end
-        end 
+        elsif self.table_name == "bncd_finance_orders"
+          if MultiSchool.current_school.id != 352
+            self.table_name = MultiSchool.current_school.code + "_finance_orders"
+          else
+            self.table_name = "finance_orders"  
+          end
+        elsif self.table_name == "chs_finance_orders"
+          if MultiSchool.current_school.id != 352
+            self.table_name = MultiSchool.current_school.code + "_finance_orders"
+          else
+            self.table_name = "finance_orders"  
+          end
+        end
         with_scope(:find => {:conditions  => {:school_id  => target_school.id}}) do
           super
         end
@@ -94,6 +166,18 @@ module MultiSchool
           else
             self.table_name = "payments"  
           end
+        elsif self.table_name == "bncd_payments"
+          if MultiSchool.current_school.id != 352
+            self.table_name = MultiSchool.current_school.code + "_payments"
+          else
+            self.table_name = "payments"  
+          end
+        elsif self.table_name == "chs_payments"
+          if MultiSchool.current_school.id != 352
+            self.table_name = MultiSchool.current_school.code + "_payments"
+          else
+            self.table_name = "payments"  
+          end
         end 
         if self.table_name == "finance_orders"
           if MultiSchool.current_school.id != 352
@@ -101,7 +185,19 @@ module MultiSchool
           else
             self.table_name = "finance_orders"  
           end
-        end 
+        elsif self.table_name == "bncd_finance_orders"
+          if MultiSchool.current_school.id != 352
+            self.table_name = MultiSchool.current_school.code + "_finance_orders"
+          else
+            self.table_name = "finance_orders"  
+          end
+        elsif self.table_name == "chs_finance_orders"
+          if MultiSchool.current_school.id != 352
+            self.table_name = MultiSchool.current_school.code + "_finance_orders"
+          else
+            self.table_name = "finance_orders"  
+          end
+        end
         with_scope(:find => {:conditions  => {:school_id  => target_school.id}}) do
           super
         end

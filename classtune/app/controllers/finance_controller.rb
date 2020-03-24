@@ -10703,7 +10703,6 @@ class FinanceController < ApplicationController
       
       @adv_fee_discount = false
       @actual_discount = 1
-
       if advance_fee_collection
         calculate_discount(@date, @financefee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
       else
@@ -10800,6 +10799,35 @@ class FinanceController < ApplicationController
       
       @fine_amount=0 if @financefee.is_paid
       
+      if MultiSchool.current_school.id == 357
+        @previous_dues = 0.00
+        @previous_dues_fees_name = ""
+        @finance_fees_unpaid = FinanceFee.find(:all,:conditions=>["finance_fee_collections.due_date < ? and finance_fees.is_paid = #{false} and finance_fees.student_id = ? and finance_fees.balance > 0 and finance_fees.id != ?", @date.due_date,@student.id, @financefee.id],:include=>"finance_fee_collection")
+        unless @finance_fees_unpaid.blank?
+          fee_collection_ids = @finance_fees_unpaid.map{|s| s.fee_collection_id}
+          fee_collections = FinanceFeeCollection.find(:all, :conditions => "id IN (#{fee_collection_ids.join(',')})")
+          unless fee_collections.blank?
+            @previous_dues_fees_name = "(" + fee_collections.map{|s| s.name}.join(', ') + ")"
+            @previous_dues = @finance_fees_unpaid.map{|s| s.balance}.sum.to_f
+          end
+        end
+        
+        finance_order = FinanceOrder.find(:first, :conditions => "finance_fee_id = #{@financefee.id} and student_id = #{@financefee.student_id} and batch_id = #{@financefee.batch_id}")
+        unless finance_order.nil?
+          @order_id = "O" + finance_order.id.to_s
+          finance_order.update_attributes(:order_id => @order_id)
+        else
+          finance_order = FinanceOrder.new()
+          finance_order.finance_fee_id = @financefee.id
+          finance_order.student_id = @financefee.student_id
+          finance_order.batch_id = @financefee.batch_id
+          finance_order.balance = @financefee.balance
+          finance_order.save
+          @order_id = "O" + finance_order.id.to_s
+          finance_order.update_attributes(:order_id => @order_id)
+        end
+      end
+      
       #    render :layout => false
       if MultiSchool.current_school.id == 312
         render :pdf => 'student_fee_receipt_pdf',
@@ -10829,6 +10857,16 @@ class FinanceController < ApplicationController
           :bottom => 0,
           :left=> 10,
           :right => 10},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      elsif  MultiSchool.current_school.id == 357
+        render :pdf => 'student_fee_receipt_pdf',
+          :orientation => 'Landscape', :zoom => 1.00,
+          :page_size => 'Legal',
+          :margin => {    :top=> 5,
+          :bottom => 0,
+          :left=> 5,
+          :right => 5},
           :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
           :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
       elsif  MultiSchool.current_school.id == 352

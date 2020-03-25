@@ -4148,6 +4148,9 @@ module FinanceLoader
       unless request_params.nil?
         multiple = request_params[:multiple]
         unless multiple.nil?
+          if MultiSchool.current_school.id == 2
+        abort(request_params.inspect)
+      end
           if multiple.to_s == "true"
             fees = request_params[:fees].split(",")
             fees.each do |fee|
@@ -4175,9 +4178,6 @@ module FinanceLoader
             end
           end
         else
-          if MultiSchool.current_school.id == 2
-        abort(request_params.inspect)
-      end
           payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{@financefee.id}")
           unless payment.nil?
             payment_saved = true

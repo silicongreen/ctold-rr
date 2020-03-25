@@ -634,7 +634,7 @@ class SmsController < ApplicationController
               @recipients=[]
               sms_setting = SmsSetting.new()
               employee_ids.each do |e_id|
-                student = Student.find(e_id)
+                employee = Employee.find(e_id)
                 if sms_setting.employee_sms_active
                   @recipients.push employee.mobile_phone unless (employee.mobile_phone.nil? or employee.mobile_phone == "")
                 end

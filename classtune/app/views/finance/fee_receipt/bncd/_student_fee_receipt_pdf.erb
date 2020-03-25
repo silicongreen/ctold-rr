@@ -260,7 +260,14 @@
                   </tr>
               </table>
               </center>
-              <% tot_row = @fee_particulars.length + @onetime_discounts.length + @discounts.length %>
+              <% tot_row = @fee_particulars.length %>
+              <% unless @onetime_discounts.blank? %>
+              <% tot_row += @onetime_discounts.length %>
+              <% end %>
+              <% unless @discounts.blank? %>
+              <% tot_row += @discounts.length %>
+              <% end %>
+              
               <% if tot_row == 1 %>
                 <% margintop = "40%" %>
               <% elsif tot_row == 2 %>

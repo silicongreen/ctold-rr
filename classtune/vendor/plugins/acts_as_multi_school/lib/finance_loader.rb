@@ -4147,7 +4147,7 @@ module FinanceLoader
       payment_saved = false
       unless request_params.nil?
         if MultiSchool.current_school.id == 2
-        abort(request_params)
+        abort(request_params.inspect)
       end
         multiple = request_params[:multiple]
         unless multiple.nil?

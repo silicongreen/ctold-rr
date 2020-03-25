@@ -4143,11 +4143,12 @@ module FinanceLoader
         end
 
       end
-      if MultiSchool.current_school.id == 2
-        abort('sadasd')
-      end
+      
       payment_saved = false
       unless request_params.nil?
+        if MultiSchool.current_school.id == 2
+        abort(request_params)
+      end
         multiple = request_params[:multiple]
         unless multiple.nil?
           if multiple.to_s == "true"

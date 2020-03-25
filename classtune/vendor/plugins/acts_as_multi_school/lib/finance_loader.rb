@@ -4148,9 +4148,6 @@ module FinanceLoader
       unless request_params.nil?
         multiple = request_params[:multiple]
         unless multiple.nil?
-          if MultiSchool.current_school.id == 2
-        abort(request_params.inspect)
-      end
           if multiple.to_s == "true"
             fees = request_params[:fees].split(",")
             fees.each do |fee|
@@ -4188,6 +4185,9 @@ module FinanceLoader
             end 
           end
         end
+      end
+      if gateway_response[:card_order_status].to_s == "DECLINED"
+        payment_saved = false
       end
       if payment_saved
         gateway_status = false

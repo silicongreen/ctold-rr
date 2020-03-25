@@ -73,18 +73,26 @@
             </table> 
             
             <% tr_count = 0 %>
-            <table class="std_info" id="pdf-table">
+            <table class="std_info" id="pdf-table" style="margin-top: 1px;">
                 <tr class="table-header">
-                    <td colspan="1" class="align-center" ><%= "Fee Details" %></td>
-                    <td class="mark-td border-right-none no-warp align-right" style='padding-right: 6px !important;'> <%= "Taka" %></td>
-                    <td class="name-td left border-left-none"  colspan="1" ><%= "Ps" %></td>
+                    <td colspan="1" class="align-center" style="font-weight: bold;"><%= "Fee Details" %></td>
+                    <td class="mark-td border-right-none no-warp align-right" style='font-weight: bold; padding-right: 6px !important;'> <%= "Taka" %></td>
+                    <td class="name-td left border-left-none"  colspan="1" style="font-weight: bold;"><%= "Ps" %></td>
                 </tr>
+                <% disabled_late_fine = false %>
+                <% disabled_previous_due = false %>
                 <% tr_count = tr_count+1 %>
                 <%k=0%>
                 <% i = 0  %>
                 <% c= 'even' %>
                 <% vat_amount = 0 %>
                 <% @fee_particulars.each do |fee| %>
+                      <% if fee.finance_fee_particular_category_id == 258 %>
+                        <% disabled_late_fine = true %>
+                      <% end %>
+                      <% if fee.finance_fee_particular_category_id == 256 %>
+                        <% disabled_previous_due = true %>
+                      <% end %>
                       <tr  class="table-header">
                           <%k+=1%>
                           <td class="name-td left" colspan="1"><%= fee.name %></td>
@@ -93,6 +101,9 @@
                       </tr>
                       <% total_fees += fee.amount %>   
                 <% end %>
+                      <%#= "tot_row" %>
+                
+                
                       
                 <% total_discount = 0 %>
                 <% unless @onetime_discounts.nil? or @onetime_discounts.empty? or @onetime_discounts.blank? %>
@@ -187,51 +198,53 @@
                     </td>
                     <td class="name-td left border-left-none" colspan="1"><% if @previous_dues.to_i >= 0 %><% a,b = (sprintf "%.2f", (@previous_dues - @previous_dues.to_i).to_f).split('.') %><%= b %><% else %>-<% end %></td>
                 </tr>
-                
-                <%  k += 1%> 
-                <%
-                  fine_amount_paid = 0.0
-                  unless @paid_fees.blank?
-                    transaction_ids = @paid_fees.map(&:id)
-                    unless transaction_ids.blank?
-                      paidFineFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")")
-                      unless paidFineFess.blank?
-                        fine_amount_paid += paidFineFess.map(&:amount).sum.to_f
+                <% unless disabled_late_fine %>
+                  <%  k += 1%> 
+                  <%
+                    fine_amount_paid = 0.0
+                    unless @paid_fees.blank?
+                      transaction_ids = @paid_fees.map(&:id)
+                      unless transaction_ids.blank?
+                        paidFineFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")")
+                        unless paidFineFess.blank?
+                          fine_amount_paid += paidFineFess.map(&:amount).sum.to_f
+                        end
                       end
+                    else
+                      fine_amount_paid = @fine_amount.blank? ? 0 : @fine_amount
                     end
-                  else
-                    fine_amount_paid = @fine_amount.blank? ? 0 : @fine_amount
-                  end
-                %>
-                <% fine_amount_paid = fine_amount_paid.to_f %>
-                <% if fine_amount_paid > 0 %>
-                  <tr  class="table-header">
-                      <td class="name-td left" colspan="1" style='font-weight: bold;'><%= "Late Payment Fine" %></td>
-                      <td class="mark-td border-right-none align-right" style='padding-right: 6px !important;'>
-                          &nbsp;&nbsp;&nbsp;<%= fine_amount_paid.to_i %>
-                          <% total_fees += fine_amount_paid %>
-                      </td>
-                      <td class="name-td left border-left-none" colspan="1"><% if fine_amount_paid.to_i >= 0 %><% a,b = (sprintf "%.2f", (fine_amount_paid - fine_amount_paid.to_i).to_f).split('.') %><%= b %><% else %>-<% end %></td>
-                  </tr>      
-                <% else %>
-                  <tr class="table-header">
-                      <td class="name-td left" colspan="1" style='font-weight: bold;'><%= "Late Payment Fine" %></td>
-                      <td class="mark-td border-right-none align-right" style='padding-right: 6px !important;'>
-                          &nbsp;&nbsp;&nbsp;<%= fine_amount_paid.to_i %>
-                          <% total_fees += fine_amount_paid %>
-                      </td>
-                      <td class="name-td left border-left-none" colspan="1"><% if fine_amount_paid.to_i >= 0 %><% a,b = (sprintf "%.2f", (fine_amount_paid - fine_amount_paid.to_i).to_f).split('.') %><%= b %><% else %>-<% end %></td>
-                  </tr>      
+                  %>
+                  <% fine_amount_paid = fine_amount_paid.to_f %>
+                  <% if fine_amount_paid > 0 %>
+                    <tr  class="table-header">
+                        <td class="name-td left" colspan="1" style='font-weight: bold;'><%= "Late Payment Fine" %></td>
+                        <td class="mark-td border-right-none align-right" style='padding-right: 6px !important;'>
+                            &nbsp;&nbsp;&nbsp;<%= fine_amount_paid.to_i %>
+                            <% total_fees += fine_amount_paid %>
+                        </td>
+                        <td class="name-td left border-left-none" colspan="1"><% if fine_amount_paid.to_i >= 0 %><% a,b = (sprintf "%.2f", (fine_amount_paid - fine_amount_paid.to_i).to_f).split('.') %><%= b %><% else %>-<% end %></td>
+                    </tr>      
+                  <% else %>
+                    <tr class="table-header">
+                        <td class="name-td left" colspan="1" style='font-weight: bold;'><%= "Late Payment Fine" %></td>
+                        <td class="mark-td border-right-none align-right" style='padding-right: 6px !important;'>
+                            &nbsp;&nbsp;&nbsp;<%= fine_amount_paid.to_i %>
+                            <% total_fees += fine_amount_paid %>
+                        </td>
+                        <td class="name-td left border-left-none" colspan="1"><% if fine_amount_paid.to_i >= 0 %><% a,b = (sprintf "%.2f", (fine_amount_paid - fine_amount_paid.to_i).to_f).split('.') %><%= b %><% else %>-<% end %></td>
+                    </tr>      
+                  <% end %>
                 <% end %>
                   
-                
+                <% unless disabled_previous_due %>
                 <tr class="table-header">
                     <td class="name-td left" colspan="1" style='font-weight: normal; text-align: right; padding-right: 6px !important; font-size: 14px;'><%= "Total Payable Amount" %></td>
                     <td class="mark-td border-right-none align-right" style='padding-right: 6px !important; font-size: 14px;'>
                         &nbsp;&nbsp;&nbsp;<%= total_fees.to_i %>
                     </td>
                     <td class="name-td left border-left-none" colspan="1" style="font-size: 14px;"><% if total_fees.to_i >= 0 %><% a,b = (sprintf "%.2f", (total_fees - total_fees.to_i).to_f).split('.') %><%= b %><% else %>-<% end %></td>
-                </tr>  
+                </tr> 
+                <% end %>
                 
                 <tr class="table-header">
                     <td class="name-td left" colspan="3" style='font-weight: normal; line-height: 15px;'>
@@ -243,11 +256,33 @@
               
               <table class="std_info_no_border" style=" width: 100% !important; ">
                   <tr class="table-header">
-                      <td style="font-size: 16px; line-height: 18x;">If payment is not made within the last date of payment, this invoice will become invalid. Payment must be made through new invoice with late fine and dues</td>
+                      <td style="font-size: 12px; line-height: 18x;">If payment is not made within the last date of payment, this invoice will become invalid. Payment must be made through new invoice with late fine and dues</td>
                   </tr>
               </table>
               </center>
-              <table class="signature">
+              <% tot_row = @fee_particulars.length + @onetime_discounts.length + @discounts.length %>
+              <% if tot_row == 1 %>
+                <% margintop = "40%" %>
+              <% elsif tot_row == 2 %>
+                <% margintop = "36%" %>
+              <% elsif tot_row == 3 %>
+                <% margintop = "34%" %>
+              <% elsif tot_row == 4 %>
+                <% margintop = "30%" %>
+              <% elsif tot_row == 5 %>
+                <% margintop = "24%" %>
+              <% elsif tot_row == 6 %>
+                <% margintop = "19%" %>
+              <% elsif tot_row == 7 %>
+                <% margintop = "14%" %>
+              <% elsif tot_row == 8 %>
+                <% margintop = "9%" %>
+              <% elsif tot_row == 9 %>
+                <% margintop = "3%" %>
+              <% else %>
+                <% margintop = "0%" %>
+              <% end %>
+              <table class="signature" style="margin-top: <%= margintop %>;">
                   <tr>
                       <td class="top-border">Parent/Student</td>
                       <td style='width: 3%;'></td>
@@ -264,7 +299,7 @@
                 <%= cp %>
               </div>
               <div style="width: 100%; text-align: center; font-weight: normal; font-size: 10px; padding-top: 5px; ">
-                Computerized Fees Receipt By: Classtune 
+                Computerized Fees Receipt By: ClassTune 
               </div>
                    
               

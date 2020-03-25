@@ -23,9 +23,9 @@
     <%= render  :partial=>"/finance/fee_receipt/south/student_fee_receipt_pdf" %>
   <% elsif MultiSchool.current_school.id == 3 %>
     <%= render  :partial=>"/finance/fee_receipt/kinderland/student_fee_receipt_pdf" %>
-  <% elsif MultiSchool.current_school.id == 352 %>
+  <% elsif MultiSchool.current_school.id == 357 %>
     <%= render  :partial=>"/finance/fee_receipt/bncd/student_fee_receipt_pdf" %>
-  <% elsif MultiSchool.current_school.id == 3521 %>
+  <% elsif MultiSchool.current_school.id == 352 %>
     <% unless params[:admission].blank? %>
       <%= render  :partial=>"/finance/fee_receipt/sagc/student_fee_receipt_admission_pdf" %>
     <% else %>

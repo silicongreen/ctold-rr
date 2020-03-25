@@ -10799,7 +10799,7 @@ class FinanceController < ApplicationController
       
       @fine_amount=0 if @financefee.is_paid
       
-      if MultiSchool.current_school.id == 352
+      if MultiSchool.current_school.id == 357
         @previous_dues = 0.00
         @previous_dues_fees_name = ""
         @finance_fees_unpaid = FinanceFee.find(:all,:conditions=>["finance_fee_collections.due_date < ? and finance_fees.is_paid = #{false} and finance_fees.student_id = ? and finance_fees.balance > 0 and finance_fees.id != ?", @date.due_date,@student.id, @financefee.id],:include=>"finance_fee_collection")
@@ -10859,7 +10859,7 @@ class FinanceController < ApplicationController
           :right => 10},
           :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
           :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-      elsif  MultiSchool.current_school.id == 352
+      elsif  MultiSchool.current_school.id == 357
         render :pdf => 'student_fee_receipt_pdf',
           :orientation => 'Landscape', :zoom => 1.00,
           :page_size => 'Legal',
@@ -10869,7 +10869,7 @@ class FinanceController < ApplicationController
           :right => 5},
           :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
           :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-      elsif  MultiSchool.current_school.id == 3521
+      elsif  MultiSchool.current_school.id == 352
         unless params[:admission].blank?
           render :pdf => 'student_fee_receipt_pdf',
             :orientation => 'Landscape', :zoom => 1.00,

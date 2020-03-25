@@ -1092,11 +1092,18 @@
                                   <% end %>
                               <% end %>
                               <% @gateway_settings.keys.each do |key| %>
-                                  <% unless key == "citybank" %>
+                                  <% if key == "bkash" %>
                                   <div class="gateway_image_panel" data-gateway="<%= key %>" style="position: relative;">
                                       <input type="radio" id="radio_<%= key %>" name="gateway_radio" class="gateway_radio" value="<%= key %>" style="position: absolute; top: 0; right: 4px;" autocomplete="off" />
-                                      <%= image_tag "/images/gateway_images/#{key}-ico.png", :class => "gateway_image", :id => "#{key}", :style => "#{key == 'citybank' ? 'height:70px;' : 'height: 65px;'}" %>
+                                      <%= image_tag "/images/bkash-logo.png", :class => "gateway_image", :id => "#{key}", :style => "height:65px;border: 1px solid #ccc;border-radius: 12px;" %>
                                   </div>
+                                  <% else %>
+                                    <% unless key == "citybank" %>
+                                    <div class="gateway_image_panel" data-gateway="<%= key %>" style="position: relative;">
+                                        <input type="radio" id="radio_<%= key %>" name="gateway_radio" class="gateway_radio" value="<%= key %>" style="position: absolute; top: 0; right: 4px;" autocomplete="off" />
+                                        <%= image_tag "/images/gateway_images/#{key}-ico.png", :class => "gateway_image", :id => "#{key}", :style => "#{key == 'citybank' ? 'height:70px;' : 'height: 65px;'}" %>
+                                    </div>
+                                    <% end %>
                                   <% end %>
                               <% end %>
                             </div>    

@@ -45,14 +45,7 @@
     top: 20% !important;
   }
 </style>
-<%
-llo = "sakd_payments"
-unless llo.index('paynts').blank?
-%>
-<div style="display:none;">HERE I try</div>
-<% else %>
-<div style="display:none;">HERE I don't try</div>
-<% end %>
+
 <% unless params[:show_order_id].blank? %>
   <% if params[:show_order_id].to_i == 1 %>
     <div style="padding: 20px; border: 1px solid #ccc;">
@@ -1208,11 +1201,18 @@ unless llo.index('paynts').blank?
                             <% end %>
                         <% end %>
                         <% @gateway_settings.keys.each do |key| %>
-                            <% unless key == "citybank" %>
+                            <% if key == "bkash" %>
                             <div class="gateway_image_panel" data-gateway="<%= key %>" style="position: relative;">
                                 <input type="radio" id="radio_<%= key %>" name="gateway_radio" class="gateway_radio" value="<%= key %>" style="position: absolute; top: 0; right: 4px;" autocomplete="off" />
-                                <%= image_tag "/images/gateway_images/#{key}-ico.png", :class => "gateway_image", :id => "#{key}", :style => "#{key == 'citybank' ? 'height:70px;' : 'height: 65px;'}" %>
+                                <%= image_tag "/images/bkash-logo.png", :class => "gateway_image", :id => "#{key}", :style => "height:65px;border: 1px solid #ccc;border-radius: 12px;" %>
                             </div>
+                            <% else %>
+                              <% unless key == "citybank" %>
+                              <div class="gateway_image_panel" data-gateway="<%= key %>" style="position: relative;">
+                                  <input type="radio" id="radio_<%= key %>" name="gateway_radio" class="gateway_radio" value="<%= key %>" style="position: absolute; top: 0; right: 4px;" autocomplete="off" />
+                                  <%= image_tag "/images/gateway_images/#{key}-ico.png", :class => "gateway_image", :id => "#{key}", :style => "#{key == 'citybank' ? 'height:70px;' : 'height: 65px;'}" %>
+                              </div>
+                              <% end %>
                             <% end %>
                         <% end %>
                       </div>    
@@ -1290,31 +1290,12 @@ unless llo.index('paynts').blank?
         <div class="modal-content">
           <div class="modal-body">
               <div style="width: 100%; text-align: center;">
-                  <h1>Pay Summary</h1>
-                  <hr />
-                  <div style=" text-align: left; padding: 10px;">
-                      <div style="width: 24%; text-align: left; display: inline-block;font-size: 15px;padding: 6px;font-weight: bold; border: 1px solid #ccc;">Fees Name:</div>
-                      <div style="width: 70%; text-align: left; display: inline-block;font-size: 15px;padding: 6px;font-weight: bold; border: 1px solid #ccc;"><%= fee_collection_name %></div>
-                  </div>
-                  
-                  <div style=" text-align: left; padding: 10px;">
-                      <div style="width: 70%; text-align: right; display: inline-block;font-size: 18px;padding: 6px;font-weight: bold; border: 1px solid #ccc;">Fees Summary:</div>
-                      <div style="width: 24%; text-align: right; display: inline-block;font-size: 18px;padding: 6px;font-weight: bold; border: 1px solid #ccc;"><%= to_comma_seperated_precision_label(total_fees) %></div>
-                  </div>
-                  <div style="width: 98%; text-align: right; ">
-                    <% @gateway_settings.each do |key,value| %>
-                        <div class="gateway_image_panel-new" data-gateway="<%= key %>" style="position: relative;">
-                            <input type="radio" id="radio_<%= key %>_new" name="gateway_radio_new" class="gateway_radio_new" value="<%= key %>" style="position: absolute; top: 0; right: 4px;" autocomplete="off" />
-                            <%= image_tag "/images/gateway_images/#{key}-ico.png", :class => "gateway_image_new", :id => "#{key}" %>
-                        </div>
-                    <% end %>
-                      
-                  </div>
+                  <h1><i class="fa fa-exclamation-circle" aria-hidden="true" style="color: #ED1C24; font-size: 70px;"></i><br />
+                    <label id="error_label" style="font-size: 24px;">Error in payment</label></h1>
               </div>
           </div>
           <div class="modal-footer">
               <button type="button" id="close_pop_" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" id="pay_now_multi_new" class="btn btn-primary" disabled=""><%= "► #{t('pay_fees')}" %></button>
           </div>
         </div>
       </div>
@@ -1394,7 +1375,6 @@ encrypted = [cipher].pack('m')
   <input type="hidden" name="mmsec" id="mmsec" value="<%= encrypted.strip %>" />
 </form>
 <script>
-  
     j(document).ready(function(){
         var paymentID;
         var id_token;
@@ -1435,7 +1415,9 @@ encrypted = [cipher].pack('m')
                       else 
                       { 
                         bKash.create().onError(); 
-                        alert(data.errorMessage);
+                        j('#error_label').html(data.errorMessage);
+                        j("#paymentModal").modal();
+                        //alert(data.errorMessage);
                         j("#pay_fees_multiple").prop('disabled',false);
                         j("#pay_fees_multiple").html("<%= "► #{t('pay_fees')}" %>");
 
@@ -1444,9 +1426,10 @@ encrypted = [cipher].pack('m')
                 error: function () {
                     j("#pay_fees_multiple").prop('disabled',false);
                     j("#pay_fees_multiple").html("<%= "► #{t('pay_fees')}" %>");
-                    
                     bKash.create().onError(); 
-
+                    j('#error_label').html(data.errorMessage);
+                    j("#paymentModal").modal();
+                    //alert(data.errorMessage);
                 }
             });
           } 
@@ -1476,7 +1459,9 @@ encrypted = [cipher].pack('m')
                     success: function (data) {
                           if ( ! data.id_token )
                           {
-                              alert(data.errorMessage);
+                              j('#error_label').html(data.errorMessage);
+                              j("#paymentModal").modal();
+                              //alert(data.errorMessage);
                           }
                           else
                           {
@@ -1496,18 +1481,24 @@ encrypted = [cipher].pack('m')
                                         } 
                                         else 
                                         { 
-                                          alert(data.errorMessage);
+                                          j('#error_label').html(data.errorMessage);
+                                          j("#paymentModal").modal();
+                                          //alert(data.errorMessage);
                                         } 
                                   },
                                   error: function () {
-                                      alert(data.errorMessage);
+                                      j('#error_label').html(data.errorMessage);
+                                      j("#paymentModal").modal();
+                                      //alert(data.errorMessage);
                                   }
                               });
                           }
                     },
                     error: function () {
                         //bKash.create().onError();//run clean up code
-                        alert(data.errorMessage);
+                        j('#error_label').html("Error in payment");
+                        j("#paymentModal").modal();
+                        //alert(data.errorMessage);
 
                     }
                 });

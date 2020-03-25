@@ -64,17 +64,23 @@ class StudentController < ApplicationController
               fees.each do |fee|
                 f = fee.to_i
                 @finance_order = FinanceOrder.find_by_order_id_and_finance_fee_id(params[:order_id], f)
-                @finance_order.update_attributes(:request_params => params)
+                unless @finance_order.blank?
+                  @finance_order.update_attributes(:request_params => params)
+                end
               end
             else
               params[:multiple] = "false" 
               @finance_order = FinanceOrder.find_by_order_id_and_student_id(params[:order_id],params[:student_id])
-              @finance_order.update_attributes(:request_params => params)
+              unless @finance_order.blank?
+                @finance_order.update_attributes(:request_params => params)
+              end
             end
           else
             params[:multiple] = "false" 
             @finance_order = FinanceOrder.find_by_order_id_and_student_id(params[:order_id],params[:student_id])
-            @finance_order.update_attributes(:request_params => params)
+            unless @finance_order.blank?
+              @finance_order.update_attributes(:request_params => params)
+            end
           end
           
           @user_gateway = params[:user_gateway]
@@ -148,7 +154,8 @@ class StudentController < ApplicationController
             a_data = plain.split("---")
             if a_data.length == 3
               student_id = a_data[0]
-              fees = a_data[1]
+              fees = a_data[1].split(',')
+              #abort(fees.inspect)
               order_id = a_data[2]
               #abort(order_id.to_s  + "  " + params[:order_id])
               if order_id.to_s == params[:order_id].to_s
@@ -160,16 +167,20 @@ class StudentController < ApplicationController
                     @finance_orders.each do |finance_order|
 
                       finance_fee_id = finance_order.finance_fee_id
-                      finance_fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{student.id}")
-                      unless finance_fee.blank?
-                        fee_collection_id = finance_fee.fee_collection_id
-                        d = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}")
-                        unless d.blank?
-                          bal = FinanceFee.get_student_actual_balance(d, student, finance_fee)
-                          total_fees += bal.to_f
+                      if fees.include?(finance_fee_id.to_s)
+                        finance_fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{student.id}")
+                        unless finance_fee.blank?
+                          fee_collection_id = finance_fee.fee_collection_id
+                          d = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}")
+                          unless d.blank?
+                            bal = FinanceFee.get_student_actual_balance(d, student, finance_fee) + d.fine_to_pay(student).to_f
+                            #abort(bal.to_s)
+                            total_fees += bal.to_f
+                          end
                         end
                       end
                     end
+                    #abort(total_fees.to_s)
                     if total_fees.to_f == params[:total_fees].to_f
                       @user_gateway = params[:gateway]
                       id_token = params[:id_token]

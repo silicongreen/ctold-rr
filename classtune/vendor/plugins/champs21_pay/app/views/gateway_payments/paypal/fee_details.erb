@@ -1150,7 +1150,7 @@
                     <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button' %>
                     <% end %>
                   <% else %>
-                    <div style="width: 100%; float: right; text-align: right;">
+                      <div style="width: 100%; float: right; text-align: right;">
                         <% @gateway_settings.keys.each do |key| %>
                             <% if key == "citybank" %>
                             <div class="gateway_image_panel" data-gateway="<%= key %>" style="position: relative;">
@@ -1160,11 +1160,18 @@
                             <% end %>
                         <% end %>
                         <% @gateway_settings.keys.each do |key| %>
-                            <% unless key == "citybank" %>
+                            <% if key == "bkash" %>
                             <div class="gateway_image_panel" data-gateway="<%= key %>" style="position: relative;">
                                 <input type="radio" id="radio_<%= key %>" name="gateway_radio" class="gateway_radio" value="<%= key %>" style="position: absolute; top: 0; right: 4px;" autocomplete="off" />
-                                <%= image_tag "/images/gateway_images/#{key}-ico.png", :class => "gateway_image", :id => "#{key}", :style => "#{key == 'citybank' ? 'height:70px;' : 'height: 65px;'}" %>
+                                <%= image_tag "/images/bkash-logo.png", :class => "gateway_image", :id => "#{key}", :style => "height:65px;border: 1px solid #ccc;border-radius: 12px;" %>
                             </div>
+                            <% else %>
+                              <% unless key == "citybank" %>
+                              <div class="gateway_image_panel" data-gateway="<%= key %>" style="position: relative;">
+                                  <input type="radio" id="radio_<%= key %>" name="gateway_radio" class="gateway_radio" value="<%= key %>" style="position: absolute; top: 0; right: 4px;" autocomplete="off" />
+                                  <%= image_tag "/images/gateway_images/#{key}-ico.png", :class => "gateway_image", :id => "#{key}", :style => "#{key == 'citybank' ? 'height:70px;' : 'height: 65px;'}" %>
+                              </div>
+                              <% end %>
                             <% end %>
                         <% end %>
                       </div>    
@@ -1458,31 +1465,12 @@
       <div class="modal-content">
         <div class="modal-body">
             <div style="width: 100%; text-align: center;">
-                <h1>Pay Summary</h1>
-                <hr />
-                <div style=" text-align: left; padding: 10px;">
-                    <div style="width: 24%; text-align: left; display: inline-block;font-size: 15px;padding: 6px;font-weight: bold; border: 1px solid #ccc;">Fees Name:</div>
-                    <div style="width: 70%; text-align: left; display: inline-block;font-size: 15px;padding: 6px;font-weight: bold; border: 1px solid #ccc;"><%= fee_collection_name %></div>
-                </div>
-
-                <div style=" text-align: left; padding: 10px;">
-                    <div style="width: 70%; text-align: right; display: inline-block;font-size: 18px;padding: 6px;font-weight: bold; border: 1px solid #ccc;">Fees Summary:</div>
-                    <div style="width: 24%; text-align: right; display: inline-block;font-size: 18px;padding: 6px;font-weight: bold; border: 1px solid #ccc;"><%= to_comma_seperated_precision_label(total_fees) %></div>
-                </div>
-                <div style="width: 98%; text-align: right; ">
-                  <% @gateway_settings.each do |key,value| %>
-                      <div class="gateway_image_panel-new" data-gateway="<%= key %>" style="position: relative;">
-                          <input type="radio" id="radio_<%= key %>_new" name="gateway_radio_new" class="gateway_radio_new" value="<%= key %>" style="position: absolute; top: 0; right: 4px;" autocomplete="off" />
-                          <%= image_tag "/images/gateway_images/#{key}-ico.png", :class => "gateway_image_new", :id => "#{key}" %>
-                      </div>
-                  <% end %>
-
-                </div>
+                <h1><i class="fa fa-exclamation-circle" aria-hidden="true" style="color: #ED1C24; font-size: 70px;"></i><br />
+                  <label id="error_label" style="font-size: 24px;">Error in payment</label></h1>
             </div>
         </div>
         <div class="modal-footer">
             <button type="button" id="close_pop_" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" id="pay_now_multi_new" class="btn btn-primary" disabled=""><%= "► #{t('pay_fees')}" %></button>
         </div>
       </div>
     </div>
@@ -1622,7 +1610,7 @@ kkp = [key].pack('m')
 iv = OpenSSL::Cipher::Cipher.new(alg).random_iv
 iip = [iv].pack('m')
 
-data = @student.id.to_s + "---" + @date.id.to_s + "---" + @order_id.to_s
+data = @student.id.to_s + "---" + @financefee.id.to_s + "---" + @order_id.to_s
 
 aes = OpenSSL::Cipher::Cipher.new(alg)
 aes.encrypt
@@ -1643,7 +1631,6 @@ encrypted = [cipher].pack('m')
 </form>
 
 <script>
-  
     j(document).ready(function(){
         var paymentID;
         var id_token;
@@ -1684,7 +1671,9 @@ encrypted = [cipher].pack('m')
                       else 
                       { 
                         bKash.create().onError(); 
-                        alert(data.errorMessage);
+                        j('#error_label').html(data.errorMessage);
+                        j("#paymentModal").modal();
+                        //alert(data.errorMessage);
                         j("#pay_fees_multiple").prop('disabled',false);
                         j("#pay_fees_multiple").html("<%= "► #{t('pay_fees')}" %>");
 
@@ -1693,9 +1682,10 @@ encrypted = [cipher].pack('m')
                 error: function () {
                     j("#pay_fees_multiple").prop('disabled',false);
                     j("#pay_fees_multiple").html("<%= "► #{t('pay_fees')}" %>");
-                    
                     bKash.create().onError(); 
-
+                    j('#error_label').html(data.errorMessage);
+                    j("#paymentModal").modal();
+                    //alert(data.errorMessage);
                 }
             });
           } 
@@ -1725,7 +1715,9 @@ encrypted = [cipher].pack('m')
                     success: function (data) {
                           if ( ! data.id_token )
                           {
-                              alert(data.errorMessage);
+                              j('#error_label').html(data.errorMessage);
+                              j("#paymentModal").modal();
+                              //alert(data.errorMessage);
                           }
                           else
                           {
@@ -1745,18 +1737,24 @@ encrypted = [cipher].pack('m')
                                         } 
                                         else 
                                         { 
-                                          alert(data.errorMessage);
+                                          j('#error_label').html(data.errorMessage);
+                                          j("#paymentModal").modal();
+                                          //alert(data.errorMessage);
                                         } 
                                   },
                                   error: function () {
-                                      alert(data.errorMessage);
+                                      j('#error_label').html(data.errorMessage);
+                                      j("#paymentModal").modal();
+                                      //alert(data.errorMessage);
                                   }
                               });
                           }
                     },
                     error: function () {
                         //bKash.create().onError();//run clean up code
-                        alert(data.errorMessage);
+                        j('#error_label').html("Error in payment");
+                        j("#paymentModal").modal();
+                        //alert(data.errorMessage);
 
                     }
                 });
@@ -1773,6 +1771,63 @@ encrypted = [cipher].pack('m')
             j("#radio_" + gateway).prop('checked', true);
             j("#user_gateway").val(gateway);
             j("#pay_fees_multiple").removeAttr('disabled');
+        });
+      
+        j(document).on("click", ".expand_tr", function(){
+            var id = this.id.replace("expand_tr_", "");
+            if ( j(this).children('td.expand_td').children('i.expand_i').hasClass('fa-plus-square-o') )
+            {
+                j(this).children('td.expand_td').children('i.expand_i').removeClass("fa-plus-square-o");
+                j(this).children('td.expand_td').children('i.expand_i').addClass("fa-minus-square-o");
+                
+                j(".tr_fees_" + id).show();
+                j(".blank_tr_" + id).show();
+            }
+            else
+            {
+                j(this).children('td.expand_td').children('i.expand_i').removeClass("fa-minus-square-o");
+                j(this).children('td.expand_td').children('i.expand_i').addClass("fa-plus-square-o");
+                j(".tr_fees_" + id).hide();
+                j(".blank_tr_" + id).hide();
+            }
+        });
+        
+        j(document).on("click", ".expand_td", function(){
+            var id = this.id.replace("expand_td_", "");
+            if ( j(this).children('i.expand_i').hasClass('fa-plus-square-o') )
+            {
+                j(this).children('i.expand_i').removeClass("fa-plus-square-o");
+                j(this).children('i.expand_i').addClass("fa-minus-square-o");
+                
+                j(".tr_fees_" + id).show();
+                j(".blank_tr_" + id).show();
+            }
+            else
+            {
+                j(this).children('i.expand_i').removeClass("fa-minus-square-o");
+                j(this).children('i.expand_i').addClass("fa-plus-square-o");
+                j(".tr_fees_" + id).hide();
+                j(".blank_tr_" + id).hide();
+            }
+        });
+        
+        j(document).on("click", ".expand_i", function(){
+            var id = this.id.replace("expand_i_", "");
+            if ( j(this).hasClass('fa-plus-square-o') )
+            {
+                j(this).removeClass("fa-plus-square-o");
+                j(this).addClass("fa-minus-square-o");
+                
+                j(".tr_fees_" + id).show();
+                j(".blank_tr_" + id).show();
+            }
+            else
+            {
+                j(this).removeClass("fa-minus-square-o");
+                j(this).addClass("fa-plus-square-o");
+                j(".tr_fees_" + id).hide();
+                j(".blank_tr_" + id).hide();
+            }
         });
     });
 </script>

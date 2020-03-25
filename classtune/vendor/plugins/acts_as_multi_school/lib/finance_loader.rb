@@ -4106,12 +4106,14 @@ module FinanceLoader
         result = Base64.decode64(params[:CheckoutXmlMsg])
         #result = '<Response date="2016-06-20 10:14:53.213">  <RefID>133783A000129D</RefID>  <OrderID>O1052536</OrderID>  <Name> Customer1</Name>  <Email> mr.customer@gmail.com </Email>  <Amount>2090.00</Amount>  <ServiceCharge>0.00</ServiceCharge>  <Status>1</Status>  <StatusText>PAID</StatusText>  <Used>0</Used>  <Verified>0</Verified>  <PaymentType>ITCL</PaymentType>  <PAN>712300XXXX1277</PAN>  <TBMM_Account></TBMM_Account>  <MarchentID>SAGC</MarchentID>  <OrderDateTime>2016-06-20 10:14:24.700</OrderDateTime>  <PaymentDateTime>2016-06-20 10:21:34.303</PaymentDateTime>  <EMI_No>0</EMI_No>  <InterestAmount>0.00</InterestAmount>  <PayWithCharge>1</PayWithCharge>  <CardResponseCode>00</CardResponseCode>  <CardResponseDescription>APPROVED</CardResponseDescription>  <CardOrderStatus>APPROVED</CardOrderStatus> </Response> '
         xml_res = Nokogiri::XML(result)
+        
         xml_response = Hash.from_xml(xml_res.to_s)
         xml_response_data = xml_response[:Response]
         gateway_response = {}
         xml_response_data.each do |k,v|
           gateway_response[k.underscore.to_sym] = v
         end
+        #abort(xml_response_data.inspect)
         #xml_response_data.each { |k,v| k.underscore.to_sym = v }
         verified = xml_response_data[:Verified]
         orderId = xml_response_data[:OrderID]
@@ -4123,8 +4125,14 @@ module FinanceLoader
         @finance_order = FinanceOrder.find_by_order_id(orderId.strip)
         #abort(@finance_order.inspect)
         request_params = @finance_order.request_params
-
-        dt = trans_date.split(".")
+#abort(trans_date.inspect)
+        unless trans_date.blank?
+          dt = trans_date.split(".")
+        else
+          unless order_datetime.blank?
+            dt = order_datetime.split(".")
+          end
+        end
         transaction_datetime = dt[0]
 
         if verified.to_i == 0
@@ -4261,7 +4269,11 @@ module FinanceLoader
 #          end
          # abort(orderId.inspect)
           unless order_verify_trust_bank(orderId)
-            msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
+            if gateway_response[:card_order_status].to_s == "DECLINED"
+              msg = "Payment DECLINED!!!"
+            else
+              msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
+            end
             gateway_status = false
           else
             gateway_status = true

@@ -118,7 +118,9 @@
             <% end %>
             <th style="width: 10%;"><%= t("gateway_status") %></th>
             <% unless MultiSchool.current_school.id == 352 %>
-            <th style="width: 10%;"><%= t("online_transaction_id") %></th>
+              <% if @gateway != "bkash" %>
+              <th style="width: 10%;"><%= t("online_transaction_id") %></th>
+              <% end %>
             <% end %>
             <th style="width: 10%;"><%= t("transaction_date") %></th>
             <% if @gateway == "trustbank" %>

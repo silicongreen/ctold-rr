@@ -69,7 +69,7 @@
       <% form_remote_for :fees, :url => {:controller => 'student',:action => 'fee_details',:id => @student.id,:id2 => @date.id,:mobile_view=>1}, :html => {:id => "fees_form"}, :before=>"prev_double();$('loader_pay').show();",:complete=>"set_back();$('loader_pay').hide();" do |form| %>
         <% unless @fee_particulars.nil? %>
           <% total_fees = 0  %>
-        
+          <div style="display:block; min-height: 720px;">
           <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 100%;">
           <thead><!-- class="thead-inverse" -->
             <tr>
@@ -1079,8 +1079,9 @@
                     <% end %>
                   <% end %>
             <% end %>
-        <% end %>
+        <% end %> 
       <% end %>
+      </tbody></table></div>
       <% if @gateway_settings.keys.include?('bkash')  %>
       <button id="bKash_button" style="display:none;">Pay with bKash</button>
       <% unless params[:multiple].nil? %>

@@ -332,7 +332,7 @@ class StudentController < ApplicationController
                     response_ssl.each do |key,value|
                       gateway_response[key.to_sym] = value
                     end
-                    transaction_datetime = DateTime.parse(createTime).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
+                    transaction_datetime = (DateTime.parse(createTime).to_time + 6.hours).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
                     orderId = order_id.to_s
                     @student = Student.find(student_id)
                     @finance_order = FinanceOrder.find_by_order_id_and_student_id(orderId.strip, student_id)

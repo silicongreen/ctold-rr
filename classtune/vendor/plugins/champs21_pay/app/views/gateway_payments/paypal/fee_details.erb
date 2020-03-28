@@ -1433,7 +1433,7 @@
             <td class="col-3" style="text-align: right;">
               <%= precision_label(f.amount.to_f) %>
             </td>
-            <% if MultiSchool.current_school.id == 352 %>
+            <% if MultiSchool.current_school.id == 352 or MultiSchool.current_school.id == 357 %>
               <td>
                 <%= link_to "► #{t('print_receipt')}", {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id, :trn_id=>f.id},:target => '_blank', :class=> 'user_button' %>
               </td>

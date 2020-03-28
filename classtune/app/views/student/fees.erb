@@ -358,10 +358,12 @@
                   <% else %>
                     <% if bal.to_i <= 0  %>
                       <% checked_class  = "fa-check-square-o" %>
-                      <% cls_rerd = "finance_fees_collection_all" %>
+                      <% cls_rerd = "finance_fees_collection_all_1" %>
                     <% end %>
                   <% if @student.id == 41556 %>
                   <% class_name = "unpaid_class" %>
+                  <% checked_class  = "fa-check-square-o" %>
+                      <% cls_rerd = "finance_fees_collection_all_1" %>
                       <%= bal %>
                     <% end %>
                     <% color_check = "#999" %>

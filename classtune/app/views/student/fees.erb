@@ -356,6 +356,9 @@
                     <% amount += bal %>   
                     <% end %>
                   <% else %>
+                    <% if @student.id == 41556 %>
+                      <%= bal %>
+                    <% end %>
                     <% if bal.to_f <= 0  %>
                       <% checked_class  = "fa-check-square-o" %>
                       <% cls_rerd = "finance_fees_collection_all" %>

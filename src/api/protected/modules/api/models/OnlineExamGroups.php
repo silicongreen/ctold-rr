@@ -410,8 +410,9 @@ class OnlineExamGroups extends CActiveRecord {
 
     public function getOnlineExamList($batch_id, $student_id, $page_number, $page_size, $created_at="", $subject_id=0,$not_started=0) {
         $cur_date = date("Y-m-d");
+        $cur_time = date("H:i:s");
         $criteria = new CDbCriteria();
-        $criteria->select = 't.id,t.name,t.start_date,t.end_date,t.maximum_time,t.pass_percentage';
+        $criteria->select = 't.id,t.name,t.start_date,t.start_time,t.end_date, t.end_time,t.maximum_time,t.pass_percentage';
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.school_id', Yii::app()->user->schoolId);
         $criteria->compare('t.is_deleted', 0);
@@ -485,10 +486,18 @@ class OnlineExamGroups extends CActiveRecord {
                 $exam_array[$i]['id'] = $value->id;
                 $exam_array[$i]['timeover'] = 0;
                 $exam_array[$i]['not_started'] = 0;
-                if ($cur_date > date("Y-m-d", strtotime($value->end_date))) {
+                if (
+                        $cur_date > date("Y-m-d", strtotime($value->end_date))
+                        or
+                        ( $cur_date == date("Y-m-d", strtotime($value->end_date)) and $cur_time > $value->end_time )
+                        
+                        ) {
                     $exam_array[$i]['timeover'] = 1;
                 }
-                if ($cur_date < date("Y-m-d", strtotime($value->start_date))) {
+                if ($cur_date < date("Y-m-d", strtotime($value->start_date))
+                    or
+                    ( $cur_date == date("Y-m-d", strtotime($value->start_date)) and $cur_time < $value->start_time  )
+                        ) {
                     $exam_array[$i]['not_started'] = 1;
                 }
                 $exam_array[$i]['examGiven'] = 0;

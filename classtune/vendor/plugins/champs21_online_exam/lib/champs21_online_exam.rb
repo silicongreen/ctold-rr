@@ -37,7 +37,9 @@ class Champs21OnlineExam
           end
         end
       end
-      exams = OnlineExamGroup.find_all_by_batch_id(self.batch_id, :conditions=> "subject_id IS NOT NULL and end_date >= '#{local_tzone_time.to_date}' and start_date <= '#{local_tzone_time.to_date}' and is_published = '1'", :include => [:subject])
+      
+      time_now = local_tzone_time.strftime("%H:%M:%S")
+      exams = OnlineExamGroup.find_all_by_batch_id(self.batch_id, :conditions=> "subject_id IS NOT NULL and (end_date > '#{local_tzone_time.to_date}' or (end_date = '#{local_tzone_time.to_date}' and end_time >='#{time_now}')) and (start_date < '#{local_tzone_time.to_date}' or ( start_date = '#{local_tzone_time.to_date}' and start_time <= '#{time_now}' )) and is_published = '1'", :include => [:subject])
       exams.reject {|e| OnlineExamAttendance.exists?( :student_id => self.id, :online_exam_group_id=>e.id)}
     end
   end

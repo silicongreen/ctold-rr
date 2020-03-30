@@ -1,4 +1,4 @@
-<div id="page-yield">
+
   <div id="box">
     <% unless flash[:notice].nil? %>
       <p class="flash-msg"> <%= flash[:notice] %> </p>
@@ -14,9 +14,20 @@
         <label><%= t('start_date') %></label>
         <div class="text-input-bg"><%= calendar_date_select_tag "exam_group[start_date]",I18n.l(@exam_group.start_date),:readonly=>true,:popup=>:force%></div>
       </div>
+    
+      <div class="label-field-pair">
+        <label for="name"> Start Time </label>
+        <div class="time-select-field"><%= time_select :exam_group, :start_time, {:minute_step => 5} %></div>
+      </div>
+
+    
       <div class="label-field-pair">
         <label><%= t('end_date') %></label>
         <div class="text-input-bg"><%= calendar_date_select_tag "exam_group[end_date]",I18n.l(@exam_group.end_date),:readonly=>true,:popup=>:force%></div>
+      </div>
+      <div class="label-field-pair">
+        <label for="name">End Time  </label>
+        <div class="time-select-field"><%= time_select :exam_group, :end_time, {:minute_step => 5} %></div>
       </div>
       <div class="label-field-pair">
         <label><%= t('maximum_time_minutes') %></label>
@@ -78,4 +89,21 @@
       </div>
     <% end %>
   </div>
-</div>
+
+<style>
+  #MB_frame .label-field-pair .time-select-field select
+  {
+          width: 87px !important;
+  }
+  .label-field-pair input, .label-field-pair select
+  {
+      margin: 5px 0 0 0 !important;
+  }
+   #MB_frame .label-field-pair .time-select-field
+   
+   {
+       float:left;
+       clear:both;
+       margin-top:5px;
+   }
+</style>

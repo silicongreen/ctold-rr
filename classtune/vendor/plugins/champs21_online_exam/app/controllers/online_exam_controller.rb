@@ -149,32 +149,66 @@ class OnlineExamController < ApplicationController
   end
   
   def get_classes
+    
     school_id = MultiSchool.current_school.id
-    @courses = Rails.cache.fetch("course_data_#{params[:batch_id]}_#{school_id}"){
-      unless params[:batch_id].empty?
-        batch_data = Batch.find params[:batch_id]
-        batch_name = batch_data.name
-        batches = Batch.find(:all, :conditions => ["name = ? and is_deleted = 0", batch_name]).map{|b| b.course_id}
-        tmp_classes = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
-      else  
-        tmp_classes = []
-      end
-      class_data = tmp_classes
-      class_data
-    }
+    @batch_name = false
+    unless params[:batch_id].empty?
+      batch_data = Batch.find params[:batch_id]
+      batch_name = batch_data.name
+    end 
+    
+    
+    if current_user.employee
+      batches_all = @current_user.employee_record.batches
+      batches_all += @current_user.employee_record.subjects.collect{|b| b.batch}
+      batches_all = batches_all.uniq unless batches_all.empty?
+      batches_all.reject! {|s| s.name!=batch_name}
+    else
+      batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+    end 
+    
+    batches = batches_all.map{|b| b.course_id}
+    @courses = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", batches], :group => "course_name", :select => "course_name,no_call", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+    
+    #    @courses = []
+    #    unless batch_name.blank?
+    #      @courses = Rails.cache.fetch("classes_data_#{batch_name.parameterize("_")}_#{school_id}"){
+    #        @batch_name = batch_name;
+    #        batches = Batch.find(:all, :conditions => ["name = ? and is_deleted = 0", batch_name]).map{|b| b.course_id}
+    #        tmp_classes = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+    #        class_data = tmp_classes
+    #        class_data
+    #      }
+    
     @classes = []
     @batch_id = ''
     @course_name = ""
+    @section_name = ""
+    unless params[:course_name].blank?
+      @course_name = params[:course_name]
+    end
+    unless params[:section_name].blank?
+      @section_name = params[:section_name]
+    end
+   
     render :update do |page|
       page.replace_html 'course', :partial => 'courses', :object => @courses
     end
   end
   
   def get_section_data
+   
+    
+    
+    @batch_name = ""
+    @class_name = ""
+    
     batch_id = 0
     unless params[:student].nil?
       unless params[:student][:batch_name].nil?
+        
         batch_id = params[:student][:batch_name]
+        
       end
     end
     
@@ -185,23 +219,43 @@ class OnlineExamController < ApplicationController
     end
     
     school_id = MultiSchool.current_school.id
-    @classes = Rails.cache.fetch("section_data_#{params[:class_name].parameterize("_")}_#{batch_id}_#{school_id}"){
-      if batch_id.to_i > 0
-        batch = Batch.find batch_id
-        batch_name = batch.name
-        
-        batches = Batch.find(:all, :conditions => ["name = ? and is_active = 1 and is_deleted = 0", batch_name]).map{|b| b.course_id}
-        tmp_class_data = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0 and id IN (?)",params[:class_name], batches])
-      else  
-        tmp_class_data = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0",params[:class_name]])
-      end
-      class_data = tmp_class_data
-      class_data
-    }
+    batch_name = ""
+    if batch_id.to_i > 0
+      batch = Batch.find batch_id
+      batch_name = batch.name
+      @batch_name = batch_name
+    end
+    
+    unless batch_name.blank?
+      if current_user.employee
+        batches_all = @current_user.employee_record.batches
+        batches_all += @current_user.employee_record.subjects.collect{|b| b.batch}
+        batches_all = batches_all.uniq unless batches_all.empty?
+        batches_all.reject! {|s| s.name!=batch_name}
+      else
+        batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+      end 
+      
+      batches = batches_all.map{|b| b.course_id}    
+      @classes = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0 and id IN (?)",params[:class_name], batches])      
+    else    
+      @classes =  Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0",params[:class_name]]) 
+    end
+    
     @selected_section = 0
+    
+    unless params[:section_name].blank?
+      @selected_section = params[:section_name].to_i
+    end
     
     @batch_id = 0
     @courses = []
+    
+    @class_name = params[:class_name]
+    if batch_id.to_i > 0
+      batch = Batch.find batch_id
+      @batch_name = batch.name
+    end
     
     render :update do |page|
       page.replace_html 'section', :partial => 'sections', :object => @classes

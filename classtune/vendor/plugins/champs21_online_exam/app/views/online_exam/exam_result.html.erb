@@ -24,6 +24,9 @@
         <td><%= t('result') %></td>
       </tr>
       <% @attendance.each do |att| %>
+        <% if att.total_score.blank? %>
+           <% att.total_score = 0 %>
+        <% end %>
         <tr class="tr-<%= cycle('odd', 'even') %>">
           <td class="col-2" ><%= att.student.full_name %></td>
           <td class="col-2" ><%= att.total_score %>/<%= @exam_group.online_exam_questions.sum('mark') %></td>

@@ -113,7 +113,7 @@
                               @subjects.map {|s| ["#{s.name}",s.id]},
                               {:prompt => "#{t('select_a_subject')}"},
                               {:onChange => "#{remote_function(:url => {:action => "subject_assignments2"},
-                              :with => "'subject_id='+ value +'&due_date='+ $('assignment_duedate').value+'&is_published='+ $('assignment_is_published').value",
+                              :with => "'subject_id='+ value +'&due_date='+ $('assignment_duedate').value",
                               :before => "Element.show('loader')",
                               :success => "Element.hide('loader')"
                               )}"} %>
@@ -211,9 +211,7 @@
                                           <% if Date.today <= Date.parse(assignment.duedate.to_s) %>
 
                                             <% if @assignment_answers.empty? %>
-                                              <div class="answer" id="done_<%= assignment.id %>">
-                                                  <%= link_to_remote "#{t('done_this_assignment')}" , :url => {:controller => 'assignment_answers', :action => "done", :assignment_id => assignment.id } , :update=> 'done_'+assignment.id.to_s, :html => { :class  => "user_button",:style=>"margin-left:0px" }%>
-                                              </div>
+                                              
                                             <%  else %>
                                               <div class="answer">
                                                   <% unless @assignment_answers.empty? %>

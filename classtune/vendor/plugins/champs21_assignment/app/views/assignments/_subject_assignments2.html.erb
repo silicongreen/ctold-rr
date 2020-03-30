@@ -36,9 +36,7 @@
                          
                                
                                 <% if @assignment_answers.empty? %>
-                                  <div class="answer" id="done_<%= assignment.id %>" >
-                                    <%= link_to_remote "#{t('done_this_assignment')}" , :url => {:controller => 'assignment_answers', :action => "done", :assignment_id => assignment.id } , :update=> 'done_'+assignment.id.to_s, :html => { :class  => "user_button",:style=>"margin-left:0px" }%>
-                                  </div>
+                                
                                 <%  else %>
                                   <div class="answer">
                                       <% unless @assignment_answers.empty? %>

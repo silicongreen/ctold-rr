@@ -222,8 +222,9 @@
           <% end %>
           <% end %>  
         </div>
-          
-        <div id="student-list-bg" style="display:none;">
+         
+        <% if @assignment.assignment_type == 2 %>   
+        <div id="student-list-bg" >
           <div id="loaderbox">     <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %> </div>
           <div id="quickinfo">  <h5><%= link_to_remote  "#{t('assigned')} (#{@students_assigned_count})",:update=>"assigned_students",:url=>{:action=>:assignment_student_list,:id=>@assignment.id,:status=>"assigned"},   :before => "Element.show('loader')", :success => "Element.hide('loader')"%></h5>
             <h5> <%= link_to_remote  "#{t('answered')} (#{@answered_count})",:update=>"assigned_students",:url=>{:action=>:assignment_student_list,:id=>@assignment.id,:status=>"answered"},   :before => "Element.show('loader')", :success => "Element.hide('loader')"%></h5>
@@ -236,16 +237,17 @@
 
           <div id="student_list"></div>
         </div>
+        <% end %>  
 
       </div>
       <div class="extender"></div>
 
     <% else%>
-      <div class="student-options"  style="display:none;">
+      <div class="student-options" >
         <div id="assignment_ajax_msg" style="clear: both;">
         <%if @assignment.student_list.split(",").include? @current_user.student_record.id.to_s %>
           <% if @assignment_answers.empty?  and Date.today <= Date.parse(@assignment.duedate.to_s) and @assignment.assignment_type == 1 %>
-            <div class="answer">
+            <div class="answer"  style="display:none;">
               
               <%= link_to_remote "#{t('done_this_assignment')}" , :url => {:controller => 'assignment_answers', :action => "create", :assignment_id => @assignment.id } , :update=> 'assignment_ajax_msg', :html => { :class  => "user_button",:style=>"margin-left:135px" }%>
             </div>

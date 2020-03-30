@@ -1373,6 +1373,7 @@ cipher << aes.final
 
 encrypted = [cipher].pack('m')
 %>
+<% if @gateway_settings.keys.include?('bkash')  %>
 <form id="data-form-val">
   <input type="hidden" name="total_fees" id="total_fees" value="<%= precision_label total_fees %>" />
   <input type="hidden" name="order_id" id="order_id" value="<%= @order_id.strip unless @order_id.blank? %>" />
@@ -1380,6 +1381,12 @@ encrypted = [cipher].pack('m')
   <input type="hidden" name="imsee" id="imsee" value="<%= iip.strip %>" />
   <input type="hidden" name="mmsec" id="mmsec" value="<%= encrypted.strip %>" />
 </form>
+<%
+  fee_percent = 0.00
+  fee_percent = total_fees.to_f * (1.5 / 100)
+  total_fees = total_fees + fee_percent
+%>
+<% end %>
 <script>
   
     j(document).ready(function(){

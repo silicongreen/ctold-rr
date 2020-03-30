@@ -3636,6 +3636,40 @@ module FinanceLoader
           end
           
           if payment_saved
+            bkash_finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{orderId}' and student_id = '#{@student.id}'")
+            unless bkash_finance_orders.blank?
+              total_fees = 0.00
+              bkash_finance_orders.each do |finance_order|
+
+                finance_fee_id = finance_order.finance_fee_id
+                if fees.include?(finance_fee_id.to_s)
+                  finance_fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{@student.id}")
+                  unless finance_fee.blank?
+                    fee_collection_id = finance_fee.fee_collection_id
+                    d = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}")
+                    unless d.blank?
+                      bal = FinanceFee.get_student_actual_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f
+                      #abort(bal.to_s)
+                      total_fees += bal.to_f
+                    end
+                  end
+                end
+              end
+            end
+            fee_percent = 0.00
+            fee_percent = total_fees.to_f * (1.5 / 100)
+            
+            amount = response_ssl[:amount]
+            if (amount.to_f + fee_percent.to_f) == total_fees
+              amount = amount.to_f - fee_percent.to_f
+              finance_interest = FinanceInterest.new
+              finance_interest.order_id = orderId.strip
+              finance_interest.student_id = @student.id
+              finance_interest.batch_id = @student.batch.id
+              finance_interest.interest = fee_percent
+              finance_interest.save
+            end
+            
             unless order_verify(orderId, 'bkash', transaction_datetime, response_ssl[:trxID], response_ssl[:amount])
               false
             else

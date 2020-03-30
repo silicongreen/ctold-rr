@@ -203,11 +203,17 @@ class StudentController < ApplicationController
                       @app_secret = PaymentConfiguration.config_value(@user_gateway + "_app_secret")
                       @app_username = PaymentConfiguration.config_value(@user_gateway + "_username")
                       @app_password = PaymentConfiguration.config_value(@user_gateway + "_password")
-
+                      
+                      fee_percent = 0.00
+                      fee_percent = total_fees.to_f * (1.5 / 100)
+                      total_fees = total_fees + fee_percent
+                      #abort(total_fees.to_s)
                       request = Net::HTTP::Post.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
-                      request.body = {"amount"=> total_fees,"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>order_id}.to_json
+                      request.body = {"amount"=> sprintf("%.2f", total_fees),"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>order_id}.to_json
+                      #abort({"amount"=> total_fees,"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>order_id}.to_json.inspect)
                       response = http.request(request)
                       response_ssl = JSON::parse(response.body)
+                      #abort(response_ssl.inspect)
                       render :json => response_ssl
                     else
                       error = {:errorMessage => "Fees not matched"}
@@ -283,6 +289,26 @@ class StudentController < ApplicationController
               if order_id.to_s == params[:order_id].to_s
                 student = Student.find(:first, :conditions => "id = '#{student_id.to_s}'")
                 unless student.blank?
+                  @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{order_id}' and student_id = '#{student.id}'")
+                  unless @finance_orders.blank?
+                    total_fees = 0.00
+                    @finance_orders.each do |finance_order|
+
+                      finance_fee_id = finance_order.finance_fee_id
+                      if fees.include?(finance_fee_id.to_s)
+                        finance_fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{student.id}")
+                        unless finance_fee.blank?
+                          fee_collection_id = finance_fee.fee_collection_id
+                          d = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}")
+                          unless d.blank?
+                            bal = FinanceFee.get_student_actual_balance(d, student, finance_fee) + d.fine_to_pay(student).to_f
+                            #abort(bal.to_s)
+                            total_fees += bal.to_f
+                          end
+                        end
+                      end
+                    end
+                  end
                   @user_gateway = params[:gateway]
                   id_token = params[:id_token]
                   payment_id = params[:payment_id]
@@ -325,7 +351,12 @@ class StudentController < ApplicationController
                       amount = value
                     end
                   end
-
+                  
+                  fee_percent = 0.00
+                  fee_percent = total_fees.to_f * (1.5 / 100)
+                  
+                  amount = amount.to_f - fee_percent.to_f
+                  
                   if response_ssl.keys.include?("transactionStatus") and transactionStatus == 'Completed'
                     require 'date'
                     gateway_response = {}
@@ -335,6 +366,14 @@ class StudentController < ApplicationController
                     transaction_datetime = (DateTime.parse(createTime).to_time + 6.hours).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
                     orderId = order_id.to_s
                     @student = Student.find(student_id)
+                    
+                    finance_interest = FinanceInterest.new
+                    finance_interest.order_id = orderId.strip
+                    finance_interest.student_id = @student.id
+                    finance_interest.batch_id = @student.batch.id
+                    finance_interest.interest = fee_percent
+                    finance_interest.save
+                    
                     @finance_order = FinanceOrder.find_by_order_id_and_student_id(orderId.strip, student_id)
                     #abort(@finance_order.inspect)
                     request_params = @finance_order.request_params

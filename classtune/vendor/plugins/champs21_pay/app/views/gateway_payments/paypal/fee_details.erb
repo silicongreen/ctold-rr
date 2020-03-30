@@ -1642,6 +1642,7 @@ cipher << aes.final
 
 encrypted = [cipher].pack('m')
 %>
+<% if @gateway_settings.keys.include?('bkash')  %>
 <form id="data-form-val">
   <input type="hidden" name="total_fees" id="total_fees" value="<%= precision_label total_fees %>" />
   <input type="hidden" name="order_id" id="order_id" value="<%= @order_id.strip unless @order_id.blank? %>" />
@@ -1650,6 +1651,13 @@ encrypted = [cipher].pack('m')
   <input type="hidden" name="mmsec" id="mmsec" value="<%= encrypted.strip %>" />
 </form>
 
+<%
+  fee_percent = 0.00
+  fee_percent = total_fees.to_f * (1.5 / 100)
+  total_fees = total_fees + fee_percent
+%>
+
+<% end %>
 <script>
     j(document).ready(function(){
         var paymentID;
@@ -1668,15 +1676,16 @@ encrypted = [cipher].pack('m')
           }, 
           onClose : function () {
               bkashLoad = false;
-              j("#radio_bkash").prop('check',false);
-              j("#bKashFrameWrapper").css('display','none');
-              j("#pay_fees_multiple").prop('disabled',false);
-              j("#pay_fees_multiple").html("<%= "► #{t('pay_fees')}" %>");
+              j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
+              j("#pay_fees_multiple").removeClass('gateway_image_single_bkash_disabled');
+              j(".loading_single_bkash").hide();
           },
           executeRequestOnAuthorization: function() { 
             j("#bKashFrameWrapper").css('display','none');
+            j("#pay_fees_multiple").addClass('gateway_image_single_bkash_disabled');
+            j(".loading_single_bkash").show();
             j("#pay_fees_multiple").prop('disabled',true);
-            j("#pay_fees_multiple").html("<i class='fa fa-spin fa-spinner'></i> Executing Payment, please wait...");
+            j("#pay_fees_multiple").attr('id',"pay_fees_multiple_1");
             j.ajax({
                 url: '/student/complete_bkash_payment',
                 type: 'POST',
@@ -1685,6 +1694,9 @@ encrypted = [cipher].pack('m')
                       bkashLoad = false;
                       if (data && data.paymentID != null) 
                       {
+                        j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
+                        j("#pay_fees_multiple").removeClass('gateway_image_single_bkash_disabled');
+                        j(".loading_single_bkash").hide();
                         j("#bKashFrameWrapper").css('display','none');
                         location.reload();
                       } 
@@ -1693,18 +1705,18 @@ encrypted = [cipher].pack('m')
                         bKash.create().onError(); 
                         j('#error_label').html(data.errorMessage);
                         j("#paymentModal").modal();
-                        //alert(data.errorMessage);
-                        j("#pay_fees_multiple").prop('disabled',false);
-                        j("#pay_fees_multiple").html("<%= "► #{t('pay_fees')}" %>");
-
+                        j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
+                        j("#pay_fees_multiple").removeClass('gateway_image_single_bkash_disabled');
+                        j(".loading_single_bkash").hide();                        
                       } 
                 },
                 error: function () {
-                    j("#pay_fees_multiple").prop('disabled',false);
-                    j("#pay_fees_multiple").html("<%= "► #{t('pay_fees')}" %>");
                     bKash.create().onError(); 
                     j('#error_label').html(data.errorMessage);
                     j("#paymentModal").modal();
+                    j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
+                    j("#pay_fees_multiple").removeClass('gateway_image_single_bkash_disabled');
+                    j(".loading_single_bkash").hide();
                     //alert(data.errorMessage);
                 }
             });
@@ -1714,8 +1726,9 @@ encrypted = [cipher].pack('m')
         j(document).on('click', "#close_pop", function(){
             if ( bkashLoad == false )
             {
-              j("#pay_fees_multiple").prop('disabled',false);
-              j("#pay_fees_multiple").html("<%= "► #{t('pay_fees')}" %>");
+              j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
+              j("#pay_fees_multiple").removeClass('gateway_image_single_bkash_disabled');
+              j(".loading_single_bkash").hide();
 
             }
         });

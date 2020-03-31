@@ -41,12 +41,10 @@
           <% end %>
 
           <tr class="<%= "#{c}" %>">
-            <% if att.total_score.blank? %>
-              <% att.total_score = 0 %>
-            <% end %>
+        
             <td class="col-pdf"><%= index+=1 %></td>
             <td class="col-pdf"><%= att.student.full_name %></td>
-            <td class="col-pdf"><%= att.total_score %>/<%= @exam_group.online_exam_questions.sum('mark') %></td>
+            <td class="col-pdf"><% if att.total_score.blank? %>NA<% else  %><%= att.total_score %><% end %>/<%= @exam_group.online_exam_questions.sum('mark') %></td>
             <% if att.is_passed %>
               <td class="col-pdf"><%= t('passed') %></td>
             <% else %>

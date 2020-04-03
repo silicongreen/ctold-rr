@@ -334,7 +334,28 @@ class OnlineExamController < ApplicationController
     
     #params[:batch_id] = params[:student][:batch_name]
     
-    @exams = OnlineExamGroup.paginate(:page => params[:page], :per_page => 20 ,:conditions=>[ "batch_id = '#{params[:batch_id]}'"], :include=> [:online_exam_attendances, :subject], :order=>"id DESC")
+    if @current_user.employee?
+        emp_record = current_user.employee_record 
+        @subject_employees = emp_record.subjects.active
+        @subject_employees.reject! {|s| !s.batch.is_active}
+        if emp_record.all_access.to_i == 1
+          batches = @current_user.employee_record.batches
+          batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+          batches = batches.uniq unless batches.empty?
+          unless batches.blank?
+            batches.each do |batch|
+              @subject_employees += batch.subjects
+            end
+          end
+        end
+        @subject_employees = @subject_employees.uniq unless @subject_employees.empty?
+        sub_id = @subject_employees.map{|b| b.id}
+        @exams = OnlineExamGroup.paginate(:page => params[:page], :per_page => 20 ,:conditions=>[ "batch_id = '#{params[:batch_id]}' and subject_id IN (?)",sub_id], :include=> [:online_exam_attendances, :subject], :order=>"id DESC")
+    else
+        @exams = OnlineExamGroup.paginate(:page => params[:page], :per_page => 20 ,:conditions=>[ "batch_id = '#{params[:batch_id]}'"], :include=> [:online_exam_attendances, :subject], :order=>"id DESC")
+    end  
+    
+    
     render :partial=>'active_exam_list'
   end
 
@@ -383,7 +404,27 @@ class OnlineExamController < ApplicationController
     unless @exam_group.update_attributes(params[:exam_group])
       @error = true
     end
-    @exams = OnlineExamGroup.paginate(:page => params[:page], :conditions=>[ "batch_id = '#{@exam_group.batch_id}'"], :order=>"id DESC")
+    
+    if @current_user.employee?
+        emp_record = current_user.employee_record 
+        @subject_employees = emp_record.subjects.active
+        @subject_employees.reject! {|s| !s.batch.is_active}
+        if emp_record.all_access.to_i == 1
+          batches = @current_user.employee_record.batches
+          batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+          batches = batches.uniq unless batches.empty?
+          unless batches.blank?
+            batches.each do |batch|
+              @subject_employees += batch.subjects
+            end
+          end
+        end
+        @subject_employees = @subject_employees.uniq unless @subject_employees.empty?
+        sub_id = @subject_employees.map{|b| b.id}
+        @exams = OnlineExamGroup.paginate(:page => params[:page], :per_page => 20 ,:conditions=>[ "batch_id = '#{@exam_group.batch_id}' and subject_id IN (?)",sub_id], :include=> [:online_exam_attendances, :subject], :order=>"id DESC")
+    else
+        @exams = OnlineExamGroup.paginate(:page => params[:page], :per_page => 20 ,:conditions=>[ "batch_id = '#{@exam_group.batch_id}'"], :include=> [:online_exam_attendances, :subject], :order=>"id DESC")
+    end 
   end
 
   def delete_exam_group
@@ -472,7 +513,29 @@ class OnlineExamController < ApplicationController
       end
       
     end
-    @exams = OnlineExamGroup.paginate(:page => params[:page], :per_page => 20, :conditions=>[ "batch_id = '#{@exam_group.batch_id}'"], :order=>"id DESC")
+    
+    if @current_user.employee?
+        emp_record = current_user.employee_record 
+        @subject_employees = emp_record.subjects.active
+        @subject_employees.reject! {|s| !s.batch.is_active}
+        if emp_record.all_access.to_i == 1
+          batches = @current_user.employee_record.batches
+          batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+          batches = batches.uniq unless batches.empty?
+          unless batches.blank?
+            batches.each do |batch|
+              @subject_employees += batch.subjects
+            end
+          end
+        end
+        @subject_employees = @subject_employees.uniq unless @subject_employees.empty?
+        sub_id = @subject_employees.map{|b| b.id}
+        @exams = OnlineExamGroup.paginate(:page => params[:page], :per_page => 20 ,:conditions=>[ "batch_id = '#{@exam_group.batch_id}' and subject_id IN (?)",sub_id], :include=> [:online_exam_attendances, :subject], :order=>"id DESC")
+    else
+        @exams = OnlineExamGroup.paginate(:page => params[:page], :per_page => 20 ,:conditions=>[ "batch_id = '#{@exam_group.batch_id}'"], :include=> [:online_exam_attendances, :subject], :order=>"id DESC")
+    end 
+    
+#    @exams = OnlineExamGroup.paginate(:page => params[:page], :per_page => 20, :conditions=>[ "batch_id = '#{@exam_group.batch_id}'"], :order=>"id DESC")
     if @exam_group.online_exam_questions.blank?
       render :update do |page|
         page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('sorry_cannot_publish_an_exam_without_questions_please_add_minimum_one_question')}</p>"
@@ -486,11 +549,36 @@ class OnlineExamController < ApplicationController
   end
 
   def view_result
-    @batches = Batch.active
+    if current_user.employee
+      batches_all = @current_user.employee_record.batches
+      batches_all += @current_user.employee_record.subjects.collect{|b| b.batch}
+      @batches = batches_all.uniq unless batches_all.empty?
+    else
+      @batches = Batch.active
+    end 
   end
 
   def update_exam_list
-    @exams = OnlineExamGroup.find_all_by_batch_id(params[:batch_id],:conditions=>"is_published = 1",:order=>"id DESC")
+    if @current_user.employee?
+        emp_record = current_user.employee_record 
+        @subject_employees = emp_record.subjects.active
+        @subject_employees.reject! {|s| !s.batch.is_active}
+        if emp_record.all_access.to_i == 1
+          batches = @current_user.employee_record.batches
+          batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+          batches = batches.uniq unless batches.empty?
+          unless batches.blank?
+            batches.each do |batch|
+              @subject_employees += batch.subjects
+            end
+          end
+        end
+        @subject_employees = @subject_employees.uniq unless @subject_employees.empty?
+        sub_id = @subject_employees.map{|b| b.id}
+        @exams = OnlineExamGroup.find_all_by_batch_id(params[:batch_id],:conditions=>[ "is_published = 1 and subject_id IN (?)",sub_id], :include=> [:online_exam_attendances, :subject], :order=>"id DESC")
+    else
+        @exams = OnlineExamGroup.find_all_by_batch_id(params[:batch_id] ,:conditions=>[ "is_published = 1"], :include=> [:online_exam_attendances, :subject], :order=>"id DESC")
+    end
     render :update do |page|
       page.replace_html 'exam-list', :partial=>'exam_list'
     end
@@ -511,11 +599,17 @@ class OnlineExamController < ApplicationController
   end
 
   def reset_exam
-    @batches = Batch.active.all(:include=>:course)
+    if current_user.employee
+      batches_all = @current_user.employee_record.batches
+      batches_all += @current_user.employee_record.subjects.collect{|b| b.batch}
+      @batches = batches_all.uniq unless batches_all.empty?
+    else
+      @batches = Batch.active.all(:include=>:course)
+    end 
   end
 
   def update_student_exam
-    @exams = OnlineExamGroup.find_all_by_batch_id(params[:batch_id],:conditions=>"is_published = 1",:order=>"id DESC")
+    @exams = OnlineExamGroup.find_all_by_batch_id(params[:batch_id],:conditions=>"is_published = 1", :include=> [:online_exam_attendances, :subject],:order=>"id DESC")
     render :update do |page|
       page.replace_html 'exam-list', :partial=>'student_exam_list'
     end
@@ -536,10 +630,10 @@ class OnlineExamController < ApplicationController
           OnlineExamAttendance.hard_delete(params[:att_id])
         end
         flash[:notice]="#{t('exam_reset_successful_for_selected_students')}"
-        redirect_to :action=>:index
+        redirect_to :action=>:reset_exam
       else
         flash[:notice]="#{t('sorry_no_students_selected')}"
-        redirect_to :action => :index
+        redirect_to :action => :reset_exam
       end
     else
       flash[:notice] = "#{t('flash_msg4')}"

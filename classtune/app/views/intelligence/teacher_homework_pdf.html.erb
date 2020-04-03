@@ -17,13 +17,17 @@
           <td class="col-pdf aling-left"><b>Department</b></td> 
           <td class="col-pdf"><b>Class</b></td> 
           <td class="col-pdf"><b>Given</b></td> 
-          <% if MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 246 or MultiSchool.current_school.id == 354 %>
-            <td><b>Before 5pm</b></td>
+          <% if MultiSchool.current_school.id != 352 %>
+            <% if MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 246 or MultiSchool.current_school.id == 354 %>
+              <td><b>Before 5pm</b></td>
+            <% else %>
+              <td><b>Before 3pm</b></td>
+              <td><b>After 3pm</b></td>
+              <td><b>Not Given</b></td>
+            <% end %>
           <% else %>
-            <td><b>Before 3pm</b></td>
-            <td><b>After 3pm</b></td>
-            <td><b>Not Given</b></td>
-          <% end %>
+              <td>Not Given</td>
+          <% end %>    
           <td class="col-pdf"><b>Frequency</b></td>     
         </tr>
         <% std_count = 0 %>
@@ -38,7 +42,7 @@
                 employee['frequency'] = "N/A"
               end 
             %>
-            <% if std_count>46 %>
+            <% if std_count>47 %>
               <% std_count = 0 %>
               <tr class="page-break">
                   <td colspan="100">&nbsp;</td>
@@ -57,10 +61,11 @@
 
               %>
               <tr class="table-header">
-                <td class="col-pdf aling-left"><%= employee['emp_name'] %></td>
-                <td class="col-pdf aling-left"><%= employee['emp_dep'] %></td>
+                <td class="col-pdf aling-left no-warp"><%= employee['emp_name'] %></td>
+                <td class="col-pdf aling-left no-warp"><%= employee['emp_dep'] %></td>
                 <td class="col-pdf"><%= employee['total_class'] %></td>
                 <td class="col-pdf"><%= employee['homework_given'] %></td>
+                <% if MultiSchool.current_school.id != 352 %>
                 <td class="col-pdf"><%= employee['homework_given_before_3pm'] %></td>
                 <% if MultiSchool.current_school.id != 325 and MultiSchool.current_school.id != 246 and MultiSchool.current_school.id != 354 %>
                   <td class="col-pdf"><%= employee['homework_given'].to_i-employee['homework_given_before_3pm'].to_i %></td>
@@ -73,6 +78,15 @@
                       
                   </td>
                 <% end %>
+                <% else %>
+                  <td class="col-pdf">
+                    <% if employee['homework_given'].to_i > employee['total_class'].to_i %>
+                          0
+                    <% else %>
+                      <%= employee['total_class'].to_i-employee['homework_given'].to_i %>
+                    <% end %>
+                  </td>      
+                <% end %>  
                 <td class="col-pdf"><%= sprintf( "%0.02f", employee['frequency'].to_f)%></td>
               </tr>
             <% end %>  
@@ -121,5 +135,9 @@ table#pdf-table{
 .table-header td.aling-left
 {
     text-align:left !important;
+}
+.no-warp
+{
+    white-space: nowrap;
 }
 </style>    

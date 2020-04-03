@@ -11,7 +11,7 @@
   <div class="report">
 
     <div id ="main_info">
-      <h4> <%= "#{t('class')} :"+ " " "#{@batch.full_name}" %></h4>
+      <h4> <%= "#{t('class')} :"+ " " "#{@batch.full_name}" %>&nbsp;&nbsp;Subject : <%= @exam_group.subject.name %></h4>
       <h4> <%= "#{t('exam_text')} :"+ " " "#{@exam_group.name}" %></h4>
     </div>
     <div id="pdf-info">
@@ -27,10 +27,24 @@
         <% i = 0 %>
         <% index=0 %>
         <% c = 'odd' %>
+        <% break_on = true %>
         <% @attendance.each do |att| %>
 
-          <% if i== 17 %>
+          <% if i== 18 && break_on == true %>
             <% i= 0 %>
+            <% break_on = false %>
+            <tr class="page-break"><td colspan="3"></td></tr>
+            <tr class="table-header">
+              <td class="col-pdf"><%= t('sl_no') %></td>
+              <td class="col-pdf"><%= t('student_text') %>  </td>
+              <td class="col-pdf"><%= t('marks') %>  </td>
+              <td class="col-pdf"><%= t('result') %>  </td>
+            </tr>
+          <% end %>
+            
+          <% if i== 20 && break_on == false %>
+            <% i= 0 %>
+            <% break_on = false %>
             <tr class="page-break"><td colspan="3"></td></tr>
             <tr class="table-header">
               <td class="col-pdf"><%= t('sl_no') %></td>
@@ -60,3 +74,11 @@
   </div>
 
 </div>
+
+<style>
+  .page-break td{
+    height: 100px;
+    border: 1px solid #fff;
+    border-bottom: 1px solid #ADACAB;
+}
+</style>

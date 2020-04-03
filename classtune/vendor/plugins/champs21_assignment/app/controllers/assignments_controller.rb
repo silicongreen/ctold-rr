@@ -361,10 +361,35 @@ class AssignmentsController < ApplicationController
       @subjects = []
     else
       @batch = Batch.find @batch_id
-      @normal_subjects = Subject.find_all_by_batch_id(@batch,:conditions=>"elective_group_id IS NULL AND is_deleted = false")
-      @student_electives =StudentsSubject.all(:conditions=>{:batch_id=>@batch,:subjects=>{:is_deleted=>false}},:joins=>[:subject])
-      @elective_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>["elective_group_id IS NOT NULL AND is_deleted = false"])
-      @subjects = @normal_subjects+@elective_subjects
+      if @current_user.employee?
+        emp_record = current_user.employee_record 
+        @subject_employees = emp_record.subjects.active
+        @subject_employees.reject! {|s| !s.batch.is_active}
+        if emp_record.all_access.to_i == 1
+          batches = @current_user.employee_record.batches
+          batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+          batches = batches.uniq unless batches.empty?
+          unless batches.blank?
+            batches.each do |batch|
+              @subject_employees += batch.subjects
+            end
+          end
+        end
+        @subject_employees = @subject_employees.uniq unless @subject_employees.empty?
+        sub_id = @subject_employees.map{|b| b.id}
+        @normal_subjects = Subject.find_all_by_batch_id(@batch,:conditions=>["elective_group_id IS NULL AND is_deleted = false and id IN (?)",sub_id])
+        @student_electives =StudentsSubject.all(:conditions=>{:batch_id=>@batch,:subjects=>{:is_deleted=>false}},:joins=>[:subject])
+        @elective_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>["elective_group_id IS NOT NULL AND is_deleted = false and id IN (?)",sub_id])
+        @subjects = @normal_subjects+@elective_subjects
+        @subjects = @subjects.uniq unless @subjects.empty?
+        
+      else
+        @normal_subjects = Subject.find_all_by_batch_id(@batch,:conditions=>"elective_group_id IS NULL AND is_deleted = false")
+        @student_electives =StudentsSubject.all(:conditions=>{:batch_id=>@batch,:subjects=>{:is_deleted=>false}},:joins=>[:subject])
+        @elective_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>["elective_group_id IS NOT NULL AND is_deleted = false"])
+        @subjects = @normal_subjects+@elective_subjects
+        @subjects = @subjects.uniq unless @subjects.empty?
+      end
     end
     
     #puts @elective_groups.to_yaml

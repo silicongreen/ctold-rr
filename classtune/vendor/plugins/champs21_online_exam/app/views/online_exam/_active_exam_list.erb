@@ -25,7 +25,7 @@
           <div class="subcontent-date"><b style="color:#000;">End date : </b><%= e.end_date.strftime("%d-%m-%Y") %></div>
         </div>
         <div class='timetable_last'>
-          <%= link_to_remote "#{t('edit_text')}",:url=>{:action=>"edit_exam_group" ,:id=>e.id } unless e.has_attendence%> <%= link_to_remote "| #{t('delete_text')}",:url=>{:action=>"delete_exam_group" ,:id=>e.id}, :confirm=>"#{t('are_you_sure_to_delete_this_exam_group')}" unless e.is_published%> 
+          <%= link_to_remote "#{t('edit_text')}",:url=>{:action=>"edit_exam_group" ,:id=>e.id } %> <%= link_to_remote "| #{t('delete_text')}",:url=>{:action=>"delete_exam_group" ,:id=>e.id}, :confirm=>"#{t('are_you_sure_to_delete_this_exam_group')}" unless e.is_published%> 
           <% unless e.is_published %>
             <%= link_to_remote "| #{t('publish_t')}",:url=>{:action=>"publish_exam" ,:id=>e.id} %>          
           <%  end  %>

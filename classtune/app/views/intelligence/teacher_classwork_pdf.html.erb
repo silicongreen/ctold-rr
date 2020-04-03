@@ -57,8 +57,8 @@
 
               %>
               <tr class="table-header">
-                <td class="col-pdf aling-left"><%= employee['emp_name'] %></td>
-                <td class="col-pdf aling-left"><%= employee['emp_dep'] %></td>
+                <td class="col-pdf aling-left no-warp"><%= employee['emp_name'] %></td>
+                <td class="col-pdf aling-left no-warp"><%= employee['emp_dep'] %></td>
                 <td class="col-pdf"><%= employee['total_class'] %></td>
                 <td class="col-pdf"><%= employee['classwork_given'] %></td>
                 <td class="col-pdf"><%= employee['classwork_given_before_3pm'] %></td>
@@ -121,5 +121,9 @@ table#pdf-table{
 .table-header td.aling-left
 {
     text-align:left !important;
+}
+.no-warp
+{
+    white-space: nowrap;
 }
 </style>    

@@ -4,7 +4,7 @@
    </label>
    <div class="text-input-bg">
   <%= select :batch, :id,
-  @exams.map {|b| [b.name, b.id] },
+  @exams.map {|b| [b.name+" ("+b.subject.name+")", b.id] },
   {:prompt => "#{t('select_exam')}"},
   {:onchange => "#{remote_function(
   :url => { :action => 'update_student_list' },

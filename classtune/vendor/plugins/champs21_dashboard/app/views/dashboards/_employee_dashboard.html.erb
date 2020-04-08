@@ -240,7 +240,7 @@ employee_id = @current_user.employee_record.id
         <%= render :partial => "event", :locals=>{:event=>@event} %>
       </div>
     <% end %>
-<%= MultiSchool.current_school.id %>
+<%#= MultiSchool.current_school.id %>
     <div class="school_feed_box" style="margin-right: 30px;">
       <% bbb_enabled_school = [2,312]  %>  
       <% if bbb_enabled_school.include?(MultiSchool.current_school.id)  %>

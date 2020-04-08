@@ -91,6 +91,32 @@ class OnlineMeetingRoom < ActiveRecord::Base
     self.update_attributes(:is_active=>true)
   end
   
+  def fetch_meeting_recordings
+    online_random_meeting_name_tmp = OnlineRandomMeetingName.find(:all, :conditions => "online_meeting_room_id = #{self.id}")
+    unless online_random_meeting_name_tmp.blank?
+      online_random_meeting_names = online_random_meeting_name_tmp.map(&:random_meeting_name).join(",")
+      response = self.server.api.get_meeting_recordings(online_random_meeting_names)
+    else  
+      response = self.server.api.get_meeting_recordings(self.meetingid)
+    end
+    
+
+#    @participant_count = response[:participantCount]
+#    @moderator_count = response[:moderatorCount]
+#    @running = response[:running]
+#    @has_been_forcibly_ended = response[:hasBeenForciblyEnded]
+#    @start_time = response[:startTime]
+#    @end_time = response[:endTime]
+#    @attendees = []
+#    response[:attendees].each do |att|
+#      attendee = OnlineMeetingAttendee.new
+#      attendee.from_hash(att)
+#      @attendees << attendee
+#    end
+
+    response
+  end
+  
 
   # Fetches info from BBB about this room.
   # The response is parsed and stored in the model. You can access it using attributes such as:
@@ -178,6 +204,14 @@ class OnlineMeetingRoom < ActiveRecord::Base
       self.attendee_password = response[:attendeePW]
       self.moderator_password = response[:moderatorPW]
       self.save
+      
+      online_random_meeting_name_tmp = OnlineRandomMeetingName.find(:all, :conditions => "online_meeting_room_id = #{self.id} and random_meeting_name = '#{self.meetingid}'")
+      if online_random_meeting_name_tmp.blank?
+        online_random_meeting_name = OnlineRandomMeetingName.new
+        online_random_meeting_name.online_meeting_room_id = self.id
+        online_random_meeting_name.random_meeting_name = self.meetingid
+        online_random_meeting_name.save
+      end
     end
 
     response

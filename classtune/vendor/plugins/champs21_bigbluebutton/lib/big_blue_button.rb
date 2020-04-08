@@ -100,9 +100,9 @@ module BigBlueButton
       else
         @version = version
       end
-      unless @supported_versions.include?(@version)
-        raise BigBlueButtonException.new("BigBlueButton error: Invalid API version #{version}. Supported versions: #{@supported_versions.join(', ')}")
-      end
+      #unless @supported_versions.include?(@version)
+      #  raise BigBlueButtonException.new("BigBlueButton error: Invalid API version #{version}. Supported versions: #{@supported_versions.join(', ')}")
+      #end
 
       puts "BigBlueButtonAPI: Using version #{@version}" if @debug
     end
@@ -284,6 +284,13 @@ module BigBlueButton
       response[:endTime] = response[:endTime].to_s.downcase == "null" ?
         nil : DateTime.parse(response[:endTime])
 
+      response
+    end
+    
+    
+    def get_meeting_recordings(meeting_id)
+      #abort(meeting_id.inspect)
+      response = send_api_request(:getRecordings, { :meetingID => meeting_id, :state => "any" })
       response
     end
 

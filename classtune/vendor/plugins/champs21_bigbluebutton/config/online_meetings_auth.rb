@@ -56,6 +56,7 @@ authorization do
       :update_recipient_list,
       :logout_from_meeting,
       :mark_active_meeting,
+      :recordings,
       :view_meetings_by_date
       ]
 

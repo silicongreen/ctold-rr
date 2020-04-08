@@ -21,7 +21,7 @@ Champs21Plugin.register = {
   :description=>"Champs21 Module to integrate with BigBlueButton",
   :auth_file=>"config/online_meetings_auth.rb",
   :more_menu=>{:title=>"collaborate_text",:controller=>"online_meeting_rooms",:action=>"index",:target_id=>"more-parent"},
-  :multischool_models=>%w{OnlineMeetingServer OnlineMeetingRoom OnlineMeetingMember OnlineMeetingSetting }
+  :multischool_models=>%w{OnlineMeetingServer OnlineMeetingRoom OnlineMeetingMember OnlineMeetingSetting OnlineRandomMeetingName }
 }
 
 Dir[File.join("#{File.dirname(__FILE__)}/config/locales/*.yml")].each do |locale|

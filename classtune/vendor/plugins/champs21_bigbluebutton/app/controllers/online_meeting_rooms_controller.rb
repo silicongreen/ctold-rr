@@ -92,6 +92,10 @@ class OnlineMeetingRoomsController < ApplicationController
       
       respond_to do |format|
         if @room.save
+          online_random_meeting_name = OnlineRandomMeetingName.new
+          online_random_meeting_name.online_meeting_room_id = @room.id
+          online_random_meeting_name.random_meeting_name = @room.meetingid
+          online_random_meeting_name.save
           #room_tmp = OnlineMeetingRoom.find(@room.id)
           #room_tmp.update_attributes(:logout_url => @room.logout_url + "/" + @room.id.to_s + "/end_meeting")
           
@@ -149,7 +153,7 @@ class OnlineMeetingRoomsController < ApplicationController
         else
           #abort(@room.errors.inspect)
           @recipients=User.find_all_by_id(params[:recipients].split(","))
-          unless @timetable.errors.empty?
+          unless @room.errors.empty?
             message = @room.errors.full_messages 
           else
             message = t('failed_to_create_online_meeting_room')
@@ -379,11 +383,14 @@ class OnlineMeetingRoomsController < ApplicationController
     unless @subjects.blank?
       batches_ids = @subjects.map{|s| s.batch.id}.uniq
     end
-    @batches = Batch.find(:all, :conditions => "id IN (#{batches_ids.join(",")})")
-    @batches.sort_by{|batch| batch.course.code.to_i}
+    batches = []
+    unless batches_ids.blank?
+      batches = Batch.find(:all, :conditions => "id IN (#{batches_ids.join(",")})")
+      batches.sort_by{|batch| batch.course.code.to_i}
+    end
     #@subjects = @subjects.map { |s| s.user }.compact||[]
     
-    @batches = Batch.find_all_by_id(@batches.map(&:id))
+    @batches = Batch.find_all_by_id(batches.map(&:id))
     unless @batches.nil?
       @students = []
       @batches.each do |batch|
@@ -619,6 +626,13 @@ class OnlineMeetingRoomsController < ApplicationController
     @room.make_active
     flash[:notice] = "Meeting has been Marked as active"
     redirect_to :action => "index" and return
+  end
+  
+  def recordings
+    @room = OnlineMeetingRoom.find(params[:id])
+
+    @meeting_recordings = @room.fetch_meeting_recordings
+    abort(@meeting_recordings)
   end
 
   def end_meeting

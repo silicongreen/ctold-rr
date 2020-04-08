@@ -249,7 +249,7 @@ AND online_exam_groups.is_published = 1"
         <% end %>
 
         <div class="school_feed_box" style="margin-right: 34px;">
-            <% bbb_enabled_school = [2]  %>  
+            <% bbb_enabled_school = [2,312]  %>  
             <% if bbb_enabled_school.include?(MultiSchool.current_school.id)  %>
             <%=  link_to "<img src='/images/classlive/classlive_btn.png' style='width:100%'>", :controller => 'online_meeting_rooms', :action => 'index' %><br/><br/>      
             <% end %>

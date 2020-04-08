@@ -1034,8 +1034,11 @@ class UserController < ApplicationController
       #abort(all_links.map(&:id).inspect)
       general_links = all_links.select{|l| l.link_type=="general"}
     
-    
+      
       school_menu_links = SchoolMenuLink.find(:all, :conditions => ["school_id = ?",MultiSchool.current_school.id], :select => "menu_link_id")
+#      if MultiSchool.current_school.id == 312
+#        abort(school_menu_links.inspect)
+#      end
       school_menu_links_arr = school_menu_links.map {|i| i.menu_link_id }
       #abort(school_menu_links_arr.inspect)
       user_menu_links = MenuLink.find(:all, :conditions => ["id IN (?) and link_type = 'user_menu' AND menu_link_category_id = ?",school_menu_links_arr, params[:cat_id] ])

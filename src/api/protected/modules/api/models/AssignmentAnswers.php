@@ -118,6 +118,42 @@ class AssignmentAnswers extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+        function submitted_list($assignment_id)
+        {
+            $std_list = [];
+            $assignmentObj = new Assignments();
+            $assData = $assignmentObj->findByPk($assignment_id);
+            if($assData)
+            {
+                $std_ids = explode(",",$assData['student_list']);
+                $stdObj = new Students();
+                $assignment_students = $stdObj->getFindAllByStdIds($std_ids);
+                $i_loop = 0;
+                foreach($assignment_students as $svalue)
+                {
+                    $std_list[$i_loop]['student_id'] = $svalue->id;
+                    $std_list[$i_loop]['student_name'] = $svalue->first_name." ".$svalue->middle_name." ".$svalue->last_name;
+                    $std_list[$i_loop]['student_name'] = str_replace("  "," ", $std_list[$i_loop]['student_name']);
+                    $std_list[$i_loop]['class_roll_no'] = $svalue->class_roll_no;
+                    $std_list[$i_loop]['status'] = $this->isAlreadyDone($assignment_id,$svalue->id);
+                    $i_loop++;
+                }
+                
+            } 
+            return $std_list;
+        }
+        function single_submit($assignment_id,$student_id)
+        {
+            $criteria = new CDbCriteria();
+            $criteria->select = 't.*';
+            $criteria->compare('t.student_id', $student_id);
+            $criteria->compare('t.assignment_id', $assignment_id);
+            $criteria->limit = 1;
+            $criteria->order = "created_at DESC";
+            $data = $this->find($criteria);
+            return $data;
+        }
         function homeworkStatus($assignment_id)
         {
             $criteria = new CDbCriteria();
@@ -168,6 +204,7 @@ class AssignmentAnswers extends CActiveRecord
             return $data->total;
             
         }
+        
         function isAlreadyDone($assignment_id, $student_id)
         {
              $criteria = new CDbCriteria();
@@ -175,7 +212,7 @@ class AssignmentAnswers extends CActiveRecord
              $criteria->compare('t.student_id', $student_id);
              $criteria->compare('t.assignment_id', $assignment_id);
              
-             $criteria->order = "created_at ASC";
+             $criteria->order = "created_at DESC";
              $data = $this->findAll($criteria);
              $return = "";
              foreach($data as $value)

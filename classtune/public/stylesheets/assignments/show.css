@@ -25,7 +25,7 @@
     text-decoration: underline;
 }
 #quickinfo{
-    width:600px;
+    width:100%;
     font-weight: bold;
     overflow:hidden;
 }
@@ -40,11 +40,9 @@
     text-decoration: underline;
 }
 #student-list-bg{
-    width: 535px;
+    width: 100%;
     background-color: #EEE;
     padding :7px;
-    -webkit-border-radius : 10px;
-    -moz-border-radius : 10px;
     margin-top: 30px;
 }
 #loaderbox{
@@ -53,7 +51,7 @@
 #student_list {
     margin-top:5px;
     overflow:auto;
-    padding:5px;
+    padding:20px 5px;
     height: 100px;
 }
 .answer-link a
@@ -70,9 +68,10 @@
 .listitem {
     border-bottom: 1px solid #DDDDDD;
     overflow: hidden;
-    font-size:14px;
-    padding-left: 12px;
-    color : #444444;
+    font-size: 14px;
+    /* padding-left: 12px; */
+    color: #444444;
+    padding-bottom: 10px;
     width: 100% !important;
 }
 
@@ -147,7 +146,6 @@
 #attachment a,.listitem a{
     text-decoration: none;
     color:#000;
-    margin-left: -12px;
     /* margin-top: 6px !important;*/
     float: left;
 }

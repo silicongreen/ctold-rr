@@ -15,7 +15,9 @@
         <div class="listitem">
           <%= link_to " #{student.full_name} &#x200E;",assignment_assignment_answer_path(a.assignment,a) %> &nbsp;  (<%= student.admission_no %>) &nbsp; <%= "&#x200E; #{a.status=="0" ? t('pending'): a.status.to_s.capitalize}"  %>
           <div class="answer-details"  >
-            <%= t('on_text') %>&#x200E;<%= a.updated_at.strftime("%r , %d %B") unless a.updated_at.nil? %>
+              
+            <% time_created = a.created_at.to_time + 6*60*60 %>  
+            <%= t('on_text') %>&#x200E;<%= I18n.l(time_created, :format=>'%r , %d %B') %>
           </div>
         </div>
       <% else %>

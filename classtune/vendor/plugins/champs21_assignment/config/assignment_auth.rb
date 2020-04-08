@@ -98,6 +98,7 @@ authorization do
       :published_homework,
       :publisher_homework,
       :download_attachment,
+      :download_excell,
       :remove_attachment,
       :edit,
       :index,

@@ -55,6 +55,8 @@ class DelayedReminderJob
     require "yaml"
 
    
+    @user_id_array = []
+    @notification_id_array = []
     @recipient_ids.each do |r_id|
       
       student_id = 0
@@ -79,18 +81,32 @@ class DelayedReminderJob
         :rtype => @rtype
       )
       
+      
       if @reminder.save
-        champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
-        notification_url = champs21_api_config['notification_url']
-        uri = URI(notification_url)
-        http = Net::HTTP.new(uri.host, uri.port)
-        auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
-        auth_req.set_form_data({"user_id" => r_id, "notification_id" => @reminder.id})
-        auth_res = http.request(auth_req)
+        @user_id_array << r_id
+        @notification_id_array << @reminder.id
+#        champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
+#        notification_url = champs21_api_config['notification_url']
+#        uri = URI(notification_url)
+#        http = Net::HTTP.new(uri.host, uri.port)
+#        auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+#        auth_req.set_form_data({"user_id" => r_id, "notification_id" => @reminder.id})
+#        auth_res = http.request(auth_req)
       end
       
  
      
+    end
+    unless @user_id_array.blank?
+      all_users = @user_id_array.join("*") 
+      all_noti = @notification_id_array.join("*") 
+      champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
+      notification_url = champs21_api_config['notification_url']
+      uri = URI(notification_url)
+      http = Net::HTTP.new(uri.host, uri.port)
+      auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+      auth_req.set_form_data({"user_id" => all_users, "notification_id" => all_noti})
+      auth_res = http.request(auth_req)
     end
     
 

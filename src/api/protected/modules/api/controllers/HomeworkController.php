@@ -23,7 +23,7 @@ class HomeworkController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'homeworkintelligence','defaulterList','delete','getdefaulterlist','adddefaulter','getsubjectstudents', 'teacherintelligence', 'Done', 'subjects', 'publishhomework', 'singleteacher', 'assessmentscore', 'singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus', 'teacherQuiz'),
+                'actions' => array('index', 'homeworkintelligence','submittedlist','statuschange','singlesubmit','submit','defaulterList','delete','getdefaulterlist','adddefaulter','getsubjectstudents', 'teacherintelligence', 'Done', 'subjects', 'publishhomework', 'singleteacher', 'assessmentscore', 'singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus', 'teacherQuiz'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -663,7 +663,7 @@ class HomeworkController extends Controller
                 }
                 if (empty($page_size))
                 {
-                    $page_size = 10;
+                    $page_size = 50;
                 }
 
                 if (!$subject_id)
@@ -1215,6 +1215,57 @@ class HomeworkController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+    
+    
+    private function upload_homework_ans($file, $homework)
+    {
+        $homework->attachment_updated_at = date("Y-m-d H:i:s");
+        $homework->updated_at = date("Y-m-d H:i:s");
+
+        $home_work_id = strlen($homework->assignment_id);
+        
+        $new_id = "";
+        $diff = 9-$home_work_id;
+        for($i = 0; $i<$diff; $i++)
+        {
+            $new_id = $new_id."0";
+        }
+        $new_id = $new_id."".$homework->assignment_id;
+        
+        $ass_ids = str_split($new_id, 3);
+        
+        $home_school_id = strlen($homework->school_id);
+        
+        $new_id = "";
+        $diff = 9-$home_school_id;
+        for($i = 0; $i<$diff; $i++)
+        {
+            $new_id = $new_id."0";
+        }
+        $new_id = $new_id."".$homework->school_id;
+        
+        $school_ids = str_split($new_id, 3);
+
+        $uploads_dir = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachments/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/";
+        
+        $file_name = $file['attachment_file_name']['name'];
+        $tmp_name = $file["attachment_file_name"]["tmp_name"];
+
+        if (!is_dir($uploads_dir))
+        {
+            @mkdir($uploads_dir, 0777, true);
+        }
+
+        $uploads_dir = $uploads_dir . $file_name;
+        
+
+        if (@move_uploaded_file($tmp_name, "$uploads_dir"))
+        {
+            $homework->attachment_file_name = $file['attachment_file_name']['name'];
+            $homework->save();
+        }
+        return $uploads_dir;
+    }
 
     private function upload_homework($file, $homework)
     {
@@ -1495,7 +1546,122 @@ class HomeworkController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+    public function actionsubmittedList()
+    {
+       $user_secret = Yii::app()->request->getPost('user_secret');
+       $id = Yii::app()->request->getPost('id');
+       if(Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $id)
+       {
+          $assignmentAnswersObj = new AssignmentAnswers();
+          $submitted_list = $assignmentAnswersObj->submitted_list($id);
+          $response['data']['submitted_list'] = $submitted_list;
+          $response['status']['code'] = 200;
+          $response['status']['msg'] = "Data Found";
+          
+       }
+       else
+       {
+           $response['status']['code'] = 400;
+           $response['status']['msg'] = "Bad Request";
+       }  
+       echo CJSON::encode($response);
+       Yii::app()->end();
+    }
+    public function actionstatusChange()
+    {
+        $id = Yii::app()->request->getPost('id');
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $status = Yii::app()->request->getPost('status');
+        if(Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $id && $status)
+        {
+            $assignmentAnswersObj = new AssignmentAnswers();
+            $answer = $assignmentAnswersObj->findByPk($id);
+            if( $answer ) 
+            {
+                $answer->status = $status;
+                $answer->save();
+            }
+            $response['data']['msg'] = "Success";
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Data Found";
+        }
+       else
+       {
+           $response['status']['code'] = 400;
+           $response['status']['msg'] = "Bad Request";
+       }  
+       echo CJSON::encode($response);
+       Yii::app()->end();
+    }
+    public function actionsingleSubmit()
+    {
+       $user_secret = Yii::app()->request->getPost('user_secret');
+       $id = Yii::app()->request->getPost('id');
+       $student_id = Yii::app()->request->getPost('student_id');
+       if(Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin || Yii::app()->user->isStudent) && $id && $student_id)
+       {
+          $assignmentAnswersObj = new AssignmentAnswers();
+          $submitted = $assignmentAnswersObj->single_submit($id,$student_id);
+          $response['data']['submit_data'] = $submitted;
+          $response['status']['code'] = 200;
+          $response['status']['msg'] = "Data Found";
+          
+       }
+       else
+       {
+           $response['status']['code'] = 400;
+           $response['status']['msg'] = "Bad Request";
+       }  
+       echo CJSON::encode($response);
+       Yii::app()->end();
+    }
+    public function actionSubmit()
+    {
+       if (isset($_POST) && !empty($_POST))
+        {
+            $user_secret = Yii::app()->request->getPost('user_secret');
+            $assignment_id = Yii::app()->request->getPost('assignment_id');
+            $title = Yii::app()->request->getPost('title');
+            $content = Yii::app()->request->getPost('content');
+            $response = array();
+            if (Yii::app()->user->user_secret === $user_secret && $assignment_id != "" && $title && Yii::app()->user->isStudent)
+            {
+                $assignment_answer = new AssignmentAnswers();
+                $assignment_answer->assignment_id = $assignment_id;
+                $assignment_answer->student_id = Yii::app()->user->profileId;
+                $assignment_answer->title = $title;
+                $assignment_answer->content = $content;
+                $assignment_answer->created_at = date("Y-m-d H:i:s");
+                $assignment_answer->school_id = Yii::app()->user->schoolId;
+                $assignment_answer->insert();
+                
+                if (isset($_FILES['attachment_file_name']['name']) && !empty($_FILES['attachment_file_name']['name']))
+                {
 
+                    $file_name_main = $_FILES['attachment_file_name']['name'];
+                    $assignment_answer->updated_at = date("Y-m-d H:i:s");
+                    $assignment_answer->attachment_content_type = Yii::app()->request->getPost('mime_type');
+                    $assignment_answer->attachment_file_size = Yii::app()->request->getPost('file_size');
+                    $this->upload_homework_ans($_FILES, $assignment_answer);
+
+                }
+                
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "Successfully Saved";
+                //}
+            } else
+            {
+                $response['status']['code'] = 403;
+                $response['status']['msg'] = "Access Denied.";
+            }
+        } else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end(); 
+    }
     public function actionDone()
     {
         if (isset($_POST) && !empty($_POST))

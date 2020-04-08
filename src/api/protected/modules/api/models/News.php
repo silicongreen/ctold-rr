@@ -159,7 +159,7 @@ class News extends CActiveRecord {
         $_data['file_type'] = (!empty($row->attachment_content_type)) ? $row->attachment_content_type : '';
         $_data['file_size'] = (!empty($row->attachment_file_size)) ? $row->attachment_file_size : '';
         $_data['file_updated_at'] = (!empty($row->attachment_updated_at)) ? $row->attachment_updated_at : '';
-        $_data['published_at'] = date('Y-m-d H:i:s', strtotime($row->created_at));
+        $_data['published_at'] = date('Y-m-d H:i:s', strtotime("+6 hours",strtotime($row->created_at)));
         $_data['updated_at'] = date('Y-m-d H:i:s', strtotime($row->updated_at));
         $_data['author_id'] = rtrim($row['authorDetails']->id);
         $_data['author_first_name'] = rtrim($row['authorDetails']->first_name);

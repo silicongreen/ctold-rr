@@ -23,7 +23,7 @@ class FreeuserController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'runmusic', 'getleaderboard', 'savespellingbee', 'downloadattachment', 'downloadclasswork', 'downloadlessonplan', 'create', 'getcategorypost', 'getsinglenews', 'search', "getkeywordpost"
+                'actions' => array('index', 'runmusic', 'getleaderboard', 'savespellingbee','downloadans', 'downloadattachment', 'downloadclasswork', 'downloadlessonplan', 'create', 'getcategorypost', 'getsinglenews', 'search', "getkeywordpost"
                     , "gettagpost", "getbylinepost", "getmenu", "getassesment", "addmark", "updateplayed", "assesmenthistory",
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
@@ -37,6 +37,54 @@ class FreeuserController extends Controller
             ),
         );
     }
+    
+    public function actionDownloadAns()
+    {
+
+        $id = $_GET['id'];
+        if ($id)
+        {
+            $assignment_ans = new AssignmentAnswers();
+            $homework = $assignment_ans->findByPk($id);
+            if ($homework->attachment_file_name)
+            {
+               $home_work_id = strlen($homework->assignment_id);
+        
+                $new_id = "";
+                $diff = 9-$home_work_id;
+                for($i = 0; $i<$diff; $i++)
+                {
+                    $new_id = $new_id."0";
+                }
+                $new_id = $new_id."".$homework->assignment_id;
+
+                $ass_ids = str_split($new_id, 3);
+
+                $home_school_id = strlen($homework->school_id);
+
+                $new_id = "";
+                $diff = 9-$home_school_id;
+                for($i = 0; $i<$diff; $i++)
+                {
+                    $new_id = $new_id."0";
+                }
+                $new_id = $new_id."".$homework->school_id;
+
+                $school_ids = str_split($new_id, 3);
+                $url = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachments/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/".$homework->attachment_file_name;
+
+                header("Content-Disposition: attachment; filename=" . $homework->attachment_file_name);
+                header("Content-Type: {$homework->attachment_content_type}");
+                header("Content-Length: " . $homework->attachment_file_size);
+                readfile($url);
+            }
+            else
+            {
+                echo "File not found. Please Contact Support";
+            }    
+        }
+        
+    }    
 
     public function actionDownloadClassWork()
     {

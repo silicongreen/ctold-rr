@@ -256,7 +256,21 @@
               <%= link_to "#{t('answer_this_assignment')}" , new_assignment_assignment_answer_path(@assignment) ,:class=>"user_button"%>
             </div>
           <% else %>
-
+            <% main_status = "" %>
+            <% @assignment_answers.each do |answer| %>
+              <% if answer.status == "REJECTED" %>
+                <% main_status = "REJECTED" %>
+              <% end %>
+              <% if answer.status == "ACCEPTED" %>
+                <% main_status = "DONE" %>
+              <% end %>
+              <% break %>
+            <% end %>
+            <% if main_status == "REJECTED" %>
+              <div class="answer">
+                <%= link_to "#{t('answer_this_assignment')}" , new_assignment_assignment_answer_path(@assignment) ,:class=>"user_button"%>
+              </div>
+            <% end %>
             <% @assignment_answers.each do |answer| %>
               
               <br/>

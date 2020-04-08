@@ -74,6 +74,7 @@ class OnlineExamController < ApplicationController
         
         @online_exam_group  = OnlineExamGroup.new(params[:online_exam_group])
         @online_exam_group.batch_id = @batch_ids
+        @online_exam_group.user_id = current_user.id
 
         unless params[:assignment].nil?
           unless params[:assignment][:subject].nil?
@@ -84,6 +85,7 @@ class OnlineExamController < ApplicationController
         if @online_exam_group.save
           @id=@online_exam_group.id
           @flag=1
+          
         else
           @flag=0
         end
@@ -123,7 +125,7 @@ class OnlineExamController < ApplicationController
     #      render :action=>:new_online_exam and return
     #    end
     exam_group=OnlineExamGroup.find(params[:id])
-    @group_ids=OnlineExamGroup.find(:all,:conditions=>{:name=>exam_group.name,:start_date=>exam_group.start_date,:end_date=>exam_group.end_date,:maximum_time=>exam_group.maximum_time,:pass_percentage=>exam_group.pass_percentage,:option_count=>exam_group.option_count,:is_deleted=>exam_group.is_deleted,:is_published=>exam_group.is_published}).collect(&:id)
+    @group_ids=OnlineExamGroup.find(:all,:conditions=>{:id=>exam_group.id}).collect(&:id)
     @option_count  = exam_group.option_count.to_i
     @online_exam_question = OnlineExamQuestion.new
     @option_count.to_i.times { @online_exam_question.online_exam_options.build }
@@ -135,6 +137,7 @@ class OnlineExamController < ApplicationController
       @option_count  = (params[:option_count]).to_i
       @group_ids.each do |g|
         @online_exam_question = OnlineExamQuestion.new(params[:online_exam_question])
+        @online_exam_question.user_id = current_user.id
         @online_exam_question.online_exam_group_id = g
         if @online_exam_question.save
           @online_exam_question = OnlineExamQuestion.new
@@ -474,7 +477,8 @@ class OnlineExamController < ApplicationController
     if request.post?
       @online_exam_question = OnlineExamQuestion.new(params[:online_exam_question])
       @online_exam_question.online_exam_group_id = @exam_group.id
-      if @online_exam_question.save
+      @online_exam_question.user_id = current_user.id
+     if @online_exam_question.save
         redirect_to :action=>:exam_details, :id=>@exam_group.id
       end
     end

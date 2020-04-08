@@ -64,6 +64,22 @@ class AssignmentAnswersController < ApplicationController
           render :partial => 'assignment_answer'
         else
           flash[:notice] = "#{t('assignment_submitted')}"
+          user_ass = []
+          student_ids = []
+          batch_ids = []
+          student_ids << 0
+          batch_ids << 0
+          user_ass << @assignment.employee.user_id
+          Delayed::Job.enqueue(
+            DelayedReminderJob.new( :sender_id  => current_user.id,
+              :recipient_ids => user_ass,
+              :subject=>"New Assignment Submitted By Student",
+              :rtype=>4,
+              :rid=>@assignment.id,
+              :student_id => student_ids,
+              :batch_id => batch_ids,
+              :body=>"New Assignment Submitted By Student ("+current_user.student_record.full_name+")")
+          )
           redirect_to assignments_path
         end
       else
@@ -123,8 +139,8 @@ class AssignmentAnswersController < ApplicationController
   def evaluate_assignment
     #Change the status of assignment Answer submitted
     @assignment_answer=AssignmentAnswer.find params[:id]
-    if current_user.employee?
-      if  current_user.employee_record.id == @assignment_answer.assignment.employee_id
+    if current_user.employee? or current_user.admin?
+      if  current_user.employee_record.id == @assignment_answer.assignment.employee_id or current_user.admin?
         @assignment_answer.status = params[:status]
         if @assignment_answer.save
           flash[:notice] = "#{t('assignment_text')}" + " #{@assignment_answer.status.capitalize}"
@@ -141,6 +157,9 @@ class AssignmentAnswersController < ApplicationController
     #Method for downloading the attachment
     @assignment_answer =AssignmentAnswer.find params[:assignment_answer]
     if @assignment_answer.download_allowed_for(current_user)
+      unless params[:check_file].blank?
+        abort(@assignment_answer.attachment.path)
+      end
       send_file  @assignment_answer.attachment.path, :type=>@assignment_answer.attachment.content_type
     else
       flash[:notice] = "#{t('you_are_not_allowed_to_download_that_file')}"

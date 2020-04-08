@@ -7,22 +7,39 @@ class AssignmentsController < ApplicationController
   before_filter :only_publisher_admin_allowed , :only=>[:publisher,:show_publisher,:get_homework_filter_publisher,:showsubjects_publisher,:publisher_homework,:deny_homework,:subject_assignments_publisher]
   
   def get_homework_filter
-    batch_id = params[:batch_name]
-    student_class_name = params[:student_class_name]
-    student_section = params[:student_section]
+    @ba_id = batch_id = params[:batch_name]
+    @class_id = student_class_name = params[:student_class_name]
+    @std_id = student_section = params[:student_section]
+    @pub_date_string = assignment_publish_date = params[:assignment_publish_date]
     @assignments = []
     unless batch_id.nil?
       batchdata = Batch.find_by_id(batch_id)
       unless batchdata.blank?
         batch_name = batchdata.name
         if student_class_name.blank?
-          @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]     
-        elsif student_section.blank?
-          @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}] 
-        else
+          if assignment_publish_date.blank?
+            @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]     
+          else
+            @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
+            @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}' and DATE(assignments.created_at) = '#{@pub_date}' and is_published=1 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]  
+          end   
+       elsif student_section.blank?
+         if assignment_publish_date.blank?
+            @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}] 
+         else
+            @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
+            @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}' and DATE(assignments.created_at) = '#{@pub_date}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}]
+         end   
+       else
           batch = Batch.find_by_course_id_and_name(student_section, batch_name)
           unless batch.blank?
-            @assignments =Assignment.paginate  :conditions=>"batches.id = '#{batch.id}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
+            if assignment_publish_date.blank?
+              @assignments =Assignment.paginate  :conditions=>"batches.id = '#{batch.id}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
+            else
+              @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
+              @batch_id_main = batch.id
+              @assignments =Assignment.paginate  :conditions=>"batches.id = '#{batch.id}'  and is_published=1 and DATE(assignments.created_at) = '#{@pub_date}'",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
+            end
           end
         end  
       end
@@ -33,6 +50,85 @@ class AssignmentsController < ApplicationController
       format.js { render :action => 'get_homework_filter' }
     end
    
+  end
+  
+  def download_excell
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    new_book = Spreadsheet::Workbook.new
+    sheet1 = new_book.create_worksheet :name => 'homework_report'
+    row_first = ['SL','Class','Group','Assignment Type','Subject','Title','Teacher','Due Date','Assign Date']
+    new_book.worksheet(0).insert_row(0, row_first)
+    
+    batch_id = params[:batch_name]
+    student_class_name = params[:student_class_name]
+    student_section = params[:student_section]
+    assignment_publish_date = params[:assignment_publish_date]
+    @assignments = []
+    unless batch_id.nil?
+      batchdata = Batch.find_by_id(batch_id)
+      unless batchdata.blank?
+        batch_name = batchdata.name
+        if student_class_name.blank?
+          if assignment_publish_date.blank?
+            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}'  and is_published=1 ",:order=>"duedate desc",:include=>[{:subject=>[:batch]}])     
+          else
+            @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
+            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and DATE(assignments.created_at) = '#{@pub_date}' and is_published=1 ",:order=>"duedate desc",:include=>[{:subject=>[:batch]}]) 
+          end   
+       elsif student_section.blank?
+         if assignment_publish_date.blank?
+            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"duedate desc",:include=>[{:subject=>[{:batch=>[:course]}]}] )
+         else
+            @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
+            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and DATE(assignments.created_at) = '#{@pub_date}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"duedate desc",:include=>[{:subject=>[{:batch=>[:course]}]}])
+         end   
+       else
+          batch = Batch.find_by_course_id_and_name(student_section, batch_name)
+          unless batch.blank?
+            if assignment_publish_date.blank?
+              @assignments =Assignment.find(:all,:conditions=>"batches.id = '#{batch.id}'  and is_published=1 ",:order=>"duedate desc",:include=>[{:subject=>[:batch]}] )
+            else
+              @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
+              @batch_id_main = batch.id
+              @assignments =Assignment.find(:all,:conditions=>"batches.id = '#{batch.id}'  and is_published=1 and DATE(assignments.created_at) = '#{@pub_date}'",:order=>"duedate desc",:include=>[{:subject=>[:batch]}] )
+            end
+          end
+        end  
+      end
+    else
+      @assignments =Assignment.find(:all,:conditions=>"is_published=1",:order=>"duedate desc",:include=>[{:subject=>[:batch]}])
+    end 
+    
+    iloop = 0
+    unless @assignments.blank?
+      @assignments.each_with_index do |assignment,i|
+        iloop = iloop+1
+        tmp_row = []
+        tmp_row << iloop
+        tmp_row << assignment.subject.batch.full_name
+        tmp_row << assignment.subject.batch.course.group
+        if assignment.assignment_type == 1
+          tmp_row << "Homework"
+        else
+          tmp_row << "Assignment"
+        end  
+        tmp_row << assignment.subject.name
+        tmp_row << assignment.title
+        unless assignment.employee.blank?
+          tmp_row << assignment.employee.full_name
+        else
+          tmp_row << ""
+        end
+        tmp_row << I18n.l(assignment.duedate,:format=>"%d-%m-%Y")
+        tmp_row << I18n.l(assignment.created_at,:format=>"%d-%m-%Y")
+        new_book.worksheet(0).insert_row(iloop, tmp_row)
+      end
+    end
+    spreadsheet = StringIO.new 
+    new_book.write spreadsheet 
+    send_data spreadsheet.string, :filename => "homework_report.xls", :type =>  "application/vnd.ms-excel"
+    
   end
   
   def get_homework_filter_publisher
@@ -686,12 +782,15 @@ class AssignmentsController < ApplicationController
           end
           @students << s if s.present?
         end
+        
         @students = @students.sort_by{|s| s.full_name}
+        @students = @students.uniq unless @students.blank?
       elsif @status == "answered"
         @answers = @assignment.assignment_answers
         #        @answers  = @answers.sort_by{|a| a.updated_at}
         @answers  = @answers.sort_by{|a| (a && a.updated_at(:length)) || 0}
         @students = @answers.map{|a| a.student }
+        @students = @students.uniq unless @students.blank?
       elsif @status== "pending"
         answers = @assignment.assignment_answers
         answered_students = answers.map{|a| a.student_id.to_s }
@@ -706,6 +805,7 @@ class AssignmentsController < ApplicationController
           @students << s if s.present?
         end
         @students = @students.sort_by{|s| s.full_name}
+        @students = @students.uniq unless @students.blank?
       end
       render(:update) do |page|
         page.replace_html 'student_list', :partial=>'student_list'
@@ -887,10 +987,42 @@ class AssignmentsController < ApplicationController
       #RR assignment defaulter added
       @defaulter_registered = AssignmentDefaulterRegistration.find_by_assignment_id(@assignment.id)
       @current_user = current_user
-      @assignment_answers = @assignment.assignment_answers
-      @students_assigned_count = @assignment.student_list.split(",").count
-      @answered_count = @assignment_answers.count
-      @pending_count =     @students_assigned_count  -  @answered_count
+    
+      assigned_students= @assignment.student_list.split(",")
+      @students=[]
+      assigned_students.each do |assigned_student|
+        s = Student.find_by_id assigned_student
+        if s.nil?
+          s = ArchivedStudent.find_by_former_id assigned_student
+        end
+        @students << s if s.present?
+      end
+      @students = @students.uniq unless @students.blank?
+      @students_assigned_count = @students.count
+
+      @answers = @assignment.assignment_answers
+      #        @answers  = @answers.sort_by{|a| a.updated_at}
+      @answers  = @answers.sort_by{|a| (a && a.updated_at(:length)) || 0}
+      @students = @answers.map{|a| a.student }
+      @students = @students.uniq unless @students.blank?
+      @answered_count = @students.count
+
+      answers = @assignment.assignment_answers
+      answered_students = answers.map{|a| a.student_id.to_s }
+      assigned_students= @assignment.student_list.split(",")
+      pending_students = assigned_students - answered_students
+      @students = []
+      pending_students.each do |pending_student|
+        s = Student.find_by_id pending_student
+        if s.nil?
+          s=ArchivedStudent.find_by_former_id pending_student
+        end
+        @students << s if s.present?
+      end
+      @students = @students.sort_by{|s| s.full_name}
+      @students = @students.uniq unless @students.blank?
+      @pending_count = @students.count
+    
       @assignment_answers = AssignmentAnswer.find_all_by_student_id_and_assignment_id(current_user.student_record.id,@assignment.id) if current_user.student?
       
       @subject =Subject.find_by_id @assignment.subject_id

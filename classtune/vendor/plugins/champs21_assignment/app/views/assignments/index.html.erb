@@ -314,6 +314,25 @@
                                 <label for="student_grade"><%= t('section_label') %></label>
                                 <div class="text-input-bg"><div id="section_assingment"> <%= render :partial => 'student/sections_assignment_view', :object => @classes %></div></div>
                             </div> 
+                          
+                            <div class="label-field-pair" id="publish_date_div" style="margin: 0px auto;">
+                                <label for="duedate"><%= "Published date"%></label>
+                                <div  class="text-input-bg">
+                                    <%= calendar_date_select_tag "assignment_publish_date", '' ,
+                                      :class=>"text-input-bg",
+                                      :readonly=>true,
+                                      :popup=>:force,
+                                      :onchange => "#{remote_function(:url => {:action => "get_homework_filter"},
+                                      :with => "'assignment_publish_date='+ value +'&batch_name='+ $('student_batch_name').value+'&student_class_name='+ $('student_class_name').value+'&student_section='+ $('student_section').value",
+                                      :before => "Element.show('loader')",
+                                      :success => "Element.hide('loader')"
+                                      )}"
+                                  %>
+                                </div>
+                            </div>
+                            <div style=" float: left; clear:both; margin-left:0 auto; width: 95%;">
+                                <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
+                            </div>
                             <script type="text/javascript">
                               var jj = jQuery.noConflict();
                               jj("#listing").html("");
@@ -337,23 +356,22 @@
                             jj("#student_batch_name").on("change", function (event) {
                                 jj("#listing").html("");
                                 jj("#syllabus").html("");
-                                jj.get("assignments/get_homework_filter", {batch_name: jj("#student_batch_name").val()})
+                                jj.get("assignments/get_homework_filter", {batch_name: jj("#student_batch_name").val(), assignment_publish_date: jj("#assignment_publish_date").val()})
                                         .done(function (data) {
-
                                         });
                             });
 
                             jj(document).off("change", "#student_class_name").on("change", "#student_class_name", function (event) {
                                 jj("#listing").html("");
                                 jj("#syllabus").html("");
-                                jj.get("assignments/get_homework_filter", {batch_name: jj("#student_batch_name").val(), student_class_name: jj("#student_class_name").val()})
+                                jj.get("assignments/get_homework_filter", {batch_name: jj("#student_batch_name").val(), assignment_publish_date: jj("#assignment_publish_date").val(), student_class_name: jj("#student_class_name").val()})
                                         .done(function (data) {
                                         });
                             });
 
                             jj(document).off("change", "#student_section").on("change", "#student_section", function (event) {
                                 jj("#listing").html("");
-                                jj.get("assignments/get_homework_filter", {batch_name: jj("#student_batch_name").val(), student_class_name: jj("#student_class_name").val(), student_section: jj("#student_section").val()})
+                                jj.get("assignments/get_homework_filter", {batch_name: jj("#student_batch_name").val(), assignment_publish_date: jj("#assignment_publish_date").val(), student_class_name: jj("#student_class_name").val(), student_section: jj("#student_section").val()})
                                         .done(function (data) {
                                         });
                             });

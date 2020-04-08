@@ -28,15 +28,17 @@
     <% end %>
     <% if permitted_to? :index,:online_meeting_servers %>
       <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('servers')}", online_meeting_servers_path %> </li>
-    <% end %>
+    <% end %> 
   </ul>
-</div>
+</div> 
 </div>
 <div id="page-yield">
     <img src="images/classlive/Group 3467.png" width="100%">
+    <% if permitted_to? :new,:online_meeting_rooms %>
     <div style="padding-top: 15px; text-align: center;">
         <button  class="schedule" onclick="location.href='<%= new_online_meeting_room_path %>'">Schedule A Live Class</button>
     </div>
+    <% end %>
   <% unless flash[:notice].nil? %>
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>

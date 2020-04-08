@@ -48,7 +48,7 @@ class OnlineMeetingRoom < ActiveRecord::Base
 
   #validates_length_of :attendee_password,:maximum => 40
   #validates_length_of :moderator_password,:maximum => 40
-  validates_length_of :name,:maximum => 12
+  validates_length_of :name,:maximum => 150
 
   #validates_presence_of :attendee_password,:if => :private?
   #validates_presence_of :moderator_password,:if => :private?

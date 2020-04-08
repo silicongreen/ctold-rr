@@ -147,9 +147,14 @@ class OnlineMeetingRoomsController < ApplicationController
           }
           format.json { render :json => { :message => message }, :status => :created }
         else
-          abort(@room.errors.inspect)
+          #abort(@room.errors.inspect)
           @recipients=User.find_all_by_id(params[:recipients].split(","))
-          message = t('failed_to_create_online_meeting_room')
+          unless @timetable.errors.empty?
+            message = @room.errors.full_messages 
+          else
+            message = t('failed_to_create_online_meeting_room')
+          end
+          
           flash[:notice] = message
           redirect_to :action => "new" and return
         end

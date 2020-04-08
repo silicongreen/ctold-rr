@@ -141,17 +141,26 @@ class AssignmentAnswersController < ApplicationController
     @assignment_answer=AssignmentAnswer.find params[:id]
     if current_user.employee? or current_user.admin?
       if  current_user.employee_record.id == @assignment_answer.assignment.employee_id or current_user.admin?
-        @assignment_answer.status = params[:status]
-        if @assignment_answer.save
-          flash[:notice] = "#{t('assignment_text')}" + " #{@assignment_answer.status.capitalize}"
+        if params[:status] == "DELETED"
+          @assignment=@assignment_answer.assignment
+          @assignment_answer.destroy
+          flash[:notice] = "Answer successfully removed"
+          redirect_to assignments_path
         else
-          flash[:notice] = "#{t('failed_to_set_status_of_assignment')}"
+          @assignment_answer.status = params[:status]
+          if @assignment_answer.save
+            flash[:notice] = "#{t('assignment_text')}" + " #{@assignment_answer.status.capitalize}"
+          else
+            flash[:notice] = "#{t('failed_to_set_status_of_assignment')}"
+          end
+          redirect_to assignment_assignment_answer_path(@assignment_answer.assignment,@assignment_answer)
         end
       end
     else
       flash[:notice] = "#{t('you_cannot_approve_or_reject_this_assignment')}"
+      redirect_to assignment_assignment_answer_path(@assignment_answer.assignment,@assignment_answer)
     end
-    redirect_to assignment_assignment_answer_path(@assignment_answer.assignment,@assignment_answer)
+    
   end
   def download_attachment
     #Method for downloading the attachment

@@ -44,6 +44,7 @@
       <% if @current_user.employee_record.id == @assignment_answer.assignment.employee_id or @current_user.admin? %>
         <% unless @assignment_answer.status=="ACCEPTED" %>  <%= link_to "#{t('accept_answer')}",  {:action => "evaluate_assignment" ,:id=>@assignment_answer.id,:status=>"ACCEPTED"},:class=>"submit-button" %><% end %>
         <% unless @assignment_answer.status=="REJECTED" %>  <%= link_to "#{t('reject_answer')}",  { :action => "evaluate_assignment" ,:id=>@assignment_answer.id,:status=>"REJECTED" },:class=>"submit-button" %><% end %>
+        <% if @assignment_answer.status!="ACCEPTED" %>  <%= link_to "Delete Answer",  {:action => "evaluate_assignment" ,:id=>@assignment_answer.id,:status=>"DELETED"},:class=>"submit-button" %><% end %>
       <% end %>
   </div>
 </div>

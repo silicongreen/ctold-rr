@@ -22,7 +22,7 @@
 <div class='header-sep'>|</div>
 <div class='sub-header'><%= t('all') %></div>
 <div id="inner-tab-menu">
-  <ul>
+    <ul style="display: none;">
     <% if permitted_to? :new,:online_meeting_rooms %>
       <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('new_text')}", new_online_meeting_room_path %> </li>
     <% end %>
@@ -33,22 +33,20 @@
 </div>
 </div>
 <div id="page-yield">
-
+    <img src="images/classlive/Group 3467.png" width="100%">
+    <div style="padding-top: 15px; text-align: center;">
+        <button  class="schedule" onclick="location.href='<%= new_online_meeting_room_path %>'">Schedule A Live Class</button>
+    </div>
   <% unless flash[:notice].nil? %>
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
   <div id="top-box">
-    <div id="activities" class="themed_text">
-      <%= render :partial=>"date_show" %>
+      <div id="activities" class="themed_text" style=" display: inline-block; width: 40%;">
+      <%#= render :partial=>"date_show" %>
     </div>
 
-    <div class="search-box">
-      <% remote_form_for :meetings ,:url=>{:action=>'view_meetings_by_date'},:loading => "$('loading').show();", :loaded => "$('loading').hide();" do |f| %>
-        <label class="select-date"><%= t('select_date') %></label>
-        <div class="text-input-bg"><%= calendar_date_select_tag 'meetings[search_date]', I18n.l(@date,:format=>"%d %b %Y"), :time => false,:readonly=>true,:popup=>"force"  %></div>
-        <div class="go"><%= submit_tag "#{t('go')}", :class=>"submit_button" %></div>
-      <% end %>
-    </div>
+    
+    <div style="clear: both; height: 30px;"></div>  
     <div id="img_load">
       <%= image_tag("loader.gif",
         :align => "absmiddle",
@@ -65,3 +63,44 @@
   </div>
 
 </div>
+<style>
+    .go_button{
+      height: 34px !important;
+      margin-left: 39px !important;
+      margin-top: 5px !important;
+    }
+    .schedule {
+      font-size: 13px;
+      border: 2px solid #29363B;
+      background-color: #29363B;
+      padding: 6px 9px;
+      color: #fff;
+      border-radius: 6px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      cursor: pointer;
+  }
+  .table_join a {
+      border: none;
+      background: #1AAD9E;
+      color: #fff;
+      font-size: 12px;
+      padding: 4px 17px;
+      border-radius: 9px;
+      text-transform: capitalize;
+      margin-right: -6px;
+      margin-left: -8px;
+  }
+  .links a{
+      text-decoration: none;
+  }
+  .links a:hover{
+      text-decoration: none;
+  }
+  .table_header_title h6 {
+      font-size: 22px;
+      font-weight: 500;
+      color: #29363B;
+      margin: 12px 1px;
+  }
+</style>

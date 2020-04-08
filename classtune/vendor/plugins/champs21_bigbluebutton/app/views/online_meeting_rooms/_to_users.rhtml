@@ -1,23 +1,44 @@
-
-<% string = @to_users.collect(&:id).join(',')%>
-<% add = "<span> #{t('add')} </span>" %>
-<div class="label-field-pair">
-  <label for="student_grade"><%= t('select_members') %></label>
-  <div class ="scrolable" >
-    <div class="scroll-inside">
-      <div class="hover"><%= link_to "#{t('select_all')}  <span> #{t('add')} </span>", '#', :onClick => "add_all_recipient('#{string}')", :class=> 'all' %>
-       
-      </div>
-      <% @to_users.each do |user| %>
-        <div class="hover"><%= link_to shorten_string(user.full_name,18)+add  , '#', :onClick => "add_recipient(#{user.id}); return false", :class=>'individual',
-    :before => "Element.show('loader')",
-      :success => "Element.hide('loader')" %>
-         
-        </div>
-      <% end %>
+<% unless @to_users.blank? %>
+  <div class="label-field-pair">
+    <% 
+      @hide_dropdown = false
+      @employee_label = "#{t('select_employee')}"
+      if @current_user.employee?
+        @employee_id = @current_user.id
+        @hide_dropdown = true
+        @employee_label = "Employee Info"
+      end
+    %>  
+    <div class="label-container">
+      <label for="course" id="label-member5"><%= @employee_label %>
+      <%= image_tag("loader.gif",
+        :align => "absmiddle",
+        :border => 0,
+        :id => "loader1",
+        :style =>"display: none;" ) %></label></div>  
+    <div class="input-container">
+      <% style = (@hide_dropdown) ? 'display: none' : ''; %>  
+      <span style="<%= style %>">
+      <% if @employee_id and @employee_id.present? %>
+         <%= select :select_user, :employee, @to_users.map { |e| [e.full_name, e.id] },
+          {:selected=>@employee_id.to_i}, 
+          {:onChange => "#{remote_function(:url => {:action => "get_options"}, :with => "'employee_id='+value",
+          :before => "Element.show('loader1')",
+          :success => "Element.hide('loader1')")}"} %>
+        <script type="text/javascript">
+    <%= remote_function(:url => {:action => "get_options"}, :with => "'employee_id='+#{@employee_id.to_i}") %>
+        </script>
+      <% else %>
+         <%= select :select_user, :employee, @to_users.map { |e| [e.full_name, e.id] },
+        {:prompt => "#{t('select_employee')}"},
+        {:onChange => "#{remote_function(:url => {:action => "get_options"}, :with => "'employee_id='+value",
+        :before => "Element.show('loader1')",
+        :success => "Element.hide('loader1')")}"} %>
+      <% end %>  
+     </span>  
+     <% if @current_user.employee? %>   
+        <span style="padding-left: 10px; padding-top: 8px; display: block; font-size: 18px; font-weight: bold;"><%= @current_user.full_name %></span>
+     <% end %>   
     </div>
   </div>
-</div>
-
-
-
+<% end %>

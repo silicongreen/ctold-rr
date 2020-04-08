@@ -15,15 +15,15 @@
 #specific language governing permissions and limitations
 #under the License.
 authorization do
-#  role :admin do
-#   includes :manage_online_meeting_rooms
-#   includes :manage_online_meeting_servers
-#  end
-#
-#  role :employee do
-#    includes :manage_online_meeting_rooms
-#  end
-#
+  role :admin do
+   includes :manage_online_meeting_rooms
+   includes :manage_online_meeting_servers
+  end
+
+  role :employee do
+    includes :manage_online_meeting_rooms
+  end
+
 #  role :student do
 #    includes :manage_online_meeting_rooms
 #  end
@@ -48,10 +48,59 @@ authorization do
       :to_employees,
       :to_students,
       :to_schools,
+      :get_subjects,
+      :get_courses,
+      :get_options,
+      :subject_students_list,
+      :course_students_list,
       :update_recipient_list,
+      :logout_from_meeting,
+      :mark_active_meeting,
       :view_meetings_by_date
       ]
 
   end
+  
+  role :student do
+    has_permission_on [:online_meeting_rooms],
+      :to => [
+      :index,:show,\
+      :join,:invite,:auth, :running,\
+      :join_mobile,
+      :logout_from_meeting,
+      :view_meetings_by_date
+      ]
+
+  end
+#  role :admin do
+#    has_permission_on [:online_meeting_servers],
+#      :to => [
+#      :index,:create,:update,:edit,:destroy,:show,:new,:activity]
+#  end
+#
+#  role :admin do
+#    has_permission_on [:online_meeting_rooms],
+#      :to => [
+#      :index,:show,:new,:edit,:create,:update,\
+#      :destroy,:join,:invite,:auth, :running,\
+#      :end_meeting, :join_mobile,
+#      :list_employees,
+#      :select_employee_department,
+#      :select_users,
+#      :select_student_course,
+#      :select_users,
+#      :to_employees,
+#      :to_students,
+#      :to_schools,
+#      :get_subjects,
+#      :get_courses,
+#      :subject_students_list,
+#      :course_students_list,
+#      :get_options,
+#      :update_recipient_list,
+#      :view_meetings_by_date
+#      ]
+#
+#  end
 
 end

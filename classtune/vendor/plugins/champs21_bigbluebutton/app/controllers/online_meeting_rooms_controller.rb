@@ -27,9 +27,13 @@ class OnlineMeetingRoomsController < ApplicationController
   def index
     @date=@local_tzone_time.to_date
     if current_user.admin?
-      @rooms = OnlineMeetingRoom.all(:conditions=>"(scheduled_on >= '#{@date.strftime("%Y-%m-%d 00:00:00")}' and scheduled_on <= '#{@date.strftime("%Y-%m-%d 23:59:59")}' )",:order=>"id DESC")
+      @rooms = OnlineMeetingRoom.all(:conditions=>"(scheduled_on >= '#{@date.strftime("%Y-%m-%d 00:00:00")}' and is_active = #{true} and scheduled_on <= '#{@date.strftime("%Y-%m-%d 23:59:59")}' )",:order=>"id DESC")
+      @inactive_rooms = OnlineMeetingRoom.all(:conditions=>"(scheduled_on >= '#{@date.strftime("%Y-%m-%d 00:00:00")}' and is_active = #{false} and scheduled_on <= '#{@date.strftime("%Y-%m-%d 23:59:59")}' )",:order=>"id DESC")
     else
       @rooms = OnlineMeetingRoom.rooms_for_user(current_user,@date)
+      if current_user.employee?
+        @inactive_rooms = OnlineMeetingRoom.rooms_for_user_inactive(current_user,@date)
+      end
     end
     @current_user = current_user
   end
@@ -55,30 +59,107 @@ class OnlineMeetingRoomsController < ApplicationController
   end
 
   def create
-    @room = OnlineMeetingRoom.new(params[:online_meeting_room])
-    @room.user_id = current_user.id
-    @room.member_ids = params[:recipients].split(",").reject{|a| a.strip.blank?}.collect{ |s| s.to_i }
-    respond_to do |format|
-      if @room.save
-        message = t('online_meeting_room_created_successfully')
-        format.html {
-          params[:redir_url] ||= online_meeting_rooms_path
-          flash[:notice] = message
-          redirect_to params[:redir_url]
-        }
-        format.json { render :json => { :message => message }, :status => :created }
+    unless params[:student_list].blank?
+      @room = OnlineMeetingRoom.new(params[:online_meeting_room])
+      @room.user_id = current_user.id
+      
+      unless params[:select_user].blank?
+        unless params[:select_user][:employee].blank?
+          @room.moderator_id = params[:select_user][:employee]
+        else
+          @room.moderator_id = current_user.id
+        end
       else
-        @recipients=User.find_all_by_id(params[:recipients].split(","))
-        format.html {
-          unless params[:redir_url].blank?
-            message = t('failed_to_create_online_meeting_room')
-            redirect_to params[:redir_url], :error => message
-          else
-            load_data
-            render :action => "new"
+        @room.moderator_id = current_user.id
+      end
+      
+      params[:recipients] = params[:student_list].join(',')
+      #abort(params[:recipients].inspect)
+      @room.member_ids = params[:recipients].split(",").reject{|a| a.strip.blank?}.collect{ |s| s.to_i }.uniq
+      
+      unless params[:moderator_password].blank?
+        @room.moderator_password = params[:moderator_password]
+      end
+      unless params[:attendee_password].blank?
+        @room.attendee_password = params[:attendee_password]
+      end
+      
+      unless params[:student_list].blank?
+        @room.max_participants = params[:student_list].length
+      else
+        @room.max_participants = 30
+      end
+      
+      respond_to do |format|
+        if @room.save
+          #room_tmp = OnlineMeetingRoom.find(@room.id)
+          #room_tmp.update_attributes(:logout_url => @room.logout_url + "/" + @room.id.to_s + "/end_meeting")
+          
+          settings = ["mute_user", "disabled_mic", "disabled_webcam", "private_chat", "recording"]
+          settings.each do |ss|
+            online_meeting_settings = OnlineMeetingSetting.new
+            online_meeting_settings.online_meeting_room_id = @room.id
+            online_meeting_settings.config_name = ss
+            online_meeting_settings.config_value = 0
+            online_meeting_settings.save
           end
-        }
-        format.json { render :json => @room.errors.full_messages, :status => :unprocessable_entity }
+          online_meeting_settings = OnlineMeetingSetting.new
+          online_meeting_settings.online_meeting_room_id = @room.id
+          online_meeting_settings.config_name = "duration"
+          online_meeting_settings.config_value = 0
+          online_meeting_settings.save
+          
+          unless params[:meeting_settings].blank?
+            meeting_settings = params[:meeting_settings]
+            #abort(meeting_settings.inspect)
+            meeting_settings.each do |ss|
+              online_meeting_settings = OnlineMeetingSetting.find_by_online_meeting_room_id_and_config_name(@room.id, ss)
+              unless online_meeting_settings.blank?
+                online_meeting_settings.update_attributes(:config_value => 1)
+              else
+                online_meeting_settings = OnlineMeetingSetting.new
+                online_meeting_settings.online_meeting_room_id = @room.id
+                online_meeting_settings.config_name = ss
+                online_meeting_settings.config_value = 1
+                online_meeting_settings.save
+              end
+            end
+          end
+          
+          unless params[:meeting_duration].blank?
+            online_meeting_settings = OnlineMeetingSetting.find_by_online_meeting_room_id_and_config_name(@room.id, "duration")
+            unless online_meeting_settings.blank?
+              online_meeting_settings.update_attributes(:config_value => params[:meeting_duration])
+            else
+              online_meeting_settings = OnlineMeetingSetting.new
+              online_meeting_settings.online_meeting_room_id = @room.id
+              online_meeting_settings.config_name = "duration"
+              online_meeting_settings.config_value = params[:meeting_duration]
+              online_meeting_settings.save
+            end
+          end
+          
+          message = t('online_meeting_room_created_successfully')
+          format.html {
+            params[:redir_url] ||= online_meeting_rooms_path
+            flash[:notice] = message
+            redirect_to params[:redir_url]
+          }
+          format.json { render :json => { :message => message }, :status => :created }
+        else
+          @recipients=User.find_all_by_id(params[:recipients].split(","))
+          message = t('failed_to_create_online_meeting_room')
+          flash[:notice] = message
+          redirect_to :action => "new" and return
+        end
+      end
+    else
+      unless params[:redir_url].blank?
+        message = t('failed_to_create_online_meeting_room')
+        redirect_to params[:redir_url], :error => message
+      else
+        load_data
+        render :action => "new"
       end
     end
   end
@@ -131,8 +212,274 @@ class OnlineMeetingRoomsController < ApplicationController
     department = EmployeeDepartment.find(params[:dept_id])
     employees = department.employees(:include=>:user).sort_by{|a| a.full_name.downcase}
     @to_users = employees.map { |s| s.user }.compact||[]
+    
+    #if current_user.employee?
+    #  @employee_id = current_user.id
+    #end
+    
     render :update do |page|
       page.replace_html 'to_users', :partial => 'to_users', :object => @to_users
+      page << 'j(document).ready(function(){ j("#select_user_employee").select2(); });'
+    end
+  end
+  
+  def get_options
+    if params[:employee_id] == ""
+      render :update do |page|
+        page.replace_html "option_list", :text => ""
+      end
+      return
+    end
+    
+    employee = User.find(params[:employee_id])
+    emp_record = employee.employee_record 
+    @subjects = emp_record.subjects.active
+    @subjects.reject! {|s| !s.batch.is_active}
+    if emp_record.all_access.to_i == 1
+      batches = @current_user.employee_record.batches
+      batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+      batches = batches.uniq unless batches.empty?
+      unless batches.blank?
+        batches.each do |batch|
+          @subjects += batch.subjects
+        end
+      end
+    end
+    @subjects = @subjects.uniq unless @subjects.empty?
+    @subjects.sort_by{|s| s.batch.course.code.to_i}
+    #@subjects = @subjects.map { |s| s.user }.compact||[]
+    
+    @subject = Subject.find_all_by_id(@subjects.map(&:id))
+    unless @subject.nil?
+      @students = []
+      @subject.each do |sub|
+        if sub.elective_group_id.nil?
+          students_all = Student.find_all_by_batch_id(sub.batch_id)
+          students_all.each do |std|
+            @students << std
+          end
+        else
+          assigned_students = StudentsSubject.find_all_by_subject_id_and_batch_id(sub.id,sub.batch_id)
+          unless assigned_students.blank?
+            assigned_students.each do |std|
+              unless std.student.blank?
+                unless std.student.batch_id.blank?
+                  if sub.batch_id == std.student.batch_id
+                    @students << std.student
+                  end
+                end
+              end 
+            end
+          end
+          
+        end
+      end
+      @students=@students.compact
+      @students.reject!{|e| e.is_deleted == true}
+    end
+    
+    render :update do |page|
+      page.replace_html 'option_list', :partial => 'option_list'
+      page.replace_html 'subject_list', :partial => 'subject_list', :object => @subjects
+      page.replace_html 'student_list', :partial=>"student_list", :object => @students
+      page << 'j("#submit-btn").show();'
+    end
+  end
+  
+  def get_subjects
+    if params[:employee_id] == ""
+      render :update do |page|
+        page.replace_html "subject_list", :text => ""
+      end
+      return
+    end
+    employee = User.find(params[:employee_id])
+    emp_record = employee.employee_record 
+    @subjects = emp_record.subjects.active
+    @subjects.reject! {|s| !s.batch.is_active}
+    if emp_record.all_access.to_i == 1
+      batches = @current_user.employee_record.batches
+      batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+      batches = batches.uniq unless batches.empty?
+      unless batches.blank?
+        batches.each do |batch|
+          @subjects += batch.subjects
+        end
+      end
+    end
+    @subjects = @subjects.uniq unless @subjects.empty?
+    @subjects.sort_by{|s| s.batch.course.code.to_i}
+    #@subjects = @subjects.map { |s| s.user }.compact||[]
+    
+    @subject = Subject.find_all_by_id(@subjects.map(&:id))
+    unless @subject.nil?
+      @students = []
+      @subject.each do |sub|
+        if sub.elective_group_id.nil?
+          students_all = Student.find_all_by_batch_id(sub.batch_id)
+          students_all.each do |std|
+            @students << std
+          end
+        else
+          assigned_students = StudentsSubject.find_all_by_subject_id_and_batch_id(sub.id,sub.batch_id)
+          unless assigned_students.blank?
+            assigned_students.each do |std|
+              unless std.student.blank?
+                unless std.student.batch_id.blank?
+                  if sub.batch_id == std.student.batch_id
+                    @students << std.student
+                  end
+                end
+              end 
+            end
+          end
+          
+        end
+      end
+      @students=@students.compact
+      @students.reject!{|e| e.is_deleted == true}
+    end
+    
+    render :update do |page|
+      page.replace_html 'subject_list', :partial => 'subject_list', :object => @subjects
+      page.replace_html 'student_list', :partial=>"student_list", :object => @students
+      page << 'j("#loader_option").hide();'
+      page << 'j("#submit-btn").show();'
+    end
+  end
+  
+  def get_courses
+    if params[:employee_id] == ""
+      render :update do |page|
+        page.replace_html "course_list", :text => ""
+      end
+      return
+    end
+    employee = User.find(params[:employee_id])
+    emp_record = employee.employee_record 
+    @subjects = emp_record.subjects.active
+    @subjects.reject! {|s| !s.batch.is_active}
+    if emp_record.all_access.to_i == 1
+      batches = @current_user.employee_record.batches
+      batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+      batches = batches.uniq unless batches.empty?
+      unless batches.blank?
+        batches.each do |batch|
+          @subjects += batch.subjects
+        end
+      end
+    end
+    @subjects = @subjects.uniq unless @subjects.empty?
+    unless @subjects.blank?
+      batches_ids = @subjects.map{|s| s.batch.id}.uniq
+    end
+    @batches = Batch.find(:all, :conditions => "id IN (#{batches_ids.join(",")})")
+    @batches.sort_by{|batch| batch.course.code.to_i}
+    #@subjects = @subjects.map { |s| s.user }.compact||[]
+    
+    @batches = Batch.find_all_by_id(@batches.map(&:id))
+    unless @batches.nil?
+      @students = []
+      @batches.each do |batch|
+        students_all = Student.find_all_by_batch_id(batch.id)
+        students_all.each do |std|
+          @students << std
+        end
+      end
+      @students=@students.compact
+      @students.reject!{|e| e.is_deleted == true}
+    end
+      
+    render :update do |page|
+      page.replace_html 'course_list', :partial => 'course_list', :object => @batches
+      page.replace_html 'student_list', :partial=>"student_list", :object => @students
+      page << 'j("#loader_option").hide();'
+      page << 'j("#submit-btn").show();'
+    end
+  end
+  
+  def subject_students_list
+    unless params[:subject_id].blank?
+      subject_batch_ids = params[:subject_id].split(",")
+      subject_ids = []
+      subject_batch_ids.each do |subject_batch_id|
+        subject_batch_id_comb = subject_batch_id.split("---")
+        subject_ids << subject_batch_id_comb[0].to_i
+      end
+      students_id = []
+      @subject = Subject.find_all_by_id(subject_ids)
+      unless @subject.nil?
+        @students = []
+        @subject.each do |sub|
+          if sub.elective_group_id.nil?
+            batch_ids = []
+            subject_batch_ids.each do |subject_batch_id|
+              subject_batch_id_comb = subject_batch_id.split("---")
+              if  sub.id.to_i == subject_batch_id_comb[0].to_i
+                batch_ids << subject_batch_id_comb[1]
+              end
+            end
+            students_all = Student.find(:all, :conditions => "batch_id IN (#{batch_ids.join(",")})")
+            unless students_all.blank?
+              students_all.each do |std|
+                unless students_id.include?(std.id)
+                  @students << std
+                  students_id << std.id
+                end
+              end
+            end
+          else
+            batch_ids = []
+            subject_batch_ids.each do |subject_batch_id|
+              subject_batch_id_comb = subject_batch_id.split("---")
+              if  sub.id.to_i == subject_batch_id_comb[0].to_i
+                batch_ids << subject_batch_id_comb[1]
+              end
+            end
+            assigned_students = StudentsSubject.find(:all, :conditions => "subject_id = #{sub.id} and batch_id IN #{batch_ids.join(",")}")
+            unless assigned_students.blank?
+              assigned_students.each do |std|
+                unless std.student.blank?
+                  unless std.student.batch_id.blank?
+                    unless students_id.include?(std.student.id)
+                      @students << std.student
+                      students_id << std.student.id
+                    end
+                  end
+                end 
+              end
+            end
+
+          end
+        end
+        @students=@students.compact
+        @students.reject!{|e| e.is_deleted == true}
+      end
+    end
+    render(:update) do |page|
+      page.replace_html 'student_list', :partial=>"student_list"
+      page << 'j("#loader_student").hide();'
+      page << 'j("#submit-btn").show();'
+    end
+  end
+  
+  def course_students_list
+    @batches = Batch.find_all_by_id(params[:course_id].split(","))
+    unless @batches.nil?
+      @students = []
+      @batches.each do |batch|
+        students_all = Student.find_all_by_batch_id(batch.id)
+        students_all.each do |std|
+          @students << std
+        end
+      end
+      @students=@students.compact
+      @students.reject!{|e| e.is_deleted == true}
+    end
+    render(:update) do |page|
+      page.replace_html 'student_list', :partial=>"student_list"
+      page << 'j("#loader_student").hide();'
+      page << 'j("#submit-btn").show();'
     end
   end
 
@@ -155,6 +502,10 @@ class OnlineMeetingRoomsController < ApplicationController
     @servers = OnlineMeetingServer.all
     @departments = EmployeeDepartment.active(:order=>"name asc")
     @batches = Batch.active
+    if current_user.employee?
+      emp_record = current_user.employee_record 
+      @employee_department_id = emp_record.employee_department_id
+    end
   end
 
   def update
@@ -202,6 +553,10 @@ class OnlineMeetingRoomsController < ApplicationController
       # TODO Better error message: "Room destroyed in DB, but not in BBB..."
     end
 
+    online_meeting_settings = OnlineMeetingSetting.find_all_by_online_meeting_room_id(@room.id)
+    online_meeting_settings.each do |om|
+      om.destroy
+    end
     @room.destroy
 
     respond_to do |format|
@@ -251,6 +606,14 @@ class OnlineMeetingRoomsController < ApplicationController
     end
 
   end
+  
+  def mark_active_meeting
+    @room = OnlineMeetingRoom.find(params[:id])
+
+    @room.make_active
+    flash[:notice] = "Meeting has been Marked as active"
+    redirect_to :action => "index" and return
+  end
 
   def end_meeting
     @room = OnlineMeetingRoom.find(params[:id])
@@ -263,7 +626,7 @@ class OnlineMeetingRoomsController < ApplicationController
         @room.make_inactive
         message = t('online_meeting_successfully_ended')
       else
-        error = true
+        @room.make_inactive
         message = t('end_failure_online_meeting_not_running')
       end
     rescue BigBlueButton::BigBlueButtonException => e
@@ -271,6 +634,8 @@ class OnlineMeetingRoomsController < ApplicationController
       message = e.to_s
     end
 
+    #@room.make_inactive
+    #message = t('online_meeting_successfully_ended')
     if error
       respond_to do |format|
         format.html {
@@ -289,14 +654,37 @@ class OnlineMeetingRoomsController < ApplicationController
     end
     flash[:notice] = "#{t('online_meeting_successfully_ended')}"
   end
+  
+  def logout_from_meeting
+    @room = OnlineMeetingRoom.find(params[:id])
+
+    error = false
+    begin
+      @room.fetch_is_running?
+      if @room.is_running?
+        @room.send_end
+        message = t('online_meeting_successfully_ended')
+      end
+    rescue BigBlueButton::BigBlueButtonException => e
+      error = true
+      message = e.to_s
+    end
+    @room.update_attributes(:is_running => false)
+    flash[:notice] = message
+    redirect_to :action => "index" and return
+  end
 
   def view_meetings_by_date
     @date = (params[:meetings][:search_date]).to_date
     
     if current_user.admin?
-      @rooms = OnlineMeetingRoom.all(:conditions=>"(scheduled_on >= '#{@date.strftime("%Y-%m-%d 00:00:00")}' and scheduled_on <= '#{@date.strftime("%Y-%m-%d 23:59:59")}' )",:order=>"id DESC")
+      @rooms = OnlineMeetingRoom.all(:conditions=>"(scheduled_on >= '#{@date.strftime("%Y-%m-%d 00:00:00")}' and is_active = #{true} and scheduled_on <= '#{@date.strftime("%Y-%m-%d 23:59:59")}' )",:order=>"id DESC")
+      @inactive_rooms = OnlineMeetingRoom.all(:conditions=>"(scheduled_on >= '#{@date.strftime("%Y-%m-%d 00:00:00")}' and is_active = #{false} and scheduled_on <= '#{@date.strftime("%Y-%m-%d 23:59:59")}' )",:order=>"id DESC")
     else
       @rooms = OnlineMeetingRoom.rooms_for_user(current_user,@date)
+      if current_user.employee?
+        @inactive_rooms = OnlineMeetingRoom.rooms_for_user_inactive(current_user,@date)
+      end
     end
 
     render :update do|page|
@@ -322,6 +710,7 @@ class OnlineMeetingRoomsController < ApplicationController
 
       @room.send_create unless @room.is_running?
       join_url = @room.join_url(username, role)
+      @room.update_attributes(:is_running => true)
       redirect_to(join_url)
 
       # normal user only joins if the conference is running

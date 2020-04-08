@@ -25,7 +25,7 @@ class OnlineMeetingServer < ActiveRecord::Base
   validates_presence_of :url
   validates_uniqueness_of :url ,:allow_blank=>true
   validates_length_of :url,:maximum=>500
-  validates_format_of :url, :with => /http:\/\/.*\/bigbluebutton\/api/,:allow_blank=>true
+  #validates_format_of :url, :with => /http:\/\/.*\/bigbluebutton\/api/,:allow_blank=>true
 
   validates_presence_of :param
   validates_uniqueness_of :param ,:allow_blank=>true

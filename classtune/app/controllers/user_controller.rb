@@ -1027,10 +1027,11 @@ class UserController < ApplicationController
   end
 
   def show_all_features
-    #  Rails.cache.delete("user_cat_links_#{params[:cat_id]}_#{current_user.id}")
+    Rails.cache.delete("user_cat_links_#{params[:cat_id]}_#{current_user.id}")
     cat_links = Rails.cache.fetch("user_cat_links_#{params[:cat_id]}_#{current_user.id}"){
       link_cat = MenuLinkCategory.find_by_id(params[:cat_id])
       all_links = link_cat.menu_links
+      #abort(all_links.map(&:id).inspect)
       general_links = all_links.select{|l| l.link_type=="general"}
     
     
@@ -1058,7 +1059,7 @@ class UserController < ApplicationController
           end
         end
       end
-    
+    #abort(selective_links.map(&:id).inspect)
       allowed_links = selective_links.select{|l| can_access_request?(l.target_action.to_s.to_sym,@current_user,:context=>l.target_controller.to_s.to_sym)}
       allowed_links
     }

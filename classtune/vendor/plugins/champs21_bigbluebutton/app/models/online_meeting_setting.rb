@@ -1,6 +1,4 @@
-<%-#
 #Copyright 2010 teamCreative Private Limited
-#
 #This product includes software developed at
 #Project Champs21 - http://www.champs21.com/
 #
@@ -15,6 +13,8 @@
 #"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
-#under the License. -%>
-<span id="heading"><%= "Current Date: " %></span>
-<span id="date"><%= @date.strftime("%d %B, %Y") %></span>
+#under the License.
+class OnlineMeetingSetting < ActiveRecord::Base
+  belongs_to :online_meeting_room, :foreign_key => :online_meeting_room_id
+  
+end

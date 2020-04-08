@@ -16,7 +16,9 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-<div id="select-employee-department">
+
+<% style = (@current_user.employee?) ? 'display: none' : ''; %>  
+<div id="select-employee-department" style="<%= style %>">
   <%=   render :partial=>"select_employee_department" %>
 </div>
 
@@ -24,10 +26,13 @@
   <div id="to_users"></div>
 </div>
 <div class="extender"></div>
+<div class="label-field-to">
+  <div id="option_list"></div>
+</div>
 <div class="extender"></div>
-<div id="select-student-course">
-  <%=  render :partial=> "select_student_course" %>
+<!--div id="select-student-course">
+  <%#=  render :partial=> "select_student_course" %>
 </div>
 <div class="label-field-to">
   <div id="to_users2"></div>
-</div>
+</div-->

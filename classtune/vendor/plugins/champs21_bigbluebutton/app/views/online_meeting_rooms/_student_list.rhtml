@@ -1,0 +1,77 @@
+<% unless @students.blank? %>
+  <div class="batch_select_box" style="background: #FAFAFA; padding-left: none; padding-bottom: 10px; height: 285px; width: 103%; border: 1px solid #ccc; border-radius: 6px;">
+    <div class="label-field-pair">
+        <div style="display: inline-block; border-bottom: 1px solid #ccc; width: 100%; ">
+            <div style="width: 65%; display: inline-block;">
+              <div class="label-container"><label> <%= t('select_student') %><span class="necessary-field">*</span>:</label></div>
+            </div>
+            <div class="sel-list" style="padding-bottom: 5px; width: 29%; display: inline-block; vertical-align: top; text-align: right; padding-right: 10px; font-size: 14px; padding-top: 14px;">
+              <%= link_to_function t('all'), "$$('input.student_list_options').each(function(checkbox) { checkbox.checked = true; });" %> |
+              <%= link_to_function t('none'), "$$('input.student_list_options').each(function(checkbox) { checkbox.checked = false; });" %>
+            </div>
+        </div>
+        <div style="width: 85%; display: inline-block;">
+        <input type="text" name="batch_search" id="batch_search" class="form-field batch_search" data-search="student_name_srch" data-search-opt="student_list_options"  />
+        </div>
+        <div class="fee_category_scroll" style="">
+          
+          <% @students.each do |student| %>
+
+            <div class="each_batch" style="padding: 5px 0; width: 100%; ">
+              <% checked = true %>
+              <div class="checkbox_inline"><%= check_box_tag "student_list[]", student.user_id, checked, :class=>'batches_box category_select batches_selected student_list_options' %></div> 
+              <div class="checkbox_label" style="width: 90%;"><label id="batch_name_srch_<%= student.user_id%>" class="batch_name_srch student_name_srch" style="width: 100%;"><%= "#{student.full_name}" %></label></div>
+            </div>
+
+          <% end %>
+        </div>
+        
+    </div>
+  </div>
+  <div style="clear: both; height: 40px;"></div>
+<% end %>
+  <div style="width: 100%;">
+      <b style="width: 100%; border-bottom: 1px solid #ccc; text-align: center; display: block; padding-right: 12%; padding-bottom: 10px; margin-bottom: 10px; font-size: 20px;">Meeting Settings</b>
+      <div class="input-container" style="padding-left: 11px; width: 100%; padding-top: 10px; padding-bottom: 20px; border-bottom: 1px solid #ccc; padding-right: 10%;">
+          <div style="width: 100%; padding: 10px;">
+              <input type="checkbox" name="meeting_settings[]" id ="mute_user" value="mute_user" checked="" style="display: none;" />
+              <i name="meeting_settings" id="meeting_settings_mute_user" class="fa fa-check-square-o meeting_settings" style="font-size: 16px; cursor: pointer; padding-left: 10px;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;">Mute User when they join</span>
+          </div>
+          <div style="width: 100%; padding: 10px;">
+              <input type="checkbox" name="meeting_settings[]" id ="disabled_mic" value="disabled_mic" checked="" style="display: none;" />
+              <i name="meeting_settings" id="meeting_settings_disabled_mic" class="fa fa-check-square-o meeting_settings" style="font-size: 16px; cursor: pointer; padding-left: 10px;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;">Disabled User Microphone</span>
+          </div>
+          <div style="width: 100%; padding: 10px;">
+              <input type="checkbox" name="meeting_settings[]" id ="disabled_webcam" value="disabled_webcam" checked="" style="display: none;" />
+              <i name="meeting_settings" id="meeting_settings_disabled_webcam" class="fa fa-check-square-o meeting_settings" style="font-size: 16px; cursor: pointer; padding-left: 10px;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;">Disabled User Webcam</span>
+          </div>
+          <div style="width: 100%; padding: 10px;">
+              <input type="checkbox" name="meeting_settings[]" id ="private_chat" value="private_chat" checked="" style="display: none;" />
+              <i name="meeting_settings" id="meeting_settings_disabled_private_chat" class="fa fa-check-square-o meeting_settings" style="font-size: 16px; cursor: pointer; padding-left: 10px;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;">Disabled Private Chat</span>
+          </div>
+          <div style="width: 100%; padding: 10px;">
+              <input type="checkbox" name="meeting_settings[]" id ="recording" value="recording" checked="" style="display: none;" />
+              <i name="meeting_settings" id="meeting_settings_recording" class="fa fa-check-square-o meeting_settings" style="font-size: 16px; cursor: pointer; padding-left: 10px;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;">Enabled Recording</span>
+          </div>
+    </div>
+    <div class="label-field-pair" style="padding-bottom: 10px; padding-top: 20px;">
+       <div class="label-container"><label for="name" id="label-member1"><%= "Moderator Password: " %>  </label></div>
+       <div class="input-container"><input type="text" id="moderator_password" name="moderator_password" value="" ></div>
+    </div>
+    <div class="label-field-pair" style="padding-bottom: 10px;">
+       <div class="label-container"><label for="name" id="label-member1"><%= "Attendee Password: " %>  </label></div>
+       <div class="input-container"><input type="text" id="attendee_password" name="attendee_password" value="" ></div>
+    </div>
+    <div class="label-field-pair" style="padding-bottom: 10px;">
+       <div class="label-container"><label for="name" id="label-member1"><%= "Meeting Duration: " %>  </label></div>
+       <div class="input-container">
+           <select id="meeting_duration" name="meeting_duration">
+              <option value="0">Unlimited</option>
+              <option value="30">30 Minutes</option>
+              <option value="45">45 Minutes</option>
+              <option value="60">1 Hour</option>
+              <option value="90">1 Hour 30 Minutes</option>
+           </select>
+       </div>
+    </div>
+  </div>

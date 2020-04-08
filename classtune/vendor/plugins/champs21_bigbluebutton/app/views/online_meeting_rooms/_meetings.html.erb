@@ -16,42 +16,115 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-<% if @rooms.present? %>
+
   <div id="flash_box"></div>
   <% unless flash[:notices].nil? %>
     <p class="flash-msg"> <%= flash[:notices] %> </p>
   <% end %>
-  <table id="listing" width="100%">
+  <div class="table_header_title" style="display: inline-block; width: 40%;"><h6>Live Classes</h6></div>
+  <div class="search-box" style="width: 59%; display: inline-block; float: right;">
+      <% remote_form_for :meetings ,:url=>{:action=>'view_meetings_by_date'},:loading => "$('loading').show();", :loaded => "$('loading').hide();" do |f| %>
+        <div class="label-field-pair" style="display: inline-block; width: 100%;">
+          <div class="label-container" style='text-align: right; padding-right: 51px; padding-top: 8px;'><label for="name" id="label-member1"><%= t('select_date') %>: </label></div>
+          <div class="input-container calendar-input" style='width: 44%;'><%= calendar_date_select_tag 'meetings[search_date]', I18n.l(@date,:format=>"%d %b %Y"), :time => false,:readonly=>true,:popup=>"force"  %></div>
+          <div class="go" style="display: inline-block;">
+              <button type="submit" class="submit_button go_button" id='search_meeting' id='search_meeting'><i class="fa fa-search" aria-hidden="true"></i></button>
+          </div>  
+      </div>
+      
+      <% end %>
+    </div>
+  <table class="table table-striped table-bordered" id="example" style="width: 98%;" cellspacing="0" cellpadding="0" border="0">
     <tr class="tr-head">
-      <td><%= t('name') %></td>
-      <td><%= t('created_by') %></td>
-      <td><%= t('scheduled_on') %></td>
-      <td><%= t('actions') %></td>
+      <td style="background: #A4ACAE;"><%= "Meeting Name" %></td>
+      <td style="background: #A4ACAE;"><%= t('created_by') %></td>
+      <td style="text-align: center; background: #A4ACAE;"><%= "Meeting Date" %></td>
+      <td style="text-align: center; background: #A4ACAE;"><%= "Start Time" %></td>
+      <td colspan="2" style="text-align: center; background: #A4ACAE;"><%= t('actions') %></td>
     </tr>
-    <% @rooms.each do |room| %>
-      <tr class="tr-<%= cycle('odd', 'even') %>">
-        <td class="col-1">
-          <%= link_to room.name, online_meeting_room_path(:id=>room) %>
-        </td>
-        <td class="col-2">
-          <%= room.user.full_name %>
-        </td>
-        <td class="col-4">
-          <%= room.scheduled_on %>
-        </td>
-        <td class="col-2">
-          <small>
+    <% if @rooms.present? %>
+      <% @rooms.each do |room| %>
+        <tr class="tr-<%= cycle('odd', 'even') %>">
+          <td class="col-1">
+              <span style="display: inline-block; padding-top: 10px;"><img src="images/classlive/icon.png" width="24px"></span>
+              <span style="display: inline-block; padding-left: 4px; font-size: 16px; vertical-align: top; padding-top: 7px;"><%= link_to room.name, online_meeting_room_path(:id=>room) %></span>
+          </td>
+          <td class="col-2">
+            <%= room.user.full_name %>
+            <%= "<br /><small>Employee Id: " + room.user.employee_record.employee_number.to_s + "</small>" if room.user.employee? %>
+          </td>
+          <td class="col-4" style="text-align: center;">
+            <%= room.scheduled_on.strftime("%d-%m-%Y") %>
+          </td>
+          <td class="col-4" style="text-align: center;">
+            <%= room.scheduled_on.strftime("%I:%M %p") %>
+          </td>
+          <td class="col-2 table_join" colspan="<%= (room.user_id == @current_user.id) ? '1' : '2' %>" style="text-align: center;">
             <%= link_to "#{t('join')}", join_online_meeting_room_path(:id=>room) %>
-            <% if room.user_id == @current_user.id %>
-              | <%= link_to "#{t('end')}", end_meeting_online_meeting_room_path(:id=>room), :confirm => "#{t('delete_confirm_msg')}" %> |
-              <%= link_to "#{t('edit_text')}", edit_online_meeting_room_path(:id=>room)  %> |
-              <%= link_to("#{t('delete_text')}", online_meeting_room_path(:id=>room), :method => 'delete', :confirm => "#{t('delete_confirm_msg')}") %>
-            <% end %>
-          </small>
-        </td>
-      </tr>
+          </td>
+          <% if room.user_id == @current_user.id %>
+          <td class="col-2" style="text-align: center;">
+            <small class="links">
+              <% if room.user_id == @current_user.id %>
+                <%= link_to "<b><i class=\"fa fa-stop-circle-o\"></i>&nbsp; End Meeting</b>", end_meeting_online_meeting_room_path(:id=>room), :confirm => "#{t('delete_confirm_msg')}" %> &nbsp;&nbsp;&nbsp;&nbsp;
+                <%= link_to("<b style=\"color: #FE5454;\"><i class=\"fa fa-trash\"></i>&nbsp; Delete</b>", online_meeting_room_path(:id=>room), :method => 'delete', :confirm => "#{t('delete_confirm_msg')}") %>
+              <% end %>
+            </small>
+          </td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% else %>
+        <td colspan="6" style="text-align: center;"><%= t('no_meeting_for_selected_date') %></td>
     <% end %>
   </table>
-<% else %>
-    <div class="flash"><%= t('no_meeting_for_selected_date') %></div>
-<% end %>
+  <div style="clear: both; height: 30px;"></div>
+  <% if @current_user.admin? or @current_user.employee? %>
+  <div class="table_header_title"><h6>Previous Classes</h6></div>
+  <table class="table table-striped table-bordered" id="example" style="width: 98%;" cellspacing="0" cellpadding="0" border="0">
+    <tr class="tr-head">
+      <td style="background: #A4ACAE;"><%= "Meeting Name" %></td>
+      <td style="background: #A4ACAE;"><%= t('created_by') %></td>
+      <td style="text-align: center; background: #A4ACAE;"><%= "Meeting Date" %></td>
+      <td style="text-align: center; background: #A4ACAE;"><%= "Start Time" %></td>
+      <td colspan="2" style="text-align: center; background: #A4ACAE;"><%= t('actions') %></td>
+    </tr>
+    <% if @inactive_rooms.present? %>
+      <% @inactive_rooms.each do |room| %>
+        <tr class="tr-<%= cycle('odd', 'even') %>">
+          <td class="col-1">
+              <span style="display: inline-block; padding-top: 10px;"><img src="images/classlive/icon.png" width="24px"></span>
+              <span style="display: inline-block; padding-left: 4px; font-size: 16px; vertical-align: top; padding-top: 7px;"><%= link_to room.name, online_meeting_room_path(:id=>room) %></span>
+          </td>
+          <td class="col-2">
+            <%= room.user.full_name %>
+            <%= "<br /><small>Employee Id: " + room.user.employee_record.employee_number.to_s + "</small>" if room.user.employee? %>
+          </td>
+          <td class="col-4" style="text-align: center;">
+            <%= room.scheduled_on.strftime("%d-%m-%Y") %>
+          </td>
+          <td class="col-4" style="text-align: center;">
+            <%= room.scheduled_on.strftime("%I:%M %p") %>
+          </td>
+          <td class="col-2 table_join" colspan="<%= (room.user_id == @current_user.id) ? '1' : '2' %>" style="text-align: center;">
+            <%= link_to "#{t('join')}", join_online_meeting_room_path(:id=>room) %>
+          </td>
+          <% if room.user_id == @current_user.id %>
+          <td class="col-2" style="text-align: center;">
+            <small class="links">
+              <% if room.user_id == @current_user.id %>
+                <%= link_to "<b><i class=\"fa fa-check\"></i>&nbsp; Mark Active</b>", mark_active_meeting_online_meeting_room_path(:id=>room), :confirm => "#{t('delete_confirm_msg')}" %> &nbsp;&nbsp;&nbsp;&nbsp;
+                <%= link_to("<b style=\"color: #FE5454;\"><i class=\"fa fa-trash\"></i>&nbsp; Delete</b>", online_meeting_room_path(:id=>room), :method => 'delete', :confirm => "#{t('delete_confirm_msg')}") %>
+              <% end %>
+            </small>
+          </td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% else %>
+        <td colspan="6" style="text-align: center;"><%= t('no_meeting_for_selected_date') %></td>
+    <% end %>
+    <% end %>
+</table>
+  
+

@@ -16,6 +16,13 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/stylesheets/select2.min.css">
+<%= javascript_include_tag 'select2.full.min.js' %>
+
 <div id="content-header">
 <%= show_header_icon %>
   <h1><%= t('online_meetings') %></h1>
@@ -29,4 +36,133 @@
   <%= render :partial => "form" %>
 </div>
 
-
+<script>
+  j(document).ready(function(){
+      j(document).on("keyup", ".batch_search", function () {
+          var srch_val = this.value;
+          var search_data = j(this).data('search');
+          var search_data_option = j(this).data('search-opt');
+          j('.' + search_data).each(function(){
+              var batchid = this.id.replace("batch_name_srch_","");
+              var val = j(this).html();
+              if ( val.toLowerCase().indexOf(srch_val.toLowerCase()) == -1  )
+              {
+                  j('.' + search_data_option).each(function(){
+                      if ( this.value == batchid )
+                      {
+                         j(this).removeAttr('checked');
+                         return ;
+                      }
+                  });
+                  j(this).parent().parent().hide();
+              }
+              else
+              {
+                  j('.' + search_data_option).each(function(){
+                      if ( this.value == batchid )
+                      {
+                         if ( j(this).prop('checked') == false && j(this).parent().parent().css('display') != 'block')
+                         {
+                            if ( j('#none_click').val() == 1 )
+                            {
+                               j(this).removeAttr('checked');
+                            }
+                            else
+                            {
+                               j(this).prop('checked', true);
+                            }
+                         }
+                         return ;
+                      }
+                  });
+                  j(this).parent().parent().show();
+              }
+          });
+      });
+      
+      j(document).off('click','.meeting_options').on("click",".meeting_options",function(){
+            var id = this.id.replace('meeting_options_','');
+            if (j(this).hasClass("fa-check-square-o"))
+            {
+                var cnt = 0;
+                j(".meeting_options").each(function(){
+                    if (j(this).hasClass("fa-check-square-o"))
+                    {
+                        cnt++;
+                    }
+                });
+                if ( cnt == 0 )
+                {
+                  return ;
+                }
+            }
+            else
+            {
+                j("#student_list").html('');
+                j(".meeting_options").each(function(){
+                    var mid = this.id.replace('meeting_options_','');
+                    if (j(this).hasClass("fa-check-square-o"))
+                    {
+                        j(this).addClass("fa-square-o");
+                        j(this).removeClass("fa-check-square-o");
+                    }
+                    j("#" + mid + "_list").html('');
+                });
+                j("#loader_option").css('display','inline-block');
+                j(this).removeClass("fa-square-o");
+                j(this).addClass("fa-check-square-o");
+                new Ajax.Request('/online_meeting_rooms/get_' + id + "s", 
+                    {
+                      asynchronous:true, 
+                      evalScripts:true, 
+                      parameters:'employee_id='+j("#select_user_employee").val()
+                    }
+               );
+            }
+        });
+        
+      j(document).off('click','.meeting_settings').on("click",".meeting_settings",function(){
+            var id = this.id.replace('meeting_settings_','');
+            if (j(this).hasClass("fa-check-square-o"))
+            {
+                j(this).addClass("fa-square-o");
+                j(this).removeClass("fa-check-square-o");
+                j("#" + id).prop('checked', false);
+            }
+            else
+            {
+                j(this).removeClass("fa-square-o");
+                j(this).addClass("fa-check-square-o");
+                j("#" + id).prop('checked', true);
+            }
+      });
+        
+      j(document).off('click','.update_attendee').on("click",".update_attendee",function(){
+            var id = this.id.replace('update_attendee_','');
+            j("#student_list").html('');
+            j("#loader_student").css('display','inline-block');
+            var target_id = "";
+            j('.option_selected').each(function(){
+                if ( j(this).prop('checked') )
+                {
+                    var batch_id = j(this).data('batch_id');
+                    target_id += j(this).val() + '---' + batch_id + ",";
+                }
+            });
+            target_id = target_id.substr(0, target_id.length - 1);
+            new Ajax.Request('/online_meeting_rooms/' + id + "_students_list", 
+                {
+                  asynchronous:true, 
+                  evalScripts:true, 
+                  parameters: id + '_id='+target_id
+                }
+           );
+          return false;
+      });
+  });
+</script>
+<style>
+    .select2-container{
+        width: 114% !important;
+    }
+</style>

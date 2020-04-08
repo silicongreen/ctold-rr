@@ -153,16 +153,27 @@ module BigBlueButton
     #
     def create_meeting(meeting_name, meeting_id, moderator_password = nil, attendee_password = nil,
         welcome_message = nil, dial_number = nil, logout_url = nil,
-        max_participants = nil, voice_bridge = nil)
+        max_participants = nil, voice_bridge = nil, setting_for_meetings = nil)
 
       params = { :name => meeting_name, :meetingID => meeting_id,
         :moderatorPW => moderator_password, :attendeePW => attendee_password,
         :welcome => welcome_message, :dialNumber => dial_number,
         :logoutURL => logout_url, :maxParticpants => max_participants,
         :voiceBridge => voice_bridge }
-
+      
+      unless setting_for_meetings.blank?
+        setting_for_meetings.each do |h|
+          keys = h.keys
+          keys.each do |k|
+            params[k.to_sym] = h[k]
+          end
+        end
+      end
+      #abort(params.inspect)
+      #apiurl = get_url(:create, params)
+      #abort(apiurl.inspect)
       response = send_api_request(:create, params)
-
+      #abort(response.inspect)
       response[:meetingID] = response[:meetingID].to_s
       response[:moderatorPW] = response[:moderatorPW].to_s
       response[:attendeePW] = response[:attendeePW].to_s
@@ -375,10 +386,20 @@ module BigBlueButton
     end
 
     def send_api_request(method, data = {})
-      url = get_url(method, data)
+      apiurl = get_url(method, data)
+      #abort(apiurl.inspect)
       begin
-        puts "BigBlueButtonAPI: URL request = #{url}" if @debug
-        @http_response = Net::HTTP.get_response(URI.parse(url))
+        puts "BigBlueButtonAPI: URL request = #{apiurl}" if @debug
+        url = URI.parse(apiurl)
+        http = Net::HTTP.new(url.host, url.port)
+        http.use_ssl = (url.scheme == 'https')
+        #abort(url.path.inspect)
+        request = Net::HTTP::Get.new(apiurl)
+        @http_response = http.request(request)
+      
+        #response = http.get(url.request_uri)
+        #@http_response = Net::HTTP.get_response()
+        #abort(response.inspect)
         puts "BigBlueButtonAPI: URL response = #{@http_response.body}" if @debug
       rescue Exception => socketerror
         raise BigBlueButtonException.new("Connection error. Your URL is probably incorrect: \"#{@url}\"")
@@ -390,7 +411,8 @@ module BigBlueButton
 
       # 'Hashify' the XML
       hash = Hash.from_xml @http_response.body
-
+      #abort(apiurl.inspect)
+#abort(hash.inspect)
       # simple validation of the xml body
       unless hash.has_key?(:response) and hash[:response].has_key?(:returncode)
         raise BigBlueButtonException.new("Invalid response body. Is the API URL correct? \"#{@url}\", version #{@version}")

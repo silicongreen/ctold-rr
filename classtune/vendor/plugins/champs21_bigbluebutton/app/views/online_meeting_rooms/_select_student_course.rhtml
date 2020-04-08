@@ -1,12 +1,13 @@
 <% unless @batches.blank? %>
   <div class="label-field-pair">
+      <div class="label-container">
     <label for="course" id="label-member5"><%= t('select_course') %>
       <%= image_tag("loader.gif",
         :align => "absmiddle",
         :border => 0,
         :id => "loader1",
-        :style =>"display: none;" ) %></label>
-    <div class="text-input-bg">
+        :style =>"display: none;" ) %></label></div>  
+    <div class="input-container">
       <% if params[:select_batch] and params[:select_batch][:batch] and params[:select_batch][:batch].present? %>
        <%= select :select_batch, :batch, @batches.map { |s| [s.full_name, s.id] },
         {:selected => params[:select_batch][:batch].to_i},

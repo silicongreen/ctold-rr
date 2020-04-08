@@ -93,20 +93,22 @@
   <div id="recipient-list">
     <%= render :partial=>"recipient_list" %>
   </div>
-  <div id="admission1_form">
-    <div id="necessary-field-notification"><%= t('legend1') %> <span class="necessary-field">*</span> <%= t('legend2') %></div>
-    <div id="form">
-      <div class="label-field-pair">
-        <label for="name" id="label-member1"><%= t('name') %> <span class="necessary-field">*</span> </label>
-        <div class="text-input-bg"><%= f.text_field :name %></div>
+  <h1 style="margin: auto;">Create New Meeting</h1>
+  <hr style="border: 1px solid #ccc;" />
+  <div id="admission1_form" style="padding-top: 10px;">
+    <div id="necessary-field-notification" style="padding-bottom: 10px; font-size: 12px;"><%= t('legend1') %> <span class="necessary-field">*</span> <%= t('legend2') %></div>
+    <div id="form" style="width:45%; border-right: 1px solid #ddd; padding-right: 6%; display: inline-block;">
+      <b style="width: 100%; border-bottom: 1px solid #ccc; text-align: center; display: block; padding-right: 12%; padding-bottom: 10px; margin-bottom: 15px; font-size: 20px;">Moderator Info</b>  
+      <div class="label-field-pair" style="padding-bottom: 10px;">
+          <div class="label-container"><label for="name" id="label-member1"><%= t('name') %> <span class="necessary-field">*</span> </label></div>
+          <div class="input-container"><%= f.text_field :name %></div>
       </div>
       <% if OnlineMeetingServer.count == 1 %>
         <%= f.hidden_field :server_id,:value=>OnlineMeetingServer.first.id%>
       <% else %>
         <div class="label-field-pair">
-          <label for="department" id="label-member4"><%= t('server') %>
-          </label>
-          <div class="text-input-bg">
+          <div class="label-container"><label for="department" id="label-member4"><%= t('server') %></label></div>
+          <div class="input-container">
             <%= f.select :server_id, @servers.map { |s| [s.name, s.id] }%>
           </div>
         </div>
@@ -121,11 +123,25 @@
 
       <div class="extender"></div>
       <div class="label-field-pair">
-        <label for="name" id="label-member1"><%= t('scheduled_on') %><span class="necessary-field">*</span> </label>
-        <div class="text-input-bg"><%= calendar_date_select_tag 'online_meeting_room[scheduled_on]',(@room.scheduled_on.blank? ? I18n.l(Time.now,:format=>"%Y-%m-%d %H:%M") : I18n.l(@room.scheduled_on,:format=>"%Y-%m-%d %H:%M")  ),:time=>true,:readonly=>true,:popup=>"force"%></div>
+          <div class="label-container"><label for="name" id="label-member1"><%= t('scheduled_on') %><span class="necessary-field">*</span> </label></div>
+        <div class="input-container calendar-input"><%= calendar_date_select_tag 'online_meeting_room[scheduled_on]',(@room.scheduled_on.blank? ? I18n.l(Time.now,:format=>"%Y-%m-%d %H:%M") : I18n.l(@room.scheduled_on,:format=>"%Y-%m-%d %H:%M")  ),:time=>true,:readonly=>true,:popup=>"force"%></div>
       </div>
 
       <%= f.hidden_field :host_url, :value=>"#{request.protocol}#{request.host_with_port}" %>
+    </div>
+    <div id="form" style="width:45%;  display: inline-block;">
+      <b style="width: 100%; border-bottom: 1px solid #ccc; text-align: center; display: block; padding-right: 12%; padding-bottom: 10px; margin-bottom: 15px; font-size: 20px;">Attendee Info
+      <%= image_tag("loader.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader_student",
+          :style =>"display: none;" ) %>  </b>  
+      <div class="extender"></div>
+      <div class="label-field-to"><div id="student_list"></div></div>
+    </div>
+    <div style="clear: both; height: 10px;"></div>
+    <div class="submit-btn" id="submit-btn" style="padding-bottom: 10px; text-align: center; border-top: 1px solid #ccc; margin-top: 20px; display: none;">
+        <%= submit_tag "", :value => "#{t('save')}", :class => "submit_button", :disable_with => "#{t('please_wait')}" %>
     </div>
   </div>
   <% unless params[:send_to].nil? %>
@@ -137,3 +153,53 @@
     </script>
   <% end %>
 <% end %>
+
+<style>
+    .submit_button{
+      margin-left: 0;
+      width: 12% !important;
+    }
+    .label-field-pair .label-container {
+        width: 39% !important;
+    }
+
+    .label-field-pair select{
+        width: 110% !important;
+    }
+
+    .batch_select_box{
+        margin: 20px;
+    }
+
+    .fee_category1_scroll {
+        margin-right: 0px;
+        margin-left: 0px;
+        margin-top: 0px;
+    }
+
+    #batchs {
+        float: right;
+        height: 243px;
+        width: 407px;
+    }
+    #batchs .batch_select_box{
+        width: 390px;
+        height: 246px;
+    }
+
+    #batchs .batch_select_box .label-field-pair{
+        width: 389px !important;
+    }
+    #category_generated_table{
+        margin-top: 50px;
+    }
+    .select2-selection{
+      text-align: left;
+    }
+    .label-field-pair {
+      width: 100%;
+    }
+</style>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/stylesheets/select2.min.css">
+<link rel="stylesheet" href="/stylesheets/select2-finance.css">

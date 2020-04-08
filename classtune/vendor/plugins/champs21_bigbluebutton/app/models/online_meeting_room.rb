@@ -46,12 +46,12 @@ class OnlineMeetingRoom < ActiveRecord::Base
   # Passwords are 16 character strings
   # See http://groups.google.com/group/OnlineMeeting-dev/browse_thread/thread/9be5aae1648bcab?pli=1
 
-  validates_length_of :attendee_password,:maximum => 40
-  validates_length_of :moderator_password,:maximum => 40
+  #validates_length_of :attendee_password,:maximum => 40
+  #validates_length_of :moderator_password,:maximum => 40
   validates_length_of :name,:maximum => 12
 
-  validates_presence_of :attendee_password,:if => :private?
-  validates_presence_of :moderator_password,:if => :private?
+  #validates_presence_of :attendee_password,:if => :private?
+  #validates_presence_of :moderator_password,:if => :private?
 
 
   attr_accessible :name, :meetingid, :attendee_password, :moderator_password,
@@ -76,9 +76,19 @@ class OnlineMeetingRoom < ActiveRecord::Base
         :conditions=>"(`online_meeting_members`.member_id = #{user.id} OR `online_meeting_rooms`.user_id=#{user.id}) and `online_meeting_rooms`.is_active = 1" + \
         " AND (scheduled_on >= '#{date.strftime("%Y-%m-%d 00:00:00")}' and scheduled_on <= '#{date.strftime("%Y-%m-%d 23:59:59")}')" )
   end
+  
+  def self.rooms_for_user_inactive(user,date)
+    self.find(:all,:group=>"`online_meeting_rooms`.id DESC",:joins=>:online_meeting_members,\
+        :conditions=>"(`online_meeting_members`.member_id = #{user.id} OR `online_meeting_rooms`.user_id=#{user.id}) and `online_meeting_rooms`.is_active = 0" + \
+        " AND (scheduled_on >= '#{date.strftime("%Y-%m-%d 00:00:00")}' and scheduled_on <= '#{date.strftime("%Y-%m-%d 23:59:59")}')" )
+  end
 
   def make_inactive
     self.update_attributes(:is_active=>false)
+  end
+  
+  def make_active
+    self.update_attributes(:is_active=>true)
   end
   
 
@@ -190,7 +200,9 @@ class OnlineMeetingRoom < ActiveRecord::Base
   def user_role(current_user)
     role = nil
     if self.user
-      if current_user.admin? or current_user.id==self.user.id
+      if current_user.admin? or current_user.id==self.moderator_id.id
+          role = :moderator
+      elsif current_user.admin? or current_user.id==self.user.id
           role = :moderator
       else
         if self.members.collect(&:id).include?(current_user.id)
@@ -261,25 +273,65 @@ class OnlineMeetingRoom < ActiveRecord::Base
   end
 
   def do_create_meeting
+    setting_for_meetings = []
+    settings = ["mute_user", "disabled_mic", "disabled_webcam", "private_chat", "recording","duration"]
+    settings.each do |ss|
+      online_meeting_settings = OnlineMeetingSetting.find(:first, :conditions => "online_meeting_room_id = '#{self.id}' and config_name = '#{ss}'")
+      unless online_meeting_settings.blank?
+        if online_meeting_settings.config_name == "mute_user" and online_meeting_settings.config_value.to_i == 1
+          tmp = {}
+          tmp['muteOnStart'] = true
+          setting_for_meetings << tmp
+        elsif online_meeting_settings.config_name == "disabled_mic" and online_meeting_settings.config_value.to_i == 1
+          tmp = {}
+          tmp['allowModsToUnmuteUsers'] = true
+          tmp['lockSettingsDisableMic'] = true
+          setting_for_meetings << tmp
+        elsif online_meeting_settings.config_name == "disabled_webcam" and online_meeting_settings.config_value.to_i == 1
+          tmp = {}
+          tmp['lockSettingsDisableCam'] = true
+          setting_for_meetings << tmp
+        elsif online_meeting_settings.config_name == "private_chat" and online_meeting_settings.config_value.to_i == 1
+          tmp = {}
+          tmp['lockSettingsDisablePrivateChat'] = true
+          setting_for_meetings << tmp
+        elsif online_meeting_settings.config_name == "recording" and online_meeting_settings.config_value.to_i == 1
+          tmp = {}
+          tmp['record'] = true
+          setting_for_meetings << tmp
+        elsif online_meeting_settings.config_name == "recording" and online_meeting_settings.config_value.to_i == 0
+          tmp = {}
+          tmp['record'] = false
+          setting_for_meetings << tmp
+        elsif online_meeting_settings.config_name == "duration" and online_meeting_settings.config_value.to_i > 0
+          tmp = {}
+          tmp['duration'] = online_meeting_settings.config_value
+          setting_for_meetings << tmp
+        end
+      end
+    end
+    logout_url = "#{self.logout_url}" + "/logout_from_meeting/" + self.id.to_s
+    #abort(logout_url.inspect)
+    #abort(setting_for_meetings.inspect)
     self.server.api.create_meeting(self.name, self.meetingid, self.moderator_password,
       self.attendee_password, self.welcome_msg, self.dial_number,
-      self.logout_url, self.max_participants, self.voice_bridge)
+      logout_url, self.max_participants, self.voice_bridge, setting_for_meetings)
   end
 
   # if :param wasn't set, sets it as :name downcase and parameterized
   def set_defaults
     self.param = self.name.parameterize.downcase unless self.name.nil?
     self.welcome_msg = "#{t('welcome_to')} #{self.name}"
-    self.logout_url = "#{self.host_url}"
+    self.logout_url = "#{self.host_url}/online_meeting_rooms"
     if self.new_record?
       self.is_active = true
       self.randomize_meetingid = true
       self.meetingid = random_meetingid
-      self.attendee_password = "#{self.user_id}-#{self.meetingid[0..10]}"
-      self.moderator_password = "M#{self.user_id}-#{self.meetingid[0..10]}"
-      self.max_participants = 30
+      #self.attendee_password = "#{self.user_id}-#{self.meetingid[0..10]}"
+      #self.moderator_password = "M#{self.user_id}-#{self.meetingid[0..10]}"
+      #self.max_participants = 30
       self.private = true
-      self.voice_bridge = self.meetingid
+      self.voice_bridge = random_voice_bridge
     end
   end
 end

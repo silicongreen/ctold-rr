@@ -174,6 +174,10 @@ employee_id = @current_user.employee_record.id
     <div class="school_feed_box">
       <%= render :partial => "attendance" %>
       <div style="clear:both;height: 20px;"></div>
+      <% bbb_enabled_school = [2]  %>  
+      <% if bbb_enabled_school.include?(MultiSchool.current_school.id)  %>
+      <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#27aa80; color:white;'><span style='text-align:center;width:80%; float:left;'>ClassliveBD</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'online_meeting_rooms', :action => 'index' %>  
+      <% end %>
       <% if @current_user.admin? %>
         <% unless session[:access_token].blank? %>
           <a href="http://dashboard.classtune.com?access_token=<%=session[:access_token]%>&dom=<%=MultiSchool.current_school.code%>&username=<%=@current_user.username%>" ><div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#CFB53B; color:white;'><span style='text-align:center;width:80%; float:left;'>New Dashboard</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div></a>
@@ -238,6 +242,10 @@ employee_id = @current_user.employee_record.id
     <% end %>
 
     <div class="school_feed_box" style="margin-right: 30px;">
+      <% bbb_enabled_school = [2]  %>  
+      <% if bbb_enabled_school.include?(MultiSchool.current_school.id)  %>
+      <%=  link_to "<img src='/images/classlive/classlive_btn.png' style='width:100%'>", :controller => 'online_meeting_rooms', :action => 'index' %><br/><br/>      
+      <% end %>
       
       <%=  link_to "<img src='/images/dashpallete/big_icon/sylabus.png' style='width:100%'>", :controller => 'syllabus', :action => 'classes_view' %><br/><br/>      
       <%=  link_to "<img src='/images/dashpallete/big_icon/calender.png' style='width:100%'>", :controller => 'calendar', :action => 'index' %><br/><br/>      

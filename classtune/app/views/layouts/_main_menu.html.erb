@@ -16,7 +16,7 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-
+<%#= debug Champs21Plugin::AVAILABLE_MODULES.inspect %>
 <% arrow_dir = rtl? ? "◀" : "▶" %>
 <ul id="main-menu">
   <li class="a"><%= link_to t('dashboard_text'), :controller => "user", :action => "dashboard" %></li>
@@ -121,6 +121,7 @@
     </li>
   <% end %>
   <% if @current_user.admin? %>
+    
     <% Champs21Plugin::AVAILABLE_MODULES.each do |mod| %>
       <% unless mod[:top_bar].blank? %>
         <% if can_access_request? "#{mod[:top_bar][:action]}".to_sym,"#{mod[:top_bar][:controller]}".to_sym %>

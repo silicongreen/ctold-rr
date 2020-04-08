@@ -89,7 +89,7 @@ class OnlineMeetingRoomsController < ApplicationController
       else
         @room.max_participants = 30
       end
-      
+      abort('here')
       respond_to do |format|
         if @room.save
           #room_tmp = OnlineMeetingRoom.find(@room.id)

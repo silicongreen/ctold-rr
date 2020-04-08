@@ -89,7 +89,7 @@ class OnlineMeetingRoomsController < ApplicationController
       else
         @room.max_participants = 30
       end
-      abort('here')
+      
       respond_to do |format|
         if @room.save
           #room_tmp = OnlineMeetingRoom.find(@room.id)
@@ -147,6 +147,7 @@ class OnlineMeetingRoomsController < ApplicationController
           }
           format.json { render :json => { :message => message }, :status => :created }
         else
+          abort(@room.errors.inspect)
           @recipients=User.find_all_by_id(params[:recipients].split(","))
           message = t('failed_to_create_online_meeting_room')
           flash[:notice] = message

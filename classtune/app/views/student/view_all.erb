@@ -337,6 +337,14 @@
           jq('#student_' + student_id).html("<font color='green'>Message Send</font>");
       });
   }
+   function send_sms_student(student_id)
+  {
+      var image_loading = jq('#image_loading').html()
+      jq('#student_' + student_id).html(image_loading);
+      jq.get("/student/send_sms_username_password/" + student_id+"?send_to=2", function (data) {
+          jq('#student_' + student_id).html("<font color='green'>Message Send</font>");
+      });
+  }
   jq(document).ready(function () {
       jq('.js-example-basic-single').select2();
       var value = jq("#class_name").val();

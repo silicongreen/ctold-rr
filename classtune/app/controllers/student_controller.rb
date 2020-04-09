@@ -1109,6 +1109,7 @@ class StudentController < ApplicationController
       admission_date = student.admission_date 
       p_image = "<img src='#{@profile_image}' width='80' />"
       send_sms = "<a href='javascript:void(0)' id='student_"+student.id.to_s+"' onClick='send_sms("+student.id.to_s+")'>Send</a>"
+      send_sms = send_sms+"&nbsp;&nbsp;|&nbsp;&nbsp;<a href='javascript:void(0)' id='student_"+student.id.to_s+"' onClick='send_sms_student("+student.id.to_s+")'>Send Student</a>"
       send_sms = send_sms+"&nbsp;&nbsp;|&nbsp;&nbsp;<a href='/student/edit/"+student.id.to_s+"' target='_blank' >Edit</a>"
       std = {:p_image=>p_image,:admission_no=>student.admission_no,:roll_no=>student.class_roll_no,:password=>password,:sms_number=>student.sms_number,:student_name=>"<a href='/student/profile/"+student.id.to_s+"'>"+student.full_name+"</a>",:admission_date=>admission_date,:religion=>religion,:category=>std_category,:blood_group=>blood_group,:class=>student.batch.course.course_name,:batch=>batch,:section=>student.batch.course.section_name,:session=>student.batch.course.session,:version=>version,:group=>student.batch.course.group,:send_sms=>send_sms}
       data[k] = std
@@ -1124,6 +1125,7 @@ class StudentController < ApplicationController
   
   def send_sms_username_password
     @student = Student.find(params[:id])
+    send_to = params[:send_to]
     student_ids = []
     student_ids << @student.id
     message = ""
@@ -1132,7 +1134,9 @@ class StudentController < ApplicationController
       message = sms_text_config['upass']
     end
     download_opt = 0
-    sent_to = 3
+    if send_to.blank?
+      sent_to = 3
+    end
     unless message.blank?
       send_sms_student(student_ids,message,sent_to)
     end

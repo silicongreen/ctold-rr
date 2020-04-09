@@ -82,9 +82,7 @@
                 <% if Date.today <= Date.parse(h['duedate'].to_s) %>
 
                   <% if @assignment_answers.empty? %>
-                    <div class="answer" id="done_<%= h['id'] %>" style="float:left; width:100%;">
-                      <%= link_to_remote "Done" , :url => {:controller => 'assignment_answers', :action => "done", :assignment_id => h['id'] } , :update=> 'done_'+h['id'].to_s, :html => { :class  => "user_button",:style=>"margin-left:0px;width:85%;" }%>
-                    </div>
+                    
                   <%  else %>
                     <div class="answer" style="float:left; width:100%;">
                       <% unless @assignment_answers.empty? %>

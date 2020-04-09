@@ -1,4 +1,4 @@
-lo<?php
+<?php
 /**
  * Twenty Sixteen functions and definitions
  *

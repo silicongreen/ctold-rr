@@ -1142,7 +1142,7 @@
       <% if MultiSchool.current_school.id == 352 %>
       <% has_dues = false %>
       <% end %>
-      
+      <% has_dues = false %>
       <tr class="tr-blank"></tr>
       <tr class="tr-blank"></tr>
       <tr class="tr-blank"></tr>
@@ -1177,6 +1177,7 @@
         <% #has_dues = true %>
         <% end %>
       <% end %>
+      <% has_dues = false %>
       <% if has_dues == false %>
         <% if total_fees > 0 and found and under_maintenance == false %>
             <tr>

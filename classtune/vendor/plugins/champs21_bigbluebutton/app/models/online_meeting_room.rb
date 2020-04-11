@@ -92,13 +92,7 @@ class OnlineMeetingRoom < ActiveRecord::Base
   end
   
   def fetch_meeting_recordings
-    online_random_meeting_name_tmp = OnlineRandomMeetingName.find(:all, :conditions => "online_meeting_room_id = #{self.id}")
-    unless online_random_meeting_name_tmp.blank?
-      online_random_meeting_names = online_random_meeting_name_tmp.map(&:random_meeting_name).join(",")
-      response = self.server.api.get_meeting_recordings(online_random_meeting_names)
-    else  
-      response = self.server.api.get_meeting_recordings(self.meetingid)
-    end
+    response = self.server.api.get_meeting_recordings(self.meetingid)
     
 
 #    @participant_count = response[:participantCount]
@@ -181,7 +175,7 @@ class OnlineMeetingRoom < ActiveRecord::Base
 
       # create a new random meetingid everytime create fails with "duplicateWarning"
     else
-      self.meetingid = random_meetingid
+      #self.meetingid = random_meetingid
 
       count = 0
       try_again = true

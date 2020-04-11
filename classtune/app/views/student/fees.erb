@@ -397,7 +397,9 @@
                         <% if MultiSchool.current_school.id != 352 %>  
                             <% if bal.to_f > 0 %>
                             <%= link_to "Print Receipt", {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>d.id}, :class=>"details_button details_button_color" %>
+                            <% unless combine_fees_enabled %>
                             <%= link_to "Pay Fees", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"details_button details_button_color" %>
+                            <% end %>
                             <% else %>
                             <%= link_to "Details", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"details_button details_button_color", :id => "fee_link_" + Base64.encode64(@student.id.to_s + "-" + d.id.to_s).reverse + '===' + "" %>
                             <% end %>

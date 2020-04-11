@@ -632,7 +632,7 @@ class OnlineMeetingRoomsController < ApplicationController
     @room = OnlineMeetingRoom.find(params[:id])
 
     @meeting_recordings = @room.fetch_meeting_recordings
-    abort(@meeting_recordings)
+    #abort(@meeting_recordings[:recordings][:recording].length.inspect)
   end
 
   def end_meeting

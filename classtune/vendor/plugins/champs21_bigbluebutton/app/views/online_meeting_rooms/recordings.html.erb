@@ -1,0 +1,78 @@
+<%-#
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('online_meetings') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= "Recordings" %></div>
+</div>
+<div id="page-yield">
+    <img src="images/classlive/Group 3467.png" width="100%">
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+  <div class="box">
+    <div id="event-table">
+      <%= render :partial=>"recordings" %>
+    </div>
+    <div class="extender"></div>
+  </div>
+
+</div>
+<style>
+    .go_button{
+      height: 34px !important;
+      margin-left: 39px !important;
+      margin-top: 5px !important;
+    }
+    .schedule {
+      font-size: 13px;
+      border: 2px solid #29363B;
+      background-color: #29363B;
+      padding: 6px 9px;
+      color: #fff;
+      border-radius: 6px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      cursor: pointer;
+  }
+  .table_join a {
+      border: none;
+      background: #1AAD9E;
+      color: #fff;
+      font-size: 12px;
+      padding: 4px 17px;
+      border-radius: 9px;
+      text-transform: capitalize;
+      margin-right: -6px;
+      margin-left: -8px;
+  }
+  .links a{
+      text-decoration: none;
+  }
+  .links a:hover{
+      text-decoration: none;
+  }
+  .table_header_title h6 {
+      font-size: 22px;
+      font-weight: 500;
+      color: #29363B;
+      margin: 12px 1px;
+  }
+</style>

@@ -1119,9 +1119,9 @@
                         <% @fees_collections.reverse.each do |fee| %>
                           <% fee_id = fee.to_i %>
                           <% date_id = @date[fee_id].id %>
-                        <% end %>
+                        <% end %> 
                         <%= link_to "► #{t('print_receipt')}", 
-                          {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>date_id},:target => '_blank', :class=> 'user_button' %>
+                          {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>date_id},:target => '_blank', :class=> 'user_button_new' %>
                       <% else %>
                           <%= link_to "â–º #{t('print_receipt')}",
                             {:controller => "finance", :action => "student_fee_receipt_pdf_multiple", :id => @student.id, :fees=> @collection_fees, :multiple => true},:target => '_blank', :class=> 'user_button_new' %>

@@ -19,6 +19,8 @@
 
 <% if MultiSchool.current_school.id == 352 %>
   <%= render  :partial=>"/finance/fee_receipt/sagc/student_fee_receipt_pdf_multiple" %>
+<% elsif MultiSchool.current_school.id == 357 %> 
+  <%= render  :partial=>"/finance/fee_receipt/bncd/student_fee_receipt_pdf_multiple" %>
 <% else %>
   <%= render  :partial=>"/finance/fee_receipt/student_fee_receipt_pdf_multiple" %>
 <% end %>

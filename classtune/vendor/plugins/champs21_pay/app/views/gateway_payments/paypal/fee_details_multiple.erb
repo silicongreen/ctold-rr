@@ -1223,8 +1223,19 @@
                       <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button_multiple', :style=>"display: none;" %>
                   <% end %>
                 <% if MultiSchool.current_school.id != 352 %>    
-                <%= link_to "► #{t('print_receipt')}",
-                  {:controller => "finance", :action => "student_fee_receipt_pdf_multiple", :id => @student.id, :fees=> @collection_fees, :multiple => true},:target => '_blank', :class=> 'user_button' %>
+                      <% if MultiSchool.current_school.id == 357 %> 
+                        <% fee_id = 0 %>
+                        <% date_id = 0 %>
+                        <% @fees_collections.reverse.each do |fee| %>
+                          <% fee_id = fee.to_i %>
+                          <% date_id = @date[fee_id].id %>
+                        <% end %>
+                        <%= link_to "► #{t('print_receipt')}",
+                          {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>date_id},:target => '_blank', :class=> 'user_button' %>
+                      <% else %>
+                      <%= link_to "► #{t('print_receipt')}",
+                        {:controller => "finance", :action => "student_fee_receipt_pdf_multiple", :id => @student.id, :fees=> @collection_fees, :multiple => true},:target => '_blank', :class=> 'user_button' %>
+                      <% end %>  
                 <% end %>  
                 </div></div>  
               </td>

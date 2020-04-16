@@ -1125,8 +1125,8 @@
         });
       </script>
       <% under_maintenance = false %>
-      <% if MultiSchool.current_school.id == 352 %>
-      <% @student_has_due = false %>
+      <% if MultiSchool.current_school.id == 352 or MultiSchool.current_school.id == 312 %>
+      <% @student_has_due = false %> 
       <% end %>
       <% if MultiSchool.current_school.id == 357 and !@current_user.admin? %>
         <% if @student.id != 44129 %>
@@ -1136,7 +1136,7 @@
       <% if @student_has_due == false #and @financefee.batch_id == @student.batch_id %>
         <%#= total_fees.to_s + " DID DID DID" %>
         <% if total_fees > 0 and under_maintenance == false  %>
-            <% @amount_to_pay = precision_label(balance+@fine_amount.to_f) %>
+            <% @amount_to_pay = precision_label(balance+@fine_amount.to_f) %> 
             <% unless combine_fees_enabled %>
             <tr>
               <td colspan="5" style="padding-bottom: 30px;">

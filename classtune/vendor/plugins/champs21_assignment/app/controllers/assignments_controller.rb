@@ -52,6 +52,60 @@ class AssignmentsController < ApplicationController
    
   end
   
+  def download_pdf
+    batch_id = params[:batch_name]
+    student_class_name = params[:student_class_name]
+    student_section = params[:student_section]
+    assignment_publish_date = params[:assignment_publish_date]
+    @assignments = []
+    unless batch_id.nil?
+      batchdata = Batch.find_by_id(batch_id)
+      unless batchdata.blank?
+        batch_name = batchdata.name
+        if student_class_name.blank?
+          if assignment_publish_date.blank?
+            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}'  and is_published=1 ",:order=>"duedate desc",:include=>[{:subject=>[:batch]}])     
+          else
+            @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
+            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and DATE(assignments.created_at) = '#{@pub_date}' and is_published=1 ",:order=>"duedate desc",:include=>[{:subject=>[:batch]}]) 
+          end   
+       elsif student_section.blank?
+         if assignment_publish_date.blank?
+            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"duedate desc",:include=>[{:subject=>[{:batch=>[:course]}]}] )
+         else
+            @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
+            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and DATE(assignments.created_at) = '#{@pub_date}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"duedate desc",:include=>[{:subject=>[{:batch=>[:course]}]}])
+         end   
+       else
+          batch = Batch.find_by_course_id_and_name(student_section, batch_name)
+          unless batch.blank?
+            if assignment_publish_date.blank?
+              @assignments =Assignment.find(:all,:conditions=>"batches.id = '#{batch.id}'  and is_published=1 ",:order=>"duedate desc",:include=>[{:subject=>[:batch]}] )
+            else
+              @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
+              @batch_id_main = batch.id
+              @assignments =Assignment.find(:all,:conditions=>"batches.id = '#{batch.id}'  and is_published=1 and DATE(assignments.created_at) = '#{@pub_date}'",:order=>"duedate desc",:include=>[{:subject=>[:batch]}] )
+            end
+          end
+        end  
+      end
+    else
+      @assignments =Assignment.find(:all,:conditions=>"is_published=1",:order=>"duedate desc",:include=>[{:subject=>[:batch]}])
+    end 
+    @employee_ids = []
+    @employee_ids = @assignments.map(&:employee_id).uniq unless @assignments.blank?
+    
+    render :pdf => 'download_pdf',
+        :orientation => 'Portrait', :zoom => 1.00,
+        :page_size => 'A4',
+        :margin => {    :top=> 10,
+        :bottom => 10,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
+  
   def download_excell
     require 'spreadsheet'
     Spreadsheet.client_encoding = 'UTF-8'

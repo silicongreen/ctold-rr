@@ -99,6 +99,7 @@ authorization do
       :publisher_homework,
       :download_attachment,
       :download_excell,
+      :download_pdf,
       :remove_attachment,
       :edit,
       :index,

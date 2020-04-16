@@ -1254,6 +1254,14 @@ class HomeworkController extends Controller
         if (!is_dir($uploads_dir))
         {
             @mkdir($uploads_dir, 0777, true);
+            
+            $uploads_dir1 = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/";
+            @chmod($uploads_dir1, 0777);
+            $uploads_dir2 = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachments/".$ass_ids[0]."/";
+            @chmod($uploads_dir2, 0777);
+            $uploads_dir3 = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachments/".$ass_ids[0]."/".$ass_ids[1]."/";
+            @chmod($uploads_dir3, 0777);
+            @chmod($uploads_dir, 0777);
         }
 
         $uploads_dir = $uploads_dir . $file_name;
@@ -1632,6 +1640,7 @@ class HomeworkController extends Controller
                 $assignment_answer->title = $title;
                 $assignment_answer->content = $content;
                 $assignment_answer->created_at = date("Y-m-d H:i:s");
+                $assignment_answer->updated_at = date("Y-m-d H:i:s");
                 $assignment_answer->school_id = Yii::app()->user->schoolId;
                 $assignment_answer->insert();
                 

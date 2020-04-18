@@ -1,4 +1,6 @@
 <?php
+phpinfo();
+exit;
 ini_set('max_execution_time',0);
 $servername = "192.168.0.117";
 $username = "champs21";

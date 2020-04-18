@@ -317,11 +317,11 @@ class OnlineExamGroups extends CActiveRecord {
                         }
 
                         $response_array['question'][$i]['id'] = $questions->id;
-                        $response_array['question'][$i]['question'] = Settings::substr_with_unicode($questions->question);
+                        $response_array['question'][$i]['question'] = Settings::substr_with_unicode(utf8_encode($questions->question));
                         $response_array['question'][$i]['explanation'] = "";
                         if($questions->explanation)
                         {
-                            $response_array['question'][$i]['explanation'] = $questions->explanation;
+                            $response_array['question'][$i]['explanation'] = utf8_encode($questions->explanation);
                         }
                         $response_array['question'][$i]['image'] = $q_image;
 
@@ -341,7 +341,7 @@ class OnlineExamGroups extends CActiveRecord {
                             }
 
                             $response_array['question'][$i]['option'][$j]['id'] = $options->id;
-                            $response_array['question'][$i]['option'][$j]['answer'] = Settings::substr_with_unicode($options->option);
+                            $response_array['question'][$i]['option'][$j]['answer'] = Settings::substr_with_unicode(utf8_encode($options->option));
                             $response_array['question'][$i]['option'][$j]['answer_image'] = $a_image;
 
                             $response_array['question'][$i]['option'][$j]['correct'] = $options->is_answer;

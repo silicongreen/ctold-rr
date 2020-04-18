@@ -146,8 +146,8 @@ class News extends CActiveRecord {
         $_data['notice_id'] = $row->id;
         $_data['notice_type_id'] = $row->category_id;
         $_data['notice_type_text'] = ucfirst(Settings::$ar_notice_type[$row->category_id]);
-        $_data['notice_title'] = $row->title;
-        $_data['notice_content'] = $row->content;
+        $_data['notice_title'] = utf8_encode($row->title);
+        $_data['notice_content'] = utf8_encode($row->content);
         $_data['notice_icon'] = "";
         if(!empty($row->icon_file_name))
         {
@@ -390,8 +390,8 @@ class News extends CActiveRecord {
             $_data['notice_id'] = $row->id;
             $_data['notice_type_id'] = $row->category_id;
             $_data['notice_type_text'] = ucfirst(Settings::$ar_notice_type[$row->category_id]);
-            $_data['notice_title'] = $row->title;
-            $_data['notice_content'] = $row->content;
+            $_data['notice_title'] = utf8_encode($row->title);
+            $_data['notice_content'] = utf8_encode($row->content);
             $_data['notice_icon'] = "";
             if(!empty($row->icon_file_name))
             {

@@ -34,7 +34,7 @@ class OnlineStudentExamController < ApplicationController
   def start_exam
     @student = Student.find_by_user_id(current_user.id,:select=>"id,batch_id")
     @exam = @student.available_online_exams.find_by_id(params[:id].to_i)
-    @per_page = 5
+    @per_page = 20
     if @exam.present?
       unless @exam.already_attended(@student.id)
         Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:id], 15,current_user.id])
@@ -56,7 +56,7 @@ class OnlineStudentExamController < ApplicationController
   def started_exam
     @exam = OnlineExamGroup.find(params[:id])
     @exam_attendance = OnlineExamAttendance.find(params[:attendance_id])
-    @per_page = 5
+    @per_page = 20
     render :partial => 'late_submit' and return if @exam_attendance.start_time+@exam_attendance.online_exam_group.maximum_time.minutes+2.minutes < @local_tzone_time.to_time
     @exam_questions = @exam.online_exam_questions.paginate(:per_page=>@per_page,:page=>params[:page])
     @num_exam_questions = @exam.online_exam_questions.count

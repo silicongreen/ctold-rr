@@ -755,8 +755,8 @@ class Classworks extends CActiveRecord
                 $marge['subjects_id'] = $value["subjectDetails"]->id;
                 $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
                 $marge['assign_date'] = date("Y-m-d", strtotime($value->created_at));
-                $marge['name'] = $value->title;
-                $marge['content'] = $value->content;
+                $marge['name'] = utf8_encode($value->title);
+                $marge['content'] = utf8_encode($value->content);
                 $marge['type'] = $value->classwork_type;
                 $marge['id'] = $value->id;
                 $marge['is_editable'] = $this->checkHtmlTag($value->content);
@@ -897,8 +897,8 @@ class Classworks extends CActiveRecord
                 $marge['subjects_id'] = $value["subjectDetails"]->id;
                 $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
                 $marge['assign_date'] = date("Y-m-d", strtotime($value->created_at));
-                $marge['name'] = $value->title;
-                $marge['content'] = $value->content;
+                $marge['name'] = utf8_encode($value->title);
+                $marge['content'] = utf8_encode($value->content);
                 $marge['type'] = $value->classwork_type;
                 $marge['id'] = $value->id;
                 $marge['is_editable'] = $this->checkHtmlTag($value->content);
@@ -1000,8 +1000,8 @@ class Classworks extends CActiveRecord
                     $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
                     $marge['assign_date'] = date("Y-m-d", strtotime($value->created_at));
                     
-                    $marge['name'] = $value->title;
-                    $marge['content'] = $value->content;
+                    $marge['name'] = utf8_encode($value->title);
+                    $marge['content'] = utf8_encode($value->content);
                     $marge['type'] = $value->classwork_type;
                     $marge['is_editable'] = $this->checkHtmlTag($value->content);
                     $marge['id'] = $value->id;

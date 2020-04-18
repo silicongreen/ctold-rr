@@ -783,8 +783,17 @@ class NewsController < ApplicationController
 
   def view
     Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:id], 5,current_user.id])
-    @total = Reminder.count(:all,:conditions=>{:rtype=>5,:rid=> params[:id]})
-    @total_read = Reminder.count(:all,:conditions=>{:rtype=>5,:rid=> params[:id],:is_read=>true})
+    @total_obj = Reminder.find(:first,:select=>"count(distinct recipient) as total",:conditions=>["reminders.rid = ? and reminders.rtype = ? and users.is_deleted = ?", params[:id], 5, false],:joins=>[:user])
+    @total_read_obj = Reminder.find(:first,:select=>"count(distinct recipient) as total",:conditions=>["reminders.rid = ? and reminders.rtype = ? and users.is_deleted = ? and reminders.is_read = ?", params[:id], 5, false, true],:joins=>[:user])
+    @total = 0
+    @total_read = 0
+    unless @total_obj.blank?
+      @total = @total_obj.total
+    end
+    unless @total_read_obj.blank?
+      @total_read = @total_read_obj.total
+    end
+    
     show_comments_associate(params[:id], params[:page])
   end
 

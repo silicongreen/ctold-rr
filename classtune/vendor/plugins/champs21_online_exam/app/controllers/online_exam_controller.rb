@@ -592,12 +592,14 @@ class OnlineExamController < ApplicationController
     @exam_group = OnlineExamGroup.find(params[:id])
     @attendance = @exam_group.online_exam_attendances
     @attendance.reject!{|s|s.student.nil?}
+    @attendance.sort! { |a, b|  a.student.class_roll_no.to_i <=> b.student.class_roll_no.to_i }
   end
     
   def exam_result_pdf
     @exam_group = OnlineExamGroup.find(params[:id])
     @attendance = @exam_group.online_exam_attendances
     @attendance.reject!{|s|s.student.nil?}
+    @attendance.sort!{ |a, b|  a.student.class_roll_no.to_i <=> b.student.class_roll_no.to_i }
     @batch = @exam_group.batch
     render :pdf=>'Online_exam_result'
   end

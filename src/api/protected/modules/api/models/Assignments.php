@@ -544,8 +544,8 @@ class Assignments extends CActiveRecord
                     $marge['assign_time'] = date("h:i a",strtotime($value->created_at));
                 }
                 $marge['duedate'] = date("Y-m-d", strtotime($value->duedate));
-                $marge['name'] = $value->title;
-                $marge['content'] = $value->content;
+                $marge['name'] = utf8_encode($value->title);
+                $marge['content'] = utf8_encode($value->content);
                 $marge['type'] = $value->assignment_type;
                 $marge['id'] = $value->id;
                 $marge['is_editable'] = $this->checkHtmlTag($value->content);
@@ -787,8 +787,8 @@ class Assignments extends CActiveRecord
                 $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
                 $marge['assign_date'] = date("Y-m-d", strtotime($value->created_at));
                 $marge['duedate'] = date("Y-m-d", strtotime($value->duedate));
-                $marge['name'] = $value->title;
-                $marge['content'] = $value->content;
+                $marge['name'] = utf8_encode($value->title);
+                $marge['content'] = utf8_encode($value->content);
                 $marge['type'] = $value->assignment_type;
                 $marge['id'] = $value->id;
                 $marge['is_editable'] = $this->checkHtmlTag($value->content);
@@ -946,8 +946,8 @@ class Assignments extends CActiveRecord
                 $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
                 $marge['assign_date'] = date("Y-m-d", strtotime($value->created_at));
                 $marge['duedate'] = date("Y-m-d", strtotime($value->duedate));
-                $marge['name'] = $value->title;
-                $marge['content'] = $value->content;
+                $marge['name'] = utf8_encode($value->title);
+                $marge['content'] = utf8_encode($value->content);
                 $marge['type'] = $value->assignment_type;
                 $marge['id'] = $value->id;
                 $marge['is_editable'] = $this->checkHtmlTag($value->content);
@@ -1065,8 +1065,8 @@ class Assignments extends CActiveRecord
                     {
                        $marge['time_over'] = 1; 
                     }
-                    $marge['name'] = $value->title;
-                    $marge['content'] = $value->content;
+                    $marge['name'] = utf8_encode($value->title);
+                    $marge['content'] = utf8_encode($value->content);
                     $marge['type'] = $value->assignment_type;
                     $marge['is_editable'] = $this->checkHtmlTag($value->content);
                     $marge['id'] = $value->id;

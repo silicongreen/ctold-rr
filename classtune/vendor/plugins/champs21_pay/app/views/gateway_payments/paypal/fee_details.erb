@@ -1461,7 +1461,7 @@
     <% ffee.update_attributes(:balance => total_fees, :is_paid => false) %>
   <% end %>
 <% end %>  
-<% if @gateway_settings.length > 1 %>
+<% if @gateway_settings.keys.include?('bkash')  %>
   <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">

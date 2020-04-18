@@ -335,7 +335,7 @@ class StudentController < ApplicationController
                   request = Net::HTTP::Post.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
                   #request.body = {"amount"=> params[:total_fees],"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>params[:order_id]}.to_json
                   response = http.request(request)
-                  abort(response.body.inspect)
+                  #abort(response.body.inspect)
                   response_ssl = JSON::parse(response.body)
                   
                   transactionStatus = ""

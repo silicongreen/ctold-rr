@@ -19,7 +19,6 @@
       <% unless @attendance.blank? %>
       <table id="pdf-table" width="100%" cellspacing="0">
         <tr class="table-header">
-          <td class="col-pdf"><%= t('sl_no') %></td>
           <td class="col-pdf"><%= "Roll No" %></td>
           <td class="col-pdf"><%= t('student_text') %>  </td>
           <td class="col-pdf"><%= t('marks') %>  </td>
@@ -36,7 +35,6 @@
             <% break_on = false %>
             <tr class="page-break"><td colspan="3"></td></tr>
             <tr class="table-header">
-              <td class="col-pdf"><%= t('sl_no') %></td>
               <td class="col-pdf"><%= "Roll No" %></td>
               <td class="col-pdf"><%= t('student_text') %>  </td>
               <td class="col-pdf"><%= t('marks') %>  </td>
@@ -49,7 +47,6 @@
             <% break_on = false %>
             <tr class="page-break"><td colspan="3"></td></tr>
             <tr class="table-header">
-              <td class="col-pdf"><%= t('sl_no') %></td>
               <td class="col-pdf"><%= "Roll No" %></td>
               <td class="col-pdf"><%= t('student_text') %>  </td>
               <td class="col-pdf"><%= t('marks') %>  </td>
@@ -58,8 +55,6 @@
           <% end %>
 
           <tr class="<%= "#{c}" %>">
-        
-            <td class="col-pdf"><%= index+=1 %></td>
             <td class="col-pdf"><%= att.student.class_roll_no %></td>
             <td class="col-pdf"><%= att.student.full_name %></td>
             <td class="col-pdf"><% if att.total_score.blank? %>NA<% else  %><%= att.total_score %><% end %>/<%= @exam_group.online_exam_questions.sum('mark') %></td>

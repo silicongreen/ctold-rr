@@ -842,7 +842,7 @@ class AssignmentsController < ApplicationController
       elsif @status == "answered"
         @answers = @assignment.assignment_answers
         #        @answers  = @answers.sort_by{|a| a.updated_at}
-        @answers  = @answers.sort_by{|a| (a && a.updated_at(:length)) || 0}
+        @answers  = @answers.sort_by{|a| (a && a.created_at(:length)) || 0}
         @students = @answers.map{|a| a.student }
         @students = @students.uniq unless @students.blank?
       elsif @status== "pending"
@@ -1056,7 +1056,7 @@ class AssignmentsController < ApplicationController
 
       @answers = @assignment.assignment_answers
       #        @answers  = @answers.sort_by{|a| a.updated_at}
-      @answers  = @answers.sort_by{|a| (a && a.updated_at(:length)) || 0}
+      @answers  = @answers.sort_by{|a| (a && a.created_at(:length)) || 0}
       @students = @answers.map{|a| a.student }
       @students = @students.uniq unless @students.blank?
       @answered_count = @students.count

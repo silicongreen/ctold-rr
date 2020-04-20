@@ -64,7 +64,7 @@
     <% end %>
     <%= f.submit "► #{t('update')}",:class=>:submit_button ,:disable_with=> "► #{t('please_wait')}" %>
   <% end %>
-  <% if MultiSchool.current_school.id != 352 %>
+  <% if MultiSchool.current_school.id != 352 and MultiSchool.current_school.id == 352 %>
     <ul id="teacher_status" class="category-list">
       <% @employees.each do |emp| %>
         <li class="listodd" ><%= emp.full_name %><span id="emp_status_<%=emp.id%>">
@@ -79,10 +79,10 @@
       <% end %>
     </ul>
   <% end %>
-   <% if MultiSchool.current_school.id == 352 %>
+   
       <%= will_paginate @batches %>
       <%= stylesheet_link_tag 'pagination_and_table' %>
-    <% end %>
+   
 </div>
 
 <script>

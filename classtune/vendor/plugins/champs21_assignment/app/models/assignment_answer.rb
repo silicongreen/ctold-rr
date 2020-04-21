@@ -31,4 +31,6 @@ class AssignmentAnswer < ActiveRecord::Base
   Paperclip.interpolates :assignment_id do |attachment,style|
     custom_id_partition attachment.instance.assignment_id
   end
+
+  
 end

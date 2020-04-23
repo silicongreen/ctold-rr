@@ -7,6 +7,7 @@ class AssignmentAnswer < ActiveRecord::Base
 #    :path => "uploads/assignments/:assignment_id/:class/:id_partition/:basename.:extension"
 #	:url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp",
     :path => "public/uploads/:class/:attachment/:assignment_id/:basename.:extension"
+    
 
   def download_allowed_for user
     return true if user.admin?
@@ -15,6 +16,8 @@ class AssignmentAnswer < ActiveRecord::Base
     return (self.student_id == user.parent_record.id) if user.parent?
     false
   end
+  
+
 
   def student_details
     if self.student.present?

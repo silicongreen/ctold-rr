@@ -205,8 +205,11 @@ class StudentController < ApplicationController
                       @app_password = PaymentConfiguration.config_value(@user_gateway + "_password")
                       
                       fee_percent = 0.00
-                      fee_percent = total_fees.to_f * (1.5 / 100)
-                      total_fees = total_fees + fee_percent
+                      fee_percent = total_fees.to_f * (1.5 / 100) 
+                       
+                      if MultiSchool.current_school.id != 312 
+                        total_fees = total_fees + fee_percent 
+                      end
                       #abort(total_fees.to_s)
                       request = Net::HTTP::Post.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
                       request.body = {"amount"=> sprintf("%.2f", total_fees),"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>order_id}.to_json
@@ -358,8 +361,10 @@ class StudentController < ApplicationController
                   
                   fee_percent = 0.00
                   fee_percent = total_fees.to_f * (1.5 / 100)
+                  if MultiSchool.current_school.id != 312 
+                    amount = amount.to_f - fee_percent.to_f
+                  end
                   
-                  amount = amount.to_f - fee_percent.to_f
                   
                   if response_ssl.keys.include?("transactionStatus") and transactionStatus == 'Completed'
                     require 'date'
@@ -370,13 +375,14 @@ class StudentController < ApplicationController
                     transaction_datetime = (DateTime.parse(createTime).to_time + 6.hours).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
                     orderId = order_id.to_s
                     @student = Student.find(student_id)
-                    
-                    finance_interest = FinanceInterest.new
-                    finance_interest.order_id = orderId.strip
-                    finance_interest.student_id = @student.id
-                    finance_interest.batch_id = @student.batch.id
-                    finance_interest.interest = fee_percent
-                    finance_interest.save
+                    if MultiSchool.current_school.id != 312 
+                      finance_interest = FinanceInterest.new
+                      finance_interest.order_id = orderId.strip
+                      finance_interest.student_id = @student.id
+                      finance_interest.batch_id = @student.batch.id
+                      finance_interest.interest = fee_percent
+                      finance_interest.save
+                    end
                     
                     @finance_order = FinanceOrder.find_by_order_id_and_student_id(orderId.strip, student_id)
                     #abort(@finance_order.inspect)
@@ -3119,6 +3125,7 @@ class StudentController < ApplicationController
                       date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}")
                       unless date.blank?
                         s = Student.find(@student.id)
+                        #abort('here')
                         reset_fees(date, s, f)
                         #abort(finance_particulars.inspect)
                         paid_fees = f.finance_transactions
@@ -3261,6 +3268,7 @@ class StudentController < ApplicationController
           if MultiSchool.current_school.id == 352
             if @previous_category_id != @student.student_category_id
               if @previous_batch_id == @student.batch_id
+                #
                 @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
                 unless @finance_fees.blank?
                   @finance_fees.each do |f|
@@ -3269,19 +3277,20 @@ class StudentController < ApplicationController
                     unless date.blank?
                       s = Student.find(@student.id)
                       reset_fees(date, s, f)
+                      
                       #abort(finance_particulars.inspect)
-                      paid_fees = f.finance_transactions
-                      unless paid_fees.blank?
-                        found_paid_fees = true
-                        paid_fees.each do |p|
-                          transaction_particulars = FinanceTransactionParticular.find(:all, :conditions => "finance_transaction_id = #{p.id}")
-                          unless transaction_particulars.blank?
-                            transaction_particulars.each do |tp|
-                              arrange_particular_category_wise(date, s, tp, f)
-                            end
-                          end
-                        end
-                      end
+#                      paid_fees = f.finance_transactions
+#                      unless paid_fees.blank?
+#                        found_paid_fees = true
+#                        paid_fees.each do |p|
+#                          transaction_particulars = FinanceTransactionParticular.find(:all, :conditions => "finance_transaction_id = #{p.id}")
+#                          unless transaction_particulars.blank?
+#                            transaction_particulars.each do |tp|
+#                              arrange_particular_category_wise(date, s, tp, f)
+#                            end
+#                          end
+#                        end
+#                      end
                       bal = FinanceFee.get_student_actual_balance(date, s, f)
                       bal = 0 if bal < 0
                       f.update_attributes(:balance=>bal)
@@ -3325,7 +3334,8 @@ class StudentController < ApplicationController
           
           if MultiSchool.current_school.id == 352
             if found_paid_fees
-              redirect_to :controller => "student", :action => "adjust_paid_fees", :id => @student.id, :previous_category_id => @previous_category_id, :previous_batch_id => @previous_batch_id
+              #redirect_to :controller => "student", :action => "adjust_paid_fees", :id => @student.id, :previous_category_id => @previous_category_id, :previous_batch_id => @previous_batch_id
+              redirect_to :controller => "student", :action => @action_name_main, :id => @student.id
             else
               redirect_to :controller => "student", :action => @action_name_main, :id => @student.id
             end

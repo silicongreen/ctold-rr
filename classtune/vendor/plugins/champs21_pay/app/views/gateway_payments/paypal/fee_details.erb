@@ -1654,8 +1654,11 @@ encrypted = [cipher].pack('m')
 <%
   fee_percent = 0.00
   fee_percent = total_fees.to_f * (1.5 / 100)
-  total_fees = total_fees + fee_percent
+  if MultiSchool.current_school.id != 312 
+    total_fees = total_fees + fee_percent
+  end
 %>
+
 
 <% end %>
 <script>

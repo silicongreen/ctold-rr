@@ -1185,7 +1185,7 @@
         <% end %> 
       <% end %>    
           
-      <% if @gateway_settings.length > 1 %>
+      <% if @gateway_settings.keys.include?('bkash')  %>
         <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -1395,7 +1395,9 @@ encrypted = [cipher].pack('m')
 <%
   fee_percent = 0.00
   fee_percent = total_fees.to_f * (1.5 / 100)
-  total_fees = total_fees + fee_percent
+  if MultiSchool.current_school.id != 312 
+    total_fees = total_fees + fee_percent
+  end
 %>
 <% end %>
 <script>

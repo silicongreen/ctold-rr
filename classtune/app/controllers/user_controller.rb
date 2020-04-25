@@ -829,14 +829,14 @@ class UserController < ApplicationController
               if MultiSchool.current_school.code == "sagc"	
                 redirect_to "https://sagc.edu.bd" and return	
               else	
-                redirect_to "http://www.classtune.com" and return	
+                redirect_to "https://classtune.com" and return	
               end	
             end
           else
             if MultiSchool.current_school.code == "sagc"	
               redirect_to "https://sagc.edu.bd" and return	
             else	
-              redirect_to "http://www.classtune.com" and return	
+              redirect_to "https://classtune.com" and return	
             end	
           end
         end
@@ -852,14 +852,14 @@ class UserController < ApplicationController
             if MultiSchool.current_school.code == "sagc"	
               redirect_to "https://sagc.edu.bd" and return	
             else	
-              redirect_to "http://www.classtune.com" and return	
+              redirect_to "https://classtune.com" and return	
             end	
           end
         else
           if MultiSchool.current_school.code == "sagc"	
             redirect_to "https://sagc.edu.bd" and return	
           else	
-            redirect_to "http://www.classtune.com" and return	
+            redirect_to "https://classtune.com" and return	
           end	
         end
       end

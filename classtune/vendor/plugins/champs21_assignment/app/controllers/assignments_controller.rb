@@ -52,6 +52,66 @@ class AssignmentsController < ApplicationController
    
   end
   
+  def download_pdf_publush_date
+    batch_id = params[:batch_name]
+    student_class_name = @class_name =  params[:student_class_name]
+    student_section  = @section_name = params[:student_section]
+    assignment_publish_date = params[:assignment_publish_date]
+    @assignments = []
+    unless batch_id.nil?
+      batchdata = @batch = Batch.find_by_id(batch_id)
+      unless batchdata.blank?
+        batch_name = batchdata.name
+        if student_class_name.blank?
+          if assignment_publish_date.blank?
+            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}'  and is_published=1 and assignment_type = 2",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}])     
+          else
+            @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
+            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and DATE(assignments.duedate) = '#{@pub_date}' and is_published=1 and assignment_type = 2",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}]) 
+          end   
+       elsif student_section.blank?
+         if assignment_publish_date.blank?
+            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and is_published=1 and assignment_type = 2",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}] )
+         else
+            @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
+            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and DATE(assignments.duedate) = '#{@pub_date}' and courses.course_name = '#{student_class_name}'  and is_published=1 and assignment_type = 2",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}])
+         end   
+       else
+          batch = Batch.find_by_course_id_and_name(student_section, batch_name)
+          unless batch.blank?
+            if assignment_publish_date.blank?
+              @assignments =Assignment.find(:all,:conditions=>"batches.id = '#{batch.id}'  and is_published=1 and assignment_type = 2",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}] )
+            else
+              @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
+              @batch_id_main = batch.id
+              @assignments =Assignment.find(:all,:conditions=>"batches.id = '#{batch.id}'  and is_published=1 and DATE(assignments.duedate) = '#{@pub_date}' and assignment_type = 2",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}] )
+            end
+          end
+        end  
+      end
+    else
+      @assignments =Assignment.find(:all,:conditions=>"is_published=1 and assignment_type = 2",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}])
+    end 
+    @asignment_ids = []
+    @asignment_ids = @assignments.map(&:id).uniq unless @assignments.blank?
+    
+    unless @asignment_ids.blank?
+      @assignment_submits = AssignmentAnswer.find(:all,:select=>"count( distinct student_id) as total, assignment_id",:group=>"assignment_id",:conditions=>["assignment_id in (?)",@asignment_ids])
+    end
+    
+    render :pdf => 'download_pdf_publush_date',
+        :orientation => 'Portrait', :zoom => 1.00,
+        :page_size => 'A4',
+        :margin => {    :top=> 10,
+        :bottom => 10,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
+  
+  
+  
   def download_pdf
     batch_id = params[:batch_name]
     student_class_name = @class_name =  params[:student_class_name]

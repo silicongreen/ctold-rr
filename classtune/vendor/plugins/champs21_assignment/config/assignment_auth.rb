@@ -100,6 +100,7 @@ authorization do
       :download_attachment,
       :download_excell,
       :download_pdf,
+      :download_pdf_publush_date,
       :remove_attachment,
       :edit,
       :index,

@@ -3003,6 +3003,7 @@ authorization do
       :previous_data,
       :generate_ssl_url,
       :generate_bkash_token,
+      :regenerate_order_id,
       :complete_bkash_payment,
       :generate_bkash_payment,
       :previous_data_from_profile,
@@ -3617,6 +3618,7 @@ authorization do
       :create_student_security,
       :generate_ssl_url,
       :generate_bkash_token,
+      :regenerate_order_id,
       :complete_bkash_payment,
       :generate_bkash_payment,
       :fee_details

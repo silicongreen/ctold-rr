@@ -22,7 +22,7 @@ class StudentController < ApplicationController
   before_filter :login_required
   before_filter :check_permission, :only=>[:index,:admission1,:profile,:reports,:categories,:add_additional_details]
   before_filter :set_precision
-  before_filter :protect_other_student_data, :except =>[:edit_guardian_own, :generate_bkash_payment,:generate_ssl_url, :complete_bkash_payment, :generate_bkash_token,:get_previous_exam,:update_is_promoted,:insert_into_new_parent_student_table,:show,:class_test_report,:previous_batch_report,:combined_exam,:progress_report,:class_test_report_single,:term_test_report]
+  before_filter :protect_other_student_data, :except =>[:edit_guardian_own, :generate_bkash_payment,:generate_ssl_url, :complete_bkash_payment, :generate_bkash_token, :regenerate_order_id,:get_previous_exam,:update_is_promoted,:insert_into_new_parent_student_table,:show,:class_test_report,:previous_batch_report,:combined_exam,:progress_report,:class_test_report_single,:term_test_report]
   before_filter :default_time_zone_present_time
   before_filter :only_allowed_when_parmitted , :only=>[:edit_guardian_own,:edit_student_guardian]
   
@@ -46,6 +46,105 @@ class StudentController < ApplicationController
   def graduation_lists
     @schoo_batch_id = Batch.all.map(&:id)
     @graduation_session = BatchTransfer.find(:all,:conditions=>["from_id IN (?) and to_id = ?",@schoo_batch_id,0],:limit=>100,:order=>'created_at DESC')
+  end
+  
+  def regenerate_order_id
+    require "openssl"
+    require 'digest/sha2'
+    require 'base64'
+    @total_fees_raw = params[:total_fees]
+    unless params[:student_id].blank?
+      student_id = params[:student_id]
+      if params[:multiple].to_i == 1
+        collection_fees_raw = params[:collection_fees]
+        collection_fees = params[:collection_fees].split(",")
+        order_id = params[:order_id]
+        unless order_id.blank?
+          @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{order_id}' and student_id = '#{student_id}'")
+          unless @finance_orders.blank?
+            @finance_orders.each do |finance_order|
+              finance_order.update_attributes(:status => 1)
+            end
+          end
+        end
+        
+        collection_fees.each do |fee_id|
+          @financefeeTmp = FinanceFee.find(fee_id)
+          finance_order = FinanceOrder.find(:first, :conditions => "finance_fee_id = #{@financefeeTmp.id} and student_id = #{@financefeeTmp.student_id} and batch_id = #{@financefeeTmp.batch_id} and status = 0")
+          unless finance_order.nil?
+            @order_id = "O" + finance_order.id.to_s
+            finance_order.update_attributes(:order_id => @order_id)
+          else
+            finance_order = FinanceOrder.new()
+            finance_order.finance_fee_id = @financefeeTmp.id
+            finance_order.student_id = @financefeeTmp.student_id
+            finance_order.batch_id = @financefeeTmp.batch_id
+            finance_order.balance = @financefeeTmp.balance
+            finance_order.save
+            @order_id = "O" + finance_order.id.to_s
+            finance_order.update_attributes(:order_id => @order_id)
+          end
+        end
+      else
+        collection_fees_raw = params[:fee_id]
+        fee_id = params[:fee_id]
+        order_id = params[:order_id]
+        unless order_id.blank?
+          @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{order_id}' and student_id = '#{student_id}'")
+          unless @finance_orders.blank?
+            @finance_orders.each do |finance_order|
+              finance_order.update_attributes(:status => 1)
+            end
+          end
+        end
+        @financefeeTmp = FinanceFee.find(fee_id)
+        finance_order = FinanceOrder.find(:first, :conditions => "finance_fee_id = #{@financefeeTmp.id} and student_id = #{@financefeeTmp.student_id} and batch_id = #{@financefeeTmp.batch_id} and status = 0")
+        unless finance_order.nil?
+          @order_id = "O" + finance_order.id.to_s
+          finance_order.update_attributes(:order_id => @order_id)
+        else
+          finance_order = FinanceOrder.new()
+          finance_order.finance_fee_id = @financefeeTmp.id
+          finance_order.student_id = @financefeeTmp.student_id
+          finance_order.batch_id = @financefeeTmp.batch_id
+          finance_order.balance = @financefeeTmp.balance
+          finance_order.save
+          @order_id = "O" + finance_order.id.to_s
+          finance_order.update_attributes(:order_id => @order_id)
+        end
+      end
+      alg = "AES-256-CBC"
+
+      digest = Digest::SHA256.new
+      digest.update("symetric key")
+      key = digest.digest
+      kkp = [key].pack('m')
+      iv = OpenSSL::Cipher::Cipher.new(alg).random_iv
+      iip = [iv].pack('m')
+
+      data = student_id.to_s + "---" + collection_fees_raw.to_s + "---" + @order_id.to_s
+
+      aes = OpenSSL::Cipher::Cipher.new(alg)
+      aes.encrypt
+      aes.key = key
+      aes.iv = iv
+
+      cipher = aes.update(data)
+      cipher << aes.final
+
+      encrypted = [cipher].pack('m')
+      
+      render :update do |page|
+        page << 'j("#pay_fees_multiple_1").attr("id","pay_fees_multiple");'
+        page << 'j("#pay_fees_multiple").removeClass("gateway_image_single_bkash_disabled");'
+        page << 'j(".loading_single_bkash").hide();'
+        page << 'j("#fees_form").find("input#order_id").val("' + @order_id.to_s + '")'
+        page << 'j("#data-form-val").find("input#order_id").val("' + @order_id.to_s + '")'
+        page << 'j("#data-form-val").find("input#kmsee").val("' + kkp.to_s.strip + '")'
+        page << 'j("#data-form-val").find("input#imsee").val("' + iip.to_s.strip + '")'
+        page << 'j("#data-form-val").find("input#mmsec").val("' + encrypted.to_s.strip + '")'
+      end
+    end
   end
   
   def generate_bkash_token
@@ -446,39 +545,103 @@ class StudentController < ApplicationController
                       end
                     end
                   else
+                    unless order_id.blank?
+                      @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{order_id}' and student_id = '#{student.id}'")
+                      unless @finance_orders.blank?
+                        @finance_orders.each do |finance_order|
+                          finance_order.update_attributes(:status => 1)
+                        end
+                      end
+                    end
                     render :json => response_ssl
                   end
                 else
+                  unless order_id.blank?
+                    @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{order_id}'")
+                    unless @finance_orders.blank?
+                      @finance_orders.each do |finance_order|
+                        finance_order.update_attributes(:status => 1)
+                      end
+                    end
+                  end
                   error = {:errorMessage => "Invalid payment Request, Invoice No. Not match"}
                   response_ssl = JSON::parse(error.to_json)
                   render :json => response_ssl
                 end
               else
+                unless order_id.blank?
+                  @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{order_id}'")
+                  unless @finance_orders.blank?
+                    @finance_orders.each do |finance_order|
+                      finance_order.update_attributes(:status => 1)
+                    end
+                  end
+                end
                 error = {:errorMessage => "Invalid payment Request, Invoice No. Not match"}
                 response_ssl = JSON::parse(error.to_json)
                 render :json => response_ssl
               end
             else
+              unless params[:order_id].blank?
+                @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{params[:order_id].to_s}'")
+                unless @finance_orders.blank?
+                  @finance_orders.each do |finance_order|
+                    finance_order.update_attributes(:status => 1)
+                  end
+                end
+              end
               error = {:errorMessage => "Invalid payment Request, Data Not match"}
               response_ssl = JSON::parse(error.to_json)
               render :json => response_ssl
             end
           else
+            unless params[:order_id].blank?
+              @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{params[:order_id].to_s}'")
+              unless @finance_orders.blank?
+                @finance_orders.each do |finance_order|
+                  finance_order.update_attributes(:status => 1)
+                end
+              end
+            end
             error = {:errorMessage => "Invalid payment Request, Data Not match"}
             response_ssl = JSON::parse(error.to_json)
             render :json => response_ssl
           end
         else
+          unless params[:order_id].blank?
+            @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{params[:order_id].to_s}'")
+            unless @finance_orders.blank?
+              @finance_orders.each do |finance_order|
+                finance_order.update_attributes(:status => 1)
+              end
+            end
+          end
           error = {:errorMessage => "Invalid payment Request, Data Not match"}
           response_ssl = JSON::parse(error.to_json)
           render :json => response_ssl
         end
       else
+        unless params[:order_id].blank?
+          @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{params[:order_id].to_s}'")
+          unless @finance_orders.blank?
+            @finance_orders.each do |finance_order|
+              finance_order.update_attributes(:status => 1)
+            end
+          end
+        end
         error = {:errorMessage => "Invalid Request for token"}
         response_ssl = JSON::parse(error.to_json)
         render :json => response_ssl
       end
     else
+      unless params[:order_id].blank?
+        @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{params[:order_id].to_s}'")
+        unless @finance_orders.blank?
+          @finance_orders.each do |finance_order|
+            finance_order.update_attributes(:status => 1)
+          end
+        end
+      end
       error = {:errorMessage => "Invalid Request for token"}
       response_ssl = JSON::parse(error.to_json)
       render :json => response_ssl
@@ -3139,13 +3302,30 @@ class StudentController < ApplicationController
                               end
                             end
                           end
-                        end
-                        bal = FinanceFee.get_student_actual_balance(date, s, f)
-                        f.update_attributes(:balance=>bal)
-                        if bal.to_f == 0.00
-                          f.update_attributes(:is_paid=>true)
-                        elsif bal.to_f > 0.00
-                          f.update_attributes(:is_paid=>false)
+                        else
+                          bal = FinanceFee.get_student_actual_balance(date, s, f)
+                          bal = 0 if bal < 0
+                          f.update_attributes(:balance=>bal)
+                          if bal.to_f == 0.00
+                            f.update_attributes(:is_paid=>true)
+                          elsif bal.to_f > 0.00
+                            f.update_attributes(:is_paid=>false)
+                          end
+
+                          balance = FinanceFee.get_student_balance(date, s, f)
+                          student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{f.id} and amount_to_pay > 0 and amount_paid = 0 and transaction_id = 0 and is_fine = 0")
+                          unless student_fee_ledgers.nil?
+                            student_fee_ledgers.each do |fee_ledger|
+                              student_fee_ledger = StudentFeeLedger.find(fee_ledger.id)
+                              student_fee_ledger.destroy
+                            end
+                          end
+                          student_fee_ledger = StudentFeeLedger.new
+                          student_fee_ledger.student_id = s.id
+                          student_fee_ledger.ledger_date = date.start_date
+                          student_fee_ledger.amount_to_pay = balance.to_f
+                          student_fee_ledger.fee_id = f.id
+                          student_fee_ledger.save
                         end
                       end
                     end
@@ -3279,42 +3459,59 @@ class StudentController < ApplicationController
                       reset_fees(date, s, f)
                       
                       #abort(finance_particulars.inspect)
-#                      paid_fees = f.finance_transactions
-#                      unless paid_fees.blank?
-#                        found_paid_fees = true
-#                        paid_fees.each do |p|
-#                          transaction_particulars = FinanceTransactionParticular.find(:all, :conditions => "finance_transaction_id = #{p.id}")
-#                          unless transaction_particulars.blank?
-#                            transaction_particulars.each do |tp|
-#                              arrange_particular_category_wise(date, s, tp, f)
-#                            end
-#                          end
-#                        end
-#                      end
-                      bal = FinanceFee.get_student_actual_balance(date, s, f)
-                      bal = 0 if bal < 0
-                      f.update_attributes(:balance=>bal)
-                      if bal.to_f == 0.00
-                        f.update_attributes(:is_paid=>true)
-                      elsif bal.to_f > 0.00
-                        f.update_attributes(:is_paid=>false)
+                      paid_fees = f.finance_transactions
+                      unless paid_fees.blank?
+                        found_paid_fees = true
+                        paid_fees.each do |p|
+                          transaction_particulars = FinanceTransactionParticular.find(:all, :conditions => "finance_transaction_id = #{p.id}")
+                          unless transaction_particulars.blank?
+                            transaction_particulars.each do |tp|
+                              arrange_particular_category_wise(date, s, tp, f)
+                            end
+                          end
+                        end
+                      else
+                        bal = FinanceFee.get_student_actual_balance(date, s, f)
+                        bal = 0 if bal < 0
+                        f.update_attributes(:balance=>bal)
+                        if bal.to_f == 0.00
+                          f.update_attributes(:is_paid=>true)
+                        elsif bal.to_f > 0.00
+                          f.update_attributes(:is_paid=>false)
+                        end
+                        
+                        balance = FinanceFee.get_student_balance(date, s, f)
+                        student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{f.id} and amount_to_pay > 0 and amount_paid = 0 and transaction_id = 0 and is_fine = 0")
+                        unless student_fee_ledgers.nil?
+                          student_fee_ledgers.each do |fee_ledger|
+                            student_fee_ledger = StudentFeeLedger.find(fee_ledger.id)
+                            student_fee_ledger.destroy
+                          end
+                        end
+                        student_fee_ledger = StudentFeeLedger.new
+                        student_fee_ledger.student_id = s.id
+                        student_fee_ledger.ledger_date = date.start_date
+                        student_fee_ledger.amount_to_pay = balance.to_f
+                        student_fee_ledger.fee_id = f.id
+                        student_fee_ledger.save
                       end
                       
-                      balance = FinanceFee.get_student_actual_balance(date, s, f)
-                      student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{f.id} and particular_id = #{0} and amount_to_pay > 0 and amount_paid = 0 and transaction_id = 0 and is_fine = 0")
-                      unless student_fee_ledgers.nil?
-                        student_fee_ledgers.each do |fee_ledger|
-                          student_fee_ledger = StudentFeeLedger.find(fee_ledger.id)
-                          student_fee_ledger.update_attributes(:amount_to_pay => balance)
-                        end
-                      end
+                      
+                      
+                      
+#                      unless student_fee_ledgers.nil?
+#                        student_fee_ledgers.each do |fee_ledger|
+#                          student_fee_ledger = StudentFeeLedger.find(fee_ledger.id)
+#                          student_fee_ledger.update_attributes(:amount_to_pay => balance)
+#                        end
+#                      end
                     end
                   end
                 end
               end
             end
           end
-          
+          #abort('here')
           if @previous_batch_id != @student.batch_id
             exam_marks_to_new_batch(@previous_batch_id,@student)
           end
@@ -5452,11 +5649,11 @@ class StudentController < ApplicationController
   
 
   def fees
-    @dates=FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} and ((finance_fees.balance > 0 and finance_fees.batch_id<>#{@student.batch_id}) or (finance_fees.batch_id=#{@student.batch_id}) )").uniq
+    #@dates=FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} and ((finance_fees.balance > 0 and finance_fees.batch_id<>#{@student.batch_id}) or (finance_fees.batch_id=#{@student.batch_id}) )").uniq
     
     #@dates_paid = FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} and ((finance_fees.balance = 0))", :order=>'finance_fee_collections.due_date DESC').uniq # and finance_fees.batch_id = #{@student.batch_id}
     #@dates_unpaid = FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} and ((finance_fees.balance > 0)  )", :order=>'finance_fee_collections.due_date DESC').uniq # and finance_fees.batch_id = #{@student.batch_id}
-    @dates_all = FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} ", :order=>'finance_fee_collections.due_date DESC').uniq # and finance_fees.batch_id = #{@student.batch_id}
+    @dates_all = FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}' and finance_fee_collections.is_deleted=#{false} ", :order=>'finance_fee_collections.due_date DESC').uniq # and finance_fees.batch_id = #{@student.batch_id}  and finance_fees.is_paid = #{false}
     
     if request.post?
       @student.update_attribute(:has_paid_fees,params[:fee][:has_paid_fees]) unless params[:fee].nil?

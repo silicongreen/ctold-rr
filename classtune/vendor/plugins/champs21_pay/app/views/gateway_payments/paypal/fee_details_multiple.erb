@@ -1188,7 +1188,7 @@
                   <% if @gateway_settings.length == 1 %>
                       <% if @gateway_settings.keys.include?('bkash') %>
                       <i class='fa fa-spin fa-spinner loading_single_bkash' style="position: absolute; right: 10px; top: 5px; display: none;"></i>
-                      <%= image_tag "/images/bkash-logo.png", :class => "gateway_image_single_bkash", :id => "pay_fees_multiple", :style => "" %>
+                      <%= image_tag "/images/bkash-logo.png", :class => "gateway_image_single_bkash", :id => "pay_fees_multiple", :style => "", :onclick=> "initBkash(this);" %>
                       <!--button type="button" id="pay_fees_multiple" class="submit_button"><%#= "► #{t('pay_fees')}" %></button-->
                       <% else %>
                       <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button' %>
@@ -1314,6 +1314,21 @@
         </div>
       </div>
     </div>
+    <div class="modal fade" id="paymentModalSuccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+              <div style="width: 100%; text-align: center;">
+                  <h1><i class="fa fa-check" aria-hidden="true" style="color: #49BB4B; font-size: 60px;"></i><br />
+                    <label id="success_label" style="font-size: 20px;">Successful Payment</label></h1>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" id="close_pop_" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <% end %>
 <style>
     button[disabled]{
@@ -1400,13 +1415,15 @@ cipher << aes.final
 encrypted = [cipher].pack('m')
 %>
 <% if @gateway_settings.keys.include?('bkash')  %>
-<form id="data-form-val">
-  <input type="hidden" name="total_fees" id="total_fees" value="<%= precision_label total_fees %>" />
-  <input type="hidden" name="order_id" id="order_id" value="<%= @order_id.strip unless @order_id.blank? %>" />
-  <input type="hidden" name="kmsee" id="kmsee" value="<%= kkp.strip %>" />
-  <input type="hidden" name="imsee" id="imsee" value="<%= iip.strip %>" />
-  <input type="hidden" name="mmsec" id="mmsec" value="<%= encrypted.strip %>" />
-</form>
+<div id="form-div-data-form-val">
+  <form id="data-form-val">
+    <input type="hidden" name="total_fees" id="total_fees" value="<%= precision_label total_fees %>" />
+    <input type="hidden" name="order_id" id="order_id" value="<%= @order_id.strip unless @order_id.blank? %>" />
+    <input type="hidden" name="kmsee" id="kmsee" value="<%= kkp.strip %>" />
+    <input type="hidden" name="imsee" id="imsee" value="<%= iip.strip %>" />
+    <input type="hidden" name="mmsec" id="mmsec" value="<%= encrypted.strip %>" />
+  </form>
+</div>
 <%
   fee_percent = 0.00
   fee_percent = total_fees.to_f * (1.5 / 100)
@@ -1417,10 +1434,119 @@ encrypted = [cipher].pack('m')
 
 <% end %>
 <script>
+    var paymentID;
+    var id_token;
+    var bkashLoad = false;
+    function initBkash(obj){
+        if ( j(obj).hasClass('gateway_image_single_bkash_disabled') )
+        {
+            return ;
+        }
+        if ( j("#user_gateway").val() == 'bkash' )
+        {
+            j(obj).addClass('gateway_image_single_bkash_disabled');
+            j(".loading_single_bkash").show();
+            j(obj).prop('disabled',true);
+            j(obj).html("<i class='fa fa-spin fa-spinner'></i> Please wait...");
+
+            j(obj).prop('disabled',true);
+            j(obj).html("<i class='fa fa-spin fa-spinner'></i> Pay Fees");
+
+            j(obj).attr('id',"pay_fees_multiple_1");
+
+            j.ajax({
+                url: '/student/generate_bkash_token',
+                type: 'POST',
+                data: j("#fees_form").serialize() + "&student_id=<%= @student.id %>",
+                success: function (data) {
+                      if ( ! data.id_token )
+                      {
+                          j('#error_label').html(data.errorMessage);
+                          j("#paymentModal").modal();
+                          j("#bKashFrameWrapper").css('display','none');
+                          new Ajax.Request('/student/regenerate_order_id', 
+                                {
+                                  asynchronous:true, 
+                                  evalScripts:true, 
+                                  parameters:'student_id='+<%= @student.id %>+'&collection_fees=<%= @collection_fees.to_s %>'+'&order_id='+j("#fees_form").find("input#order_id").val()+'&total_fees='+<%= total_fees %>+'&multiple=1'
+                                }
+                          )
+                          //alert(data.errorMessage);
+                      }
+                      else
+                      {
+                          id_token = data.id_token;
+                          console.log(j("#data-form-val").serialize());
+                          j.ajax({
+                              url: '/student/generate_bkash_payment',
+                              type: 'POST',
+                              data: j("#data-form-val").serialize() + "&id_token=" + data.id_token + "&gateway=bkash",
+                              success: function (data) {
+                                    j(".loading_single_bkash").hide();
+                                    j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
+                                    j("#pay_fees_multiple").removeClass('gateway_image_single_bkash_disabled');
+                                    if (data && data.paymentID != null) 
+                                    {
+                                      bkashLoad = true;
+                                      j("#bKashFrameWrapper").css('display','block');
+                                      j("#close_pop").trigger('click');
+                                      paymentID = data.paymentID; 
+                                      bKash.create().onSuccess(data); //pass the whole response data in bKash.create().onSucess() method as a parameter 
+                                    } 
+                                    else 
+                                    { 
+                                      j('#error_label').html(data.errorMessage);
+                                      j("#paymentModal").modal();
+                                      j("#bKashFrameWrapper").css('display','none');
+                                      new Ajax.Request('/student/regenerate_order_id', 
+                                            {
+                                              asynchronous:true, 
+                                              evalScripts:true, 
+                                              parameters:'student_id='+<%= @student.id %>+'&collection_fees=<%= @collection_fees.to_s %>'+'&order_id='+j("#fees_form").find("input#order_id").val()+'&total_fees='+<%= total_fees %>+'&multiple=1'
+                                            }
+                                      )
+                                      //alert(data.errorMessage);
+                                    } 
+                              },
+                              error: function () {
+                                  j('#error_label').html(data.errorMessage);
+                                  j("#paymentModal").modal();
+                                  j("#bKashFrameWrapper").css('display','none');
+                                  new Ajax.Request('/student/regenerate_order_id', 
+                                        {
+                                          asynchronous:true, 
+                                          evalScripts:true, 
+                                          parameters:'student_id='+<%= @student.id %>+'&collection_fees=<%= @collection_fees.to_s %>'+'&order_id='+j("#fees_form").find("input#order_id").val()+'&total_fees='+<%= total_fees %>+'&multiple=1'
+                                        }
+                                  )
+                                  //alert(data.errorMessage);
+                              }
+                          });
+                      }
+                },
+                error: function () {
+                    j('#error_label').html("Error in payment");
+                    j("#paymentModal").modal();
+                    j("#bKashFrameWrapper").css('display','none');
+                    new Ajax.Request('/student/regenerate_order_id', 
+                          {
+                            asynchronous:true, 
+                            evalScripts:true, 
+                            parameters:'student_id='+<%= @student.id %>+'&collection_fees=<%= @collection_fees.to_s %>'+'&order_id='+j("#fees_form").find("input#order_id").val()+'&total_fees='+<%= total_fees %>+'&multiple=1'
+                          }
+                    )
+                    //alert(data.errorMessage);
+
+                }
+            });
+
+        }
+        else
+        {
+          j("#submit_button_multiple").trigger('click');
+        }
+    }
     j(document).ready(function(){
-        var paymentID;
-        var id_token;
-        var bkashLoad = false;
         <% if @gateway_settings.keys.include?('bkash')  %>
         bKash.init({ 
           paymentMode: 'checkout', //fixed value ‘checkout’ 
@@ -1434,9 +1560,30 @@ encrypted = [cipher].pack('m')
           }, 
           onClose : function () {
               bkashLoad = false;
+              bKash.create().onError(); 
               j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
               j("#pay_fees_multiple").removeClass('gateway_image_single_bkash_disabled');
               j(".loading_single_bkash").hide();
+              j("#bKashFrameWrapper").css('display','none');
+              
+              j("#pay_fees_multiple").addClass('gateway_image_single_bkash_disabled');
+              j("#pay_fees_multiple").attr('id',"pay_fees_multiple_1");
+              j(".loading_single_bkash").show();
+              
+              new Ajax.Request('/student/regenerate_order_id', 
+                    {
+                      asynchronous:true, 
+                      evalScripts:true, 
+                      parameters:'student_id='+<%= @student.id %>+'&collection_fees=<%= @collection_fees.to_s %>'+'&order_id='+j("#fees_form").find("input#order_id").val()+'&total_fees='+<%= total_fees %>+'&multiple=1'
+                    }
+              )
+              
+              /*alert()
+              alert(j("#fees_form").find("input#order_id").length)
+              alert()
+              alert(j("#data-form-val").children("input#order_id").length)*/
+              
+              
           },
           executeRequestOnAuthorization: function() { 
             j("#bKashFrameWrapper").css('display','none');
@@ -1456,25 +1603,38 @@ encrypted = [cipher].pack('m')
                         j("#pay_fees_multiple").removeClass('gateway_image_single_bkash_disabled');
                         j(".loading_single_bkash").hide();
                         j("#bKashFrameWrapper").css('display','none');
-                        location.reload();
+                        j('#success_label').html("Thanks for your payment, payment was Successfull. Your order ID is: " + j("#fees_form").find("input#order_id").val());
+                        j("#paymentModalSuccess").modal();
+                        j("#pay_fees_multiple").remove();
+                        //location.reload();
                       } 
                       else 
                       { 
                         bKash.create().onError(); 
                         j('#error_label').html(data.errorMessage);
                         j("#paymentModal").modal();
-                        j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
-                        j("#pay_fees_multiple").removeClass('gateway_image_single_bkash_disabled');
-                        j(".loading_single_bkash").hide();                        
+                        j("#bKashFrameWrapper").css('display','none');
+                        new Ajax.Request('/student/regenerate_order_id', 
+                              {
+                                asynchronous:true, 
+                                evalScripts:true, 
+                                parameters:'student_id='+<%= @student.id %>+'&collection_fees=<%= @collection_fees.to_s %>'+'&order_id='+j("#fees_form").find("input#order_id").val()+'&total_fees='+<%= total_fees %>+'&multiple=1'
+                              }
+                        )
                       } 
                 },
                 error: function () {
                     bKash.create().onError(); 
                     j('#error_label').html(data.errorMessage);
                     j("#paymentModal").modal();
-                    j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
-                    j("#pay_fees_multiple").removeClass('gateway_image_single_bkash_disabled');
-                    j(".loading_single_bkash").hide();
+                    j("#bKashFrameWrapper").css('display','none');
+                    new Ajax.Request('/student/regenerate_order_id', 
+                          {
+                            asynchronous:true, 
+                            evalScripts:true, 
+                            parameters:'student_id='+<%= @student.id %>+'&collection_fees=<%= @collection_fees.to_s %>'+'&order_id='+j("#fees_form").find("input#order_id").val()+'&total_fees='+<%= total_fees %>+'&multiple=1'
+                          }
+                    )
                     //alert(data.errorMessage);
                 }
             });
@@ -1491,88 +1651,10 @@ encrypted = [cipher].pack('m')
             }
         });
         
-        j(document).on("click", "#pay_fees_multiple", function(){
-            if ( j("#user_gateway").val() == 'bkash' )
-            {
-                j(this).addClass('gateway_image_single_bkash_disabled');
-                j(".loading_single_bkash").show();
-                j(this).prop('disabled',true);
-                j(this).html("<i class='fa fa-spin fa-spinner'></i> Please wait...");
+        /*j(document).on("click", "#pay_fees_multiple", function(){
+          alert('here ');
             
-                j(this).prop('disabled',true);
-                j(this).html("<i class='fa fa-spin fa-spinner'></i> Pay Fees");
-                
-                j(this).attr('id',"pay_fees_multiple_1");
-                
-                j.ajax({
-                    url: '/student/generate_bkash_token',
-                    type: 'POST',
-                    data: j("#fees_form").serialize() + "&student_id=<%= @student.id %>",
-                    success: function (data) {
-                          if ( ! data.id_token )
-                          {
-                              j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
-                              j("#pay_fees_multiple").removeClass('gateway_image_single_bkash_disabled');
-                              j(".loading_single_bkash").hide();
-                              j('#error_label').html(data.errorMessage);
-                              j("#paymentModal").modal();
-                              //alert(data.errorMessage);
-                          }
-                          else
-                          {
-                              id_token = data.id_token;
-                              j.ajax({
-                                  url: '/student/generate_bkash_payment',
-                                  type: 'POST',
-                                  data: j("#data-form-val").serialize() + "&id_token=" + data.id_token + "&gateway=bkash",
-                                  success: function (data) {
-                                        j(".loading_single_bkash").hide();
-                                        j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
-                                        j("#pay_fees_multiple").removeClass('gateway_image_single_bkash_disabled');
-                                        if (data && data.paymentID != null) 
-                                        {
-                                          bkashLoad = true;
-                                          j("#bKashFrameWrapper").css('display','block');
-                                          j("#close_pop").trigger('click');
-                                          paymentID = data.paymentID; 
-                                          bKash.create().onSuccess(data); //pass the whole response data in bKash.create().onSucess() method as a parameter 
-                                        } 
-                                        else 
-                                        { 
-                                          j('#error_label').html(data.errorMessage);
-                                          j("#paymentModal").modal();
-                                          //alert(data.errorMessage);
-                                        } 
-                                  },
-                                  error: function () {
-                                      j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
-                                      j("#pay_fees_multiple").removeClass('gateway_image_single_bkash_disabled');
-                                      j(".loading_single_bkash").hide();
-                                      j('#error_label').html(data.errorMessage);
-                                      j("#paymentModal").modal();
-                                      //alert(data.errorMessage);
-                                  }
-                              });
-                          }
-                    },
-                    error: function () {
-                        j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
-                        j("#pay_fees_multiple").removeClass('gateway_image_single_bkash_disabled');
-                        j(".loading_single_bkash").hide();
-                        //bKash.create().onError();//run clean up code
-                        j('#error_label').html("Error in payment");
-                        j("#paymentModal").modal();
-                        //alert(data.errorMessage);
-
-                    }
-                });
-
-            }
-            else
-            {
-              j("#submit_button_multiple").trigger('click');
-            }
-        });
+        });*/
       
         j(document).on("click", ".gateway_image_panel", function(){
             var gateway = j(this).data('gateway');

@@ -1006,7 +1006,7 @@
                       <% if @gateway_settings.length == 1 %>
                         <% if @gateway_settings.keys.include?('bkash') %>
                         <i class='fa fa-spin fa-spinner loading_single_bkash' style="position: absolute; right: 10px; top: 5px; display: none;"></i>
-                        <%= image_tag "/images/bkash-logo.png", :class => "gateway_image_single_bkash", :id => "pay_fees_multiple", :style => "" %>
+                        <%= image_tag "/images/bkash-logo.png", :class => "gateway_image_single_bkash", :id => "pay_fees_multiple", :style => "", :onclick => "initBkash(this);" %>
                         <!--button type="button" id="pay_fees_multiple" class="submit_button"><%#= "► #{t('pay_fees')}" %></button-->
                         <% else %>
                         <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button' %>
@@ -1103,39 +1103,35 @@
     
     <% if @gateway_settings.keys.include?('bkash')  %>
       <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-body">
-                <div style="width: 100%; text-align: center;">
-                    <h1>Pay Summary</h1>
-                    <hr />
-                    <div style=" text-align: left; padding: 10px;">
-                        <div style="width: 24%; text-align: left; display: inline-block;font-size: 15px;padding: 6px;font-weight: bold; border: 1px solid #ccc;">Fees Name:</div>
-                        <div style="width: 70%; text-align: left; display: inline-block;font-size: 15px;padding: 6px;font-weight: bold; border: 1px solid #ccc;"><%= fee_collection_name %></div>
-                    </div>
-
-                    <div style=" text-align: left; padding: 10px;">
-                        <div style="width: 70%; text-align: right; display: inline-block;font-size: 18px;padding: 6px;font-weight: bold; border: 1px solid #ccc;">Fees Summary:</div>
-                        <div style="width: 24%; text-align: right; display: inline-block;font-size: 18px;padding: 6px;font-weight: bold; border: 1px solid #ccc;"><%= to_comma_seperated_precision_label(total_fees) %></div>
-                    </div>
-                    <div style="width: 98%; text-align: right; ">
-                      <% @gateway_settings.each do |key,value| %>
-                          <div class="gateway_image_panel-new" data-gateway="<%= key %>" style="position: relative;">
-                              <input type="radio" id="radio_<%= key %>_new" name="gateway_radio_new" class="gateway_radio_new" value="<%= key %>" style="position: absolute; top: 0; right: 4px;" autocomplete="off" />
-                              <%= image_tag "/images/gateway_images/#{key}-ico.png", :class => "gateway_image_new", :id => "#{key}" %>
-                          </div>
-                      <% end %>
-
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="close_pop_" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" id="pay_now_multi_new" class="btn btn-primary" disabled=""><%= "► #{t('pay_fees')}" %></button>
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                  <div style="width: 100%; text-align: center;">
+                      <h1><i class="fa fa-exclamation-circle" aria-hidden="true" style="color: #ED1C24; font-size: 70px;"></i><br />
+                        <label id="error_label" style="font-size: 24px;">Error in payment</label></h1>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" id="close_pop_" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+        <div class="modal fade" id="paymentModalSuccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                  <div style="width: 100%; text-align: center;">
+                      <h1><i class="fa fa-check" aria-hidden="true" style="color: #49BB4B; font-size: 60px;"></i><br />
+                        <label id="success_label" style="font-size: 20px;">Successful Payment</label></h1>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" id="close_pop_" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
     <% end %>   
     <%
       require "openssl"
@@ -1313,11 +1309,130 @@
     }
 </style>
 <script>
-  
+    var paymentID;
+    var id_token;
+    var bkashLoad = false;
+    function initBkash(obj){
+        if ( j(obj).hasClass('gateway_image_single_bkash_disabled') )
+        {
+            return ;
+        }
+        if ( j("#user_gateway").val() == 'bkash' )
+        {
+            j(obj).addClass('gateway_image_single_bkash_disabled');
+            j(".loading_single_bkash").show();
+            j(obj).prop('disabled',true);
+            j(obj).html("<i class='fa fa-spin fa-spinner'></i> Please wait...");
+
+            j(obj).prop('disabled',true);
+            j(obj).html("<i class='fa fa-spin fa-spinner'></i> Pay Fees");
+
+            j(obj).attr('id',"pay_fees_multiple_1");
+
+            j.ajax({
+                url: '/student/generate_bkash_token',
+                type: 'POST',
+                data: j("#fees_form").serialize() + "&student_id=<%= @student.id %>",
+                success: function (data) {
+                      if ( ! data.id_token )
+                      {
+                          j('#error_label').html(data.errorMessage);
+                          j("#paymentModal").modal();
+                          j("#bKashFrameWrapper").css('display','none');
+                          j.ajax({
+                              url: '/student/regenerate_order_id',
+                              type: 'POST',
+                              data: 'student_id='+<%= @student.id %>+'&fee_id=<%= @financefee.id.to_s %>'+'&order_id='+j("#fees_form").find("input#order_id").val()+'&total_fees='+<%= total_fees %>+'&multiple=0',
+                              success: function (data) {
+                              },
+                              error: function () {
+
+                              }
+                          });
+                          //alert(data.errorMessage);
+                      }
+                      else
+                      {
+                          id_token = data.id_token;
+                          j.ajax({
+                              url: '/student/generate_bkash_payment',
+                              type: 'POST',
+                              data: j("#data-form-val").serialize() + "&id_token=" + data.id_token + "&gateway=bkash",
+                              success: function (data) {
+                                    j(".loading_single_bkash").hide();
+                                    j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
+                                    j("#pay_fees_multiple").removeClass('gateway_image_single_bkash_disabled');
+                                    if (data && data.paymentID != null) 
+                                    {
+                                      bkashLoad = true;
+                                      j("#bKashFrameWrapper").css('display','block');
+                                      j("#close_pop").trigger('click');
+                                      paymentID = data.paymentID; 
+                                      bKash.create().onSuccess(data); //pass the whole response data in bKash.create().onSucess() method as a parameter 
+                                    } 
+                                    else 
+                                    { 
+                                      j('#error_label').html(data.errorMessage);
+                                      j("#paymentModal").modal();
+                                      j("#bKashFrameWrapper").css('display','none');
+                                      j.ajax({
+                                          url: '/student/regenerate_order_id',
+                                          type: 'POST',
+                                          data: 'student_id='+<%= @student.id %>+'&fee_id=<%= @financefee.id.to_s %>'+'&order_id='+j("#fees_form").find("input#order_id").val()+'&total_fees='+<%= total_fees %>+'&multiple=0',
+                                          success: function (data) {
+                                          },
+                                          error: function () {
+
+                                          }
+                                      });
+                                      //alert(data.errorMessage);
+                                    } 
+                              },
+                              error: function () {
+                                  j('#error_label').html(data.errorMessage);
+                                  j("#paymentModal").modal();
+                                  j("#bKashFrameWrapper").css('display','none');
+                                  j.ajax({
+                                      url: '/student/regenerate_order_id',
+                                      type: 'POST',
+                                      data: 'student_id='+<%= @student.id %>+'&fee_id=<%= @financefee.id.to_s %>'+'&order_id='+j("#fees_form").find("input#order_id").val()+'&total_fees='+<%= total_fees %>+'&multiple=0',
+                                      success: function (data) {
+                                      },
+                                      error: function () {
+
+                                      }
+                                  });
+                                  //alert(data.errorMessage);
+                              }
+                          });
+                      }
+                },
+                error: function () {
+                    j('#error_label').html("Error in payment");
+                    j("#paymentModal").modal();
+                    j("#bKashFrameWrapper").css('display','none');
+                    j.ajax({
+                        url: '/student/regenerate_order_id',
+                        type: 'POST',
+                        data: 'student_id='+<%= @student.id %>+'&fee_id=<%= @financefee.id.to_s %>'+'&order_id='+j("#fees_form").find("input#order_id").val()+'&total_fees='+<%= total_fees %>+'&multiple=0',
+                        success: function (data) {
+                        },
+                        error: function () {
+
+                        }
+                    });
+                    //alert(data.errorMessage);
+
+                }
+            });
+
+        }
+        else
+        {
+          j("#submit_button_multiple").trigger('click');
+        }
+    }
     j(document).ready(function(){
-        var paymentID;
-        var id_token;
-        var bkashLoad = false;
         <% if @gateway_settings.keys.include?('bkash')  %>
         bKash.init({ 
           paymentMode: 'checkout', //fixed value ‘checkout’ 
@@ -1335,6 +1450,18 @@
               j("#bKashFrameWrapper").css('display','none');
               j("#pay_fees_multiple").prop('disabled',false);
               j("#pay_fees_multiple").html("<%= "► #{t('pay_fees')}" %>");
+              j("#bKashFrameWrapper").css('display','none');
+              
+              j.ajax({
+                  url: '/student/regenerate_order_id',
+                  type: 'POST',
+                  data: 'student_id='+<%= @student.id %>+'&fee_id=<%= @financefee.id.to_s %>'+'&order_id='+j("#fees_form").find("input#order_id").val()+'&total_fees='+<%= total_fees %>+'&multiple=0',
+                  success: function (data) {
+                  },
+                  error: function () {
+                     
+                  }
+              });
           },
           executeRequestOnAuthorization: function() { 
             j("#bKashFrameWrapper").css('display','none');
@@ -1349,7 +1476,9 @@
                       if (data && data.paymentID != null) 
                       {
                         j("#bKashFrameWrapper").css('display','none');
-                        location.reload();
+                        alert("Thanks for your payment, payment was Successfull. Your order ID is: " + j("#fees_form").find("input#order_id").val());
+                        j("#pay_fees_multiple").remove();
+                        //location.reload();
                       } 
                       else 
                       { 
@@ -1357,14 +1486,34 @@
                         alert(data.errorMessage);
                         j("#pay_fees_multiple").prop('disabled',false);
                         j("#pay_fees_multiple").html("<%= "► #{t('pay_fees')}" %>");
+                        j("#bKashFrameWrapper").css('display','none');
+                        j.ajax({
+                            url: '/student/regenerate_order_id',
+                            type: 'POST',
+                            data: 'student_id='+<%= @student.id %>+'&fee_id=<%= @financefee.id.to_s %>'+'&order_id='+j("#fees_form").find("input#order_id").val()+'&total_fees='+<%= total_fees %>+'&multiple=0',
+                            success: function (data) {
+                            },
+                            error: function () {
 
+                            }
+                        });
                       } 
                 },
                 error: function () {
                     j("#pay_fees_multiple").prop('disabled',false);
                     j("#pay_fees_multiple").html("<%= "► #{t('pay_fees')}" %>");
-                    
+                    j("#bKashFrameWrapper").css('display','none');
                     bKash.create().onError(); 
+                    j.ajax({
+                        url: '/student/regenerate_order_id',
+                        type: 'POST',
+                        data: 'student_id='+<%= @student.id %>+'&fee_id=<%= @financefee.id.to_s %>'+'&order_id='+j("#fees_form").find("input#order_id").val()+'&total_fees='+<%= total_fees %>+'&multiple=0',
+                        success: function (data) {
+                        },
+                        error: function () {
+
+                        }
+                    });
 
                 }
             });
@@ -1380,7 +1529,7 @@
             }
         });
         
-        j(document).on("click", "#pay_fees_multiple", function(){
+        /*j(document).on("click", "#pay_fees_multiple", function(){
             if ( j("#user_gateway").val() == 'bkash' )
             {
                 j(this).addClass('gateway_image_single_bkash_disabled');
@@ -1461,7 +1610,7 @@
             {
               j("#submit_button_multiple").trigger('click');
             }
-        });
+        });*/
       
         j(document).on("click", ".gateway_image_panel", function(){
             var gateway = j(this).data('gateway');

@@ -1467,12 +1467,49 @@ class HomeworkController extends Controller
                                 $homework->attachment_content_type = Yii::app()->request->getPost('mime_type');
                                 $homework->attachment_file_size = Yii::app()->request->getPost('file_size');
                                 $origin = $this->upload_homework($_FILES, $homework);
-                            } else
+                            } 
+                            else
                             {
                                 $homework->updated_at = date("Y-m-d H:i:s");
                                 $homework->attachment_content_type = Yii::app()->request->getPost('mime_type');
                                 $homework->attachment_file_size = Yii::app()->request->getPost('file_size');
                                 $origin = $this->copy_homework($origin, $file_name_main, $homework);
+                            }
+                        }
+                        
+                        if (isset($_FILES['attachment2_file_name']['name']) && !empty($_FILES['attachment2_file_name']['name']))
+                        {
+                            if (!isset($file_name_main2) && !isset($origin2))
+                            {
+                                $file_name_main2 = $_FILES['attachment2_file_name']['name'];
+                                $homework->attachment2_content_type = Yii::app()->request->getPost('mime_type2');
+                                $homework->attachment2_file_size = Yii::app()->request->getPost('file_size2');
+                                $origin2 = $this->upload_homework2($_FILES, $homework);
+                            } 
+                            else
+                            {
+                                
+                                $homework->attachment2_content_type = Yii::app()->request->getPost('mime_type2');
+                                $homework->attachment2_file_size = Yii::app()->request->getPost('file_size2');
+                                $origin = $this->copy_homework2($origin2, $file_name_main2, $homework);
+                            }
+                        }
+                        
+                        if (isset($_FILES['attachment3_file_name']['name']) && !empty($_FILES['attachment3_file_name']['name']))
+                        {
+                            if (!isset($file_name_main3) && !isset($origin3))
+                            {
+                                $file_name_main3 = $_FILES['attachment3_file_name']['name'];
+                                $homework->attachment3_content_type = Yii::app()->request->getPost('mime_type3');
+                                $homework->attachment3_file_size = Yii::app()->request->getPost('file_size3');
+                                $origin3 = $this->upload_homework3($_FILES, $homework);
+                            } 
+                            else
+                            {
+                              
+                                $homework->attachment3_content_type = Yii::app()->request->getPost('mime_type3');
+                                $homework->attachment3_file_size = Yii::app()->request->getPost('file_size3');
+                                $origin = $this->copy_homework3($origin3, $file_name_main3, $homework);
                             }
                         }
 
@@ -1655,6 +1692,26 @@ class HomeworkController extends Controller
 
                 }
                 
+                if (isset($_FILES['attachment2_file_name']['name']) && !empty($_FILES['attachment2_file_name']['name']))
+                {
+
+                    $file_name_main = $_FILES['attachment2_file_name']['name'];
+                    $assignment_answer->attachment2_content_type = Yii::app()->request->getPost('mime_type');
+                    $assignment_answer->attachment2_file_size = Yii::app()->request->getPost('file_size');
+                    $this->upload_homework_ans2($_FILES, $assignment_answer);
+
+                }
+                
+                if (isset($_FILES['attachment3_file_name']['name']) && !empty($_FILES['attachment3_file_name']['name']))
+                {
+
+                    $file_name_main = $_FILES['attachment3_file_name']['name'];
+                    $assignment_answer->attachment3_content_type = Yii::app()->request->getPost('mime_type3');
+                    $assignment_answer->attachment3_file_size = Yii::app()->request->getPost('file_size3');
+                    $this->upload_homework_ans3($_FILES, $assignment_answer);
+
+                }
+                
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Successfully Saved";
                 //}
@@ -1775,5 +1832,295 @@ class HomeworkController extends Controller
             Yii::app()->end();
         }
     }
+    
+    
+    private function upload_homework_ans3($file, $homework)
+    {
+        $homework->attachment3_updated_at = date("Y-m-d H:i:s");
+
+        $home_work_id = strlen($homework->assignment_id);
+        
+        $new_id = "";
+        $diff = 9-$home_work_id;
+        for($i = 0; $i<$diff; $i++)
+        {
+            $new_id = $new_id."0";
+        }
+        $new_id = $new_id."".$homework->assignment_id;
+        
+        $ass_ids = str_split($new_id, 3);
+        
+        $home_school_id = strlen($homework->school_id);
+        
+        $new_id = "";
+        $diff = 9-$home_school_id;
+        for($i = 0; $i<$diff; $i++)
+        {
+            $new_id = $new_id."0";
+        }
+        $new_id = $new_id."".$homework->school_id;
+        
+        $school_ids = str_split($new_id, 3);
+
+        $uploads_dir = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment3s/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/attach3/";
+        
+        $file_name = $file['attachment3_file_name']['name'];
+        $tmp_name = $file["attachment3_file_name"]["tmp_name"];
+
+        if (!is_dir($uploads_dir))
+        {
+            @mkdir($uploads_dir, 0777, true);
+            
+            $uploads_dir1 = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/";
+            @chmod($uploads_dir1, 0777);
+            $uploads_dir2 = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment3s/".$ass_ids[0]."/";
+            @chmod($uploads_dir2, 0777);
+            $uploads_dir3 = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment3s/".$ass_ids[0]."/".$ass_ids[1]."/";
+            @chmod($uploads_dir3, 0777);
+            $uploads_dir4 = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment3s/".$ass_ids[0]."/".$ass_ids[1]."/attach3/";
+            @chmod($uploads_dir4, 0777);
+            @chmod($uploads_dir, 0777);
+        }
+
+        $uploads_dir = $uploads_dir . $file_name;
+        
+
+        if (@move_uploaded_file($tmp_name, "$uploads_dir"))
+        {
+            $homework->attachment3_file_name = $file['attachment3_file_name']['name'];
+            $homework->save();
+        }
+        return $uploads_dir;
+    }
+    
+    
+    private function upload_homework_ans2($file, $homework)
+    {
+        $homework->attachment2_updated_at = date("Y-m-d H:i:s");
+
+        $home_work_id = strlen($homework->assignment_id);
+        
+        $new_id = "";
+        $diff = 9-$home_work_id;
+        for($i = 0; $i<$diff; $i++)
+        {
+            $new_id = $new_id."0";
+        }
+        $new_id = $new_id."".$homework->assignment_id;
+        
+        $ass_ids = str_split($new_id, 3);
+        
+        $home_school_id = strlen($homework->school_id);
+        
+        $new_id = "";
+        $diff = 9-$home_school_id;
+        for($i = 0; $i<$diff; $i++)
+        {
+            $new_id = $new_id."0";
+        }
+        $new_id = $new_id."".$homework->school_id;
+        
+        $school_ids = str_split($new_id, 3);
+
+        $uploads_dir = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment2s/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/attach2/";
+        
+        $file_name = $file['attachment2_file_name']['name'];
+        $tmp_name = $file["attachment2_file_name"]["tmp_name"];
+
+        if (!is_dir($uploads_dir))
+        {
+            @mkdir($uploads_dir, 0777, true);
+            
+            $uploads_dir1 = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/";
+            @chmod($uploads_dir1, 0777);
+            $uploads_dir2 = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment2s/".$ass_ids[0]."/";
+            @chmod($uploads_dir2, 0777);
+            $uploads_dir3 = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment2s/".$ass_ids[0]."/".$ass_ids[1]."/";
+            @chmod($uploads_dir3, 0777);
+            $uploads_dir4 = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment2s/".$ass_ids[0]."/".$ass_ids[1]."/attach2/";
+            @chmod($uploads_dir4, 0777);
+            @chmod($uploads_dir, 0777);
+        }
+
+        $uploads_dir = $uploads_dir . $file_name;
+        
+
+        if (@move_uploaded_file($tmp_name, "$uploads_dir"))
+        {
+            $homework->attachment2_file_name = $file['attachment2_file_name']['name'];
+            $homework->save();
+        }
+        return $uploads_dir;
+    }
+
+    private function upload_homework2($file, $homework)
+    {
+        
+        if( !$homework->updated_at )
+        {
+            $homework->updated_at = date("Y-m-d H:i:s");
+        }
+        $attachment_datetime_chunk = explode(" ", $homework->updated_at);
+
+        $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
+        $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);
+
+        $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
+        $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
+
+        $uploads_dir = Settings::$paid_image_path . "uploads/assignments/attachment2s/" . $homework->id . "/original/";
+        $file_name = str_replace(" ", "+", $file['attachment2_file_name']['name']) . "?" . $attachment_extra;
+        $tmp_name = $file["attachment2_file_name"]["tmp_name"];
+
+        if (!is_dir($uploads_dir))
+        {
+            $uploads_dir_main = Settings::$paid_image_path . "uploads/assignments/";
+            @chmod($uploads_dir_main, 0777);
+            mkdir($uploads_dir, 0777, true);
+            $uploads_dir1 = Settings::$paid_image_path . "uploads/assignments/attachment2s/";
+            @chmod($uploads_dir1, 0777);
+            $uploads_dir2 = Settings::$paid_image_path . "uploads/assignments/attachment2s/" . $homework->id . "/";
+            @chmod($uploads_dir2, 0777);
+            @chmod($uploads_dir, 0777);
+            
+        }
+
+        $uploads_dir = $uploads_dir . $file_name;
+
+
+        if (@move_uploaded_file($tmp_name, "$uploads_dir"))
+        {
+            $homework->attachment2_file_name = $file['attachment2_file_name']['name'];
+            $homework->save();
+        }
+        return $uploads_dir;
+    }
+
+    private function copy_homework2($origin, $file_name, $homework)
+    {
+        if( !$homework->updated_at )
+        {
+            $homework->updated_at = date("Y-m-d H:i:s");
+        }
+
+        $attachment_datetime_chunk = explode(" ", $homework->updated_at);
+
+        $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
+        $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);
+
+        $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
+        $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
+
+        $uploads_dir = Settings::$paid_image_path . "uploads/assignments/attachment2s/" . $homework->id . "/original/";
+        $file_name_new = str_replace(" ", "+", $file_name) . "?" . $attachment_extra;
+
+
+        if (!is_dir($uploads_dir))
+        {
+            $uploads_dir_main = Settings::$paid_image_path . "uploads/assignments/";
+            @chmod($uploads_dir_main, 0777);
+            @mkdir($uploads_dir, 0777, true);
+            $uploads_dir1 = Settings::$paid_image_path . "uploads/assignments/attachment2s/";
+            @chmod($uploads_dir1, 0777);
+            $uploads_dir2 = Settings::$paid_image_path . "uploads/assignments/attachment2s/" . $homework->id . "/";
+            @chmod($uploads_dir2, 0777);
+            @chmod($uploads_dir, 0777);
+        }
+
+        $uploads_dir = $uploads_dir . $file_name_new;
+
+
+        if (@copy($origin, "$uploads_dir"))
+        {
+            $homework->attachment2_file_name = $file_name;
+            $homework->save();
+        }
+        return $uploads_dir;
+    }
+    
+    private function upload_homework3($file, $homework)
+    {
+        
+        if( !$homework->updated_at )
+        {
+            $homework->updated_at = date("Y-m-d H:i:s");
+        }
+        $attachment_datetime_chunk = explode(" ", $homework->updated_at);
+
+        $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
+        $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);
+
+        $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
+        $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
+
+        $uploads_dir = Settings::$paid_image_path . "uploads/assignments/attachment3s/" . $homework->id . "/original/";
+        $file_name = str_replace(" ", "+", $file['attachment3_file_name']['name']) . "?" . $attachment_extra;
+        $tmp_name = $file["attachment3_file_name"]["tmp_name"];
+
+        if (!is_dir($uploads_dir))
+        {
+            $uploads_dir_main = Settings::$paid_image_path . "uploads/assignments/";
+            @chmod($uploads_dir_main, 0777);
+            @mkdir($uploads_dir, 0777, true);
+            $uploads_dir1 = Settings::$paid_image_path . "uploads/assignments/attachment3s/";
+            @chmod($uploads_dir1, 0777);
+            $uploads_dir2 = Settings::$paid_image_path . "uploads/assignments/attachment3s/" . $homework->id . "/";
+            @chmod($uploads_dir2, 0777);
+            @chmod($uploads_dir, 0777);
+        }
+
+        $uploads_dir = $uploads_dir . $file_name;
+
+
+        if (@move_uploaded_file($tmp_name, "$uploads_dir"))
+        {
+            $homework->attachment3_file_name = $file['attachment3_file_name']['name'];
+            $homework->save();
+        }
+        return $uploads_dir;
+    }
+
+    private function copy_homework3($origin, $file_name, $homework)
+    {
+        if( !$homework->updated_at )
+        {
+            $homework->updated_at = date("Y-m-d H:i:s");
+        }
+
+        $attachment_datetime_chunk = explode(" ", $homework->updated_at);
+
+        $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
+        $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);
+
+        $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
+        $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
+
+        $uploads_dir = Settings::$paid_image_path . "uploads/assignments/attachment3s/" . $homework->id . "/original/";
+        $file_name_new = str_replace(" ", "+", $file_name) . "?" . $attachment_extra;
+
+
+        if (!is_dir($uploads_dir))
+        {
+            $uploads_dir_main = Settings::$paid_image_path . "uploads/assignments/";
+            @chmod($uploads_dir_main, 0777);
+            @mkdir($uploads_dir, 0777, true);
+            $uploads_dir1 = Settings::$paid_image_path . "uploads/assignments/attachment3s/";
+            @chmod($uploads_dir1, 0777);
+            $uploads_dir2 = Settings::$paid_image_path . "uploads/assignments/attachment3s/" . $homework->id . "/";
+            @chmod($uploads_dir2, 0777);
+            @chmod($uploads_dir, 0777);
+        }
+
+        $uploads_dir = $uploads_dir . $file_name_new;
+
+
+        if (@copy($origin, "$uploads_dir"))
+        {
+            $homework->attachment3_file_name = $file_name;
+            $homework->save();
+        }
+        return $uploads_dir;
+    }
+
 
 }

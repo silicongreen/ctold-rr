@@ -1423,11 +1423,20 @@ class AssignmentsController < ApplicationController
   
   def download_attachment
     #download the  attached file
+    @number = params[:number]
     @assignment =Assignment.active.find params[:id]
     unless @assignment.nil?
       if @assignment.download_allowed_for(current_user)
-        filename = @assignment.attachment_file_name
-        send_file  @assignment.attachment.path , :type=>@assignment.attachment.content_type,:filename => filename
+        if @number.blank? or @number.to_i == 1
+          filename = @assignment.attachment_file_name
+          send_file  @assignment.attachment.path , :type=>@assignment.attachment.content_type,:filename => filename
+        elsif @number.to_i == 2
+          filename = @assignment.attachment2_file_name
+          send_file  @assignment.attachment2.path , :type=>@assignment.attachment2.content_type,:filename => filename
+        elsif @number.to_i == 3
+          filename = @assignment.attachment3_file_name
+          send_file  @assignment.attachment3.path , :type=>@assignment.attachment3.content_type,:filename => filename
+        end  
       else
         flash[:notice] = "#{t('you_are_not_allowed_to_download_that_file')}"
         redirect_to :controller=>:assignments
@@ -1437,6 +1446,9 @@ class AssignmentsController < ApplicationController
       redirect_to :controller=>:user ,:action=>:dashboard
     end
   end
+  
+  
+   
 
   def load_data
     @subject = @assignment.subject

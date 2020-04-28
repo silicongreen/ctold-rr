@@ -41,12 +41,17 @@ class FreeuserController extends Controller
     public function actionDownloadAns()
     {
 
+        $number = 0;
         $id = $_GET['id'];
+        if( isset($_GET['number']) )
+        {
+            $number = $_GET['number'];
+        }
         if ($id)
         {
             $assignment_ans = new AssignmentAnswers();
             $homework = $assignment_ans->findByPk($id);
-            if ($homework->attachment_file_name)
+            if ($homework->attachment_file_name or $homework->attachment2_file_name or $homework->attachment3_file_name)
             {
                $home_work_id = strlen($homework->assignment_id);
         
@@ -71,12 +76,34 @@ class FreeuserController extends Controller
                 $new_id = $new_id."".$homework->school_id;
 
                 $school_ids = str_split($new_id, 3);
-                $url = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachments/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/".$homework->attachment_file_name;
+                if( $number == 2 && $homework->attachment2_file_name)
+                {
+                    $url = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment2s/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/attach2/".$homework->attachment2_file_name;
 
-                header("Content-Disposition: attachment; filename=" . $homework->attachment_file_name);
-                header("Content-Type: {$homework->attachment_content_type}");
-                header("Content-Length: " . $homework->attachment_file_size);
-                readfile($url);
+                    header("Content-Disposition: attachment; filename=" . $homework->attachment2_file_name);
+                    header("Content-Type: {$homework->attachment2_content_type}");
+                    header("Content-Length: " . $homework->attachment2_file_size);
+                    readfile($url);
+                    
+                }
+                else if( $number == 3 && $homework->attachment3_file_name )
+                {
+                   $url = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment3s/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/attach3/".$homework->attachment3_file_name;
+
+                    header("Content-Disposition: attachment; filename=" . $homework->attachment3_file_name);
+                    header("Content-Type: {$homework->attachment3_content_type}");
+                    header("Content-Length: " . $homework->attachmen3_file_size);
+                    readfile($url); 
+                }
+                else
+                {    
+                    $url = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachments/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/".$homework->attachment_file_name;
+
+                    header("Content-Disposition: attachment; filename=" . $homework->attachment_file_name);
+                    header("Content-Type: {$homework->attachment_content_type}");
+                    header("Content-Length: " . $homework->attachment_file_size);
+                    readfile($url);
+                }
             }
             else
             {
@@ -131,6 +158,7 @@ class FreeuserController extends Controller
                 $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
                 $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
 
+               
                 $url = Settings::$paid_image_path . "uploads/lessonplans/attachments/" . $id . "/original/" . str_replace(" ", "+", $lessonplantobj->attachment_file_name) . "?" . $attachment_extra;
 
                 header("Content-Disposition: attachment; filename=" . $lessonplantobj->attachment_file_name);
@@ -144,12 +172,17 @@ class FreeuserController extends Controller
     public function actionDownloadAttachment()
     {
 
+        $number = 0;
         $id = $_GET['id'];
+        if( isset($_GET['number']) )
+        {
+            $number = $_GET['number'];
+        }
         if ($id)
         {
             $assignment = new Assignments();
             $assignmentobj = $assignment->findByPk($id);
-            if ($assignmentobj->attachment_file_name)
+            if ($assignmentobj->attachment_file_name or $assignmentobj->attachment2_file_name or $assignmentobj->attachment3_file_name)
             {
                 $attachment_datetime_chunk = explode(" ", $assignmentobj->updated_at);
 
@@ -159,12 +192,36 @@ class FreeuserController extends Controller
                 $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
                 $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
 
-                $url = Settings::$paid_image_path . "uploads/assignments/attachments/" . $id . "/original/" . urlencode($assignmentobj->attachment_file_name) . "?" . $attachment_extra;
+                if( $number == 2 && $homework->attachment2_file_name)
+                {
+                    $url = Settings::$paid_image_path . "uploads/assignments/attachment2s/" . $id . "/original/" . urlencode($assignmentobj->attachment2_file_name) . "?" . $attachment_extra;
 
-                header("Content-Disposition: attachment; filename=" . $assignmentobj->attachment_file_name);
-                header("Content-Type: {$assignmentobj->attachment_content_type}");
-                header("Content-Length: " . $assignmentobj->attachment_file_size);
-                readfile($url);
+                    header("Content-Disposition: attachment; filename=" . $assignmentobj->attachment2_file_name);
+                    header("Content-Type: {$assignmentobj->attachment2_content_type}");
+                    header("Content-Length: " . $assignmentobj->attachment2_file_size);
+                    readfile($url); 
+                    
+                }
+                else if( $number == 3 && $homework->attachment3_file_name)
+                {
+                    $url = Settings::$paid_image_path . "uploads/assignments/attachment3s/" . $id . "/original/" . urlencode($assignmentobj->attachment3_file_name) . "?" . $attachment_extra;
+
+                    header("Content-Disposition: attachment; filename=" . $assignmentobj->attachment3_file_name);
+                    header("Content-Type: {$assignmentobj->attachment3_content_type}");
+                    header("Content-Length: " . $assignmentobj->attachment3_file_size);
+                    readfile($url); 
+                }    
+                else 
+                {
+                    $url = Settings::$paid_image_path . "uploads/assignments/attachments/" . $id . "/original/" . urlencode($assignmentobj->attachment_file_name) . "?" . $attachment_extra;
+
+                    header("Content-Disposition: attachment; filename=" . $assignmentobj->attachment_file_name);
+                    header("Content-Type: {$assignmentobj->attachment_content_type}");
+                    header("Content-Length: " . $assignmentobj->attachment_file_size);
+                    readfile($url); 
+                }   
+                    
+                
             }
             else
             {

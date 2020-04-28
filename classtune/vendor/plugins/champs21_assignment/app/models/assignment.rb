@@ -12,6 +12,12 @@ class Assignment < ActiveRecord::Base
 
   has_attached_file :attachment ,
     :url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp"
+  
+  has_attached_file :attachment2 ,
+    :url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp"
+  
+  has_attached_file :attachment3 ,
+    :url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp"
     #:path => "public/uploads/:class/:attachment/:id/:style/:basename.:extension"
 
   named_scope :for_student, lambda { |s|{ :conditions => ["FIND_IN_SET(?,student_list)",s],:order=>"duedate asc"} }

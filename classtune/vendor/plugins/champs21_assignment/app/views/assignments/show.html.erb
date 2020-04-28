@@ -167,6 +167,14 @@
         <%= @assignment.content.to_s%>
       </p>
       
+      <% unless @assignment.attachment2_file_name.nil? %>
+      <p class="atachment_div"><%= link_to 'Attachment 2', :controller => "assignments", :action => "download_attachment" , :id=>@assignment.id, :number=>2 %></p>
+      <% end %>
+      
+      <% unless @assignment.attachment3_file_name.nil? %>
+      <p class="atachment_div"><%= link_to 'Attachment 3', :controller => "assignments", :action => "download_attachment" , :id=>@assignment.id, :number=>3 %></p>
+      <% end %>
+      
     </div>
      
 

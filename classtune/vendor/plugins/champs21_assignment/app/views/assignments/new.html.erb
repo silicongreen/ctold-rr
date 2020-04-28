@@ -90,7 +90,7 @@
         </div>
 
         <div class="label-field-pair" style="float:left; clear:both;">
-          <label ><%= t('attach_a_file')%> (<%= t('max_size') %>)</label>
+          <label ><%= t('attach_a_file')%> (25mb)</label>
           <div  class="text-input-bg" id="assignment-attachment">
           <%  if check_free_school? %>
               &nbsp;&nbsp;<b style="color: red; float:left; margin-top:9px;">Subscribed feature</b>
@@ -99,6 +99,23 @@
           <% end %>    
           </div>
         </div>
+          
+        <% if MultiSchool.current_school.id == 2 %>
+          <div class="label-field-pair" style="float:left; clear:both;">
+            <label ><%= t('attach_a_file')%> 2 (25mb)</label>
+            <div  class="text-input-bg" id="assignment-attachment">
+              <%= f.file_field  :attachment2 %>    
+            </div>
+          </div>
+
+
+          <div class="label-field-pair" style="float:left; clear:both;">
+            <label ><%= t('attach_a_file')%> 3 (25mb)</label>
+            <div  class="text-input-bg" id="assignment-attachment">
+              <%= f.file_field  :attachment3 %>      
+            </div>
+          </div>
+        <% end %>   
         
         <div class="label-field-pair"  style="float:left; clear:both;">
           <label for="duedate"><%= "#{t('due_date')}"%></label>

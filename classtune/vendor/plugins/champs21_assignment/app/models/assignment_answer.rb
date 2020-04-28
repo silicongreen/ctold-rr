@@ -6,7 +6,19 @@ class AssignmentAnswer < ActiveRecord::Base
 #    :url => "/user/paperclip_attachment/:id?attachment=attachment&class=assignment_answer",
 #    :path => "uploads/assignments/:assignment_id/:class/:id_partition/:basename.:extension"
 #	:url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp",
-    :path => "public/uploads/:class/:attachment/:assignment_id/:basename.:extension"
+    :path => "public/uploads/:school_id/:class/:attachment/:assignment_id/:basename.:extension"
+    
+  has_attached_file :attachment2 ,
+#    :url => "/user/paperclip_attachment/:id?attachment=attachment&class=assignment_answer",
+#    :path => "uploads/assignments/:assignment_id/:class/:id_partition/:basename.:extension"
+#	:url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp",
+    :path => "public/uploads/:school_id/:class/:attachment/:assignment_id/attach2/:basename.:extension"
+    
+  has_attached_file :attachment3 ,
+#    :url => "/user/paperclip_attachment/:id?attachment=attachment&class=assignment_answer",
+#    :path => "uploads/assignments/:assignment_id/:class/:id_partition/:basename.:extension"
+#	:url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp",
+    :path => "public/uploads/:school_id/:class/:attachment/:assignment_id/attach3/:basename.:extension"
     
 
   def download_allowed_for user
@@ -33,6 +45,9 @@ class AssignmentAnswer < ActiveRecord::Base
 
   Paperclip.interpolates :assignment_id do |attachment,style|
     custom_id_partition attachment.instance.assignment_id
+  end
+  Paperclip.interpolates :school_id do |attachment,style|
+    custom_id_partition attachment.instance.school_id
   end
 
   

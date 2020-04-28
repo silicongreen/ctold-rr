@@ -109,6 +109,13 @@
         <label><%= t('email') %></label>
         <div class="text-input-bg"><%= a.text_field :email %></div>
       </div>
+      
+      <hr class="label-underline"></hr>
+      <div class="label-field-pair">
+        <label for="employee_joining_date"><%= t('date_of_birth') %> (certificate) </label>
+        <div class="text-input-bg"><%= calendar_date_select_tag 'employee[date_of_birth]', I18n.l(@employee.date_of_birth,:format=>"%d %b %Y"),:popup => "force" ,
+            :year_range => 83.years.ago..0.years.from_now %></div>
+      </div>
 
       <hr class="label-underline"></hr>
 

@@ -164,12 +164,20 @@ class AssignmentAnswersController < ApplicationController
   end
   def download_attachment
     #Method for downloading the attachment
+    @number = params[:number]
     @assignment_answer =AssignmentAnswer.find params[:assignment_answer]
     if @assignment_answer.download_allowed_for(current_user)
       unless params[:check_file].blank?
         abort(@assignment_answer.attachment.path)
       end
-      send_file  @assignment_answer.attachment.path, :type=>@assignment_answer.attachment.content_type
+      if @number.blank? or @number.to_i == 1
+        send_file  @assignment_answer.attachment.path, :type=>@assignment_answer.attachment.content_type
+      elsif @number.to_i == 2
+        send_file  @assignment_answer.attachment2.path, :type=>@assignment_answer.attachment2.content_type
+      elsif @number.to_i == 3
+        send_file  @assignment_answer.attachment3.path, :type=>@assignment_answer.attachment3.content_type
+      end 
+      
     else
       flash[:notice] = "#{t('you_are_not_allowed_to_download_that_file')}"
       redirect_to :controller=>:assignments

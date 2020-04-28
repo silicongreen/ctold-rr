@@ -769,6 +769,18 @@ class Assignments extends CActiveRecord
                     $marge['attachment_file_name'] = $value->attachment_file_name;
                 }
                 
+                $marge['attachment2_file_name'] = ""; 
+                if($value->attachment2_file_name)
+                {
+                    $marge['attachment2_file_name'] = $value->attachment2_file_name;
+                }
+                
+                $marge['attachment3_file_name'] = ""; 
+                if($value->attachment3_file_name)
+                {
+                    $marge['attachment3_file_name'] = $value->attachment3_file_name;
+                }
+                
                 $marge['course'] = $value["subjectDetails"]['Subjectbatch']['courseDetails']->course_name;
                 $marge['section'] = "";
                 if($value["subjectDetails"]['Subjectbatch']['courseDetails']->section_name)
@@ -1036,10 +1048,21 @@ class Assignments extends CActiveRecord
                     }
 
                     $marge['attachment_file_name'] = "";
+                    $marge['attachment2_file_name'] = "";
+                    $marge['attachment3_file_name'] = "";
+                     
 
                     if($value->attachment_file_name)
                     {
                         $marge['attachment_file_name'] = $value->attachment_file_name;
+                    }
+                    if($value->attachment2_file_name)
+                    {
+                        $marge['attachment2_file_name'] = $value->attachment2_file_name;
+                    }
+                    if($value->attachment3_file_name)
+                    {
+                        $marge['attachment3_file_name'] = $value->attachment3_file_name;
                     }
                     $marge['teacher_name'] = "";
                     $marge['teacher_id']   = 0;

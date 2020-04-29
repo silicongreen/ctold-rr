@@ -302,6 +302,7 @@
               
           </div>    
       <% end %> 
+      <% unless @additional_fields.blank? %>
       <div class="col-sm-12" style="padding:0px;">
               
           <legend><%= t('additional_detail') %></legend>
@@ -365,6 +366,7 @@
               
            </fieldset>
         </div>
+      <% end %>    
           
       <div class="col-sm-12" style="padding:0px;">
             <fieldset>

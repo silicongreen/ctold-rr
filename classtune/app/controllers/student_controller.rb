@@ -22,7 +22,7 @@ class StudentController < ApplicationController
   before_filter :login_required
   before_filter :check_permission, :only=>[:index,:admission1,:profile,:reports,:categories,:add_additional_details]
   before_filter :set_precision
-  before_filter :protect_other_student_data, :except =>[:edit_guardian_own, :generate_bkash_payment,:generate_ssl_url, :complete_bkash_payment, :generate_bkash_token, :regenerate_order_id,:get_previous_exam,:update_is_promoted,:insert_into_new_parent_student_table,:show,:class_test_report,:previous_batch_report,:combined_exam,:progress_report,:class_test_report_single,:term_test_report]
+  before_filter :protect_other_student_data, :except =>[:edit_guardian_own,:generate_ssl_url,:get_previous_exam,:update_is_promoted,:insert_into_new_parent_student_table,:show,:class_test_report,:previous_batch_report,:combined_exam,:progress_report,:class_test_report_single,:term_test_report]
   before_filter :default_time_zone_present_time
   before_filter :only_allowed_when_parmitted , :only=>[:edit_guardian_own,:edit_student_guardian]
   
@@ -48,727 +48,40 @@ class StudentController < ApplicationController
     @graduation_session = BatchTransfer.find(:all,:conditions=>["from_id IN (?) and to_id = ?",@schoo_batch_id,0],:limit=>100,:order=>'created_at DESC')
   end
   
-  def regenerate_order_id
-    require "openssl"
-    require 'digest/sha2'
-    require 'base64'
-    @total_fees_raw = params[:total_fees]
-    unless params[:student_id].blank?
-      student_id = params[:student_id]
-      if params[:multiple].to_i == 1
-        collection_fees_raw = params[:collection_fees]
-        collection_fees = params[:collection_fees].split(",")
-        order_id = params[:order_id]
-        unless order_id.blank?
-          @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{order_id}' and student_id = '#{student_id}'")
-          unless @finance_orders.blank?
-            @finance_orders.each do |finance_order|
-              finance_order.update_attributes(:status => 1)
-            end
-          end
-        end
-        
-        collection_fees.each do |fee_id|
-          @financefeeTmp = FinanceFee.find(fee_id)
-          finance_order = FinanceOrder.find(:first, :conditions => "finance_fee_id = #{@financefeeTmp.id} and student_id = #{@financefeeTmp.student_id} and batch_id = #{@financefeeTmp.batch_id} and status = 0")
-          unless finance_order.nil?
-            @order_id = "O" + finance_order.id.to_s
-            finance_order.update_attributes(:order_id => @order_id)
-          else
-            finance_order = FinanceOrder.new()
-            finance_order.finance_fee_id = @financefeeTmp.id
-            finance_order.student_id = @financefeeTmp.student_id
-            finance_order.batch_id = @financefeeTmp.batch_id
-            finance_order.balance = @financefeeTmp.balance
-            finance_order.save
-            @order_id = "O" + finance_order.id.to_s
-            finance_order.update_attributes(:order_id => @order_id)
-          end
-        end
-      else
-        collection_fees_raw = params[:fee_id]
-        fee_id = params[:fee_id]
-        order_id = params[:order_id]
-        unless order_id.blank?
-          @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{order_id}' and student_id = '#{student_id}'")
-          unless @finance_orders.blank?
-            @finance_orders.each do |finance_order|
-              finance_order.update_attributes(:status => 1)
-            end
-          end
-        end
-        @financefeeTmp = FinanceFee.find(fee_id)
-        finance_order = FinanceOrder.find(:first, :conditions => "finance_fee_id = #{@financefeeTmp.id} and student_id = #{@financefeeTmp.student_id} and batch_id = #{@financefeeTmp.batch_id} and status = 0")
-        unless finance_order.nil?
-          @order_id = "O" + finance_order.id.to_s
-          finance_order.update_attributes(:order_id => @order_id)
-        else
-          finance_order = FinanceOrder.new()
-          finance_order.finance_fee_id = @financefeeTmp.id
-          finance_order.student_id = @financefeeTmp.student_id
-          finance_order.batch_id = @financefeeTmp.batch_id
-          finance_order.balance = @financefeeTmp.balance
-          finance_order.save
-          @order_id = "O" + finance_order.id.to_s
-          finance_order.update_attributes(:order_id => @order_id)
-        end
-      end
-      alg = "AES-256-CBC"
-
-      digest = Digest::SHA256.new
-      digest.update("symetric key")
-      key = digest.digest
-      kkp = [key].pack('m')
-      iv = OpenSSL::Cipher::Cipher.new(alg).random_iv
-      iip = [iv].pack('m')
-
-      data = student_id.to_s + "---" + collection_fees_raw.to_s + "---" + @order_id.to_s
-
-      aes = OpenSSL::Cipher::Cipher.new(alg)
-      aes.encrypt
-      aes.key = key
-      aes.iv = iv
-
-      cipher = aes.update(data)
-      cipher << aes.final
-
-      encrypted = [cipher].pack('m')
-      
-      render :update do |page|
-        page << 'j("#pay_fees_multiple_1").attr("id","pay_fees_multiple");'
-        page << 'j("#pay_fees_multiple").removeClass("gateway_image_single_bkash_disabled");'
-        page << 'j(".loading_single_bkash").hide();'
-        page << 'j("#fees_form").find("input#order_id").val("' + @order_id.to_s + '")'
-        page << 'j("#data-form-val").find("input#order_id").val("' + @order_id.to_s + '")'
-        page << 'j("#data-form-val").find("input#kmsee").val("' + kkp.to_s.strip + '")'
-        page << 'j("#data-form-val").find("input#imsee").val("' + iip.to_s.strip + '")'
-        page << 'j("#data-form-val").find("input#mmsec").val("' + encrypted.to_s.strip + '")'
-      end
-    end
-  end
-  
-  def generate_bkash_token
-    require 'net/http'
-    require 'net/https'
-    require 'uri'
-    require "yaml"
-    unless params[:user_gateway].blank?
-      unless params[:order_id].blank?
-        unless params[:student_id].blank?
-          unless params[:multiple].nil?
-            if params[:multiple].to_i == 1
-              params[:multiple] = "true" 
-              order_id = params[:order_id]
-              fees = params[:fees].split(",")
-              fees.each do |fee|
-                f = fee.to_i
-                @finance_order = FinanceOrder.find_by_order_id_and_finance_fee_id(params[:order_id], f)
-                unless @finance_order.blank?
-                  @finance_order.update_attributes(:request_params => params)
-                end
-              end
-            else
-              params[:multiple] = "false" 
-              @finance_order = FinanceOrder.find_by_order_id_and_student_id(params[:order_id],params[:student_id])
-              unless @finance_order.blank?
-                @finance_order.update_attributes(:request_params => params)
-              end
-            end
-          else
-            params[:multiple] = "false" 
-            @finance_order = FinanceOrder.find_by_order_id_and_student_id(params[:order_id],params[:student_id])
-            unless @finance_order.blank?
-              @finance_order.update_attributes(:request_params => params)
-            end
-          end
-          
-          @user_gateway = params[:user_gateway]
-          payment_urls = Hash.new
-          if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
-            payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
-          end
-          
-          is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
-          extra_string = (is_test_bkash.to_i == 1) ? '_sandbox' : ''
-          
-          payment_url = URI(payment_urls["bkash_token_url" + extra_string])
-          payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/token/grant")
-#abort(payment_url.inspect)
-          http = Net::HTTP.new(payment_url.host, payment_url.port)
-          http.use_ssl = (payment_url.scheme == 'https')
-          http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
-          #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-          @app_key = PaymentConfiguration.config_value(@user_gateway + "_app_key")
-          @app_secret = PaymentConfiguration.config_value(@user_gateway + "_app_secret")
-          @app_username = PaymentConfiguration.config_value(@user_gateway + "_username")
-          @app_password = PaymentConfiguration.config_value(@user_gateway + "_password")
-#abort(@app_key.to_s + "  " + @app_secret.to_s  + "  " + @app_username.to_s  + "  " + @app_username.to_s )
-          request = Net::HTTP::Post.new(payment_url.path, {"username" => @app_username, "password" => @app_password, "Content-Type" => "application/json", "Accept" => "application/json"})
-          request.body = {"app_key"=>@app_key,"app_secret"=>@app_secret}.to_json
-          response = http.request(request)
-          response_ssl = JSON::parse(response.body)
-          #abort(response_ssl.inspect)
-          render :json => response_ssl
-        else
-          error = {:errorMessage => "No student selected, Please contact adnin"}
-          response_ssl = JSON::parse(error.to_json)
-          render :json => response_ssl
-        end
-      else
-        error = {:errorMessage => "Error in creating Order, Please contact adnin"}
-        response_ssl = JSON::parse(error.to_json)
-        render :json => response_ssl
-      end
-    else
-      error = {:errorMessage => "Invalid Request for token"}
-      response_ssl = JSON::parse(error.to_json)
-      render :json => response_ssl
-    end
-  end
-  
-  def generate_bkash_payment
-    require 'net/http'
-    require 'net/https'
-    require 'uri'
-    require "yaml"
-    
-    require "openssl"
-    require 'digest/sha2'
-    require 'base64'
-    
-    unless params[:gateway].blank?
-      unless params[:id_token].blank?
-        unless params[:mmsec].nil?
-          #order_id = params[:order_id]
-          
-          alg = "AES-256-CBC"
-          decode_cipher = OpenSSL::Cipher::Cipher.new(alg)
-          decode_cipher.decrypt
-          decode_cipher.key = params[:kmsee].unpack('m')[0]
-          decode_cipher.iv = params[:imsee].unpack('m')[0]
-          plain = decode_cipher.update(params[:mmsec].unpack('m')[0])
-          plain << decode_cipher.final
-          
-          if plain.index('---') != false
-            a_data = plain.split("---")
-            if a_data.length == 3
-              student_id = a_data[0]
-              fees = a_data[1].split(',')
-              #abort(fees.inspect)
-              order_id = a_data[2]
-              #abort(order_id.to_s  + "  " + params[:order_id])
-              if order_id.to_s == params[:order_id].to_s
-                student = Student.find(:first, :conditions => "id = '#{student_id.to_s}'")
-                unless student.blank?
-                  @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{order_id}' and student_id = '#{student.id}'")
-                  unless @finance_orders.blank?
-                    total_fees = 0.00
-                    @finance_orders.each do |finance_order|
-
-                      finance_fee_id = finance_order.finance_fee_id
-                      if fees.include?(finance_fee_id.to_s)
-                        finance_fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{student.id}")
-                        unless finance_fee.blank?
-                          fee_collection_id = finance_fee.fee_collection_id
-                          d = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}")
-                          unless d.blank?
-                            bal = FinanceFee.get_student_actual_balance(d, student, finance_fee) + d.fine_to_pay(student).to_f
-                            #abort(bal.to_s)
-                            total_fees += bal.to_f
-                          end
-                        end
-                      end
-                    end
-                    #abort(total_fees.to_s)
-                    if total_fees.to_f == params[:total_fees].to_f
-                      @user_gateway = params[:gateway]
-                      id_token = params[:id_token]
-                      payment_urls = Hash.new
-                      if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
-                        payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
-                      end
-
-                      is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
-                      extra_string = (is_test_bkash.to_i == 1) ? '_sandbox' : ''
-
-                      payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "create")
-                      payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "create")
-
-                      http = Net::HTTP.new(payment_url.host, payment_url.port)
-                      http.use_ssl = (payment_url.scheme == 'https')
-                      http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
-                      #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-                      @app_key = PaymentConfiguration.config_value(@user_gateway + "_app_key")
-                      @app_secret = PaymentConfiguration.config_value(@user_gateway + "_app_secret")
-                      @app_username = PaymentConfiguration.config_value(@user_gateway + "_username")
-                      @app_password = PaymentConfiguration.config_value(@user_gateway + "_password")
-                      
-                      fee_percent = 0.00
-                      fee_percent = total_fees.to_f * (1.5 / 100) 
-                       
-                      if MultiSchool.current_school.id != 312 
-                        total_fees = total_fees + fee_percent 
-                      end
-                      #abort(total_fees.to_s)
-                      request = Net::HTTP::Post.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
-                      request.body = {"amount"=> sprintf("%.2f", total_fees),"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>order_id}.to_json
-                      #abort({"amount"=> total_fees,"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>order_id}.to_json.inspect)
-                      response = http.request(request)
-                      response_ssl = JSON::parse(response.body)
-                      #abort(response_ssl.inspect)
-                      render :json => response_ssl
-                    else
-                      error = {:errorMessage => "Fees not matched"}
-                      response_ssl = JSON::parse(error.to_json)
-                      render :json => response_ssl
-                    end
-                  else
-                    error = {:errorMessage => "Invalid Invoice No."}
-                    response_ssl = JSON::parse(error.to_json)
-                    render :json => response_ssl
-                  end
-                else
-                  error = {:errorMessage => "Invalid Request"}
-                  response_ssl = JSON::parse(error.to_json)
-                  render :json => response_ssl
-                end
-              else
-                error = {:errorMessage => "Invoice No. not matched"}
-                response_ssl = JSON::parse(error.to_json)
-                render :json => response_ssl
-              end
-            else
-              error = {:errorMessage => "Invalid Request"}
-              response_ssl = JSON::parse(error.to_json)
-              render :json => response_ssl
-            end
-          else
-            error = {:errorMessage => "Invalid Request"}
-            response_ssl = JSON::parse(error.to_json)
-            render :json => response_ssl
-          end
-        else
-          error = {:errorMessage => "Missing Invoice No."}
-          response_ssl = JSON::parse(error.to_json)
-          render :json => response_ssl
-        end
-      else
-        error = {:errorMessage => "Invalid Request for token"}
-        response_ssl = JSON::parse(error.to_json)
-        render :json => response_ssl
-      end
-    else
-      error = {:errorMessage => "Invalid Request for token"}
-      response_ssl = JSON::parse(error.to_json)
-      render :json => response_ssl
-    end
-  end
-  
-  def complete_bkash_payment
-    require 'net/http'
-    require 'net/https'
-    require 'uri'
-    require "yaml"
-    unless params[:gateway].blank?
-      unless params[:id_token].blank?
-        unless params[:mmsec].nil?
-          
-          alg = "AES-256-CBC"
-          decode_cipher = OpenSSL::Cipher::Cipher.new(alg)
-          decode_cipher.decrypt
-          decode_cipher.key = params[:kmsee].unpack('m')[0]
-          decode_cipher.iv = params[:imsee].unpack('m')[0]
-          plain = decode_cipher.update(params[:mmsec].unpack('m')[0])
-          plain << decode_cipher.final
-          
-          if plain.index('---') != false
-            a_data = plain.split("---")
-            if a_data.length == 3
-              student_id = a_data[0]
-              fees = a_data[1]
-              order_id = a_data[2]
-              #abort(order_id.to_s  + "  " + params[:order_id])
-              if order_id.to_s == params[:order_id].to_s
-                student = Student.find(:first, :conditions => "id = '#{student_id.to_s}'")
-                unless student.blank?
-                  @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{order_id}' and student_id = '#{student.id}'")
-                  unless @finance_orders.blank?
-                    total_fees = 0.00
-                    @finance_orders.each do |finance_order|
-
-                      finance_fee_id = finance_order.finance_fee_id
-                      if fees.include?(finance_fee_id.to_s)
-                        finance_fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{student.id}")
-                        unless finance_fee.blank?
-                          fee_collection_id = finance_fee.fee_collection_id
-                          d = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}")
-                          unless d.blank?
-                            bal = FinanceFee.get_student_actual_balance(d, student, finance_fee) + d.fine_to_pay(student).to_f
-                            #abort(bal.to_s)
-                            total_fees += bal.to_f
-                          end
-                        end
-                      end
-                    end
-                  end
-                  @user_gateway = params[:gateway]
-                  id_token = params[:id_token]
-                  payment_id = params[:payment_id]
-                  payment_urls = Hash.new
-                  if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
-                    payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
-                  end
-
-                  is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
-                  extra_string = (is_test_bkash.to_i == 1) ? '_sandbox' : ''
-
-                  payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "execute/" + payment_id.to_s)
-                  payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "execute/" + payment_id.to_s)
-
-                  http = Net::HTTP.new(payment_url.host, payment_url.port)
-                  http.use_ssl = (payment_url.scheme == 'https')
-                  http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
-                  #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-                  @app_key = PaymentConfiguration.config_value(@user_gateway + "_app_key")
-                  @app_secret = PaymentConfiguration.config_value(@user_gateway + "_app_secret")
-                  @app_username = PaymentConfiguration.config_value(@user_gateway + "_username")
-                  @app_password = PaymentConfiguration.config_value(@user_gateway + "_password")
-
-                  request = Net::HTTP::Post.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
-                  #request.body = {"amount"=> params[:total_fees],"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>params[:order_id]}.to_json
-                  response = http.request(request)
-                  #if student_id.to_i == 46112
-                  #  abort(response.body.to_s + "  " + id_token.to_s + "  " + @app_key)
-                  #end
-                  response_ssl = JSON::parse(response.body)
-                  
-                  transactionStatus = ""
-                  createTime = ""
-                  trxID = ""
-                  amount = ""
-                  response_ssl.each do |key,value|
-                    if key == "transactionStatus"
-                      transactionStatus = value
-                    elsif key == "createTime"
-                      createTime = value
-                    elsif key == "trxID"
-                      trxID = value
-                    elsif key == "amount"
-                      amount = value
-                    end
-                  end
-                  
-                  fee_percent = 0.00
-                  fee_percent = total_fees.to_f * (1.5 / 100)
-                  if MultiSchool.current_school.id != 312 
-                    amount = amount.to_f - fee_percent.to_f
-                  end
-                  
-                  
-                  if response_ssl.keys.include?("transactionStatus") and transactionStatus == 'Completed'
-                    require 'date'
-                    gateway_response = {}
-                    response_ssl.each do |key,value|
-                      gateway_response[key.to_sym] = value
-                    end
-                    transaction_datetime = (DateTime.parse(createTime).to_time + 6.hours).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
-                    orderId = order_id.to_s
-                    @student = Student.find(student_id)
-                    if MultiSchool.current_school.id != 312 
-                      finance_interest = FinanceInterest.new
-                      finance_interest.order_id = orderId.strip
-                      finance_interest.student_id = @student.id
-                      finance_interest.batch_id = @student.batch.id
-                      finance_interest.interest = fee_percent
-                      finance_interest.save
-                    end
-                    
-                    @finance_order = FinanceOrder.find_by_order_id_and_student_id(orderId.strip, student_id)
-                    #abort(@finance_order.inspect)
-                    request_params = @finance_order.request_params
-
-                    payment_saved = false
-                    unless request_params.nil?
-                      multiple = request_params[:multiple]
-                      unless multiple.nil?
-                        if multiple.to_s == "true"
-                          fees = request_params[:fees].split(",")
-                          fees.each do |fee|
-                            f = fee.to_i
-                            feenew = FinanceFee.find(f)
-                            payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{feenew.id}")
-                            unless payment.nil?
-                              payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
-                              payment_saved = true
-                            else  
-                              payment = Payment.new(:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
-                              if payment.save
-                                payment_saved = true
-                              end 
-                            end
-                          end
-                        else
-                          financefee = FinanceFee.find(@finance_order.finance_fee_id)
-                          payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id}")
-                          unless payment.nil?
-                            payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
-                            payment_saved = true
-                          else  
-                            payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
-                            if payment.save
-                              payment_saved = true
-                            end 
-                          end
-                        end
-                      else
-                        financefee = FinanceFee.find(@finance_order.finance_fee_id)
-                        payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id}")
-                        unless payment.nil?
-                          payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
-                          payment_saved = true
-                        else  
-                          payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
-                          if payment.save
-                            payment_saved = true
-                          end 
-                        end
-                      end
-
-                      if payment_saved
-                        unless order_verify(orderId, 'bkash', transaction_datetime, trxID, amount)
-                          error = {:errorMessage => "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"}
-                          response_ssl = JSON::parse(error.to_json)
-                          render :json => response_ssl
-                        else
-                          render :json => response_ssl
-                        end
-                      end
-                    end
-                  else
-                    unless order_id.blank?
-                      @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{order_id}' and student_id = '#{student.id}'")
-                      unless @finance_orders.blank?
-                        @finance_orders.each do |finance_order|
-                          finance_order.update_attributes(:status => 1)
-                        end
-                      end
-                    end
-                    render :json => response_ssl
-                  end
-                else
-                  unless order_id.blank?
-                    @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{order_id}'")
-                    unless @finance_orders.blank?
-                      @finance_orders.each do |finance_order|
-                        finance_order.update_attributes(:status => 1)
-                      end
-                    end
-                  end
-                  error = {:errorMessage => "Invalid payment Request, Invoice No. Not match"}
-                  response_ssl = JSON::parse(error.to_json)
-                  render :json => response_ssl
-                end
-              else
-                unless order_id.blank?
-                  @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{order_id}'")
-                  unless @finance_orders.blank?
-                    @finance_orders.each do |finance_order|
-                      finance_order.update_attributes(:status => 1)
-                    end
-                  end
-                end
-                error = {:errorMessage => "Invalid payment Request, Invoice No. Not match"}
-                response_ssl = JSON::parse(error.to_json)
-                render :json => response_ssl
-              end
-            else
-              unless params[:order_id].blank?
-                @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{params[:order_id].to_s}'")
-                unless @finance_orders.blank?
-                  @finance_orders.each do |finance_order|
-                    finance_order.update_attributes(:status => 1)
-                  end
-                end
-              end
-              error = {:errorMessage => "Invalid payment Request, Data Not match"}
-              response_ssl = JSON::parse(error.to_json)
-              render :json => response_ssl
-            end
-          else
-            unless params[:order_id].blank?
-              @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{params[:order_id].to_s}'")
-              unless @finance_orders.blank?
-                @finance_orders.each do |finance_order|
-                  finance_order.update_attributes(:status => 1)
-                end
-              end
-            end
-            error = {:errorMessage => "Invalid payment Request, Data Not match"}
-            response_ssl = JSON::parse(error.to_json)
-            render :json => response_ssl
-          end
-        else
-          unless params[:order_id].blank?
-            @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{params[:order_id].to_s}'")
-            unless @finance_orders.blank?
-              @finance_orders.each do |finance_order|
-                finance_order.update_attributes(:status => 1)
-              end
-            end
-          end
-          error = {:errorMessage => "Invalid payment Request, Data Not match"}
-          response_ssl = JSON::parse(error.to_json)
-          render :json => response_ssl
-        end
-      else
-        unless params[:order_id].blank?
-          @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{params[:order_id].to_s}'")
-          unless @finance_orders.blank?
-            @finance_orders.each do |finance_order|
-              finance_order.update_attributes(:status => 1)
-            end
-          end
-        end
-        error = {:errorMessage => "Invalid Request for token"}
-        response_ssl = JSON::parse(error.to_json)
-        render :json => response_ssl
-      end
-    else
-      unless params[:order_id].blank?
-        @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{params[:order_id].to_s}'")
-        unless @finance_orders.blank?
-          @finance_orders.each do |finance_order|
-            finance_order.update_attributes(:status => 1)
-          end
-        end
-      end
-      error = {:errorMessage => "Invalid Request for token"}
-      response_ssl = JSON::parse(error.to_json)
-      render :json => response_ssl
-    end
-  end
-  
   def generate_ssl_url
     require 'net/http'
-    require 'net/https'
     require 'uri'
     require "yaml"
     
-    unless params[:gateway].blank?
-      payment_urls = Hash.new
-      if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
-        payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
-      end
-      
-      if params[:gateway] == "citybank"
-        rootCA = "#{Rails.root}/certs/createorder.crt"
-        rootCAData = File.read(rootCA)
-        
-        keyCA = "#{Rails.root}/certs/createorder.key"
-        keyCAData = File.read(keyCA)
-        is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
-        extra_string = (is_test_citybank) ? '_sandbox' : ''
-        #abort(rootCAData.inspect)
-        payment_url = URI(payment_urls["citybank_app_url" + extra_string] + "token")
-        payment_url ||= URI("https://sandbox.thecitybank.com:7788/transaction/token")
-        #abort(payment_url.inspect)
-        http = Net::HTTP.new(payment_url.host, payment_url.port)
-        http.use_ssl = (payment_url.scheme == 'https')
-        http.cert = OpenSSL::X509::Certificate.new(rootCAData)
-        http.key  = OpenSSL::PKey::RSA.new(keyCAData)
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
-        #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-        
-        request = Net::HTTP::Post.new(payment_url.path,  {"Content-Type" => "application/json", "Accept" => "application/json"})
-        #request.set_form_data({"userName"=>params[:userName],"password"=>params[:password]}.to_json)
-        request.body = {"userName"=>params[:userName],"password"=>params[:password]}.to_json
-        response = http.request(request)
-        response_ssl = JSON::parse(response.body)
-        if response_ssl["responseCode"].to_i == 107
-          flash[:notice] = "Authentication Failed, Please contact with System Admin"
-          redirect_to params[:fee_url]
-        elsif response_ssl["responseCode"].to_i == 100
-            data_params = {
-              "merchantId"  => params[:merchantId],
-              "amount"      => params[:amount],
-              "currency"    => params[:currency],
-              "description" => params[:description],
-              "approveUrl"  => params[:approveUrl],
-              "cancelUrl"   => params[:cancelUrl],
-              "declineUrl"  => params[:declineUrl],
-              "userName"    => params[:userName],
-              "passWord"    => params[:password],
-              "secureToken" => response_ssl["transactionId"]
-            }
-            
-            is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
-            extra_string = (is_test_citybank) ? '_sandbox' : ''
-            order_payment_url = URI(payment_urls["citybank_app_url" + extra_string] + "createorder")
-            order_payment_url ||= URI("https://sandbox.thecitybank.com:7788/transaction/createorder")
-
-            http_order = Net::HTTP.new(order_payment_url.host, order_payment_url.port)
-            http_order.use_ssl = (order_payment_url.scheme == 'https')
-            http_order.cert = OpenSSL::X509::Certificate.new(rootCAData)
-            http_order.key  = OpenSSL::PKey::RSA.new(keyCAData)
-            http_order.verify_mode = OpenSSL::SSL::VERIFY_NONE 
-            #http_order.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-            request = Net::HTTP::Post.new(order_payment_url.path,  {"Content-Type" => "application/json", "Accept" => "application/json"})
-            request.body = data_params.to_json
-            #request.set_form_data(data_params)
-            response = http_order.request(request)
-            response_ssl = JSON::parse(response.body)
-             if response_ssl["responseCode"].to_i == 107
-                flash[:notice] = "Authentication Failed, Please contact with System Admin"
-                redirect_to params[:fee_url]
-             elsif response_ssl["responseCode"].to_i == 100
-               checkout_url = response_ssl["items"]['url'];
-               session_id = response_ssl["items"]['sessionId'];
-               order_id = response_ssl["items"]['orderId'];
-               redirect_Url = checkout_url + "?ORDERID=" + order_id + "&SESSIONID=" + session_id
-               redirect_to redirect_Url
-                #abort(response_ssl['items'].inspect)
-                #order_url = response_ssl['items']['url']; $orderId = $cblEcomm['items']['orderId']; $sessionId = $cblEcomm['items']['sessionId']; $redirectUrl = $URL."?ORDERID=".$orderId."&SESSIONID=".$sessionId; 
-             else
-               flash[:notice] = response_ssl['message']
-               redirect_to params[:fee_url]
-             end
-        else
-          flash[:notice] = response_ssl['message']
-          redirect_to params[:fee_url]
+    testssl = false
+    if PaymentConfiguration.config_value('is_test_sslcommerz').to_i == 1
+      if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config.yml")
+        payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config.yml"))
+        unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
+          testssl = payment_configs["testsslcommer"]
         end
       end
     end
+    if testssl
+      api_uri = URI(payment_configs["session_api_to_generate_transaction"])
+    else  
+      api_uri = URI("https://securepay.sslcommerz.com/gwprocess/v3/api_convenient_fee.php")
+    end
     
-#    testssl = false
-#    if PaymentConfiguration.config_value('is_test_sslcommerz').to_i == 1
-#      if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config.yml")
-#        payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config.yml"))
-#        unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
-#          testssl = payment_configs["testsslcommer"]
-#        end
-#      end
-#    end
-#    if testssl
-#      api_uri = URI(payment_configs["session_api_to_generate_transaction"])
-#    else  
-#      api_uri = URI("https://securepay.sslcommerz.com/gwprocess/v3/api_convenient_fee.php")
-#    end
-#    
-#    http = Net::HTTP.new(api_uri.host, api_uri.port)
-#    http.use_ssl = true
-#    request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded' })
-#    request.set_form_data({"tran_id"=>params[:tran_id],"store_id"=>params[:store_id],"store_passwd"=>params[:store_passwd],"cart[0][product]"=>params[:product],"cart[0][amount]"=>params[:amount],"total_amount"=>params[:total_amount],"success_url"=>params[:success_url],"fail_url"=>params[:fail_url],"cancel_url"=>params[:cancel_url],"version"=>params[:version]})
-#    response = http.request(request)
-#    @response_ssl = JSON::parse(response.body)
-#    
-#    if @response_ssl['status'] == "FAILED" 
-#      flash[:notice] = @response_ssl['failedreason']
-#      redirect_to params[:ret_url]
-#      #redirect_to :controller => "student", :action => "fee_details", :id=>13429, :id2=>1569
-#    else
-#      redirect_to @response_ssl['GatewayPageURL']
-#    end
+    http = Net::HTTP.new(api_uri.host, api_uri.port)
+    http.use_ssl = true
+    request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded' })
+    request.set_form_data({"tran_id"=>params[:tran_id],"store_id"=>params[:store_id],"store_passwd"=>params[:store_passwd],"cart[0][product]"=>params[:product],"cart[0][amount]"=>params[:amount],"total_amount"=>params[:total_amount],"success_url"=>params[:success_url],"fail_url"=>params[:fail_url],"cancel_url"=>params[:cancel_url],"version"=>params[:version]})
+    response = http.request(request)
+    @response_ssl = JSON::parse(response.body)
+    
+    if @response_ssl['status'] == "FAILED" 
+      flash[:notice] = @response_ssl['failedreason']
+      redirect_to params[:ret_url]
+      #redirect_to :controller => "student", :action => "fee_details", :id=>13429, :id2=>1569
+    else
+      redirect_to @response_ssl['GatewayPageURL']
+    end
     
   end
   
@@ -813,7 +126,6 @@ class StudentController < ApplicationController
     params[:student].each_pair do |student_id, details|
       @std = Student.find(student_id)
       @std.update_attribute("class_roll_no",details[:class_roll_no])
-      @std.update_attribute("gpa",details[:gpa])
     end
     render :text=> "Save Succesfully"
   end
@@ -828,6 +140,7 @@ class StudentController < ApplicationController
     @iloop = 0
     unless @previous_batches.blank?
       @previous_batches.each do |pv|
+        unless pv.batch_id == @student.batch_id
           @previous_exam = ExamConnectStudent.find_all_by_batch_student_id(pv.id)
           @previous_group_exam = GroupExamStudent.find_all_by_batch_student_id(pv.id)
           if !@previous_exam.blank? or !@previous_group_exam.blank?
@@ -870,6 +183,7 @@ class StudentController < ApplicationController
               end
             end  
           end
+        end
       end
     end
     
@@ -1282,7 +596,6 @@ class StudentController < ApplicationController
       admission_date = student.admission_date 
       p_image = "<img src='#{@profile_image}' width='80' />"
       send_sms = "<a href='javascript:void(0)' id='student_"+student.id.to_s+"' onClick='send_sms("+student.id.to_s+")'>Send</a>"
-      send_sms = send_sms+"&nbsp;&nbsp;|&nbsp;&nbsp;<a href='javascript:void(0)' id='student_"+student.id.to_s+"' onClick='send_sms_student("+student.id.to_s+")'>Send Student</a>"
       send_sms = send_sms+"&nbsp;&nbsp;|&nbsp;&nbsp;<a href='/student/edit/"+student.id.to_s+"' target='_blank' >Edit</a>"
       std = {:p_image=>p_image,:admission_no=>student.admission_no,:roll_no=>student.class_roll_no,:password=>password,:sms_number=>student.sms_number,:student_name=>"<a href='/student/profile/"+student.id.to_s+"'>"+student.full_name+"</a>",:admission_date=>admission_date,:religion=>religion,:category=>std_category,:blood_group=>blood_group,:class=>student.batch.course.course_name,:batch=>batch,:section=>student.batch.course.section_name,:session=>student.batch.course.session,:version=>version,:group=>student.batch.course.group,:send_sms=>send_sms}
       data[k] = std
@@ -1298,7 +611,6 @@ class StudentController < ApplicationController
   
   def send_sms_username_password
     @student = Student.find(params[:id])
-    send_to = params[:send_to]
     student_ids = []
     student_ids << @student.id
     message = ""
@@ -1307,9 +619,7 @@ class StudentController < ApplicationController
       message = sms_text_config['upass']
     end
     download_opt = 0
-    if send_to.blank?
-      sent_to = 3
-    end
+    sent_to = 3
     unless message.blank?
       send_sms_student(student_ids,message,sent_to)
     end
@@ -1926,11 +1236,8 @@ class StudentController < ApplicationController
           #          @fee_collection_dates = @fee_collection_dates.select{|d| d.due_date>=@student.admission_date }
           @fee_collection_dates = FinanceFeeParticular.find(:all,:joins=>"INNER JOIN collection_particulars on collection_particulars.finance_fee_particular_id=finance_fee_particulars.id INNER JOIN finance_fee_collections on finance_fee_collections.id=collection_particulars.finance_fee_collection_id",:conditions=>"finance_fee_particulars.batch_id='#{@student.batch_id}' and finance_fee_particulars.receiver_type='Batch' and finance_fee_collections.due_date>='#{@student.admission_date}'",:select=>"finance_fee_collections.*").uniq
           @fee_collection_dates.each do |date|
-            fee_collection_batches = FeeCollectionBatch.find_by_finance_fee_collection_id_and_batch_id(date.id, @student.batch_id)
-            unless fee_collection_batches.blank?
-              d = FinanceFeeCollection.find(date.id)
-              FinanceFee.new_student_fee(d,@student)
-            end
+            d = FinanceFeeCollection.find(date.id)
+            FinanceFee.new_student_fee(d,@student)
           end
             
           student_category_log = StudentCategoryLog.find(:first, :conditions => "student_id = #{@student.id}")
@@ -3028,9 +2335,6 @@ class StudentController < ApplicationController
     @user = current_user
     @student = Student.find(params[:id])
     
-    @student_electives =StudentsSubject.all(:conditions=>{:student_id=>@student.id,:batch_id=>@student.batch.id,:subjects=>{:is_deleted=>false}},:joins=>[:subject])
-    @std_sub_map = @student_electives.map(&:subject_id)
-    @elective_subjects = Subject.find_all_by_batch_id(@student.batch_id,:conditions=>["elective_group_id IS NOT NULL AND is_deleted = false"])
     guardians = @student.student_guardian
     unless guardians.blank?
       iloop = 0
@@ -3044,9 +2348,6 @@ class StudentController < ApplicationController
         iloop = iloop+1
       end
     end
-    
-    @additional_fields = StudentAdditionalField.find(:all, :conditions=> "status = true", :order=>"priority ASC")
-    @student_additional_details = StudentAdditionalDetail.find_all_by_student_id(@student.id)
    
     
     @previous_batch_id = @student.batch_id
@@ -3104,22 +2405,6 @@ class StudentController < ApplicationController
         @guardian_mother.save
       end
       
-      unless params[:subject_ids].blank? or @elective_subjects.blank?
-        unless @student_electives.blank?
-          @student_electives.each do |e_sub|
-              e_sub.destroy()
-          end
-        end
-        params[:subject_ids].each do |subject_id|
-            student_sub = StudentsSubject.new
-            student_sub.subject_id = subject_id
-            student_sub.elective_type = params["elective_type_#{subject_id}"]
-            student_sub.batch_id = @student.batch_id
-            student_sub.student_id = @student.id
-            student_sub.save 
-        end
-      end
-      
       if !params[:f_first_name].blank? && @guardian_father.blank?
           hash_guar = {}
           hash_guar[:guardian] = {}
@@ -3163,52 +2448,6 @@ class StudentController < ApplicationController
           @error=true
         end  
       end
-      
-      mandatory_fields = StudentAdditionalField.find(:all, :conditions=>{:is_mandatory=>true, :status=>true})
-      mandatory_fields.each do|m|
-        unless params[:student_additional_details][m.id.to_s.to_sym].present?
-          @student.errors.add_to_base("#{m.name} must contain atleast one selected option.")
-          @error=true
-        else
-          if params[:student_additional_details][m.id.to_s.to_sym][:additional_info]==""
-            @student.errors.add_to_base("#{m.name} cannot be blank.")
-            @error=true
-          end
-        end
-      end
-      
-      unless @error==true
-        additional_field_ids_posted = []
-        additional_field_ids = @additional_fields.map(&:id)
-        if params[:student_additional_details].present?
-          params[:student_additional_details].each_pair do |k, v|
-            addl_info = v['additional_info']
-            additional_field_ids_posted << k.to_i
-            addl_field = StudentAdditionalField.find_by_id(k)
-            if addl_field.input_type == "has_many"
-              addl_info = addl_info.join(", ")
-            end
-            prev_record = StudentAdditionalDetail.find_by_student_id_and_additional_field_id( @student.id, k)
-            unless prev_record.nil?
-              unless addl_info.present?
-                prev_record.destroy
-              else
-                prev_record.update_attributes(:additional_info => addl_info)
-              end
-            else
-              addl_detail = StudentAdditionalDetail.new(:student_id =>  @student.id,
-                :additional_field_id => k,:additional_info => addl_info)
-              addl_detail.save if addl_detail.valid?
-            end
-          end
-        end
-        if additional_field_ids.present?
-          StudentAdditionalDetail.find_all_by_student_id_and_additional_field_id(@student.id,(additional_field_ids - additional_field_ids_posted)).each do |additional_info|
-            additional_info.destroy unless additional_info.student_additional_field.is_mandatory == true
-          end
-        end
-      end
-      
       
       params[:student].delete "pass"
       if params[:student][:student_category_id] != "433"
@@ -3288,7 +2527,6 @@ class StudentController < ApplicationController
                       date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}")
                       unless date.blank?
                         s = Student.find(@student.id)
-                        #abort('here')
                         reset_fees(date, s, f)
                         #abort(finance_particulars.inspect)
                         paid_fees = f.finance_transactions
@@ -3302,30 +2540,13 @@ class StudentController < ApplicationController
                               end
                             end
                           end
-                        else
-                          bal = FinanceFee.get_student_actual_balance(date, s, f)
-                          bal = 0 if bal < 0
-                          f.update_attributes(:balance=>bal)
-                          if bal.to_f == 0.00
-                            f.update_attributes(:is_paid=>true)
-                          elsif bal.to_f > 0.00
-                            f.update_attributes(:is_paid=>false)
-                          end
-
-                          balance = FinanceFee.get_student_balance(date, s, f)
-                          student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{f.id} and amount_to_pay > 0 and amount_paid = 0 and transaction_id = 0 and is_fine = 0")
-                          unless student_fee_ledgers.nil?
-                            student_fee_ledgers.each do |fee_ledger|
-                              student_fee_ledger = StudentFeeLedger.find(fee_ledger.id)
-                              student_fee_ledger.destroy
-                            end
-                          end
-                          student_fee_ledger = StudentFeeLedger.new
-                          student_fee_ledger.student_id = s.id
-                          student_fee_ledger.ledger_date = date.start_date
-                          student_fee_ledger.amount_to_pay = balance.to_f
-                          student_fee_ledger.fee_id = f.id
-                          student_fee_ledger.save
+                        end
+                        bal = FinanceFee.get_student_actual_balance(date, s, f)
+                        f.update_attributes(:balance=>bal)
+                        if bal.to_f == 0.00
+                          f.update_attributes(:is_paid=>true)
+                        elsif bal.to_f > 0.00
+                          f.update_attributes(:is_paid=>false)
                         end
                       end
                     end
@@ -3448,7 +2669,6 @@ class StudentController < ApplicationController
           if MultiSchool.current_school.id == 352
             if @previous_category_id != @student.student_category_id
               if @previous_batch_id == @student.batch_id
-                #
                 @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
                 unless @finance_fees.blank?
                   @finance_fees.each do |f|
@@ -3457,7 +2677,6 @@ class StudentController < ApplicationController
                     unless date.blank?
                       s = Student.find(@student.id)
                       reset_fees(date, s, f)
-                      
                       #abort(finance_particulars.inspect)
                       paid_fees = f.finance_transactions
                       unless paid_fees.blank?
@@ -3470,48 +2689,21 @@ class StudentController < ApplicationController
                             end
                           end
                         end
-                      else
-                        bal = FinanceFee.get_student_actual_balance(date, s, f)
-                        bal = 0 if bal < 0
-                        f.update_attributes(:balance=>bal)
-                        if bal.to_f == 0.00
-                          f.update_attributes(:is_paid=>true)
-                        elsif bal.to_f > 0.00
-                          f.update_attributes(:is_paid=>false)
-                        end
-                        
-                        balance = FinanceFee.get_student_balance(date, s, f)
-                        student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{f.id} and amount_to_pay > 0 and amount_paid = 0 and transaction_id = 0 and is_fine = 0")
-                        unless student_fee_ledgers.nil?
-                          student_fee_ledgers.each do |fee_ledger|
-                            student_fee_ledger = StudentFeeLedger.find(fee_ledger.id)
-                            student_fee_ledger.destroy
-                          end
-                        end
-                        student_fee_ledger = StudentFeeLedger.new
-                        student_fee_ledger.student_id = s.id
-                        student_fee_ledger.ledger_date = date.start_date
-                        student_fee_ledger.amount_to_pay = balance.to_f
-                        student_fee_ledger.fee_id = f.id
-                        student_fee_ledger.save
                       end
-                      
-                      
-                      
-                      
-#                      unless student_fee_ledgers.nil?
-#                        student_fee_ledgers.each do |fee_ledger|
-#                          student_fee_ledger = StudentFeeLedger.find(fee_ledger.id)
-#                          student_fee_ledger.update_attributes(:amount_to_pay => balance)
-#                        end
-#                      end
+                      bal = FinanceFee.get_student_actual_balance(date, s, f)
+                      f.update_attributes(:balance=>bal)
+                      if bal.to_f == 0.00
+                        f.update_attributes(:is_paid=>true)
+                      elsif bal.to_f > 0.00
+                        f.update_attributes(:is_paid=>false)
+                      end
                     end
                   end
                 end
               end
             end
           end
-          #abort('here')
+          
           if @previous_batch_id != @student.batch_id
             exam_marks_to_new_batch(@previous_batch_id,@student)
           end
@@ -3531,8 +2723,7 @@ class StudentController < ApplicationController
           
           if MultiSchool.current_school.id == 352
             if found_paid_fees
-              #redirect_to :controller => "student", :action => "adjust_paid_fees", :id => @student.id, :previous_category_id => @previous_category_id, :previous_batch_id => @previous_batch_id
-              redirect_to :controller => "student", :action => @action_name_main, :id => @student.id
+              redirect_to :controller => "student", :action => "adjust_paid_fees", :id => @student.id, :previous_category_id => @previous_category_id, :previous_batch_id => @previous_batch_id
             else
               redirect_to :controller => "student", :action => @action_name_main, :id => @student.id
             end
@@ -3587,7 +2778,7 @@ class StudentController < ApplicationController
     @previous_batch_id = params[:previous_batch_id]
     
     @fees = params[:fee_id].split(",")
-    #abort(@fees.inspect)
+    
     @finance_fees = FinanceFee.find(:all, :conditions => "id IN (#{@fees.map(&:to_i).join(",")})")
     
     unless @finance_fees.blank?
@@ -3611,21 +2802,11 @@ class StudentController < ApplicationController
             end
           end
           bal = FinanceFee.get_student_actual_balance(date, s, f)
-          bal = 0 if bal < 0
           f.update_attributes(:balance=>bal)
           if bal.to_f == 0.00
             f.update_attributes(:is_paid=>true)
           elsif bal.to_f > 0.00
             f.update_attributes(:is_paid=>false)
-          end
-          
-          balance = FinanceFee.get_student_actual_balance(date, s, f)
-          student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{s.id} and fee_id = #{f.id} and particular_id = #{0} and amount_to_pay > 0 and amount_paid = 0 and transaction_id = 0 and is_fine = 0")
-          unless student_fee_ledgers.nil?
-            student_fee_ledgers.each do |fee_ledger|
-              student_fee_ledger = StudentFeeLedger.find(fee_ledger.id)
-              student_fee_ledger.update_attributes(:amount_to_pay => balance)
-            end
           end
         end
       end
@@ -5649,11 +4830,14 @@ class StudentController < ApplicationController
   
 
   def fees
-    #@dates=FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} and ((finance_fees.balance > 0 and finance_fees.batch_id<>#{@student.batch_id}) or (finance_fees.batch_id=#{@student.batch_id}) )").uniq
+    @dates=FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} and ((finance_fees.balance > 0 and finance_fees.batch_id<>#{@student.batch_id}) or (finance_fees.batch_id=#{@student.batch_id}) )").uniq
     
     #@dates_paid = FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} and ((finance_fees.balance = 0))", :order=>'finance_fee_collections.due_date DESC').uniq # and finance_fees.batch_id = #{@student.batch_id}
     #@dates_unpaid = FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} and ((finance_fees.balance > 0)  )", :order=>'finance_fee_collections.due_date DESC').uniq # and finance_fees.batch_id = #{@student.batch_id}
-    @dates_all = FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}' and finance_fee_collections.is_deleted=#{false} ", :order=>'finance_fee_collections.due_date DESC').uniq # and finance_fees.batch_id = #{@student.batch_id}  and finance_fees.is_paid = #{false}
+    @dates_all = FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} ", :order=>'finance_fee_collections.due_date DESC').uniq # and finance_fees.batch_id = #{@student.batch_id}
+    @dates_admission = @student.batch.finance_fee_collections.find(:all,:conditions=>"finance_fee_collections.is_deleted=#{false} and finance_fee_collections.for_admission = #{true}", :order=>'finance_fee_collections.due_date DESC').uniq # and finance_fees.batch_id = #{@student.batch_id}
+    
+    #@finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id",:order => "if(students.class_roll_no = '' or students.class_roll_no is null,0,cast(students.class_roll_no as unsigned)),students.first_name ASC", :conditions=>"finance_fees.fee_collection_id = #{fee_collection.id}")
     
     if request.post?
       @student.update_attribute(:has_paid_fees,params[:fee][:has_paid_fees]) unless params[:fee].nil?
@@ -6500,8 +5684,11 @@ class StudentController < ApplicationController
     if sent_to.to_i == 1 or sent_to.to_i == 3
       guardians = Guardian.find(:all, :conditions => "ward_id IN (#{student_ids.join(',')})").map(&:user_id)
       
-      sql = "SELECT g.first_name, g.last_name, s.sms_number, g.mobile_phone,fu.paid_username,fu.paid_password FROM guardians as g INNER join students s ON s.id = g.ward_id left join tds_free_users as fu on g.user_id=fu.paid_id where fu.paid_school_id=#{MultiSchool.current_school.id} and fu.paid_id IN (#{guardians.join(',')}) and fu.paid_username LIKE '%p1%' and s.is_deleted = 0" 
-    
+      if MultiSchool.current_school.id == 352 or MultiSchool.current_school.id == 346
+        sql = "SELECT g.first_name, g.last_name, s.sms_number, g.mobile_phone,fu.paid_username,fu.paid_password FROM guardians as g INNER join students s ON s.id = g.ward_id left join tds_free_users as fu on g.user_id=fu.paid_id where fu.paid_school_id=#{MultiSchool.current_school.id} and fu.paid_id IN (#{guardians.join(',')}) and fu.paid_username LIKE '%p1%' and s.is_deleted = 0" 
+      else
+        sql = "SELECT g.first_name, g.last_name, s.sms_number, g.mobile_phone,fu.paid_username,fu.paid_password FROM guardians as g INNER join students s ON s.id = g.ward_id left join tds_free_users as fu on g.user_id=fu.paid_id where fu.paid_school_id=#{MultiSchool.current_school.id} and fu.paid_id IN (#{guardians.join(',')}) and s.is_deleted = 0"
+      end
       guardians_data = @conn.execute(sql).all_hashes
       
     end
@@ -6617,9 +5804,7 @@ class StudentController < ApplicationController
                       exam_new = all_exam_new.find{|v| v.subject_id == subject_id_new}
                       unless exam_new.blank?
                         exam_score = ExamScore.find_by_exam_id_and_student_id(exam_prev.id,student.id)
-                        unless exam_score.blank?
-                          exam_score.update_attribute("exam_id",exam_new.id)
-                        end
+                        exam_score.update_attribute("exam_id",exam_new.id)
                       end  
                     end
                   end   

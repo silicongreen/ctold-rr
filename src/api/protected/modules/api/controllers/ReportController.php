@@ -718,11 +718,12 @@ class ReportController extends Controller
        if(Yii::app()->user->user_secret === $user_secret)
        {
             $school_id = Yii::app()->user->schoolId;
+            $studentobj = new Students();
             if(Yii::app()->user->isParent)
             {
                 $batch_id   = Yii::app()->request->getPost('batch_id');
                 $student_id = Yii::app()->request->getPost('student_id');
-                $studentobj = new Students();
+                
                 $stddata = $studentobj->findByPk($student_id);
                 $user_id = $stddata->user_id;
             }
@@ -739,6 +740,8 @@ class ReportController extends Controller
                 $student_id = Yii::app()->user->profileId;
                 $user_id = Yii::app()->user->id;
             } 
+         
+            $stddata = $studentobj->findByPk($student_id);
             $response['data']['profile_picture'] = "";
             
             $freobj = new Freeusers();

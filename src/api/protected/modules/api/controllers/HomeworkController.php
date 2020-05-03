@@ -23,7 +23,7 @@ class HomeworkController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'homeworkintelligence','submittedlist','statuschange','singlesubmit','submit','defaulterList','delete','getdefaulterlist','adddefaulter','getsubjectstudents', 'teacherintelligence', 'Done', 'subjects', 'publishhomework', 'singleteacher', 'assessmentscore', 'singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus', 'teacherQuiz'),
+                'actions' => array('index', 'homeworkintelligence','submittedlist','statuschange','singlesubmit','submit','submitdelete','defaulterList','delete','getdefaulterlist','adddefaulter','getsubjectstudents', 'teacherintelligence', 'Done', 'subjects', 'publishhomework', 'singleteacher', 'assessmentscore', 'singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus', 'teacherQuiz'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -1660,6 +1660,32 @@ class HomeworkController extends Controller
        echo CJSON::encode($response);
        Yii::app()->end();
     }
+    public function actionsubmitDelete()
+    {
+       $user_secret = Yii::app()->request->getPost('user_secret');
+       $id = Yii::app()->request->getPost('id');
+       if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $id)
+       {
+          $assignmentAnswersObj = new AssignmentAnswers();
+          $submitted = $assignmentAnswersObj->findByPk($id);
+          if( $submitted )
+          {
+              $submitted->delete();
+          }
+          
+          $response['status']['code'] = 200;
+          $response['status']['msg'] = "Successfuly Deleted";
+          
+       }
+       else
+       {
+           $response['status']['code'] = 400;
+           $response['status']['msg'] = "Bad Request";
+       }  
+       echo CJSON::encode($response);
+       Yii::app()->end();
+    }
+    
     public function actionSubmit()
     {
        if (isset($_POST) && !empty($_POST))

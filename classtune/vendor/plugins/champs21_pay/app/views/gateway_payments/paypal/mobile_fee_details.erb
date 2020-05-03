@@ -993,8 +993,8 @@
               <% #@student_has_due = true %>
               <% end %>
             <% end %>
-              
-            <% if @student_has_due == false #and @financefee.batch_id == @student.batch_id %>
+            <% @student_has_due = false %>
+            <% if @student_has_due == false  #and @financefee.batch_id == @student.batch_id %>
               <%#= total_fees.to_s + " DID DID DID" %>
               <% if total_fees > 0 and under_maintenance == false  %>
                   <% @amount_to_pay = precision_label(balance+@fine_amount.to_f) %>
@@ -1320,7 +1320,7 @@
         if ( j("#user_gateway").val() == 'bkash' )
         {
             j(obj).addClass('gateway_image_single_bkash_disabled');
-            j(".loading_single_bkash").show();
+            //j(".loading_single_bkash").show();
             j(obj).prop('disabled',true);
             j(obj).html("<i class='fa fa-spin fa-spinner'></i> Please wait...");
 
@@ -1533,7 +1533,7 @@
             if ( j("#user_gateway").val() == 'bkash' )
             {
                 j(this).addClass('gateway_image_single_bkash_disabled');
-                j(".loading_single_bkash").show();
+                //j(".loading_single_bkash").show();
                 j(this).prop('disabled',true);
                 j(this).html("<i class='fa fa-spin fa-spinner'></i> Please wait...");
             

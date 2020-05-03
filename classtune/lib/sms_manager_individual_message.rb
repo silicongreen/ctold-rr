@@ -55,63 +55,88 @@ class SmsManagerIndividualMessage
 
   def perform
     if @config.present?
+      power_sms_schools = [2,357,352]
       @sms_hash = {"user"=>@username,"pass"=>@password,"sid" =>@sendername}
      
-      i = 0
-      @i_sms_loop = 0
-      @recipients.each do |recipient|
-       message = @multi_message[i]
-       message_escape = CGI::escape message
-       if @i_sms_loop == 3
-         message_log = SmsMessage.new(:body=> message_escape)
-         message_log.save
-         message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>"Successfull")
-         @sms_hash["sms[#{@i_sms_loop}][0]"] = recipient
-         @sms_hash["sms[#{@i_sms_loop}][1]"] = message
-         @sms_hash["sms[#{@i_sms_loop}][2]"] = @i_sms_loop
+      if power_sms_schools.include?(MultiSchool.current_school.id)
+        @i_sms_loop = 0
+        i = 0
+        @recipients.each do |recipient|
+          message = @multi_message[i]
+          message_escape = CGI::escape message
+          message_log = SmsMessage.new(:body=> message_escape)
+          message_log.save
+          commaseprated = @recipients.join(",")
+          parsed_url = "https://powersms.banglaphone.net.bd/httpapi/sendsms?userId=classtune&password=Classtune123&smsText="+message_escape+"&commaSeperatedReceiverNumbers="+recipient
+          uri = URI(parsed_url)
+          http = Net::HTTP.new(uri.host, uri.port)
+          http.use_ssl = true
+          auth_req = Net::HTTP::Get.new(parsed_url)
+          http.request(auth_req)
+          message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>"Successfull")
+          @i_sms_loop = @i_sms_loop+1
+          i = i+1
+        end
+        sms_count = Configuration.find_by_config_key("TotalSmsCount")
+        new_count = sms_count.config_value.to_i + 1+@i_sms_loop
+        sms_count.update_attributes(:config_value=>new_count)
+      else
+        i = 0
+        @i_sms_loop = 0
+        @recipients.each do |recipient|
+          message = @multi_message[i]
+          message_escape = CGI::escape message
+          if @i_sms_loop == 3
+            message_log = SmsMessage.new(:body=> message_escape)
+            message_log.save
+            message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>"Successfull")
+            @sms_hash["sms[#{@i_sms_loop}][0]"] = recipient
+            @sms_hash["sms[#{@i_sms_loop}][1]"] = message
+            @sms_hash["sms[#{@i_sms_loop}][2]"] = @i_sms_loop
         
-         api_uri = URI.parse(@sms_url)
-         http = Net::HTTP.new(api_uri.host, api_uri.port)
-         request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
-         request.set_form_data(@sms_hash)
+            api_uri = URI.parse(@sms_url)
+            http = Net::HTTP.new(api_uri.host, api_uri.port)
+            request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+            request.set_form_data(@sms_hash)
          
-         http.request(request)
+            http.request(request)
         
-         sms_count = Configuration.find_by_config_key("TotalSmsCount")
-         new_count = sms_count.config_value.to_i + 4
-         sms_count.update_attributes(:config_value=>new_count)
+            sms_count = Configuration.find_by_config_key("TotalSmsCount")
+            new_count = sms_count.config_value.to_i + 4
+            sms_count.update_attributes(:config_value=>new_count)
          
-         @sms_hash = {"user"=>@username,"pass"=>@password,"sid" =>@sendername}
+            @sms_hash = {"user"=>@username,"pass"=>@password,"sid" =>@sendername}
        
-         @i_sms_loop = 0
-       elsif recipient.equal? @recipients.last
-         message_log = SmsMessage.new(:body=> message_escape)
-         message_log.save
-         message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>"Successfull")
-         @sms_hash["sms[#{@i_sms_loop}][0]"] = recipient
-         @sms_hash["sms[#{@i_sms_loop}][1]"] = message
-         @sms_hash["sms[#{@i_sms_loop}][2]"] = @i_sms_loop
+            @i_sms_loop = 0
+          elsif recipient.equal? @recipients.last
+            message_log = SmsMessage.new(:body=> message_escape)
+            message_log.save
+            message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>"Successfull")
+            @sms_hash["sms[#{@i_sms_loop}][0]"] = recipient
+            @sms_hash["sms[#{@i_sms_loop}][1]"] = message
+            @sms_hash["sms[#{@i_sms_loop}][2]"] = @i_sms_loop
          
-         api_uri = URI.parse(@sms_url)
-         http = Net::HTTP.new(api_uri.host, api_uri.port)
-         request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
-         request.set_form_data(@sms_hash)
-         http.request(request)
+            api_uri = URI.parse(@sms_url)
+            http = Net::HTTP.new(api_uri.host, api_uri.port)
+            request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+            request.set_form_data(@sms_hash)
+            http.request(request)
         
-         sms_count = Configuration.find_by_config_key("TotalSmsCount")
-         new_count = sms_count.config_value.to_i + 1+@i_sms_loop
-         sms_count.update_attributes(:config_value=>new_count)
-       else
-         @sms_hash["sms[#{@i_sms_loop}][0]"] = recipient
-         @sms_hash["sms[#{@i_sms_loop}][1]"] = message
-         @sms_hash["sms[#{@i_sms_loop}][2]"] = @i_sms_loop
-         message_log = SmsMessage.new(:body=> message_escape)
-         message_log.save
-         message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>"Successfull")
-         @i_sms_loop = @i_sms_loop+1
-       end   
+            sms_count = Configuration.find_by_config_key("TotalSmsCount")
+            new_count = sms_count.config_value.to_i + 1+@i_sms_loop
+            sms_count.update_attributes(:config_value=>new_count)
+          else
+            @sms_hash["sms[#{@i_sms_loop}][0]"] = recipient
+            @sms_hash["sms[#{@i_sms_loop}][1]"] = message
+            @sms_hash["sms[#{@i_sms_loop}][2]"] = @i_sms_loop
+            message_log = SmsMessage.new(:body=> message_escape)
+            message_log.save
+            message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>"Successfull")
+            @i_sms_loop = @i_sms_loop+1
+          end   
        
-       i += 1
+          i += 1
+        end
       end
     end
   end

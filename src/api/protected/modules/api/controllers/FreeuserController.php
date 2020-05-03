@@ -88,12 +88,13 @@ class FreeuserController extends Controller
                 }
                 else if( $number == 3 && $homework->attachment3_file_name )
                 {
-                   $url = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment3s/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/attach3/".$homework->attachment3_file_name;
+                    $url = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment3s/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/attach3/".$homework->attachment3_file_name;
 
                     header("Content-Disposition: attachment; filename=" . $homework->attachment3_file_name);
                     header("Content-Type: {$homework->attachment3_content_type}");
-                    header("Content-Length: " . $homework->attachmen3_file_size);
-                    readfile($url); 
+                    header("Content-Length: " . $homework->attachment3_file_size);
+                    readfile($url);
+                    
                 }
                 else
                 {    
@@ -192,7 +193,7 @@ class FreeuserController extends Controller
                 $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
                 $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
 
-                if( $number == 2 && $homework->attachment2_file_name)
+                if( $number == 2 && $assignmentobj->attachment2_file_name)
                 {
                     $url = Settings::$paid_image_path . "uploads/assignments/attachment2s/" . $id . "/original/" . urlencode($assignmentobj->attachment2_file_name) . "?" . $attachment_extra;
 
@@ -202,7 +203,7 @@ class FreeuserController extends Controller
                     readfile($url); 
                     
                 }
-                else if( $number == 3 && $homework->attachment3_file_name)
+                else if( $number == 3 && $assignmentobj->attachment3_file_name)
                 {
                     $url = Settings::$paid_image_path . "uploads/assignments/attachment3s/" . $id . "/original/" . urlencode($assignmentobj->attachment3_file_name) . "?" . $attachment_extra;
 

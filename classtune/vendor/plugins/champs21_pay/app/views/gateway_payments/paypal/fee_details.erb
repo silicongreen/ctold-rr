@@ -1133,6 +1133,7 @@
         <% #@student_has_due = true %>
         <% end %>
       <% end %>
+      <% @student_has_due = false %>
       <% if @student_has_due == false #and @financefee.batch_id == @student.batch_id %>
         <%#= total_fees.to_s + " DID DID DID" %>
         <% if total_fees > 0 and under_maintenance == false  %>
@@ -1688,7 +1689,7 @@ encrypted = [cipher].pack('m')
         if ( j("#user_gateway").val() == 'bkash' )
         {
             j(obj).addClass('gateway_image_single_bkash_disabled');
-            j(".loading_single_bkash").show();
+            //j(".loading_single_bkash").show();
             j(obj).prop('disabled',true);
             j(obj).html("<i class='fa fa-spin fa-spinner'></i> Please wait...");
 
@@ -1810,7 +1811,7 @@ encrypted = [cipher].pack('m')
               
               j("#pay_fees_multiple").addClass('gateway_image_single_bkash_disabled');
               j("#pay_fees_multiple").attr('id',"pay_fees_multiple_1");
-              j(".loading_single_bkash").show();
+              //j(".loading_single_bkash").show();
               
               new Ajax.Request('/student/regenerate_order_id', 
                     {
@@ -1823,7 +1824,7 @@ encrypted = [cipher].pack('m')
           executeRequestOnAuthorization: function() { 
             j("#bKashFrameWrapper").css('display','none');
             j("#pay_fees_multiple").addClass('gateway_image_single_bkash_disabled');
-            j(".loading_single_bkash").show();
+            //j(".loading_single_bkash").show();
             j("#pay_fees_multiple").prop('disabled',true);
             j("#pay_fees_multiple").attr('id',"pay_fees_multiple_1");
             j.ajax({
@@ -1890,7 +1891,7 @@ encrypted = [cipher].pack('m')
             if ( j("#user_gateway").val() == 'bkash' )
             {
                 j(this).addClass('gateway_image_single_bkash_disabled');
-                j(".loading_single_bkash").show();
+                //j(".loading_single_bkash").show();
                 j(this).prop('disabled',true);
                 j(this).html("<i class='fa fa-spin fa-spinner'></i> Please wait...");
             

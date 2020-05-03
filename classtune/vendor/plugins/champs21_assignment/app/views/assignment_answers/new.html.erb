@@ -31,7 +31,7 @@
             <div  class="text-input-bg" id="assignment-attachment"><%= f.file_field  :attachment %></div>
           </div>
             
-         <% if MultiSchool.current_school.id == 2 %>
+         
           <div class="label-field-pair" >
             <label ><%= t('attach_a_file')%> 2</label>
             <div  class="text-input-bg" id="assignment-attachment2">
@@ -46,7 +46,7 @@
               <%= f.file_field  :attachment3 %>      
             </div>
           </div>
-        <% end %>
+        
 
           <%= f.submit "#{t('submit_answer')}" ,:class=>"submit_button", :disable_with => "#{t('please_wait')}"%>
         </div>

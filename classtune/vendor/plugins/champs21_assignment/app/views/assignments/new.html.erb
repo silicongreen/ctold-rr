@@ -100,7 +100,7 @@
           </div>
         </div>
           
-        <% if MultiSchool.current_school.id == 2 %>
+        
           <div class="label-field-pair" style="float:left; clear:both;">
             <label ><%= t('attach_a_file')%> 2 (25mb)</label>
             <div  class="text-input-bg" id="assignment-attachment">
@@ -114,8 +114,7 @@
             <div  class="text-input-bg" id="assignment-attachment">
               <%= f.file_field  :attachment3 %>      
             </div>
-          </div>
-        <% end %>   
+          </div> 
         
         <div class="label-field-pair"  style="float:left; clear:both;">
           <label for="duedate"><%= "#{t('due_date')}"%></label>

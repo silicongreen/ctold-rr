@@ -1007,6 +1007,7 @@
                         <% if @gateway_settings.keys.include?('bkash') %>
                         <i class='fa fa-spin fa-spinner loading_single_bkash' style="position: absolute; right: 10px; top: 5px; display: none;"></i>
                         <%= image_tag "/images/bkash-logo.png", :class => "gateway_image_single_bkash", :id => "pay_fees_multiple", :style => "", :onclick => "initBkash(this);" %>
+                        <p style="text-align: right; display: block; padding-top: 80px;">*1.5% charge applicable for  bKash payment.</p>
                         <!--button type="button" id="pay_fees_multiple" class="submit_button"><%#= "► #{t('pay_fees')}" %></button-->
                         <% else %>
                         <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button' %>

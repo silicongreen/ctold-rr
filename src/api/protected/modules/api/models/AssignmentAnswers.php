@@ -154,6 +154,24 @@ class AssignmentAnswers extends CActiveRecord
             $data = $this->find($criteria);
             return $data;
         }
+        function delete_all_answer($assignment_id,$student_id)
+        {
+            $criteria = new CDbCriteria();
+            $criteria->select = 't.id';
+            $criteria->compare('t.student_id', $student_id);
+            $criteria->compare('t.assignment_id', $assignment_id);
+            $data = $this->findAll($criteria);
+            $assignmentAnswersObj = new AssignmentAnswers();
+            if( $data )
+            {
+                foreach($data as $value)
+                {
+                    $submitted = $assignmentAnswersObj->findByPk($value->id);
+                    $submitted->delete();
+                }
+            }
+            return true;
+        }
         function homeworkStatus($assignment_id)
         {
             $criteria = new CDbCriteria();

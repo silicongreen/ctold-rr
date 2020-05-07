@@ -1664,14 +1664,11 @@ class HomeworkController extends Controller
     {
        $user_secret = Yii::app()->request->getPost('user_secret');
        $id = Yii::app()->request->getPost('id');
-       if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $id)
+       $student_id = Yii::app()->request->getPost('student_id');
+       if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $id && $student_id)
        {
           $assignmentAnswersObj = new AssignmentAnswers();
-          $submitted = $assignmentAnswersObj->findByPk($id);
-          if( $submitted )
-          {
-              $submitted->delete();
-          }
+          $assignmentAnswersObj->delete_all_answer($id,$student_id);
           
           $response['status']['code'] = 200;
           $response['status']['msg'] = "Successfuly Deleted";

@@ -95,6 +95,9 @@ class AssignmentAnswersController < ApplicationController
     @assignment= Assignment.active.find params[:assignment_id]
     @assignment_answer= AssignmentAnswer.find_by_id(params[:id])
     if @assignment_answer.present?
+      @student_id = @assignment_answer.student_id
+      @assignment_id = @assignment_answer.assignment_id
+      show_comments_associate(@assignment_id, @student_id)
       unless (@assignment.download_allowed_for(current_user))
         flash[:notice] = "#{t('you_are_not_allowed_to_view_that_page')}"
         redirect_to assignments_path
@@ -182,5 +185,41 @@ class AssignmentAnswersController < ApplicationController
       flash[:notice] = "#{t('you_are_not_allowed_to_download_that_file')}"
       redirect_to :controller=>:assignments
     end
+  end
+  def comment_view
+    @student_id = params[:student_id]
+    @assignment_id = params[:assignment_id]
+    show_comments_associate(@assignment_id, @student_id)
+    render :update do |page|
+      page.replace_html 'comments-list', :partial=>"comment"
+    end
+  end
+  def add_comment
+    @student_id = params[:comment][:student_id]
+    @assignment_id = params[:comment][:assignment_id]
+    @cmnt = AssignmentComment.new(params[:comment])
+    @current_user = @cmnt.author = current_user
+    @cmnt.save
+    show_comments_associate(@assignment_id, @student_id)
+    render :update do |page|
+      page.replace_html 'comments-list', :partial=>"comment"
+    end
+  end
+  def delete_comment
+    @comment = AssignmentComment.find(params[:id])
+    @student_id = @comment.student_id
+    @assignment_id = @comment.assignment_id
+    @comment.destroy
+    show_comments_associate(@assignment_id, @student_id)
+    render :update do |page|
+      page.replace_html 'comments-list', :partial=>"comment"
+    end
+  end
+  
+  private
+
+  def show_comments_associate( assignment_id, student_id )
+    @comments = AssignmentComment.find(:all,:conditions=>['student_id = ? and assignment_id = ?',student_id,assignment_id], :include =>[:author])
+    @current_user = current_user
   end
 end

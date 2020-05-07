@@ -29,6 +29,9 @@ authorization do
       :edit,
       :new,
       :show,
+      :comment_view,
+      :add_comment,
+      :delete_comment,
       :update]
     has_permission_on [:assignments],
       :to=>[
@@ -80,6 +83,9 @@ authorization do
       :to=>[
       :download_attachment,
       :evaluate_assignment,
+      :comment_view,
+      :add_comment,
+      :delete_comment,
       :show]
    
   end
@@ -117,6 +123,9 @@ authorization do
       :to=>[
       :download_attachment,
       :evaluate_assignment,
+      :comment_view,
+      :add_comment,
+      :delete_comment,
       :show]
       has_permission_on :assignments, :to=>:show, :join_by=> :or do
        

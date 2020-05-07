@@ -1141,10 +1141,15 @@ class AssignmentsController < ApplicationController
       
       @subject =Subject.find_by_id @assignment.subject_id
       student=current_user.student_record
+      
       unless @subject.nil?
         @assignments_list =Assignment.paginate  :conditions=>"subject_id=#{@subject.id} and is_published=1 and FIND_IN_SET(#{student.id},student_list)",:order=>"duedate desc", :page=>params[:page]
       else
         @assignments_list =Assignment.paginate  :conditions=>"FIND_IN_SET(#{student.id},student_list) and is_published=1",:order=>"duedate desc", :page=>params[:page]
+      end
+      
+      if current_user.student?
+        show_comments_associate(@assignment.id, current_user.student_record.id)
       end
       
       Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:id], 4,current_user.id])
@@ -1676,5 +1681,12 @@ class AssignmentsController < ApplicationController
       flash[:notice] = "#{t('flash_msg4')}"
       redirect_to :controller => 'user', :action => 'dashboard'
     end  
+  end
+  
+  private
+
+  def show_comments_associate( assignment_id, student_id )
+    @comments = AssignmentComment.find(:all,:conditions=>['student_id = ? and assignment_id = ?',student_id,assignment_id], :include =>[:author])
+    @current_user = current_user
   end
 end

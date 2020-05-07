@@ -221,6 +221,7 @@
               :confirm => "Do You realy want to publish this homework?", :class => "user_button" %>
             <% end %>
           <% end %>  
+            <a href="../assignment_answers/show.html.erb"></a>
           <!-- RR, remove comment-out later -->
           
           <% if @assignment.is_published==1 %>
@@ -231,7 +232,8 @@
           <% end %>  
         </div>
          
-        <% if @assignment.assignment_type == 2 %>   
+        <% if @assignment.assignment_type == 2 %>  
+           
         <div id="student-list-bg" >
           <div id="loaderbox">     <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %> </div>
           <div id="quickinfo">  <h5><%= link_to_remote  "#{t('assigned')} (#{@students_assigned_count})",:update=>"assigned_students",:url=>{:action=>:assignment_student_list,:id=>@assignment.id,:status=>"assigned"},   :before => "Element.show('loader')", :success => "Element.hide('loader')"%></h5>
@@ -318,6 +320,34 @@
       </div>
       
     <% end %>
+      
+   <% if MultiSchool.current_school.id == 2 and @current_user.student? %>
+            <h4 id="leave-a-comment"><%= t('leave_comment') %>   <%= image_tag("loader.gif",
+            :align => "absmiddle",
+            :border => 0,
+            :id => "loader",
+            :style =>"display: none;" ) %></h4>
+
+          <% form_remote_for :comment, :id => 'comments-form', :url => { :controller => 'assignment_answers',:action => 'add_comment' },  :loading => "$('loader').show();$('mysubmit').disable();", :loaded => "$('loader').hide();$('mysubmit').enable();" do |f| %>
+            <div class="comment-content"> <%= f.text_area :content %> </div>
+            <%= f.hidden_field :student_id, :value => @current_user.student_record.id %>
+            <%= f.hidden_field :assignment_id, :value => @assignment.id %>
+            <div id="submit-button"><%= submit_tag '', {:value =>"#{t('submit')}",:onClick => "return validate()",:id => "mysubmit"} %></div>
+          <% end %>
+          <div class="extender"></div>
+
+
+          <h3 id="comments-heading"><%= t('comments') %>
+           <%= image_tag("loader.gif",
+              :align => "absmiddle",
+              :border => 0,
+              :id => "loader2",
+              :style =>"display: none;" ) %></h3>
+          <span id="comments-count"><% if @comments.empty? %><%= t('no_comments') %><% end %></span>
+          <ul id="comments-list">
+            <%= render :partial => "assignment_answers/comment" %>
+          </ul>
+        <% end %> 
 
   </div>
 </div>
@@ -385,5 +415,23 @@
       overflow: hidden;
       padding: 3px !important;
   }
+  
+  #comments-heading{border-bottom:2px solid gray;padding:0 0 10px}
+#leave-a-comment{margin:40px 0 10px}
+#comments-list{padding:0 0 20px}
+#comments-list li{border-bottom:1px solid #aaa;list-style-type:none;margin:20px 0 0;padding:10px 0}
+#comments-list li .comment-details{color:#888;font-size:80%;height:15px;margin:0 0 10px}
+.comment-details .commenter{float:left;width:535px}
+.comment-details .comment-posted-at{float:right;padding-left:10px}
+.comment-details .delete-comment{float:right;margin:0 0 0 20px}
+.comment-content{width:600px}
+.comment-content textarea{-moz-border-radius:10px 10px 10px 10px;-webkit-border-radius:10px;border:1px solid #c6c6c6;background-color:#eee;width:600px;height:100px;padding:10px}
+.comment-content textarea:focus{background:#fff;border:1px solid #9e0f15}
+#submit-button{margin:20px 0 0}
+#submit-button input{-moz-border-radius:10px;-webkit-border-radius:10px;background:#db3434 none repeat scroll 0 0;color:#fff;font-size:14px;font-weight:700;margin:0 auto;padding:7px 12px;border:none;float:left;text-align:center;width:auto;cursor:pointer;margin-left:510px}
+.approve{float:left;width:220px}
+.delete-comment a{color:#000;font-size:12px;font-weight:400;margin-bottom:10px;text-decoration:none}
+.approve a{color:#000;font-size:12px;font-weight:400;margin-bottom:10px;text-decoration:none}
+.pagination{margin-top:15px;margin-right:0}
   
 </style>

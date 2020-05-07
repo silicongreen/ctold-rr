@@ -8059,7 +8059,7 @@ class FinanceController < ApplicationController
       @students = {}
       particulars = []
       particular_categories = []
-      @student_finance_fees = FinanceFee.paginate(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id",:page => params[:page], :per_page => 50)
+      @student_finance_fees = FinanceFee.paginate(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id",:page => params[:page], :per_page => 25)
       #student_finance_fees = FinanceFee.find(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id")
       
       unless @student_finance_fees.blank?
@@ -15941,8 +15941,8 @@ class FinanceController < ApplicationController
       @students = {}
       particulars = []
       particular_categories = []
-      @student_finance_fees = FinanceFee.paginate(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id",:page => params[:page], :per_page => 500)
-      #student_finance_fees = FinanceFee.find(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id")
+      #@student_finance_fees = FinanceFee.paginate(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id",:page => params[:page], :per_page => 500)
+      student_finance_fees = FinanceFee.find(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id")
       
 #      unless @student_finance_fees.blank?
 #        @student_finance_fees.each do |fee|
@@ -16048,8 +16048,9 @@ class FinanceController < ApplicationController
       #row_1 << 'Fine'
       row_1 << 'Total Fees'
       row_1 << 'Paid Amount'
-      row_1 << 'Due'
-      row_1 << 'Advance'
+      row_1 << 'Contact Number'
+#      row_1 << 'Due'
+#      row_1 << 'Advance'
       new_book.worksheet(0).insert_row(0, row_1)
       new_book.worksheet(0).row(0).set_format(0, title_format)
       new_book.worksheet(0).column(0).width = 15
@@ -16095,24 +16096,31 @@ class FinanceController < ApplicationController
           tmp << l.to_s
           tmp << fee.student.admission_no
           tmp << fee.student.full_name
-          tmp << s.batch.course.course_name
-          tmp << s.batch.course.section_name
-          discount = 0.0
-          fine = 0.0
+          tmp << fee.student.batch.course.course_name
+          tmp << fee.student.batch.course.section_name
+          #discount = 0.0
+          #fine = 0.0
           paid_amount = 0.0
           total_fee = 0.0
-          advance = 0.0
-          tmp << discount
-          tmp << fine
+          #advance = 0.0
+          if fee.is_paid
+            paid_fees = fee.finance_transactions.map(&:amount).sum.to_f unless fee.finance_transactions.blank?
+            total_fee = paid_fees
+            paid_amount = paid_fees
+          else
+            total_fee = fee.balance
+            paid_amount = 0.0
+          end
           tmp << total_fee
           tmp << paid_amount
-          remaining = total_fee - paid_amount.to_f
-          if remaining < 0
-            advance = remaining * -1
-            remaining = 0.0
-          end
-          tmp << remaining
-          tmp << advance
+          tmp << fee.student.sms_number
+#          remaining = total_fee - paid_amount.to_f
+#          if remaining < 0
+#            advance = remaining * -1
+#            remaining = 0.0
+#          end
+#          tmp << remaining
+#          tmp << advance
           
           new_book.worksheet(0).insert_row(ind, tmp)
           new_book.worksheet(0).row(ind).set_format(0, center_format)
@@ -16121,10 +16129,10 @@ class FinanceController < ApplicationController
           new_book.worksheet(0).row(ind).set_format(4, center_format)
           
           m = 5
-          @particular_categories.each do |particular|
-            new_book.worksheet(0).row(ind).set_format(m, amount_format)
-            m += 1
-          end
+#          @particular_categories.each do |particular|
+#            new_book.worksheet(0).row(ind).set_format(m, amount_format)
+#            m += 1
+#          end
           new_book.worksheet(0).row(ind).set_format(m, amount_format)
           m += 1
           new_book.worksheet(0).row(ind).set_format(m, amount_format)

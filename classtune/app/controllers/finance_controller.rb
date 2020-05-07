@@ -16041,11 +16041,11 @@ class FinanceController < ApplicationController
       row_1 << 'Student Name'
       row_1 << 'Class'
       row_1 << 'Section'
-      @particular_categories.each do |particular|
-        row_1 << particular
-      end
-      row_1 << 'Discount'
-      row_1 << 'Fine'
+#      @particular_categories.each do |particular|
+#        row_1 << particular
+#      end
+      #row_1 << 'Discount'
+      #row_1 << 'Fine'
       row_1 << 'Total Fees'
       row_1 << 'Paid Amount'
       row_1 << 'Due'
@@ -16062,11 +16062,11 @@ class FinanceController < ApplicationController
       new_book.worksheet(0).row(0).set_format(4, title_format)
       new_book.worksheet(0).column(4).width = 15
       k = 5
-      @particular_categories.each do |particular|
-        new_book.worksheet(0).row(0).set_format(k, title_format)
-        new_book.worksheet(0).column(k).width = particular.length + 5
-        k += 1
-      end
+#      @particular_categories.each do |particular|
+#        new_book.worksheet(0).row(0).set_format(k, title_format)
+#        new_book.worksheet(0).column(k).width = particular.length + 5
+#        k += 1
+#      end
       new_book.worksheet(0).row(0).set_format(k, title_format)
       new_book.worksheet(0).column(k).width = 15
       k += 1
@@ -16088,44 +16088,19 @@ class FinanceController < ApplicationController
       
       ind = 1
       l = 1
-      unless @students.blank?
-        @students.each do |k, fee_data|
+      unless @student_finance_fees.blank?
+        @student_finance_fees.each do |fee|
           tmp = []
-          s = fee_data[0]
+          #s = fee_data[0]
           tmp << l.to_s
-          tmp << s.admission_no
-          tmp << s.full_name
+          tmp << fee.student.admission_no
+          tmp << fee.student.full_name
           tmp << s.batch.course.course_name
           tmp << s.batch.course.section_name
           discount = 0.0
           fine = 0.0
           paid_amount = 0.0
           total_fee = 0.0
-          unless @student_particulars[k].blank?
-            unless @particular_categories.blank?
-              @particular_categories.each do |particular|
-                sp_amounts = @student_particulars[k][0].map{|sp| sp.amount if sp.finance_fee_particular_category.name == particular }
-                particular_amount = 0.00
-                sp_amounts.each do |sp_amount|
-                  particular_amount += sp_amount.to_f
-                end
-                total_fee += particular_amount
-                tmp << particular_amount
-              end
-            else
-              tmp << 0.00
-            end
-          end
-          unless @student_summaries[k].blank?
-            student_summaries = @student_summaries[k][0]
-            discount = student_summaries['discount'].to_f
-            total_fee -= student_summaries['discount'].to_f
-            
-            fine = student_summaries['fine'].to_f
-            total_fee += student_summaries['fine'].to_f
-            
-            paid_amount = student_summaries['paid_amount'].to_f
-          end
           advance = 0.0
           tmp << discount
           tmp << fine

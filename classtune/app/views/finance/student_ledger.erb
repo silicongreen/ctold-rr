@@ -109,18 +109,29 @@
         <div id="student_profile_heading1">
             <div id="student_main_info1" style="float: left; width: 98%;">
                 <span class="name" style="width: 66%; display: inline-block;"><h1> Student Ledger</h1> </span>
-                <span class="name" style="width: 15%; padding-right: 10px; display: inline-block; text-align: right;">
-                    <%= link_to "Download PDF",
-                            {:controller => "finance", :action => "student_ledger_pdf_fees", :id => @student.id},:target => '_blank', :class => "user_button" %>
-                </span>
-                <span class="name" style="width: 15%; padding-right: 0px; display: inline-block; text-align: right;">
-                    <%= link_to "Download Excel",
-                            {:controller => "finance", :action => "student_ledger_xls_fees", :id => @student.id},:target => '_blank', :class => "user_button" %>
-                </span>
+                <% if @from_student_view %>
+                  <span class="name" style="width: 15%; padding-right: 10px; display: inline-block; text-align: right;">
+                      <%= link_to "Download PDF",
+                              {:controller => "finance", :action => "student_ledger_pdf_fees", :id => @student.id, :id2 => 1},:target => '_blank', :class => "user_button" %>
+                  </span>
+                  <span class="name" style="width: 15%; padding-right: 0px; display: inline-block; text-align: right;">
+                      <%= link_to "Download Excel",
+                              {:controller => "finance", :action => "student_ledger_xls_fees", :id => @student.id, :id2 => 1},:target => '_blank', :class => "user_button" %>
+                  </span>
+                <% else %>
+                  <span class="name" style="width: 15%; padding-right: 10px; display: inline-block; text-align: right;">
+                      <%= link_to "Download PDF",
+                              {:controller => "finance", :action => "student_ledger_pdf_fees", :id => @student.id, :start_date => @start_date},:target => '_blank', :class => "user_button" %>
+                  </span>
+                  <span class="name" style="width: 15%; padding-right: 0px; display: inline-block; text-align: right;">
+                      <%= link_to "Download Excel",
+                              {:controller => "finance", :action => "student_ledger_xls_fees", :id => @student.id, :start_date => @start_date},:target => '_blank', :class => "user_button" %>
+                  </span>
+                <% end %>
             </div>
             <div class="extender"> </div>
         </div>
-        
+        <%#= debug @student_fee_ledgers_previous.inspect %>
         <hr style="border: 1px solid #ccc;" />
         <div id="table-scroll" class="table-scroll" style="display: block; width: 96%; padding-bottom: 20px;">
             <table class="table-bordered main-table" id="table-scroll" cellspacing="0" cellpadding="0" border="0" style="table-layout:fixed;">
@@ -143,6 +154,32 @@
                     <% i = 0 %>
                     <% balance_forward = false %>
                     <% already_shown = false %>
+                    <% val = 0 %>
+                    <% unless @student_fee_ledgers_previous.blank? %>
+                      <% val = 1 %>
+                      <tr class="tr-odd">
+                          <td style="text-align: center; vertical-align: middle; font-weight: bold; font-family: Roboto;"><%= 1 %></td>
+                          <th style="vertical-align: middle; text-align: left; color: #555; font-family: verdana; font-size: 12px; line-height: 17px;" class="fixed-side">
+                          </th>
+                          <td colspan="4" style="vertical-align: middle; text-align: right; color: #555; font-family: verdana; font-size: 12px; line-height: 17px;">
+                              <%= "Balance Forward upto " + @start_date.strftime("%d %B, %Y") unless @start_date.blank? %><br />
+                          </td>
+                          <% amt = @student_fee_ledgers_previous.amount_to_pay %>
+                          <% amt_paid = @student_fee_ledgers_previous.amount_paid %>
+                          <td style="vertical-align: middle; text-align: right; font-size: 12px;"><%= to_comma_seperated_precision_label amt %></td>
+                          <td style="vertical-align: middle; text-align: right; font-size: 12px;"><%= to_comma_seperated_precision_label amt_paid %></td>
+                          <% current_balance = (carried_amount + amt.to_f) - amt_paid.to_f %>
+                          <% carried_amount = current_balance %>
+                          <td style="vertical-align: middle; text-align: right; font-size: 12px;">
+                              <% if current_balance < 0 %>
+                                <%= to_comma_seperated_precision_label current_balance * (-1) %><br />
+                                <small style="font-size: 13px;">(Advance)</small>
+                              <% else %>
+                                <%= to_comma_seperated_precision_label current_balance %>
+                              <% end %>
+                          </td>
+                      </tr>
+                    <% end %>
                     <% @student_fee_ledgers.each_with_index do |student_fee_ledger, ind| %>
                     <% balance_forward = false %>
                     <% ledger_info = "" %>
@@ -312,7 +349,7 @@
                         <% end %>
                         <% if amt > 0 %>
                           <tr class="tr-odd">
-                              <td style="text-align: center; vertical-align: middle; font-weight: bold; font-family: Roboto;"><%= ind + 1 %></td>
+                              <td style="text-align: center; vertical-align: middle; font-weight: bold; font-family: Roboto;"><%= ind + 1 + val %></td>
                               <th style="vertical-align: middle; text-align: left; color: #555; font-family: verdana; font-size: 12px; line-height: 17px;" class="fixed-side">
                                   <%= ledger_date.strftime("%d %B, %Y") unless ledger_date.blank? %><br />
                               </th>
@@ -339,7 +376,7 @@
                     
                     <% if ledger_found and already_shown and !balance_forward %>  
                       <tr class="tr-odd">
-                          <td style="text-align: center; vertical-align: middle; font-weight: bold; font-family: Roboto;"><%= ind + 1 %></td>
+                          <td style="text-align: center; vertical-align: middle; font-weight: bold; font-family: Roboto;"><%= ind + 1 + val %></td>
                           <th style="vertical-align: middle; text-align: left; color: #555; font-family: verdana; font-size: 12px; line-height: 17px;" class="fixed-side">
                               <% unless balance_forward %>
                                 <%= student_fee_ledger.ledger_date.strftime("%d %B, %Y") %><br />
@@ -366,7 +403,7 @@
                     <% elsif ledger_found and !already_shown %>  
                       <% already_shown = true %>
                       <tr class="tr-odd">
-                          <td style="text-align: center; vertical-align: middle; font-weight: bold; font-family: Roboto;"><%= ind + 1 %></td>
+                          <td style="text-align: center; vertical-align: middle; font-weight: bold; font-family: Roboto;"><%= ind + 1 + val %></td>
                           <th style="vertical-align: middle; text-align: left; color: #555; font-family: verdana; font-size: 12px; line-height: 17px;" class="fixed-side">
                               <% unless balance_forward %>
                                 <%= student_fee_ledger.ledger_date.strftime("%d %B, %Y") %><br />

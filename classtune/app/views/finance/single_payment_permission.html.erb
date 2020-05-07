@@ -56,19 +56,24 @@
         
       <div style="border: 1px solid #ccc; border-radius: 5px; float: left; width: 65%; margin-left: 1%;">
         <span style="padding: 8px 15px 2px 13px; font-weight: bold; display: block;">Filter By Shift/Class or Section:</span>  
-        <div class="label-field-pair course_area" style="width: 32%; margin-right: 0; display: inline-block; float: left; margin-top: 6px; ">
+        <div class="label-field-pair course_area" style="width: 24%; margin-right: 0; display: inline-block; float: left; margin-top: 6px; ">
           <%= select :fees_defaulters, :batch_name, Batch.active.find(:all, :group => "name").map { |c| [c.name, c.id] },
             {:prompt => "#{t('select_a_batch')}"},
             {:class => "select2-combo", :autocomplete=> "off", :onChange => "#{remote_function(:url => {:controller => "finance", :action => "get_classes_single_payment"}, :with => "'batch_id='+value" ,:before => "$('loading_2').show();",
             :success => "$('loading_2').hide();")}"} %>
           <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
         </div>  
-        <div class="label-field-pair" style="width: 32%; margin-right: 0; display: inline-block; float: left; margin-top: 6px;">
+        <div class="label-field-pair" style="width: 24%; margin-right: 0; display: inline-block; float: left; margin-top: 6px;">
           <div id="course_data" class="course_area" style='width: 100%;'> <%= render :partial => 'courses_data_single', :object => @courses %></div>
         </div>  
-        <div class="label-field-pair" style="width: 32%; display: inline-block; float: left; margin-top: 6px; margin-right: 1%;">
+        <div class="label-field-pair" style="width: 24%; display: inline-block; float: left; margin-top: 6px; margin-right: 1%;">
           <div id="batches" class="course_area">
               <%= render :partial => 'batches_single' %>
+          </div>
+        </div>  
+        <div class="label-field-pair" style="width: 20%; display: inline-block; float: left; margin-top: 6px; margin-right: 1%;">
+          <div id="batches_single_session" class="course_area">
+              <%= render :partial => 'batches_single_session' %>
           </div>
         </div>  
         
@@ -121,7 +126,7 @@
     float: left;
   }
   .select2-container {
-    width: 92% !important;
+    width: 89% !important;
   }
   .course_area .select2-container {
     width: 100% !important;

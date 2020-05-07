@@ -1,0 +1,11 @@
+<%= select :fine_configuration, :section_id, @sections.map {|c| [c.session.to_s, c.id]},
+{:prompt => "Select a Session"},
+{:class => "select2-combo", :autocomplete=> "off", :onChange => "#{remote_function(:url => {:controller => "finance",:action => "update_fine_configuration_sections"}, 
+:with => "'section_id='+value+'&course_id='+$('fine_configuration_class_name').value+'&batch_id='+$('fine_configuration_batch_name').value+'&opt=2'" ,:before => "$('loading_section_data').show();",
+:success => "$('loading_section_data').hide(); ")}"} %>  
+<%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_section_data", :style =>"display: none;" ) %>
+
+
+<script type="text/javascript" charset="utf-8">
+    j('#fine_configuration_section_id').select2();
+</script>

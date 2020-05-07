@@ -43,6 +43,7 @@
     <div class="report">
         <div id ="report_info">
             <h6>Title:  Student Ledger</h6>
+            <%  %>
             <h6 style='margin-bottom: 12px;'>Period: <span style='font-weight: normal;'><%= @student_fee_ledgers[0].ledger_date.to_datetime.strftime("%b %d, %Y") %> to <%= @student_fee_ledgers[@student_fee_ledgers.length - 1].ledger_date.to_datetime.strftime("%b %d, %Y") %></span></h6>
             <%#*<h6>Title:  Student Ledger</h6>%>
         </div>
@@ -126,6 +127,32 @@
                 </tr>
                 <% balance_forward = false %>
                 <% already_shown = false %>
+                <% val = 0 %>
+                <% unless @student_fee_ledgers_previous.blank? %>
+                  <% val = 1 %>
+                  <tr class="even">
+                      <td style="text-align: center;"><%= 1 %></td>
+                      <td style="text-align: left;" class="fixed-side">
+                      </th>
+                      <td colspan="4" style="text-align: right; ">
+                          <%= "Balance Forward upto " + @start_date.strftime("%d %B, %Y") unless @start_date.blank? %>
+                      </td>
+                      <% amt = @student_fee_ledgers_previous.amount_to_pay %>
+                      <% amt_paid = @student_fee_ledgers_previous.amount_paid %>
+                      <td style="text-align: right;"><%= to_comma_seperated_precision_label amt %></td>
+                      <td style="text-align: right;"><%= to_comma_seperated_precision_label amt_paid %></td>
+                      <% current_balance = (carried_amount + amt.to_f) - amt_paid.to_f %>
+                      <% carried_amount = current_balance %>
+                      <td style="text-align: right;">
+                          <% if current_balance < 0 %>
+                            <%= to_comma_seperated_precision_label current_balance * (-1) %><br />
+                            <small style="font-size: 13px;">(Advance)</small>
+                          <% else %>
+                            <%= to_comma_seperated_precision_label current_balance %>
+                          <% end %>
+                      </td>
+                  </tr>
+                <% end %>
                 <% @student_fee_ledgers.each_with_index do |student_fee_ledger, ind| %>
                   <% balance_forward = false %>
                   <% info = "" %>
@@ -277,7 +304,7 @@
                         <% end %>
                         <% if amt > 0 %>
                           <tr class="even">
-                              <td style="text-align: center;"><%= ind + 1 %></td>
+                              <td style="text-align: center;"><%= ind + 1 + val %></td>
                               <td  style="text-align: center;"><%= ledger_date.strftime("%d %B, %Y") unless ledger_date.blank? %></td>
                               <td style="text-align: center;"><%= "Fine" %></td>
                               <td style="text-align: center;"><%= fee_id %></td>
@@ -302,7 +329,7 @@
                 
                     <% if ledger_found and already_shown and !balance_forward %>  
                       <tr class="even">
-                        <td style="text-align: center;"><%= ind + 1 %></td>
+                        <td style="text-align: center;"><%= ind + 1 + val %></td>
                         <td style="text-align: center;"><%= student_fee_ledger.ledger_date.strftime("%d-%m-%Y") if balance_forward == false %></td>
                         <td style="text-align: center;"><%= trans_type %></td>
                         <td style="text-align: center;"><%= trans_id %></td>
@@ -324,7 +351,7 @@
                   <% elsif ledger_found and !already_shown %>  
                     <% already_shown = true %>
                     <tr class="even">
-                        <td style="text-align: center;"><%= ind + 1 %></td>
+                        <td style="text-align: center;"><%= ind + 1 + val %></td>
                         <td style="text-align: center;"><%= student_fee_ledger.ledger_date.strftime("%d-%m-%Y") if balance_forward == false %></td>
                         <td style="text-align: center;"><%= trans_type %></td>
                         <td style="text-align: center;"><%= trans_id %></td>

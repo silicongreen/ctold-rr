@@ -37,6 +37,11 @@
   <% unless @student_fee_ledgers.blank? %>  
   <h2 style="border-bottom: 2px solid #ccc; padding-bottom: 10px;">Student Ledger List</h2>
   <div id="filter" style="width: 100%;">
+      <div class="label-field-pair" style="width: 60%; display: block; float: left;">
+        <div class="label-container" style="width: 18%; display: inline-block; padding-top: 6px;"><label><%= "Start Date" %>:</label></div>
+        <div class="input-container calendar-input" style="width: 34%; margin-right: 6%; display: inline-block; "><%= calendar_date_select_tag 'start_date', I18n.l(@start_date.to_date,:format=>"%d %b %Y") ,:popup=>:force, :onchange => "filter_ledger($F(this));" %></div>
+        <div class="input-container calendar-input" style="width: 34%; display: inline-block; padding-left: 10px; display: none;"><%= calendar_date_select_tag 'end_date', I18n.l(Date.today,:format=>"%d %b %Y") ,:popup=>:force%></div>
+      </div>
       <div style="width: 50%; display: inline-block;">
         <div class="label-field-pair" style="width: 45%; display: block; float: left; margin-top: 6px; margin-right: 1%;">
           <select name="filter_by_course" id="filter_by_course" style="width: 100% !important;">
@@ -87,7 +92,7 @@
                       <% student = ArchivedStudent.find(:first, :conditions => "former_id = #{student_fee_ledger.student_id}") %>
                       <% end %>
                       <th style="vertical-align: middle; text-align: left;" class="fixed-side">
-                          <a href="/finance/student_ledger/<%= student_fee_ledger.student_id %>" target="_blank" style="color: #444; line-height: 23px; font-size: 16px;">
+                          <a href="/finance/student_ledger/<%= student_fee_ledger.student_id %>?start_date=<%= @start_date %>" target="_blank" style="color: #444; line-height: 23px; font-size: 16px;">
                             <%= student.full_name unless student.full_name.nil? %><br />
                             <small>ID: <%= student.admission_no unless student.admission_no.nil? %></small><br />
                             <small><%= student.batch.full_name %></small><br />
@@ -203,21 +208,31 @@
     }  
   });
   
+  function filter_ledger(val)
+  {
+      var filter_by_dues = j("#filter_by_dues").val();
+      var filter_by_course = j("#filter_by_course").val();
+
+      location.href = '/finance/student_ledger_list?filter_by_course=' + filter_by_course + "&filter_by_dues=" + filter_by_dues + "&start_date=" + val;
+  }
+  
   j(document).ready(function() {
       j(".main-table").clone(true).appendTo('#table-scroll').addClass('clone');   
       
       j(document).on("change", "#filter_by_course", function(){
           var filter_by_dues = j("#filter_by_dues").val();
+          var start_date = j("#start_date").val();
           var filter_by_course = j(this).val();
           
-          location.href = '/finance/student_ledger_list?filter_by_course=' + filter_by_course + "&filter_by_dues=" + filter_by_dues;
+          location.href = '/finance/student_ledger_list?filter_by_course=' + filter_by_course + "&filter_by_dues=" + filter_by_dues + "&start_date=" + start_date;
       });
       
       j(document).on("change", "#filter_by_dues", function(){
           var filter_by_dues = j(this).val();
+          var start_date = j("#start_date").val();
           var filter_by_course = j("#filter_by_course").val();
           
-          location.href = '/finance/student_ledger_list?filter_by_course=' + filter_by_course + "&filter_by_dues=" + filter_by_dues;
+          location.href = '/finance/student_ledger_list?filter_by_course=' + filter_by_course + "&filter_by_dues=" + filter_by_dues + "&start_date=" + start_date;
       });
       
       j(document).on("keyup", "#admission_no", function(){
@@ -229,13 +244,14 @@
                   filter = true;
                   var admission_no = this.value;
                   var filter_by_dues = j("#filter_by_dues").val();
+                  var start_date = j("#start_date").val();
                   var filter_by_course = j("#filter_by_course").val();
 
                   new Ajax.Request('/finance/ajax_student_ledger_list', 
                           {
                             asynchronous:true, 
                             evalScripts:true, 
-                            parameters:'filter_by_dues='+filter_by_dues+'&filter_by_course='+filter_by_course+'&admission_no='+admission_no
+                            parameters:'filter_by_dues='+filter_by_dues+'&filter_by_course='+filter_by_course+'&admission_no='+admission_no+'&start_date='+start_date
                           }
                   )
               }
@@ -249,13 +265,14 @@
                       filter = false;
                       req = true;
                       var filter_by_dues = j("#filter_by_dues").val();
+                      var start_date = j("#start_date").val();
                       var filter_by_course = j("#filter_by_course").val();
 
                       new Ajax.Request('/finance/ajax_student_ledger_list', 
                               {
                                 asynchronous:true, 
                                 evalScripts:true, 
-                                parameters:'filter_by_dues='+filter_by_dues+'&filter_by_course='+filter_by_course
+                                parameters:'filter_by_dues='+filter_by_dues+'&filter_by_course='+filter_by_course + '&start_date=' + start_date
                               }
                       )
                   }
@@ -264,13 +281,14 @@
                       req = true;
                       var admission_no = this.value;
                       var filter_by_dues = j("#filter_by_dues").val();
+                      var start_date = j("#start_date").val();
                       var filter_by_course = j("#filter_by_course").val();
 
                       new Ajax.Request('/finance/ajax_student_ledger_list', 
                               {
                                 asynchronous:true, 
                                 evalScripts:true, 
-                                parameters:'filter_by_dues='+filter_by_dues+'&filter_by_course='+filter_by_course+'&admission_no='+admission_no
+                                parameters:'filter_by_dues='+filter_by_dues+'&filter_by_course='+filter_by_course+'&admission_no='+admission_no + 'start_date=' + start_date
                               }
                       )
                   }

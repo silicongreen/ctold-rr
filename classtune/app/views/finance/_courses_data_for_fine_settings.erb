@@ -1,6 +1,6 @@
 <%= select :fine_configuration, :class_name, @courses.map {|c| [c.course_name, c.id]},
 {:prompt => "Select a Class"},
-{:class => "select2-combo", :autocomplete=> "off", :onChange => "#{remote_function(:url => {:controller => "finance",:action => "get_section_data_finance_for_fine_settings"}, :with => "'class_name='+value+'&batch_id='+j('#fine_configuration_batch_name').val()" ,:before => "$('loading_course_data').show();",
+{:class => "select2-combo", :autocomplete=> "off", :onChange => "#{remote_function(:url => {:controller => "finance",:action => "get_section_data_single"}, :with => "'class_name='+value+'&batch_id='+j('#fine_configuration_batch_name').val()" ,:before => "$('loading_course_data').show();",
 :success => "$('loading_course_data').hide(); ")}"} %>  
 <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_course_data", :style =>"display: none;" ) %>
 

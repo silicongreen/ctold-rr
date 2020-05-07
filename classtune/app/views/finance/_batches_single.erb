@@ -1,11 +1,11 @@
-<%= select :fees_defaulters, :section_id, @sections.map {|c| [c.section_name.strip+" "+c.session.to_s, c.id]},
+<%= select :fine_configuration, :session_id, @sections.map {|c| [c.section_name.strip, c.id]},
 {:prompt => "Select a Section"},
-{:class => "select2-combo", :autocomplete=> "off", :onChange => "#{remote_function(:url => {:controller => "finance",:action => "single_payment_permission_filter"}, 
-:with => "'section_id='+value+'&course_id='+$('fees_defaulters_class_name').value+'&batch_id='+$('fees_defaulters_batch_name').value+'&opt=2'" ,:before => "$('loading_section_data').show();",
-:success => "$('loading_section_data').hide(); ")}"} %>  
-<%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_section_data", :style =>"display: none;" ) %>
+{:class => "select2-combo", :autocomplete=> "off", :onChange => "#{remote_function(:url => {:controller => "finance",:action => "get_session_section_data_finance_fine"}, 
+:with => "'section_id='+value+'&class_name='+$('fine_configuration_class_name').value+'&batch_id='+$('fine_configuration_batch_name').value+'&opt=2'" ,:before => "$('loading_session_data_session').show();",
+:success => "$('loading_session_data_session').hide(); ")}"} %>  
+<%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_session_data_session", :style =>"display: none;" ) %>
 
 
 <script type="text/javascript" charset="utf-8">
-    j('#fees_defaulters_section_id').select2();
+    j('#fine_configuration_session_id').select2();
 </script>

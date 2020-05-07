@@ -38,7 +38,7 @@
             <div class="each_batch" style="padding: 5px 0; width: 100%; ">
               <% checked = true %>
               <% unless params[:fee_collection].nil? %>
-                <% checked = params[:fee_collection][:category_ids].include?(f.id.to_s) if params[:fee_collection][:category_ids].present? %>
+                <% checked = params[:fee_collection][:category_ids].include?(f.category_generated_tableid.to_s) if params[:fee_collection][:category_ids].present? %>
               <% end %>
                 <div class="checkbox_inline"><%= check_box_tag "fee_collection[category_ids][]", f.id, checked, :class=>'batches_box category_select batches_selected' %></div> 
                 <div class="checkbox_label" style="width: 90%;"><label id="batch_name_srch_<%= f.id %>" class="batch_name_srch" style="width: 100%;"><%= f.full_name %></label></div>
@@ -48,7 +48,13 @@
         </div>
     </div>
   </div>
-<div class="label-field-pair" style="border: 1px solid #ccc; width: 95%; margin-left: 6%; border-radius: 6px; padding-bottom: 10px;">
+  <% if @show_other_filter %>
+    <div class="label-field-pair" style="border: 1px solid #ccc; width: 91%; margin-left: 6%; border-radius: 6px; padding: 10px; text-align: center; margin-bottom: 10px; height: auto;">
+      <a href="javascript:;" id="set_by_school_college" data-target="1" data-id-val="<%= @param_ids %>">Fees set School/College or Category wise</a> 
+      <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_batches_collection", :style =>"display: none; padding-left: 10px;" ) %>
+    </div>
+  <% end %>
+  <div class="label-field-pair" style="border: 1px solid #ccc; width: 95%; margin-left: 6%; border-radius: 6px; padding-bottom: 10px;">
     <div class="input-container-for-admission" style="width: 100%;">
         <div class="each_batch" style="border-bottom: 0; width: 100%; overflow: hidden;">
           <div class="checkbox_inline" style="width: 10%;"><%= check_box_tag "for_admission", 1, false, :class=>'batches_box' %></div> 

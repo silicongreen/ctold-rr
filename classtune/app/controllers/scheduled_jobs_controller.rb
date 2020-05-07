@@ -29,6 +29,7 @@ class ScheduledJobsController < ApplicationController
         if params[:job_object]=="FinanceFeeCollection"
         @all_jobs.each do|j|
          @jobs.push j if j.payload_object.class.name=="DelayedFeeCollectionJob"
+         @jobs.push j if j.payload_object.class.name=="DelayedFeeCollectionNewJob"
           end
 
         elsif params[:job_object]=="FeeCollectionRegeneration"

@@ -32,14 +32,14 @@
         </thead>
         <tbody>
             <% @student_fee_ledgers.each do |student_fee_ledger| %>
-            <%= debug student_fee_ledger.inspect %>
+            <%#= debug student_fee_ledger.inspect %>
               <tr class="tr-odd">
                   <% student = Student.find(:first, :conditions => "id = #{student_fee_ledger.student_id}") %>
                   <% if student.nil?  %>
                   <% student = ArchivedStudent.find(:first, :conditions => "former_id = #{student_fee_ledger.student_id}") %>
                   <% end %>
                   <th style="vertical-align: middle; text-align: left;" class="fixed-side">
-                      <a href="/finance/student_ledger/<%= student_fee_ledger.student_id %>" target="_blank" style="color: #444; line-height: 23px; font-size: 16px;">
+                      <a href="/finance/student_ledger/<%= student_fee_ledger.student_id %>?start_date=<%= @start_date %>" target="_blank" style="color: #444; line-height: 23px; font-size: 16px;">
                         <%= student.full_name unless student.full_name.nil? %><br />
                         <small>ID: <%= student.admission_no unless student.admission_no.nil? %></small><br />
                         <small><%= student.batch.full_name %></small><br />

@@ -63,6 +63,8 @@
                 <td class="col-3">Generate CCE Reports</td>
               <% elsif job.payload_object.class.name=="DelayedFeeCollectionJob" %>
                 <td class="col-3">Fee Collection</td>
+              <% elsif job.payload_object.class.name=="DelayedFeeCollectionNewJob" %>
+                <td class="col-3">Fee Collection</td>
               <%else%>
                 <td class="col-3"> - </td>
               <% end %>

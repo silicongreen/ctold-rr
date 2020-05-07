@@ -1,0 +1,114 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="filter" style="width: 100%;">
+  <div class="batch_select_box batch_select_box_school_college" data-hide-height="50px" data-show-height="85px" style="background: #FCFCFC; padding-left: none; padding-bottom: 10px; height: 85px;">
+    <div class="label-field-pair">
+        <div style="display: inline-block; border-bottom: 1px solid #ccc; width: 100%; ">
+            <div style="width: 65%; display: inline-block;">
+                <div class="label-container"><label style="padding-left: 0;"><input type="checkbox" name="school_college" id="school_college" class="filter_fees" checked="" style="float: left; margin-top: 0;"><span style="display: inline-block; padding-left: 10px; "><%= "Fees By School/College" %>:</span></label></div>
+            </div>
+            <div class="sel-list sel-list-school_college" style="padding-bottom: 5px; width: 29%; display: inline-block; vertical-align: top; text-align: right; padding-right: 10px; font-size: 14px; padding-top: 6px;">
+              <%= link_to_function t('all'), "$$('input.school_college_box').each(function(checkbox) { checkbox.checked = true; });" %> |
+              <%= link_to_function t('none'), "$$('input.school_college_box').each(function(checkbox) { checkbox.checked = false; });" %>
+            </div>
+        </div>
+        <div class="fee_category_scroll fee_category_scroll_school_college">
+          <div class="each_batch" style="padding: 5px 0; width: 100%; border-bottom: none;">
+            <% checked = true %>
+            <div class="checkbox_inline"><%= check_box_tag "fee_collection[category_ids][]", 'school', checked, :class=>'school_college_box category_select school_college_selected' %></div> 
+            <div class="checkbox_label" style="width: 39%;"><label id="batch_name_srch_<%= 'school' %>" class="batch_name_srch" style="width: 100%;"><%= "School" %></label></div>
+            
+            <div class="checkbox_inline"><%= check_box_tag "fee_collection[category_ids][]", 'college', checked, :class=>'school_college_box category_select school_college_selected' %></div> 
+            <div class="checkbox_label" style="width: 39%;"><label id="batch_name_srch_<%= 'college' %>" class="batch_name_srch" style="width: 100%;"><%= "College" %></label></div>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="batch_select_box batch_select_box_student_category" data-hide-height="50px" data-show-height="210px" style="background: #FCFCFC; padding-left: none; padding-bottom: 10px; height: 50px;">
+    <div class="label-field-pair">
+        <div style="display: inline-block; border-bottom: 1px solid #ccc; width: 100%; ">
+            <div style="width: 65%; display: inline-block;">
+                <div class="label-container"><label style="padding-left: 0; width: 300px;"><input type="checkbox" name="student_category" id="student_category" class="filter_fees" style="float: left; margin-top: 0;"><span style="display: inline-block; padding-left: 10px; "><%= "Fees By Student Category" %>:</span></label></div>
+            </div>
+            <div class="sel-list sel-list-student_category" style="padding-bottom: 5px; width: 29%; display: inline-block; vertical-align: top; text-align: right; padding-right: 10px; font-size: 14px; padding-top: 6px; opacity: 0;">
+              <%= link_to_function t('all'), "$$('input.student_category_box').each(function(checkbox) { checkbox.checked = true; });" %> |
+              <%= link_to_function t('none'), "$$('input.student_category_box').each(function(checkbox) { checkbox.checked = false; });" %>
+            </div>
+        </div>
+        <div class="fee_category_scroll fee_category_scroll_student_category" style="display: none;">
+          <div class="each_batch" style="padding: 5px 0; width: 100%; border-bottom: none;">
+            <% checked = false %>
+            <% unless @categories.blank? %>
+                <% l = 1 %>
+                <% @categories.each do |category| %>
+                  <div class="checkbox_inline"><%= check_box_tag "fee_collection[category_ids][]", category.id, checked, :class=>'student_category_box category_select student_category_selected', :disabled => "true" %></div> 
+                  <div class="checkbox_label" style="width: 39%;"><label id="batch_name_srch_<%= category.id %>" class="batch_name_srch" style="width: 100%;"><%= category.name %></label></div>
+                  <% if l % 2 == 0 %>
+                  <div style="display: block; clear: both;"></div>
+                  <% end %>
+                  <% l += 1 %>  
+                <% end %>
+            <% end %>  
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="batch_select_box batch_select_box_course" data-hide-height="50px" data-show-height="245px" style="background: #FCFCFC; padding-left: none; padding-bottom: 10px; height: 50px;">
+    <div class="label-field-pair">
+        <div style="display: inline-block; border-bottom: 1px solid #ccc; width: 100%; ">
+            <div style="width: 65%; display: inline-block;">
+                <div class="label-container"><label style="padding-left: 0; width: 300px;"><input type="checkbox" name="course" id="course" class="filter_fees" style="float: left; margin-top: 0;"><span style="display: inline-block; padding-left: 10px; "><%= "Fees By Class" %>:</span></label></div>
+            </div>
+            <div class="sel-list sel-list-course" style="padding-bottom: 5px; width: 29%; display: inline-block; vertical-align: top; text-align: right; padding-right: 10px; font-size: 14px; padding-top: 6px; opacity: 0;">
+              <%= link_to_function t('all'), "$$('input.course_box').each(function(checkbox) { checkbox.checked = true; });" %> |
+              <%= link_to_function t('none'), "$$('input.course_box').each(function(checkbox) { checkbox.checked = false; });" %>
+            </div>
+        </div>
+        <div class="fee_category_scroll fee_category_scroll_course" style="display: none;">
+          <div class="each_batch" style="padding: 5px 0; width: 100%; border-bottom: none;">
+            <% checked = false %>
+            <% unless @courses.blank? %>
+                <% l = 1 %>
+                <% @courses.each do |course| %>
+                  <div class="checkbox_inline"><%= check_box_tag "fee_collection[category_ids][]", course.id, checked, :class=>'course_box category_select course_selected', :disabled => "true" %></div> 
+                  <div class="checkbox_label" style="width: 39%;"><label id="batch_name_srch_<%= course.id %>" class="batch_name_srch" style="width: 100%;"><%= course.course_name %></label></div>
+                  <% if l % 2 == 0 %>
+                  <div style="display: block; clear: both;"></div>
+                  <% end %>
+                  <% l += 1 %>  
+                <% end %>
+            <% end %>  
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="label-field-pair" style="border: 1px solid #ccc; width: 91%; margin-left: 6%; border-radius: 6px; padding: 10px; text-align: center; margin-bottom: 10px; height: auto;">
+    <a href="javascript:;" id="set_by_batches" data-target="1" data-id-val="<%= @param_ids %>">Fees set batches wise</a> 
+    <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_batches_collection", :style =>"display: none; padding-left: 10px;" ) %>
+  </div>
+  <div class="label-field-pair" style="border: 1px solid #ccc; width: 95%; margin-left: 6%; border-radius: 6px; padding-bottom: 10px;">
+    <div class="input-container-for-admission" style="width: 100%;">
+      <div class="each_batch" style="border-bottom: 0; width: 100%; overflow: hidden;">
+        <div class="checkbox_inline" style="width: 10%;"><%= check_box_tag "for_admission", 1, false, :class=>'batches_box' %></div> 
+        <div class="checkbox_label" style="width: 85%;"><label style="width: 100%;">Set for Admission (No Student will assign any fees by default)</label></div>
+      </div>
+    </div>
+  </div>
+</div>

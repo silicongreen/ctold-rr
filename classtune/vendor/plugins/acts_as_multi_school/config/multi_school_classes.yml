@@ -2,6 +2,7 @@
 multi_school_classes:
 - PayslipTransactionJob
 - DelayedFeeCollectionJob
+- DelayedFeeCollectionNewJob
 - DelayedFeeCollectionRegeneration
 - DelayedFeeCollectionNotificationJob
 - DelayedAdditionalReportCsv

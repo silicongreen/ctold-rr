@@ -17,7 +17,6 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-
 <title>Bill Generation Report</title>
 </div>
 <div id="page-yield">
@@ -40,16 +39,17 @@
           <h4 style="width: 24%; display: inline-block; text-align: right;"> <%= "#{t('section')} :"+ " " "#{batch.course.section_name}" %></h4>
         <% end %>
     </div>
-    <% unless @students.blank? %>  
+      
+    <% unless @student_finance_fees.blank? %>  
     <div id="pdf-info" style="padding-bottom: 40px;">
       <% page = 1 %>  
       <table id="pdf-table" width="100%" cellspacing="0">
         <tr class="table-header">
-            <td class="col-pdf" style="width: 6%;">#</td>
-            <td class="col-pdf" style="width: 14%;"><%= t('student_id') %></td>
+            <td class="col-pdf" style="width: 4%;">#</td>
+            <td class="col-pdf" style="width: 12%;"><%= t('student_id') %></td>
             <td class="col-pdf"><%= t('name') %></td>
             <td class="col-pdf"><%= t('roll_no') %></td>
-            <td class="col-pdf"><%= t('section') %></td>
+            <td class="col-pdf" style="width: 8%;"><%= t('section') %></td>
             <td class="col-pdf"><%= t('student_category') %></td>
             <td class="col-pdf"><%= t('amount')%> (<%= @currency_type%>)</td>
             <td class="col-pdf"><%= t('paid_amount')%> (<%= @currency_type%>)</td>
@@ -65,17 +65,18 @@
         <% elsif page == 2 and @opt.to_i == 0 %>
           <% pg2 = 18 %>
         <% end %>
-        <% @students.each do |k, s| %>
+        
+        <% @student_finance_fees.each do |fee| %>
           <% if page == 1 and i== pg1 %>
               <% i= 0 %>
               <% page += 1 %>
               <tr style="padding: 10px; height: 30px;"><td colspan="8">&nbsp;</td></tr>
               <tr class="table-header">
-                <td class="col-pdf" style="width: 6%;">#</td>
-                <td class="col-pdf" style="width: 14%;"><%= t('student_id') %></td>
+                <td class="col-pdf" style="width: 4%;">#</td>
+                <td class="col-pdf" style="width: 12%;"><%= t('student_id') %></td>
                 <td class="col-pdf"><%= t('name') %></td>
                 <td class="col-pdf"><%= t('roll_no') %></td>
-                <td class="col-pdf"><%= t('section') %></td>
+                <td class="col-pdf" style="width: 8%;"><%= t('section') %></td>
                 <td class="col-pdf"><%= t('student_category') %></td>
                 <td class="col-pdf"><%= t('amount')%> (<%= @currency_type%>)</td>
                 <td class="col-pdf"><%= t('paid_amount')%> (<%= @currency_type%>)</td>
@@ -86,11 +87,11 @@
               <% page += 1 %>
               <tr style="padding: 10px; height: 25px;"><td colspan="8">&nbsp;</td></tr>
               <tr class="table-header">
-                <td class="col-pdf" style="width: 6%;">#</td>
-                <td class="col-pdf" style="width: 14%;"><%= t('student_id') %></td>
+                <td class="col-pdf" style="width: 4%;">#</td>
+                <td class="col-pdf" style="width: 12%;"><%= t('student_id') %></td>
                 <td class="col-pdf"><%= t('name') %></td>
                 <td class="col-pdf"><%= t('roll_no') %></td>
-                <td class="col-pdf"><%= t('section') %></td>
+                <td class="col-pdf" style="width: 8%;"><%= t('section') %></td>
                 <td class="col-pdf"><%= t('student_category') %></td>
                 <td class="col-pdf"><%= t('amount')%> (<%= @currency_type%>)</td>
                 <td class="col-pdf"><%= t('paid_amount')%> (<%= @currency_type%>)</td>
@@ -101,21 +102,24 @@
           <% c =cycle('even','odd ') %>
           <tr class="<%= "#{c}" %> td-body" style="height: 55px;">
               <td class="col-pdf" style="text-align: center;"><%= index += 1 %></td>
-              <td class="col-pdf" style="text-align: center;"><%= s[0].admission_no unless s[0].admission_no.blank? %></td>
-              <td class="col-pdf"><%= s[0].full_name unless s[0].full_name.blank? %></td>
-              <td class="col-pdf" style="text-align: center;"><%= s[0].class_roll_no unless s[0].full_name.blank? %></td>
-              <td class="col-pdf" style="text-align: center;"><%= s[0].batch.course.section_name %></td>
-              <td class="col-pdf" style="text-align: center;"><%= s[0].student_category.name %></td>
+              <td class="col-pdf" style="text-align: center;"><%= fee.student.admission_no unless fee.student.admission_no.blank? %></td>
+              <td class="col-pdf"><%= truncate(fee.student.full_name, :length => 20) unless fee.student.full_name.blank? %></td>
+              <td class="col-pdf" style="text-align: center;"><%= fee.student.class_roll_no unless fee.student.full_name.blank? %></td>
+              <td class="col-pdf" style="text-align: center;"><%= fee.student.batch.course.section_name %></td>
+              <td class="col-pdf" style="text-align: center;"><%= fee.student.student_category.name %></td>
               <% total_fee = 0.0 %>    
-              <% paid_amount = 0.0 %>    
-              <% unless @student_summaries[k].blank? %>
-                  <% student_summaries = @student_summaries[k][0] %>
-                  <% total_fee = student_summaries['total_fee'].to_f %>
-                  <% paid_amount = student_summaries['paid_amount'].to_f %>
+              <% paid_amount = 0.0 %>  
+              <% if fee.is_paid %>
+                <% paid_fees = fee.finance_transactions.map(&:amount).sum.to_f unless fee.finance_transactions.blank? %>
+                <% total_fee = paid_fees %>    
+                <% paid_amount = paid_fees %>  
+              <% else %>
+                <% total_fee = fee.balance %>    
+                <% paid_amount = 0.0 %>  
               <% end %>
               <td class="col-pdf" style="text-align: right;"><%= precision_label(total_fee.to_f) %></td>
               <td class="col-pdf" style="text-align: right;"><%= precision_label(paid_amount.to_f) %></td>
-              <td class="col-pdf" style="text-align: center;"><%= s[0].sms_number %></td>
+              <td class="col-pdf" style="text-align: center;"><%= fee.student.sms_number.gsub("88", "") %></td>
           </tr>
         <% end %>
       </table>

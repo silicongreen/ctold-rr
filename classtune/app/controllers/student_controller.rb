@@ -235,11 +235,16 @@ class StudentController < ApplicationController
     require "openssl"
     require 'digest/sha2'
     require 'base64'
+#    order_id = params[:order_id]
+#    student_id = params[:student_id]
+#    if current_user
+#    @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{order_id}' and student_id = '#{student_id}'")
+    
     
     unless params[:gateway].blank?
       unless params[:id_token].blank?
         unless params[:mmsec].nil?
-          #order_id = params[:order_id]
+          #
           
           alg = "AES-256-CBC"
           decode_cipher = OpenSSL::Cipher::Cipher.new(alg)

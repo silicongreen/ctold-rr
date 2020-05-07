@@ -1,8 +1,10 @@
 require 'i18n'
-class DelayedFeeCollectionJob
-  attr_accessor :user,:collection,:fee_collection, :sent_remainder, :particular_ids, :particular_names, :transport_particular_id, :transport_particular_name, :auto_adjust_advance, :for_admission
-  def initialize(user,collection,fee_collection, sent_remainder, particular_ids, particular_names,transport_particular_id, transport_particular_name, default_particular_names, default_transport_particular_name, auto_adjust_advance, for_admission)
+class DelayedFeeCollectionNewJob
+  attr_accessor :fees_params, :student_category, :user,:collection,:fee_collection, :sent_remainder, :particular_ids, :particular_names, :transport_particular_id, :transport_particular_name, :auto_adjust_advance, :for_admission
+  def initialize(fees_params, student_category, user,collection,fee_collection, sent_remainder, particular_ids, particular_names,transport_particular_id, transport_particular_name, default_particular_names, default_transport_particular_name, auto_adjust_advance, for_admission)
     @user = user
+    @fees_params = fees_params
+    @student_category = student_category
     @collection = collection
     @fee_collection = fee_collection
     @sent_remainder = sent_remainder
@@ -20,7 +22,127 @@ class DelayedFeeCollectionJob
     I18n.t(obj)
   end
   def perform
+    unless @fees_params[:student_category].blank?
+      if @fees_params[:student_category] == "on"
+        @student_category = @fee_collection[:category_ids].map(&:to_i)
+        finance_fee_category_id = @collection[:fee_category_id]
+        if finance_fee_category_id.to_i == 0
+          batches = Batch.active.find(:all,:joins=>[:finance_fee_particulars,:course],:conditions=>"finance_fee_particulars.finance_fee_category_id=0 and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
+          @fee_collection[:category_ids] = batches.map(&:id)
+        else
+          batches = Batch.active.find(:all,:joins=>[{:finance_fee_particulars=>:finance_fee_category},:course],:conditions=>"finance_fee_categories.id =#{finance_fee_category_id} and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
+          @fee_collection[:category_ids] = batches.map(&:id)
+        end
+      end
+    end
+    unless @fees_params[:school_college].blank?
+      if @fees_params[:school_college] == "on"
+        school_colleges = @fee_collection[:category_ids]
+        school_found = false
+        college_found = false
+        school_colleges.each do |school_college_val|
+          if school_college_val.to_s == "school"
+            college_found = false
+            school_found = true
+          end
+          if school_college_val.to_s == "college"
+            school_found = false
+            college_found = true
+          end
+        end
+        finance_fee_category_id = @collection[:fee_category_id]
+        if school_found && college_found
+          if finance_fee_category_id.to_i == 0
+            batches = Batch.active.find(:all,:joins=>[:finance_fee_particulars,:course],:conditions=>"finance_fee_particulars.finance_fee_category_id=0 and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
+          else
+            batches = Batch.active.find(:all,:joins=>[{:finance_fee_particulars=>:finance_fee_category},:course],:conditions=>"finance_fee_categories.id =#{finance_fee_category_id} and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
+          end
+          @fee_collection[:category_ids] = batches.map(&:id)
+        elsif school_found && college_found == false
+          eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+          tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+          hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
+          college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+          if college_courses_id.blank?
+            college_courses_id[0] = 0
+          end
+          school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+          school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+          if school_course_id.blank?
+            school_course_id[0] = 0
+          end
 
+          batches_school = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+          batches_school = batches_school.reject { |b| b.to_s.empty? }
+          if batches_school.blank?
+            batches_school[0] = 0
+          end
+          if finance_fee_category_id.to_i == 0
+            batches = Batch.active.find(:all,:joins=>[:finance_fee_particulars,:course],:conditions=>"batches.id IN (#{batches_school.join(',')}) and finance_fee_particulars.finance_fee_category_id=0 and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
+          else
+            batches = Batch.active.find(:all,:joins=>[{:finance_fee_particulars=>:finance_fee_category},:course],:conditions=>"batches.id IN (#{batches_school.join(',')}) and finance_fee_categories.id =#{finance_fee_category_id} and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
+          end
+          @fee_collection[:category_ids] = batches.map(&:id)
+        elsif school_found == false && college_found
+          eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+          tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+          hsc_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%hsc%'").map(&:id)
+          college_courses_id = eleven_courses_id + tweleve_courses_id + hsc_courses_id
+          college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+          if college_courses_id.blank?
+            college_courses_id[0] = 0
+          end
+          #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+          batches_college = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+          batches_college = batches_college.reject { |b| b.to_s.empty? }
+          if batches_college.blank?
+            batches_college[0] = 0
+          end
+
+          if finance_fee_category_id.to_i == 0
+            batches = Batch.active.find(:all,:joins=>[:finance_fee_particulars,:course],:conditions=>"batches.id IN (#{batches_college.join(',')}) and finance_fee_particulars.finance_fee_category_id=0 and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
+          else
+            batches = Batch.active.find(:all,:joins=>[{:finance_fee_particulars=>:finance_fee_category},:course],:conditions=>"batches.id IN (#{batches_college.join(',')}) and finance_fee_categories.id =#{finance_fee_category_id} and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
+          end
+          
+          @fee_collection[:category_ids] = batches.map(&:id)
+        else
+          @fee_collection[:category_ids] = []
+        end
+      end
+    end
+    unless @fees_params[:course].blank?
+      if @fees_params[:course] == "on"
+        finance_fee_category_id = @collection[:fee_category_id]
+
+        all_selected_courses = []
+        courses = @fee_collection[:category_ids]
+        courses.each do |course|
+          course_data = Course.find course
+          course_name = course_data.course_name
+          tmp_courses = Course.find(:all, :conditions => "course_name = '#{course_name}'").map(&:id)
+          tmp_courses.each do |tmp_course|
+            all_selected_courses << tmp_course
+          end
+        end
+        batches_courses = Batch.find(:all, :conditions => "course_id IN (#{all_selected_courses.join(",")})").map(&:id)
+        batches_courses = batches_courses.reject { |b| b.to_s.empty? }
+        if batches_courses.blank?
+          batches_courses[0] = 0
+        end
+        #abort(batches_courses.inspect)
+        if finance_fee_category_id.to_i == 0
+          batches = Batch.active.find(:all,:joins=>[:finance_fee_particulars,:course],:conditions=>"batches.id IN (#{batches_courses.join(',')}) and finance_fee_particulars.finance_fee_category_id=0 and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
+        else
+          batches = Batch.active.find(:all,:joins=>[{:finance_fee_particulars=>:finance_fee_category},:course],:conditions=>"batches.id IN (#{batches_courses.join(',')}) and finance_fee_categories.id =#{finance_fee_category_id} and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
+        end
+        @fee_collection[:category_ids] = batches.map(&:id)
+      end
+      #jinga
+    end
+    
+    
     finance_fee_category_id = @collection[:fee_category_id]
     if finance_fee_category_id.to_i != 0
       finance_fee_category = FinanceFeeCategory.find(finance_fee_category_id)
@@ -201,7 +323,7 @@ class DelayedFeeCollectionJob
               b=b.to_i
               FeeCollectionBatch.create(:finance_fee_collection_id=>@finance_fee_collection.id,:batch_id=>b)
               fee_category_name = @collection[:fee_category_id]
-              @students = Student.find_all_by_batch_id(b)
+              @students = Student.find(:all, :conditions => "batch_id = #{b} and student_category_id IN (#{@student_category.join(",")})")
               @fee_category= FinanceFeeCategory.find_by_id(@collection[:fee_category_id])
 
               unless @fee_category.fee_particulars.all(:conditions=>"is_tmp = 0 and is_deleted=false and batch_id=#{b}").collect(&:receiver_type).include?"Batch"

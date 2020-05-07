@@ -179,14 +179,10 @@
         :style =>"display: none;" ) %></div>
       
       <div class="pdf_link" style="text-align: center;">
-          <% page = 1 %>
-          <% unless params[:page].blank? %>
-            <% page = params[:page] %>
-          <% end %>
-          <%= link_to "Download PDF (Page #{page})",
+          <%= link_to "Download PDF",
             {:controller => "finance", :action => "bill_generation_report_pdf", :opt => @opt, :section_id => @section_id, :course_name => @course_name, :batch_id => @b_id, :date => @d_id, :page => page},:target => '_blank', :class=> 'user_button' %>
           
-          <%= link_to "Download Excel (Page #{page})",
+          <%= link_to "Download Excel",
             {:controller => "finance", :action => "bill_generation_report_xls", :opt => @opt, :section_id => @section_id, :course_name => @course_name, :batch_id => @b_id, :date => @d_id, :page => page},:target => '_blank', :class=> 'user_button' %>
       </div>
   </div>

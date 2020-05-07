@@ -235,10 +235,41 @@ class StudentController < ApplicationController
     require "openssl"
     require 'digest/sha2'
     require 'base64'
-#    order_id = params[:order_id]
+    
+    validate = true
+    unless current_user.admin?
+      order_id = params[:order_id]
+      finance_order = FinanceOrder.find(:first, :conditions => "order_id = '#{order_id}'")
+      if finance_order.blank?
+        validate = false
+      else
+        student_id = finance_order.student_id
+         if current_user.parent?
+           guardian_id = current_user.guardian_entry.id
+           g_students = GuardianStudents.find_all_by_guardian_id(guardian_id)
+           found = false
+           g_students.each do |g_student|
+             if g_student.student_id == student_id
+               found = true
+             end
+           end
+           unless found
+              validate = false
+              params[:gateway] = nil
+           end
+         end
+         if current_user.student?
+           if current_user.student_record.id != student_id
+             validate = false
+             params[:gateway] = nil
+           end
+         end
+      end
+    end
+#    
 #    student_id = params[:student_id]
 #    if current_user
-#    @finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{order_id}' and student_id = '#{student_id}'")
+#    
     
     
     unless params[:gateway].blank?
@@ -363,9 +394,15 @@ class StudentController < ApplicationController
         render :json => response_ssl
       end
     else
-      error = {:errorMessage => "Invalid Request for token"}
-      response_ssl = JSON::parse(error.to_json)
-      render :json => response_ssl
+      if validate
+        error = {:errorMessage => "Invalid Request for token"}
+        response_ssl = JSON::parse(error.to_json)
+        render :json => response_ssl
+      else
+        error = {:errorMessage => "Invalid Request for payment"}
+        response_ssl = JSON::parse(error.to_json)
+        render :json => response_ssl
+      end
     end
   end
   

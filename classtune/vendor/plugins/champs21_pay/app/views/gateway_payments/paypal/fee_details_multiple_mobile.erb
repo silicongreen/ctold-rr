@@ -1079,8 +1079,8 @@
                             <% if @gateway_settings.keys.include?('bkash') %>
                             <i class='fa fa-spin fa-spinner loading_single_bkash' style="position: absolute; right: 10px; top: 5px; display: none;"></i>
                             <%= image_tag "/images/bkash-logo.png", :class => "gateway_image_single_bkash", :id => "pay_fees_multiple", :style => "", :onclick => "initBkash(this);" %>
-                            <% if MultiSchool.current_school.id == 360 %>
-                              <p style="text-align: right; display: block; padding-top: 80px;">*1.5% charge applicable for  bKash payment.</p>
+                            <% if MultiSchool.current_school.id == 360 or MultiSchool.current_school.id == 352 %>
+                              <p style="text-align: right; display: block; padding-top: 80px;">*1.5% convenience fee applicable.</p>
                             <% end %>
                             <!--button type="button" id="pay_fees_multiple" class="submit_button"><%#= "► #{t('pay_fees')}" %></button-->
                             <% else %>
@@ -1192,6 +1192,9 @@
         <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
+              <div class="modal-header">
+                  <p style="margin: 1px 0 0; color: #ED1C24;"><i class="fa fa-exclamation-circle" aria-hidden="true" style="color: #ED1C24; margin-right: 8px;"></i>Payment Failed</p>
+              </div>  
               <div class="modal-body">
                   <div style="width: 100%; text-align: center;">
                       <h1><i class="fa fa-exclamation-circle" aria-hidden="true" style="color: #ED1C24; font-size: 70px;"></i><br />

@@ -1,5 +1,6 @@
 <% unless @sections.blank? %>
-  <%= select :fees_defaulters, :session_id, @sections.map{|c| c unless c.nil?}.map{|c| c unless c.session.nil?}.map{|c| [c.session.strip, c.id]},
+<%= debug @sections.inspect %>
+  <%= select :fees_defaulters, :session_id, [],
   {:prompt => "Select a Session"},
   {:class => "select2-combo", :autocomplete=> "off", :onChange => "#{remote_function(:url => {:controller => "finance",:action => "update_fees_collection_dates_defaulters_sections"}, 
   :with => "'section_id='+value+'&course_id='+$('fees_defaulters_class_name').value+'&batch_id='+$('fees_defaulters_batch_name').value+'&opt=2'" ,:before => "$('loading_section_data_new').show();",

@@ -993,6 +993,11 @@
               <% #@student_has_due = true %>
               <% end %>
             <% end %>
+            <% if MultiSchool.current_school.id == 246 or MultiSchool.current_school.id == 348 %>
+              <% unless @current_user.admin? %>
+                <% under_maintenance = true %>
+              <% end %>
+            <% end %>
             <% @student_has_due = false %>
             <% if @student_has_due == false  #and @financefee.batch_id == @student.batch_id %>
               <%#= total_fees.to_s + " DID DID DID" %>
@@ -1007,7 +1012,7 @@
                         <% if @gateway_settings.keys.include?('bkash') %>
                         <i class='fa fa-spin fa-spinner loading_single_bkash' style="position: absolute; right: 10px; top: 5px; display: none;"></i>
                         <%= image_tag "/images/bkash-logo.png", :class => "gateway_image_single_bkash", :id => "pay_fees_multiple", :style => "", :onclick => "initBkash(this);" %>
-                        <% if MultiSchool.current_school.id == 360 or MultiSchool.current_school.id == 352 %>
+                        <% unless MultiSchool.current_school.id == 312 %>
                           <p style="text-align: right; display: block; padding-top: 80px;">*1.5% convenience fee applicable.</p>
                         <% end %>
                         <!--button type="button" id="pay_fees_multiple" class="submit_button"><%#= "► #{t('pay_fees')}" %></button-->

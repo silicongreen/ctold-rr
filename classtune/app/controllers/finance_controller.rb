@@ -11735,6 +11735,34 @@ class FinanceController < ApplicationController
       end
     end
     
+#    @students = Student.active
+##    #@students = Student.find(:all, :conditions => "id = 24170")
+#    #abort(@student.inspect)
+#    error = []
+#    @students.each do |s|
+#      finance_fees = FinanceFee.find(:all, :conditions => "student_id = '#{s.id}' and is_paid = 0 and balance > 0")
+#      unless finance_fees.blank?
+#        finance_fees.each do |fee|
+#          date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
+#          unless date.blank?
+#            balance = FinanceFee.get_student_actual_balance(date, s, fee)
+#            if balance.to_f > 1
+#              if balance.to_f != fee.balance
+#                finance_fee = FinanceFee.find fee.id
+#                finance_fee.update_attributes( :balance=>balance.to_f)
+#              end
+#            elsif balance.to_f == 0
+#              finance_fee = FinanceFee.find fee.id
+#              finance_fee.update_attributes( :balance=>0, :is_paid => 1)
+#            elsif balance.to_f > 0 and balance.to_f < 1
+#              error << s.id.to_s + "  " + fee.id.to_s 
+#            end
+#          end
+#        end
+#      end
+#    end
+#    abort(error.inspect)
+#    
     
 #    @students = Student.active
 ##    #@students = Student.find(:all, :conditions => "id = 24170")

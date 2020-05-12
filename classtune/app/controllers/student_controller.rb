@@ -724,7 +724,7 @@ class StudentController < ApplicationController
         keyCAData = File.read(keyCA)
         is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
         
-        extra_string = (is_test_citybank) ? '_sandbox' : ''
+        extra_string = (is_test_citybank.to_i != 0) ? '_sandbox' : ''
         abort(extra_string.inspect)
         #abort(rootCAData.inspect)
         payment_url = URI(payment_urls["citybank_app_url" + extra_string] + "token")

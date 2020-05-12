@@ -723,6 +723,7 @@ class StudentController < ApplicationController
         keyCA = "#{Rails.root}/certs/classtune.key"
         keyCAData = File.read(keyCA)
         is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
+        abort(is_test_citybank.inspect)
         extra_string = (is_test_citybank) ? '_sandbox' : ''
         #abort(rootCAData.inspect)
         payment_url = URI(payment_urls["citybank_app_url" + extra_string] + "token")

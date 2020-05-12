@@ -3430,7 +3430,7 @@ module FinanceLoader
     keyCAData = File.read(keyCA)
     
     is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
-    extra_string = (is_test_citybank) ? '_sandbox' : ''
+    extra_string = (is_test_citybank.to_i != 0) ? '_sandbox' : '_url'
     payment_url = URI(payment_urls["citybank_app_url" + extra_string] + 'token')
     payment_url ||= URI("https://sandbox.thecitybank.com:7788/transaction/token")
 
@@ -3470,7 +3470,7 @@ module FinanceLoader
     keyCAData = File.read(keyCA)
     
     is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
-    extra_string = (is_test_citybank) ? '_sandbox' : ''
+    extra_string = (is_test_citybank.to_i != 0) ? '_sandbox' : '_url'
     payment_url = URI(payment_urls["citybank_app_url" + extra_string] + 'getorderdetailsapi')
     payment_url ||= URI("https://sandbox.thecitybank.com:7788/transaction/getorderdetailsapi")
 

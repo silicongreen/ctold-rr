@@ -729,7 +729,7 @@ class StudentController < ApplicationController
         #abort(rootCAData.inspect)
         payment_url = URI(payment_urls["citybank_app_url" + extra_string] + "token")
         payment_url ||= URI("https://sandbox.thecitybank.com:7788/transaction/token")
-        abort(payment_url.inspect)
+        #abort(payment_url.inspect)
         http = Net::HTTP.new(payment_url.host, payment_url.port)
         http.use_ssl = (payment_url.scheme == 'https')
         http.cert = OpenSSL::X509::Certificate.new(rootCAData)
@@ -760,7 +760,7 @@ class StudentController < ApplicationController
             }
             
             is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
-            extra_string = (is_test_citybank) ? '_sandbox' : ''
+            extra_string = (is_test_citybank.to_i != 0) ? '_sandbox' : '_url'
             order_payment_url = URI(payment_urls["citybank_app_url" + extra_string] + "createorder")
             order_payment_url ||= URI("https://sandbox.thecitybank.com:7788/transaction/createorder")
 

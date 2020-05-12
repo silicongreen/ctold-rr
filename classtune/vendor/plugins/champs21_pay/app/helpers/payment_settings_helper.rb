@@ -82,7 +82,7 @@ module PaymentSettingsHelper
       end
     elsif active_gateway == "citybank"
 #      is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
-#      extra_string = (is_test_citybank) ? '_sandbox' : ''
+#      extra_string = (is_test_citybank.to_i != 0) ? '_sandbox' : ''
 #      payment_url = payment_urls["citybank_token_url" + extra_string]
 #      payment_url ||= "https://sandbox.thecitybank.com:7788/transaction/token"
       payment_url ||= "/student/generate_ssl_url"

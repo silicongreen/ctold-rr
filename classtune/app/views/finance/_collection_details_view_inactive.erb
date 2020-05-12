@@ -145,7 +145,11 @@
             <div style="display: inline-block; padding-right: 5px;"><%= i = i + 1 %></div>
         </td>
         <td class="col-4" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle; background-color: #ffe6e6"<% else %>style="vertical-align: middle;" <% end %>>
+            <% unless fees.student.class_roll_no.blank? %>  
             <small><strong><%= link_to fees.student.full_name + " (Roll No: " + fees.student.class_roll_no + ")", :controller => 'finance' ,:action => 'fees_student_dates',:id => fees.student.id%></strong></small><br>
+            <% else %>
+            <small><strong><%= link_to fees.student.full_name, :controller => 'finance' ,:action => 'fees_student_dates',:id => fees.student.id%></strong></small><br>
+            <% end %>
             <small><%= fees.student.admission_no %></small><br>
             <small><%= fees.student.batch.full_name %></small>
             <hr style="border: 1px solid #ccc; display: none;" class="absent_hr_panel" />

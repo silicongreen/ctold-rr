@@ -32,7 +32,11 @@
         <% unless @batch.blank? %>
           <% batch_version = @batch.name.split(" ") %>
           <h4 style="width: 25%; display: inline-block;"> <%= "#{t('shift')} :"+ " " "#{batch_version[0].strip}" %></h4>
+          <% unless batch_version[1].blank? %>
           <h4 style="width: 24%; display: inline-block; text-align: left; "> <%= "#{t('version')} :"+ " " "#{batch_version[1].strip}" %></h4>
+          <% else %>
+          <h4 style="width: 24%; display: inline-block; text-align: left; "> <%= "#{t('version')} :"+ " " "N/A" %></h4>
+          <% end %>
           <h4 style="width: 24%; display: inline-block; text-align: center;"> <%= "#{t('class')} :"+ " " "#{@batch.course.course_name}" %></h4>
           <h4 style="width: 24%; display: inline-block; text-align: right;"> <%= "#{t('section')} :"+ " " "#{@batch.course.section_name}" %></h4>
         <% else %>
@@ -70,7 +74,7 @@
           <% b = Batch.find(s.batch_id)  %>
           <% sc = StudentCategory.find(s.student_category_id)  %>
           <% b_v = b.name.split(" ") %>
-          <% if page == 1 and i== 35 %>
+          <% if page == 1 and i== 36 %>
               <% i= 0 %>
               <% page += 1 %>
               <tr style="padding: 10px; height: 1px;"><td colspan="8">&nbsp;</td></tr>
@@ -84,7 +88,7 @@
                 <td style="text-align: center;"><%= t('contact_number') %></td>
                 <td style="text-align: center;"><%= "Remarks" %></td>
               </tr>
-          <% elsif page > 1 and i== 40 %>
+          <% elsif page > 1 and i== 42 %>
               <% i= 0 %>
               <% page += 1 %>
               <tr style="padding: 10px; height: 1px;"><td colspan="8">&nbsp;</td></tr>

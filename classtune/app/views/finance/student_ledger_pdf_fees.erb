@@ -43,8 +43,9 @@
     <div class="report">
         <div id ="report_info">
             <h6>Title:  Student Ledger</h6>
-            <%  %>
+            <% unless @student_fee_ledgers.blank? %>
             <h6 style='margin-bottom: 12px;'>Period: <span style='font-weight: normal;'><%= @student_fee_ledgers[0].ledger_date.to_datetime.strftime("%b %d, %Y") %> to <%= @student_fee_ledgers[@student_fee_ledgers.length - 1].ledger_date.to_datetime.strftime("%b %d, %Y") %></span></h6>
+            <% end %>
             <%#*<h6>Title:  Student Ledger</h6>%>
         </div>
         <%

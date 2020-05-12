@@ -1285,12 +1285,12 @@
           <input type="hidden" name="student_fees" id="student_fees" value="<%= params[:id] %>" />
           <input type="hidden" name="multiple" id="multiple" value="1" />
         <% else %>
-          <input type="hidden" name="fees" id="fees" value="<%= params[:id2] %>" />
+          <input type="hidden" name="fees" id="fees" value="<%= @financefee.id %>" />
           <input type="hidden" name="student_fees" id="student_fees" value="<%= params[:id] %>" />
           <input type="hidden" name="multiple" id="multiple" value="0" />
         <% end %>
       <% else %>
-        <input type="hidden" name="fees" id="fees" value="<%= params[:id2] %>" />
+        <input type="hidden" name="fees" id="fees" value="<%= @financefee.id %>" />
         <input type="hidden" name="student_fees" id="student_fees" value="<%= params[:id] %>" />
         <input type="hidden" name="multiple" id="multiple" value="0" />
       <% end %> 

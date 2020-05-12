@@ -719,16 +719,16 @@ class StudentController < ApplicationController
       if params[:gateway] == "citybank"
         is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
         if is_test_citybank.to_i != 0
-          rootCA = "#{Rails.root}/certs/classtune.crt"
-          rootCAData = File.read(rootCA)
-
-          keyCA = "#{Rails.root}/certs/classtune.key"
-          keyCAData = File.read(keyCA)
-        else
           rootCA = "#{Rails.root}/certs/createorder.crt"
           rootCAData = File.read(rootCA)
 
           keyCA = "#{Rails.root}/certs/createorder.key"
+          keyCAData = File.read(keyCA)
+        else
+          rootCA = "#{Rails.root}/certs/classtune.crt"
+          rootCAData = File.read(rootCA)
+
+          keyCA = "#{Rails.root}/certs/classtune.key"
           keyCAData = File.read(keyCA)
         end
         is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")

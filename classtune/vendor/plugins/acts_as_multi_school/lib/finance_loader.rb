@@ -3423,13 +3423,26 @@ module FinanceLoader
       payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
     end
     
-    rootCA = "#{Rails.root}/certs/createorder.crt"
-    rootCAData = File.read(rootCA)
-
-    keyCA = "#{Rails.root}/certs/createorder.key"
-    keyCAData = File.read(keyCA)
-    
     is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
+    if is_test_citybank.to_i != 0
+      rootCA = "#{Rails.root}/certs/classtune.crt"
+      rootCAData = File.read(rootCA)
+
+      keyCA = "#{Rails.root}/certs/classtune.key"
+      keyCAData = File.read(keyCA)
+    else
+      rootCA = "#{Rails.root}/certs/createorder.crt"
+      rootCAData = File.read(rootCA)
+
+      keyCA = "#{Rails.root}/certs/createorder.key"
+      keyCAData = File.read(keyCA)
+    end
+#    rootCA = "#{Rails.root}/certs/createorder.crt"
+#    rootCAData = File.read(rootCA)
+#
+#    keyCA = "#{Rails.root}/certs/createorder.key"
+#    keyCAData = File.read(keyCA)
+    
     extra_string = (is_test_citybank.to_i != 0) ? '_sandbox' : '_url'
     payment_url = URI(payment_urls["citybank_app_url" + extra_string] + 'token')
     payment_url ||= URI("https://sandbox.thecitybank.com:7788/transaction/token")
@@ -3463,11 +3476,20 @@ module FinanceLoader
       payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
     end
     
-    rootCA = "#{Rails.root}/certs/createorder.crt"
-    rootCAData = File.read(rootCA)
+    is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
+    if is_test_citybank.to_i != 0
+      rootCA = "#{Rails.root}/certs/classtune.crt"
+      rootCAData = File.read(rootCA)
 
-    keyCA = "#{Rails.root}/certs/createorder.key"
-    keyCAData = File.read(keyCA)
+      keyCA = "#{Rails.root}/certs/classtune.key"
+      keyCAData = File.read(keyCA)
+    else
+      rootCA = "#{Rails.root}/certs/createorder.crt"
+      rootCAData = File.read(rootCA)
+
+      keyCA = "#{Rails.root}/certs/createorder.key"
+      keyCAData = File.read(keyCA)
+    end
     
     is_test_citybank = PaymentConfiguration.config_value("is_test_citybank")
     extra_string = (is_test_citybank.to_i != 0) ? '_sandbox' : '_url'

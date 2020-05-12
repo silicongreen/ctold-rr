@@ -751,7 +751,7 @@ class StudentController < ApplicationController
         request.body = {"userName"=>params[:userName],"password"=>params[:password]}.to_json
         response = http.request(request)
         response_ssl = JSON::parse(response.body)
-        abort(response_ssl.inspect)
+        #abort(response_ssl.inspect)
         if response_ssl["responseCode"].to_i == 107
           flash[:notice] = "Authentication Failed, Please contact with System Admin"
           redirect_to params[:fee_url]

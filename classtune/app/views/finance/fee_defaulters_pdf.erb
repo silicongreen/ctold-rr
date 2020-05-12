@@ -59,6 +59,12 @@
         <% i = 0 %>
         <% index = 0   %>
         <% c = 'even' %>
+        <% num1 = 35 %>
+        <% num2 = 40 %>
+        <% if MultiSchool.current_school.id == 357 %>
+        <% num1 = 37 %>
+        <% num2 = 43 %>
+        <% end %>
         <% @defaulters.each do |s| %>
           <% unless @date == 0 %>
             <% if @multi_date %>
@@ -74,7 +80,7 @@
           <% b = Batch.find(s.batch_id)  %>
           <% sc = StudentCategory.find(s.student_category_id)  %>
           <% b_v = b.name.split(" ") %>
-          <% if page == 1 and i== 36 %>
+          <% if page == 1 and i== num1 %>
               <% i= 0 %>
               <% page += 1 %>
               <tr style="padding: 10px; height: 1px;"><td colspan="8">&nbsp;</td></tr>
@@ -88,7 +94,7 @@
                 <td style="text-align: center;"><%= t('contact_number') %></td>
                 <td style="text-align: center;"><%= "Remarks" %></td>
               </tr>
-          <% elsif page > 1 and i== 42 %>
+          <% elsif page > 1 and i== num2 %>
               <% i= 0 %>
               <% page += 1 %>
               <tr style="padding: 10px; height: 1px;"><td colspan="8">&nbsp;</td></tr>

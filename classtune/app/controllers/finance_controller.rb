@@ -11740,7 +11740,7 @@ class FinanceController < ApplicationController
 #    #abort(@student.inspect)
 #    error = []
 #    @students.each do |s|
-#      finance_fees = FinanceFee.find(:all, :conditions => "student_id = '#{s.id}' and is_paid = 1 and balance = 0")
+#      finance_fees = FinanceFee.find(:all, :conditions => "student_id = '#{s.id}' and is_paid = 1 and balance > 0")
 #      unless finance_fees.blank?
 #        finance_fees.each do |fee|
 #          date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")

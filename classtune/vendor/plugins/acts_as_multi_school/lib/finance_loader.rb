@@ -4113,7 +4113,7 @@ module FinanceLoader
               validation_response = result
                 
               orderId = params[:order_id_in_trans]
-              abort(orderId.inspect)
+              
               student_id = params[:id]
                 
               @student = Student.find(student_id)
@@ -4167,7 +4167,7 @@ module FinanceLoader
                     end 
                   end
                 end
-
+                abort(payment_saved.inspect)
                 if payment_saved
                   unless order_verify(orderId, 'citybank', transaction_datetime, gateway_response[:Message][:OrderID], gateway_response[:Message][:TotalAmount])
                     flash[:notice] = "Payment unsuccessful!! Invalid Transaction, Amount mismatch"

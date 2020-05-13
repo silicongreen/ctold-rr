@@ -3739,31 +3739,33 @@ module FinanceLoader
       finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and request_params is not null")
       unless finance_orders.blank?
         request_params = finance_orders[0].request_params
-        fees = request_params["fees"].split(",")
-        unless fees.blank?
-          fees.each do |fee|
-            finance_order = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and finance_fee_id = #{fee} and request_params is not null")
-            unless finance_order.blank?
-              if finance_order.length > 1
-                finance_order_attributes = finance_order[0].attributes
-                finance_order.each do |fo|
-                  fo.destroy
+        unless request_params["fees"].blank?
+          fees = request_params["fees"].split(",")
+          unless fees.blank?
+            fees.each do |fee|
+              finance_order = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and finance_fee_id = #{fee} and request_params is not null")
+              unless finance_order.blank?
+                if finance_order.length > 1
+                  finance_order_attributes = finance_order[0].attributes
+                  finance_order.each do |fo|
+                    fo.destroy
+                  end
+                  finance_order_new = FinanceOrder.new(finance_order_attributes)
+                  finance_order_new.save
                 end
+              else
+                finance_order_attributes = finance_orders[0].attributes
+                finance_order_attributes.delete "finance_fee_id"
+                finance_order_attributes.merge!(:finance_fee_id=>fee)
+                #finance_order_attributes.finance_fee_id = fee
                 finance_order_new = FinanceOrder.new(finance_order_attributes)
                 finance_order_new.save
               end
-            else
-              finance_order_attributes = finance_orders[0].attributes
-              finance_order_attributes.delete "finance_fee_id"
-              finance_order_attributes.merge!(:finance_fee_id=>fee)
-              #finance_order_attributes.finance_fee_id = fee
-              finance_order_new = FinanceOrder.new(finance_order_attributes)
-              finance_order_new.save
             end
           end
         end
       end
-      abort('here')
+      #abort('here')
       finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and request_params is not null")
       #abort(finance_orders.map(&:id).inspect)
       unless finance_orders.nil?
@@ -4169,7 +4171,7 @@ module FinanceLoader
                 end
                 
                 if payment_saved
-                  unless order_verify(orderId, 'citybank', transaction_datetime, gateway_response[:Message][:OrderID], gateway_response[:Message][:TotalAmount])
+                  unless order_verify(orderId, 'citybank', transaction_datetime, gateway_response[:Message][:OrderID], gateway_response[:Message][:TotalAmount] / 100)
                     flash[:notice] = "Payment unsuccessful!! Invalid Transaction, Amount mismatch"
                   end
                 end

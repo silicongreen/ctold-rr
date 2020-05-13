@@ -3763,7 +3763,7 @@ module FinanceLoader
           end
         end
       end
-
+      abort('here')
       finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and request_params is not null")
       #abort(finance_orders.map(&:id).inspect)
       unless finance_orders.nil?
@@ -4167,7 +4167,7 @@ module FinanceLoader
                     end 
                   end
                 end
-                abort(payment_saved.inspect)
+                
                 if payment_saved
                   unless order_verify(orderId, 'citybank', transaction_datetime, gateway_response[:Message][:OrderID], gateway_response[:Message][:TotalAmount])
                     flash[:notice] = "Payment unsuccessful!! Invalid Transaction, Amount mismatch"

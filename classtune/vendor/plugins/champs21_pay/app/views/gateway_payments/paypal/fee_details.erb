@@ -1153,9 +1153,6 @@
                     <% if @gateway_settings.keys.include?('bkash') %>
                       <i class='fa fa-spin fa-spinner loading_single_bkash' style="position: absolute; right: 10px; top: 5px; display: none;"></i>
                       <%= image_tag "/images/bkash-logo.png", :class => "gateway_image_single_bkash", :id => "pay_fees_multiple", :style => "", :onclick => "initBkash(this);" %>
-                      <% unless MultiSchool.current_school.id == 312 %>
-                        <p style="text-align: right; display: block; padding-top: 80px;">*1.5% convenience fee applicable.</p>
-                      <% end %>
                       <!--button type="button" id="pay_fees_multiple" class="submit_button"><%#= "► #{t('pay_fees')}" %></button-->
                     <% else %>
                     <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button' %>
@@ -1189,13 +1186,27 @@
                       <button type="button" id="pay_fees_multiple" class="submit_button" disabled><%= "► #{t('pay_fees')}" %></button>
                       <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button_multiple', :style=>"display: none;" %>
                   <% end %>
+                  <% style = "" %>    
+                  <% if @gateway_settings.length == 1 %>
+                    <% if @gateway_settings.keys.include?('bkash') or @gateway_settings.keys.include?('citybank') %>
+                      <% style = "padding: 14px 10px; margin: 18px 10px 0 !important;" %>    
+                    <% end %>
+                  <% end %>    
                 <% if MultiSchool.current_school.id != 352 and MultiSchool.current_school.id != 2 %>  
-                <%= link_to "► #{t('print_receipt')}",
-                  {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id},:target => '_blank', :class=> 'user_button' %>
-                </div>
-                     
-                  </div>  
-                <% end %>  
+                     <%= link_to "► #{t('print_receipt')}",
+                        {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id},:target => '_blank', :class=> 'user_button', :style=> style %>
+                <% end %> 
+                <% if @gateway_settings.length == 1 %>
+                    <% if @gateway_settings.keys.include?('bkash') or @gateway_settings.keys.include?('citybank') %>
+                      <% unless MultiSchool.current_school.id == 312 %>
+                        <p style="text-align: right; display: block; padding-top: 80px;">*1.5% convenience fee applicable.</p>
+                      <% end %>
+                      <% if @gateway_settings.keys.include?('citybank') %>  
+                        <%= image_tag "/images/card.png", :class => "", :id => "", :style => "float: right;" %>  
+                      <% end %>  
+                    <% end %>
+                  <% end %>  
+                  </div></div>  
               </td>
             </tr>
             <% end %>

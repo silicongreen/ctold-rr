@@ -757,6 +757,11 @@ class StudentController < ApplicationController
           flash[:notice] = "Authentication Failed, Please contact with System Admin"
           redirect_to params[:fee_url]
         elsif response_ssl["responseCode"].to_i == 100
+            fee_percent = 0.00
+            fee_percent = params[:amount].to_f.to_f * (1.5 / 100)
+            if MultiSchool.current_school.id != 312 
+              amount = amount.to_f + fee_percent.to_f
+            end
             data_params = {
               "merchantId"  => params[:merchantId],
               "amount"      => params[:amount].to_f * 100,

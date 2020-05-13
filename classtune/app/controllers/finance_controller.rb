@@ -67,6 +67,7 @@ class FinanceController < ApplicationController
   def donation
     #@students = Student.active
     if MultiSchool.current_school.id == 357
+      now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
       activity_log = ActivityLog.new
       activity_log.user_id = current_user.id
       activity_log.controller = "checking Finance Fees"

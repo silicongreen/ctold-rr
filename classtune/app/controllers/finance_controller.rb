@@ -15357,7 +15357,11 @@ class FinanceController < ApplicationController
       batch_version = @batch.name.split(" ")
       current_row = row_loop
       
-      row_1 = ["#{t('shift')} :"+ " " "#{batch_version[0].strip}",'',"#{t('version')} :"+ " " "#{batch_version[1].strip}", "","#{t('class')} :"+ " " "#{@batch.course.course_name}", "", "#{t('section')} :"+ " " "#{@batch.course.section_name}",'']
+      if batch_version[1].blank?
+        row_1 = ["#{t('shift')} :"+ " " "#{batch_version[0].strip}",'',"#{t('version')} :"+ " " "N/A", "","#{t('class')} :"+ " " "#{@batch.course.course_name}", "", "#{t('section')} :"+ " " "#{@batch.course.section_name}",'']
+      else  
+        row_1 = ["#{t('shift')} :"+ " " "#{batch_version[0].strip}",'',"#{t('version')} :"+ " " "#{batch_version[1].strip}", "","#{t('class')} :"+ " " "#{@batch.course.course_name}", "", "#{t('section')} :"+ " " "#{@batch.course.section_name}",'']
+      end
       new_book.worksheet(0).insert_row(row_loop, row_1)
       row_loop += 1
       

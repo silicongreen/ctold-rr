@@ -34,7 +34,11 @@
           <% batch = @batch[0] %>
           <% batch_version = batch.name.split(" ") %>
           <h4 style="width: 25%; display: inline-block;"> <%= "#{t('shift')} :"+ " " "#{batch_version[0].strip}" %></h4>
-          <h4 style="width: 24%; display: inline-block; text-align: left; "> <%= "#{t('version')} :"+ " " "#{batch_version[1].strip}" %></h4>
+          <% unless batch_version[1].blank? %>
+            <h4 style="width: 24%; display: inline-block; text-align: left; "> <%= "#{t('version')} :"+ " " "#{batch_version[1].strip}" %></h4>
+          <% else  %>
+            <h4 style="width: 24%; display: inline-block; text-align: left; "> <%= "#{t('version')} :"+ " " "N/A" %></h4>
+          <% end %>
           <h4 style="width: 24%; display: inline-block; text-align: center;"> <%= "#{t('class')} :"+ " " "#{batch.course.course_name}" %></h4>
           <h4 style="width: 24%; display: inline-block; text-align: right;"> <%= "#{t('section')} :"+ " " "#{batch.course.section_name}" %></h4>
         <% end %>

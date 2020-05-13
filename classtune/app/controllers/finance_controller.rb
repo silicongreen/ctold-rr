@@ -80,7 +80,7 @@ class FinanceController < ApplicationController
       activity_log.save
       activity_log_id = activity_log.id
       
-      finance_fees = FinanceFee.find(:all, :conditions => "id > 242203", :order => "id asc")
+      finance_fees = FinanceFee.find(:all, :conditions => "id > 249169", :order => "id asc")
   #    #@students = Student.find(:all, :conditions => "id = 24170")
       #abort(@student.inspect)
       error = []

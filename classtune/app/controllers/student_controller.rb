@@ -759,7 +759,7 @@ class StudentController < ApplicationController
         elsif response_ssl["responseCode"].to_i == 100
             data_params = {
               "merchantId"  => params[:merchantId],
-              "amount"      => params[:amount],
+              "amount"      => params[:amount] * 100,
               "currency"    => params[:currency],
               "description" => params[:description],
               "approveUrl"  => params[:approveUrl],

@@ -749,7 +749,7 @@ class StudentController < ApplicationController
         request = Net::HTTP::Post.new(payment_url.path,  {"Content-Type" => "application/json", "Accept" => "application/json"})
         #request.set_form_data({"userName"=>params[:userName],"password"=>params[:password]}.to_json)
         request.body = {"userName"=>params[:userName],"password"=>params[:password]}.to_json
-        abort({"userName"=>params[:userName],"password"=>params[:password]}.to_json.inspect)
+        #abort({"userName"=>params[:userName],"password"=>params[:password]}.to_json.inspect)
         response = http.request(request)
         response_ssl = JSON::parse(response.body)
         #abort(response_ssl.inspect)

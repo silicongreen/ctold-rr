@@ -4171,7 +4171,7 @@ module FinanceLoader
                 end
                 
                 if payment_saved
-                  unless order_verify(orderId, 'citybank', transaction_datetime, gateway_response[:Message][:OrderID], gateway_response[:Message][:TotalAmount] / 100)
+                  unless order_verify(orderId, 'citybank', transaction_datetime, gateway_response[:Message][:OrderID], gateway_response[:Message][:TotalAmount].to_f / 100)
                     flash[:notice] = "Payment unsuccessful!! Invalid Transaction, Amount mismatch"
                   end
                 end

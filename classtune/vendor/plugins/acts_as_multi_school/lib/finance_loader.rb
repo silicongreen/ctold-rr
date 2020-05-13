@@ -4171,7 +4171,14 @@ module FinanceLoader
                 end
                 
                 if payment_saved
-                  unless order_verify(orderId, 'citybank', transaction_datetime, gateway_response[:Message][:OrderID], gateway_response[:Message][:TotalAmount].to_f / 100)
+                  fee_percent = 0.00
+                  amount_return = gateway_response[:Message][:TotalAmount].to_f / 100
+                  amount = amount_return
+                  fee_percent = amount_return.to_ff * (1.5 / 100)
+                  if MultiSchool.current_school.id != 312 
+                    amount = amount.to_f - fee_percent.to_f
+                  end
+                  unless order_verify(orderId, 'citybank', transaction_datetime, gateway_response[:Message][:OrderID], amount)
                     flash[:notice] = "Payment unsuccessful!! Invalid Transaction, Amount mismatch"
                   end
                 end

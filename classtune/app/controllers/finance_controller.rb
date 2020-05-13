@@ -65,6 +65,51 @@ class FinanceController < ApplicationController
   end
 
   def donation
+    #@students = Student.active
+    if MultiSchool.current_school.id == 357
+      activity_log = ActivityLog.new
+      activity_log.user_id = current_user.id
+      activity_log.controller = "checking Finance Fees"
+      activity_log.action = "checking Finance Fees"
+      activity_log.post_requests = "0"
+      activity_log.ip = request.remote_ip
+      activity_log.user_agent = request.user_agent
+      activity_log.created_at = now
+      activity_log.updated_at = now
+      activity_log.save
+      activity_log_id = activity_log.id
+      
+      finance_fees = FinanceFee.find(:all, :order => "id asc")
+  #    #@students = Student.find(:all, :conditions => "id = 24170")
+      #abort(@student.inspect)
+      error = []
+      finance_fees.each do |fee|
+        #finance_fees = FinanceFee.find(:all, :conditions => "student_id = '#{s.id}' and is_paid = 1 and balance > 0")
+        unless fee.blank?
+          sid = fee.student_id
+          s = Student.find sid
+          date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
+          unless date.blank?
+            balance = FinanceFee.get_student_actual_balance(date, s, fee)
+            if balance.to_f > 1
+              if balance.to_f != fee.balance
+                finance_fee = FinanceFee.find fee.id
+                finance_fee.update_attributes( :balance=>balance.to_f, :is_paid => 0)
+              end
+            elsif balance.to_f == 0
+              finance_fee = FinanceFee.find fee.id
+              finance_fee.update_attributes( :balance=>0, :is_paid => 1)
+            elsif balance.to_f > 0 and balance.to_f < 1
+              error << s.id.to_s + "  " + fee.id.to_s 
+            end
+          end
+          activity_log = ActivityLog.find activity_log_id
+          pr = fee.id
+          activity_log.update_attributes( :post_requests=> pr.to_s)
+        end
+      end
+    end
+    abort(error.inspect)
     @donation = FinanceDonation.new(params[:donation])
     if request.post? and @donation.save
       flash[:notice] = "#{t('flash1')}"

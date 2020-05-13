@@ -758,7 +758,7 @@ class StudentController < ApplicationController
           redirect_to params[:fee_url]
         elsif response_ssl["responseCode"].to_i == 100
             fee_percent = 0.00
-            fee_percent = params[:amount].to_f * (1.5 / 100)
+            fee_percent = (params[:amount].to_f  * 100) * (1.5 / 100)
             if MultiSchool.current_school.id != 312 
               amount = (params[:amount].to_f * 100) + fee_percent.to_f
             end

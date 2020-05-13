@@ -4174,7 +4174,7 @@ module FinanceLoader
                   fee_percent = 0.00
                   amount_return = gateway_response[:Message][:TotalAmount].to_f / 100
                   amount = amount_return
-                  fee_percent = amount_return.to_ff * (1.5 / 100)
+                  fee_percent = amount_return.to_f * (1.5 / 100)
                   if MultiSchool.current_school.id != 312 
                     amount = amount.to_f - fee_percent.to_f
                   end

@@ -98,8 +98,14 @@ class PaymentSettingsController < ApplicationController
         extra_query += ' and gateway_response like \'%:status: "' + payment_status.to_s + '%\''
       end
       #abort(params[:transactionStatus].inspect)
-      unless params[:transactionStatus].nil? or params[:transactionStatus].empty? or params[:transactionStatus].blank?
-        extra_query += ' and gateway_response like \'%:transactionStatus: "' + params[:transactionStatus].to_s + '%\''
+      if @gateway == "bkash"
+        unless params[:transactionStatus].nil? or params[:transactionStatus].empty? or params[:transactionStatus].blank?
+          extra_query += ' and gateway_response like \'%:transactionStatus: ' + params[:transactionStatus].to_s + '%\''
+        end
+      else  
+        unless params[:transactionStatus].nil? or params[:transactionStatus].empty? or params[:transactionStatus].blank?
+          extra_query += ' and gateway_response like \'%:transactionStatus: "' + params[:transactionStatus].to_s + '%\''
+        end
       end
       unless params[:citybank_order_id].nil? or params[:citybank_order_id].empty? or params[:citybank_order_id].blank?
         extra_query += ' and gateway_response like \'%OrderID: "' + params[:citybank_order_id].to_s + '%\''
@@ -178,9 +184,16 @@ class PaymentSettingsController < ApplicationController
               end
               extra_query += ' and gateway_response like \'%:status: "' + payment_status.to_s + '%\''
             end
-            unless params[:transactionStatus].nil? or params[:transactionStatus].empty? or params[:transactionStatus].blank?
-              extra_query += ' and gateway_response1 like \'%:transactionStatus: "' + params[:transactionStatus].to_s + '%\''
+            if @gateway == "bkash"
+              unless params[:transactionStatus].nil? or params[:transactionStatus].empty? or params[:transactionStatus].blank?
+                extra_query += ' and gateway_response like \'%:transactionStatus: ' + params[:transactionStatus].to_s + '%\''
+              end
+            else  
+              unless params[:transactionStatus].nil? or params[:transactionStatus].empty? or params[:transactionStatus].blank?
+                extra_query += ' and gateway_response like \'%:transactionStatus: "' + params[:transactionStatus].to_s + '%\''
+              end
             end
+            
             unless params[:citybank_order_id].nil? or params[:citybank_order_id].empty? or params[:citybank_order_id].blank?
               extra_query += ' and gateway_response like \'%OrderID: "' + params[:citybank_order_id].to_s + '%\''
             end

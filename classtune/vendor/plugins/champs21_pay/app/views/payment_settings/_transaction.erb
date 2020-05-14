@@ -161,7 +161,9 @@
                 amount = amount_return
                 fee_percent = payment.finance_transaction.amount.to_f * (1.5 / 100)
                 if MultiSchool.current_school.id != 312 
-                  amount = amount.to_f - fee_percent.to_f
+                  unless payment.finance_transaction.amount == amount_return
+                    amount = amount.to_f - fee_percent.to_f
+                  end
                 end
                 amount ||= payment.gateway_response[:Message][:PurchaseAmount]
               end

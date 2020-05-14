@@ -258,7 +258,9 @@ class PaymentSettingsController < ApplicationController
                     amount = amount_return
                     fee_percent = payment.finance_transaction.amount.to_f * (1.5 / 100)
                     if MultiSchool.current_school.id != 312 
-                      amount = amount.to_f - fee_percent.to_f
+                      unless payment.finance_transaction.amount == amount_return
+                        amount = amount.to_f - fee_percent.to_f
+                      end
                     end
                     #amt = payment.gateway_response[:Message][:TotalAmount].to_f
                     #service_change = payment.gateway_response[:service_charge].to_f

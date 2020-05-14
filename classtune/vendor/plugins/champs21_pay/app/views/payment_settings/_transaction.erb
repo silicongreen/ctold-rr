@@ -166,7 +166,7 @@
                 amount ||= payment.gateway_response[:Message][:PurchaseAmount]
               end
             %>
-            <%= amount_return %>
+            <%= debug  payment.finance_transaction.inspect %>
             <td style="vertical-align: middle; text-align: right; padding-right: 4px;"><%= to_comma_seperated_precision_label(amount.to_f) %></td>
             <% if @gateway == "trustbank" or @gateway == "citybank" %>
             <% 

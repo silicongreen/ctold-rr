@@ -283,6 +283,9 @@ class PaymentSettingsController < ApplicationController
                   new_book.worksheet(0).insert_row(ind, row_new)
                   new_book.worksheet(0).row(ind).set_format(5, amount_format)
                   new_book.worksheet(0).row(ind).set_format(6, amount_format)
+                  if @gateway == "trustbank" or @gateway == "citybank"
+                    new_book.worksheet(0).row(ind).set_format(7, amount_format)
+                  end
                   
                   ind += 1
                 end

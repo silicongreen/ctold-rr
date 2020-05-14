@@ -262,6 +262,7 @@ class PaymentSettingsController < ApplicationController
                         amount = amount.to_f - fee_percent.to_f
                       end
                     end
+                    amt = amount
                     #amt = payment.gateway_response[:Message][:TotalAmount].to_f
                     #service_change = payment.gateway_response[:service_charge].to_f
                     tot_amt = amount 

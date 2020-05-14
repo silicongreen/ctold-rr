@@ -277,9 +277,9 @@ class PaymentSettingsController < ApplicationController
                   if @gateway == "trustbank"
                     row_new = [payment.gateway_response[:ref_id], payment.gateway_response[:order_id], payment.gateway_response[:name], payment.gateway_response[:merchant_id], Champs21Precision.set_and_modify_precision(tot_amt), Champs21Precision.set_and_modify_precision(amt), Champs21Precision.set_and_modify_precision(service_change), payment.gateway_response[:status], verified, I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y")]
                   elsif @gateway == "citybank"
-                    row_new = [payment.gateway_response[:Message][:OrderID], payment.order_id, payment.payee.admission_no, payment.payee.full_name, payment.gateway_response[:Message][:CardHolderName].to_s + " - " + payment.gateway_response[:Message][:PAN], Champs21Precision.set_and_modify_precision(amt), Champs21Precision.set_and_modify_precision(fee_percent), Champs21Precision.set_and_modify_precision(total_amount), payment.gateway_response[:Message][:OrderStatus], I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y %H:%M:%S")]
+                    row_new = [payment.gateway_response[:Message][:OrderID], payment.order_id, payment.payee_admission_no, payment.payee_name, payment.gateway_response[:Message][:CardHolderName].to_s + " - " + payment.gateway_response[:Message][:PAN], Champs21Precision.set_and_modify_precision(amt), Champs21Precision.set_and_modify_precision(fee_percent), Champs21Precision.set_and_modify_precision(total_amount), payment.gateway_response[:Message][:OrderStatus], I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y %H:%M:%S")]
                   elsif @gateway == "bkash"
-                    row_new = [payment.gateway_response[:trxID], payment.gateway_response[:paymentID], payment.gateway_response[:merchantInvoiceNumber], payment.payee.admission_no, payment.payee.full_name, Champs21Precision.set_and_modify_precision(tot_amt), Champs21Precision.set_and_modify_precision(amt), payment.gateway_response[:transactionStatus], I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y %H:%M:%S")]
+                    row_new = [payment.gateway_response[:trxID], payment.gateway_response[:paymentID], payment.gateway_response[:merchantInvoiceNumber], payment.payee_admission_no, payment.payee_name, Champs21Precision.set_and_modify_precision(tot_amt), Champs21Precision.set_and_modify_precision(amt), payment.gateway_response[:transactionStatus], I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y %H:%M:%S")]
                   end
                   new_book.worksheet(0).insert_row(ind, row_new)
                   new_book.worksheet(0).row(ind).set_format(5, amount_format)
@@ -406,7 +406,7 @@ class PaymentSettingsController < ApplicationController
                                   a_trans_date_time = trans_date_time.split(' ')
                                   trans_date = a_trans_date_time[0].split('/').reverse.join('-')
                                   trans_date_time = trans_date + " " + a_trans_date_time[1]
-                                  @student = payment.payee
+                                  #@student = payment.payee
                                   require 'date'
                                   transaction_datetime = DateTime.parse(trans_date_time).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
                 

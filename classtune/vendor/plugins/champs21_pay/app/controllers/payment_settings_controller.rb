@@ -233,7 +233,7 @@ class PaymentSettingsController < ApplicationController
                 if @gateway == "trustbank"
                   row_1 = ["Ref ID","Order ID","Name","Merchant ID","Amount","Fees","Service Charge","Status","Verified","Trn Date"]
                 elsif @gateway == "citybank"
-                  row_1 = ["Ref ID","Order ID","Student ID","Full Name","Session ID","Fees","Service Charge","Total Amount","Status","Trn Date"]
+                  row_1 = ["Ref ID","Order ID","Student ID","Full Name","Card Info","Fees","Service Charge","Total Amount","Status","Trn Date"]
                 elsif @gateway == "bkash"
                   row_1 = ["trxID","Payment ID","Order ID","Student ID","Full Name","Amount","Fees","Status","Trn Date"]
                 end

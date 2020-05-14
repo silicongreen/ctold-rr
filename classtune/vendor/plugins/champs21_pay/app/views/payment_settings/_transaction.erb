@@ -37,7 +37,7 @@
                   <option value="Authorized" <%= 'selected' if params[:transactionStatus] == "Authorized" %>>Authorized</option>
                   <option value="Expired" <%= 'selected' if params[:transactionStatus] == "Expired" %>>Expired</option>
                   <option value="Cancelled" <%= 'selected' if params[:transactionStatus] == "Pending" %>>Cancelled</option>
-                  <option value="Declined" <%= 'selected' if params[:transactionStatus] == "Declined" %>>Cancelled</option>
+                  <option value="Declined" <%= 'selected' if params[:transactionStatus] == "Declined" %>>Declined</option>
               </select>
               <% end %>
           </div>
@@ -118,7 +118,7 @@
             <% end %>
             <th style="width: 10%;"><%= t("gateway_status") %></th>
             <% unless MultiSchool.current_school.id == 352 %>
-              <% if @gateway != "bkash" %>
+              <% if @gateway != "bkash" || @gateway != "citybank" %>
               <th style="width: 10%;"><%= t("online_transaction_id") %></th>
               <% end %>
             <% end %>
@@ -158,7 +158,13 @@
                 amount = payment.gateway_response[:amount]
                 amount ||= payment.gateway_response[:x_amount]
               elsif @gateway == "citybank"
-                amount = payment.gateway_response[:Message][:TotalAmount]
+                fee_percent = 0.00
+                amount_return = payment.gateway_response[:Message][:TotalAmount].to_f / 100
+                amount = amount_return
+                fee_percent = amount_return.to_f * (1.5 / 100)
+                if MultiSchool.current_school.id != 312 
+                  amount = amount.to_f - fee_percent.to_f
+                end
                 amount ||= payment.gateway_response[:Message][:PurchaseAmount]
               end
             %>

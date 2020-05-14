@@ -115,6 +115,7 @@
             <th style="width: 10%;"><%= t("amount") %></th>
             <% if @gateway == "trustbank" or @gateway == "citybank" %>
             <th style="width: 10%;"><%= t("service_charge") %></th>
+            <th style="width: 10%;"><%= "Total Amount" %></th>
             <% end %>
             <th style="width: 10%;"><%= t("gateway_status") %></th>
             <% if @gateway == "trustbank" %>
@@ -165,6 +166,7 @@
                     amount = amount.to_f - fee_percent.to_f
                   end
                 end
+                total_amount = amount + fee_percent
                 amount ||= payment.gateway_response[:Message][:PurchaseAmount]
               end
             %>
@@ -178,6 +180,9 @@
               end
             %>
             <td style="vertical-align: middle; text-align: right; padding-right: 4px;"><%= precision_label(service_charge) %></td>
+            <% end %>
+            <% if @gateway == "citybank" %>
+            <td style="vertical-align: middle; text-align: right; padding-right: 4px;"><%= precision_label(total_amount) %></td>
             <% end %>
             <% if @gateway == "trustbank" %>
             <td style="vertical-align: middle; text-align: center;">

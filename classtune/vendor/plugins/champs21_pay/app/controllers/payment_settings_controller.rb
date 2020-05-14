@@ -233,7 +233,7 @@ class PaymentSettingsController < ApplicationController
                 if @gateway == "trustbank"
                   row_1 = ["Ref ID","Order ID","Name","Merchant ID","Amount","Fees","Service Charge","Status","Verified","Trn Date"]
                 elsif @gateway == "citybank"
-                  row_1 = ["Ref ID","Order ID","Student ID","Full Name","Session ID","Amount","Fees","Status","Trn Date"]
+                  row_1 = ["Ref ID","Order ID","Student ID","Full Name","Session ID","Amount","Fees","Service Charge","Status","Trn Date"]
                 elsif @gateway == "bkash"
                   row_1 = ["trxID","Payment ID","Order ID","Student ID","Full Name","Amount","Fees","Status","Trn Date"]
                 end
@@ -253,9 +253,13 @@ class PaymentSettingsController < ApplicationController
                     service_change = payment.gateway_response[:service_charge].to_f
                     tot_amt = amt + service_change
                   else
-                    amt = payment.gateway_response[:Message][:TotalAmount].to_f
+                    fee_percent = 0.00
+                    amount_return = payment.gateway_response[:Message][:TotalAmount].to_f / 100
+                    amount = amount_return
+                    fee_percent = amount_return.to_f * (1.5 / 100)
+                    #amt = payment.gateway_response[:Message][:TotalAmount].to_f
                     #service_change = payment.gateway_response[:service_charge].to_f
-                    tot_amt = amt 
+                    tot_amt = amount 
                   end
                   verified = "false"
                   unless payment.gateway_response[:verified].nil?
@@ -266,7 +270,7 @@ class PaymentSettingsController < ApplicationController
                   if @gateway == "trustbank"
                     row_new = [payment.gateway_response[:ref_id], payment.gateway_response[:order_id], payment.gateway_response[:name], payment.gateway_response[:merchant_id], Champs21Precision.set_and_modify_precision(tot_amt), Champs21Precision.set_and_modify_precision(amt), Champs21Precision.set_and_modify_precision(service_change), payment.gateway_response[:status], verified, I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y")]
                   elsif @gateway == "citybank"
-                    row_new = [payment.gateway_response[:Message][:OrderID], payment.order_id, payment.payee.admission_no, payment.payee.full_name, payment.gateway_response[:Message][:SessionID], Champs21Precision.set_and_modify_precision(tot_amt), Champs21Precision.set_and_modify_precision(amt), payment.gateway_response[:Message][:OrderStatus], I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y %H:%M:%S")]
+                    row_new = [payment.gateway_response[:Message][:OrderID], payment.order_id, payment.payee.admission_no, payment.payee.full_name, payment.gateway_response[:Message][:SessionID], Champs21Precision.set_and_modify_precision(tot_amt), Champs21Precision.set_and_modify_precision(amt), Champs21Precision.set_and_modify_precision(fee_percent), payment.gateway_response[:Message][:OrderStatus], I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y %H:%M:%S")]
                   elsif @gateway == "bkash"
                     row_new = [payment.gateway_response[:trxID], payment.gateway_response[:paymentID], payment.gateway_response[:merchantInvoiceNumber], payment.payee.admission_no, payment.payee.full_name, Champs21Precision.set_and_modify_precision(tot_amt), Champs21Precision.set_and_modify_precision(amt), payment.gateway_response[:transactionStatus], I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y %H:%M:%S")]
                   end

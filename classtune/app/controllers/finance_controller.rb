@@ -81,8 +81,8 @@ class FinanceController < ApplicationController
       
       error_order = []
       @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "count(order_id) as ord_cnt,order_id, student_id", :order => 'order_id ASC', :conditions => ["order_id is not null and order_id NOT LIKE '%%,%%'"], :group => "order_id", :having => "count(order_id) > 1") #, :group => "ledger_date"
-      abort(@student_fee_ledgers.inspect)
-      unless @student_fee_ledgers
+      #abort(@student_fee_ledgers.inspect)
+      unless @student_fee_ledgers.blank?
         @student_fee_ledgers.each do |student_fee_ledger|
           order_id = student_fee_ledger.order_id
           student_id  = student_fee_ledger.student_id

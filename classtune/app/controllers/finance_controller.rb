@@ -87,10 +87,10 @@ class FinanceController < ApplicationController
           order_id = student_fee_ledger.order_id
           student_id  = student_fee_ledger.student_id
           #abort(order_id.to_s + "  " + student_id.to_s)
-          student_fee_ledger_amount = StudentFeeLedger.find(:first, :select => "sum(amount_paid) as pay_amount", :order => 'order_id ASC', :conditions => ["order_id = '#{order_id}' and student_id '#{student_id}'"], :group => "order_id") #, :group => "ledger_date"
+          student_fee_ledger_amount = StudentFeeLedger.find(:first, :select => "sum(amount_paid) as pay_amount", :order => 'order_id ASC', :conditions => ["order_id = '#{order_id}' and student_id = '#{student_id}'"], :group => "order_id") #, :group => "ledger_date"
           unless student_fee_ledger_amount.blank?
             amount_paid = student_fee_ledger_amount.pay_amount
-            payment = Payment.find(:first, :conditions => "order_id = '#{order_id}' and payee_id '#{student_id}'")
+            payment = Payment.find(:first, :conditions => "order_id = '#{order_id}' and payee_id = '#{student_id}'")
             unless payment.blank?
               gateway_response_amount = payment.gateway_response[:amount]
               if gateway_response_amount.to_f != amount_paid.to_f

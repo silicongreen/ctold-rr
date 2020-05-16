@@ -80,7 +80,7 @@ class FinanceController < ApplicationController
       activity_log_id = activity_log.id
       
       error_order = []
-      @valid_fee_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.id", :order => 'finance_transactions.id ASC', :conditions => ["finance_transactions.payment_mode LIKE 'Online Payment' and payments.finance_transaction_id is null"], :joins => " LEFT JOIN payments ON payments.finance_transaction_id = finance_transactions.id") #, :group => "ledger_date"
+      @valid_fee_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.id", :order => 'finance_transactions.id ASC', :conditions => ["finance_transactions.payment_mode LIKE 'Online Payment' and payments.finance_transaction_id is null and finance_transactions.id > 88893"], :joins => " LEFT JOIN payments ON payments.finance_transaction_id = finance_transactions.id") #, :group => "ledger_date"
       unless @valid_fee_transactions.blank?
         @valid_fee_transactions.each do |valid_fee_transaction|
           ftransaction = FinanceTransaction.find valid_fee_transaction.id

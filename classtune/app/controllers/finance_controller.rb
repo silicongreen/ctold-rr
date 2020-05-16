@@ -106,6 +106,7 @@ class FinanceController < ApplicationController
         end
       end
     end
+    abort(error_order.inspect)
     #@students = Student.active
 #    if MultiSchool.current_school.id == 357
 #      now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')

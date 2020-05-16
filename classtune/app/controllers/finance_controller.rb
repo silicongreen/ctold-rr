@@ -83,9 +83,9 @@ class FinanceController < ApplicationController
       @valid_fee_transactions = FinanceTransaction.find(:all, :select => "id, payee_id", :order => 'id ASC', :conditions => ["payment_mode LIKE 'Advance Adjustment'"]) #, :group => "ledger_date"
       unless @valid_fee_transactions.blank?
         @valid_fee_transactions.each do |valid_fee_transaction|
-          student_fee_ledgers = StudentFeeLedger.find(:first, :select => "student_id, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :conditions => ["student_id = #{valid_fee_transaction.id} "])
+          student_fee_ledgers = StudentFeeLedger.find(:first, :select => "student_id, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :conditions => ["student_id = #{valid_fee_transaction.payee_id} "])
           unless student_fee_ledgers.blank?
-            if student_fee_ledgers.diff_amount >= 0
+            if student_fee_ledgers.diff_amoun.to_f >= 0
               error_order << valid_fee_transaction.id
             end
           end

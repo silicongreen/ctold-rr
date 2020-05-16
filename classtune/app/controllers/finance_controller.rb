@@ -81,9 +81,14 @@ class FinanceController < ApplicationController
       
       error_order = []
       @valid_fee_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.id", :order => 'finance_transactions.id ASC', :conditions => ["finance_transactions.payment_mode LIKE 'Online Payment' and payments.finance_transaction_id is null"], :joins => " LEFT JOIN payments ON payments.finance_transaction_id = finance_transactions.id") #, :group => "ledger_date"
-      abort(@valid_fee_transactions.count.inspect)
-      unless @student_fee_ledgers.blank?
-        @student_fee_ledgers.each do |student_fee_ledger|
+      unless @valid_fee_transactions.blank?
+        @valid_fee_transactions.each do |valid_fee_transaction|
+          abort(valid_fee_transaction.id.inspect)
+          ftransaction = FinanceTransaction.find valid_fee_transaction.id
+          ftransaction.destroy
+          activity_log = ActivityLog.find activity_log_id
+          pr = order_id
+          activity_log.update_attributes( :post_requests=> pr.to_s)
           order_id = student_fee_ledger.order_id
           student_id  = student_fee_ledger.student_id
           #abort(order_id.to_s + "  " + student_id.to_s)
@@ -96,9 +101,7 @@ class FinanceController < ApplicationController
               if gateway_response_amount.to_f != amount_paid.to_f
                 error_order << order_id
               end
-              activity_log = ActivityLog.find activity_log_id
-              pr = order_id
-              activity_log.update_attributes( :post_requests=> pr.to_s)
+              
               #abort(gateway_response_amount.to_s + "  " + amount_paid.to_s)
             end
             

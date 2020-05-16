@@ -3740,26 +3740,31 @@ module FinanceLoader
       unless finance_orders.blank?
         request_params = finance_orders[0].request_params
         unless request_params["fees"].blank?
-          fees = request_params["fees"].split(",")
-          unless fees.blank?
-            fees.each do |fee|
-              finance_order = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and finance_fee_id = #{fee} and request_params is not null")
-              unless finance_order.blank?
-                if finance_order.length > 1
-                  finance_order_attributes = finance_order[0].attributes
-                  finance_order.each do |fo|
-                    fo.destroy
+          multiple = request_params[:multiple]
+          unless multiple.nil?
+            if multiple.to_s == "true"
+              fees = request_params["fees"].split(",")
+              unless fees.blank?
+                fees.each do |fee|
+                  finance_order = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and finance_fee_id = #{fee} and request_params is not null")
+                  unless finance_order.blank?
+                    if finance_order.length > 1
+                      finance_order_attributes = finance_order[0].attributes
+                      finance_order.each do |fo|
+                        fo.destroy
+                      end
+                      finance_order_new = FinanceOrder.new(finance_order_attributes)
+                      finance_order_new.save
+                    end
+                  else
+                    finance_order_attributes = finance_orders[0].attributes
+                    finance_order_attributes.delete "finance_fee_id"
+                    finance_order_attributes.merge!(:finance_fee_id=>fee)
+                    #finance_order_attributes.finance_fee_id = fee
+                    finance_order_new = FinanceOrder.new(finance_order_attributes)
+                    finance_order_new.save
                   end
-                  finance_order_new = FinanceOrder.new(finance_order_attributes)
-                  finance_order_new.save
                 end
-              else
-                finance_order_attributes = finance_orders[0].attributes
-                finance_order_attributes.delete "finance_fee_id"
-                finance_order_attributes.merge!(:finance_fee_id=>fee)
-                #finance_order_attributes.finance_fee_id = fee
-                finance_order_new = FinanceOrder.new(finance_order_attributes)
-                finance_order_new.save
               end
             end
           end
@@ -3777,6 +3782,34 @@ module FinanceLoader
           fee_id = finance_order.finance_fee_id
 
           fee = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and id = #{fee_id}")
+          
+          found = false
+          multiple = request_params[:multiple]
+          unless multiple.nil?
+            if multiple.to_s == "true"
+              fee_orders = request_params["fees"].split(",")
+              unless fees.blank?
+                fee_orders.each do |fee_order|
+                  if fee_order.to_i == fee_id.to_i
+                    found = true
+                  end
+                end
+              end
+            else  
+              fee_order_id = request_params["fees"]
+              if fee_order_id.to_i == fee_id.to_i
+                found = true
+              end
+            end
+          else
+            fee_order_id = request_params["fees"]
+            if fee_order_id.to_i == fee_id.to_i
+              found = true
+            end
+          end
+          if found == false
+            fee = nil
+          end
           unless fee.nil?
             unless fee.is_paid
               date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")

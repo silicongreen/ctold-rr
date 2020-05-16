@@ -80,8 +80,8 @@ class FinanceController < ApplicationController
       activity_log_id = activity_log.id
       
       error_order = []
-      @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "count(order_id) as ord_cnt,order_id, student_id", :order => 'order_id ASC', :conditions => ["order_id is not null and order_id NOT LIKE '%%,%%'"], :group => "order_id", :having => "count(order_id) > 1") #, :group => "ledger_date"
-      #abort(@student_fee_ledgers.inspect)
+      @valid_fee_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.id", :order => 'finance_transactions.id ASC', :conditions => ["finance_transactions.payment_mode LIKE 'Online Payment' and payments.finance_transaction_id is null"], :joins => " LEFT JOIN payments ON payments.finance_transaction_id = finance_transactions.id") #, :group => "ledger_date"
+      abort(@valid_fee_transactions.count.inspect)
       unless @student_fee_ledgers.blank?
         @student_fee_ledgers.each do |student_fee_ledger|
           order_id = student_fee_ledger.order_id

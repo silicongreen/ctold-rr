@@ -80,18 +80,24 @@ class FinanceController < ApplicationController
       activity_log_id = activity_log.id
       
       error_order = []
-      @valid_fee_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.id", :order => 'finance_transactions.id ASC', :conditions => ["finance_transactions.payment_mode LIKE 'Online Payment' and payments.finance_transaction_id is null and finance_transactions.id > 88893"], :joins => " LEFT JOIN payments ON payments.finance_transaction_id = finance_transactions.id") #, :group => "ledger_date"
+      @valid_fee_transactions = FinanceTransaction.find(:all, :select => "id, payee_id", :order => 'id ASC', :conditions => ["payment_mode LIKE 'Advance Adjustment'"]) #, :group => "ledger_date"
       unless @valid_fee_transactions.blank?
         @valid_fee_transactions.each do |valid_fee_transaction|
-          ftransaction = FinanceTransaction.find valid_fee_transaction.id
-          ftransaction.destroy
-          activity_log = ActivityLog.find activity_log_id
+          student_fee_ledgers = StudentFeeLedger.find(:first, :select => "student_id, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :conditions => ["student_id = #{valid_fee_transaction.id} "])
+          unless student_fee_ledgers.blank?
+            if student_fee_ledgers.diff_amount >= 0
+              error_order << valid_fee_transaction.id
+            end
+          end
+#          ftransaction = FinanceTransaction.find valid_fee_transaction.id
+#          ftransaction.destroy
+#          activity_log = ActivityLog.find activity_log_id
           pr = valid_fee_transaction.id
           activity_log.update_attributes( :post_requests=> pr.to_s)
         end
       end
     end
-    #abort(error_order.inspect)
+    abort(error_order.inspect)
     #@students = Student.active
 #    if MultiSchool.current_school.id == 357
 #      now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')

@@ -95,6 +95,9 @@ class FinanceController < ApplicationController
               if gateway_response_amount.to_f != amount_paid.to_f
                 error_order << order_id
               end
+              activity_log = ActivityLog.find activity_log_id
+              pr = order_id
+              activity_log.update_attributes( :post_requests=> pr.to_s)
               abort(gateway_response_amount.to_s + "  " + amount_paid.to_s)
             end
             

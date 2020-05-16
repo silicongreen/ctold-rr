@@ -85,7 +85,7 @@ class FinanceController < ApplicationController
         @student_fee_ledgers.each do |student_fee_ledger|
           order_id = student_fee_ledger.order_id
           student_id  = student_fee_ledger.student_id
-          
+          abort(order_id.to_s + "  " + student_id.to_s)
           student_fee_ledger_amount = StudentFeeLedger.find(:first, :select => "sum(amount_paid) as pay_amount", :order => 'order_id ASC', :conditions => ["order_id = '#{order_id}' and student_id '#{student_id}'"], :group => "order_id") #, :group => "ledger_date"
           unless student_fee_ledger_amount.blank?
             amount_paid = student_fee_ledger_amount.pay_amount

@@ -65,6 +65,43 @@ class FinanceController < ApplicationController
   end
 
   def donation
+    if MultiSchool.current_school.id == 352
+      now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+      activity_log = ActivityLog.new
+      activity_log.user_id = current_user.id
+      activity_log.controller = "checking Finance Fees"
+      activity_log.action = "checking Finance Fees"
+      activity_log.post_requests = "0"
+      activity_log.ip = request.remote_ip
+      activity_log.user_agent = request.user_agent
+      activity_log.created_at = now
+      activity_log.updated_at = now
+      activity_log.save
+      activity_log_id = activity_log.id
+      
+      error_order = []
+      @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "count(order_id) as ord_cnt,order_id, student_id", :order => 'order_id ASC', :conditions => ["order_id is not null and order_id NOT LIKE '%,%'"], :group => "order_id", :having => "count(order_id) > 1") #, :group => "ledger_date"
+      unless @student_fee_ledgers
+        @student_fee_ledgers.each do |student_fee_ledger|
+          order_id = student_fee_ledger.order_id
+          student_id  = student_fee_ledger.student_id
+          
+          student_fee_ledger_amount = StudentFeeLedger.find(:first, :select => "sum(amount_paid) as pay_amount", :order => 'order_id ASC', :conditions => ["order_id = '#{order_id}' and student_id '#{student_id}'"], :group => "order_id") #, :group => "ledger_date"
+          unless student_fee_ledger_amount.blank?
+            amount_paid = student_fee_ledger_amount.pay_amount
+            payment = Payment.find(:first, :conditions => "order_id = '#{order_id}' and payee_id '#{student_id}'")
+            unless payment.blank?
+              gateway_response_amount = payment.gateway_response[:amount]
+              if gateway_response_amount.to_f != amount_paid.to_f
+                error_order << order_id
+              end
+              abort(gateway_response_amount.to_s + "  " + amount_paid.to_s)
+            end
+            
+          end
+        end
+      end
+    end
     #@students = Student.active
 #    if MultiSchool.current_school.id == 357
 #      now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')

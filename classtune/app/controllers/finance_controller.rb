@@ -99,7 +99,7 @@ class FinanceController < ApplicationController
               activity_log = ActivityLog.find activity_log_id
               pr = order_id
               activity_log.update_attributes( :post_requests=> pr.to_s)
-              abort(gateway_response_amount.to_s + "  " + amount_paid.to_s)
+              #abort(gateway_response_amount.to_s + "  " + amount_paid.to_s)
             end
             
           end

@@ -3173,6 +3173,227 @@ class ExamController < ApplicationController
       :footer => {:html => { :template=> 'layouts/pdf_footer_sagc.html'}}
   end
   
+  def sis_report_excell
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    new_book = Spreadsheet::Workbook.new
+    sheet1 = new_book.create_worksheet :name => 'marksheet'
+    
+    @id = params[:id]
+    @subject_id = params[:subject_id]
+    @connect_exam_obj = ExamConnect.active.find(@id)
+    @batch = Batch.find(@connect_exam_obj.batch_id) 
+    @subject = Subject.find(@subject_id)
+    @assigned_employee=@batch.all_class_teacher
+    @grades = @batch.grading_level_list
+
+    @employee_sub = EmployeesSubject.find_by_subject_id(@subject_id)
+    if !@employee_sub.nil?
+      @employee = Employee.find(@employee_sub.employee_id)
+    end
+    
+    get_subject_mark_sheet(@id,@subject_id)
+    @report_data = []
+    if @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end
+    center_align_format = Spreadsheet::Format.new :horizontal_align => :center,  :vertical_align => :middle,:left=>:thin,:right=>:thin,:top=>:thin,:bottom=>:thin
+    row = [@subject.name]
+    new_book.worksheet(0).insert_row(0, row)
+    row = [@batch.full_name]
+    new_book.worksheet(0).insert_row(1, row)
+    new_book.worksheet(0).merge_cells(0,0,0,9)
+    new_book.worksheet(0).merge_cells(1,0,1,9)
+    
+    sheet1.row(0).default_format = center_align_format
+    sheet1.row(1).default_format = center_align_format
+    
+    
+    row_first = ['Sr No.','Name of Student','Mock 1','','Mock 2','','Mock 3','','Best Mark','Grade']
+    row_second = ['','','p1','p2','p1','p2','p1','p2','','']
+    row_third = ['','']
+    @report_data['result']['ALL'].each do |rs|
+      if rs['exam_category'] != "7"
+        row_third << rs['maximum_marks'].to_i
+      end
+    end
+    
+    if row_third.count < 8
+      if row_third.count == 6
+        row_third << "-"
+        row_third << "-"
+      end
+    end
+    row_third << "100"
+    row_third << ""
+    
+    
+    new_book.worksheet(0).insert_row(2, row_first)
+    new_book.worksheet(0).insert_row(3, row_second)
+    new_book.worksheet(0).insert_row(4, row_third)
+    
+    new_book.worksheet(0).merge_cells(2,0,4,0)
+    new_book.worksheet(0).merge_cells(2,1,4,1)
+    
+    new_book.worksheet(0).merge_cells(2,2,2,3)
+     new_book.worksheet(0).merge_cells(2,4,2,5)
+    new_book.worksheet(0).merge_cells(2,6,2,7)
+    
+    new_book.worksheet(0).merge_cells(2,8,3,8)
+    new_book.worksheet(0).merge_cells(2,9,4,9)
+    
+    sheet1.row(2).default_format = center_align_format
+    sheet1.row(3).default_format = center_align_format
+    sheet1.row(4).default_format = center_align_format
+    
+    
+    iloop = 0
+    kloop = 4
+    
+    std_list_sorted = []
+    
+    unless @report_data['result']['al_students'].blank?
+      @report_data['result']['al_students'].each do |std|
+        mock1 = 0
+        mock2 = 0
+        mock3 = 0
+        mock1_full = 0
+        mock2_full = 0
+        mock3_full = 0
+        iloop = iloop+1
+        kloop = kloop+1
+        rows = [iloop,std['name']]
+        
+        @report_data['result']['ALL'].each do |rs|
+          if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
+            rows << rs['students'][std['id']]['score'].to_i
+            if rs['quarter'] != '1' 
+             mock1 = mock1.to_f+rs['students'][std['id']]['score'].to_f
+            end
+            if rs['quarter'] != '2' 
+               mock2 = mock2.to_f+rs['students'][std['id']]['score'].to_f
+            end
+            if rs['quarter'] != '3' 
+               mock3 = mock3.to_f+rs['students'][std['id']]['score'].to_f
+            end
+          else
+            rows << ""
+          end
+          
+          if !rs['maximum_marks'].blank?
+           if rs['quarter'] != '1' 
+               mock1_full = mock1_full.to_f+rs['maximum_marks'].to_i
+            end
+            if rs['quarter'] != '2' 
+               mock2_full = mock2_full.to_f+rs['maximum_marks'].to_i
+            end
+            if rs['quarter'] != '3' 
+               mock3_full = mock3_full.to_f+rs['maximum_marks'].to_i
+            end 
+          end
+        end
+        best_mark = 0
+
+        if mock1 > 0
+          avg = (mock1.to_f/mock1_full.to_f)*100
+          avg = avg.round()
+          if avg > best_mark
+            best_mark = avg
+          end  
+        end  
+        if mock2 > 0
+          avg = (mock2.to_f/mock2_full.to_f)*100
+          avg = avg.round()
+          if avg > best_mark
+            best_mark = avg
+          end  
+        end 
+        if mock3 > 0
+          avg = (mock3.to_f/mock3_full.to_f)*100
+          avg = avg.round()
+          if avg > best_mark
+            best_mark = avg
+          end  
+        end 
+        if best_mark > 0
+          rows << best_mark.round()
+          std['best_mark'] = best_mark
+          std_list_sorted << std
+        else
+          rows << ""
+        end
+        
+        
+        
+        grade = SubjectGradingLevel.percentage_to_grade(best_mark, @batch.id, @subject.id.to_i)
+        if !grade.blank? and !grade.name.blank? and best_mark > 0
+          rows << grade.name
+        else
+          rows << ""
+        end   
+        new_book.worksheet(0).insert_row(kloop, rows)
+        sheet1.row(kloop).default_format = center_align_format
+      end
+    end
+    
+    kloop = kloop+3
+    
+    unless std_list_sorted.blank?
+      std_list_sorted.sort! { |a, b|  b['best_mark'].to_i <=> a['best_mark'].to_i }
+      row = [@subject.name]
+      new_book.worksheet(0).insert_row(kloop, row)
+      new_book.worksheet(0).merge_cells(kloop,0,kloop,3)
+      sheet1.row(kloop).default_format = center_align_format
+      row = [@batch.full_name]
+      kloop = kloop+1
+      new_book.worksheet(0).insert_row(kloop, row)
+      new_book.worksheet(0).merge_cells(kloop,0,kloop,3)
+      sheet1.row(kloop).default_format = center_align_format
+      row_first = ['Best Mark','Name of Student','Rank','']
+      kloop = kloop+1
+      new_book.worksheet(0).insert_row(kloop, row_first)
+      new_book.worksheet(0).merge_cells(kloop,2,kloop,3)
+      sheet1.row(kloop).default_format = center_align_format
+      staring_row = kloop+1
+      starting_grade = ""
+      rank = 0
+     
+      std_list_sorted.each do |std|
+        kloop = kloop+1
+        grade = SubjectGradingLevel.percentage_to_grade(std['best_mark'].to_i, @batch.id, @subject.id.to_i)
+        grade_name = "" 
+        if !grade.blank? and !grade.name.blank?
+          grade_name = grade.name
+        end
+        unless grade_name.blank?
+          if starting_grade != "" and starting_grade != grade_name
+            starting_grade = grade_name
+            rank = 0
+            end_kloop = kloop-1
+            new_book.worksheet(0).merge_cells(staring_row,3,end_kloop,3)
+            staring_row = kloop
+          end
+          rank = rank+1
+          rows = [std['best_mark'],std['name'],rank,grade_name]
+          
+          if starting_grade == ""
+            starting_grade = grade_name
+          end
+          
+          new_book.worksheet(0).insert_row(kloop, rows)
+          sheet1.row(kloop).default_format = center_align_format
+        
+        end  
+      end
+      end_kloop = kloop
+      new_book.worksheet(0).merge_cells(staring_row,3,end_kloop,3)
+    end  
+    
+    spreadsheet = StringIO.new 
+    new_book.write spreadsheet 
+    send_data spreadsheet.string, :filename => @batch.full_name + "-" + @subject.name + ".xls", :type =>  "application/vnd.ms-excel"
+  end
+  
   def tabulation_excell_sems
     require 'spreadsheet'
     Spreadsheet.client_encoding = 'UTF-8'

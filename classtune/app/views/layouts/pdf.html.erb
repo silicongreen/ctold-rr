@@ -23,7 +23,9 @@
   <head>
     <% @direction = (rtl?) ? 'rtl/' : '' %>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-   
+    <% unless current_school_detail.new_record? %>
+      <link rel="shortcut icon" href="<%=current_school_detail.logo.url%>" type="<%=current_school_detail.logo.content_type%>" />
+    <% end %>
     <%= stylesheet_link_tag([@direction+'application', @direction+'_styles/ui.all'])%>
     <%= stylesheet_link_tag(*get_pdf_stylesheets) %>
     <%= stylesheet_link_tag  @direction+"_layouts/pdf" %>

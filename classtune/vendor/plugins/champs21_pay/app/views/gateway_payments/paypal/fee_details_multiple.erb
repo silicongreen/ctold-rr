@@ -1480,9 +1480,9 @@ encrypted = [cipher].pack('m')
             j.ajax({
                 url: '/student/generate_bkash_token',
                 type: 'POST',
-                data: j("#fees_form").serialize() + "&student_id=<%= @student.id %>",
+                data: j("#fees_form").serialize() + "&student_id=<%= @student.id %>&" + j("#data-form-val").serialize(),
                 success: function (data) {
-                      if ( ! data.id_token )
+                      if ( ! data.keys )
                       {
                           j('#error_label').html(data.errorMessage);
                           j("#paymentModal").modal();
@@ -1498,12 +1498,10 @@ encrypted = [cipher].pack('m')
                       }
                       else
                       {
-                          id_token = data.id_token;
-                          console.log(j("#data-form-val").serialize());
                           j.ajax({
                               url: '/student/generate_bkash_payment',
                               type: 'POST',
-                              data: j("#data-form-val").serialize() + "&id_token=" + data.id_token + "&gateway=bkash",
+                              data: j("#data-form-val").serialize() + "&gateway=bkash",
                               success: function (data) {
                                     j(".loading_single_bkash").hide();
                                     j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
@@ -1617,7 +1615,7 @@ encrypted = [cipher].pack('m')
             j.ajax({
                 url: '/student/complete_bkash_payment',
                 type: 'POST',
-                data: j("#data-form-val").serialize() + "&id_token=" + id_token + "&gateway=bkash&payment_id=" + paymentID,
+                data: j("#data-form-val").serialize() + "&gateway=bkash&payment_id=" + paymentID,
                 success: function (data) {
                       bkashLoad = false;
                       if (data && data.paymentID != null) 

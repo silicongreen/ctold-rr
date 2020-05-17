@@ -152,6 +152,11 @@ class StudentController < ApplicationController
     require 'net/https'
     require 'uri'
     require "yaml"
+    
+    require "openssl"
+    require 'digest/sha2'
+    require 'base64'
+    
     unless params[:user_gateway].blank?
       unless params[:order_id].blank?
         unless params[:student_id].blank?
@@ -208,7 +213,57 @@ class StudentController < ApplicationController
           response = http.request(request)
           response_ssl = JSON::parse(response.body)
           #abort(response_ssl.inspect)
-          render :json => response_ssl
+          alg = "AES-256-CBC"
+          
+#          decode_cipher = OpenSSL::Cipher::Cipher.new(alg)
+#          decode_cipher.decrypt
+#          decode_cipher.key = params[:kmsee].unpack('m')[0]
+#          decode_cipher.iv = params[:imsee].unpack('m')[0]
+          #abort(decode_cipher.iv.inspect)
+          digest = Digest::SHA256.new
+          digest.update("symetric key")
+          key = params[:kmsee].unpack('m')[0]
+          kkp = [key].pack('m')
+          iv = params[:imsee].unpack('m')[0]
+          iip = [iv].pack('m')
+          #abort(response_ssl["id_token"].inspect)
+          id_token = response_ssl["id_token"]
+          refresh_token = response_ssl["refresh_token"]
+          expires_in = response_ssl["expires_in"]
+          token_type = response_ssl["token_type"]
+          #abort(id_token.inspect)
+          aes = OpenSSL::Cipher::Cipher.new(alg)
+          aes.encrypt
+          aes.key = key
+          aes.iv = iv
+
+          cipher = aes.update(id_token)
+          cipher << aes.final
+          session[:id_token] = id_token
+
+          encrypted_id_token = [cipher].pack('m')
+          
+          cipher = aes.update(refresh_token)
+          cipher << aes.final
+
+          encrypted_refresh_token = [cipher].pack('m')
+          
+          cipher = aes.update(expires_in.to_s)
+          cipher << aes.final
+
+          encrypted_expires_in = [cipher].pack('m')
+          
+          cipher = aes.update(token_type)
+          cipher << aes.final
+
+          encrypted_token_type = [cipher].pack('m')
+          
+          response_data = {}
+          response_data["keys"] = encrypted_id_token
+          response_data["ref_keys"] = encrypted_refresh_token
+          response_data["keys_b"] = encrypted_token_type
+          response_data["keys_e"] = encrypted_expires_in
+          render :json => response_data
         else
           error = {:errorMessage => "No student selected, Please contact adnin"}
           response_ssl = JSON::parse(error.to_json)
@@ -235,6 +290,10 @@ class StudentController < ApplicationController
     require "openssl"
     require 'digest/sha2'
     require 'base64'
+    
+    unless session[:id_token].blank?
+      params[:id_token] = session[:id_token]
+    end
     
     validate = true
     unless current_user.admin?
@@ -411,6 +470,11 @@ class StudentController < ApplicationController
     require 'net/https'
     require 'uri'
     require "yaml"
+    
+    unless session[:id_token].blank?
+      params[:id_token] = session[:id_token]
+    end
+    session[:id_token] = nil
     unless params[:gateway].blank?
       unless params[:id_token].blank?
         unless params[:mmsec].nil?

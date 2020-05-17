@@ -1130,11 +1130,17 @@
                           <% fee_id = fee.to_i %>
                           <% date_id = @date[fee_id].id %>
                         <% end %> 
+                            <% show_print_receipt = false %>
+                            <% if show_print_receipt %>
                         <%= link_to "► #{t('print_receipt')}", 
                           {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>date_id},:target => '_blank', :class=> 'user_button_new', :style => style %>
+                            <% end %>
                       <% else %>
-                          <%= link_to "â–º #{t('print_receipt')}",
+                          <% show_print_receipt = false %>
+                          <% if show_print_receipt %>  
+                          <%= link_to "► #{t('print_receipt')}", 
                             {:controller => "finance", :action => "student_fee_receipt_pdf_multiple", :id => @student.id, :fees=> @collection_fees, :multiple => true},:target => '_blank', :class=> 'user_button_new', :style => style %>
+                          <% end %>  
                           <% end %>  
                           <% end %>  
                             <% if @gateway_settings.length == 1 %>
@@ -1443,9 +1449,9 @@ encrypted = [cipher].pack('m')
             j.ajax({
                 url: '/student/generate_bkash_token',
                 type: 'POST',
-                data: j("#fees_form").serialize() + "&student_id=<%= @student.id %>",
+                data: j("#fees_form").serialize() + "&student_id=<%= @student.id %>&" + j("#data-form-val").serialize(),
                 success: function (data) {
-                      if ( ! data.id_token )
+                      if ( ! data.keys )
                       {
                           j('#error_label').html(data.errorMessage);
                           j("#paymentModal").modal();
@@ -1464,11 +1470,11 @@ encrypted = [cipher].pack('m')
                       }
                       else
                       {
-                          id_token = data.id_token;
+                          //id_token = data.id_token;
                           j.ajax({
                               url: '/student/generate_bkash_payment',
                               type: 'POST',
-                              data: j("#data-form-val").serialize() + "&id_token=" + data.id_token + "&gateway=bkash",
+                              data: j("#data-form-val").serialize() + "&gateway=bkash",
                               success: function (data) {
                                     j(".loading_single_bkash").hide();
                                     j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
@@ -1581,7 +1587,7 @@ encrypted = [cipher].pack('m')
             j.ajax({
                 url: '/student/complete_bkash_payment',
                 type: 'POST',
-                data: j("#data-form-val").serialize() + "&id_token=" + id_token + "&gateway=bkash&payment_id=" + paymentID,
+                data: j("#data-form-val").serialize() + "&gateway=bkash&payment_id=" + paymentID,
                 success: function (data) {
                       bkashLoad = false;
                       if (data && data.paymentID != null) 

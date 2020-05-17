@@ -30,7 +30,7 @@
 %>
 <link rel="shortcut icon" href="<%= "/"+("#{Rails.root}/"+ ("public/images/school_logo/#{MultiSchool.current_school.id}/logo.png")) %>" type="<%=current_school_detail.logo.content_type%>" />
 <title>Fee Receipt - <%= @student.admission_no + " - " + @student.full_name %></title>
-<%= ("#{Rails.root}"+ current_school_detail.logo.url) %>
+
 <div id="page-yield" class="available_sections">
     <% copy.each do |cp| %>
     <div class="div-33" >

@@ -80,12 +80,23 @@ class FinanceController < ApplicationController
       activity_log_id = activity_log.id
       
       error_order = []
-      @valid_fee_transactions = FinanceTransaction.find(:all, :select => "id, payee_id", :order => 'id ASC', :conditions => ["payment_mode LIKE 'Advance Adjustment'"]) #, :group => "ledger_date"
+      @valid_fee_transactions = FinanceTransaction.find(:all, :select => "id, payee_id, finance_id, transaction_date, amount ", :order => 'id ASC', :conditions => ["payment_mode LIKE 'Advance Adjustment'"]) #, :group => "ledger_date"
       unless @valid_fee_transactions.blank?
         @valid_fee_transactions.each do |valid_fee_transaction|
-          student_fee_ledgers = StudentFeeLedger.find(:first, :select => "student_id, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :conditions => ["student_id = #{valid_fee_transaction.payee_id} "])
+          finance_transaction_id = valid_fee_transaction.id
+          student_id = valid_fee_transaction.payee_id
+          finance_id = valid_fee_transaction.finance_id
+          transaction_date = valid_fee_transaction.transaction_date
+          trans_amount = valid_fee_transaction.amount
+          student_fee_ledgers = StudentFeeLedger.find(:first, :select => "student_id, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :conditions => ["student_id = #{student_id} and ledger_date < '#{transaction_date}' and  id not in (select id from student_fee_ledgers WHERE amount_to_pay > 0 and fee_id = #{finance_id}) and id not in (select student_fee_ledgers.id from student_fee_ledgers inner join finance_transactions ON student_fee_ledgers.transaction_id = finance_transactions.id WHERE amount_paid > 0 and finance_transactions.finance_id = #{finance_id})"])
           unless student_fee_ledgers.blank?
-            if student_fee_ledgers.diff_amount.to_f == 0
+            adv = 0.0
+            adv_fnd = false
+            if student_fee_ledgers.diff_amount.to_f < 0
+              adv = student_fee_ledgers.diff_amount.to_f * -1
+              adv_fnd = true
+            end
+            if adv_fnd and adv.to_f != trans_amount.to_f
               error_order << valid_fee_transaction.id
             end
           end

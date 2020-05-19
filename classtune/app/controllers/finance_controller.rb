@@ -80,7 +80,7 @@ class FinanceController < ApplicationController
       activity_log_id = activity_log.id
       
       error_order = []
-      @students = Student.find(:all, :order => 'id ASC', :conditions => ["is_deleted = 0"]) #, :group => "ledger_date"
+      @students = Student.find(:all, :order => 'id ASC', :conditions => ["is_deleted = 0 and id > 0"]) #, :group => "ledger_date"
       unless @students.blank?
         @students.each do |s|
           finance_fees = FinanceFee.find(:all, :conditions => "student_id = '#{s.id}'")
@@ -4773,6 +4773,21 @@ class FinanceController < ApplicationController
         Delayed::Job.enqueue(DelayedFeeCollectionNewJob.new(params, student_category.map(&:to_i), @user,params[:finance_fee_collection],params[:fee_collection], sent_remainder, particular_ids, particular_names, transport_particular_id, transport_particular_name, default_particular_names, default_transport_particular_name, auto_adjust_advance, for_admission))
       else
         Delayed::Job.enqueue(DelayedFeeCollectionJob.new(@user,params[:finance_fee_collection],params[:fee_collection], sent_remainder, particular_ids, particular_names, transport_particular_id, transport_particular_name, default_particular_names, default_transport_particular_name, auto_adjust_advance, for_admission))
+        
+        #DUMB
+#         @collection = params[:finance_fee_collection]
+#      @fee_collection = params[:fee_collection]
+#      @sent_remainder = sent_remainder
+#      @particular_ids = particular_ids
+#      @particular_names = particular_names
+#      @default_particular_names = default_particular_names
+#      @transport_particular_id = transport_particular_id
+#      @transport_particular_name = transport_particular_name
+#      @default_transport_particular_name = default_transport_particular_name
+#      @auto_adjust_advance = auto_adjust_advance
+#      @for_admission = for_admission
+    
+        
       end
       
 #      @collection = params[:finance_fee_collection]

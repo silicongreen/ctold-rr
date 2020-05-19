@@ -59,7 +59,7 @@
         <% i = 0 %>
         <% index = 0   %>
         <% c = 'even' %>
-        <% unless params[:date].to_i == 0 %>
+        <% if params[:date].to_i == 0 %>
           <% num1 = 37 %>
           <% num2 = 42 %>
           <% height = 25 %>
@@ -68,6 +68,7 @@
           <% num2 = 41 %>
           <% height = 28 %>
         <% end %>
+        
         
         <% @defaulters.each do |s| %>
           <% unless @date == 0 %>

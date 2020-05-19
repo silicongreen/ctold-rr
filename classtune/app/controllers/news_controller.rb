@@ -783,8 +783,8 @@ class NewsController < ApplicationController
 
   def view
     Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:id], 5,current_user.id])
-    @total_obj = Reminder.find(:first,:select=>"count(distinct recipient) as total",:conditions=>["reminders.rid = ? and reminders.rtype = ? and users.is_deleted = ?", params[:id], 5, false],:joins=>[:user])
-    @total_read_obj = Reminder.find(:first,:select=>"count(distinct recipient) as total",:conditions=>["reminders.rid = ? and reminders.rtype = ? and users.is_deleted = ? and reminders.is_read = ?", params[:id], 5, false, true],:joins=>[:user])
+    @total_obj = Reminder.find(:first,:select=>"count(distinct recipient) as total",:conditions=>["reminders.rid = ? and reminders.rtype = ? and users.is_deleted = ?", params[:id], 5, false],:joins=>[:to_user])
+    @total_read_obj = Reminder.find(:first,:select=>"count(distinct recipient) as total",:conditions=>["reminders.rid = ? and reminders.rtype = ? and users.is_deleted = ? and reminders.is_read = ?", params[:id], 5, false, true],:joins=>[:to_user])
     @total = 0
     @total_read = 0
     unless @total_obj.blank?

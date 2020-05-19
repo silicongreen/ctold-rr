@@ -130,7 +130,7 @@
               <td style="text-align: center;"><%= s.admission_no %></td>
               <td class="name"><%= truncate(s.full_name, :length => 20) %></td>
               <td style="text-align: center;"><%= s.class_roll_no %></td>
-              <td style="text-align: center;"><%= sc.name %></td>
+              <td style="text-align: center;"><%= truncate(sc.name, :length => 10) %></td>
               <% fee_remarks = "" %>
               <% unless params[:date] == '0' %>
               <% fee_remarks = @date.name %>

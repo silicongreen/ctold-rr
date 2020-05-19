@@ -69,7 +69,17 @@
           <% height = 28 %>
         <% end %>
         
-        
+        <% if MultiSchool.current_school.id == 352 %>
+          <% unless params[:date].to_i == 0 %>
+            <% num1 = 37 %>
+            <% num2 = 42 %>
+            <% height = 25 %>
+          <% else %>
+            <% num1 = 36 %>
+            <% num2 = 41 %>
+            <% height = 28 %>
+          <% end %>
+        <% end %>
         <% @defaulters.each do |s| %>
           <% unless @date == 0 %>
             <% if @multi_date %>

@@ -15122,7 +15122,7 @@ class FinanceController < ApplicationController
         unless params[:batch_id].nil?
           batch_id = params[:batch_id]
         end
-        
+        @batch   = Batch.find(params[:batch_id])
         unless params[:course_name].nil?
           class_id = params[:course_name]
         end

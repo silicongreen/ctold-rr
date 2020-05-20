@@ -49,7 +49,7 @@
               <div class="logo-left-div"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/#{MultiSchool.current_school.id}/logo.png")),:width=> '95%' %></div>
             <% else %>
               
-              <div class="logo-left-div"><%= ("#{Rails.root}"+ current_school_detail.logo.url.to_s.gsub(/\?.*/, '')) %></div>
+              <div class="logo-left-div"><%= wicked_pdf_image_tag (current_school_detail.logo.url.to_s.gsub(/\?.*/, '')),:width=> '95%' %></div>
             <% end %>
             <div class="school-left-div"><%=Configuration.get_config_value('InstitutionName').upcase; %></div>
             <div class="left-clear"></div>

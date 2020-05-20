@@ -993,7 +993,7 @@
               <% #@student_has_due = true %>
               <% end %>
             <% end %>
-            <% if MultiSchool.current_school.id == 246 or MultiSchool.current_school.id == 348 %>
+            <% if MultiSchool.current_school.id == 246 %>
               <% unless @current_user.admin? %>
                 <% under_maintenance = true %>
               <% end %>

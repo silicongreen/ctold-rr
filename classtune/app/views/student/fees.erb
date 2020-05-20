@@ -298,7 +298,8 @@
                     <td id="bal_user_<%= finance_fee.id %>" style="font-weight: normal; vertical-align: middle; text-align: right; font-weight: normal; font-size: 14px;"><span class="bal"><%= to_comma_seperated_precision_label(bal.to_f)  %></span>&nbsp;&nbsp;</td>
                     <td id="advance_user_<%= d.id %>" style="font-weight: normal; vertical-align: middle; text-align: right; font-weight: normal; font-size: 14px;"><%= to_comma_seperated_precision_label(advance.to_f)  %>&nbsp;&nbsp;</td>
                     <td class="button_td" style="font-weight: normal; vertical-align: middle; text-align: center; font-weight: normal; font-size: 14px;">
-                        <% if MultiSchool.current_school.id != 352 %>  
+                        <% school_only_details = [352, 361, 360] %>
+                        <% if school_only_details.exclude?(MultiSchool.current_school.id) %>  
                             <% if bal.to_f <= 0 %>
                             <%= link_to "Details", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"details_button details_button_color", :id => "fee_link_" + Base64.encode64(@student.id.to_s + "-" + d.id.to_s).reverse + '===' + "" %>
                             <% else %>

@@ -482,7 +482,7 @@ class PaymentSettingsController < ApplicationController
                           if paymentID.blank?
                             tokens = get_bkash_token()
                             transaction_info = search_bkash_payment(tokens[:id_token], params[:order_id])  
-                            abort(transaction_info.inspect)
+                            #abort(transaction_info.inspect)
                             if order_ids.length > 1
                               flash[:notice] = "No Order found with these Transaction IDs"
                             else

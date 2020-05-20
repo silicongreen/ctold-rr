@@ -46,11 +46,11 @@
                </table>
             <center class="registration_numer"><%= "VAT REGISTRATION NO:- 18151028415" unless vat_registation.blank? %></center>
             <% if File.exists?("/"+("#{Rails.root}/"+ ("public/images/school_logo/#{MultiSchool.current_school.id}/logo.png"))) %>
-              <div class="logo-left-div" style="<%= "width: 80%" if MultiSchool.current_school.id == 348 %>"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/#{MultiSchool.current_school.id}/logo.png")),:width=> '95%' %></div>
+              <div class="logo-left-div" style="<%= "width: 70%; padding-bottom: 20px;" if MultiSchool.current_school.id == 348 %>"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/#{MultiSchool.current_school.id}/logo.png")),:width=> '95%' %></div>
             <% else %>
-              <div class="logo-left-div" style="<%= "width: 80%" if MultiSchool.current_school.id == 348 %>"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public" + current_school_detail.logo.url.to_s.gsub(/\?.*/, ''))),:width=> '95%' %></div>
+              <div class="logo-left-div" style="<%= "width: 70%; padding-bottom: 20px;" if MultiSchool.current_school.id == 348 %>"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public" + current_school_detail.logo.url.to_s.gsub(/\?.*/, ''))),:width=> '95%' %></div>
             <% end %>
-            <div class="school-left-div" style="border: 1px solid #ccc;<%= "width: 10%" if MultiSchool.current_school.id == 348 %>"><%=Configuration.get_config_value('InstitutionName').upcase; %></div>
+            <div class="school-left-div" style="<%= "width: 10%" if MultiSchool.current_school.id == 348 %>"><%=Configuration.get_config_value('InstitutionName').upcase; %></div>
             <div class="left-clear"></div>
             <% unless account_info.blank? %>
             <center>A/C NAME: SOCIAL SERVICES AND MANAGEMENT TRUST</center>

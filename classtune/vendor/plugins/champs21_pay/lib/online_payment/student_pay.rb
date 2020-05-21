@@ -109,21 +109,43 @@ module OnlinePayment
           else
             #
             #if params[:create_transaction].present? and params[:target_gateway] == "citybank"
-              unless params[:target_gateway] == "trustbank"
-                unless params[:fees].blank?
+              unless params[:fees].blank?
+                unless params[:fees].index("--").nil?
                   city_fees = "fees=" + params[:fees].gsub("--","&")
                   kparams = {}
                   city_fees.split(/&/).inject({}) do |hash, setting|
                     key, val = setting.split(/=/)
                     params[key.to_sym] = val
                   end
-                else
-                  if params[:t].present?
-                    city_fees = "t=" + params[:t].gsub("--","&")
+                end
+              end
+              if params[:t].present?
+                city_fees = "t=" + params[:t].gsub("--","&")
+                kparams = {}
+                city_fees.split(/&/).inject({}) do |hash, setting|
+                  key, val = setting.split(/=/)
+                  params[key.to_sym] = val
+                end
+              end
+              unless params[:target_gateway] == "trustbank"
+                unless params[:fees].blank?
+                  unless params[:fees].index("--").nil?
+                    city_fees = "fees=" + params[:fees].gsub("--","&")
                     kparams = {}
                     city_fees.split(/&/).inject({}) do |hash, setting|
                       key, val = setting.split(/=/)
                       params[key.to_sym] = val
+                    end
+                  end
+                else
+                  if params[:t].present?
+                    unless params[:t].index("--").nil?
+                      city_fees = "t=" + params[:t].gsub("--","&")
+                      kparams = {}
+                      city_fees.split(/&/).inject({}) do |hash, setting|
+                        key, val = setting.split(/=/)
+                        params[key.to_sym] = val
+                      end
                     end
                   end
                 end

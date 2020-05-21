@@ -3782,7 +3782,7 @@ module FinanceLoader
           fee_id = finance_order.finance_fee_id
 
           fee = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and id = #{fee_id}")
-          
+          #abort(fee.inspect)
           found = false
           multiple = request_params[:multiple]
           unless multiple.nil?
@@ -3810,6 +3810,7 @@ module FinanceLoader
           if found == false
             fee = nil
           end
+          #abort(fee.inspect)
           unless fee.nil?
             unless fee.is_paid
               date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
@@ -4027,6 +4028,7 @@ module FinanceLoader
   end
   
   def validate_payment_types(params)
+    #abort(params[:target_gateway].inspect)
     orderId = ""
     if params[:create_cancel_transaction].present?
       gateway_response = {
@@ -4129,6 +4131,7 @@ module FinanceLoader
           :val_id => params[:val_id]
         }    
       elsif params[:target_gateway] == "citybank"
+        
         xml_res = Nokogiri::XML(params[:xmlmsg])
         require 'active_support/core_ext/hash/conversions'
         gateway_response = Hash.from_xml(xml_res.to_s)
@@ -4204,14 +4207,11 @@ module FinanceLoader
                 end
                 
                 if payment_saved
-                  fee_percent = 0.00
-                  amount_return = gateway_response[:Message][:TotalAmount].to_f / 100
-                  amount = amount_return
-                  fee_percent = amount_return.to_f * (1.5 / 100)
-                  if MultiSchool.current_school.id != 312 
-                    amount = amount.to_f - fee_percent.to_f
-                  end
-                  unless order_verify(orderId, 'citybank', transaction_datetime, gateway_response[:Message][:OrderID], amount)
+                  amount_to_pay = @finance_order.request_params[:total_payable]
+                  #abort(@finance_order.request_params.inspect)
+                  #abort(amount_to_pay.to_s)
+                  
+                  unless order_verify(orderId, 'citybank', transaction_datetime, gateway_response[:Message][:OrderID], amount_to_pay)
                     flash[:notice] = "Payment unsuccessful!! Invalid Transaction, Amount mismatch"
                   end
                 end
@@ -4268,50 +4268,53 @@ module FinanceLoader
       end
       
       payment_saved = false
-      unless request_params.nil?
-        multiple = request_params[:multiple]
-        unless multiple.nil?
-          if multiple.to_s == "true"
-            fees = request_params[:fees].split(",")
-            fees.each do |fee|
-              f = fee.to_i
-              feenew = FinanceFee.find(f)
-              payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{feenew.id}")
+      unless params[:target_gateway] == 'citybank'
+        unless request_params.nil?
+          multiple = request_params[:multiple]
+          unless multiple.nil?
+            if multiple.to_s == "true"
+              fees = request_params[:fees].split(",")
+              fees.each do |fee|
+                f = fee.to_i
+                feenew = FinanceFee.find(f)
+                payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{feenew.id} and gateway_txt = '#{params[:target_gateway]}'")
+                unless payment.nil?
+                  payment_saved = true
+                else  
+                  payment = Payment.new(:gateway_txt => params[:target_gateway],:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
+                  if payment.save
+                    payment_saved = true
+                  end 
+                end
+              end
+            else
+              payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{@financefee.id} and gateway_txt = '#{params[:target_gateway]}'")
               unless payment.nil?
                 payment_saved = true
               else  
-                payment = Payment.new(:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
+                payment = Payment.new(:gateway_txt => params[:target_gateway],:order_id => orderId, :payee => @student,:payment => @financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
                 if payment.save
                   payment_saved = true
                 end 
               end
             end
           else
-            payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{@financefee.id}")
+            payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{@financefee.id} and gateway_txt = '#{params[:target_gateway]}'")
             unless payment.nil?
               payment_saved = true
             else  
-              payment = Payment.new(:order_id => orderId, :payee => @student,:payment => @financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
+              payment = Payment.new(:gateway_txt => params[:target_gateway],:order_id => orderId, :payee => @student,:payment => @financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
               if payment.save
                 payment_saved = true
               end 
             end
-          end
-        else
-          payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{@financefee.id}")
-          unless payment.nil?
-            payment_saved = true
-          else  
-            payment = Payment.new(:order_id => orderId, :payee => @student,:payment => @financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
-            if payment.save
-              payment_saved = true
-            end 
           end
         end
       end
       if gateway_response[:card_order_status].to_s == "DECLINED"
         payment_saved = false
       end
+      
       if payment_saved
         gateway_status = false
         if params[:target_gateway] == "Paypal"

@@ -415,7 +415,7 @@ class PaymentSettingsController < ApplicationController
                               session_id = payment.gateway_response[:Message][:SessionID] unless payment.gateway_response[:Message][:SessionID].nil?
                               order_id = payment.gateway_response[:Message][:OrderID] unless payment.gateway_response[:Message][:OrderID].nil?
                               result = validate_citybank_transaction(citybank_token[:transactionId], order_id, session_id)
-                              abort(result.inspect)
+                              
                               if result[:orderStatus].present?
                                 if result[:orderStatus] == "APPROVED"
                                   trans_date_time = payment.gateway_response[:Message][:TranDateTime]
@@ -425,13 +425,17 @@ class PaymentSettingsController < ApplicationController
                                   #@student = payment.payee
                                   require 'date'
                                   transaction_datetime = DateTime.parse(trans_date_time).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
-                
-                                  validation_response = result
-                                  payment.update_attributes(:validation_response => validation_response)
-                                  unless order_verify(o, 'citybank', transaction_datetime, order_id, payment.gateway_response[:Message][:TotalAmount])
-                                    order_ids_new << o
-                                  else
-                                    verified_no += 1
+                                  
+                                  finance_order_data = FinanceOrder.find_by_order_id_and_student_id(o.strip, payment.payee.id)
+                                  unless finance_order_data.blank?
+                                    amount_to_pay = finance_order_data.request_params[:total_payable]
+                                    validation_response = result
+                                    payment.update_attributes(:validation_response => validation_response)
+                                    unless order_verify(o, 'citybank', transaction_datetime, order_id, amount_to_pay)
+                                      order_ids_new << o
+                                    else
+                                      verified_no += 1
+                                    end
                                   end
                                 else
                                   order_ids_new << o

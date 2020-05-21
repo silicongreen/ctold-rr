@@ -3810,7 +3810,7 @@ module FinanceLoader
           if found == false
             fee = nil
           end
-          #abort(fee.inspect)
+          abort(fee.inspect)
           unless fee.nil?
             unless fee.is_paid
               date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")

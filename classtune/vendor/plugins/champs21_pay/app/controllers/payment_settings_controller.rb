@@ -409,6 +409,7 @@ class PaymentSettingsController < ApplicationController
                       end
                     elsif @gateway == "citybank"
                        payments = Payment.find(:all, :conditions => "order_id = '#{o}' and gateway_txt = 'citybank'") 
+                       abort(payments.inspect)
                        unless payments.blank?
                           payments.each do |payment|
                               session_id = payment.gateway_response[:Message][:SessionID] unless payment.gateway_response[:Message][:SessionID].nil?

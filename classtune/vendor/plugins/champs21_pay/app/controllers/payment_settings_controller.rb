@@ -432,6 +432,9 @@ class PaymentSettingsController < ApplicationController
                                     validation_response = result
                                     payment.update_attributes(:validation_response => validation_response)
                                     #abort(amount_to_pay.to_s)
+                                    unless payment.payee.blank?
+                                      @student = payment.payee
+                                    end
                                     unless order_verify(o, 'citybank', transaction_datetime, order_id, amount_to_pay)
                                       order_ids_new << o
                                     else

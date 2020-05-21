@@ -3772,7 +3772,7 @@ module FinanceLoader
       end
       #abort('here')
       finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and request_params is not null")
-      #abort(finance_orders.map(&:id).inspect)
+      abort(finance_orders.map(&:id).inspect)
       unless finance_orders.nil?
 
         finance_orders.each do |finance_order|

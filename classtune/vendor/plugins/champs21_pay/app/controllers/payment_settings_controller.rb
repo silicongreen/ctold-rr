@@ -91,7 +91,7 @@ class PaymentSettingsController < ApplicationController
 
       extra_query = ""
       if @gateway == "citybank"
-        extra_query += ' and gateway_response like \'%:Message:%\''
+        extra_query += ' and gateway_response like \'%Message:%\''
       end
       unless params[:payment_status].nil? or params[:payment_status].empty? or params[:payment_status].blank?
         payment_status = 0
@@ -181,7 +181,7 @@ class PaymentSettingsController < ApplicationController
 
             extra_query = ""
             if @gateway == "citybank"
-              extra_query += ' and gateway_response like \'%:Message:%\''
+              extra_query += ' and gateway_response like \'%Message:%\''
             end
             
             unless params[:payment_status].nil? or params[:payment_status].empty? or params[:payment_status].blank?

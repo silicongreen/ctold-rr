@@ -146,8 +146,10 @@ module OnlinePayment
                   end
                 end
                 if params[:target_gateway] == "citybank" and params[:create_fail_transaction].present?
+                  save_fail_cancel_response_citybank 
                   flash[:notice] = "Payment unsuccessful"
                 elsif params[:target_gateway] == "citybank" and params[:create_cancel_transaction].present?
+                  save_fail_cancel_response_citybank 
                   flash[:notice] = "Payment cancel by user"
                 end
               end

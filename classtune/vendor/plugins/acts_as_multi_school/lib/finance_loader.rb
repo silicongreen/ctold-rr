@@ -4027,6 +4027,76 @@ module FinanceLoader
     verify_order
   end
   
+  def save_fail_cancel_response_citybank
+    #abort(params.inspect)
+    xml_res = Nokogiri::XML(params[:xmlmsg])
+    require 'active_support/core_ext/hash/conversions'
+    gateway_response = Hash.from_xml(xml_res.to_s)
+
+    trans_date_time = gateway_response[:Message][:TranDateTime]
+    a_trans_date_time = trans_date_time.split(' ')
+    trans_date = a_trans_date_time[0].split('/').reverse.join('-')
+    trans_date_time = trans_date + " " + a_trans_date_time[1]
+    gateway_response[:Message][:TranDateTime] = trans_date_time
+    citybank_token = get_citybank_token()
+    
+    validation_response = {}
+    if citybank_token[:responseCode].to_i == 100
+      result = validate_citybank_transaction(citybank_token[:transactionId], gateway_response[:Message][:OrderID], gateway_response[:Message][:SessionID])
+      transaction_datetime = DateTime.parse(gateway_response[:Message][:TranDateTime]).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
+      validation_response = result
+    end
+    
+    orderId = params[:order_id_in_trans]
+          #abort(orderId.inspect)    
+    student_id = params[:id]
+
+    @student = Student.find(student_id)
+    @finance_order = FinanceOrder.find_by_order_id_and_student_id(orderId.strip, student_id)
+    #abort(@finance_order.inspect)
+    request_params = @finance_order.request_params
+
+    unless request_params.nil?
+      multiple = request_params[:multiple]
+      unless multiple.nil?
+        if multiple.to_s == "true"
+          fees = request_params[:fees].split(",")
+          fees.each do |fee|
+            f = fee.to_i
+            feenew = FinanceFee.find(f)
+            payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{feenew.id}")
+            unless payment.nil?
+              payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :validation_response => validation_response, :gateway_txt => "citybank")
+            else  
+              payment = Payment.new(:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "citybank", :validation_response => validation_response)
+              payment.save
+              #abort(payment.inspect)
+            end
+          end
+        else
+          financefee = FinanceFee.find(@finance_order.finance_fee_id)
+          payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id}")
+          unless payment.nil?
+            payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :validation_response => validation_response, :gateway_txt => "citybank")
+          else  
+            payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "citybank", :validation_response => validation_response)
+            payment.save
+          end
+        end
+      else
+        financefee = FinanceFee.find(@finance_order.finance_fee_id)
+        payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id}")
+        unless payment.nil?
+          payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :validation_response => validation_response, :gateway_txt => "citybank")
+        else  
+          payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "citybank", :validation_response => validation_response)
+          payment.save
+        end
+      end
+    end
+    
+  end
+  
   def validate_payment_types(params)
     #abort(params[:target_gateway].inspect)
     orderId = ""

@@ -168,7 +168,7 @@
               unless total_payments.blank?
                 total_payments.each do |p|
                   unless p.finance_transaction.nil?
-                    paid_amount = p.finance_transaction.amount.to_f
+                    paid_amount += p.finance_transaction.amount.to_f
                   else
                     fee_id = p.payment_id
                     fee = FinanceFee.find fee_id

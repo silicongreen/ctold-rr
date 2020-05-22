@@ -129,6 +129,7 @@
         </tr>
         </thead>
         <tbody>
+        
         <% @online_payments.each_with_index do |payment,index| %>
           <tr>
             <td style="vertical-align: middle;"><%= ((@online_payments.current_page - 1) * @online_payments.per_page) + index + 1 %></td>

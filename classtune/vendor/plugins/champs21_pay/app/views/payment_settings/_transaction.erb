@@ -130,7 +130,6 @@
         </thead>
         <tbody>
         <% @online_payments.each_with_index do |payment,index| %>
-           <%= debug payment.inspect %> 
           <tr>
             <td style="vertical-align: middle;"><%= ((@online_payments.current_page - 1) * @online_payments.per_page) + index + 1 %></td>
             <% payee_user = payment.payee.try(:user).try(:username) unless payment.payee.class.name == "Applicant" %>
@@ -153,7 +152,38 @@
             <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:trxID]}" %></td>
             <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:merchantInvoiceNumber]}" %></td>
             <% end %>
-            
+            <% if payment.id == 25 %>
+            <%
+              fee_percent = 0.00
+              amount_return = payment.gateway_response[:Message][:TotalAmount].to_f / 100
+              %>
+            <%= amount_return.to_s + "  " %>
+            <%
+              amount = amount_return
+              paid_amount = 0
+              unless payment.finance_transaction.nil?
+                paid_amount = payment.finance_transaction.amount.to_f
+              else
+                fee_id = payment.payment_id
+                fee = FinanceFee.find fee_id
+                unless fee.nil? 
+                  date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
+                  paid_amount=FinanceFee.get_student_balance(date, payment.payee, fee)
+                else
+                  paid_amount = 0
+                end
+              end
+            %>
+            <%= paid_amount.to_s + "  " %>
+            <%
+              fee_percent = paid_amount.to_f * (1.5 / 100)
+              if MultiSchool.current_school.id != 312 
+                unless paid_amount == amount_return
+                  amount = amount.to_f - fee_percent.to_f
+                end
+              end
+            %>
+            <% end %>
             
             <% 
               if @gateway == "trustbank" or @gateway == "bkash"

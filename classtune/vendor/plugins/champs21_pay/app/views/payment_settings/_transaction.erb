@@ -27,6 +27,7 @@
                   <option value="">Select a Status</option>
                   <option value="APPROVED" <%= 'selected' if params[:order_status] == "APPROVED" %>>Approved</option>
                   <option value="DECLINED" <%= 'selected' if params[:order_status] == "DECLINED" %>>Declined</option>
+                  <option value="CANCELED" <%= 'selected' if params[:order_status] == "CANCELED" %>>Cancel</option>
               </select>
               <% elsif @gateway == "bkash" %>
               <select name="transactionStatus" id="transactionStatus">
@@ -36,7 +37,7 @@
                   <option value="Pending" <%= 'selected' if params[:transactionStatus] == "Pending" %>>Pending</option>
                   <option value="Authorized" <%= 'selected' if params[:transactionStatus] == "Authorized" %>>Authorized</option>
                   <option value="Expired" <%= 'selected' if params[:transactionStatus] == "Expired" %>>Expired</option>
-                  <option value="Cancelled" <%= 'selected' if params[:transactionStatus] == "Pending" %>>Cancelled</option>
+                  <option value="Cancelled" <%= 'selected' if params[:transactionStatus] == "Cancelled" %>>Cancelled</option>
                   <option value="Declined" <%= 'selected' if params[:transactionStatus] == "Declined" %>>Declined</option>
               </select>
               <% end %>
@@ -129,7 +130,7 @@
         </thead>
         <tbody>
         <% @online_payments.each_with_index do |payment,index| %>
-            
+           <%= debug payment.inspect %> 
           <tr>
             <td style="vertical-align: middle;"><%= ((@online_payments.current_page - 1) * @online_payments.per_page) + index + 1 %></td>
             <% payee_user = payment.payee.try(:user).try(:username) unless payment.payee.class.name == "Applicant" %>

@@ -463,6 +463,8 @@ class PaymentSettingsController < ApplicationController
                         elsif params[:query_type] == "citybank_order_id"
                           @session_id = params[:session_id]
                           @order_id = params[:order_id]
+                          @classtune_order_id = params[:classtune_order_id]
+                          @classtune_student_id = params[:classtune_student_id]
                           get_the_token = true
               
                           if @gateway == "citybank"
@@ -476,7 +478,19 @@ class PaymentSettingsController < ApplicationController
                           
                           if get_the_token
                             result = validate_citybank_transaction(citybank_token[:transactionId], @order_id, @session_id)
-                            abort(result.inspect)
+                            if result[:orderStatus].present?
+                              if result[:orderStatus] == "APPROVED"
+                                trans_date_time = gateway_response[:Message][:TranDateTime]
+                                a_trans_date_time = trans_date_time.split(' ')
+                                trans_date = a_trans_date_time[0].split('/').reverse.join('-')
+                                trans_date_time = trans_date + " " + a_trans_date_time[1]
+                                gateway_response[:Message][:TranDateTime] = trans_date_time
+                                require 'date'
+                                transaction_datetime = DateTime.parse(gateway_response[:Message][:TranDateTime]).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
+                                validation_response = result
+                              end
+                            end
+                            abort('here')
                           else
                             flash[:notice] = "Citybank Token Mismatch, Please try again later"
                           end

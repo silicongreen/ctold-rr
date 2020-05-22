@@ -41,8 +41,14 @@
       <div id='citybank_order_id' class="form-group col-sm-6 citybank_order" style="display: none; padding-bottom: 20px;">
           <label> CityBank Order Id<span class="necessary-field">*</span> :</label>
           <%= text_field_tag "order_id", @order_id, :class=>"form-control"%>
+          <div style='clear: both; height: 10px;'></div>
           <label> CityBank Session Id<span class="necessary-field">*</span> :</label>
           <%= text_field_tag "session_id", @session_id, :class=>"form-control"%>
+          <div style='clear: both; height: 10px;'></div>
+          <label> Classtune Order Id<span class="necessary-field">*</span> :</label>
+          <%= text_field_tag "classtune_order_id", @classtune_order_id, :class=>"form-control"%>
+          <label> Student Id<span class="necessary-field">*</span> :</label>
+          <%= text_field_tag "classtune_student_id", @classtune_student_id, :class=>"form-control"%>
           <small>(CityBank Order ID & Session ID)</small>
       </div>
 

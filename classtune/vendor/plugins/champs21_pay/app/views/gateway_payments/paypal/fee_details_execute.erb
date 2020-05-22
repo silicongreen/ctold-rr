@@ -84,7 +84,7 @@
     <% options['password'] = @gateway_settings[gateway]['api_password'] %>
     <% options['amount'] = sprintf("%0.2f",@total_amount).to_f  %>
     <% options['currency'] = "050" %>
-    <% options['description'] = @fee_collection_name %>
+    <% options['description'] = "Student Fees, Student ID: #{@student.id}-#{@student.admission_no}, Order ID: #{@finance_order.order_id}"  %>
     <% unless params[:mobile_view].blank? %>
       <% extra_string = "-mobile_view" %>
     <% end %>

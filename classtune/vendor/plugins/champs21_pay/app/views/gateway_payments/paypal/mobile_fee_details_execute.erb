@@ -85,7 +85,7 @@
     <% options['password'] = @gateway_settings[gateway]['api_password'] %>
     <% options['amount'] = sprintf("%0.2f",@total_amount).to_f  %>
     <% options['currency'] = "050" %>
-    <% options['description'] = @fee_collection_name %>
+    <% options['description'] = "Student Fees, Student ID: #{@student.id}-#{@student.admission_no}, Order ID: #{@finance_order.order_id}"  %>
     <% unless params[:mobile_view].blank? %>
       <% extra_string = "-mobile_view" %>
     <% end %>
@@ -96,6 +96,7 @@
     <% options['declineUrl'] = ("#{success_url}&order_id_in_trans=#{params[:order_id]}&create_fail_transaction=4&target_gateway=#{gateway}" + extra_string).gsub("&","--") %>
     <% options['cancelUrl'] = ("#{success_url}&order_id_in_trans=#{params[:order_id]}&create_cancel_transaction=5&target_gateway=#{gateway}" + extra_string).gsub("&","--") %>
     <% options['transactionId'] = @finance_order.order_id %>
+    <% options['studentId'] = @student.id %>
     <% options['fee_url'] = ("#{success_url}").gsub("&","--") %>
     <% options['gateway'] = gateway %>
     <%= pay_button(options, gateway) %>   

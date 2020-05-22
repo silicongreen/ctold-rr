@@ -107,5 +107,14 @@
                   }
           )
       });
+      
+      j(document).on("click", ".query_type_citybank", function(){
+          if (this.checked)
+          {
+              j(".citybank_order").css('display', 'none');
+              var val = this.value;
+              j("#" + val).show();
+          }
+      });
   });
 </script>

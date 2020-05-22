@@ -1,4 +1,4 @@
-<% if @gateway != "bkash" %>  
+<% if @gateway == "trustbank" %>  
   <h2>Order Verification</h2>  
   <hr style="border: 1px solid #ccc;" />
   <% form_for :payment_settings,:url => {:action => :order_verifications} do |f| %>
@@ -7,6 +7,43 @@
           <label>(<%= (Champs21Pay.const_defined?(@gateway.upcase)) ? Champs21Pay.const_get(@gateway.upcase) : @gateway %>) Order Id<span class="necessary-field">*</span> :</label>
           <%= text_area_tag "order_id", @order_id, :class=>"form-control"%>
           <small>(Comma Seperated Value)</small>
+      </div>
+
+      <div class="form-group col-sm-6 even">
+          <%= submit_tag "", :value => "► #{t('verify_order')}", :class => "btn btn-success", :disable_with => "► #{t('please_wait')}" %>
+      </div>
+  <% end %>
+<% elsif @gateway == "citybank" %>  
+  <h2>Order Verification</h2>  
+  <hr style="border: 1px solid #ccc;" />
+  <% form_for :payment_settings,:url => {:action => :order_verifications} do |f| %>
+      <%
+        query_type = "otder_id"
+        unless params[:query_type].blank?
+          query_type = params[:query_type]
+        end
+      %>
+      <input type="hidden" name="gateway" id="gateway" value="<%= @gateway %>" />
+      <div style="width: 100%; padding-bottom: 20px; float: left; display: none;">
+        <div style="width: 200px; float: left; padding-right: 10px;">
+            <input type="radio" name="query_type" class="query_type_citybank" id="query_type_order_id" value="order_id" <%= (query_type == "otder_id") ? "checked" : "" %> />&nbsp;&nbsp;&nbsp;Classtune Order ID
+        </div>
+        <div style="width: 250px; float: left; padding-right: 10px;">
+            <input type="radio" name="query_type" class="query_type_citybank" id="query_type_citybank_order_id" value="citybank_order_id" <%= (query_type == "citybank_order_id") ? "checked" : "" %> />&nbsp;&nbsp;&nbsp;Citybank Order ID & Session ID
+        </div>
+      </div>
+      <div id='order_id' class="form-group col-sm-6 citybank_order" style='padding-bottom: 20px;'>
+          <label>(<%= (Champs21Pay.const_defined?(@gateway.upcase)) ? Champs21Pay.const_get(@gateway.upcase) : @gateway %>) Order Id<span class="necessary-field">*</span> :</label>
+          <%= text_area_tag "order_id", @order_id, :class=>"form-control", :style => "width: 100%;"%>
+          <small>(Comma Seperated Value)</small>
+          <small>(Classtune Order ID)</small>
+      </div>
+      <div id='citybank_order_id' class="form-group col-sm-6 citybank_order" style="display: none; padding-bottom: 20px;">
+          <label> CityBank Order Id<span class="necessary-field">*</span> :</label>
+          <%= text_field_tag "order_id", @order_id, :class=>"form-control"%>
+          <label> CityBank Session Id<span class="necessary-field">*</span> :</label>
+          <%= text_field_tag "session_id", @session_id, :class=>"form-control"%>
+          <small>(CityBank Order ID & Session ID)</small>
       </div>
 
       <div class="form-group col-sm-6 even">

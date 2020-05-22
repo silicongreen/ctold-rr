@@ -311,7 +311,7 @@ class PaymentSettingsController < ApplicationController
                 
               else
                 #if MultiSchool.current_school.id == 352
-                  @online_payments = Payment.paginate(:conditions=>"gateway_txt = '#{@gateway}' and CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "order_id")
+                  @online_payments = Payment.paginate(:conditions=>"gateway_txt1 = '#{@gateway}' and CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "order_id")
                 #else
                 #  @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
                 #end
@@ -408,48 +408,74 @@ class PaymentSettingsController < ApplicationController
                         order_ids_new << o
                       end
                     elsif @gateway == "citybank"
-                       payments = Payment.find(:all, :conditions => "order_id = '#{o}' and gateway_txt = 'citybank'") 
-                       
-                       unless payments.blank?
-                          payments.each do |payment|
-                              session_id = payment.gateway_response[:Message][:SessionID] unless payment.gateway_response[:Message][:SessionID].nil?
-                              order_id = payment.gateway_response[:Message][:OrderID] unless payment.gateway_response[:Message][:OrderID].nil?
-                              result = validate_citybank_transaction(citybank_token[:transactionId], order_id, session_id)
-                              
-                              if result[:orderStatus].present?
-                                if result[:orderStatus] == "APPROVED"
-                                  trans_date_time = payment.gateway_response[:Message][:TranDateTime]
-                                  a_trans_date_time = trans_date_time.split(' ')
-                                  trans_date = a_trans_date_time[0].split('/').reverse.join('-')
-                                  trans_date_time = trans_date + " " + a_trans_date_time[1]
-                                  #@student = payment.payee
-                                  require 'date'
-                                  transaction_datetime = DateTime.parse(trans_date_time).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
-                                  
-                                  finance_order_data = FinanceOrder.find_by_order_id_and_student_id(o.strip, payment.payee.id)
-                                  unless finance_order_data.blank?
-                                    amount_to_pay = finance_order_data.request_params[:total_payable]
-                                    validation_response = result
-                                    payment.update_attributes(:validation_response => validation_response)
-                                    #abort(amount_to_pay.to_s)
-                                    unless payment.payee.blank?
-                                      @student = payment.payee
-                                    end
-                                    unless order_verify(o, 'citybank', transaction_datetime, order_id, amount_to_pay)
-                                      order_ids_new << o
-                                    else
-                                      verified_no += 1
-                                    end
-                                  end
-                                else
-                                  order_ids_new << o
-                                end
-                              else
-                                order_ids_new << o
-                              end
+                      unless params[:query_type].blank?
+                        if params[:query_type] == "order_id"
+                          payments = Payment.find(:all, :conditions => "order_id = '#{o}' and gateway_txt = 'citybank'") 
+
+                          unless payments.blank?
+                             payments.each do |payment|
+                                 session_id = payment.gateway_response[:Message][:SessionID] unless payment.gateway_response[:Message][:SessionID].nil?
+                                 order_id = payment.gateway_response[:Message][:OrderID] unless payment.gateway_response[:Message][:OrderID].nil?
+                                 result = validate_citybank_transaction(citybank_token[:transactionId], order_id, session_id)
+
+                                 if result[:orderStatus].present?
+                                   if result[:orderStatus] == "APPROVED"
+                                     trans_date_time = payment.gateway_response[:Message][:TranDateTime]
+                                     a_trans_date_time = trans_date_time.split(' ')
+                                     trans_date = a_trans_date_time[0].split('/').reverse.join('-')
+                                     trans_date_time = trans_date + " " + a_trans_date_time[1]
+                                     #@student = payment.payee
+                                     require 'date'
+                                     transaction_datetime = DateTime.parse(trans_date_time).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
+
+                                     finance_order_data = FinanceOrder.find_by_order_id_and_student_id(o.strip, payment.payee.id)
+                                     unless finance_order_data.blank?
+                                       amount_to_pay = finance_order_data.request_params[:total_payable]
+                                       validation_response = result
+                                       payment.update_attributes(:validation_response => validation_response)
+                                       #abort(amount_to_pay.to_s)
+                                       unless payment.payee.blank?
+                                         @student = payment.payee
+                                       end
+                                       unless order_verify(o, 'citybank', transaction_datetime, order_id, amount_to_pay)
+                                         order_ids_new << o
+                                       else
+                                         verified_no += 1
+                                       end
+                                     end
+                                   else
+                                     order_ids_new << o
+                                   end
+                                 else
+                                   order_ids_new << o
+                                 end
+                             end
+                          else  
+                            order_ids_new << o
                           end
-                       else  
-                         order_ids_new << o
+                        elsif params[:query_type] == "citybank_order_id"
+                          @session_id = params[:session_id]
+                          @order_id = params[:order_id]
+                          get_the_token = true
+              
+                          if @gateway == "citybank"
+                            citybank_token = get_citybank_token()
+                            unless citybank_token[:responseCode].to_i == 100
+                              get_the_token = false
+                            else
+                              flash[:notice] = citybank_token[:responseMessage]
+                            end
+                          end
+                          
+                          if get_the_token
+                            result = validate_citybank_transaction(citybank_token[:transactionId], @order_id, @session_id)
+                            abort(result.inspect)
+                          else
+                            flash[:notice] = "Citybank Token Mismatch, Please try again later"
+                          end
+                        end
+                       else
+                        flash[:notice] = "Invalid Request"
                        end
                     elsif @gateway == "bkash"
                       paymentID = []

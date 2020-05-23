@@ -408,6 +408,7 @@ class PaymentSettingsController < ApplicationController
             if params[:order_id].blank?
               unless params[:classtune_order_id].blank?
                 params[:order_id] = params[:classtune_order_id]
+                @classtune_order_id = params[:classtune_order_id]
               end
             end
             unless params[:order_id].blank?

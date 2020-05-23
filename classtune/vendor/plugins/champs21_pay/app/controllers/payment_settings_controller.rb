@@ -277,9 +277,25 @@ class PaymentSettingsController < ApplicationController
                     fee_percent = 0.00
                     amount_return = payment.gateway_response[:Message][:TotalAmount].to_f / 100
                     amount = amount_return
-                    fee_percent = payment.finance_transaction.amount.to_f * (1.5 / 100)
+                    paid_amount = 0
+                    total_payments = Payment.find(:all, :conditions => "order_id = '#{payment.order_id}'")
+                    unless total_payments.blank?
+                      total_payments.each do |p|
+                        unless p.finance_transaction.nil?
+                          paid_amount += p.finance_transaction.amount.to_f
+                        else
+                          fee_id = p.payment_id
+                          fee = FinanceFee.find fee_id
+                          unless fee.nil? 
+                            date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
+                            paid_amount += FinanceFee.get_student_balance(date, payment.payee, fee)
+                          end
+                        end
+                      end
+                    end
+                    fee_percent = paid_amount.to_f * (1.5 / 100)
                     if MultiSchool.current_school.id != 312 
-                      unless payment.finance_transaction.amount == amount_return
+                      unless paid_amount == amount_return
                         amount = amount.to_f - fee_percent.to_f
                       end
                     end

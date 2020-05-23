@@ -16,7 +16,7 @@
 <% elsif @gateway == "citybank" %>  
   <h2>Order Verification</h2>  
   <hr style="border: 1px solid #ccc;" />
-  <%= params[:query_type] %>
+  <%#= params[:query_type] %>
   <% form_for :payment_settings,:url => {:action => :order_verifications} do |f| %>
       <%
       

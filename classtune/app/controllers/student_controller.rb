@@ -888,34 +888,18 @@ class StudentController < ApplicationController
                       fees.each do |fee|
                         f = fee.to_i
                         feenew = FinanceFee.find(f)
-                        payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{feenew.id}")
-                        unless payment.nil?
-                          payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => Time.now + 6.hours, :gateway_txt => "citybank")
-                        else  
-                          payment = Payment.new(:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => Time.now + 6.hours, :gateway_txt => "citybank")
-                          payment.save
-                          #abort(payment.inspect)
-                        end
+                        payment = Payment.new(:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => Time.now + 6.hours, :gateway_txt => "citybank")
+                        payment.save
                       end
                     else
                       financefee = FinanceFee.find(@finance_order.finance_fee_id)
-                      payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id}")
-                      unless payment.nil?
-                        payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => Time.now + 6.hours, :gateway_txt => "citybank")
-                      else  
-                        payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => Time.now + 6.hours, :gateway_txt => "citybank")
-                        payment.save
-                      end
+                      payment = Payment.new(:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => Time.now + 6.hours, :gateway_txt => "citybank")
+                      payment.save
                     end
                   else
                     financefee = FinanceFee.find(@finance_order.finance_fee_id)
-                    payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id}")
-                    unless payment.nil?
-                      payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => Time.now + 6.hours, :gateway_txt => "citybank")
-                    else  
-                      payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => Time.now + 6.hours, :gateway_txt => "citybank")
-                      payment.save
-                    end
+                    payment = Payment.new(:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => Time.now + 6.hours, :gateway_txt => "citybank")
+                    payment.save
                   end
                 end
             

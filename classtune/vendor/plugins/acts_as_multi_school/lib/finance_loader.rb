@@ -4097,7 +4097,7 @@ module FinanceLoader
     
   end
   
-  def verify_citybank_payment(order_id, session_id, payment, get_the_token)
+  def verify_citybank_payment(citybank_token, order_id, session_id, payment, get_the_token)
     if get_the_token
       result = validate_citybank_transaction(citybank_token[:transactionId], order_id, session_id)
       if result[:orderStatus].present?

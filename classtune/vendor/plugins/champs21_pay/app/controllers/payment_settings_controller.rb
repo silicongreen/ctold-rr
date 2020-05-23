@@ -481,7 +481,7 @@ class PaymentSettingsController < ApplicationController
                           else
                             get_the_token = false
                           end
-                          if verify_citybank_payment(@order_id, @session_id, payment, get_the_token)
+                          if verify_citybank_payment(citybank_token, @order_id, @session_id, payment, get_the_token)
                             verified_no += 1
                           else
                             order_ids_new << o

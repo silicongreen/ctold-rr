@@ -413,7 +413,7 @@ class PaymentSettingsController < ApplicationController
             unless params[:order_id].blank?
               order_id_vals =  params[:order_id]
               order_ids = order_id_vals.split(",").map{ |s| s.strip }
-              abort(order_ids.inspect)
+              #abort(order_ids.inspect)
               num_orders = order_ids.length
               verified_no = 0
               

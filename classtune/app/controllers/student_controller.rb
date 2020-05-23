@@ -893,12 +893,12 @@ class StudentController < ApplicationController
                       end
                     else
                       financefee = FinanceFee.find(@finance_order.finance_fee_id)
-                      payment = Payment.new(:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => Time.now + 6.hours, :gateway_txt => "citybank")
+                      payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => Time.now + 6.hours, :gateway_txt => "citybank")
                       payment.save
                     end
                   else
                     financefee = FinanceFee.find(@finance_order.finance_fee_id)
-                    payment = Payment.new(:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => Time.now + 6.hours, :gateway_txt => "citybank")
+                    payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => Time.now + 6.hours, :gateway_txt => "citybank")
                     payment.save
                   end
                 end

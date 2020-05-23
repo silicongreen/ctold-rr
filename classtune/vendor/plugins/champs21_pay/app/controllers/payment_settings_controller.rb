@@ -405,6 +405,10 @@ class PaymentSettingsController < ApplicationController
             end
           end
           if request.post?
+            if params[:order_id].blank?
+              unless params[:classtune_order_id].blank?
+              params[:order_id] = params[:classtune_order_id]
+            end
             unless params[:order_id].blank?
               order_id_vals =  params[:order_id]
               order_ids = order_id_vals.split(",").map{ |s| s.strip }

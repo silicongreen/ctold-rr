@@ -34,7 +34,7 @@
       </div>
       <div id='order_id' class="form-group col-sm-6 citybank_order" style='padding-bottom: 20px; <%= (query_type == "otder_id") ? "" : "display: none;" %>'>
           <label>(<%= (Champs21Pay.const_defined?(@gateway.upcase)) ? Champs21Pay.const_get(@gateway.upcase) : @gateway %>) Order Id<span class="necessary-field">*</span> :</label>
-          <%= text_area_tag "order_id", @order_id, :class=>"form-control", :style => "width: 100%;"%>
+          <%= text_area_tag "classtune_order_id", @order_id, :class=>"form-control", :style => "width: 100%;"%>
           <small>(Comma Seperated Value)</small>
           <small>(Classtune Order ID)</small>
       </div>

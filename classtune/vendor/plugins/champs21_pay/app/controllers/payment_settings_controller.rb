@@ -407,7 +407,8 @@ class PaymentSettingsController < ApplicationController
           if request.post?
             if params[:order_id].blank?
               unless params[:classtune_order_id].blank?
-              params[:order_id] = params[:classtune_order_id]
+                params[:order_id] = params[:classtune_order_id]
+              end
             end
             unless params[:order_id].blank?
               order_id_vals =  params[:order_id]

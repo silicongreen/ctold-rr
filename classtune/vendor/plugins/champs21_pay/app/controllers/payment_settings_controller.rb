@@ -444,40 +444,70 @@ class PaymentSettingsController < ApplicationController
 
                           unless payments.blank?
                              payments.each do |payment|
-                                 session_id = payment.gateway_response[:Message][:SessionID] unless payment.gateway_response[:Message][:SessionID].nil?
-                                 order_id = payment.gateway_response[:Message][:OrderID] unless payment.gateway_response[:Message][:OrderID].nil?
-                                 result = validate_citybank_transaction(citybank_token[:transactionId], order_id, session_id)
+                                 unless payment.gateway_response[:Message].blank?
+                                  session_id = payment.gateway_response[:Message][:SessionID] unless payment.gateway_response[:Message][:SessionID].nil?
+                                  order_id = payment.gateway_response[:Message][:OrderID] unless payment.gateway_response[:Message][:OrderID].nil?
+                                  result = validate_citybank_transaction(citybank_token[:transactionId], order_id, session_id)
 
-                                 if result[:orderStatus].present?
-                                   if result[:orderStatus] == "APPROVED"
-                                     trans_date_time = payment.gateway_response[:Message][:TranDateTime]
-                                     a_trans_date_time = trans_date_time.split(' ')
-                                     trans_date = a_trans_date_time[0].split('/').reverse.join('-')
-                                     trans_date_time = trans_date + " " + a_trans_date_time[1]
-                                     #@student = payment.payee
-                                     require 'date'
-                                     transaction_datetime = DateTime.parse(trans_date_time).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
+                                  if result[:orderStatus].present?
+                                    if result[:orderStatus] == "APPROVED"
+                                      trans_date_time = payment.gateway_response[:Message][:TranDateTime]
+                                      a_trans_date_time = trans_date_time.split(' ')
+                                      trans_date = a_trans_date_time[0].split('/').reverse.join('-')
+                                      trans_date_time = trans_date + " " + a_trans_date_time[1]
+                                      #@student = payment.payee
+                                      require 'date'
+                                      transaction_datetime = DateTime.parse(trans_date_time).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
 
-                                     finance_order_data = FinanceOrder.find_by_order_id_and_student_id(o.strip, payment.payee.id)
-                                     unless finance_order_data.blank?
-                                       amount_to_pay = finance_order_data.request_params[:total_payable]
-                                       validation_response = result
-                                       payment.update_attributes(:validation_response => validation_response)
-                                       #abort(amount_to_pay.to_s)
-                                       unless payment.payee.blank?
-                                         @student = payment.payee
-                                       end
-                                       unless order_verify(o, 'citybank', transaction_datetime, order_id, amount_to_pay)
-                                         order_ids_new << o
-                                       else
-                                         verified_no += 1
-                                       end
-                                     end
-                                   else
-                                     order_ids_new << o
-                                   end
+                                      finance_order_data = FinanceOrder.find_by_order_id_and_student_id(o.strip, payment.payee.id)
+                                      unless finance_order_data.blank?
+                                        amount_to_pay = finance_order_data.request_params[:total_payable]
+                                        validation_response = result
+                                        payment.update_attributes(:validation_response => validation_response)
+                                        #abort(amount_to_pay.to_s)
+                                        unless payment.payee.blank?
+                                          @student = payment.payee
+                                        end
+                                        unless order_verify(o, 'citybank', transaction_datetime, order_id, amount_to_pay)
+                                          order_ids_new << o
+                                        else
+                                          verified_no += 1
+                                        end
+                                      end
+                                    else
+                                      order_ids_new << o
+                                    end
+                                  else
+                                    order_ids_new << o
+                                  end
                                  else
-                                   order_ids_new << o
+                                   unless payment.gateway_response[:order_id].blank?
+                                      unless payment.gateway_response[:session_id].blank?
+                                          @session_id = payment.gateway_response[:session_id]
+                                          @order_id = payment.gateway_response[:order_id]
+                                          get_the_token = true
+
+                                          payment = Payment.find(:first, :conditions => "gateway_response LIKE '%%#{@order_id}%%' and gateway_txt = 'citybank'") 
+
+                                          unless payment.blank?
+                                            if @gateway == "citybank"
+                                              citybank_token = get_citybank_token()
+                                              unless citybank_token[:responseCode].to_i == 100
+                                                get_the_token = false
+                                              else
+                                                flash[:notice] = citybank_token[:responseMessage]
+                                              end
+                                            end
+                                          else
+                                            get_the_token = false
+                                          end
+                                          if verify_citybank_payment(citybank_token, @order_id, @session_id, payment, get_the_token)
+                                            verified_no += 1
+                                          else
+                                            order_ids_new << o
+                                          end
+                                      end
+                                   end
                                  end
                              end
                           else  
@@ -486,8 +516,6 @@ class PaymentSettingsController < ApplicationController
                         elsif params[:query_type] == "citybank_order_id"
                           @session_id = params[:session_id]
                           @order_id = params[:order_id]
-                          @classtune_order_id = params[:classtune_order_id]
-                          @classtune_student_id = params[:classtune_student_id]
                           get_the_token = true
                           
                           payment = Payment.find(:first, :conditions => "gateway_response LIKE '%%#{@order_id}%%' and gateway_txt = 'citybank'") 

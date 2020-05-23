@@ -4205,6 +4205,7 @@ module FinanceLoader
         xml_res = Nokogiri::XML(params[:xmlmsg])
         require 'active_support/core_ext/hash/conversions'
         gateway_response = Hash.from_xml(xml_res.to_s)
+        #abort(gateway_response.inspect)
         citybank_token = get_citybank_token()
         
         if citybank_token[:responseCode].to_i == 100

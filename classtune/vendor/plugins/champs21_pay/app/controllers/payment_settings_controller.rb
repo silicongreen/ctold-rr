@@ -480,6 +480,40 @@ class PaymentSettingsController < ApplicationController
                             result = validate_citybank_transaction(citybank_token[:transactionId], @order_id, @session_id)
                             if result[:orderStatus].present?
                               if result[:orderStatus] == "APPROVED"
+                                message = {
+                                  :PAN => result[:pan], 
+                                  :AcqFee => "0", 
+                                  :FeeScr => "0.00", 
+                                  :AcqFeeScr => "0.00", 
+                                  :date => result[:approveDatetime],
+                                  :TranDateTime => result[:approveDatetime],
+                                  :OrderID => result[:orderId],
+                                  :RRN  => result[:rrn],
+                                  :SessionID  => result[:sessionID],
+                                  :SessionId  => result[:sessionID],
+                                  :Currency  => result[:currency],
+                                  :ResponseCode  => "001",
+                                  :PurchaseAmountScr  => result[:amount],
+                                  :TotalAmountScr  => result[:amount],
+                                  :AuthorizationResponseCode  => "01",
+                                  :TransactionType => "Purchase",
+                                  :PurchaseAmount  => result[:amount] * 100,
+                                  :TotalAmount  => result[:amount] * 100,
+                                  :OrderStatusScr => result[:orderStatus],
+                                  :OrderStatus => result[:orderStatus],
+                                  :ShopName => "SIS.CLASSTUNE",
+                                  :RezultOperation => "Transaction Result",
+                                  :Language => "eng",
+                                  :CurrencyScr => "BDT",
+                                  :ApprovalCode => result[:approvalCode],
+                                  :ApprovalCodeScr => result[:approvalCode],
+                                  :OrderDescription => result[:description],
+                                  :CardHolderName => result[:cardHoldername],
+                                }
+                                gateway_response = {
+                                  :Message => message
+                                }
+                                abort(gateway_response.inspect)
                                 trans_date_time = gateway_response[:Message][:TranDateTime]
                                 a_trans_date_time = trans_date_time.split(' ')
                                 trans_date = a_trans_date_time[0].split('/').reverse.join('-')

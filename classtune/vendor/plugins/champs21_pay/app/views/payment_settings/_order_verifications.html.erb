@@ -32,24 +32,19 @@
             <input type="radio" name="query_type" class="query_type_citybank" id="query_type_citybank_order_id" value="citybank_order_id" <%= (query_type == "citybank_order_id") ? "checked" : "" %> />&nbsp;&nbsp;&nbsp;Citybank Order ID & Session ID
         </div>
       </div>
-      <div id='order_id' class="form-group col-sm-6 citybank_order" style='padding-bottom: 20px;'>
+      <div id='order_id' class="form-group col-sm-6 citybank_order" style='padding-bottom: 20px; <%= (query_type == "otder_id") ? "" : "display: none;" %>'>
           <label>(<%= (Champs21Pay.const_defined?(@gateway.upcase)) ? Champs21Pay.const_get(@gateway.upcase) : @gateway %>) Order Id<span class="necessary-field">*</span> :</label>
           <%= text_area_tag "order_id", @order_id, :class=>"form-control", :style => "width: 100%;"%>
           <small>(Comma Seperated Value)</small>
           <small>(Classtune Order ID)</small>
       </div>
-      <div id='citybank_order_id' class="form-group col-sm-6 citybank_order" style="display: none; padding-bottom: 20px;">
+      <div id='citybank_order_id' class="form-group col-sm-6 citybank_order" style=" <%= (query_type == "citybank_order_id") ? "" : "display: none;" %> padding-bottom: 20px;">
           <label> CityBank Order Id<span class="necessary-field">*</span> :</label>
           <%= text_field_tag "order_id", @order_id, :class=>"form-control"%>
           <div style='clear: both; height: 10px;'></div>
           <label> CityBank Session Id<span class="necessary-field">*</span> :</label>
           <%= text_field_tag "session_id", @session_id, :class=>"form-control"%>
           <div style='clear: both; height: 10px;'></div>
-          <label> Classtune Order Id<span class="necessary-field">*</span> :</label>
-          <%= text_field_tag "classtune_order_id", @classtune_order_id, :class=>"form-control"%>
-          <label> Student Id<span class="necessary-field">*</span> :</label>
-          <%= text_field_tag "classtune_student_id", @classtune_student_id, :class=>"form-control"%>
-          <small>(CityBank Order ID & Session ID)</small>
       </div>
 
       <div class="form-group col-sm-6 even">

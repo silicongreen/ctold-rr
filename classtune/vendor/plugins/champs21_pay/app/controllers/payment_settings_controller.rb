@@ -285,10 +285,12 @@ class PaymentSettingsController < ApplicationController
                           paid_amount += p.finance_transaction.amount.to_f
                         else
                           fee_id = p.payment_id
-                          fee = FinanceFee.find fee_id
+                          fee = FinanceFee.find(:first, :conditions => "id = #{fee_id}") 
                           unless fee.nil? 
                             date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
-                            paid_amount += FinanceFee.get_student_balance(date, payment.payee, fee)
+                            unless date.blank?
+                              paid_amount += FinanceFee.get_student_balance(date, payment.payee, fee)
+                            end
                           end
                         end
                       end

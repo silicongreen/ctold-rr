@@ -16,9 +16,11 @@
 <% elsif @gateway == "citybank" %>  
   <h2>Order Verification</h2>  
   <hr style="border: 1px solid #ccc;" />
+  <%= params[:query_type] %>
   <% form_for :payment_settings,:url => {:action => :order_verifications} do |f| %>
       <%
-        query_type = "otder_id"
+      
+        query_type = "order_id"
         unless params[:query_type].blank?
           query_type = params[:query_type]
         end
@@ -26,13 +28,13 @@
       <input type="hidden" name="gateway" id="gateway" value="<%= @gateway %>" />
       <div style="width: 100%; padding-bottom: 20px; float: left; ">
         <div style="width: 200px; float: left; padding-right: 10px;">
-            <input type="radio" name="query_type" class="query_type_citybank" id="query_type_order_id" value="order_id" <%= (query_type == "otder_id") ? "checked" : "" %> />&nbsp;&nbsp;&nbsp;Classtune Order ID
+            <input type="radio" name="query_type" class="query_type_citybank" id="query_type_order_id" value="order_id" <%= (query_type == "order_id") ? "checked" : "" %> />&nbsp;&nbsp;&nbsp;Classtune Order ID
         </div>
         <div style="width: 250px; float: left; padding-right: 10px;">
             <input type="radio" name="query_type" class="query_type_citybank" id="query_type_citybank_order_id" value="citybank_order_id" <%= (query_type == "citybank_order_id") ? "checked" : "" %> />&nbsp;&nbsp;&nbsp;Citybank Order ID & Session ID
         </div>
       </div>
-      <div id='order_id' class="form-group col-sm-6 citybank_order" style='padding-bottom: 20px; <%= (query_type == "otder_id") ? "" : "display: none;" %>'>
+      <div id='order_id' class="form-group col-sm-6 citybank_order" style='padding-bottom: 20px; <%= (query_type == "order_id") ? "" : "display: none;" %>'>
           <label>(<%= (Champs21Pay.const_defined?(@gateway.upcase)) ? Champs21Pay.const_get(@gateway.upcase) : @gateway %>) Order Id<span class="necessary-field">*</span> :</label>
           <%= text_area_tag "classtune_order_id", @order_id, :class=>"form-control", :style => "width: 100%;"%>
           <small>(Comma Seperated Value)</small>

@@ -466,14 +466,20 @@ class PaymentSettingsController < ApplicationController
                           @classtune_order_id = params[:classtune_order_id]
                           @classtune_student_id = params[:classtune_student_id]
                           get_the_token = true
-              
-                          if @gateway == "citybank"
-                            citybank_token = get_citybank_token()
-                            unless citybank_token[:responseCode].to_i == 100
-                              get_the_token = false
-                            else
-                              flash[:notice] = citybank_token[:responseMessage]
+                          
+                          payment = Payment.find(:first, :conditions => "gateway_response LIKE '%%#{@order_id}%%' and gateway_txt = 'citybank'") 
+                          
+                          unless payment.blank?
+                            if @gateway == "citybank"
+                              citybank_token = get_citybank_token()
+                              unless citybank_token[:responseCode].to_i == 100
+                                get_the_token = false
+                              else
+                                flash[:notice] = citybank_token[:responseMessage]
+                              end
                             end
+                          else
+                            get_the_token = false
                           end
                           
                           if get_the_token
@@ -513,7 +519,6 @@ class PaymentSettingsController < ApplicationController
                                 gateway_response = {
                                   :Message => message
                                 }
-                                abort(gateway_response.inspect)
                                 trans_date_time = gateway_response[:Message][:TranDateTime]
                                 a_trans_date_time = trans_date_time.split(' ')
                                 trans_date = a_trans_date_time[0].split('/').reverse.join('-')
@@ -522,9 +527,75 @@ class PaymentSettingsController < ApplicationController
                                 require 'date'
                                 transaction_datetime = DateTime.parse(gateway_response[:Message][:TranDateTime]).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
                                 validation_response = result
+                                
+                                orderId = payment.order_id
+              
+                                student_id = payment.payee_id
+                                
+                                @student = Student.find(student_id)
+                                @finance_order = FinanceOrder.find_by_order_id_and_student_id(orderId.strip, student_id)
+                                #abort(@finance_order.inspect)
+                                request_params = @finance_order.request_params
+
+                                payment_saved = false
+                                unless request_params.nil?
+                                  multiple = request_params[:multiple]
+                                  unless multiple.nil?
+                                    if multiple.to_s == "true"
+                                      fees = request_params[:fees].split(",")
+                                      fees.each do |fee|
+                                        f = fee.to_i
+                                        feenew = FinanceFee.find(f)
+                                        payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{feenew.id}")
+                                        unless payment.nil?
+                                          payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :validation_response => validation_response, :gateway_txt => "citybank")
+                                          payment_saved = true
+                                        else  
+                                          payment = Payment.new(:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "citybank", :validation_response => validation_response)
+                                          if payment.save
+                                            payment_saved = true
+                                          end 
+                                        end
+                                      end
+                                    else
+                                      financefee = FinanceFee.find(@finance_order.finance_fee_id)
+                                      payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id}")
+                                      unless payment.nil?
+                                        payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :validation_response => validation_response, :gateway_txt => "citybank")
+                                        payment_saved = true
+                                      else  
+                                        payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "citybank", :validation_response => validation_response)
+                                        if payment.save
+                                          payment_saved = true
+                                        end 
+                                      end
+                                    end
+                                  else
+                                    financefee = FinanceFee.find(@finance_order.finance_fee_id)
+                                    payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id}")
+                                    unless payment.nil?
+                                      payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :validation_response => validation_response, :gateway_txt => "citybank")
+                                      payment_saved = true
+                                    else  
+                                      payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "citybank", :validation_response => validation_response)
+                                      if payment.save
+                                        payment_saved = true
+                                      end 
+                                    end
+                                  end
+
+                                  if payment_saved
+                                    amount_to_pay = @finance_order.request_params[:total_payable]
+                                    #abort(@finance_order.request_params.inspect)
+                                    #abort(amount_to_pay.to_s)
+
+                                    unless order_verify(orderId, 'citybank', transaction_datetime, gateway_response[:Message][:OrderID], amount_to_pay)
+                                      flash[:notice] = "Payment unsuccessful!! Invalid Transaction, Amount mismatch"
+                                    end
+                                  end
+                                end
                               end
                             end
-                            abort('here')
                           else
                             flash[:notice] = "Citybank Token Mismatch, Please try again later"
                           end

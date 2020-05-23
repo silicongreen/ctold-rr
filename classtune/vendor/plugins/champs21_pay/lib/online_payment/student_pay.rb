@@ -143,6 +143,15 @@ module OnlinePayment
                         params[key.to_sym] = val
                       end
                     end
+                  elsif params[:mobile_view].present?
+                    unless params[:mobile_view].index("--").nil?
+                      city_fees = "mobile_view=" + params[:mobile_view].gsub("--","&")
+                      kparams = {}
+                      city_fees.split(/&/).inject({}) do |hash, setting|
+                        key, val = setting.split(/=/)
+                        params[key.to_sym] = val
+                      end
+                    end
                   end
                 end
                 if params[:target_gateway] == "citybank" and params[:create_fail_transaction].present?

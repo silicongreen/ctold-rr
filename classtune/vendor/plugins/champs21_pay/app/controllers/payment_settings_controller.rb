@@ -570,15 +570,10 @@ class PaymentSettingsController < ApplicationController
                         elsif params[:query_type] == "payment_id"
                           paymentID = order_ids
                         elsif params[:query_type] == "trx_id"
+                          tokens = get_bkash_token()
                           order_ids.each do |order_id|
-                            payments = Payment.find(:all, :conditions => 'gateway_response like \'%:trxID: ' + order_id.to_s + '%\'')
-                            unless payments.blank?
-                              payments.each do |payment|
-                                unless payment.gateway_response[:paymentID].nil?
-                                  paymentID << payment.gateway_response[:paymentID]
-                                end
-                              end
-                            end
+                            transaction_info = search_bkash_payment(tokens[:id_token], order_id)  
+                            abort(transaction_info.inspect)
                           end
                           if paymentID.blank?
                             tokens = get_bkash_token()

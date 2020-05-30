@@ -18,11 +18,10 @@
 #under the License. -%>
 
 <% payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments" %>
-<%= payment_table %>
 <% f = @transaction %>
 <% transaction_payment = false %>
 <% transaction_payment_not_assign = false %>
-<% if MultiSchool.current_school.id == 352 %>
+
   <% payment = Payment.find_by_finance_transaction_id_and_payment_id(f.id, @finance_fee.id) %>
   <% unless payment.present? %>
     <% payment = Payment.find_by_payment_id(@finance_fee.id) %>
@@ -38,7 +37,7 @@
   <% else %>
     <% transaction_payment = true %>
   <% end %>
-<% end %>
+
 
 
 <% payment_mode = f.payment_mode %>

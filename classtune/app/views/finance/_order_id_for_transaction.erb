@@ -37,15 +37,63 @@
   <% else %>
     <% transaction_payment = true %>
   <% end %>
-
+  
 
 
 <% payment_mode = f.payment_mode %>
 <% if transaction_payment %>
+  <% if payment.gateway_txt.downcase == "trustbank" %>
   <% payment_mode = "Trust Bank Online Payment" %>
+  <% elsif payment.gateway_txt.downcase == "bkash" %>
+  <% payment_mode = "bKash Online Payment" %>
+  <% elsif payment.gateway_txt.downcase == "citybank" %>
+  <% payment_mode = "Citybank Online Payment" %>
+  <% end %>
 <% elsif transaction_payment_not_assign %>
+  <% if payment.gateway_txt.downcase == "trustbank" %>
   <% payment_mode = "Trust Bank Online Payment" %>
+  <% elsif payment.gateway_txt.downcase == "bkash" %>
+  <% payment_mode = "bKash Online Payment" %>
+  <% elsif payment.gateway_txt.downcase == "citybank" %>
+  <% payment_mode = "Citybank Online Payment" %>
+  <% end %>
   <% payment.update_attributes(:finance_transaction_id=>f.id) %>
+  <%
+    student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{@student.id} and fee_id = #{@finance_fee.id} and transaction_id = #{f.id} and is_fine = #{true}")
+    unless student_fee_ledgers.blank?
+      student_fee_ledgers.each do |student_fee_ledger|
+        unless payment.transaction_datetime.blank?
+          student_fee_ledger.update_attributes(:ledger_date => payment.transaction_datetime.strftime("%Y-%m-%d"), :ledger_title => "Fine On " + payment.transaction_datetime.strftime("%d %B, %Y"))
+        else
+          student_fee_ledger.update_attributes(:ledger_date => f.transaction_date.strftime("%Y-%m-%d"), :ledger_title => "Fine On " + f.transaction_date.strftime("%d %B, %Y"))
+        end
+      end
+    end
+
+    student_fee_ledger = StudentFeeLedger.find(:first, :conditions => "student_id = #{@student.id} and fee_id = #{@financefee.id} and transaction_id = #{f.id} and is_fine = #{false}")
+    unless student_fee_ledger.blank?
+      amount_paid = student_fee_ledger.amount_paid
+      if amount_paid.to_f != f.amount.to_f
+        student_fee_ledger.update_attributes(:amount_paid => f.amount.to_f)
+      end
+    else
+      student_fee_ledger = StudentFeeLedger.new
+      student_fee_ledger.student_id = @student.id
+      unless payment.transaction_datetime.blank?
+        student_fee_ledger.ledger_date = payment.transaction_datetime.strftime("%Y-%m-%d")
+      else
+        student_fee_ledger.ledger_date = f.transaction_date.strftime("%Y-%m-%d")
+      end
+      student_fee_ledger.ledger_title = @financefee.finance_fee_collection.title  
+      student_fee_ledger.amount_to_pay = 0.00
+      student_fee_ledger.fee_id = @financefee.id
+      student_fee_ledger.amount_paid = f.amount.to_f
+      student_fee_ledger.transaction_id = f.id
+      student_fee_ledger.order_id = payment.order_id
+      student_fee_ledger.save
+    end
+
+  %>
 <% end %>
 <%= payment_mode %>
 <hr style="border: 1px solid #ccc;" />
@@ -54,20 +102,48 @@
   <p><b>Order ID: </b><%= payment.order_id %></p>
   <%
     trans_type = ""
-    if payment.gateway_response[:payment_type] == "MB"
-      trans_type = "TBL Mobile banking"
-    else
-      trans_type = "TBL Card Payment"
+    if payment.gateway_txt.downcase == "trustbank"
+      if payment.gateway_response[:payment_type] == "MB"
+        trans_type = "TBL Mobile banking"
+      else
+        trans_type = "TBL Card Payment"
+      end
     end
   %>
+  <% if payment.gateway_txt.downcase == "trustbank" %>
   <p><b>Ref Id: </b><%= payment.gateway_response[:ref_id] %></p>
+  <% elsif payment.gateway_txt.downcase == "citybank" %>
+  <p><b>ApprovalCode: </b><%= payment.gateway_response[:Message][:ApprovalCode] %></p>
+  <p><b>Ref Id: </b><%= payment.gateway_response[:Message][:OrderID] %></p>
+  <% elsif payment.gateway_txt.downcase == "bkash" %>
+  <p><b>Payment Id: </b><%= payment.gateway_response[:paymentID] unless payment.gateway_response[:paymentID].blank? %></p>
+  <p><b>Transaction Id: </b><%= payment.gateway_response[:trxID] unless payment.gateway_response[:trxID].blank? %></p>
+  <% end %>
+  <% if payment.gateway_txt.downcase == "trustbank" %>
   <p><b>Transaction Type: </b><%= trans_type %></p>
+  <% end %>
   <hr style="border: 1px solid #ccc;" />
-  <% if payment.gateway_response[:verified].to_i == 1 %>
-    <i class="fa fa-check-circle-o" style="font-size: 18px; color: #49BB4B;"></i>&nbsp;&nbsp;Verified
-  <% else %>
-    <% unless payment.validation_response.nil? %>
-      <% if payment.validation_response[:verified].to_i == 0 %>
+  <% if payment.gateway_txt.downcase == "trustbank" %>
+    <% if payment.gateway_response[:verified].to_i == 1 %>
+      <i class="fa fa-check-circle-o" style="font-size: 18px; color: #49BB4B;"></i>&nbsp;&nbsp;Verified
+    <% else %>
+      <% unless payment.validation_response.nil? %>
+        <% if payment.validation_response[:verified].to_i == 0 %>
+        <div style="width: 100%;">
+          <div style="width: 60%; display: inline-block;">
+            <i class="fa fa-circle-o" style="font-size: 18px; color: #900;"></i>&nbsp;&nbsp;<span style="color: #900;">Not Verified</span>
+          </div>
+          <% if @current_user.admin? %>
+          <div style="width: 35%; display: inline-block; text-align: right;">
+            <%= link_to "(verify Now)", {:controller => "online_payments", :action => "order_verifications", :order_tid => payment.order_id},:target => '_blank' %>
+
+          </div>
+         <% end %>   
+        </div>
+        <% else %>
+        <i class="fa fa-check-circle-o" style="font-size: 18px; color: #49BB4B;"></i>&nbsp;&nbsp;Verified
+        <% end %>
+      <% else %>
       <div style="width: 100%;">
         <div style="width: 60%; display: inline-block;">
           <i class="fa fa-circle-o" style="font-size: 18px; color: #900;"></i>&nbsp;&nbsp;<span style="color: #900;">Not Verified</span>
@@ -79,22 +155,20 @@
         </div>
        <% end %>   
       </div>
-      <% else %>
-      <i class="fa fa-check-circle-o" style="font-size: 18px; color: #49BB4B;"></i>&nbsp;&nbsp;Verified
       <% end %>
-    <% else %>
-    <div style="width: 100%;">
-      <div style="width: 60%; display: inline-block;">
-        <i class="fa fa-circle-o" style="font-size: 18px; color: #900;"></i>&nbsp;&nbsp;<span style="color: #900;">Not Verified</span>
+      <% end %>
+      <% elsif payment.gateway_txt.downcase == "bkash" %>
+      <div style="width: 100%;">
+          <div style="width: 60%; display: inline-block;">
+            <i class="fa fa-circle-o" style="font-size: 18px; color: <%= (payment.gateway_response[:transactionStatus] == "Completed") ? "#49BB4B" : "#900" %>;"></i>&nbsp;&nbsp;<span style="color: <%= (payment.gateway_response[:transactionStatus] == "Completed") ? "#145214" : "#900" %>;"><%= payment.gateway_response[:transactionStatus]  unless payment.gateway_response[:transactionStatus].blank?  %></span>
+          </div>  
       </div>
-      <% if @current_user.admin? %>
-      <div style="width: 35%; display: inline-block; text-align: right;">
-        <%= link_to "(verify Now)", {:controller => "online_payments", :action => "order_verifications", :order_tid => payment.order_id},:target => '_blank' %>
-
+      <% elsif payment.gateway_txt.downcase == "citybank" %>
+      <div style="width: 100%;">
+          <div style="width: 60%; display: inline-block;">
+            <i class="fa fa-circle-o" style="font-size: 18px; color: <%= (payment.gateway_response[:Message][:OrderStatus] == "APPROVED") ? "#49BB4B" : "#900" %>;"></i>&nbsp;&nbsp;<span style="color: <%= (payment.gateway_response[:Message][:OrderStatus] == "APPROVED") ? "#145214" : "#900" %>;"><%= payment.gateway_response[:Message][:OrderStatus]  unless payment.gateway_response[:Message][:OrderStatus].blank?  %></span>
+          </div>  
       </div>
-     <% end %>   
-    </div>
-    <% end %>
+    <% end %>      
     <div style="clear: both; height: 1px;"></div>
-  <% end %>
 </div>

@@ -18,6 +18,7 @@
 #under the License. -%>
 
 <% payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments" %>
+<%= payment_table %>
 <% f = @transaction %>
 <% transaction_payment = false %>
 <% transaction_payment_not_assign = false %>

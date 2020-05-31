@@ -410,6 +410,86 @@ class StudentController < ApplicationController
                       #abort({"amount"=> total_fees,"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>order_id}.to_json.inspect)
                       response = http.request(request)
                       response_ssl = JSON::parse(response.body)
+                      
+                      transactionStatus = ""
+                      createTime = ""
+                      trxID = ""
+                      amount = ""
+                      response_ssl.each do |key,value|
+                        if key == "transactionStatus"
+                          transactionStatus = value
+                        elsif key == "createTime"
+                          createTime = value
+                        elsif key == "trxID"
+                          trxID = value
+                        elsif key == "amount"
+                          amount = value
+                        end
+                      end
+                      
+                      require 'date'
+                      gateway_response = {}
+                      response_ssl.each do |key,value|
+                        gateway_response[key.to_sym] = value
+                      end
+                      unless gateway_response.blank?
+                        transaction_datetime = (DateTime.parse(createTime).to_time + 6.hours).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
+                        orderId = order_id.to_s
+                        @student = Student.find(student_id)
+                        
+                        @finance_order = FinanceOrder.find_by_order_id_and_student_id(orderId.strip, student_id)
+                        #abort(@finance_order.inspect)
+                        request_params = @finance_order.request_params
+
+                        payment_saved = false
+                        unless request_params.nil?
+                          multiple = request_params[:multiple]
+                          unless multiple.nil?
+                            if multiple.to_s == "true"
+                              fees = request_params[:fees].split(",")
+                              fees.each do |fee|
+                                f = fee.to_i
+                                feenew = FinanceFee.find(f)
+                                payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{feenew.id}")
+                                unless payment.nil?
+                                  payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
+                                  payment_saved = true
+                                else  
+                                  payment = Payment.new(:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
+                                  if payment.save
+                                    payment_saved = true
+                                  end 
+                                end
+                              end
+                            else
+                              financefee = FinanceFee.find(@finance_order.finance_fee_id)
+                              payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id}")
+                              unless payment.nil?
+                                payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
+                                payment_saved = true
+                              else  
+                                payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
+                                if payment.save
+                                  payment_saved = true
+                                end 
+                              end
+                            end
+                          else
+                            financefee = FinanceFee.find(@finance_order.finance_fee_id)
+                            payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id}")
+                            unless payment.nil?
+                              payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
+                              payment_saved = true
+                            else  
+                              payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
+                              if payment.save
+                                payment_saved = true
+                              end 
+                            end
+                          end
+                        end
+                      end
+                      
                       #abort(response_ssl.inspect)
                       render :json => response_ssl
                     else

@@ -246,14 +246,14 @@
       {
           string = string + '<%="#{t('fee_collection_name_cant_be_blank')}"%>' + "\n"
       }
-      if (!($$('.start_date')[0].value <= $$('.end_date')[0].value))
+      if (!($$('.start_date')[0].value <= $$('.due_date')[0].value))
       {
-          string = string + '<%="#{t('start_date_cant_be_after_end_date')}"%>' + "\n"
+          string = string + '<%="Start Date can't be After End Date"%>' + "\n"
       }
-      if (!($$('.end_date')[0].value <= $$('.due_date')[0].value))
+      /*if (!($$('.end_date')[0].value <= $$('.due_date')[0].value))
       {
-          string = string + '<%="#{t('end_date_cant_be_after_due_date')}"%>' + "\n"
-      }
+          string = string + '<%#="#{t('end_date_cant_be_after_due_date')}"%>' + "\n"
+      }*/
       
       var particulars = 0;
       j("#fee_category_particulars_div").html("");

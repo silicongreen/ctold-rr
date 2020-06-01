@@ -3202,15 +3202,15 @@ class ExamController < ApplicationController
     new_book.worksheet(0).insert_row(0, row)
     row = [@batch.full_name]
     new_book.worksheet(0).insert_row(1, row)
-    new_book.worksheet(0).merge_cells(0,0,0,9)
-    new_book.worksheet(0).merge_cells(1,0,1,9)
+    new_book.worksheet(0).merge_cells(0,0,0,11)
+    new_book.worksheet(0).merge_cells(1,0,1,11)
     
     sheet1.row(0).default_format = center_align_format
     sheet1.row(1).default_format = center_align_format
     
     
-    row_first = ['Sr No.','Name of Student','Mock 1','','Mock 2','','Mock 3','','Best Mark','Grade']
-    row_second = ['','','p1','p2','p1','p2','p1','p2','','']
+    row_first = ['Sr No.','Name of Student','Mock 1','','Mock 2','','Mock 3','','Mock 4','','Best Mark','Grade']
+    row_second = ['','','p1','p2','p1','p2','p1','p2','p1','p2','','']
     row_third = ['','']
     @report_data['result']['ALL'].each do |rs|
       if rs['exam_category'] != "7"
@@ -3218,8 +3218,14 @@ class ExamController < ApplicationController
       end
     end
     
-    if row_third.count < 8
+    if row_third.count < 10
       if row_third.count == 6
+        row_third << "-"
+        row_third << "-"
+        row_third << "-"
+        row_third << "-"
+      end
+      if row_third.count == 8
         row_third << "-"
         row_third << "-"
       end
@@ -3238,9 +3244,10 @@ class ExamController < ApplicationController
     new_book.worksheet(0).merge_cells(2,2,2,3)
      new_book.worksheet(0).merge_cells(2,4,2,5)
     new_book.worksheet(0).merge_cells(2,6,2,7)
+    new_book.worksheet(0).merge_cells(2,8,2,9)
     
-    new_book.worksheet(0).merge_cells(2,8,3,8)
-    new_book.worksheet(0).merge_cells(2,9,4,9)
+    new_book.worksheet(0).merge_cells(2,10,3,10)
+    new_book.worksheet(0).merge_cells(2,11,4,11)
     
     sheet1.row(2).default_format = center_align_format
     sheet1.row(3).default_format = center_align_format
@@ -3257,9 +3264,11 @@ class ExamController < ApplicationController
         mock1 = 0
         mock2 = 0
         mock3 = 0
+        mock4 = 0
         mock1_full = 0
         mock2_full = 0
         mock3_full = 0
+        mock4_full = 0
         iloop = iloop+1
         kloop = kloop+1
         rows = [iloop,std['name']]
@@ -3268,13 +3277,16 @@ class ExamController < ApplicationController
           if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
             rows << rs['students'][std['id']]['score'].to_i
             if rs['quarter'] != '1' 
-             mock1 = mock1.to_f+rs['students'][std['id']]['score'].to_f
+               mock1 = mock1.to_f+rs['students'][std['id']]['score'].to_f
             end
             if rs['quarter'] != '2' 
                mock2 = mock2.to_f+rs['students'][std['id']]['score'].to_f
             end
             if rs['quarter'] != '3' 
                mock3 = mock3.to_f+rs['students'][std['id']]['score'].to_f
+            end
+            if rs['quarter'] != '4' 
+               mock4 = mock4.to_f+rs['students'][std['id']]['score'].to_f
             end
           else
             rows << ""
@@ -3289,6 +3301,9 @@ class ExamController < ApplicationController
             end
             if rs['quarter'] != '3' 
                mock3_full = mock3_full.to_f+rs['maximum_marks'].to_i
+            end 
+            if rs['quarter'] != '4' 
+               mock4_full = mock4_full.to_f+rs['maximum_marks'].to_i
             end 
           end
         end
@@ -3315,6 +3330,13 @@ class ExamController < ApplicationController
             best_mark = avg
           end  
         end 
+        if mock4 > 0
+          avg = (mock4.to_f/mock4_full.to_f)*100
+          avg = avg.round()
+          if avg > best_mark
+            best_mark = avg
+          end  
+        end
         if best_mark > 0
           rows << best_mark.round()
           std['best_mark'] = best_mark

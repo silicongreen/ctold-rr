@@ -40,18 +40,32 @@
 #under the License. -%>
 
 
-
+<title>Transaction Fees</title>
 </div>
 <div id="page-yield">
 
     <div class="header-sagc">
         <div class="header-sagc-left">
-            <div class="logo-left"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/sagc_logo.png")),:width=> '60%',:style=>"margin-left: 20%; margin-top: 10%;" %></div>
+            
+            <% if MultiSchool.current_school.id == 352 %>
+                <div class="logo-left"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/sagc_logo.png")),:width=> '60%',:style=>"margin-left: 20%; margin-top: 10%;" %></div>
+            <% else %>
+              <% if File.exists?("/"+("#{Rails.root}/"+ ("public/images/school_logo/#{MultiSchool.current_school.id}/logo.png"))) %>
+                <div class="logo-left-div" style="<%= "width: 70%; padding-bottom: 20px;" if MultiSchool.current_school.id == 348 %>"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/#{MultiSchool.current_school.id}/logo.png")),:width=> '95%' %></div>
+              <% else %>
+                <div class="logo-left-div" style="<%= "width: 70%; padding-bottom: 20px;" if MultiSchool.current_school.id == 348 %>"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public" + current_school_detail.logo.url.to_s.gsub(/\?.*/, ''))),:width=> '95%' %></div>
+              <% end %>
+            <% end %>
+            
             <div class="school-name-left">
+                <% unless MultiSchool.current_school.id == 348  %>
                 <h2><%=Configuration.get_config_value('InstitutionName').upcase; %></h2>
-                <span>Dhaka Cantonment</span>
-                <span>Dhaka-1206</span>
-                <span>Phone: 9833306, Web: sagc.edu.bd</span>
+                  <% if MultiSchool.current_school.id == 352 %>
+                  <span>Dhaka Cantonment</span>
+                  <span>Dhaka-1206</span>
+                  <span>Phone: 9833306, Web: sagc.edu.bd</span>
+                  <% end %>
+                <% end %>
             </div>
         </div>
         <div class="header-sagc-right">
@@ -75,7 +89,10 @@
                 <tr class="table-header">
                     <td style="width: 50px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Sl No</td>
                     <td style="width: 300px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Student Name</td>
-                    <td style="width: 300px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Student ID</td>
+                    <td style="width: 100px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Student ID</td>
+                    <% if MultiSchool.current_school.id == 312 %>
+                    <td style="width: 300px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Batch Info</td>
+                    <% end %>
                     <td style="width: 300px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Order Id</td>
                     <td style="width: 300px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Amount</td>
                 </tr>
@@ -110,6 +127,9 @@
                       <td style="text-align: center; padding: 10px;"><%= i + 1 %></td>
                       <td style="text-align: left; padding-left: 20px;"><%= student.full_name %></td>
                       <td style="text-align: left; padding-left: 20px;"><%= student.admission_no %></td>
+                      <% if MultiSchool.current_school.id == 312 %>
+                      <td style="text-align: left; padding-left: 20px;"><%= student.batch.full_name %></td>
+                      <% end %>
                       <td style="text-align: left; padding-left: 20px;"><%= order %></td>
                       <td style="text-align: right; padding-right: 20px;">
                         <%= to_comma_seperated_precision_label amount.to_f %>

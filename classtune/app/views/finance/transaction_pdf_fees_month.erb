@@ -59,7 +59,7 @@
             
             <div class="school-name-left">
                 <% unless MultiSchool.current_school.id == 348  %>
-                  <% unless MultiSchool.current_school.id == 352 %>
+                  <% if MultiSchool.current_school.id == 352 %>
                   <h2><%=Configuration.get_config_value('InstitutionName').upcase; %></h2>
                   <% else %>
                   <h2 style="margin-top: 20px; font-size: 20px;"><%=Configuration.get_config_value('InstitutionName').upcase; %></h2>
@@ -69,7 +69,7 @@
                   <span>Dhaka-1206</span>
                   <span>Phone: 9833306, Web: sagc.edu.bd</span>
                   <% else %>
-                  <span style="margin-top: 20px; font-size: 20px;"><%=Configuration.get_config_value('InstitutionAddress'); %></span>
+                  <span style=" font-size: 14px;"><%=Configuration.get_config_value('InstitutionAddress'); %></span>
                   <% end %>
                 <% end %>
             </div>

@@ -59,11 +59,13 @@
             
             <div class="school-name-left">
                 <% unless MultiSchool.current_school.id == 348  %>
-                <h2><%=Configuration.get_config_value('InstitutionName').upcase; %></h2>
+                  <h2><%=Configuration.get_config_value('InstitutionName').upcase; %></h2>
                   <% if MultiSchool.current_school.id == 352 %>
                   <span>Dhaka Cantonment</span>
                   <span>Dhaka-1206</span>
                   <span>Phone: 9833306, Web: sagc.edu.bd</span>
+                  <% else %>
+                  <span><%=Configuration.get_config_value('InstitutionAddress'); %></span>
                   <% end %>
                 <% end %>
             </div>

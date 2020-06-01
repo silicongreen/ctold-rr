@@ -59,7 +59,11 @@
             
             <div class="school-name-left">
                 <% unless MultiSchool.current_school.id == 348  %>
+                  <% unless MultiSchool.current_school.id == 352 %>
                   <h2><%=Configuration.get_config_value('InstitutionName').upcase; %></h2>
+                  <% else %>
+                  <h2 style="padding-top: 20px; font-size: 20px;"><%=Configuration.get_config_value('InstitutionName').upcase; %></h2>
+                  <% end %>
                   <% if MultiSchool.current_school.id == 352 %>
                   <span>Dhaka Cantonment</span>
                   <span>Dhaka-1206</span>

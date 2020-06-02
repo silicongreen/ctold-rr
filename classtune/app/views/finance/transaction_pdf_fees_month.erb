@@ -90,6 +90,13 @@
         <% j = 1 %>
         <% pg = 1 %>
         
+        <% tar1 = 15 %>
+        <% tar2 = 20 %>
+        <% if MultiSchool.current_school.id == 348 %>
+        <% tar1 = 16 %>
+        <% tar2 = 20 %>
+        <% end %>
+        
         <div id="pdf-info">
             <table id="pdf-table" width="100%" cellspacing="0">
                 <tr class="table-header">
@@ -116,13 +123,13 @@
                   <% amount = payment.gateway_response[:amount] %>  
                 
                   <% if pg == 1 %>
-                    <% if j == 16 %>
+                    <% if j == tar1 %>
                       <tr><td colspan="3" style="height: 40px;"></td></tr>
                       <% j = 1 %>
                       <% pg += 1 %>
                     <% end %>
                   <% else %>
-                      <% if j == 20 %>
+                      <% if j == tar2 %>
                         <tr><td colspan="3" style="height: 45px;"></td></tr>
                         <% j = 1 %>
                         <% pg += 1 %>

@@ -110,7 +110,7 @@
               <td class="col-pdf"><%= truncate(fee.student.full_name, :length => 20) unless fee.student.full_name.blank? %></td>
               <td class="col-pdf" style="text-align: center;"><%= fee.student.class_roll_no unless fee.student.full_name.blank? %></td>
               <td class="col-pdf" style="text-align: center;"><%= fee.student.batch.course.section_name %></td>
-              <td class="col-pdf" style="text-align: center;"><%= fee.student.student_category.name %></td>
+              <td class="col-pdf" style="text-align: center;"><%= fee.student.student_category.name unless fee.student.student_category.blank? %></td>
               <% total_fee = 0.0 %>    
               <% paid_amount = 0.0 %>  
               <% if fee.is_paid %>

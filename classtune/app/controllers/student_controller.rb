@@ -1561,7 +1561,7 @@ class StudentController < ApplicationController
     message = ""
     if File.exists?("#{Rails.root}/config/sms_text_#{MultiSchool.current_school.id}.yml")
       sms_text_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/sms_text_#{MultiSchool.current_school.id}.yml")['school']
-      if send_to == 2
+      if send_to.to_i == 2
         message = sms_text_config['epass']
       else
         message = sms_text_config['upass']

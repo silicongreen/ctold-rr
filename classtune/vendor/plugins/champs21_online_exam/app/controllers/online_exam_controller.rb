@@ -69,26 +69,50 @@ class OnlineExamController < ApplicationController
       end
       
       unless params[:batch_id].nil?
-        @batch_ids = params[:batch_id]
-        #@batch_ids.each do |b|
         
-        @online_exam_group  = OnlineExamGroup.new(params[:online_exam_group])
-        @online_exam_group.batch_id = @batch_ids
-        @online_exam_group.user_id = current_user.id
+        multiple = false
+        unless params[:exam][:multiple].blank?
+          if params[:exam][:multiple].to_i == 1
+            multiple = true
+          end
+        end
+        @flag = 0
+        if multiple == true
+          @batch_ids = params[:batch_id]
+          @batch = Batch.find_by_id(@batch_ids)
+          @main_subject = Subject.find_by_id(params[:assignment][:subject])
+          @subjects = Subject.find(:all,:include=>[{:batch=>[:course]}],:conditions=>["subjects.code = ? and courses.course_name = ?",@main_subject.code,@batch.course.course_name])
+          @subjects.each do |sub|
+            @online_exam_group  = OnlineExamGroup.new(params[:online_exam_group])
+            @online_exam_group.batch_id = sub.batch_id
+            @online_exam_group.user_id = current_user.id
+            @online_exam_group.subject_id = sub.id
+            if @online_exam_group.save
+              @id=@online_exam_group.id
+              @flag=1
+            end
+          end
+        else
+        
+          @batch_ids = params[:batch_id]
+          #@batch_ids.each do |b|
 
-        unless params[:assignment].nil?
-          unless params[:assignment][:subject].nil?
-            @online_exam_group.subject_id = params[:assignment][:subject]
+          @online_exam_group  = OnlineExamGroup.new(params[:online_exam_group])
+          @online_exam_group.batch_id = @batch_ids
+          @online_exam_group.user_id = current_user.id
+
+          unless params[:assignment].nil?
+            unless params[:assignment][:subject].nil?
+              @online_exam_group.subject_id = params[:assignment][:subject]
+            end
+          end
+          if @online_exam_group.save
+            @id=@online_exam_group.id
+            @flag=1
           end
         end
         
-        if @online_exam_group.save
-          @id=@online_exam_group.id
-          @flag=1
-          
-        else
-          @flag=0
-        end
+        
           
         #end
         
@@ -124,8 +148,11 @@ class OnlineExamController < ApplicationController
     #      @online_exam_group.errors.add_to_base("#{t('batch_cant_be_blank')}")
     #      render :action=>:new_online_exam and return
     #    end
-    exam_group=OnlineExamGroup.find(params[:id])
-    @group_ids=OnlineExamGroup.find(:all,:conditions=>{:id=>exam_group.id}).collect(&:id)
+    exam_group=OnlineExamGroup.find(params[:id],:include=>[{:batch=>[:course]},:subject])
+    
+    @group_ids=OnlineExamGroup.find(:all,:include=>[{:batch=>[:course]},:subject],:conditions=>["courses.course_name = ? and subjects.code = ? and online_exam_groups.name = ? and online_exam_groups.start_date = ? and online_exam_groups.end_date = ? and online_exam_groups.maximum_time = ? and online_exam_groups.pass_percentage = ? and online_exam_groups.option_count = ? and online_exam_groups.is_deleted = ? and online_exam_groups.is_published = ?",exam_group.batch.course.course_name,exam_group.subject.code,exam_group.name,exam_group.start_date,exam_group.end_date,exam_group.maximum_time,exam_group.pass_percentage,exam_group.option_count,exam_group.is_deleted,exam_group.is_published]).collect(&:id)
+    
+#    @group_ids=OnlineExamGroup.find(:all,:conditions=>{:id=>exam_group.id}).collect(&:id)
     @option_count  = exam_group.option_count.to_i
     @online_exam_question = OnlineExamQuestion.new
     @option_count.to_i.times { @online_exam_question.online_exam_options.build }

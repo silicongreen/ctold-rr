@@ -51,9 +51,9 @@
                 <div class="logo-left"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/sagc_logo.png")),:width=> '60%',:style=>"margin-left: 20%; margin-top: 10%;" %></div>
             <% else %>
               <% if File.exists?("/"+("#{Rails.root}/"+ ("public/images/school_logo/#{MultiSchool.current_school.id}/logo.png"))) %>
-                <div class="logo-left" style="<%= "width: 60%; padding-bottom: 20px;" if MultiSchool.current_school.id == 348 %>"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/#{MultiSchool.current_school.id}/logo.png")),:width=> '95%' %></div>
+                <div class="logo-left" style="<%= "width: 40%; padding-bottom: 20px;" if MultiSchool.current_school.id == 348 %>"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/#{MultiSchool.current_school.id}/logo.png")),:width=> '95%' %></div>
               <% else %>
-                <div class="logo-left" style="<%= "width: 60%; padding-bottom: 20px;" if MultiSchool.current_school.id == 348 %>"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public" + current_school_detail.logo.url.to_s.gsub(/\?.*/, ''))),:width=> '95%' %></div>
+                <div class="logo-left" style="<%= "width: 40%; padding-bottom: 20px;" if MultiSchool.current_school.id == 348 %>"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public" + current_school_detail.logo.url.to_s.gsub(/\?.*/, ''))),:width=> '95%' %></div>
               <% end %>
             <% end %>
             
@@ -116,7 +116,7 @@
                   <% amount = payment.gateway_response[:amount] %>  
                 
                   <% if pg == 1 %>
-                    <% if j == 14 %>
+                    <% if j == 16 %>
                       <tr><td colspan="3" style="height: 40px;"></td></tr>
                       <% j = 1 %>
                       <% pg += 1 %>

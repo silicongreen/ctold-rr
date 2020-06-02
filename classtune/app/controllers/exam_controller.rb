@@ -3197,57 +3197,100 @@ class ExamController < ApplicationController
     if @student_response['status']['code'].to_i == 200
       @report_data = @student_response['data']
     end
+    
+    mock_1_count = 0
+    @report_data['result']['ALL'].each do |rs|
+      if rs['exam_category'] != "7"
+        if rs['quarter'] == '1'
+          mock_1_count = mock_1_count+1
+        end
+      end
+    end
+    
     center_align_format = Spreadsheet::Format.new :horizontal_align => :center,  :vertical_align => :middle,:left=>:thin,:right=>:thin,:top=>:thin,:bottom=>:thin
     row = [@subject.name]
     new_book.worksheet(0).insert_row(0, row)
     row = [@batch.full_name]
     new_book.worksheet(0).insert_row(1, row)
-    new_book.worksheet(0).merge_cells(0,0,0,11)
-    new_book.worksheet(0).merge_cells(1,0,1,11)
+    
+    if mock_1_count == 2
+      new_book.worksheet(0).merge_cells(0,0,0,11)
+      new_book.worksheet(0).merge_cells(1,0,1,11)
+    else
+      new_book.worksheet(0).merge_cells(0,0,0,7)
+      new_book.worksheet(0).merge_cells(1,0,1,7)
+    end   
     
     sheet1.row(0).default_format = center_align_format
     sheet1.row(1).default_format = center_align_format
     
     
-    row_first = ['Sr No.','Name of Student','Mock 1','','Mock 2','','Mock 3','','Mock 4','','Best Mark','Grade']
-    row_second = ['','','p1','p2','p1','p2','p1','p2','p1','p2','','']
+    if mock_1_count == 2
+      row_first = ['Sr No.','Name of Student','Mock 1','','Mock 2','','Mock 3','','Mock 4','','Best Mark','Grade']
+      row_second = ['','','p1','p2','p1','p2','p1','p2','p1','p2','','']
+    else
+      row_first = ['Sr No.','Name of Student','Mock 1','Mock 2','Mock 3','Mock 4','Best Mark','Grade']
+    end   
     row_third = ['','']
     @report_data['result']['ALL'].each do |rs|
       if rs['exam_category'] != "7"
         row_third << rs['maximum_marks'].to_i
       end
     end
-    
-    if row_third.count < 10
-      if row_third.count == 6
-        row_third << "-"
-        row_third << "-"
-        row_third << "-"
-        row_third << "-"
+    if mock_1_count == 2
+      if row_third.count < 10
+        if row_third.count == 6
+          row_third << "-"
+          row_third << "-"
+          row_third << "-"
+          row_third << "-"
+        end
+        if row_third.count == 8
+          row_third << "-"
+          row_third << "-"
+        end
       end
-      if row_third.count == 8
-        row_third << "-"
-        row_third << "-"
+    else
+      if row_third.count < 6
+        if row_third.count == 2
+          row_third << "-"
+          row_third << "-"
+          row_third << "-"
+          row_third << "-"
+        end
+        if row_third.count == 4
+          row_third << "-"
+          row_third << "-"
+        end
       end
-    end
+    end   
     row_third << "100"
     row_third << ""
     
     
     new_book.worksheet(0).insert_row(2, row_first)
-    new_book.worksheet(0).insert_row(3, row_second)
+    if mock_1_count == 2
+      new_book.worksheet(0).insert_row(3, row_second)
+    end
     new_book.worksheet(0).insert_row(4, row_third)
     
     new_book.worksheet(0).merge_cells(2,0,4,0)
     new_book.worksheet(0).merge_cells(2,1,4,1)
     
-    new_book.worksheet(0).merge_cells(2,2,2,3)
-     new_book.worksheet(0).merge_cells(2,4,2,5)
-    new_book.worksheet(0).merge_cells(2,6,2,7)
-    new_book.worksheet(0).merge_cells(2,8,2,9)
+    if mock_1_count == 2
+      new_book.worksheet(0).merge_cells(2,2,2,3)
+      new_book.worksheet(0).merge_cells(2,4,2,5)
+      new_book.worksheet(0).merge_cells(2,6,2,7)
+      new_book.worksheet(0).merge_cells(2,8,2,9)
+    end
     
-    new_book.worksheet(0).merge_cells(2,10,3,10)
-    new_book.worksheet(0).merge_cells(2,11,4,11)
+    if mock_1_count == 2
+      new_book.worksheet(0).merge_cells(2,10,3,10)
+      new_book.worksheet(0).merge_cells(2,11,4,11)
+    else
+      new_book.worksheet(0).merge_cells(2,6,3,6)
+      new_book.worksheet(0).merge_cells(2,7,4,7)
+    end  
     
     sheet1.row(2).default_format = center_align_format
     sheet1.row(3).default_format = center_align_format
@@ -3276,16 +3319,16 @@ class ExamController < ApplicationController
         @report_data['result']['ALL'].each do |rs|
           if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
             rows << rs['students'][std['id']]['score'].to_i
-            if rs['quarter'] != '1' 
+            if rs['quarter'] == '1' 
                mock1 = mock1.to_f+rs['students'][std['id']]['score'].to_f
             end
-            if rs['quarter'] != '2' 
+            if rs['quarter'] == '2' 
                mock2 = mock2.to_f+rs['students'][std['id']]['score'].to_f
             end
-            if rs['quarter'] != '3' 
+            if rs['quarter'] == '3' 
                mock3 = mock3.to_f+rs['students'][std['id']]['score'].to_f
             end
-            if rs['quarter'] != '4' 
+            if rs['quarter'] == '4' 
                mock4 = mock4.to_f+rs['students'][std['id']]['score'].to_f
             end
           else
@@ -3293,16 +3336,16 @@ class ExamController < ApplicationController
           end
           
           if !rs['maximum_marks'].blank?
-           if rs['quarter'] != '1' 
+           if rs['quarter'] == '1' 
                mock1_full = mock1_full.to_f+rs['maximum_marks'].to_i
             end
-            if rs['quarter'] != '2' 
+            if rs['quarter'] == '2' 
                mock2_full = mock2_full.to_f+rs['maximum_marks'].to_i
             end
-            if rs['quarter'] != '3' 
+            if rs['quarter'] == '3' 
                mock3_full = mock3_full.to_f+rs['maximum_marks'].to_i
             end 
-            if rs['quarter'] != '4' 
+            if rs['quarter'] == '4' 
                mock4_full = mock4_full.to_f+rs['maximum_marks'].to_i
             end 
           end

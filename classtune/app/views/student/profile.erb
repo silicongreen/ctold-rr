@@ -362,7 +362,7 @@
                   <div class="clearfix"></div>
                 <% end %>
                   
-                <% unless @student.dual_nationality_id.nil? or @student.dual_nationality_id.nationality.nil? %>
+                <% unless @student.dual_nationality_id.nil? or @student.dual_nationality.nationality.nil? %>
                   <div class="row">
                       <div class="row_label">
                           <div><%= t('dual_nationality') %></div>

@@ -6134,7 +6134,7 @@ class ExamController < ApplicationController
           :footer => {:html => { :template=> 'layouts/pdf_footer_baghc_landscape.html'}}
       end  
     elsif  MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2 
-      if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6 and @connect_exam_obj.result_type != 7
+      if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6 and @connect_exam_obj.result_type != 7 and @connect_exam_obj.result_type != 10 and @connect_exam_obj.result_type != 11
         render :pdf => template,
           :save_to_file => file_name,
           :save_only    => for_save,

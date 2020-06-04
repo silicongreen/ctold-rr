@@ -51,6 +51,9 @@
           if assignment.subject.blank?
             next
           end
+          unless assignment.content.index("</").nil?
+            assignment.created_at = assignment.created_at.to_time + 6*60*60
+          end
         %>
         <% @defaulter_registered = AssignmentDefaulterRegistration.find_by_assignment_id(assignment.id) %>
         <tr class="tr-<%= cycle('odd', 'even') %>">

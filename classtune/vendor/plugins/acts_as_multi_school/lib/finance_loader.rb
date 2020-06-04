@@ -2259,7 +2259,7 @@ module FinanceLoader
     end
 
     if @config.present?
-      power_sms_schools = [2,357,352,361]
+      power_sms_schools = [2,357,352]
       @sms_hash = {"user"=>@username,"pass"=>@password,"sid" =>@sendername}
       if power_sms_schools.include?(MultiSchool.current_school.id)
         @i_sms_loop = 0
@@ -4100,6 +4100,7 @@ module FinanceLoader
   def verify_citybank_payment(citybank_token, order_id, session_id, payment, get_the_token)
     if get_the_token
       result = validate_citybank_transaction(citybank_token[:transactionId], order_id, session_id)
+      abort(result.inspect)
       if result[:orderStatus].present?
         if result[:orderStatus] == "APPROVED"
           message = {

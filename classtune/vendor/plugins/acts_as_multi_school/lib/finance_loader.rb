@@ -4151,7 +4151,7 @@ module FinanceLoader
           gateway_response = {
             :Message => message
           }
-          abort(gateway_response.inspect)
+          #abort(gateway_response.inspect)
           trans_date_time = gateway_response[:Message][:TranDateTime]
           a_trans_date_time = trans_date_time.split(' ')
           trans_date = a_trans_date_time[0].split('/').reverse.join('-')

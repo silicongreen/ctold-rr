@@ -3252,14 +3252,16 @@ class ExamController < ApplicationController
       end
     else
       if row_third.count < 6
-        if row_third.count == 2
-          row_third << "-"
+        if row_third.count == 3
           row_third << "-"
           row_third << "-"
           row_third << "-"
         end
         if row_third.count == 4
           row_third << "-"
+          row_third << "-"
+        end
+        if row_third.count == 5
           row_third << "-"
         end
       end
@@ -3271,11 +3273,19 @@ class ExamController < ApplicationController
     new_book.worksheet(0).insert_row(2, row_first)
     if mock_1_count == 2
       new_book.worksheet(0).insert_row(3, row_second)
-    end
-    new_book.worksheet(0).insert_row(4, row_third)
+      new_book.worksheet(0).insert_row(4, row_third)
+    else
+      new_book.worksheet(0).insert_row(3, row_third)
+    end  
     
-    new_book.worksheet(0).merge_cells(2,0,4,0)
-    new_book.worksheet(0).merge_cells(2,1,4,1)
+    
+    if mock_1_count == 2
+      new_book.worksheet(0).merge_cells(2,0,4,0)
+      new_book.worksheet(0).merge_cells(2,1,4,1)
+    else
+      new_book.worksheet(0).merge_cells(2,0,3,0)
+      new_book.worksheet(0).merge_cells(2,1,3,1)
+    end  
     
     if mock_1_count == 2
       new_book.worksheet(0).merge_cells(2,2,2,3)
@@ -3288,17 +3298,21 @@ class ExamController < ApplicationController
       new_book.worksheet(0).merge_cells(2,10,3,10)
       new_book.worksheet(0).merge_cells(2,11,4,11)
     else
-      new_book.worksheet(0).merge_cells(2,6,3,6)
-      new_book.worksheet(0).merge_cells(2,7,4,7)
+      new_book.worksheet(0).merge_cells(2,7,3,7)
     end  
     
     sheet1.row(2).default_format = center_align_format
     sheet1.row(3).default_format = center_align_format
-    sheet1.row(4).default_format = center_align_format
+    if mock_1_count == 2
+      sheet1.row(4).default_format = center_align_format
+    end
     
     
     iloop = 0
-    kloop = 4
+    kloop = 3
+    if mock_1_count == 2
+      kloop = 4
+    end
     
     std_list_sorted = []
     
@@ -3350,6 +3364,39 @@ class ExamController < ApplicationController
             end 
           end
         end
+        
+        if mock_1_count == 2
+          if rows.count < 10
+            if rows.count == 6
+              rows << "-"
+              rows << "-"
+              rows << "-"
+              rows << "-"
+            end
+            if rows.count == 8
+              rows << "-"
+              rows << "-"
+            end
+          end
+        else
+          if rows.count < 6
+            if rows.count == 3
+              rows << "-"
+              rows << "-"
+              rows << "-"
+            end
+            if rows.count == 4
+              rows << "-"
+              rows << "-"
+            end
+            if rows.count == 5
+              rows << "-"
+            end
+          end
+          
+        end  
+        
+        
         best_mark = 0
 
         if mock1 > 0

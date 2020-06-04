@@ -798,6 +798,10 @@ class Assignments extends CActiveRecord
                 $marge['subjects_id'] = $value["subjectDetails"]->id;
                 $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
                 $marge['assign_date'] = date("Y-m-d", strtotime($value->created_at));
+                if(strpos($value->content, "</") !== false )
+                {
+                    $marge['assign_date'] = date("Y-m-d", strtotime("+6 hour", strtotime($value->created_at)));
+                }
                 $marge['duedate'] = date("Y-m-d", strtotime($value->duedate));
                 $marge['name'] = utf8_encode($value->title);
                 $marge['content'] = utf8_encode($value->content);
@@ -957,6 +961,10 @@ class Assignments extends CActiveRecord
                 $marge['subjects_id'] = $value["subjectDetails"]->id;
                 $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
                 $marge['assign_date'] = date("Y-m-d", strtotime($value->created_at));
+                if(strpos($value->content, "</") !== false )
+                {
+                    $marge['assign_date'] = date("Y-m-d", strtotime("+6 hour", strtotime($value->created_at)));
+                }
                 $marge['duedate'] = date("Y-m-d", strtotime($value->duedate));
                 $marge['name'] = utf8_encode($value->title);
                 $marge['content'] = utf8_encode($value->content);
@@ -1082,6 +1090,10 @@ class Assignments extends CActiveRecord
                     $marge['subjects_id'] = $value["subjectDetails"]->id;
                     $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
                     $marge['assign_date'] = date("Y-m-d", strtotime($value->created_at));
+                    if(strpos($value->content, "</") !== false )
+                    {
+                        $marge['assign_date'] = date("Y-m-d", strtotime("+6 hour", strtotime($value->created_at)));
+                    }
                     $marge['duedate'] = date("Y-m-d",  strtotime($value->duedate));
                     $marge['time_over'] = 0;
                     if(date("Y-m-d")>date("Y-m-d",  strtotime($value->duedate)))

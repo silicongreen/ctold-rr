@@ -44,6 +44,9 @@
             emp_name += ' ' + @assignment.employee.last_name
           end
         end
+        unless @assignment.content.index("</").nil?
+          @assignment.created_at = @assignment.created_at.to_time + 6*60*60
+        end
       %>
 <div class="portlet-subcontent" style="width:100%">     
   <div class="timetable_left">

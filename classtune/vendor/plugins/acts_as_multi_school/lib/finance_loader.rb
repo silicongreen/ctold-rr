@@ -4100,7 +4100,21 @@ module FinanceLoader
   def verify_citybank_payment(citybank_token, order_id, session_id, payment, get_the_token)
     if get_the_token
       result = validate_citybank_transaction(citybank_token[:transactionId], order_id, session_id)
-      abort(result.inspect)
+      orderId = payment.order_id
+
+      student_id = payment.payee_id
+
+      @student = Student.find(student_id)
+      @finance_order = FinanceOrder.find_by_order_id_and_student_id(orderId.strip, student_id)
+      #abort(@finance_order.inspect)
+      request_params = @finance_order.request_params
+      amount_to_pay = @finance_order.request_params[:total_payable]
+      fee_percent = 0.00
+      fee_percent = (amount_to_pay.to_f  * 100) * (1.5 / 100)
+      if MultiSchool.current_school.id != 312 
+        amount = (amount_to_pay.to_f * 100) + fee_percent.to_f
+      end
+      abort(amount.to_s)
       if result[:orderStatus].present?
         if result[:orderStatus] == "APPROVED"
           message = {

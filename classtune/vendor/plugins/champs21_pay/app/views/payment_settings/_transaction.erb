@@ -181,11 +181,16 @@
                     end
                   end
                 end
+              %>
+              <% #if payment.payee.id == 36518 %>
+            
+              <% #end %>
+              <%
                 fee_percent = paid_amount.to_f * (1.5 / 100)
                 if MultiSchool.current_school.id != 312 
-                  unless paid_amount == amount_return
+                  #unless paid_amount == amount_return
                     amount = amount.to_f - fee_percent.to_f
-                  end
+                  #end
                 end
                 total_amount = amount + fee_percent
                 amount ||= payment.gateway_response[:Message][:PurchaseAmount]

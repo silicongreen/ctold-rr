@@ -4111,10 +4111,11 @@ module FinanceLoader
       amount_to_pay = @finance_order.request_params[:total_payable]
       fee_percent = 0.00
       fee_percent = (amount_to_pay.to_f  * 100) * (1.5 / 100)
+      paid_amount = amount_to_pay
       if MultiSchool.current_school.id != 312 
-        amount = (amount_to_pay.to_f * 100) + fee_percent.to_f
+        paid_amount = (amount_to_pay.to_f * 100) + fee_percent.to_f
       end
-      abort(amount.to_s)
+      #abort(amount.to_s)
       if result[:orderStatus].present?
         if result[:orderStatus] == "APPROVED"
           message = {
@@ -4130,12 +4131,12 @@ module FinanceLoader
             :SessionId  => result[:sessionID],
             :Currency  => result[:currency],
             :ResponseCode  => "001",
-            :PurchaseAmountScr  => result[:amount].to_f,
-            :TotalAmountScr  => result[:amount].to_f,
+            :PurchaseAmountScr  => amount_to_pay.to_f,
+            :TotalAmountScr  => amount_to_pay.to_f,
             :AuthorizationResponseCode  => "01",
             :TransactionType => "Purchase",
-            :PurchaseAmount  => result[:amount].to_f * 100,
-            :TotalAmount  => result[:amount].to_f * 100,
+            :PurchaseAmount  => paid_amount,
+            :TotalAmount  => paid_amount,
             :OrderStatusScr => result[:orderStatus],
             :OrderStatus => result[:orderStatus],
             :ShopName => "SIS.CLASSTUNE",
@@ -4150,6 +4151,7 @@ module FinanceLoader
           gateway_response = {
             :Message => message
           }
+          abort(gateway_response.inspect)
           trans_date_time = gateway_response[:Message][:TranDateTime]
           a_trans_date_time = trans_date_time.split(' ')
           trans_date = a_trans_date_time[0].split('/').reverse.join('-')

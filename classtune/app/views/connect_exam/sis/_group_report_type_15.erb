@@ -1,0 +1,166 @@
+<% c = 'even' %>
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+            <table id="pdf-table" width="100%" class="left-table even-table extra_padding" cellspacing="0">
+                  <% c = 'even'  %>
+                  <tr class="odd">
+                      <td class="col-pdf" rowspan="2"><b><%= "Subjects" %></b></td>
+                      <td class="col-pdf" colspan="2"><b>Mock 1</b></td>
+                      <td class="col-pdf" colspan="2"><b>Mock 2</b></td>
+                      <td class="col-pdf" colspan="2"><b>Mock 3</b></td>
+                      <td class="col-pdf" colspan="2"><b>Mock 4</b></td>
+                      <td class="col-pdf" ><b>Best Mark</b></td>
+                      <td class="col-pdf" rowspan="2"><b>Grade</b></td>
+                  </tr>
+                  <tr class="odd">
+                      <% @report_data['report']['exams'].each do |report| %>
+                        <td class="col-pdf"><b><%= report['exam_name'] %></b></td>
+                      <% end %>
+                      <td class="col-pdf"><b>100</b></td>
+                  </tr>
+                  <% total_parcent = 0 %>
+                  <% total_subject = 0 %>
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% if subjects['no_exams_sjws'].to_i == 1  %>
+                        <% next %>
+                      <% end %>
+                      <% subjectdata = Subject.find(subjects['id'].to_i) %>
+                      <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                      <% if @has_exam_student == false %>
+                        <% next %>
+                      <% end %>
+                      <tr class="odd">
+                          <% weightage_mark = 0 %>
+                          <% total_mark = 0 %>
+                          <% full_mark = 0 %>
+                          <% student_subject = false %>
+                          <% mock1 = 0 %>
+                          <% mock2 = 0 %>
+                          <% mock3 = 0 %>
+                          <% mock4 = 0 %>
+
+                          <% mock1_full = 0 %>
+                          <% mock2_full = 0 %>
+                          <% mock3_full = 0 %>
+                          <% mock4_full = 0 %>
+                          
+                          <td class="col-pdf left-td"><%= subjects['name'] %></td>
+                          <% unless @report_data['report']['exams'].blank? %>  
+                            <% @report_data['report']['exams'].each do |report| %> 
+                              <% if report['exam_category'] == '7' %>
+                                <% next %>
+                              <% end %>
+                              
+                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>       
+                                <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                  <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB" %>
+                                    <td class="col-pdf"><b><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %></b></td>
+                                    <% student_subject = true %>
+                                    <% if report['quarter'] == '1' %>
+                                      <% mock1 = mock1+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <% end %>
+                                    <% if report['quarter'] == '2' %>
+                                      <% mock2 = mock2+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <% end %>
+                                    <% if report['quarter'] == '3' %>
+                                      <% mock3 = mock3+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <% end %>
+                                    <% if report['quarter'] == '4' %>
+                                      <% mock4 = mock4+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <% end %>
+                                  <% else %>
+                                    <td class="col-pdf"><b>AB</b></td>
+                                  <% end %>  
+                              <% else %>
+                                    <td class="col-pdf"><b>-</b></td>
+                                    
+                              <% end %>      
+                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                <% if report['quarter'] == '1' %>
+                                    <% mock1_full = mock1_full+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                <% end %>  
+                                <% if report['quarter'] == '2' %>
+                                    <% mock2_full = mock2_full+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                <% end %>
+                                <% if report['quarter'] == '3' %>
+                                    <% mock3_full = mock3_full+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                <% end %> 
+                                <% if report['quarter'] == '4' %>
+                                    <% mock4_full = mock4_full+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                <% end %> 
+                                    
+                              <% end %>  
+                            <% end %>
+                          <% end %>
+
+
+
+
+
+                        <% 
+                          
+                          best_mark = 0
+                          
+                          if mock1 > 0
+                            avg = (mock1.to_f/mock1_full.to_f)*100
+                            avg = avg.round()
+                            if avg > best_mark
+                              best_mark = avg
+                            end  
+                          end  
+                          if mock2 > 0
+                            avg = (mock2.to_f/mock2_full.to_f)*100
+                            avg = avg.round()
+                            if avg > best_mark
+                              best_mark = avg
+                            end  
+                          end 
+                        if mock3 > 0
+                            avg = (mock3.to_f/mock3_full.to_f)*100
+                            avg = avg.round()
+                            if avg > best_mark
+                              best_mark = avg
+                            end  
+                          end 
+                        if mock4 > 0
+                          avg = (mock4.to_f/mock4_full.to_f)*100
+                          avg = avg.round()
+                          if avg > best_mark
+                            best_mark = avg
+                          end  
+                        end
+                        %>
+
+                          <% if student_subject == true %>
+                            <td class="col-pdf"><b><%= best_mark.round() %></b></td>
+                            <%  grade = GradingLevel.percentage_to_grade(best_mark, @batch.id) %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <td class="col-pdf"><b><%= grade.name %></b></td>
+                            <% else %>
+                              <td class="col-pdf"><b>-</b></td>
+                            <% end %>
+                            <% total_parcent= total_parcent+best_mark %>
+                          <% else  %>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
+                          <% end %>      
+                          <% total_subject = total_subject+1 %>
+                      </tr> 
+                    <% end %>  
+                  <% end %>
+                  
+
+              </table>
+              
+       
+<% end %>
+<style>
+    
+table tr.odd table.std_info_table tr td
+{
+    border:none !important;
+    text-align: left !important;
+    padding: 5px 0px !important;
+    font-weight:bold;
+}
+</style>

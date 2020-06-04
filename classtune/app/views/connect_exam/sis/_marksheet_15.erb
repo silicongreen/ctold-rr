@@ -1,0 +1,247 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div id="page-yield" class="available_sections1">
+  <div class="page1"> </div>
+  <div class="section1 row" >
+    <center>
+      <h3 align="center">Mark Sheet</h3>
+      <div class="hor_line"></div>
+      <h4 align="center">For Subject Teacher</h4>
+      
+      <div id ="main_info">
+          <table>
+              <tr>
+                 <% if !@employee.nil? %> 
+                  <td align='left'><h4>Teacher's Name : <%=  @employee.full_name %></h4></td>
+                  <td align='center'><h4>Subject : <%= @subject.name %></h4></td>
+                 <% else %>
+                  <td align='left'><h4>Subject : <%= @subject.name %></h4></td>
+                 <% end %> 
+                  
+                  <td align='center'><h4>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %></h4></td>
+                  <td align='right'><h4>Section : <%= @batch.course.section_name %></h4></td>
+              </tr>    
+          </table>    
+       
+      </div>
+      <% unless @report_data.blank?  or  @report_data['result'].blank? %>
+      <% c = 'even' %>
+      <% full_mark = 0 %>
+      <% colspan = 0 %>
+      <% mock_1_count = 0 %>
+      <% @report_data['result']['ALL'].each do |rs| %>
+        <% if rs['exam_category'] != "7" %>
+          <% if rs['quarter'] == '1' %>
+            <% mock_1_count = mock_1_count+1 %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <table id="pdf-table" width="98%" cellspacing="0">
+          
+        <% if mock_1_count == 2 %>   
+        <tr class="table-header">
+          <td rowspan="3">Roll NO.</td>
+          <td rowspan="3">Name</td>
+          <td class="col-pdf" colspan="2"><b>Mock 1</b></td>
+          <td class="col-pdf" colspan="2"><b>Mock 2</b></td>
+          <td class="col-pdf" colspan="2"><b>Mock 3</b></td>
+          <td class="col-pdf" colspan="2"><b>Mock 4</b></td>
+          <td class="col-pdf" rowspan="2" ><b>Best Mark</b></td>
+          <td class="col-pdf" rowspan="3"><b>Grade</b></td>
+        
+        </tr>
+        <tr class="table-header">
+            <% @report_data['result']['ALL'].each do |rs| %>
+            <% if rs['exam_category'] != "7" %>
+              <td><%=  rs['name'] %></td>
+            <% end %>
+            <% colspan = colspan+1 %>
+          <% end %> 
+        </tr> 
+        <% else %>
+        
+          <tr class="table-header">
+            <td rowspan="2">Roll NO.</td>
+            <td rowspan="2">Name</td>
+            <% @report_data['result']['ALL'].each do |rs| %>
+              <% if rs['exam_category'] != "7" %>
+                <td><%=  rs['name'] %></td>
+              <% end %>
+              <% colspan = colspan+1 %>
+            <% end %>
+            <td class="col-pdf"><b>Best Mark</b></td>
+            <td class="col-pdf" rowspan="2"><b>Grade</b></td>
+
+          </tr>
+        
+        <% end %>
+        <tr class="table-header">
+            <% @report_data['result']['ALL'].each do |rs| %>
+            <% if rs['exam_category'] != "7" %>
+              <td><%=  rs['maximum_marks'] %></td>
+            <% end %>
+            <% colspan = colspan+1 %>
+          <% end %> 
+            <td>100</td>    
+        </tr> 
+        
+        <% extender = 0 %>
+        <% std_count = 0 %>
+        <% if mock_1_count == 1 %>  
+        <% std_count = -1 %>
+        <% end %>
+        <% unless @report_data['result']['al_students'].blank? %>
+        <% @report_data['result']['al_students'].each do |std| %>
+          <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>@subject.id.to_s,:elective_group_id=>@subject.elective_group_id.to_i} %>
+          <% if @has_exam_student == false %>
+            <% next %>
+          <% end %>          
+                
+
+          <%  std_count = std_count+1; %>
+          <% colspan = colspan+4 %>
+          <% if std_count>18 && extender ==0 %>
+              <% std_count = 0 %>
+              <% extender = 1 %>
+              <tr class="page-break">
+                  <td colspan="<%= colspan %>">&nbsp;</td>
+              </tr>    
+          <% elsif std_count>22 && extender ==1 %>
+              <% std_count = 0 %>
+              <% extender = 1 %>
+              <tr class="page-break">
+                  <td colspan="<%= colspan %>">&nbsp;</td>
+              </tr> 
+          <% end %>    
+        
+        
+          <% total_mark = 0 %>
+          <% full_mark = 0 %>
+          <% mock1 = 0 %>
+          <% mock2 = 0 %>
+          <% mock3 = 0 %>
+          <% mock4 = 0 %>
+
+          <% mock1_full = 0 %>
+          <% mock2_full = 0 %>
+          <% mock3_full = 0 %>
+          <% mock4_full = 0 %>
+              
+          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+            <td><%= std['class_roll_no'] %></td>
+            <td><%= std['name'] %></td>
+            <% @report_data['result']['ALL'].each do |rs| %>
+              <td>
+              <% if rs['exam_category'] != '7' %>
+                 
+                <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? && rs['students'][std['id']]['score'].to_i != 0 %>
+                    <%= rs['students'][std['id']]['score'].to_i %>
+                    <% if rs['quarter'] == '1' %>
+                      <% mock1 = mock1.to_f+rs['students'][std['id']]['score'].to_f %>
+                    <% end %>
+                    <% if rs['quarter'] == '2' %>
+                      <% mock2 = mock2.to_f+rs['students'][std['id']]['score'].to_f %>
+                    <% end %>
+                    <% if rs['quarter'] == '3' %>
+                      <% mock3 = mock3.to_f+rs['students'][std['id']]['score'].to_f %>
+                    <% end %>
+                    <% if rs['quarter'] == '4' %>
+                      <% mock4 = mock4.to_f+rs['students'][std['id']]['score'].to_f %>
+                    <% end %>
+
+                <% else %>
+                    -
+                <% end %>
+                <% if !rs['maximum_marks'].blank? %>
+                  <% if rs['quarter'] == '1' %>
+                      <% mock1_full = mock1_full.to_f+rs['maximum_marks'].to_i %>
+                    <% end %>
+                    <% if rs['quarter'] == '2' %>
+                      <% mock2_full = mock2_full.to_f+rs['maximum_marks'].to_i %>
+                    <% end %>
+                    <% if rs['quarter'] == '3' %>
+                      <% mock3_full = mock3_full.to_f+rs['maximum_marks'].to_i %>
+                    <% end %>
+                    <% if rs['quarter'] == '4' %>
+                      <% mock4_full = mock4_full.to_f+rs['maximum_marks'].to_i %>
+                    <% end %>
+                <% end %>
+              <% end %>    
+              </td>
+              
+            <% end %> 
+              
+            <% 
+                          
+              best_mark = 0
+
+              if mock1 > 0
+                avg = (mock1.to_f/mock1_full.to_f)*100
+                avg = avg.round()
+                if avg > best_mark
+                  best_mark = avg
+                end  
+              end  
+              if mock2 > 0
+                avg = (mock2.to_f/mock2_full.to_f)*100
+                avg = avg.round()
+                if avg > best_mark
+                  best_mark = avg
+                end  
+              end 
+            if mock3 > 0
+                avg = (mock3.to_f/mock3_full.to_f)*100
+                avg = avg.round()
+                if avg > best_mark
+                  best_mark = avg
+                end  
+              end 
+            if mock4 > 0
+                avg = (mock4.to_f/mock4_full.to_f)*100
+                avg = avg.round()
+                if avg > best_mark
+                  best_mark = avg
+                end  
+              end
+            %>
+             
+           
+           <% if best_mark > 0 %>   
+              <td ><%= best_mark.round() %></td>
+           <% else %>
+              <td><%= "-" %></td>
+           <% end %>
+           
+
+           <%  grade = SubjectGradingLevel.percentage_to_grade(best_mark, @batch.id, @subject.id.to_i) %>
+           <% if !grade.blank? and !grade.name.blank? and best_mark > 0 %>
+            <td class="col-2"><b><%= grade.name %></b></td>
+          <% else %>
+            <td class="col-2"><b>-</b></td>
+          <% end %>
+        </tr>
+        <% end %>
+        <% end %>
+      </table>
+      <% end %>
+    </center>
+  </div>
+  
+  
+</div>

@@ -182,11 +182,7 @@
                   end
                 end
                 fee_percent = paid_amount.to_f * (1.5 / 100)
-                %>
-                <% if payment.payee.id == 36518 %>
-              <%= paid_amount.to_s + "  " + fee_percent.to_s + "  " + amount_return.to_s %>
-              <% end %>
-                <%
+                
                 if MultiSchool.current_school.id != 312 
                   unless paid_amount == amount_return
                     amount = amount.to_f - fee_percent.to_f

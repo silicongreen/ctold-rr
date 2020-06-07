@@ -28,18 +28,18 @@
                       <td class="col-pdf">1<sup>st</sup> Quarter (50/25)</td>
                       <td class="col-pdf">2<sup>nd</sup> Quarter (50/25)</td>
                       <td class="col-pdf">Full Marks</td>
-                      <td class="col-pdf">Total</td>
+                      <td class="col-pdf">Total Marks Obtained</td>
                       <td class="col-pdf">Grade</td>
                       <td class="col-pdf">Highest Mark</td>
                       <td class="col-pdf">3<sup>rd</sup> Quarter(50/25)</td>
                       <td class="col-pdf">4<sup>th</sup> Quarter (50/25)</td>
                       <td class="col-pdf">Full Marks</td>
-                      <td class="col-pdf">Total</td>
+                      <td class="col-pdf">Total Marks Obtained</td>
                       <td class="col-pdf">Grade</td>
                       <td class="col-pdf">Highest Mark</td>
                       
                       <td class="col-pdf">Overall Total</td>
-                      <td class="col-pdf">Convert (100/50)</td>
+                      <td class="col-pdf">Converted to (100/50)</td>
                       <td class="col-pdf">Grade</td>
 
                   </tr>
@@ -325,7 +325,7 @@
                               avg_mark_ct3 = ct_marks3[0].to_f+ct_marks3[1].to_f+ct_marks3[2].to_f
                               ct_full_mark3 = ct_full_mark3*3
                           else 
-                              avg_mark_ct1 = ct_marks3[0].to_f+ct_marks3[1].to_f
+                              avg_mark_ct3 = ct_marks3[0].to_f+ct_marks3[1].to_f
                               ct_full_mark3 = ct_full_mark3*2
                           end 
 
@@ -333,7 +333,7 @@
                               avg_mark_st3 = st_marks3[0].to_f+st_marks3[1].to_f+st_marks3[2].to_f+st_marks3[3].to_f
                               st_full_mark3 = st_full_mark3*4
                           else st_full_mark3.to_i == 5  
-                              avg_mark_st1 = st_marks3[0].to_f+st_marks3[1].to_f+st_marks3[2].to_f
+                              avg_mark_st3 = st_marks3[0].to_f+st_marks3[1].to_f+st_marks3[2].to_f
                               st_full_mark3 = st_full_mark3*3
                           end
 

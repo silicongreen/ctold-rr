@@ -198,7 +198,7 @@ module Redactor::FormHelpers
                               }
                           }
                         },
-                focus: true,
+                focus: false,
                 plugins: ['fontcolor','#{latex_plugin}'],
                 direction: '#{direction}',
                 lang: '#{I18n.locale}',

@@ -21,8 +21,8 @@
                   <tr class="table-header">
                       <td class="col-pdf no-warp" colspan="8" ><%= first_term_exam_name %> <%= main_title %></td>
                       <td class="col-pdf no-warp" colspan="7" ><%= final_term_exam_name %> <%= main_title %></td>
-                      <td class="col-pdf no-warp" colspan="2" >Combined Result</td>
-                  </tr>     
+                      <td class="col-pdf no-warp" colspan="3" >Combined Result</td>
+                  </tr>    
                   <tr class="table-header">
                       <td class="col-pdf"><%= "Subject" %></td>
                       <td class="col-pdf">1<sup>st</sup> Quarter (30/15)</td>
@@ -39,7 +39,9 @@
                       <td class="col-pdf">Total</td>
                       <td class="col-pdf">Grade</td>
                       <td class="col-pdf">Highest Mark</td>
-                      <td class="col-pdf">Average</td>
+                      
+                      <td class="col-pdf">Overall Total</td>
+                      <td class="col-pdf">Converted to (100/50)</td>
                       <td class="col-pdf">Grade</td>
 
                   </tr>
@@ -341,7 +343,7 @@
                           else 
                             avg_mark_ct3 = ct_marks3[0].to_f
                           end 
-
+                        
                           querter_mark = 30
 
                           if st_full_mark3.to_i == 10 
@@ -412,9 +414,9 @@
                             <td class="col-pdf" colspan="2" rowspan="<%= rowspan %>">Not taken due to Corona Pandemic</td>
                             
                           <% end %>
-                          
                           <td class="col-pdf"><%= querter_mark.round().to_s %></td>
                           <td class="col-pdf"><%= obtained_mark3.round().to_s %></td>
+                          
                          
                           <%  grade = GradingLevel.percentage_to_grade(main_mark_final_term, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>
@@ -422,13 +424,18 @@
                           <% else %>
                             <td class="col-pdf"><b>-</b></td>
                           <% end %>
+                            
+                            
 
                           <td class="col-pdf">
                               <% if !@subject_highest_mark_final_term[subjects['id'].to_i].blank? %>  
                                 <%= @subject_highest_mark_final_term[subjects['id'].to_i].to_i %>
                               <% end %>
                           </td>
-                          <% main_mark_combned = (main_mark.to_f/100)*first_term_full_mark.to_f %>
+                          <% total_mark_combined = full_mark_first_term+querter_mark %>
+                          
+                          <td class="col-pdf"><%=  total_mark_combined.round() %></td>
+                          <% main_mark_combned = (main_mark.to_f/100)*full_mark_first_term.to_f %>
                           <td class="col-pdf"><%=  main_mark_combned.round() %></td>
                           <%  main_mark = main_mark.round() %>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
@@ -481,7 +488,7 @@
                             </td>
                             <td class="col-pdf" colspan="6"></td>
                             <td class="col-pdf"><%= report['subject_comment'] %></td>
-                            <td class="col-pdf" colspan="3"></td>
+                            <td class="col-pdf" colspan="4"></td>
                         </tr>
                       <% end %>
                     <% end %>

@@ -334,6 +334,11 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
         main_mark = (obtained_mark.round().to_f/full_mark.to_f)*100
         
         
+        full_mark_final = full_mark3+full_mark4
+        obtained_mark_final = obtained_mark3.round()+obtained_mark4.round()
+        main_mark_final = (obtained_mark_final.round().to_f/full_mark_final.to_f)*100
+        
+        
         quarter_mark = 0
         if obtained_mark1>0
           quarter_mark = obtained_mark1.round()
@@ -356,6 +361,12 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
           @subject_highest_mark_first_term[sub['id'].to_i] = obtained_mark
         elsif obtained_mark.to_i > @subject_highest_mark_first_term[sub['id'].to_i].to_i
           @subject_highest_mark_first_term[sub['id'].to_i] = obtained_mark.to_i
+        end
+        
+        if @subject_highest_mark_final_term[sub['id'].to_i].blank?
+          @subject_highest_mark_final_term[sub['id'].to_i] = obtained_mark_final
+        elsif obtained_mark_final.to_i > @subject_highest_mark_final_term[sub['id'].to_i].to_i
+          @subject_highest_mark_final_term[sub['id'].to_i] = obtained_mark_final.to_i
         end
 
       end

@@ -34,7 +34,7 @@ class OnlineStudentExamController < ApplicationController
   def start_exam
     @student = Student.find_by_user_id(current_user.id,:select=>"id,batch_id")
     @exam = @student.available_online_exams.find_by_id(params[:id].to_i)
-    @per_page = 20
+    @per_page = 40
     if @exam.present?
       unless @exam.already_attended(@student.id)
         Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:id], 15,current_user.id])

@@ -38,7 +38,7 @@
         <p><%= t('question') %></p>
         <div class="label-field-pair1">
           <label ><%= t('mark') %></label>
-          <div class="text-input-bg"><%= f.text_field :mark %></div>
+          <div class="text-input-bg"><%= f.text_field :mark, :autofocus=>true %></div>
         </div>
         
         <div id="question_text_field_bg">
@@ -86,3 +86,10 @@
   </div>
 </div>
 <%= stylesheet_link_tag 'tadded-header' %>
+
+<script>
+  j(document).ready(function(){
+    document.getElementById("online_exam_question_mark").focus();
+  });
+  
+</script>  

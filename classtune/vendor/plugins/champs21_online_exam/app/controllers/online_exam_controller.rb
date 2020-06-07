@@ -498,17 +498,29 @@ class OnlineExamController < ApplicationController
   end
 
   def add_extra_question
-    @exam_group = OnlineExamGroup.find(params[:id])
-    @online_exam_question = OnlineExamQuestion.new
-    @exam_group.option_count.to_i.times { @online_exam_question.online_exam_options.build }
-    if request.post?
-      @online_exam_question = OnlineExamQuestion.new(params[:online_exam_question])
-      @online_exam_question.online_exam_group_id = @exam_group.id
-      @online_exam_question.user_id = current_user.id
-     if @online_exam_question.save
-        redirect_to :action=>:exam_details, :id=>@exam_group.id
+    exam_group =  OnlineExamGroup.find(params[:id],:include=>[{:batch=>[:course]},:subject])
+    @group_ids=OnlineExamGroup.find(:all,:include=>[{:batch=>[:course]},:subject],:conditions=>["courses.course_name = ? and subjects.code = ? and online_exam_groups.name = ? and online_exam_groups.start_date = ? and online_exam_groups.end_date = ? and online_exam_groups.maximum_time = ? and online_exam_groups.pass_percentage = ? and online_exam_groups.option_count = ? and online_exam_groups.is_deleted = ? and online_exam_groups.is_published = ?",exam_group.batch.course.course_name,exam_group.subject.code,exam_group.name,exam_group.start_date,exam_group.end_date,exam_group.maximum_time,exam_group.pass_percentage,exam_group.option_count,exam_group.is_deleted,exam_group.is_published]).collect(&:id)
+    saved = false
+    unless @group_ids.blank?
+      @group_ids.each do |g|
+        @exam_group_main = OnlineExamGroup.find(g)
+        @online_exam_question = OnlineExamQuestion.new
+        @exam_group_main.option_count.to_i.times { @online_exam_question.online_exam_options.build }
+        if request.post?
+          @online_exam_question = OnlineExamQuestion.new(params[:online_exam_question])
+          @online_exam_question.online_exam_group_id = @exam_group_main.id
+          @online_exam_question.user_id = current_user.id
+          if @online_exam_question.save
+            saved = true
+          end
+        end
       end
     end
+    
+    if saved == true
+      redirect_to :action=>:exam_details, :id=>exam_group.id
+    end
+    
   end
 
   def publish_exam

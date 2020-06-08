@@ -304,6 +304,7 @@
                         
                     </tr>
                   <% elsif !params[:show_one].blank? %>
+                    <% if params[:enrolment].blank? %>
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         <% date_two = @date.due_date.to_date %>
                         
@@ -314,6 +315,15 @@
 
                         <td class="col-pdf"><%= "#{precision_label(balance3.round())}" %></td>
                     </tr>
+                    <% else %>
+                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        
+                        <td colspan="3"><b>Principal's permission is needed for late admission after 25th June 2020.</b><b>
+
+                        
+                    </tr>
+                    
+                    <% end %>
                   <% else %>
                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <% date_one = @date.due_date.to_date+1.days %>
@@ -455,7 +465,11 @@
                 <h3 align="center">N.B. Laboratory fees will be taken after subject selection within one month of regular classes.</h3>
               <% end %>
               <% if !params[:report].blank? %>
-                <h3 align="center">N.B. Roll No. in the new class will be set as per merit list of the final result.</h3>
+                <h3 align="center">N.B. Roll No. in the new class will be set as per merit list of the final result.
+                <% if !params[:enrolment].blank? %>
+                   if enrolment procedure is completed by 25th June 2020 
+                <% end %>    
+                </h3>
               <% end %>
               <h3>&nbsp;</h3>
               <h3>&nbsp;</h3>

@@ -55,6 +55,7 @@ class AssignmentAnswersController < ApplicationController
     unless @assignment.nil?
       @assignment_answer = @assignment.assignment_answers.build(params[:assignment_answer])
       @assignment_answer.student_id = current_user.student_record.id
+      @assignment_answer.from_web = 1
       if @assignment.assignment_type != 2
         @assignment_answer.title = "Done"
         @assignment_answer.content = "Homework Submitted Please Check"

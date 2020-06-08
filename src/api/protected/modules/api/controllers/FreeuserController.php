@@ -53,7 +53,33 @@ class FreeuserController extends Controller
             $homework = $assignment_ans->findByPk($id);
             if ($homework->attachment_file_name or $homework->attachment2_file_name or $homework->attachment3_file_name)
             {
-               $home_work_id = strlen($homework->assignment_id);
+               
+                if( $homework->from_web == 1 )
+                {
+                    if( $homework->attachment_file_name )
+                    {
+                        $file_name_explode = explode(".", $homework->attachment_file_name);
+                        $extension = $file_name_explode[count($file_name_explode)-1];
+                        $file_name = str_replace(".".$extension,"", $homework->attachment_file_name);
+                        $homework->attachment_file_name = $file_name."_".$homework->id.".".$extension;
+                    }
+                    if( $homework->attachment2_file_name )
+                    {
+                        $file_name_explode = explode(".", $homework->attachment2_file_name);
+                        $extension = $file_name_explode[count($file_name_explode)-1];
+                        $file_name = str_replace(".".$extension,"", $homework->attachment2_file_name);
+                        $homework->attachment2_file_name = $file_name."_".$homework->id.".".$extension;
+                    }
+                    if( $homework->attachment3_file_name )
+                    {
+                        $file_name_explode = explode(".", $homework->attachment3_file_name);
+                        $extension = $file_name_explode[count($file_name_explode)-1];
+                        $file_name = str_replace(".".$extension,"", $homework->attachment3_file_name);
+                        $homework->attachment3_file_name = $file_name."_".$homework->id.".".$extension;
+                    }
+                    
+                }
+                $home_work_id = strlen($homework->assignment_id);
         
                 $new_id = "";
                 $diff = 9-$home_work_id;

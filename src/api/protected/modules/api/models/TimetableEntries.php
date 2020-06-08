@@ -396,6 +396,7 @@ class TimetableEntries extends CActiveRecord {
         $criteria->group = "t.weekday_id";
         $criteria->addCondition("timeTableDetails.start_date <= '" . $date . "' ");
         $criteria->addCondition("timeTableDetails.end_date >= '" . $date . "' ");
+        $criteria->addCondition("batchDetails.class_timing_set_id = classTimingDetails.class_timing_set_id");
         if($batch_id)
         {
             $criteria->compare('t.batch_id', $batch_id);
@@ -555,6 +556,8 @@ class TimetableEntries extends CActiveRecord {
         $criteria->compare('t.weekday_id', $cur_day_key);
         $criteria->addCondition("timeTableDetails.start_date <= '" . $date . "' ");
         $criteria->addCondition("timeTableDetails.end_date >= '" . $date . "' ");
+        
+        $criteria->addCondition("batchDetails.class_timing_set_id = classTimingDetails.class_timing_set_id");
         if($batch_id)
         {
             $criteria->compare('t.batch_id', $batch_id);

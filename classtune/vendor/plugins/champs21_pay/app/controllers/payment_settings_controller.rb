@@ -674,7 +674,9 @@ class PaymentSettingsController < ApplicationController
       configurations = PaymentConfiguration.all
       unless configurations.blank?
         configurations.each do |con|
-          con.destroy
+          if con.config_key.to_s != "test_user_for_payment_check"
+            con.destroy
+          end
         end
       end
       #abort(configurations.inspect)

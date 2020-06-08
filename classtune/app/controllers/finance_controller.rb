@@ -15030,13 +15030,17 @@ class FinanceController < ApplicationController
       @d_id = params[:date];
       @batch   = Batch.find(params[:batch_id])
       #@students = @batch.students
+      order = "students.admission_no ASC"
+      if MultiSchool.current_school.id == 352
+        order = "CAST(students.class_roll_no AS SIGNED INTEGER) ASC"
+      end
       unless params[:date].blank?
         unless params[:date] == '0'
           @date = FinanceFeeCollection.find(params[:date])
-          @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.balance > 0 and students.batch_id='#{@batch.id}'"],:order=>"students.admission_no ASC").uniq
+          @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.balance > 0 and students.batch_id='#{@batch.id}'"],:order=>order).uniq
         else
           @date = 0
-          @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.balance > 0 and students.batch_id='#{@batch.id}'"],:order=>"students.admission_no ASC").uniq
+          @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.balance > 0 and students.batch_id='#{@batch.id}'"],:order=>order).uniq
         end
       end
     else
@@ -15086,6 +15090,10 @@ class FinanceController < ApplicationController
           end
         end
         #@students = Student.find(:all,:conditions=>["batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+        order = "students.admission_no ASC"
+        if MultiSchool.current_school.id == 352
+          order = "CAST(students.class_roll_no AS SIGNED INTEGER) ASC"
+        end
         unless params[:date].blank?
           unless params[:date] == '0'
             @multi_date = true
@@ -15102,12 +15110,12 @@ class FinanceController < ApplicationController
                 @dates_id[0] = 0
               end
               #abort(@dates.map(&:id).inspect)
-              @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id IN (#{@dates_id.join(",")}) and finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+              @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id IN (#{@dates_id.join(",")}) and finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>order).uniq
               #abort(@defaulters.inspect)
             end
           else
             @date = 0
-            @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+            @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>order).uniq
           end
         end
       else
@@ -15122,15 +15130,26 @@ class FinanceController < ApplicationController
         unless params[:batch_id].nil?
           batch_id = params[:batch_id]
         end
-        @batch   = Batch.find(params[:batch_id])
+        #@batch   = Batch.find(params[:batch_id])
         unless params[:course_name].nil?
           class_id = params[:course_name]
+          batch = Batch.find(:first, :conditions => "course_id = #{class_id}")
+          unless batch.blank?
+            batch_id = batch.id
+            batch_name = batch.name
+          end
         end
 
         unless params[:section_id].blank?
           course_id = params[:section_id]
+          batch = Batch.find(:first, :conditions => "course_id = #{course_id}")
+          unless batch.blank?
+            batch_id = batch.id
+            batch_name = batch.name
+          end
         end
-
+        
+        
         batch_name = ""
         batches = [0]
         if batch_id.to_i > 0
@@ -15138,8 +15157,10 @@ class FinanceController < ApplicationController
           batch_name = batch.name
         end
         
+        @batch   = Batch.find(batch_id)
+        
         class_name = ""
-        if class_id.to_i > 0
+        if course_id.to_i > 0
           course = Course.find class_id
           class_name = course.course_name
         end
@@ -15171,6 +15192,10 @@ class FinanceController < ApplicationController
         end
         #abort(batches.inspect)
         #@students = Student.find(:all,:conditions=>["batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+        order = "students.admission_no ASC"
+        if MultiSchool.current_school.id == 352
+          order = "CAST(students.class_roll_no AS SIGNED INTEGER) ASC"
+        end
         unless params[:date].blank?
           unless params[:date] == '0'
             if course_id == 0
@@ -15188,16 +15213,16 @@ class FinanceController < ApplicationController
                   @dates_id[0] = 0
                 end
                 #abort(@dates.map(&:id).inspect)
-                @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id IN (#{@dates_id.join(",")}) and finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+                @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id IN (#{@dates_id.join(",")}) and finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>order).uniq
                 #abort(@defaulters.inspect)
               end
             else  
               @date = FinanceFeeCollection.find(params[:date])
-              @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+              @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>order).uniq
             end
           else
             @date = 0
-            @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>"students.admission_no ASC").uniq
+            @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id",:conditions=>["finance_fees.balance > 0 and students.batch_id IN (#{batches.join(",")})"],:order=>order).uniq
           end
         end
       end

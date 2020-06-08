@@ -17,7 +17,19 @@ module OnlinePayment
       ref_id = ""
       merchant_id = ""
       now = I18n.l(Time.now, :format=>'%Y-%m-%d %H:%M:%S')
-      
+      #test_user_for_payment_check = []
+      test_user = PaymentConfiguration.config_value("test_user_for_payment_check")
+      test_users = test_user.split(",") unless test_user.blank?
+      test_users ||= Array.new
+      found_test_user = false
+      has_test_user = false
+      unless test_users.blank?
+        student_id = params[:id]
+        has_test_user = true
+        if test_users.map(&:to_i).include?(student_id.to_i)
+          found_test_user = true
+        end
+      end
 #      require 'date'
 #      s = "2020-02-25T13:22:32:790 GMT+0000"
 #      abort(DateTime.parse(s).to_datetime.strftime("%Y-%m-%d %H:%M:%S"))
@@ -44,13 +56,26 @@ module OnlinePayment
                     config_val = String.new
                   end
                 end
-                @gateway_settings[active_gateway] = tmp
+                must_include = true
+                if found_test_user
+                  if PaymentConfiguration.config_value('is_test_' + active_gateway).to_i == 0
+                    must_include = false
+                  end
+                end
+                if has_test_user and found_test_user == false
+                  if PaymentConfiguration.config_value('is_test_' + active_gateway).to_i == 1
+                    must_include = false
+                  end
+                end
+                if must_include
+                  @gateway_settings[active_gateway] = tmp
+                end
               end
             end
           else  
             fee_details_without_gateway and return
           end
-          
+          #abort(@gateway_settings.)
           current_school_name = Configuration.find_by_config_key('InstitutionName').try(:config_value)
           
           #@fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }

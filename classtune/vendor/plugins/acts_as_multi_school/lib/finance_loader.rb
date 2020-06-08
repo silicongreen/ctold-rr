@@ -62,6 +62,9 @@ module FinanceLoader
           @total_discount = @total_discount + @discounts_amount[d.id]
         end
       end
+      if student.id == 14328
+      abort(@discounts.inspect)
+      end
     else
       if is_advance_fee_collection == false or (is_advance_fee_collection && advance_fee_particular.include?(0))
         

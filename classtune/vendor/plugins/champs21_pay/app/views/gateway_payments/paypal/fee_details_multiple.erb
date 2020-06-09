@@ -1142,7 +1142,11 @@
       <% if MultiSchool.current_school.id == 352 %>
       <% has_dues = false %>
       <% end %>
+      
+      <% prev_dues_school = [312] %>
+      <% unless prev_dues_school.include?(MultiSchool.current_school.id) %>
       <% has_dues = false %>
+      <% end %>
       <tr class="tr-blank"></tr>
       <tr class="tr-blank"></tr>
       <tr class="tr-blank"></tr>

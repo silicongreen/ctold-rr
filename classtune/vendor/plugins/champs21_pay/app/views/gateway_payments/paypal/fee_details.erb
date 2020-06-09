@@ -1138,7 +1138,10 @@
           <% under_maintenance = true %>
         <% end %>
       <% end %>
+      <% prev_dues_school = [312] %>
+      <% unless prev_dues_school.include?(MultiSchool.current_school.id) %>
       <% @student_has_due = false %>
+      <% end %>
       <% if @student_has_due == false #and @financefee.batch_id == @student.batch_id %>
         <%#= total_fees.to_s + " DID DID DID" %>
         <% if total_fees > 0 and under_maintenance == false  %>

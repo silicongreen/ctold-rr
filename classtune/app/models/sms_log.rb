@@ -30,7 +30,13 @@ class SmsLog < ActiveRecord::Base
       filter_data =  SmsLog.find(:all,:conditions=> ["DATE(created_at) >= '#{date1}' AND DATE(created_at) <= '#{date2}'"])
     end
     unless mobile.blank?
-      filter_data = SmsLog.find(:all, :conditions=> ["mobile = #{mobile}"])
+      unless start_date.blank? and end_date.blank?
+        date1 = start_date.to_date.strftime("%Y-%m-%d")
+        date2 = end_date.to_date.strftime("%Y-%m-%d")
+        filter_data =  SmsLog.find(:all,:conditions=> ["DATE(created_at) >= '#{date1}' AND DATE(created_at) <= '#{date2}' AND mobile = '#{mobile}'"])
+      else
+        filter_data = SmsLog.find(:all, :conditions=> ["mobile = #{mobile}"])
+      end
     end
     return filter_data
   end

@@ -1,3 +1,17 @@
+<%
+if @batch.course.course_name == "KG I" or @batch.course.course_name == "KG II" or @batch.course.course_name == "Nursery" or @batch.course.course_name == "Playgroup"
+  teacher_sign = @batch.course.course_name.downcase+" "+@batch.course.section_name.downcase+" "+@batch.name.downcase+".jpg"
+else
+  teacher_sign = @batch.course.course_name.downcase+" "+@batch.course.section_name.downcase+".jpg"
+end  
+  teacher_in_charge_sign = "Teacher In charge grade 5 to all.jpg"
+if @batch.course.course_name == "KG I" or @batch.course.course_name == "KG II" or @batch.course.course_name == "Nursery" or @batch.course.course_name == "Playgroup" or @batch.course.course_name == "Grade 1" or @batch.course.course_name == "Grade 2" or @batch.course.course_name == "Grade 3" or @batch.course.course_name == "Grade 4"
+  teacher_in_charge_sign = "Teacher In charge Pg to grade 4.jpg"
+end 
+
+
+%>
+
 <% bottom_string = "<br/><br/><br/><br/>" %>
 <% bottom_string2 = "" %>
 <% unless params[:bottom].blank?  %>
@@ -16,13 +30,13 @@
 
         <tr class="even border-bottom-1-px">
             <td class="col-pdf " width="25%">
-                 <%= bottom_string %>
+                 <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/")+"#{teacher_sign}") %>
             </td> 
             <td class="col-pdf" width="25%">
-                <%= bottom_string %>
+                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/")+"#{teacher_in_charge_sign}") %>
             </td>
             <td class="col-pdf" width="25%">
-                <%= bottom_string %>
+                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/Principal.jpg")) %>
             </td> 
             <td class="col-pdf " width="25%">
                 <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/signature.png")) %>

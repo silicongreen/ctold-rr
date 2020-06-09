@@ -1,5 +1,16 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-  <div id="page-yield"  class="available_sections1 st_joseph_bg">
+<% 
+student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","Grade 6","Grade 7","Grade 8","Grade 9","Grade 10","Grade 11","Grade 12"]
+ 
+@promoted_to = ""
+  if student_classes.include?(@batch.course.course_name)
+    array_index = student_classes.index @batch.course.course_name
+    if array_index < student_classes.count
+      @promoted_to = student_classes[array_index+1]
+    end
+  end
+%>  
+<div id="page-yield"  class="available_sections1 st_joseph_bg">
       <p class="top_margin">&nbsp;</p>
       <table class="big_font_south"  width="99%" >
           <thead>
@@ -18,6 +29,7 @@
 
                    
               <table id="pdf-table" width="99%" cellspacing="0">
+                  <% u_count = 0 %>
                   <% first_term_exam_name = "Half Yearly" %>
                   <% final_term_exam_name = "Final Term" %>
                   <% main_title = "Examination" %>
@@ -46,14 +58,14 @@
                       <td class="col-pdf">2<sup>nd</sup> Quarter (30/15)</td>
                       <td class="col-pdf"><%= first_term_exam_name %> (40/20)</td>
                       <td class="col-pdf">Full Marks</td>
-                      <td class="col-pdf">Total</td>
+                      <td class="col-pdf">Total Marks obtained</td>
                       <td class="col-pdf">Grade</td>
                       <td class="col-pdf">Highest Mark</td>
                       <td class="col-pdf">3<sup>rd</sup> Quarter(30/15)</td>
                       <td class="col-pdf">4<sup>th</sup> Quarter (30/15)</td>
                       <td class="col-pdf"><%= final_term_exam_name %> (40/20)</td>
                       <td class="col-pdf">Full Marks</td>
-                      <td class="col-pdf">Total</td>
+                      <td class="col-pdf">Total Marks obtained</td>
                       <td class="col-pdf">Grade</td>
                       <td class="col-pdf">Highest Mark</td>
                       
@@ -457,6 +469,9 @@
                           <%  main_mark = main_mark.round() %>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>
+                            <% if grade.name == "U" %>
+                              <% u_count = u_count+1 %>
+                            <% end %>
                             <td class="col-pdf"><b><%= grade.name %></b></td>
                           <% else %>
                             <td class="col-pdf"><b>-</b></td>
@@ -587,9 +602,12 @@
                           <table id="pdf-table" class="font-size-20" width="100%" >
                               <tr class="table-header">
                                   <td class="col-pdf promoted_section_final"  valign="top">
-
-                                      Promoted To&nbsp:&nbsp;
-
+                                      <% if u_count < 3 && @promoted_to %>
+                                      Promoted To&nbsp:&nbsp;<%= @promoted_to %><% if u_count > 0 %> (on consideration)<% end %>
+                                      <% elsif @promoted_to %>
+                                      Not Promoted.
+                                      <% end %>
+                                      
                                   </td>                      
                               </tr>
                           </table>

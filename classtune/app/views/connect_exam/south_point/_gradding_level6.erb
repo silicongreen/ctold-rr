@@ -7,8 +7,13 @@
                     <table  id="pdf-table" class="margin-top-bottom-10 font-size-2 gradding"  width="85%">
                          <tr  class="even">
                           <td colspan="3" class="col-pdf"><b>Grading System</b></td>
-                          <td colspan="3" class="col-pdf"><b>Attendance</b></td>
-                          <td colspan="3" rowspan="9" class="col-pdf border-right"><b>Promoted To&nbsp:&nbsp;<br/><br/><br/><br/><br/></b></td>
+                          <td colspan="3" class="col-pdf"><b>Attendance(Excluding Online Classes)</b></td>
+                          <td colspan="3" rowspan="9" class="col-pdf border-right"><b><% if @u_count < 3 && @promoted_to %>
+                                        Promoted To&nbsp:&nbsp;<%= @promoted_to %> <% if @u_count > 0 %> (on consideration)<% end %>
+                                      <% elsif @promoted_to %>
+                                        Not Promoted.
+                                      <% end %>
+                                     <br/><br/><br/></b></td>
                          </tr>
                          <tr class="odd">
                           <td class="col-pdf"><b>Mark</b></td>

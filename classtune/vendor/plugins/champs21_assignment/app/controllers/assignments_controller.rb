@@ -21,14 +21,14 @@ class AssignmentsController < ApplicationController
             @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]     
           else
             @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
-            @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}' and DATE(assignments.created_at) = '#{@pub_date}' and is_published=1 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]  
+            @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}' and ( (DATE(DATE_ADD(assignments.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( ( (DATE(DATE_ADD(assignments.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(assignments.created_at) = '#{@pub_date}' and content not like '%</%' ) ) and content not like '%</%' ) ) and is_published=1 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]  
           end   
        elsif student_section.blank?
          if assignment_publish_date.blank?
             @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}] 
          else
             @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
-            @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}' and DATE(assignments.created_at) = '#{@pub_date}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}]
+            @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}' and ( (DATE(DATE_ADD(assignments.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(assignments.created_at) = '#{@pub_date}' and content not like '%</%' ) ) and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}]
          end   
        else
           batch = Batch.find_by_course_id_and_name(student_section, batch_name)
@@ -38,7 +38,7 @@ class AssignmentsController < ApplicationController
             else
               @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
               @batch_id_main = batch.id
-              @assignments =Assignment.paginate  :conditions=>"batches.id = '#{batch.id}'  and is_published=1 and DATE(assignments.created_at) = '#{@pub_date}'",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
+              @assignments =Assignment.paginate  :conditions=>"batches.id = '#{batch.id}'  and is_published=1 and ( (DATE(DATE_ADD(assignments.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(assignments.created_at) = '#{@pub_date}' and content not like '%</%' ) )",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
             end
           end
         end  
@@ -127,14 +127,14 @@ class AssignmentsController < ApplicationController
             @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}'  and is_published=1 ",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}])     
           else
             @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
-            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and DATE(assignments.created_at) = '#{@pub_date}' and is_published=1 ",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}]) 
+            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and ( (DATE(DATE_ADD(assignments.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(assignments.created_at) = '#{@pub_date}' and content not like '%</%' ) ) and is_published=1 ",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}]) 
           end   
        elsif student_section.blank?
          if assignment_publish_date.blank?
             @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}] )
          else
             @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
-            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and DATE(assignments.created_at) = '#{@pub_date}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}])
+            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and ( (DATE(DATE_ADD(assignments.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(assignments.created_at) = '#{@pub_date}' and content not like '%</%' ) ) and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}])
          end   
        else
           batch = Batch.find_by_course_id_and_name(student_section, batch_name)
@@ -144,7 +144,7 @@ class AssignmentsController < ApplicationController
             else
               @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
               @batch_id_main = batch.id
-              @assignments =Assignment.find(:all,:conditions=>"batches.id = '#{batch.id}'  and is_published=1 and DATE(assignments.created_at) = '#{@pub_date}'",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}] )
+              @assignments =Assignment.find(:all,:conditions=>"batches.id = '#{batch.id}'  and is_published=1 and ( (DATE(DATE_ADD(assignments.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(assignments.created_at) = '#{@pub_date}' and content not like '%</%' ) )",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}] )
             end
           end
         end  
@@ -188,14 +188,14 @@ class AssignmentsController < ApplicationController
             @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}'  and is_published=1 ",:order=>"duedate desc",:include=>[{:subject=>[:batch]}])     
           else
             @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
-            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and DATE(assignments.created_at) = '#{@pub_date}' and is_published=1 ",:order=>"duedate desc",:include=>[{:subject=>[:batch]}]) 
+            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and ( (DATE(DATE_ADD(assignments.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(assignments.created_at) = '#{@pub_date}' and content not like '%</%' ) ) and is_published=1 ",:order=>"duedate desc",:include=>[{:subject=>[:batch]}]) 
           end   
        elsif student_section.blank?
          if assignment_publish_date.blank?
             @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"duedate desc",:include=>[{:subject=>[{:batch=>[:course]}]}] )
          else
             @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
-            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and DATE(assignments.created_at) = '#{@pub_date}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"duedate desc",:include=>[{:subject=>[{:batch=>[:course]}]}])
+            @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and ( (DATE(DATE_ADD(assignments.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(assignments.created_at) = '#{@pub_date}' and content not like '%</%' ) ) and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"duedate desc",:include=>[{:subject=>[{:batch=>[:course]}]}])
          end   
        else
           batch = Batch.find_by_course_id_and_name(student_section, batch_name)
@@ -205,7 +205,7 @@ class AssignmentsController < ApplicationController
             else
               @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
               @batch_id_main = batch.id
-              @assignments =Assignment.find(:all,:conditions=>"batches.id = '#{batch.id}'  and is_published=1 and DATE(assignments.created_at) = '#{@pub_date}'",:order=>"duedate desc",:include=>[{:subject=>[:batch]}] )
+              @assignments =Assignment.find(:all,:conditions=>"batches.id = '#{batch.id}'  and is_published=1 and ( (DATE(DATE_ADD(assignments.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(assignments.created_at) = '#{@pub_date}' and content not like '%</%' ) )",:order=>"duedate desc",:include=>[{:subject=>[:batch]}] )
             end
           end
         end  

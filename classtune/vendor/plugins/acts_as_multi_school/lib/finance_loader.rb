@@ -2965,11 +2965,13 @@ module FinanceLoader
     xml_transaction_infos.each do |xml_transaction_info|
       childs = xml_transaction_info.children
       childs.each do |c|
-        if c.name == "Verified"
-          v = c.text
-          if v.to_i == 1
-            verifiedId = xmlind
-            found_verified = true
+        unless c.blank?
+          if c.name == "Verified"
+            v = c.text
+            if v.to_i == 1
+              verifiedId = xmlind
+              found_verified = true
+            end
           end
         end
       end
@@ -2984,11 +2986,13 @@ module FinanceLoader
       xml_transaction_infos.each do |xml_transaction_info|
         childs = xml_transaction_info.children
         childs.each do |c|
-          if c.name == "Status"
-            v = c.text
-            if v.to_i == 1
-              paidId = xmlind
-              found_paid = true
+          unless c.blank?
+            if c.name == "Status"
+              v = c.text
+              if v.to_i == 1
+                paidId = xmlind
+                found_paid = true
+              end
             end
           end
         end
@@ -3004,7 +3008,7 @@ module FinanceLoader
       end
     end
 
-    #abort(childs.inspect)
+    abort(childs.inspect)
     childs.each do |c|
       if c.name == "RefID"
         ref_id = c.text

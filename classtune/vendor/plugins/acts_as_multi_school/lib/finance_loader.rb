@@ -3010,52 +3010,54 @@ module FinanceLoader
 
     #abort(childs.inspect)
     childs.each do |c|
-      if c.name == "RefID"
-        ref_id = c.text
-      elsif c.name == "OrderID"
-        orderId = c.text
-      elsif c.name == "Name"
-        name = c.text
-      elsif c.name == "Email"
-        email = c.text
-      elsif c.name == "Amount"
-        amount = c.text
-      elsif c.name == "ServiceCharge"
-        service_charge = c.text
-      elsif c.name == "TotalAmount"
-        total_amount = c.text
-      elsif c.name == "Status"
-        status = c.text
-      elsif c.name == "StatusText"
-        status_text = c.text
-      elsif c.name == "Used"
-        used = c.text
-      elsif c.name == "Verified"
-        verified = c.text
-      elsif c.name == "PaymentType"
-        payment_type = c.text
-      elsif c.name == "PAN"
-        pan = c.text
-      elsif c.name == "TBMM_Account"
-        tbbmm_account = c.text
-      elsif c.name == "MarchentID"
-        merchant_id = c.text
-      elsif c.name == "OrderDateTime"
-        order_datetime = c.text
-      elsif c.name == "PaymentDateTime"
-        trans_date = c.text
-      elsif c.name == "EMI_No"
-        emi_no = c.text
-      elsif c.name == "InterestAmount"
-        interest_amount = c.text
-      elsif c.name == "PayWithCharge"
-        pay_with_charge = c.text
-      elsif c.name == "CardResponseCode"
-        card_response_code = c.text
-      elsif c.name == "CardResponseDescription"
-        card_response_desc = c.text
-      elsif c.name == "CardOrderStatus"
-        card_order_status = c.text
+      unless c.blank?
+        if c.name == "RefID"
+          ref_id = c.text
+        elsif c.name == "OrderID"
+          orderId = c.text
+        elsif c.name == "Name"
+          name = c.text
+        elsif c.name == "Email"
+          email = c.text
+        elsif c.name == "Amount"
+          amount = c.text
+        elsif c.name == "ServiceCharge"
+          service_charge = c.text
+        elsif c.name == "TotalAmount"
+          total_amount = c.text
+        elsif c.name == "Status"
+          status = c.text
+        elsif c.name == "StatusText"
+          status_text = c.text
+        elsif c.name == "Used"
+          used = c.text
+        elsif c.name == "Verified"
+          verified = c.text
+        elsif c.name == "PaymentType"
+          payment_type = c.text
+        elsif c.name == "PAN"
+          pan = c.text
+        elsif c.name == "TBMM_Account"
+          tbbmm_account = c.text
+        elsif c.name == "MarchentID"
+          merchant_id = c.text
+        elsif c.name == "OrderDateTime"
+          order_datetime = c.text
+        elsif c.name == "PaymentDateTime"
+          trans_date = c.text
+        elsif c.name == "EMI_No"
+          emi_no = c.text
+        elsif c.name == "InterestAmount"
+          interest_amount = c.text
+        elsif c.name == "PayWithCharge"
+          pay_with_charge = c.text
+        elsif c.name == "CardResponseCode"
+          card_response_code = c.text
+        elsif c.name == "CardResponseDescription"
+          card_response_desc = c.text
+        elsif c.name == "CardOrderStatus"
+          card_order_status = c.text
+        end
       end
 
     end
@@ -3108,7 +3110,7 @@ module FinanceLoader
       @student = ArchivedStudent.find_by_admission_no(admission_no)
     end
     if @student.id == 48940
-      abort('here')
+      abort(gateway_response.inspect)
     end
 
     request_url = @verification_url + '/Transaction_Verify_Details'

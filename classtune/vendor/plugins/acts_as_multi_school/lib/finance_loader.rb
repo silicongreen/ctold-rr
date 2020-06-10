@@ -2922,7 +2922,9 @@ module FinanceLoader
     auth_res = http.request(auth_req)
 
     xml_res = Nokogiri::XML(auth_res.body)
-
+if MultiSchool.current_school.id == 357
+  abort(xml_res.inspect)
+end
 
 
     status = ""
@@ -2931,9 +2933,7 @@ module FinanceLoader
     end
 
     result = Base64.decode64(status)
-if MultiSchool.current_school.id == 357
-  abort(result.inspect)
-end
+
     ref_id = ""
     orderId = ""
     name = ""

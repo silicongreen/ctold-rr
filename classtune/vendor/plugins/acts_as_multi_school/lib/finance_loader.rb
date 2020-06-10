@@ -2885,9 +2885,14 @@ module FinanceLoader
     end
     if testtrustbank
       merchant_info = payment_configs["merchant_info_" + MultiSchool.current_school.id.to_s]
-      @merchant_id = merchant_info["merchant_id"]
-      @keycode = merchant_info["keycode"]
-      @verification_url = merchant_info["validation_api"]
+      unless merchant_info.blank?
+        @merchant_id = merchant_info["merchant_id"]
+        @keycode = merchant_info["keycode"]
+      else
+        @merchant_id = PaymentConfiguration.config_value("trustbank_merchant_id")
+        @keycode = PaymentConfiguration.config_value("trustbank_keycode_verification")
+      end
+      @verification_url = payment_configs["validation_api"]
       @merchant_id ||= String.new
       @keycode ||= String.new
       @verification_url ||= "https://ibanking.tblbd.com/TestCheckout/Services/Payment_Info.asmx"
@@ -4530,9 +4535,7 @@ module FinanceLoader
           end
         end
       end
-      if @student.id == 48940
-      abort(payment_saved.to_s)
-    end
+      
       if gateway_response[:card_order_status].to_s == "DECLINED"
         payment_saved = false
       end

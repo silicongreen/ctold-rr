@@ -6,7 +6,7 @@
     <div id="list">
       <div class="sel-list">
         <%= t('select') %>: <%= link_to_function "#{t('all')}", "$$('input.batches_box').each(function(checkbox) { checkbox.checked = true; });" %>,
-        <%= link_to_function "#{t('none')}", "$$('input.batches_box').each(function(checkbox) { checkbox.checked = false; });" %>
+        <%= link_to_function "#{t('none')}", "$$('input.batches_box').each(function(checkbox) { checkbox.checked = false; });" %>, <%= link_to_function "NA", "$$('input.batches_box').each(function(checkbox) { checkbox.checked = false; });$$('input.na').each(function(checkbox) { checkbox.checked = true; });" %>
       </div>
 
       <% form_for :attendance,:url=>{:action=>'update_reset_exam'} do |form| %>
@@ -14,7 +14,13 @@
           <% if !b.blank? and !b.student.blank?  %>
           <div class="name_list<%=cycle('odd', 'even')%>">
             <li>
-              <label> <%= check_box_tag "att_id[]", b.id,true,:class=>'batches_box' %> <div class="att_list_names"><%= b.student.full_name %><span> (<%= b.student_admission_no %>)</span></div></label>
+              <% class_name = "batches_box" %>
+                <% 
+                if  b.total_score.blank?
+                  class_name = "batches_box na"
+                end
+                %>
+              <label> <%= check_box_tag "att_id[]", b.id,true,:class=>class_name %> <div class="att_list_names"><%= b.student.full_name %><span> (<%= b.student_admission_no %>)</span> Score : <% if  b.total_score.blank? %>NA<% else  %><%=  b.total_score %><% end %></div></label>
             </li>
           </div>
           <% end %>

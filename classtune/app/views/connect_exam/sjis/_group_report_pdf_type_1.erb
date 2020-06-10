@@ -145,7 +145,7 @@
                               <% if group_count > 1 %>
                               <% if !top_exam_first.blank? and top_exam_first!="" %>
                                 <% if report['exam_name'].index(top_exam_first).nil? %>
-                                    <td class="col-pdf"><%= total_term.round() %></td>
+                                    <td class="col-pdf"><% total_mark = total_mark+total_term.round() %><%= total_term.round() %></td>
                                     <%
                                         exam_no = 2
                                         total_term = 0
@@ -171,11 +171,15 @@
                               <% if converted_total_showded == 0 %>
                                     <% converted_total_30 = 0 %>
                                     <% if converted_total.to_i > 0 %>
-                                    <% converted_total_30 = (converted_total.to_f/converted_full_mark.to_f)*30 %>
-                                    <% converted_total_30 = converted_total_30 %>
+                                    <% if converted_full_mark.to_i > 20 %>
+                                      <% converted_total_30 = (converted_total.to_f/converted_full_mark.to_f)*30 %>
+                                      <% converted_total_30 = converted_total_30 %>
+                                    <% else %>
+                                      <% converted_total_30 = converted_total %>
+                                    <% end %>
                                     <% end %>
                                     <% full_mark = full_mark+30 %>
-                                    <% total_mark = total_mark.to_f+converted_total_30.to_f %>
+                                    
                                     <% total_term = total_term.to_f+converted_total_30.to_f %>
                                     
                                     <% if exam_no == 1  %>
@@ -193,7 +197,7 @@
                               <td class="col-pdf no-warp">
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
-                                    <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    
                                    
                                     <% total_term = total_term.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     
@@ -230,7 +234,7 @@
                             <% end %>    
 
                             <% if !top_exam_first.blank? and top_exam_first!="" %>
-                                
+                                <% total_mark = total_mark+total_term.round() %>
                                 <td class="col-pdf"><%= total_term.round() %></td>
                             <% end %>  
                           <% end %>    
@@ -242,6 +246,7 @@
                           <% 
                           total_term1 = total_term1.round()
                           total_term2 = total_term2.round()
+                       
                           highest_mark = 0
                           if !@subject_highest.blank? and !@subject_highest[subjects['id'].to_i].blank?
                             highest_mark = @subject_highest[subjects['id'].to_i].to_f

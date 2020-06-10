@@ -515,6 +515,8 @@ class OnlineExamGroups extends CActiveRecord {
                 $exam_array[$i]['subject_icon'] = $subject_icon;
                 $exam_array[$i]['start_date'] = $value->start_date;
                 $exam_array[$i]['end_date'] = $value->end_date;
+                $exam_array[$i]['start_time'] = $value->start_time;
+                $exam_array[$i]['end_time'] = $value->end_time;
                 $exam_array[$i]['maximum_time'] = $value->maximum_time;
                 $exam_array[$i]['pass_percentage'] = $value->pass_percentage;
                 $i++;
@@ -532,7 +534,7 @@ class OnlineExamGroups extends CActiveRecord {
         if ($b_total) {
             $criteria->select = 'COUNT(*) AS total';
         } else {
-            $criteria->select = 't.id, t.name, t.start_date, t.end_date, t.maximum_time, t.pass_percentage, (SELECT COUNT(examgiven.id) FROM `online_exam_attendances` AS examgiven WHERE `examgiven`.`online_exam_group_id` = `t`.`id`) AS perticipated';
+            $criteria->select = 't.id, t.name, t.start_date, t.end_date,t.start_time,t.end_time, t.maximum_time, t.pass_percentage, (SELECT COUNT(examgiven.id) FROM `online_exam_attendances` AS examgiven WHERE `examgiven`.`online_exam_group_id` = `t`.`id`) AS perticipated';
         }
         $criteria->compare('t.school_id', Yii::app()->user->schoolId);
         if (!empty($subject_ids)) {
@@ -586,6 +588,8 @@ class OnlineExamGroups extends CActiveRecord {
                 $exam_array[$i]['subject_icon'] = $subject_icon;
                 $exam_array[$i]['start_date'] = $value->start_date;
                 $exam_array[$i]['end_date'] = $value->end_date;
+                $exam_array[$i]['start_time'] = $value->start_time;
+                $exam_array[$i]['end_time'] = $value->end_time;
                 $exam_array[$i]['maximum_time'] = $value->maximum_time;
                 $exam_array[$i]['pass_percentage'] = $value->pass_percentage;
                 $exam_array[$i]['done'] = $value->perticipated;

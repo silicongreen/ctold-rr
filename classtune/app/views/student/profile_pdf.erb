@@ -261,7 +261,7 @@
           </tr>
           
         <% end %>
-        <% @guardian = Guardian.find(@student.immediate_contact_id) unless @student.immediate_contact_id.blank? %>
+        <% @guardian = Guardian.find_by_id(@student.immediate_contact_id) unless @student.immediate_contact_id.blank? %>
         <% unless @guardian.blank? %>
           <% g_loop = 0 %>
           <% p = @guardian %>

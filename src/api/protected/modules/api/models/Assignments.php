@@ -595,7 +595,7 @@ class Assignments extends CActiveRecord
             
             $criteria->compare('t.employee_id', $employee_id);
             
-            $criteria->addCondition("DATE(t.created_at) >= '".$start_date."' and DATE(t.created_at) <= '".$end_date."'");
+            $criteria->addCondition(" ( ( DATE(DATE_ADD(t.created_at, INTERVAL 6 HOUR)) >= '$start_date' AND t.content like '%</%') OR  ( DATE(t.created_at) >= '$start_date' AND  t.content not like '%</%' ) ) and ( (DATE(DATE_ADD(t.created_at, INTERVAL 6 HOUR)) <= '$end_date' AND t.content like '%</%') OR  ( DATE(t.created_at) <= '$end_date' AND  t.content not like '%</%' ) )" );
            // $criteria->compare('DATE(t.created_at)', $date);
              
                 

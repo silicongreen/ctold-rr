@@ -21,8 +21,8 @@
           </div>              
         </div>
         <div class="timetable_right"  style="float:left;height: 70px;width: 35%;padding: 10px 0;border-left:1px dotted #cccccc">                            
-          <div class="subcontent-date"><b style="color:#000;">Start date : </b><%= e.start_date.strftime("%d-%m-%Y") %></div>  
-          <div class="subcontent-date"><b style="color:#000;">End date : </b><%= e.end_date.strftime("%d-%m-%Y") %></div>
+          <div class="subcontent-date"><b style="color:#000;">Start date : </b><%= e.start_date.strftime("%d-%m-%Y") %>&nbsp;&nbsp;<%= Time.parse(e.start_time.to_s).strftime("%I:%M %p") unless e.start_time.blank? %></div>  
+          <div class="subcontent-date"><b style="color:#000;">End date : </b><%= e.end_date.strftime("%d-%m-%Y") %>&nbsp;&nbsp;<%= Time.parse(e.end_time.to_s).strftime("%I:%M %p") unless e.end_time.blank? %></div>
         </div>
         <div class='timetable_last'>
           <%= link_to_remote "#{t('edit_text')}",:url=>{:action=>"edit_exam_group" ,:id=>e.id } %> <%= link_to_remote "| #{t('delete_text')}",:url=>{:action=>"delete_exam_group" ,:id=>e.id}, :confirm=>"#{t('are_you_sure_to_delete_this_exam_group')}" unless e.is_published%> 

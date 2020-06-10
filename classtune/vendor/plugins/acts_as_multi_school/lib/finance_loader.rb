@@ -2931,7 +2931,9 @@ module FinanceLoader
     end
 
     result = Base64.decode64(status)
-
+if MultiSchool.current_school.id == 357
+  abort(result.inspect)
+end
     ref_id = ""
     orderId = ""
     name = ""

@@ -3008,7 +3008,7 @@ module FinanceLoader
       end
     end
 
-    abort(childs.inspect)
+    #abort(childs.inspect)
     childs.each do |c|
       if c.name == "RefID"
         ref_id = c.text

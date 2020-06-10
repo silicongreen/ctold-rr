@@ -178,7 +178,11 @@
                                       <% converted_total_30 = converted_total %>
                                     <% end %>
                                     <% end %>
-                                    <% full_mark = full_mark+30 %>
+                                    <% if converted_full_mark > 20 %>
+                                      <% full_mark = full_mark+30 %>
+                                    <% else %>
+                                      <% full_mark = full_mark+converted_full_mark.to_f %>
+                                    <% end %>
                                     
                                     <% total_term = total_term.to_f+converted_total_30.to_f %>
                                     
@@ -190,7 +194,11 @@
                                         
                                     <% end %>
                                     <td class="col-pdf no-warp">
+                                        <% if converted_total_30 > 0 %>
                                         <%= sprintf( "%0.02f", converted_total_30)%>
+                                        <% else %>
+                                        -
+                                        <% end %>
                                     </td>
                                     <% converted_total_showded = 1 %>
                               <% end %>      
@@ -235,7 +243,11 @@
 
                             <% if !top_exam_first.blank? and top_exam_first!="" %>
                                 <% total_mark = total_mark+total_term.round() %>
-                                <td class="col-pdf"><%= total_term.round() %></td>
+                                <% if total_term > 0 %>
+                                  <td class="col-pdf"><%= total_term.round() %></td>
+                                <% else %>
+                                  <td class="col-pdf">-</td>
+                                <% end %>
                             <% end %>  
                           <% end %>    
 

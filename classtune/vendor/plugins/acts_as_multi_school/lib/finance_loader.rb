@@ -2922,16 +2922,16 @@ module FinanceLoader
     auth_res = http.request(auth_req)
 
     xml_res = Nokogiri::XML(auth_res.body)
-if MultiSchool.current_school.id == 357
-  abort(xml_res.inspect)
-end
+
 
 
     status = ""
     unless xml_res.xpath("/").empty?
       status = xml_res.xpath("/").text
     end
-
+if MultiSchool.current_school.id == 357
+  abort(status.inspect)
+end
     result = Base64.decode64(status)
 
     ref_id = ""

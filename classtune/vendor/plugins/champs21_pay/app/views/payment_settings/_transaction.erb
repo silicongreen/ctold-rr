@@ -289,11 +289,24 @@
       <span style="font-family: verdana; font-size: 12px;">Showing <%= pg %> to <%= showing %> of <%= @online_payments.total_entries %> Records</span> 
       <% no_paginate_params = ['authenticity_token','export','controller','action','search'] %>
       <% paginate_params = params.select{|k,v| {k.to_sym => v} unless no_paginate_params.include?(k.to_s) or v.blank? } %>
-      <% if MultiSchool.current_school.id == 357  %>
-        <%= debug paginate_params.inspect %>
+      <% if @payment_gateway.length > 1 %>
+        <% paginate_params[:controller] = "online_payments" %>
+        <% paginate_params[:action] = "transaction_list" %>
       <% end %>
+      
       <%#= will_paginate @student_finance_fees, :previous_label=>"<", :next_label=>">", :renderer => 'RemoteLinkRenderer' ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader_paginate').hide();"  }, :params => {:controller=>:finance,:action => "load_bill_generation_reports", :opt => @opt, :filter_by_course => @filter_by_course, :date => @date.id} %>
+      <% if @payment_gateway.length > 1 %>
+      <%= will_paginate @online_payments,:params=> paginate_params, :renderer => 'RemoteLinkRenderer' ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader_paginate').hide();"  } %>
+      <% else %>
       <%= will_paginate @online_payments,:params=> paginate_params %>
+      <% end %>
+      <% if @payment_gateway.length > 1 %>
+      <div class="div2"><%= image_tag("loader.gif",
+        :align => "absmiddle",
+        :border => 0,
+        :id => "loader_paginate",
+        :style =>"display: none;" ) %></div>
+      <% end %>
     </div>
   <% else %>
     <div id="flash-box">

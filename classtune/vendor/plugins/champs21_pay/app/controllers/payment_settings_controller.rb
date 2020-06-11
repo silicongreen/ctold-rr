@@ -83,6 +83,11 @@ class PaymentSettingsController < ApplicationController
   
   def transaction_list
     unless params[:gateway].blank?
+      @payment_gateways = PaymentConfiguration.config_value("champs21_gateway")
+      @payment_gateway = @payment_gateways.split(",") unless @payment_gateways.blank?
+      @payment_gateway ||= Array.new
+      
+      
       @gateway = params[:gateway]
       start_date = params[:start_date]
       start_date ||= Date.today
@@ -146,7 +151,7 @@ class PaymentSettingsController < ApplicationController
 
       @online_payments = Payment.paginate(:conditions=>"gateway_txt = '#{@gateway}' and CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "order_id")
       render :update do |page|
-        page.replace_html 'payment_gatway_settings',:partial => "transaction"
+          page.replace_html 'payment_gatway_settings',:partial => "transaction"
         page << "j('#loader').hide();"
       end
     else

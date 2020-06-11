@@ -576,11 +576,18 @@ class PaymentSettingsController < ApplicationController
                           paymentID = order_ids
                         elsif params[:query_type] == "trx_id"
                           tokens = get_bkash_token()
-                          order_ids.each do |order_id|
+                          @admission_no = params[:admission_no]
+                          @trx_id = params[:trx_id]
+                          order_id = @trx_id
+                          @student = Student.find_by_admission_no(@admission_no)
+                          if @student.nil?
+                            @student = ArchivedStudent.find_by_admission_no(admission_no)
+                          end
+                          unless @student.blank?
                             transaction_info = search_bkash_payment(tokens[:id_token], order_id)  
                             unless transaction_info[:transactionStatus].blank?
                               if transaction_info[:transactionStatus].to_s == "Completed"
-                                payments = Payment.find(:all, :conditions => "gateway_txt = 'bkash' and finance_transaction_id IS NULL") 
+                                payments = Payment.find(:all, :conditions => "payee_id = #{@student.id} and gateway_txt = 'bkash' and finance_transaction_id IS NULL") 
                                 unless payments.blank?
                                   payments.each do |payment|
                                     paymentID = payment.gateway_response[:paymentID]
@@ -595,8 +602,8 @@ class PaymentSettingsController < ApplicationController
                                 end
                               end
                             end
-                            abort(paymentID.inspect)
                           end
+                          abort(paymentID.inspect)
                           if paymentID.blank?
                             tokens = get_bkash_token()
                             transaction_info = search_bkash_payment(tokens[:id_token], params[:order_id])  

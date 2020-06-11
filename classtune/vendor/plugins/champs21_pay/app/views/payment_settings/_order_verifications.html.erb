@@ -75,7 +75,7 @@
           
           <div id='bkash_trxid_panel' class="form-group bkash_order" style=" <%= (query_type == "trx_id") ? "" : "display: none;" %> padding-bottom: 20px;">
               <label> Student Admission No:<span class="necessary-field">*</span> :</label>
-              <%= text_field_tag "admission_no", @order_id, :class=>"form-control"%>
+              <%= text_field_tag "admission_no",@admission_no, :class=>"form-control"%>
               <div style='clear: both; height: 10px;'></div>
               <label> Transaction ID:<span class="necessary-field">*</span> :</label>
               <%= text_field_tag "trx_id", @trx_id, :class=>"form-control"%>

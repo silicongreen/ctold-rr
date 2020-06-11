@@ -3861,8 +3861,8 @@ module FinanceLoader
 
                 finance_fee_id = finance_order.finance_fee_id
                 if fees.map(&:to_s).include?(finance_fee_id.to_s)
-                  abort("ksahdkasd")
                   finance_fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{@student.id}")
+                  abort(finance_fee.inspect)
                   unless finance_fee.blank?
                     fee_collection_id = finance_fee.fee_collection_id
                     d = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}")

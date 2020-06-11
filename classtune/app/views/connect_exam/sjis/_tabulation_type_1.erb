@@ -285,7 +285,7 @@
                                   elsif term == 1
                                     subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                     subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                    #subject_obtain_mark = subject_obtain_mark.round()
+                                    subject_obtain_mark = subject_obtain_mark.round()
                                     term = 2
                                   else
                                     subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
@@ -525,7 +525,7 @@
                                   elsif term == 1
                                     subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                     subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                    #subject_obtain_mark = subject_obtain_mark.round()
+                                    subject_obtain_mark = subject_obtain_mark.round()
                                     term = 2
                                   else
                                     subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i

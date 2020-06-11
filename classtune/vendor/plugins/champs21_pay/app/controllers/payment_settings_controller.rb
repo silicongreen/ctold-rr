@@ -593,30 +593,19 @@ class PaymentSettingsController < ApplicationController
                           end
                         
                           order_id = @trx_id
-                        
+                          verified_already = false
                           if @finance_fee != ""
                             unless @student.blank?
                               @fee_collections_id = FinanceFeeCollection.find(:all, :conditions => ["is_deleted = #{false} and name = ?", @finance_fee]).map(&:id)
                               finance_f = FinanceFee.find(:all, :conditions => "student_id = #{@student.id} and fee_collection_id IN (#{@fee_collections_id.join(",")})").map(&:id)
-                              abort(finance_f.inspect)
-                              transaction_info = search_bkash_payment(tokens[:id_token], order_id)  
-                              unless transaction_info[:transactionStatus].blank?
-                                if transaction_info[:transactionStatus].to_s == "Completed"
-                                  payments = Payment.find(:all, :conditions => "payee_id = #{@student.id} and gateway_txt = 'bkash' and finance_transaction_id IS NULL") 
-                                  unless payments.blank?
-                                    payments.each do |payment|
-                                      payment_id = payment.gateway_response[:paymentID]
-                                      query_info = query_bkash_payment(tokens[:id_token], payment_id)  
-                                      unless query_info[:trxID].blank?
-                                        if query_info[:trxID].to_s == order_id.to_s
-                                          paymentID << paymentID
-                                          break
-                                        end
-                                      end
-                                    end
-                                  end
+                              unless finance_f.blank?
+                                payment = Payment.find(:first, :conditions => "payee_id = #{@student.id} and gateway_txt = 'bkash' and payment_id IN (#{finance_f.join(",")})") 
+                                transaction_info = search_bkash_payment(tokens[:id_token], order_id)  
+                                unless transaction_info[:transactionStatus].blank?
+                                  abort(transaction_info.inspect)
                                 end
                               end
+                              
                             end
                           else  
                             unless @student.blank?

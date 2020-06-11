@@ -3851,9 +3851,8 @@ module FinanceLoader
               end 
             end
           end
-          abort(payment_saved.inspect)
+          #abort(payment_saved.inspect)
           if payment_saved
-            abort('here')
             bkash_finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{orderId}' and student_id = '#{@student.id}'")
             unless bkash_finance_orders.blank?
               total_fees = 0.00

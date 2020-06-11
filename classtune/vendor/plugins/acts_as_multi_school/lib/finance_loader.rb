@@ -3805,6 +3805,7 @@ module FinanceLoader
         @student = Student.find(student_id)
         payment_saved = false
         unless request_params.nil?
+          fees = request_params[:fees].split(",")
           multiple = request_params[:multiple]
           unless multiple.nil?
             if multiple.to_s == "true"
@@ -3849,7 +3850,7 @@ module FinanceLoader
               end 
             end
           end
-          abort(payment_saved.inspect)
+          #abort(payment_saved.inspect)
           if payment_saved
             bkash_finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{orderId}' and student_id = '#{@student.id}'")
             unless bkash_finance_orders.blank?
@@ -3873,7 +3874,7 @@ module FinanceLoader
             end
             fee_percent = 0.00
             fee_percent = total_fees.to_f * (1.5 / 100)
-            
+            abort(total_fees.to_s)
             amount = response_ssl[:amount]
             if (amount.to_f + fee_percent.to_f) == total_fees
               amount = amount.to_f - fee_percent.to_f

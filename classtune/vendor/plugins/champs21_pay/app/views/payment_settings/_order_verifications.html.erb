@@ -78,7 +78,7 @@
                   <option value="">Please Select a Fees</option>
                   <% unless @fee_collections.blank? %>
                     <% @fee_collections.each do |fee_collection| %>
-                      <option value="<%= fee_collection.id %>"><%= fee_collection.name %></option>
+                      <option value="<%= fee_collection.id %>" <%= (fee_collection.id == @finance_fee.to_i) ? "selected" : "" %>><%= fee_collection.name %></option>
                     <% end %>
                   <% end %>
               </select>

@@ -3677,7 +3677,7 @@ module FinanceLoader
     tmp_response_ssl.each do |key,value|
       response_ssl[key.to_sym] = value
     end
-    #   abort(response_ssl.inspect)
+    abort(response_ssl.inspect)
     if response_ssl[:transactionStatus] == 'Completed'
       require 'date'
       gateway_response = response_ssl

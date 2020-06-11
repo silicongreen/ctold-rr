@@ -3862,12 +3862,12 @@ module FinanceLoader
                 finance_fee_id = finance_order.finance_fee_id
                 if fees.map(&:to_s).include?(finance_fee_id.to_s)
                   finance_fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{@student.id}")
-                  abort(finance_fee.inspect)
+                  #abort(finance_fee.inspect)
                   unless finance_fee.blank?
                     fee_collection_id = finance_fee.fee_collection_id
                     d = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}")
                     unless d.blank?
-                      bal = FinanceFee.get_student_actual_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f
+                      bal = FinanceFee.get_student_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f
                       #abort(bal.to_s)
                       total_fees += bal.to_f
                     end

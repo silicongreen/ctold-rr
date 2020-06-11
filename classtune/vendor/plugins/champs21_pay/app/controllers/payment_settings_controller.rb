@@ -409,6 +409,9 @@ class PaymentSettingsController < ApplicationController
               @gateway = @payment_gateway[0]
             end
           end
+          
+          @fee_collections = FinanceFeeCollection.find(:all, :conditions => "is_deleted = #{false}")
+          
           if request.post?
             if params[:order_id].blank?
               unless params[:classtune_order_id].blank?

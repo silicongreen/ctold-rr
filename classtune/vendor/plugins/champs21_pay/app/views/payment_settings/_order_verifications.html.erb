@@ -74,6 +74,16 @@
           </div>
           
           <div id='bkash_trxid_panel' class="form-group bkash_order" style=" <%= (query_type == "trx_id") ? "" : "display: none;" %> padding-bottom: 20px;">
+              <label> Finance Fee:<span class="necessary-field">*</span> :</label>
+              <select name="finance_fee" id="finance_fee">
+                  <option value="">Please Select a Fees</option>
+                  <% unless @fee_collections.blank? %>
+                    <% @fee_collections.each do |fee_collection| %>
+                      <option value="<%= fee_collection.id %>"><%= fee_collection.name %></option>
+                    <% end %>
+                  <% end %>
+              </select>
+              <div style='clear: both; height: 10px;'></div>
               <label> Student Admission No:<span class="necessary-field">*</span> :</label>
               <%= text_field_tag "admission_no",@admission_no, :class=>"form-control"%>
               <div style='clear: both; height: 10px;'></div>

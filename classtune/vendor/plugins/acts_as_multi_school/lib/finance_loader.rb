@@ -3649,7 +3649,6 @@ module FinanceLoader
   end
   
   def verify_bkash_payment(id_token, payment_id)
-    payment_id = "MU3XXSL1591859220520"
     payment_urls = Hash.new
     if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
       payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
@@ -3658,8 +3657,8 @@ module FinanceLoader
     is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
     extra_string = (is_test_bkash.to_i == 1) ? '_sandbox' : ''
     
-    payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "capture/" + payment_id.to_s)
-    payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "capture/" + payment_id.to_s)
+    payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "query/" + payment_id.to_s)
+    payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "query/" + payment_id.to_s)
     #abort("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "query/" + payment_id.to_s)
     http = Net::HTTP.new(payment_url.host, payment_url.port)
     http.use_ssl = (payment_url.scheme == 'https')
@@ -3670,7 +3669,7 @@ module FinanceLoader
     @app_username = PaymentConfiguration.config_value("bkash_username")
     @app_password = PaymentConfiguration.config_value("bkash_password")
 
-    request = Net::HTTP::Post.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
+    request = Net::HTTP::Get.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
     #request.body = {"amount"=> params[:total_fees],"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>params[:order_id]}.to_json
     response = http.request(request)
     tmp_response_ssl = JSON::parse(response.body)
@@ -3678,7 +3677,7 @@ module FinanceLoader
     tmp_response_ssl.each do |key,value|
       response_ssl[key.to_sym] = value
     end
-    abort(response_ssl.inspect)
+    #abort(response_ssl.inspect)
     if response_ssl[:transactionStatus] == 'Completed'
       require 'date'
       gateway_response = response_ssl

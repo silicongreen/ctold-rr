@@ -632,7 +632,7 @@ class PaymentSettingsController < ApplicationController
                                     unless response_ssl[:intent].blank?
                                       response_ssl[:intent] = 'sale'
                                     end
-                                    if save_bkash_payment
+                                    if save_bkash_payment(response_ssl)
                                       verified_already = true
                                     end
                                   end

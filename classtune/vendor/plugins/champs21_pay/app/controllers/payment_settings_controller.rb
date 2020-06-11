@@ -597,6 +597,7 @@ class PaymentSettingsController < ApplicationController
                                     query_info = query_bkash_payment(tokens[:id_token], paymentID)  
                                     unless query_info[:trxID].blank?
                                       if query_info[:trxID].to_s == order_id.to_s
+                                        abort(query_info.inspect)
                                         paymentID << paymentID
                                         break
                                       end

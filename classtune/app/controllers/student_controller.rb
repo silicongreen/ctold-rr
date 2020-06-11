@@ -623,9 +623,9 @@ class StudentController < ApplicationController
                   request = Net::HTTP::Post.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
                   #request.body = {"amount"=> params[:total_fees],"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>params[:order_id]}.to_json
                   response = http.request(request)
-                  if student_id.to_i == 48931
-                    abort(response.body.to_s + "  " + id_token.to_s)
-                  end
+                 # if student_id.to_i == 48931
+                 #  abort(response.body.to_s + "  " + id_token.to_s)
+                 # end
                   response_ssl = JSON::parse(response.body)
                   
                   transactionStatus = ""
@@ -5502,7 +5502,7 @@ class StudentController < ApplicationController
     if @show_batch_subject
       @batch = Batch.find(params[:id])
       @elective_subject = Subject.find(params[:id2])
-      @students = @batch.students.all(:order=>"first_name ASC")
+      @students = @batch.students.all(:order=>"class_roll_no ASC")
       @elective_group = ElectiveGroup.find(@elective_subject.elective_group_id)
     else
       @batch_only = false
@@ -5557,7 +5557,7 @@ class StudentController < ApplicationController
           @subject_tmp = Subject.find(:all, :conditions => ["batch_id = ? and code = ? and elective_group_id = ?", b, @subjects_code, elective_group_id])
           
           unless @subject_tmp.nil? or @subject_tmp.empty?
-            @batch_data[@tmp_batch.name] << {"course_name" => @tmp_course.course_name, "section" => @tmp_course.section_name, "students" => @tmp_batch.students.all(:order=>"first_name ASC")}
+            @batch_data[@tmp_batch.name] << {"course_name" => @tmp_course.course_name, "section" => @tmp_course.section_name, "students" => @tmp_batch.students.all(:order=>"class_roll_no ASC")}
           else
             @batch_data[@tmp_batch.name] << {"course_name" => @tmp_course.course_name, "section" => @tmp_course.section_name, "students" => nil, "message" => "<b style='color: #f00;'>This Elective Group Subject is not assigned to this Section</b>"}
           end

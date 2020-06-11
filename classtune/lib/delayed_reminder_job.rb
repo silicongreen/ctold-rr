@@ -104,6 +104,7 @@ class DelayedReminderJob
       notification_url = champs21_api_config['notification_url']
       uri = URI(notification_url)
       http = Net::HTTP.new(uri.host, uri.port)
+      http.read_timeout = 36000
       auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
       auth_req.set_form_data({"user_id" => all_users, "notification_id" => all_noti})
       auth_res = http.request(auth_req)

@@ -430,7 +430,7 @@ class OnlineExamGroups extends CActiveRecord {
         //$criteria->addCondition("examgiven.student_id != '".$student_id."' ");
         $criteria->with = array(
             'examgiven' => array(
-                'select' => ''
+                'select' => 'examgiven.student_id,examgiven.total_score'
             ),
             'subject' => array(
                 'select' => 'subject.name,subject.icon_number',
@@ -463,10 +463,12 @@ class OnlineExamGroups extends CActiveRecord {
                 $new_data = $robject->FindUnreadData(15, $rid);
                 
                 $examGiven = false;
+                $score = 0.0;
                 if (isset($value['examgiven']) && count($value['examgiven']) > 0) {
                     foreach ($value['examgiven'] as $evalue) {
                         if ($evalue->student_id == $student_id) {
                             $examGiven = true;
+                            $score = $evalue->total_score;
                             break;
                         }
                     }
@@ -480,7 +482,7 @@ class OnlineExamGroups extends CActiveRecord {
                 if (isset($value['subject']->icon_number) && $value['subject']->icon_number) {
                     $subject_icon = $value['subject']->icon_number;
                 }
-                
+                $exam_array[$i]['score'] = $score;
                 $exam_array[$i]['is_new'] = 0;
 
                 $exam_array[$i]['id'] = $value->id;

@@ -430,7 +430,9 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
                           
                           <td class="col-pdf"><%=  total_mark_combined.round() %></td>
                           <% main_mark_combned = (main_mark.to_f/100)*full_mark_first_term.to_f %>
-                          <td class="col-pdf"><%=  main_mark_combned.round() %></td>
+                          <% main_mark_combned = main_mark_combned.round() %>
+                          <% main_mark = (main_mark_combned.to_f/full_mark_first_term.to_f)*100 %>
+                          <td class="col-pdf"><%= main_mark_combned %></td>
                           <%  main_mark = main_mark.round() %>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>

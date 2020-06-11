@@ -706,9 +706,18 @@ class GroupedExams extends CActiveRecord
                      
                 } 
                 $results['comments2'] = array();
-                if($exm_connect_data->result_type==1)
+                if($exm_connect_data->result_type==1 || $exm_connect_data->result_type == 10 || $exm_connect_data->result_type == 11)
                 {
-                    $first_term_id_for_class_performance = $exam_connect_obj->getConnectExamByBatch($batch_id,2);
+                    if( $exm_connect_data->result_type == 1 || $exm_connect_data->result_type == 10 )
+                    {
+                        $first_term_id_for_class_performance = $exam_connect_obj->getConnectExamByBatch($batch_id,2);
+                    }
+                    else
+                    {
+                        $first_term_id_for_class_performance = $exam_connect_obj->getConnectExamByBatch($batch_id,8);
+                    } 
+                
+                    //$first_term_id_for_class_performance = $exam_connect_obj->getConnectExamByBatch($batch_id,2);
                     if($first_term_id_for_class_performance)
                     {
                         foreach($all_subject_without_no_exam as $value)

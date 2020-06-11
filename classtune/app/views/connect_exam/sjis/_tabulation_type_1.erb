@@ -282,10 +282,15 @@
                                   elsif rs['exam_category'] == '1' && term == 2
                                     subject_full_mark_ct2 = subject_full_mark_ct2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                     subject_obtain_mark_ct2 = subject_obtain_mark_ct2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  elsif term == 1
+                                    subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                    subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    #subject_obtain_mark = subject_obtain_mark.round()
+                                    term = 2
                                   else
                                     subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                     subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                    term = 2
+                                    #subject_obtain_mark = subject_obtain_mark.round()
                                   end
 
 
@@ -294,14 +299,27 @@
                             <% end %>
                             
                             <% if subject_full_mark_ct1 > 0 %>
-                              <% subject_full_mark = subject_full_mark+30 %>
-                              <% subjects_marks_ct_converted = (subject_obtain_mark_ct1/subject_full_mark_ct1)*30 %>
-                              <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted %>
+                              <% if subject_full_mark_ct1 > 20 %>
+                                <% subject_full_mark = subject_full_mark+30 %>
+                                <% subjects_marks_ct_converted = (subject_obtain_mark_ct1/subject_full_mark_ct1)*30 %>
+                                <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted %>
+                              <% else %>
+                                <% subject_full_mark = subject_full_mark+subject_full_mark_ct1 %>
+                                <% subjects_marks_ct_converted = subject_obtain_mark_ct1 %>
+                                <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted %>
+                            
+                              <% end %>
                             <% end %>
                             <% if subject_full_mark_ct2 > 0 %> 
-                              <% subject_full_mark = subject_full_mark+30 %>
-                              <% subjects_marks_ct_converted = (subject_obtain_mark_ct2/subject_full_mark_ct2)*30 %>
-                              <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted %>
+                              <% if subject_full_mark_ct2 > 20 %>
+                                <% subject_full_mark = subject_full_mark+30 %>
+                                <% subjects_marks_ct_converted = (subject_obtain_mark_ct2/subject_full_mark_ct2)*30 %>
+                                <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted %>
+                              <% else %>
+                                <% subject_full_mark = subject_full_mark+subject_full_mark_ct2 %>
+                                <% subjects_marks_ct_converted = subject_obtain_mark_ct2 %>
+                                <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted %>
+                              <% end %>
                             <% end %>
                             <% subject_obtain_mark = subject_obtain_mark.round() %>
                             
@@ -504,10 +522,15 @@
                                   elsif rs['exam_category'] == '1' && term == 2
                                     subject_full_mark_ct2 = subject_full_mark_ct2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                     subject_obtain_mark_ct2 = subject_obtain_mark_ct2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  elsif term == 1
+                                    subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                    subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    #subject_obtain_mark = subject_obtain_mark.round()
+                                    term = 2
                                   else
                                     subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                     subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                    term = 2
+                                    #subject_obtain_mark = subject_obtain_mark.round()
                                   end
 
 
@@ -516,14 +539,27 @@
                             <% end %>
                             
                             <% if subject_full_mark_ct1 > 0 %>
-                              <% subject_full_mark = subject_full_mark+30 %>
-                              <% subjects_marks_ct_converted = (subject_obtain_mark_ct1/subject_full_mark_ct1)*30 %>
-                              <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted %>
+                              <% if subject_full_mark_ct1 > 20 %>
+                                <% subject_full_mark = subject_full_mark+30 %>
+                                <% subjects_marks_ct_converted = (subject_obtain_mark_ct1/subject_full_mark_ct1)*30 %>
+                                <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted %>
+                              <% else %>
+                                <% subject_full_mark = subject_full_mark+subject_full_mark_ct1 %>
+                                <% subjects_marks_ct_converted = subject_obtain_mark_ct1 %>
+                                <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted %>
+                            
+                              <% end %>
                             <% end %>
                             <% if subject_full_mark_ct2 > 0 %> 
-                              <% subject_full_mark = subject_full_mark+30 %>
-                              <% subjects_marks_ct_converted = (subject_obtain_mark_ct2/subject_full_mark_ct2)*30 %>
-                              <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted %>
+                              <% if subject_full_mark_ct2 > 20 %>
+                                <% subject_full_mark = subject_full_mark+30 %>
+                                <% subjects_marks_ct_converted = (subject_obtain_mark_ct2/subject_full_mark_ct2)*30 %>
+                                <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted %>
+                              <% else %>
+                                <% subject_full_mark = subject_full_mark+subject_full_mark_ct2 %>
+                                <% subjects_marks_ct_converted = subject_obtain_mark_ct2 %>
+                                <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted %>
+                              <% end %>
                             <% end %>
                             <% subject_obtain_mark = subject_obtain_mark.round() %>
                             

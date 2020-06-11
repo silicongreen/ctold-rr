@@ -602,7 +602,10 @@ class PaymentSettingsController < ApplicationController
                                 payment = Payment.find(:first, :conditions => "payee_id = #{@student.id} and gateway_txt = 'bkash' and payment_id IN (#{finance_f.join(",")})") 
                                 transaction_info = search_bkash_payment(tokens[:id_token], order_id)  
                                 unless transaction_info[:transactionStatus].blank?
-                                  abort(transaction_info.inspect)
+                                  #gateway_response = transaction_info
+                                  payment_id = payment.gateway_response[:paymentID]
+                                  query_info = query_bkash_payment(tokens[:id_token], payment_id) 
+                                  abort(query_info.inspect)
                                 end
                               end
                               

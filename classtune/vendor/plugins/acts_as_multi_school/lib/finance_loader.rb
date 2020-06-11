@@ -3854,13 +3854,13 @@ module FinanceLoader
           #abort(payment_saved.inspect)
           if payment_saved
             bkash_finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{orderId}' and student_id = '#{@student.id}'")
-            abort(fees.inspect)
+            #abort(fees.inspect)
             unless bkash_finance_orders.blank?
               total_fees = 0.00
               bkash_finance_orders.each do |finance_order|
 
                 finance_fee_id = finance_order.finance_fee_id
-                if fees.include?(finance_fee_id.to_s)
+                if fees.map(&:to_s).include?(finance_fee_id.to_s)
                   finance_fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{@student.id}")
                   unless finance_fee.blank?
                     fee_collection_id = finance_fee.fee_collection_id
@@ -3876,7 +3876,7 @@ module FinanceLoader
             end
             fee_percent = 0.00
             fee_percent = total_fees.to_f * (1.5 / 100)
-            #abort(total_fees.to_s)
+            abort(total_fees.to_s)
             amount = response_ssl[:amount]
             if (amount.to_f + fee_percent.to_f) == total_fees
               amount = amount.to_f - fee_percent.to_f

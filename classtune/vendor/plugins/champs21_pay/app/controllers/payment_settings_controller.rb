@@ -606,7 +606,7 @@ class PaymentSettingsController < ApplicationController
                               end
                             end
                           end
-                          abort(paymentID.inspect)
+                          #abort(paymentID.inspect)
                           if paymentID.blank?
                             tokens = get_bkash_token()
                             transaction_info = search_bkash_payment(tokens[:id_token], params[:order_id])  

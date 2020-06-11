@@ -415,6 +415,9 @@ class PaymentSettingsController < ApplicationController
                 params[:order_id] = params[:classtune_order_id]
                 @classtune_order_id = params[:classtune_order_id]
               end
+              unless params[:trx_id].blank?
+                params[:order_id] = params[:trx_id]
+              end
             end
             unless params[:order_id].blank?
               order_id_vals =  params[:order_id]

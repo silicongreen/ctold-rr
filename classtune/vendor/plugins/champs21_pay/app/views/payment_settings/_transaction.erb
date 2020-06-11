@@ -289,6 +289,10 @@
       <span style="font-family: verdana; font-size: 12px;">Showing <%= pg %> to <%= showing %> of <%= @online_payments.total_entries %> Records</span> 
       <% no_paginate_params = ['authenticity_token','export','controller','action','search'] %>
       <% paginate_params = params.select{|k,v| {k.to_sym => v} unless no_paginate_params.include?(k.to_s) or v.blank? } %>
+      <% if MultiSchool.current_school.id == 357  %>
+        <%= debug paginate_params.inspect %>
+      <% end %>
+      <%#= will_paginate @student_finance_fees, :previous_label=>"<", :next_label=>">", :renderer => 'RemoteLinkRenderer' ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader_paginate').hide();"  }, :params => {:controller=>:finance,:action => "load_bill_generation_reports", :opt => @opt, :filter_by_course => @filter_by_course, :date => @date.id} %>
       <%= will_paginate @online_payments,:params=> paginate_params %>
     </div>
   <% else %>
@@ -296,7 +300,9 @@
       <p class="flash-msg"  style="float: left;margin-top: 50px;width: 100%;">No Payments present</p>
     </div>
   <% end %>
+  <% unless @online_payments.blank? %>  
     <div style="width: 100%; text-align: center; padding-top: 20px;">
       <%= submit_tag 'Export Transaction',:name => "export_transaction",:class => "submit-button", :onclick => "j('#export').val(1);", :style => "float: none;" %>
     </div>  
+  <% end %>
   <% end %>

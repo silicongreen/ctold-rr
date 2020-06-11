@@ -118,6 +118,9 @@
             <th style="width: 10%;"><%= t("service_charge") %></th>
             <th style="width: 10%;"><%= "Total Amount" %></th>
             <% end %>
+            <% if @gateway == "trustbank" %>
+              <th style="width: 10%;"><%= t("service_charge") %></th>
+            <% end %>
             <% if @gateway == "bkash" or @gateway == "citybank" %>
             <th style="width: 10%;"><%= t("gateway_status") %></th>
             <% end %>

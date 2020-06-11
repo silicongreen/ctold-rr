@@ -619,7 +619,7 @@ class PaymentSettingsController < ApplicationController
                           end
                         end
                         unless paymentID.blank?
-                          paymentID = paymentID.uniq
+                          #paymentID = paymentID.uniq
                           tokens = get_bkash_token()
                           cnt = 0
                           paymentID.each do |pid|

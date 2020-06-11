@@ -121,6 +121,7 @@
           var val = this.value;
           j("#comma_sep").hide();
           j("#comma_sep_single").hide();
+          j(".bkash_order").hide();
           if (val == "order_id")
           {
               j("#comma_sep").show();
@@ -128,6 +129,14 @@
           else
           {
               j("#comma_sep_single").show();
+          }
+          if ( val == "trx_id" )
+          {
+              j("#bkash_trxid_panel").show();
+          }
+          else
+          {
+              j("#bkash_other_panel").show();
           }
       });
   });

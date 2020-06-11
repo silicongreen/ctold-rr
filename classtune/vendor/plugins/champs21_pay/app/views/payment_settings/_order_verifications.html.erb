@@ -72,7 +72,7 @@
             <small id="comma_sep">(Comma Seperated Value)</small>
             <small id="comma_sep_single" style="display: none;">(Only Single TrxID or PaymentID)</small>
           </div>
-          
+          <% @fee_collections = FinanceFeeCollection.find(:all, :conditions => "is_deleted1 = #{false}") %>
           <div id='bkash_trxid_panel' class="form-group bkash_order" style=" <%= (query_type == "trx_id") ? "" : "display: none;" %> padding-bottom: 20px;">
               <label> Finance Fee:<span class="necessary-field">*</span> :</label>
               <select name="finance_fee" id="finance_fee">

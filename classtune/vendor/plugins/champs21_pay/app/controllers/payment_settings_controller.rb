@@ -596,7 +596,7 @@ class PaymentSettingsController < ApplicationController
                         
                           if @finance_fee != ""
                             unless @student.blank?
-                              @fee_collections_id = FinanceFeeCollection.find(:all, :conditions => "is_deleted = #{false} and name = '#{@finance_fee}'").map(&:id)
+                              @fee_collections_id = FinanceFeeCollection.find(:all, :conditions => ["is_deleted = #{false} and name = ?", @finance_fee]).map(&:id)
                               finance_f = FinanceFee.find(:all, :conditions => "student_id = #{@student.id} and fee_collection_id IN (#{@fee_collections_id.join(",")})").map(&:id)
                               abort(finance_f.inspect)
                               transaction_info = search_bkash_payment(tokens[:id_token], order_id)  

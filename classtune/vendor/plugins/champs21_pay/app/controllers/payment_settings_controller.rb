@@ -599,7 +599,8 @@ class PaymentSettingsController < ApplicationController
                               @fee_collections_id = FinanceFeeCollection.find(:all, :conditions => ["is_deleted = #{false} and name = ?", @finance_fee]).map(&:id)
                               finance_f = FinanceFee.find(:all, :conditions => "student_id = #{@student.id} and fee_collection_id IN (#{@fee_collections_id.join(",")})").map(&:id)
                               unless finance_f.blank?
-                                payment = Payment.find(:first, :conditions => "payee_id = #{@student.id} and gateway_txt = 'bkash' and payment_id IN (#{finance_f.join(",")})") 
+                                payment = Payment.find(:last, :conditions => "payee_id = #{@student.id} and gateway_txt = 'bkash' and payment_id IN (#{finance_f.join(",")})") 
+                                
                                 unless payment.blank?
                                   transaction_info = search_bkash_payment(tokens[:id_token], order_id)  
                                   unless transaction_info[:transactionStatus].blank?
@@ -621,15 +622,15 @@ class PaymentSettingsController < ApplicationController
                                         end
                                       end
                                     end
-                                    unless response_ssl[:refundAmount].blank?
+                                    if response_ssl[:refundAmount].blank?
                                       response_ssl[:refundAmount] = "0"
                                     end
-                                    unless response_ssl[:paymentID].blank?
+                                    if response_ssl[:paymentID].blank?
                                       o = [('a'..'z'), ('A'..'Z')].map(&:to_a).flatten
                                       payID = (0...20).map { o[rand(o.length)] }.join
                                       response_ssl[:paymentID] = payID
                                     end
-                                    unless response_ssl[:intent].blank?
+                                    if response_ssl[:intent].blank?
                                       response_ssl[:intent] = 'sale'
                                     end
                                     if save_bkash_payment(response_ssl)

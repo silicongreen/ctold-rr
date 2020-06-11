@@ -56,6 +56,13 @@
 <% elsif @gateway == "bkash" %>  
   <h2>Payment Verification</h2>  
   <hr style="border: 1px solid #ccc;" />
+  <%
+      
+    query_type = "order_id"
+    unless params[:query_type].blank?
+      query_type = params[:query_type]
+    end
+  %>
   <% form_for :payment_settings,:url => {:action => :order_verifications} do |f| %>
       <input type="hidden" name="gateway" id="gateway" value="<%= @gateway %>" />
       <div class="form-group col-sm-6">
@@ -68,10 +75,10 @@
           
           <div id='bkash_trxid_panel' class="form-group col-sm-6 bkash_order" style=" <%= (query_type == "trx_id") ? "" : "display: none;" %> padding-bottom: 20px;">
               <label> Student Admission No:<span class="necessary-field">*</span> :</label>
-              <%= text_field_tag "order_id", @order_id, :class=>"form-control"%>
+              <%= text_field_tag "admission_no", @order_id, :class=>"form-control"%>
               <div style='clear: both; height: 10px;'></div>
               <label> Transaction ID:<span class="necessary-field">*</span> :</label>
-              <%= text_field_tag "session_id", @session_id, :class=>"form-control"%>
+              <%= text_field_tag "trx_id", @trx_id, :class=>"form-control"%>
               <div style='clear: both; height: 10px;'></div>
           </div>
       </div>

@@ -605,7 +605,21 @@ class PaymentSettingsController < ApplicationController
                                   #gateway_response = transaction_info
                                   payment_id = payment.gateway_response[:paymentID]
                                   query_info = query_bkash_payment(tokens[:id_token], payment_id) 
-                                  abort(query_info.inspect)
+                                  response_ssl = transaction_info
+                                  response_ssl[:merchantInvoiceNumber] = payment.order_id
+                                  unless query_info[:refundAmount].blank?
+                                    response_ssl[:refundAmount] = query_info[:refundAmount]
+                                  end
+                                  unless query_info[:paymentID].blank?
+                                    response_ssl[:paymentID] = query_info[:paymentID]
+                                  end
+                                  unless query_info[:intent].blank?
+                                    response_ssl[:intent] = query_info[:intent]
+                                  end
+                                  
+                                  if save_bkash_payment
+                                    verified_already = true
+                                  end
                                 end
                               end
                               
@@ -640,11 +654,16 @@ class PaymentSettingsController < ApplicationController
                             tokens = get_bkash_token()
                             transaction_info = search_bkash_payment(tokens[:id_token], params[:order_id])  
                             #abort(transaction_info.inspect)
-                            if order_ids.length > 1
-                              flash[:notice] = "No Order found with these Transaction IDs"
+                            unless verified_already
+                              if order_ids.length > 1
+                                flash[:notice] = "No Order found with these Transaction IDs"
+                              else
+                                flash[:notice] = "No Order found with this Transaction ID"
+                              end
                             else
-                              flash[:notice] = "No Order found with this Transaction ID"
+                              flash[:notice] = "All Orders has been verified successfully"
                             end
+                            
                           end
                         end
                         unless paymentID.blank?

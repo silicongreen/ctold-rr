@@ -3789,6 +3789,119 @@ module FinanceLoader
     end
   end
   
+  def save_bkash_payment(response_ssl)
+    
+    if response_ssl[:transactionStatus] == 'Completed'
+      require 'date'
+      gateway_response = response_ssl
+      
+      transaction_datetime = (DateTime.parse(response_ssl[:completedTime]).to_time + 6.hours).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
+      orderId = response_ssl[:merchantInvoiceNumber].to_s
+      @finance_order = FinanceOrder.find_by_order_id(orderId.strip)
+      
+      unless @finance_order.blank?
+        student_id = @finance_order.student_id
+        request_params = @finance_order.request_params
+        @student = Student.find(student_id)
+        payment_saved = false
+        unless request_params.nil?
+          multiple = request_params[:multiple]
+          unless multiple.nil?
+            if multiple.to_s == "true"
+              fees = request_params[:fees].split(",")
+              fees.each do |fee|
+                f = fee.to_i
+                feenew = FinanceFee.find(f)
+                payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{feenew.id} and gateway_txt = 'bkash'")
+                unless payment.nil?
+                  payment_saved = true
+                  payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
+                else  
+                  payment = Payment.new(:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
+                  if payment.save
+                    payment_saved = true
+                  end 
+                end
+              end
+            else
+              financefee = FinanceFee.find(@finance_order.finance_fee_id)
+              payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id} and gateway_txt = 'bkash'")
+              unless payment.nil?
+                payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
+                payment_saved = true
+              else  
+                payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
+                if payment.save
+                  payment_saved = true
+                end 
+              end
+            end
+          else
+            financefee = FinanceFee.find(@finance_order.finance_fee_id)
+            payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{financefee.id} and gateway_txt = 'bkash'")
+            unless payment.nil?
+              payment.update_attributes(:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
+              payment_saved = true
+            else  
+              payment = Payment.new(:order_id => orderId, :payee => @student,:payment => financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime, :gateway_txt => "bkash")
+              if payment.save
+                payment_saved = true
+              end 
+            end
+          end
+          
+          if payment_saved
+            bkash_finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{orderId}' and student_id = '#{@student.id}'")
+            unless bkash_finance_orders.blank?
+              total_fees = 0.00
+              bkash_finance_orders.each do |finance_order|
+
+                finance_fee_id = finance_order.finance_fee_id
+                if fees.include?(finance_fee_id.to_s)
+                  finance_fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{@student.id}")
+                  unless finance_fee.blank?
+                    fee_collection_id = finance_fee.fee_collection_id
+                    d = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}")
+                    unless d.blank?
+                      bal = FinanceFee.get_student_actual_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f
+                      #abort(bal.to_s)
+                      total_fees += bal.to_f
+                    end
+                  end
+                end
+              end
+            end
+            fee_percent = 0.00
+            fee_percent = total_fees.to_f * (1.5 / 100)
+            
+            amount = response_ssl[:amount]
+            if (amount.to_f + fee_percent.to_f) == total_fees
+              amount = amount.to_f - fee_percent.to_f
+              finance_interest = FinanceInterest.new
+              finance_interest.order_id = orderId.strip
+              finance_interest.student_id = @student.id
+              finance_interest.batch_id = @student.batch.id
+              finance_interest.interest = fee_percent
+              finance_interest.save
+            end
+            
+            unless order_verify(orderId, 'bkash', transaction_datetime, response_ssl[:trxID], response_ssl[:amount])
+              false
+            else
+              true
+            end
+          end
+        else
+          false
+        end
+      else
+        false
+      end
+    else
+      false
+    end
+  end
+  
   def order_verify(o, gateway, transaction_datetime, ref_id, amount)
     verify_order = false
     unless @student.nil?

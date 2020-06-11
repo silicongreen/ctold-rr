@@ -289,10 +289,7 @@
       <span style="font-family: verdana; font-size: 12px;">Showing <%= pg %> to <%= showing %> of <%= @online_payments.total_entries %> Records</span> 
       <% no_paginate_params = ['authenticity_token','export','controller','action','search'] %>
       <% paginate_params = params.select{|k,v| {k.to_sym => v} unless no_paginate_params.include?(k.to_s) or v.blank? } %>
-      <% if @payment_gateway.length > 1 %>
-        <% paginate_params[:controller] = "online_payments" %>
-        <% paginate_params[:action] = "transaction_list" %>
-      <% end %>
+      
       
       <%#= will_paginate @student_finance_fees, :previous_label=>"<", :next_label=>">", :renderer => 'RemoteLinkRenderer' ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader_paginate').hide();"  }, :params => {:controller=>:finance,:action => "load_bill_generation_reports", :opt => @opt, :filter_by_course => @filter_by_course, :date => @date.id} %>
       <% if @payment_gateway.length > 1 %>

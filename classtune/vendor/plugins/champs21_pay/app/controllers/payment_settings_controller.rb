@@ -596,7 +596,7 @@ class PaymentSettingsController < ApplicationController
                                   payments.each do |payment|
                                     paymentID = payment.gateway_response[:paymentID]
                                     query_info = query_bkash_payment(tokens[:id_token], paymentID)  
-                                    unless [6728,6731].include?(payment.id)
+                                    if payment.id == 6832
                                     abort(query_info.inspect)
                                     end
                                     unless query_info[:trxID].blank?

@@ -381,6 +381,7 @@ class PaymentSettingsController < ApplicationController
       unless params[:order_tid].nil?
         @order_id = params[:order_tid]
       end
+      @fee_collections = FinanceFeeCollection.find(:all, :conditions => "is_deleted = #{false}")
       render :update do |page|
         page.replace_html 'order_panel',:partial => "order_verifications"
         page << "j('#loader').hide();"

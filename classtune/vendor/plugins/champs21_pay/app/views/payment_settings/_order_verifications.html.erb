@@ -61,7 +61,7 @@
       <div class="form-group col-sm-6">
           <label><%= (Champs21Pay.const_defined?(@gateway.upcase)) ? Champs21Pay.const_get(@gateway.upcase) : @gateway %> Verification<span class="necessary-field">*</span> :</label>
           <%= text_area_tag "order_id", @order_id, :class=>"form-control"%>
-          <small>(Comma Seperated Value)</small>
+          <small id="comma_sep">(Comma Seperated Value)</small>
       </div>
       <div style="clear: both; height: 1px;"></div>
       <div style="width:100%;">
@@ -72,13 +72,13 @@
             end
           %>
           <div style="width: 120px; float: left; padding-right: 10px;">
-              <input type="radio" name="query_type" id="query_type_order_id" value="order_id" <%= (query_type == "otder_id") ? "checked" : "" %> />&nbsp;&nbsp;&nbsp;Order ID
+              <input type="radio" class="bkash_qry_type" name="query_type" id="query_type_order_id" value="order_id" <%= (query_type == "otder_id") ? "checked" : "" %> />&nbsp;&nbsp;&nbsp;Order ID
           </div>
           <div style="width: 120px; float: left; padding-right: 10px;">
-              <input type="radio" name="query_type" id="query_type_payment_id" value="payment_id" <%= (query_type == "payment_id") ? "checked" : "" %> />&nbsp;&nbsp;&nbsp;Payment ID
+              <input type="radio" class="bkash_qry_type" name="query_type" id="query_type_payment_id" value="payment_id" <%= (query_type == "payment_id") ? "checked" : "" %> />&nbsp;&nbsp;&nbsp;Payment ID
           </div>
           <div style="width: 120px; float: left; padding-right: 10px;">
-              <input type="radio" name="query_type" id="query_type_trans_id" value="trx_id" <%= (query_type == "trx_id") ? "checked" : "" %> />&nbsp;&nbsp;&nbsp;Transaction ID
+              <input type="radio" class="bkash_qry_type" name="query_type" id="query_type_trans_id" value="trx_id" <%= (query_type == "trx_id") ? "checked" : "" %> />&nbsp;&nbsp;&nbsp;Transaction ID
           </div>
       </div>
       <div style="clear: both; height: 10px;"></div>

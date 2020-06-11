@@ -116,5 +116,14 @@
               j("#" + val).show();
           }
       });
+      
+      j(document).on("click", ".bkash_qry_type", function(){
+          var val = this.value;
+          j("#comma_sep").hide();
+          if (val == "order_id")
+          {
+              j("#comma_sep").show();
+          }
+      });
   });
 </script>

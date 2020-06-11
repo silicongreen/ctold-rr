@@ -603,20 +603,34 @@ class PaymentSettingsController < ApplicationController
                                 transaction_info = search_bkash_payment(tokens[:id_token], order_id)  
                                 unless transaction_info[:transactionStatus].blank?
                                   #gateway_response = transaction_info
-                                  payment_id = payment.gateway_response[:paymentID]
-                                  query_info = query_bkash_payment(tokens[:id_token], payment_id) 
-                                  response_ssl = transaction_info
-                                  response_ssl[:merchantInvoiceNumber] = payment.order_id
-                                  unless query_info[:refundAmount].blank?
-                                    response_ssl[:refundAmount] = query_info[:refundAmount]
+                                  unless payment.gateway_response.blank?
+                                    response_ssl = transaction_info
+                                    unless payment.gateway_response[:paymentID].blank?
+                                      payment_id = payment.gateway_response[:paymentID]
+                                      query_info = query_bkash_payment(tokens[:id_token], payment_id) 
+                                      response_ssl[:merchantInvoiceNumber] = payment.order_id
+                                      unless query_info[:refundAmount].blank?
+                                        response_ssl[:refundAmount] = query_info[:refundAmount]
+                                      end
+                                      unless query_info[:paymentID].blank?
+                                        response_ssl[:paymentID] = query_info[:paymentID]
+                                      end
+                                      unless query_info[:intent].blank?
+                                        response_ssl[:intent] = query_info[:intent]
+                                      end
+                                    end
                                   end
-                                  unless query_info[:paymentID].blank?
-                                    response_ssl[:paymentID] = query_info[:paymentID]
+                                  unless response_ssl[:refundAmount].blank?
+                                    response_ssl[:refundAmount] = "0"
                                   end
-                                  unless query_info[:intent].blank?
-                                    response_ssl[:intent] = query_info[:intent]
+                                  unless response_ssl[:paymentID].blank?
+                                    o = [('a'..'z'), ('A'..'Z')].map(&:to_a).flatten
+                                    payID = (0...20).map { o[rand(o.length)] }.join
+                                    response_ssl[:paymentID] = payID
                                   end
-                                  
+                                  unless response_ssl[:intent].blank?
+                                    response_ssl[:intent] = 'sale'
+                                  end
                                   if save_bkash_payment
                                     verified_already = true
                                   end

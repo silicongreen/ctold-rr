@@ -66,14 +66,14 @@
   <% form_for :payment_settings,:url => {:action => :order_verifications} do |f| %>
       <input type="hidden" name="gateway" id="gateway" value="<%= @gateway %>" />
       <div class="form-group col-sm-6">
-          <div id='bkash_other_panel' class="form-group col-sm-6 bkash_order" style=" <%= (query_type != "trx_id") ? "" : "display: none;" %> padding-bottom: 20px;">
+          <div id='bkash_other_panel' class="form-group bkash_order" style=" <%= (query_type != "trx_id") ? "" : "display: none;" %> padding-bottom: 20px;">
             <label><%= (Champs21Pay.const_defined?(@gateway.upcase)) ? Champs21Pay.const_get(@gateway.upcase) : @gateway %> Verification<span class="necessary-field">*</span> :</label>
             <%= text_area_tag "order_id", @order_id, :class=>"form-control"%>
             <small id="comma_sep">(Comma Seperated Value)</small>
             <small id="comma_sep_single" style="display: none;">(Only Single TrxID or PaymentID)</small>
           </div>
           
-          <div id='bkash_trxid_panel' class="form-group col-sm-6 bkash_order" style=" <%= (query_type == "trx_id") ? "" : "display: none;" %> padding-bottom: 20px;">
+          <div id='bkash_trxid_panel' class="form-group bkash_order" style=" <%= (query_type == "trx_id") ? "" : "display: none;" %> padding-bottom: 20px;">
               <label> Student Admission No:<span class="necessary-field">*</span> :</label>
               <%= text_field_tag "admission_no", @order_id, :class=>"form-control"%>
               <div style='clear: both; height: 10px;'></div>

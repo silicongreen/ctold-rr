@@ -114,13 +114,15 @@
             <% end %>
             <th style="width: 10%;"><%= t("order_id") %></th>
             <th style="width: 10%;"><%= t("amount") %></th>
-            <% if @gateway == "trustbank" or @gateway == "citybank" %>
+            <% if @gateway == "citybank" %>
             <th style="width: 10%;"><%= t("service_charge") %></th>
             <th style="width: 10%;"><%= "Total Amount" %></th>
             <% end %>
+            <% if @gateway == "bkash" or @gateway == "citybank" %>
             <th style="width: 10%;"><%= t("gateway_status") %></th>
+            <% end %>
             <% if @gateway == "trustbank" %>
-              <th style="width: 10%;"><%= t("online_transaction_id") %></th>
+              <!--th style="width: 10%;"><%#= t("online_transaction_id") %></th-->
             <% end %>
             <th style="width: 10%;"><%= t("transaction_date") %></th>
             <% if @gateway == "trustbank" %>

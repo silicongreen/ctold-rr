@@ -121,9 +121,8 @@
             <% if @gateway == "trustbank" %>
               <th style="width: 10%;"><%= t("service_charge") %></th>
             <% end %>
-            <% if @gateway == "bkash" or @gateway == "citybank" %>
             <th style="width: 10%;"><%= t("gateway_status") %></th>
-            <% end %>
+            
             <% if @gateway == "trustbank" %>
               <!--th style="width: 10%;"><%#= t("online_transaction_id") %></th-->
             <% end %>

@@ -3798,7 +3798,7 @@ module FinanceLoader
       transaction_datetime = (DateTime.parse(response_ssl[:completedTime]).to_time + 6.hours).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
       orderId = response_ssl[:merchantInvoiceNumber].to_s
       @finance_order = FinanceOrder.find_by_order_id(orderId.strip)
-      abort(@finance_order.inspect)
+      
       unless @finance_order.blank?
         student_id = @finance_order.student_id
         request_params = @finance_order.request_params
@@ -3849,7 +3849,7 @@ module FinanceLoader
               end 
             end
           end
-          
+          abort(payment_saved.inspect)
           if payment_saved
             bkash_finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{orderId}' and student_id = '#{@student.id}'")
             unless bkash_finance_orders.blank?

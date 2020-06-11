@@ -42,7 +42,7 @@
               if rs['exam_category'] == '1'
                 if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
                   std_subject_marks_ct = std_subject_marks_ct+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f  
-                  std_subject_marks = std_subject_marks+std_subject_marks_ct
+                  std_subject_marks = std_subject_marks+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f  
                 end
                 if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].blank?
                   std_full_marks_ct = std_full_marks_ct+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f  

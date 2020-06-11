@@ -3649,6 +3649,7 @@ module FinanceLoader
   end
   
   def verify_bkash_payment(id_token, payment_id)
+    payment_id = "MU3XXSL1591859220520"
     payment_urls = Hash.new
     if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
       payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
@@ -3669,7 +3670,7 @@ module FinanceLoader
     @app_username = PaymentConfiguration.config_value("bkash_username")
     @app_password = PaymentConfiguration.config_value("bkash_password")
 
-    request = Net::HTTP::Post.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
+    request = Net::HTTP::Get.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
     #request.body = {"amount"=> params[:total_fees],"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>params[:order_id]}.to_json
     response = http.request(request)
     tmp_response_ssl = JSON::parse(response.body)

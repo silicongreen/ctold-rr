@@ -590,13 +590,13 @@ class PaymentSettingsController < ApplicationController
                           unless @student.blank?
                             transaction_info = search_bkash_payment(tokens[:id_token], order_id)  
                             unless transaction_info[:transactionStatus].blank?
-                              abort(transaction_info.inspect)
                               if transaction_info[:transactionStatus].to_s == "Completed"
                                 payments = Payment.find(:all, :conditions => "payee_id = #{@student.id} and gateway_txt = 'bkash' and finance_transaction_id IS NULL") 
                                 unless payments.blank?
                                   payments.each do |payment|
                                     paymentID = payment.gateway_response[:paymentID]
                                     query_info = query_bkash_payment(tokens[:id_token], paymentID)  
+                                    abort(query_info.inspect)
                                     unless query_info[:trxID].blank?
                                       if query_info[:trxID].to_s == order_id.to_s
                                         abort(query_info.inspect)

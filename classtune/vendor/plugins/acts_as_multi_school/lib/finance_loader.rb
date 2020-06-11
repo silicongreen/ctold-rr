@@ -2268,7 +2268,7 @@ module FinanceLoader
     end
 
     if @config.present?
-      power_sms_schools = [2,357,352,361]
+      power_sms_schools = [2,357,352]
       @sms_hash = {"user"=>@username,"pass"=>@password,"sid" =>@sendername}
       if power_sms_schools.include?(MultiSchool.current_school.id)
         @i_sms_loop = 0
@@ -3595,6 +3595,38 @@ module FinanceLoader
     
     payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "search/" + payment_id.to_s)
     payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "search/" + payment_id.to_s)
+    #abort("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "query/" + payment_id.to_s)
+    http = Net::HTTP.new(payment_url.host, payment_url.port)
+    http.use_ssl = (payment_url.scheme == 'https')
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
+    #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    @app_key = PaymentConfiguration.config_value("bkash_app_key")
+    @app_secret = PaymentConfiguration.config_value("bkash_app_secret")
+    @app_username = PaymentConfiguration.config_value("bkash_username")
+    @app_password = PaymentConfiguration.config_value("bkash_password")
+
+    request = Net::HTTP::Get.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
+    #request.body = {"amount"=> params[:total_fees],"currency"=>"BDT","intent" => "sale","merchantInvoiceNumber"=>params[:order_id]}.to_json
+    response = http.request(request)
+    tmp_response_ssl = JSON::parse(response.body)
+    response_ssl = {}
+    tmp_response_ssl.each do |key,value|
+      response_ssl[key.to_sym] = value
+    end
+    response_ssl 
+  end
+  
+  def query_bkash_payment(id_token, payment_id)
+    payment_urls = Hash.new
+    if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+      payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+    end
+
+    is_test_bkash = PaymentConfiguration.config_value("is_test_bkash")
+    extra_string = (is_test_bkash.to_i == 1) ? '_sandbox' : ''
+    
+    payment_url = URI(payment_urls["bkash_payment_url" + extra_string] + "query/" + payment_id.to_s)
+    payment_url ||= URI("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "query/" + payment_id.to_s)
     #abort("https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/" + "query/" + payment_id.to_s)
     http = Net::HTTP.new(payment_url.host, payment_url.port)
     http.use_ssl = (payment_url.scheme == 'https')

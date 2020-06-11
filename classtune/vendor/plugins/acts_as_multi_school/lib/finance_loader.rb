@@ -3693,6 +3693,7 @@ module FinanceLoader
         payment_saved = false
         unless request_params.nil?
           multiple = request_params[:multiple]
+          fees = request_params[:fees].split(",")
           unless multiple.nil?
             if multiple.to_s == "true"
               fees = request_params[:fees].split(",")
@@ -3852,6 +3853,7 @@ module FinanceLoader
           end
           #abort(payment_saved.inspect)
           if payment_saved
+            abort('here')
             bkash_finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{orderId}' and student_id = '#{@student.id}'")
             unless bkash_finance_orders.blank?
               total_fees = 0.00

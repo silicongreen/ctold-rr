@@ -3751,7 +3751,7 @@ module FinanceLoader
                     fee_collection_id = finance_fee.fee_collection_id
                     d = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}")
                     unless d.blank?
-                      bal = FinanceFee.get_student_actual_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f
+                      bal = FinanceFee.get_student_balance(d, @student, finance_fee) + d.fine_to_pay(@student).to_f
                       #abort(bal.to_s)
                       total_fees += bal.to_f
                     end
@@ -3877,7 +3877,7 @@ module FinanceLoader
             end
             fee_percent = 0.00
             fee_percent = total_fees.to_f * (1.5 / 100)
-            abort(total_fees.to_s)
+            #abort(total_fees.to_s)
             amount = response_ssl[:amount]
             if (amount.to_f + fee_percent.to_f) == total_fees
               amount = amount.to_f - fee_percent.to_f

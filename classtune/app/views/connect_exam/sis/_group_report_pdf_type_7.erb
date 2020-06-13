@@ -69,7 +69,7 @@
                                         <% if report['exam_category'] == '7' %>
                                             <% next %>
                                         <% end %>
-                                        <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
+                                        <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                                           <% group_one_loop = group_one_loop+1 %>
                                           <tr class="even subgroup group_one">
                                           <td class="col-pdf no-warp align-left"><%= sub_group_name %></td>
@@ -101,7 +101,7 @@
                                        <% if report['exam_category'] == '7' %>
                                           <% next %>
                                       <% end %>
-                                       <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
+                                       <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                                           <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                                           <% wordString_split = wordString.split("|") %>
                                           <% unless wordString_split[iloop.to_i].blank? %>
@@ -158,7 +158,7 @@
                                         <% if report['exam_category'] == '7' %>
                                             <% next %>
                                         <% end %>
-                                        <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
+                                        <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                                           <% group_two_loop = group_two_loop+1 %>
                                           <tr class="even group_two">
                                           <td class="col-pdf no-warp align-left"><%= sub_group_name %></td>
@@ -191,7 +191,7 @@
                                       <% if report['exam_category'] == '7' %>
                                           <% next %>
                                       <% end %>
-                                       <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
+                                       <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                                           <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                                           <% wordString_split = wordString.split("|") %>
                                           <% unless wordString_split[iloop.to_i].blank? %>

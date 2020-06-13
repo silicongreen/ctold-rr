@@ -432,6 +432,9 @@ class OnlineExamGroups extends CActiveRecord {
             'examgiven' => array(
                 'select' => 'examgiven.student_id,examgiven.total_score'
             ),
+            'questions' => array(
+                'select' => 'questions.id,questions.mark'
+            ),
             'subject' => array(
                 'select' => 'subject.name,subject.icon_number',
                 'joinType' => "LEFT JOIN"
@@ -511,7 +514,19 @@ class OnlineExamGroups extends CActiveRecord {
                 {
                     $exam_array[$i]['is_new'] = 1;
                 }
+                $total_question = 0;
+                $total_marks = 0;
+                if($value['questions'] )
+                {
+                    foreach ($value['questions'] as $questions) {
+                        $total_marks = $total_marks+$questions->mark;
+                        $total_question = $total_question+1;
+                    }
+                }
                 
+                $exam_array[$i]['name'] = $value->name;
+                $exam_array[$i]['total_marks'] = $total_marks;
+                $exam_array[$i]['total_question'] = $total_question;
                 $exam_array[$i]['name'] = $value->name;
                 $exam_array[$i]['subject_name'] = $subject;
                 $exam_array[$i]['subject_icon'] = $subject_icon;

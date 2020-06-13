@@ -28,6 +28,7 @@
               </tr>
           </table>
       </div>
+      <% covid = params[:covid] %>
       <% total_subject = 0 %>
       <% total_comments_grade = 3 %>
       <div class ="current_batch" style="margin-left:0px;">
@@ -35,22 +36,31 @@
               <table id="pdf-table"  width="30%" class="left-table even-table exam-marks" cellspacing="0" >
                   <% c = 'even'  %>
                   <tr class="odd">
-                      
-                        <td class="col-pdf" rowspan="2"><%= "Subject" %></td>
+                        <% if covid.blank? %>
+                          <td class="col-pdf" rowspan="2"><%= "Subject" %></td>
                      
-                      
-                        <% if @connect_exam_obj.quarter_number == 5 %>
-                          <td class="col-pdf height-18" colspan="2">First Term</td>
-                        <% else %>
-                          <td class="col-pdf height-18" colspan="2">Final Term</td>
-                        <% end %>
+                        
+                          <% if @connect_exam_obj.quarter_number == 5 %>
+                            <td class="col-pdf height-18" colspan="2">First Term</td>
+                          <% else %>
+                            <td class="col-pdf height-18" colspan="2">Final Term</td>
+                          <% end %>
+                        <% else %> 
+                          <td class="col-pdf"><%= "Subject" %></td>
+                          <% if @connect_exam_obj.quarter_number == 5 %>
+                            <td class="col-pdf height-18">First Term</td>
+                          <% else %>
+                            <td class="col-pdf height-18">Final Term</td>
+                          <% end %>
+                        <% end %>    
                        
                   </tr>
-                  
-                  <tr class="even">
-                    <td class="col-pdf height-18">Marks</td>
-                    <td class="col-pdf height-18">Grade</td>
-                  </tr>
+                  <% if covid.blank? %>
+                    <tr class="even">
+                      <td class="col-pdf height-18">Marks</td>
+                      <td class="col-pdf height-18">Grade</td>
+                    </tr>
+                  <% end %>
                  
                   <% has_quarter = false %>
                   <% total_marks_obtain = 0 %>
@@ -243,8 +253,9 @@
                            
                           if has_mark == true && total_mark.to_i > 0
                           %>
-                          
+                          <% if covid.blank? %>
                           <td class="col-pdf"><b><%= total_mark %></b></td>
+                          <% end %>
                           
                           <% if !grade.blank? and !grade.name.blank? and total_mark > 0 %>
                             <td class="col-pdf"><b><%= grade.name %></b></td>
@@ -254,8 +265,9 @@
                           <% else %>
                             
                             <td class="col-pdf"><b></b></td>
-                            
+                            <% if covid.blank? %>
                             <td class="col-pdf"<b></b></td>
+                            <% end %>
                           <% end %> 
                           
 
@@ -283,8 +295,9 @@
                       <% total_subject = total_subject+1 %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <td class="col-pdf no-warp  align-left"><%= report['subject_name'] %></td>
-                          
+                          <% if covid.blank? %>
                           <td class="col-pdf"><b>-</b></td>
+                          <% end %>
                           
                           <td class="col-pdf"><b><%= report['subject_comment'] %></b></td>
                       </tr>

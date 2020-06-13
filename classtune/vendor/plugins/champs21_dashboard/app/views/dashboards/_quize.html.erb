@@ -25,8 +25,10 @@
                 :url => {:controller=>"dashboards", :action => "quiz_result_data_student", :id => h['id']} %>
             <% elsif h['timeover']==1 %>
               <div class="box-text-time-out">Time Over</div>
-            <% elsif h['not_started']==0 %>
+            <% elsif h['not_started']==0 && @current_user.student? %>
               <%= link_to "<div class='box-text-start'>Start</div>", :controller => "online_student_exam", :action => "start_exam", :id => h['id'] %>
+            <% elsif h['not_started']==0 %>  
+              <div class='box-text-start' style="width:70%; padding: 10px 10px 10px 25px;">On Going</div>
             <% else %>
               <div class="box-text-time-out">Not Started</div>
             <% end %>  

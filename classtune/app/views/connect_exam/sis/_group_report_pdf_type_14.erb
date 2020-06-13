@@ -28,6 +28,7 @@
               </tr>
           </table>
       </div>
+      <% covid = params[:covid] %>
       <% total_subject = 0 %>
       <% total_comments_grade = 3 %>
       <div class ="current_batch" style="margin-left:0px;">
@@ -35,12 +36,12 @@
               <table id="pdf-table"  width="30%" class="left-table even-table exam-marks" cellspacing="0" >
                   <% c = 'even'  %>
                   <tr class="odd">
-                      <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII" %>
+                      <% if covid.blank? and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                         <td class="col-pdf" rowspan="2"><%= "Subject" %></td>
                       <% else %>
                         <td class="col-pdf"><%= "Subject" %></td>
                       <% end %>
-                      <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII" %>
+                      <% if covid.blank? and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                         <% if @connect_exam_obj.quarter_number == 5 %>
                           <td class="col-pdf height-18" colspan="2">First Term</td>
                         <% else %>
@@ -54,7 +55,7 @@
                         <% end %>
                       <% end %>  
                   </tr>
-                  <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII" %>
+                  <% if covid.blank? and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                   <tr class="even">
                     <td class="col-pdf height-18">Marks</td>
                     <td class="col-pdf height-18">Grade</td>
@@ -225,7 +226,7 @@
                            
                           if has_mark == true
                           %>
-                          <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII" %>
+                          <% if covid.blank? and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                           <td class="col-pdf"><b><%= total_mark %></b></td>
                           <% end %>
                           <% if !grade.blank? and !grade.name.blank? %>
@@ -234,7 +235,7 @@
                             <td class="col-pdf"><b>-</b></td>
                           <% end %> 
                           <% else %>
-                            <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII" %>
+                            <% if covid.blank? and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                               <td class="col-pdf"><b>-</b></td>
                             <% end %>
                             <td class="col-pdf"<b>-</b></td>
@@ -267,7 +268,7 @@
                       <% total_subject = total_subject+1 %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <td class="col-pdf no-warp  align-left"><%= report['subject_name'] %></td>
-                          <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII" %>
+                          <% if covid.blank? and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                             <td class="col-pdf"><b>-</b></td>
                           <% end %>
                           <td class="col-pdf"><b><%= report['subject_comment'] %></b></td>
@@ -597,7 +598,7 @@
 </style> 
 
 <style>
-<% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII" %>
+<% if covid.blank? and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
 table.height-exam tr td
 {
     height: 33px !important;

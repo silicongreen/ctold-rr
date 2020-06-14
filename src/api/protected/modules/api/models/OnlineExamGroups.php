@@ -410,7 +410,9 @@ class OnlineExamGroups extends CActiveRecord {
 
     public function getOnlineExamList($batch_id, $student_id, $page_number, $page_size, $created_at="", $subject_id=0,$not_started=0) {
         $cur_date = date("Y-m-d");
-        $cur_time = date("H:i:s");
+        //$cur_time = date("H:i:s");
+        $random_time = rand(1,300);
+        $cur_time = date("H:i:s", time() + $random_time);
         $criteria = new CDbCriteria();
         $criteria->select = 't.id,t.name,t.start_date,t.start_time,t.end_date, t.end_time,t.maximum_time,t.pass_percentage';
         $criteria->compare('t.batch_id', $batch_id);
@@ -418,11 +420,11 @@ class OnlineExamGroups extends CActiveRecord {
         $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.is_published', 1);
         if ($created_at) {
-            $criteria->compare('DATE(start_date)', $created_at);
+            $criteria->compare('start_date', $created_at);
         }
         if($not_started == 0)
         {
-            $criteria->addCondition("DATE(start_date) <= '" . $cur_date . "' ");
+            $criteria->addCondition("start_date <= '" . $cur_date . "' ");
         }
 
 
@@ -453,17 +455,16 @@ class OnlineExamGroups extends CActiveRecord {
         $data = $this->findAll($criteria);
 
         $exam_array = array();
-
+        
         if ($data) {
             $i = 0;
+            foreach($data as $kvalue)
+            {
+                $rid[]= $kvalue->id;
+            }
+            $robject = new Reminders();
+            $new_data = $robject->FindUnreadData(15, $rid);
             foreach ($data as $value) {
-                foreach($data as $kvalue)
-                {
-                    $rid[]= $kvalue->id;
-                }
-                $robject = new Reminders();
-                
-                $new_data = $robject->FindUnreadData(15, $rid);
                 
                 $examGiven = false;
                 $score = 0.0;
@@ -513,6 +514,7 @@ class OnlineExamGroups extends CActiveRecord {
                 if(in_array($value->id, $new_data) && $exam_array[$i]['timeover']==0 && $exam_array[$i]['examGiven']==0)
                 {
                     $exam_array[$i]['is_new'] = 1;
+                    $robject->ReadReminderNew(Yii::app()->user->id, 0 ,15, $value->id);
                 }
                 $total_question = 0;
                 $total_marks = 0;

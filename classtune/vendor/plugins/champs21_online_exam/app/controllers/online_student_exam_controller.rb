@@ -37,7 +37,7 @@ class OnlineStudentExamController < ApplicationController
     @per_page = 40
     if @exam.present?
       unless @exam.already_attended(@student.id)
-        Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:id], 15,current_user.id])
+        #Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:id], 15,current_user.id])
         @exam_attendance = OnlineExamAttendance.create(:online_exam_group_id=> @exam.id, :student_id=>@student.id, :start_time=>I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S'))
         @exam_questions = @exam.online_exam_questions.paginate(:per_page=>@per_page,:page=>params[:page])
         @num_exam_questions = @exam.online_exam_questions.count
@@ -57,7 +57,7 @@ class OnlineStudentExamController < ApplicationController
     @exam = OnlineExamGroup.find(params[:id])
     @exam_attendance = OnlineExamAttendance.find(params[:attendance_id])
     @per_page = 20
-    render :partial => 'late_submit' and return if @exam_attendance.start_time+@exam_attendance.online_exam_group.maximum_time.minutes+2.minutes < @local_tzone_time.to_time
+    render :partial => 'late_submit' and return if @exam_attendance.start_time+@exam_attendance.online_exam_group.maximum_time.minutes+6.minutes < @local_tzone_time.to_time
     @exam_questions = @exam.online_exam_questions.paginate(:per_page=>@per_page,:page=>params[:page])
     @num_exam_questions = @exam.online_exam_questions.count
     question_ids = @exam_questions.collect(&:id)
@@ -70,14 +70,14 @@ class OnlineStudentExamController < ApplicationController
 
   def save_scores
     @exam_attendance = OnlineExamAttendance.find(params[:attendance_id])
-    render :partial => 'late_submit' and return if @exam_attendance.start_time+@exam_attendance.online_exam_group.maximum_time.minutes+2.minutes < Time.now
+    render :partial => 'late_submit' and return if @exam_attendance.start_time+@exam_attendance.online_exam_group.maximum_time.minutes+6.minutes < Time.now
     @exam_attendance.update_attributes(:online_exam_score_details_attributes=>params[:online_exam_attendance][:online_exam_score_details_attributes])
     render :nothing=>true
   end
 
   def save_exam
     @exam_attendance = OnlineExamAttendance.find(params[:attendance_id])
-    render :partial => 'late_submit' and return if @exam_attendance.start_time+@exam_attendance.online_exam_group.maximum_time.minutes+2.minutes < Time.now
+    render :partial => 'late_submit' and return if @exam_attendance.start_time+@exam_attendance.online_exam_group.maximum_time.minutes+6.minutes < Time.now
     @exam_attendance.update_attributes(:online_exam_score_details_attributes=>params[:online_exam_attendance][:online_exam_score_details_attributes])
     @exam_attendance.reload
     @total_score = @exam_attendance.online_exam_group.online_exam_questions.sum('mark')

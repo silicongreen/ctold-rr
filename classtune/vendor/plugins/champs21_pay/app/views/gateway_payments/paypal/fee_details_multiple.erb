@@ -1145,6 +1145,11 @@
       <% end %>
       
       <% prev_dues_school = [312] %>
+      <% prev_dues_school = PaymentNewConfiguration.config_value("previous_dues") %>
+      <%
+        prev_dues_school = prev_dues_school.split(",").map(&:to_i) unless prev_dues_school.blank?
+        prev_dues_school ||= Array.new
+      %>
       <% unless prev_dues_school.include?(MultiSchool.current_school.id) %>
       <% has_dues = false %>
       <% end %>

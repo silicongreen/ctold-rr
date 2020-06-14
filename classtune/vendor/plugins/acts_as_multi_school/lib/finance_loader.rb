@@ -2929,9 +2929,9 @@ module FinanceLoader
     unless xml_res.xpath("/").empty?
       status = xml_res.xpath("/").text
     end
-#if MultiSchool.current_school.id == 357
-#  abort(status.inspect)
-#end
+if MultiSchool.current_school.id == 357
+  abort(status.inspect)
+end
     result = Base64.decode64(status)
 
     ref_id = ""

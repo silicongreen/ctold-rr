@@ -150,7 +150,7 @@ class OnlineExamController < ApplicationController
     #    end
     exam_group=OnlineExamGroup.find(params[:id],:include=>[{:batch=>[:course]},:subject])
     
-    @group_ids=OnlineExamGroup.find(:all,:include=>[{:batch=>[:course]},:subject],:conditions=>["courses.course_name = ? and subjects.code = ? and online_exam_groups.name = ? and online_exam_groups.start_date = ? and online_exam_groups.end_date = ? and online_exam_groups.maximum_time = ? and online_exam_groups.pass_percentage = ? and online_exam_groups.option_count = ? and online_exam_groups.is_deleted = ? and online_exam_groups.is_published = ?",exam_group.batch.course.course_name,exam_group.subject.code,exam_group.name,exam_group.start_date,exam_group.end_date,exam_group.maximum_time,exam_group.pass_percentage,exam_group.option_count,exam_group.is_deleted,exam_group.is_published]).collect(&:id)
+    @group_ids=OnlineExamGroup.find(:all,:include=>[{:batch=>[:course]},:subject],:conditions=>["courses.course_name = ? and subjects.code = ? and online_exam_groups.name = ? and online_exam_groups.start_date = ? and online_exam_groups.end_date = ? and online_exam_groups.maximum_time = ? and online_exam_groups.pass_percentage = ? and online_exam_groups.option_count = ? and online_exam_groups.is_deleted = ? and online_exam_groups.is_published = ? and subjects.is_deleted = ?",exam_group.batch.course.course_name,exam_group.subject.code,exam_group.name,exam_group.start_date,exam_group.end_date,exam_group.maximum_time,exam_group.pass_percentage,exam_group.option_count,exam_group.is_deleted,exam_group.is_published, false]).collect(&:id)
     
 #    @group_ids=OnlineExamGroup.find(:all,:conditions=>{:id=>exam_group.id}).collect(&:id)
     @option_count  = exam_group.option_count.to_i
@@ -518,7 +518,7 @@ class OnlineExamController < ApplicationController
 
   def add_extra_question
     exam_group =  OnlineExamGroup.find(params[:id],:include=>[{:batch=>[:course]},:subject])
-    @group_ids=OnlineExamGroup.find(:all,:include=>[{:batch=>[:course]},:subject],:conditions=>["courses.course_name = ? and subjects.code = ? and online_exam_groups.name = ? and online_exam_groups.start_date = ? and online_exam_groups.end_date = ? and online_exam_groups.maximum_time = ? and online_exam_groups.pass_percentage = ? and online_exam_groups.option_count = ? and online_exam_groups.is_deleted = ? and online_exam_groups.is_published = ?",exam_group.batch.course.course_name,exam_group.subject.code,exam_group.name,exam_group.start_date,exam_group.end_date,exam_group.maximum_time,exam_group.pass_percentage,exam_group.option_count,exam_group.is_deleted,exam_group.is_published]).collect(&:id)
+    @group_ids=OnlineExamGroup.find(:all,:include=>[{:batch=>[:course]},:subject],:conditions=>["courses.course_name = ? and subjects.code = ? and online_exam_groups.name = ? and online_exam_groups.start_date = ? and online_exam_groups.end_date = ? and online_exam_groups.maximum_time = ? and online_exam_groups.pass_percentage = ? and online_exam_groups.option_count = ? and online_exam_groups.is_deleted = ? and online_exam_groups.is_published = ? and subjects.is_deleted = ?",exam_group.batch.course.course_name,exam_group.subject.code,exam_group.name,exam_group.start_date,exam_group.end_date,exam_group.maximum_time,exam_group.pass_percentage,exam_group.option_count,exam_group.is_deleted,exam_group.is_published,false]).collect(&:id)
     saved = false
     unless @group_ids.blank?
       @group_ids.each do |g|

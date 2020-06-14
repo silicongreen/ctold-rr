@@ -956,6 +956,9 @@ module FinanceLoader
 
     unless @financefee.is_paid
       finance_order = FinanceOrder.find(:first, :conditions => "finance_fee_id = #{@financefee.id} and student_id = #{@financefee.student_id} and batch_id = #{@financefee.batch_id} and status = 0")
+      if MultiSchool.current_school.id == 357
+        finance_order = nil
+      end
       unless finance_order.nil?
         @order_id = "O" + finance_order.id.to_s
         finance_order.update_attributes(:order_id => @order_id)
@@ -1199,6 +1202,9 @@ module FinanceLoader
 
       unless @financefee[f].is_paid
         finance_order = FinanceOrder.find(:first, :conditions => "finance_fee_id = #{@financefee[f].id} and student_id = #{@financefee[f].student_id} and batch_id = #{@financefee[f].batch_id} and status = 0")
+        if MultiSchool.current_school.id == 357
+          finance_order = nil
+        end
         unless finance_order.blank?
           if @order_id_saved
             finance_order.update_attributes(:order_id => @order_id)

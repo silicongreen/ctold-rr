@@ -440,7 +440,7 @@ class AssignmentsController < ApplicationController
       @subjects.reject! {|s| !s.batch.is_active}
       if emp_record.all_access.to_i == 1
         batches = @current_user.employee_record.batches
-        batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+        #batches += @current_user.employee_record.subjects.collect{|b| b.batch}
         batches = batches.uniq unless batches.empty?
         unless batches.blank?
           batches.each do |batch|
@@ -577,7 +577,7 @@ class AssignmentsController < ApplicationController
         @subject_employees.reject! {|s| !s.batch.is_active}
         if emp_record.all_access.to_i == 1
           batches = @current_user.employee_record.batches
-          batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+          #batches += @current_user.employee_record.subjects.collect{|b| b.batch}
           batches = batches.uniq unless batches.empty?
           unless batches.blank?
             batches.each do |batch|
@@ -686,7 +686,7 @@ class AssignmentsController < ApplicationController
       @subjects.reject! {|s| !s.batch.is_active}
       if emp_record.all_access.to_i == 1
         batches = @current_user.employee_record.batches
-        batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+        #batches += @current_user.employee_record.subjects.collect{|b| b.batch}
         batches = batches.uniq unless batches.empty?
         unless batches.blank?
           batches.each do |batch|
@@ -789,7 +789,7 @@ class AssignmentsController < ApplicationController
       @subjects.reject! {|s| !s.batch.is_active}
       if emp_record.all_access.to_i == 1
         batches = @current_user.employee_record.batches
-        batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+        #batches += @current_user.employee_record.subjects.collect{|b| b.batch}
         batches = batches.uniq unless batches.empty?
         unless batches.blank?
           batches.each do |batch|
@@ -1488,7 +1488,7 @@ class AssignmentsController < ApplicationController
       @subjects.reject! {|s| !s.batch.is_active}
       if emp_record.all_access.to_i == 1
         batches = @current_user.employee_record.batches
-        batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+        #batches += @current_user.employee_record.subjects.collect{|b| b.batch}
         batches = batches.uniq unless batches.empty?
         unless batches.blank?
           batches.each do |batch|

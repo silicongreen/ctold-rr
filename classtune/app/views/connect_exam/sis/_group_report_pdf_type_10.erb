@@ -404,7 +404,7 @@
                   end
                 end
               %>
-              
+              <% if covid.blank? %>
               <table id="pdf-table"  width="30%" class="left-table even-table signature" cellspacing="0" >
                   <tr class="even">
                       <td class="align-left">Total Working Days</td>
@@ -416,11 +416,12 @@
                   </tr>
                   
               </table>
+              <% end %>
               <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
               <% if @grading_levels.blank? %>
               <% @grading_levels = GradingLevel.default %>
               <% end %>
-              <table id="pdf-table"  width="42%" class="left-table odd-table signature" cellspacing="0" >
+              <table id="pdf-table"  <% if covid.blank? %>width="42%" class="left-table odd-table signature"<% else %>  width="72%" class="left-table even-table signature" <% end %> cellspacing="0" >
                   <tr class="even">
                       <%  unless @grading_levels.empty? %>
                         <% i = 0 %>
@@ -461,7 +462,7 @@
                   
               </table>
               <% if @connect_exam_obj.quarter_number == 6 %>
-             
+              <% if covid.blank? %>
               <table id="pdf-table"  width="20%" class="left-table  odd-table signature" cellspacing="0" >
                   <tr class="even">
                       <td class="align-left">Total Marks Obtained</td>
@@ -477,6 +478,7 @@
                   </tr>
                   
               </table>
+              <% end %>
               
               <% end %>
               <table id="pdf-table"  width="100%" class="left-table even-table signature2" cellspacing="0" >

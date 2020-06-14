@@ -370,7 +370,7 @@ class OnlineExamController < ApplicationController
         @subject_employees.reject! {|s| !s.batch.is_active}
         if emp_record.all_access.to_i == 1
           batches = @current_user.employee_record.batches
-          batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+          #batches += @current_user.employee_record.subjects.collect{|b| b.batch}
           batches = batches.uniq unless batches.empty?
           unless batches.blank?
             batches.each do |batch|
@@ -441,7 +441,7 @@ class OnlineExamController < ApplicationController
         @subject_employees.reject! {|s| !s.batch.is_active}
         if emp_record.all_access.to_i == 1
           batches = @current_user.employee_record.batches
-          batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+          #batches += @current_user.employee_record.subjects.collect{|b| b.batch}
           batches = batches.uniq unless batches.empty?
           unless batches.blank?
             batches.each do |batch|
@@ -563,7 +563,7 @@ class OnlineExamController < ApplicationController
         @subject_employees.reject! {|s| !s.batch.is_active}
         if emp_record.all_access.to_i == 1
           batches = @current_user.employee_record.batches
-          batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+          #batches += @current_user.employee_record.subjects.collect{|b| b.batch}
           batches = batches.uniq unless batches.empty?
           unless batches.blank?
             batches.each do |batch|
@@ -608,7 +608,7 @@ class OnlineExamController < ApplicationController
         @subject_employees.reject! {|s| !s.batch.is_active}
         if emp_record.all_access.to_i == 1
           batches = @current_user.employee_record.batches
-          batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+          #batches += @current_user.employee_record.subjects.collect{|b| b.batch}
           batches = batches.uniq unless batches.empty?
           unless batches.blank?
             batches.each do |batch|
@@ -665,6 +665,25 @@ class OnlineExamController < ApplicationController
     @attendance = @exam_group.online_exam_attendances
     render :update do |page|
       page.replace_html 'student-list', :partial=>'student_list'
+    end
+  end
+  
+  def reset_exam_singal
+    unless request.get?
+      if !params[:att_id].blank? and !param[:exam_group_id].blank?
+        attendance = OnlineExamAttendance.find()
+        ActiveRecord::Base.transaction do
+          OnlineExamAttendance.hard_delete_singal(params[:att_id])
+        end
+        flash[:notice]="#{t('exam_reset_successful_for_selected_students')}"
+        redirect_to :action=>:exam_result,:id=>param[:exam_group_id]
+      else
+        flash[:notice]="#{t('sorry_no_students_selected')}"
+        redirect_to :action => :exam_result,:id=>param[:exam_group_id]
+      end
+    else
+      flash[:notice] = "#{t('flash_msg4')}"
+      redirect_to :controller => "user", :action => "dashboard"
     end
   end
 

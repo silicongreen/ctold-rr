@@ -481,7 +481,13 @@ class PaymentSettingsController < ApplicationController
                                         unless payment.payee.blank?
                                           @student = payment.payee
                                         end
-                                        unless order_verify(o, 'citybank', transaction_datetime, order_id, amount_to_pay)
+                                        amount = amount_to_pay
+                                        fee_percent = 0.00
+                                        fee_percent = (amount_to_pay.to_f  * 100) * (1.5 / 100)
+                                        if MultiSchool.current_school.id != 312 
+                                          amount = (amount_to_pay.to_f * 100) + fee_percent.to_f
+                                        end
+                                        unless order_verify(o, 'citybank', transaction_datetime, order_id, amount)
                                           order_ids_new << o
                                         else
                                           verified_no += 1

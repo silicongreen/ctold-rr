@@ -1267,7 +1267,7 @@ module FinanceLoader
     end
   end
   
-  def pay_student(amount_from_gateway, total_fees, request_params, orderId, trans_date, ref_id)
+  def pay_student(amount_from_gateway, total_fees, request_params, orderId, trans_date, ref_id, gateway)
     #abort(request_params.to_s)
     #abort(@fee_particulars.map(&:id).join(","))
     unless @financefee.is_paid?
@@ -1678,7 +1678,7 @@ module FinanceLoader
 
         sms_setting = SmsSetting.new()
         if sms_setting.student_sms_active or sms_setting.parent_sms_active    
-          message = "Fees received BDT #AMOUNT# for #UNAME#(#UID#) as on #PAIDDATE# by TBL. TranID-#TRANID# TranRef-#TRANREF#, Sender - SAGC"
+          message = "Fees received BDT #AMOUNT# for #UNAME#(#UID#) as on #PAIDDATE# by #{gateway}. TranID-#TRANID# TranRef-#TRANREF#"
           if File.exists?("#{Rails.root}/config/sms_text_#{MultiSchool.current_school.id}.yml")
             sms_text_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/sms_text_#{MultiSchool.current_school.id}.yml")['school']
             message = sms_text_config['feepaid']
@@ -3416,7 +3416,7 @@ module FinanceLoader
                   amount_from_gateway = amount
 
                   #abort(amount_from_gateway.to_s + " " + total_fees.to_s + "  " + @fine_amount.to_s)
-                  pay_student(amount_from_gateway, total_fees, request_params, finance_order.order_id, verification_trans_date, ref_id)
+                  pay_student(amount_from_gateway, total_fees, request_params, finance_order.order_id, verification_trans_date, ref_id, "TBL")
                 end
               else
                 paid_fees = fee.finance_transactions
@@ -4179,7 +4179,7 @@ module FinanceLoader
                 amount_from_gateway = amount
 
                 #abort(amount_from_gateway.to_s + " " + total_fees.to_s + "  " + @fine_amount.to_s)
-                pay_student(amount_from_gateway, total_fees, request_params, finance_order.order_id, transaction_datetime, ref_id)
+                pay_student(amount_from_gateway, total_fees, request_params, finance_order.order_id, transaction_datetime, ref_id, gateway)
                 verify_order = true
               end
             else
@@ -4395,7 +4395,7 @@ module FinanceLoader
               #abort(@finance_order.request_params.inspect)
               #abort(amount_to_pay.to_s)
 
-              unless order_verify(orderId, 'citybank', transaction_datetime, gateway_response[:Message][:OrderID], amount_to_pay)
+              unless order_verify(orderId, 'citybank', transaction_datetime, gateway_response[:Message][:OrderID], paid_amount) #amount_to_pay
                 false
               else
                 true
@@ -4593,8 +4593,8 @@ module FinanceLoader
                   amount_to_pay = @finance_order.request_params[:total_payable]
                   #abort(@finance_order.request_params.inspect)
                   #abort(amount_to_pay.to_s)
-                  
-                  unless order_verify(orderId, 'citybank', transaction_datetime, gateway_response[:Message][:OrderID], amount_to_pay)
+                  amount_paid = gateway_response[:Message][:TotalAmount].to_f / 100
+                  unless order_verify(orderId, 'citybank', transaction_datetime, gateway_response[:Message][:OrderID], amount_paid)
                     flash[:notice] = "Payment unsuccessful!! Invalid Transaction, Amount mismatch"
                   end
                 end

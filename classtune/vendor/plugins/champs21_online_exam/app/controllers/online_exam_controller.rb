@@ -463,7 +463,26 @@ class OnlineExamController < ApplicationController
     if @exam_group.destroy
       #flash[:notice]="#{t('exam_group_successfully_deleted')}"
     end
-    @exams = OnlineExamGroup.find_all_by_batch_id(batch_id)
+    if @current_user.employee?
+        emp_record = current_user.employee_record 
+        @subject_employees = emp_record.subjects.active
+        @subject_employees.reject! {|s| !s.batch.is_active}
+        if emp_record.all_access.to_i == 1
+          batches = @current_user.employee_record.batches
+          #batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+          batches = batches.uniq unless batches.empty?
+          unless batches.blank?
+            batches.each do |batch|
+              @subject_employees += batch.subjects
+            end
+          end
+        end
+        @subject_employees = @subject_employees.uniq unless @subject_employees.empty?
+        sub_id = @subject_employees.map{|b| b.id}
+        @exams = OnlineExamGroup.paginate(:page => params[:page], :per_page => 20 ,:conditions=>[ "batch_id = '#{@exam_group.batch_id}' and subject_id IN (?)",sub_id], :include=> [:online_exam_attendances, :subject], :order=>"id DESC")
+    else
+        @exams = OnlineExamGroup.paginate(:page => params[:page], :per_page => 20 ,:conditions=>[ "batch_id = '#{@exam_group.batch_id}'"], :include=> [:online_exam_attendances, :subject], :order=>"id DESC")
+    end 
     render :update do |page|
       page.replace_html 'exam-list', :partial=>'active_exam_list'
       page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('exam_group_successfully_deleted')}</p>"

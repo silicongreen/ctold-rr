@@ -197,7 +197,7 @@
 <% fee_collection_name = @date.name %>
   <% if @student.has_dues %>
   <div style="clear: both; height: 4px;"></div>
-  <div style="width: 100%; text-align: center; color: #f00;">***Student has previous Dues***</div>
+  <div style="width: 100%; text-align: center; color: #f00;">***Please pay previous due first***</div>
   <div style="clear: both; height: 10px;"></div>
   <% end %>
   <% form_remote_for :fees, :url => {:controller => 'student',:action => 'fee_details',:id => @student.id,:id2 => @date.id}, :html => {:id => "fees_form"}, :before=>"prev_double();$('loader_pay').show();",:complete=>"set_back();$('loader_pay').hide();" do |form| %>
@@ -1274,7 +1274,7 @@
     <% end %>
     <% if @student.has_dues %>
     <div style="clear: both; height: 4px;"></div>
-    <div style="width: 100%; text-align: center; color: #f00;">***Student has previous Dues***</div>
+    <div style="width: 100%; text-align: center; color: #f00;">***Please pay previous due first***</div>
     <div style="clear: both; height: 10px;"></div>
     <% end %>
   <% end %>

@@ -12,6 +12,10 @@ class OnlineExamQuestion < ActiveRecord::Base
     
   before_create :min_one_answer
   xss_terminate :except => [ :question ]
+  
+  def after_save
+    Rails.cache.delete("online_exam_questions_#{self.online_exam_group_id}")
+  end
 
   def min_one_answer
     flag = false

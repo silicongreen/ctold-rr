@@ -8,6 +8,12 @@ class OnlineExamOption < ActiveRecord::Base
   
   xss_terminate :except => [ :option ]
 
+  def after_save
+    question = OnlineExamQuestion.find_by_id(self.online_exam_question_id)
+    unless question.blank?
+     Rails.cache.delete("online_exam_options_#{question.online_exam_group_id}")
+    end
+  end
   def update_redactor
     RedactorUpload.update_redactors(self.redactor_to_update,self.redactor_to_delete)
   end

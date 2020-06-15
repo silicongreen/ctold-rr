@@ -310,9 +310,22 @@
                         <% subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
                         <% iloop = 0 %>
                         <% subject_groups.each do |group_name| %>
+                             <% if group_name.name.upcase == "ATTENDANCE"  %>
+                              <% if !wordString.blank? and !wordString[iloop].blank? %>
+                                <tr class="odd">
+                                   <td class="col-pdf align-left"><%= group_name.name %></td>
+                                   <td class="col-pdf align-left" colspan="4">&nbsp;&nbsp;<%= wordString[iloop] %></td>
+                                </tr>    
+                              <% else %>
+                                  <tr class="odd">
+                                   <td class="col-pdf align-left"><%= group_name.name %></td>
+                                   <td colspan="4">-</td>
+                                </tr>
+                              <% end %>
+                            <% else %>
                             <% if !wordString.blank? and !wordString[iloop].blank? %>
                             <tr class="odd">
-                               <td class="col-pdf align-left"><%= group_name.name %></td>
+                               <td class="col-pdf align-left"><%= group_name.name %><%= group_name.name.upcase %></td>
                                <td class="col-pdf"><%  if wordString[iloop].to_i == 1 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
                                <td class="col-pdf"><%  if wordString[iloop].to_i == 2 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
                                <td class="col-pdf"><%  if wordString[iloop].to_i == 3 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
@@ -320,12 +333,13 @@
                            </tr>
                            <% else %>
                            <tr class="even">
-                               <td class="col-pdf align-left"><%= group_name.name %></td>
+                               <td class="col-pdf align-left"><%= group_name.name.upcase %></td>
                                <td class="col-pdf"></td>
                                <td class="col-pdf"></td>
                                <td class="col-pdf"></td>
                                <td class="col-pdf"></td>
                            </tr>
+                           <% end %>
                            <% end %>
                           <% iloop = iloop+1 %> 
                         <% end %> 
@@ -364,6 +378,19 @@
                         <% subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
                         <% iloop = 0 %>
                         <% subject_groups.each do |group_name| %>
+                          <% if group_name.name.upcase == "ATTENDANCE"  %>
+                              <% if !wordString.blank? and !wordString[iloop].blank? %>
+                                <tr class="odd">
+                                   <td class="col-pdf align-left"><%= group_name.name %></td>
+                                   <td class="col-pdf align-left" colspan="5">&nbsp;&nbsp;<%= wordString[iloop] %></td>
+                                </tr>    
+                              <% else %>
+                                  <tr class="odd">
+                                   <td class="col-pdf align-left"><%= group_name.name %></td>
+                                   <td class="col-pdf align-left" colspan="5">-</td>
+                                </tr>
+                              <% end %>
+                            <% else %>
                             <% if !wordString.blank? and !wordString[iloop].blank? %>
                            <tr class="odd">
                                <td class="col-pdf align-left"><%= group_name.name %></td>
@@ -382,6 +409,7 @@
                                <td class="col-pdf"></td>
                                <td class="col-pdf"></td>
                            </tr>
+                           <% end %>
                            <% end %>
                           <% iloop = iloop+1 %> 
                         <% end %> 

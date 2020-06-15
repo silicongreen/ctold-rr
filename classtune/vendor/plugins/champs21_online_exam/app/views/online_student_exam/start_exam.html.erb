@@ -65,8 +65,6 @@
         <%= render :partial=>'exam_questions' %>
       </div>
     </div>
-
-    <%= periodically_call_remote(:frequency => @exam.maximum_time.minutes.to_i+7,:before => "j('form').submit()" ) %>
     
   </body>
 

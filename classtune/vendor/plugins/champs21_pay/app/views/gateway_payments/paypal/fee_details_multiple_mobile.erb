@@ -38,7 +38,6 @@
           <script src="https://scripts.sandbox.bka.sh/versions/1.2.0-beta/checkout/bKash-checkout-sandbox.js"></script>
         <% end %>
         <% end %>
-        <%#= javascript_include_tag 'finance.js' %>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         
         <title>Pay Fees</title>
@@ -919,8 +918,6 @@
           end
           amount_advanced = advance_amount_paid
         %>
-        <%# if total_payable_individual[f] < paid %>
-        <%# amount_advanced = paid - total_payable_individual[f]  %>
         <% if amount_advanced > 0 %>
         <tr class="tr-blank blank_tr_<%= f %>" style="display: none;"></tr>
         <tr class="tr-blank blank_tr_<%= f %>" style="display: none;"></tr>

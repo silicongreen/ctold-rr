@@ -50,7 +50,23 @@ class OnlineStudentExamController < ApplicationController
               @option_main
         }
       else
-        render :partial => 'already_attended' and return
+        exam_attendance_previous = OnlineExamAttendance.find(:first, :conditions=>{:student_id => @student.id, :online_exam_group_id=>@exam.id})
+        if exam_attendance_previous.total_score.blank? and exam_attendance_previous.end_time.blank?
+          exam_attendance_previous.destroy
+          @exam_attendance = OnlineExamAttendance.create(:online_exam_group_id=> @exam.id, :student_id=>@student.id, :start_time=>I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S'))
+          @exam_questions = Rails.cache.fetch("online_exam_questions_#{params[:id]}"){
+            @exam_question_main = @exam.online_exam_questions.paginate(:per_page=>@per_page,:page=>params[:page])
+            @exam_question_main
+          }
+          @num_exam_questions = @exam.online_exam_questions.count
+          question_ids = @exam_questions.collect(&:id)
+          @options = Rails.cache.fetch("online_exam_options_#{params[:id]}"){
+                @option_main = @exam.online_exam_options.all(:conditions=>{:online_exam_question_id=>question_ids}).map {|op| @exam_attendance.online_exam_score_details.build(:online_exam_question_id=>op.online_exam_question_id, :online_exam_option_id=>op.id)}.group_by(&:online_exam_question_id)
+                @option_main
+          }
+        else
+          render :partial => 'already_attended' and return
+        end
       end
       render :layout => false
     else

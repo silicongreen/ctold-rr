@@ -1204,6 +1204,7 @@ class AssignmentsController < ApplicationController
   end
   def update
     @assignment = Assignment.find_by_id(params[:id])
+    updated_at = @assignment.updated_at
     unless @assignment.nil?
       student_ids = params[:assignment][:student_ids]
       params[:assignment].delete(:student_ids)
@@ -1211,6 +1212,8 @@ class AssignmentsController < ApplicationController
       if  @assignment.update_attributes(params[:assignment])
         flash[:notice]="#{t('assignment_details_updated')}"
         @config = Configuration.find_by_config_key('HomeworkWillForwardOnly')
+        @assignment.update_attribute("updated_at",updated_at)
+        
         if !@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1 and (@current_user.employee_entry.homework_publisher == 1 or @current_user.admin?) 
           redirect_to :controller=>:assignments ,:action=>:show_publisher, :id=>@assignment.id
         else

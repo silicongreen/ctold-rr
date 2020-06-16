@@ -28,7 +28,9 @@ class OnlineExamController < ApplicationController
             unless params[:student][:batch_name].nil?
               batch_id = params[:student][:batch_name]
               batches_data = Batch.find_by_id(batch_id)
-              batch_name = batches_data.name
+              unless batches_data.blank?
+                batch_name = batches_data.name
+              end
             end
           end
         else

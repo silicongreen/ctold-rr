@@ -411,7 +411,7 @@ class OnlineExamGroups extends CActiveRecord {
     public function getOnlineExamList($batch_id, $student_id, $page_number, $page_size, $created_at="", $subject_id=0,$not_started=0) {
         $cur_date = date("Y-m-d");
         //$cur_time = date("H:i:s");
-        $random_time = rand(1,300);
+        $random_time = rand(1,360);
         $cur_time = date("H:i:s", time() + $random_time);
         $criteria = new CDbCriteria();
         $criteria->select = 't.id,t.name,t.start_date,t.start_time,t.end_date, t.end_time,t.maximum_time,t.pass_percentage';

@@ -325,7 +325,7 @@
                             <% else %>
                             <% if !wordString.blank? and !wordString[iloop].blank? %>
                             <tr class="odd">
-                               <td class="col-pdf align-left"><%= group_name.name %><%= group_name.name.upcase %></td>
+                               <td class="col-pdf align-left"><%= group_name.name %></td>
                                <td class="col-pdf"><%  if wordString[iloop].to_i == 1 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
                                <td class="col-pdf"><%  if wordString[iloop].to_i == 2 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
                                <td class="col-pdf"><%  if wordString[iloop].to_i == 3 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
@@ -333,7 +333,7 @@
                            </tr>
                            <% else %>
                            <tr class="even">
-                               <td class="col-pdf align-left"><%= group_name.name.upcase %></td>
+                               <td class="col-pdf align-left"><%= group_name.name %></td>
                                <td class="col-pdf"></td>
                                <td class="col-pdf"></td>
                                <td class="col-pdf"></td>

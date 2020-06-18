@@ -121,28 +121,37 @@ class AssignmentsController < ApplicationController
     unless batch_id.nil?
       batchdata = @batch = Batch.find_by_id(batch_id)
       unless batchdata.blank?
+        
         batch_name = batchdata.name
         if student_class_name.blank?
+          
+          
           if assignment_publish_date.blank?
+            get_total_class(false,0,batch_name,false)
             @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}'  and is_published=1 ",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}])     
           else
             @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
+            get_total_class(@pub_date,0,batch_name,false)
             @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and ( (DATE(DATE_ADD(assignments.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(assignments.created_at) = '#{@pub_date}' and content not like '%</%' ) ) and is_published=1 ",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}]) 
           end   
        elsif student_section.blank?
          if assignment_publish_date.blank?
+            get_total_class(false,0,batch_name,student_class_name)
             @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}] )
          else
             @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
+            get_total_class(@pub_date,0,batch_name,student_class_name)
             @assignments =Assignment.find(:all,:conditions=>"batches.name = '#{batch_name}' and ( (DATE(DATE_ADD(assignments.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(assignments.created_at) = '#{@pub_date}' and content not like '%</%' ) ) and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}])
          end   
        else
           batch = Batch.find_by_course_id_and_name(student_section, batch_name)
           unless batch.blank?
             if assignment_publish_date.blank?
+              get_total_class(false,batch.id,false,false)
               @assignments =Assignment.find(:all,:conditions=>"batches.id = '#{batch.id}'  and is_published=1 ",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}] )
             else
               @pub_date = assignment_publish_date.to_datetime.strftime("%Y-%m-%d")
+              get_total_class(@pub_date,batch.id,false,false)
               @batch_id_main = batch.id
               @assignments =Assignment.find(:all,:conditions=>"batches.id = '#{batch.id}'  and is_published=1 and ( (DATE(DATE_ADD(assignments.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(assignments.created_at) = '#{@pub_date}' and content not like '%</%' ) )",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}] )
             end
@@ -152,6 +161,11 @@ class AssignmentsController < ApplicationController
     else
       @assignments =Assignment.find(:all,:conditions=>"is_published=1",:order=>"courses.priority asc",:include=>[{:subject=>[{:batch=>[:course]}]}])
     end 
+    
+    @report_data = []
+    if !@student_response.blank? and @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end
     @employee_ids = []
     @employee_ids = @assignments.map(&:employee_id).uniq unless @assignments.blank?
     
@@ -1693,5 +1707,22 @@ class AssignmentsController < ApplicationController
   def show_comments_associate( assignment_id, student_id )
     @comments = AssignmentComment.find(:all,:conditions=>['student_id = ? and assignment_id = ?',student_id,assignment_id], :include =>[:author])
     @current_user = current_user
+  end
+  
+  def get_total_class(date = "", batch_id = 0, batch_name = "", class_name = "")
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+ 
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+    
+    homework_uri = URI(api_endpoint + "api/homework/totalclass")
+    http = Net::HTTP.new(homework_uri.host, homework_uri.port)
+    homework_req = Net::HTTP::Post.new(homework_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+    homework_req.set_form_data({"daily"=>1,"call_from_web"=>1,"date" => date, "batch_id"=> batch_id, "batch_name"=> batch_name, "class_name"=> class_name,"user_secret" => session[:api_info][0]['user_secret']})
+
+    homework_res = http.request(homework_req)
+    @routine_response = JSON::parse(homework_res.body)
   end
 end

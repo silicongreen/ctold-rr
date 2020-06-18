@@ -23,7 +23,7 @@ class HomeworkController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'homeworkintelligence','submittedlist','statuschange','singlesubmit','submit','submitdelete','defaulterList','delete','getdefaulterlist','adddefaulter','getsubjectstudents', 'teacherintelligence', 'Done', 'subjects', 'publishhomework', 'singleteacher', 'assessmentscore', 'singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus', 'teacherQuiz'),
+                'actions' => array('index', 'homeworkintelligence','totalclass','submittedlist','statuschange','singlesubmit','submit','submitdelete','defaulterList','delete','getdefaulterlist','adddefaulter','getsubjectstudents', 'teacherintelligence', 'Done', 'subjects', 'publishhomework', 'singleteacher', 'assessmentscore', 'singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus', 'teacherQuiz'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -363,6 +363,47 @@ class HomeworkController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+    
+    public function actionTotalClass()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $date = Yii::app()->request->getPost('date');
+        $batch_name = Yii::app()->request->getPost('batch_name');
+        $class_name = Yii::app()->request->getPost('class_name');
+        $batch_id = Yii::app()->request->getPost('batch_id');
+        $type = "day";
+        if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin))
+        {
+            if (!$date)
+            {
+                $date = date("Y-m-d");
+            }
+            if (!$batch_name)
+            {
+                $batch_name = FALSE;
+            }
+            if (!$class_name)
+            {
+                $class_name = FALSE;
+            }
+            if (!$batch_id)
+            {
+                $batch_id = FALSE;
+            }
+           
+            $timetable = new TimetableEntries();
+            $total_class = $timetable->getTotalClass($date, $batch_name, $class_name, $batch_id);
+            $response['data']['total_class'] = $total_class;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "DATA_FOUND";
+        } else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end(); 
+    }
 
     public function actionHomeworkIntelligence()
     {
@@ -524,6 +565,7 @@ class HomeworkController extends Controller
                     $examAttendanc->created_at = date("Y-m-d H:i:s");
                     $examAttendanc->updated_at = date("Y-m-d H:i:s");
                     $examAttendanc->school_id = $school_id;
+                    $examAttendanc->from_mobile = 1;
 
                     $examAttendanc->save();
                     if (isset($examAttendanc->id) && $examAttendanc->id)

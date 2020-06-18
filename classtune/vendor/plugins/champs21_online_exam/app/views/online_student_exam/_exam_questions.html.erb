@@ -2,6 +2,7 @@
 <div id="box">
   <% unless @exam_questions.nil? or @exam_questions.empty? %>
     <% form_for @exam_attendance, :url=>{:action=>'save_exam'} do |f| %>
+      <%=hidden_field_tag('attendance_id',@exam_attendance.id )%>
       <% @exam_questions.each_with_index do |question,i| %>
         <% if params[:page].present? %>
           <% if params[:page].to_i >= 1 %>
@@ -46,7 +47,7 @@
         <div class="extender"></div>
         <hr width="850" size="3" color="#27292B" noshade class="horizontal-line"></hr>
       <% end %>
-      <%=hidden_field_tag('attendance_id',@exam_attendance.id )%>
+      
       <div id="submit-button">
         
         <%

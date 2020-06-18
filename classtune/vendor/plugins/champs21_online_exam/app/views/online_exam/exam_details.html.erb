@@ -60,6 +60,7 @@
 <div id="page-yield" style="margin-top: 0px;">
     <h4><%= @exam_group.subject.name %> | <%= @exam_group.name %></h4>
     <% @exam_questions.each_with_index do |e,i|%>
+    <a href="../../controllers/online_exam_controller.rb"></a>
       <div class="q-table">
         <div id="q-no"><%= i+1 %>) <%= t('question') %> :</div>
         <div id="question"> <%= e.question %></div>

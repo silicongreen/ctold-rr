@@ -39,6 +39,7 @@ class OnlineStudentExamController < ApplicationController
       unless @exam.already_attended(@student.id)
         #Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:id], 15,current_user.id])
         @exam_attendance = OnlineExamAttendance.create(:online_exam_group_id=> @exam.id, :student_id=>@student.id, :start_time=>I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S'))
+        session[:exam_attendance_id] = @exam_attendance.id
         @exam_questions = Rails.cache.fetch("online_exam_questions_#{params[:id]}"){
           @exam_question_main = @exam.online_exam_questions.paginate(:per_page=>@per_page,:page=>params[:page])
           @exam_question_main
@@ -46,14 +47,15 @@ class OnlineStudentExamController < ApplicationController
         @num_exam_questions = @exam.online_exam_questions.count
         question_ids = @exam_questions.collect(&:id)
         @options = Rails.cache.fetch("online_exam_options_#{params[:id]}"){
-              @option_main = @exam.online_exam_options.all(:conditions=>{:online_exam_question_id=>question_ids}).map {|op| @exam_attendance.online_exam_score_details.build(:online_exam_question_id=>op.online_exam_question_id, :online_exam_option_id=>op.id)}.group_by(&:online_exam_question_id)
-              @option_main
+          @option_main = @exam.online_exam_options.all(:conditions=>{:online_exam_question_id=>question_ids}).map {|op| @exam_attendance.online_exam_score_details.build(:online_exam_question_id=>op.online_exam_question_id, :online_exam_option_id=>op.id)}.group_by(&:online_exam_question_id)
+          @option_main
         }
       else
         exam_attendance_previous = OnlineExamAttendance.find(:first, :conditions=>{:student_id => @student.id, :online_exam_group_id=>@exam.id})
         if exam_attendance_previous.total_score.blank? and exam_attendance_previous.end_time.blank?
           exam_attendance_previous.destroy
           @exam_attendance = OnlineExamAttendance.create(:online_exam_group_id=> @exam.id, :student_id=>@student.id, :start_time=>I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S'))
+          session[:exam_attendance_id] = @exam_attendance.id
           @exam_questions = Rails.cache.fetch("online_exam_questions_#{params[:id]}"){
             @exam_question_main = @exam.online_exam_questions.paginate(:per_page=>@per_page,:page=>params[:page])
             @exam_question_main
@@ -61,8 +63,8 @@ class OnlineStudentExamController < ApplicationController
           @num_exam_questions = @exam.online_exam_questions.count
           question_ids = @exam_questions.collect(&:id)
           @options = Rails.cache.fetch("online_exam_options_#{params[:id]}"){
-                @option_main = @exam.online_exam_options.all(:conditions=>{:online_exam_question_id=>question_ids}).map {|op| @exam_attendance.online_exam_score_details.build(:online_exam_question_id=>op.online_exam_question_id, :online_exam_option_id=>op.id)}.group_by(&:online_exam_question_id)
-                @option_main
+            @option_main = @exam.online_exam_options.all(:conditions=>{:online_exam_question_id=>question_ids}).map {|op| @exam_attendance.online_exam_score_details.build(:online_exam_question_id=>op.online_exam_question_id, :online_exam_option_id=>op.id)}.group_by(&:online_exam_question_id)
+            @option_main
           }
         else
           render :partial => 'already_attended' and return
@@ -99,6 +101,26 @@ class OnlineStudentExamController < ApplicationController
 
   def save_exam
     @exam_attendance = OnlineExamAttendance.find_by_id(params[:attendance_id])
+    if @exam_attendance.blank?
+      exam_id = params[:exam_id]
+      unless exam_id.blank?
+        @exam = OnlineExamGroup.find_by_id(params[:exam_id])
+        @student = Student.find_by_user_id(current_user.id,:select=>"id,batch_id")
+        @exam_attendance = OnlineExamAttendance.find(:first, :conditions=>{:student_id => @student.id, :online_exam_group_id=>@exam.id})
+        if @exam_attendance.blank?
+          @exam_attendance = OnlineExamAttendance.create(:online_exam_group_id=> @exam.id, :student_id=>@student.id, :start_time=>I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S'))
+        end
+      else
+        if session[:exam_attendance_id]
+          att_id = session[:exam_attendance_id]
+          @exam_attendance = OnlineExamAttendance.find_by_id(att_id)
+        end
+      end
+    end
+    session[:exam_attendance_id] = nil if session[:exam_attendance_id]
+    unless @exam_attendance.end_time.blank?
+      render :partial => 'already_attended' and return
+    end
     render :partial => 'late_submit' and return if @exam_attendance.start_time+@exam_attendance.online_exam_group.maximum_time.minutes+6.minutes < Time.now
     @exam_attendance.update_attributes(:online_exam_score_details_attributes=>params[:online_exam_attendance][:online_exam_score_details_attributes])
     @exam_attendance.reload

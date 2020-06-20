@@ -1342,7 +1342,7 @@ class HomeworkController extends Controller
         $uploads_dir = $uploads_dir . $file_name;
 
 
-        if (@move_uploaded_file($tmp_name, "$uploads_dir"))
+        if (move_uploaded_file($tmp_name, "$uploads_dir"))
         {
             $homework->attachment_file_name = $file['attachment_file_name']['name'];
             $homework->save();

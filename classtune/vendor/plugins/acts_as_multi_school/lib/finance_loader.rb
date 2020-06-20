@@ -2930,7 +2930,7 @@ module FinanceLoader
     xml_res = Nokogiri::XML(auth_res.body)
 
 
-
+#abort(xml_res.inspect)
     status = ""
     unless xml_res.xpath("/").empty?
       status = xml_res.xpath("/").text

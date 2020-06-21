@@ -224,9 +224,8 @@ class FreeuserController extends Controller
                     $url = Settings::$paid_image_path . "uploads/assignments/attachment2s/" . $id . "/original/" . urlencode($assignmentobj->attachment2_file_name) . "?" . $attachment_extra;
                     header("Content-Disposition: attachment; filename=" . $assignmentobj->attachment2_file_name);
                     header("Content-Type: {$assignmentobj->attachment2_content_type}");
-                    header("Content-Length: " . $assignmentobj->attachment2_file_size);
+                    header("Content-Length: " . filesize($url));
                     readfile($url);
-                    exit;
                     
                 }
                 else if( $number == 3 && $assignmentobj->attachment3_file_name)
@@ -234,18 +233,16 @@ class FreeuserController extends Controller
                     $url = Settings::$paid_image_path . "uploads/assignments/attachment3s/" . $id . "/original/" . urlencode($assignmentobj->attachment3_file_name) . "?" . $attachment_extra;
                     header("Content-Disposition: attachment; filename=" . $assignmentobj->attachment3_file_name);
                     header("Content-Type: {$assignmentobj->attachment3_content_type}");
-                    header("Content-Length: " . $assignmentobj->attachment3_file_size);
+                    header("Content-Length: " . filesize($url));
                     readfile($url);
-                    exit;
                 }    
                 else 
                 {
                     $url = Settings::$paid_image_path . "uploads/assignments/attachments/" . $id . "/original/" . urlencode($assignmentobj->attachment_file_name) . "?" . $attachment_extra;
                     header("Content-Disposition: attachment; filename=" . $assignmentobj->attachment_file_name);
                     header("Content-Type: {$assignmentobj->attachment_content_type}");
-                    header("Content-Length: " . $assignmentobj->attachment_file_size);
+                    header("Content-Length: " . filesize($url));
                     readfile($url);
-                    exit;
                 }   
                     
                 

@@ -187,7 +187,10 @@ module OnlinePayment
                   flash[:notice] = "Payment cancel by user"
                 end
               end
-              #abort(params.inspect)
+              if MultiSchool.current_school.id == 2
+                abort(params.inspect)
+              end
+              #
             #end
             if params[:create_transaction].present?
               if params[:target_gateway] == "trustbank"

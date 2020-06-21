@@ -82,9 +82,7 @@ module OnlinePayment
           #@total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
           
           if request.post? and params[:order_id].present?
-            if MultiSchool.current_school.id == 2
-              abort(params.inspect)
-            end
+            
             @fee_collection_name = ( params[:fee_collection_name].blank? ) ? "Student Fees" : params[:fee_collection_name]
             @user_gateway = @gateway_settings.keys[0].to_s
             unless params[:user_gateway].blank?
@@ -151,6 +149,9 @@ module OnlinePayment
 #                end
 #              end
 #              abort(params.inspect)
+if MultiSchool.current_school.id == 2
+              abort(params.inspect)
+            end
               unless params[:target_gateway] == "trustbank"
                 unless params[:fees].blank?
                   unless params[:fees].index("--").nil?

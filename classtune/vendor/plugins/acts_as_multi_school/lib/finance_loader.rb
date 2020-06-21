@@ -3766,10 +3766,11 @@ module FinanceLoader
               end
             end
             fee_percent = 0.00
-            fee_percent = total_fees.to_f * (1.5 / 100)
-            
+            fee_percent = '%.2f' % (total_fees.to_f * (1.5 / 100))
+            total_fees_with_charge = '%.2f' % (total_fees.to_f  / (1 - (1.5/100)))
             amount = response_ssl[:amount]
-            if (amount.to_f + fee_percent.to_f) == total_fees
+            #if (amount.to_f + fee_percent.to_f) == total_fees
+            if total_fees_with_charge == total_fees
               amount = amount.to_f - fee_percent.to_f
               finance_interest = FinanceInterest.new
               finance_interest.order_id = orderId.strip
@@ -3882,10 +3883,12 @@ module FinanceLoader
               end
             end
             fee_percent = 0.00
-            fee_percent = total_fees.to_f * (1.5 / 100)
+            fee_percent = '%.2f' % (total_fees.to_f * (1.5 / 100))
+            total_fees_with_charge = '%.2f' % (total_fees.to_f  / (1 - (1.5/100)))
             #abort(total_fees.to_s)
             amount = response_ssl[:amount]
-            if (amount.to_f + fee_percent.to_f) == total_fees
+            #if (amount.to_f + fee_percent.to_f) == total_fees
+            if total_fees_with_charge == total_fees
               amount = amount.to_f - fee_percent.to_f
               finance_interest = FinanceInterest.new
               finance_interest.order_id = orderId.strip

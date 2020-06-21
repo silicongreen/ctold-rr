@@ -399,10 +399,11 @@ class StudentController < ApplicationController
                       @app_password = PaymentConfiguration.config_value(@user_gateway + "_password")
                       
                       fee_percent = 0.00
-                      fee_percent = total_fees.to_f * (1.5 / 100) 
+                      fee_percent = '%.2f' % (total_fees.to_f * (1.5 / 100))
                        
                       if MultiSchool.current_school.id != 312 
-                        total_fees = total_fees + fee_percent 
+                        #total_fees = total_fees + fee_percent 
+                        total_fees = '%.2f' % (total_fees.to_f  / (1 - (1.5/100)))
                       end
                       #abort(total_fees.to_s)
                       request = Net::HTTP::Post.new(payment_url.path, {"authorization" => id_token, "x-app-key" => @app_key, "Content-Type" => "application/json", "Accept" => "application/json"})
@@ -646,9 +647,12 @@ class StudentController < ApplicationController
                   
                   paid_amount = amount
                   fee_percent = 0.00
-                  fee_percent = total_fees.to_f * (1.5 / 100)
+                  total_fees_with_change = '%.2f' % (total_fees.to_f  / (1 - (1.5/100)))
+                  fee_percent = total_fees_with_change.to_f - total_fees.to_f
                   if MultiSchool.current_school.id != 312 
-                    amount = amount.to_f - fee_percent.to_f
+                    #amount = amount.to_f - fee_percent.to_f
+                    amount = total_fees_with_change.to_f - fee_percent.to_f
+                    #amount = amount.to_f - fee_percent.to_f
                   end
                   
                   

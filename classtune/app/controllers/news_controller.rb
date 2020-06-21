@@ -816,17 +816,19 @@ class NewsController < ApplicationController
   private
 
   def show_comments_associate(news_id, params_page=nil)
-    @news = News.find(news_id, :include=>[:author])
-    @comments = @news.comments.latest.paginate(:page => params_page, :per_page => 15, :include =>[:author])
-    @current_user = current_user
-    @is_moderator = false
-    if @current_user.admin?
-      @is_moderator = true
-    elsif @current_user.employee? and @current_user.privileges.include?(Privilege.find_by_name('ManageNews')) and @news.author_id == @current_user.id
-      @is_moderator = true
-    end  
-    @config = Configuration.find_by_config_key('EnableNewsCommentModeration')
-    @permitted_to_delete_comment_news = permitted_to? :delete_comment , :news
+    @news = News.find_by_id(news_id, :include=>[:author])
+    unless @news.blank?
+      @comments = @news.comments.latest.paginate(:page => params_page, :per_page => 15, :include =>[:author])
+      @current_user = current_user
+      @is_moderator = false
+      if @current_user.admin?
+        @is_moderator = true
+      elsif @current_user.employee? and @current_user.privileges.include?(Privilege.find_by_name('ManageNews')) and @news.author_id == @current_user.id
+        @is_moderator = true
+      end  
+      @config = Configuration.find_by_config_key('EnableNewsCommentModeration')
+      @permitted_to_delete_comment_news = permitted_to? :delete_comment , :news
+    end
   end
 
 end

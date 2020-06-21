@@ -1098,13 +1098,17 @@ class DashboardsController < ApplicationController
     if current_user.parent
       target = current_user.guardian_entry.current_ward_id      
       student = Student.find_by_id(target)
-      homework_uri = URI(api_endpoint + "api/report/attendence")
-      http = Net::HTTP.new(homework_uri.host, homework_uri.port)
-      homework_req = Net::HTTP::Post.new(homework_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
-      homework_req.set_form_data({"batch_id"=>student.batch_id,"student_id"=>student.id,"call_from_web"=>1,"user_secret" => session[:api_info][0]['user_secret']})
+      unless student.blank?
+        homework_uri = URI(api_endpoint + "api/report/attendence")
+        http = Net::HTTP.new(homework_uri.host, homework_uri.port)
+        homework_req = Net::HTTP::Post.new(homework_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+        homework_req.set_form_data({"batch_id"=>student.batch_id,"student_id"=>student.id,"call_from_web"=>1,"user_secret" => session[:api_info][0]['user_secret']})
 
-      homework_res = http.request(homework_req)
-      @attendence_text = JSON::parse(homework_res.body)
+        homework_res = http.request(homework_req)
+        @attendence_text = JSON::parse(homework_res.body)
+      else
+        @attendence_text = ""
+      end  
     end
     
     @attendence_text

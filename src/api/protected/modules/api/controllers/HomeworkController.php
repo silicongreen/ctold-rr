@@ -1390,7 +1390,10 @@ class HomeworkController extends Controller
         {
             $assignments = new Assignments();
             $assignments_data = $assignments->findByPk($id);
-            $assignments_data->delete();
+            if( $assignments_data )
+            {
+                $assignments_data->delete();
+            }
             $response['status']['code'] = 200;
             $response['status']['msg'] = "SUCCESS";
         } 

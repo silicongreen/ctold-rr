@@ -54,7 +54,7 @@
         i = 0
         weekend_class = ''
         @days_of_week.each do |d|
-          if @attendence['week_end'].include?(i)
+          if @attendence['week_end'].include?(i.to_s)
             weekend_class = ' weekend'
           end
         %>

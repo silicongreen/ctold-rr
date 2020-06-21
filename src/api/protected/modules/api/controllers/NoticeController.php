@@ -124,7 +124,12 @@ class NoticeController extends Controller {
                 
                 $url = str_replace("&", "%26",$url);
                 if (file_exists($url)) {
-                    return Yii::app()->getRequest()->sendFile($newsObj->attachment_file_name, @file_get_contents($url));
+                    header("Content-Disposition: attachment; filename=" . $newsObj->attachment_file_name);
+                    header("Content-Type: {$newsObj->attachment_content_type}");
+                    header("Content-Length: " . $newsObj->attachment_file_size);
+                    ob_clean();
+                    flush();
+                    readfile($url);
                 }
                 else
                 {
@@ -132,10 +137,7 @@ class NoticeController extends Controller {
                 }    
 //
 //
-//                header("Content-Disposition: attachment; filename=" . $newsObj->attachment_file_name);
-//                header("Content-Type: {$newsObj->attachment_content_type}");
-//                header("Content-Length: " . $newsObj->attachment_file_size);
-//                readfile($url);
+               
             }
         }
     }

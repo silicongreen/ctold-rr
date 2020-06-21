@@ -149,9 +149,9 @@ module OnlinePayment
 #                end
 #              end
 #              abort(params.inspect)
-if MultiSchool.current_school.id == 2
-              abort(params.inspect)
-            end
+#if MultiSchool.current_school.id == 2
+#              abort(params.inspect)
+#            end
               unless params[:target_gateway] == "trustbank"
                 unless params[:fees].blank?
                   unless params[:fees].index("--").nil?

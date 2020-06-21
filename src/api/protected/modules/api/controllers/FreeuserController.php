@@ -222,26 +222,35 @@ class FreeuserController extends Controller
                 if( $number == 2 && $assignmentobj->attachment2_file_name)
                 {
                     $url = Settings::$paid_image_path . "uploads/assignments/attachment2s/" . $id . "/original/" . urlencode($assignmentobj->attachment2_file_name) . "?" . $attachment_extra;
+
                     header("Content-Disposition: attachment; filename=" . $assignmentobj->attachment2_file_name);
                     header("Content-Type: {$assignmentobj->attachment2_content_type}");
-                    header("Content-Length: " . filesize($url));
+                    header("Content-Length: " . $assignmentobj->attachment2_file_size);
+                    ob_clean();
+                    flush();
                     readfile($url);
                     
                 }
                 else if( $number == 3 && $assignmentobj->attachment3_file_name)
                 {
                     $url = Settings::$paid_image_path . "uploads/assignments/attachment3s/" . $id . "/original/" . urlencode($assignmentobj->attachment3_file_name) . "?" . $attachment_extra;
+
                     header("Content-Disposition: attachment; filename=" . $assignmentobj->attachment3_file_name);
                     header("Content-Type: {$assignmentobj->attachment3_content_type}");
-                    header("Content-Length: " . filesize($url));
+                    header("Content-Length: " . $assignmentobj->attachment3_file_size);
+                    ob_clean();
+                    flush();
                     readfile($url);
                 }    
                 else 
                 {
                     $url = Settings::$paid_image_path . "uploads/assignments/attachments/" . $id . "/original/" . urlencode($assignmentobj->attachment_file_name) . "?" . $attachment_extra;
+
                     header("Content-Disposition: attachment; filename=" . $assignmentobj->attachment_file_name);
                     header("Content-Type: {$assignmentobj->attachment_content_type}");
-                    header("Content-Length: " . filesize($url));
+                    header("Content-Length: " . $assignmentobj->attachment_file_size);
+                    ob_clean();
+                    flush();
                     readfile($url);
                 }   
                     

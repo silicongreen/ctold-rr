@@ -235,7 +235,7 @@ module OnlinePayment
               end
             end
             if params[:create_transaction].present?
-              if MultiSchool.current_school.id == 2
+              if MultiSchool.current_school.id == 348
                 abort(params.inspect)
               end
               validate_payment_types(params)

@@ -109,6 +109,8 @@ class FreeuserController extends Controller
                     header("Content-Disposition: attachment; filename=" . $homework->attachment2_file_name);
                     header("Content-Type: {$homework->attachment2_content_type}");
                     header("Content-Length: " . $homework->attachment2_file_size);
+                    ob_clean();
+                    flush();
                     readfile($url);
                     
                 }
@@ -119,6 +121,8 @@ class FreeuserController extends Controller
                     header("Content-Disposition: attachment; filename=" . $homework->attachment3_file_name);
                     header("Content-Type: {$homework->attachment3_content_type}");
                     header("Content-Length: " . $homework->attachment3_file_size);
+                    ob_clean();
+                    flush();
                     readfile($url);
                     
                 }
@@ -129,6 +133,8 @@ class FreeuserController extends Controller
                     header("Content-Disposition: attachment; filename=" . $homework->attachment_file_name);
                     header("Content-Type: {$homework->attachment_content_type}");
                     header("Content-Length: " . $homework->attachment_file_size);
+                    ob_clean();
+                    flush();
                     readfile($url);
                 }
             }
@@ -163,6 +169,8 @@ class FreeuserController extends Controller
                 header("Content-Disposition: attachment; filename=" . $classworkobj->attachment_file_name);
                 header("Content-Type: {$classworkobj->attachment_content_type}");
                 header("Content-Length: " . $classworkobj->attachment_file_size);
+                ob_clean();
+                flush();
                 readfile($url);
             }
         }
@@ -191,6 +199,8 @@ class FreeuserController extends Controller
                 header("Content-Disposition: attachment; filename=" . $lessonplantobj->attachment_file_name);
                 header("Content-Type: {$lessonplantobj->attachment_content_type}");
                 header("Content-Length: " . $lessonplantobj->attachment_file_size);
+                ob_clean();
+                flush();
                 readfile($url);
             }
         }

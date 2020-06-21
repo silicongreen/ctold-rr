@@ -374,19 +374,19 @@ class HomeworkController extends Controller
         $type = "day";
         if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin))
         {
-            if (!$date)
+            if (!$date or $date == "false")
             {
                 $date = date("Y-m-d");
             }
-            if (!$batch_name)
+            if (!$batch_name or $batch_name == "false")
             {
                 $batch_name = FALSE;
             }
-            if (!$class_name)
+            if (!$class_name or $class_name == "")
             {
                 $class_name = FALSE;
             }
-            if (!$batch_id)
+            if (!$batch_id or $batch_id = 0)
             {
                 $batch_id = FALSE;
             }

@@ -163,8 +163,8 @@ class AssignmentsController < ApplicationController
     end 
     
     @report_data = []
-    if !@student_response.blank? and @student_response['status']['code'].to_i == 200
-      @report_data = @student_response['data']
+    if !@routine_response.blank? and @routine_response['status']['code'].to_i == 200
+      @report_data = @routine_response['data']
     end
     @employee_ids = []
     @employee_ids = @assignments.map(&:employee_id).uniq unless @assignments.blank?

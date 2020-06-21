@@ -187,9 +187,7 @@ module OnlinePayment
                   flash[:notice] = "Payment cancel by user"
                 end
               end
-              if MultiSchool.current_school.id == 2
-                abort(params.inspect)
-              end
+              
               #
             #end
             if params[:create_transaction].present?
@@ -237,6 +235,9 @@ module OnlinePayment
               end
             end
             if params[:create_transaction].present?
+              if MultiSchool.current_school.id == 2
+                abort(params.inspect)
+              end
               validate_payment_types(params)
             end
             unless multiple_param.nil?

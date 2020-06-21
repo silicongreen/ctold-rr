@@ -27,7 +27,7 @@
   a { color: #dc8100; text-decoration: none; }
   a:hover { color: #333; text-decoration: none; }
 </style>
-<script src="http://sagc.classtune.com/javascripts/jquery/jquery-1.9.1.min.js?1526281034" type="text/javascript"></script>
+<script src="https://<%= request.host_with_port %>/javascripts/jquery/jquery-1.9.1.min.js?1526281034" type="text/javascript"></script>
 <body>
   <article>
       <h1>You're redirect to payment page, Please wait...</h1>
@@ -48,9 +48,9 @@
     
   <% gateway = @user_gateway.to_s %>
   <% if gateway == "Paypal" %>
-    <%= paypal_pay_button(@certificate, @merchant_id,"FEE #{fee_collection_name}",total_fees,"http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1",paid_fee,"float: right;margin: 18px 0 0;") %>
+    <%= paypal_pay_button(@certificate, @merchant_id,"FEE #{fee_collection_name}",total_fees,"https://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1",paid_fee,"float: right;margin: 18px 0 0;") %>
   <% elsif gateway == "Authorize.net" %>
-    <%= authorize_net_pay_button(@merchant_id,@certificate,total_fees,"Fee (#{@student.full_name}-#{@student.admission_no}-#{fee_collection_name})","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&only_path=false",paid_fee,"float: right;margin: 18px 0 0;") %>
+    <%= authorize_net_pay_button(@merchant_id,@certificate,total_fees,"Fee (#{@student.full_name}-#{@student.admission_no}-#{fee_collection_name})","https://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&only_path=false",paid_fee,"float: right;margin: 18px 0 0;") %>
   <% elsif gateway == "sslcommerce" %>
     <% options = {} %>
     <% options['tran_id'] = @finance_order.order_id %>
@@ -59,10 +59,10 @@
     <% options['amount'] = 1 %>
     <% options['product'] = "Fee (#{@student.full_name}-#{@student.admission_no}-#{@fee_collection_name})" %>
     <% options['total_amount'] = sprintf("%0.2f",@total_amount).to_f  %>
-    <% options['success_url'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&target_gateway=#{gateway}" + extra_string %>
-    <% options['fail_url'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_fail_transaction=3&target_gateway=#{gateway}" + extra_string %>
-    <% options['ret_url'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}" + extra_string %>
-    <% options['cancel_url'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_cancel_transaction=1&target_gateway=#{gateway}" + extra_string %>
+    <% options['success_url'] = "https://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&target_gateway=#{gateway}" + extra_string %>
+    <% options['fail_url'] = "https://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_fail_transaction=3&target_gateway=#{gateway}" + extra_string %>
+    <% options['ret_url'] = "https://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}" + extra_string %>
+    <% options['cancel_url'] = "https://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_cancel_transaction=1&target_gateway=#{gateway}" + extra_string %>
     <% options['version'] = "2.00" %>
     <%= pay_button(options, gateway) %>  
   <% elsif gateway == "trustbank" %>  
@@ -72,11 +72,11 @@
     <% options['FullName'] = @student.admission_no %>
     <% options['Email'] = email %>
     <% options['orderID'] = @finance_order.order_id %>
-    <% success_url = "http://#{request.host_with_port}#{request.fullpath}" %>
+    <% success_url = "https://#{request.host_with_port}#{request.fullpath}" %>
     <% #success_url %>
     <% success_url += success_url.index("?").nil? ? '?t=1' : "" %>
     <% options['PaymentSuccessUrl'] = "#{success_url}&create_transaction=1&target_gateway=#{gateway}" + extra_string %>
-    <% #options['PaymentSuccessUrl'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&target_gateway=#{gateway}" + extra_string %>
+    <% #options['PaymentSuccessUrl'] = "https://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&target_gateway=#{gateway}" + extra_string %>
     <%= pay_button(options, gateway) %>   
   <% elsif gateway == "citybank" %>  
     <% options = {} %>
@@ -90,7 +90,7 @@
       <% extra_string = "-mobile_view" %>
     <% end %>
     <% extra_string = "" %>
-    <% success_url = "http://#{request.host_with_port}#{request.fullpath}" %>
+    <% success_url = "https://#{request.host_with_port}#{request.fullpath}" %>
     <%#= debug params.inspect %>
     <% success_url += success_url.index("?").nil? ? '?t=1' : "" %>
     
@@ -114,11 +114,11 @@
     <% unless params[:mobile_view].blank? %>
       <% extra_string = "-mobile_view" %>
     <% end %>
-    <% options['approveUrl'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=2" + extra_string %>
-    <% options['declineUrl'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_fail_transaction=4" + extra_string %>
-    <% options['cancelUrl'] = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_cancel_transaction=5" + extra_string %>
+    <% options['approveUrl'] = "https://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=2" + extra_string %>
+    <% options['declineUrl'] = "https://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_fail_transaction=4" + extra_string %>
+    <% options['cancelUrl'] = "https://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_cancel_transaction=5" + extra_string %>
     <% options['transactionId'] = @finance_order.order_id %>
-    <% options['fee_url'] = "http://#{request.host_with_port}/#{request.fullpath}" %>
+    <% options['fee_url'] = "https://#{request.host_with_port}/#{request.fullpath}" %>
     <% options['gateway'] = gateway %>
     <%= pay_button(options, gateway) %>  
   <% end %>

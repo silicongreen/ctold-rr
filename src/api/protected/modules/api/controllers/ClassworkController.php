@@ -611,7 +611,7 @@ class ClassworkController extends Controller
         $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
         $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
 
-        $file_name = clean($file_name);
+        $file_name = Settings::clean($file_name);
         $uploads_dir = Settings::$paid_image_path . "uploads/classworks/attachments/".$classwork->id."/original/";
         $file_name_new =  str_replace(" ", "+",$file_name) . "?" .$attachment_extra;
         
@@ -644,7 +644,7 @@ class ClassworkController extends Controller
         $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
         $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
 
-        $file['attachment_file_name']['name'] = clean($file['attachment_file_name']['name']);
+        $file['attachment_file_name']['name'] = Settings::clean($file['attachment_file_name']['name']);
         $uploads_dir = Settings::$paid_image_path . "uploads/classworks/attachments/".$classwork->id."/original/";
         $file_name =  str_replace(" ", "+",$file['attachment_file_name']['name']) . "?" .$attachment_extra;
         $tmp_name = $file["attachment_file_name"]["tmp_name"];

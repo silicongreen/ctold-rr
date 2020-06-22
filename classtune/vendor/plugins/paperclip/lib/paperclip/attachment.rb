@@ -99,7 +99,7 @@ module Paperclip
       return nil if uploaded_file.nil?
 
       @queued_for_write[:original]   = to_tempfile(uploaded_file)
-      ori_filename = uploaded_file.original_filename.gsub("/[&!()*-$+,/:;=?@<>[]{}\|\\^~%# ]/", "_")
+      ori_filename = uploaded_file.original_filename.gsub(/&!()*-$+,\/:;=?@<>[]{}\|\\^~%# /, "_")
    
       instance_write(:file_name,       ori_filename.strip)
       instance_write(:content_type,    uploaded_file.content_type.to_s.strip)

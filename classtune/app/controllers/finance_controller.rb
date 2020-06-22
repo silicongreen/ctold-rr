@@ -18882,14 +18882,25 @@ class FinanceController < ApplicationController
   
   def update_scholarship
      unless params[:id].nil?
-        @fee_discount = FeeDiscount.find_by_id(params[:id].to_i)
-        unless params[:amount].blank?
-        @fee_discount.discount = params[:amount]
+        @fee_discount = FeeDiscount.find(:first, :conditions => "id = #{params[:id].to_i}")
+        unless @fee_discount.blank?
+          receiver_id = @fee_discount.receiver_id
+          @fee_discounts = FeeDiscount.find(:all, :conditions => "receiver_id = #{receiver_id}")
+          unless @fee_discounts.blank?
+            @fee_discounts.each do |fee_discount|
+              fee_discounts_paid = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND particular_id = #{fee_discount.id}")
+              if fee_discounts_paid.blank?
+                fee_dis = FeeDiscount.find(:first, :conditions => "id = #{fee_discount.id.to_i}")
+                unless params[:amount].blank?
+                  fee_dis.update_attributes( :discount=>params[:amount].to_f)
+                end
+                unless params[:type].blank?
+                  fee_dis.update_attributes( :is_amount=>params[:type])
+                end
+              end
+            end
+          end
         end
-        unless params[:type].nil?
-        @fee_discount.is_amount = params[:type]
-        end
-        @fee_discount.save
         
         render :update do |page|
           page.replace_html "editID-"+ @fee_discount.id.to_s ,:partial => "scholarship_amount"

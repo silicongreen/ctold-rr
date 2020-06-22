@@ -1910,6 +1910,11 @@ class Settings {
 
         return $ar_ids;
     }
+    function clean($string) {
+        $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
+
+        return preg_replace('/[^A-Za-z0-9.\-]/', '-', $string); // Removes special chars.
+     }
 
     public static function sendNotification($notification_ids,$user_ids) {
         $api_access_key_gcm = 'AIzaSyBrKEjz2fYKuBiNJwtKD09DtmRZKkEeFYk';

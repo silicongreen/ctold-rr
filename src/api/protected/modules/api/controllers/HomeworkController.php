@@ -1287,6 +1287,7 @@ class HomeworkController extends Controller
         $new_id = $new_id."".$homework->school_id;
         
         $school_ids = str_split($new_id, 3);
+        $file['attachment_file_name']['name'] = clean($file['attachment_file_name']['name']);
 
         $uploads_dir = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachments/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/";
         
@@ -1340,6 +1341,8 @@ class HomeworkController extends Controller
 
         $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
         $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
+        
+        $file['attachment_file_name']['name'] = clean($file['attachment_file_name']['name']);
 
         $uploads_dir = Settings::$paid_image_path . "uploads/assignments/attachments/" . $homework->id . "/original/";
         $file_name = str_replace(" ", "+", $file['attachment_file_name']['name']) . "?" . $attachment_extra;
@@ -1384,6 +1387,8 @@ class HomeworkController extends Controller
 
         $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
         $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
+        
+        $file_name = clean($file_name);
 
         $uploads_dir = Settings::$paid_image_path . "uploads/assignments/attachments/" . $homework->id . "/original/";
         $file_name_new = str_replace(" ", "+", $file_name) . "?" . $attachment_extra;

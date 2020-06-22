@@ -4,7 +4,7 @@
     <% i = 1 %>
     <% @assignments.each_with_index do |assignment,i| %>
       <%
-        if assignment.subject.blank?
+        if assignment.subject.blank? or assignment.created_at.blank?
           next
         end
         emp_name = ""
@@ -12,7 +12,7 @@
            emp_name = assignment.employee.full_name
         end
       
-        unless assignment.content.index("</").nil? && !assignment.created_at.blank?
+        unless assignment.content.index("</").nil?
           assignment.created_at = assignment.created_at.to_time + 6*60*60
         end
       %>

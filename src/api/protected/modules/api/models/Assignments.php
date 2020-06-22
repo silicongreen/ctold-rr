@@ -892,7 +892,10 @@ class Assignments extends CActiveRecord
             $criteria->order = "t.created_at DESC";
             $criteria->limit = 5;
             
-            $criteria->addCondition("t.title like '%".$term."%'");
+            if( $term )
+            {
+                $criteria->addCondition("t.title like '%".$term."%'");
+            }
             
             if($batch_id)
             {

@@ -1099,6 +1099,7 @@ class DashboardsController < ApplicationController
       target = current_user.guardian_entry.current_ward_id      
       student = Student.find_by_id(target)
       unless student.blank?
+        
         homework_uri = URI(api_endpoint + "api/report/attendence")
         http = Net::HTTP.new(homework_uri.host, homework_uri.port)
         homework_req = Net::HTTP::Post.new(homework_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })

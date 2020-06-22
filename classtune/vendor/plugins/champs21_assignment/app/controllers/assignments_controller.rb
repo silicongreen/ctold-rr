@@ -1112,6 +1112,7 @@ class AssignmentsController < ApplicationController
   def show
     @assignment  = Assignment.active.find_by_id(params[:id], :include => [:employee])
     unless @assignment.nil?
+      
       #RR assignment defaulter added
       @defaulter_registered = AssignmentDefaulterRegistration.find_by_assignment_id(@assignment.id)
       @current_user = current_user

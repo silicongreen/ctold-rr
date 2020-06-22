@@ -1312,6 +1312,17 @@ class HomeworkController extends Controller
         if (@move_uploaded_file($tmp_name, "$uploads_dir"))
         {
             $homework->attachment_file_name = $file['attachment_file_name']['name'];
+            if( !$homework->attachment_content_type )
+            {
+                if( strpos($homework->attachment_file_name, ".jpeg") !== false or strpos($homework->attachment_file_name, ".jpg") !== false )
+                {
+                    $homework->attachment_content_type = "image/jpeg";
+                }
+                if( strpos($homework->attachment_file_name, ".png") !== false )
+                {
+                    $homework->attachment_content_type = "image/png";
+                }
+            }
             $homework->save();
         }
         return $uploads_dir;
@@ -1345,6 +1356,17 @@ class HomeworkController extends Controller
         if (move_uploaded_file($tmp_name, "$uploads_dir"))
         {
             $homework->attachment_file_name = $file['attachment_file_name']['name'];
+            if( !$homework->attachment_content_type )
+            {
+                if( strpos($homework->attachment_file_name, ".jpeg") !== false or strpos($homework->attachment_file_name, ".jpg") !== false )
+                {
+                    $homework->attachment_content_type = "image/jpeg";
+                }
+                if( strpos($homework->attachment_file_name, ".png") !== false )
+                {
+                    $homework->attachment_content_type = "image/png";
+                }
+            }
             $homework->save();
         }
         return $uploads_dir;
@@ -1378,6 +1400,17 @@ class HomeworkController extends Controller
         if (@copy($origin, "$uploads_dir"))
         {
             $homework->attachment_file_name = $file_name;
+            if( !$homework->attachment_content_type )
+            {
+                if( strpos($file_name, ".jpeg") !== false or strpos($file_name, ".jpg") !== false )
+                {
+                    $homework->attachment_content_type = "image/jpeg";
+                }
+                if( strpos($file_name, ".png") !== false )
+                {
+                    $homework->attachment_content_type = "image/png";
+                }
+            }
             $homework->save();
         }
         return $uploads_dir;

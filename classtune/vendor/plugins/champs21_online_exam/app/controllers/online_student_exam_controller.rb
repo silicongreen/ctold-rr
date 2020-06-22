@@ -110,6 +110,7 @@ class OnlineStudentExamController < ApplicationController
         if @exam_attendance.blank?
           @exam_attendance = OnlineExamAttendance.create(:online_exam_group_id=> @exam.id, :student_id=>@student.id, :start_time=>I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S'))
         end
+        
       else
         if session[:exam_attendance_id]
           att_id = session[:exam_attendance_id]

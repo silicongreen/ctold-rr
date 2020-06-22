@@ -683,7 +683,7 @@ class UserController < ApplicationController
         auth_res = http.request(auth_req)
         @auth_response = ActiveSupport::JSON.decode(auth_res.body)
         
-        if @auth_response['status']['code']==200
+        if !@auth_response.blank? && @auth_response['status']['code']==200
           user = User.active.find_by_username params[:username]
           if user.present? and User.authenticate?(params[:username], params[:password])
             authenticated_user = user

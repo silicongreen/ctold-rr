@@ -414,8 +414,35 @@ class Events extends CActiveRecord {
 
         $formatted_events = array();
         foreach ($obj_events as $row) {
+            
+            if( !$row['eventCategory'] )
+            {
+                $_data['event_id'] = $row->id;
+                $_data['event_title'] = $row->title;
+                $_data['event_category_id'] = $row->event_category_id;
+                $_data['event_category_name'] = "";
+                $_data['event_icon_name'] = "";
+                $_data['event_icon_path'] = null;
+                $_data['event_icon'] = "";
+                if(!empty($row->icon_file_name))
+                {
+                    $sd = new SchoolDomains();
+                    $domains = $sd->getSchoolDomainBySchoolId(Yii::app()->user->schoolId);
+                    $_data['event_icon']  = "http://".$domains->domain."/events/icon/".$row->id."/original/".$row->icon_file_name;
+                }
+                
+                $_data['event_start_date'] = $row->start_date;
+                $_data['event_end_date'] = $row->end_date;
+                $_data['event_description'] = $row->description;
+                $_data['event_common'] = $row->is_common;
+                
+                $_data['is_holiday'] = $row->is_holiday;
 
-            if ($row['eventCategory']->is_club == 0) {
+                $event_ack = new EventAcknowledges;
+                $_data['event_acknowledge'] = (int) $event_ack->getEventAcknowledgeData($school_id, $row->id); 
+            }
+
+            elseif ($row['eventCategory']->is_club == 0) {
 
                 $_data['event_id'] = $row->id;
                 $_data['event_title'] = $row->title;

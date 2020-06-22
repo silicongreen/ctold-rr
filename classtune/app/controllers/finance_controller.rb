@@ -18759,7 +18759,7 @@ class FinanceController < ApplicationController
   
   def view_scholarships
     #@scholarships = FeeDiscount.find(:all, :conditions => ["finance_fee_category_id = 0"])
-    @scholarships = FeeDiscount.find(:all, :conditions => ["scholarship_id != 0"], :joins  => "INNER JOIN scholarships ON scholarships.id = fee_discounts.scholarship_id")
+    @scholarships = FeeDiscount.find(:all, :conditions => ["scholarship_id != 0"], :joins  => "INNER JOIN scholarships ON scholarships.id = fee_discounts.scholarship_id", :group => "fee_discounts.receiver_id")
     @scholarships_student_ids = []
     unless @scholarships.blank?
       @finance_fee_category = FinanceFeeParticularCategory.find(:first,:conditions => ["is_deleted = ? and name = 'Tuition Fees'", false])
@@ -18898,12 +18898,33 @@ class FinanceController < ApplicationController
   end
   
   def delete_scholarship
+     deleted = true
      unless params[:id].nil?
-        @fee_discount = FeeDiscount.find_by_id(params[:id].to_i)
-        @fee_discount.destroy
-        
-        render :update do |page|
-          page.replace_html "deleteID-"+ params[:id] ,""
+        @fee_discount = FeeDiscount.find(:first, :conditions => "id = #{params[:id].to_i}")
+        unless @fee_discount.blank?
+          receiver_id = @fee_discount.receiver_id
+          @fee_discounts = FeeDiscount.find(:all, :conditions => "receiver_id = #{receiver_id}")
+          unless @fee_discounts.blank?
+            fee_discount_ids = @fee_discounts.map(&:id)
+            fee_discounts_paid = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND particular_id IN (" + fee_discount_ids.join(",") + ")")
+            unless fee_discounts_paid.blank?
+              deleted = false
+            else
+              @fee_discounts.each do |fee_discount|
+                fee_dis = FeeDiscount.find(:first, :conditions => "id = #{fee_discount.id.to_i}")
+                fee_dis.destroy
+              end
+            end
+          end
+        end
+        if deleted
+          render :update do |page|
+            page.replace_html "deleteID-"+ params[:id] ,""
+          end
+        else
+          render :update do |page|
+            page << "Scholarship Can't be deleted student already make payment. \n\nPlease delete the payment history then try again"
+          end
         end
      end
   end

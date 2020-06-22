@@ -18758,7 +18758,8 @@ class FinanceController < ApplicationController
   end
   
   def view_scholarships
-    @scholarships = FeeDiscount.find(:all, :conditions => ["finance_fee_category_id = 0"])
+    #@scholarships = FeeDiscount.find(:all, :conditions => ["finance_fee_category_id = 0"])
+    @scholarships = FeeDiscount.find(:all, :conditions => ["scholarship_id != 0"], :joins  => "INNER JOIN scholarships ON scholarships.id = fee_discounts.scholarship_id")
     @scholarships_student_ids = []
     unless @scholarships.blank?
       @finance_fee_category = FinanceFeeParticularCategory.find(:first,:conditions => ["is_deleted = ? and name = 'Tuition Fees'", false])
@@ -18767,7 +18768,7 @@ class FinanceController < ApplicationController
         @scholarships.each do |s|
           unless s.receiver.blank?
             student = s.receiver
-            fee_particulars = FinanceFeeParticular.all(:conditions=>"finance_fee_category_id = 0 and is_deleted=#{false} and batch_id=#{student.batch.id} and finance_fee_particular_category_id = #{category_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+            fee_particulars = FinanceFeeParticular.all(:conditions=>"is_deleted=#{false} and batch_id=#{student.batch.id} and finance_fee_particular_category_id = #{category_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
             payable_ampt=fee_particulars.map{|st| st.amount}.sum.to_f
             discount_amt = payable_ampt * s.discount.to_f/ (s.is_amount?? payable_ampt : 100)
             @scholarships_student_ids[student.id] = discount_amt

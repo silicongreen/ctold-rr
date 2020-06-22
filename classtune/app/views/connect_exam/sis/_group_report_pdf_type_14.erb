@@ -471,13 +471,14 @@
                   
               </table>
               <% end %>
-              <% if @batch.course.course_name == "KG-I" or @batch.course.course_name == "KG-II" %>
+              <% if @batch.course.course_name == "KG-I" or @batch.course.course_name == "KG-II" or @batch.course.course_name == "KG II" or @batch.course.course_name == "KG I" %>
               <table id="pdf-table"  width="100%" class="std_info_table even-table margin-top-10" cellspacing="0" >
                   <tr clas="even">
-                      <td class="width-25 align-left">A = Excellent</td>
-                      <td class="width-25">B+ = Very Good</td>
-                      <td class="width-25">B = Good</td>
-                      <td class="width-25 align-right">NI = Needs Improvement</td>
+                      <td class="width-20 align-left">A = Excellent</td>
+                      <td class="width-20">B+ = Very Good</td>
+                      <td class="width-20">B = Good</td>
+                      <td class="width-20">C = Satisfactory</td>
+                      <td class="width-20 align-right">NI = Needs Improvement</td>
                   </tr>
                   
               </table>
@@ -642,5 +643,9 @@ table.height-exam tr td
 {
    float:left;
    margin-top:10px !important;
+}
+.width-20
+{
+    width:20%;
 }
 </style>    

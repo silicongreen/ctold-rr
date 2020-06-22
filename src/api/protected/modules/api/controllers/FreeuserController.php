@@ -154,7 +154,7 @@ class FreeuserController extends Controller
         {
             $classwork = new Classworks();
             $classworkobj = $classwork->findByPk($id);
-            if ( $classworkobj && $classworkobj->attachment_file_name )
+            if ( isset($classworkobj->attachment_file_name) && $classworkobj->attachment_file_name )
             {
                 $attachment_datetime_chunk = explode(" ", $classworkobj->updated_at);
 

@@ -903,10 +903,10 @@ class UserController < ApplicationController
       #      if params[:query].length>= 3
       #        @user = User.first_name_or_last_name_or_username_begins_with params[:query].split
       @user = User.active.find(:all,
-        :conditions => ["first_name LIKE ? OR last_name LIKE ?
-                            OR username = ? OR (concat(first_name, \" \", last_name) LIKE ? ) ",
+        :conditions => ["(first_name LIKE ? OR last_name LIKE ?
+                            OR username = ? OR (concat(first_name, \" \", last_name) LIKE ? )) and ( admin = ? or id = ?) ",
           "#{params[:query]}%","#{params[:query]}%","#{params[:query]}",
-          "#{params[:query]}%"],
+          "#{params[:query]}%",false,current_user.id],
         :order => "first_name asc") unless params[:query] == ''
       #      else
       #        @user = User.first_name_or_last_name_or_username_equals params[:query].split

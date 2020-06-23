@@ -550,17 +550,22 @@ class UserController < ApplicationController
 
   def delete
     @user = User.active.find_by_username(params[:id],:conditions=>"admin = 1")
-    unless @user.nil?
-      if current_user == @user
-        flash[:notice] = "#{t('you_cannot_delete_your_own_profile')}"
-        redirect_to :controller => "user", :action => "dashboard" and return
-      else
-        if @user.employee_record.nil?
-          flash[:notice] = "#{t('flash12')}" if @user.destroy
+    if @user.admin? && @user.id != current_user.id
+      flash[:notice] = "#{t('flash_msg5')}"
+      redirect_to :controller=>"user", :action=>"dashboard"
+    else
+      unless @user.nil?
+        if current_user == @user
+          flash[:notice] = "#{t('you_cannot_delete_your_own_profile')}"
+          redirect_to :controller => "user", :action => "dashboard" and return
+        else
+          if @user.employee_record.nil?
+            flash[:notice] = "#{t('flash12')}" if @user.destroy
+          end
         end
       end
+      redirect_to :controller => 'user'
     end
-    redirect_to :controller => 'user'
   end
 
   def dashboard

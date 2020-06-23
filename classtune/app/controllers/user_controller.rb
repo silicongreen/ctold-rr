@@ -379,7 +379,7 @@ class UserController < ApplicationController
       page_not_found
     end
     if params[:user_type] == 'Admin'
-      @users = User.activevisible.find(:all, :conditions => {:admin => true}, :order => 'first_name ASC')
+      @users = User.activevisible.find(:all, :conditions => {:admin => true,:id=>current_user.id}, :order => 'first_name ASC')
       render(:update) do |page|
         page.replace_html 'users', :partial=> 'users'
         page.replace_html 'employee_user', :text => ''

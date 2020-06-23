@@ -483,20 +483,25 @@ class UserController < ApplicationController
   def user_change_password
     @user = User.active.find_by_username(params[:id])
     if @user.present?
-      if request.post?
-        if params[:user][:new_password]=='' and params[:user][:confirm_password]==''
-          flash[:warn_notice]= "<p>#{t('flash6')}</p>"
-        else
-          if params[:user][:new_password] == params[:user][:confirm_password]
-            @user.password = params[:user][:new_password]
-            if @user.update_attributes(:password => @user.password,:role => @user.role_name)
-              flash[:notice]= "#{t('flash7')}"
-              redirect_to :action=>"profile", :id=>@user.username
-            else
-              render :user_change_password
-            end
+      if @user.admin? && @user.id != current_user.id
+        flash[:notice] = "#{t('flash_msg5')}"
+        redirect_to :controller=>"user", :action=>"dashboard"
+      else
+        if request.post?
+          if params[:user][:new_password]=='' and params[:user][:confirm_password]==''
+            flash[:warn_notice]= "<p>#{t('flash6')}</p>"
           else
-            flash[:warn_notice] =  "<p>#{t('flash10')}</p>"
+            if params[:user][:new_password] == params[:user][:confirm_password]
+              @user.password = params[:user][:new_password]
+              if @user.update_attributes(:password => @user.password,:role => @user.role_name)
+                flash[:notice]= "#{t('flash7')}"
+                redirect_to :action=>"profile", :id=>@user.username
+              else
+                render :user_change_password
+              end
+            else
+              flash[:warn_notice] =  "<p>#{t('flash10')}</p>"
+            end
           end
         end
       end

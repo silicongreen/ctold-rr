@@ -94,7 +94,7 @@ if User.first( :conditions=>{:admin=>true}).blank?
   employee_grade = EmployeeGrade.find_or_create_by_name(:name => 'System Admin',:priority => 0 ,:status => true,:max_hours_day=>nil,:max_hours_week=>nil)
  
   employee = Employee.find_or_create_by_employee_number(:employee_number => MultiSchool.current_school.code.to_s + '-admin',:joining_date => Date.today,:first_name => 'Admin',:last_name => 'User',
-    :employee_department_id => employee_department.id,:employee_grade_id => employee_grade.id,:employee_position_id => employee_position.id,:employee_category_id => employee_category.id,:status => true,:nationality_id =>'14', :date_of_birth => Date.today-365, :email => 'noreply@champs21.com',:gender=> 'm', :pass => 'cctune0793')
+    :employee_department_id => employee_department.id,:employee_grade_id => employee_grade.id,:employee_position_id => employee_position.id,:employee_category_id => employee_category.id,:status => true,:nationality_id =>'14', :date_of_birth => Date.today-365, :email => 'noreply@champs21.com',:gender=> 'm', :pass => '@Hm@#3O635O@Ctune')
 
   employee.user.update_attributes(:admin=>true,:employee=>false)
   

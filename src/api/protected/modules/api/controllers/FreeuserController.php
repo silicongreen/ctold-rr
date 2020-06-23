@@ -219,7 +219,7 @@ class FreeuserController extends Controller
         {
             $assignment = new Assignments();
             $assignmentobj = $assignment->findByPk($id);
-            if ( $assignmentobj && ($assignmentobj->attachment_file_name or $assignmentobj->attachment2_file_name or $assignmentobj->attachment3_file_name))
+            if ( isset($assignmentobj->attachment_file_name) && $assignmentobj && ($assignmentobj->attachment_file_name or $assignmentobj->attachment2_file_name or $assignmentobj->attachment3_file_name))
             {
                 $attachment_datetime_chunk = explode(" ", $assignmentobj->updated_at);
 

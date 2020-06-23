@@ -116,11 +116,11 @@
           </tr>
         <% end %>
           <tr class="table-header2">
-            <% if !@section_name.blank? or !@class_name.blank?  %>  
+            <% if @section_name.blank? or @class_name.blank?  %>  
               
-              <td colspan="3" class="t-right">Total Attachments</td>
+              <td colspan="4" class="t-right">Total Attachments</td>
             <% else %>
-              <td colspan="2" class="t-right">Total Attachments</td>
+              <td colspan="3" class="t-right">Total Attachments</td>
             <% end %>      
             <td><%= count_attachment %></td> 
             <td colspan="2" class="t-right">Total Class</td>

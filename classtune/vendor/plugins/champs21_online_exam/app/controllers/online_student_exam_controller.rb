@@ -52,6 +52,9 @@ class OnlineStudentExamController < ApplicationController
         }
       else
         exam_attendance_previous = OnlineExamAttendance.find(:first, :conditions=>{:student_id => @student.id, :online_exam_group_id=>@exam.id})
+        if exam_attendance_previous.blank?
+          exam_attendance_previous = OnlineExamAttendance.create(:online_exam_group_id=> @exam.id, :student_id=>@student.id, :start_time=>I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S'))
+        end
         if exam_attendance_previous.total_score.blank? and exam_attendance_previous.end_time.blank?
           exam_attendance_previous.destroy
           @exam_attendance = OnlineExamAttendance.create(:online_exam_group_id=> @exam.id, :student_id=>@student.id, :start_time=>I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S'))
@@ -109,8 +112,7 @@ class OnlineStudentExamController < ApplicationController
         @exam_attendance = OnlineExamAttendance.find(:first, :conditions=>{:student_id => @student.id, :online_exam_group_id=>@exam.id})
         if @exam_attendance.blank?
           @exam_attendance = OnlineExamAttendance.create(:online_exam_group_id=> @exam.id, :student_id=>@student.id, :start_time=>I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S'))
-        end
-        
+        end 
       else
         if session[:exam_attendance_id]
           att_id = session[:exam_attendance_id]

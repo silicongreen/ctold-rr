@@ -95,7 +95,7 @@
 </div>
 <% elsif MultiSchool.current_school.id == 342 or MultiSchool.current_school.id == 324 %>
 <div id="pdf-header-south" class="sfx-header">
-  <h4 align="center"><%= image_tag  "http://#{MultiSchool.current_school.code}.classtune.com/images/school_logo/280/logo.jpg",:width=> '9%' %></h4>
+  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/280/logo.jpg")),:width=> '9%' %></h4>
   <h2 align="center">St. Joseph International School</h2>
   <h6 align="center">CONDUCT BY BROTHERS OF HOLY CROSS</h6>
 </div>
@@ -217,7 +217,7 @@
   <% else %>
     <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '7%' %></h4>
   <% end %>
-  <h2 align="center">s<%=Configuration.get_config_value('InstitutionName'); %></h2>
+  <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
 </div>
 <% end %>
 

@@ -417,11 +417,7 @@ class OnlineExamController < ApplicationController
     @selected_section = @course_data.id
     
     unless @batch_id.nil?
-      @normal_subjects = Subject.find_all_by_batch_id(@batch_data,:conditions=>"elective_group_id IS NULL AND is_deleted = false")
-      @student_electives =StudentsSubject.all(:conditions=>{:batch_id=>@batch_data,:subjects=>{:is_deleted=>false}},:joins=>[:subject])
-      @student_electives.each do |e|
-        @elective_subjects.push Subject.find(e.subject_id)
-      end
+      @normal_subjects = Subject.find_all_by_batch_id(@batch_data,:conditions=>"is_deleted = false")
       @subjects = @normal_subjects + @elective_subjects
     end
     

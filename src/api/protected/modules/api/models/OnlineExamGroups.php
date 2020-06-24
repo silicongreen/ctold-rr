@@ -311,10 +311,10 @@ class OnlineExamGroups extends CActiveRecord {
                 foreach ($data['questions'] as $questions) {
                     if (isset($questions['option']) && count($questions['option'] > 1)) {
                         $q_image = "";
-//                        $qimages = Settings::content_images($questions->question);
-//                        if (count($qimages) > 0) {
-//                            $q_image = $qimages[0];
-//                        }
+                        $qimages = Settings::content_images(utf8_encode($questions->question));
+                        if (count($qimages) > 0) {
+                            $q_image = $qimages[0];
+                        }
 
                         $response_array['question'][$i]['id'] = $questions->id;
                         $response_array['question'][$i]['question'] = Settings::substr_with_unicode(utf8_encode($questions->question), true);
@@ -334,7 +334,7 @@ class OnlineExamGroups extends CActiveRecord {
                         $j = 0;
                         foreach ($questions['option'] as $options) {
                             $a_image = "";
-                            $images = Settings::content_images($options->option);
+                            $images = Settings::content_images(utf8_encode($options->option));
                             if (count($images) > 0) {
                                 $a_image = $images[0];
                             }

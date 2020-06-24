@@ -450,6 +450,9 @@ class OnlineExamGroups extends CActiveRecord {
                 foreach ($data_today as $kvalue) {
                     $rid[] = $kvalue->id;
                 }
+                $robject = new Reminders();
+                $new_data = $robject->FindUnreadData(15, $rid);
+                $rid = [];
                 foreach ($data_today as $value) {
 
                     $examGiven = false;

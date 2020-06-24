@@ -19,14 +19,17 @@
     <% unless @attendance.blank? %>
     <table id="listing" width="100%">
       <tr class="tr-head">
+        <td><%= "Serial" %></td>
         <td><%= "Roll" %></td>
         <td><%= t('student_text') %></td>
         <td><%= t('marks') %></td>
         <td><%= t('result') %></td>
       </tr>
+      <% i = 0 %>
       <% @attendance.each do |att| %>
-       
+        <% i = i+1 %>
         <tr class="tr-<%= cycle('odd', 'even') %>">
+          <td class="col-2" ><%= i %></td>
           <td class="col-2" ><%= att.student.class_roll_no %></td>
           <td class="col-2" ><%= att.student.full_name %></td>
           <td class="col-2" ><% if att.total_score.blank? %>NA<% else  %><%= att.total_score %><% end %>/<%= @exam_group.online_exam_questions.sum('mark') %></td>

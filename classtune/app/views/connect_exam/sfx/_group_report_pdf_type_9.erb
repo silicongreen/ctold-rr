@@ -159,49 +159,7 @@
                                 <% end %>
                               <% end %>
                               <% end %>      
-                              <%  if report['exam_category'] == '1' %>
-                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                      <% converted_total = converted_total.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                      
-                                    <% end %>
-                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
-                                        <% converted_full_mark = converted_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
-                                    <% end %>
-                              <% else %> 
-                              <% if converted_total_showded == 0 %>
-                                    <% converted_total_30 = 0 %>
-                                    <% if converted_total.to_i > 0 %>
-                                    <% if converted_full_mark.to_i > 20 %>
-                                      <% converted_total_30 = (converted_total.to_f/converted_full_mark.to_f)*30 %>
-                                      <% converted_total_30 = converted_total_30 %>
-                                    <% else %>
-                                      <% converted_total_30 = converted_total %>
-                                    <% end %>
-                                    <% end %>
-                                    <% if converted_full_mark > 20 %>
-                                      <% full_mark = full_mark+30 %>
-                                    <% else %>
-                                      <% full_mark = full_mark+converted_full_mark.to_f %>
-                                    <% end %>
-                                    
-                                    <% total_term = total_term.to_f+converted_total_30.to_f %>
-                                    
-                                    <% if exam_no == 1  %>
-                                        <% total_term1 = total_term1.to_f+converted_total_30.to_f %>
-                                        
-                                    <% else %>
-                                        <% total_term2 = total_term2.to_f+converted_total_30.to_f %>
-                                        
-                                    <% end %>
-                                    <td class="col-pdf no-warp">
-                                        <% if converted_total_30 > 0 %>
-                                        <%= sprintf( "%0.02f", converted_total_30)%>
-                                        <% else %>
-                                        -
-                                        <% end %>
-                                    </td>
-                                    <% converted_total_showded = 1 %>
-                              <% end %>      
+                                   
                               <td class="col-pdf no-warp">
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>

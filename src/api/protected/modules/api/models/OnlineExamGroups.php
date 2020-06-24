@@ -415,6 +415,7 @@ class OnlineExamGroups extends CActiveRecord {
 
         $total_today = 0;
         $i = 0;
+        $rid = [];
         if ($page_number == 1) {
             $criteria = new CDbCriteria();
             $criteria->select = 't.id,t.name,t.start_date,t.start_time,t.end_date, t.end_time,t.maximum_time,t.pass_percentage';
@@ -449,8 +450,6 @@ class OnlineExamGroups extends CActiveRecord {
                 foreach ($data_today as $kvalue) {
                     $rid[] = $kvalue->id;
                 }
-                $robject = new Reminders();
-                $new_data = $robject->FindUnreadData(15, $rid);
                 foreach ($data_today as $value) {
 
                     $examGiven = false;

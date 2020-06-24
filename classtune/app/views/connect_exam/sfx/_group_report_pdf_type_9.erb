@@ -4,7 +4,7 @@
 
       
       <div class="student_information">
-      <h4><b>Student's Information</b></h4>
+      <h4><b class="no-warp">Student's Information</b></h4>
       <%= render  :partial=>"/connect_exam/sjis/student_information" %>
       </div>
       <div class="grade_information">
@@ -13,7 +13,7 @@
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
 
-              <h4 class="h4-evaluation result-in-details"><b>Result in Details</b></h4>
+              <h4 class="h4-evaluation result-in-details no-warp"><b>Result in Details</b></h4>
               <table id="pdf-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
@@ -347,17 +347,8 @@
                   end
                 %>
               
-              <h4 class="h4-evaluation"><b>Evaluation</b></h4>
+              <h4 class="h4-evaluation no-warp"><b>Evaluation</b></h4>
               <table id="pdf-table" class="evaluation" width="99.8%" >
-                      <tr class="odd">
-                          <td class="col-pdf border-left-none" width="50%">
-                              Result
-                          </td> 
-                          <td class="col-pdf align-center border-right-none" width="50%">
-                              <b> <%= result %> </b>
-                          </td>
-                      </tr>
-                      
                       <tr class="odd">
                           <td class="col-pdf border-left-none" width="50%">
                               No. of Working Days
@@ -378,10 +369,7 @@
                      
                       
               </table>
-             
-              <%= render  :partial=>"/connect_exam/sjis/behaviour_grade" %>
               <h5><b>&nbsp;</b></h5>
-              <%= render  :partial=>"/connect_exam/sjis/signs" %>
                
 
           </div>

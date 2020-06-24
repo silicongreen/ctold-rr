@@ -114,8 +114,8 @@ class OnlineExamGroups extends CActiveRecord {
         $criteria->compare('school_id', $this->school_id);
 
         return new CActiveDataProvider($this, array(
-                    'criteria' => $criteria,
-                ));
+            'criteria' => $criteria,
+        ));
     }
 
     /**
@@ -124,7 +124,7 @@ class OnlineExamGroups extends CActiveRecord {
      * @param string $className active record class name.
      * @return OnlineExamGroups the static model class
      */
-    public static function model($className=__CLASS__) {
+    public static function model($className = __CLASS__) {
         return parent::model($className);
     }
 
@@ -157,7 +157,7 @@ class OnlineExamGroups extends CActiveRecord {
             $total_mark = 0;
             if (isset($data['questions']) && count($data['questions'] > 0)) {
                 foreach ($data['questions'] as $questions) {
-                    $total_mark+=$questions->mark;
+                    $total_mark += $questions->mark;
                 }
             }
 
@@ -211,14 +211,14 @@ class OnlineExamGroups extends CActiveRecord {
         return $response_array;
     }
 
-    public function getOnlineExam($id, $batch_id="", $student_id="") {
+    public function getOnlineExam($id, $batch_id = "", $student_id = "") {
         $cur_date = date("Y-m-d");
         $criteria = new CDbCriteria();
         $criteria->select = 't.*';
         $criteria->compare('t.id', $id);
-        if($batch_id)
-        $criteria->compare('t.batch_id', $batch_id);
-        
+        if ($batch_id)
+            $criteria->compare('t.batch_id', $batch_id);
+
         $criteria->compare('t.school_id', Yii::app()->user->schoolId);
         $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.is_published', 1);
@@ -246,8 +246,8 @@ class OnlineExamGroups extends CActiveRecord {
 
 
         $data = $this->find($criteria);
-        
-      
+
+
 
 
         $response_array = array();
@@ -317,10 +317,9 @@ class OnlineExamGroups extends CActiveRecord {
 //                        }
 
                         $response_array['question'][$i]['id'] = $questions->id;
-                        $response_array['question'][$i]['question'] = Settings::substr_with_unicode(utf8_encode($questions->question),true);
+                        $response_array['question'][$i]['question'] = Settings::substr_with_unicode(utf8_encode($questions->question), true);
                         $response_array['question'][$i]['explanation'] = "";
-                        if($questions->explanation)
-                        {
+                        if ($questions->explanation) {
                             $response_array['question'][$i]['explanation'] = utf8_encode($questions->explanation);
                         }
                         $response_array['question'][$i]['image'] = $q_image;
@@ -357,7 +356,7 @@ class OnlineExamGroups extends CActiveRecord {
         return $response_array;
     }
 
-    public function getOnlineExamTotal($batch_id, $student_id, $subject_id=0,$not_started=0) {
+    public function getOnlineExamTotal($batch_id, $student_id, $subject_id = 0, $not_started = 0) {
         $cur_date = date("Y-m-d");
         $criteria = new CDbCriteria();
         $criteria->select = 'count(t.id) as total';
@@ -368,8 +367,7 @@ class OnlineExamGroups extends CActiveRecord {
         if ($subject_id > 0) {
             $criteria->compare('t.subject_id', $subject_id);
         }
-        if($not_started == 0)
-        {
+        if ($not_started == 0) {
             $criteria->addCondition("DATE(start_date) <= '" . $cur_date . "' ");
         }
         $data = $this->find($criteria);
@@ -408,22 +406,137 @@ class OnlineExamGroups extends CActiveRecord {
         return $response_array;
     }
 
-    public function getOnlineExamList($batch_id, $student_id, $page_number, $page_size, $created_at="", $subject_id=0,$not_started=0) {
+    public function getOnlineExamList($batch_id, $student_id, $page_number, $page_size, $created_at = "", $subject_id = 0, $not_started = 0) {
         $cur_date = date("Y-m-d");
         //$cur_time = date("H:i:s");
-        $random_time = rand(1,360);
-        $cur_time = date("H:i:s", time() + $random_time);
+        $random_time = rand(1, 360);
+        $cur_time = date("H:i:s");
+        $exam_array = array();
+
+        $total_today = 0;
+        $i = 0;
+        if ($page_number == 1) {
+            $criteria = new CDbCriteria();
+            $criteria->select = 't.id,t.name,t.start_date,t.start_time,t.end_date, t.end_time,t.maximum_time,t.pass_percentage';
+            $criteria->compare('t.batch_id', $batch_id);
+            $criteria->compare('t.school_id', Yii::app()->user->schoolId);
+            $criteria->compare('t.is_deleted', 0);
+            $criteria->compare('t.is_published', 1);
+            $criteria->compare('t.start_date', $cur_date);
+            $criteria->addCondition(" t.end_time > '$cur_time' ");
+            
+
+            $criteria->with = array(
+                'examgiven' => array(
+                    'select' => 'examgiven.student_id,examgiven.total_score'
+                ),
+                'questions' => array(
+                    'select' => 'questions.id,questions.mark'
+                ),
+                'subject' => array(
+                    'select' => 'subject.name,subject.icon_number',
+                    'joinType' => "LEFT JOIN"
+                )
+            );
+            if ($subject_id > 0) {
+                $criteria->compare('t.subject_id', $subject_id);
+            }
+            $criteria->order = "t.start_time ASC";
+            $data_today = $this->findAll($criteria);
+            $total_today = count($data_today);
+            if ($data_today) {
+                
+                foreach ($data_today as $kvalue) {
+                    $rid[] = $kvalue->id;
+                }
+                $robject = new Reminders();
+                $new_data = $robject->FindUnreadData(15, $rid);
+                foreach ($data_today as $value) {
+
+                    $examGiven = false;
+                    $score = 0.0;
+                    if (isset($value['examgiven']) && count($value['examgiven']) > 0) {
+                        foreach ($value['examgiven'] as $evalue) {
+                            if ($evalue->student_id == $student_id) {
+                                $examGiven = true;
+                                $score = $evalue->total_score;
+                                break;
+                            }
+                        }
+                    }
+
+                    $subject = "";
+                    $subject_icon = "";
+                    if (isset($value['subject']->name) && $value['subject']->name) {
+                        $subject = $value['subject']->name;
+                    }
+                    if (isset($value['subject']->icon_number) && $value['subject']->icon_number) {
+                        $subject_icon = $value['subject']->icon_number;
+                    }
+                    $exam_array[$i]['score'] = $score;
+                    $exam_array[$i]['is_new'] = 0;
+
+                    $exam_array[$i]['id'] = $value->id;
+                    $exam_array[$i]['timeover'] = 0;
+                    $exam_array[$i]['not_started'] = 0;
+                    if (
+                            $cur_date > date("Y-m-d", strtotime($value->end_date))
+                            or ( $cur_date == date("Y-m-d", strtotime($value->end_date)) and $cur_time > $value->end_time )
+                    ) {
+                        $exam_array[$i]['timeover'] = 1;
+                    }
+                    if ($cur_date < date("Y-m-d", strtotime($value->start_date))
+                            or ( $cur_date == date("Y-m-d", strtotime($value->start_date)) and $cur_time < $value->start_time )
+                    ) {
+                        $exam_array[$i]['not_started'] = 1;
+                    }
+                    $exam_array[$i]['examGiven'] = 0;
+                    if ($examGiven) {
+                        $exam_array[$i]['examGiven'] = 1;
+                    }
+
+                    if (in_array($value->id, $new_data) && $exam_array[$i]['timeover'] == 0 && $exam_array[$i]['examGiven'] == 0) {
+                        $exam_array[$i]['is_new'] = 1;
+                        $robject->ReadReminderNew(Yii::app()->user->id, 0, 15, $value->id);
+                    }
+                    $total_question = 0;
+                    $total_marks = 0;
+                    if ($value['questions']) {
+                        foreach ($value['questions'] as $questions) {
+                            $total_marks = $total_marks + $questions->mark;
+                            $total_question = $total_question + 1;
+                        }
+                    }
+
+                    $exam_array[$i]['name'] = $value->name;
+                    $exam_array[$i]['total_marks'] = $total_marks;
+                    $exam_array[$i]['total_question'] = $total_question;
+                    $exam_array[$i]['name'] = $value->name;
+                    $exam_array[$i]['subject_name'] = $subject;
+                    $exam_array[$i]['subject_icon'] = $subject_icon;
+                    $exam_array[$i]['start_date'] = $value->start_date;
+                    $exam_array[$i]['end_date'] = $value->end_date;
+                    $exam_array[$i]['start_time'] = $value->start_time;
+                    $exam_array[$i]['end_time'] = $value->end_time;
+                    $exam_array[$i]['maximum_time'] = $value->maximum_time;
+                    $exam_array[$i]['pass_percentage'] = $value->pass_percentage;
+                    $i++;
+                }
+            }
+        }
+
+
         $criteria = new CDbCriteria();
         $criteria->select = 't.id,t.name,t.start_date,t.start_time,t.end_date, t.end_time,t.maximum_time,t.pass_percentage';
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.school_id', Yii::app()->user->schoolId);
         $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.is_published', 1);
+        $criteria->addCondition(" (start_date != '$cur_date' or t.end_time < '$cur_time') ");
         if ($created_at) {
             $criteria->compare('start_date', $created_at);
         }
-        if($not_started == 0)
-        {
+        if ($not_started == 0) {
             $criteria->addCondition("start_date <= '" . $cur_date . "' ");
         }
 
@@ -448,24 +561,22 @@ class OnlineExamGroups extends CActiveRecord {
 
         $criteria->order = "t.created_at DESC";
         $start = ($page_number - 1) * $page_size;
-        $criteria->limit = $page_size;
+        $criteria->limit = $page_size - $total_today;
 
         $criteria->offset = $start;
 
         $data = $this->findAll($criteria);
 
-        $exam_array = array();
-        
+
+
         if ($data) {
-            $i = 0;
-            foreach($data as $kvalue)
-            {
-                $rid[]= $kvalue->id;
+            foreach ($data as $kvalue) {
+                $rid[] = $kvalue->id;
             }
             $robject = new Reminders();
             $new_data = $robject->FindUnreadData(15, $rid);
             foreach ($data as $value) {
-                
+
                 $examGiven = false;
                 $score = 0.0;
                 if (isset($value['examgiven']) && count($value['examgiven']) > 0) {
@@ -494,38 +605,33 @@ class OnlineExamGroups extends CActiveRecord {
                 $exam_array[$i]['not_started'] = 0;
                 if (
                         $cur_date > date("Y-m-d", strtotime($value->end_date))
-                        or
-                        ( $cur_date == date("Y-m-d", strtotime($value->end_date)) and $cur_time > $value->end_time )
-                        
-                        ) {
+                        or ( $cur_date == date("Y-m-d", strtotime($value->end_date)) and $cur_time > $value->end_time )
+                ) {
                     $exam_array[$i]['timeover'] = 1;
                 }
                 if ($cur_date < date("Y-m-d", strtotime($value->start_date))
-                    or
-                    ( $cur_date == date("Y-m-d", strtotime($value->start_date)) and $cur_time < $value->start_time  )
-                        ) {
+                        or ( $cur_date == date("Y-m-d", strtotime($value->start_date)) and $cur_time < $value->start_time )
+                ) {
                     $exam_array[$i]['not_started'] = 1;
                 }
                 $exam_array[$i]['examGiven'] = 0;
                 if ($examGiven) {
                     $exam_array[$i]['examGiven'] = 1;
                 }
-                
-                if(in_array($value->id, $new_data) && $exam_array[$i]['timeover']==0 && $exam_array[$i]['examGiven']==0)
-                {
+
+                if (in_array($value->id, $new_data) && $exam_array[$i]['timeover'] == 0 && $exam_array[$i]['examGiven'] == 0) {
                     $exam_array[$i]['is_new'] = 1;
-                    $robject->ReadReminderNew(Yii::app()->user->id, 0 ,15, $value->id);
+                    $robject->ReadReminderNew(Yii::app()->user->id, 0, 15, $value->id);
                 }
                 $total_question = 0;
                 $total_marks = 0;
-                if($value['questions'] )
-                {
+                if ($value['questions']) {
                     foreach ($value['questions'] as $questions) {
-                        $total_marks = $total_marks+$questions->mark;
-                        $total_question = $total_question+1;
+                        $total_marks = $total_marks + $questions->mark;
+                        $total_question = $total_question + 1;
                     }
                 }
-                
+
                 $exam_array[$i]['name'] = $value->name;
                 $exam_array[$i]['total_marks'] = $total_marks;
                 $exam_array[$i]['total_question'] = $total_question;
@@ -543,13 +649,13 @@ class OnlineExamGroups extends CActiveRecord {
         }
         return $exam_array;
     }
-    
-    public function getOnlineExamListTeacher($page_number, $page_size, $subject_ids = array(), $b_total = false, $created_at="") {
-        
+
+    public function getOnlineExamListTeacher($page_number, $page_size, $subject_ids = array(), $b_total = false, $created_at = "") {
+
         $cur_date = date("Y-m-d");
-        
+
         $criteria = new CDbCriteria();
-        
+
         if ($b_total) {
             $criteria->select = 'COUNT(*) AS total';
         } else {
@@ -559,7 +665,7 @@ class OnlineExamGroups extends CActiveRecord {
         if (!empty($subject_ids)) {
             $criteria->compare('t.subject_id', $subject_ids);
         }
-        
+
         $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.is_published', 1);
         if ($created_at) {
@@ -573,7 +679,7 @@ class OnlineExamGroups extends CActiveRecord {
                 'joinType' => "LEFT JOIN"
             )
         );
-        
+
         $criteria->order = "t.created_at DESC";
         $start = ($page_number - 1) * $page_size;
         $criteria->limit = $page_size;
@@ -585,12 +691,12 @@ class OnlineExamGroups extends CActiveRecord {
         } else {
             $data = $this->findAll($criteria);
         }
-        
+
         $exam_array = array();
         if ($data && !$b_total) {
             $i = 0;
             foreach ($data as $value) {
-                
+
                 $subject = "";
                 $subject_icon = "";
                 if (isset($value['subject']->name) && $value['subject']->name) {
@@ -601,7 +707,7 @@ class OnlineExamGroups extends CActiveRecord {
                 }
 
                 $exam_array[$i]['id'] = $value->id;
-                
+
                 $exam_array[$i]['name'] = $value->name;
                 $exam_array[$i]['subject_name'] = $subject;
                 $exam_array[$i]['subject_icon'] = $subject_icon;
@@ -615,7 +721,7 @@ class OnlineExamGroups extends CActiveRecord {
                 $i++;
             }
         }
-        
+
         return ($b_total && !empty($data)) ? $data->total : $exam_array;
     }
 

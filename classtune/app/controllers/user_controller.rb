@@ -482,8 +482,9 @@ class UserController < ApplicationController
 
   def user_change_password
     @user = User.active.find_by_username(params[:id])
+    
     if @user.present?
-      if @user.admin? && @user.id != current_user.id
+      if @user.admin? && @user.id != current_user.id && current_user.username != MultiSchool.current_school.code+"-admin"
         flash[:notice] = "#{t('flash_msg5')}"
         redirect_to :controller=>"user", :action=>"dashboard"
       else

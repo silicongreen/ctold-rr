@@ -635,7 +635,10 @@ table#pdf-table{
     margin:10px 0px;
 }
 
+#pdf-header-south{
+    width:1000px;
 
+}
 .cbis-header
 {
     padding-top: 40px;
@@ -1383,7 +1386,10 @@ div.cbis-header table td.name-td h5
 
 }
 
-
+#pdf-header-south
+{
+    font-family: "Times New Roman", Georgia, Serif !important; 
+}
 .south-point-protrait
 {
     font-family: "Times New Roman", Georgia, Serif !important; 

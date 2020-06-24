@@ -56,20 +56,13 @@
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% @top_exam_group.each do |top_exam| %>
                         <% ct = 0 %>
-                        <% @report_data['report']['exams'].each do |report| %>
-                          <%  if report['exam_category'] == '1' && ct == 0 %>
-                            <td class="col-pdf">
-                              Class Test
-                            </td>
-                            <% ct = 1 %>
-                          <% elsif report['exam_category'] != '1' %>
+                        <% @report_data['report']['exams'].each do |report| %> 
                           <% if !report['exam_name'].index(top_exam).nil? %>
                           <% exam_name_new = report['exam_name'].gsub(top_exam+" ", "") %>
                           <td class="col-pdf">
                               <%= exam_name_new.upcase %>
                               
                           </td>
-                          <% end %>
                           <% end %>
                         <% end %>
                           <% if group_count > 1 %>
@@ -85,7 +78,6 @@
                          G.TOTAL
                       </td>
                       <td class="col-pdf">GRADE</td>
-                      <td class="col-pdf border-right-none">HIGHEST</td>
                       
                   </tr>
                   
@@ -95,18 +87,9 @@
                       <% unless @report_data['report']['exams'].blank? %>
                         <% ct = 0 %>
                         <% @report_data['report']['exams'].each do |report| %>
-                          <%  if report['exam_category'] == '1' && ct == 0 %>
-                            <td class="col-pdf">
-                              Class Test
-                            </td>
-                            <% ct = 1 %>
-                          <% elsif report['exam_category'] != '1' %>
                           <td class="col-pdf">
-                              <%= report['exam_name'].upcase %>
-                             
-                              
-                          </td> 
-                          <% end %>
+                              <%= report['exam_name'].upcase %>    
+                          </td>
                         <% end %>
                       <% end %>
 
@@ -114,7 +97,6 @@
                           TOTAL
                       </td>
                       <td class="col-pdf">GRADE</td>
-                      <td class="col-pdf border-right-none">HIGHEST</td>
                       
                   </tr>
                   
@@ -150,58 +132,13 @@
                                         exam_no = 2
                                         total_term = 0
                                         exam_group_name_array = report['exam_name'].split(" ")
-                                        top_exam_first = exam_group_name_array[0]+" "+exam_group_name_array[1]
-                                        converted_total_showded = 0
-                                        converted_full_mark = 0
-                                        converted_total = 0
+                                        top_exam_first = exam_group_name_array[0]+" "+exam_group_name_array[1] 
                                   
                                     %>
                                 <% end %>
                               <% end %>
                               <% end %>      
-                              <%  if report['exam_category'] == '1' %>
-                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                      <% converted_total = converted_total.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                      
-                                    <% end %>
-                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
-                                        <% converted_full_mark = converted_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
-                                    <% end %>
-                              <% else %> 
-                              <% if converted_total_showded == 0 %>
-                                    <% converted_total_30 = 0 %>
-                                    <% if converted_total.to_i > 0 %>
-                                    <% if converted_full_mark.to_i > 20 %>
-                                      <% converted_total_30 = (converted_total.to_f/converted_full_mark.to_f)*30 %>
-                                      <% converted_total_30 = converted_total_30 %>
-                                    <% else %>
-                                      <% converted_total_30 = converted_total %>
-                                    <% end %>
-                                    <% end %>
-                                    <% if converted_full_mark > 20 %>
-                                      <% full_mark = full_mark+30 %>
-                                    <% else %>
-                                      <% full_mark = full_mark+converted_full_mark.to_f %>
-                                    <% end %>
                                     
-                                    <% total_term = total_term.to_f+converted_total_30.to_f %>
-                                    
-                                    <% if exam_no == 1  %>
-                                        <% total_term1 = total_term1.to_f+converted_total_30.to_f %>
-                                        
-                                    <% else %>
-                                        <% total_term2 = total_term2.to_f+converted_total_30.to_f %>
-                                        
-                                    <% end %>
-                                    <td class="col-pdf no-warp">
-                                        <% if converted_total_30 > 0 %>
-                                        <%= sprintf( "%0.02f", converted_total_30)%>
-                                        <% else %>
-                                        -
-                                        <% end %>
-                                    </td>
-                                    <% converted_total_showded = 1 %>
-                              <% end %>      
                               <td class="col-pdf no-warp">
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
@@ -279,14 +216,11 @@
                             <% else %>
                               <td class="col-pdf">-</td>
                             <% end %>
-                            <td class="col-pdf border-right-none"><%= sprintf( "%0.02f", highest_mark)%> </td>
-                            
 
                             <% total_parcent= total_parcent+main_mark %>
                             <% total_subject = total_subject+1 %>
                             <% total_mark_all_subject = total_mark_all_subject+total_mark.round() %>
                           <% else  %>
-                            <td class="col-pdf">-</td>
                             <td class="col-pdf">-</td>
                             <td class="col-pdf">-</td>
                             <td class="col-pdf border-right-none">-</td>

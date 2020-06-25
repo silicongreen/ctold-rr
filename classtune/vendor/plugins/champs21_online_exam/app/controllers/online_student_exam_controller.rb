@@ -121,7 +121,7 @@ class OnlineStudentExamController < ApplicationController
       end
     end
     session[:exam_attendance_id] = nil if session[:exam_attendance_id]
-    unless @exam_attendance.end_time.blank?
+    if @exam_attendance.blank? or !@exam_attendance.end_time.blank?
       render :partial => 'already_attended' and return
     end
     render :partial => 'late_submit' and return if @exam_attendance.start_time+@exam_attendance.online_exam_group.maximum_time.minutes+6.minutes < Time.now

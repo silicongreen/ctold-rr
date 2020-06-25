@@ -211,32 +211,7 @@
           </div>
         
         <% elsif MultiSchool.current_school.id == 324 or MultiSchool.current_school.id == 342 %>
-          <div id="pdf-footer">
-
-              <table id="listing table-design"  width="100%"  style="margin-top:10px;">
-                  <thead>          
-
-                      <tr>
-                          <td class="">
-                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/280/principal.jpg")),:width=> '36%' %><br />
-                              <%= "---------------------------------------------------------------" %><br />
-                              <font size='5'><%= "Principal" %></font>
-                          </td>
-                          <td class="">
-                              <br /><br /><br /><br />
-                              <%= "---------------------------------------------------------------" %><br />
-                              <font size='5'><%= "Class Teacher" %></font>
-                          </td>
-                          
-                          <td class="">
-                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/342/director_new.jpg")),:width=> '25%' %><br/>
-                              <%= "---------------------------------------------------------------" %><br />
-                              <font size='5'><%= "Director" %></font>
-                          </td>
-                  </tr>
-
-              </table>
-          </div>
+          
         <% elsif MultiSchool.current_school.id == 3 %>
            <div id="pdf-footer">
 

@@ -19,11 +19,11 @@
     <% unless @attendance.blank? %>
     <table id="listing" width="100%">
       <tr class="tr-head">
-        <td><%= "Serial" %></td>
-        <td><%= "Roll" %></td>
-        <td><%= t('student_text') %></td>
-        <td><%= t('marks') %></td>
-        <td><%= t('result') %></td>
+        <td width="20%"><%= "Serial" %></td>
+        <td width="20%"><%= "Roll" %></td>
+        <td width="20%"><%= t('student_text') %></td>
+        <td width="20%"><%= t('marks') %></td>
+        <td width="20%"><%= t('result') %></td>
       </tr>
       <% i = 0 %>
       <% @attendance.each do |att| %>

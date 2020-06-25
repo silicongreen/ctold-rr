@@ -32,7 +32,7 @@
         <% break_on = true %>
         <% @attendance.each do |att| %>
           <% j += 1  %>
-          <% if i== 18 && break_on == true %>
+          <% if i== 21 && break_on == true %>
             <% i= 0 %>
             <% break_on = false %>
             <tr class="page-break"><td colspan="3"></td></tr>
@@ -45,7 +45,7 @@
             </tr>
           <% end %>
             
-          <% if i== 21 && break_on == false %>
+          <% if i== 24 && break_on == false %>
             <% i= 0 %>
             <% break_on = false %>
             <tr class="page-break"><td colspan="3"></td></tr>

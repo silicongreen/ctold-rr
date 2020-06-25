@@ -94,11 +94,7 @@
   <h6 align="center">CONDUCT BY BROTHERS OF HOLY CROSS</h6>
 </div>
 <% elsif MultiSchool.current_school.id == 342 or MultiSchool.current_school.id == 324 %>
-<div id="pdf-header-south" class="sfx-header">
-  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/280/logo.jpg")),:width=> '9%' %></h4>
-  <h2 align="center">St. Joseph International School</h2>
-  <h6 align="center">CONDUCT BY BROTHERS OF HOLY CROSS</h6>
-</div>
+
 <% elsif MultiSchool.current_school.id == 3 %>
 <div id="pdf-header-south" class="sfx-header">
   <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '50%' %></h4>
@@ -213,9 +209,9 @@
 <% else %>
 <div id="pdf-header-south" class="sfx-header">
   <% if !@connect_exam_obj.blank? %>
-    <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '20%' %></h4>
+    <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/bncd/logo.png")),:width=> '20%' %></h4>
   <% else %>
-    <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '7%' %></h4>
+    <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/bncd/logo.png")),:width=> '8%' %></h4>
   <% end %>
   <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
 </div>

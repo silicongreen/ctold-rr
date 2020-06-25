@@ -1201,77 +1201,84 @@ class Settings {
         return $a_out;
     }
 
-    public static function get_post_time($published_date, $to = 6, $check = true, $start_date = false) {
-        $datediff = self::get_diff_date($published_date, true, $start_date);
-        $datestring = "";
-        $findvalue = false;
-        if ($datediff['Years'] > 0 && $to > 0) {
-            if ($datediff['Years'] > 1) {
-                $datestring .= $datediff['Years'] . " Years";
-            } else {
-                $datestring .= $datediff['Years'] . " Year";
+    public static function get_post_time($published_date = "", $to = 6, $check = true, $start_date = false) {
+        if($published_date)
+        {
+            $datediff = self::get_diff_date($published_date, true, $start_date);
+            $datestring = "";
+            $findvalue = false;
+            if ($datediff['Years'] > 0 && $to > 0) {
+                if ($datediff['Years'] > 1) {
+                    $datestring .= $datediff['Years'] . " Years";
+                } else {
+                    $datestring .= $datediff['Years'] . " Year";
+                }
+                $findvalue = true;
             }
-            $findvalue = true;
-        }
-        if ($datediff['Months'] > 0 && ($findvalue === false || $check == false) && $to > 1) {
-            if ($findvalue) {
-                $datestring .= ", ";
-            }
-            if ($datediff['Months'] > 1) {
-                $datestring .= $datediff['Months'] . " Months";
-            } else {
-                $datestring .= $datediff['Months'] . " Month";
-            }
+            if ($datediff['Months'] > 0 && ($findvalue === false || $check == false) && $to > 1) {
+                if ($findvalue) {
+                    $datestring .= ", ";
+                }
+                if ($datediff['Months'] > 1) {
+                    $datestring .= $datediff['Months'] . " Months";
+                } else {
+                    $datestring .= $datediff['Months'] . " Month";
+                }
 
-            $findvalue = true;
-        }
-        if ($datediff['Days'] > 0 && ($findvalue === false || $check == false) && $to > 2) {
-            if ($findvalue) {
-                $datestring .= ", ";
+                $findvalue = true;
             }
-            if ($datediff['Days'] > 1) {
-                $datestring .= $datediff['Days'] . " Days";
-            } else {
-                $datestring .= $datediff['Days'] . " Day";
-            }
+            if ($datediff['Days'] > 0 && ($findvalue === false || $check == false) && $to > 2) {
+                if ($findvalue) {
+                    $datestring .= ", ";
+                }
+                if ($datediff['Days'] > 1) {
+                    $datestring .= $datediff['Days'] . " Days";
+                } else {
+                    $datestring .= $datediff['Days'] . " Day";
+                }
 
-            $findvalue = true;
-        }
-        if ($datediff['Hours'] > 0 && ($findvalue === false || $check == false) && $to > 3) {
-            if ($findvalue) {
-                $datestring .= ", ";
+                $findvalue = true;
             }
-            if ($datediff['Hours'] > 1) {
-                $datestring .= $datediff['Hours'] . " Hours";
-            } else {
-                $datestring .= $datediff['Hours'] . " Hour";
-            }
+            if ($datediff['Hours'] > 0 && ($findvalue === false || $check == false) && $to > 3) {
+                if ($findvalue) {
+                    $datestring .= ", ";
+                }
+                if ($datediff['Hours'] > 1) {
+                    $datestring .= $datediff['Hours'] . " Hours";
+                } else {
+                    $datestring .= $datediff['Hours'] . " Hour";
+                }
 
-            $findvalue = true;
-        }
-        if ($datediff['Minutes'] > 0 && ($findvalue === false || $check == false) && $to > 4) {
-            if ($findvalue) {
-                $datestring .= ", ";
+                $findvalue = true;
             }
-            if ($datediff['Minutes'] > 1) {
-                $datestring .= $datediff['Minutes'] . " Minutes";
-            } else {
-                $datestring .= $datediff['Minutes'] . " Minute";
-            }
+            if ($datediff['Minutes'] > 0 && ($findvalue === false || $check == false) && $to > 4) {
+                if ($findvalue) {
+                    $datestring .= ", ";
+                }
+                if ($datediff['Minutes'] > 1) {
+                    $datestring .= $datediff['Minutes'] . " Minutes";
+                } else {
+                    $datestring .= $datediff['Minutes'] . " Minute";
+                }
 
-            $findvalue = true;
-        }
-        if ($datediff['Seconds'] > 0 && ($findvalue === false || $check == false) && $to > 5) {
-            if ($findvalue) {
-                $datestring .= ", ";
+                $findvalue = true;
             }
-            if ($datediff['Seconds'] > 1) {
-                $datestring .= $datediff['Seconds'] . " Seconds";
-            } else {
-                $datestring .= $datediff['Seconds'] . " Second";
-            }
+            if ($datediff['Seconds'] > 0 && ($findvalue === false || $check == false) && $to > 5) {
+                if ($findvalue) {
+                    $datestring .= ", ";
+                }
+                if ($datediff['Seconds'] > 1) {
+                    $datestring .= $datediff['Seconds'] . " Seconds";
+                } else {
+                    $datestring .= $datediff['Seconds'] . " Second";
+                }
 
-            $findvalue = true;
+                $findvalue = true;
+            }
+        }
+        else 
+        {
+            $datestring = "-";
         }
 
 

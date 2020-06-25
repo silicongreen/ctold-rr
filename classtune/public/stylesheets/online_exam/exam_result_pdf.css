@@ -6,7 +6,10 @@
     float: left;
     overflow: hidden;
 }
+#pdf-header-south{
+    width:1000px;
 
+}
 
 
 .hor_line{

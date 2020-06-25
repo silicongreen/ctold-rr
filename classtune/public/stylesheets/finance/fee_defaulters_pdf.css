@@ -100,6 +100,7 @@ table#pdf-table{
 .report{
     min-height: 1000px;
     margin: 0 auto;
+    width: 100%;
 }
 
 #signature{

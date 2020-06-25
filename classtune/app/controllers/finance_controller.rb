@@ -15604,8 +15604,12 @@ class FinanceController < ApplicationController
           fees = s.finance_fees
         end
         b = Batch.find(s.batch_id)
-        sc = StudentCategory.find(s.student_category_id)
+        sc = StudentCategory.find(s.student_category_id) unless s.student_category_id.blank?
         b_v = b.name.split(" ")
+        category_name = ""
+        unless sc.blank?
+          category_name = sc.name
+        end
         
         fee_remarks = ""
         unless params[:date] == '0'
@@ -15626,7 +15630,7 @@ class FinanceController < ApplicationController
         end
         
         #unless sc.receiver.blank?
-          data_row = [sl, s.admission_no, s.full_name, s.class_roll_no, sc.name, fees.map(&:balance).sum, s.sms_number,fee_remarks ]
+          data_row = [sl, s.admission_no, s.full_name, s.class_roll_no, category_name, fees.map(&:balance).sum, s.sms_number,fee_remarks ]
           new_book.worksheet(0).insert_row(row_loop, data_row)
           new_book.worksheet(0).row(row_loop).set_format(0, center_format)
           new_book.worksheet(0).row(row_loop).set_format(1, center_format)

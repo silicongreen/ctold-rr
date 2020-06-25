@@ -29,14 +29,14 @@
       <% @attendance.each do |att| %>
         <% i = i+1 %>
         <tr class="tr-<%= cycle('odd', 'even') %>">
-          <td><%= i %></td>
-          <td><%= att.student.class_roll_no %></td>
-          <td><%= att.student.full_name %></td>
-          <td><% if att.total_score.blank? %>NA<% else  %><%= att.total_score %><% end %>/<%= @exam_group.online_exam_questions.sum('mark') %></td>
+          <td class="col-2" ><%= i %></td>
+          <td class="col-2" ><%= att.student.class_roll_no %></td>
+          <td class="col-2" ><%= att.student.full_name %></td>
+          <td class="col-2" ><% if att.total_score.blank? %>NA<% else  %><%= att.total_score %><% end %>/<%= @exam_group.online_exam_questions.sum('mark') %></td>
           <% if att.is_passed %>
-          <td><%= t('passed') %></td>
+          <td class="col-2" ><%= t('passed') %></td>
           <% else %>
-          <td><%= t('failed') %></td>
+          <td class="col-2" ><%= t('failed') %></td>
           <% end %>
         </tr>
         <% end %>
@@ -48,3 +48,10 @@
    
     <div class="extender"></div>
   </div></div>
+<style>
+    #listing tr td.col-2
+    {
+      width: 20%;
+    }
+    
+ </style>   

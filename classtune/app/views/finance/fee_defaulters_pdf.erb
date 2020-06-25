@@ -62,7 +62,7 @@
         <% num1 = 39 %>
         <% num2 = 44 %>
         <% num3 = 45 %>
-        <% height = 20 %>
+        <% height = 5 %>
         
         
         <% @defaulters.each do |s| %>
@@ -83,7 +83,7 @@
           <% if page == 1 and i== num1 %>
               <% i= 0 %>
               <% page += 1 %>
-              <tr style="height: 1px;"><td colspan="8">&nbsp;</td></tr>
+              <tr style="height: 1px;"><td colspan="8"></td></tr>
               <tr class="table-header">
                 <td style="text-align: center;">SL</td>
                 <td style="text-align: center;"><%= t('student_id') %></td>

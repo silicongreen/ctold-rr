@@ -15127,11 +15127,11 @@ class FinanceController < ApplicationController
         batch_id = 0
         course_id = 0
         class_id = 0
-        unless params[:batch_id].nil?
+        unless params[:batch_id].blank?
           batch_id = params[:batch_id]
         end
         #@batch   = Batch.find(params[:batch_id])
-        unless params[:course_name].nil?
+        unless params[:course_name].blank?
           class_id = params[:course_name]
           batch = Batch.find(:first, :conditions => "course_id = #{class_id}")
           unless batch.blank?

@@ -62,7 +62,7 @@
         <% num1 = 39 %>
         <% num2 = 43 %>
         <% num3 = 44 %>
-        <% height = 10 %>
+        <% height = 20 %>
         
         
         <% @defaulters.each do |s| %>
@@ -94,25 +94,10 @@
                 <td style="text-align: center;"><%= t('contact_number') %></td>
                 <td style="text-align: center;"><%= "Remarks" %></td>
               </tr>
-          <% elsif page == 2 and i== num2 %>
+          <% elsif page > 1 and i== num2 %>
               <% i= 0 %>
               <% page += 1 %>
-              <tr style="padding: 10px; height: <%= height %>px;"><td colspan="8">&nbsp;</td></tr>
-              
-              <tr class="table-header">
-                <td style="text-align: center;">SL</td>
-                <td style="text-align: center;"><%= t('student_id') %></td>
-                <td class="name" style="text-align: center;"><%= t('name') %></td>
-                <td style="text-align: center;"><%= t('roll_no') %></td>
-                <td style="text-align: center;"><%= t('student_category') %></td>
-                <td style="text-align: center;"><%= t('due_amount')%> (<%= @currency_type%>)</td>
-                <td style="text-align: center;"><%= t('contact_number') %></td>
-                <td style="text-align: center;"><%= "Remarks" %></td>
-              </tr>
-          <% elsif page > 2 and i== num3 %>
-              <% i= 0 %>
-              <% page += 1 %>
-              <tr style="padding: 10px;"><td colspan="8">&nbsp;</td></tr>
+              <tr style="height: <%= height %>px;"><td colspan="8">&nbsp;</td></tr>
               
               <tr class="table-header">
                 <td style="text-align: center;">SL</td>

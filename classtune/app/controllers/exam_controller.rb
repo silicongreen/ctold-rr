@@ -6162,9 +6162,11 @@ class ExamController < ApplicationController
         :save_only    => for_save,
         :orientation => 'Portrait',
         :margin => {:top=> 0,
-        :bottom => 35,
+        :bottom => 0,
         :left=> 10,
-        :right => 10}
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
     elsif  MultiSchool.current_school.id == 340  
       if @connect_exam_obj.result_type == 14 or @connect_exam_obj.result_type == 13
         render :pdf => template,

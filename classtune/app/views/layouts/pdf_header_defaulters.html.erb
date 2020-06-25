@@ -3,12 +3,12 @@
         <tr>
             <td>
                 <% if MultiSchool.current_school.id == 352 %>
-                  <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/sagc_logo.png")),:width=> '60%',:style=>"margin-left: 20%; margin-top: 10%;" %>
+                  <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/sagc_logo.png")),:width=> '80%',:style=>"margin-left: 20%; margin-top: 10%;" %>
                 <% else %>
                   <% if File.exists?("/"+("#{Rails.root}/"+ ("public/images/school_logo/#{MultiSchool.current_school.id}/logo.png"))) %>
-                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/#{MultiSchool.current_school.id}/logo.png")),:width=> '40px' %>
+                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/#{MultiSchool.current_school.id}/logo.png")),:width=> '100%' %>
                   <% else %>
-                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public" + current_school_detail.logo.url.to_s.gsub(/\?.*/, ''))),:width=> '40px' %>
+                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public" + current_school_detail.logo.url.to_s.gsub(/\?.*/, ''))),:width=> '100%' %>
                   <% end %>
                 <% end %>
               <%#= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '40px' %>

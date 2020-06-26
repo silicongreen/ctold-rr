@@ -746,9 +746,10 @@ class ApplicationController < ActionController::Base
         Rails.cache.delete("user_main_menu#{session[:user_id]}")
         Rails.cache.delete("user_autocomplete_menu#{session[:user_id]}")
         cookies.delete("_champs21_session")
-        session[:user_id_main] = params[:user_id]
-        session[:user_id] = params[:user_id]
-        redirect_to ({:controller => 'exam', :action => 'generated_report5_pdf', :connect_exam =>params[:connect_exam],:batch_id =>params[:batch_id],:student =>params[:student],:page_height=>450,:type=>"grouped"  })
+        session[:user_id_main] = nil if session[:user_id_main]
+        session[:user_id] = nil if session[:user_id]
+        session[:access_token] = nil if session[:access_token]
+        session[:language] = nil if session[:language]
       else
         redirect_to :controller => 'user', :action => 'dashboard'
       end

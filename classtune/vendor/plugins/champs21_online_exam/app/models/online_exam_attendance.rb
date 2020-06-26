@@ -5,6 +5,7 @@ class OnlineExamAttendance < ActiveRecord::Base
 
   validates_associated :online_exam_score_details
   accepts_nested_attributes_for :online_exam_score_details ,:reject_if=>:reject_exam_score , :allow_destroy=>true
+  accepts_nested_attributes_for :online_exam_score_history_details
 
   def reject_exam_score(attributed)
     exam_option_id=attributed["online_exam_option_id"].to_i

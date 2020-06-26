@@ -94,6 +94,12 @@ class OnlineStudentExamController < ApplicationController
       page.replace_html 'questions', :partial=>'exam_questions'
     end
   end
+  def save_history
+    @exam_attendance = OnlineExamAttendance.find(params[:attendance_id])
+    OnlineExamScoreHistoryDetail.destroy_all(:online_exam_attendance => @exam_attendance.id)
+    @exam_attendance.update_attributes(:online_exam_score_history_details_attributes=>params[:online_exam_attendance][:online_exam_score_details_attributes])
+    render :nothing=>true
+  end
 
   def save_scores
     @exam_attendance = OnlineExamAttendance.find(params[:attendance_id])

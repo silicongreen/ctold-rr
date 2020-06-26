@@ -85,6 +85,7 @@ authorization do
       :start_exam,
       :save_exam,
       :save_scores,
+      :save_history,
       :started_exam,
       :exam_list
     ]
@@ -97,6 +98,7 @@ authorization do
       :start_exam,
       :save_exam,
       :save_scores,
+      :save_history,
       :started_exam,
       :exam_list
     ]

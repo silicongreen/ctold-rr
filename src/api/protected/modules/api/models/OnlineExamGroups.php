@@ -247,7 +247,7 @@ class OnlineExamGroups extends CActiveRecord {
 
         $data = $this->find($criteria);
         
-        $school_id = Yii::app()->user->schoolId();
+        $school_id = Yii::app()->user->schoolId;
         $school_obj = new School();
         $school_data = $school_obj->findByPk($school_id);
         $url = "https://".$school_data->code.".classtune.com";

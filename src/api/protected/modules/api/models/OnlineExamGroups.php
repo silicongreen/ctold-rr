@@ -246,9 +246,11 @@ class OnlineExamGroups extends CActiveRecord {
 
 
         $data = $this->find($criteria);
-
-
-
+        
+        $school_id = Yii::app()->user->schoolId();
+        $school_obj = new School();
+        $school_data = $school_obj->findByPk($school_id);
+        $url = "https://".$school_data->code.".classtune.com";
 
         $response_array = array();
         $assesment_valid = false;
@@ -311,11 +313,7 @@ class OnlineExamGroups extends CActiveRecord {
                 foreach ($data['questions'] as $questions) {
                     if (isset($questions['option']) && count($questions['option'] > 1)) {
                         $q_image = "";
-                        $qimages = Settings::content_images(utf8_encode($questions->question));
-                        if (count($qimages) > 0) {
-                            $q_image = $qimages[0];
-                        }
-
+                        $q_image = Settings::content_images(utf8_encode($questions->question),$url);
                         $response_array['question'][$i]['id'] = $questions->id;
                         $response_array['question'][$i]['question'] = Settings::substr_with_unicode(utf8_encode($questions->question), true);
                         $response_array['question'][$i]['explanation'] = "";
@@ -334,11 +332,7 @@ class OnlineExamGroups extends CActiveRecord {
                         $j = 0;
                         foreach ($questions['option'] as $options) {
                             $a_image = "";
-                            $images = Settings::content_images(utf8_encode($options->option));
-                            if (count($images) > 0) {
-                                $a_image = $images[0];
-                            }
-
+                            $a_image = Settings::content_images(utf8_encode($options->option),$url);
                             $response_array['question'][$i]['option'][$j]['id'] = $options->id;
                             $response_array['question'][$i]['option'][$j]['answer'] = Settings::substr_with_unicode(utf8_encode($options->option));
                             $response_array['question'][$i]['option'][$j]['answer_image'] = $a_image;

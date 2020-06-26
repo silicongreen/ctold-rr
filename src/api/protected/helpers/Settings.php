@@ -1842,27 +1842,15 @@ class Settings {
         return $content_image;
     }
 
-    public static function content_images($content, $first_image = true, $lead_material = false) {
+    public static function content_images($content, $url = "") {
         $doc = new DOMDocument();
         @$doc->loadHTML($content);
         $images = $doc->getElementsByTagName('img');
-        $all_image = array();
+        $all_image = "";
 
-        if ($lead_material) {
-            $all_image[] = self::get_mobile_image(self::$image_path . $lead_material);
-        }
-        $i = 1;
         foreach ($images as $image) {
-            if (strpos($image->getAttribute('src'), "relatednews.jpg") !== FALSE) {
-                continue;
-            } else if (strpos($image->getAttribute('class'), "no_slider") !== FALSE) {
-                continue;
-            } else if ($i == 1 && $first_image === false) {
-                continue;
-            } else {
-                $all_image[] = self::get_mobile_image($image->getAttribute('src'));
-            }
-            $i++;
+            $all_image = $url.$image->getAttribute('src');
+            break;
         }
         return $all_image;
     }

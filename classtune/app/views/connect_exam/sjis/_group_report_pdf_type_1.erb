@@ -251,7 +251,11 @@
                                   <td class="col-pdf">-</td>
                                 <% end %>
                             <% end %>  
-                          <% end %>    
+                          <% end %>  
+                                  
+                          <% if group_count == 1 %>
+                                <% total_mark = total_mark+total_term.round() %>   
+                          <% end %>        
 
 
 

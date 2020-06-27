@@ -67,7 +67,7 @@ class SmsManagerIndividualMessage
           message_log = SmsMessage.new(:body=> message_escape)
           message_log.save
           commaseprated = @recipients.join(",")
-          parsed_url = "https://powersms.banglaphone.net.bd/httpapi/sendsms?userId="+@username+"&password="+@password+"&smsText="+message_escape+"&commaSeperatedReceiverNumbers="+recipient
+          parsed_url = @sms_url+"?userId="+@username+"&password="+@password+"&smsText="+message_escape+"&commaSeperatedReceiverNumbers="+recipient
           uri = URI(parsed_url)
           http = Net::HTTP.new(uri.host, uri.port)
           http.use_ssl = true

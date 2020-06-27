@@ -2274,7 +2274,7 @@ module FinanceLoader
     end
 
     if @config.present?
-      power_sms_schools = [2,357,352]
+      power_sms_schools = [2,357,352,361]
       @sms_hash = {"user"=>@username,"pass"=>@password,"sid" =>@sendername}
       if power_sms_schools.include?(MultiSchool.current_school.id)
         @i_sms_loop = 0
@@ -2285,7 +2285,7 @@ module FinanceLoader
           message_log = SmsMessage.new(:body=> message_escape)
           message_log.save
           commaseprated = @recipients.join(",")
-          parsed_url = "https://powersms.banglaphone.net.bd/httpapi/sendsms?userId=classtune&password=Classtune123&smsText="+message_escape+"&commaSeperatedReceiverNumbers="+recipient
+          parsed_url = "https://powersms.banglaphone.net.bd/httpapi/sendsms?userId="+@username+"&password="+@password+"&smsText="+message_escape+"&commaSeperatedReceiverNumbers="+recipient
           uri = URI(parsed_url)
           http = Net::HTTP.new(uri.host, uri.port)
           http.use_ssl = true

@@ -65,7 +65,7 @@ class SmsManager
       
       if power_sms_schools.include?(MultiSchool.current_school.id)
         commaseprated = @recipients.join(",")
-        parsed_url = "https://powersms.banglaphone.net.bd/httpapi/sendsms?userId=classtune&password=Classtune123&smsText="+encoded_message+"&commaSeperatedReceiverNumbers="+commaseprated
+        parsed_url = "https://powersms.banglaphone.net.bd/httpapi/sendsms?userId="+@username+"&password="+@password+"&smsText="+encoded_message+"&commaSeperatedReceiverNumbers="+commaseprated
         uri = URI(parsed_url)
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = true

@@ -3,17 +3,29 @@
   <div id="page-yield"  class="available_sections1 sjis-new">
 
       
-      <div class="student_information">
-      <h4><b class="no-warp">Student's Information</b></h4>
-      <%= render  :partial=>"/connect_exam/sjis/student_information" %>
-      </div>
-      <div class="grade_information">
-      <%= render  :partial=>"/connect_exam/sjis/gradding_level" %>
-      </div>
+      <h3 align="center"><%= @connect_exam_obj.name %></h3>
+     
+      <table id="pdf-table" class="margin-top-bottom-20" width="100%" cellspacing="0">
+          <tr class="even">
+              <% if @batch.course.course_name=="AS"%>
+                <td class="td-align-left">Name : <b><%= @student.full_name %></b></td>
+                <td class="td-align-right">Class : <input type="checkbox" checked="checked" />&nbsp;AS Level&nbsp;&nbsp;<input type="checkbox" />&nbsp;A2 Level</td>
+              
+              <% elsif @batch.course.course_name=="A2" %>
+                <td class="td-align-left">Name : <b><%= @student.full_name %></b></td>
+                <td class="td-align-right">Class : <input type="checkbox"  />&nbsp;AS Level&nbsp;&nbsp;<input type="checkbox" checked="checked" />&nbsp;A2 Level</td>
+              
+              <% else %>
+              <td>Name : <b><%= @student.full_name %></b></td>
+              <td>Class : <b><%= @batch.course.course_name %></b></td>
+              <td>Section : <b><%= @batch.course.section_name %></b></td>
+              <td>Roll : <b><%= @student.class_roll_no %></b></td>
+              <% end %>
+          </tr>
+      </table>
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
 
-              <h4 class="h4-evaluation result-in-details no-warp"><b>Result in Details</b></h4>
               <table id="pdf-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
@@ -41,11 +53,9 @@
                           
                      
 
-                      <td class="col-pdf">
-                          
+                      <td colspan="2" class="col-pdf border-right-non">
+                          AVE OF TWO TERMS
                       </td>
-                      <td class="col-pdf"></td>
-                      <td class="col-pdf border-right-none"></td>
                       
                   </tr>
                   
@@ -74,7 +84,7 @@
                         <% end %>
                           <% if group_count > 1 %>
                           <td class="col-pdf">
-                              TOTAL
+                              GRADE
                           </td>
                           <% end %>
                      
@@ -82,10 +92,9 @@
                       <% end %>
 
                       <td class="col-pdf">
-                         G.TOTAL
+                         FINAL AVE
                       </td>
                       <td class="col-pdf">GRADE</td>
-                      <td class="col-pdf border-right-none">HIGHEST</td>
                       
                   </tr>
                   
@@ -111,10 +120,9 @@
                       <% end %>
 
                       <td class="col-pdf">
-                          TOTAL
+                         FINAL AVE
                       </td>
                       <td class="col-pdf">GRADE</td>
-                      <td class="col-pdf border-right-none">HIGHEST</td>
                       
                   </tr>
                   
@@ -145,7 +153,13 @@
                               <% if group_count > 1 %>
                               <% if !top_exam_first.blank? and top_exam_first!="" %>
                                 <% if report['exam_name'].index(top_exam_first).nil? %>
-                                    <td class="col-pdf"><% total_mark = total_mark+total_term.round() %><%= total_term.round() %></td>
+                                    <%  grade = GradingLevel.percentage_to_grade(total_term, @batch.id) %>
+                                    <% if !grade.blank? and !grade.name.blank? %>
+                                      <td class="col-pdf"><%= grade.name %></td>
+                                    <% else %>
+                                      <td class="col-pdf">-</td>
+                                    <% end %>  
+                                    <td class="col-pdf"><% total_mark = total_mark+total_term.round() %></td>
                                     <%
                                         exam_no = 2
                                         total_term = 0
@@ -200,11 +214,12 @@
 
                             <% if !top_exam_first.blank? and top_exam_first!="" %>
                                 <% total_mark = total_mark+total_term.round() %>
-                                <% if total_term > 0 %>
-                                  <td class="col-pdf"><%= total_term.round() %></td>
+                                <%  grade = GradingLevel.percentage_to_grade(total_term, @batch.id) %>
+                                <% if !grade.blank? and !grade.name.blank? %>
+                                  <td class="col-pdf"><%= grade.name %></td>
                                 <% else %>
                                   <td class="col-pdf">-</td>
-                                <% end %>
+                                <% end %> 
                             <% end %>  
                           <% end %>    
 
@@ -229,21 +244,20 @@
                         %>
 
                           <% if full_mark.to_f > 0 %>
-                            <td class="col-pdf"><%= total_mark.round() %></td>
+                            <td class="col-pdf"><%= main_mark.round() %></td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><%= grade.name %></td>
                             <% else %>
                               <td class="col-pdf">-</td>
                             <% end %>
-                            <td class="col-pdf border-right-none"><%= sprintf( "%0.02f", highest_mark)%> </td>
+                            
                             
 
                             <% total_parcent= total_parcent+main_mark %>
                             <% total_subject = total_subject+1 %>
-                            <% total_mark_all_subject = total_mark_all_subject+total_mark.round() %>
+                            <% total_mark_all_subject = total_mark_all_subject+main_mark.round() %>
                           <% else  %>
-                            <td class="col-pdf">-</td>
                             <td class="col-pdf">-</td>
                             <td class="col-pdf">-</td>
                             <td class="col-pdf border-right-none">-</td>
@@ -252,6 +266,30 @@
                       </tr> 
                     <% end %>  
                   <% end %>
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none"><b>Total Mark</b></td>
+                          
+                          <% if group_count > 1 %>
+                          <% unless @report_data['report']['exams'].blank? %> 
+                            <% jloop = 0 %>
+                            <% @top_exam_group.each do |top_exam| %>
+                              <% colspan = @top_exam_group_count[jloop]-1 %>
+                                <% jloop = jloop+1 %>
+                                <% if jloop == 1 %>
+                                  <td class="col-pdf"><%= sprintf( "%0.02f", total_term1) %></td>
+                                <% else %>
+                                  <td class="col-pdf"><%= sprintf( "%0.02f", total_term2) %></td>
+                                <% end %>
+                                <td class="col-pdf group_exam"></td>
+                            <% end %>
+                          <% end %>  
+                         <% else %>
+                           <td class="col-pdf group_exam" colspan="<%= @top_exam_group_count[0]-1 %>"></td>   
+                         <% end %>      
+                                
+                         <td class="col-pdf"><b><%= total_mark_all_subject.round() %></b></td>
+                         <td class="col-pdf border-right-none"></td>
+                      </tr> 
                      <%  
                     
                           group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
@@ -293,7 +331,6 @@
                            <% else %>
                               <td class="col-pdf group_exam" colspan="<%= @top_exam_group_count[0]-1 %>"></td>  
                            <% end %>
-                          <td class="col-pdf"></td> 
                           
                           <td class="col-pdf"><%= report['subject_comment'] %></td>
                           <td class="col-pdf border-right-none"></td>
@@ -303,72 +340,26 @@
                     <% end %>
                         
                         
-                      <tr class="odd">
-                          <td class="col-pdf border-left-none"><b>Total Mark</b></td>
-                          
-                          <% if group_count > 1 %>
-                          <% unless @report_data['report']['exams'].blank? %> 
-                            <% jloop = 0 %>
-                            <% @top_exam_group.each do |top_exam| %>
-                              <% colspan = @top_exam_group_count[jloop]-1 %>
-                                <td class="col-pdf group_exam" colspan="<%= colspan %>"></td>
-                                <% jloop = jloop+1 %>
-                                <% if jloop == 1 %>
-                                  <td class="col-pdf"><%= sprintf( "%0.02f", total_term1) %></td>
-                                <% else %>
-                                  <td class="col-pdf"><%= sprintf( "%0.02f", total_term2) %></td>
-                                <% end %>
-                            <% end %>
-                          <% end %>  
-                         <% else %>
-                           <td class="col-pdf group_exam" colspan="<%= @top_exam_group_count[0]-1 %>"></td>   
-                         <% end %>      
-                                
-                         <td class="col-pdf"><b><%= total_mark_all_subject.round() %></b></td>
-                          
-                         <td class="col-pdf"></td>
-                         <td class="col-pdf border-right-none"></td>
-                      </tr>   
+                        
 
               </table>
 
-                <% 
-                  result = ""
+                <%
+                  total_att = ""
+                  absent = ""
                   if !@exam_comment.blank?
                     all_comments = @exam_comment.comments
                     if !all_comments.blank?
                       all_comments_array = all_comments.split("|")
-                      result = all_comments_array[0]
-                      promotion_status = 0
+                      @report_data['total'] = all_comments_array[0]
                       if !all_comments_array[1].nil?
-                        promotion_status = all_comments_array[1]
+                        @report_data['present'] = all_comments_array[1]
                       end
                     end
                   end
                 %>
               
-              <h4 class="h4-evaluation no-warp"><b>Evaluation</b></h4>
-              <table id="pdf-table" class="evaluation" width="99.8%" >
-                      <tr class="odd">
-                          <td class="col-pdf border-left-none" width="50%">
-                              No. of Working Days
-                          </td> 
-                          <td class="col-pdf align-center border-right-none" width="50%">
-                              <%= @report_data['total'] %>
-                          </td>
-                      </tr>
-                      <tr class="odd">
-                          <td class="col-pdf border-left-none" width="50%">
-                              Attendance
-                          </td> 
-                          <td class="col-pdf align-center  border-right-none" width="50%">
-                              <%#= @report_data['present'] %>
-                              <%= @report_data['present'] %>
-                          </td>
-                      </tr>
-                     
-                      
-              </table>
+             
               <h5><b>&nbsp;</b></h5>
                
 

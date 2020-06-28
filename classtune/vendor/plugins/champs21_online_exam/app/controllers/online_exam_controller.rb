@@ -496,7 +496,7 @@ class OnlineExamController < ApplicationController
   def exam_result_details
     @exam_attendance = OnlineExamAttendance.find_by_id(params[:id])
     @exam_group = OnlineExamGroup.find(@exam_attendance.online_exam_group_id,:include => [:subject])
-    @exam_result = OnlineExamScoreDetail.find_by_online_exam_attendance_id(:all,@exam_attendance.id)
+    @exam_result = OnlineExamScoreDetail.find_all_by_online_exam_attendance_id(@exam_attendance.id)
     @attendance = @exam_group.has_attendence
     @exam_questions = @exam_group.online_exam_questions.all(:include=>[:online_exam_options])
   end

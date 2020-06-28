@@ -43,19 +43,29 @@
               <% exam_type = 1 %>
               <% full_mark = 0 %>
               <% colspan = 0 %>
-               <table>
-                    <tr>
-                        <% if !@employee.nil? %> 
-                          <td align='left'><h4>Teacher's Name : <%=  @employee.full_name %></h4></td>
-                          <td align='center'><h4>Subject : <%= @subject.name %></h4></td>
-                        <% else %>
-                          <td align='left'><h4>Subject : <%= @subject.name %></h4></td>
-                        <% end %> 
+            
+            <table id="pdf-table" width="98%" cellspacing="0">
+                  <tr class="table-header">
+                      <td>Roll NO.</td>
+                      <td>Name</td>
+                      <td>Quarter (50)</td>
+                      <% total_full_mark = 0 %>
+                      <% @report_data['result']['ALL'].each do |rs| %>
+                        <%  if rs['quarter'] == '6' %>  
+                          <% exam_type = 2 %>
+                        <% end %>
+                      <% end %> 
+                      <% @report_data['result']['ALL'].each do |rs| %>
+                        <%  if (exam_type == 1 and rs['quarter'] == '5') or (rs['quarter'] == '6' && exam_type == 2) %>  
+                          <td><%=  rs['name'] %> (50)</td>
+                        <% end %>
+                      <% end %> 
+                      <td>Total (100)</td>
+                      <td>Grade</td>
 
-                        <td align='center'><h4>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %></h4></td>
-                        <td align='right'><h4>Section : <%= @batch.course.section_name %></h4></td>
-                    </tr>    
-                </table> 
+                  </tr>
+            </table>   
+             
               <table id="pdf-table" width="98%" cellspacing="0">
                   <tr class="table-header">
                       <td>Roll NO.</td>

@@ -96,6 +96,17 @@ class OnlineStudentExamController < ApplicationController
   end
   def save_history
     @exam_attendance = OnlineExamAttendance.find(params[:attendance_id])
+    if @exam_attendance.blank?
+      exam_id = params[:exam_id]
+      if session[:exam_attendance_id]
+        att_id = session[:exam_attendance_id]
+        @exam_attendance = OnlineExamAttendance.find_by_id(att_id)
+      elsif !exam_id.blank?
+        @exam = OnlineExamGroup.find_by_id(params[:exam_id])
+        @student = Student.find_by_user_id(current_user.id,:select=>"id,batch_id")
+        @exam_attendance = OnlineExamAttendance.find(:first, :conditions=>{:student_id => @student.id, :online_exam_group_id=>@exam.id})  
+      end
+    end
     OnlineExamScoreHistoryDetail.destroy_all(:online_exam_attendance_id => @exam_attendance.id)
     @exam_attendance.update_attributes(:online_exam_score_history_details_attributes=>params[:online_exam_attendance][:online_exam_score_details_attributes])
     render :nothing=>true
@@ -112,18 +123,16 @@ class OnlineStudentExamController < ApplicationController
     @exam_attendance = OnlineExamAttendance.find_by_id(params[:attendance_id])
     if @exam_attendance.blank?
       exam_id = params[:exam_id]
-      unless exam_id.blank?
+      if session[:exam_attendance_id]
+        att_id = session[:exam_attendance_id]
+        @exam_attendance = OnlineExamAttendance.find_by_id(att_id)
+      elsif !exam_id.blank?
         @exam = OnlineExamGroup.find_by_id(params[:exam_id])
         @student = Student.find_by_user_id(current_user.id,:select=>"id,batch_id")
         @exam_attendance = OnlineExamAttendance.find(:first, :conditions=>{:student_id => @student.id, :online_exam_group_id=>@exam.id})
         if @exam_attendance.blank?
           @exam_attendance = OnlineExamAttendance.create(:online_exam_group_id=> @exam.id, :student_id=>@student.id, :start_time=>I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S'))
-        end 
-      else
-        if session[:exam_attendance_id]
-          att_id = session[:exam_attendance_id]
-          @exam_attendance = OnlineExamAttendance.find_by_id(att_id)
-        end
+        end   
       end
     end
     session[:exam_attendance_id] = nil if session[:exam_attendance_id]

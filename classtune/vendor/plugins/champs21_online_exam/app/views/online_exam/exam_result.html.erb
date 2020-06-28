@@ -32,7 +32,7 @@
           <td class="col-2" ><%= i %></td>
           <td class="col-2" ><%= att.student.class_roll_no %></td>
           <td class="col-2" ><%= att.student.full_name %></td>
-          <td class="col-2" ><% if att.total_score.blank? %>NA<% else  %><%= att.total_score %><% end %>/<%= @exam_group.online_exam_questions.sum('mark') %></td>
+          <td class="col-2" ><a href="/online_exam/exam_result_details/<%= att.id %>"><% if att.total_score.blank? %>NA<% else  %><%= att.total_score %><% end %>/<%= @exam_group.online_exam_questions.sum('mark') %></a></td>
           <% if att.is_passed %>
           <td class="col-2" ><%= t('passed') %></td>
           <% else %>

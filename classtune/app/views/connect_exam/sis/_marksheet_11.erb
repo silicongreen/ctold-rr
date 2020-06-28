@@ -89,21 +89,9 @@
 
           <%  std_count = std_count+1; %>
           <% colspan = colspan+4 %>
-          <% if std_count>18 && extender ==0 %>
-              <% std_count = 0 %>
-              <% extender = 1 %>
-              <tr class="page-break">
-                  <td colspan="<%= colspan %>">&nbsp;</td>
-              </tr>    
-          <% elsif std_count>24 && extender ==1 %>
-              <% std_count = 0 %>
-              <% extender = 1 %>
-              <tr class="page-break">
-                  <td colspan="<%= colspan %>">&nbsp;</td>
-              </tr> 
-          <% end %>     
-        
-        
+          <tr class="table-header">
+              <td colspan="100"></td>  
+          </tr>  
           <% total_mark = 0 %>
           <% full_mark = 0 %>
           <% assessment_total_mark = 0 %>

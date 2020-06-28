@@ -16,10 +16,10 @@
                 <td class="td-align-right">Class : <input type="checkbox"  />&nbsp;AS Level&nbsp;&nbsp;<input type="checkbox" checked="checked" />&nbsp;A2 Level</td>
               
               <% else %>
-              <td>Name : <b><%= @student.full_name %></b></td>
+              <td class="border-left-none">Name : <b><%= @student.full_name %></b></td>
               <td>Class : <b><%= @batch.course.course_name %></b></td>
               <td>Section : <b><%= @batch.course.section_name %></b></td>
-              <td>Roll : <b><%= @student.class_roll_no %></b></td>
+              <td class="border-right-none">Roll : <b><%= @student.class_roll_no %></b></td>
               <% end %>
           </tr>
       </table>
@@ -53,7 +53,7 @@
                           
                      
 
-                      <td colspan="2" class="col-pdf border-right-non">
+                      <td colspan="2" class="col-pdf border-right-none">
                           AVE OF TWO TERMS
                       </td>
                       
@@ -94,7 +94,7 @@
                       <td class="col-pdf">
                          FINAL AVE
                       </td>
-                      <td class="col-pdf">GRADE</td>
+                      <td class="col-pdf  border-right-none">GRADE</td>
                       
                   </tr>
                   
@@ -122,7 +122,7 @@
                       <td class="col-pdf">
                          FINAL AVE
                       </td>
-                      <td class="col-pdf">GRADE</td>
+                      <td class="col-pdf border-right-none">GRADE</td>
                       
                   </tr>
                   
@@ -173,7 +173,7 @@
                                 <% end %>
                               <% end %>
                               <% end %>    
-                              <td class="col-pdf no-warp">
+                              
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                     
@@ -197,7 +197,7 @@
                                   <% else %>
 
                                   <% end %> 
-                              </td>
+                           
                            
 
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['weightage_mark'].blank? %>

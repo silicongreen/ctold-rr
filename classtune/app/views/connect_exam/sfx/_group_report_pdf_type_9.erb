@@ -294,11 +294,20 @@
                           group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
 
                           @all_subjects = []
+                          @all_subject_grade = []
                           group_exams.each do |group_exam|
                             allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
                             allexams.each do |exam|
-                              if !@all_subjects.include?(exam.subject.id)
+                              if !@all_subjects.include?(exam.subject.id) && exam.subject.grade_subject.to_i == 0
                                 @all_subjects << exam.subject.id
+                              end
+                            end
+                          end 
+                          group_exams.each do |group_exam|
+                            allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
+                            allexams.each do |exam|
+                              if !@all_subject_grade.include?(exam.subject.id) && exam.subject.grade_subject.to_i == 1
+                                @all_subject_grade << exam.subject.id
                               end
                             end
                           end 
@@ -344,24 +353,46 @@
               </table>
 
                 <%
-                  total_att = ""
-                  absent = ""
+                  present = 0
                   if !@exam_comment.blank?
                     all_comments = @exam_comment.comments
                     if !all_comments.blank?
                       all_comments_array = all_comments.split("|")
-                      @report_data['total'] = all_comments_array[0]
-                      if !all_comments_array[1].nil?
-                        @report_data['present'] = all_comments_array[1]
-                      end
+                      present = all_comments_array[0].to_i
                     end
                   end
                 %>
               
+              <h5><b>&nbsp;</b></h5>
+              <table id="pdf-table" width="99.8%" cellspacing="0">
+                  <tr><td class="border-left-none">NO. OF WORKING DAYS</td><td class="border-right-none"><%= @connect_exam_obj.total_working_days %></td></tr>
+                  <tr><td class="border-left-none">PRESENT</td><td class="border-right-none"><%= present %></td></tr>
+                  <tr><td class="border-left-none">ABSENT</td><td class="border-right-none"><%= @connect_exam_obj.total_working_days.to_i - present.to_i %></td></tr>
+              </table>
+              <h2 align="center">FINAL TERM REMARKS</h2>
+              <table id="pdf-table" width="99.8%" cellspacing="0">
+                <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                    <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
+
+                    <%  if @all_subject_grade.include?(report['id'].to_i) %>
+
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        <td class="col-pdf border-left-none  align-left-baf"><%= report['subject_name'].upcase %></td>
+                        <td class="col-pdf border-right-none"><%= report['subject_comment'] %></td>
+                        </tr>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+              </table>
              
               <h5><b>&nbsp;</b></h5>
-               
-
+              
+              <h3>PROMOTED TO: <%= @connect_exam_obj.promoted_to %></h3>
+              <h3>SCHOOL REOPEN ON: <%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %></h3>
+              <h5><b>&nbsp;</b></h5>
+              <h5><b>&nbsp;</b></h5>
+              <h5><b>&nbsp;</b></h5>
+              <h3>KG IN-CHARGE'S SIGNATURE</h3>
           </div>
       </div>
 

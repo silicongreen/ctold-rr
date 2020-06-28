@@ -112,7 +112,8 @@
                       <% total_mark = 0 %>
                       <% full_mark = 0 %>
 
-                     
+                      <tr class="table-header">
+                          
                           <% @report_data['result']['ALL'].each do |rs| %>
                             <% 
                             if rs['exam_category'] == '7'
@@ -240,7 +241,16 @@
                           grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
 
                         %>
-                          
+                          <td><%= sprintf( "%0.02f", quarter_mark) %></td>
+                          <td><%= sprintf( "%0.02f", term_mark) %></td>
+                          <td><%= total_mark.round() %></td>
+
+                          <% if !grade.blank? and !grade.name.blank? %>
+                            <td><b><%= grade.name %></b></td>
+                          <% else %>
+                            <td><b>-</b></td>
+                          <% end %>
+                      </tr>
                     <% end %>
                   <% end %>
               </table>

@@ -175,7 +175,7 @@
                               <% end %>    
                               
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                    <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
+                                    <td><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %></td>
                                     
                                    
                                     <% total_term = total_term.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>

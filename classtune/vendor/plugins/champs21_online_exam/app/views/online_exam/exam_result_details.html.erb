@@ -72,6 +72,7 @@
         <% e.online_exam_options.each do |o| %>
           <div id="option-content">
             <div class="answer">
+                <%= debug @exam_result.inspect  %>
               <%
               class_selected = ""
               unless @exam_result.blank?

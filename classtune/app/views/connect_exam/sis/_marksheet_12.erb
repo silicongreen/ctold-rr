@@ -112,9 +112,7 @@
                       <% total_mark = 0 %>
                       <% full_mark = 0 %>
 
-                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                          <td><%= std['class_roll_no'] %></td>
-                          <td><%= std['name'] %></td>
+                     
                           <% @report_data['result']['ALL'].each do |rs| %>
                             <% 
                             if rs['exam_category'] == '7'
@@ -242,8 +240,7 @@
                           grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
 
                         %>
-                      
-                      </tr>
+                          
                     <% end %>
                   <% end %>
               </table>

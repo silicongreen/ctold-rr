@@ -1,4 +1,9 @@
 <%= render  :partial=>"/connect_exam/sis/marksheet_"+@connect_exam_obj.result_type.to_s %>
+<% number_of_student = 0 %>
+<% unless @report_data['result']['al_students'].blank? %>
+  <% number_of_student = number_of_student+1 %>
+<% end %>
+
 <style>
     td.color-red
     {
@@ -23,5 +28,24 @@
     padding: 8px 3px 8px 5px;
     font-size: 15px;
 }
-    
+<% if number_of_student < 19 %>
+even td{
+
+    padding: 14px 3px 14px 5px;
+    font-size: 17px;
+}
+
+
+.odd td{
+    padding: 14px 3px 14px 5px;
+    font-size: 17px;
+}
+
+
+.table-header td{
+    padding: 14px 3px 14px 5px;
+    font-size: 17px;
+}
+
+<% end %>
  </style>   

@@ -247,9 +247,9 @@
                             <td class="col-pdf"><%= main_mark.round() %></td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
-                              <td class="col-pdf"><%= grade.name %></td>
+                              <td class="col-pdf border-right-non"><%= grade.name %></td>
                             <% else %>
-                              <td class="col-pdf">-</td>
+                              <td class="col-pdf border-right-non">-</td>
                             <% end %>
                             
                             
@@ -331,8 +331,8 @@
                               <td class="col-pdf group_exam" colspan="<%= @top_exam_group_count[0]-1 %>"></td>  
                            <% end %>
                           
-                          <td class="col-pdf">/td>
-                          <td class="col-pdf border-right-none"><%= report['subject_comment'] %><</td>
+                          <td class="col-pdf"></td>
+                          <td class="col-pdf border-right-none"><%= report['subject_comment'] %></td>
                           </tr>
                         <% end %>
                       <% end %>

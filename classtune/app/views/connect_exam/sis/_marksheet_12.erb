@@ -66,9 +66,7 @@
                       <td>Grade</td>
 
                   </tr>
-                  <tr class="table-header">
-                      <td colspan="100"></td>  
-                  </tr>
+                  
 
                   <% extender = 0 %>
                   <% std_count = 0 %>
@@ -102,7 +100,9 @@
                       <% subject_obtain_mark = 0 %>
                       <% total_mark = 0 %>
                       <% full_mark = 0 %>
-                   
+                      <tr class="table-header">
+                          <td colspan="100"></td>  
+                      </tr>
 
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <td><%= std['class_roll_no'] %></td>

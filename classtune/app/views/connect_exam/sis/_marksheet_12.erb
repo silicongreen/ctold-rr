@@ -17,28 +17,23 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <div id="page-yield" class="available_sections1">
-    <div class="section1 row" >
-        <center>
+    <div>
             <h3 align="center">Mark Sheet</h3>
             <div class="hor_line"></div>
             <h4 align="center">For Subject Teacher</h4>
+            <table>
+                <tr>
+                    <% if !@employee.nil? %> 
+                      <td align='left'><h4>Teacher's Name : <%=  @employee.full_name %></h4></td>
+                      <td align='center'><h4>Subject : <%= @subject.name %></h4></td>
+                    <% else %>
+                      <td align='left'><h4>Subject : <%= @subject.name %></h4></td>
+                    <% end %> 
 
-            <div id ="main_info">
-                <table>
-                    <tr>
-                        <% if !@employee.nil? %> 
-                          <td align='left'><h4>Teacher's Name : <%=  @employee.full_name %></h4></td>
-                          <td align='center'><h4>Subject : <%= @subject.name %></h4></td>
-                        <% else %>
-                          <td align='left'><h4>Subject : <%= @subject.name %></h4></td>
-                        <% end %> 
-
-                        <td align='center'><h4>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %></h4></td>
-                        <td align='right'><h4>Section : <%= @batch.course.section_name %></h4></td>
-                    </tr>    
-                </table>    
-
-            </div>
+                    <td align='center'><h4>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %></h4></td>
+                    <td align='right'><h4>Section : <%= @batch.course.section_name %></h4></td>
+                </tr>    
+            </table> 
             <% unless @report_data.blank?  or  @report_data['result'].blank? %>
               <% c = 'even' %>
               <% exam_type = 1 %>
@@ -254,7 +249,7 @@
                   <% end %>
               </table>
             <% end %>
-        </center>
+        
     </div>
 
 

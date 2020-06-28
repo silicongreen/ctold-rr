@@ -44,27 +44,7 @@
               <% full_mark = 0 %>
               <% colspan = 0 %>
             
-            <table id="pdf-table" width="98%" cellspacing="0">
-                  <tr class="table-header">
-                      <td>Roll NO.</td>
-                      <td>Name</td>
-                      <td>Quarter (50)</td>
-                      <% total_full_mark = 0 %>
-                      <% @report_data['result']['ALL'].each do |rs| %>
-                        <%  if rs['quarter'] == '6' %>  
-                          <% exam_type = 2 %>
-                        <% end %>
-                      <% end %> 
-                      <% @report_data['result']['ALL'].each do |rs| %>
-                        <%  if (exam_type == 1 and rs['quarter'] == '5') or (rs['quarter'] == '6' && exam_type == 2) %>  
-                          <td><%=  rs['name'] %> (50)</td>
-                        <% end %>
-                      <% end %> 
-                      <td>Total (100)</td>
-                      <td>Grade</td>
-
-                  </tr>
-            </table>   
+              
              
               <table id="pdf-table" width="98%" cellspacing="0">
                   <tr class="table-header">
@@ -98,20 +78,7 @@
 
 
                       <%  std_count = std_count+1; %>
-                      <% colspan = colspan+4 %>
-                      <% if std_count>18 && extender ==0 %>
-                        <% std_count = 0 %>
-                        <% extender = 1 %>
-                        <tr class="page-break">
-                            <td colspan="<%= colspan %>">&nbsp;</td>
-                        </tr>    
-                      <% elsif std_count>22 && extender ==1 %>
-                        <% std_count = 0 %>
-                        <% extender = 1 %>
-                        <tr class="page-break">
-                            <td colspan="<%= colspan %>">&nbsp;</td>
-                        </tr> 
-                      <% end %>     
+                         
 
 
                       <% q1_mark = 0 %>

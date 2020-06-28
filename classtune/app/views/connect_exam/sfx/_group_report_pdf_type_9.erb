@@ -159,7 +159,7 @@
                                     <% else %>
                                       <td class="col-pdf">-</td>
                                     <% end %>  
-                                    <td class="col-pdf"><% total_mark = total_mark+total_term.round() %></td>
+                                    <% total_mark = total_mark+total_term.round() %>
                                     <%
                                         exam_no = 2
                                         total_term = 0
@@ -258,7 +258,6 @@
                             <% total_subject = total_subject+1 %>
                             <% total_mark_all_subject = total_mark_all_subject+main_mark.round() %>
                           <% else  %>
-                            <td class="col-pdf">-</td>
                             <td class="col-pdf">-</td>
                             <td class="col-pdf border-right-none">-</td>
                           <% end %>      

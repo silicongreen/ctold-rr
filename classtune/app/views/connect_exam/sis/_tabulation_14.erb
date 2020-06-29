@@ -439,7 +439,7 @@ unless @ranked_student.blank?
                               <% if has_exam == true %>
                                 <td>
                                    <% if total_mark > 0 %>
-                                    <%= sprintf( "%0.02f", total_mark) %><%= sprintf( "%0.02f", main_mark) %><%= sprintf( "%0.02f", full_mark_all) %><hr/>
+                                    <%= sprintf( "%0.02f", total_mark) %><hr/>
                                     <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                     <% if !grade.blank? and !grade.name.blank? %>
                                       <%

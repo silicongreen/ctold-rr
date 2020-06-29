@@ -24,7 +24,10 @@
         </table>
       </div>
       
-      <% covid = params[:covid] %>
+      <% year_month = I18n.l(@connect_exam_obj.published_date,:format=>"%Y-%m") %>
+      <% if year_month.to_s == "2020-07" %>
+        <% covid = 1 %>
+      <% end %>
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
               <table id="pdf-table" width="48%" class="left-table even-table extra_padding" cellspacing="0">

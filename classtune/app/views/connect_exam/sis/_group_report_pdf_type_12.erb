@@ -28,7 +28,10 @@
               </tr>
           </table>
       </div>
-      <% covid = params[:covid] %>
+      <% year_month = I18n.l(@connect_exam_obj.published_date,:format=>"%Y-%m") %>
+      <% if year_month.to_s == "2020-07" %>
+        <% covid = 1 %>
+      <% end %>
       <% total_subject = 0 %>
       <% total_comments_grade = 3 %>
       <div class ="current_batch" style="margin-left:0px;">
@@ -474,12 +477,14 @@
               
               <% end %>
               <table id="pdf-table"  width="100%" class="left-table even-table signature2" cellspacing="0" >
+                  <% if covid.blank? %>
                   <tr class="even">
                       <td class="width-20 align-left">Class Teacher</td>
                       <td class="width-30"></td>
                       <td class="width-20 align-left">Principal</td>
                       <td class="width-30"></td>
-                  </tr>    
+                  </tr>
+                  <% end %>
                   <tr class="even">    
                       <td class="width-20 align-left">Section-in-charge</td>
                       <td class="width-30"></td>

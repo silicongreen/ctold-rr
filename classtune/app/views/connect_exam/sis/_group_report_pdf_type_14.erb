@@ -209,7 +209,7 @@
                               q4_mark_20 = q4_mark_20.round()
                             end 
                             if final_term_fullmark > 0 && final_term_mark > 0
-                              full_mark_term = final_term_mark
+                              full_mark_term = final_term_fullmark
                               final_term_mark_60 = final_term_mark.to_f
                             end
                             total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
@@ -219,10 +219,10 @@
                             total_mark_all = total_mark_all+total_mark.round()
                           end
                           total_mark = total_mark.round()
-                          full_mark_term = full_mark_term+50
+                          full_mark_all = full_mark_term+50
                           main_mark = 0
-                          if total_mark > 0 && full_mark_term > 0
-                            main_mark = (total_mark.to_f/full_mark_term.to_f)*100
+                          if total_mark > 0 && full_mark_all > 0
+                            main_mark = (total_mark.to_f/full_mark_all.to_f)*100
                           end
                           grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                           total_marks_obtain = total_marks_obtain+total_mark_all
@@ -233,7 +233,7 @@
                           <td class="col-pdf"><b><%= total_mark %></b></td>
                           <% end %>
                           <% if !grade.blank? and !grade.name.blank? %>
-                            <td class="col-pdf"><b><%= full_mark_term %><%= grade.name %></b></td>
+                            <td class="col-pdf"><b><%= grade.name %></b></td>
                           <% else %>
                             <td class="col-pdf"><b>-</b></td>
                           <% end %> 

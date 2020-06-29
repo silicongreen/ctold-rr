@@ -209,7 +209,7 @@
                               q4_mark_20 = q4_mark_20.round()
                             end 
                             if final_term_fullmark > 0 && final_term_mark > 0
-                              full_mark_term = first_term_fullmark
+                              full_mark_term = final_term_mark
                               final_term_mark_60 = final_term_mark.to_f
                             end
                             total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
@@ -233,7 +233,7 @@
                           <td class="col-pdf"><b><%= total_mark %></b></td>
                           <% end %>
                           <% if !grade.blank? and !grade.name.blank? %>
-                            <td class="col-pdf"><b><%= total_mark %><%= grade.name %></b></td>
+                            <td class="col-pdf"><b><%= grade.name %></b></td>
                           <% else %>
                             <td class="col-pdf"><b>-</b></td>
                           <% end %> 

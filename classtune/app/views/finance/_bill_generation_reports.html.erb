@@ -190,7 +190,7 @@
   <% else %>
   <div class="pagination_div" style="margin-top: 100px;">
       <div class="div1">
-          <%= will_paginate @student_finance_fees, :previous_label=>"<", :next_label=>">", :renderer => 'RemoteLinkRenderer' ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader_paginate').hide();"  }, :params => {:controller=>:finance,:action => "load_bill_generation_reports", :batch_id => @b_id, :date => @d_id} %>
+          <%#= will_paginate @student_finance_fees, :previous_label=>"<", :next_label=>">", :renderer => 'RemoteLinkRenderer' ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader_paginate').hide();"  }, :params => {:controller=>:finance,:action => "load_bill_generation_reports", :batch_id => @b_id, :date => @d_id} %>
       </div>
       <div class="div2"><%= image_tag("loader.gif",
         :align => "absmiddle",

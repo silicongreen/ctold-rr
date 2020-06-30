@@ -16281,8 +16281,14 @@ class FinanceController < ApplicationController
             total_fee = paid_fees
             paid_amount = paid_fees
           else
-            total_fee = fee.balance
-            paid_amount = 0.0
+            if fee.balance == 0
+              paid_fees = fee.finance_transactions.map(&:amount).sum.to_f unless fee.finance_transactions.blank?
+              total_fee = paid_fees
+              paid_amount = paid_fees
+            else
+              total_fee = fee.balance
+              paid_amount = 0.0
+            end
           end
           tmp << total_fee
           tmp << paid_amount

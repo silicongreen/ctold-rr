@@ -3173,6 +3173,120 @@ class ExamController < ApplicationController
       :footer => {:html => { :template=> 'layouts/pdf_footer_sagc.html'}}
   end
   
+  
+  def tabulation_excell_sjis
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    new_book = Spreadsheet::Workbook.new
+    sheet1 = new_book.create_worksheet :name => 'tabulation'
+    @id = params[:id]
+    @connect_exam_obj = ExamConnect.find_by_id(@id)
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id)
+    @report_data = []
+    if student_response['status']['code'].to_i == 200
+      @report_data = student_response['data']
+    end
+    if !@report_data.blank?
+      
+      row_first = ['ID','Students Name']
+      @report_data['report']['subjects'].each do |sub|
+        row_first << sub['code']
+      end
+      @report_data['report']['no_exam_subject_resutl'].each do |sub|
+        row_first << sub['code']
+      end
+      row_first << "Total"
+      i = 2
+      new_book.worksheet(0).insert_row(2, row_first)
+      @report_data['report']['students'].each do |std|
+        i = i+1
+        row = []
+        if !std['first_name'].blank? and !std['last_name'].blank?
+          row << std['first_name']+" "+std['last_name']
+        elsif !std['first_name'].blank?
+          row << std['first_name']
+        end  
+        total_mark = 0
+        @report_data['report']['subjects'].each do |sub|
+          subject_full_mark = 0 
+          subject_obtain_mark = 0 
+          subject_full_mark_ct1 = 0 
+          subject_obtain_mark_ct1 = 0 
+          subject_full_mark_ct2 = 0 
+          subject_obtain_mark_ct2 = 0 
+          term = 1
+          @report_data['report']['exams'].each do |rs|
+            if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+              if rs['exam_category'] == '1' && term == 1
+                subject_full_mark_ct1 = subject_full_mark_ct1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                subject_obtain_mark_ct1 = subject_obtain_mark_ct1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+              elsif rs['exam_category'] == '1' && term == 2
+                subject_full_mark_ct2 = subject_full_mark_ct2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                subject_obtain_mark_ct2 = subject_obtain_mark_ct2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+              elsif term == 1
+                subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                subject_obtain_mark = subject_obtain_mark.round()
+                term = 2
+              else
+                subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                #subject_obtain_mark = subject_obtain_mark.round()
+              end
+            end
+          end
+          
+          if subject_full_mark_ct1 > 0
+            if subject_full_mark_ct1 > 20 
+              subject_full_mark = subject_full_mark+30 
+              subjects_marks_ct_converted = (subject_obtain_mark_ct1/subject_full_mark_ct1)*30 
+              subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted 
+            else 
+              subject_full_mark = subject_full_mark+subject_full_mark_ct1 
+              subjects_marks_ct_converted = subject_obtain_mark_ct1 
+              subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted 
+
+            end 
+          end 
+          if subject_full_mark_ct2 > 0  
+            if subject_full_mark_ct2 > 20 
+              subject_full_mark = subject_full_mark+30 
+              subjects_marks_ct_converted = (subject_obtain_mark_ct2/subject_full_mark_ct2)*30 
+              subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted 
+            else 
+              subject_full_mark = subject_full_mark+subject_full_mark_ct2 
+              subjects_marks_ct_converted = subject_obtain_mark_ct2 
+              subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted 
+            end 
+          end 
+          subject_obtain_mark = subject_obtain_mark.round() 
+
+
+          main_mark = 0 
+          if subject_obtain_mark.to_i > 0 and subject_full_mark.to_i > 0 
+            main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100   
+          end 
+          total_mark = total_mark+subject_obtain_mark.to_f
+          grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+          if !grade.blank? and !grade.name.blank?
+            row << subject_obtain_mark.to_s+"-"+grade.name
+          else
+            row << subject_obtain_mark.to_s
+          end   
+          
+          
+        end
+        row << total_mark
+        new_book.worksheet(0).insert_row(i, row)
+        
+      end
+    end
+    spreadsheet = StringIO.new 
+    new_book.write spreadsheet 
+    send_data spreadsheet.string, :filename => @batch.full_name + "-" + @connect_exam_obj.name + ".xls", :type =>  "application/vnd.ms-excel"
+  end
+  
   def sis_report_excell
     require 'spreadsheet'
     Spreadsheet.client_encoding = 'UTF-8'
@@ -3334,33 +3448,33 @@ class ExamController < ApplicationController
           if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
             rows << rs['students'][std['id']]['score'].to_i
             if rs['quarter'] == '1' 
-               mock1 = mock1.to_f+rs['students'][std['id']]['score'].to_f
+              mock1 = mock1.to_f+rs['students'][std['id']]['score'].to_f
             end
             if rs['quarter'] == '2' 
-               mock2 = mock2.to_f+rs['students'][std['id']]['score'].to_f
+              mock2 = mock2.to_f+rs['students'][std['id']]['score'].to_f
             end
             if rs['quarter'] == '3' 
-               mock3 = mock3.to_f+rs['students'][std['id']]['score'].to_f
+              mock3 = mock3.to_f+rs['students'][std['id']]['score'].to_f
             end
             if rs['quarter'] == '4' 
-               mock4 = mock4.to_f+rs['students'][std['id']]['score'].to_f
+              mock4 = mock4.to_f+rs['students'][std['id']]['score'].to_f
             end
           else
             rows << ""
           end
           
           if !rs['maximum_marks'].blank?
-           if rs['quarter'] == '1' 
-               mock1_full = mock1_full.to_f+rs['maximum_marks'].to_i
+            if rs['quarter'] == '1' 
+              mock1_full = mock1_full.to_f+rs['maximum_marks'].to_i
             end
             if rs['quarter'] == '2' 
-               mock2_full = mock2_full.to_f+rs['maximum_marks'].to_i
+              mock2_full = mock2_full.to_f+rs['maximum_marks'].to_i
             end
             if rs['quarter'] == '3' 
-               mock3_full = mock3_full.to_f+rs['maximum_marks'].to_i
+              mock3_full = mock3_full.to_f+rs['maximum_marks'].to_i
             end 
             if rs['quarter'] == '4' 
-               mock4_full = mock4_full.to_f+rs['maximum_marks'].to_i
+              mock4_full = mock4_full.to_f+rs['maximum_marks'].to_i
             end 
           end
         end

@@ -62,8 +62,8 @@
         <% i = 0 %>
         <% index = 0   %>
         <% c = 'even' %>
-        <% pg1 = 15 %>
-        <% pg2 = 16 %>
+        <% pg1 = 17 %>
+        <% pg2 = 19 %>
         <% if page == 1 and @opt.to_i == 0 %>
           <% pg1 = 14 %>
         <% elsif page == 2 and @opt.to_i == 0 %>
@@ -74,7 +74,7 @@
           <% if page == 1 and i== pg1 %>
               <% i= 0 %>
               <% page += 1 %>
-              <tr style="padding: 10px; height: 30px;"><td colspan="8">&nbsp;</td></tr>
+              <tr style="height: 1px;"><td colspan="8">&nbsp;</td></tr>
               <tr class="table-header">
                 <td class="col-pdf" style="width: 4%;">#</td>
                 <td class="col-pdf" style="width: 10%;"><%= t('student_id') %></td>
@@ -89,7 +89,7 @@
           <% elsif page > 1 and i== pg2 %>
               <% i= 0 %>
               <% page += 1 %>
-              <tr style="padding: 10px; height: 35px;"><td colspan="8">&nbsp;</td></tr>
+              <tr style="height: 1px;"><td colspan="8">&nbsp;</td></tr>
               <tr class="table-header">
                 <td class="col-pdf" style="width: 4%;">#</td>
                 <td class="col-pdf" style="width: 10%;"><%= t('student_id') %></td>

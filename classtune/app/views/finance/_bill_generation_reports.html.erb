@@ -40,8 +40,8 @@
 <%#= debug @particular_categories[0].inspect %>
 <%#= debug @bill_generations.inspect %>
 <%#= debug @particular_categories.uniq.inspect %>
-<% #@particular_categories = @particular_categories.uniq %>
-<%= debug  @particular_categories.inspect %>
+<% @particular_categories = @particular_categories.uniq %>
+<%#= debug  @particular_categories.inspect %>
 <span style="padding: 8px 15px 20px 13px; font-weight: bold; display: block; font-size: 18px; font-family: verdana; text-align: left;">Bill Generation Report</span>
   <div class="table-wrap">
         <table class="table-bordered main-table" id="table-scroll" cellspacing="0" cellpadding="0" border="0">
@@ -188,9 +188,10 @@
       </div>
   </div>
   <% else %>
+  <% unless @student_finance_fees.blank? %>
   <div class="pagination_div" style="margin-top: 100px;">
       <div class="div1">
-          <%#= will_paginate @student_finance_fees, :previous_label=>"<", :next_label=>">", :renderer => 'RemoteLinkRenderer' ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader_paginate').hide();"  }, :params => {:controller=>:finance,:action => "load_bill_generation_reports", :batch_id => @b_id, :date => @d_id} %>
+          <%= will_paginate @student_finance_fees, :previous_label=>"<", :next_label=>">", :renderer => 'RemoteLinkRenderer' ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader_paginate').hide();"  }, :params => {:controller=>:finance,:action => "load_bill_generation_reports", :batch_id => @b_id, :date => @d_id} %>
       </div>
       <div class="div2"><%= image_tag("loader.gif",
         :align => "absmiddle",
@@ -205,6 +206,7 @@
             {:controller => "finance", :action => "bill_generation_report_xls", :batch_id => @b_id, :date => @d_id},:target => '_blank', :class=> 'user_button' %>
       </div>
   </div>
+  <% end %>
   <% end %>
 <%#= debug particulars_with_amount.inspect %>
 <style>

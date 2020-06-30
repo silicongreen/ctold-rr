@@ -238,7 +238,7 @@
                           <div class="listitem">
                               <div class="student_name"> <%= s.full_name %> </div>
                               <div class="check_box"> 
-                                 <%= check_box_tag "assignment[student_ids][]", s.id,@assigned_students.include?(s.id),:class=>"right" %>
+                                 <%= check_box_tag "assignment[student_ids][]", s.id,@assigned_students.include?(s.id.to_s),:class=>"right" %>
                               </div>
                           </div>
                         <% end %>

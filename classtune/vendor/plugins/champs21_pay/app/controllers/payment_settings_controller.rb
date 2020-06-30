@@ -243,7 +243,7 @@ class PaymentSettingsController < ApplicationController
             unless params[:export].nil?
               if params[:export].to_i == 1
                 #if MultiSchool.current_school.id == 352
-                  @online_payments = Payment.find(:all, :conditions=>"gateway_txt = '#{@gateway}' and CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}", :order => "transaction_datetime DESC", :group => "order_id")
+                  @online_payments = Payment.find(:all, :conditions=>"gateway_txt = '#{@gateway}' and CAST(transaction_datetime AS DATE) >= '#{start_date.to_date}' and CAST(transaction_datetime AS DATE) <= '#{end_date.to_date}' #{extra_query}", :order => "transaction_datetime DESC") #, :group => "order_id"
                 #else
                 #  @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}
                 #end

@@ -1,7 +1,9 @@
+
 <% unless @students.nil? %>
+  <div class="scrollable">
   <% unless @students.empty? %>
     <% @assigned_students ||= [] %>
-    <div class="scrollable">
+    
       <div class="select_all">
         <%  if check_free_school? %>
           <a href='javascrip:void(0)' class='themed_text subscribed-messege' >All</a>,
@@ -29,5 +31,6 @@
     <% else %>
       <p class="flash-msg"><%= t('no_students') %></p>
     <% end %>
+   </div>
   <% end  %>
-</div>
+

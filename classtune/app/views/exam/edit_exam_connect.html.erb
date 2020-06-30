@@ -19,261 +19,307 @@
 <script type="text/javascript">
   function check_all_or_none(c)
   {
-    if ((document.getElementById('chck1')).checked == true)
-    {
-      $$('input.right').each(function(checkbox) { checkbox.checked = true; });
-      total=0;
-      for(i=0;i<=c;i++)
+      if ((document.getElementById('chck1')).checked == true)
       {
-        box=$("check"+i);
-        set_weightage(box,i-1);
-      }
+          $$('input.right').each(function (checkbox) {
+        checkbox.checked = true;
+      });
+          total = 0;
+          for (i = 0; i <= c; i++)
+          {
+              box = $("check" + i);
+              set_weightage(box, i - 1);
+          }
 
-    }
-    else
-    {
-      $$('input.right').each(function(checkbox) { checkbox.checked = false; });
-      for(i=0;i<=c;i++)
+      } else
       {
-        box=$("check"+i);
-        set_weightage(box,i-1);
+          $$('input.right').each(function (checkbox) {
+        checkbox.checked = false;
+      });
+          for (i = 0; i <= c; i++)
+          {
+              box = $("check" + i);
+              set_weightage(box, i - 1);
+          }
       }
-    }
-    make_total(c);
+      make_total(c);
   }
 
-  function set_weightage(val,cnt)
+  function set_weightage(val, cnt)
   {
-    c=val.id;
-    d=c.replace("check","weightage");
-    p=c.replace("check","priority");
-    e=c.replace("check","show_in_connect");
-    if(val.checked==true)
-    {
-      $(d).disabled=false;
-      $(p).disabled=false;
-      $(e).disabled=false;
-    }
-    else
-    {
-      document.getElementById('chck1').checked = false;
-      $(d).value="0";
-      $(p).value="0";
-      $(e).value="1";
-      $(d).disabled=true;
-      $(p).disabled=true;
-      $(e).disabled=true;
-    }
-    make_total(cnt);
+      c = val.id;
+      d = c.replace("check", "weightage");
+      p = c.replace("check", "priority");
+      e = c.replace("check", "show_in_connect");
+      if (val.checked == true)
+      {
+          $(d).disabled = false;
+          $(p).disabled = false;
+          $(e).disabled = false;
+      } else
+      {
+          document.getElementById('chck1').checked = false;
+          $(d).value = "0";
+          $(p).value = "0";
+          $(e).value = "1";
+          $(d).disabled = true;
+          $(p).disabled = true;
+          $(e).disabled = true;
+      }
+      make_total(cnt);
 
   }
   function make_total(val)
   {
-    value=parseInt(val);
-    total=0;
-    for(i=0;i<=value;i++)
-    {
-      weightage=$("weightage"+i).value;
-      weight=parseFloat(weightage);
-      total=total+weight;
-    }
-    $("tot").innerHTML=total;
+      value = parseInt(val);
+      total = 0;
+      for (i = 0; i <= value; i++)
+      {
+          weightage = $("weightage" + i).value;
+          weight = parseFloat(weightage);
+          total = total + weight;
+      }
+      $("tot").innerHTML = total;
   }
-  function check_weightage(val,cnt)
+  function check_weightage(val, cnt)
   {
-    if(val.value=="")
-    {
-      val.value="0";
-    }
-    if(isNaN(val.value)){
-      alert("Please enter a valid weightage");
-      val.value="0";
-    }
-    if (parseFloat(val.value)>100)
-    {
-      alert("Weightage cannot be greater than 100%");
-      val.value="0";
-    }
-    make_total(cnt);
+      if (val.value == "")
+      {
+          val.value = "0";
+      }
+      if (isNaN(val.value)) {
+          alert("Please enter a valid weightage");
+          val.value = "0";
+      }
+      if (parseFloat(val.value) > 100)
+      {
+          alert("Weightage cannot be greater than 100%");
+          val.value = "0";
+      }
+      make_total(cnt);
   }
 </script>
 <div id="content-header">
-<%= show_header_icon %>
-  <h1><%= t('exams_text') %></h1>
-<div class='header-sep'>|</div>
-<div class='sub-header'><%= t('grouping') %></div>
+    <%= show_header_icon %>
+    <h1><%= t('exams_text') %></h1>
+    <div class='header-sep'>|</div>
+    <div class='sub-header'><%= t('grouping') %></div>
 
 </div>
 <div id="page-yield">
-  <div class="bread_crumb">
-    <%= link_to t('course_text'), :controller => "courses", :action=>"index" %> <div class = "bread-crumb-separator"> > </div>
-    <%= link_to "#{@batch.course.full_name}", :controller => "courses", :action => "show",:id=>@batch.course_id %> <div class = "bread-crumb-separator"> > </div>
-    <%= link_to "#{@batch.name}", [@batch.course, @batch] %> <div class = "bread-crumb-separator"> > </div>
-    <%= link_to t('exams_text'), :controller => "exam", :action=>"index" %> <div class = "bread-crumb-separator"> > </div>
-    <%= link_to t('exam_groups_text'), batch_exam_groups_path(@batch) %> <div class = "bread-crumb-separator"> > </div>
-    <%= t('edit_grouping') %>
-  </div>
-    
-  <% unless flash[:notice].nil? %>
-    <p class="flash-msg"> <%= flash[:notice] %> </p>
-  <% end %>
-  <div id="application-list"> 
+    <div class="bread_crumb">
+        <%= link_to t('course_text'), :controller => "courses", :action=>"index" %> <div class = "bread-crumb-separator"> > </div>
+        <%= link_to "#{@batch.course.full_name}", :controller => "courses", :action => "show",:id=>@batch.course_id %> <div class = "bread-crumb-separator"> > </div>
+        <%= link_to "#{@batch.name}", [@batch.course, @batch] %> <div class = "bread-crumb-separator"> > </div>
+        <%= link_to t('exams_text'), :controller => "exam", :action=>"index" %> <div class = "bread-crumb-separator"> > </div>
+        <%= link_to t('exam_groups_text'), batch_exam_groups_path(@batch) %> <div class = "bread-crumb-separator"> > </div>
+        <%= t('edit_grouping') %>
+    </div>
+
+    <% unless flash[:notice].nil? %>
+      <p class="flash-msg"> <%= flash[:notice] %> </p>
+    <% end %>
+    <div id="application-list"> 
 <%#*<div class="sel-list">%>
 <%#= t('select') %><%#: <%= link_to_function t('all'), "$$('input.right').each(function(checkbox) { checkbox.checked = true; });" %>
 <%#= link_to_function t('none'), "$$('input.right').each(function(checkbox) { checkbox.checked = false; });" %>
 <%#*</div>%>
-    <% unless @exam_groups.empty? %>
-      <h4><%= t('connect_exams') %></h4>
-      <% form_for :exam_grouping do |f| %>
-        <div class="label-field-pair">
-          <label><%= t('new_grouping_name') %> : </label>
-          <div class="text-input-bg"><%= f.text_field :name ,:value=> @exam_connect.name%>              
-          </div>
-        </div>
-      <% exam_type = get_exam_result_type() %>
-      <% exam_type =exam_type.sort_by{|k,v| v} %>
-   
-       <div class="label-field-pair">
-        <label for="title">Result Type</label>
-        <div class="text-input-bg">
-         
-            <%= select :exam_grouping,:result_type,options_from_collection_for_select(exam_type, :first, :last,@exam_connect.result_type.to_s) %>
-         
-        </div>
-      </div>
-      <div class="label-field-pair">
-          <% exam_quarter = get_exam_result_quarter() %>
-       <label >Quarter</label>
-        <div  class="text-input-bg">
-          <%= select :exam_grouping,:quarter_number,options_from_collection_for_select(exam_quarter, :first, :last,@exam_connect.quarter_number.to_s) %>
-        </div>
-      </div>
-       
-        <div class="label-field-pair"  style="float:left; clear:both;">
-          <label for="duedate">Publish Date</label>
-          <div  class="text-input-bg">
-            <%= calendar_date_select_tag "exam_grouping[published_date]",
-              @exam_connect.published_date.blank?  ? I18n.l(1.week.since,:format=>"%d %b %Y") : I18n.l(@exam_connect.published_date,:format=>"%d %b %Y") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
-          </div>
-        </div>
-        <div class="label-field-pair"  style="float:left; clear:both;">
-          <label for="duedate">Printing Date</label>
-          <div  class="text-input-bg">
-            <%= calendar_date_select_tag "exam_grouping[printing_date]",
-              @exam_connect.printing_date.blank?  ? I18n.l(1.week.since,:format=>"%d %b %Y") : I18n.l(@exam_connect.printing_date,:format=>"%d %b %Y") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
-          </div>
-        </div>
-        <div class="label-field-pair"  style="float:left; clear:both;">
-          <label for="duedate">Next Session/Term Begins</label>
-          <div  class="text-input-bg">
-            <%= calendar_date_select_tag "exam_grouping[next_session_begins]",
-              @exam_connect.next_session_begins.blank?  ? I18n.l(1.week.since,:format=>"%d %b %Y") : I18n.l(@exam_connect.next_session_begins,:format=>"%d %b %Y"), 
-              :class=>"text-input-bg",:readonly=>true,:popup=>:force%>
-          </div>
-        </div>
-        <div class="label-field-pair">
-          <label><%= "Promoted To" %> : </label>
-          <div class="text-input-bg"><%= f.text_field :promoted_to,:value=> @exam_connect.promoted_to %>
-          </div>
-        </div>
-        <div class="label-field-pair">
-          <label><%= "Number Of Working Days" %> : </label>
-          <div class="text-input-bg"><%= f.text_field :total_working_days,:value=> @exam_connect.total_working_days %>
-          </div>
-        </div>
-        <% 
-          styletext = ""
-          
-          if @exam_connect.attandence_start_date.nil?
-            start_date = ""
-          end 
-          if @exam_connect.attandence_end_date.nil?
-            end_date = ""
-          end 
-        %>
-        <div class="label-field-pair"  style="float:left; clear:both;">
-          <label for="duedate"><%= "#{t('attandence_start_date')}"%></label>
-          <div  class="text-input-bg">           
-            <%= calendar_date_select_tag "exam_grouping[attandence_start_date]",
-              I18n.l(@exam_connect.attandence_start_date,:format=>"%d %b %Y"), :class=>"text-input-bg",:readonly=>true,:popup=>:force%>
-          </div>
-        </div>
-        <div class="label-field-pair"  style="float:left; clear:both;">
-          <label for="duedate"><%= "#{t('attandence_end_date')}"%></label>
-          <div  class="text-input-bg">
-            <%= calendar_date_select_tag "exam_grouping[attandence_end_date]",
-              I18n.l(@exam_connect.attandence_end_date,:format=>"%d %b %Y"),:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
-          </div>
-        </div>
-        <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
-          <% count=@exam_groups.count.to_i - 1 %>
-          <tr class="tr-head">
-            <td class="col-1"><%= check_box_tag 'chck1','yes', false,{:onClick=> "check_all_or_none(#{count})"} %></td>
-            <td class="col-2">
-              <%= t('exam_group') %>
-            </td>
-            <td class="col-3">
-              <%= "Priority" %>
-            </td>
-            <td class="col-3">
-              <%= "Show In Marks Entry" %>
-            </td>
-            <td class="col-3" style="display:none">
-              <%= t('weightage') %>(%)
-            </td>
-          </tr>
-          <tr class="tr-blank"></tr>
-          <% i=0 %>
-          <% total = 0 %>
-          <% @exam_groups.each do |e| %>
-            <tr class="tr-<%= cycle('odd', 'even') %>">
-              <% already_grouped = GroupedExam.find_by_connect_exam_id_and_exam_group_id(@exam_connect.id,e) %>
-              
-              <% is_already_grouped = already_grouped.present? %>                
-              <td class="col-1"><%= check_box_tag "exam_grouping[exam_group_ids][]", e.id,is_already_grouped,{:class=>'right',:id=>"check#{i}",:onClick=>"set_weightage(this,#{count})"} %></td>
-              <td class="col-2"><%= e.name %>
-                  <% exam_quarter = get_exam_result_quarter() %>
-                  <% unless exam_quarter[e.quarter.to_s].blank? %>
-                  [<%= exam_quarter[e.quarter.to_s] %>]
+        <% unless @exam_groups.empty? %>
+          <h4><%= t('connect_exams') %></h4>
+          <% form_for :exam_grouping do |f| %>
+            <div class="label-field-pair">
+                <label><%= t('new_grouping_name') %> : </label>
+                <div class="text-input-bg"><%= f.text_field :name ,:value=> @exam_connect.name%>              
+                </div>
+            </div>
+            <% exam_type = get_exam_result_type() %>
+            <% exam_type =exam_type.sort_by{|k,v| v} %>
+
+            <div class="label-field-pair">
+                <label for="title">Result Type</label>
+                <div class="text-input-bg">
+
+                    <%= select :exam_grouping,:result_type,options_from_collection_for_select(exam_type, :first, :last,@exam_connect.result_type.to_s) %>
+
+                </div>
+            </div>
+            <div class="label-field-pair">
+                <% exam_quarter = get_exam_result_quarter() %>
+                <label >Quarter</label>
+                <div  class="text-input-bg">
+                    <%= select :exam_grouping,:quarter_number,options_from_collection_for_select(exam_quarter, :first, :last,@exam_connect.quarter_number.to_s) %>
+                </div>
+            </div>
+
+            <div class="label-field-pair"  style="float:left; clear:both;">
+                <label for="duedate">Publish Date</label>
+                <div  class="text-input-bg">
+                    <%= calendar_date_select_tag "exam_grouping[published_date]",
+                      @exam_connect.published_date.blank?  ? I18n.l(1.week.since,:format=>"%d %b %Y") : I18n.l(@exam_connect.published_date,:format=>"%d %b %Y") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+                </div>
+            </div>
+            <div class="label-field-pair"  style="float:left; clear:both;">
+                <label for="duedate">Printing Date</label>
+                <div  class="text-input-bg">
+                    <%= calendar_date_select_tag "exam_grouping[printing_date]",
+                      @exam_connect.printing_date.blank?  ? I18n.l(1.week.since,:format=>"%d %b %Y") : I18n.l(@exam_connect.printing_date,:format=>"%d %b %Y") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+                </div>
+            </div>
+            <div class="label-field-pair"  style="float:left; clear:both;">
+                <label for="duedate">Next Session/Term Begins</label>
+                <div  class="text-input-bg">
+                    <%= calendar_date_select_tag "exam_grouping[next_session_begins]",
+                      @exam_connect.next_session_begins.blank?  ? I18n.l(1.week.since,:format=>"%d %b %Y") : I18n.l(@exam_connect.next_session_begins,:format=>"%d %b %Y"), 
+                      :class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+                </div>
+            </div>
+            <div class="label-field-pair">
+                <label><%= "Promoted To" %> : </label>
+                <div class="text-input-bg"><%= f.text_field :promoted_to,:value=> @exam_connect.promoted_to %>
+                </div>
+            </div>
+            <div class="label-field-pair">
+                <label><%= "Number Of Working Days" %> : </label>
+                <div class="text-input-bg"><%= f.text_field :total_working_days,:value=> @exam_connect.total_working_days %>
+                </div>
+            </div>
+            <% 
+            styletext = ""
+
+            if @exam_connect.attandence_start_date.nil?
+              start_date = ""
+              end 
+            if @exam_connect.attandence_end_date.nil?
+              end_date = ""
+              end 
+          %>
+            <div class="label-field-pair"  style="float:left; clear:both;">
+                <label for="duedate"><%= "#{t('attandence_start_date')}"%></label>
+                <div  class="text-input-bg">           
+                    <%= calendar_date_select_tag "exam_grouping[attandence_start_date]",
+                      I18n.l(@exam_connect.attandence_start_date,:format=>"%d %b %Y"), :class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+                </div>
+            </div>
+            <div class="label-field-pair"  style="float:left; clear:both;">
+                <label for="duedate"><%= "#{t('attandence_end_date')}"%></label>
+                <div  class="text-input-bg">
+                    <%= calendar_date_select_tag "exam_grouping[attandence_end_date]",
+                      I18n.l(@exam_connect.attandence_end_date,:format=>"%d %b %Y"),:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+                </div>
+            </div>
+            <div class="label-field-pair">
+                <label for="title">Is Common?</label>
+                <div class="text-input-bg">
+                    <%= f.select :is_common,[['Yes',1],['No',0]] %>
+                </div>
+            </div>
+            <% @students = Student.find_all_by_batch_id(@batch.id) %>
+            <% unless @exam_connect.students.blank?  %>
+              <% @assigned_students = @exam_connect.students.split(",") %>
+            <% end %>
+            <% unless @students.nil? %>
+              <div class="scrollable" <% if @exam_connect.is_common.to_i != 1 %> style="display:none;" <% end %>>
+                  <% unless @students.empty? %>
+                    <% @assigned_students ||= [] %>
+
+                    <div class="select_all">
+                        <%  if check_free_school? %>
+                          <a href='javascrip:void(0)' class='themed_text subscribed-messege' >All</a>,
+                          <a href='javascrip:void(0)' class='themed_text subscribed-messege' >None</a>,
+                        <% else %>  
+                          <%= "#{t('select')}:"%> <%= link_to_function "#{t('all')}", "$$('input.right').each(function(checkbox) { checkbox.checked = true; });" ,:class=>"themed_text"%>,
+                          <%= link_to_function "#{t('none')}", "$$('input.right').each(function(checkbox) { checkbox.checked = false; });" ,:class=>"themed_text" %>
+                        <% end %>  
+                    </div>
+                    <div id="scrollable-list">
+
+                        <% @students.each do |s| %>
+                          <div class="listitem">
+                              <div class="student_name"> <%= s.full_name %> </div>
+                              <div class="check_box">
+                                  <%  if check_free_school? %>
+                                    <%= check_box_tag "assignment[student_ids][]", s.id,@assigned_students.include?(s),:class=>"right",:checked=>"true",:onclick=>"j( '#dialog-message-subscribed' ).dialog( 'open' ); return false;" %>
+                                  <% else %> 
+                                    <%= check_box_tag "assignment[student_ids][]", s.id,@assigned_students.include?(s),:class=>"right" %>
+                                  <% end %>
+                              </div>
+                          </div>
+                        <% end %>
+                    </div>
+                  <% else %>
+                    <p class="flash-msg"><%= t('no_students') %></p>
                   <% end %>
-              </td>
-             
-              <% if is_already_grouped==true %>
-                
-                <td class="col-3"><input type="number" id="priority<%= i  %>" name="priority[]" value="<%=already_grouped.priority%>"></td>
-              <% else %>
-                <td class="col-3"><input type="number" id="priority<%= i  %>" name="priority[]" disabled="true" value="0"></td>               
-              <% end %>
-              
-              <% if is_already_grouped==true %>
-                
-                <td class="col-3"><input type="number" id="show_in_connect<%= i  %>" name="show_in_connect[]" value="<%=already_grouped.show_in_connect%>"></td>
-              <% else %>
-                <td class="col-3"><input type="number" id="show_in_connect<%= i  %>" name="show_in_connect[]" disabled="true" value="1"></td>               
-              <% end %>
-                
-              <% if is_already_grouped==true %>
-                <td class="col-3" style="display:none"><%=text_field_tag 'weightage[]',already_grouped.weightage,:class=>'total-box',:id=>"weightage#{i}"%></td>
-                <% total += already_grouped.weightage  if already_grouped.weightage.present? %>
-              <% else %>
-                <td class="col-3" style="display:none"><%=text_field_tag 'weightage[]',"0",:class=>'total-box',:disabled=>true,:id=>"weightage#{i}"%></td>
-              <% end %>
-            </tr>
-            <% i=i+1 %>
-          <% end %>
-          <tr class="tr-blank"></tr>
-          <tr class="tr-head" style="display:none">
-            <td class="col-4" colspan="2">
-              <%= t('total_weghtage') %>
-            </td>
-            <td class="col-2" colspan="2">
-              
-            </td>
-            <td class="col-3">
-              <%=label_tag 'total',total,:id=>"tot"%>
-            </td>
-          </tr>
-        </table>
+              </div>
+            <% end  %>
+            <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
+                <% count=@exam_groups.count.to_i - 1 %>
+                <tr class="tr-head">
+                    <td class="col-1"><%= check_box_tag 'chck1','yes', false,{:onClick=> "check_all_or_none(#{count})"} %></td>
+                    <td class="col-2">
+                        <%= t('exam_group') %>
+                    </td>
+                    <td class="col-3">
+                        <%= "Priority" %>
+                    </td>
+                    <td class="col-3">
+                        <%= "Show In Marks Entry" %>
+                    </td>
+                    <td class="col-3" style="display:none">
+                        <%= t('weightage') %>(%)
+                    </td>
+                </tr>
+                <tr class="tr-blank"></tr>
+                <% i=0 %>
+                <% total = 0 %>
+                <% @exam_groups.each do |e| %>
+                  <tr class="tr-<%= cycle('odd', 'even') %>">
+                      <% already_grouped = GroupedExam.find_by_connect_exam_id_and_exam_group_id(@exam_connect.id,e) %>
+
+                      <% is_already_grouped = already_grouped.present? %>                
+                      <td class="col-1"><%= check_box_tag "exam_grouping[exam_group_ids][]", e.id,is_already_grouped,{:class=>'right',:id=>"check#{i}",:onClick=>"set_weightage(this,#{count})"} %></td>
+                      <td class="col-2"><%= e.name %>
+                          <% exam_quarter = get_exam_result_quarter() %>
+                          <% unless exam_quarter[e.quarter.to_s].blank? %>
+                            [<%= exam_quarter[e.quarter.to_s] %>]
+                          <% end %>
+                      </td>
+
+                      <% if is_already_grouped==true %>
+
+                        <td class="col-3"><input type="number" id="priority<%= i  %>" name="priority[]" value="<%=already_grouped.priority%>"></td>
+                      <% else %>
+                        <td class="col-3"><input type="number" id="priority<%= i  %>" name="priority[]" disabled="true" value="0"></td>               
+                      <% end %>
+
+                      <% if is_already_grouped==true %>
+
+                        <td class="col-3"><input type="number" id="show_in_connect<%= i  %>" name="show_in_connect[]" value="<%=already_grouped.show_in_connect%>"></td>
+                      <% else %>
+                        <td class="col-3"><input type="number" id="show_in_connect<%= i  %>" name="show_in_connect[]" disabled="true" value="1"></td>               
+                      <% end %>
+
+                      <% if is_already_grouped==true %>
+                        <td class="col-3" style="display:none"><%=text_field_tag 'weightage[]',already_grouped.weightage,:class=>'total-box',:id=>"weightage#{i}"%></td>
+                        <% total += already_grouped.weightage  if already_grouped.weightage.present? %>
+                      <% else %>
+                        <td class="col-3" style="display:none"><%=text_field_tag 'weightage[]',"0",:class=>'total-box',:disabled=>true,:id=>"weightage#{i}"%></td>
+                      <% end %>
+                  </tr>
+                  <% i=i+1 %>
+                <% end %>
+                <tr class="tr-blank"></tr>
+                <tr class="tr-head" style="display:none">
+                    <td class="col-4" colspan="2">
+                        <%= t('total_weghtage') %>
+                    </td>
+                    <td class="col-2" colspan="2">
+
+                    </td>
+                    <td class="col-3">
+                        <%=label_tag 'total',total,:id=>"tot"%>
+                    </td>
+                </tr>
+            </table>
     <%#*<div class="name_list<%=cycle('odd', 'even')%>
     <%# already_grouped = GroupedExam.find_by_batch_id_and_exam_group_id(@batch.id,e) %>
     <%# already_grouped = already_grouped.present? %>
@@ -281,14 +327,72 @@
     <%#*</div>%>
     <%# end %>
 
-        <%= submit_tag "", :value => "#{t('save')}", :class => "submit_button" %>
-      <% end %>
-    <% else %>
-      <p class="flash-msg">No valid exams available to connect.</p>
-    <% end %>
+            <%= submit_tag "", :value => "#{t('save')}", :class => "submit_button" %>
+          <% end %>
+        <% else %>
+          <p class="flash-msg">No valid exams available to connect.</p>
+        <% end %>
 
 
-    <div class="extender"></div>
-  </div>
+        <div class="extender"></div>
+    </div>
 </div>
+
+<script>
+  var $jq = jQuery.noConflict(true);
+  $jq(document).on("change", "#exam_grouping_is_common", function () {
+      var val = $jq(this).val();
+      if (val == 1)
+      {
+          $jq(".scrollable").show();
+      } else
+      {
+          $jq(".scrollable").hide();
+      }
+
+  });
+
+</script>  
+
+<style>
+    .scrollable{
+        width: 250px;
+        background-color: #EEE;
+        padding :7px;
+        -webkit-border-radius : 10px;
+        -moz-border-radius : 10px;
+    }
+    #scrollable-list {
+        width: 250px;
+        overflow: auto;
+        height: 160px;
+    }
+    .select_all{
+        font-weight: bold;
+        font-size: 14px;
+        margin-bottom:10px;
+    }
+    .select_all a {
+        color: #9F0C14;
+        text-decoration: none;
+    }
+    .select_all a:hover {
+        color: #9F0C14;
+        text-decoration: none;
+    }
+    .listitem{
+        margin-bottom: 2px;
+        border-bottom: 1px solid #DDDDDD;
+        overflow: hidden;
+        font-size:14px;
+    }
+    .listitem .check_box {
+        float:left;
+        width: 5px;
+    }
+    .listitem .student_name {
+        float:left;
+        width: 200px;
+    }
+</style>
 

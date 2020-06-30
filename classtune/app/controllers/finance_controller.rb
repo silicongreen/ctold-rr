@@ -8261,205 +8261,73 @@ class FinanceController < ApplicationController
     unless params[:date].nil? or params[:date].empty? or params[:date].blank?
       @batch   = Batch.find(params[:batch_id])
       @date    =  @fee_collection = FinanceFeeCollection.find(params[:date])
-      student_ids=@date.finance_fees.find(:all,:conditions=>"batch_id='#{@batch.id}'").collect(&:student_id)
-
-      tmp_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}", :group => "name")
-      particulars_name = tmp_particulars.map(&:name)
-      @particulars = []
-      i = 1
-      tmp_particulars.each_with_index do |particular, j|
-        tmp = {}
-        tmp['id'] = j+1
-        tmp['name'] = particular.name
-        tmp['amount'] = 0.00
-        tmp['plusminus'] = true
-        tmp['opt'] = 1
-        @particulars << tmp
-        i += 1
-      end
+      particulars = []
+      particular_categories = []
+      @student_finance_fees = FinanceFee.paginate(:all,:conditions=>"finance_fees.batch_id = #{@batch.id} and finance_fees.fee_collection_id = #{@date.id}", :joins => "INNER JOIN students ON students.id = finance_fees.student_id",:page => params[:page], :per_page => 25)
+      #student_finance_fees = FinanceFee.find(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id")
       
-      tmp = {}
-      tmp['id'] = i
-      tmp['name'] = "Total Payable"
-      tmp['amount'] = 0.00
-      tmp['plusminus'] = false
-      tmp['opt'] = 0
-      @particulars << tmp
-      i += 1
-      
-      tmp = {}
-      tmp['id'] = i
-      tmp['name'] = "Discount"
-      tmp['amount'] = 0.00
-      tmp['plusminus'] = true
-      tmp['opt'] = 2
-      @particulars << tmp
-      i += 1
-      
-      tmp = {}
-      tmp['id'] = i
-      tmp['name'] = "Fine"
-      tmp['amount'] = 0.00
-      tmp['plusminus'] = true
-      tmp['opt'] = 1
-      @particulars << tmp
-      i += 1
-      
-      @bill_generations = []
-
-      student_ids.each do |sid|
-        tmp = {}
-        
-        @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{@date.id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = '#{sid}'")
-        
-        unless @fee.nil?
-          advance_fee_collection = false
-          @self_advance_fee = false
-          @fee_has_advance_particular = false
-        
-          @student = @fee.student
-          
-          tmp['id'] = sid
-          tmp['name'] = @student.full_name
-          @financefee = @student.finance_fee_by_date @date
-          
-          if @financefee.has_advance_fee_id
-            if @date.is_advance_fee_collection
-              @self_advance_fee = true
-              advance_fee_collection = true
-            end
-            @fee_has_advance_particular = true
-            @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
-            @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
-            if @advance_ids.blank?
-              @advance_ids[0] = 0
-            end
-            @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
-          end
-        
-          #if @financefee.advance_fee_id.to_i > 0
-          
-          @due_date = @fee_collection.due_date
-          @paid_fees = @fee.finance_transactions
-          
-          exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+      unless @student_finance_fees.blank?
+        @student_finance_fees.each do |fee|
+          exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(fee.student.id, fee.finance_fee_collection.id).map(&:fee_particular_id)
           unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
             exclude_particular_ids = exclude_particular_ids
           else
             exclude_particular_ids = [0]
           end
+
+          @student_particulars[fee.student.id] = []
+          @students[fee.student.id] = []
+          @student_summaries[fee.student.id] = []
+          fee_particulars = fee.finance_fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{fee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==fee.student or par.receiver==fee.student.student_category or par.receiver==fee.batch) }
           
-          if advance_fee_collection
-            
-            if @fee_collection_advances.particular_id == 0
-              fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
-            else
-              fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@batch.id} and finance_fee_particular_category_id = #{@fee_collection_advances.particular_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
-            end
-          else
-            fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
-          end
-          fee_particulars.each do |fee_particular|
-            if particulars_name.include?(fee_particular.name)
-              tmp[fee_particular.name] = fee_particular.amount
-            end
-          end
-          
-          if advance_fee_collection
-            total_payable = (fee_particulars.map{|s| s.amount}.sum * @fee_collection_advances.no_of_month.to_i).to_f
-          else  
-            total_payable = fee_particulars.map{|s| s.amount}.sum.to_f
-          end
-          tmp['Total Payable'] = total_payable
+          @student_particulars[fee.student.id] << fee_particulars
+          @students[fee.student.id] << fee.student
+          particulars << fee_particulars.map(&:name)
+          particular_categories << fee_particulars.map{|fp| fp.finance_fee_particular_category.name}
+          #if fee.student.id == 32262
+          #  abort(particular_categories.inspect)
+          #end
+
           @total_discount = 0
-        
-          if advance_fee_collection
-            calculate_discount(@date, @fee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
-          else
-            if @fee_has_advance_particular
-              calculate_discount(@date, @fee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
-            else
-              calculate_discount(@date, @fee.batch, @student, false, nil, @fee_has_advance_particular)
-            end
-          end
-          
-          tmp['Discount'] = @total_discount
-          
-          bal=(total_payable-@total_discount).to_f
-          @submission_date = Date.today
-          if @financefee.is_paid
-            @paid_fees = @financefee.finance_transactions
-            days=(@paid_fees.first.transaction_date-@date.due_date.to_date).to_i
-          else
-            days=(Date.today-@date.due_date.to_date).to_i
-          end
+          @total_payable=fee_particulars.map{|s| s.amount}.sum.to_f
+          calculate_discount(fee.finance_fee_collection, fee.batch, fee.student, false, nil, false)
 
-          fine_enabled = true
-          student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
-          unless student_fee_configuration.blank?
-            if student_fee_configuration.config_value.to_i == 1
-              fine_enabled = true
-            else
-              fine_enabled = false
-            end
-          end
-          
-          if @tmp_paid_fees.blank?
-            @tmp_paid_fees = @financefee.finance_transactions
-          end
-          
-          unless @tmp_paid_fees.blank?
-            @tmp_paid_fees.each do |paid_fee|
-              transaction_id = paid_fee.id
-              online_payments = Payment.find_by_finance_transaction_id_and_payee_id(transaction_id, @student.id)
-              unless online_payments.blank?
-                fine_enabled = false
+          paid_amount = 0
+          paid_fine = 0
+          paid_fees = fee.finance_transactions
+          unless paid_fees.blank?
+            paid_fines = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + paid_fees.map(&:id).join(",") + ")")
+            tmp_paid_fines = []
+            unless paid_fines.nil?
+              paid_fines.each do |pf|
+                paid_fine = pf.amount
               end
             end
-          end
-          
-          auto_fine=@date.fine
-
-          @has_fine_discount = false
-          if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
-            @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
-            @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
-
-            calculate_extra_fine(@date, @batch, @student, @fine_rule)
-
-            @new_fine_amount = @fine_amount
-            get_fine_discount(@date, @batch, @student)
-            if @fine_amount < 0
-              @fine_amount = 0
-            end
-          end
-          
-          tmp['is_paid'] = false
-          
-          strip_fine = false
-          @paid_fees = @fee.finance_transactions
-          tmp['paid_fees'] = @paid_fees
-          
-          unless @paid_fees.blank?
-            strip_fine = true
-            tmp['is_paid'] = true
-            @paid_fees.each do |pf|
-              if pf.transaction_date > @date.due_date.to_date
-                strip_fine = false
+            paid_discounts = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND finance_transaction_id IN (" + paid_fees.map(&:id).join(",") + ")")
+            discount = 0
+            unless paid_discounts.nil?
+              paid_discounts.each do |pf|
+                discount = pf.amount
               end
             end
+            @total_discount = discount
+            paid_amount += paid_fees.map(&:amount).sum.to_f
           end
-          
-          if strip_fine
-            @fine_amount = 0
-          end
-          
-          tmp['Fine'] = @fine_amount
-          
-          
-          @bill_generations << tmp
+          @student_summaries[fee.student.id] << {"discount" => @total_discount, 'fine' => paid_fine, "paid_amount" => paid_amount}
         end
-      end
+        
+#        #abort(particular_categories.inspect)
+#        ar_particular_categories = particular_categories
+#        pt = []
+#        ar_particular_categories.each_with_index do |particular_categories, i|
+#          particular_categories.each do |particular_category|
+#            pt << particular_category
+#          end
+#        end
+#        @particular_categories = pt
+        
+        fee_cateroies = FinanceFeeParticularCategory.active
+        @particular_categories = fee_cateroies.map{|p| p.name}
     end
   end
   

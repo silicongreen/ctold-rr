@@ -3194,7 +3194,7 @@ class ExamController < ApplicationController
     end
     if !@report_data.blank?
       
-      row_first = ['ID','Students Name']
+      row_first = ['Roll','Students Name']
       j = 1
       @report_data['report']['subjects'].each do |sub|
         j =  j+1
@@ -3212,6 +3212,7 @@ class ExamController < ApplicationController
       @report_data['report']['students'].each do |std|
         i = i+1
         row = []
+        row << std['class_roll_no']
         if !std['first_name'].blank? and !std['last_name'].blank?
           row << std['first_name']+" "+std['last_name']
         elsif !std['first_name'].blank?

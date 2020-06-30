@@ -100,7 +100,7 @@ class ReportController extends Controller
                 }   
                  
                 $examConnect = new ExamConnect();
-                $exam_report = $examConnect->getConnectExam($batch_id);
+                $exam_report = $examConnect->getConnectExam($batch_id,$student_id);
                 if ($exam_report) {
                     
                     $response['data']['exams'] = $exam_report;

@@ -59,14 +59,14 @@ class ExamConnect extends CActiveRecord
         return parent::model($className);
     }
     
-    public function getConnectExam($batch_id)
+    public function getConnectExam($batch_id,$student_id = 0)
     {
         
              
         $criteria = new CDbCriteria;
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.is_deleted', 0);
-        $criteria->compare('t.is_published', 1);
+        $criteria->addCondition("t.is_published = 1 and (t.is_common = ? or or FIND_IN_SET($student_id,students))");
         $criteria->select = 't.*';
         $criteria->order = "published_date DESC";
         $connect_exam = $this->findAll($criteria);

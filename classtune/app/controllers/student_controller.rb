@@ -4181,7 +4181,7 @@ class StudentController < ApplicationController
       @student = Student.find_by_id(target) 
     end
     @batch = @student.batch
-    @all_connect_exam = ExamConnect.active.find_all_by_batch_id(@batch.id,:conditions=>"is_published = 1")
+    @all_connect_exam = ExamConnect.active.find_all_by_batch_id(@batch.id,:conditions=>["is_published = ? and (is_common = ? or FIND_IN_SET(?,students))",true,true,@student.id])
     
     render :partial=>"combined_exam"
   end

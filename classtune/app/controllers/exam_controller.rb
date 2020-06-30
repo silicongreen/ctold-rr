@@ -3190,10 +3190,15 @@ class ExamController < ApplicationController
     if !@report_data.blank?
       
       row_first = ['ID','Students Name']
+      j = 1
       @report_data['report']['subjects'].each do |sub|
+        j =  j+1
         row_first << sub['code']
+        row_first << ""
+        new_book.worksheet(0).merge_cells(2,j,2,j+1)
       end
       @report_data['report']['no_exam_subject_resutl'].each do |sub|
+        j =  j+1
         row_first << sub['code']
       end
       row_first << "Total"
@@ -3269,13 +3274,21 @@ class ExamController < ApplicationController
           end 
           total_mark = total_mark+subject_obtain_mark.to_f
           grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+          row << subject_obtain_mark.to_s
           if !grade.blank? and !grade.name.blank?
-            row << subject_obtain_mark.to_s+"-"+grade.name
+            row << grade.name
           else
-            row << subject_obtain_mark.to_s
+            row << ""
           end   
           
           
+        end
+        @report_data['report']['no_exam_subject_resutl'].each do |sub|
+          if !sub['subject_comment'][std['id']].nil? && !sub['subject_comment'][std['id']].blank?
+            row << sub['subject_comment'][std['id']]
+          else
+            row << ""
+          end  
         end
         row << total_mark
         new_book.worksheet(0).insert_row(i, row)

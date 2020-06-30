@@ -40,7 +40,8 @@
 <%#= debug @particular_categories[0].inspect %>
 <%#= debug @bill_generations.inspect %>
 <%#= debug @particular_categories.uniq.inspect %>
-<% @particular_categories = @particular_categories.uniq %>
+<% #@particular_categories = @particular_categories.uniq %>
+<%= debug  @particular_categories.inspect %>
 <span style="padding: 8px 15px 20px 13px; font-weight: bold; display: block; font-size: 18px; font-family: verdana; text-align: left;">Bill Generation Report</span>
   <div class="table-wrap">
         <table class="table-bordered main-table" id="table-scroll" cellspacing="0" cellpadding="0" border="0">

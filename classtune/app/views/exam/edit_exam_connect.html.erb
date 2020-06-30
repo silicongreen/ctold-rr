@@ -213,12 +213,13 @@
                     <%= f.select :is_common,[['Yes',1],['No',0]] %>
                 </div>
             </div>
+            <br/>
             <% @students = Student.find_all_by_batch_id(@batch.id) %>
             <% unless @exam_connect.students.blank?  %>
               <% @assigned_students = @exam_connect.students.split(",") %>
             <% end %>
             <% unless @students.nil? %>
-              <div class="scrollable" <% if @exam_connect.is_common.to_i != 1 %> style="display:none;" <% end %>>
+              <div class="scrollable" <% if @exam_connect.is_common.to_i == 1 %> style="display:none;" <% end %>>
                   <% unless @students.empty? %>
                     <% @assigned_students ||= [] %>
 
@@ -251,6 +252,7 @@
                   <% end %>
               </div>
             <% end  %>
+            <br/>
             <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
                 <% count=@exam_groups.count.to_i - 1 %>
                 <tr class="tr-head">

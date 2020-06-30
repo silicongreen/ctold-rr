@@ -377,7 +377,7 @@
                     <%  if @all_subject_grade.include?(report['id'].to_i) %>
 
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                        <td class="col-pdf border-left-none  align-left-baf"><%= report['subject_name'].upcase %></td>
+                        <td class="col-pdf border-left-none  align-left-baf" width="30%"><%= report['subject_name'].upcase %></td>
                         <td class="col-pdf border-right-none align-left-baf"><%= report['subject_comment'] %></td>
                         </tr>
                       <% end %>

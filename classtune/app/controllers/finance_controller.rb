@@ -8259,6 +8259,76 @@ class FinanceController < ApplicationController
   
   def bill_generation_report_batch
     unless params[:date].nil? or params[:date].empty? or params[:date].blank?
+      @batch   = Batch.find(params[:batch_id])
+      @date    =  @fee_collection = FinanceFeeCollection.find(params[:date])
+      particulars = []
+      particular_categories = []
+      @student_finance_fees = FinanceFee.paginate(:all,:conditions=>"finance_fees.batch_id = #{@batch.id} and finance_fees.fee_collection_id = #{@date.id}", :joins => "INNER JOIN students ON students.id = finance_fees.student_id",:page => params[:page], :per_page => 25)
+      #student_finance_fees = FinanceFee.find(:all,:conditions=>"finance_fees.batch_id IN (#{batches.join(',')}) and finance_fees.fee_collection_id IN (#{@dates_data_id.join(',')})", :joins => "INNER JOIN students ON students.id = finance_fees.student_id")
+      
+      unless @student_finance_fees.blank?
+        @student_finance_fees.each do |fee|
+          exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(fee.student.id, fee.finance_fee_collection.id).map(&:fee_particular_id)
+          unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+            exclude_particular_ids = exclude_particular_ids
+          else
+            exclude_particular_ids = [0]
+          end
+
+          @student_particulars[fee.student.id] = []
+          @students[fee.student.id] = []
+          @student_summaries[fee.student.id] = []
+          fee_particulars = fee.finance_fee_collection.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{fee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==fee.student or par.receiver==fee.student.student_category or par.receiver==fee.batch) }
+          
+          @student_particulars[fee.student.id] << fee_particulars
+          @students[fee.student.id] << fee.student
+          particulars << fee_particulars.map(&:name)
+          particular_categories << fee_particulars.map{|fp| fp.finance_fee_particular_category.name}
+          #if fee.student.id == 32262
+          #  abort(particular_categories.inspect)
+          #end
+
+          @total_discount = 0
+          @total_payable=fee_particulars.map{|s| s.amount}.sum.to_f
+          calculate_discount(fee.finance_fee_collection, fee.batch, fee.student, false, nil, false)
+
+          paid_amount = 0
+          paid_fine = 0
+          paid_fees = fee.finance_transactions
+          unless paid_fees.blank?
+            paid_fines = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + paid_fees.map(&:id).join(",") + ")")
+            tmp_paid_fines = []
+            unless paid_fines.nil?
+              paid_fines.each do |pf|
+                paid_fine = pf.amount
+              end
+            end
+            paid_discounts = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND finance_transaction_id IN (" + paid_fees.map(&:id).join(",") + ")")
+            discount = 0
+            unless paid_discounts.nil?
+              paid_discounts.each do |pf|
+                discount = pf.amount
+              end
+            end
+            @total_discount = discount
+            paid_amount += paid_fees.map(&:amount).sum.to_f
+          end
+          @student_summaries[fee.student.id] << {"discount" => @total_discount, 'fine' => paid_fine, "paid_amount" => paid_amount}
+        end
+        
+#        #abort(particular_categories.inspect)
+#        ar_particular_categories = particular_categories
+#        pt = []
+#        ar_particular_categories.each_with_index do |particular_categories, i|
+#          particular_categories.each do |particular_category|
+#            pt << particular_category
+#          end
+#        end
+#        @particular_categories = pt
+        
+        fee_cateroies = FinanceFeeParticularCategory.active
+        @particular_categories = fee_cateroies.map{|p| p.name}
+      end
     end
   end
   

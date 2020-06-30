@@ -98,7 +98,7 @@ class FinanceController < ApplicationController
                 std_particular.fee_collection_id = date.id
                 std_particular.save
               end
-              abort('here')
+              #abort('here')
               balance = FinanceFee.get_student_actual_balance(date, s, fee)
               if balance.to_f > 0
                   if balance.to_f != fee.balance
@@ -116,7 +116,7 @@ class FinanceController < ApplicationController
           activity_log.update_attributes( :post_requests=> pr.to_s)
         end
       end
-      abort('here')
+      abort('here - done')
       
       now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
       activity_log = ActivityLog.new

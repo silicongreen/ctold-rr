@@ -341,7 +341,7 @@
                            <% end %>
                           
                           <td class="col-pdf"></td>
-                          <td class="col-pdf border-right-none align-left-baf"><%= report['subject_comment'] %></td>
+                          <td class="col-pdf border-right-none "><%= report['subject_comment'] %></td>
                           </tr>
                         <% end %>
                       <% end %>
@@ -378,7 +378,7 @@
 
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         <td class="col-pdf border-left-none  align-left-baf"><%= report['subject_name'].upcase %></td>
-                        <td class="col-pdf border-right-none"><%= report['subject_comment'] %></td>
+                        <td class="col-pdf border-right-none align-left-baf"><%= report['subject_comment'] %></td>
                         </tr>
                       <% end %>
                     <% end %>
@@ -393,8 +393,8 @@
               <h5><b>&nbsp;</b></h5>
               <table id="pdf-table" width="99.8%" cellspacing="0">
                   <tr>
-                      <td><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-1.png")), :width=>"30%" %></td>
-                      <td><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-1.png")), :width=>"30%" %></td>
+                      <td>&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-1.png")), :width=>"30%" %></td>
+                      <td>&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-1.png")), :width=>"30%" %></td>
                   </tr>
                   
                   <tr><td>&nbsp;HEAD OF SECTION</td><td>&nbsp;PRINCIPAL'S SIGNATURE</td></tr>

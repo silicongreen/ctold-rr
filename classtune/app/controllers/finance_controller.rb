@@ -90,8 +90,15 @@ class FinanceController < ApplicationController
             unless date.blank?
               @fee_particulars = date.finance_fee_particulars.all(:conditions=>"name LIKE 'Exam Fee (1st Term)' and is_deleted=#{false} and batch_id=#{fee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==fee.batch) }
               #@particulars = FinanceFeeParticular.find(:all,:conditions => ["name LIKE 'Exam Fee (1st Term)' and is_deleted = '#{false}' and finance_fee_category_id = '#{date.fee_category_id}' and batch_id='#{fee.batch_id}' "])
-              abort(@fee_particulars.inspect)
-              #StudentExcludeParticular //obhai
+              #abort(@fee_particulars.inspect)
+              @fee_particulars.each do |fee_particular|
+                std_particular = StudentExcludeParticular.new
+                std_particular.student_id = s.id
+                std_particular.fee_particular_id = fee_particular.id
+                std_particular.fee_collection_id = date.id
+                std_particular.save
+              end
+              abort('here')
               balance = FinanceFee.get_student_actual_balance(date, s, fee)
               if balance.to_f > 0
                   if balance.to_f != fee.balance

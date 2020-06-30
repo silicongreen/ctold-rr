@@ -80,7 +80,7 @@ class FinanceController < ApplicationController
       activity_log_id = activity_log.id
       
       @finance_fees = FinanceFee.find(:all, :order => 'id ASC', :conditions => ["`fee_collection_id` IN (2445,2447) and is_paid = 0 and balance > 0 and batch_id NOT IN (SELECT id FROM `batches` WHERE school_id = 352 and course_id in (SELECT id FROM `courses` where ((LOWER(course_name) LIKE '%%nursery%%') OR (LOWER(course_name) LIKE '%%kg%%') OR (LOWER(course_name) LIKE '%%eleven%%' or UPPER(course_name) LIKE '%%XI%%') OR (LOWER(course_name) LIKE '%%hsc%%')  OR (LOWER(course_name) LIKE '%%twelve%%' or UPPER(course_name) LIKE '%%XII%%')) and school_id = 352)) "]) #, :group => "ledger_date"
-      abort(@finance_fees.length.to_s)
+      #abort(@finance_fees.length.to_s)
       unless @finance_fees.blank?
         @finance_fees.each do |fee|
           sid = fee.student_id
@@ -88,7 +88,8 @@ class FinanceController < ApplicationController
           unless s.blank?
             date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
             unless date.blank?
-              
+              @particulars = FinanceFeeParticular.find(:all,:conditions => ["name LIKE 'Exam Fee (1st Term)' and is_deleted = '#{false}' and finance_fee_category_id = '#{date.fee_category_id}' and batch_id='#{fee.batch_id}' "])
+              abort(@particulars.inspect)
               #StudentExcludeParticular
               balance = FinanceFee.get_student_actual_balance(date, s, fee)
               if balance.to_f > 0

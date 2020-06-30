@@ -1055,13 +1055,15 @@ class ExamController < ApplicationController
             if params[:exam_grouping][:name].nil?
               flash[:notice]="#{t('flash25')}"
               return
-            else  
-              student_ids = params[:assignment][:student_ids]
+            else
               student_list = ""
-              if !student_ids.blank?
-                student_list = student_ids.join(",")
+              if !params[:assignment].blank? && !params[:assignment][:student_ids].blank?
+                student_ids = params[:assignment][:student_ids]
+                if !student_ids.blank?
+                  student_list = student_ids.join(",")
+                end
               end
-              @exam_connect.update_attributes(:name=> params[:exam_grouping][:name],:students=> student_list,:is_common=> params[:exam_grouping][:is_common],:printing_date => params[:exam_grouping][:printing_date],:result_type => params[:exam_grouping][:result_type],:quarter_number => params[:exam_grouping][:quarter_number],:next_session_begins => params[:exam_grouping][:next_session_begins],:promoted_to => params[:exam_grouping][:promoted_to],:attandence_start_date => params[:exam_grouping][:attandence_start_date],:attandence_end_date => params[:exam_grouping][:attandence_end_date],:published_date => params[:exam_grouping][:published_date])
+              @exam_connect.update_attributes(:name=> params[:exam_grouping][:name],:total_working_days=>params[:exam_grouping][:total_working_days],:students=> student_list,:is_common=> params[:exam_grouping][:is_common],:printing_date => params[:exam_grouping][:printing_date],:result_type => params[:exam_grouping][:result_type],:quarter_number => params[:exam_grouping][:quarter_number],:next_session_begins => params[:exam_grouping][:next_session_begins],:promoted_to => params[:exam_grouping][:promoted_to],:attandence_start_date => params[:exam_grouping][:attandence_start_date],:attandence_end_date => params[:exam_grouping][:attandence_end_date],:published_date => params[:exam_grouping][:published_date])
                      
               @exam_connect_id = @exam_connect.id
               

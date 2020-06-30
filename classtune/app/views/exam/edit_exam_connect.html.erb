@@ -344,7 +344,7 @@
   var $jq = jQuery.noConflict(true);
   $jq(document).on("change", "#exam_grouping_is_common", function () {
       var val = $jq(this).val();
-      if (val == 1)
+      if (val == 0)
       {
           $jq(".scrollable").show();
       } else
@@ -357,12 +357,15 @@
 </script>  
 
 <style>
-    .scrollable{
-        width: 250px;
+    .scrollable {
+        width: 300px;
         background-color: #EEE;
-        padding :7px;
-        -webkit-border-radius : 10px;
-        -moz-border-radius : 10px;
+        padding: 7px;
+        float: left;
+        clear: both;
+        margin: 20px 0px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
     }
     #scrollable-list {
         width: 250px;

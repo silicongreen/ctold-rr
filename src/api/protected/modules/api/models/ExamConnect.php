@@ -59,7 +59,7 @@ class ExamConnect extends CActiveRecord
         return parent::model($className);
     }
     
-    public function getConnectExam($batch_id,$student_id = 0)
+    public function getConnectExam($batch_id,$student_id)
     {
         
              

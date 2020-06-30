@@ -210,7 +210,7 @@
             <div class="label-field-pair">
                 <label for="title">Is Common?</label>
                 <div class="text-input-bg">
-                    <%= f.select :is_common,[['Yes',1],['No',0]] %>
+                    <%= f.select :is_common,options_for_select([['Yes',1],['No',0]],@exam_connect.is_common) %>
                 </div>
             </div>
             <br/>
@@ -237,12 +237,8 @@
                         <% @students.each do |s| %>
                           <div class="listitem">
                               <div class="student_name"> <%= s.full_name %> </div>
-                              <div class="check_box">
-                                  <%  if check_free_school? %>
-                                    <%= check_box_tag "assignment[student_ids][]", s.id,@assigned_students.include?(s),:class=>"right",:checked=>"true",:onclick=>"j( '#dialog-message-subscribed' ).dialog( 'open' ); return false;" %>
-                                  <% else %> 
-                                    <%= check_box_tag "assignment[student_ids][]", s.id,@assigned_students.include?(s),:class=>"right" %>
-                                  <% end %>
+                              <div class="check_box"> 
+                                 <%= check_box_tag "assignment[student_ids][]", s.id,@assigned_students.include?(s.id),:class=>"right" %>
                               </div>
                           </div>
                         <% end %>

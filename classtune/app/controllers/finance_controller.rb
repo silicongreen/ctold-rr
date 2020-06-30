@@ -8261,6 +8261,10 @@ class FinanceController < ApplicationController
     unless params[:date].nil? or params[:date].empty? or params[:date].blank?
       @batch   = Batch.find(params[:batch_id])
       @date    =  @fee_collection = FinanceFeeCollection.find(params[:date])
+      
+      @student_particulars = {}
+      @student_summaries = {}
+      @students = {}
       particulars = []
       particular_categories = []
       @student_finance_fees = FinanceFee.paginate(:all,:conditions=>"finance_fees.batch_id = #{@batch.id} and finance_fees.fee_collection_id = #{@date.id}", :joins => "INNER JOIN students ON students.id = finance_fees.student_id",:page => params[:page], :per_page => 25)

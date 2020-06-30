@@ -3188,6 +3188,7 @@ class ExamController < ApplicationController
     @connect_exam_obj = ExamConnect.find_by_id(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
     student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id)
+    center_align_format = Spreadsheet::Format.new :horizontal_align => :center,  :vertical_align => :middle,:left=>:thin,:right=>:thin,:top=>:thin,:bottom=>:thin
     @report_data = []
     if student_response['status']['code'].to_i == 200
       @report_data = student_response['data']
@@ -3195,12 +3196,13 @@ class ExamController < ApplicationController
     if !@report_data.blank?
       
       row_first = ['Roll','Students Name']
-      j = 1
+      j = 2
       @report_data['report']['subjects'].each do |sub|
-        j =  j+1
+        
         row_first << sub['code']
         row_first << ""
         new_book.worksheet(0).merge_cells(2,j,2,j+1)
+        j =  j+2
       end
       @report_data['report']['no_exam_subject_resutl'].each do |sub|
         j =  j+1
@@ -3209,6 +3211,7 @@ class ExamController < ApplicationController
       row_first << "Total"
       i = 2
       new_book.worksheet(0).insert_row(2, row_first)
+      sheet1.row(2).default_format = center_align_format
       @report_data['report']['students'].each do |std|
         i = i+1
         row = []
@@ -3298,6 +3301,7 @@ class ExamController < ApplicationController
         end
         row << total_mark
         new_book.worksheet(0).insert_row(i, row)
+        sheet1.row(i).default_format = center_align_format
         
       end
     end

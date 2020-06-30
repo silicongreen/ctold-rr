@@ -11,7 +11,10 @@
             </div>
           </center>
       </div>
-      
+      <% year_month = I18n.l(@connect_exam_obj.published_date,:format=>"%Y-%m") %>
+      <% if year_month.to_s == "2020-07" %>
+        <% covid = 1 %>
+      <% end %>
       
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
@@ -144,11 +147,21 @@
 
               </table>
               <table id="pdf-table" width="99.8%" cellspacing="0">
-                <tr class="even">
+                  <% if covid.blank? %>
+                    <tr class="even">
                           
                           <td class="col-pdf no-warp align-left" width="50%"><b>Class Teacher</b></td>
                           <td class="col-pdf no-warp align-left" width="50%"><br/><br/></td>    
                    </tr>  
+                  <% else %>
+                   
+                   <tr class="even">
+                          
+                          <td class="col-pdf no-warp align-left" width="50%"><b>Section-in-charge</b></td>
+                          <td class="col-pdf no-warp align-left" width="50%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/#{@section_in_charge}.png")), :width=>"30%" %></td>    
+                   </tr> 
+                   
+                  <% end %> 
                     <tr class="even">
                           
                           <td class="col-pdf no-warp align-left" width="50%"><b>Section in charge</b></td>

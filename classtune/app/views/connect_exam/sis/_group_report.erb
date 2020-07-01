@@ -38,4 +38,9 @@
         height: 60px !important;
     }
     
-</style>    
+</style> 
+
+<% year_month = I18n.l(@connect_exam_obj.published_date,:format=>"%Y-%m") %>
+<% if year_month.to_s == "2020-07" %>
+  <% @covid_main = 1 %>
+<% end %>

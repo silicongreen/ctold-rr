@@ -1,6 +1,5 @@
 
-<% if @connect_exam_obj.result_type.to_i == 4 or @connect_exam_obj.result_type.to_i == 2 %> 
-
+<% if @connect_exam_obj.result_type.to_i == 4 or @connect_exam_obj.result_type.to_i == 2 or @connect_exam_obj.result_type.to_i == 6  %> 
 <%
       if @tabulation_data.nil?
         student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
@@ -10,6 +9,10 @@
         end
       end
 %>
-<%= render  :partial=>"/connect_exam/baf_shaheen/finding_data" %>
+  <% if @connect_exam_obj.result_type.to_i == 9 %>
+    <%= render  :partial=>"/connect_exam/baf_shaheen/finding_data2" %>
+  <% else %>
+    <%= render  :partial=>"/connect_exam/baf_shaheen/finding_data" %>
+  <% end %>
 <% end %>
 <%= render  :partial=>"/connect_exam/baf_shaheen/group_report_type_"+@connect_exam_obj.result_type.to_s %>

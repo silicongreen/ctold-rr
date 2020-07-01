@@ -226,6 +226,7 @@
                           end 
                           
                           total_mark = term_mark+quarter_mark
+                          total_mark = total_mark.round()
                           grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
 
                         %>

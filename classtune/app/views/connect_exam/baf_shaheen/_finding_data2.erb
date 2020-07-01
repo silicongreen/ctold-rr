@@ -35,57 +35,86 @@
         u_grade = 0
         tab['subjects'].each do |sub|
          
-          has_exam = false
+          has_exam = true
           loop = 0
-          tab['exams'].each do |rs|
-            loop = loop+1  
-            if loop>2
-              break
-            end
-            if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
-              has_exam = true
-              break
-            end  
-          end 
-          if has_exam == false
-            next
-          end  
+           
           if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
             
             subject_count_std = subject_count_std+1
             std_subject_marks_final = 0
-            i = 0
+            class_test = []
             tab['exams'].each do |rs|
+              if rs['exam_category'] != '1' or rs['quarter'] != '6'
+                next
+              end  
               if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-                i = i+1
-                if i<3
-                  if i > 1
-                    rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f*2
-                  end  
-                  std_subject_marks_final = std_subject_marks_final+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                else
-                  break
-                end  
-              end    
+                obt_mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*7.5
+                class_test << obt_mark.round(2)
+              else
+                class_test << 0
+              end  
+            end 
+            class_test.sort! {|x,y| y <=> x }
+            std_subject_marks_final = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f
+            tab['exams'].each do |rs|
+              if rs['exam_category'] == '1' or rs['exam_category'] == '3' or rs['quarter'] != '6'
+                next
+              end  
+              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                obt_mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*2.5
+                std_subject_marks_final = std_subject_marks_final+obt_mark.to_f
+              end  
             end
-
+          
+            tab['exams'].each do |rs|
+              if rs['exam_category'] != '3' or rs['quarter'] != '6'
+                next
+              end  
+              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                obt_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f*2
+                std_subject_marks_final = std_subject_marks_final+obt_mark.to_f
+              end  
+            end
 
             std_subject_marks_mid = 0
-            i = 0
+            class_test = []
+            
+            
             tab['exams'].each do |rs|
+              if rs['exam_category'] != '1' or rs['quarter'] == '6'
+                next
+              end  
               if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-                i = i+1
-                if i>2
-                  std_subject_marks_mid = std_subject_marks_mid+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                end
-              end    
+                obt_mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*7.5
+                class_test << obt_mark.round(2)
+              else
+                class_test << 0
+              end  
+            end 
+            class_test.sort! {|x,y| y <=> x }
+            std_subject_marks_mid = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f
+            tab['exams'].each do |rs|
+              if rs['exam_category'] == '1' or rs['exam_category'] == '3' or rs['quarter'] == '6'
+                next
+              end  
+              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                obt_mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*2.5
+                std_subject_marks_mid = std_subject_marks_final+obt_mark.to_f
+              end  
             end
+          
+            tab['exams'].each do |rs|
+              if rs['exam_category'] != '3' or rs['quarter'] == '6'
+                next
+              end  
+              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                obt_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                std_subject_marks_mid = std_subject_marks_final+obt_mark.to_f
+              end  
+            end
+            
 
-            #unless @final_term_student_list.include?(std['id'].to_i)
-              subject_full_marks = ((std_subject_marks_final.to_f*70)/100)+((std_subject_marks_mid.to_f*30)/100)
-            #else
-              #subject_full_marks = std_subject_marks_final.to_f
-            #end
+            subject_full_marks = ((std_subject_marks_final.to_f*30)/100)+((std_subject_marks_mid.to_f*70)/100)
 
             std_marks_full = std_marks_full+subject_full_marks.round()
             

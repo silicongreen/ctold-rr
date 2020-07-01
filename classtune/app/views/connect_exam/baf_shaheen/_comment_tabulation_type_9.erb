@@ -229,54 +229,99 @@
                   
                   <% iloop = 0  %>
                   <td>
-                  <% @report_data['report']['exams'].each do |rs| %>
-                    <% iloop = iloop+1 %>
-                    <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? %>
                       
-                      <%
-                      if iloop == 2
-                        rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i*2
+                  <%
+                    subject_count_std = subject_count_std+1
+                    std_subject_marks_final = 0
+                    final_assignent = 0
+                    mid_assignment = 0
+                    final_term = 0
+                    mid_term = 0
+                    class_test = []
+                    @report_data['report']['exams'].each do |rs|
+                      if rs['exam_category'] != '1' or rs['quarter'] != '6'
+                        next
                       end  
+                      if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                        obt_mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*7.5
+                        class_test << obt_mark.round(2)
+                      else
+                        class_test << 0
+                      end  
+                    end 
+                    class_test.sort! {|x,y| y <=> x }
+                    std_subject_marks_final = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f
+                    @report_data['report']['exams'].each do |rs|
+                      if rs['exam_category'] == '1' or rs['exam_category'] == '3' or rs['quarter'] != '6'
+                        next
+                      end  
+                      if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                        obt_mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*2.5
+                        std_subject_marks_final = std_subject_marks_final+obt_mark.to_f
+                      end  
+                    end
+                    final_assignent = std_subject_marks_final
+
+                    @report_data['report']['exams'].each do |rs|
+                      if rs['exam_category'] != '3' or rs['quarter'] != '6'
+                        next
+                      end  
+                      if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                        obt_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f*2
+                        final_term = obt_mark
+                        std_subject_marks_final = std_subject_marks_final+obt_mark.to_f
+                      end  
+                    end
+
+                    std_subject_marks_mid = 0
+                    class_test = []
+
+
+                    @report_data['report']['exams'].each do |rs|
+                      if rs['exam_category'] != '1' or rs['quarter'] == '6'
+                        next
+                      end  
+                      if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                        obt_mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*7.5
+                        class_test << obt_mark.round(2)
+                      else
+                        class_test << 0
+                      end  
+                    end 
+                    class_test.sort! {|x,y| y <=> x }
+                    std_subject_marks_mid = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f
+                    @report_data['report']['exams'].each do |rs|
+                      if rs['exam_category'] == '1' or rs['exam_category'] == '3' or rs['quarter'] == '6'
+                        next
+                      end  
+                      if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                        obt_mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*2.5
                         
-                      subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                      %>
-                      <% if iloop < 3  %>
-                        <% if iloop > 1 %>
-                        <% rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f*2 %>
-                        <%  subject_mark_final = subject_mark_final+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
-                      <% else %>
-                        <%  subject_mark_midterm = subject_mark_midterm+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
-                      <% end %>
-                      
-                      <% if iloop == 3  %>
-                        <hr/>
-                      <% end %>
-                      <% if iloop == 1 or iloop == 3  %>
-                        A:
-                      <% elsif iloop == 2  %>
-                        F:
-                      <% else  %>
-                        M:
-                      <% end %>
-                        
-                        
-                      <%= rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round().to_i %>
-                      <% if iloop == 1 or iloop == 3  %>
-                      |
-                      <% end %>
-                      
-                      
-                        
-                    <% end %>
-                   <% end %>
-                        <% subject_obtain_mark = ((subject_mark_final.to_f/100)*30)+((subject_mark_midterm.to_f/100)*70) %>
-                        <% subject_obtain_mark = subject_obtain_mark.round() %>
-                        <% main_mark = subject_obtain_mark %>  
+                        std_subject_marks_mid = std_subject_marks_final+obt_mark.to_f
+                      end  
+                    end
+                  
+                    mid_assignment = std_subject_marks_mid
+
+                    @report_data['report']['exams'].each do |rs|
+                      if rs['exam_category'] != '3' or rs['quarter'] == '6'
+                        next
+                      end  
+                      if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                        obt_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        mid_term = obt_mark
+                        std_subject_marks_mid = std_subject_marks_final+obt_mark.to_f
+                      end  
+                    end
+                    subject_obtain_mark = ((std_subject_marks_final.to_f*30)/100)+((std_subject_marks_mid.to_f*70)/100)
                 
-                       <% total_mark = total_mark+subject_obtain_mark.to_f %>
-                       <hr/>T:<%= subject_obtain_mark.to_i %>
+                  %>    
+                      
+                        A : <%= final_assignent %> | F :<%= final_term %><hr/>
+                        A : <%= mid_assignment %> | M :<%= mid_term %>
+                        <hr/>T:<%= subject_obtain_mark.to_i %>
                      
-                       <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                       <%  grade = GradingLevel.percentage_to_grade(subject_obtain_mark, @batch.id) %>
                        <% if !grade.blank? and !grade.name.blank? %>
                            <%
                               if grades.include?(grade.name.to_s)

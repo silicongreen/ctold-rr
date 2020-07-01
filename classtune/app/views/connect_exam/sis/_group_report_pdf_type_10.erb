@@ -17,7 +17,7 @@
                                   &nbsp;
                               <% end %>      
                           </td>
-                          <td class="width-33"><h2 align="center"><font size="6" color="#36346B">&nbsp;</font></h2></td>
+                          <td class="width-33"><h2 align="center"><font size="6" color="#36346B"><% unless @covid_main.blank? %>Report Card<% else %>&nbsp; <% end %></font></h2></td>
                           <td class="align-right width-33"><font color="#BF1E2D" size="6"><b>Class - <%= @batch.course.course_name %></b></font></td>
                      </tr>
                      <tr><td colspan="3">&nbsp;</td></tr>

@@ -416,7 +416,7 @@ class OnlineExamGroups extends CActiveRecord {
             $criteria->compare('t.batch_id', $batch_id);
             $criteria->compare('t.school_id', Yii::app()->user->schoolId);
             $criteria->compare('t.is_deleted', 0);
-            $criteria->compare('t.is_published', 1);
+            $criteria->addCondition("t.is_published = 1 and (t.is_common = 1 or FIND_IN_SET(".$student_id.",t.students))");
             $criteria->compare('t.start_date', $cur_date);
             $criteria->addCondition(" t.end_time > '$cur_time' ");
             
@@ -527,7 +527,7 @@ class OnlineExamGroups extends CActiveRecord {
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.school_id', Yii::app()->user->schoolId);
         $criteria->compare('t.is_deleted', 0);
-        $criteria->compare('t.is_published', 1);
+        $criteria->addCondition("t.is_published = 1 and (t.is_common = 1 or FIND_IN_SET(".$student_id.",t.students))");
         $criteria->addCondition(" (start_date != '$cur_date' or t.end_time < '$cur_time') ");
         if ($created_at) {
             $criteria->compare('start_date', $created_at);

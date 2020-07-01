@@ -429,9 +429,17 @@ class OnlineExamController < ApplicationController
   def update_exam_group
     @exam_group = OnlineExamGroup.find(params[:id])
     @exam_group.subject_id = params[:assignment][:subject]
+    if !params[:assignment].blank? && !params[:assignment][:student_ids].blank?
+      student_ids = params[:assignment][:student_ids]
+      if !student_ids.blank?
+        params[:exam_group][:students] = student_ids.join(",")
+      end
+    end
     unless @exam_group.update_attributes(params[:exam_group])
       @error = true
     end
+    
+    
     
     if @current_user.employee?
         emp_record = current_user.employee_record 

@@ -83,13 +83,69 @@
           <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
         </div>  
       </div>
+    
+      <div class="label-field-pair">
+          <label for="title">Is Common?</label>
+          <div class="text-input-bg">
+              <%= form.select :is_common,options_for_select([['Yes',1],['No',0]],@exam_group.is_common) %>
+          </div>
+      </div>
+    
+            <% @students = Student.find_all_by_batch_id(@exam_group.batch_id) %>
+            <% unless @exam_group.students.blank?  %>
+              <% @assigned_students = @exam_group.students.split(",") %>
+            <% end %>
+            <% unless @students.nil? %>
+              <div class="scrollable" <% if @exam_group.is_common.to_i == 1 %> style="display:none;" <% end %>>
+                  <% unless @students.empty? %>
+                    <% @assigned_students ||= [] %>
+
+                    <div class="select_all">
+                        <%  if check_free_school? %>
+                          <a href='javascrip:void(0)' class='themed_text subscribed-messege' >All</a>,
+                          <a href='javascrip:void(0)' class='themed_text subscribed-messege' >None</a>,
+                        <% else %>  
+                          <%= "#{t('select')}:"%> <%= link_to_function "#{t('all')}", "$$('input.right').each(function(checkbox) { checkbox.checked = true; });" ,:class=>"themed_text"%>,
+                          <%= link_to_function "#{t('none')}", "$$('input.right').each(function(checkbox) { checkbox.checked = false; });" ,:class=>"themed_text" %>
+                        <% end %>  
+                    </div>
+                    <div id="scrollable-list">
+
+                        <% @students.each do |s| %>
+                          <div class="listitem">
+                              <div class="student_name"> <%= s.full_name %> </div>
+                              <div class="check_box"> 
+                                 <%= check_box_tag "assignment[student_ids][]", s.id,@assigned_students.include?(s.id.to_s),:class=>"right" %>
+                              </div>
+                          </div>
+                        <% end %>
+                    </div>
+                  <% else %>
+                    <p class="flash-msg"><%= t('no_students') %></p>
+                  <% end %>
+              </div>
+            <% end  %>
 
       <div id="submit-button">
         <%=form.submit("► #{t('update')}") %>
       </div>
     <% end %>
   </div>
+<script>
+  var $jq = jQuery.noConflict(true);
+  $jq(document).on("change", "#exam_group_is_common", function () {
+      var val = $jq(this).val();
+      if (val == 0)
+      {
+          $jq(".scrollable").show();
+      } else
+      {
+          $jq(".scrollable").hide();
+      }
 
+  });
+
+</script> 
 <style>
   #MB_frame .label-field-pair .time-select-field select
   {
@@ -110,4 +166,47 @@
    {
        position: fixed !important;
    }
+   
+    .scrollable {
+        width: 413px;
+        background-color: #EEE;
+        padding: 7px;
+        float: left;
+        clear: both;
+        margin: 20px 0px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 10px;
+    }
+    #scrollable-list {
+        width: 413px;
+        overflow: auto;
+        height: 160px;
+    }
+    .select_all{
+        font-weight: bold;
+        font-size: 14px;
+        margin-bottom:10px;
+    }
+    .select_all a {
+        color: #9F0C14;
+        text-decoration: none;
+    }
+    .select_all a:hover {
+        color: #9F0C14;
+        text-decoration: none;
+    }
+    .listitem{
+        margin-bottom: 2px;
+        border-bottom: 1px solid #DDDDDD;
+        overflow: hidden;
+        font-size:14px;
+    }
+    .listitem .check_box {
+        float:left;
+        width: 5px;
+    }
+    .listitem .student_name {
+        float: left;
+        width: 375px;
+    }
 </style>

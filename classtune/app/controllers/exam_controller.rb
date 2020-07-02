@@ -6131,10 +6131,12 @@ class ExamController < ApplicationController
         :save_to_file => file_name,
         :save_only    => for_save,
         :orientation => 'Landscape',
-        :margin => {:top=> 35,
+        :margin => {:top=> 10,
         :bottom => 40,
         :left=> 10,
-        :right => 10}
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_footer.html'}}
     elsif MultiSchool.current_school.id == 355
       
       if @connect_exam_obj.result_type == 1

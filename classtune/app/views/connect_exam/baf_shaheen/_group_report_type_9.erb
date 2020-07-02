@@ -75,6 +75,7 @@
 
                             <% end %>
                           <% end %>
+                          <% total_mark = total_mark.round() %>
                           <td class="col-pdf no-warp"><%= sprintf( "%0.02f", total_mark)%></td>
                               
                           <% unless @report_data['report']['exams'].blank? %>  
@@ -130,7 +131,7 @@
                              end
                             end 
                           end 
-                        
+                          midterm_total = midterm_total.round()
                           unless @report_data['report']['exams'].blank?   
                             @report_data['report']['exams'].each do |report| 
                              if report['exam_category'] != '3' or report['quarter'] == '6'  

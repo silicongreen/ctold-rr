@@ -174,20 +174,20 @@
 
                           <% 
                            
-
+                          total_mark = total_mark.round()
                           if total_mark.to_f>0 and full_mark.to_f>0
                             main_mark = (total_mark.to_f/full_mark.to_f)*100 
                           else
                             main_mark = 0
                           end 
-                          total_mark = total_mark.round()
+                          
                         %>
 
                           <% if full_mark.to_f > 0 %>
                             <td class="col-pdf border-right-none"><%= sprintf( "%0.02f", total_mark)%></td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
-                              <td class="col-pdf border-right-none"><%= grade.name %><%= full_mark %></td>
+                              <td class="col-pdf border-right-none"><%= grade.name %></td>
                             <% else %>
                               <td class="col-pdf border-right-none">-</td>
                             <% end %>

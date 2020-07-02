@@ -277,9 +277,9 @@
                           <% end %> 
                           <% else %>
                             
-                            <td class="col-pdf"><b></b></td>
+                            <td class="col-pdf"><b>-</b></td>
                             <% if covid.blank? %>
-                            <td class="col-pdf"<b></b></td>
+                            <td class="col-pdf"<b>-</b></td>
                             <% end %>
                           <% end %> 
                           
@@ -453,15 +453,31 @@
                       <%  unless @grading_levels.empty? %>
                         <% i = 0 %>
                         <% @grading_levels.each_with_index do |grade,index| %>
-                        <% if i<4 %>
+                        <% if i<3 %>
                           <td class="align-left">
+                            <% if grade.max_score.nil? %>  
+                              <%= '%i%' % grade.min_score %>
+                            <% else %> 
+                             <%= '%i%' % grade.min_score %> - <%= '%i%' % grade.max_score %>
+                            <% end %>
+                          </td>
+                          <td class="align-left"><%= grade.name %></td>
+                        <% end %>
+                        <% i = i+1 %>
+                        <% end %>
+                      <% end %>
+                      <%  unless @grading_levels.empty? %>
+                        <% i = 0 %>
+                        <% @grading_levels.each_with_index do |grade,index| %>
+                        <% if i>5 %>
+                          <td class="align-left" rowspan="2">
                             <% if grade.max_score.nil? %>  
                               <%= '%i%' % grade.min_score %>
                             <% else %> 
                               <%= '%i%' % grade.min_score %> - <%= '%i%' % grade.max_score %>
                             <% end %>
                           </td>
-                          <td class="align-left"><%= grade.name %></td>
+                          <td class="align-left" rowspan="2"><%= grade.name %></td>
                         <% end %>
                         <% i = i+1 %>
                         <% end %>
@@ -471,7 +487,7 @@
                       <%  unless @grading_levels.empty? %>
                         <% i = 0 %>
                         <% @grading_levels.each_with_index do |grade,index| %>
-                        <% if i>=4 && i<8 %>
+                        <% if i>=3 && i<6 %>
                           <td class="align-left">
                             <% if grade.max_score.nil? %>  
                               <%= '%i%' % grade.min_score %>
@@ -485,7 +501,6 @@
                         <% end %>
                       <% end %>
                   </tr>
-                  
                   
               </table>
               <% if @connect_exam_obj.quarter_number == 6 %>

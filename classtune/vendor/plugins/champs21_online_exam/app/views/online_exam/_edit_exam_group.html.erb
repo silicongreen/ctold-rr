@@ -91,7 +91,7 @@
           </div>
       </div>
     
-            <% @students = Student.find_all_by_batch_id(@exam_group.batch_id) %>
+            <% @students = Student.find_all_by_batch_id(@exam_group.batch_id,:order=>"class_roll_no ASC") %>
             <% unless @exam_group.students.blank?  %>
               <% @assigned_students = @exam_group.students.split(",") %>
             <% end %>
@@ -113,7 +113,7 @@
 
                         <% @students.each do |s| %>
                           <div class="listitem">
-                              <div class="student_name"> <%= s.full_name %> </div>
+                              <div class="student_name"><%= s.class_roll_no %>&nbsp;&nbsp;<%= s.full_name %> </div>
                               <div class="check_box"> 
                                  <%= check_box_tag "assignment[student_ids][]", s.id,@assigned_students.include?(s.id.to_s),:class=>"right" %>
                               </div>

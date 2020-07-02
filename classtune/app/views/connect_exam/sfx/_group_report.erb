@@ -1,5 +1,5 @@
 <% 
- if @connect_exam_obj.result_type.to_i > 9
+ if @connect_exam_obj.result_type.to_i > 8
     if @all_exam_groups.nil?
         @all_group_exams = GroupedExam.find(
                 :all,

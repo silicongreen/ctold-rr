@@ -268,7 +268,7 @@
                       if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
                         obt_mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*2.5
                         
-                        std_subject_marks_mid = std_subject_marks_final+obt_mark.to_f
+                        std_subject_marks_mid = std_subject_marks_mid+obt_mark.to_f
                       end  
                     end
                     std_subject_marks_mid = std_subject_marks_mid.round()
@@ -281,7 +281,7 @@
                       if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
                         obt_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         mid_term = obt_mark
-                        std_subject_marks_mid = std_subject_marks_final+obt_mark.to_f
+                        std_subject_marks_mid = std_subject_marks_mid+obt_mark.to_f
                       end  
                     end
                     subject_obtain_mark = ((std_subject_marks_final.to_f*30)/100)+((std_subject_marks_mid.to_f*70)/100)

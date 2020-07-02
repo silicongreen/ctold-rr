@@ -127,7 +127,7 @@
                              end 
                              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? 
                                obt_mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f/report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f)*2.5 
-                               midterm_total = total_mark.to_f+obt_mark.to_f 
+                               midterm_total = midterm_total.to_f+obt_mark.to_f 
                              end
                             end 
                           end 
@@ -139,7 +139,7 @@
                              end 
                              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? 
                                obt_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f 
-                               midterm_total = total_mark.to_f+obt_mark.to_f 
+                               midterm_total = midterm_total.to_f+obt_mark.to_f 
                              end
                             end 
                           end

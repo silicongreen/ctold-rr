@@ -359,6 +359,15 @@
                               <% jloop = 0 %>
                               <% @top_exam_group.each do |top_exam| %>
                                 <% colspan = @top_exam_group_count[jloop]-1 %>
+                                  <% total_exam = 0 %>
+                                  <% @report_data['report']['exams'].each do |report| %>
+                                    <% if !report['exam_name'].index(top_exam).nil? %>
+                                      <% total_exam = total_exam+1 %>
+                                    <% end %>
+                                  <% end %>
+                                  <% if total_exam > 1 %>
+                                    <% colspan = colspan+1 %>
+                                  <% end %>
                                 
                                   <td class="col-pdf group_exam" colspan="<%= colspan %>"></td>
                                   <% jloop = jloop+1 %>
@@ -387,11 +396,17 @@
 
                 <%
                   present = 0
+                  comments = ""
                   if !@exam_comment.blank?
                     all_comments = @exam_comment.comments
                     if !all_comments.blank?
                       all_comments_array = all_comments.split("|")
-                      present = all_comments_array[0].to_i
+                      if !all_comments_array[1].nil?
+                        present = all_comments_array[1].to_i
+                        comments = all_comments_array[0]
+                      else
+                        present = all_comments_array[0].to_i
+                      end
                     end
                   end
                 %>
@@ -402,6 +417,17 @@
                   <tr class="even"><td class="border-left-none align-left-baf" width="30%">PRESENT</td><td class="border-right-none align-left-baf"><%= present %></td></tr>
                   <tr class="even"><td class="border-left-none align-left-baf" width="30%">ABSENT</td><td class="border-right-none align-left-baf"><%= @connect_exam_obj.total_working_days.to_i - present.to_i %></td></tr>
               </table>
+              <% has_grade_subject = false %>
+              <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
+
+                  <%  if @all_subject_grade.include?(report['id'].to_i) %>
+                    <% has_grade_subject = true %>
+                    <% break %>
+                  <% end %>
+                <% end %>
+              <% end %>
+              <% unless has_grade_subject.blank? %>
               <h3 align="center">FINAL TERM REMARKS</h3>
               <table id="pdf-table" width="99.8%" cellspacing="0">
                 <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
@@ -417,16 +443,23 @@
                     <% end %>
                   <% end %>
               </table>
+              <% end %>
              
               <h5><b>&nbsp;</b></h5>
-              
+              <% if !comments.blank? && has_grade_subject.blank? %>
+                <h3>GENERAL COMMENTS <%= comments %></h3>
+              <% end %>
               <h3>PROMOTED TO: <%= @connect_exam_obj.promoted_to %></h3>
               <h3>SCHOOL REOPEN'S ON: <%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %></h3>
             
               <h5><b>&nbsp;</b></h5>
               <table id="pdf-table" width="99.8%" cellspacing="0">
                   <tr>
-                      <td>&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-2.png")), :width=>"30%" %></td>
+                      <% if has_grade_subject.blank? %>
+                        <td>&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/signature2.jpg")),:width=> '30%' %></td>
+                      <% else %>
+                        <td>&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-2.png")), :width=>"30%" %></td>
+                      <% end %>
                       <td>&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-1.png")), :width=>"30%" %></td>
                   </tr>
                   

@@ -1,0 +1,44 @@
+<div id="pdf-header-south" class="general-header <% if !@connect_exam_obj.blank? %> <% if @connect_exam_obj.result_type.to_i != 1 && @connect_exam_obj.result_type.to_i != 6  && @connect_exam_obj.result_type.to_i != 7  && @connect_exam_obj.result_type.to_i != 10 && @connect_exam_obj.result_type.to_i != 11 %>potrait_header_south_point<% else %>lanscape_header_south_point<%  end %><% end %>">
+    <table width="100%">
+        <% if !@connect_exam_obj.blank? %> 
+          <% if @connect_exam_obj.result_type.to_i == 1 || @connect_exam_obj.result_type.to_i == 6  || @connect_exam_obj.result_type.to_i == 7  || @connect_exam_obj.result_type.to_i == 10  || @connect_exam_obj.result_type.to_i == 11 %>
+            <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/logo.jpg")),:width=> '85%' %></span></td>
+          <% else %>
+            <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/logo.jpg")),:width=> '100%' %></span></td>
+          <% end %>
+        <% else %>
+          <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/logo.jpg")),:width=> '100%' %></span></td>
+        <% end %>
+        <td class="name-td name-td-south">
+              <h4 align="center"><%=Configuration.get_config_value('InstitutionName').upcase; %></h4>
+              <h5 align="center">English Medium - Banani Branch</h5>
+              <% if !@connect_exam_obj.blank? %>
+                <% if !@batch.blank? and @connect_exam_obj.result_type.to_i == 4 %>
+                    <h5 align="center" class="bold-all step-1">Result Sheet</h5>
+                    <h5 align="center" class="step-2"><%= @batch.course.course_name+", Section - "+@batch.course.section_name %></h5>
+                    <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
+                    <h5 align="center" class="step-2" ><%= @connect_exam_obj.name %> <% if month_number.to_i>6 %>
+                       <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %>
+                    <% else %>
+                       <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>
+                    <% end %> </h5>
+                <% else %>
+                <% unless @connect_exam_obj.blank? and @batch.blank? %>
+                   <h5 align="center"   class="bold-all step-1">Progress Report</h5>
+                   <h5 align="center" class="step-2"><%= @batch.course.course_name %></h5>
+                   <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
+                   <h5 align="center" class="step-2" >
+                     
+                    <%= @connect_exam_obj.name %> <% if month_number.to_i>6 %>
+                       <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %>
+                    <% else %>
+                       <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>
+                    <% end %>   
+                   
+                   </h5>
+                <% end %>
+                <% end %>   
+             <% end %>   
+        </td>
+    </table>   
+</div> 

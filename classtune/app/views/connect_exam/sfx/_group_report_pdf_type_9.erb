@@ -368,8 +368,9 @@
                                   <% if total_exam > 1 %>
                                     <% colspan = colspan+1 %>
                                   <% end %>
-                                
-                                  <td class="col-pdf group_exam" colspan="<%= colspan %>"></td>
+                                  <% (1..colspan).each do |i| %>
+                                  <td class="col-pdf group_exam"></td>
+                                  <% end %>
                                   <% jloop = jloop+1 %>
                                   <% if jloop == 1 %>
                                     <td class="col-pdf"></td>

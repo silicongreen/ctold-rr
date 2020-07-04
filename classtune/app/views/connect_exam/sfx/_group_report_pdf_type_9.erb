@@ -55,7 +55,7 @@
                           <% if group_count == 1 %>
                             <% colspan = @top_exam_group_count[jloop]-1 %>
                           <% end %>
-                          <% unless top_exam.upcase.index("EXAM")? %>
+                          <% unless top_exam.upcase.index("EXAM").nil? %>
                             <% top_exam = top_exam+" "+"Exam" %>
                           <% end %>
                           <td class="col-pdf group_exam" colspan="<%= colspan %>"><%= top_exam %></td>

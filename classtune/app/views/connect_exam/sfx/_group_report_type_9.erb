@@ -13,14 +13,23 @@
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% jloop = 0 %>
                         <% @top_exam_group.each do |top_exam| %>
+                          <% total_exam = 0 %>
+                          <% @report_data['report']['exams'].each do |report| %>
+                            <% if !report['exam_name'].index(top_exam).nil? %>
+                              <% total_exam = total_exam+1 %>
+                            <% end %>
+                          <% end %>
                           <% if jloop == 0  %>
                             <% top_exam_first = top_exam_first_main = top_exam %>
                           <% end %>
                           <% colspan = @top_exam_group_count[jloop] %>
+                          <% if total_exam > 1 %>
+                            <% colspan = colspan+1 %>
+                          <% end %>
                           <% if group_count == 1 %>
                             <% colspan = @top_exam_group_count[jloop]-1 %>
                           <% end %>
-                          <% unless top_exam.upcase.index("EXAM")? %>
+                          <% if top_exam.upcase.index("EXAM").nil? %>
                             <% top_exam = top_exam+" "+"Exam" %>
                           <% end %>
                           <td class="col-pdf group_exam" colspan="<%= colspan %>"><%= top_exam %></td>
@@ -43,6 +52,7 @@
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% @top_exam_group.each do |top_exam| %>
                         <% ct = 0 %>
+                        <% total_exam = 0 %>
                         <% @report_data['report']['exams'].each do |report| %>
                           <%  if report['exam_category'] == '1' && ct == 0 %>
                             <td class="col-pdf">
@@ -51,12 +61,16 @@
                             <% ct = 1 %>
                           <% elsif report['exam_category'] != '1' %>
                           <% if !report['exam_name'].index(top_exam).nil? %>
+                          <% total_exam = total_exam+1 %>
                           <% exam_name_new = report['exam_name'].gsub(top_exam+" ", "") %>
                           <td class="col-pdf">
                               <%= exam_name_new %>
                               
                           </td>
                           <% end %>
+                          <% end %>
+                          <% if total_exam > 1 %>
+                            <td class="col-pdf">Total 100</td>
                           <% end %>
                         <% end %>
                           <% if group_count > 1 %>
@@ -122,7 +136,7 @@
                           <% converted_total = 0 %>
                           <% converted_full_mark = 0 %>
                           <% converted_total_showded = 0 %>
-                          
+                          <% total_exam = 0 %>
 
                           <td class="col-pdf border-left-none no-warp align-left-baf"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
@@ -131,6 +145,9 @@
                               <% if !top_exam_first.blank? and top_exam_first!="" %>
                                 <% if report['exam_name'].index(top_exam_first).nil? %>
                                     <%  grade = GradingLevel.percentage_to_grade(total_term, @batch.id) %>
+                                    <% if total_exam > 1 %>
+                                      <td class="col-pdf"><%= total_term.round() %></td>
+                                    <% end %>
                                     <% if !grade.blank? and !grade.name.blank? %>
                                       <td class="col-pdf"><%= grade.name %></td>
                                     <% else %>
@@ -138,6 +155,7 @@
                                     <% end %>  
                                     <% total_mark = total_mark+total_term.round() %>
                                     <%
+                                        total_exam = 0
                                         exam_no = 2
                                         total_term = 0
                                         exam_group_name_array = report['exam_name'].split(" ")
@@ -153,7 +171,7 @@
                               
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <td><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %></td>
-                                    
+                                    <% total_exam = total_exam+1 %>
                                    
                                     <% total_term = total_term.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     
@@ -191,6 +209,9 @@
 
                             <% if !top_exam_first.blank? and top_exam_first!="" %>
                                 <% total_mark = total_mark+total_term.round() %>
+                                <% if total_exam > 1 %>
+                                  <td class="col-pdf"><%= total_term.round() %></td>
+                                <% end %>
                                 <%  grade = GradingLevel.percentage_to_grade(total_term, @batch.id) %>
                                 <% if !grade.blank? and !grade.name.blank? %>
                                   <td class="col-pdf"><%= grade.name %></td>
@@ -249,7 +270,16 @@
                           <% unless @report_data['report']['exams'].blank? %> 
                             <% jloop = 0 %>
                             <% @top_exam_group.each do |top_exam| %>
-                              <% colspan = @top_exam_group_count[jloop]-1 %>
+                                <% total_exam = 0 %>
+                                <% @report_data['report']['exams'].each do |report| %>
+                                  <% if !report['exam_name'].index(top_exam).nil? %>
+                                    <% total_exam = total_exam+1 %>
+                                  <% end %>
+                                <% end %>
+                                <% colspan = @top_exam_group_count[jloop]-1 %>
+                                <% if total_exam > 1 %>
+                                  <td class="col-pdf group_exam" colspan="<%= colspan %>"></td>
+                                <% end %>
                                 <% jloop = jloop+1 %>
                                 <% if jloop == 1 %>
                                   <td class="col-pdf"><%= sprintf( "%0.02f", total_term1) %></td>
@@ -303,6 +333,15 @@
                               <% jloop = 0 %>
                               <% @top_exam_group.each do |top_exam| %>
                                 <% colspan = @top_exam_group_count[jloop]-1 %>
+                                  <% total_exam = 0 %>
+                                  <% @report_data['report']['exams'].each do |report_main| %>
+                                    <% if !report_main['exam_name'].index(top_exam).nil? %>
+                                      <% total_exam = total_exam+1 %>
+                                    <% end %>
+                                  <% end %>
+                                  <% if total_exam > 1 %>
+                                    <% colspan = colspan+1 %>
+                                  <% end %>
                                 
                                   <td class="col-pdf group_exam" colspan="<%= colspan %>"></td>
                                   <% jloop = jloop+1 %>

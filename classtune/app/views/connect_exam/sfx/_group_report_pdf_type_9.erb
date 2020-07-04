@@ -60,7 +60,7 @@
                   </tr>
                   
                   <tr class="table-header">
-                      <td class="col-pdf border-left-none no-warp  align-left-baf"><b><%= "SUBJECT" %></b></td>
+                      <td class="col-pdf border-left-none no-warp  align-left-baf"><b><%= "SUBJECTS" %></b></td>
                       
                         
                       <% unless @report_data['report']['exams'].blank? %> 
@@ -100,7 +100,7 @@
                   
                   <% else %>
                   <tr class="table-header">
-                      <td class="col-pdf border-left-none no-warp  align-left-baf"><b><%= "SUBJECT" %></b></td>
+                      <td class="col-pdf border-left-none no-warp  align-left-baf"><b><%= "SUBJECTS" %></b></td>
                       <% unless @report_data['report']['exams'].blank? %>
                         <% ct = 0 %>
                         <% @report_data['report']['exams'].each do |report| %>
@@ -147,7 +147,7 @@
                           <% converted_total_showded = 0 %>
                           
 
-                          <td class="col-pdf border-left-none no-warp align-left-baf"><%= subjects['name'].upcase %></td>
+                          <td class="col-pdf border-left-none no-warp align-left-baf"><%= subjects['name'].capitalize %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
                               <% if group_count > 1 %>

@@ -2122,5 +2122,8 @@ div.sjws *
 {
     font-family: "Times New Roman", Georgia, Serif !important; 
 }
-
+#pdf-header-south
+{
+    width: 1350px !important;
+}
 

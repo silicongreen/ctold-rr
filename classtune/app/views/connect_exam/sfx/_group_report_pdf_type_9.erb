@@ -319,7 +319,7 @@
 
                           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
-                          <td class="col-pdf border-left-none  align-left-baf"><%= report['subject_name'].capitalize %></td>
+                          <td class="col-pdf border-left-none  align-left-baf"><%= report['subject_name'] %></td>
                            
                             <% if group_count > 1 %>
                             <% unless @report_data['report']['exams'].blank? %> 

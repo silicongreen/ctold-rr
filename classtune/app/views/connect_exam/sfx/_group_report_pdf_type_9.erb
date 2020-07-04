@@ -359,6 +359,16 @@
                               <% jloop = 0 %>
                               <% @top_exam_group.each do |top_exam| %>
                                 <% colspan = @top_exam_group_count[jloop]-1 %>
+                                  <% total_exam = 0 %>
+                                  <% @report_data['report']['exams'].each do |report_main| %>
+                                    <% if !report_main['exam_name'].index(top_exam).nil? %>
+                                      <% total_exam = total_exam+1 %>
+                                    <% end %>
+                                  <% end %>
+                                  <% if total_exam > 1 %>
+                                    <% colspan = colspan+1 %>
+                                  <% end %>
+                                
                                   <td class="col-pdf group_exam" colspan="<%= colspan %>"></td>
                                   <% jloop = jloop+1 %>
                                   <% if jloop == 1 %>

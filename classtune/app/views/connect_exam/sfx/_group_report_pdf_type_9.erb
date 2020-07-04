@@ -46,7 +46,7 @@
                           <% if group_count == 1 %>
                             <% colspan = @top_exam_group_count[jloop]-1 %>
                           <% end %>
-                          <td class="col-pdf group_exam" colspan="<%= colspan %>"><%= top_exam.upcase %></td>
+                          <td class="col-pdf group_exam" colspan="<%= colspan %>"><%= top_exam.capitalize %></td>
                           <% jloop = jloop+1 %>
                         <% end %>
                       <% end %>
@@ -76,7 +76,7 @@
                           <% if !report['exam_name'].index(top_exam).nil? %>
                           <% exam_name_new = report['exam_name'].gsub(top_exam+" ", "") %>
                           <td class="col-pdf">
-                              <%= exam_name_new.upcase %>
+                              <%= exam_name_new.capitalize %>
                               
                           </td>
                           <% end %>
@@ -111,7 +111,7 @@
                             <% ct = 1 %>
                           <% elsif report['exam_category'] != '1' %>
                           <td class="col-pdf">
-                              <%= report['exam_name'].upcase %>
+                              <%= report['exam_name'].capitalize %>
                              
                               
                           </td> 
@@ -319,7 +319,7 @@
 
                           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
-                          <td class="col-pdf border-left-none  align-left-baf"><%= report['subject_name'].upcase %></td>
+                          <td class="col-pdf border-left-none  align-left-baf"><%= report['subject_name'].capitalize %></td>
                            
                             <% if group_count > 1 %>
                             <% unless @report_data['report']['exams'].blank? %> 
@@ -377,7 +377,7 @@
                     <%  if @all_subject_grade.include?(report['id'].to_i) %>
 
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                        <td class="col-pdf border-left-none  align-left-baf" width="30%"><%= report['subject_name'].upcase %></td>
+                        <td class="col-pdf border-left-none  align-left-baf" width="30%"><%= report['subject_name'].capitalize %></td>
                         <td class="col-pdf border-right-none align-left-baf"><%= report['subject_comment'] %></td>
                         </tr>
                       <% end %>

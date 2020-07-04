@@ -20,7 +20,10 @@
                           <% if group_count == 1 %>
                             <% colspan = @top_exam_group_count[jloop]-1 %>
                           <% end %>
-                          <td class="col-pdf group_exam" colspan="<%= colspan %>"><%= top_exam.capitalize %></td>
+                          <% unless top_exam.upcase.index("EXAM")? %>
+                            <% top_exam = top_exam+" "+"Exam" %>
+                          <% end %>
+                          <td class="col-pdf group_exam" colspan="<%= colspan %>"><%= top_exam %></td>
                           <% jloop = jloop+1 %>
                         <% end %>
                       <% end %>
@@ -50,7 +53,7 @@
                           <% if !report['exam_name'].index(top_exam).nil? %>
                           <% exam_name_new = report['exam_name'].gsub(top_exam+" ", "") %>
                           <td class="col-pdf">
-                              <%= exam_name_new.capitalize %>
+                              <%= exam_name_new %>
                               
                           </td>
                           <% end %>
@@ -85,7 +88,7 @@
                             <% ct = 1 %>
                           <% elsif report['exam_category'] != '1' %>
                           <td class="col-pdf">
-                              <%= report['exam_name'].capitalize %>
+                              <%= report['exam_name'] %>
                              
                               
                           </td> 
@@ -121,7 +124,7 @@
                           <% converted_total_showded = 0 %>
                           
 
-                          <td class="col-pdf border-left-none no-warp align-left-baf"><%= subjects['name'].capitalize %></td>
+                          <td class="col-pdf border-left-none no-warp align-left-baf"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
                               <% if group_count > 1 %>

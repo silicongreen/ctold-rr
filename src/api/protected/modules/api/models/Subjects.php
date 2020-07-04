@@ -486,10 +486,6 @@ class Subjects extends CActiveRecord
                     }
                 }    
             }
-            
-            usort($subject_array, function($a, $b) {
-                return strcmp($a["name"], $b["name"]);
-            });
         }
         
         

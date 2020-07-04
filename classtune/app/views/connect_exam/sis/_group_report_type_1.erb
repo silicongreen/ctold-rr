@@ -1,6 +1,10 @@
 <% c = 'even' %>
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-            <table id="pdf-table" width="99.8%" cellspacing="0">
+<% year_month = I18n.l(@connect_exam_obj.published_date,:format=>"%Y-%m") %>
+      <% if year_month.to_s == "2020-07" %>
+        <% covid = 1 %>
+      <% end %>            
+<table id="pdf-table" width="99.8%" cellspacing="0">
                   
                   <tr class="even">
                     <td class="col-pdf no-warp  align-left"><b><%= "DEVELOPMENT CHECKLIST" %></b></td>
@@ -59,12 +63,14 @@
                           <% iloop = 0 %>
                           <% subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
                               <% subject_groups.each do |group_name| %>
+                                <% mloop+=1 %>
                                 <% subject_subgroup = get_subject_sub_group(group_name.id,@connect_exam_obj.quarter_number) %>
                                 <% unless subject_subgroup.blank? %>
                                    <tr class="odd">
                                     <td class="col-pdf no-warp align-left"  colspan="2"><b><%= group_name.name %></b></td>
                                    </tr>
                                     <% subject_subgroup.each do |sub_group_name| %>
+                                      <% mloop+=1 %>
                                        <% @report_data['report']['exams'].each do |report| %>
                                         <% if report['exam_category'] == '7' %>
                                             <% next %>
@@ -123,18 +129,7 @@
                       </tr>
                     <% end %>  
                   <% end %>    
-                   <tr class="even">
-                          
-                          <td class="col-pdf no-warp align-left"><b>Class Teacher</b></td>
-                          <td class="col-pdf no-warp align-left"><br/><br/></td>    
-
-                   </tr>  
-                    <tr class="even">
-                          
-                          <td class="col-pdf no-warp align-left"><b>Section in charge</b></td>
-                          <td class="col-pdf no-warp align-left"><br/><br/></td>    
-
-                   </tr> 
+                   
 
               </table>
        

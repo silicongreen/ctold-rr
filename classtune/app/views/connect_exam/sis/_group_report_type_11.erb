@@ -1,10 +1,14 @@
 <% c = 'even' %>
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
+<% year_month = I18n.l(@connect_exam_obj.published_date,:format=>"%Y-%m") %>
+      <% if year_month.to_s == "2020-07" %>
+        <% covid = 1 %>
+      <% end %>
             <table id="pdf-table" width="48%" class="left-table even-table extra_padding" cellspacing="0">
                   <% c = 'even'  %>
                   <tr class="odd">
                       <td class="col-pdf"><b><%= "SUBJECTS" %></b></td>
-                      <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII" %>
+                       <% if covid.blank? and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                         <td class="col-pdf"><b>MARKS</b></td>
                       <% end %>
                       <td class="col-pdf"><b>GRADES</b></td>
@@ -82,7 +86,7 @@
                         %>
 
                           <% if full_mark.to_f > 0 %>
-                            <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII" %>
+                             <% if covid.blank? and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                               <td class="col-pdf"><b><%= show_marks.round() %></b></td>
                             <% end %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
@@ -95,7 +99,7 @@
                             <% total_parcent= total_parcent+main_mark %>
                             
                           <% else  %>
-                            <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII" %>
+                             <% if covid.blank? and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                               <td class="col-pdf">-</td>
                             <% end %>
                             <td class="col-pdf">-</td>
@@ -123,15 +127,23 @@
                   <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
                     <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
 
-                    <%  if @all_subjects.include?(report['id'].to_i) && !report['subject_comment'].blank? %>
+                    <%  if @all_subjects.include?(report['id'].to_i) %>
                          <% total_subject = total_subject+1 %>
-                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        
+                        <tr class="odd">
                         
                           <td class="col-pdf left-td"><b><%= report['subject_name'] %></b></td>
-                          <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII" %>
+                           <% if covid.blank? and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                             <td class="col-pdf">-</td>
                           <% end %>
-                          <td class="col-pdf"><b><%= report['subject_comment'] %></td>
+                          <td class="col-pdf"><b>
+
+                           <% unless report['subject_comment'].blank? %>       
+                            <%= report['subject_comment'] %>
+                           <% else %>
+                           -       
+                           <% end %>      
+                          </td>
                         </tr>
                       <% end %>
                     <% end %>

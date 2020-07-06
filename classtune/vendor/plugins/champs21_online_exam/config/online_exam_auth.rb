@@ -37,10 +37,8 @@ authorization do
       :update_exam_list,
       :exam_result,
       :exam_result_pdf,
-      :reset_exam,
       :update_student_exam,
       :update_student_list,
-      :update_reset_exam,
       :get_classes,
       :get_section_data,
       :delete_exam_group

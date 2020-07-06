@@ -109,7 +109,7 @@ font-weight:bold;
     line-height: 0px;
 }
 .assignment-question, .assignment-answer {
-    background-color: #F0FFF0;
+    background-color: #EEE;
     padding: 10px;
     -moz-border-radius: 0px;
     -webkit-border-radius: 0px;
@@ -136,7 +136,7 @@ font-weight:bold;
 form .comment-content textarea {
     -moz-border-radius: 0px;
     -webkit-border-radius: 0px;
-    background-color: #F0FFF0;
+    background-color: #EEE;
     width: 849px;
 }
 #page-yield {
@@ -144,7 +144,7 @@ form .comment-content textarea {
     float: left;
     width: 97%;
     background-color: #fff;
-    padding: 15px;
+    padding: 30xp 15px;
 }
 #answer-container {
     padding: 10px;

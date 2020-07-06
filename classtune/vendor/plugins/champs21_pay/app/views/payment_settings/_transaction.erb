@@ -200,7 +200,7 @@
                   end
                 end
                 total_amount = amount + fee_percent
-                amount ||= payment.gateway_response[:x_amount]
+                amount ||= payment.gateway_response[:Message][:PurchaseAmount]
               elsif @gateway == "bkash"
                 fee_percent = 0.00
                 amount_return = payment.gateway_response[:amount].to_f 
@@ -230,13 +230,13 @@
                 <%
                 if MultiSchool.current_school.id != 312 
                   unless paid_amount == amount_return
-                    #amount = amount.to_f - fee_percent.to_f
-                    amount = '%.2f' % (paid_amount.to_f  / (1 - (1.5/100)))
+                    amount = paid_amount.to_f
+                    #amount = '%.2f' % (paid_amount.to_f  / (1 - (1.5/100)))
                   end
                 end
                 total_amount = amount #+ fee_percent
                 fee_percent = amount_return.to_f - amount.to_f
-                amount ||= payment.gateway_response[:Message][:PurchaseAmount]
+                amount ||= payment.gateway_response[:x_amount]
               end
             %>
             <td style="vertical-align: middle; text-align: right; padding-right: 4px;"><%= to_comma_seperated_precision_label(amount.to_f) %></td>

@@ -13,7 +13,7 @@
       <% student ||= ArchivedStudent.find_by_former_id(a.student_id) %>
       <% if student.present? %>
         <div class="listitem">
-          <%= link_to " #{student.full_name} &#x200E;",assignment_assignment_answer_path(a.assignment,a) %> &nbsp;  (<%= student.admission_no %>) &nbsp; <%= "&#x200E; #{a.status=="0" ? t('pending'): a.status.to_s.capitalize}"  %>
+          <%= link_to " #{student.full_name} &#x200E;",assignment_assignment_answer_path(a.assignment,a),:target => '_blank' %> &nbsp;  (<%= student.admission_no %>) &nbsp; <%= "&#x200E; #{a.status=="0" ? t('pending'): a.status.to_s.capitalize}"  %>
           <div class="answer-details"  >
               
             <% time_created = a.created_at.to_time + 6*60*60 %>  

@@ -225,7 +225,9 @@
                   end
                 end
                 #fee_percent = paid_amount.to_f * (1.5 / 100)
-                
+                %>
+                <%= paid_amount %>
+                <%
                 if MultiSchool.current_school.id != 312 
                   unless paid_amount == amount_return
                     #amount = amount.to_f - fee_percent.to_f

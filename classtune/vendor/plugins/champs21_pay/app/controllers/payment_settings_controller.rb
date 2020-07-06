@@ -119,7 +119,7 @@ class PaymentSettingsController < ApplicationController
         extra_query += ' and gateway_response like \'%OrderID: "' + params[:citybank_order_id].to_s + '%\''
       end
       unless params[:trxID].nil? or params[:trxID].empty? or params[:trxID].blank?
-        extra_query += ' and gateway_response like \'%:trxID: "' + params[:trxID].to_s + '%\''
+        extra_query += ' and gateway_response like \'%:trxID: ' + params[:trxID].to_s + '%\''
       end
       unless params[:paymentID].nil? or params[:paymentID].empty? or params[:paymentID].blank?
         extra_query += ' and gateway_response like \'%:paymentID: "' + params[:paymentID].to_s + '%\''
@@ -136,7 +136,7 @@ class PaymentSettingsController < ApplicationController
         elsif @gateway == "citybank"
           extra_query += ' and order_id like \'%' + params[:order_id].to_s + '%\''
         elsif @gateway == "bkash"
-          extra_query += ' and gateway_response like \'%:merchantInvoiceNumber: "' + params[:order_id].to_s + '%\''
+          extra_query += ' and gateway_response like \'%:merchantInvoiceNumber: ' + params[:order_id].to_s + '%\''
         end
       end
       unless params[:ref_no].nil? or params[:ref_no].empty? or params[:ref_no].blank?
@@ -210,7 +210,7 @@ class PaymentSettingsController < ApplicationController
               extra_query += ' and gateway_response like \'%OrderID: "' + params[:citybank_order_id].to_s + '%\''
             end
             unless params[:trxID].nil? or params[:trxID].empty? or params[:trxID].blank?
-              extra_query += ' and gateway_response like \'%:trxID: "' + params[:trxID].to_s + '%\''
+              extra_query += ' and gateway_response like \'%:trxID: ' + params[:trxID].to_s + '%\''
             end
             unless params[:paymentID].nil? or params[:paymentID].empty? or params[:paymentID].blank?
               extra_query += ' and gateway_response like \'%:paymentID: "' + params[:paymentID].to_s + '%\''
@@ -227,7 +227,7 @@ class PaymentSettingsController < ApplicationController
               elsif @gateway == "citybank"
                 extra_query += ' and order_id like \'%' + params[:order_id].to_s + '%\''
               elsif @gateway == "bkash"
-                extra_query += ' and gateway_response like \'%:merchantInvoiceNumber: "' + params[:order_id].to_s + '%\''
+                extra_query += ' and gateway_response like \'%:merchantInvoiceNumber: ' + params[:order_id].to_s + '%\''
               end
             end
             unless params[:ref_no].nil? or params[:ref_no].empty? or params[:ref_no].blank?

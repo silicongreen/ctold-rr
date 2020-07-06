@@ -169,7 +169,7 @@
               if @gateway == "trustbank"
                 amount = payment.gateway_response[:amount]
                 amount ||= payment.gateway_response[:x_amount]
-              elsif @gateway == "bkash"
+              elsif @gateway == "citybank"
                 fee_percent = 0.00
                 amount_return = payment.gateway_response[:amount].to_f 
                 amount = amount_return
@@ -201,7 +201,7 @@
                 end
                 total_amount = amount + fee_percent
                 amount ||= payment.gateway_response[:x_amount]
-              elsif @gateway == "citybank"
+              elsif @gateway == "bkash"
                 fee_percent = 0.00
                 amount_return = payment.gateway_response[:Message][:TotalAmount].to_f / 100
                 amount = amount_return

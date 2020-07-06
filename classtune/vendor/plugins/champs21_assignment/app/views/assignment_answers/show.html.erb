@@ -23,6 +23,10 @@
     
     <% unless @assignment_answer.attachment3_file_name.nil? %> <div id="attachment"><%= link_to @assignment_answer.attachment3_file_name.to_s, :controller => "assignment_answers", :action => "download_attachment" , :assignment_answer=>@assignment_answer.id, :number=>3 %></div><%  end %>
   </div>
+  <% unless @assignment_answer.attachment_file_name.nil? %> 
+    <iframe width="100%" height="500px" src="https://docs.google.com/gview?url=<%= request.base_url %><%= @assignment_answer.attachment.url %>" style="border:0px;" ></iframe>
+  <% end %>
+  
 
   <div class="answer-details">
     <div class="label-div-pair"><label for="student-name"><%= "#{t('submitted_by')}"%></label><div id="student-name" class="themed_text"> <%= @assignment_answer.student_details.present? ? @assignment_answer.student_details.full_name : t('no_students') %></div></div>

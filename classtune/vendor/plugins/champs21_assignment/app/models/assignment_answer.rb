@@ -11,13 +11,13 @@ class AssignmentAnswer < ActiveRecord::Base
   has_attached_file :attachment2 ,
 #    :url => "/user/paperclip_attachment/:id?attachment=attachment&class=assignment_answer",
 #    :path => "uploads/assignments/:assignment_id/:class/:id_partition/:basename.:extension"
-#	:url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp",
+    :url => "/uploads/:school_id/:class/:attachment/:assignment_id/attach2/:basename.:extension",
     :path => "public/uploads/:school_id/:class/:attachment/:assignment_id/attach2/:basename.:extension"
     
   has_attached_file :attachment3 ,
 #    :url => "/user/paperclip_attachment/:id?attachment=attachment&class=assignment_answer",
 #    :path => "uploads/assignments/:assignment_id/:class/:id_partition/:basename.:extension"
-#	:url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp",
+    :url => "/uploads/:school_id/:class/:attachment/:assignment_id/attach3/:basename.:extension",
     :path => "public/uploads/:school_id/:class/:attachment/:assignment_id/attach3/:basename.:extension"
     
 

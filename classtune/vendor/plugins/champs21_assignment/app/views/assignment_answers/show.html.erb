@@ -24,7 +24,7 @@
     <% unless @assignment_answer.attachment3_file_name.nil? %> <div id="attachment"><%= link_to @assignment_answer.attachment3_file_name.to_s, :controller => "assignment_answers", :action => "download_attachment" , :assignment_answer=>@assignment_answer.id, :number=>3 %></div><%  end %>
   </div>
   <% unless @assignment_answer.attachment_file_name.nil? %> 
-  <iframe width="100%" height="500px" src="https://docs.google.com/viewer?url=https://<%= MultiSchool.current_school.code %>.classtune.com/<%= @assignment_answer.attachment.url %>" style="border:0px;" ></iframe>
+  <iframe width="100%" height="500px" src="https://docs.google.com/viewer?url=https://<%= MultiSchool.current_school.code %>.classtune.com<%= @assignment_answer.attachment.url %>&embedded=true&print=true" style="border:0px;"   frameborder="0" ></iframe>
   <% end %>
   
 

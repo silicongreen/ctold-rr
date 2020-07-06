@@ -17,7 +17,7 @@
   <div class="assignment-answer">
     <div class="assignment-answer-title"><%= @assignment_answer.title.to_s   %></div>
     <div class="assignment-answer-content"><%= @assignment_answer.content.to_s %></div>
-    <% unless @assignment_answer.attachment_file_name.nil? %> <div id="attachment"><%= link_to @assignment_answer.attachment_file_name.to_s, :controller => "assignment_answers", :action => "download_attachment" , :assignment_answer=>@assignment_answer.id %></div><%  end %>
+    <% unless @assignment_answer.attachment_file_name.nil? %> <div id="attachment"><%= @assignment_answer.attachment.url %><%= link_to @assignment_answer.attachment_file_name.to_s, :controller => "assignment_answers", :action => "download_attachment" , :assignment_answer=>@assignment_answer.id %></div><%  end %>
     
     <% unless @assignment_answer.attachment2_file_name.nil? %> <div id="attachment"><%= link_to @assignment_answer.attachment2_file_name.to_s, :controller => "assignment_answers", :action => "download_attachment" , :assignment_answer=>@assignment_answer.id, :number=>2 %></div><%  end %>
     

@@ -153,3 +153,19 @@ form .comment-content textarea {
 {
     top: 27px;
 }
+.assignment-answer-content {
+    padding: 10px 0px;
+}
+#attachment {
+    background: url(/images/assignment/paperclip.png) no-repeat left;
+    padding-left: 24px;
+    height: 35px;
+    padding-top: 3px;
+    border-top: 1px solid #ccc;
+}
+#attachment a {
+    text-decoration: none;
+    color: #000;
+    margin-top: 6px;
+    float: left;
+}

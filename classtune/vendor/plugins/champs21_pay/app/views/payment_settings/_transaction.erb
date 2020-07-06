@@ -235,7 +235,7 @@
                   end
                 end
                 total_amount = amount #+ fee_percent
-                fee_percent = amount_return - amount
+                fee_percent = amount_return.to_f - amount.to_f
                 amount ||= payment.gateway_response[:Message][:PurchaseAmount]
               end
             %>

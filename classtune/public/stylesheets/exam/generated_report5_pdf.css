@@ -2127,3 +2127,8 @@ div.sjws *
     width: 1250px !important;
 }
 
+#page-yield.landscape
+{
+   width: 1350px !important; 
+}
+

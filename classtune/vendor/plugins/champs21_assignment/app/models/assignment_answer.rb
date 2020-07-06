@@ -5,7 +5,7 @@ class AssignmentAnswer < ActiveRecord::Base
   has_attached_file :attachment ,
 #    :url => "/user/paperclip_attachment/:id?attachment=attachment&class=assignment_answer",
 #    :path => "uploads/assignments/:assignment_id/:class/:id_partition/:basename.:extension"
-    :url => "/uploads/:school_id/:class/:attachment/:assignment_id/:attachment_fullname",
+    :url => "/uploads/:school_id/:class/:attachment/:assignment_id/:basename.:extension",
     :path => "public/uploads/:school_id/:class/:attachment/:assignment_id/:basename.:extension"
     
   has_attached_file :attachment2 ,

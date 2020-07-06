@@ -113,8 +113,15 @@
             <th style="width: 10%;"><%= "trxID" %></th>
             <% end %>
             <th style="width: 10%;"><%= t("order_id") %></th>
+            <% if @gateway == "trustbank" %>
             <th style="width: 10%;"><%= t("amount") %></th>
+            <% elsif @gateway == "bkash" %>
+            <th style="width: 10%;"><%= t("amount") %></th>
+            <th style="width: 10%;"><%= t("service_charge") %></th>
+            <th style="width: 10%;"><%= "Total Amount" %></th>
+            <% end %>
             <% if @gateway == "citybank" %>
+            <th style="width: 10%;"><%= t("amount") %></th>
             <th style="width: 10%;"><%= t("service_charge") %></th>
             <th style="width: 10%;"><%= "Total Amount" %></th>
             <% end %>
@@ -159,15 +166,15 @@
             <% end %>
             
             <% 
-              if @gateway == "trustbank" or @gateway == "bkash"
+              if @gateway == "trustbank"
                 amount = payment.gateway_response[:amount]
                 amount ||= payment.gateway_response[:x_amount]
-              elsif @gateway == "citybank"
+              elsif @gateway == "bkash"
                 fee_percent = 0.00
-                amount_return = payment.gateway_response[:Message][:TotalAmount].to_f / 100
+                amount_return = payment.gateway_response[:amount].to_f 
                 amount = amount_return
                 paid_amount = 0
-                total_payments = Payment.find(:all, :conditions => "order_id = '#{payment.order_id}' and gateway_response like \'%OrderDescription:%\'")
+                total_payments = Payment.find(:all, :conditions => "order_id = '#{payment.order_id}' and gateway_response like \'%:trxID:%\'")
                 unless total_payments.blank?
                   total_payments.each do |p|
                     unless p.finance_transaction.nil?
@@ -193,11 +200,45 @@
                   end
                 end
                 total_amount = amount + fee_percent
+                amount ||= payment.gateway_response[:x_amount]
+              elsif @gateway == "citybank"
+                fee_percent = 0.00
+                amount_return = payment.gateway_response[:Message][:TotalAmount].to_f / 100
+                amount = amount_return
+                paid_amount = 0
+                total_payments = Payment.find(:all, :conditions => "order_id = '#{payment.order_id}' and gateway_response like \'%OrderDescription:%\'")
+                unless total_payments.blank?
+                  total_payments.each do |p|
+                    unless p.finance_transaction.nil?
+                      paid_amount += p.finance_transaction.amount.to_f
+                    else
+                      fee_id = p.payment_id
+                      fee = FinanceFee.find(:first, :conditions => "id = #{fee_id}") 
+                      unless fee.nil? 
+                        date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
+                        unless date.blank?
+                          paid_amount += FinanceFee.get_student_balance(date, payment.payee, fee)
+                        end
+                        #paid_amount += FinanceFee.get_student_balance(date, payment.payee, fee)
+                      end
+                    end
+                  end
+                end
+                #fee_percent = paid_amount.to_f * (1.5 / 100)
+                
+                if MultiSchool.current_school.id != 312 
+                  unless paid_amount == amount_return
+                    #amount = amount.to_f - fee_percent.to_f
+                    amount = '%.2f' % (paid_amount.to_f  / (1 - (1.5/100)))
+                  end
+                end
+                total_amount = amount #+ fee_percent
+                fee_percent = amount_return - amount
                 amount ||= payment.gateway_response[:Message][:PurchaseAmount]
               end
             %>
             <td style="vertical-align: middle; text-align: right; padding-right: 4px;"><%= to_comma_seperated_precision_label(amount.to_f) %></td>
-            <% if @gateway == "trustbank" or @gateway == "citybank" %>
+            <% if @gateway == "trustbank" or @gateway == "citybank" or @gateway == "bkash" %>
             <% 
               if @gateway == "trustbank"
                 service_charge = payment.gateway_response[:service_charge]
@@ -207,7 +248,7 @@
             %>
             <td style="vertical-align: middle; text-align: right; padding-right: 4px;"><%= precision_label(service_charge) %></td>
             <% end %>
-            <% if @gateway == "citybank" %>
+            <% if @gateway == "citybank" or @gateway == "bkash" %>
             <td style="vertical-align: middle; text-align: right; padding-right: 4px;"><%= precision_label(total_amount) %></td>
             <% end %>
             <% if @gateway == "trustbank" %>

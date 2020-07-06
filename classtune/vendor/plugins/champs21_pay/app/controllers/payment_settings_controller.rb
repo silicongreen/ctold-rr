@@ -261,7 +261,7 @@ class PaymentSettingsController < ApplicationController
                 elsif @gateway == "citybank"
                   row_1 = ["Ref ID","Order ID","Student ID","Full Name","Card Info","Fees","Service Charge","Total Amount","Status","Trn Date"]
                 elsif @gateway == "bkash"
-                  row_1 = ["trxID","Payment ID","Order ID","Student ID","Full Name","Amount","Fees","Status","Trn Date"]
+                  row_1 = ["trxID","Payment ID","Order ID","Student ID","Full Name","Fees","Service Charge","Total Amount","Status","Trn Date"]
                 end
                 # Create a new Workbook
                 new_book = Spreadsheet::Workbook.new
@@ -274,11 +274,11 @@ class PaymentSettingsController < ApplicationController
 
                 ind = 1
                 @online_payments.each do |payment|
-                  if @gateway != "citybank"
+                  if @gateway == "trustbank"
                     amt = payment.gateway_response[:amount].to_f
                     service_change = payment.gateway_response[:service_charge].to_f
                     tot_amt = amt + service_change
-                  else
+                  elsif @gateway == "citybank"
                     fee_percent = 0.00
                     amount_return = payment.gateway_response[:Message][:TotalAmount].to_f / 100
                     amount = amount_return
@@ -311,6 +311,48 @@ class PaymentSettingsController < ApplicationController
                     #amt = payment.gateway_response[:Message][:TotalAmount].to_f
                     #service_change = payment.gateway_response[:service_charge].to_f
                     tot_amt = amount 
+                  elsif @gateway == "bkash"
+                    fee_percent = 0.00
+                    amount_return = payment.gateway_response[:amount].to_f 
+                    amount = amount_return
+                    paid_amount = 0
+                    total_payments = Payment.find(:all, :conditions => "order_id = '#{payment.order_id}' and gateway_response like \'%:transactionStatus:%\'")
+                    unless total_payments.blank?
+                      total_payments.each do |p|
+                        unless p.finance_transaction.nil?
+                          paid_amount += p.finance_transaction.amount.to_f
+                        else
+                          fee_id = p.payment_id
+                          fee = FinanceFee.find(:first, :conditions => "id = #{fee_id}") 
+                          unless fee.nil? 
+                            date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
+                            unless date.blank?
+                              paid_amount += FinanceFee.get_student_balance(date, payment.payee, fee)
+                            end
+                            #paid_amount += FinanceFee.get_student_balance(date, payment.payee, fee)
+                          end
+                        end
+                      end
+                    else
+
+                    end
+                    #fee_percent = paid_amount.to_f * (1.5 / 100)
+                    if MultiSchool.current_school.id != 312 
+                      unless paid_amount == amount_return
+                        amount = paid_amount.to_f
+                        #amount = '%.2f' % (paid_amount.to_f  / (1 - (1.5/100)))
+                      end
+                    end
+                    total_amount = amount_return.to_f #+ fee_percent
+                    fee_percent = amount_return.to_f - amount.to_f
+                    amount ||= payment.gateway_response[:x_amount]  
+                    
+                  
+                    #total_amount = amount + fee_percent
+                    amt = amount
+                    #amt = payment.gateway_response[:Message][:TotalAmount].to_f
+                    #service_change = payment.gateway_response[:service_charge].to_f
+                    tot_amt = amount
                   end
                   verified = "false"
                   unless payment.gateway_response[:verified].nil?
@@ -323,14 +365,14 @@ class PaymentSettingsController < ApplicationController
                   elsif @gateway == "citybank"
                     row_new = [payment.gateway_response[:Message][:OrderID], payment.order_id, payment.payee_admission_no, payment.payee_name, payment.gateway_response[:Message][:CardHolderName].to_s + " - " + payment.gateway_response[:Message][:PAN], Champs21Precision.set_and_modify_precision(amt), Champs21Precision.set_and_modify_precision(fee_percent), Champs21Precision.set_and_modify_precision(total_amount), payment.gateway_response[:Message][:OrderStatus], I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y %H:%M:%S")]
                   elsif @gateway == "bkash"
-                    row_new = [payment.gateway_response[:trxID], payment.gateway_response[:paymentID], payment.gateway_response[:merchantInvoiceNumber], payment.payee_admission_no, payment.payee_name, Champs21Precision.set_and_modify_precision(tot_amt), Champs21Precision.set_and_modify_precision(amt), payment.gateway_response[:transactionStatus], I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y %H:%M:%S")]
+                    row_new = [payment.gateway_response[:trxID], payment.gateway_response[:paymentID], payment.gateway_response[:merchantInvoiceNumber], payment.payee_admission_no, payment.payee_name, Champs21Precision.set_and_modify_precision(amt), Champs21Precision.set_and_modify_precision(fee_percent), Champs21Precision.set_and_modify_precision(total_amount), payment.gateway_response[:transactionStatus], I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y %H:%M:%S")]
                   end
                   new_book.worksheet(0).insert_row(ind, row_new)
                   new_book.worksheet(0).row(ind).set_format(5, amount_format)
                   new_book.worksheet(0).row(ind).set_format(6, amount_format)
-                  if @gateway == "trustbank" or @gateway == "citybank"
+                  #if @gateway == "trustbank" or @gateway == "citybank"
                     new_book.worksheet(0).row(ind).set_format(7, amount_format)
-                  end
+                  #end
                   
                   ind += 1
                 end

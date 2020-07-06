@@ -116,7 +116,7 @@ font-weight:bold;
 }
 #evaluate-answer
 {
-    padding-left: 280px;
+    padding-left: 0px;
 }
 #evaluate-answer .submit-button:first-child
 {
@@ -127,7 +127,7 @@ font-weight:bold;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
 }
-#submit-button input
+form #submit-button input
 {
    -moz-border-radius: 3px;
    -webkit-border-radius: 3px; 
@@ -144,8 +144,12 @@ form .comment-content textarea {
     float: left;
     width: 97%;
     background-color: #fff;
-    padding: 30xp 15px;
+    padding: 15px;
 }
 #answer-container {
     padding: 10px;
+}
+#content
+{
+    top: 27px;
 }

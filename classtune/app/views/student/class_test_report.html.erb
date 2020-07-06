@@ -14,9 +14,8 @@
                 </div>
             </div>
         </div>
-  <div style="float:right;width:19%;">
-          <%= link_to "<div class='button-link button-link-report'>Attendence Report</div>", :controller => "student_attendance", :action => "month_report" %>
-          <%= render :partial => "previous_batches", :locals=>{:batches=>@previous_batch} %> 
+        <div style="float:right;width:19%;">
+          <%= link_to "<div class='button-link button-link-report'>Attendence Report</div>", :controller => "student_attendance", :action => "month_report" %> 
         </div>
 
         <div class="tabbed-header-wrapper">
@@ -53,6 +52,12 @@
                       :url => {:controller=>"student",:action => "combined_exam"} ,
                       :with => "'batch_id='+ j( '#course_course_id option:selected' ).val()"%>
                 </li>
+                <% BatchStudent.find_by_student_id(@student.id) %>
+                <% if !BatchStudent.blank? %>
+                    <li>
+                      <%= link_to "Previous Report", {:controller => "student", :action => "previous_report", :id => @student.id}, {:class => 'f2'} %>
+                    </li>
+                <%  end %> 
 
             </ul>
         </div>

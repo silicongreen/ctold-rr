@@ -46,7 +46,7 @@
         
         <% unless prevexam.blank? %>
           <% connect_exam = ExamConnect.find_by_id(p.exam_connect_id) %>
-          <% if connect_exam.is_published == 1 or  MultiSchool.current_school.id != 348 or connect_exam.name.upcase.index("FINAL")? %>
+          <% if connect_exam.is_published == 1 or  MultiSchool.current_school.id != 348 or !connect_exam.name.upcase.index("FINAL").nil? %>
             <tr class="tr-<%= cycle('odd', 'even') %>">
               <td class="col-1"><%= p.exam_connect.name %></td>
               <td class="col-1"><%= p.exam_connect.published_date %></td>

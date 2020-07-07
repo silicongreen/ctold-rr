@@ -1,5 +1,4 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-  <p>&nbsp;<p>
   <div id="page-yield"  class="available_sections1 sjis-new sfx">
 
 
@@ -51,6 +50,7 @@
                     <% if senior_setion == false %>
                     <tr class="table-header">
                         <td class="col-pdf border-left-none no-warp  align-left-baf"></td>
+                    <% end %>    
                         <% unless @report_data['report']['exams'].blank? %> 
                           <% jloop = 0 %>
                           <% @top_exam_group.each do |top_exam| %>
@@ -73,11 +73,13 @@
                             <% if top_exam.upcase.index("EXAM").nil? %>
                               <% top_exam = top_exam+" "+"Exam" %>
                             <% end %>
+                            <% if senior_setion == false %>
                             <td class="col-pdf group_exam" colspan="<%= colspan %>"><%= top_exam %></td>
+                            <% end %>
                             <% jloop = jloop+1 %>
                           <% end %>
                         <% end %>
-
+                    <% if senior_setion == false %>
                         <% if senior_setion %>
                           <td colspan="3" class="col-pdf border-right-none">
                               AVE OF TWO TERMS

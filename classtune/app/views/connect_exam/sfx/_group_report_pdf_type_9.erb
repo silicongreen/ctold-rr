@@ -113,9 +113,15 @@
                           </td>
                           <% end %>
                           <% end %>
-                          <% if total_exam > 1 %>
-                            <td class="col-pdf">Total 100</td>
-                          <% end %>
+                          <% if senior_setion %>
+                            <% if total_exam > 2 %>
+                              <td class="col-pdf">Total 100</td>
+                            <% end %>
+                          <% else %>
+                            <% if total_exam > 1 %>
+                              <td class="col-pdf">Total 100</td>
+                            <% end %>
+                          <% end %>  
                         <% end %>
                           <% if group_count > 1 %>
                           <td class="col-pdf">

@@ -1,6 +1,6 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <div id="pdf-header-south" class="sfx-header">
-    <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/323/transcript.png")),:width=> '50%' %></h4>
+    <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/323/transcript.png")),:width=> '55%' %></h4>
   </div> 
   <% total_u = 0 %>
   
@@ -585,40 +585,9 @@
 
 <% end %>
 <%= stylesheet_link_tag 'list_table' %>
-
-<% if params[:page_height] %>
-  <script type="text/javascript">
-    var body = document.body,
-            html = document.documentElement;
-    var pg_height = parseInt(<%= params[:page_height] %>)
-    var page = new Element('div', {'class': 'page1'});
-    var pageBreak = new Element('div', {'class': 'page-break1'});
-    var insertPageBreak = function () {
-        body.appendChild(pageBreak.cloneNode(true))
-    };
-    var insertPage = function () {
-        body.appendChild(page.cloneNode(true));
-    };
-    var currPage = function () {
-        return $$('.page1').last()
-    };
-    var current_page_height = 0
-    var i = 0
-    $$('.available_sections1 .section1').each(function (el) {
-        a = parseInt(el.getHeight());
-        c = current_page_height + a;
-        current_page_height = c;
-        if (c > pg_height) {
-            current_page_height = a
-            body.appendChild(new Element('div', {'id': 'page-blank_' + i, 'class': 'page-blank'}))
-            document.getElementById('page-blank_' + i).style.height = (c - pg_height) + 'px';
-            document.getElementById('page-blank_' + i).innerHTML = "&nbsp;"/* if a div doesnt have any content it may not display.. set height will not work */
-            i += 1
-            el.style.marginTop = "50px"; /* for this border-top is coming, top section of each page */
-            insertPageBreak();
-            insertPage();
-        }
-        currPage().appendChild(el);
-    });
-  </script>
-<% end %>
+<style>
+  #pdf-header-south
+  {
+      width: 1000px !important;
+  }
+</style>

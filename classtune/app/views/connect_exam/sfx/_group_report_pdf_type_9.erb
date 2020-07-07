@@ -39,7 +39,7 @@
               <% if  course_name == "VIII" or course_name == "IX" %> 
                   <% senior_setion2 = true %>
               <% end %>
-              <% if senior_setion == false %>
+
               <table id="pdf-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
@@ -88,7 +88,6 @@
                       <% end %>
                       
                   </tr>
-                  
                   
                   <tr class="table-header">
                       <td class="col-pdf border-left-none no-warp  align-left-baf"><b><%= "SUBJECTS" %></b></td>
@@ -163,38 +162,6 @@
                          CODE
                       </td>  
                       <% end %> 
-                      <td class="col-pdf">
-                         FINAL AVE
-                      </td>
-                      <td class="col-pdf border-right-none">GRADES</td>
-                      
-                  </tr>
-                  
-                  <% end %>
-                  
-                  <% else %>
-                  <tr class="table-header">
-                      <td class="col-pdf border-left-none no-warp  align-left-baf"><b><%= "SUBJECTS" %></b></td>
-                      <% unless @report_data['report']['exams'].blank? %>
-                        <% ct = 0 %>
-                        <% @report_data['report']['exams'].each do |report| %>
-                          <%  if report['exam_category'] == '1' && ct == 0 %>
-                            <td class="col-pdf">
-                              Class Test
-                            </td>
-                            <% ct = 1 %>
-                          <% elsif report['exam_category'] != '1' %>
-                          <td class="col-pdf">
-                              <%= report['exam_name'] %>
-                             
-                              
-                          </td> 
-                          <% end %>
-                        <% end %>
-                      <% end %>
-                      <td class="col-pdf">
-                         CODE
-                      </td> 
                       <td class="col-pdf">
                          FINAL AVE
                       </td>

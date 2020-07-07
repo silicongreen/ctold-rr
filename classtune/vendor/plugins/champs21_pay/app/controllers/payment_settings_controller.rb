@@ -263,8 +263,12 @@ class PaymentSettingsController < ApplicationController
                 })
               
                 center_format = Spreadsheet::Format.new({
-                  :horizontal_align => :centre
-                })
+                  :horizontal_align => :centre,
+                  :vertical_align => :centre
+                });
+                vertical_format = Spreadsheet::Format.new({
+                  :vertical_align => :centre
+                });
 
                 date = Spreadsheet::Format.new :number_format => 'MM/DD/YYYY'
                 if @gateway == "trustbank"
@@ -398,25 +402,51 @@ class PaymentSettingsController < ApplicationController
                     new_book.worksheet(0).column(0).width = 20
                     new_book.worksheet(0).column(1).width = 20
                     new_book.worksheet(0).column(2).width = 20
+                    new_book.worksheet(0).column(3).width = 20
                     new_book.worksheet(0).column(4).width = 20
                     new_book.worksheet(0).column(5).width = 20
                     new_book.worksheet(0).column(6).width = 20
                     new_book.worksheet(0).column(7).width = 20
                     new_book.worksheet(0).column(8).width = 20
                     new_book.worksheet(0).column(9).width = 20
+                    
+                    new_book.worksheet(0).row(ind).set_format(0, center_format)
+                    new_book.worksheet(0).row(ind).set_format(1, center_format)
+                    new_book.worksheet(0).row(ind).set_format(2, center_format)
+                    new_book.worksheet(0).row(ind).set_format(3, center_format)
+                    new_book.worksheet(0).row(ind).set_format(4, vertical_format)
+                    new_book.worksheet(0).row(ind).set_format(5, vertical_format)
+                    new_book.worksheet(0).row(ind).set_format(6, vertical_format)
+                    new_book.worksheet(0).row(ind).set_format(7, center_format)
+                    new_book.worksheet(0).row(ind).set_format(8, center_format)
+                    new_book.worksheet(0).row(ind).set_format(9, center_format)
+                    
                   elsif @gateway == "citybank"
                     new_book.worksheet(0).column(0).width = 20
                     new_book.worksheet(0).column(1).width = 20
                     new_book.worksheet(0).column(2).width = 20
                     new_book.worksheet(0).column(3).width = 40
                     new_book.worksheet(0).column(4).width = 20
-                    new_book.worksheet(0).column(5).width = 30
+                    new_book.worksheet(0).column(5).width = 40
                     new_book.worksheet(0).column(6).width = 50
                     new_book.worksheet(0).column(7).width = 20
                     new_book.worksheet(0).column(8).width = 20
                     new_book.worksheet(0).column(9).width = 20
                     new_book.worksheet(0).column(10).width = 25
                     new_book.worksheet(0).column(11).width = 25
+                    
+                    new_book.worksheet(0).row(ind).set_format(0, center_format)
+                    new_book.worksheet(0).row(ind).set_format(1, center_format)
+                    new_book.worksheet(0).row(ind).set_format(2, center_format)
+                    new_book.worksheet(0).row(ind).set_format(3, vertical_format)
+                    new_book.worksheet(0).row(ind).set_format(4, center_format)
+                    new_book.worksheet(0).row(ind).set_format(5, vertical_format)
+                    new_book.worksheet(0).row(ind).set_format(6, vertical_format)
+                    new_book.worksheet(0).row(ind).set_format(7, vertical_format)
+                    new_book.worksheet(0).row(ind).set_format(8, vertical_format)
+                    new_book.worksheet(0).row(ind).set_format(9, vertical_format)
+                    new_book.worksheet(0).row(ind).set_format(10, center_format)
+                    new_book.worksheet(0).row(ind).set_format(11, center_format)
                   elsif @gateway == "bkash"
                     new_book.worksheet(0).column(0).width = 20
                     new_book.worksheet(0).column(1).width = 25
@@ -424,7 +454,7 @@ class PaymentSettingsController < ApplicationController
                     new_book.worksheet(0).column(3).width = 20
                     new_book.worksheet(0).column(4).width = 40
                     new_book.worksheet(0).column(5).width = 20
-                    new_book.worksheet(0).column(6).width = 30
+                    new_book.worksheet(0).column(6).width = 40
                     new_book.worksheet(0).column(7).width = 20
                     new_book.worksheet(0).column(8).width = 20
                     new_book.worksheet(0).column(9).width = 20
@@ -435,7 +465,12 @@ class PaymentSettingsController < ApplicationController
                     new_book.worksheet(0).row(ind).set_format(1, center_format)
                     new_book.worksheet(0).row(ind).set_format(2, center_format)
                     new_book.worksheet(0).row(ind).set_format(3, center_format)
+                    new_book.worksheet(0).row(ind).set_format(4, vertical_format)
                     new_book.worksheet(0).row(ind).set_format(5, center_format)
+                    new_book.worksheet(0).row(ind).set_format(6, vertical_format)
+                    new_book.worksheet(0).row(ind).set_format(7, vertical_format)
+                    new_book.worksheet(0).row(ind).set_format(8, vertical_format)
+                    new_book.worksheet(0).row(ind).set_format(9, vertical_format)
                     new_book.worksheet(0).row(ind).set_format(10, center_format)
                     new_book.worksheet(0).row(ind).set_format(11, center_format)
                   end

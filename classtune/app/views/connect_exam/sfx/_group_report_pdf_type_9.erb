@@ -129,23 +129,33 @@
                                 <% end %>
                               <% end %>  
                             <% end %>
-                            <% if group_count > 1 %>
+                            <% if group_count > 1 && total_exam > 2 %>
                               <td class="col-pdf">
-                                  GRADES
+                                  Grade
                               </td>
-                            <% end %>
+                            <% elsif group_count > 1 %>
+                              <td class="col-pdf">
+                                  Half Yearly Grade
+                              </td>
+                            <% end %>  
 
                           <% end %>
                         <% end %>
                         <% if senior_setion %>
                           <td class="col-pdf">
-                              CODE
+                              Code
                           </td>  
-                        <% end %>    
+                           
+                          <td class="col-pdf">
+                              Average 100
+                          </td>
+                        <% else %> 
                         <td class="col-pdf">
-                            FINAL AVE
-                        </td>
-                        <td class="col-pdf  border-right-none">GRADES</td>
+                              FINAL AVE
+                          </td>
+                        
+                        <% end %>
+                        <td class="col-pdf  border-right-none">Grade</td>
 
                     </tr>
 

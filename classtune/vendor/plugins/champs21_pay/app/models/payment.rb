@@ -64,6 +64,34 @@ class Payment < ActiveRecord::Base
     end
   end
 
+  def payee_roll_no
+    if payee.nil?
+      if payee_type == 'Student'
+        ArchivedStudent.find_by_former_id(payee_id).try(:full_name) || "NA"
+      elsif payee_type == 'Guardian'
+        ArchivedGuardian.find_by_former_id(payee_id).try(:full_name) || "NA"
+      elsif payee_type == 'Applicant'
+        "NA"
+      end
+    else
+      payee.class_roll_no
+    end
+  end
+
+  def payee_batch_full_name
+    if payee.nil?
+      if payee_type == 'Student'
+        ArchivedStudent.find_by_former_id(payee_id).try(:full_name) || "NA"
+      elsif payee_type == 'Guardian'
+        ArchivedGuardian.find_by_former_id(payee_id).try(:full_name) || "NA"
+      elsif payee_type == 'Applicant'
+        "NA"
+      end
+    else
+      payee.batch.full_name
+    end
+  end
+
   def payee_user
     if payee.nil?
       if payee_type == 'Student'

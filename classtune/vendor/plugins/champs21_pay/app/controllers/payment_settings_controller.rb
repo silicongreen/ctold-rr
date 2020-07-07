@@ -252,7 +252,8 @@ class PaymentSettingsController < ApplicationController
                 
                 amount_format = Spreadsheet::Format.new({
                     :horizontal_align => :right,
-                    :number_format    => "0.00"
+                    :number_format    => "0.00",
+                    :vertical_align => :centre
                 });
               
                 title_format = Spreadsheet::Format.new({
@@ -414,9 +415,6 @@ class PaymentSettingsController < ApplicationController
                     new_book.worksheet(0).row(ind).set_format(1, center_format)
                     new_book.worksheet(0).row(ind).set_format(2, center_format)
                     new_book.worksheet(0).row(ind).set_format(3, center_format)
-                    new_book.worksheet(0).row(ind).set_format(4, vertical_format)
-                    new_book.worksheet(0).row(ind).set_format(5, vertical_format)
-                    new_book.worksheet(0).row(ind).set_format(6, vertical_format)
                     new_book.worksheet(0).row(ind).set_format(7, center_format)
                     new_book.worksheet(0).row(ind).set_format(8, center_format)
                     new_book.worksheet(0).row(ind).set_format(9, center_format)
@@ -442,9 +440,6 @@ class PaymentSettingsController < ApplicationController
                     new_book.worksheet(0).row(ind).set_format(4, center_format)
                     new_book.worksheet(0).row(ind).set_format(5, vertical_format)
                     new_book.worksheet(0).row(ind).set_format(6, vertical_format)
-                    new_book.worksheet(0).row(ind).set_format(7, vertical_format)
-                    new_book.worksheet(0).row(ind).set_format(8, vertical_format)
-                    new_book.worksheet(0).row(ind).set_format(9, vertical_format)
                     new_book.worksheet(0).row(ind).set_format(10, center_format)
                     new_book.worksheet(0).row(ind).set_format(11, center_format)
                   elsif @gateway == "bkash"
@@ -468,9 +463,6 @@ class PaymentSettingsController < ApplicationController
                     new_book.worksheet(0).row(ind).set_format(4, vertical_format)
                     new_book.worksheet(0).row(ind).set_format(5, center_format)
                     new_book.worksheet(0).row(ind).set_format(6, vertical_format)
-                    new_book.worksheet(0).row(ind).set_format(7, vertical_format)
-                    new_book.worksheet(0).row(ind).set_format(8, vertical_format)
-                    new_book.worksheet(0).row(ind).set_format(9, vertical_format)
                     new_book.worksheet(0).row(ind).set_format(10, center_format)
                     new_book.worksheet(0).row(ind).set_format(11, center_format)
                   end

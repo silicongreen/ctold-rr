@@ -258,6 +258,11 @@ class PaymentSettingsController < ApplicationController
                 title_format = Spreadsheet::Format.new({
                   :weight           => :bold,
                   :size             => 11,
+                  :horizontal_align => :centre,
+                  :vertical_align => :centre
+                })
+              
+                center_format = Spreadsheet::Format.new({
                   :horizontal_align => :centre
                 })
 
@@ -425,6 +430,14 @@ class PaymentSettingsController < ApplicationController
                     new_book.worksheet(0).column(9).width = 20
                     new_book.worksheet(0).column(10).width = 20
                     new_book.worksheet(0).column(11).width = 25
+                    
+                    new_book.worksheet(0).row(ind).set_format(0, center_format)
+                    new_book.worksheet(0).row(ind).set_format(1, center_format)
+                    new_book.worksheet(0).row(ind).set_format(2, center_format)
+                    new_book.worksheet(0).row(ind).set_format(3, center_format)
+                    new_book.worksheet(0).row(ind).set_format(5, center_format)
+                    new_book.worksheet(0).row(ind).set_format(10, center_format)
+                    new_book.worksheet(0).row(ind).set_format(11, center_format)
                   end
                 
                   

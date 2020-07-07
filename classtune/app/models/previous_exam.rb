@@ -16,4 +16,5 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 class PreviousExam < ActiveRecord::Base
+  belongs_to :exam_connect
 end

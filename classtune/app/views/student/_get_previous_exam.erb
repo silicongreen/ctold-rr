@@ -42,7 +42,7 @@
       </tr>
       <% else %>
     
-        <%  prevexam = PreviousExam.find_by_connect_exam_id(p.exam_connect_id,:conditions=>["(is_finished = 1 and(data_type = 1 or data_type=2))"]) %>
+        <%  prevexam = PreviousExam.find_by_connect_exam_id(p.exam_connect_id,:conditions=>["(is_finished = 1 and is_published = 1 and(data_type = 1 or data_type=2))"]) %>
         <% unless prevexam.blank? %>
         <tr class="tr-<%= cycle('odd', 'even') %>">
           <td class="col-1"><%= p.exam_connect.name %></td>

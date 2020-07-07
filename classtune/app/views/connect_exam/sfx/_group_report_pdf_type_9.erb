@@ -39,7 +39,7 @@
               <% if  course_name == "VIII" or course_name == "IX" %> 
                 <% senior_setion2 = true %>
               <% end %>
-
+              
               <table id="pdf-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
@@ -48,6 +48,7 @@
                   <% group_count = 0 %>
                   <% unless @top_exam_group.blank? %>
                     <% group_count = @top_exam_group.count %>
+                    <% if senior_setion == false %>
                     <tr class="table-header">
                         <td class="col-pdf border-left-none no-warp  align-left-baf"></td>
                         <% unless @report_data['report']['exams'].blank? %> 
@@ -88,7 +89,7 @@
                         <% end %>
 
                     </tr>
-
+                    <% end %>
                     <tr class="table-header">
                         <td class="col-pdf border-left-none no-warp  align-left-baf"><b><%= "SUBJECTS" %></b></td>
 
@@ -556,26 +557,27 @@
     }
     .sfx table tr.table-header td
     {
-        font-size:20px;
+        font-size:19px;
         color:black;
         text-align: center;
+         padding: 2px;
     }
     .sfx table  tr.odd td
     {
-        font-size:20px;
+        font-size:19px;
         color:black;
-        padding: 3px; 
+        padding: 2px; 
     }
     .sfx table  tr.even td
     {
-        font-size:24px;
+        font-size:19px;
         color:black;
-        padding: 3px; 
+        padding: 2px; 
     }
     .sfx table  td
     {
 
-        font-size:20px;
+        font-size:19px;
         color:black;
         padding: 3px; 
     }
@@ -618,9 +620,9 @@
     .sfx td.remarks_code_table table tr td
     {
         border:none;
-        padding: 3px 3px 3px 0px;
+        padding: 2px 2px 2px 0px;
         text-align: left;
-        font-size:18px;
+        font-size:17px;
     }
     .no-warp
     {
@@ -632,7 +634,7 @@
     }
     .sfx table.text-size-18 tr td
     {
-        font-size: 18px; 
+        font-size: 17px; 
     }
 
 

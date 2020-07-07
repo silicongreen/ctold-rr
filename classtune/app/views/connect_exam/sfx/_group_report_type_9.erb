@@ -36,12 +36,28 @@
                           <% jloop = jloop+1 %>
                         <% end %>
                       <% end %>
-                          
-                     
-
-                      <td colspan="2" class="col-pdf border-right-none">
-                          AVE OF TWO TERMS
-                      </td>
+                      <% senior_setion = false %>
+                      <% senior_setion1 = false %> 
+                      <% senior_setion2 = false %> 
+                      <% course_name = @batch.course.course_name  %>
+                      <% if  course_name == "VI" or course_name == "VII" or course_name == "VIII" or course_name == "IX" %> 
+                          <% senior_setion = true %>
+                      <% end %> 
+                      <% if  course_name == "VI" or course_name == "VII" %> 
+                          <% senior_setion1 = true %>
+                      <% end %> 
+                      <% if  course_name == "VIII" or course_name == "IX" %> 
+                          <% senior_setion2 = true %>
+                      <% end %> 
+                      <% if senior_setion %>
+                         <td colspan="3" class="col-pdf border-right-none">
+                            AVE OF TWO TERMS
+                          </td> 
+                      <% else %>    
+                        <td colspan="2" class="col-pdf border-right-none">
+                            AVE OF TWO TERMS
+                        </td>
+                      <% end %>
                       
                   </tr>
                   
@@ -81,7 +97,11 @@
                      
                         <% end %>
                       <% end %>
-
+                      <% if senior_setion %>
+                      <td class="col-pdf">
+                         CODE
+                      </td>  
+                      <% end %>    
                       <td class="col-pdf">
                          FINAL AVE
                       </td>
@@ -109,7 +129,11 @@
                           <% end %>
                         <% end %>
                       <% end %>
-
+                      <% if senior_setion %>
+                      <td class="col-pdf">
+                         CODE
+                      </td>  
+                      <% end %> 
                       <td class="col-pdf">
                          FINAL AVE
                       </td>
@@ -242,6 +266,15 @@
                         %>
 
                           <% if full_mark.to_f > 0 %>
+                            <% if senior_setion %>
+                              <td class="col-pdf">
+                                <% unless @report_data['report']['comments'].blank? %>
+                                  <% unless @report_data['report']['comments'][subjects['id']].blank? %>
+                                    <%= @report_data['report']['comments'][subjects['id']] %> 
+                                  <% end %>
+                                <% end %>    
+                              </td>
+                            <% end %>
                             <td class="col-pdf"><%= main_mark.round() %></td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
@@ -256,6 +289,15 @@
                             <% total_subject = total_subject+1 %>
                             <% total_mark_all_subject = total_mark_all_subject+main_mark.round() %>
                           <% else  %>
+                            <% if senior_setion %>
+                              <td class="col-pdf">
+                                <% unless @report_data['report']['comments'].blank? %>
+                                  <% unless @report_data['report']['comments'][subjects['id']].blank? %>
+                                    <%= @report_data['report']['comments'][subjects['id']] %> 
+                                  <% end %>
+                                <% end %>    
+                              </td>
+                            <% end %>
                             <td class="col-pdf">-</td>
                             <td class="col-pdf border-right-none">-</td>
                           <% end %>      
@@ -264,7 +306,7 @@
                     <% end %>  
                   <% end %>
                       <tr class="odd">
-                          <td class="col-pdf border-left-none"><b>Total Mark</b></td>
+                          <td class="col-pdf border-left-none"><b>Total Marks</b></td>
                           
                           <% if group_count > 1 %>
                           <% unless @report_data['report']['exams'].blank? %> 
@@ -294,7 +336,9 @@
                          <% else %>
                            <td class="col-pdf group_exam" colspan="<%= @top_exam_group_count[0]-1 %>"></td>   
                          <% end %>      
-                                
+                         <% if senior_setion %>
+                           <td class="col-pdf"></td>
+                         <% end %>  
                          <td class="col-pdf"><b><%= total_mark_all_subject.round() %></b></td>
                          <td class="col-pdf border-right-none"></td>
                       </tr> 
@@ -358,7 +402,9 @@
                            <% else %>
                               <td class="col-pdf group_exam" colspan="<%= @top_exam_group_count[0]-1 %>"></td>  
                            <% end %>
-                          
+                          <% if senior_setion %>
+                            <td class="col-pdf"></td>
+                          <% end %>
                           <td class="col-pdf"></td>
                           <td class="col-pdf border-right-none "><%= report['subject_comment'] %></td>
                           </tr>

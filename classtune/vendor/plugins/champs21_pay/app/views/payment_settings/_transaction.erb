@@ -146,7 +146,7 @@
             <td style="vertical-align: middle;"><%= ((@online_payments.current_page - 1) * @online_payments.per_page) + index + 1 %></td>
             <% payee_user = payment.payee.try(:user).try(:username) unless payment.payee.class.name == "Applicant" %>
             
-            <td style="vertical-align: middle; text-align: left; padding-left: 20px !important;"><%= "#{payment.payee_admission_no}" %><br /><%= "#{payment.payee_name}" %></td>
+            <td style="vertical-align: middle; text-align: left; padding-left: 20px !important;"><%= "#{payment.payee_admission_no}" %><br /><%= "#{payment.payee_name}" %><hr style="border: 1px solid #ccc;"><%= "Roll No: #{payment.payee.class_roll_no}" %><br /><%= "#{payment.payee.batch.full_name}" %></td>
             <% if @gateway == "trustbank" %>
             <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:payment_type]}" %></td>
             <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:ref_id]}" %></td>

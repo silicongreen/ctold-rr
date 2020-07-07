@@ -1,5 +1,12 @@
 <% 
- if @connect_exam_obj.result_type.to_i > 8
+ senior_setion = false 
+  
+ course_name = @batch.course.course_name  
+ if  course_name == "VI" or course_name == "VII" or course_name == "VIII" or course_name == "IX"
+    senior_setion = true 
+end
+ 
+ if @connect_exam_obj.result_type.to_i > 8 && senior_setion == false
     if @all_exam_groups.nil?
         @all_group_exams = GroupedExam.find(
                 :all,

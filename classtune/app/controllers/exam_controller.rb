@@ -6231,12 +6231,11 @@ class ExamController < ApplicationController
           :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
       end
     elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325
-      if MultiSchool.current_school.id == 319  and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8)
+      if MultiSchool.current_school.id == 319  and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8 or @connect_exam_obj.result_type == 9)
         render :pdf => template,
           :save_to_file => file_name,
           :save_only    => for_save,
           :orientation => 'Portrait',
-  
           :margin => {    :top=> 10,
           :bottom => 10,
           :left=> 10,

@@ -254,24 +254,35 @@ class PaymentSettingsController < ApplicationController
                     :horizontal_align => :right,
                     :number_format    => "0.00"
                 });
+              
+                title_format = Spreadsheet::Format.new({
+                  :weight           => :bold,
+                  :size             => 11,
+                  :horizontal_align => :centre
+                })
 
                 date = Spreadsheet::Format.new :number_format => 'MM/DD/YYYY'
                 if @gateway == "trustbank"
                   row_1 = ["Ref ID","Order ID","Name","Merchant ID","Amount","Fees","Service Charge","Status","Verified","Trn Date"]
                 elsif @gateway == "citybank"
-                  row_1 = ["Ref ID","Order ID","Student ID","Full Name","Card Info","Fees","Service Charge","Total Amount","Status","Trn Date"]
+                  row_1 = ["Ref ID","Order ID","Student ID","Full Name", "Roll No", "Class & Section","Card Info","Fees","Service Charge","Total Amount","Status","Trn Date"]
                 elsif @gateway == "bkash"
-                  row_1 = ["trxID","Payment ID","Order ID","Student ID","Full Name","Fees","Service Charge","Total Amount","Status","Trn Date"]
+                  row_1 = ["trxID","Payment ID","Order ID","Student ID","Full Name", "Roll No", "Class & Section","Fees","Service Charge","Total Amount","Status","Trn Date"]
                 end
                 # Create a new Workbook
                 new_book = Spreadsheet::Workbook.new
 
                 # Create the worksheet
                 new_book.create_worksheet :name => 'Online Transaction'
-
+                
                 # Add row_1
                 new_book.worksheet(0).insert_row(0, row_1)
-
+                
+                row_1.each_with_index do |e, ind_row|
+                  new_book.worksheet(0).row(0).set_format(ind_row, title_format)
+                end
+                new_book.worksheet(0).row(0).height = 22
+                
                 ind = 1
                 @online_payments.each do |payment|
                   if @gateway == "trustbank"
@@ -363,15 +374,62 @@ class PaymentSettingsController < ApplicationController
                   if @gateway == "trustbank"
                     row_new = [payment.gateway_response[:ref_id], payment.gateway_response[:order_id], payment.gateway_response[:name], payment.gateway_response[:merchant_id], Champs21Precision.set_and_modify_precision(tot_amt), Champs21Precision.set_and_modify_precision(amt), Champs21Precision.set_and_modify_precision(service_change), payment.gateway_response[:status], verified, I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y")]
                   elsif @gateway == "citybank"
-                    row_new = [payment.gateway_response[:Message][:OrderID], payment.order_id, payment.payee_admission_no, payment.payee_name, payment.gateway_response[:Message][:CardHolderName].to_s + " - " + payment.gateway_response[:Message][:PAN], Champs21Precision.set_and_modify_precision(amt), Champs21Precision.set_and_modify_precision(fee_percent), Champs21Precision.set_and_modify_precision(total_amount), payment.gateway_response[:Message][:OrderStatus], I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y %H:%M:%S")]
+                    row_new = [payment.gateway_response[:Message][:OrderID], payment.order_id, payment.payee_admission_no, payment.payee_name, payment.payee_roll_no, payment.payee_batch_full_name, payment.gateway_response[:Message][:CardHolderName].to_s + " - " + payment.gateway_response[:Message][:PAN], Champs21Precision.set_and_modify_precision(amt), Champs21Precision.set_and_modify_precision(fee_percent), Champs21Precision.set_and_modify_precision(total_amount), payment.gateway_response[:Message][:OrderStatus], I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y %H:%M:%S")]
                   elsif @gateway == "bkash"
-                    row_new = [payment.gateway_response[:trxID], payment.gateway_response[:paymentID], payment.gateway_response[:merchantInvoiceNumber], payment.payee_admission_no, payment.payee_name, Champs21Precision.set_and_modify_precision(amt), Champs21Precision.set_and_modify_precision(fee_percent), Champs21Precision.set_and_modify_precision(total_amount), payment.gateway_response[:transactionStatus], I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y %H:%M:%S")]
+                    row_new = [payment.gateway_response[:trxID], payment.gateway_response[:paymentID], payment.gateway_response[:merchantInvoiceNumber], payment.payee_admission_no, payment.payee_name, payment.payee_roll_no, payment.payee_batch_full_name, Champs21Precision.set_and_modify_precision(amt), Champs21Precision.set_and_modify_precision(fee_percent), Champs21Precision.set_and_modify_precision(total_amount), payment.gateway_response[:transactionStatus], I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y %H:%M:%S")]
                   end
                   new_book.worksheet(0).insert_row(ind, row_new)
-                  new_book.worksheet(0).row(ind).set_format(5, amount_format)
-                  new_book.worksheet(0).row(ind).set_format(6, amount_format)
-                  #if @gateway == "trustbank" or @gateway == "citybank"
+                  if @gateway == "trustbank"
+                    new_book.worksheet(0).row(ind).set_format(4, amount_format)
+                    new_book.worksheet(0).row(ind).set_format(5, amount_format)
+                    new_book.worksheet(0).row(ind).set_format(6, amount_format)
+                  else  
                     new_book.worksheet(0).row(ind).set_format(7, amount_format)
+                    new_book.worksheet(0).row(ind).set_format(8, amount_format)
+                    new_book.worksheet(0).row(ind).set_format(9, amount_format)
+                  end
+                  new_book.worksheet(0).row(ind).height = 20
+                  if @gateway == "trustbank"
+                    new_book.worksheet(0).column(0).width = 20
+                    new_book.worksheet(0).column(1).width = 20
+                    new_book.worksheet(0).column(2).width = 20
+                    new_book.worksheet(0).column(4).width = 20
+                    new_book.worksheet(0).column(5).width = 20
+                    new_book.worksheet(0).column(6).width = 20
+                    new_book.worksheet(0).column(7).width = 20
+                    new_book.worksheet(0).column(8).width = 20
+                    new_book.worksheet(0).column(9).width = 20
+                  elsif @gateway == "citybank"
+                    new_book.worksheet(0).column(0).width = 20
+                    new_book.worksheet(0).column(1).width = 20
+                    new_book.worksheet(0).column(2).width = 20
+                    new_book.worksheet(0).column(3).width = 40
+                    new_book.worksheet(0).column(4).width = 20
+                    new_book.worksheet(0).column(5).width = 30
+                    new_book.worksheet(0).column(6).width = 50
+                    new_book.worksheet(0).column(7).width = 20
+                    new_book.worksheet(0).column(8).width = 20
+                    new_book.worksheet(0).column(9).width = 20
+                    new_book.worksheet(0).column(10).width = 25
+                    new_book.worksheet(0).column(11).width = 25
+                  elsif @gateway == "bkash"
+                    new_book.worksheet(0).column(0).width = 20
+                    new_book.worksheet(0).column(1).width = 25
+                    new_book.worksheet(0).column(2).width = 20
+                    new_book.worksheet(0).column(3).width = 20
+                    new_book.worksheet(0).column(4).width = 40
+                    new_book.worksheet(0).column(5).width = 20
+                    new_book.worksheet(0).column(6).width = 30
+                    new_book.worksheet(0).column(7).width = 20
+                    new_book.worksheet(0).column(8).width = 20
+                    new_book.worksheet(0).column(9).width = 20
+                    new_book.worksheet(0).column(10).width = 20
+                    new_book.worksheet(0).column(11).width = 25
+                  end
+                
+                  
+                  #if @gateway == "trustbank" or @gateway == "citybank"
+                    
                   #end
                   
                   ind += 1

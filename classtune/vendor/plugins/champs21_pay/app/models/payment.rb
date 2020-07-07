@@ -64,7 +64,7 @@ class Payment < ActiveRecord::Base
     end
   end
 
-  def payee_roll_no
+  def payee_roll_no 
     if payee.nil?
       if payee_type == 'Student'
         ArchivedStudent.find_by_former_id(payee_id).try(:full_name) || "NA"

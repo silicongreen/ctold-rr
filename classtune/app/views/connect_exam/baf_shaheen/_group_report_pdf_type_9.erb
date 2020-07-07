@@ -1,6 +1,6 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <div id="pdf-header-south" class="sfx-header">
-    <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/323/transcript.png")),:width=> '55%' %></h4>
+    <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/323/transcript.png")),:width=> '65%' %></h4>
   </div> 
   <% total_u = 0 %>
   
@@ -588,6 +588,6 @@
 <style>
   #pdf-header-south
   {
-      width: 1000px !important;
+      width: 1200px !important;
   }
 </style>

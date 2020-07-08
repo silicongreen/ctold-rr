@@ -122,8 +122,16 @@
                   <% payment = Payment.find_by_finance_transaction_id(transaction_id) %>
                   <% amount = payment.gateway_response[:amount] %>  
                   <% if payment.gateway_txt == "bkash" %>
-                    <% finance_transaction = FinanceTransaction.find(transaction_id) %>
-                    <% amount = finance_transaction.amount %>  
+                    <%
+                      amount = 0
+                      payments = Payment.find(:all, :conditions => "order_id = #{order}")
+                      unless payments.blank?
+                        payments.each do |p|
+                          finance_transaction = FinanceTransaction.find(p.finance_transaction_id)
+                          amount += finance_transaction.amount 
+                        end
+                      end
+                    %>
                   <% end %>
                   <% if pg == 1 %>
                     <% if j == tar1 %>

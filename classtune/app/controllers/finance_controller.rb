@@ -1157,11 +1157,18 @@ class FinanceController < ApplicationController
       if student.nil?
         student = ArchivedStudent.find(:first, :conditions => "former_id = #{std_id}")
       end
+      
       payment = Payment.find_by_finance_transaction_id(transaction_id)
       amount = payment.gateway_response[:amount]
       if payment.gateway_txt == "bkash"
-        finance_transaction = FinanceTransaction.find(transaction_id)
-        amount = finance_transaction.amount 
+        amount = 0
+        payments = Payment.find(:all, :conditions => "order_id = #{order}")
+        unless payments.blank?
+          payments.each do |p|
+            finance_transaction = FinanceTransaction.find(p.finance_transaction_id)
+            amount += finance_transaction.amount 
+          end
+        end
       end 
       
       total_amount += amount.to_f

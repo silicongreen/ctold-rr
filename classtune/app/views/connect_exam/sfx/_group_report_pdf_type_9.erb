@@ -32,11 +32,11 @@
                 <td class="td-align-right">Class : <input type="checkbox"  />&nbsp;AS Level&nbsp;&nbsp;<input type="checkbox" checked="checked" />&nbsp;A2 Level</td>
 
               <% else %>
-                <td class="border-left-none">Name : <b><%= @student.full_name %></b></td>
+                <td >Name : <b><%= @student.full_name %></b></td>
                 <td>Class : <b><%= @batch.course.course_name %></b></td>
                 <td>Section : <b><%= @batch.course.section_name %></b></td>
                 <% if senior_setion == false %>
-                <td class="border-right-none">Roll : <b><%= @student.class_roll_no %></b></td>
+                <td >Roll : <b><%= @student.class_roll_no %></b></td>
                 <% end %>
               <% end %>
           </tr>
@@ -56,7 +56,7 @@
                     <% group_count = @top_exam_group.count %>
                     <% if senior_setion == false %>
                     <tr class="table-header">
-                        <td class="col-pdf border-left-none no-warp  align-left-baf"></td>
+                        <td class="col-pdf no-warp  align-left-baf"></td>
                     <% end %>    
                         <% unless @report_data['report']['exams'].blank? %> 
                           <% jloop = 0 %>
@@ -88,11 +88,11 @@
                         <% end %>
                     <% if senior_setion == false %>
                         <% if senior_setion %>
-                          <td colspan="3" class="col-pdf border-right-none">
+                          <td colspan="3" class="col-pdf">
                               AVE OF TWO TERMS
                           </td> 
                         <% else %>    
-                          <td colspan="2" class="col-pdf border-right-none">
+                          <td colspan="2" class="col-pdf">
                               AVE OF TWO TERMS
                           </td>
                         <% end %>
@@ -100,7 +100,7 @@
                     </tr>
                     <% end %>
                     <tr class="table-header">
-                        <td class="col-pdf border-left-none no-warp  align-left-baf"><b><%= "SUBJECTS" %></b></td>
+                        <td class="col-pdf  no-warp  align-left-baf"><b><%= "SUBJECTS" %></b></td>
 
 
                         <% unless @report_data['report']['exams'].blank? %> 
@@ -159,13 +159,13 @@
                           </td>
                         
                         <% end %>
-                        <td class="col-pdf  border-right-none">Grade</td>
+                        <td class="col-pdf">Grade</td>
 
                     </tr>
 
                   <% else %>
                     <tr class="table-header">
-                        <td class="col-pdf border-left-none no-warp  align-left-baf"><b><%= "SUBJECTS" %></b></td>
+                        <td class="col-pdf no-warp  align-left-baf"><b><%= "SUBJECTS" %></b></td>
                         <% unless @report_data['report']['exams'].blank? %>
                           <% ct = 0 %>
                           <% @report_data['report']['exams'].each do |report| %>
@@ -191,7 +191,7 @@
                         <td class="col-pdf">
                             FINAL AVE
                         </td>
-                        <td class="col-pdf border-right-none">GRADES</td>
+                        <td class="col-pdf">GRADES</td>
 
                     </tr>
 
@@ -216,7 +216,7 @@
                           <% converted_total_showded = 0 %>
                           <% total_exam = 0 %>
 
-                          <td class="col-pdf border-left-none no-warp align-left-baf"><%= subjects['name'] %></td>
+                          <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
                               <% if group_count > 1 %>
@@ -353,7 +353,7 @@
                               </td>
                             <% end %>
                             <td class="col-pdf">-</td>
-                            <td class="col-pdf border-right-none">-</td>
+                            <td class="col-pdf">-</td>
                           <% end %>      
 
                       </tr> 
@@ -361,7 +361,7 @@
                   <% end %>
                   <% if senior_setion == false %>
                   <tr class="odd">
-                      <td class="col-pdf border-left-none"><b>Total Marks</b></td>
+                      <td class="col-pdf "><b>Total Marks</b></td>
 
                       <% if group_count > 1 %>
                         <% unless @report_data['report']['exams'].blank? %> 
@@ -395,7 +395,7 @@
                         <td class="col-pdf"></td>
                       <% end %>  
                       <td class="col-pdf"><b><%= total_mark_all_subject.round() %></b></td>
-                      <td class="col-pdf border-right-none"></td>
+                      <td class="col-pdf"></td>
                   </tr> 
                   <% end %>
                   <%  
@@ -428,7 +428,7 @@
 
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
-                            <td class="col-pdf border-left-none  align-left-baf"><%= report['subject_name'] %></td>
+                            <td class="col-pdf   align-left-baf"><%= report['subject_name'] %></td>
 
                             <% if group_count > 1 %>
                               <% unless @report_data['report']['exams'].blank? %> 
@@ -462,7 +462,7 @@
                               <td class="col-pdf"></td>
                             <% end %>
                             <td class="col-pdf"></td>
-                            <td class="col-pdf border-right-none "><%= report['subject_comment'] %></td>
+                            <td class="col-pdf  "><%= report['subject_comment'] %></td>
                         </tr>
                       <% end %>
                     <% end %>
@@ -496,9 +496,9 @@
               <% else %> 
                 <h5><b>&nbsp;</b></h5>
                 <table id="pdf-table" width="99.8%" cellspacing="0">
-                    <tr class="even"><td class="border-left-none align-left-baf" width="30%">NO. OF WORKING DAYS</td><td class="border-right-none align-left-baf"><%= @connect_exam_obj.total_working_days %></td></tr>
-                    <tr class="even"><td class="border-left-none align-left-baf" width="30%">PRESENT</td><td class="border-right-none align-left-baf"><%= present %></td></tr>
-                    <tr class="even"><td class="border-left-none align-left-baf" width="30%">ABSENT</td><td class="border-right-none align-left-baf"><%= @connect_exam_obj.total_working_days.to_i - present.to_i %></td></tr>
+                    <tr class="even"><td class=" align-left-baf" width="30%">NO. OF WORKING DAYS</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days %></td></tr>
+                    <tr class="even"><td class=" align-left-baf" width="30%">PRESENT</td><td class=" align-left-baf"><%= present %></td></tr>
+                    <tr class="even"><td class=" align-left-baf" width="30%">ABSENT</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days.to_i - present.to_i %></td></tr>
                 </table>
                 <% has_grade_subject = false %>
                 <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
@@ -519,8 +519,8 @@
                           <%  if @all_subject_grade.include?(report['id'].to_i) %>
 
                             <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                                <td class="col-pdf border-left-none  align-left-baf" width="30%"><%= report['subject_name'] %></td>
-                                <td class="col-pdf border-right-none align-left-baf"><%= report['subject_comment'] %></td>
+                                <td class="col-pdf   align-left-baf" width="30%"><%= report['subject_name'] %></td>
+                                <td class="col-pdf  align-left-baf"><%= report['subject_comment'] %></td>
                             </tr>
                           <% end %>
                         <% end %>

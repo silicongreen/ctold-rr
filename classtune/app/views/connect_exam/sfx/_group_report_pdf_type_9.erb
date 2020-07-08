@@ -1,11 +1,25 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
+  <% senior_setion = false %>
+  <% senior_setion1 = false %> 
+  <% senior_setion2 = false %> 
+  <% course_name = @batch.course.course_name  %>
+  <% if  course_name == "VI" or course_name == "VII" or course_name == "VIII" or course_name == "IX" %> 
+    <% senior_setion = true %>
+  <% end %> 
+  <% if  course_name == "VI" or course_name == "VII" %> 
+    <% senior_setion1 = true %>
+  <% end %> 
+  <% if  course_name == "VIII" or course_name == "IX" %> 
+    <% senior_setion2 = true %>
+  <% end %>
   <div id="pdf-header-south" class="sfx-header">
     <h2 align="center">St. Francis Xavier's Greenherald International School</h2>
   </div> 
   <p align="center">&nbsp;</p>
   <div id="page-yield"  class="available_sections1 sjis-new sfx">
-      
+      <% if senior_setion == false %>
       <h2 align="center"><%= @connect_exam_obj.name %></h2>
+      <% end %>
 
       <table id="pdf-table" class="margin-top-bottom-20" width="100%" cellspacing="0">
           <tr class="even">
@@ -21,26 +35,16 @@
                 <td class="border-left-none">Name : <b><%= @student.full_name %></b></td>
                 <td>Class : <b><%= @batch.course.course_name %></b></td>
                 <td>Section : <b><%= @batch.course.section_name %></b></td>
+                <% if senior_setion == false %>
                 <td class="border-right-none">Roll : <b><%= @student.class_roll_no %></b></td>
+                <% end %>
               <% end %>
           </tr>
       </table>
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
 
-              <% senior_setion = false %>
-              <% senior_setion1 = false %> 
-              <% senior_setion2 = false %> 
-              <% course_name = @batch.course.course_name  %>
-              <% if  course_name == "VI" or course_name == "VII" or course_name == "VIII" or course_name == "IX" %> 
-                <% senior_setion = true %>
-              <% end %> 
-              <% if  course_name == "VI" or course_name == "VII" %> 
-                <% senior_setion1 = true %>
-              <% end %> 
-              <% if  course_name == "VIII" or course_name == "IX" %> 
-                <% senior_setion2 = true %>
-              <% end %>
+              
               
               <table id="pdf-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
@@ -355,6 +359,7 @@
                       </tr> 
                     <% end %>  
                   <% end %>
+                  <% if senior_setion == false %>
                   <tr class="odd">
                       <td class="col-pdf border-left-none"><b>Total Marks</b></td>
 
@@ -392,6 +397,7 @@
                       <td class="col-pdf"><b><%= total_mark_all_subject.round() %></b></td>
                       <td class="col-pdf border-right-none"></td>
                   </tr> 
+                  <% end %>
                   <%  
 
                   group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
@@ -485,7 +491,7 @@
             %>
 
 
-              <% if senior_setion1 %>
+              <% if senior_setion %>
                 <%= render  :partial=>"/connect_exam/sfx/comments6" %> 
               <% else %> 
                 <h5><b>&nbsp;</b></h5>

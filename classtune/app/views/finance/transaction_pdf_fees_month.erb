@@ -121,7 +121,10 @@
                   <% end %>
                   <% payment = Payment.find_by_finance_transaction_id(transaction_id) %>
                   <% amount = payment.gateway_response[:amount] %>  
-                
+                  <% if payment.gateway_txt == "bkash" %>
+                    <% finance_transaction = FinanceTransaction.find(transaction_id) %>
+                    <% amount = finance_transaction.amount %>  
+                  <% end %>
                   <% if pg == 1 %>
                     <% if j == tar1 %>
                       <tr><td colspan="3" style="height: 40px;"></td></tr>

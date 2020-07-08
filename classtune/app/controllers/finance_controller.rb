@@ -1159,6 +1159,10 @@ class FinanceController < ApplicationController
       end
       payment = Payment.find_by_finance_transaction_id(transaction_id)
       amount = payment.gateway_response[:amount]
+      if payment.gateway_txt == "bkash"
+        finance_transaction = FinanceTransaction.find(transaction_id)
+        amount = finance_transaction.amount 
+      end 
       
       total_amount += amount.to_f
       row_new = [i+1, student.full_name, student.admission_no, order, amount.to_f]

@@ -9,6 +9,7 @@
   <%
   @student_list = []
   @student_subject_marks = {}
+  @student_subject_mark_test = {}
   @subject_highest = {}
   @student_avg_mark = {}
   unless @tabulation_data.blank?
@@ -121,8 +122,14 @@
             if @student_subject_marks[sub['id'].to_i].blank?
               @student_subject_marks[sub['id'].to_i] = {}
             end
+          
+            if @student_subject_mark_test[std['id'].to_i].blank?
+              @student_subject_mark_test[std['id'].to_i] = {}
+            end
+          
             
-            @student_subject_marks[sub['id'].to_i][std['id'].to_i] = subject_full_marks
+            @student_subject_mark_test[std['id'].to_i][sub['id'].to_i] = subject_full_marks.round()
+            @student_subject_marks[sub['id'].to_i][std['id'].to_i] = subject_full_marks.round()
            
            subject_grade = ""
            grade = GradingLevel.percentage_to_grade(subject_full_marks, @batch.id)

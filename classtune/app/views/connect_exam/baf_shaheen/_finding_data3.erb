@@ -36,8 +36,8 @@
         cw = 0 
         total_mark = 0 
         total_subject = 0
-        unless tab['sub'].blank? 
-          tab['sub'].each do |sub|
+        unless tab['subjects'].blank? 
+          tab['subjects'].each do |sub|
             if sub['grade_subject'].to_i == 1
               next
             end
@@ -69,7 +69,7 @@
                     sub_cw = sub_cw.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                   end
                   end
-                if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?  and !rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
 
                   if rs['exam_category'] == '7'
                     sub_hw_full_mark = sub_hw_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
@@ -143,12 +143,12 @@
         end
         total_mark = total_mark+ag_assessment.to_f+ag_hw.to_f+ag_cw.to_f
 
-        unless tab['sub'].blank? 
+        unless tab['subjects'].blank? 
             finish = false
             total_mark_life = 0
             start = true
             sub = 0
-            tab['sub'].each do |sub|
+            tab['subjects'].each do |sub|
               if sub['grade_subject'].to_i != 1
                 next
               end
@@ -191,8 +191,8 @@
         cw = 0 
         total_mark = 0 
         total_subject = 0
-        unless tab['sub'].blank? 
-          tab['sub'].each do |sub|
+        unless tab['subjects'].blank? 
+          tab['subjects'].each do |sub|
             if sub['grade_subject'].to_i == 1
               next
             end
@@ -298,12 +298,12 @@
         end
         total_mark = total_mark+ag_assessment.to_f+ag_hw.to_f+ag_cw.to_f
 
-        unless tab['sub'].blank? 
+        unless tab['subjects'].blank? 
             finish = false
             total_mark_life = 0
             start = true
             sub = 0
-            tab['sub'].each do |sub|
+            tab['subjects'].each do |sub|
               if sub['grade_subject'].to_i != 1
                 next
               end

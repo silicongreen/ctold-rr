@@ -172,8 +172,8 @@
         end
 
         att_mark = 0
-        if !@tabulation_data['adata'].blank? and !@tabulation_data['adata'][batch_id].blank? and !@tabulation_data['adata'][batch_id][0].blank? and !@tabulation_data['adata'][batch_id][0][std['id']].blank?
-          total = @tabulation_data['adata'][batch_id][0][std['id']]
+        if !@tabulation_data['adata'].blank? and !@tabulation_data['adata'][batch_id].blank? and !@tabulation_data['adata'][batch_id][0].blank?
+          total = @tabulation_data['adata'][batch_id][0]
           present = @tabulation_data['adata'][batch_id][1][std['id']]
           att_mark = (present.to_f/total.to_f)*10
           att_mark = sprintf( "%0.01f", att_mark)
@@ -324,8 +324,8 @@
         end
 
         att_mark = 0
-        if !@tabulation_data['adata_first_term'].blank? and !@tabulation_data['adata_first_term'][batch_id].blank? and !@tabulation_data['adata_first_term'][batch_id][0].blank? and !@tabulation_data['adata_first_term'][batch_id][0][std['id']].blank?
-          total = @tabulation_data['adata_first_term'][batch_id][0][std['id']]
+        if !@tabulation_data['adata_first_term'].blank? and !@tabulation_data['adata_first_term'][batch_id].blank? and !@tabulation_data['adata_first_term'][batch_id][0].blank?
+          total = @tabulation_data['adata_first_term'][batch_id][0]
           present = @tabulation_data['adata_first_term'][batch_id][1][std['id']]
           att_mark = (present.to_f/total.to_f)*10
           att_mark = sprintf( "%0.01f", att_mark)

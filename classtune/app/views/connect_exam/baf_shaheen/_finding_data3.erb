@@ -20,10 +20,11 @@
       end
       batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
       batch_subject_id = batch_subject.map(&:id)
+      batch_id = @tabulation_data['batches'][batch_loop]
       batch_loop = batch_loop+1
       connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
       connect_exam = connect_exam+1
-      batch_id = @tabulation_data['batches'][batch_loop]
+      
       
       tab['students'].each do |std| 
         subject_count_std = 0
@@ -379,7 +380,7 @@
         end
           
         std_marks_full_new = 5000.00-main_total.to_f
-        @student_list << [std_marks_full_new.to_f,std['id'].to_i,total_mark_mid_term,batch_id]
+        @student_list << [std_marks_full_new.to_f,std['id'].to_i]
          
 
       end

@@ -41,6 +41,9 @@
             if sub['grade_subject'].to_i == 1
               next
             end
+            if !batch_subject_id.include?(sub['id'].to_i) or !std_subject_id.include?(sub['id'].to_i)
+              next
+            end  
 
             subjectdata = Subject.find(sub['id'].to_i)
 
@@ -111,7 +114,7 @@
               hw_avg = (sub_hw.to_f/sub_hw_full_mark.to_f)*20
               hw_avg = hw_avg.round()
               hw = hw+hw_avg
-              end
+            end
             if sub_cw > 0
               cw_avg = (sub_cw.to_f/sub_cw_full_mark.to_f)*10
               cw_avg = cw_avg.round()
@@ -147,6 +150,9 @@
            
             tab['subjects'].each do |sub|
               if sub['grade_subject'].to_i != 1
+                next
+              end
+              if !batch_subject_id.include?(sub['id'].to_i) or !std_subject_id.include?(sub['id'].to_i)
                 next
               end
 
@@ -191,6 +197,9 @@
         unless tab['subjects'].blank? 
           tab['subjects'].each do |sub|
             if sub['grade_subject'].to_i == 1
+              next
+            end
+            if !batch_subject_id.include?(sub['id'].to_i) or !std_subject_id.include?(sub['id'].to_i)
               next
             end
 
@@ -301,6 +310,9 @@
               if sub['grade_subject'].to_i != 1
                 next
               end
+              if !batch_subject_id.include?(sub['id'].to_i) or !std_subject_id.include?(sub['id'].to_i)
+                next
+              end
 
               
               sub_mark = 0
@@ -367,7 +379,7 @@
         end
           
         std_marks_full_new = 5000.00-main_total.to_f
-        @student_list << [main_total.to_f,std['id'].to_i,total_mark_mid_term,total_mark_final_term]
+        @student_list << [std_marks_full_new.to_f,std['id'].to_i,total_mark_mid_term]
          
 
       end

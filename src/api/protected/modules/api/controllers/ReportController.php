@@ -434,6 +434,9 @@ class ReportController extends Controller
                 
                 $groupexam = new GroupedExams();
                 $batch_ids =  array();
+                $adata = [];
+                $adata_first_term = [];
+                $first_term_id = 0;
                 if($all_class_report)
                 {
                    $exam_report = array();
@@ -442,9 +445,18 @@ class ReportController extends Controller
                    {
                        foreach($new_connect_exam_id as $value)
                        {
-                           $examData = $connectexmObj->findByPk($value);
-                           $exam_report[] = $groupexam->getTabulation($examData->batch_id,$value);
-                           $batch_ids[] = $examData->batch_id;
+                            $examData = $connectexmObj->findByPk($value);
+                            $exam_report_main = $exam_report[] = $groupexam->getTabulation($examData->batch_id,$value);
+                            $batch_ids[] = $examData->batch_id;
+                            $first_term_id = $cont_exam->getConnectExamFirstTerm($examData->batch_id);
+                   
+                            $attandence = new Attendances();
+                            $adata[$examData->batch_id] = $attandence->getTotalPrsent($examData->batch_id, $value,$exam_report_main['students']);
+
+                            if($first_term_id && $first_term_id!=$value)
+                            {
+                               $adata_first_term[$examData->batch_id] = $attandence->getTotalPrsent($examData->batch_id, $first_term_id, $exam_report_main['students']);
+                            }
                        }    
                    }
                    
@@ -452,12 +464,26 @@ class ReportController extends Controller
                 else 
                 {
                    $exam_report = $groupexam->getTabulation($batch_id,$connect_exam_id);
+                   $first_term_id = $cont_exam->getConnectExamFirstTerm($batch_id);
+                   
+                   $attandence = new Attendances();
+                   $adata = $attandence->getTotalPrsent($batch_id, $connect_exam_id,$exam_report['students']);
+
+                   $adata_first_term = array();
+                   if($first_term_id && $first_term_id!=$connect_exam_id)
+                   {
+                      $adata_first_term = $attandence->getTotalPrsent($batch_id, $first_term_id, $exam_report['students']);
+                   }
+                   
                 }
                 
                 if ($exam_report) {
                     $response['data']['report'] = $exam_report;
                     $response['data']['batches'] = $batch_ids;
                     $response['data']['connect_exams'] = $new_connect_exam_id;
+                    $response['data']['adata'] = $adata;
+                    $response['data']['adata_first_term'] = $adata_first_term;
+                    
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "EXAM_REPORT_FOUND";
                     $objPreviousExam->saveExam($connect_exam_id,CJSON::encode($response),$is_finished,$data_type);

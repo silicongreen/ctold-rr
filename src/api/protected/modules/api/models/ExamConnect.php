@@ -113,6 +113,10 @@ class ExamConnect extends CActiveRecord
         {
             $res_type = array(1);
         }
+        if(Yii::app()->user->schoolId == 323)
+        {
+            $res_type = array(2,8,10);
+        }
         $criteria = new CDbCriteria;
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.is_deleted', 0);

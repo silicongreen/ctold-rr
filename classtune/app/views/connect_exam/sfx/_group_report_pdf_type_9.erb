@@ -136,9 +136,13 @@
                               <td class="col-pdf">
                                   Grade
                               </td>
-                            <% elsif group_count > 1 %>
+                            <% elsif group_count > 1 && senior_setion %>
                               <td class="col-pdf">
                                   Half Yearly Grade
+                              </td>
+                            <% elsif group_count > 1  %> 
+                              <td class="col-pdf">
+                                  Grade
                               </td>
                             <% end %>  
 
@@ -580,6 +584,7 @@
         color: #000;
         font-weight: bold;
     }
+    <% if senior_setion == true %>
     .sfx table tr.table-header td
     {
         font-size:19px;
@@ -606,6 +611,7 @@
         color:black;
         padding: 3px; 
     }
+    <% end %>
 
     .sfx .left-table
     {

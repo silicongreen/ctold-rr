@@ -297,7 +297,8 @@
                       <td class="col-pdf border-right-none"><%= total_mark_life %></td>
                     </tr>
                     <% total_mark = total_mark+total_mark_life.to_f %>
-                <% end %>  
+                <% end %> 
+              
               </table>
               
               <%
@@ -591,6 +592,7 @@
                         new_roll = "-"
                         new_section = "-"
                       %>
+                      <% end %>
                       <td>Merit Position: <%= merit_position %></td>
                       <td>New Roll:  <%= new_roll %></td>
                       <td>New Section:  <%= new_section %></td>

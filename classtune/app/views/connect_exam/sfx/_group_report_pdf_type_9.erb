@@ -210,7 +210,7 @@
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% subjectdata = Subject.find(subjects['id'].to_i) %>
                       <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
-                      <% if @has_exam_student == false && senior_setion == true %>
+                      <% if @has_exam_student == false && senior_setion2 == true %>
                          <% next %>
                       <% end %>
                       <% has_exam = false %>
@@ -222,7 +222,7 @@
                           <% end %>
                         <% end %>
                       <% end %>
-                      <% if has_exam == false && senior_setion == true %>
+                      <% if has_exam == false && senior_setion2 == true %>
                          <% next %>
                       <% end %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">

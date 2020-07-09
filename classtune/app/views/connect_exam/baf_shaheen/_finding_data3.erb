@@ -41,7 +41,7 @@
             if sub['grade_subject'].to_i == 1
               next
             end
-            if !batch_subject_id.include?(sub['id'].to_i) or !std_subject_id.include?(sub['id'].to_i)
+            if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
               next
             end  
 
@@ -152,7 +152,7 @@
               if sub['grade_subject'].to_i != 1
                 next
               end
-              if !batch_subject_id.include?(sub['id'].to_i) or !std_subject_id.include?(sub['id'].to_i)
+              if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
                 next
               end
 
@@ -199,7 +199,7 @@
             if sub['grade_subject'].to_i == 1
               next
             end
-            if !batch_subject_id.include?(sub['id'].to_i) or !std_subject_id.include?(sub['id'].to_i)
+            if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
               next
             end
 
@@ -310,7 +310,7 @@
               if sub['grade_subject'].to_i != 1
                 next
               end
-              if !batch_subject_id.include?(sub['id'].to_i) or !std_subject_id.include?(sub['id'].to_i)
+              if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
                 next
               end
 

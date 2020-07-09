@@ -336,10 +336,10 @@
         end
 
         att_mark = 0
-        if !@tabulation_data['adata_first_term'].blank? and !@tabulation_data['adata_first_term'][batch_id].blank? and !@tabulation_data['adata_first_term'][batch_id][0].blank?
-          total = @tabulation_data['adata_first_term'][batch_id][0]
-          present = @tabulation_data['adata_first_term'][batch_id][1][std['id']]
-          att_mark = (present.to_f/total.to_f)*10
+        if !@tabulation_data['adata_first_term'].blank? and !@tabulation_data['adata_first_term'][batch_id.to_s].blank? and !@tabulation_data['adata_first_term'][batch_id.to_s][0].blank?
+          total_days = @tabulation_data['adata_first_term'][batch_id.to_s][0]
+          present = @tabulation_data['adata_first_term'][batch_id.to_s][1][std['id'].to_s]
+          att_mark = (present.to_f/total_days.to_f)*10
           att_mark = sprintf( "%0.01f", att_mark)
           total_mark = total_mark+att_mark.to_f
         end
@@ -379,7 +379,7 @@
         end
           
         std_marks_full_new = 5000.00-main_total.to_f
-        @student_list << [std_marks_full_new.to_f,std['id'].to_i,total_mark_mid_term]
+        @student_list << [std_marks_full_new.to_f,std['id'].to_i,total_mark_mid_term,total_days]
          
 
       end

@@ -574,7 +574,7 @@
               <table id="pdf-table" class="evaluation" width="99.8%" >
                   <tr class="odd">
                       <td>Promoted to: <% if !@promoted_to.blank? and @promoted_to!="0" %><%= @promoted_to %><% end %></td>
-                      <% if !@student_position[@student.id.to_i].blank? and promotion_status != "-" %>
+                      <% if !@student_position[@student.id.to_i].blank? %>
                           <% merit_position = @student_position[@student.id.to_i] %>
                           <% unless @student_roll[@student_real_position[@student.id.to_i].to_i].blank? %>
                              <% new_roll = @student_roll[@student_real_position[@student.id.to_i].to_i] %>

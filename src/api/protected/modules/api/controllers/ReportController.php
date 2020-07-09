@@ -433,6 +433,7 @@ class ReportController extends Controller
                 }    
                 
                 $groupexam = new GroupedExams();
+                $cont_exam = new ExamConnect();
                 $batch_ids =  array();
                 $adata = [];
                 $adata_first_term = [];

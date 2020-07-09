@@ -67,6 +67,8 @@
               end  
             end
           
+            std_subject_marks_final = std_subject_marks_final.round()
+          
             tab['exams'].each do |rs|
               if rs['exam_category'] != '3' or rs['quarter'] != '6'
                 next
@@ -103,7 +105,8 @@
                 std_subject_marks_mid = std_subject_marks_mid+obt_mark.to_f
               end  
             end
-          
+            std_subject_marks_mid = std_subject_marks_mid.round()
+            
             tab['exams'].each do |rs|
               if rs['exam_category'] != '3' or rs['quarter'] == '6'
                 next

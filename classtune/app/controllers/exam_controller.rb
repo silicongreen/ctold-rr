@@ -3645,6 +3645,199 @@ class ExamController < ApplicationController
     send_data spreadsheet.string, :filename => @batch.full_name + "-" + @subject.name + ".xls", :type =>  "application/vnd.ms-excel"
   end
   
+  def tabulation_excell_sems2
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    new_book = Spreadsheet::Workbook.new
+    sheet1 = new_book.create_worksheet :name => 'tabulation'
+    @id = params[:id]
+    @connect_exam_obj = ExamConnect.find_by_id(@id)
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    get_continues(@id,@batch.id)
+    @report_data = []
+    if @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end
+    if !@report_data.blank?
+      
+      row_first = ['ID','Name','Class','House','Total Mark','Obtain Mark']
+      new_book.worksheet(0).insert_row(0, row_first)
+      
+      @all_subject_exam = @report_data['report']['subjects']
+      @all_student_subject = StudentsSubject.find_all_by_batch_id(@batch.id)
+      @total_std_in_class = @report_data['report']['students'].count
+      iloop = 0
+      @report_data['report']['students'].each do |std| 
+        subjects_new = []
+        subjects_ids = []
+        unless @all_subject_exam.blank? 
+          @all_subject_exam.each do |subjects|
+            if subjects['elective_group_id'].to_i!=0 && MultiSchool.current_school.id!=319 && MultiSchool.current_school.id!=324
+              @all_student_subject.each do |sub_std|
+                if subjects['id'].to_i == sub_std.subject_id and std['id'].to_i == sub_std.student_id and !subjects_ids.include?(subjects['id'].to_i)
+                  subjects_new << subjects
+                  subjects_ids << subjects['id'].to_i
+                end 
+              end 
+            elsif !subjects_ids.include?(subjects['id'].to_i)
+              subjects_new << subjects 
+              subjects_ids << subjects['id'].to_i
+            end 
+          end
+        end
+        @report_data['report']['subjects'] = subjects_new
+    
+        @student = Student.find_by_id(std['id'].to_i)
+        
+        unless @student.blank?
+      
+          if !@report_data['report']['all_result'][std['id']]['exams'].blank?
+            @report_data['report']['exams'] = @report_data['report']['all_result'][std['id']]['exams']
+            iloop = iloop+1
+            row = []
+            row << @student.admission_no
+            row << @student.full_name
+            row << @batch.full_name
+            ad_details = StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,14)
+            unless ad_details.blank?
+              row << ad_details.additional_info
+            else
+              row << ""
+            end
+            grand_total_mark = 0
+            gradn_obtain_mark = 0
+            unless @report_data['report']['subjects'].blank? 
+              @report_data['report']['subjects'].each do |subjects|
+                loop = 0
+                
+                
+                 total_mark = 0 
+                 full_mark = 22.5 
+                 class_test = []
+                 unless @report_data['report']['exams'].blank?   
+                   @report_data['report']['exams'].each do |report| 
+                     if report['exam_category'] != '1' or report['quarter'] != '6'  
+                       next 
+                     end 
+                     if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? 
+                       obt_mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f/report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f)*7.5 
+                       class_test << obt_mark.round(2) 
+                     else 
+                       class_test << 0 
+                     end 
+                   end 
+                 end 
+                 class_test.sort! {|x,y| y <=> x }  
+                 total_mark = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f 
+
+                 unless @report_data['report']['exams'].blank?   
+                   @report_data['report']['exams'].each do |report| 
+                    if report['exam_category'] == '1' or report['exam_category'] == '3' or report['quarter'] != '6'  
+                      next 
+                    end 
+
+                    if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? 
+                      obt_mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f/report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f)*2.5 
+                       total_mark = total_mark.to_f+obt_mark.to_f 
+                    end 
+                    if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? 
+                      full_mark = full_mark+2.5 
+                    end
+                   end 
+                 end 
+                 total_mark = total_mark.round() 
+                
+
+                 unless @report_data['report']['exams'].blank?   
+                   @report_data['report']['exams'].each do |report| 
+                    if report['exam_category'] != '3' or report['quarter'] != '6'  
+                      next 
+                    end
+                    if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?  
+                      marks_obtain = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f*2.00 
+                      total_mark = total_mark.to_f+marks_obtain.to_f 
+                    end 
+                    if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? 
+                      new_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f*2.00 
+                      full_mark = full_mark+new_full_mark 
+                    end
+
+                   end 
+                 end 
+                
+                
+                midterm_total = 0
+                midterm_30 = 0
+                class_test = []
+                unless @report_data['report']['exams'].blank?   
+                  @report_data['report']['exams'].each do |report| 
+                    if report['exam_category'] != '1' or report['quarter'] == '6'  
+                      next 
+                    end 
+                    if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? 
+                      obt_mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f/report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f)*7.5 
+                      class_test << obt_mark.round(2) 
+                    else 
+                      class_test << 0 
+                    end 
+                  end 
+                end 
+                class_test.sort! {|x,y| y <=> x }  
+                midterm_total = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f
+                unless @report_data['report']['exams'].blank?   
+                  @report_data['report']['exams'].each do |report| 
+                   if report['exam_category'] == '1' or report['exam_category'] == '3' or report['quarter'] == '6'  
+                     next 
+                   end 
+                   if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? 
+                     obt_mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f/report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f)*2.5 
+                     midterm_total = midterm_total.to_f+obt_mark.to_f 
+                   end
+                  end 
+                end 
+                midterm_total = midterm_total.round()
+
+                unless @report_data['report']['exams'].blank?   
+                  @report_data['report']['exams'].each do |report| 
+                   if report['exam_category'] != '3' or report['quarter'] == '6'  
+                     next 
+                   end 
+                   if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? 
+                     obt_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f 
+                     midterm_total = midterm_total.to_f+obt_mark.to_f 
+                   end
+                  end 
+                end
+                if midterm_total.to_f>0
+                  midterm_30  = (midterm_total.to_f*70)/100
+                end
+                
+                if total_mark.to_f>0 and full_mark.to_f>0
+                  main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                  total_70 = (total_mark.to_f*30)/100
+                else
+                  main_mark = 0
+                  total_70 = 0
+                end
+                accumulated = midterm_30+total_70
+                accumulated = accumulated.round()
+                grand_total_mark = grand_total_mark+100
+                gradn_obtain_mark = gradn_obtain_mark+accumulated
+              end
+            end
+            row << grand_total_mark
+            row << gradn_obtain_mark
+            new_book.worksheet(0).insert_row(iloop, row)
+          end
+        end
+
+      end
+    end
+    spreadsheet = StringIO.new 
+    new_book.write spreadsheet 
+    send_data spreadsheet.string, :filename => @batch.full_name + "-" + @connect_exam_obj.name + ".xls", :type =>  "application/vnd.ms-excel"
+  end
+  
   def tabulation_excell_sems
     require 'spreadsheet'
     Spreadsheet.client_encoding = 'UTF-8'

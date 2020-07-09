@@ -144,13 +144,13 @@
             finish = false
             total_mark_life = 0
             start = true
-            sub = 0
+           
             tab['subjects'].each do |sub|
               if sub['grade_subject'].to_i != 1
                 next
               end
 
-              sub = sub+1
+            
               sub_mark = 0
               unless tab['exams'].blank?  
                 tab['exams'].each do |rs|
@@ -296,13 +296,13 @@
             finish = false
             total_mark_life = 0
             start = true
-            sub = 0
+            
             tab['subjects'].each do |sub|
               if sub['grade_subject'].to_i != 1
                 next
               end
 
-              sub = sub+1
+              
               sub_mark = 0
               unless tab['exams'].blank?  
                 tab['exams'].each do |rs|

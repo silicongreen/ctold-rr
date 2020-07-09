@@ -551,10 +551,10 @@
                         <% else %>
                           <td>&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-2.png")), :width=>"30%" %></td>
                         <% end %>
-                        <td>&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-1.png")), :width=>"30%" %></td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-1.png")), :width=>"30%" %></td>
                     </tr>
 
-                    <tr><td>&nbsp;HEAD OF SECTION</td><td>&nbsp;PRINCIPAL'S SIGNATURE</td></tr>
+                    <tr><td>&nbsp;HEAD OF SECTION</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRINCIPAL'S SIGNATURE</td></tr>
                 </table>
               
           </div>
@@ -566,7 +566,7 @@
   <% if senior_setion %>
   <p>&nbsp;</p>
   <div id="pdf-header-south" class="sfx-header">
-    <h4 align="center">NB: This is a temporary computer generated report which has a validity till <%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %></h4>
+    <h4 align="center">N.B: This is a temporary computer generated report which has a validity till <%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %></h4>
   </div>
   <% end %>
 <% end %>

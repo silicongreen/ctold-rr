@@ -496,52 +496,57 @@
 
               <% if senior_setion %>
                 <%= render  :partial=>"/connect_exam/sfx/comments6" %> 
-              <% else %> 
+              <% end %> 
                 <h5><b>&nbsp;</b></h5>
-                <table id="pdf-table" width="99.8%" cellspacing="0">
-                    <tr class="even"><td class=" align-left-baf" width="30%">NO. OF WORKING DAYS</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days %></td></tr>
-                    <tr class="even"><td class=" align-left-baf" width="30%">PRESENT</td><td class=" align-left-baf"><%= present %></td></tr>
-                    <tr class="even"><td class=" align-left-baf" width="30%">ABSENT</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days.to_i - present.to_i %></td></tr>
-                </table>
-                <% has_grade_subject = false %>
-                <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
-                  <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
+                <% if senior_setion == false %>
+                  <table id="pdf-table" width="99.8%" cellspacing="0">
+                      <tr class="even"><td class=" align-left-baf" width="30%">NO. OF WORKING DAYS</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days %></td></tr>
+                      <tr class="even"><td class=" align-left-baf" width="30%">PRESENT</td><td class=" align-left-baf"><%= present %></td></tr>
+                      <tr class="even"><td class=" align-left-baf" width="30%">ABSENT</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days.to_i - present.to_i %></td></tr>
+                  </table>
+                  <% has_grade_subject = false %>
+                  <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                    <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
 
-                    <%  if @all_subject_grade.include?(report['id'].to_i) %>
-                      <% has_grade_subject = true %>
-                      <% break %>
+                      <%  if @all_subject_grade.include?(report['id'].to_i) %>
+                        <% has_grade_subject = true %>
+                        <% break %>
+                      <% end %>
                     <% end %>
                   <% end %>
-                <% end %>
-                <% unless has_grade_subject.blank? %>
-                  <h3 align="center">FINAL TERM REMARKS</h3>
-                  <table id="pdf-table" width="99.8%" cellspacing="0">
-                      <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
-                        <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
+                  <% unless has_grade_subject.blank? %>
+                    <h3 align="center">FINAL TERM REMARKS</h3>
+                    <table id="pdf-table" width="99.8%" cellspacing="0">
+                        <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                          <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
 
-                          <%  if @all_subject_grade.include?(report['id'].to_i) %>
+                            <%  if @all_subject_grade.include?(report['id'].to_i) %>
 
-                            <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                                <td class="col-pdf   align-left-baf" width="30%"><%= report['subject_name'] %></td>
-                                <td class="col-pdf  align-left-baf"><%= report['subject_comment'] %></td>
-                            </tr>
+                              <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                                  <td class="col-pdf   align-left-baf" width="30%"><%= report['subject_name'] %></td>
+                                  <td class="col-pdf  align-left-baf"><%= report['subject_comment'] %></td>
+                              </tr>
+                            <% end %>
                           <% end %>
                         <% end %>
-                      <% end %>
-                  </table>
-                <% end %>
+                    </table>
+                  <% end %>
 
-                <h5><b>&nbsp;</b></h5>
-                <% if !comments.blank? && has_grade_subject.blank? %>
-                  <h3>GENERAL COMMENTS: <%= comments %></h3>
+                  <h5><b>&nbsp;</b></h5>
+                  <% if !comments.blank? && has_grade_subject.blank? %>
+                    <h3>GENERAL COMMENTS: <%= comments %></h3>
+                  <% end %>
                 <% end %>
                 <h3>PROMOTED TO: <%= @connect_exam_obj.promoted_to %></h3>
-                <h3>SCHOOL REOPENS ON: <%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %></h3>
-
+                <% if senior_setion == false %>
+                  <h3>SCHOOL REOPENS ON: <%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %></h3>
+                <% end %>
                 <h5><b>&nbsp;</b></h5>
                 <table id="pdf-table" width="99.8%" cellspacing="0">
                     <tr>
-                        <% if has_grade_subject.blank? %>
+                        <% if senior_setion == true %>
+                          <td>&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sis-signature-6-10.jpg")),:width=> '30%' %></td>
+                        <% elsif has_grade_subject.blank? %>
                           <td>&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-junior-sec-head.png")),:width=> '30%' %></td>
                         <% else %>
                           <td>&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-2.png")), :width=>"30%" %></td>
@@ -551,7 +556,7 @@
 
                     <tr><td>&nbsp;HEAD OF SECTION</td><td>&nbsp;PRINCIPAL'S SIGNATURE</td></tr>
                 </table>
-              <% end %>
+              
           </div>
       </div>
 
@@ -561,7 +566,7 @@
   <% if senior_setion %>
   <p>&nbsp;</p>
   <div id="pdf-header-south" class="sfx-header">
-    <h4 align="center">This is a temporary computer generated report which has a validity till <%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %></h4>
+    <h4 align="center">NB: This is a temporary computer generated report which has a validity till <%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %></h4>
   </div>
   <% end %>
 <% end %>

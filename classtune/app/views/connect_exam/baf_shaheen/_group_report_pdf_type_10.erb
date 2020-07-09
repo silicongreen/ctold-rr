@@ -1,5 +1,5 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-<div id="pdf-header-south" class="sfx-header">
+  <div id="pdf-header-south" class="sfx-header">
     <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/323/transcript.png")),:width=> '65%' %></h4>
   </div> 
   <% total_u = 0 %>
@@ -463,6 +463,25 @@
                   end  
                 end  
               end
+              ag_hw = 0
+              ag_assessment = 0
+              ag_cw = 0
+
+              if total_subject > 0 && 
+                if assessment > 0
+                  ag_assessment = assessment.to_f/total_subject.to_f
+                  ag_assessment = sprintf( "%0.01f", ag_assessment)
+                end
+                if hw > 0
+                  ag_hw = hw.to_f/total_subject.to_f
+                  ag_hw = sprintf( "%0.01f", ag_hw)
+                end
+                if cw > 0
+                  ag_cw = cw.to_f/total_subject.to_f
+                  ag_cw = sprintf( "%0.01f", ag_cw)
+                end
+              end
+              total_mark = total_mark+ag_assessment.to_f+ag_hw.to_f+ag_cw.to_f
             
               unless @report_data['report']['subjects'].blank? 
                     finish = false
@@ -513,47 +532,47 @@
                 grade = GradingLevel.percentage_to_grade(main_total, @batch.id)
             
               %>
-              
+              <h4 class="h4-evaluation"><b>&nbsp;</b></h4>
               <table id="pdf-table" class="evaluation" width="99.8%" >
                   <tr class="odd">
-                      <td class="col-pdf border-left-none border-right-none" rowspan="3">
+                      <td class="col-pdf border-left-none border-left-none" rowspan="3">
                           <b>FINAL RESULT:</b>
                       </td>
-                      <td class="col-pdf border-left-none border-right-none">
+                      <td class="col-pdf">
                           30% of Final Term
                       </td>
-                      <td>
+                      <td class="col-pdf border-right-none">
                         <%= total_30 %>
                       </td>
                   </tr>
                   <tr class="odd">
-                      <td class="col-pdf border-left-none border-right-none">
+                      <td class="col-pdf">
                           70% of Mid Term
                       </td>
-                      <td>
+                      <td class="col-pdf border-right-none">
                         <%= total_70 %>
                       </td>
                   </tr>     
                   <tr class="odd">
-                      <td class="col-pdf border-left-none border-right-none">
+                      <td class="col-pdf">
                           Total
                       </td>
-                      <td>
+                      <td class="col-pdf border-right-none">
                         <%= main_total %>
                       </td>
                   </tr>
                   <tr class="odd">
-                      <td class="col-pdf border-left-none border-right-none">
+                      <td class="col-pdf">
                           Grade
                       </td>
-                      <td>
+                      <td class="col-pdf border-right-none">
                         <% if !grade.blank? and !grade.name.blank? %>
                           <%= grade.name %>
                         <% end %>
                       </td>
                   </tr>
               <table>
-              
+              <h4 class="h4-evaluation"><b>&nbsp;</b></h4>  
               <table id="pdf-table" class="evaluation" width="99.8%" >
                   <tr class="odd">
                       <td class="col-pdf border-left-none border-right-none">
@@ -570,7 +589,7 @@
                       </td>
                   </tr>
               <table>
-                  
+              <h4 class="h4-evaluation"><b>Evaluation</b></h4>    
               <table id="pdf-table" class="evaluation" width="99.8%" >
                   <tr class="odd">
                       <td>Promoted to: <% if !@promoted_to.blank? and @promoted_to!="0" %><%= @promoted_to %><% end %></td>
@@ -648,18 +667,6 @@
       padding: 2px 3px 2px 3px !important; 
       font-size: 22px !important;
   }
-  
-  .baf_shaheen h4
-{
-    border-bottom: 2px solid black;
-    font-size: 25px;
-    padding: 0px;
-    width: auto;
-    float:left;
-    clear:both;
-    margin-top: 10px;
-    margin-bottom: 8px;
-}
 #pdf-header-south
   {
       width: 1100px !important;

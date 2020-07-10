@@ -591,7 +591,6 @@
               <h4 class="h4-evaluation"><b>Evaluation</b></h4>    
               <table id="pdf-table" class="evaluation" width="99.8%" >
                   <tr class="odd">
-                      <td>Promoted to: <% if !@promoted_to.blank? and @promoted_to!="0" %><%= @promoted_to %><% end %></td>
                       <% if !@student_position[@student.id.to_i].blank? %>
                           <% merit_position = @student_position[@student.id.to_i] %>
                           <% unless @student_roll[@student_real_position[@student.id.to_i].to_i].blank? %>
@@ -612,6 +611,8 @@
                         new_section = "-"
                       %>
                       <% end %>
+                      <td>Promoted to: <% if !@promoted_to.blank? and @promoted_to!="0" and merit_position != "-" %><%= @promoted_to %><% end %></td>
+                      
                       <td>Merit Position: <%= merit_position %></td>
                       <td>New Roll:  <%= new_roll %></td>
                       <td>New Section:  <%= new_section %></td>

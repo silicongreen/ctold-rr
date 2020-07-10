@@ -118,14 +118,14 @@
           end  
         end
 
-        @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(connect_exam_id,std['id'].to_i)
+        @exam_comment_main_all = ExamConnectComment.find_by_exam_connect_id_and_student_id(connect_exam_id,std['id'].to_i)
         result = ""
         promotion_status = ""
         merit_position = ""
         new_roll = ""
         new_section = ""
-        if !@exam_comment.blank?
-          all_comments = @exam_comment.comments
+        if !@exam_comment_main_all.blank?
+          all_comments = @exam_comment_main_all.comments
           if !all_comments.blank?
             all_comments_array = all_comments.split("|")
             result = all_comments_array[0]

@@ -150,7 +150,7 @@
          59 and Below
         </td>
         <td>
-         
+         <%= @connect_exam_obj.publish_date.blank?  ? "" : I18n.l(@connect_exam_obj.publish_date,:format=>"%d %B %Y") %>
         </td>
     </tr>
     <tr class="odd">

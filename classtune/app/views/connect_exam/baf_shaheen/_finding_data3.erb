@@ -350,6 +350,14 @@
         total_30 = (total_mark_final_term.to_f*30)/100
         main_total = total_70+total_30
         main_total = sprintf( "%0.01f", main_total)
+        grade = GradingLevel.percentage_to_grade(main_total, @batch.id)
+        u_grade = 0
+        if !grade.blank? and !grade.name.blank?
+          if grade.name == "U"
+           u_grade = u_grade+1
+          end
+        end
+        
 
         @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(connect_exam_id,std['id'].to_i)
         result = ""
@@ -378,9 +386,10 @@
             end
           end
         end
-          
-        std_marks_full_new = 5000.00-main_total.to_f
-        @student_list << [std_marks_full_new.to_f,std['id'].to_i]
+        if u_grade == 0  
+          std_marks_full_new = 5000.00-main_total.to_f
+          @student_list << [std_marks_full_new.to_f,std['id'].to_i]
+        end
          
 
       end

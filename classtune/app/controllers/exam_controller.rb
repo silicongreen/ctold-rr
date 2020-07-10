@@ -3694,6 +3694,27 @@ class ExamController < ApplicationController
       
         if !@report_data['report']['all_result'][std['id']]['exams'].blank?
           @report_data['report']['exams'] = @report_data['report']['all_result'][std['id']]['exams']
+          if !@report_data['present_all'].blank? and !@report_data['present_all'][std['id']].blank? and 
+            @report_data['present'] = @report_data['present_all'][std['id']]
+          end 
+
+          if !@report_data['absent_all'].blank? and !@report_data['absent_all'][std['id']].blank?
+            @report_data['absent'] = @report_data['absent_all'][std['id']]
+          end 
+
+          if !@report_data['first_term_total'].blank?
+            @report_data['total_first_term'] = @report_data['first_term_total']
+          end 
+          if !@report_data['first_term_present_all'].blank? and !@report_data['first_term_present_all'][std['id']].blank?
+            @report_data['present_first_term'] = @report_data['first_term_present_all'][std['id']]
+          end
+          if !@report_data['first_term_absent_all'].blank? and !@report_data['first_term_absent_all'][std['id']].blank?
+            @report_data['absent_first_term'] = @report_data['first_term_absent_all'][std['id']]
+          end
+          if !@report_data['first_term_total_new'].blank? and !@report_data['first_term_total_new'][std['id']].blank?
+            @report_data['total_new_std_first_term'] = @report_data['first_term_total_new'][std['id']]
+            @report_data['total_first_term'] = @report_data['first_term_total_new'][std['id']]
+          end
           iloop = iloop+1
           row = []
           row << @student.admission_no

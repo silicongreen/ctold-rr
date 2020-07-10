@@ -1,5 +1,18 @@
 
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
+            <% senior_setion = false %>
+            <% senior_setion1 = false %> 
+            <% senior_setion2 = false %> 
+            <% course_name = @batch.course.course_name  %>
+            <% if  course_name == "VI" or course_name == "VII" or course_name == "VIII" or course_name == "IX" %> 
+              <% senior_setion = true %>
+            <% end %> 
+            <% if  course_name == "VI" or course_name == "VII" %> 
+              <% senior_setion1 = true %>
+            <% end %> 
+            <% if  course_name == "VIII" or course_name == "IX" %> 
+              <% senior_setion2 = true %>
+            <% end %>
             <table id="pdf-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
@@ -163,6 +176,25 @@
                   <% total_mark_all_subject = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% subjectdata = Subject.find(subjects['id'].to_i) %>
+                      <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                      <% if @has_exam_student == false && senior_setion2 == true %>
+                         <% next %>
+                      <% end %>
+                      <% has_exam = false %>
+                      <% unless @report_data['report']['exams'].blank? %>
+                        <% @report_data['report']['exams'].each do |report| %>
+                          <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                            <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'] != "AB" %>
+                              <% has_exam = true %>
+                              <% break %>
+                            <% end %>
+                          <% end %>
+                        <% end %>
+                      <% end %>
+                      <% if has_exam == false && senior_setion2 == true %>
+                         <% next %>
+                      <% end %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% weightage_mark = 0 %>
                           <% total_mark = 0 %>

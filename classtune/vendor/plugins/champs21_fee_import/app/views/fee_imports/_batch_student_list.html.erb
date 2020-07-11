@@ -1,4 +1,8 @@
 <% if @students.present? %>
+  <% if MultiSchool.current_school.id == 348 %>
+  <% form_for :fees_list, :url=>{ :action=>'select_student' },:html => {:onsubmit => "return validate_assign()"} do |form| %>
+  <%= form.hidden_field :multiple, :value => 1 %>
+  <%= form.hidden_field :batch_id_selected, :value => @batch.id %>
   <div id="student_list">
     <%= render  :partial=>"student_list" %>
   </div>
@@ -6,6 +10,19 @@
   <div id="fees_list">
     <%= render :partial=>'fees_list'%>
   </div>
+  <div style='width: 100%; text-align: center; border-top: 1px solid #ccc;'>
+    <%= form.submit "#{t('assign_fees')}", :class=>"submit_button", :style=> "float: none;", :disable_with => "► #{t('please_wait')}" %>
+  </div>
+  <% end %>
+  <% else %>
+  <div id="student_list">
+    <%= render  :partial=>"student_list" %>
+  </div>
+
+  <div id="fees_list">
+    <%= render :partial=>'fees_list'%>
+  </div>
+  <% end %>
 <% else %>
   <p class="flash-msg"> <%= t("no_students_in_batch")  %> </p>
 <% end %>

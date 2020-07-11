@@ -18,6 +18,12 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/stylesheets/select2.min.css">
+<link rel="stylesheet" href="/stylesheets/select2-finance.css">
+
+<%= javascript_include_tag 'select2.full.min.js' %>
+
 <div id="content-header">
   <div class='header-icon student-icon'></div>
   <h1><%= t('admission') %></h1>
@@ -31,10 +37,10 @@
   <% end %>
     <form name="search_form" action="" style="display:inline;">
     <div class="label-field-pair-select-class">
-      <label for="student-detail-select-class"><%= t('select_a_batch') %> </label>
+      <label style="width: 135px;" for="student-detail-select-class"><%= t('select_a_batch') %> </label>
       
       <div class="text-input-bg">
-          <%= select :batch, :batch_id, @batches.map{|b| [b.full_name,b.id]},:prompt=> "Select Batch" %>
+          <%= select :batch, :batch_id, @batches.map{|b| [b.full_name,b.id]}, {:prompt=> "Select Batch"}, {:class => "select2-combo",} %>
       </div>
       <%= image_tag("loader.gif",
         :align => "absmiddle",
@@ -42,8 +48,8 @@
         :id => "loader",
         :style =>"display: none;" ) %>
     </div>
-    <div class="label-field-pair" style="margin:0px auto">    
-      <label>Admission No/Name : </label>  
+    <div class="label-field-pair" style="margin:0px auto; <%= (MultiSchool.current_school.id == 348) ? "display: none;" : ""; %>   ">    
+      <label style="width: 135px;">Admission No/Name : </label>  
       <div class="text-input-bg"><%= text_field_tag("query", params['query'], :autocomplete => 'off',:class=>"form-control") %></div>
     </div>
   </form>
@@ -52,7 +58,113 @@
     <%= render :partial => "batch_student_list" if @students.present? %>
   </div>
 </div>
-
+<style>
+  .text-input-bg select, .label-field-pair input , .label-field-pair textarea {
+      border-radius: 4px;
+      display: block;
+      padding: 6px 12px;
+      width: 100%;
+      font-size: 14px;
+      line-height: 1.428571429;
+      color: #555;
+      background: #fff;
+      background-image: none;
+      border: 1px solid #ccc;
+      -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+      box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+      -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+      transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  }
+  .select2-container {
+    width: 96% !important;
+  }
+  .name_listeven{
+      background: #f5f5f5;
+      border-top: 1px solid #ccc;
+      height: 40px;
+  }
+  .name_listodd{
+      background: #EAEAEA;
+      border-top: 1px solid #ccc;
+      height: 40px;
+  }
+  .each_batch, .each_category {
+      font-size: 12px;
+      overflow-y: auto;
+      width: 280px;
+      float: left;
+  }
+  .each_batch .checkbox_inline, .each_category .checkbox_inline {
+      float: left;
+      width: 20px;
+  }
+  .checkbox_inline input[type="checkbox"] {
+      width: 12px;
+      margin: 12px auto;
+  }
+  .each_batch .checkbox_label, .each_category .checkbox_label {
+      float: left;
+      width: 205px;
+      padding-left: 10px;
+      padding-top: 2px;
+  }
+  .checkbox_label label {
+      color: #444;
+      display: block;
+      font-size: 14px;
+      margin: 0 0 0px 0;
+      float: left;
+      clear: both;
+      width: 202px;
+      padding-top: 10px;
+      font-weight: 600;
+  }
+</style>
+<script type="text/javascript" charset="utf-8">
+    j('#batch_batch_id').select2();
+    j(document).ready(function(){
+        j(document).on("keyup","#search_std",function(){
+        
+            var srch_val = this.value;
+            j('.std_name').each(function(){
+                var stdid = this.id.replace("std_","");
+                var val = j(this).html();
+                if ( val.toLowerCase().indexOf(srch_val.toLowerCase()) == -1  )
+                {
+                    j('.students_box').each(function(){
+                        if ( this.value == stdid )
+                        {
+                           j(this).removeAttr('checked');
+                           return ;
+                        }
+                    });
+                    j(this).parent().parent().hide();
+                }
+                else
+                {
+                    j('.students_box').each(function(){
+                        if ( this.value == stdid )
+                        {
+                           if ( j(this).prop('checked') == false && j(this).parent().parent().css('display') != 'block')
+                           {
+                              if ( j('#none_click').val() == 1 )
+                              {
+                                 j(this).removeAttr('checked');
+                              }
+                              else
+                              {
+                                 j(this).prop('checked', true);
+                              }
+                           }
+                           return ;
+                        }
+                    });
+                    j(this).parent().parent().show();
+                }
+            });
+        });
+    });
+</script>
 <script type="text/javascript">
   function set_active(){
     $$('.active-link').each(function(e){

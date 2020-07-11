@@ -3,21 +3,36 @@
   <% unless flash[:warn_notice].nil? %>
     <p class="flash-msg"><span><%= flash[:warn_notice] %></span> </p>
   <% end %>
-  <div class="sel-list">
-    <%= t('layouts_default_select') %>: <a href="#" onclick="$$('input.collection_box').each(function(checkbox) { checkbox.checked = true; });; return false;"><%= t('layouts_default_all') %></a>,
-    <a href="#" onclick="$$('input.collection_box').each(function(checkbox) { checkbox.checked = false; });; return false;"><%= t('layouts_default_none') %></a>
-  </div>
-  <% form_for :fees_list, :url=>{ :action=>'select_student' },:html => {:onsubmit => "return validate_assign()"} do |form| %>
-    <%= form.hidden_field :student_id, :value => @student.id %>
-    <% @fee_collection_dates.each do |fee_collection| %>
-      <div class="name_list<%=cycle('odd', 'even')%>">
-        <li>
-          <label><%= check_box_tag 'fees_list[collection_ids][]', fee_collection.id, @student_fees.include?(fee_collection.id) ,{:class=>'collection_box', :disabled=> @payed_fees.include?(fee_collection.id) } %> <div class="att_list_names"> <%= fee_collection.name %> </div></label>
-        </li>
-      </div>
-    <% end %>
-    <%= form.submit "#{t('assign_fees')}", :class=>"submit_button", :disable_with => "► #{t('please_wait')}" %>
-  <% end %>
+  <div style="width: 97%; border: 1px solid #ccc;">
+      <div style='width: 50%; float: left; font-size: 30px; padding-left: 10px;'>Fee List</div>  
+    <div class="sel-list" style="float: right; text-align: right; padding-right: 7px; width: 40%; padding-top: 5px;">
+      <a href="#" onclick="$$('input.collection_box').each(function(checkbox) { if (!checkbox.disabled) { checkbox.checked = true; } });; return false;"><%= t('layouts_default_all') %></a>,
+      <a href="#" onclick="$$('input.collection_box').each(function(checkbox) { if (!checkbox.disabled) { checkbox.checked = false; } });; return false;"><%= t('layouts_default_none') %></a>
+    </div>
+      <div style="clear: both; height: 1px;"></div>  
+      <% unless MultiSchool.current_school.id == 348 %>
+        <% form_for :fees_list, :url=>{ :action=>'select_student' },:html => {:onsubmit => "return validate_assign()"} do |form| %>
+          <%= form.hidden_field :student_id, :value => @student.id %>
+          <%= form.hidden_field :multiple, :value => 0 %>
+          <% @fee_collection_dates.each do |fee_collection| %>
+            <div class="name_list<%=cycle('odd', 'even')%>">
+              <li>
+                <label><%= check_box_tag 'fees_list[collection_ids][]', fee_collection.id, @student_fees.include?(fee_collection.id) ,{:class=>'collection_box', :disabled=> @payed_fees.include?(fee_collection.id) } %> <div class="att_list_names"> <%= fee_collection.name %> </div></label>
+              </li>
+            </div>
+          <% end %>
+          <%= form.submit "#{t('assign_fees')}", :class=>"submit_button", :disable_with => "► #{t('please_wait')}" %>
+        <% end %>
+      <% else %>
+        <% @fee_collection_dates.each do |fee_collection| %>
+          <div class="name_list<%=cycle('odd', 'even')%>">
+            <li>
+              <label><%= check_box_tag 'fees_list[collection_ids][]', fee_collection.id, @student_fees.include?(fee_collection.id) ,{:class=>'collection_box', :disabled=> @payed_fees.include?(fee_collection.id) } %> <div class="att_list_names"> <%= fee_collection.name %> </div></label>
+            </li>
+          </div>
+        <% end %>
+      <% end %>
+  </div>    
 <%else%>
 <p class="flash-msg"> <span><%= t("no_fees_in_batch")  %> </span></p>
 <%end%>

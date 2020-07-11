@@ -1095,7 +1095,7 @@ class StudentController < ApplicationController
           if !@previous_exam.blank? or !@previous_group_exam.blank?
             
             unless @batch_ids.include?(pv.batch_id)
-              @batch_ids << pv.batch_id
+              
 
               if !@previous_exam.blank?
                 @group_exam_count[pv.batch_id.to_s] = @previous_exam.count

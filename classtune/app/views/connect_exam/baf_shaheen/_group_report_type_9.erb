@@ -132,6 +132,7 @@
                             end 
                           end 
                           midterm_total = midterm_total.round()
+                        
                           unless @report_data['report']['exams'].blank?   
                             @report_data['report']['exams'].each do |report| 
                              if report['exam_category'] != '3' or report['quarter'] == '6'  
@@ -193,7 +194,7 @@
                               <% end %>
                             <td><b><%= subject_grade %></b></td>
                               
-                            <% unless @subject_highest[subjects['id'].to_i].blank? %> 
+                            <% if !@subject_highest.blank? && !@subject_highest[subjects['id'].to_i].blank? %> 
                               
                                 <td class="col-pdf border-right-none"><b><%= @subject_highest[subjects['id'].to_i].round() %></b></td>
                             <% else %>
@@ -265,5 +266,5 @@
                          <td class="col-pdf border-right-none"></td>
                       </tr>   
 
-              </table>         
+              </table>        
 <% end %>

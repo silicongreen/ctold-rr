@@ -126,7 +126,7 @@
 
                             <% end %>
                           <% end %>
-                          <% total_mark = total_mark.round() %>
+                          
                           <td class="col-pdf no-warp"><%= sprintf( "%0.02f", total_mark)%></td>
                               
                           <% unless @report_data['report']['exams'].blank? %>  
@@ -152,7 +152,8 @@
                             <% end %>
                           <% end %>
 
-                          <% 
+                          <%
+                          total_mark = total_mark.round()
                           midterm_total = 0
                           midterm_30 = 0
                           class_test = []
@@ -182,7 +183,7 @@
                              end
                             end 
                           end 
-                          midterm_total = midterm_total.round()
+                        
                         
                           unless @report_data['report']['exams'].blank?   
                             @report_data['report']['exams'].each do |report| 
@@ -195,7 +196,7 @@
                              end
                             end 
                           end
-                          
+                          midterm_total = midterm_total.round()
                         
                           if midterm_total.to_f>0
                             midterm_30  = (midterm_total.to_f*70)/100

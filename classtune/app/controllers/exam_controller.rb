@@ -4187,7 +4187,7 @@ class ExamController < ApplicationController
                     end
                    end 
                  end 
-                 total_mark = total_mark.round() 
+                 
                 
 
                  unless @report_data['report']['exams'].blank?   
@@ -4206,7 +4206,7 @@ class ExamController < ApplicationController
 
                    end 
                  end 
-                
+                total_mark = total_mark.round()
                 
                 midterm_total = 0
                 midterm_30 = 0
@@ -4237,7 +4237,7 @@ class ExamController < ApplicationController
                    end
                   end 
                 end 
-                midterm_total = midterm_total.round()
+                
 
                 unless @report_data['report']['exams'].blank?   
                   @report_data['report']['exams'].each do |report| 
@@ -4250,6 +4250,7 @@ class ExamController < ApplicationController
                    end
                   end 
                 end
+                midterm_total = midterm_total.round()
                 if midterm_total.to_f>0
                   midterm_30  = (midterm_total.to_f*70)/100
                 end

@@ -3869,7 +3869,7 @@ class ExamController < ApplicationController
                   sub_mark = 0
                   unless @report_data['report']['exams'].blank?  
                     @report_data['report']['exams'].each do |report|
-                        if report['quarter'] == '6' 
+                        if report['quarter'] != '6' 
                           next
                         end
                         if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?

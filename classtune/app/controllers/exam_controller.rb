@@ -3887,9 +3887,9 @@ class ExamController < ApplicationController
             end
 
             att_mark = 0
-            unless @report_data['total_first_term'].blank?
-              if @report_data['total_first_term'] > 0 && @report_data['present_first_term'] > 0
-                att_mark = (@report_data['present_first_term'].to_f/@report_data['total_first_term'].to_f)*10
+            unless @report_data['total'].blank?
+              if @report_data['total'] > 0 && @report_data['present'] > 0
+                att_mark = (@report_data['present'].to_f/@report_data['total'].to_f)*10
                 att_mark = sprintf( "%0.01f", att_mark)
                 total_mark = total_mark+att_mark.to_f
               end

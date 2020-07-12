@@ -354,27 +354,7 @@ unless @report_data['report']['subjects'].blank?
   merit_position = ""
   new_roll = ""
   new_section = ""
-  if !@exam_comment.blank?
-    all_comments = @exam_comment.comments
-    if !all_comments.blank?
-      all_comments_array = all_comments.split("|")
-      result = all_comments_array[0]
-      if !all_comments_array[1].nil?
-        promotion_status = all_comments_array[1]
-        if !all_comments_array[2].nil?
-          merit_position = all_comments_array[2]
-          if !all_comments_array[3].nil?
-            new_roll = all_comments_array[3]
-            if !all_comments_array[4].nil?
-              new_section = all_comments_array[4]
-            end
-          end
-
-        end
-
-      end
-    end
-  end
+  
 %>
 <% unless result.blank?  %>
 <tr class="table-header">

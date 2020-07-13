@@ -4317,6 +4317,33 @@ class ExamController < ApplicationController
             end
             row << grand_total_mark
             row << gradn_obtain_mark
+            unless @student_position[@student.id.to_i].blank?
+              if @promoted_to!="0"
+                row << "Promoted to STD- "+@promoted_to
+              else
+                row << "-"
+              end 
+              unless @student_position[@student.id.to_i].blank?
+                row << @student_position[@student.id.to_i]
+              else
+                row << "-"
+              end 
+              unless @student_roll[@student_real_position[@student.id.to_i].to_i].blank?
+                row << @student_roll[@student_real_position[@student.id.to_i].to_i]
+              else
+                row << "-"
+              end 
+              unless @student_section[@student_real_position[@student.id.to_i].to_i].blank?
+                row << @student_section[@student_real_position[@student.id.to_i].to_i]
+              else
+                row << "-"
+              end 
+            else
+              row << ""
+              row << ""
+              row << ""
+              row << ""
+            end 
             new_book.worksheet(0).insert_row(iloop, row)
           end
         end
@@ -4424,33 +4451,7 @@ class ExamController < ApplicationController
             end
             row << grand_total_mark
             row << gradn_obtain_mark
-            unless @student_position[@student.id.to_i].blank?
-              if @promoted_to!="0"
-                row << "Promoted to STD- "+@promoted_to
-              else
-                row << "-"
-              end 
-              unless @student_position[@student.id.to_i].blank?
-                row << @student_position[@student.id.to_i]
-              else
-                row << "-"
-              end 
-              unless @student_roll[@student_real_position[@student.id.to_i].to_i].blank?
-                row << @student_roll[@student_real_position[@student.id.to_i].to_i]
-              else
-                row << "-"
-              end 
-              unless @student_section[@student_real_position[@student.id.to_i].to_i].blank?
-                row << @student_section[@student_real_position[@student.id.to_i].to_i]
-              else
-                row << "-"
-              end 
-            else
-              row << ""
-              row << ""
-              row << ""
-              row << ""
-            end 
+             
             new_book.worksheet(0).insert_row(iloop, row)
           end
         end

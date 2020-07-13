@@ -4098,6 +4098,7 @@ class ExamController < ApplicationController
               else
                 row << "-"
               end 
+              row << @student.class_roll_no
               unless @student_roll[@student_real_position[@student.id.to_i].to_i].blank?
                 row << @student_roll[@student_real_position[@student.id.to_i].to_i]
               else
@@ -4109,10 +4110,11 @@ class ExamController < ApplicationController
                 row << "-"
               end 
             else
-              row << ""
-              row << ""
-              row << ""
-              row << ""
+              row << "-"
+              row << "-"
+              row << @student.class_roll_no
+              row << "-"
+              row << "-"
             end  
             new_book.worksheet(0).insert_row(iloop, row)
           end
@@ -4328,6 +4330,7 @@ class ExamController < ApplicationController
               else
                 row << "-"
               end 
+              row << @student.class_roll_no
               unless @student_roll[@student_real_position[@student.id.to_i].to_i].blank?
                 row << @student_roll[@student_real_position[@student.id.to_i].to_i]
               else
@@ -4339,10 +4342,11 @@ class ExamController < ApplicationController
                 row << "-"
               end 
             else
-              row << ""
-              row << ""
-              row << ""
-              row << ""
+              row << "-"
+              row << "-"
+              row << @student.class_roll_no
+              row << "-"
+              row << "-"
             end 
             new_book.worksheet(0).insert_row(iloop, row)
           end

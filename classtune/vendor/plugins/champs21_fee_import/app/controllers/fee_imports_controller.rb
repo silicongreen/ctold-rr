@@ -93,7 +93,7 @@ class FeeImportsController < ApplicationController
                 if @student_fees.include?(date.id)
                   unless dates.include?(date.id.to_s)
                     fee = FinanceFee.find_by_student_id_and_fee_collection_id(@student.id, date.id)
-                    #fee.destroy if fee.finance_transactions.empty?
+                    fee.destroy if fee.finance_transactions.empty?
                   end
                 else
 
@@ -118,7 +118,8 @@ class FeeImportsController < ApplicationController
           @batches = Batch.active
           @students = Student.find_all_by_batch_id(@batch.id,:conditions=>"has_paid_fees=#{false}", :order => 'first_name ASC')
           #collection_dates_new
-          already_assigned_ids = [2569,2570,2571,2644]
+          #already_assigned_ids = [2569,2570,2571,2644]
+          already_assigned_ids = []
           @student_fees = already_assigned_ids #@fee_collection_dates.map{|fc| fc.id}
           @payed_fees ||= []
         end
@@ -159,7 +160,8 @@ class FeeImportsController < ApplicationController
         @student_fees = @finance_fees.map{|s| s.fee_collection_id}
         @payed_fees=FinanceFee.find(:all,:joins=>"INNER JOIN fee_transactions on fee_transactions.finance_fee_id=finance_fees.id INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fees.student_id=#{@student.id} ",:select=>"finance_fees.fee_collection_id").map{|s| s.fee_collection_id}
       else
-        already_assigned_ids = [2569,2570,2571,2644]
+        #already_assigned_ids = [2569,2570,2571,2644]
+        already_assigned_ids = []
         @student_fees = already_assigned_ids #@fee_collection_dates.map{|fc| fc.id}
       end
       @payed_fees ||= []

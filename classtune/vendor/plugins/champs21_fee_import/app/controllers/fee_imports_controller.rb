@@ -93,7 +93,9 @@ class FeeImportsController < ApplicationController
                 if @student_fees.include?(date.id)
                   unless dates.include?(date.id.to_s)
                     fee = FinanceFee.find_by_student_id_and_fee_collection_id(@student.id, date.id)
-                    fee.destroy if fee.finance_transactions.empty?
+                    unless fee.blank?
+                      fee.destroy if fee.finance_transactions.empty?
+                    end
                   end
                 else
 

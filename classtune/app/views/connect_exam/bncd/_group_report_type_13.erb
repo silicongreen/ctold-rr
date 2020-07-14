@@ -1,0 +1,76 @@
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+  <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
+        <% c = 'even'  %>
+        <% total_mark_of_allexam = 0 %>
+
+        <tr class="even header-shade">
+            <td class="col-pdf" rowspan="2">
+                <b>Sl.</b>
+            </td>
+            <td class="col-pdf no-warp  align-left-baf"><b><%= "SUBJECTS" %></b></td>
+
+            <td class="col-pdf"><b>TOTAL MARKS</b></td>
+            <td class="col-pdf"><b>PASS MARKS</b></td>
+            <td class="col-pdf"><b>MARKS OBTAIN</b></td> 
+        </tr>
+        <% bonus_total_mark = 0 %>
+        <% bonus_obtain_mark = 0 %>
+        <% sl = 0 %>
+        <% unless @report_data['report']['subjects'].blank? %>
+          <% @report_data['report']['subjects'].each do |subjects| %>
+            <% total_mark = 0 %>
+            <% obtain_mark = 0 %>
+
+            <% subjectdata = Subject.find(subjects['id'].to_i) %>
+            <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+            <% if @has_exam_student == false %>
+               <% next %>
+            <% end %>
+            <% sl = sl+1 %>
+            <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                  <td class="col-pdf  no-warp"><%= sl %></td>
+                  <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>
+                  <% unless @report_data['report']['exams'].blank? %>  
+                      <% @report_data['report']['exams'].each do |report| %>  
+                        <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
+                          <%  if report['exam_category'] == '1' %>
+                            <% bonus_obtain_mark = bonus_obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                          <% else %>
+                            <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                          <% end %>
+                        <% end %>
+                        <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                          <%  if report['exam_category'] == '1' %>
+                            <% bonus_total_mark = bonus_total_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                          <% else %>
+                            <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                          <% end %>
+                        <% else %>
+                      <% end %>
+                  <% end %>
+                  <td class="col-pdf"><%= total_mark %></td>
+                  <td class="col-pdf">20</td>
+                  <td class="col-pdf"><%= obtain_mark %></td> 
+                  <% total_mark_of_allexam = total_mark_of_allexam+obtain_mark %>
+            </tr>
+          <% end %>
+
+        <% end %>
+
+        <tr class="even">
+          <td class="col-pdf  no-warp align-left-baf" colspan="2">Bonus Marks (Minimum 30)</td>
+          <td class="col-pdf"><%= bonus_total_mark %></td>
+          <td class="col-pdf">30</td>
+          <td class="col-pdf"><%= bonus_obtain_mark %></td>            
+        </tr>
+        <% total_mark_of_allexam = total_mark_of_allexam+bonus_obtain_mark %>
+
+        <tr class="even" >
+          <td class="col-pdf  no-warp align-right" colspan="4"><b>GRAND TOTAL</b></td>
+          <td class="col-pdf  no-warp" colspan="4"><b><%= total_mark_of_allexam %></b></td>
+        </tr>
+
+    </table>
+                
+                
+<% end %>

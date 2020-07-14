@@ -205,7 +205,7 @@ employee_id = @current_user.employee_record.id
        <% end %>
       <% end %>
       <% if (@current_user.employee or @current_user.admin) and can_access_request? :connect_exam,:marks %>
-        <% if MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 246 or MultiSchool.current_school.code == "oisd"  %>
+        <% if MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 246 or MultiSchool.current_school.code == "oisd" or MultiSchool.current_school.code == "baghc"  %>
           <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#27aa80; color:white;'><span style='text-align:center;width:80%; float:left;'>Marks Entry</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'marks', :action => 'index' %>
         <% else %>
           <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#27aa80; color:white;'><span style='text-align:center;width:80%; float:left;'>Marks Entry</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'marks', :action => 'connect_exam' %>
@@ -254,7 +254,7 @@ employee_id = @current_user.employee_record.id
         <%=  link_to "<img src='/images/dashpallete/big_icon/report_card.png' style='width:100%'>", :controller => 'marks', :action => 'connect_exam_report' %>
         <br/><br/>
         <% if MultiSchool.current_school.id != 352  %>
-          <% if MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 246 or MultiSchool.current_school.code == "oisd"  %>
+          <% if MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 246 or MultiSchool.current_school.code == "oisd" or MultiSchool.current_school.code == "baghc"  %>
             <%=  link_to "<img src='/images/dashpallete/big_icon/marks_entry.png' style='width:100%'>", :controller => 'marks', :action => 'connect_exam' %>
           <% else %>
             <%=  link_to "<img src='/images/dashpallete/big_icon/marks_entry.png' style='width:100%'>", :controller => 'marks', :action => 'index' %>

@@ -5,7 +5,7 @@
       <h2 align="center" class="font-24"><%= @connect_exam_obj.name %></h2>
       
      
-      <table id="pdf-table" class="tbl-lign-left" width="99.8%" cellspacing="0">
+      <table id="pdf-table" width="99.8%" cellspacing="0">
           <tr class="even">
               <td class="align-right col-pdf" width="20%">Student ID </td>
               <td colspan="3" class="align-left"><b><%= @student.admission_no %></b></td>
@@ -59,7 +59,7 @@
                   <% total_mark_of_allexam = 0 %>
                  
                   <tr class="even header-shade">
-                      <td class="col-pdf" rowspan="2">
+                      <td class="col-pdf">
                           <b>Sl.</b>
                       </td>
                       <td class="col-pdf no-warp  align-left-baf"><b><%= "SUBJECTS" %></b></td>
@@ -122,7 +122,7 @@
                   
                   <tr class="even" >
                     <td class="col-pdf  no-warp align-right" colspan="4"><b>GRAND TOTAL</b></td>
-                    <td class="col-pdf  no-warp" colspan="4"><b><%= total_mark_of_allexam %></b></td>
+                    <td class="col-pdf  no-warp"><b><%= total_mark_of_allexam %></b></td>
                   </tr>
                   
               </table>
@@ -154,7 +154,7 @@
                   </tr>
               </table>
               <div class='fine'></div>
-              <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
+              <table id="pdf-table" width="99.8%" cellspacing="0">
                 
                   <tr class="even">&nbsp;Remarks : <% if total_mark_of_allexam >= 140 %> Passed <% else %> Failed <% end %>    
               </table>

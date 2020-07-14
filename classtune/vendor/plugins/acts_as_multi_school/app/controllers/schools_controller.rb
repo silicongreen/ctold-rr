@@ -409,7 +409,7 @@ class SchoolsController <  MultiSchoolController
     #abort(@student_data.inspect)
     #@total_student = @student_data.count
     sql2 = "Select id FROM students where is_active = true and is_deleted = false"
-    @total_student = @conn.execute(sql2).all_hashes
+    @total_student = @conn.execute(sql2).all_hashesv
   end
   
   #  def download_student_list
@@ -478,6 +478,112 @@ class SchoolsController <  MultiSchoolController
   #    filename = "#{@school.name}-student-list-#{Time.now.to_date.to_s}.csv"
   #    send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
   #  end
+  
+  
+  def download_student_list_with_roll
+    sch = @school = School.find(params[:id])
+    @start_index = params[:start_index]
+    @total = params[:total]
+    @conn = ActiveRecord::Base.connection 
+    if MultiSchool.current_school.code = "sis"
+      if !@start_index.blank? and !@total.blank?
+        sql = "SELECT s.`id` as student_id,s.batch_id,s.`admission_no`  ,s.`first_name`,s.`middle_name`,s.`last_name`,s.`immediate_contact_id`,s.`class_roll_no`,s.`school_id`,
+                fu.paid_username,fu.paid_password FROM 
+                students as s left join tds_free_users as fu on s.user_id=fu.paid_id where s.school_id=#{@school.id} and s.is_deleted = 0 order by s.admission_no asc limit #{@total} OFFSET #{@start_index}"
+
+      else
+        sql = "SELECT s.`id` as student_id,s.batch_id,s.`admission_no`  ,s.`first_name`,s.`middle_name`,s.`last_name`,s.`class_roll_no`,s.`immediate_contact_id`,s.`school_id`,
+                fu.paid_username,fu.paid_password FROM 
+                students as s left join tds_free_users as fu on s.user_id=fu.paid_id where s.school_id=#{@school.id} and s.is_deleted = 0 order by s.admission_no"
+      end
+    else
+      if !@start_index.blank? and !@total.blank?
+        sql = "SELECT s.`id` as student_id,s.batch_id,s.`admission_no`  ,s.`first_name`,s.`middle_name`,s.`last_name`,s.`immediate_contact_id`,s.`class_roll_no`,s.`school_id`,
+                fu.paid_username,fu.paid_password FROM 
+                students as s left join tds_free_users as fu on s.user_id=fu.paid_id where s.school_id=#{@school.id} and s.is_deleted = 0 order by s.id asc limit #{@total} OFFSET #{@start_index}"
+
+      else
+        sql = "SELECT s.`id` as student_id,s.batch_id,s.`admission_no`  ,s.`first_name`,s.`middle_name`,s.`last_name`,s.`class_roll_no`,s.`immediate_contact_id`,s.`school_id`,
+                fu.paid_username,fu.paid_password FROM 
+                students as s left join tds_free_users as fu on s.user_id=fu.paid_id where s.school_id=#{@school.id} and s.is_deleted = 0"
+      end
+    end
+    sql2 = "SELECT g.`first_name`,g.`last_name`,gs.student_id,g.office_phone1,g.mobile_phone,
+  g.relation,fu.paid_username,fu.paid_password FROM 
+  guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join guardian_students as gs on g.id=gs.guardian_id where fu.paid_school_id=#{@school.id} and  g.school_id=#{@school.id}"
+    
+    @student_data = @conn.execute(sql).all_hashes
+    
+    @guardian_datas = @conn.execute(sql2).all_hashes
+
+    @batches = Batch.find_by_sql ["SELECT * FROM batches WHERE school_id = ?",@school.id]
+    @courses = Course.find_by_sql ["SELECT * FROM courses WHERE school_id = ?",@school.id]
+    MultiSchool.current_school = sch
+    filename = "#{@school.code}-student-list-#{Time.now.to_date.to_s}.csv"
+    destfile = Rails.root.join("public", "uploads", filename)
+    FasterCSV.open(destfile, "wb") do |csv|
+      @student_data.each_with_index do |b,i|  
+        unless b.nil?
+          @batch = @batches.find{|d| d['id'].to_i == b['batch_id'].to_i}
+
+          unless @batch.blank?
+            @course = @courses.find{|c| c['id'] == @batch.course_id}
+
+            batch_str = ""
+            unless @batch.nil?
+              if @batch.name != "" and @batch.name != "General"
+                batch_str = batch_str + "Shift:" + @batch.name+" | "
+              end
+              if @course.course_name != ""
+                batch_str = batch_str + "Class:" + @course.course_name
+              end
+              if @course.section_name != ""
+                batch_str = batch_str + " | " + "Section:" + @course.section_name
+              end
+            end
+
+            if MultiSchool.current_school.id != 352
+              guardian_data = @guardian_datas.find_all{|c| c["student_id"].to_i == b['student_id'].to_i}
+            else
+              guardian_data = @guardian_datas.find_all{|c| c["student_id"].to_i == b['student_id'].to_i && !c["paid_username"].index("p1").nil?}
+            end
+
+            rows = ["Name","Admission No","Shift","Class","Section","Roll","Username","Password"]
+            
+            guardian_data.each_with_index do |glist,i|
+              j = i+1
+              rows << "Guardian " + j.to_s
+              rows << "Username"
+              rows << "Password"    
+            end
+            rows << "#{batch_str}"
+          
+            unless b['middle_name'].blank?
+              rows << "#{b['first_name']} #{b['middle_name']} #{b['last_name']}"
+            else
+              rows << "#{b['first_name']} #{b['last_name']}"
+            end
+            rows << "#{b['admission_no']}"
+            
+            rows << @batch.name
+            rows << @course.course_name
+            rows << @course.section_name
+            rows << "#{b['class_roll_no']}"
+            rows << "#{b['paid_username']}"
+            rows << "#{b['paid_password']}"
+            guardian_data.each_with_index do |glist,i|
+              rows << "#{glist['first_name']} #{glist['last_name']}"      
+              rows << "#{glist['paid_username']}"
+              rows << "#{glist['paid_password']}"
+            end
+            csv << rows
+          end
+        end
+      end 
+      
+    end 
+    send_file(destfile, :type => 'text/csv; charset=utf-8; header=present')
+  end
   
   def download_student_list
     sch = @school = School.find(params[:id])

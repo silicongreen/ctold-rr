@@ -37,14 +37,6 @@
         total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
         std_subject_id = total_std_subject.map(&:subject_id)
         grand_total = 0
-        @student_tab = @student_all_tab.find{|val| val.id.to_i == std['id'].to_i }
-        if @student_tab.blank?
-          @student_tab = ArchivedStudent.find_by_former_id(std['id'].to_i)
-        end
-
-        if @student_tab.blank?
-          next
-        end
         if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
           @total_std = @total_std+1
         end

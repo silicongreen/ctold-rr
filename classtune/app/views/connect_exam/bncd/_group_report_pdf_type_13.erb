@@ -2,10 +2,8 @@
   <% total_u = 0 %>
   <div id="page-yield"  class="available_sections1 baf_shaheen">
       <%= render  :partial=>"/connect_exam/bncd/header" %>
-      <h2 align="center" class="font-24"><%= @connect_exam_obj.name %></h2>
-      
      
-      <table id="pdf-table" width="99.8%" cellspacing="0">
+      <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
           <tr class="even">
               <td class="align-right col-pdf" width="20%">Student ID </td>
               <td colspan="3" class="align-left"><b><%= @student.admission_no %></b></td>
@@ -154,9 +152,9 @@
                   </tr>
               </table>
               <div class='fine'></div>
-              <table id="pdf-table" width="99.8%" cellspacing="0">
+              <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
                 
-                  <tr class="even">&nbsp;Remarks : <% if total_mark_of_allexam >= 140 %> Passed <% else %> Failed <% end %>    
+                  <tr class="even"><td>&nbsp;Remarks : <% if total_mark_of_allexam >= 140 %> Passed <% else %> Failed <% end %>  </td></tr>  
               </table>
               <div class='fine'></div>
               <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >

@@ -71,9 +71,7 @@
           @total_std_batch = @total_std_batch+1
         end 
         tab['subjects'].each do |sub|
-          if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
-              next
-          end  
+          
           unless tab['exams'].blank? 
             tab['exams'].each do |rs|
               if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?

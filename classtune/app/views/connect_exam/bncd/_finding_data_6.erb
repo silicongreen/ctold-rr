@@ -13,11 +13,6 @@
   @student_list_batch = []
   batchobj = Batch.find_by_id(@batch.id) 
   courseObj = Course.find_by_id(batchobj.course_id)
-  all_courses = Course.find_all_by_course_name(courseObj.course_name)
-  all_batch = Batch.find_all_by_course_id(all_courses.map(&:id))
-  std_subject = StudentsSubject.find_all_by_batch_id(all_batch.map(&:id),:include=>[:subject])
-
-  
   unless @tabulation_data.blank?
     connect_exam = 0
     batch_loop = 0
@@ -38,20 +33,6 @@
       exam_type = 1
       connect_exam = connect_exam+1
       std_group_name = batch_data.course.group
-
-      if tab.kind_of?(Array) or tab.blank? or tab['students'].blank?
-        next
-      end
-
-      std_list = []
-      tab['students'].each do |std| 
-        std_list << std['id'].to_i
-      end
-      @student_all_tab = []
-      unless std_list.blank?
-        @student_all_tab = Student.find_all_by_id(std_list)
-        all_total_std_subject = StudentsSubject.find_all_by_student_id(std_list)
-      end
       tab['students'].each do |std| 
         total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
         std_subject_id = total_std_subject.map(&:subject_id)
@@ -71,7 +52,9 @@
           @total_std_batch = @total_std_batch+1
         end 
         tab['subjects'].each do |sub|
-          
+          if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
+              next
+          end  
           unless tab['exams'].blank? 
             tab['exams'].each do |rs|
               if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?

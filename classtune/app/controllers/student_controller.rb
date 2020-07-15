@@ -1326,6 +1326,9 @@ class StudentController < ApplicationController
     @session_name_pdf = session_name = params[:session_name]
     @group_name_pdf = group_name = params[:group_name]
     @section_pdf = section_name = params[:section_name]
+    
+    @admission_date = section_name = params[:admission_date]
+    @admission_date_2 = section_name = params[:admission_date_2]
     category_name = params[:category_name]
     condition = "1 = 1"
     unless batch_name.blank?
@@ -1349,6 +1352,16 @@ class StudentController < ApplicationController
     unless category_name.blank?
       condition = condition+" and student_categories.name = '"+category_name+"'"
     end
+    
+    if !@admission_date.blank? && !@admission_date_2.blank?
+      condition = condition+" and students.admission_date >= '"+@admission_date.to_date.strftime('%Y-%m-%d')+"' and students.admission_date <= '"+@admission_date_2.to_date.strftime('%Y-%m-%d')+"'"
+    elsif !@admission_date.blank?
+      condition = condition+" and students.admission_date >= '"+@admission_date.to_date.strftime('%Y-%m-%d')+"'"
+    elsif !@admission_date_2.blank?  
+      condition = condition+" and students.admission_date <= '"+@admission_date_2.to_date.strftime('%Y-%m-%d')+"'"
+    end
+
+    
     order_str = "courses.course_name asc,courses.section_name asc,courses.session asc,if(class_roll_no = '' or class_roll_no is null,0,cast(class_roll_no as unsigned)),students.admission_no asc"
     @students_pdf = students = Student.find(:all,:conditions=>condition,:include=>[{:batch=>[:course]},:student_category],:order=>order_str)
     if !params[:pdf].blank? and params[:pdf] == "1"

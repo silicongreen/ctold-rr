@@ -5,6 +5,8 @@
     ">
   
     <label><%= link_to "Download Students List", {:controller=>"schools", :action=>"download_student_list", :id=>@school.id} %></label>
+    <br/>
+    <label><%= link_to "Download Excel", {:controller=>"schools", :action=>"download_student_list_with_roll", :id=>@school.id} %></label>
     <br/><br/>
     <table style="width:100%;overflow: hidden;" class="table table-bordered table-striped">
       <thead>

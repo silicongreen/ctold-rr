@@ -1327,8 +1327,8 @@ class StudentController < ApplicationController
     @group_name_pdf = group_name = params[:group_name]
     @section_pdf = section_name = params[:section_name]
     
-    @admission_date = section_name = params[:admission_date]
-    @admission_date_2 = section_name = params[:admission_date_2]
+    @admission_date = params[:admission_date]
+    @admission_date_2 = params[:admission_date_2]
     category_name = params[:category_name]
     condition = "1 = 1"
     unless batch_name.blank?

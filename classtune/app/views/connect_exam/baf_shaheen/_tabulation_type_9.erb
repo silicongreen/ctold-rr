@@ -292,8 +292,8 @@
                 
                   %>    
                       
-                        A : <%= final_assignent %> | F :<%= final_term %><hr/>
-                        A : <%= mid_assignment %> | M :<%= mid_term %>
+                        A :<%= final_assignent %>|F :<%= final_term %><hr/>
+                        A :<%= mid_assignment %>|M :<%= mid_term %>
                         <hr/>T:<%= subject_obtain_mark.to_i %>
                      
                        <%  grade = GradingLevel.percentage_to_grade(subject_obtain_mark, @batch.id) %>

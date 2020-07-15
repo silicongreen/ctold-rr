@@ -522,41 +522,25 @@ class SchoolsController <  MultiSchoolController
     filename = "#{@school.code}-student-list-#{Time.now.to_date.to_s}.csv"
     destfile = Rails.root.join("public", "uploads", filename)
     FasterCSV.open(destfile, "wb") do |csv|
+      rows = ["Name","Admission No","Shift","Class","Section","Roll","Username","Password","Guardian 1","Username","Password","Guardian 2","Username","Password"]
+      csv << rows
       @student_data.each_with_index do |b,i|  
+        
+
         unless b.nil?
           @batch = @batches.find{|d| d['id'].to_i == b['batch_id'].to_i}
 
           unless @batch.blank?
             @course = @courses.find{|c| c['id'] == @batch.course_id}
 
-            batch_str = ""
-            unless @batch.nil?
-              if @batch.name != "" and @batch.name != "General"
-                batch_str = batch_str + "Shift:" + @batch.name+" | "
-              end
-              if @course.course_name != ""
-                batch_str = batch_str + "Class:" + @course.course_name
-              end
-              if @course.section_name != ""
-                batch_str = batch_str + " | " + "Section:" + @course.section_name
-              end
-            end
+            
 
             if MultiSchool.current_school.id != 352
               guardian_data = @guardian_datas.find_all{|c| c["student_id"].to_i == b['student_id'].to_i}
             else
               guardian_data = @guardian_datas.find_all{|c| c["student_id"].to_i == b['student_id'].to_i && !c["paid_username"].index("p1").nil?}
             end
-
-            rows = ["Name","Admission No","Shift","Class","Section","Roll","Username","Password"]
-            
-            guardian_data.each_with_index do |glist,i|
-              j = i+1
-              rows << "Guardian " + j.to_s
-              rows << "Username"
-              rows << "Password"    
-            end
-            rows << "#{batch_str}"
+            rows = []
           
             unless b['middle_name'].blank?
               rows << "#{b['first_name']} #{b['middle_name']} #{b['last_name']}"

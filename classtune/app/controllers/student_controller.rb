@@ -1476,7 +1476,14 @@ class StudentController < ApplicationController
                 elsif key.to_i == 9
                   condition = condition+" and students.religion = '"+v1+"'"
                 elsif key.to_i == 10
-                  condition = condition+" and students.admission_date = '"+v1.to_date.strftime('%Y-%m-%d')+"'"
+                  split_value = v1.split("_")
+                  if !split_value[0].blank? && !split_value[1].blank?
+                    condition = condition+" and students.admission_date >= '"+split_value[0].to_date.strftime('%Y-%m-%d')+"' and students.admission_date <= '"+split_value[1].to_date.strftime('%Y-%m-%d')+"'"
+                  elsif !split_value[0].blank?
+                    condition = condition+" and students.admission_date >= '"+split_value[0].to_date.strftime('%Y-%m-%d')+"'"
+                  elsif !split_value[1].blank?  
+                    condition = condition+" and students.admission_date <= '"+split_value[1].to_date.strftime('%Y-%m-%d')+"'"
+                  end
                 end  
               end
             end

@@ -5,7 +5,7 @@ CHAMPS21_DEFAULTS = {
   :company_name => 'Champs21',
   :company_url  => 'http://www.champs21.com',
   :company_api_url  => 'http://www.api.champs21.local',
-  :mathjaxurl => 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+  :mathjaxurl => '/javascripts/letex.js?config=TeX-AMS-MML_HTMLorMML'
 }
 
 #USER_SETTINGS = {} 

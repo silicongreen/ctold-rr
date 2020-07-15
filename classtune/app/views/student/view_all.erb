@@ -196,11 +196,11 @@
       </div>
       <div class="form-group col-sm-6">
           <label for="student_date_of_admission">Date of Admission</label>
-          <%= calendar_date_select_tag 'admission_date', I18n.l(Date.today-1.years,:format=>"%d %b %Y") , :year_range => 72.years.ago..0.years.ago,:popup=>"force", :class=>"form-control",:onchange => "filteradmission(this)" %>
+          <%= calendar_date_select_tag 'admission_date', "" , :year_range => 72.years.ago..0.years.ago, :class=>"form-control",:onchange => "filteradmission(this)" %>
       </div>
       <div class="form-group col-sm-6">
           <label for="student_date_of_admission_2">Date of Admission(end)</label>
-          <%= calendar_date_select_tag 'admission_date_2', I18n.l(Date.today-1.years,:format=>"%d %b %Y") , :year_range => 72.years.ago..0.years.ago,:popup=>"force", :class=>"form-control",:onchange => "filteradmission(this)" %>
+          <%= calendar_date_select_tag 'admission_date_2', "", :year_range => 72.years.ago..0.years.ago, :class=>"form-control",:onchange => "filteradmission(this)" %>
       </div>
 
 

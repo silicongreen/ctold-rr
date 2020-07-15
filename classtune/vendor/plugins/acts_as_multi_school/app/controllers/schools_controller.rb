@@ -409,7 +409,7 @@ class SchoolsController <  MultiSchoolController
     #abort(@student_data.inspect)
     #@total_student = @student_data.count
     sql2 = "Select id FROM students where is_active = true and is_deleted = false"
-    @total_student = @conn.execute(sql2).all_hashesv
+    @total_student = @conn.execute(sql2).all_hashes
   end
   
   #  def download_student_list

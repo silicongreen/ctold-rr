@@ -41,7 +41,7 @@ module Redactor::FormHelpers
 
     content_for :redactor do
       "<script type='text/x-mathjax-config'>MathJax.Hub.Config({tex2jax: {inlineMath: [['~~','~~'], ['\\(','\\)']]}});</script>
-         <script type='text/javascript'  src='/javascripts/letex.js?config=TeX-AMS-MML_HTMLorMML'></script>"
+         <script type='text/javascript'  src='https://apimaster.classtune.com/letex.js?config=TeX-AMS-MML_HTMLorMML'></script>"
     end
 
   end

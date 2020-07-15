@@ -183,6 +183,7 @@
             <% total_mark = 0 %>
             <% grades = [] %>
             <% grade_count = {} %>
+            <% subject_count_std = 0 %>
             <% @report_data['report']['subjects'].each do |sub| %>
                   <% has_exam = false %>
                   <% if @all_subject_id.include?(sub['id'].to_i) %>

@@ -287,6 +287,8 @@
                     end
                     std_subject_marks_mid = std_subject_marks_mid.round()
                     subject_obtain_mark = ((std_subject_marks_final.to_f*30)/100)+((std_subject_marks_mid.to_f*70)/100)
+                    subject_obtain_mark = subject_obtain_mark.round()
+                    total_mark = total_mark+subject_obtain_mark
                 
                   %>    
                       

@@ -231,7 +231,7 @@
                         std_subject_marks_final = std_subject_marks_final+obt_mark.to_f
                       end  
                     end
-                    std_subject_marks_final = std_subject_marks_final.round()
+                    
                     final_assignent = std_subject_marks_final
 
                     @report_data['report']['exams'].each do |rs|
@@ -244,7 +244,7 @@
                         std_subject_marks_final = std_subject_marks_final+obt_mark.to_f
                       end  
                     end
-
+                    std_subject_marks_final = std_subject_marks_final.round()
                     std_subject_marks_mid = 0
                     class_test = []
 
@@ -272,7 +272,7 @@
                         std_subject_marks_mid = std_subject_marks_mid+obt_mark.to_f
                       end  
                     end
-                    std_subject_marks_mid = std_subject_marks_mid.round()
+                    
                     mid_assignment = std_subject_marks_mid
 
                     @report_data['report']['exams'].each do |rs|
@@ -285,6 +285,7 @@
                         std_subject_marks_mid = std_subject_marks_mid+obt_mark.to_f
                       end  
                     end
+                    std_subject_marks_mid = std_subject_marks_mid.round()
                     subject_obtain_mark = ((std_subject_marks_final.to_f*30)/100)+((std_subject_marks_mid.to_f*70)/100)
                 
                   %>    

@@ -1086,10 +1086,22 @@ class ExamController < ApplicationController
   end
   
   def remove_exam_connect    
-    @exam_connect = ExamConnect.active.find_by_id(params[:id])    
-    #abort @exam_connect.inspect
+    @exam_connect = ExamConnect.active.find_by_id(params[:id])
     @batch_id = @exam_connect.batch_id
-    @exam_connect.delete
+    unless @exam_connect.blank?
+      @exam_groups = ExamGroup.find_all_by_connect_exam_id(@exam_connect.id)
+      unless @exam_groups.blank?
+        @exam_groups.each do |exam_group|
+          exam_group_obj = ExamGroup.find_by_id(exam_group.id)
+          unless exam_group_obj.blank?
+            exam_group_obj.is_deleted = 1
+            exam_group_obj.save
+          end
+        end
+      end
+      @exam_connect.is_deleted = 1
+      @exam_connect.save
+    end
     flash[:notice] = "#{t('flash26')}"
     redirect_to :controller=>"exam", :action=>"exam_connect_list", :id=>@batch_id
   end

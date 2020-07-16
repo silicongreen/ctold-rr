@@ -1089,10 +1089,10 @@ class ExamController < ApplicationController
     @exam_connect = ExamConnect.active.find_by_id(params[:id])
     @batch_id = @exam_connect.batch_id
     unless @exam_connect.blank?
-      @exam_groups = ExamGroup.find_all_by_connect_exam_id(@exam_connect.id)
+      @exam_groups = GroupedExam.find_all_by_connect_exam_id(@exam_connect.id)
       unless @exam_groups.blank?
         @exam_groups.each do |exam_group|
-          exam_group_obj = ExamGroup.find_by_id(exam_group.id)
+          exam_group_obj = ExamGroup.find_by_id(exam_group.exam_group_id)
           unless exam_group_obj.blank?
             exam_group_obj.is_deleted = 1
             exam_group_obj.save

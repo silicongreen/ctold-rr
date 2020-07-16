@@ -45,10 +45,13 @@
         if connect_exam_id.to_i == @connect_exam_obj.id
           @total_std_batch = @total_std_batch+1
         end 
+        
         tab['subjects'].each do |sub|
+          
           if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
               next
-          end  
+          end 
+          subject_marks = 0
           unless tab['exams'].blank? 
             tab['exams'].each do |rs|
               if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
@@ -56,12 +59,13 @@
                 if rs['exam_category'] == '1'
                   bonus_mark = bonus_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                 else
-                  if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f < 20
-                    subject_failed = true
-                  end  
+                  subject_marks = subject_marks+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                 end  
               end  
             end  
+          end
+          if subject_marks < 0
+            subject_failed = true
           end  
         end 
         

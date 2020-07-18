@@ -142,6 +142,8 @@ class FinanceFees extends CActiveRecord
                     )
                 )
             );
+            $criteria->compare("collection.is_deleted",0);
+            
             $objfess = $this->findAll($criteria);
             
             $afees = array();

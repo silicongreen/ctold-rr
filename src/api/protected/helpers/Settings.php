@@ -241,7 +241,7 @@ class Settings {
     {
         $array = ["att1"=>"","att2"=>"","att3"=>""];
         $school_id = Yii::app()->user->schoolId;
-        $schoolObj = new School();
+        $schoolObj = new Schools();
         $schooldata = $schoolobj->findByPk($school_id);
         $school_url = "https://".$schooldata->code.".classtune.com/";
         $assignment_ans = new AssignmentAnswers();

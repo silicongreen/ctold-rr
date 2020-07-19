@@ -129,6 +129,8 @@ class AssignmentAnswers extends CActiveRecord
                 $std_ids = explode(",",$assData['student_list']);
                 $stdObj = new Students();
                 $assignment_students = $stdObj->getFindAllByStdIds($std_ids);
+                $free_user = new Freeusers();
+                
                 $i_loop = 0;
                 foreach($assignment_students as $svalue)
                 {
@@ -136,7 +138,15 @@ class AssignmentAnswers extends CActiveRecord
                     $std_list[$i_loop]['student_name'] = $svalue->first_name." ".$svalue->middle_name." ".$svalue->last_name;
                     $std_list[$i_loop]['student_name'] = str_replace("  "," ", $std_list[$i_loop]['student_name']);
                     $std_list[$i_loop]['class_roll_no'] = $svalue->class_roll_no;
-                    $std_list[$i_loop]['profile_image'] = Settings::getProfileImage($svalue->user_id);
+                    $free_user_id = $free_user->getFreeuserPaid($svalue->user_id,$svalue->school_id);
+                    if($free_user_id)
+                    {
+                        $std_list[$i_loop]['profile_image'] = Settings::getProfileImage($svalue->user_id);
+                    }
+                    else
+                    {
+                        $std_list[$i_loop]['profile_image'] = "";
+                    }    
                     $std_list[$i_loop]['status'] = $this->isAlreadyDone($assignment_id,$svalue->id);
                     $i_loop++;
                 }

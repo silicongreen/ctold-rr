@@ -23,7 +23,7 @@ class HomeworkController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'homeworkintelligence','totalclass','submittedlist','statuschange','singlesubmit','submit','submitdelete','defaulterList','delete','getdefaulterlist','adddefaulter','getsubjectstudents', 'teacherintelligence', 'Done', 'subjects', 'publishhomework', 'singleteacher', 'assessmentscore', 'singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus', 'teacherQuiz'),
+                'actions' => array('index', 'homeworkintelligence','totalclass','submittedlist','savemark','statuschange','singlesubmit','savecomments','comments','submit','submitdelete','defaulterList','delete','getdefaulterlist','adddefaulter','getsubjectstudents', 'teacherintelligence', 'Done', 'subjects', 'publishhomework', 'singleteacher', 'assessmentscore', 'singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus', 'teacherQuiz'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -1695,6 +1695,88 @@ class HomeworkController extends Controller
        echo CJSON::encode($response);
        Yii::app()->end();
     }
+    
+    public function actionSaveComments()
+    {
+        $id = Yii::app()->request->getPost('id');
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $student_id = Yii::app()->request->getPost('student_id'); 
+        $comment = Yii::app()->request->getPost('comment'); 
+        if(Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $id && $student_id)
+        {
+            $assignmentCommentsObj = new AssignmentComments();
+            $assignment_answer->assignment_id = $id;
+            $assignment_answer->student_id = $student_id;
+            $assignment_answer->content = $comment;
+            $assignment_answer->author_id = Yii::app()->user->id;
+            $assignment_answer->created_at = date("Y-m-d H:i:s");
+            $assignment_answer->updated_at = date("Y-m-d H:i:s");
+            $assignment_answer->school_id = Yii::app()->user->schoolId;
+            $assignment_answer->insert();
+            $response['data']['msg'] = "Success";
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Data Found";
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }  
+        echo CJSON::encode($response);
+        Yii::app()->end(); 
+    }        
+
+
+    public function actionComments()
+    {
+        $id = Yii::app()->request->getPost('id');
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $student_id = Yii::app()->request->getPost('student_id');  
+        if(Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $id && $student_id)
+        {
+            $assignmentCommentsObj = new AssignmentComments();
+            $comments = $assignmentCommentsObj->getComments($id,$student_id);
+            $response['data']['comments'] = $comments;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Data Found";
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }  
+        echo CJSON::encode($response);
+        Yii::app()->end(); 
+        
+    }         
+    
+    public function actionSaveMark()
+    {
+        $id = Yii::app()->request->getPost('id');
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $mark = Yii::app()->request->getPost('mark');
+        if(Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $id && $status)
+        {
+            $assignmentAnswersObj = new AssignmentAnswers();
+            $answer = $assignmentAnswersObj->findByPk($id);
+            if( $answer ) 
+            {
+                $answer->mark = $mark;
+                $answer->save();
+            }
+            $response['data']['msg'] = "Success";
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Data Found";
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }  
+        echo CJSON::encode($response);
+        Yii::app()->end(); 
+    }        
+    
     public function actionstatusChange()
     {
         $id = Yii::app()->request->getPost('id');

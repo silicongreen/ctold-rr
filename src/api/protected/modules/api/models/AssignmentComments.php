@@ -111,6 +111,42 @@ class AssignmentComments extends CActiveRecord
             
         }
         
+        function getComments( $assignment_id, $student_id )
+        {
+            $criteria = new CDbCriteria();
+            $criteria->select = 't.*';
+            $criteria->compare('t.assignment_id', $assignment_id);
+            $criteria->compare('t.student_id', $student_id);
+            $criteria->order = "t.created_at asc";
+            $data = $this->findAll($criteria);
+            $free_user = new Freeusers();
+            $user = new Users();
+            $comments = array();
+            if( $data )
+            {
+                foreach( $data as $value )
+                {
+                    $merge = [];
+                    $userdata = $user->findByPk($value->author_id);
+                    if( $userdata )
+                    {
+                        $merge['comments'] = $value->content;
+                        $merge['user_name'] = trim($userdata->first_name." ".$userdata->last_name);
+                        $free_user_id = $free_user->getFreeuserPaid($userdata->id,$svalue->school_id);
+                        if($free_user_id)
+                        {
+                            $merge['profile_image'] = Settings::getProfileImage($free_user_id);
+                        }
+                        $comments[] =  $merge;       
+                      
+                    }  
+                            
+                }    
+            }
+            return $comments;
+            
+        }
+        
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);

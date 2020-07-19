@@ -138,6 +138,7 @@ class AssignmentAnswers extends CActiveRecord
                     $std_list[$i_loop]['student_name'] = $svalue->first_name." ".$svalue->middle_name." ".$svalue->last_name;
                     $std_list[$i_loop]['student_name'] = str_replace("  "," ", $std_list[$i_loop]['student_name']);
                     $std_list[$i_loop]['class_roll_no'] = $svalue->class_roll_no;
+                    $std_list[$i_loop]['marks'] = $svalue->class_roll_no;
                     $free_user_id = $free_user->getFreeuserPaid($svalue->user_id,$svalue->school_id);
                     if($free_user_id)
                     {
@@ -148,6 +149,7 @@ class AssignmentAnswers extends CActiveRecord
                         $std_list[$i_loop]['profile_image'] = "";
                     }    
                     $std_list[$i_loop]['status'] = $this->isAlreadyDone($assignment_id,$svalue->id);
+                    $std_list[$i_loop]['mark'] = $this->mark($assignment_id,$svalue->id);
                     $i_loop++;
                 }
                 
@@ -242,6 +244,23 @@ class AssignmentAnswers extends CActiveRecord
             $data = $this->find($criteria);
             return $data->total;
             
+        }
+        
+        function mark($assignment_id, $student_id)
+        {
+             $criteria = new CDbCriteria();
+             $criteria->select = 't.id,t.status';
+             $criteria->compare('t.student_id', $student_id);
+             $criteria->compare('t.assignment_id', $assignment_id);
+             
+             $criteria->order = "created_at DESC";
+             $data = $this->find($criteria);
+             $return = 0.00;
+             if($data)
+             {
+                 $return = $data->mark;
+             }
+             return $return;
         }
         
         function isAlreadyDone($assignment_id, $student_id)

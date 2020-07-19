@@ -91,6 +91,13 @@ class AssignmentAnswersController < ApplicationController
       redirect_to :controller=>:user ,:action=>:dashboard
     end
   end
+  
+  def message
+    @assignment= Assignment.active.find params[:assignment_id]
+    @assignment_id = params[:assignment_id]
+    @student_id = params[:student_id]
+    show_comments_associate(@assignment_id, @student_id)
+  end
 
   def show
     @assignment= Assignment.active.find params[:assignment_id]

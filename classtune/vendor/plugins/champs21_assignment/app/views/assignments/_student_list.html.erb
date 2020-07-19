@@ -13,7 +13,7 @@
           
             %>
             <% if s.present? %>
-              <div class="listitem"><b><%= link_to s.full_name , :url => {:controller => "assignment_answers_controller", :action => "message",:assignment_id=>@assignment.id,:student_id=>s.id},:target => '_blank' %><%=" &#x200E; ( #{s.admission_no} ) &#x200E;"%></b></div>
+              <div class="listitem"><b><%= link_to s.full_name , {:controller => "assignment_answers_controller", :action => "message",:assignment_id=>@assignment.id,:student_id=>s.id},:target => '_blank' %><%=" &#x200E; ( #{s.admission_no} ) &#x200E;"%></b></div>
             <% end %>
           <% end %>
       <% end %>
@@ -21,7 +21,7 @@
         
     <% @students.each do |s| %>
         <% unless std_id.include?(s.id) %>
-          <div class="listitem"><%= link_to s.full_name , :url => {:controller => "assignment_answers_controller", :action => "message",:assignment_id=>@assignment.id,:student_id=>s.id},:target => '_blank' %><%=" &#x200E; ( #{s.admission_no} ) &#x200E;"%> </div>
+          <div class="listitem"><%= link_to s.full_name ,{:controller => "assignment_answers_controller", :action => "message",:assignment_id=>@assignment.id,:student_id=>s.id},:target => '_blank' %><%=" &#x200E; ( #{s.admission_no} ) &#x200E;"%> </div>
         <% end %>
     <% end %>    
   <% elsif @status == "assigned" %>

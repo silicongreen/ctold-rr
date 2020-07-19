@@ -132,7 +132,7 @@ class AssignmentComments extends CActiveRecord
                     {
                         $merge['comments'] = $value->content;
                         $merge['user_name'] = trim($userdata->first_name." ".$userdata->last_name);
-                        $free_user_id = $free_user->getFreeuserPaid($userdata->id,$svalue->school_id);
+                        $free_user_id = $free_user->getFreeuserPaid($userdata->id,$userdata->school_id);
                         if($free_user_id)
                         {
                             $merge['profile_image'] = Settings::getProfileImage($free_user_id);

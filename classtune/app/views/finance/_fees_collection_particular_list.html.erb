@@ -34,7 +34,7 @@
                 <!--i class="fa fa-check-square-o particular-box"></i-->
             </td>
             <td id="fee_category_td" style="vertical-align: middle;">
-                <%= select("assign_fee_category_id",{} ,@fee_particulars.map { |item| [item.name, item.finance_fee_particular_category_id] }, {},{:class => "form-field fee_category_tr_row"} ) %><br />
+                <%= select("assign_fee_category_id",{} ,@fee_particulars.map { |item| [item.finance_fee_particular_category.name, item.finance_fee_particular_category_id] }, {},{:class => "form-field fee_category_tr_row"} ) %><br />
             <span style="display: block; padding-top: 10px; font-family: verdana; font-size: 12px;"><%= check_box_tag "disabled_new_particular_name", 1, true, :class=>'disabled_new_particular_name' %>&nbsp;&nbsp;Use Default Particular Name</span>
             </td>
             <td id="fee_particular_name_td" style="width: 300px; vertical-align: middle;">

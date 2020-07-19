@@ -98,7 +98,7 @@
                                     <% else %>
                                       <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                     <% end %>
-                                  <% else %>
+                                  <% end %>
                                 <% end %>
                             <% end %>
                             <td class="col-pdf"><%= total_mark %></td>
@@ -193,7 +193,7 @@
 
   </div>
 
-<% end %>
+
 <%= stylesheet_link_tag 'list_table' %>
 
 

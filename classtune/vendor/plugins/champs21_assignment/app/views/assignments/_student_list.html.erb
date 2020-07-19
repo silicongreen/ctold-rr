@@ -1,5 +1,30 @@
 <% unless @students.empty? %>
-  <% unless @status == "answered" %>
+  <% if @status == "comments" %>
+    <% std_id = [] %>
+    <% unless @ass_comments.blank? %>
+      <% @ass_comments.each do |ass_comment| %>
+          <% unless std_id.include?(ass_comment.student_id) %>
+            <% std_id << ass_comment.student_id %>
+            <%
+              s = Student.find_by_id ass_comment.student_id
+              if s.nil?
+                s = ArchivedStudent.find_by_former_id ass_comment.student_id
+              end
+          
+            %>
+            <% if s.present? %>
+              <div class="listitem"><b><%="#{s.full_name} &#x200E; ( #{s.admission_no} ) &#x200E;"%></b></div>
+            <% end %>
+          <% end %>
+      <% end %>
+    <% end %>    
+        
+    <% @students.each do |s| %>
+        <% unless std_id.include?(s.id) %>
+          <div class="listitem"><%="#{s.full_name} &#x200E; ( #{s.admission_no} ) &#x200E;"%> </div>
+        <% end %>
+    <% end %>    
+  <% elsif @status == "answered" %>
     <% @students.each do |s| %>
       <% if s.present? %>
         <div class="listitem">    <%="#{s.full_name} &#x200E; ( #{s.admission_no} ) &#x200E;"%> </div>

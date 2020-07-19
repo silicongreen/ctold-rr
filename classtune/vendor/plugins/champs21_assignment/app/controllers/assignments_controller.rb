@@ -919,6 +919,33 @@ class AssignmentsController < ApplicationController
         @answers  = @answers.sort_by{|a| (a && a.created_at(:length)) || 0}
         @students = @answers.map{|a| a.student }
         @students = @students.uniq unless @students.blank?
+      elsif @status== "comments"  
+        assigned_students= @assignment.student_list.split(",")
+        @students=[]
+        assigned_students.each do |assigned_student|
+          s = Student.find_by_id assigned_student
+          if s.nil?
+            s = ArchivedStudent.find_by_former_id assigned_student
+          end
+          @students << s if s.present?
+        end
+        
+        @students = @students.sort_by{|s| s.full_name}
+        @students = @students.uniq unless @students.blank?
+        
+        @ass_comments = AssignmentComment.find_all_by_assignment_id(@assignment.id,:select=>"student_id",:order=>"created_at Desc")
+        @students_comments=[]
+        unless @ass_comments.blank?
+          @ass_comments.each do |ass_comment|
+            s = Student.find_by_id ass_comment.student_id
+            if s.nil?
+              s = ArchivedStudent.find_by_former_id ass_comment.student_id
+            end
+            @students_comments << s if s.present?
+          end
+        end
+        @students_comments = @students_comments.uniq unless @students_comments.blank?
+        
       elsif @status== "pending"
         answers = @assignment.assignment_answers
         answered_students = answers.map{|a| a.student_id.to_s }
@@ -1116,6 +1143,21 @@ class AssignmentsController < ApplicationController
       #RR assignment defaulter added
       @defaulter_registered = AssignmentDefaulterRegistration.find_by_assignment_id(@assignment.id)
       @current_user = current_user
+      
+      
+      @ass_comments = AssignmentComment.find_all_by_assignment_id(@assignment.id,:select=>"student_id",:order=>"created_at Desc")
+      @students_comments=[]
+      unless @ass_comments.blank?
+        @ass_comments.each do |ass_comment|
+          s = Student.find_by_id ass_comment.student_id
+          if s.nil?
+            s = ArchivedStudent.find_by_former_id ass_comment.student_id
+          end
+          @students_comments << s if s.present?
+        end
+      end
+      @students_comments = @students_comments.uniq unless @students_comments.blank?
+      @comments_count = @students_comments.count
     
       assigned_students= @assignment.student_list.split(",")
       @students=[]
@@ -1135,7 +1177,10 @@ class AssignmentsController < ApplicationController
       @students = @answers.map{|a| a.student }
       @students = @students.uniq unless @students.blank?
       @answered_count = @students.count
-
+      
+      
+      
+      
       answers = @assignment.assignment_answers
       answered_students = answers.map{|a| a.student_id.to_s }
       assigned_students= @assignment.student_list.split(",")

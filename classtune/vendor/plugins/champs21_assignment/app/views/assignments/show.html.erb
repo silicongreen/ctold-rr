@@ -242,7 +242,9 @@
           <div id="quickinfo">  <h5><%= link_to_remote  "#{t('assigned')} (#{@students_assigned_count})",:update=>"assigned_students",:url=>{:action=>:assignment_student_list,:id=>@assignment.id,:status=>"assigned"},   :before => "Element.show('loader')", :success => "Element.hide('loader')"%></h5>
             <h5> <%= link_to_remote  "#{t('answered')} (#{@answered_count})",:update=>"assigned_students",:url=>{:action=>:assignment_student_list,:id=>@assignment.id,:status=>"answered"},   :before => "Element.show('loader')", :success => "Element.hide('loader')"%></h5>
             <h5> <%= link_to_remote  "#{t('pending')} (#{@pending_count})",:update=>"assigned_students",:url=>{:action=>:assignment_student_list,:id=>@assignment.id,:status=>"pending"},   :before => "Element.show('loader')", :success => "Element.hide('loader')"%></h5>
-
+            <% if MultiSchool.current_school.id == 2 %>
+              <h5> <%= link_to_remote  "Comments (#{@comments_count})",:update=>"assigned_students",:url=>{:action=>:assignment_student_list,:id=>@assignment.id,:status=>"comments"},   :before => "Element.show('loader')", :success => "Element.hide('loader')"%></h5>
+            <% end %>
           </div>
 
           

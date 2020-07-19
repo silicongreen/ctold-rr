@@ -704,11 +704,6 @@ class Settings {
                 }
             }
         }
-
-        if (!$profile_image && $userinfo && $userinfo->profile_image) {
-
-            $profile_image = $userinfo->profile_image;
-        }
         return $profile_image;
     }
 

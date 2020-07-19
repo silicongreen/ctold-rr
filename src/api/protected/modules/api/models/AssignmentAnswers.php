@@ -141,7 +141,7 @@ class AssignmentAnswers extends CActiveRecord
                     $free_user_id = $free_user->getFreeuserPaid($svalue->user_id,$svalue->school_id);
                     if($free_user_id)
                     {
-                        $std_list[$i_loop]['profile_image'] = Settings::getProfileImage($svalue->user_id);
+                        $std_list[$i_loop]['profile_image'] = Settings::getProfileImage($free_user_id);
                     }
                     else
                     {

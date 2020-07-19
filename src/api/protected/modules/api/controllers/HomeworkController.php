@@ -1702,17 +1702,17 @@ class HomeworkController extends Controller
         $user_secret = Yii::app()->request->getPost('user_secret');
         $student_id = Yii::app()->request->getPost('student_id'); 
         $comment = Yii::app()->request->getPost('comment'); 
-        if(Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $id && $student_id)
+        if(Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $id && $student_id && $comment)
         {
             $assignmentCommentsObj = new AssignmentComments();
-            $assignment_answer->assignment_id = $id;
-            $assignment_answer->student_id = $student_id;
-            $assignment_answer->content = $comment;
-            $assignment_answer->author_id = Yii::app()->user->id;
-            $assignment_answer->created_at = date("Y-m-d H:i:s");
-            $assignment_answer->updated_at = date("Y-m-d H:i:s");
-            $assignment_answer->school_id = Yii::app()->user->schoolId;
-            $assignment_answer->insert();
+            $assignmentCommentsObj->assignment_id = $id;
+            $assignmentCommentsObj->student_id = $student_id;
+            $assignmentCommentsObj->content = $comment;
+            $assignmentCommentsObj->author_id = Yii::app()->user->id;
+            $assignmentCommentsObj->created_at = date("Y-m-d H:i:s");
+            $assignmentCommentsObj->updated_at = date("Y-m-d H:i:s");
+            $assignmentCommentsObj->school_id = Yii::app()->user->schoolId;
+            $assignmentCommentsObj->insert();
             $response['data']['msg'] = "Success";
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Data Found";

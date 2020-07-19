@@ -1755,7 +1755,7 @@ class HomeworkController extends Controller
         $id = Yii::app()->request->getPost('id');
         $user_secret = Yii::app()->request->getPost('user_secret');
         $mark = Yii::app()->request->getPost('mark');
-        if(Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $id && $status)
+        if(Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $id && $mark)
         {
             $assignmentAnswersObj = new AssignmentAnswers();
             $answer = $assignmentAnswersObj->findByPk($id);

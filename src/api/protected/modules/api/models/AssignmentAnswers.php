@@ -136,6 +136,7 @@ class AssignmentAnswers extends CActiveRecord
                     $std_list[$i_loop]['student_name'] = $svalue->first_name." ".$svalue->middle_name." ".$svalue->last_name;
                     $std_list[$i_loop]['student_name'] = str_replace("  "," ", $std_list[$i_loop]['student_name']);
                     $std_list[$i_loop]['class_roll_no'] = $svalue->class_roll_no;
+                    $std_list[$i_loop]['profile_image'] = Settings::getProfileImage($value->user_id);
                     $std_list[$i_loop]['status'] = $this->isAlreadyDone($assignment_id,$svalue->id);
                     $i_loop++;
                 }
@@ -208,6 +209,16 @@ class AssignmentAnswers extends CActiveRecord
             }
             
             return $return;
+            
+        }
+        
+        function submittedTotal($assignment_id)
+        {
+            $criteria = new CDbCriteria();
+            $criteria->select = 'count(DISTINCT t.student_id) as total';
+            $criteria->compare('t.assignment_id', $assignment_id);
+            $data = $this->find($criteria);
+            return $data->total;
             
         }
         

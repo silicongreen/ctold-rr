@@ -235,6 +235,80 @@ class Settings {
         'syllabus lessonplansstd' => "Lessonplans Index"
     );
     public static $_ar_language = array('en' => 'ENG', 'bn' => 'BAN',);
+    
+    
+    public static function attachmentUrl($answer_id)
+    {
+        $array = ["att1"=>"","att2"=>"","att3"=>""];
+        $school_id = Yii::app()->user->schoolId;
+        $schoolObj = new School();
+        $schooldata = $schoolobj->findByPk($school_id);
+        $school_url = "https://".$schooldata->code.".classtune.com/";
+        $assignment_ans = new AssignmentAnswers();
+        $homework = $assignment_ans->findByPk($id);
+        $home_work_id = strlen($homework->assignment_id);
+        $new_id = "";
+        $diff = 9-$home_work_id;
+        for($i = 0; $i<$diff; $i++)
+        {
+            $new_id = $new_id."0";
+        }
+        $new_id = $new_id."".$homework->assignment_id;
+
+        $ass_ids = str_split($new_id, 3);
+
+        $home_school_id = strlen($homework->school_id);
+
+        $new_id = "";
+        $diff = 9-$home_school_id;
+        for($i = 0; $i<$diff; $i++)
+        {
+            $new_id = $new_id."0";
+        }
+        $new_id = $new_id."".$homework->school_id;
+
+        $school_ids = str_split($new_id, 3);
+        if ($homework->attachment_file_name)
+        {
+            if( $homework->from_web == 1 )
+            {
+                $file_name_explode = explode(".", $homework->attachment_file_name);
+                $extension = $file_name_explode[count($file_name_explode)-1];
+                $file_name = str_replace(".".$extension,"", $homework->attachment_file_name);
+                $homework->attachment_file_name = $file_name."_".$homework->id.".".$extension;
+                $url = $school_url. "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment2s/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/".$homework->attachment_file_name;
+                $array['att1'] = $url;
+                
+            }
+        }
+        if ($homework->attachment2_file_name)
+        {
+            if( $homework->from_web == 1 )
+            {
+                $file_name_explode = explode(".", $homework->attachment2_file_name);
+                $extension = $file_name_explode[count($file_name_explode)-1];
+                $file_name = str_replace(".".$extension,"", $homework->attachment2_file_name);
+                $homework->attachment2_file_name = $file_name."_".$homework->id.".".$extension;
+                $url = $school_url. "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment2s/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/attach2/".$homework->attachment2_file_name;
+                $array['att2'] = $url;
+                
+            }
+        }
+        if ($homework->attachment3_file_name)
+        {
+            if( $homework->from_web == 1 )
+            {
+                $file_name_explode = explode(".", $homework->attachment3_file_name);
+                $extension = $file_name_explode[count($file_name_explode)-1];
+                $file_name = str_replace(".".$extension,"", $homework->attachment3_file_name);
+                $homework->attachment3_file_name = $file_name."_".$homework->id.".".$extension;
+                $url = $school_url. "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment3s/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/attach3/".$homework->attachment3_file_name;
+                $array['att3'] = $url;
+                
+            }
+        }
+        return $array;
+    }        
 
     public static function addReminderHomeworkClasswork($subject_details, $obj, $for = "Homework") {
         $batchObj = new Batches();

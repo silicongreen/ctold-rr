@@ -804,13 +804,19 @@ class Assignments extends CActiveRecord
                 }
                 $marge['duedate'] = date("Y-m-d", strtotime($value->duedate));
                 $marge['name'] = utf8_encode($value->title);
+                $marge['total_mark'] = $value->total_mark;
                 $marge['content'] = utf8_encode($value->content);
                 $marge['type'] = $value->assignment_type;
                 $marge['id'] = $value->id;
                 $marge['is_editable'] = $this->checkHtmlTag($value->content);
                 $marge['is_published'] = $value->is_published;
+                $std_ids = explode(",",$value->student_list);
+                $marge['assign_total'] = count($std_ids);
+                
                 $assignment_answer = new AssignmentAnswers();
-                $marge['done'] = $assignment_answer->doneTotal($value->id);
+                $assignment_comments = new AssignmentComments();
+                $marge['done'] = $assignment_answer->submittedTotal($value->id);
+                $marge['comments'] = $assignment_comments->totalComments($value->id);
                 $response_array[] = $marge;     
                 
             }

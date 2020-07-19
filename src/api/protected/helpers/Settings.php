@@ -245,7 +245,7 @@ class Settings {
         $schooldata = $schoolObj->findByPk($school_id);
         $school_url = "https://".$schooldata->code.".classtune.com/";
         $assignment_ans = new AssignmentAnswers();
-        $homework = $assignment_ans->findByPk($id);
+        $homework = $assignment_ans->findByPk($answer_id);
         $home_work_id = strlen($homework->assignment_id);
         $new_id = "";
         $diff = 9-$home_work_id;

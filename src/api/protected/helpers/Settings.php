@@ -276,10 +276,11 @@ class Settings {
                 $extension = $file_name_explode[count($file_name_explode)-1];
                 $file_name = str_replace(".".$extension,"", $homework->attachment_file_name);
                 $homework->attachment_file_name = $file_name."_".$homework->id.".".$extension;
-                $url = $school_url. "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment2s/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/".$homework->attachment_file_name;
-                $array['att1'] = $url;
+                
                 
             }
+            $url = $school_url. "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment2s/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/".$homework->attachment_file_name;
+            $array['att1'] = $url;
         }
         if ($homework->attachment2_file_name)
         {
@@ -288,11 +289,11 @@ class Settings {
                 $file_name_explode = explode(".", $homework->attachment2_file_name);
                 $extension = $file_name_explode[count($file_name_explode)-1];
                 $file_name = str_replace(".".$extension,"", $homework->attachment2_file_name);
-                $homework->attachment2_file_name = $file_name."_".$homework->id.".".$extension;
-                $url = $school_url. "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment2s/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/attach2/".$homework->attachment2_file_name;
-                $array['att2'] = $url;
+                $homework->attachment2_file_name = $file_name."_".$homework->id.".".$extension; 
                 
             }
+            $url = $school_url. "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment2s/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/attach2/".$homework->attachment2_file_name;
+            $array['att2'] = $url;
         }
         if ($homework->attachment3_file_name)
         {
@@ -301,11 +302,10 @@ class Settings {
                 $file_name_explode = explode(".", $homework->attachment3_file_name);
                 $extension = $file_name_explode[count($file_name_explode)-1];
                 $file_name = str_replace(".".$extension,"", $homework->attachment3_file_name);
-                $homework->attachment3_file_name = $file_name."_".$homework->id.".".$extension;
-                $url = $school_url. "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment3s/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/attach3/".$homework->attachment3_file_name;
-                $array['att3'] = $url;
-                
+                $homework->attachment3_file_name = $file_name."_".$homework->id.".".$extension; 
             }
+            $url = $school_url. "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment3s/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/attach3/".$homework->attachment3_file_name;
+            $array['att3'] = $url;
         }
         return $array;
     }        

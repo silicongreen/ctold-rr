@@ -24,7 +24,7 @@
           <div class="listitem"><%="#{s.full_name} &#x200E; ( #{s.admission_no} ) &#x200E;"%> </div>
         <% end %>
     <% end %>    
-  <% elsif @status == "answered" %>
+  <% elsif @status == "assigned" %>
     <% @students.each do |s| %>
       <% if s.present? %>
         <div class="listitem">    <%="#{s.full_name} &#x200E; ( #{s.admission_no} ) &#x200E;"%> </div>

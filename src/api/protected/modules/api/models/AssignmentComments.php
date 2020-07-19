@@ -110,7 +110,16 @@ class AssignmentComments extends CActiveRecord
             return $data->total;
             
         }
-        
+        function hasComment($assignment_id,$student_id)
+        {
+            $criteria = new CDbCriteria();
+            $criteria->select = 'count(DISTINCT t.student_id) as total';
+            $criteria->compare('t.assignment_id', $assignment_id);
+            $criteria->compare('t.student_id', $student_id);
+            $data = $this->find($criteria);
+            return $data->total;
+            
+        }
         function getComments( $assignment_id, $student_id )
         {
             $criteria = new CDbCriteria();

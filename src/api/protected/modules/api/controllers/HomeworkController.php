@@ -1812,7 +1812,9 @@ class HomeworkController extends Controller
        {
           $assignmentAnswersObj = new AssignmentAnswers();
           $submitted = $assignmentAnswersObj->single_submit($id,$student_id);
+          $attachments = Settings::attachmentUrl($submitted->id);
           $response['data']['submit_data'] = $submitted;
+          $response['data']['attachments'] = $attachments;
           $response['status']['code'] = 200;
           $response['status']['msg'] = "Data Found";
           

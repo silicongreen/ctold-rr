@@ -131,6 +131,8 @@ class AssignmentAnswers extends CActiveRecord
                 $assignment_students = $stdObj->getFindAllByStdIds($std_ids);
                 $free_user = new Freeusers();
                 
+                $assignment_comment = new AssignmentComments();
+                
                 $i_loop = 0;
                 foreach($assignment_students as $svalue)
                 {
@@ -138,7 +140,7 @@ class AssignmentAnswers extends CActiveRecord
                     $std_list[$i_loop]['student_name'] = $svalue->first_name." ".$svalue->middle_name." ".$svalue->last_name;
                     $std_list[$i_loop]['student_name'] = str_replace("  "," ", $std_list[$i_loop]['student_name']);
                     $std_list[$i_loop]['class_roll_no'] = $svalue->class_roll_no;
-                    $std_list[$i_loop]['marks'] = $svalue->class_roll_no;
+                    
                     $free_user_id = $free_user->getFreeuserPaid($svalue->user_id,$svalue->school_id);
                     if($free_user_id)
                     {
@@ -150,6 +152,7 @@ class AssignmentAnswers extends CActiveRecord
                     }    
                     $std_list[$i_loop]['status'] = $this->isAlreadyDone($assignment_id,$svalue->id);
                     $std_list[$i_loop]['mark'] = $this->mark($assignment_id,$svalue->id);
+                    $std_list[$i_loop]['comment'] = $assignment_comment->hasComment($assignment_id,$svalue->id);
                     $i_loop++;
                 }
                 
@@ -256,7 +259,7 @@ class AssignmentAnswers extends CActiveRecord
              $criteria->order = "created_at DESC";
              $data = $this->find($criteria);
              $return = 0.00;
-             if($data)
+             if($data && $data->mark)
              {
                  $return = $data->mark;
              }

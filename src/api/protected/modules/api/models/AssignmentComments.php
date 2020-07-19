@@ -131,6 +131,7 @@ class AssignmentComments extends CActiveRecord
                     if( $userdata )
                     {
                         $merge['comments'] = $value->content;
+                        $merge['created_at'] = $value->created_at;
                         $merge['user_name'] = trim($userdata->first_name." ".$userdata->last_name);
                         $free_user_id = $free_user->getFreeuserPaid($userdata->id,$userdata->school_id);
                         if($free_user_id)

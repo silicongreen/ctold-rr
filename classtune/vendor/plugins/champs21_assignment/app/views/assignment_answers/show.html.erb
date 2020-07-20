@@ -88,7 +88,7 @@
             :border => 0,
             :id => "loader2",
             :style =>"display: none;" ) %>
-         <%= f.hidden_field :assignment_answer_id, :value => @assignment_answer.id %>
+         <%= m.hidden_field :assignment_answer_id, :value => @assignment_answer.id %>
         <div class="comment-content"> <%= m.text_field :mark, :value => @assignment_answer.mark %> </div> 
         <div id="submit-button"><%= submit_tag '', {:value =>"Save",:onClick => "return validate()",:id => "mysubmit2"} %></div>
        </div>    

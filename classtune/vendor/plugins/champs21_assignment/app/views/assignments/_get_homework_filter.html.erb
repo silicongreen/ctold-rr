@@ -74,10 +74,10 @@
           </td>
           
           <td class="col-4">
-            <%= I18n.l(assignment.duedate,:format=>"%d-%m-%Y") %>
+            <%= I18n.l(assignment.duedate,:format=>"%d-%m-%Y") unless assignment.duedate.blank? %>
           </td>
           <td class="col-4">
-            <%= I18n.l(assignment.created_at,:format=>"%d-%m-%Y") %>
+            <%= I18n.l(assignment.created_at,:format=>"%d-%m-%Y") unless assignment.created_at.blank? %>
           </td>
           
           

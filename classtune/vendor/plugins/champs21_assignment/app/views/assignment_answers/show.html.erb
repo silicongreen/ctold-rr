@@ -42,7 +42,7 @@
         <iframe width="100%" height="500px" src="https://docs.google.com/viewer?url=https://<%= MultiSchool.current_school.code %>.classtune.com<%= @assignment_answer.attachment.url %>&embedded=true&print=true" style="border:0px;"   frameborder="0" ></iframe>
       <% end %>
       <% if file_type == "image" %>
-        <img src="https://<%= MultiSchool.current_school.code %>.classtune.com<%= @assignment_answer.attachment.url %>" />
+        <img src="https://<%= MultiSchool.current_school.code %>.classtune.com<%= @assignment_answer.attachment.url %>" style=" max-width: 100%;" />
       <% end %> 
       <% if file_type == "pdf" %>
         <iframe width="100%" height="500px" src="https://<%= MultiSchool.current_school.code %>.classtune.com<%= @assignment_answer.attachment.url %>&embedded=true&print=true" style="border:0px;"   frameborder="0" ></iframe>

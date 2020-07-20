@@ -80,7 +80,6 @@
         :border => 0,
         :id => "loader2",
         :style =>"display: none;" ) %></h3>
-    <span id="comments-count"><% if @comments.empty? %><%= t('no_comments') %><% end %></span>
     <ul id="comments-list">
       <%= render :partial => "comment" %>
     </ul>

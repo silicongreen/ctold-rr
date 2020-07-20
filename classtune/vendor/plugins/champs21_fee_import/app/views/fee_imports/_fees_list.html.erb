@@ -10,7 +10,7 @@
       <a href="#" onclick="$$('input.collection_box').each(function(checkbox) { if (!checkbox.disabled) { checkbox.checked = false; } });; return false;"><%= t('layouts_default_none') %></a>
     </div>
       <div style="clear: both; height: 1px;"></div>  
-      <% unless MultiSchool.current_school.id == 348 %>
+      <% unless MultiSchool.current_school.id == 3481 %>
         <% form_for :fees_list, :url=>{ :action=>'select_student' },:html => {:onsubmit => "return validate_assign()"} do |form| %>
           <%= form.hidden_field :student_id, :value => @student.id %>
           <%= form.hidden_field :multiple, :value => 0 %>

@@ -157,7 +157,7 @@ class FeeImportsController < ApplicationController
       
       @fee_collection_dates=@fee_collection_dates.uniq
 
-      unless MultiSchool.current_school.id == 348
+      unless MultiSchool.current_school.id == 3481
         @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
         @student_fees = @finance_fees.map{|s| s.fee_collection_id}
         @payed_fees=FinanceFee.find(:all,:joins=>"INNER JOIN fee_transactions on fee_transactions.finance_fee_id=finance_fees.id INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fees.student_id=#{@student.id} ",:select=>"finance_fees.fee_collection_id").map{|s| s.fee_collection_id}
@@ -186,7 +186,7 @@ class FeeImportsController < ApplicationController
   
   def collection_dates
     @fee_collection_dates=[]
-    if MultiSchool.current_school.id == 348
+    if MultiSchool.current_school.id == 3481
       @fee_collection_date = @batch.finance_fee_collections
     else
       @fee_collection_date = @student.batch.finance_fee_collections
@@ -212,7 +212,7 @@ class FeeImportsController < ApplicationController
 
       end
       
-      if MultiSchool.current_school.id == 348
+      if MultiSchool.current_school.id == 3481
         @fee_collection_dates << f
       end
       
@@ -226,7 +226,7 @@ class FeeImportsController < ApplicationController
   
   def collection_dates_new
     @fee_collection_dates=[]
-    if MultiSchool.current_school.id == 348
+    if MultiSchool.current_school.id == 3481
       @fee_collection_date = @batch_data.finance_fee_collections
     else
       @fee_collection_date = @student.batch.finance_fee_collections
@@ -252,7 +252,7 @@ class FeeImportsController < ApplicationController
 
       end
       
-      if MultiSchool.current_school.id == 348
+      if MultiSchool.current_school.id == 3481
         @fee_collection_dates << f
       end
       

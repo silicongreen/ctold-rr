@@ -1,5 +1,5 @@
 <% if @students.present? %>
-  <% if MultiSchool.current_school.id == 348 %>
+  <% if MultiSchool.current_school.id == 3481 %>
   <% form_for :fees_list, :url=>{ :action=>'select_student' },:html => {:onsubmit => "return validate_assign()"} do |form| %>
   <%= form.hidden_field :multiple, :value => 1 %>
   <%= form.hidden_field :batch_id_selected, :value => @batch.id %>

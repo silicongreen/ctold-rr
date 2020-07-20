@@ -23,8 +23,30 @@
     
     <% unless @assignment_answer.attachment3_file_name.nil? %> <div id="attachment"><%= link_to @assignment_answer.attachment3_file_name.to_s, :controller => "assignment_answers", :action => "download_attachment" , :assignment_answer=>@assignment_answer.id, :number=>3 %></div><%  end %>
   </div>
-  <% unless @assignment_answer.attachment_file_name.nil? %> 
-      <iframe width="100%" height="500px" src="https://docs.google.com/viewer?url=https://<%= MultiSchool.current_school.code %>.classtune.com<%= @assignment_answer.attachment.url %>&embedded=true&print=true" style="border:0px;"   frameborder="0" ></iframe>
+  <% unless @assignment_answer.attachment_file_name.nil? %>
+      <%
+        file_type = "none"
+        if !@assignment_answer.attachment_file_name.upcase.index(".PNG").blank? or !@assignment_answer.attachment_file_name.upcase.index(".JPG").blank? or !@assignment_answer.attachment_file_name.upcase.index(".JPEG").blank? or !@assignment_answer.attachment_file_name.upcase.index(".GIF").blank?
+          file_type = "image"
+        end
+        if !@assignment_answer.attachment_file_name.upcase.index(".PDF").blank?
+          file_type = "pdf"
+        end
+        if !@assignment_answer.attachment_file_name.upcase.index(".DOCX").blank? or !@assignment_answer.attachment_file_name.upcase.index(".DOC").blank? or !@assignment_answer.attachment_file_name.upcase.index(".XLS").blank? or !@assignment_answer.attachment_file_name.upcase.index(".XLSX").blank? or !@assignment_answer.attachment_file_name.upcase.index(".CSV").blank?
+          file_type = "doc"
+        end
+        
+    
+      %>
+      <% if file_type == "doc" %>
+        <iframe width="100%" height="500px" src="https://docs.google.com/viewer?url=https://<%= MultiSchool.current_school.code %>.classtune.com<%= @assignment_answer.attachment.url %>&embedded=true&print=true" style="border:0px;"   frameborder="0" ></iframe>
+      <% end %>
+      <% if file_type == "image" %>
+        <img src="https://<%= MultiSchool.current_school.code %>.classtune.com<%= @assignment_answer.attachment.url %>" />
+      <% end %> 
+      <% if file_type == "pdf" %>
+        <iframe width="100%" height="500px" src="https://<%= MultiSchool.current_school.code %>.classtune.com<%= @assignment_answer.attachment.url %>&embedded=true&print=true" style="border:0px;"   frameborder="0" ></iframe>
+      <% end %>   
   <% end %>
   
 

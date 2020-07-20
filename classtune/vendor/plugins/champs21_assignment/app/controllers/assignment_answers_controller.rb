@@ -208,6 +208,44 @@ class AssignmentAnswersController < ApplicationController
     @cmnt = AssignmentComment.new(params[:comment])
     @current_user = @cmnt.author = current_user
     @cmnt.save
+    std_info = Student.find_by_id(@student_id)
+    
+    if current_user.employee? or current_user.admin?
+      user_ass = []
+      student_ids = []
+      batch_ids = []
+      student_ids << std_info.id
+      batch_ids << std_info.batch_id
+      user_ass << std_info.user_id
+      Delayed::Job.enqueue(
+        DelayedReminderJob.new( :sender_id  => current_user.id,
+          :recipient_ids => user_ass,
+          :subject=>"New Commment Added By Teacher",
+          :rtype=>4,
+          :rid=>@assignment.id,
+          :student_id => student_ids,
+          :batch_id => batch_ids,
+          :body=>"New Commment Added By Teacher ("+current_user.employee_record.full_name+")")
+      )     
+    else
+      user_ass = []
+      student_ids = []
+      batch_ids = []
+      student_ids << 0
+      batch_ids << 0
+      user_ass << @assignment.employee.user_id
+      Delayed::Job.enqueue(
+        DelayedReminderJob.new( :sender_id  => current_user.id,
+          :recipient_ids => user_ass,
+          :subject=>"New Commment Added By Student",
+          :rtype=>4,
+          :rid=>@assignment.id,
+          :student_id => student_ids,
+          :batch_id => batch_ids,
+          :body=>"New Commment Added By Student ("+current_user.student_record.full_name+")")
+      )
+    end
+    
     show_comments_associate(@assignment_id, @student_id)
     render :update do |page|
       page.replace_html 'comments-list', :partial=>"comment"

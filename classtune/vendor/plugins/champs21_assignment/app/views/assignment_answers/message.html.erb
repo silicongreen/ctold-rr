@@ -2,8 +2,10 @@
     <div class="partial_homework" style="padding: 20px;">
 
         <a href="/assignments"><h2 class="f2 routine">HOMEWORK | <%= @assignment.subject.name.to_s %></h2></a>
-
-
+        <% std_details = Student.find_by_id(@student_id) %>
+        <div class="answer-details">
+            <div class="label-div-pair"><label for="student-name">Student Name : </label><div id="student-name" class="themed_text"><%=  std_details.full_name %></div></div>
+        </div>
         <div id="page-yield" class="ch_homework_answers_wrapper">
             <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
             <div id="answer-container">
@@ -33,7 +35,6 @@
                         :border => 0,
                         :id => "loader2",
                         :style =>"display: none;" ) %></h3>
-                  <
                   <ul id="comments-list">
                       <%= render :partial => "comment" %>
                   </ul>

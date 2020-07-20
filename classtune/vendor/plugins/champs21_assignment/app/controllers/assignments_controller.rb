@@ -933,7 +933,7 @@ class AssignmentsController < ApplicationController
         @students = @students.sort_by{|s| s.full_name}
         @students = @students.uniq unless @students.blank?
         
-        @ass_comments = AssignmentComment.find_all_by_assignment_id(@assignment.id,:select=>"student_id",:order=>"created_at Desc")
+        @ass_comments = AssignmentComment.find_all_by_assignment_id(@assignment.id,:select=>"student_id,created_at",:order=>"created_at Desc")
         @students_comments=[]
         unless @ass_comments.blank?
           @ass_comments.each do |ass_comment|

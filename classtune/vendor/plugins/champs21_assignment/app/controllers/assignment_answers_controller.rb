@@ -211,6 +211,7 @@ class AssignmentAnswersController < ApplicationController
   def add_comment
     @student_id = params[:comment][:student_id]
     @assignment_id = params[:comment][:assignment_id]
+    @assignment = Assignment.find_by_id(@assignment_id)
     @cmnt = AssignmentComment.new(params[:comment])
     @current_user = @cmnt.author = current_user
     @cmnt.save

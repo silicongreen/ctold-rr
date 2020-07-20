@@ -13,7 +13,14 @@
           
             %>
             <% if s.present? %>
-              <div class="listitem"><b><%= link_to s.full_name , {:controller => "assignment_answers", :action => "message",:assignment_id=>@assignment.id,:student_id=>s.id},:target => '_blank' %><%=" &#x200E; ( #{s.admission_no} ) &#x200E;"%></b></div>
+              <div class="listitem">
+                  <b><%= link_to s.full_name , {:controller => "assignment_answers", :action => "message",:assignment_id=>@assignment.id,:student_id=>s.id},:target => '_blank' %><%=" &#x200E; ( #{s.admission_no} ) &#x200E;"%></b>
+                  <div class="answer-details"  >
+              
+                    <% time_created = ass_comment.created_at.to_time + 6*60*60 %>  
+                    <%= t('on_text') %>&#x200E;<%= I18n.l(time_created, :format=>'%r , %d %B') %>
+                  </div>
+              </div>
             <% end %>
           <% end %>
       <% end %>

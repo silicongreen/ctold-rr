@@ -206,6 +206,7 @@ class AssignmentAnswersController < ApplicationController
     @assignment_answer = AssignmentAnswer.find params[:assignment_answer][:assignment_answer_id]
     @assignment_answer.mark = params[:assignment_answer][:mark]
     @assignment_answer.save
+    render :text =>"success"
   end
   def add_comment
     @student_id = params[:comment][:student_id]

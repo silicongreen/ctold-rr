@@ -49,7 +49,7 @@
           <div class="answer-details"  >
             <% if @assignment.total_mark.to_i > 0 %>
               <% if a.mark.to_i > 0 %>
-              <b>Mark : <% a.mark %>&nbsp;&nbsp;&nbsp;</b>
+              <b>Mark : <%= a.mark %>&nbsp;&nbsp;&nbsp;</b>
               <% end %>
             <% end %>  
             <% time_created = a.created_at.to_time + 6*60*60 %>  

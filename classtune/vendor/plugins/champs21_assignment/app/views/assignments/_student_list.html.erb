@@ -13,7 +13,7 @@
           
             %>
             <% if s.present? %>
-              <div class="listitem"><b><%= link_to s.full_name , {:controller => "assignment_answers", :action => "message",:assignment_id=>@assignment.id,:student_id=>s.id},:target => '_blank' %><%=" &#x200E; ( #{s.admission_no} ) &#x200E;"%></b></div>
+              <div class="listitem"><b><%= link_to s.full_name , {:controller => "assignment_answers", :action => "message",:assignment_id=>@assignment.id,:student_id=>s.id} %><%=" &#x200E; ( #{s.admission_no} ) &#x200E;"%></b></div>
             <% end %>
           <% end %>
       <% end %>
@@ -21,7 +21,7 @@
         
     <% @students.each do |s| %>
         <% unless std_id.include?(s.id) %>
-          <div class="listitem"><%= link_to s.full_name ,{:controller => "assignment_answers", :action => "message",:assignment_id=>@assignment.id,:student_id=>s.id},:target => '_blank' %><%=" &#x200E; ( #{s.admission_no} ) &#x200E;"%> </div>
+          <div class="listitem"><%= link_to s.full_name ,{:controller => "assignment_answers", :action => "message",:assignment_id=>@assignment.id,:student_id=>s.id} %><%=" &#x200E; ( #{s.admission_no} ) &#x200E;"%> </div>
         <% end %>
     <% end %>    
   <% elsif @status == "assigned" %>
@@ -38,7 +38,7 @@
       <% student ||= ArchivedStudent.find_by_former_id(a.student_id) %>
       <% if student.present? %>
         <div class="listitem">
-          <%= link_to " #{student.full_name} &#x200E;",assignment_assignment_answer_path(a.assignment,a),:target => '_blank' %> &nbsp;  (<%= student.admission_no %>) &nbsp; <%= "&#x200E; #{a.status=="0" ? t('pending'): a.status.to_s.capitalize}"  %>
+          <%= link_to " #{student.full_name} &#x200E;",assignment_assignment_answer_path(a.assignment,a) %> &nbsp;  (<%= student.admission_no %>) &nbsp; <%= "&#x200E; #{a.status=="0" ? t('pending'): a.status.to_s.capitalize}"  %>
           <div class="answer-details"  >
               
             <% time_created = a.created_at.to_time + 6*60*60 %>  

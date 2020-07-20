@@ -19,9 +19,7 @@
 <span id="comments-count"><% if @comments.blank? %><%= t('no_comments') %><% end %></span>
 <% @comments.each do |@cmnt| %>
   <% if @cmnt.content.present? %>
-      <% is_author = (@current_user == @cmnt.author) %>
-      <% is_student = (@current_user.student? and @current_user.student_record.id == @cmnt.student_id) %>
-      <% if is_author || is_student %>
+
         <li id="comment-item-<%= @cmnt.id %>">
           <div class="comment-details">
             <div class="commenter"><%= @cmnt.author.present? ? @cmnt.author.first_name : "#{t('user_deleted')}" %></div>
@@ -38,6 +36,5 @@
             <%= @cmnt.content.strip.gsub(/\n/, "<br/>") %>
           </div>
         </li>
-      <% end %>
     <% end %>
 <% end %>

@@ -81,8 +81,8 @@
     <% if @assignment.total_mark.to_i > 0 %>
       <% form_remote_for :assignment_answer, :id => 'mark-form', :url => { :action => 'add_mark' },  :loading => "$('loader2').show();$('success_msg').hide();$('mysubmit2').disable();", :loaded => "$('loader2').hide();$('success_msg').show();$('mysubmit2').enable();" do |m| %>
        
-       <div id="evaluate-answer">
-           <p><b style="color:green; display: none" id="success_msg">Success Fully Saved<b></p>
+       <div>
+           <p><b style="color:green; display: none" id="success_msg">Success Fully Saved</b></p>
          <%= image_tag("loader.gif",
             :align => "absmiddle",
             :border => 0,

@@ -19,7 +19,7 @@
 <span id="comments-count"><% if @comments.blank? %><%= t('no_comments') %><% end %></span>
 <% @comments.each do |@cmnt| %>
   <% if @cmnt.content.present? %>
-
+        <% is_author = (@current_user == @cmnt.author) %>
         <li id="comment-item-<%= @cmnt.id %>">
           <div class="comment-details">
             <div class="commenter"><%= @cmnt.author.present? ? @cmnt.author.first_name : "#{t('user_deleted')}" %></div>

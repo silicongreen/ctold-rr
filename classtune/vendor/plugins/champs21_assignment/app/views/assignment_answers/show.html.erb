@@ -78,7 +78,8 @@
       <% end %>
       <% if @assignment.total_mark.to_i > 0 %>
         <% form_remote_for :assignment_answer, :id => 'mark-form', :url => { :action => 'add_mark' },  :loading => "$('loader2').show();$('success_msg').hide();$('mysubmit2').disable();", :loaded => "$('loader2').hide();$('success_msg').show();$('mysubmit2').enable();" do |m| %>
-         <h4 id="leave-a-comment">Assignment Mark</h4>
+        <br/> 
+        <h4 id="leave-a-comment">Assignment Mark</h4>
          <div>
              <p><b style="color:green; display: none" id="success_msg">Success Fully Saved</b></p>
            <%= image_tag("loader.gif",
@@ -96,31 +97,32 @@
   
     
     <% if MultiSchool.current_school.id == 2 %>
-    <h4 id="leave-a-comment"><%= t('leave_comment') %>   <%= image_tag("loader.gif",
-        :align => "absmiddle",
-        :border => 0,
-        :id => "loader",
-        :style =>"display: none;" ) %></h4>
+    <div style="float: left;clear: both;width: 100%;"> 
+        <h4 id="leave-a-comment"><%= t('leave_comment') %>   <%= image_tag("loader.gif",
+            :align => "absmiddle",
+            :border => 0,
+            :id => "loader",
+            :style =>"display: none;" ) %></h4>
 
-    <% form_remote_for :comment, :id => 'comments-form', :url => { :action => 'add_comment' },  :loading => "$('loader').show();$('mysubmit').disable();", :loaded => "$('loader').hide();$('mysubmit').enable();" do |f| %>
-      <div class="comment-content"> <%= f.text_area :content %> </div>
-      <%= f.hidden_field :student_id, :value => @assignment_answer.student_id %>
-      <%= f.hidden_field :assignment_id, :value => @assignment_answer.assignment_id %>
-      <div id="submit-button"><%= submit_tag '', {:value =>"#{t('submit')}",:onClick => "return validate()",:id => "mysubmit"} %></div>
-    <% end %>
-    <div class="extender"></div>
-   
-    
-    <h3 id="comments-heading"><%= t('comments') %>
-     <%= image_tag("loader.gif",
-        :align => "absmiddle",
-        :border => 0,
-        :id => "loader2",
-        :style =>"display: none;" ) %></h3>
-    <ul id="comments-list">
-      <%= render :partial => "comment" %>
-    </ul>
-    
+        <% form_remote_for :comment, :id => 'comments-form', :url => { :action => 'add_comment' },  :loading => "$('loader').show();$('mysubmit').disable();", :loaded => "$('loader').hide();$('mysubmit').enable();" do |f| %>
+          <div class="comment-content"> <%= f.text_area :content %> </div>
+          <%= f.hidden_field :student_id, :value => @assignment_answer.student_id %>
+          <%= f.hidden_field :assignment_id, :value => @assignment_answer.assignment_id %>
+          <div id="submit-button"><%= submit_tag '', {:value =>"#{t('submit')}",:onClick => "return validate()",:id => "mysubmit"} %></div>
+        <% end %>
+        <div class="extender"></div>
+
+
+        <h3 id="comments-heading"><%= t('comments') %>
+         <%= image_tag("loader.gif",
+            :align => "absmiddle",
+            :border => 0,
+            :id => "loader2",
+            :style =>"display: none;" ) %></h3>
+        <ul id="comments-list">
+          <%= render :partial => "comment" %>
+        </ul>
+    </div>
    <% end %> 
   
   

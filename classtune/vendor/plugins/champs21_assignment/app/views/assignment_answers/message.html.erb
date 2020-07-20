@@ -1,0 +1,87 @@
+<div class="box_content" style="background: #ffffff; float:left;">
+    <div class="partial_homework" style="padding: 20px;">
+
+        <a href="/assignments"><h2 class="f2 routine">HOMEWORK | <%= @assignment.subject.name.to_s %></h2></a>
+
+
+        <div id="page-yield" class="ch_homework_answers_wrapper">
+            <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
+            <div id="answer-container">
+
+
+
+                <% if MultiSchool.current_school.id == 2 %>
+
+                  <h4 id="leave-a-comment"><%= t('leave_comment') %>   <%= image_tag("loader.gif",
+                        :align => "absmiddle",
+                        :border => 0,
+                        :id => "loader",
+                        :style =>"display: none;" ) %></h4>
+
+                  <% form_remote_for :comment, :id => 'comments-form', :url => { :action => 'add_comment' },  :loading => "$('loader').show();$('mysubmit').disable();", :loaded => "$('loader').hide();$('mysubmit').enable();" do |f| %>
+                    <div class="comment-content"> <%= f.text_area :content %> </div>
+                    <%= f.hidden_field :student_id, :value => @assignment_answer.student_id %>
+                    <%= f.hidden_field :assignment_id, :value => @assignment_answer.assignment_id %>
+                    <div id="submit-button"><%= submit_tag '', {:value =>"#{t('submit')}",:onClick => "return validate()",:id => "mysubmit"} %></div>
+                  <% end %>
+                  <div class="extender"></div>
+
+
+                  <h3 id="comments-heading"><%= t('comments') %>
+                      <%= image_tag("loader.gif",
+                        :align => "absmiddle",
+                        :border => 0,
+                        :id => "loader2",
+                        :style =>"display: none;" ) %></h3>
+                  <
+                  <ul id="comments-list">
+                      <%= render :partial => "comment" %>
+                  </ul>
+
+                <% end %> 
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .box_content
+    {
+        background:#ffffff;
+        width: 100%;
+        float:left;
+
+    }
+    .partial_homework
+    {
+        clear: both;
+    }
+    .partial_homework h2 {
+        color: #2dc99a;
+        float: left;
+        font-size: 38px;
+        font-weight: normal;
+        margin: 0;
+    }
+
+
+
+    #comments-heading{border-bottom:2px solid gray;padding:0 0 10px}
+    #leave-a-comment{margin:40px 0 10px}
+    #comments-list{padding:0 0 20px}
+    #comments-list li{border-bottom:1px solid #aaa;list-style-type:none;margin:20px 0 0;padding:10px 0}
+    #comments-list li .comment-details{color:#888;font-size:80%;height:15px;margin:0 0 10px}
+    .comment-details .commenter{float:left;width:535px}
+    .comment-details .comment-posted-at{float:right;padding-left:10px}
+    .comment-details .delete-comment{float:right;margin:0 0 0 20px}
+    .comment-content{width:600px}
+    .comment-content textarea{-moz-border-radius:10px 10px 10px 10px;-webkit-border-radius:10px;border:1px solid #c6c6c6;background-color:#eee;width:600px;height:100px;padding:10px}
+    .comment-content textarea:focus{background:#fff;border:1px solid #9e0f15}
+    #submit-button{margin:20px 0 0}
+    #submit-button input{-moz-border-radius:10px;-webkit-border-radius:10px;background:#db3434 none repeat scroll 0 0;color:#fff;font-size:14px;font-weight:700;margin:0 auto;padding:7px 12px;border:none;float:left;text-align:center;width:auto;cursor:pointer;margin-left:510px}
+    .approve{float:left;width:220px}
+    .delete-comment a{color:#000;font-size:12px;font-weight:400;margin-bottom:10px;text-decoration:none}
+    .approve a{color:#000;font-size:12px;font-weight:400;margin-bottom:10px;text-decoration:none}
+    .pagination{margin-top:15px;margin-right:0}
+</style>

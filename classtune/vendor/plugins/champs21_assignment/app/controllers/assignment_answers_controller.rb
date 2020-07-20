@@ -203,8 +203,8 @@ class AssignmentAnswersController < ApplicationController
     end
   end
   def add_mark
-    @assignment_answer = AssignmentAnswer.find params[:assignment_answer_id]
-    @assignment_answer.mark = params[:mark]
+    @assignment_answer = AssignmentAnswer.find params[:assignment_answer][:assignment_answer_id]
+    @assignment_answer.mark = params[:assignment_answer][:mark]
     @assignment_answer.save
   end
   def add_comment

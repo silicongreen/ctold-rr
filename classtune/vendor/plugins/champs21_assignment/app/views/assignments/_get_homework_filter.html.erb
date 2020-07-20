@@ -51,7 +51,7 @@
           if assignment.subject.blank?
             next
           end
-          unless assignment.content.index("</").nil?
+          if !assignment.content.index("</").nil? && !assignment.created_at.blank?
             assignment.created_at = assignment.created_at.to_time + 6*60*60
           end
         %>

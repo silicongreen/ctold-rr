@@ -20,8 +20,8 @@
 
                   <% form_remote_for :comment, :id => 'comments-form', :url => { :action => 'add_comment' },  :loading => "$('loader').show();$('mysubmit').disable();", :loaded => "$('loader').hide();$('mysubmit').enable();" do |f| %>
                     <div class="comment-content"> <%= f.text_area :content %> </div>
-                    <%= f.hidden_field :student_id, :value => @assignment_answer.student_id %>
-                    <%= f.hidden_field :assignment_id, :value => @assignment_answer.assignment_id %>
+                    <%= f.hidden_field :student_id, :value => @student_id %>
+                    <%= f.hidden_field :assignment_id, :value => @assignment_id %>
                     <div id="submit-button"><%= submit_tag '', {:value =>"#{t('submit')}",:onClick => "return validate()",:id => "mysubmit"} %></div>
                   <% end %>
                   <div class="extender"></div>

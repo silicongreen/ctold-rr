@@ -1709,8 +1709,8 @@ class HomeworkController extends Controller
             $assignmentCommentsObj->student_id = $student_id;
             $assignmentCommentsObj->content = $comment;
             $assignmentCommentsObj->author_id = Yii::app()->user->id;
-            $assignmentCommentsObj->created_at = date("Y-m-d H:i:s");
-            $assignmentCommentsObj->updated_at = date("Y-m-d H:i:s");
+            $assignmentCommentsObj->created_at = date('Y-m-d H:i:s', strtotime("-6 hours"));
+            $assignmentCommentsObj->updated_at = date('Y-m-d H:i:s', strtotime("-6 hours"));
             $assignmentCommentsObj->school_id = Yii::app()->user->schoolId;
             $assignmentCommentsObj->insert();
             $response['data']['msg'] = "Success";

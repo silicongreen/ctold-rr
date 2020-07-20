@@ -47,7 +47,11 @@
         <div class="listitem">
           <%= link_to " #{student.full_name} &#x200E;",assignment_assignment_answer_path(a.assignment,a),:target => '_blank' %> &nbsp;  (<%= student.admission_no %>) &nbsp; <%= "&#x200E; #{a.status=="0" ? t('pending'): a.status.to_s.capitalize}"  %>
           <div class="answer-details"  >
-              
+            <% if @assignment.total_mark.to_i > 0 %>
+              <% if a.mark.to_i > 0 %>
+              <b>Mark : <% a.mark %>&nbsp;&nbsp;&nbsp;</b>
+              <% end %>
+            <% end %>  
             <% time_created = a.created_at.to_time + 6*60*60 %>  
             <%= t('on_text') %>&#x200E;<%= I18n.l(time_created, :format=>'%r , %d %B') %>
           </div>

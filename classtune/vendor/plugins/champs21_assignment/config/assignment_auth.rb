@@ -86,6 +86,7 @@ authorization do
       :comment_view,
       :add_comment,
       :message,
+      :add_mark,
       :delete_comment,
       :show]
    
@@ -127,6 +128,7 @@ authorization do
       :comment_view,
       :add_comment,
       :message,
+      :add_mark,
       :delete_comment,
       :show]
       has_permission_on :assignments, :to=>:show, :join_by=> :or do

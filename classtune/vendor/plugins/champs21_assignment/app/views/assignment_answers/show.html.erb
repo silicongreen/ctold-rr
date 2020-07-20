@@ -77,10 +77,23 @@
         <% if @assignment_answer.status!="ACCEPTED" %>  <%= link_to "Delete Answer",  {:action => "evaluate_assignment" ,:id=>@assignment_answer.id,:status=>"DELETED"},:class=>"submit-button" %><% end %>
       <% end %>
   </div>
-  
-  
-    <% if MultiSchool.current_school.id == 2 %>
-  
+  <% if MultiSchool.current_school.id == 2 %>
+    <% if @assignment.total_mark.to_i > 0 %>
+      <% form_remote_for :assignment_answer, :id => 'mark-form', :url => { :action => 'add_mark' },  :loading => "$('loader2').show();$('success_msg').hide();$('mysubmit2').disable();", :loaded => "$('loader2').hide();$('success_msg').show();$('mysubmit2').enable();" do |m| %>
+       
+       <div id="evaluate-answer">
+           <p><b style="color:green; display: none" id="success_msg">Success Fully Saved<b></p>
+         <%= image_tag("loader.gif",
+            :align => "absmiddle",
+            :border => 0,
+            :id => "loader2",
+            :style =>"display: none;" ) %>
+         <%= f.hidden_field :assignment_answer_id, :value => @assignment_answer.id %>
+        <div class="comment-content"> <%= m.text_field :mark, :value => @assignment_answer.mark %> </div> 
+        <div id="submit-button"><%= submit_tag '', {:value =>"Save",:onClick => "return validate()",:id => "mysubmit2"} %></div>
+       </div>    
+      <% end %> 
+    <% end %>    
     <h4 id="leave-a-comment"><%= t('leave_comment') %>   <%= image_tag("loader.gif",
         :align => "absmiddle",
         :border => 0,

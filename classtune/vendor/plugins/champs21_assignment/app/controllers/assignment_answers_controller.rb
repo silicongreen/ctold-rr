@@ -202,6 +202,11 @@ class AssignmentAnswersController < ApplicationController
       page.replace_html 'comments-list', :partial=>"comment"
     end
   end
+  def add_mark
+    @assignment_answer = AssignmentAnswer.find params[:assignment_answer_id]
+    @assignment_answer.mark = params[:mark]
+    @assignment_answer.save
+  end
   def add_comment
     @student_id = params[:comment][:student_id]
     @assignment_id = params[:comment][:assignment_id]

@@ -4,7 +4,7 @@
         
         <div id="page-yield" class="ch_homework_answers_wrapper">
             <div class="answer-details">
-                <div class="label-div-pair"><label for="student-name">&nbsp;&nbsp;Subject : </label><div id="student-name" class="themed_text"><%= @assignment.subject.name.to_s %></div></div>
+                <div class="label-div-pair"><label for="student-name">&nbsp;&nbsp;Assignment : </label><div id="student-name" class="themed_text"><%=  link_to @assignment.subject.name.to_s+' - '+@assignment.title, assignment%></div></div>
                 <div class="label-div-pair"><label for="student-name">&nbsp;&nbsp;Student Name : </label><div id="student-name" class="themed_text"><%=  std_details.full_name %></div></div>
             </div>
             <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>

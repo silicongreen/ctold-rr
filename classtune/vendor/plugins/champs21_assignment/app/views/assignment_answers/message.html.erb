@@ -1,11 +1,10 @@
 <div class="box_content" style="background: #ffffff; float:left;">
     <div class="partial_homework" style="padding: 20px;">
-
-        <a href="/assignments"><h2 class="f2 routine">HOMEWORK | <%= @assignment.subject.name.to_s %></h2></a>
         <% std_details = Student.find_by_id(@student_id) %>
         
         <div id="page-yield" class="ch_homework_answers_wrapper">
             <div class="answer-details">
+                <div class="label-div-pair"><label for="student-name">&nbsp;&nbsp;Subject : </label><div id="student-name" class="themed_text"><%= @assignment.subject.name.to_s %></div></div>
                 <div class="label-div-pair"><label for="student-name">&nbsp;&nbsp;Student Name : </label><div id="student-name" class="themed_text"><%=  std_details.full_name %></div></div>
             </div>
             <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>

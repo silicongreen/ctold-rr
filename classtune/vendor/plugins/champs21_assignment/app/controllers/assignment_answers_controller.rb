@@ -207,7 +207,6 @@ class AssignmentAnswersController < ApplicationController
     @assignment_id = params[:comment][:assignment_id]
     @cmnt = AssignmentComment.new(params[:comment])
     @current_user = @cmnt.author = current_user
-    @cmnt.created_at = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
     @cmnt.save
     show_comments_associate(@assignment_id, @student_id)
     render :update do |page|

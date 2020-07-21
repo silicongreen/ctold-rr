@@ -82,6 +82,12 @@
             <%= f.select :assignment_type, [['Regular',1],['Assignment',2]] %>
           </div>
         </div>
+        <% if MultiSchool.current_school.id == 2 %>
+        <div class="label-field-pair">
+          <label  for="assignment_title">Max Mark (**Leave 0.00 if you don't want to mark)</label>
+          <div class="text-input-bg"><%= f.text_field :total_mark %></div>
+        </div>
+        <% end %> 
         <div class="homework_content" >
           <label class="homework_content_label" style="" ><%= "#{t('content')}"%></label>
           <div  class="homework_content_div">

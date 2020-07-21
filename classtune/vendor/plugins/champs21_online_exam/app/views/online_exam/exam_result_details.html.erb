@@ -78,7 +78,13 @@
               unless @exam_result.blank?
                 exam_option = @exam_result.find{|er| er.online_exam_question_id == e.id && er.online_exam_option_id == o.id}
                 unless exam_option.blank?
-                  class_selected = "user_selected"
+                  if o.is_answer
+                    if exam_option.is_correct.to_i == 1
+                      class_selected = "user_selected"
+                    end  
+                  else  
+                    class_selected = "user_selected"
+                  end
                 end  
               end  
             

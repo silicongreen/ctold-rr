@@ -11,7 +11,7 @@ RedactorPlugins.advanced = {
         }, this);
         console.log(this);
         this.buttonAdd("latex", "Insert equation (Tex)", j.proxy(function () {
-            this.modalInit("Insert Tex expression", "#latex", 500, e), selection = j('.redactor_box > textarea').data("redactor").getSelection(), max = Math.max(selection.anchorOffset, selection.focusOffset), min = Math.min(selection.anchorOffset, selection.focusOffset), sel = selection.focusNode.data.slice(min, max), tex = sel.replace(/\~/g, ""), sel.split("~~").length == 3 && j("#redactor_modal_inner .latex-expression").val(tex)
+            this.modalInit("Insert Tex expression", "#latex", 500, e), selection = j('.latex-editor > textarea').data("redactor").getSelection(), max = Math.max(selection.anchorOffset, selection.focusOffset), min = Math.min(selection.anchorOffset, selection.focusOffset), sel = selection.focusNode.data.slice(min, max), tex = sel.replace(/\~/g, ""), sel.split("~~").length == 3 && j("#redactor_modal_inner .latex-expression").val(tex)
         }, this))
     },
     generateLatexPreview: function () {

@@ -31,7 +31,7 @@
           <div class="listitem"><%= link_to s.full_name ,{:controller => "assignment_answers", :action => "message",:assignment_id=>@assignment.id,:student_id=>s.id},:target => '_blank' %><%=" &#x200E; ( #{s.admission_no} ) &#x200E;"%> </div>
         <% end %>
     <% end %>    
-  <% elsif @status == "assigned" %>
+  <% elsif @status == "assigned" or @status == "pending" %>
     <% @students.each do |s| %>
       <% if s.present? %>
         <div class="listitem">    <%="#{s.full_name} &#x200E; ( #{s.admission_no} ) &#x200E;"%> </div>

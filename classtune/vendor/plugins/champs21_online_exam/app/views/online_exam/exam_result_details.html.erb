@@ -81,6 +81,8 @@
                   if o.is_answer
                     if exam_option.is_correct
                       class_selected = "user_selected"
+                    else
+                      class_selected = "red"
                     end  
                   else  
                     class_selected = "user_selected"
@@ -124,6 +126,11 @@
     div.is-answer.user_selected
     {
         color: green;
+        font-weight: bold;
+    }
+    div.is-answer.red
+    {
+        color: red;
         font-weight: bold;
     }
     div.not-answer.user_selected

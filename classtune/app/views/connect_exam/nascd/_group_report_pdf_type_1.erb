@@ -3,7 +3,7 @@
     <h2 align="center">Navy Anchorage School And College Dhaka</h2>
   </div> 
   <div id="page-yield"  class="available_sections1 sjis-new sfx">
-      <h2 align="center"><%= @connect_exam_obj.name %></h2>
+      <h2 align="center"><%= @connect_exam_obj.name %> - <%=  @connect_exam_obj.published_date.strftime("%B %Y") %></h2>
       <table id="pdf-table" class="margin-top-bottom-20" width="100%" cellspacing="0">
           <tr class="even">
               <td>Student's Name : <b><%= @student.full_name %></b></td>
@@ -67,7 +67,7 @@
                   <% end %>
                   <% colspan1 = colspan2+1 %>
                   <tr class="table-header">
-                      <td colspan='<%= colspan1 %>'><b>Academic Performance (January - March)</b></td>
+                      <td colspan='<%= colspan1 %>'><b>Academic Performance (<%=  @connect_exam_obj.attandence_start_date.strftime("%B") %> - <%=  @connect_exam_obj.attandence_start_date.strftime("%B") %>)</b></td>
                   </tr>
                   <tr class="table-header">
                       <td class="col-pdf no-warp" rowspan="2"><b><%= "Subject" %></b></td>
@@ -254,7 +254,7 @@
               <% end %>
               
               <table id="pdf-table"  width="60%" class="left-table break-table odd-table height-exam" cellspacing="0" >
-                  <tr class="even"><td colspan='2'>Quarterly Assessment - March 2019</td></tr>
+                  <tr class="even"><td colspan='2'><%= @connect_exam_obj.name %> - <%=  @connect_exam_obj.published_date.strftime("%B %Y") %></td></tr>
                   <tr class="even">
                       <td width='50%' class='align-left'>General Remarks<br/><br/><br/></td>
                       <td><br/><br/><br/><hr/>Signature of the Class Teacher</td>    

@@ -214,15 +214,15 @@
                     <% first_table = false %>
                     <% class_name = 'break-table' %>
                   <% end %>
-                  <table id="pdf-table"  width="32%" class="left-table <%= class_name %> odd-table height-exam" cellspacing="0" >
+                  <table id="pdf-table"  width="31%" class="left-table <%= class_name %> odd-table height-exam" cellspacing="0" >
                       <tr class="odd"><td colspan='6' class="no-warp"><b><%= subjects['name'] %></b></td></tr>
                       <tr class="odd">
                           <td></td>
-                          <td width='15%'>Ex</td>
-                          <td width='15%'>V.G</td>
-                          <td width='15%'>G</td>
-                          <td width='15%'>S</td>
-                          <td width='15%'>NS</td>
+                          <td width='13%'>Ex</td>
+                          <td width='13%'>V.G</td>
+                          <td width='13%'>G</td>
+                          <td width='13%'>S</td>
+                          <td width='13%'>NS</td>
                       </tr>
                       <% wordString_main = "" %>
                       <% @report_data['report']['exams'].each do |report| %>

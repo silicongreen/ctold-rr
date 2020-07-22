@@ -112,20 +112,7 @@
                       <% if subjects['no_exams_sjws'].to_i == 1  %>
                         <% next %>
                       <% end %>
-                      <% has_exam = false %>
-                      <% unless @report_data['report']['exams'].blank? %>
-                        <% @report_data['report']['exams'].each do |report| %>
-                          <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                            <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'] != "AB" %>
-                              <% has_exam = true %>
-                              <% break %>
-                            <% end %>
-                          <% end %>
-                        <% end %>
-                      <% end %>
-                      <% if has_exam == false %>
-                         <% next %>
-                      <% end %>
+                     
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>
                           <% mcq_mark = 0 %>
@@ -204,6 +191,7 @@
 
               </table>
               <% first_table = true %>
+              <% table_i = 0 %>
               <% unless @report_data['report']['subjects'].blank? %> 
                 <% @report_data['report']['subjects'].each do |subjects| %>
                   <% if subjects['no_exams_sjws'].to_i == 0  or !has_subject_group(subjects['id'].to_i) %>
@@ -214,7 +202,8 @@
                     <% first_table = false %>
                     <% class_name = 'break-table' %>
                   <% end %>
-                  <table id="pdf-table"  width="32.8%" class="left-table <%= class_name %> odd-table height-exam small_table" cellspacing="0" >
+                  <% table_i = table_i+1 %>
+                  <table id="pdf-table"  width="32.8%" class="left-table <%= class_name %> odd-table height-exam small_table table_<%= table_i %>" cellspacing="0" >
                       <tr class="odd"><td colspan='6' class="no-warp"><b><%= subjects['name'] %></b></td></tr>
                       <tr class="odd">
                           <td></td>
@@ -267,7 +256,7 @@
               <table id="pdf-table"  width="60%" class="left-table break-table odd-table height-exam" cellspacing="0" >
                   <tr class="even"><td colspan='2'>Quarterly Assessment - March 2019</td></tr>
                   <tr class="even">
-                      <td width='55%'>General Remarks<br/><br/><br/></td>
+                      <td width='50%' class='align-left'>General Remarks<br/><br/><br/></td>
                       <td><br/><br/><br/><hr/>Signature of the Class Teacher</td>    
                   </tr>
                   <tr class="even"><td colspan='2'><br/><br/><br/><hr/>Signature of the Principal</td></tr>
@@ -400,5 +389,18 @@
         margin-left: 0px !important;
     }
 
+    
+    .sjis-new .table_1 tr.odd td
+    {
+        padding: 2px !important;  
+        border: 1px solid #000000;
+        font-size:19px;
+    }
+    .sjis-new .table_2 tr.even td
+    {
+        padding: 3px !important; 
+        border: 1px solid #000000;
+        font-size:19px;
+    }
 
 </style>    

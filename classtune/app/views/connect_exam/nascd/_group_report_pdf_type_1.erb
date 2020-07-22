@@ -202,7 +202,7 @@
               </table>
               <% unless @report_data['report']['subjects'].blank? %> 
                 <% @report_data['report']['subjects'].each do |subjects| %>
-                  <% if subjects['no_exams_sjws'].to_i == 0  or !has_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
+                  <% if subjects['no_exams_sjws'].to_i == 0  or !has_subject_group(subjects['id'].to_i) %>
                      <% next %>
                   <% end %>
                   <table id="pdf-table"  width="30%" class="left-table odd-table height-exam" cellspacing="0" >
@@ -228,7 +228,7 @@
                          <% end %>
                       <% end %>
                       <% wordString = wordString_main.split("|") %>
-                      <% subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
+                      <% subject_groups = get_subject_group(subjects['id'].to_i) %>
                         <% iloop = 0 %>
                         <% subject_groups.each do |group_name| %>
                              <% if !wordString.blank? and !wordString[iloop].blank? %>

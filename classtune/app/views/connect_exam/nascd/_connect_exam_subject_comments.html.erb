@@ -64,9 +64,9 @@
                         <% unless @exams.blank? %>
                         
                           <% @exams.each do |exam| %>
-                            <% if has_subject_group(@exam_subject.id,@exam_connect.quarter_number) && @exam_subject.no_exams_sjws.to_i == 1 %>
+                            <% if has_subject_group(@exam_subject.id) && @exam_subject.no_exams_sjws.to_i == 1 %>
                               
-                              <% subject_groups = get_subject_group(@exam_subject.id,@exam_connect.quarter_number) %>
+                              <% subject_groups = get_subject_group(@exam_subject.id) %>
                               <td style="padding:0px; border:none;">
                                   <table width="100%" style="height: 63px;">
                                       <tr>
@@ -74,7 +74,7 @@
                                           </td></tr><tr>
                                           <% subject_groups.each do |group_name| %>
 
-                                            <% subject_subgroup = get_subject_sub_group(group_name.id,@exam_connect.quarter_number) %>
+                                            <% subject_subgroup = get_subject_sub_group(group_name.id) %>
                                             <% if subject_subgroup %>
                                               <td style="text-align:center; border:1px solid black;">
                                                   <table width="100%">
@@ -150,11 +150,11 @@
                             <% @exams.each do |exam| %>
                               <% @exam_score = exam.score_for(student) %>
 
-                              <% if has_subject_group(@exam_subject.id,@exam_connect.quarter_number) && @exam_subject.no_exams_sjws.to_i == 1  %>
+                              <% if has_subject_group(@exam_subject.id) && @exam_subject.no_exams_sjws.to_i == 1  %>
                                 <% unless @exam_score.blank? or @exam_score.remarks.blank?  %>
                                   <% exam_score_split = @exam_score.remarks.split("|") %>
                                 <% end %>
-                                <% subject_groups = get_subject_group(@exam_subject.id,@exam_connect.quarter_number) %>
+                                <% subject_groups = get_subject_group(@exam_subject.id) %>
                                 <% iloop = 0 %>
                                 <% @group_loop = 0 %>
                                 <td>
@@ -162,7 +162,7 @@
                                         <tr>
                                             <% subject_groups.each do |group_name| %>
 
-                                              <% subject_subgroup = get_subject_sub_group(group_name.id,@exam_connect.quarter_number) %>
+                                              <% subject_subgroup = get_subject_sub_group(group_name.id) %>
                                               <% unless subject_subgroup.blank? %>
                                                 <td style="padding:0px;">
                                                     <table width="100%">

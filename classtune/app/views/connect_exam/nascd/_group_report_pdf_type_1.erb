@@ -162,7 +162,9 @@
                                <% end %>
                             <% end %>
                           <% end %>
-                          <td class="col-pdf"><%= ct_mark %></td>              
+                          <td class="col-pdf"><%= ct_mark %></td>  
+                          <% total_mark = total_mark+ct_mark %>
+                          <td class="col-pdf"><%= total_mark %></td>
                       </tr>
                     <% end %>
                   <% end %>
@@ -206,8 +208,8 @@
                      <% next %>
                   <% end %>
                   <table id="pdf-table"  width="30%" class="left-table odd-table height-exam" cellspacing="0" >
-                      <tr><td colspan='6'><b><%= subjects['name'].upcase %></b></td></tr>
-                      <tr>
+                      <tr class="odd"><td colspan='6'><b><%= subjects['name'].upcase %></b></td></tr>
+                      <tr class="odd">
                           <td></td>
                           <td>Ex</td>
                           <td>V.G</td>

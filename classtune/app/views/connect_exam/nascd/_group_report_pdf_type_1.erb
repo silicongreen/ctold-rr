@@ -40,7 +40,7 @@
 
               
               
-              <table id="pdf-table" width="99.8%" cellspacing="0">
+              <table id="pdf-table" width="100%" cellspacing="0">
                   <% c = 'even'  %>
                   <% colspan2 = 1 %>
                   <% has_mcq = false %>
@@ -262,7 +262,7 @@
                   <tr class="even"><td colspan='2'><br/><br/><br/><hr/>Signature of the Principal</td></tr>
                   
               </table>  
-              <table id="pdf-table"  width="36.5%" class="left-table odd-table height-exam ev-table" cellspacing="0" >
+              <table id="pdf-table"  width="36.6%" class="left-table odd-table height-exam ev-table" cellspacing="0" >
                   <tr class="even"><td colspan='2'>Evaluation Criteria</td></tr>
                   <tr class="even"><td>Ex</td><td>Excellent</td></tr>
                   <tr class="even"><td>V.G</td><td>Very Good</td></tr>
@@ -425,6 +425,10 @@
         padding: 5px 5px 6px 5px  !important; 
         border: 1px solid #000000;
         font-size:19px;
+    }
+    .sjis-new .left-table.ev-table tr.even td, .sjis-new .left-table.ev-table tr.even td
+    {
+        padding: 8px  !important; 
     }
 
 </style>    

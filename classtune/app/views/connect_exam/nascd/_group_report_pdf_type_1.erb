@@ -10,7 +10,7 @@
           </tr>
           <tr class="even">
               <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
-              <td colspan="2">Academic Year : 
+              <td colspan="1">Academic Year : 
                   <b>
                     <% if month_number.to_i>7 %>
                       <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>
@@ -19,7 +19,7 @@
                     <% end %>
                   </b>  
               </td>
-              <td colspan="2">Class Teacher's Name : 
+              <td colspan="3">Class Teacher's Name : 
                 <% unless @assigned_employee.blank? %>
                   <% @assigned_employee.each do |emp| %>
                       <% emp_full_name = emp.first_name.to_s+" "+emp.last_name.to_s  %>

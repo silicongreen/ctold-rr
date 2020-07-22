@@ -100,6 +100,7 @@
                       <% end %>   
                       <td class="col-pdf">Conv. CT (<%= ct_lowest %>/<%= ct_highest %>)</td> 
                     <% end %>
+                    <td class="col-pdf">Total</td> 
                   </tr>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
@@ -186,7 +187,7 @@
 
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
-                        <td class="col-pdf border-left-none  no-warp align-left-baf"><%= report['subject_name'] %></td>
+                        <td class="col-pdf no-warp align-left-baf"><%= report['subject_name'] %></td>
                         <% i = 0 %>
                         <% loop do %>
                           <% i = i+1 %>
@@ -202,20 +203,26 @@
                 <% end %>
 
               </table>
+              <% first_table = true %>
               <% unless @report_data['report']['subjects'].blank? %> 
                 <% @report_data['report']['subjects'].each do |subjects| %>
                   <% if subjects['no_exams_sjws'].to_i == 0  or !has_subject_group(subjects['id'].to_i) %>
                      <% next %>
                   <% end %>
-                  <table id="pdf-table"  width="30%" class="left-table odd-table height-exam" cellspacing="0" >
-                      <tr class="odd"><td colspan='6'><b><%= subjects['name'].upcase %></b></td></tr>
+                  <% class_name = "" %>
+                  <% if first_table == true %>
+                    <% first_table = false %>
+                    <% class_name = 'break-table' %>
+                  <% end %>
+                  <table id="pdf-table"  width="32%" class="left-table <%= class_name %> odd-table height-exam" cellspacing="0" >
+                      <tr class="odd"><td colspan='6' class="no-warp"><b><%= subjects['name'] %></b></td></tr>
                       <tr class="odd">
                           <td></td>
-                          <td>Ex</td>
-                          <td>V.G</td>
-                          <td>G</td>
-                          <td>S</td>
-                          <td>NS</td>
+                          <td width='15%'>Ex</td>
+                          <td width='15%'>V.G</td>
+                          <td width='15%'>G</td>
+                          <td width='15%'>S</td>
+                          <td width='15%'>NS</td>
                       </tr>
                       <% wordString_main = "" %>
                       <% @report_data['report']['exams'].each do |report| %>
@@ -259,7 +266,7 @@
                 <% end %>
               <% end %>
               
-              <table id="pdf-table"  width="60%" class="left-table odd-table height-exam" cellspacing="0" >
+              <table id="pdf-table"  width="60%" class="left-table break-table odd-table height-exam" cellspacing="0" >
                   <tr class="even"><td colspan='2'>Quarterly Assessment - March 2019</td></tr>
                   <tr class="even">
                       <td>General Remarks</td>
@@ -378,6 +385,12 @@
     div.sjis-new
     {
         border: none;
+    }
+    
+    .sfx table#pdf-table.break-table
+    {
+        clear: both !important;
+        margin-left: 0px !important;
     }
 
 

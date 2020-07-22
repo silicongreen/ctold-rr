@@ -64,7 +64,7 @@
                   <% end %>
                   <% colspan1 = colspan2+1 %>
                   <tr class="table-header">
-                      <td colspan='<%= colspan1 %>'><b>Academic Performance (<%=  @connect_exam_obj.attandence_start_date.strftime("%B") %> - <%=  @connect_exam_obj.attandence_end_date.strftime("%B") %>)</b></td>
+                      <td colspan='<%= colspan1 %>'><b>Academic Performance</b></td>
                   </tr>
                   <tr class="table-header">
                       <td class="col-pdf no-warp" rowspan="2"><b><%= "Subject" %></b></td>
@@ -250,23 +250,24 @@
                 <% end %>
               <% end %>
               
-              <table id="pdf-table"  width="60%" class="left-table break-table odd-table height-exam" cellspacing="0" >
-                  <tr class="even"><td colspan='2'><%= @connect_exam_obj.name %> - <%=  @connect_exam_obj.published_date.strftime("%B %Y") %></td></tr>
-                  <tr class="even">
-                      <td width='50%' class='align-left'>General Remarks<br/><br/><br/></td>
-                      <td><br/><br/><br/><hr/>Signature of the Class Teacher</td>    
-                  </tr>
-                  <tr class="even"><td colspan='2'><br/><br/><br/><hr/>Signature of the Principal</td></tr>
-                  
-              </table>  
-              <table id="pdf-table"  width="36.6%" class="left-table odd-table height-exam ev-table" cellspacing="0" >
+               
+              <table id="pdf-table"  width="36.6%" class="left-table break-table odd-table height-exam ev-table" cellspacing="0" >
                   <tr class="even"><td colspan='2'>Evaluation Criteria</td></tr>
                   <tr class="even"><td>Ex</td><td>Excellent</td></tr>
                   <tr class="even"><td>V.G</td><td>Very Good</td></tr>
                   <tr class="even"><td>G</td><td>Good</td></tr>
                   <tr class="even"><td>S</td><td>Satisfactory</td></tr>
                   <tr class="even"><td>NS</td><td>Not Satisfactory</td></tr>
-              </table>    
+              </table> 
+              <table id="pdf-table"  width="60%" class="left-table odd-table height-exam" cellspacing="0" >
+                  <tr class="even"><td colspan='2'><%= @connect_exam_obj.name %> - <%=  @connect_exam_obj.published_date.strftime("%B %Y") %></td></tr>
+                  <tr class="even">
+                      <td width='50%' class='align-left border-right-none'></td>
+                      <td><br/><br/><br/><hr/>Signature of the Class Teacher</td>    
+                  </tr>
+                  <tr class="even"><td colspan='2'><br/><br/><br/><hr/>Signature of the Principal</td></tr>
+                  
+              </table> 
           </div>
       </div>
 

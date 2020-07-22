@@ -230,10 +230,8 @@
                             <% next %>
                          <% end %>
                          <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
-                          <% if @connect_exam_obj.quarter_number.to_i == report['quarter'].to_i %>
                             <% wordString_main = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                             <% break %>
-                          <% end %>
                          <% end %>
                       <% end %>
                       <% wordString = wordString_main.split("|") %>
@@ -269,13 +267,13 @@
               <table id="pdf-table"  width="60%" class="left-table break-table odd-table height-exam" cellspacing="0" >
                   <tr class="even"><td colspan='2'>Quarterly Assessment - March 2019</td></tr>
                   <tr class="even">
-                      <td>General Remarks</td>
+                      <td width='55%'>General Remarks<br/><br/><br/></td>
                       <td><br/><br/><br/><hr/>Signature of the Class Teacher</td>    
                   </tr>
                   <tr class="even"><td colspan='2'><br/><br/><br/><hr/>Signature of the Principal</td></tr>
                   
               </table>  
-              <table id="pdf-table"  width="36%" class="left-table odd-table height-exam ev-table" cellspacing="0" >
+              <table id="pdf-table"  width="36.5%" class="left-table odd-table height-exam ev-table" cellspacing="0" >
                   <tr class="even"><td colspan='2'>Evaluation Criteria</td></tr>
                   <tr class="even"><td>Ex</td><td>Excellent</td></tr>
                   <tr class="even"><td>V.G</td><td>Very Good</td></tr>

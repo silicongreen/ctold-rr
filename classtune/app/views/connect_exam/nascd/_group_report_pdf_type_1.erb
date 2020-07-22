@@ -67,7 +67,7 @@
                   <% end %>
                   <% colspan1 = colspan2+1 %>
                   <tr class="table-header">
-                      <td colspan='<%= colspan1 %>'><b>Academic Performance (<%=  @connect_exam_obj.attandence_start_date.strftime("%B") %> - <%=  @connect_exam_obj.attandence_start_date.strftime("%B") %>)</b></td>
+                      <td colspan='<%= colspan1 %>'><b>Academic Performance (<%=  @connect_exam_obj.attandence_start_date.strftime("%B") %> - <%=  @connect_exam_obj.attandence_end_date.strftime("%B") %>)</b></td>
                   </tr>
                   <tr class="table-header">
                       <td class="col-pdf no-warp" rowspan="2"><b><%= "Subject" %></b></td>

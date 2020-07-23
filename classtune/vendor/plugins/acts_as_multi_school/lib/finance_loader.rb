@@ -4326,6 +4326,8 @@ module FinanceLoader
       
       unless no_charge_apply_citybank.include?(MultiSchool.current_school.id)
         paid_amount = (amount_to_pay.to_f * 100) + fee_percent.to_f
+      else
+        paid_amount = (amount_to_pay.to_f * 100)
       end
       #abort(amount.to_s)
       if result[:orderStatus].present?

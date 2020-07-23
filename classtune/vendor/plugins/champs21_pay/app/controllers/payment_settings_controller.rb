@@ -334,7 +334,11 @@ class PaymentSettingsController < ApplicationController
                         amount = amount.to_f - fee_percent.to_f
                       end
                     end
-                    total_amount = amount + fee_percent
+                    unless no_charge_apply_citybank.include?(MultiSchool.current_school.id)
+                      total_amount = amount + fee_percent
+                    else
+                      total_amount = amount
+                    end
                     amt = amount
                     #amt = payment.gateway_response[:Message][:TotalAmount].to_f
                     #service_change = payment.gateway_response[:service_charge].to_f
@@ -647,6 +651,8 @@ class PaymentSettingsController < ApplicationController
                                     
                                         unless no_charge_apply_citybank.include?(MultiSchool.current_school.id)
                                           amount = (amount_to_pay.to_f * 100) + fee_percent.to_f
+                                        else
+                                          amount = (amount_to_pay.to_f * 100)
                                         end
                                         unless order_verify(o, 'citybank', transaction_datetime, order_id, amount)
                                           order_ids_new << o

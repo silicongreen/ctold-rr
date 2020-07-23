@@ -930,6 +930,8 @@ class StudentController < ApplicationController
           
             unless no_charge_apply_citybank.include?(MultiSchool.current_school.id)
               amount = (params[:amount].to_f * 100) + fee_percent.to_f
+            else
+              amount = (params[:amount].to_f * 100)
             end
             data_params = {
               "merchantId"  => params[:merchantId],

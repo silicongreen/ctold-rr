@@ -1209,7 +1209,23 @@
                 <% end %> 
                 <% if @gateway_settings.length == 1 %>
                     <% if @gateway_settings.keys.include?('bkash') or @gateway_settings.keys.include?('citybank') %>
-                      <% unless MultiSchool.current_school.id == 312 %>
+                      <%
+                        if @gateway_settings.keys.include?('citybank')
+                          no_charge_apply = [312] 
+                          no_charge_apply = PaymentNewConfiguration.config_value("no_charge_apply_citybank") 
+
+                          no_charge_apply = no_charge_apply.split(",").map(&:to_i) unless no_charge_apply.blank?
+                          no_charge_apply ||= Array.new
+                        end
+                        if @gateway_settings.keys.include?('bkash')
+                          no_charge_apply = [312] 
+                          no_charge_apply = PaymentNewConfiguration.config_value("no_charge_apply_bkash") 
+
+                          no_charge_apply = no_charge_apply.split(",").map(&:to_i) unless no_charge_apply.blank?
+                          no_charge_apply ||= Array.new
+                        end
+                      %>
+                      <% unless no_charge_apply.include?(MultiSchool.current_school.id) %>
                         <span style="float: right; display: block; padding-top: 8px; width: 100%; text-align: right; color: #000;">*1.5% convenience fee applicable.</span><br />
                       <% end %>
                       <% if @gateway_settings.keys.include?('citybank') %>  
@@ -1716,7 +1732,14 @@ encrypted = [cipher].pack('m')
 <%
   fee_percent = 0.00
   fee_percent = total_fees.to_f * (1.5 / 100)
-  if MultiSchool.current_school.id != 312 
+
+  no_charge_apply_bkash = [312] 
+  no_charge_apply_bkash = PaymentNewConfiguration.config_value("no_charge_apply_bkash") 
+
+  no_charge_apply_bkash = no_charge_apply_bkash.split(",").map(&:to_i) unless no_charge_apply_bkash.blank?
+  no_charge_apply_bkash ||= Array.new
+
+  unless no_charge_apply_bkash.include?(MultiSchool.current_school.id)
     #total_fees = total_fees + fee_percent
     total_fees = '%.2f' % (total_fees.to_f  / (1 - (1.5/100)))
   end

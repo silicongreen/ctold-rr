@@ -400,8 +400,14 @@ class StudentController < ApplicationController
                       
                       fee_percent = 0.00
                       fee_percent = '%.2f' % (total_fees.to_f * (1.5 / 100))
-                       
-                      if MultiSchool.current_school.id != 312 
+                      
+                      no_charge_apply_bkash = [312] 
+                      no_charge_apply_bkash = PaymentNewConfiguration.config_value("no_charge_apply_bkash") 
+                      
+                      no_charge_apply_bkash = no_charge_apply_bkash.split(",").map(&:to_i) unless no_charge_apply_bkash.blank?
+                      no_charge_apply_bkash ||= Array.new
+                      
+                      unless no_charge_apply_bkash.include?(MultiSchool.current_school.id)
                         #total_fees = total_fees + fee_percent 
                         total_fees = '%.2f' % (total_fees.to_f  / (1 - (1.5/100)))
                       end
@@ -649,7 +655,14 @@ class StudentController < ApplicationController
                   fee_percent = 0.00
                   total_fees_with_change = '%.2f' % (total_fees.to_f  / (1 - (1.5/100)))
                   fee_percent = total_fees_with_change.to_f - total_fees.to_f
-                  if MultiSchool.current_school.id != 312 
+                  
+                  no_charge_apply_bkash = [312] 
+                  no_charge_apply_bkash = PaymentNewConfiguration.config_value("no_charge_apply_bkash") 
+
+                  no_charge_apply_bkash = no_charge_apply_bkash.split(",").map(&:to_i) unless no_charge_apply_bkash.blank?
+                  no_charge_apply_bkash ||= Array.new
+                  
+                  unless no_charge_apply_bkash.include?(MultiSchool.current_school.id)
                     #amount = amount.to_f - fee_percent.to_f
                     amount = total_fees_with_change.to_f - fee_percent.to_f
                     #amount = amount.to_f - fee_percent.to_f
@@ -666,7 +679,7 @@ class StudentController < ApplicationController
                       transaction_datetime = (DateTime.parse(createTime).to_time + 6.hours).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
                       orderId = order_id.to_s
                       @student = Student.find(student_id)
-                      if MultiSchool.current_school.id != 312 
+                      unless no_charge_apply_bkash.include?(MultiSchool.current_school.id)
                         finance_interest = FinanceInterest.new
                         finance_interest.order_id = orderId.strip
                         finance_interest.student_id = @student.id
@@ -908,7 +921,14 @@ class StudentController < ApplicationController
         elsif response_ssl["responseCode"].to_i == 100
             fee_percent = 0.00
             fee_percent = (params[:amount].to_f  * 100) * (1.5 / 100)
-            if MultiSchool.current_school.id != 312 
+            
+            no_charge_apply_citybank = [312] 
+            no_charge_apply_citybank = PaymentNewConfiguration.config_value("no_charge_apply_citybank") 
+
+            no_charge_apply_citybank = no_charge_apply_citybank.split(",").map(&:to_i) unless no_charge_apply_citybank.blank?
+            no_charge_apply_citybank ||= Array.new
+          
+            unless no_charge_apply_citybank.include?(MultiSchool.current_school.id)
               amount = (params[:amount].to_f * 100) + fee_percent.to_f
             end
             data_params = {

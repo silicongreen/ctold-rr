@@ -3766,8 +3766,18 @@ module FinanceLoader
               end
             end
             fee_percent = 0.00
-            fee_percent = '%.2f' % (total_fees.to_f * (1.5 / 100))
-            total_fees_with_charge = '%.2f' % (total_fees.to_f  / (1 - (1.5/100)))
+            
+            no_charge_apply_bkash = [312] 
+            no_charge_apply_bkash = PaymentNewConfiguration.config_value("no_charge_apply_bkash") 
+
+            no_charge_apply_bkash = no_charge_apply_bkash.split(",").map(&:to_i) unless no_charge_apply_bkash.blank?
+            no_charge_apply_bkash ||= Array.new
+            unless no_charge_apply_bkash.include?(MultiSchool.current_school.id)
+              fee_percent = '%.2f' % (total_fees.to_f * (1.5 / 100))
+              total_fees_with_charge = '%.2f' % (total_fees.to_f  / (1 - (1.5/100)))
+            else
+              total_fees_with_charge = total_fees
+            end
             amount = response_ssl[:amount]
             #if (amount.to_f + fee_percent.to_f) == total_fees
             if total_fees_with_charge == total_fees
@@ -3883,8 +3893,21 @@ module FinanceLoader
               end
             end
             fee_percent = 0.00
-            fee_percent = '%.2f' % (total_fees.to_f * (1.5 / 100))
-            total_fees_with_charge = '%.2f' % (total_fees.to_f  / (1 - (1.5/100)))
+            #fee_percent = '%.2f' % (total_fees.to_f * (1.5 / 100))
+            #total_fees_with_charge = '%.2f' % (total_fees.to_f  / (1 - (1.5/100)))
+            
+            no_charge_apply_bkash = [312] 
+            no_charge_apply_bkash = PaymentNewConfiguration.config_value("no_charge_apply_bkash") 
+
+            no_charge_apply_bkash = no_charge_apply_bkash.split(",").map(&:to_i) unless no_charge_apply_bkash.blank?
+            no_charge_apply_bkash ||= Array.new
+            unless no_charge_apply_bkash.include?(MultiSchool.current_school.id)
+              fee_percent = '%.2f' % (total_fees.to_f * (1.5 / 100))
+              total_fees_with_charge = '%.2f' % (total_fees.to_f  / (1 - (1.5/100)))
+            else
+              total_fees_with_charge = total_fees
+            end
+            
             #abort(total_fees.to_s)
             amount = response_ssl[:amount]
             #if (amount.to_f + fee_percent.to_f) == total_fees
@@ -4294,7 +4317,14 @@ module FinanceLoader
       fee_percent = 0.00
       fee_percent = (amount_to_pay.to_f  * 100) * (1.5 / 100)
       paid_amount = amount_to_pay
-      if MultiSchool.current_school.id != 312 
+      
+      no_charge_apply_citybank = [312] 
+      no_charge_apply_citybank = PaymentNewConfiguration.config_value("no_charge_apply_citybank") 
+
+      no_charge_apply_citybank = no_charge_apply_citybank.split(",").map(&:to_i) unless no_charge_apply_citybank.blank?
+      no_charge_apply_citybank ||= Array.new
+      
+      unless no_charge_apply_citybank.include?(MultiSchool.current_school.id)
         paid_amount = (amount_to_pay.to_f * 100) + fee_percent.to_f
       end
       #abort(amount.to_s)

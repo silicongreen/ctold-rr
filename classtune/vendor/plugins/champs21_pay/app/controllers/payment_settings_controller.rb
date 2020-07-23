@@ -322,7 +322,14 @@ class PaymentSettingsController < ApplicationController
                       end
                     end
                     fee_percent = paid_amount.to_f * (1.5 / 100)
-                    if MultiSchool.current_school.id != 312 
+                    
+                    no_charge_apply_citybank = [312] 
+                    no_charge_apply_citybank = PaymentNewConfiguration.config_value("no_charge_apply_citybank") 
+
+                    no_charge_apply_citybank = no_charge_apply_citybank.split(",").map(&:to_i) unless no_charge_apply_citybank.blank?
+                    no_charge_apply_citybank ||= Array.new
+                  
+                    unless no_charge_apply_citybank.include?(MultiSchool.current_school.id)
                       unless paid_amount == amount_return
                         amount = amount.to_f - fee_percent.to_f
                       end
@@ -358,7 +365,14 @@ class PaymentSettingsController < ApplicationController
 
                     end
                     #fee_percent = paid_amount.to_f * (1.5 / 100)
-                    if MultiSchool.current_school.id != 312 
+                    
+                    no_charge_apply_bkash = [312] 
+                    no_charge_apply_bkash = PaymentNewConfiguration.config_value("no_charge_apply_bkash") 
+
+                    no_charge_apply_bkash = no_charge_apply_bkash.split(",").map(&:to_i) unless no_charge_apply_bkash.blank?
+                    no_charge_apply_bkash ||= Array.new
+                  
+                    unless no_charge_apply_bkash.include?(MultiSchool.current_school.id)
                       unless paid_amount == amount_return
                         amount = paid_amount.to_f
                         #amount = '%.2f' % (paid_amount.to_f  / (1 - (1.5/100)))
@@ -624,7 +638,14 @@ class PaymentSettingsController < ApplicationController
                                         amount = amount_to_pay
                                         fee_percent = 0.00
                                         fee_percent = (amount_to_pay.to_f  * 100) * (1.5 / 100)
-                                        if MultiSchool.current_school.id != 312 
+                                        
+                                        no_charge_apply_citybank = [312] 
+                                        no_charge_apply_citybank = PaymentNewConfiguration.config_value("no_charge_apply_citybank") 
+
+                                        no_charge_apply_citybank = no_charge_apply_citybank.split(",").map(&:to_i) unless no_charge_apply_citybank.blank?
+                                        no_charge_apply_citybank ||= Array.new
+                                    
+                                        unless no_charge_apply_citybank.include?(MultiSchool.current_school.id)
                                           amount = (amount_to_pay.to_f * 100) + fee_percent.to_f
                                         end
                                         unless order_verify(o, 'citybank', transaction_datetime, order_id, amount)

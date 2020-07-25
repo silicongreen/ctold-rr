@@ -468,7 +468,11 @@ unless @ranked_student.blank?
                           <% grade_point_avg = (grade_point_avg.to_f*100).to_f.round() %>
                           <% grade_point_avg = grade_point_avg.to_f/100 %>
                           <td>
-                              <%= sprintf( "%0.02f", grade_point_avg) %>
+                              <% if !@student_position_batch[std['id'].to_i].blank? %> 
+                                <%= sprintf( "%0.02f", grade_point_avg) %>
+                              <% else %>
+                                0.00
+                              <% end %>
                           </td> 
                       </tr>
                     <% end %>

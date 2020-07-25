@@ -17334,7 +17334,6 @@ class FinanceController < ApplicationController
           unless @fee_discounts.blank?
             @fee_discounts.each do |fee_dis|
                 f_dis = FeeDiscount.find(fee_dis.id)
-                abort(f_dis.inspect)
                 f_dis.update_attributes(:is_deleted=>true)
             end
           end

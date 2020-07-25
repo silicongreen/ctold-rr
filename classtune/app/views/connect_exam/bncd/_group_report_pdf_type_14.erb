@@ -51,6 +51,7 @@
               <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
+                  <% full_mark_of_allexam = 0 %>
                   <% total_grade_of_allexam = 0 %>
                   <tr class="even header-shade">
                       <td class="col-pdf">
@@ -112,6 +113,7 @@
                               <td class="col-pdf">-</td>
                             <% end %>  
                             <% total_mark_of_allexam = total_mark_of_allexam+obtain_mark %>
+                            <% full_mark_of_allexam = full_mark_of_allexam+total_mark %>
                       </tr>
                     <% end %>
                   
@@ -162,13 +164,33 @@
                       </td>
                   </tr>
               </table>
-              
+              <%
+              percent = 0
+              if full_mark_of_allexam > 0 and total_mark_of_allexam > 0
+                percent = (total_mark_of_allexam.to_f/full_mark_of_allexam.to_f)*100
+              end  
+              remarks = "Passed"
+              percent = percent.round()
+              if percent >= 80 
+                remarks = "Excellent. But there is no borderline of perfection."
+              end
+              if percent < 80 and percent >= 60
+                remarks = "Good. But try to do better."
+              end
+              if percent < 60 and percent >= 40
+                remarks = "Satisfactory. But need to work hard."
+              end
+              if percent < 40
+                remarks = "Not satisfactory. But remember, “Failure is the
+pillar of success.” So, try more."
+              end
+              %>
               <div class='fine'></div>
               <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
                 <tr class="even align-left-baf">
                     <td class="aling-left-baf align-left">&nbsp;Remarks : 
                       <% if !@student_position_batch[@student.id.to_i].blank? %> 
-                          Passed 
+                          <%= remarks %> 
                       <% else %> 
                           Failed 
                       <% end %>  

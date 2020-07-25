@@ -17322,7 +17322,7 @@ class FinanceController < ApplicationController
       @fee_category = FinanceFeeCategory.find(@fee_discount.finance_fee_category_id) unless @fee_discount.finance_fee_category_id != 0
     end
     fee_discounts_paid = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND particular_id = " + @fee_discount.id.to_s + "")
-    unless fee_discounts_paid.blank?
+    if fee_discounts_paid.blank?
       @error = true  unless @fee_discount.update_attributes(:is_deleted=>true)
       unless @error
         scholarship_id = @fee_discount.scholarship_id

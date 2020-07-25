@@ -161,7 +161,7 @@ unless @ranked_student.blank?
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
                           <% has_exam = true %>
                         <% end %>
-                        <% if has_exam == true %>
+                        <% if has_exam == false %>
                           <% next %>
                         <% end %>
                         <% if sub['subject_group_id'].to_i == 0 %>
@@ -198,7 +198,7 @@ unless @ranked_student.blank?
                     <% if !std.blank? and !std['first_name'].blank? %>
                       <% j = j+1 %>
                       <%  std_count = std_count+1; %>
-                      <% if std_count>6 && extender ==0 %>
+                      <% if std_count>11 && extender ==0 %>
                         <% std_count = 0 %>
                         <% extender = 1 %>
                         <tr class="page-break">
@@ -218,7 +218,7 @@ unless @ranked_student.blank?
                               <% if @all_subject_id.include?(sub['id'].to_i) %>
                                 <% has_exam = true %>
                               <% end %>
-                              <% if has_exam == true %>
+                              <% if has_exam == false %>
                                 <% next %>
                               <% end %>
                               <% if sub['subject_group_id'].to_i == 0 %>
@@ -246,7 +246,7 @@ unless @ranked_student.blank?
                             <td class="col-pdf">GPA</td>
                         </tr>
                        
-                      <% elsif std_count>8 && extender ==1 %>
+                      <% elsif std_count>13 && extender ==1 %>
                         <% std_count = 0 %>
                         <% extender = 1 %>
                         <tr class="page-break68">
@@ -266,7 +266,7 @@ unless @ranked_student.blank?
                               <% if @all_subject_id.include?(sub['id'].to_i) %>
                                 <% has_exam = true %>
                               <% end %>
-                              <% if has_exam == true %>
+                              <% if has_exam == false %>
                                 <% next %>
                               <% end %>
                               <% if sub['subject_group_id'].to_i == 0 %>

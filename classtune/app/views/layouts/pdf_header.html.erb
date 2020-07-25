@@ -206,6 +206,15 @@
         </td>
     </table>   
 </div> 
+<% elsif MultiSchool.current_school.code == "baghc" %>
+<div id="pdf-header-south" class="sfx-header">
+  <% if !@connect_exam_obj.blank? %>
+    <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/356/baghc_new_logo.png")),:width=> '20%' %></h4>
+  <% else %>
+    <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/356/baghc_new_logo.png")),:width=> '8%' %></h4>
+  <% end %>
+  <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
+</div>
 <% else %>
 <div id="pdf-header-south" class="sfx-header">
   <% if !@connect_exam_obj.blank? %>

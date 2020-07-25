@@ -220,7 +220,7 @@ class FeeDiscount < ActiveRecord::Base
   end
   
   def check_transaction
-    if FinanceTransactionParticular.find(:all,:conditions=>"particular_type = 'Adjustment' and transaction_type='Discount' and particular_id=#{id}").present?
+    if FinanceTransactionParticular.find(:all,:conditions=>"particular_type1 = 'Adjustment' and transaction_type='Discount' and particular_id=#{id}").present?
       errors.add_to_base(t('transaction_exists_for_this_category_cant_delete_or_edit_this_discount'))
       return false
     else

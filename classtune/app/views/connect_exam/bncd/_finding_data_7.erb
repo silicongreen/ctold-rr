@@ -61,11 +61,11 @@
               main_mark = ( subject_marks.to_f/full_mark.to_f )*100
               grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
               if !grade.blank? and !grade.name.blank?
-                if grade.credit_points.to_f == 0.00
-                  subject_failed = true
-                else
+                #if grade.credit_points.to_f == 0.00
+                  #subject_failed = true
+                #else
                   total_grade = total_grade+grade.credit_points.to_f
-                end  
+                #end  
               end   
             else
              subject_failed = true

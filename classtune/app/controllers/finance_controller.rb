@@ -17326,13 +17326,16 @@ class FinanceController < ApplicationController
       @error = true  unless @fee_discount.update_attributes(:is_deleted=>true)
       unless @error
         scholarship_id = @fee_discount.scholarship_id
-        @fee_discounts = FeeDiscount.find(:all, :conditions => "scholarship_id = #{scholarship_id}")
-        unless @fee_discounts.blank?
-          @fee_discounts.each do |fee_dis|
-            fee_discounts_paid_single = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND particular_id = " + fee_dis.id.to_s + "")
-            unless fee_discounts_paid_single.blank?
-              f_dis = FeeDiscount.find(fee_dis.id)
-              f_dis.update_attributes(:is_deleted=>true)
+        receiver_id = @fee_discount.receiver_id
+        if @fee_discount.receiver_type == "Student"
+          @fee_discounts = FeeDiscount.find(:all, :conditions => "scholarship_id = #{scholarship_id} and receiver_id = #{receiver_id}")
+          unless @fee_discounts.blank?
+            @fee_discounts.each do |fee_dis|
+              fee_discounts_paid_single = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND particular_id = " + fee_dis.id.to_s + "")
+              unless fee_discounts_paid_single.blank?
+                f_dis = FeeDiscount.find(fee_dis.id)
+                f_dis.update_attributes(:is_deleted=>true)
+              end
             end
           end
         end
@@ -18895,13 +18898,16 @@ class FinanceController < ApplicationController
 #              end
                 @error = true unless @fee_discount.update_attributes(:is_deleted=>true)
                 scholarship_id = @fee_discount.scholarship_id
-                @fee_discounts = FeeDiscount.find(:all, :conditions => "scholarship_id = #{scholarship_id}")
-                unless @fee_discounts.blank?
-                  @fee_discounts.each do |fee_dis|
-                    fee_discounts_paid_single = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND particular_id = " + fee_dis.id.to_s + "")
-                    unless fee_discounts_paid_single.blank?
-                      f_dis = FeeDiscount.find(fee_dis.id)
-                      f_dis.update_attributes(:is_deleted=>true)
+                receiver_id = @fee_discount.receiver_id
+                if @fee_discount.receiver_type == "Student"
+                  @fee_discounts = FeeDiscount.find(:all, :conditions => "scholarship_id = #{scholarship_id} and receiver_id = #{receiver_id}")
+                  unless @fee_discounts.blank?
+                    @fee_discounts.each do |fee_dis|
+                      fee_discounts_paid_single = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND particular_id = " + fee_dis.id.to_s + "")
+                      unless fee_discounts_paid_single.blank?
+                        f_dis = FeeDiscount.find(fee_dis.id)
+                        f_dis.update_attributes(:is_deleted=>true)
+                      end
                     end
                   end
                 end

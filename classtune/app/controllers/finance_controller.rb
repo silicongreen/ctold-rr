@@ -17273,10 +17273,11 @@ class FinanceController < ApplicationController
       end
     else
       if params[:id] == '0'
-        @discounts = FeeDiscount.all(:conditions=>["batch_id='#{@batch.id}' and finance_fee_category_id= 0"])
+        @discounts = FeeDiscount.all(:conditions=>["batch_id='#{@batch.id}' and is_deleted = #{false}"])
       else
-        @fee_category = FinanceFeeCategory.find(params[:id])
-        @discounts = @fee_category.fee_discounts.all(:conditions=>["batch_id='#{@batch.id}' and is_deleted= 0"])
+        #@fee_category = FinanceFeeCategory.find(params[:id])
+        #@discounts = @fee_category.fee_discounts.all(:conditions=>["batch_id='#{@batch.id}' and is_deleted= 0"])
+        @discounts = FeeDiscount.all(:conditions=>["batch_id='#{@batch.id}' and is_deleted = #{false}"])
       end
       
       render :update do |page|

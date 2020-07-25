@@ -17328,9 +17328,9 @@ class FinanceController < ApplicationController
       unless @error
         scholarship_id = @fee_discount.scholarship_id
         receiver_id = @fee_discount.receiver_id
-        abort(@fee_discount.receiver_type.inspect)
         if @fee_discount.receiver_type == "Student"
-          @fee_discounts = FeeDiscount.find(:all, :conditions => "scholarship_id = #{scholarship_id} and receiver_id = #{receiver_id}")
+          @fee_discounts = FeeDiscount.find(:all, :conditions => "scholarship_id = #{scholarship_id} and receiver_id = #{receiver_id} and is_deleted = #{false}")
+          abort(@fee_discounts.inspect)
           unless @fee_discounts.blank?
             @fee_discounts.each do |fee_dis|
               fee_discounts_paid_single = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND particular_id = " + fee_dis.id.to_s + "")

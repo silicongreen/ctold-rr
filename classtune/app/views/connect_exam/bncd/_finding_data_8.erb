@@ -13,6 +13,24 @@
   @student_list_batch = []
   batchobj = Batch.find_by_id(@batch.id) 
   courseObj = Course.find_by_id(batchobj.course_id)
+  all_courses = Course.find_all_by_course_name(courseObj.course_name)
+  all_batch = Batch.find_all_by_course_id(all_courses.map(&:id))
+  std_subject = StudentsSubject.find_all_by_batch_id(all_batch.map(&:id),:include=>[:subject])
+  @std_subject_hash_type = []
+  @std_subject_hash_code = []
+  unless std_subject.blank?
+    std_subject.each do |std_sub|
+      @std_subject_hash_type << std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s+"|||"+std_sub.elective_type.to_s
+      @std_subject_hash_code << std_sub.student_id.to_s+"|||"+std_sub.subject.code
+    end
+  end
+  @batch_subject_hash_code = []
+  batch_subject = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL and is_deleted=false")
+  unless batch_subject.blank?
+    batch_subject.each do |std_sub|
+      @batch_subject_hash_code << std_sub.code
+    end
+  end
   unless @tabulation_data.blank?
     connect_exam = 0
     batch_loop = 0
@@ -56,6 +74,14 @@
               next
           end
           subject_array << sub['id'].to_i
+          
+          fourth_subject = false
+          if !@std_subject_hash_type.blank?
+            if @std_subject_hash_type.include?(std['id'].to_s+"|||"+sub['id'].to_s+"|||4")
+              fourth_subject = true
+            end  
+          end 
+          
           full_mark = 0
           subject_marks = 0
           unless tab['exams'].blank? 
@@ -73,10 +99,17 @@
                 main_mark = ( subject_marks.to_f/full_mark.to_f )*100.00
                 grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                 if !grade.blank? and !grade.name.blank?
-                  if grade.name == "F"
+                  if grade.name == "F" and fourth_subject == false
                     subject_failed = true
                   else
-                    total_grade = total_grade+grade.credit_points.to_f
+                    if fourth_subject == false
+                      total_grade = total_grade+grade.credit_points.to_f
+                    else
+                      new_grade_point = grade.credit_points.to_f-2
+                      if new_grade_point > 0
+                        total_grade = total_grade.to_f+new_grade_point.to_f
+                      end
+                    end  
                   end  
                 end   
               else
@@ -107,10 +140,17 @@
                   main_mark = ( subject_marks.to_f/full_mark.to_f )*100.00
                   grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                   if !grade.blank? and !grade.name.blank?
-                    if grade.name == "F"
+                    if grade.name == "F" and fourth_subject == false
                       subject_failed = true
                     else
-                      total_grade = total_grade+grade.credit_points.to_f
+                      if fourth_subject == false
+                        total_grade = total_grade+grade.credit_points.to_f
+                      else
+                        new_grade_point = grade.credit_points.to_f-2
+                        if new_grade_point > 0
+                          total_grade = total_grade.to_f+new_grade_point.to_f
+                        end
+                      end
                     end  
                   end   
                 else

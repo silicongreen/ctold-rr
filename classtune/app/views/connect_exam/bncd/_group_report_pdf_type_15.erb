@@ -71,10 +71,23 @@
                   
                   <% sl = 0 %>
                   <% subjects_done = [] %>
+                  <% total_subject = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %>
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% total_mark = 0 %>
                       <% obtain_mark = 0 %>
+                      <%
+                        third_subject = ""
+                        fourth_subject = ""
+                      %>
+                      <% if !@std_subject_hash_type.blank? %>
+                        <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||4") %>
+                          <% fourth_subject = "(4th)" %>
+                        <% end %>
+                        <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||3") %>
+                          <% third_subject = "(3rd)" %>
+                        <% end %>
+                      <% end %>
                       
                       <% subjectdata = Subject.find(subjects['id'].to_i) %>
                       <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
@@ -85,10 +98,13 @@
                         <% next %>
                       <% end %>
                       <% subjects_done << subjects['id'].to_i %>
+                      <% if fourth_subject.blank? %>
+                        <% total_subject = total_subject+1 %>
+                      <% end %>
                       <% sl = sl+1 %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                             <td class="col-pdf  no-warp"><%= sl %></td>
-                            <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>
+                            <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %><%= fourth_subject %><%= third_subject %></td>
                             <% unless @report_data['report']['exams'].blank? %>  
                                 <% @report_data['report']['exams'].each do |report| %>  
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
@@ -112,6 +128,19 @@
                                   <% next %>
                                 <% end %>
                                 <% subjects_done << subjects2['id'].to_i %>
+                            
+                                <%
+                                  third_subject = ""
+                                  fourth_subject = ""
+                                %>
+                                <% if !@std_subject_hash_type.blank? %>
+                                  <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects2['id'].to_s+"|||4") %>
+                                    <% fourth_subject = "(4th)" %>
+                                  <% end %>
+                                  <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects2['id'].to_s+"|||3") %>
+                                    <% third_subject = "(3rd)" %>
+                                  <% end %>
+                                <% end %>
                                 <% unless @report_data['report']['exams'].blank? %>  
                                   <% @report_data['report']['exams'].each do |report| %>  
                                     <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].blank? %>  
@@ -137,9 +166,12 @@
                                 </tr>
                                 <% obtain_mark = 0 %>
                                 <% sl = sl+1 %>
+                                <% if fourth_subject.blank? %>
+                                  <% total_subject = total_subject+1 %>
+                                <% end %>
                                 <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                                   <td class="col-pdf  no-warp"><%= sl %></td>
-                                  <td class="col-pdf  no-warp align-left-baf"><%= subjects2['name'] %></td>
+                                  <td class="col-pdf  no-warp align-left-baf"><%= subjects2['name'] %><%= fourth_subject %><%= third_subject %></td>
                                   <% unless @report_data['report']['exams'].blank? %>  
                                       <% @report_data['report']['exams'].each do |report| %>  
                                         <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].blank? %>  
@@ -159,7 +191,14 @@
                               <% if !grade.blank? and !grade.name.blank? %>
                                 <td class="col-pdf"><%= grade.name %></td>
                                 <td class="col-pdf"><%= grade.credit_points %></td>
-                                <% total_grade_of_allexam = total_grade_of_allexam+grade.credit_points %>
+                                <% if fourth_subject.blank? %>
+                                  <% total_grade_of_allexam = total_grade_of_allexam+grade.credit_points %>
+                                <% else %>
+                                  <% new_grade_point = grade.credit_points.to_f-2 %>
+                                  <% if new_grade_point > 0 %>
+                                    <% total_grade_of_allexam = total_grade_of_allexam.to_f+new_grade_point.to_f %>
+                                  <% end %>
+                                <% end %>
                               <% else %>
                                 <td class="col-pdf">-</td>
                                 <td class="col-pdf">-</td>
@@ -181,8 +220,8 @@
                   
               </table>
               <% grade_point_avg = 0.00 %>
-              <% if total_grade_of_allexam > 0 && sl > 0 %>
-                <% grade_point_avg = total_grade_of_allexam.to_f/sl.to_f %>
+              <% if total_grade_of_allexam > 0 && total_subject > 0 %>
+                <% grade_point_avg = total_grade_of_allexam.to_f/total_subject.to_f %>
                 <% if grade_point_avg > 5 %>
                   <% grade_point_avg = 5.00 %>
                 <% end %>  

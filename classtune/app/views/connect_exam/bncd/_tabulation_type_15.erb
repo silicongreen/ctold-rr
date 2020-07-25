@@ -321,6 +321,10 @@ unless @ranked_student.blank?
                             <% if @has_exam_student == false %>
                               <td>&nbsp;<hr/>&nbsp;</td>
                             <% else %>
+                              <% fourth_subject = false %>
+                              <% if @std_subject_hash_type.include?(std['id'].to_s+"|||"+sub['id'].to_s+"|||4") %>
+                                 <% fourth_subject = true %>
+                              <% end %>
 
                               <% subject_full_mark = 0 %>
                               <% subject_obtain_mark = 0 %>
@@ -356,7 +360,16 @@ unless @ranked_student.blank?
                                         <%= grade.name %>
                                         | 
                                         <%= grade.credit_points %>
-                                        <% total_grade = total_grade+grade.credit_points.to_f %>
+                                        <%
+                                          if fourth_subject == false
+                                            total_grade = total_grade+grade.credit_points.to_f
+                                          else
+                                            new_grade_point = grade.credit_points.to_f-2
+                                            if new_grade_point > 0
+                                              total_grade = total_grade.to_f+new_grade_point.to_f
+                                            end
+                                          end
+                                        %>
                                     <% else %>
                                         -  
                                     <% end %>
@@ -393,7 +406,16 @@ unless @ranked_student.blank?
                                         <%= grade.name %>
                                         | 
                                         <%= grade.credit_points %>
-                                        <% total_grade = total_grade+grade.credit_points.to_f %>
+                                        <%
+                                          if fourth_subject == false
+                                            total_grade = total_grade+grade.credit_points.to_f
+                                          else
+                                            new_grade_point = grade.credit_points.to_f-2
+                                            if new_grade_point > 0
+                                              total_grade = total_grade.to_f+new_grade_point.to_f
+                                            end
+                                          end
+                                        %>
                                     <% else %>
                                         -  
                                     <% end %> 

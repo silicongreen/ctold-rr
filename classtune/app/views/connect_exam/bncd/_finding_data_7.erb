@@ -39,6 +39,7 @@
         grand_total = 0
         total_grade = 0.00
         full_mark = 0
+        main_mark = 0
         subject_failed = false
         if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
           @total_std = @total_std+1
@@ -64,7 +65,7 @@
           end
           if full_mark > 0
             if subject_marks > 0
-              main_mark = ( subject_marks.to_f/full_mark.to_f )*100
+              main_mark = ( subject_marks.to_f/full_mark.to_f )*100.00
               grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
               if !grade.blank? and !grade.name.blank?
                 if grade.credit_points.to_f == 0.00
@@ -83,7 +84,7 @@
           grand_grade_new = 50000-total_grade
           std_marks_full_new = 5000.00-grand_total.to_f
           if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
-            @student_list << [full_mark.to_f,grand_grade_new.to_f,std_marks_full_new.to_f,std['id'].to_i]
+            @student_list << [main_mark.to_f,grand_grade_new.to_f,std_marks_full_new.to_f,std['id'].to_i]
           end 
           if connect_exam_id.to_i == @connect_exam_obj.id
             @student_list_batch << [grand_grade_new.to_f,std_marks_full_new.to_f,std['id'].to_i]

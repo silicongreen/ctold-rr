@@ -1622,7 +1622,7 @@ class ExamController < ApplicationController
     end
     
     @students = @tmp_students
-    if MultiSchool.current_school.id != 325 and MultiSchool.current_school.id != 7
+    if MultiSchool.current_school.id != 325 and MultiSchool.current_school.id != 7 and MultiSchool.current_school.code != "baghc"
       @students.sort! { |a, b|  a.class_roll_no.to_i <=> b.class_roll_no.to_i }
     end  
     

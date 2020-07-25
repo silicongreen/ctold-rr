@@ -79,7 +79,7 @@
           end    
         end 
         
-        if subject_failed == false and subject_failed == true
+        if subject_failed == false or subject_failed == true
           grand_grade_new = 50000-total_grade
           std_marks_full_new = 5000.00-grand_total.to_f
           if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id

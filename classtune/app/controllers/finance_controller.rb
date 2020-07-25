@@ -17318,9 +17318,15 @@ class FinanceController < ApplicationController
   def delete_fee_discount
     @fee_discount = FeeDiscount.find(params[:id])
     #batch=@fee_discount.batch
-    @fee_category = FinanceFeeCategory.find(@fee_discount.finance_fee_category_id) unless @fee_discount.finance_fee_category_id != 0
-    
-    @error = true  unless @fee_discount.update_attributes(:is_deleted=>true)
+    if @fee_discount.finance_fee_category_id > 0
+      @fee_category = FinanceFeeCategory.find(@fee_discount.finance_fee_category_id) unless @fee_discount.finance_fee_category_id != 0
+    end
+    fee_discounts_paid = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND particular_id = " + @fee_discount.id + "")
+    unless fee_discounts_paid.blank?
+      @error = true  unless @fee_discount.update_attributes(:is_deleted=>true)
+    else
+      @error = true  
+    end
     unless @error
       if @fee_discount.is_onetime 
         fee_discount_id = @fee_discount.id
@@ -18862,21 +18868,23 @@ class FinanceController < ApplicationController
      unless params[:id].nil?
         @fee_discount = FeeDiscount.find(:first, :conditions => "id = #{params[:id].to_i}")
         unless @fee_discount.blank?
-          receiver_id = @fee_discount.receiver_id
-          @fee_discounts = FeeDiscount.find(:all, :conditions => "receiver_id = #{receiver_id}")
-          unless @fee_discounts.blank?
-            fee_discount_ids = @fee_discounts.map(&:id)
-            fee_discounts_paid = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND particular_id IN (" + fee_discount_ids.join(",") + ")")
+          #receiver_id = @fee_discount.receiver_id
+          #@fee_discounts = FeeDiscount.find(:all, :conditions => "receiver_id = #{receiver_id}")
+          #unless @fee_discounts.blank?
+            #fee_discount_ids = @fee_discounts.map(&:id)
+            fee_discounts_paid = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND particular_id = " + @fee_discount.id + "")
             unless fee_discounts_paid.blank?
               deleted = false
             else
-              @fee_discounts.each do |fee_discount|
-                fee_dis = FeeDiscount.find(:first, :conditions => "id = #{fee_discount.id.to_i}")
-                fee_dis.destroy
-              end
+#              @fee_discounts.each do |fee_discount|
+#                fee_dis = FeeDiscount.find(:first, :conditions => "id = #{fee_discount.id.to_i}")
+#                fee_dis.destroy
+#              end
+               @error = true  unless @fee_discount.update_attributes(:is_deleted=>true)
             end
-          end
+          #end
         end
+      
         if deleted
           render :update do |page|
             page.replace_html "deleteID-"+ params[:id] ,""

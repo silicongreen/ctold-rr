@@ -84,7 +84,7 @@
           grand_grade_new = 50000-total_grade
           std_marks_full_new = 5000.00-grand_total.to_f
           if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
-            @student_list << [main_mark.to_f,grand_grade_new.to_f,std_marks_full_new.to_f,std['id'].to_i]
+            @student_list << [grand_grade_new.to_f,std_marks_full_new.to_f,std['id'].to_i]
           end 
           if connect_exam_id.to_i == @connect_exam_obj.id
             @student_list_batch << [grand_grade_new.to_f,std_marks_full_new.to_f,std['id'].to_i]

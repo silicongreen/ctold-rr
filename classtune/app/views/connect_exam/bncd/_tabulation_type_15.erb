@@ -349,20 +349,19 @@ unless @ranked_student.blank?
                                     <% total_mark = total_mark+subject_obtain_mark.to_f %>
                                     <% full_mark_all = full_mark_all+subject_full_mark.to_f  %>
                                   <% end %>
-                                  <td><%= sprintf( "%0.02f", subject_obtain_mark) %></td>
-                                  <td>
-
-                                      <%= sprintf( "%0.02f", main_mark) %><hr/>
-                                      <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                              <td>
+                                    <%= sprintf( "%0.02f", subject_obtain_mark) %>|<%= sprintf( "%0.02f", main_mark) %><hr/>
+                                    <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                       <% if !grade.blank? and !grade.name.blank? %>
                                         <%= grade.name %>
-                                        <hr/>
+                                        | 
                                         <%= grade.credit_points %>
                                         <% total_grade = total_grade+grade.credit_points.to_f %>
-                                      <% else %>
+                                    <% else %>
                                         -  
-                                      <% end %>
-                                  </td> 
+                                    <% end %>
+                              </td>
+                                 
                                 <% else %>
                                   <% @report_data['report']['subjects'].each do |sub2| %>
                                     <%
@@ -388,20 +387,16 @@ unless @ranked_student.blank?
                                       <% total_mark = total_mark+subject_obtain_mark.to_f %>
                                       <% full_mark_all = full_mark_all+subject_full_mark.to_f  %>
                                     <% end %>
-                                    <td><%= sprintf( "%0.02f", subject_obtain_mark) %></td>
-                                    <td>
-
-                                        <%= sprintf( "%0.02f", main_mark) %><hr/>
-                                        <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
-                                        <% if !grade.blank? and !grade.name.blank? %>
-                                          <%= grade.name %>
-                                          <hr/>
-                                          <%= grade.credit_points %>
-                                          <% total_grade = total_grade+grade.credit_points.to_f %>
-                                        <% else %>
-                                          -  
-                                        <% end %>
-                                    </td> 
+                                    <%= sprintf( "%0.02f", subject_obtain_mark) %>|<%= sprintf( "%0.02f", main_mark) %><hr/>
+                                    <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                                      <% if !grade.blank? and !grade.name.blank? %>
+                                        <%= grade.name %>
+                                        | 
+                                        <%= grade.credit_points %>
+                                        <% total_grade = total_grade+grade.credit_points.to_f %>
+                                    <% else %>
+                                        -  
+                                    <% end %> 
                                 
                                   <% end %>
                                 <% end %>

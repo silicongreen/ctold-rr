@@ -17328,6 +17328,7 @@ class FinanceController < ApplicationController
       unless @error
         scholarship_id = @fee_discount.scholarship_id
         receiver_id = @fee_discount.receiver_id
+        abort(@fee_discount.receiver_type.inspect)
         if @fee_discount.receiver_type == "Student"
           @fee_discounts = FeeDiscount.find(:all, :conditions => "scholarship_id = #{scholarship_id} and receiver_id = #{receiver_id}")
           unless @fee_discounts.blank?

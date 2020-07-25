@@ -21,7 +21,12 @@
     @tabulation_data['report'].each do |tab|
       batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
       batch_subject_id = batch_subject.map(&:id)
-    
+      batch_subject_hash_code_main = []	
+      unless batch_subject.blank?	
+        batch_subject.each do |std_sub|	
+          batch_subject_hash_code_main << std_sub.code	
+        end	
+      end
       batch_data = Batch.find(@tabulation_data['batches'][batch_loop])
       batch_loop = batch_loop+1
       connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
@@ -32,7 +37,6 @@
         total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
         std_subject_id = total_std_subject.map(&:subject_id)
         grand_total = 0
-        full_mark = 0
         total_grade = 0.00
         subject_failed = false
         if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
@@ -46,6 +50,7 @@
           if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
               next
           end 
+        full_mark = 0
           subject_marks = 0
           unless tab['exams'].blank? 
             tab['exams'].each do |rs|
@@ -61,11 +66,11 @@
               main_mark = ( subject_marks.to_f/full_mark.to_f )*100
               grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
               if !grade.blank? and !grade.name.blank?
-                #if grade.credit_points.to_f == 0.00
-                  #subject_failed = true
-                #else
+                if grade.credit_points.to_f == 0.00
+                  subject_failed = true
+                else
                   total_grade = total_grade+grade.credit_points.to_f
-                #end  
+                end  
               end   
             else
              subject_failed = true
@@ -74,7 +79,7 @@
         end 
         
         if subject_failed == false
-          grand_grade_new = 5000.00-full_mark.to_f
+          grand_grade_new = 50000-total_grade
           std_marks_full_new = 5000.00-grand_total.to_f
           if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
             @student_list << [grand_grade_new.to_f,std_marks_full_new.to_f,std['id'].to_i]

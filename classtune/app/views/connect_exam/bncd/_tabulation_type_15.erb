@@ -181,40 +181,14 @@ unless @ranked_student.blank?
                           <td colspan="2"><%=  sub_name %></td>
                         <% end %>  
                       <% end %>
-                      <td class="col-pdf" rowspan="2">Grand Total</td>
-                      <td class="col-pdf" rowspan="2">Percentage(%)</td>
-                      <td class="col-pdf" rowspan="2">Position in Section</td>
-                      <td class="col-pdf" rowspan="2">Position in Class</td>
-                      <td class="col-pdf" rowspan="2">Total GP</td>
+                      <td class="col-pdf" rowspan="2">TTL</td>
+                      <td class="col-pdf" rowspan="2">Per(%)</td>
+                      <td class="col-pdf" rowspan="2">Pos(Sec)</td>
+                      <td class="col-pdf" rowspan="2">Pos(Cl)</td>
+                      <td class="col-pdf" rowspan="2">Ttl GP</td>
                       <td class="col-pdf" rowspan="2">GPA</td>
                   </tr>
-                  <tr class="table-header">
-                      <% subject_array = [] %>
-                      <% @report_data['report']['subjects'].each do |sub| %>
-                        <% if subject_array.include?(sub['id'].to_i) %>
-                          <% next %>
-                        <% end %>
-                        <% subject_array << sub['id'].to_i %>
-                        <% has_exam = false %>
-                        <% if @all_subject_id.include?(sub['id'].to_i) %>
-                          <% has_exam = true %>
-                        <% end %>
-                        <% if has_exam == true %>
-                          <% if sub['subject_group_id'].to_i == 0 %>
-                              <% @report_data['report']['subjects'].each do |sub2| %>
-                                <%
-                                  if subject_array.include?(sub2['id'].to_i) or sub2['subject_group_id'].to_i != sub2['subject_group_id'].to_i
-                                    next
-                                  end
-                                  subject_array << sub2['id'].to_i
-                                %>
-                              <% end %>
-                          <% end %>
-                          <td>MCQ</td>
-                          <td>Conv<hr/>Grd<hr/>GP</td>
-                        <% end %>
-                      <% end %>
-                  </tr>
+                  
 
                   <% extender = 0 %>
                   <% std_count = 0 %>
@@ -271,33 +245,7 @@ unless @ranked_student.blank?
                             <td class="col-pdf" rowspan="2">Total GP</td>
                             <td class="col-pdf" rowspan="2">GPA</td>
                         </tr>
-                       <tr class="table-header">
-                            <% subject_array = [] %>
-                            <% @report_data['report']['subjects'].each do |sub| %>
-                              <% if subject_array.include?(sub['id'].to_i) %>
-                                <% next %>
-                              <% end %>
-                              <% subject_array << sub['id'].to_i %>
-                              <% has_exam = false %>
-                              <% if @all_subject_id.include?(sub['id'].to_i) %>
-                                <% has_exam = true %>
-                              <% end %>
-                              <% if has_exam == true %>
-                                <% if sub['subject_group_id'].to_i == 0 %>
-                                    <% @report_data['report']['subjects'].each do |sub2| %>
-                                      <%
-                                        if subject_array.include?(sub2['id'].to_i) or sub2['subject_group_id'].to_i != sub2['subject_group_id'].to_i
-                                          next
-                                        end
-                                        subject_array << sub2['id'].to_i
-                                      %>
-                                    <% end %>
-                                <% end %>
-                                <td>MCQ</td>
-                                <td>Conv<hr/>Grd<hr/>GP</td>
-                              <% end %>
-                            <% end %>
-                        </tr>
+                       
                       <% elsif std_count>8 && extender ==1 %>
                         <% std_count = 0 %>
                         <% extender = 1 %>
@@ -345,33 +293,7 @@ unless @ranked_student.blank?
                             <td class="col-pdf" rowspan="2">Total GP</td>
                             <td class="col-pdf" rowspan="2">GPA</td>
                         </tr>
-                        <tr class="table-header">
-                            <% subject_array = [] %>
-                            <% @report_data['report']['subjects'].each do |sub| %>
-                              <% if subject_array.include?(sub['id'].to_i) %>
-                                <% next %>
-                              <% end %>
-                              <% subject_array << sub['id'].to_i %>
-                              <% has_exam = false %>
-                              <% if @all_subject_id.include?(sub['id'].to_i) %>
-                                <% has_exam = true %>
-                              <% end %>
-                              <% if has_exam == true %>
-                                <% if sub['subject_group_id'].to_i == 0 %>
-                                    <% @report_data['report']['subjects'].each do |sub2| %>
-                                      <%
-                                        if subject_array.include?(sub2['id'].to_i) or sub2['subject_group_id'].to_i != sub2['subject_group_id'].to_i
-                                          next
-                                        end
-                                        subject_array << sub2['id'].to_i
-                                      %>
-                                    <% end %>
-                                <% end %>
-                                <td>MCQ</td>
-                                <td>Conv<hr/>Grd<hr/>GP</td>
-                              <% end %>
-                            <% end %>
-                        </tr>
+                        
                       <% end %> 
 
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">

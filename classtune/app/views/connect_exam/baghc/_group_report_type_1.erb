@@ -346,6 +346,7 @@
                         end
                       end
                     %>
+                    <% if @connect_exam_obj.attandence_start_date != @connect_exam_obj.attandence_end_date %>
                     <table id="pdf-table" class="margin-top-10"  width="99.8%">
                         <tr class="table-header">
                             <td colspan="4" style="text-align:center;" >Attendance Report duration: <%= @connect_exam_obj.attandence_start_date.blank? ? '-':@connect_exam_obj.attandence_start_date.strftime("%Y-%m-%d") %> to <%= @connect_exam_obj.attandence_end_date.blank? ? '-':@connect_exam_obj.attandence_end_date.strftime("%Y-%m-%d") %></td>
@@ -382,6 +383,7 @@
                             <td colspan="4" style="text-align:left;" ></td>
                         </tr>
                     </table>
+                    <% end %>
                    
 
                 </div>

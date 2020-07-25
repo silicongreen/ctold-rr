@@ -265,15 +265,15 @@
                             <%= sprintf( "%0.02f", percentage) %>    
                         </td>
                         <td>
-                          <% if !@student_position_batch[@student.id.to_i].blank? %> 
-                            <%= @student_position_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
+                          <% if !@student_position_batch[std['id'].to_i].blank? %> 
+                            <%= @student_position_batch[std['id'].to_i] %>
                           <% else %>
                             -
                           <% end %>
                         </td>
                         <td>
-                          <% if !@student_position[@student.id.to_i].blank? %> 
-                            <%= @student_position[@student.id.to_i] %> out of <%= @total_std %>
+                          <% if !@student_position[std['id'].to_i].blank? %> 
+                            <%= @student_position[std['id'].to_i] %>
                           <% else %>
                             -
                           <% end %>

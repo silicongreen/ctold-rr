@@ -378,7 +378,7 @@ unless @ranked_student.blank?
                                 <% else %>
                                   <% @report_data['report']['subjects'].each do |sub2| %>
                                     <%
-                                      if subject_array.include?(sub2['id'].to_i) or sub2['subject_group_id'].to_i != sub2['subject_group_id'].to_i
+                                      if subject_array.include?(sub2['id'].to_i) or sub2['subject_group_id'].to_i != sub['subject_group_id'].to_i
                                         next
                                       end
                                       subject_array << sub2['id'].to_i
@@ -421,7 +421,7 @@ unless @ranked_student.blank?
                                           -  
                                       <% end %> 
                                     </td>    
-                                
+                                    <% break %>
                                   <% end %>
                                 <% end %>
                               <% end %>

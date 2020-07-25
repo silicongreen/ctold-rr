@@ -168,9 +168,7 @@
                                 </tr>
                                 <% obtain_mark = 0 %>
                                 <% sl = sl+1 %>
-                                <% if fourth_subject.blank? %>
-                                  <% total_subject = total_subject+1 %>
-                                <% end %>
+                                
                                 <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                                   <td class="col-pdf  no-warp"><%= sl %></td>
                                   <td class="col-pdf  no-warp align-left-baf"><%= subjects2['name'] %><%= fourth_subject %><%= third_subject %></td>

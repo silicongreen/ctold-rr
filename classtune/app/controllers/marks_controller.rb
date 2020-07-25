@@ -577,7 +577,7 @@ class MarksController < ApplicationController
             elsif school_id == 352 or school_id == 324 or school_id == 357
               unless c_exam_array.include?(exam_connect.id.to_i)
                 data[k] = []
-                if exam_connect.result_type == 13 or exam_connect.result_type == 14
+                if exam_connect.result_type == 13 or exam_connect.result_type == 14 or exam_connect.result_type == 15
                   data[k][0] = exam_connect_batch.to_s
                   data[k][1] = "<a href='/exam/tabulation/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>"
                   data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}' target='_blank'>#{exam.subject_name.to_s} (Marksheet)</a>"

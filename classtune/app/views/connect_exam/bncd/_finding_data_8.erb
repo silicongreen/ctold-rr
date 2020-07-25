@@ -1,0 +1,179 @@
+
+<% if @total_std.blank? %>
+  <% if @grading_levels.blank? %>
+  <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+  <% if @grading_levels.blank? %>
+    <% @grading_levels = GradingLevel.default %>
+  <% end %>
+  <% end %>
+  <%
+  @total_std_batch = 0
+  @total_std = 0
+  @student_list = []
+  @student_list_batch = []
+  batchobj = Batch.find_by_id(@batch.id) 
+  courseObj = Course.find_by_id(batchobj.course_id)
+  unless @tabulation_data.blank?
+    connect_exam = 0
+    batch_loop = 0
+    group_name = courseObj.group
+    @group_name_upper = group_name
+    @tabulation_data['report'].each do |tab|
+      batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
+      batch_subject_id = batch_subject.map(&:id)
+      batch_subject_hash_code_main = []	
+      unless batch_subject.blank?	
+        batch_subject.each do |std_sub|	
+          batch_subject_hash_code_main << std_sub.code	
+        end	
+      end
+      batch_data = Batch.find(@tabulation_data['batches'][batch_loop])
+      batch_loop = batch_loop+1
+      connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
+      exam_type = 1
+      connect_exam = connect_exam+1
+      std_group_name = batch_data.course.group
+      tab['students'].each do |std| 
+        total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
+        std_subject_id = total_std_subject.map(&:subject_id)
+        grand_total = 0
+        total_grade = 0.00
+        full_mark = 0
+        main_mark = 0
+        subject_failed = false
+        if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
+          @total_std = @total_std+1
+        end
+        if connect_exam_id.to_i == @connect_exam_obj.id
+          @total_std_batch = @total_std_batch+1
+        end 
+        subject_array = []
+        tab['subjects'].each do |sub|  
+          if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
+              next
+          end
+          if subject_array.include?(sub['id'].to_i) or sub['subject_group_id'].to_i != sub['subject_group_id'].to_i
+              next
+          end
+          subject_array << sub['id'].to_i
+          full_mark = 0
+          subject_marks = 0
+          unless tab['exams'].blank? 
+            tab['exams'].each do |rs|
+              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                grand_total = grand_total.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                subject_marks = subject_marks+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f  
+                full_mark = full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+              end  
+            end  
+          end
+          if sub['subject_group_id'].to_i == 0
+            if full_mark > 0
+              if subject_marks > 0
+                main_mark = ( subject_marks.to_f/full_mark.to_f )*100.00
+                grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                if !grade.blank? and !grade.name.blank?
+                  if grade.name == "F"
+                    subject_failed = true
+                  else
+                    total_grade = total_grade+grade.credit_points.to_f
+                  end  
+                end   
+              else
+               subject_failed = true
+              end  
+            end  
+          else
+            tab['subjects'].each do |sub2| 
+              if !batch_subject_id.include?(sub2['id'].to_i) and !std_subject_id.include?(sub2['id'].to_i)
+                next
+              end 
+              if subject_array.include?(sub2['id'].to_i) or sub2['subject_group_id'].to_i != sub2['subject_group_id'].to_i
+                next
+              end
+              subject_array << sub2['id'].to_i
+              unless tab['exams'].blank? 
+                tab['exams'].each do |rs|
+                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub2['id']].blank? and !rs['result'][rs['exam_id']][sub2['id']][std['id']].blank?
+                    grand_total = grand_total.to_f+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
+                    subject_marks = subject_marks+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f  
+                    full_mark = full_mark+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
+                  end  
+                end  
+              end
+              
+              if full_mark > 0
+                if subject_marks > 0
+                  main_mark = ( subject_marks.to_f/full_mark.to_f )*100.00
+                  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                  if !grade.blank? and !grade.name.blank?
+                    if grade.name == "F"
+                      subject_failed = true
+                    else
+                      total_grade = total_grade+grade.credit_points.to_f
+                    end  
+                  end   
+                else
+                 subject_failed = true
+                end  
+              end
+            end
+          
+          end
+        end 
+        
+        if subject_failed == false
+          grand_grade_new = 50000-total_grade
+          std_marks_full_new = 5000.00-grand_total.to_f
+          if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
+            @student_list << [grand_grade_new.to_f,std_marks_full_new.to_f,std['id'].to_i]
+          end 
+          if connect_exam_id.to_i == @connect_exam_obj.id
+            @student_list_batch << [grand_grade_new.to_f,std_marks_full_new.to_f,std['id'].to_i]
+          end
+        end  
+        
+      end 
+      
+      
+    end  
+  end
+
+  @student_position = {}
+  @student_position_batch = {}
+
+  unless @student_list.blank?
+    position = 0
+    @sorted_students = @student_list.sort
+    @sorted_students.each do|s|
+        position = position+1
+        @student_position[s[2].to_i] = position
+    end 
+  end
+
+  unless @student_list_batch.blank?
+    position = 0
+    @sorted_students = @student_list_batch.sort
+    @sorted_students.each do|s|
+        position = position+1
+        @student_position_batch[s[2].to_i] = position
+    end 
+  end
+  
+ %> 
+<style>
+    .baf_shaheen table.top-left-center tr.odd td
+    {
+        padding: 5px !important;  
+        font-size: 24px !important;
+    }
+    .baf_shaheen table.top-left-center tr.even td
+    {
+        padding: 5px !important; 
+        font-size: 24px !important;
+    }
+ </style>   
+<%  
+ end
+
+%> 

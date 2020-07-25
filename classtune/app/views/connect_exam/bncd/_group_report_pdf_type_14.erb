@@ -26,12 +26,6 @@
               <% batch_split = @batch.name.split(" ") %>
               <td class="align-right col-pdf" width="20%" >Shift </td><td class="align-left"><%= batch_split[0] %></td>   
           </tr>
-          <tr class="odd">
-              <td class="align-right col-pdf" width="20%">Session </td>
-              <td class="align-left"><%= @batch.course.session %></td>
-              <td class="align-right col-pdf" width="20%" >Version </td>
-              <td class="align-left"><%= batch_split[1] %></td> 
-          </tr>
           <tr class="even">
               <% group_split = @batch.course.group.split(" ") %>
               <% unless group_split[2].blank? %>

@@ -21,12 +21,7 @@
     @tabulation_data['report'].each do |tab|
       batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
       batch_subject_id = batch_subject.map(&:id)
-      batch_subject_hash_code_main = []	
-      unless batch_subject.blank?	
-        batch_subject.each do |std_sub|	
-          batch_subject_hash_code_main << std_sub.code	
-        end	
-      end
+    
       batch_data = Batch.find(@tabulation_data['batches'][batch_loop])
       batch_loop = batch_loop+1
       connect_exam_id = @tabulation_data['connect_exams'][connect_exam]

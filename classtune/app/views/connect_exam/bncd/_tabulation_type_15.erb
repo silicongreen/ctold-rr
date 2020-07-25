@@ -151,14 +151,35 @@ unless @ranked_student.blank?
                       <td class="col-pdf" rowspan="2">SL</td>
                       <td class="col-pdf" rowspan="2">Roll</td>
                       <td class="col-pdf" rowspan="2">Students Name</td>
+                      <% subject_array = [] %>
                       <% @report_data['report']['subjects'].each do |sub| %>
+                        <% if subject_array.include?(sub['id'].to_i) %>
+                          <% next %>
+                        <% end %>
+                        <% subject_array << sub['id'].to_i %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
-                          <td colspan="2"><%=  sub['code'] %></td>
+                          <% next %>
                         <% end %>
+                        <% if sub['subject_group_id'].to_i == 0 %>
+                            <td colspan="2"><%=  sub['code'] %></td>
+                        <% else %>
+                          <% sub_name = sub['code'] %>
+                          <% @report_data['report']['subjects'].each do |sub2| %>
+                            <%
+                             if subject_array.include?(sub2['id'].to_i) or sub2['subject_group_id'].to_i != sub2['subject_group_id'].to_i
+                               next
+                             end
+                             subject_array << sub2['id'].to_i
+                            %> 
+                            <% sub_name = sub_name+" & "+sub2['code'] %>
+                            <% break %>
+                          <% end %>
+                          <td colspan="2"><%=  sub_name %></td>
+                        <% end %>  
                       <% end %>
                       <td class="col-pdf" rowspan="2">Grand Total</td>
                       <td class="col-pdf" rowspan="2">Percentage(%)</td>
@@ -168,12 +189,27 @@ unless @ranked_student.blank?
                       <td class="col-pdf" rowspan="2">GPA</td>
                   </tr>
                   <tr class="table-header">
+                      <% subject_array = [] %>
                       <% @report_data['report']['subjects'].each do |sub| %>
+                        <% if subject_array.include?(sub['id'].to_i) %>
+                          <% next %>
+                        <% end %>
+                        <% subject_array << sub['id'].to_i %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
+                          <% if sub['subject_group_id'].to_i == 0 %>
+                              <% @report_data['report']['subjects'].each do |sub2| %>
+                                <%
+                                  if subject_array.include?(sub2['id'].to_i) or sub2['subject_group_id'].to_i != sub2['subject_group_id'].to_i
+                                    next
+                                  end
+                                  subject_array << sub2['id'].to_i
+                                %>
+                              <% end %>
+                          <% end %>
                           <td>MCQ</td>
                           <td>Conv<hr/>Grd<hr/>GP</td>
                         <% end %>
@@ -198,14 +234,35 @@ unless @ranked_student.blank?
                             <td class="col-pdf" rowspan="2">SL</td>
                             <td class="col-pdf" rowspan="2">Roll</td>
                             <td class="col-pdf" rowspan="2">Students Name</td>
+                            <% subject_array = [] %>
                             <% @report_data['report']['subjects'].each do |sub| %>
+                              <% if subject_array.include?(sub['id'].to_i) %>
+                                <% next %>
+                              <% end %>
+                              <% subject_array << sub['id'].to_i %>
                               <% has_exam = false %>
                               <% if @all_subject_id.include?(sub['id'].to_i) %>
                                 <% has_exam = true %>
                               <% end %>
                               <% if has_exam == true %>
-                                <td colspan="2"><%=  sub['code'] %></td>
+                                <% next %>
                               <% end %>
+                              <% if sub['subject_group_id'].to_i == 0 %>
+                                  <td colspan="2"><%=  sub['code'] %></td>
+                              <% else %>
+                                <% sub_name = sub['code'] %>
+                                <% @report_data['report']['subjects'].each do |sub2| %>
+                                  <%
+                                   if subject_array.include?(sub2['id'].to_i) or sub2['subject_group_id'].to_i != sub2['subject_group_id'].to_i
+                                     next
+                                   end
+                                   subject_array << sub2['id'].to_i
+                                  %> 
+                                  <% sub_name = sub_name+" & "+sub2['code'] %>
+                                  <% break %>
+                                <% end %>
+                                <td colspan="2"><%=  sub_name %></td>
+                              <% end %>  
                             <% end %>
                             <td class="col-pdf" rowspan="2">Grand Total</td>
                             <td class="col-pdf" rowspan="2">Percentage(%)</td>
@@ -214,13 +271,28 @@ unless @ranked_student.blank?
                             <td class="col-pdf" rowspan="2">Total GP</td>
                             <td class="col-pdf" rowspan="2">GPA</td>
                         </tr>
-                        <tr class="table-header">
+                       <tr class="table-header">
+                            <% subject_array = [] %>
                             <% @report_data['report']['subjects'].each do |sub| %>
+                              <% if subject_array.include?(sub['id'].to_i) %>
+                                <% next %>
+                              <% end %>
+                              <% subject_array << sub['id'].to_i %>
                               <% has_exam = false %>
                               <% if @all_subject_id.include?(sub['id'].to_i) %>
                                 <% has_exam = true %>
                               <% end %>
                               <% if has_exam == true %>
+                                <% if sub['subject_group_id'].to_i == 0 %>
+                                    <% @report_data['report']['subjects'].each do |sub2| %>
+                                      <%
+                                        if subject_array.include?(sub2['id'].to_i) or sub2['subject_group_id'].to_i != sub2['subject_group_id'].to_i
+                                          next
+                                        end
+                                        subject_array << sub2['id'].to_i
+                                      %>
+                                    <% end %>
+                                <% end %>
                                 <td>MCQ</td>
                                 <td>Conv<hr/>Grd<hr/>GP</td>
                               <% end %>
@@ -236,14 +308,35 @@ unless @ranked_student.blank?
                             <td class="col-pdf" rowspan="2">SL</td>
                             <td class="col-pdf" rowspan="2">Roll</td>
                             <td class="col-pdf" rowspan="2">Students Name</td>
+                            <% subject_array = [] %>
                             <% @report_data['report']['subjects'].each do |sub| %>
+                              <% if subject_array.include?(sub['id'].to_i) %>
+                                <% next %>
+                              <% end %>
+                              <% subject_array << sub['id'].to_i %>
                               <% has_exam = false %>
                               <% if @all_subject_id.include?(sub['id'].to_i) %>
                                 <% has_exam = true %>
                               <% end %>
                               <% if has_exam == true %>
-                                <td colspan="2"><%=  sub['code'] %></td>
+                                <% next %>
                               <% end %>
+                              <% if sub['subject_group_id'].to_i == 0 %>
+                                  <td colspan="2"><%=  sub['code'] %></td>
+                              <% else %>
+                                <% sub_name = sub['code'] %>
+                                <% @report_data['report']['subjects'].each do |sub2| %>
+                                  <%
+                                   if subject_array.include?(sub2['id'].to_i) or sub2['subject_group_id'].to_i != sub2['subject_group_id'].to_i
+                                     next
+                                   end
+                                   subject_array << sub2['id'].to_i
+                                  %> 
+                                  <% sub_name = sub_name+" & "+sub2['code'] %>
+                                  <% break %>
+                                <% end %>
+                                <td colspan="2"><%=  sub_name %></td>
+                              <% end %>  
                             <% end %>
                             <td class="col-pdf" rowspan="2">Grand Total</td>
                             <td class="col-pdf" rowspan="2">Percentage(%)</td>
@@ -253,12 +346,27 @@ unless @ranked_student.blank?
                             <td class="col-pdf" rowspan="2">GPA</td>
                         </tr>
                         <tr class="table-header">
+                            <% subject_array = [] %>
                             <% @report_data['report']['subjects'].each do |sub| %>
+                              <% if subject_array.include?(sub['id'].to_i) %>
+                                <% next %>
+                              <% end %>
+                              <% subject_array << sub['id'].to_i %>
                               <% has_exam = false %>
                               <% if @all_subject_id.include?(sub['id'].to_i) %>
                                 <% has_exam = true %>
                               <% end %>
                               <% if has_exam == true %>
+                                <% if sub['subject_group_id'].to_i == 0 %>
+                                    <% @report_data['report']['subjects'].each do |sub2| %>
+                                      <%
+                                        if subject_array.include?(sub2['id'].to_i) or sub2['subject_group_id'].to_i != sub2['subject_group_id'].to_i
+                                          next
+                                        end
+                                        subject_array << sub2['id'].to_i
+                                      %>
+                                    <% end %>
+                                <% end %>
                                 <td>MCQ</td>
                                 <td>Conv<hr/>Grd<hr/>GP</td>
                               <% end %>
@@ -280,7 +388,12 @@ unless @ranked_student.blank?
                           <% full_mark_all = 0 %>
                           <% total_grade = 0 %>
                           <% subject_count = 0 %>
+                          <% subject_array = [] %>
                           <% @report_data['report']['subjects'].each do |sub| %>
+                            <% if subject_array.include?(sub['id'].to_i) %>
+                              <% next %>
+                            <% end %>
+                            <% subject_array << sub['id'].to_i %>
                             <% subjectdata = Subject.find(sub['id'].to_i) %>
                             <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
                             <% if @has_exam_student == false %>
@@ -309,24 +422,67 @@ unless @ranked_student.blank?
                                 <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
                               <% end %> 
                               <% if has_exam == true %>
-                                <% if sub['grade_subject'].to_i != 1 %>
-                                  <% total_mark = total_mark+subject_obtain_mark.to_f %>
-                                  <% full_mark_all = full_mark_all+subject_full_mark.to_f  %>
-                                <% end %>
-                                <td><%= sprintf( "%0.02f", subject_obtain_mark) %></td>
-                                <td>
+                                <% if sub['subject_group_id'].to_i == 0 %>
+                                  <% if sub['grade_subject'].to_i != 1 %>
+                                    <% total_mark = total_mark+subject_obtain_mark.to_f %>
+                                    <% full_mark_all = full_mark_all+subject_full_mark.to_f  %>
+                                  <% end %>
+                                  <td><%= sprintf( "%0.02f", subject_obtain_mark) %></td>
+                                  <td>
 
-                                    <%= sprintf( "%0.02f", main_mark) %><hr/>
-                                    <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
-                                    <% if !grade.blank? and !grade.name.blank? %>
-                                      <%= grade.name %>
-                                      <hr/>
-                                      <%= grade.credit_points %>
-                                      <% total_grade = total_grade+grade.credit_points.to_f %>
-                                    <% else %>
-                                      -  
+                                      <%= sprintf( "%0.02f", main_mark) %><hr/>
+                                      <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                                      <% if !grade.blank? and !grade.name.blank? %>
+                                        <%= grade.name %>
+                                        <hr/>
+                                        <%= grade.credit_points %>
+                                        <% total_grade = total_grade+grade.credit_points.to_f %>
+                                      <% else %>
+                                        -  
+                                      <% end %>
+                                  </td> 
+                                <% else %>
+                                  <% @report_data['report']['subjects'].each do |sub2| %>
+                                    <%
+                                      if subject_array.include?(sub2['id'].to_i) or sub2['subject_group_id'].to_i != sub2['subject_group_id'].to_i
+                                        next
+                                      end
+                                      subject_array << sub2['id'].to_i
+                                   %>
+                                    <% @report_data['report']['exams'].each do |rs| %>
+                                      <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub2['id'].to_s} %>
+                                      <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub2['id']].blank? and !rs['result'][rs['exam_id']][sub2['id']][std['id']].blank? and @check_exam_score == true %>
+                                        <%
+                                        subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_i
+                                        subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
+                                      %>
+                                      <% end %>
                                     <% end %>
-                                </td> 
+                                    <% main_mark = 0 %>
+                                    <% if subject_obtain_mark.to_i > 0 and subject_full_mark.to_i > 0 %>
+                                      <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
+                                    <% end %>
+                                    <% if sub['grade_subject'].to_i != 1 %>
+                                      <% total_mark = total_mark+subject_obtain_mark.to_f %>
+                                      <% full_mark_all = full_mark_all+subject_full_mark.to_f  %>
+                                    <% end %>
+                                    <td><%= sprintf( "%0.02f", subject_obtain_mark) %></td>
+                                    <td>
+
+                                        <%= sprintf( "%0.02f", main_mark) %><hr/>
+                                        <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                                        <% if !grade.blank? and !grade.name.blank? %>
+                                          <%= grade.name %>
+                                          <hr/>
+                                          <%= grade.credit_points %>
+                                          <% total_grade = total_grade+grade.credit_points.to_f %>
+                                        <% else %>
+                                          -  
+                                        <% end %>
+                                    </td> 
+                                
+                                  <% end %>
+                                <% end %>
                               <% end %>
                             <% end %>   
                           <% end %> 

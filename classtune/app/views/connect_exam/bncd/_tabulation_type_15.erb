@@ -246,7 +246,7 @@ unless @ranked_student.blank?
                             <td class="col-pdf">GPA</td>
                         </tr>
                        
-                      <% elsif std_count>13 && extender ==1 %>
+                      <% elsif std_count>14 && extender ==1 %>
                         <% std_count = 0 %>
                         <% extender = 1 %>
                         <tr class="page-break68">
@@ -350,7 +350,7 @@ unless @ranked_student.blank?
                                     <% full_mark_all = full_mark_all+subject_full_mark.to_f  %>
                                   <% end %>
                               <td>
-                                    <%= subject_obtain_mark.to_i %>|<%= main_mark.to_i %><hr/>
+                                    <%= subject_obtain_mark.to_i %>&nbsp;|&nbsp;<%= main_mark.to_i %><hr/>
                                     <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                       <% if !grade.blank? and !grade.name.blank? %>
                                         <%= grade.name %>
@@ -387,7 +387,7 @@ unless @ranked_student.blank?
                                       <% total_mark = total_mark+subject_obtain_mark.to_f %>
                                       <% full_mark_all = full_mark_all+subject_full_mark.to_f  %>
                                     <% end %>
-                                    <%= subject_obtain_mark.to_i %>|<%= main_mark.to_i %><hr/>
+                                    <%= subject_obtain_mark.to_i %>&nbsp;|&nbsp;<%= main_mark.to_i %><hr/>
                                     <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                       <% if !grade.blank? and !grade.name.blank? %>
                                         <%= grade.name %>

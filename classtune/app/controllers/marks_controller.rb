@@ -577,17 +577,33 @@ class MarksController < ApplicationController
             elsif school_id == 352 or school_id == 324 or school_id == 357
               unless c_exam_array.include?(exam_connect.id.to_i)
                 data[k] = []
-                data[k][0] = exam_connect_batch.to_s
-                data[k][1] = "<a href='/exam/tabulation_excell/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>"
-                data[k][2] = "<a href='/exam/mert_list_sagc/#{exam_connect.id.to_s}' target='_blank'>Merit List</a>"
-                data[k][3] = "<a href='/exam/mert_list_sagc/#{exam_connect.id.to_s}?class=1' target='_blank'>Merit List (All)</a>"
-                data[k][4] = "<a href='/exam/summary_report/#{exam_connect.id.to_s}' target='_blank'>Summary Report</a>"
-                data[k][5] = "<a href='/exam/summary_report/#{exam_connect.id.to_s}?class=1' target='_blank'>Summary Report (All)</a>"
-                data[k][6] = "<a href='/exam/subject_wise_pass_failed/#{exam_connect.id.to_s}' target='_blank'>Subject Pass Fail</a>"
-                data[k][7] = "<a href='/exam/subject_wise_pass_failed/#{exam_connect.id.to_s}?class=1' target='_blank'>Subject Pass Fail (All)</a>"
-                data[k][8] = "<a href='/marks/non_posted_marks_entry/#{exam_connect.id.to_s}' target='_blank'>Non Posted Marks</a>"
-                data[k][9] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>REPORT CARD</a>"
-                c_exam_array << exam_connect.id.to_i
+                if exam_connect.result_type == 13 or exam_connect.result_type == 14
+                  data[k][0] = exam_connect_batch.to_s
+                  data[k][1] = "<a href='/exam/tabulation/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>"
+                  data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}' target='_blank'>#{exam.subject_name.to_s} (Marksheet)</a>"
+                  data[k][3] = "-"
+                  data[k][4] = "-"
+                  data[k][5] = "-"
+                  data[k][6] = "-"
+                  data[k][7] = "-"
+                  data[k][8] = "-"
+                  data[k][9] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>REPORT CARD</a>"
+                  c_exam_array << exam_connect.id.to_i
+                else  
+                  
+                  data[k][0] = exam_connect_batch.to_s
+                  data[k][1] = "<a href='/exam/tabulation_excell/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>"
+                  data[k][2] = "<a href='/exam/mert_list_sagc/#{exam_connect.id.to_s}' target='_blank'>Merit List</a>"
+                  data[k][3] = "<a href='/exam/mert_list_sagc/#{exam_connect.id.to_s}?class=1' target='_blank'>Merit List (All)</a>"
+                  data[k][4] = "<a href='/exam/summary_report/#{exam_connect.id.to_s}' target='_blank'>Summary Report</a>"
+                  data[k][5] = "<a href='/exam/summary_report/#{exam_connect.id.to_s}?class=1' target='_blank'>Summary Report (All)</a>"
+                  data[k][6] = "<a href='/exam/subject_wise_pass_failed/#{exam_connect.id.to_s}' target='_blank'>Subject Pass Fail</a>"
+                  data[k][7] = "<a href='/exam/subject_wise_pass_failed/#{exam_connect.id.to_s}?class=1' target='_blank'>Subject Pass Fail (All)</a>"
+                  data[k][8] = "<a href='/marks/non_posted_marks_entry/#{exam_connect.id.to_s}' target='_blank'>Non Posted Marks</a>"
+                  data[k][9] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>REPORT CARD</a>"
+                  c_exam_array << exam_connect.id.to_i
+                  
+                end
                 k = k+1
               end
             elsif school_id == 356

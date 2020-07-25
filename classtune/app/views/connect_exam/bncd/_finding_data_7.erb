@@ -68,7 +68,7 @@
               main_mark = ( subject_marks.to_f/full_mark.to_f )*100.00
               grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
               if !grade.blank? and !grade.name.blank?
-                if grade.credit_points.to_f == 0.00
+                if grade.name == "F"
                   subject_failed = true
                 else
                   total_grade = total_grade+grade.credit_points.to_f
@@ -80,7 +80,7 @@
           end    
         end 
         
-        if subject_failed == false or subject_failed == true
+        if subject_failed == false
           grand_grade_new = 50000-total_grade
           std_marks_full_new = 5000.00-grand_total.to_f
           if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id

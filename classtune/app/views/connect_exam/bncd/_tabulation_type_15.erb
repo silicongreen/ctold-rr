@@ -148,9 +148,9 @@ unless @ranked_student.blank?
               <% c = 'even' %>
               <table id="pdf-table" width="100%" cellspacing="0">
                   <tr class="table-header">
-                      <td class="col-pdf" rowspan="2">SL</td>
-                      <td class="col-pdf" rowspan="2">Roll</td>
-                      <td class="col-pdf" rowspan="2">Students Name</td>
+                      <td class="col-pdf">SL</td>
+                      <td class="col-pdf">Roll</td>
+                      <td class="col-pdf">Students Name</td>
                       <% subject_array = [] %>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% if subject_array.include?(sub['id'].to_i) %>
@@ -165,7 +165,7 @@ unless @ranked_student.blank?
                           <% next %>
                         <% end %>
                         <% if sub['subject_group_id'].to_i == 0 %>
-                            <td colspan="2"><%=  sub['code'] %></td>
+                            <td><%=  sub['code'] %></td>
                         <% else %>
                           <% sub_name = sub['code'] %>
                           <% @report_data['report']['subjects'].each do |sub2| %>
@@ -178,15 +178,15 @@ unless @ranked_student.blank?
                             <% sub_name = sub_name+" & "+sub2['code'] %>
                             <% break %>
                           <% end %>
-                          <td colspan="2"><%=  sub_name %></td>
+                          <td><%=  sub_name %></td>
                         <% end %>  
                       <% end %>
-                      <td class="col-pdf" rowspan="2">TTL</td>
-                      <td class="col-pdf" rowspan="2">Per(%)</td>
-                      <td class="col-pdf" rowspan="2">Pos(Sec)</td>
-                      <td class="col-pdf" rowspan="2">Pos(Cl)</td>
-                      <td class="col-pdf" rowspan="2">Ttl GP</td>
-                      <td class="col-pdf" rowspan="2">GPA</td>
+                      <td class="col-pdf">TTL</td>
+                      <td class="col-pdf">Per(%)</td>
+                      <td class="col-pdf">Pos(Sec)</td>
+                      <td class="col-pdf">Pos(Cl)</td>
+                      <td class="col-pdf">Ttl GP</td>
+                      <td class="col-pdf">GPA</td>
                   </tr>
                   
 
@@ -205,9 +205,9 @@ unless @ranked_student.blank?
                             <td colspan="100">&nbsp;</td>
                         </tr>  
                         <tr class="table-header">
-                            <td class="col-pdf" rowspan="2">SL</td>
-                            <td class="col-pdf" rowspan="2">Roll</td>
-                            <td class="col-pdf" rowspan="2">Students Name</td>
+                            <td class="col-pdf">SL</td>
+                            <td class="col-pdf">Roll</td>
+                            <td class="col-pdf">Students Name</td>
                             <% subject_array = [] %>
                             <% @report_data['report']['subjects'].each do |sub| %>
                               <% if subject_array.include?(sub['id'].to_i) %>
@@ -222,7 +222,7 @@ unless @ranked_student.blank?
                                 <% next %>
                               <% end %>
                               <% if sub['subject_group_id'].to_i == 0 %>
-                                  <td colspan="2"><%=  sub['code'] %></td>
+                                  <td><%=  sub['code'] %></td>
                               <% else %>
                                 <% sub_name = sub['code'] %>
                                 <% @report_data['report']['subjects'].each do |sub2| %>
@@ -235,15 +235,15 @@ unless @ranked_student.blank?
                                   <% sub_name = sub_name+" & "+sub2['code'] %>
                                   <% break %>
                                 <% end %>
-                                <td colspan="2"><%=  sub_name %></td>
+                                <td><%=  sub_name %></td>
                               <% end %>  
                             <% end %>
-                            <td class="col-pdf" rowspan="2">Grand Total</td>
-                            <td class="col-pdf" rowspan="2">Percentage(%)</td>
-                            <td class="col-pdf" rowspan="2">Position in Section</td>
-                            <td class="col-pdf" rowspan="2">Position in Class</td>
-                            <td class="col-pdf" rowspan="2">Total GP</td>
-                            <td class="col-pdf" rowspan="2">GPA</td>
+                            <td class="col-pdf">TTL</td>
+                            <td class="col-pdf">Per(%)</td>
+                            <td class="col-pdf">Pos(Sec)</td>
+                            <td class="col-pdf">Pos(Cl)</td>
+                            <td class="col-pdf">Ttl GP</td>
+                            <td class="col-pdf">GPA</td>
                         </tr>
                        
                       <% elsif std_count>8 && extender ==1 %>
@@ -253,9 +253,9 @@ unless @ranked_student.blank?
                             <td colspan="100">&nbsp;</td>
                         </tr> 
                         <tr class="table-header">
-                            <td class="col-pdf" rowspan="2">SL</td>
-                            <td class="col-pdf" rowspan="2">Roll</td>
-                            <td class="col-pdf" rowspan="2">Students Name</td>
+                            <td class="col-pdf">SL</td>
+                            <td class="col-pdf">Roll</td>
+                            <td class="col-pdf">Students Name</td>
                             <% subject_array = [] %>
                             <% @report_data['report']['subjects'].each do |sub| %>
                               <% if subject_array.include?(sub['id'].to_i) %>
@@ -270,7 +270,7 @@ unless @ranked_student.blank?
                                 <% next %>
                               <% end %>
                               <% if sub['subject_group_id'].to_i == 0 %>
-                                  <td colspan="2"><%=  sub['code'] %></td>
+                                  <td><%=  sub['code'] %></td>
                               <% else %>
                                 <% sub_name = sub['code'] %>
                                 <% @report_data['report']['subjects'].each do |sub2| %>
@@ -283,15 +283,15 @@ unless @ranked_student.blank?
                                   <% sub_name = sub_name+" & "+sub2['code'] %>
                                   <% break %>
                                 <% end %>
-                                <td colspan="2"><%=  sub_name %></td>
+                                <td><%=  sub_name %></td>
                               <% end %>  
                             <% end %>
-                            <td class="col-pdf" rowspan="2">Grand Total</td>
-                            <td class="col-pdf" rowspan="2">Percentage(%)</td>
-                            <td class="col-pdf" rowspan="2">Position in Section</td>
-                            <td class="col-pdf" rowspan="2">Position in Class</td>
-                            <td class="col-pdf" rowspan="2">Total GP</td>
-                            <td class="col-pdf" rowspan="2">GPA</td>
+                            <td class="col-pdf">TTL</td>
+                            <td class="col-pdf">Per(%)</td>
+                            <td class="col-pdf">Pos(Sec)</td>
+                            <td class="col-pdf">Pos(Cl)</td>
+                            <td class="col-pdf">Ttl GP</td>
+                            <td class="col-pdf">GPA</td>
                         </tr>
                         
                       <% end %> 
@@ -350,7 +350,7 @@ unless @ranked_student.blank?
                                     <% full_mark_all = full_mark_all+subject_full_mark.to_f  %>
                                   <% end %>
                               <td>
-                                    <%= sprintf( "%0.02f", subject_obtain_mark) %>|<%= sprintf( "%0.02f", main_mark) %><hr/>
+                                    <%= subject_obtain_mark.to_i %>|<%= main_mark.to_i %><hr/>
                                     <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                       <% if !grade.blank? and !grade.name.blank? %>
                                         <%= grade.name %>
@@ -387,7 +387,7 @@ unless @ranked_student.blank?
                                       <% total_mark = total_mark+subject_obtain_mark.to_f %>
                                       <% full_mark_all = full_mark_all+subject_full_mark.to_f  %>
                                     <% end %>
-                                    <%= sprintf( "%0.02f", subject_obtain_mark) %>|<%= sprintf( "%0.02f", main_mark) %><hr/>
+                                    <%= subject_obtain_mark.to_i %>|<%= main_mark.to_i %><hr/>
                                     <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                       <% if !grade.blank? and !grade.name.blank? %>
                                         <%= grade.name %>

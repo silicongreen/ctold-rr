@@ -121,7 +121,7 @@
               if !batch_subject_id.include?(sub2['id'].to_i) and !std_subject_id.include?(sub2['id'].to_i)
                 next
               end 
-              if subject_array.include?(sub2['id'].to_i) or sub2['subject_group_id'].to_i != sub2['subject_group_id'].to_i
+              if subject_array.include?(sub2['id'].to_i) or sub2['subject_group_id'].to_i != sub['subject_group_id'].to_i
                 next
               end
               subject_array << sub2['id'].to_i

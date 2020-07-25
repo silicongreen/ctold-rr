@@ -17318,7 +17318,8 @@ class FinanceController < ApplicationController
   def delete_fee_discount
     @fee_discount = FeeDiscount.find(params[:id])
     #batch=@fee_discount.batch
-    @fee_category = FinanceFeeCategory.find(@fee_discount.finance_fee_category_id)
+    @fee_category = FinanceFeeCategory.find(@fee_discount.finance_fee_category_id) unless @fee_discount.finance_fee_category_id != 0
+    
     @error = true  unless @fee_discount.update_attributes(:is_deleted=>true)
     unless @error
       if @fee_discount.is_onetime 
@@ -17338,6 +17339,8 @@ class FinanceController < ApplicationController
     unless @fee_category.nil?
       @discounts = @fee_category.fee_discounts.all(:conditions=>["batch_id='#{@fee_discount.batch_id}' and is_deleted= #{false}"])
       #@fee_category.is_collection_open ? @discount_edit = false : @discount_edit = true
+    else
+      @discounts = FeeDiscount.all(:conditions=>["batch_id='#{@fee_discount.batch_id}' and is_deleted= #{false}"])
     end
     render :update do |page|
       page.replace_html "discount-box", :partial => "show_fee_discounts"
@@ -18880,7 +18883,7 @@ class FinanceController < ApplicationController
           end
         else
           render :update do |page|
-            page << "Scholarship Can't be deleted student already make payment. \n\nPlease delete the payment history then try again"
+            page << "alert('Scholarship Can\'t be deleted student already make payment. \n\nPlease delete the payment history then try again');"
           end
         end
      end

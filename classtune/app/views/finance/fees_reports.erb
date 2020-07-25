@@ -40,6 +40,13 @@
       <div class="link-heading"><%= link_to "#{t('report')}", :action => "monthly_report_fees" %></div>
       <div class="link-descr"><%= t('show_transactions') %></div>
   </div>
+  
+  <% if MultiSchool.current_school.id == 361 %>  
+  <div class="link-box">
+      <div class="link-heading"><%= link_to "Transaction Summary", :action => "transaction_summary" %></div>
+      <div class="link-descr"><%= "Transaction Summary report " %></div>
+  </div>
+  <% end %>  
     
   <div class="link-box">
       <div class="link-heading"><%= link_to "Month Wise Report", :action => "all_monthly_report_fees" %></div>

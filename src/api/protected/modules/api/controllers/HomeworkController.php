@@ -546,14 +546,15 @@ class HomeworkController extends Controller
             $answer_correct = Yii::app()->request->getPost('answer_correct');
             $response = array();
             if ($id && Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isStudent && $start_time && $total_time && $total_score !== false && $is_passed !== false && $answer_question && $answer_option && $answer_correct)
-            {   
+            {  
+                $student_id = Yii::app()->user->profileId;
+                 $school_id = Yii::app()->user->schoolId;
                 $examAttendanc = new OnlineExamAttendances();
                 $total = $examAttendanc->getAttendance($id, $student_id);
                 if (count($answer_question) == count($answer_option) && count($answer_option) == count($answer_correct) && ( !$total or $total == 0 ) )
                 {
 
-                    $student_id = Yii::app()->user->profileId;
-                    $school_id = Yii::app()->user->schoolId;
+                    
 
                     
 

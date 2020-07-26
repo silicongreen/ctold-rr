@@ -297,7 +297,7 @@ unless @ranked_student.blank?
                       <% end %> 
 
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                          <td class="name"><%= std_count %></td>
+                          <td class="name"><%= j %></td>
                           <td class="name"><%= std['class_roll_no'] %></td>
                           <% if !std['first_name'].blank? and !std['last_name'].blank?  %>
                             <td class="name-std"><%= std['first_name']+" "+std['last_name'] %></td>
@@ -357,7 +357,7 @@ unless @ranked_student.blank?
                                     <% full_mark_all = full_mark_all+subject_full_mark.to_f  %>
                                   <% end %>
                                   <td>
-                                        <%= subject_obtain_mark.to_i %>&nbsp;|&nbsp;<%= main_mark.to_f %>|&nbsp;<%= subject_full_mark.to_i %><hr/>
+                                        <%= subject_obtain_mark.to_i %>&nbsp;|&nbsp;<%= main_mark.round().to_i %><hr/>
                                         <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                           <% if !grade.blank? and !grade.name.blank? %>
                                             <%= grade.name %>
@@ -488,7 +488,7 @@ unless @ranked_student.blank?
 <style>
     td.page-break
     {
-        height: 60px !important;
+        height: 59px !important;
     }
     
 </style>    

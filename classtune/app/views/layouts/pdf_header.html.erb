@@ -161,7 +161,7 @@
         </td>
     </table>   
 </div> 
-<% elsif MultiSchool.current_school.id == 312 %>
+<% elsif MultiSchool.current_school.id == 312 && !@connect_exam_obj.blank? %>
 <div id="pdf-header-south" class="general-header <% if !@connect_exam_obj.blank? %> <% if @connect_exam_obj.result_type.to_i != 1 && @connect_exam_obj.result_type.to_i != 6  && @connect_exam_obj.result_type.to_i != 7  && @connect_exam_obj.result_type.to_i != 10 && @connect_exam_obj.result_type.to_i != 11 %>potrait_header_south_point<% else %>lanscape_header_south_point<%  end %><% end %>">
     <table width="100%">
         <% if !@connect_exam_obj.blank? %> 

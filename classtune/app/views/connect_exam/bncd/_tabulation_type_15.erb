@@ -347,7 +347,8 @@ unless @ranked_student.blank?
 
                               <% main_mark = 0 %>
                               <% if subject_obtain_mark.to_i > 0 and subject_full_mark.to_i > 0 %>
-                                <% main_mark = subject_obtain_mark.to_f/subject_full_mark.to_f %>  
+                                <% main_mark = subject_obtain_mark.to_f/subject_full_mark.to_f %> 
+                                <% main_mark = main_mark.to_f*100.00 %>
                               <% end %> 
                               <% if has_exam == true %>
                                 <% if sub['subject_group_id'].to_i == 0 %>

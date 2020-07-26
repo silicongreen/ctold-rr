@@ -135,10 +135,17 @@ class OnlineStudentExamController < ApplicationController
         end   
       end
     end
+    
+    
     session[:exam_attendance_id] = nil if session[:exam_attendance_id]
     if @exam_attendance.blank? or !@exam_attendance.end_time.blank?
       render :partial => 'already_attended' and return
     end
+    exam_attendance_all_count = OnlineExamAttendance.count(:conditions=>{:student_id => @student.id, :online_exam_group_id=>@exam_attendance.online_exam_group_id})
+    if exam_attendance_all_count > 1
+      render :partial => 'already_attended' and return
+    end
+    
     render :partial => 'late_submit' and return if @exam_attendance.start_time+@exam_attendance.online_exam_group.maximum_time.minutes+6.minutes < Time.now
     @exam_attendance.update_attributes(:online_exam_score_details_attributes=>params[:online_exam_attendance][:online_exam_score_details_attributes])
     @exam_attendance.reload

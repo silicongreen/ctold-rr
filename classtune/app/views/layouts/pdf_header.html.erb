@@ -215,7 +215,7 @@
   <% end %>
   <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
 </div>
-<% else %>
+<% elsif MultiSchool.current_school.id == 312 && @connect_exam_obj.blank? %>
 <div id="pdf-header-south" class="sfx-header">
   <% if !@connect_exam_obj.blank? %>
     <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/logo.jpg")),:width=> '20%' %></h4>

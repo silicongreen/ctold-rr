@@ -130,6 +130,19 @@ class OnlineExamAttendances extends CActiveRecord
             return $attendance->maxmin;
         }
         
+        public function getAttendance($online_exam_group_id,$student_id) 
+        {
+
+            $criteria = new CDbCriteria();
+
+            $criteria->select = 'count(t.id) as total';
+            $criteria->compare('online_exam_group_id',$online_exam_group_id);
+            $criteria->compare('student_id',$student_id);
+            $attendance = $this->find($criteria);
+
+            return $attendance->total;
+        }
+        
         public function getAttendanceCount($online_exam_group_id) 
         {
 

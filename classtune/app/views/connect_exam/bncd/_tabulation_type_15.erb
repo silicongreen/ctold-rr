@@ -347,7 +347,7 @@ unless @ranked_student.blank?
 
                               <% main_mark = 0 %>
                               <% if subject_obtain_mark.to_i > 0 and subject_full_mark.to_i > 0 %>
-                                <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
+                                <% main_mark = subject_obtain_mark.to_f/subject_full_mark.to_f %>  
                               <% end %> 
                               <% if has_exam == true %>
                                 <% if sub['subject_group_id'].to_i == 0 %>
@@ -356,7 +356,7 @@ unless @ranked_student.blank?
                                     <% full_mark_all = full_mark_all+subject_full_mark.to_f  %>
                                   <% end %>
                                   <td>
-                                        <%= subject_obtain_mark.to_i %>&nbsp;|&nbsp;<%= main_mark.to_i %>|&nbsp;<%= subject_full_mark.to_i %><hr/>
+                                        <%= subject_obtain_mark.to_i %>&nbsp;|&nbsp;<%= main_mark.to_f %>|&nbsp;<%= subject_full_mark.to_i %><hr/>
                                         <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                           <% if !grade.blank? and !grade.name.blank? %>
                                             <%= grade.name %>

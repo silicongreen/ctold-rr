@@ -17315,7 +17315,57 @@ class FinanceController < ApplicationController
       #@fee_category.is_collection_open ? @discount_edit = false : @discount_edit = true
     end
   end
+  
+  def transaction_summary
+    @batches = Batch.active
+  end
+  
+  def summary_transaction_by_batch
+    unless params[:batch][:batch_id].blank?
+      @batch = Batch.find params[:batch][:batch_id]
+      if params[:query].blank?
+        @students = Student.find_all_by_batch_id(params[:batch][:batch_id],:conditions=>"has_paid_fees=#{false}", :order => 'first_name ASC')
+      else
+        @students = Student.active.find(:all,
+        :conditions => ["(first_name LIKE ? OR middle_name LIKE ? OR last_name LIKE ?
+                        OR admission_no LIKE ? OR (concat(first_name, \" \", last_name) LIKE ? ) OR (concat(first_name, \"+\", last_name) LIKE ? )) and batch_id = ? ",
+        "#{params[:query]}%","#{params[:query]}%","#{params[:query]}%",
+        "%#{params[:query]}%", "%#{params[:query]}%", "%#{params[:query]}%", params[:batch][:batch_id] ],
+        :order => "batch_id asc,first_name asc") unless params[:query] == ''
+      end  
+    else
+      @students = Student.active.find(:all,
+      :conditions => ["first_name LIKE ? OR middle_name LIKE ? OR last_name LIKE ?
+                        OR admission_no LIKE ? OR (concat(first_name, \" \", last_name) LIKE ? ) OR (concat(first_name, \"+\", last_name) LIKE ? ) ",
+        "#{params[:query]}%","#{params[:query]}%","#{params[:query]}%",
+        "%#{params[:query]}%", "%#{params[:query]}%", "%#{params[:query]}%" ],
+      :order => "batch_id asc,first_name asc") unless params[:query] == ''
+    end  
+    transaction_summary_headers = [] 
+    transaction_summary_headers = PaymentNewConfiguration.config_value("transaction_summary_header_" + MultiSchool.current_school.id.to_s) 
 
+    transaction_summary_headers = transaction_summary_headers.split(",") unless transaction_summary_headers.blank?
+    transaction_summary_headers ||= Array.new
+    
+    @transactions_headers = [] 
+    unless transaction_summary_headers.blank?
+      transaction_summary_headers.each do |transaction_summary_header|
+         header = transaction_summary_header
+         if check_if_number(header)
+          finance_fee_particular_category = FinanceFeeParticularCategory.find(:first, :conditions => "id = #{transaction_summary_header}")
+          unless finance_fee_particular_category.blank?
+            @transactions_headers << finance_fee_particular_category.name
+          else
+            @transactions_headers << transaction_summary_header
+          end
+         else
+           @transactions_headers << transaction_summary_header
+         end
+      end
+    end
+    abort(@transactions_headers.inspect)
+  end
+  
   def delete_fee_discount
     @fee_discount = FeeDiscount.find(params[:id])
     #batch=@fee_discount.batch
@@ -18984,6 +19034,10 @@ class FinanceController < ApplicationController
   
   private
 
+  def check_if_number(num)
+    num.to_f.to_s == num.to_s || num.to_i.to_s == num.to_s
+  end
+  
   def date_format(date)
     /(\d{4}-\d{2}-\d{2})/.match(date)
   end

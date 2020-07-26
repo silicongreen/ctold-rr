@@ -41,7 +41,15 @@
       <div class="link-descr"><%= t('show_transactions') %></div>
   </div>
   
-  <% if MultiSchool.current_school.id == 361 %>  
+  <%
+    transaction_summary_enabled = [361] 
+    transaction_summary_enabled = PaymentNewConfiguration.config_value("transaction_summary_enabled_school") 
+
+    transaction_summary_enabled = transaction_summary_enabled.split(",").map(&:to_i) unless transaction_summary_enabled.blank?
+    transaction_summary_enabled ||= Array.new
+  %>  
+    
+  <% if transaction_summary_enabled.include?(MultiSchool.current_school.id) %>  
   <div class="link-box">
       <div class="link-heading"><%= link_to "Transaction Summary", :action => "transaction_summary" %></div>
       <div class="link-descr"><%= "Transaction Summary report " %></div>

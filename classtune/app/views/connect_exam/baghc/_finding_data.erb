@@ -340,7 +340,7 @@
     @sorted_students = @student_list.sort
     position = 0
     @sorted_students.each do|s|
-      if last_mark != s[1].to_f and last_grade != s[0].to_f
+      if last_mark != s[1].to_f or last_grade != s[0].to_f
         position = position+1
         last_mark = s[1].to_f
         last_grade = s[0].to_f
@@ -353,7 +353,7 @@
     @sorted_students2 = @student_list2.sort
     position = 0
     @sorted_students2.each do|s|
-      if last_mark2 != s[1].to_f and last_grade2 != s[0].to_f
+      if last_mark2 != s[1].to_f or last_grade2 != s[0].to_f
         position = position+1
         last_mark2 = s[1].to_f
         last_grade2 = s[0].to_f
@@ -366,7 +366,7 @@
     @sorted_students3 = @student_list3.sort
     position = 0
     @sorted_students3.each do|s|
-      if last_mark3 != s[1].to_f and last_grade3 != s[0].to_f
+      if last_mark3 != s[1].to_f or last_grade3 != s[0].to_f
         position = position+1
         last_mark3 = s[1].to_f
         last_grade3 = s[0].to_f

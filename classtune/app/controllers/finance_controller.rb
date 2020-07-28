@@ -116,6 +116,8 @@ class FinanceController < ApplicationController
                     :is_late                   => 0
                   )
                   fee_discount_collection.save
+                else
+                  abort(fee_discount.inspect)
                 end
                 
                 balance = FinanceFee.get_student_actual_balance(date, s, fee)

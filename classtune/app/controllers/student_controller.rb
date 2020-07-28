@@ -48,29 +48,29 @@ class StudentController < ApplicationController
     @graduation_session = BatchTransfer.find(:all,:conditions=>["from_id IN (?) and to_id = ?",@schoo_batch_id,0],:limit=>100,:order=>'created_at DESC')
   end
   
-#  def student_photo_download
-#    require 'zip/zipfilesystem'
-#    batch_id = params[:batch_id]
-#    students = Student.find_all_by_batch_id(batch_id)
-#    rails_tmp_path = File.join(RAILS_ROOT, "/tmp/")
-#    tmp_zip_path = File.join(rails_tmp_path, "pictures.zip")
-#    Dir.mkdir(rails_tmp_path) unless File.exists? rails_tmp_path
-#    unless students.blank?
-#      Zip::ZipFile.open(tmp_zip_path) do |zipfile|
-#        students.each do |student|
-#          unless student.photo_file_name.blank?
-#            file_extenstion = File.extname(student.photo_file_name).gsub(/^\.+/, "")
-#            img_name = student.admission_no+"."+file_extenstion
-#            if File.exists? student.photo.path
-#              img = open(student.photo.path)
-#              zipfile.add(img_name, img.path)
-#            end
-#          end
-#        end
-#      end
-#      send_file  tmp_zip_path,:filename => "pictures.zip"
-#    end
-#  end
+  def student_photo_download
+    require 'zip/zipfilesystem'
+    batch_id = params[:batch_id]
+    students = Student.find_all_by_batch_id(batch_id)
+    rails_tmp_path = File.join(RAILS_ROOT, "/tmp/")
+    tmp_zip_path = File.join(rails_tmp_path, "pictures.zip")
+    Dir.mkdir(rails_tmp_path) unless File.exists? rails_tmp_path
+    unless students.blank?
+      Zip::ZipFile.open(tmp_zip_path) do |zipfile|
+        students.each do |student|
+          unless student.photo_file_name.blank?
+            file_extenstion = File.extname(student.photo_file_name).gsub(/^\.+/, "")
+            img_name = student.admission_no+"."+file_extenstion
+            if File.exists? student.photo.path
+              img = open(student.photo.path)
+              zipfile.add(img_name, img.path)
+            end
+          end
+        end
+      end
+      send_file  tmp_zip_path,:filename => "pictures.zip"
+    end
+  end
   
   def regenerate_order_id
     require "openssl"

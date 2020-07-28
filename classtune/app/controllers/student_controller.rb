@@ -48,24 +48,24 @@ class StudentController < ApplicationController
     @graduation_session = BatchTransfer.find(:all,:conditions=>["from_id IN (?) and to_id = ?",@schoo_batch_id,0],:limit=>100,:order=>'created_at DESC')
   end
   
-  def student_photo_download
-    require 'zip'
-    require 'zip/zipfilesystem'
-    batch_id = params[:batch_id]
-    students = Student.find_all_by_batch_id(batch_id)
-    unless students.blank?
-      compressed_filestream = Zip::OutputStream.write_buffer do |zos|
-        students.each do |student|
-          unless student.photo_file_name.blank?
-            zos.put_next_entry student.photo_file_name
-            zos.print(Paperclip.io_adapters.for(student.photo).read)
-          end
-        end
-      end
-      compressed_filestream.rewind
-      send_data compressed_filestream.read, filename: "pictures.zip"
-    end
-  end
+#  def student_photo_download
+#    require 'zip'
+#    require 'zip/zipfilesystem'
+#    batch_id = params[:batch_id]
+#    students = Student.find_all_by_batch_id(batch_id)
+#    unless students.blank?
+#      compressed_filestream = Zip::OutputStream.write_buffer do |zos|
+#        students.each do |student|
+#          unless student.photo_file_name.blank?
+#            zos.put_next_entry student.photo_file_name
+#            zos.print(Paperclip.io_adapters.for(student.photo).read)
+#          end
+#        end
+#      end
+#      compressed_filestream.rewind
+#      send_data compressed_filestream.read, filename: "pictures.zip"
+#    end
+#  end
   
   def regenerate_order_id
     require "openssl"

@@ -59,7 +59,16 @@ class StudentController < ApplicationController
       Zip::ZipFile.open(tmp_zip_path,Zip::ZipFile::CREATE) do |zipfile|
         students.each do |student|
           unless student.photo_file_name.blank?
-            file_extenstion = File.extname(student.photo_file_name)
+            file_extenstion = ""
+            if student.photo_content_type == "image/jpeg" or student.photo_content_type == "image/jpg"
+              file_extenstion = "jpg"
+            end
+            if student.photo_content_type == "image/png"
+              file_extenstion = "png"
+            end
+            if student.photo_content_type == "image/gif"
+              file_extenstion = "gif"
+            end
             img_name = student.admission_no+"."+file_extenstion
             if File.exists? student.photo.path
               img = open(student.photo.path)

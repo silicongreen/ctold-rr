@@ -89,10 +89,11 @@ class FinanceController < ApplicationController
           unless s.blank?
             batch = s.batch
             date = batch.finance_fee_collections.first(:conditions => "start_date >= '2020-07-01' and start_date <= '2020-07-31'")
-            abort(date.inspect)
+            
             unless date.blank?
               fee = FinanceFee.find(:first, :conditions => "fee_collection_id = #{date.id} and student_id = #{s.id}")
               unless fee.blank?
+                abort(fee.inspect)
                 fee_discount = FeeDiscount.new
                 fee_discount.is_onetime = true
                 fee_discount.name = "Exam Fees Adjustment"

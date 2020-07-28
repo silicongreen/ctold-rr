@@ -107,4 +107,9 @@
    <% if MultiSchool.current_school.id != 340 %>
    <div  style="float:left; clear:both; margin:10px;"><%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button", :id=> 'submit_button' %></div>
    <% end %>
+   <div  style="float:left; clear:both; margin:10px;">
+   <%= link_to " ► Download Image",
+        {:action => "student_photo_download", :batch_id => @batch_id}, :class=> 'user_button' %>
+   </div>    
+   
 </div>

@@ -69,7 +69,7 @@ class StudentController < ApplicationController
             if student.photo_content_type == "image/gif"
               file_extenstion = "gif"
             end
-            img_name = student.admission_no+"."+file_extenstion
+            img_name = student.admission_no+"-"+student.full_name+"."+file_extenstion
             if File.exists? student.photo.path
               img = open(student.photo.path)
               zipfile.add(img_name, img.path)

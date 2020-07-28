@@ -54,8 +54,10 @@ class StudentController < ApplicationController
     unless students.blank?
       compressed_filestream = Zip::OutputStream.write_buffer do |zos|
         students.each do |student|
-          zos.put_next_entry student.photo_file_name
-          zos.print(Paperclip.io_adapters.for(student.photo).read)
+          unless student.photo_file_name.blank?
+            zos.put_next_entry student.photo_file_name
+            zos.print(Paperclip.io_adapters.for(student.photo).read)
+          end
         end
       end
       compressed_filestream.rewind

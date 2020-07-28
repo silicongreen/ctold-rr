@@ -79,10 +79,10 @@ class FinanceController < ApplicationController
       activity_log.save
       activity_log_id = activity_log.id
       
-      @finance_fees = FinanceFee.find(:all, :order => 'id ASC', :conditions => ["`fee_collection_id` IN (2445,2447) and is_paid = 0 and balance > 0 and batch_id NOT IN (SELECT id FROM `batches` WHERE school_id = 352 and course_id in (SELECT id FROM `courses` where ((LOWER(course_name) LIKE '%%nursery%%') OR (LOWER(course_name) LIKE '%%kg%%') OR (LOWER(course_name) LIKE '%%eleven%%' or UPPER(course_name) LIKE '%%XI%%') OR (LOWER(course_name) LIKE '%%hsc%%')  OR (LOWER(course_name) LIKE '%%twelve%%' or UPPER(course_name) LIKE '%%XII%%')) and school_id = 352)) "]) #, :group => "ledger_date"
-      #abort(@finance_fees.length.to_s)
-      unless @finance_fees.blank?
-        @finance_fees.each do |fee|
+      @finance_transactions = FinanceTransactionParticular.find(:all, :select => "students.id, finance_fees.fee_collection_id, finance_transaction_particulars.amount", :joins => "INNER JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN finance_fees ON finance_fees.id = finance_transactions.finance_id INNER JOIN students ON finance_transactions.payee_id = students.id", :order => 'students.id ASC', :conditions => ["finance_transaction_particulars.finance_transaction_id IN (SELECT id FROM `finance_transactions` where finance_id IN (SELECT id FROM `finance_fees` WHERE `fee_collection_id` IN (SELECT finance_fee_collections.id FROM `finance_fee_collections` INNER JOIN collection_particulars ON collection_particulars.finance_fee_collection_id = finance_fee_collections.id INNER JOIN finance_fee_particulars ON collection_particulars.finance_fee_particular_id = finance_fee_particulars.id WHERE finance_fee_collections.`school_id` = 352 and finance_fee_collections.start_date >= '2020-03-01' and finance_fee_collections.start_date <= '2020-03-31' and finance_fee_particulars.finance_fee_particular_category_id = 188 GROUP BY finance_fee_collections.id )))  and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection' and finance_fee_particulars.finance_fee_particular_category_id = 188"])
+      unless @finance_transactions.blank?
+        @finance_transactions.each do |finance_transaction|
+          abort(finance_transaction.inspect)
           sid = fee.student_id
           s = Student.find(:first, :conditions => "id = #{sid}")
           unless s.blank?
@@ -17341,6 +17341,28 @@ class FinanceController < ApplicationController
         "%#{params[:query]}%", "%#{params[:query]}%", "%#{params[:query]}%" ],
       :order => "batch_id asc,first_name asc") unless params[:query] == ''
     end  
+    start_year = Date.today.beginning_of_year
+    end_year = Date.today.end_of_year
+    #start_year = Date.new(Date..current.year, 1)
+    #end_year = Date.new(Date..current.year, 12)
+    ranges = (start_year..end_year).select {|d| d.day == 1}
+    
+    unless @students.blank?
+      @students.each do |student|
+        tmp = {}
+        tmp[:id] = student.id
+        tmp[:full_name] = student.full_name
+        tmp[:category_name] = student.student_category.name
+        tmp[:id] = student.id
+        ranges.each do |range|
+          begin_month = range.to_date.beginning_of_month
+          end_month = range.to_date.end_of_month
+          @date = student.batch.finance_fee_collections.all(:conditions => "start_date >= '#{begin_month.strftime("%Y-%m-%d")}' and end_date <= '#{end_month.strftime("%Y-%m-%d")}'")
+          total_date_id = @date.map(&:id)
+          #student
+        end
+      end
+    end
     transaction_summary_headers = [] 
     transaction_summary_headers = PaymentNewConfiguration.config_value("transaction_summary_header_" + MultiSchool.current_school.id.to_s) 
 

@@ -94,7 +94,7 @@ class FinanceController < ApplicationController
               fee = FinanceFee.find(:first, :conditions => "fee_collection_id IN (#{dates.map(&:id).join(",")}) and student_id = #{s.id}")
               unless fee.blank?
                 date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
-                abort(date.inspect)
+                
                 fee_discount = FeeDiscount.new
                 fee_discount.is_onetime = true
                 fee_discount.name = "Exam Fees Adjustment"

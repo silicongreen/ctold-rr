@@ -54,7 +54,7 @@ class StudentController < ApplicationController
     students = Student.find_all_by_batch_id(batch_id)
     rails_tmp_path = File.join(RAILS_ROOT, "/tmp/")
     tmp_zip_path = File.join(rails_tmp_path, "pictures.zip")
-    FileUtils.mkdir_p(rails_tmp_path) unless File.exists? rails_tmp_path
+    FileUtils.mkdir_p(rails_tmp_path)
     unless students.blank?
       Zip::ZipFile.open(tmp_zip_path) do |zipfile|
         students.each do |student|

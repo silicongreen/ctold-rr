@@ -78,42 +78,71 @@ class FinanceController < ApplicationController
       activity_log.updated_at = now
       activity_log.save
       activity_log_id = activity_log.id
-      
-      @finance_transactions = FinanceTransactionParticular.find(:all , :joins => "INNER JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN finance_fees ON finance_fees.id = finance_transactions.finance_id INNER JOIN students ON finance_transactions.payee_id = students.id", :order => 'students.id ASC', :conditions => ["finance_transaction_particulars.finance_transaction_id IN (SELECT id FROM `finance_transactions` where finance_id IN (SELECT id FROM `finance_fees` WHERE `fee_collection_id` IN (SELECT finance_fee_collections.id FROM `finance_fee_collections` INNER JOIN collection_particulars ON collection_particulars.finance_fee_collection_id = finance_fee_collections.id INNER JOIN finance_fee_particulars ON collection_particulars.finance_fee_particular_id = finance_fee_particulars.id WHERE finance_fee_collections.`school_id` = 352 and finance_fee_collections.start_date >= '2020-03-01' and finance_fee_collections.start_date <= '2020-03-31' and finance_fee_particulars.finance_fee_particular_category_id = 188 GROUP BY finance_fee_collections.id )))  and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection' and finance_fee_particulars.finance_fee_particular_category_id = 188"])
-      unless @finance_transactions.blank?
-        @finance_transactions.each do |finance_transaction|
-          abort(finance_transaction.inspect)
-          sid = fee.student_id
+      student_id = 0
+      @finance_transaction_particulars = FinanceTransactionParticular.find(:all , :joins => "INNER JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN finance_fees ON finance_fees.id = finance_transactions.finance_id INNER JOIN students ON finance_transactions.payee_id = students.id", :order => 'students.id ASC', :conditions => ["students.id > #{student_id} and students.id NOT IN (24659,21269) and finance_transaction_particulars.finance_transaction_id IN (SELECT id FROM `finance_transactions` where finance_id IN (SELECT id FROM `finance_fees` WHERE `fee_collection_id` IN (SELECT finance_fee_collections.id FROM `finance_fee_collections` INNER JOIN collection_particulars ON collection_particulars.finance_fee_collection_id = finance_fee_collections.id INNER JOIN finance_fee_particulars ON collection_particulars.finance_fee_particular_id = finance_fee_particulars.id WHERE finance_fee_collections.`school_id` = 352 and finance_fee_collections.start_date >= '2020-03-01' and finance_fee_collections.start_date <= '2020-03-31' and finance_fee_particulars.finance_fee_particular_category_id = 188 GROUP BY finance_fee_collections.id )))  and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection' and finance_fee_particulars.finance_fee_particular_category_id = 188"])
+      unless @finance_transaction_particulars.blank?
+        @finance_transaction_particulars.each do |finance_transaction_particular|
+          finance_transaction_id = finance_transaction_particular.finance_transaction_id
+          finance_transaction = FinanceTransaction.find(finance_transaction_id)
+          sid = finance_transaction.payee_id
           s = Student.find(:first, :conditions => "id = #{sid}")
           unless s.blank?
-            date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
+            batch = s.batch
+            date = batch.finance_fee_collections.first(:conditions => "start_date >= '2020-07-01' and start_date <= '2020-07-31'")
             unless date.blank?
-              @fee_particulars = date.finance_fee_particulars.all(:conditions=>"name LIKE 'Exam Fee (1st Term)' and is_deleted=#{false} and batch_id=#{fee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==fee.batch) }
-              #@particulars = FinanceFeeParticular.find(:all,:conditions => ["name LIKE 'Exam Fee (1st Term)' and is_deleted = '#{false}' and finance_fee_category_id = '#{date.fee_category_id}' and batch_id='#{fee.batch_id}' "])
-              #abort(@fee_particulars.inspect)
-              @fee_particulars.each do |fee_particular|
-                std_particular = StudentExcludeParticular.new
-                std_particular.student_id = s.id
-                std_particular.fee_particular_id = fee_particular.id
-                std_particular.fee_collection_id = date.id
-                std_particular.save
+              fee = FinanceFee.find(:first, :conditions => "fee_collection_id = #{date.id} and student_id = #{s.id}")
+              unless fee.blank?
+                fee_discount = FeeDiscount.new
+                fee_discount.is_onetime = true
+                fee_discount.name = "Exam Fees Adjustment"
+                fee_discount.finance_fee_category_id = date.fee_category_id
+                fee_discount.batch_id = batch.id
+                fee_discount.discount = finance_transaction_particular.amount.to_f
+                fee_discount.receiver_type="Student"
+                fee_discount.receiver_id = s.id
+                fee_discount.finance_fee_particular_category_id = 54
+                fee_discount.is_late = false
+                fee_discount.is_amount = true
+                fee_discount.is_visible = false
+                
+                if fee_discount.save
+                  collection_discount = CollectionDiscount.new(:fee_discount_id=>fee_discount.id,:finance_fee_collection_id=>date.id, :finance_fee_particular_category_id => fee_discount.finance_fee_particular_category_id)
+                  collection_discount.save
+
+                  fee_discount_collection = FeeDiscountCollection.new(
+                    :finance_fee_collection_id => date.id,
+                    :fee_discount_id           => fee_discount.id,
+                    :batch_id                  => batch.id,
+                    :is_late                   => 0
+                  )
+                  fee_discount_collection.save
+                end
+                
+                balance = FinanceFee.get_student_actual_balance(date, s, fee)
+                if balance.to_f > 0
+                    if balance.to_f != fee.balance
+                      finance_fee = FinanceFee.find fee.id
+                      finance_fee.update_attributes( :balance=>balance.to_f, :is_paid => 0)
+                    end
+                  elsif balance.to_f == 0
+                    finance_fee = FinanceFee.find fee.id
+                    finance_fee.update_attributes( :balance=>0, :is_paid => 1)
+                end
+                
+                student_fee_ledger = StudentFeeLedger.find(:first, :conditions => "student_id = #{s.id} and fee_id = #{fee.id} and amount_to_pay > 0.00 and amount_paid = 0.00 and transaction_id = 0 and particular_id = 0")
+                unless student_fee_ledger.blank?
+                  student_fee_ledger.update_attributes( :amount_to_pay => balance.to_f)
+                end
               end
               #abort('here')
-              balance = FinanceFee.get_student_actual_balance(date, s, fee)
-              if balance.to_f > 0
-                  if balance.to_f != fee.balance
-                    finance_fee = FinanceFee.find fee.id
-                    finance_fee.update_attributes( :balance=>balance.to_f, :is_paid => 0)
-                  end
-                elsif balance.to_f == 0
-                  finance_fee = FinanceFee.find fee.id
-                  finance_fee.update_attributes( :balance=>0, :is_paid => 1)
-              end
+              
             end
+            activity_log = ActivityLog.find activity_log_id
+            pr = s.id
+            activity_log.update_attributes( :post_requests=> pr.to_s)
+            abort('here - not-done')
           end
-          activity_log = ActivityLog.find activity_log_id
-          pr = fee.id
-          activity_log.update_attributes( :post_requests=> pr.to_s)
+          
         end
       end
       abort('here - done')
@@ -9217,7 +9246,7 @@ class FinanceController < ApplicationController
       @fee_discount.is_visible = false
       
       @student = Student.find(params[:student])
-      
+      #soma
       unless @fee_discount.save
         #abort(@fee_discount.errors.inspect)
         render :update do |page|

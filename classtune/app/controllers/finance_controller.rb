@@ -66,6 +66,7 @@ class FinanceController < ApplicationController
 
   def donation
     if MultiSchool.current_school.id == 352
+      abort('here')
       now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
       activity_log = ActivityLog.new
       activity_log.user_id = current_user.id
@@ -17356,14 +17357,14 @@ class FinanceController < ApplicationController
     unless params[:batch][:batch_id].blank?
       @batch = Batch.find params[:batch][:batch_id]
       if params[:query].blank?
-        @students = Student.find_all_by_batch_id(params[:batch][:batch_id],:conditions=>"has_paid_fees=#{false}", :order => 'first_name ASC')
+        @students = Student.find_all_by_batch_id(params[:batch][:batch_id],:conditions=>"has_paid_fees=#{false}", :order => 'if(students.class_roll_no = \'\' or students.class_roll_no is null,0,cast(students.class_roll_no as unsigned)),students.first_name ASC')
       else
         @students = Student.active.find(:all,
         :conditions => ["(first_name LIKE ? OR middle_name LIKE ? OR last_name LIKE ?
                         OR admission_no LIKE ? OR (concat(first_name, \" \", last_name) LIKE ? ) OR (concat(first_name, \"+\", last_name) LIKE ? )) and batch_id = ? ",
         "#{params[:query]}%","#{params[:query]}%","#{params[:query]}%",
         "%#{params[:query]}%", "%#{params[:query]}%", "%#{params[:query]}%", params[:batch][:batch_id] ],
-        :order => "batch_id asc,first_name asc") unless params[:query] == ''
+        :order => "if(students.class_roll_no = \'\' or students.class_roll_no is null,0,cast(students.class_roll_no as unsigned)),students.first_name ASC") unless params[:query] == ''
       end  
     else
       @students = Student.active.find(:all,
@@ -17371,53 +17372,472 @@ class FinanceController < ApplicationController
                         OR admission_no LIKE ? OR (concat(first_name, \" \", last_name) LIKE ? ) OR (concat(first_name, \"+\", last_name) LIKE ? ) ",
         "#{params[:query]}%","#{params[:query]}%","#{params[:query]}%",
         "%#{params[:query]}%", "%#{params[:query]}%", "%#{params[:query]}%" ],
-      :order => "batch_id asc,first_name asc") unless params[:query] == ''
+      :order => "if(students.class_roll_no = \'\' or students.class_roll_no is null,0,cast(students.class_roll_no as unsigned)),students.first_name ASC") unless params[:query] == ''
     end  
     start_year = Date.today.beginning_of_year
     end_year = Date.today.end_of_year
     #start_year = Date.new(Date..current.year, 1)
     #end_year = Date.new(Date..current.year, 12)
     ranges = (start_year..end_year).select {|d| d.day == 1}
+    students_fees = []
     
-    unless @students.blank?
-      @students.each do |student|
-        tmp = {}
-        tmp[:id] = student.id
-        tmp[:full_name] = student.full_name
-        tmp[:category_name] = student.student_category.name
-        tmp[:id] = student.id
-        ranges.each do |range|
-          begin_month = range.to_date.beginning_of_month
-          end_month = range.to_date.end_of_month
-          @date = student.batch.finance_fee_collections.all(:conditions => "start_date >= '#{begin_month.strftime("%Y-%m-%d")}' and end_date <= '#{end_month.strftime("%Y-%m-%d")}'")
-          total_date_id = @date.map(&:id)
-          #student
-        end
-      end
-    end
     transaction_summary_headers = [] 
     transaction_summary_headers = PaymentNewConfiguration.config_value("transaction_summary_header_" + MultiSchool.current_school.id.to_s) 
 
     transaction_summary_headers = transaction_summary_headers.split(",") unless transaction_summary_headers.blank?
     transaction_summary_headers ||= Array.new
     
+    unless @students.blank?
+      @students.each do |student|
+        tmp = {}
+        tmp[:id] = student.id
+        tmp[:full_name] = student.full_name
+        tmp[:admission_no] = student.admission_no
+        tmp[:roll_no] = student.class_roll_no
+        tmp[:category_name] = student.student_category.name
+        
+        tot_amt_exta = 0
+        unless transaction_summary_headers.blank?
+          transaction_summary_headers.each do |transaction_summary_header|
+             amt = 0
+             if check_if_number(transaction_summary_header)
+              dates = student.batch.finance_fee_collections.all(:conditions => "start_date >= '#{start_year.strftime("%Y-%m-%d")}' and end_date <= '#{end_year.strftime("%Y-%m-%d")}'")
+              unless dates.blank?
+                fees = FinanceFee.find(:all, :conditions => "finance_fees.fee_collection_id IN (#{dates.map(&:id).join(",")}) and finance_fees.student_id = #{student.id} and finance_transactions.payee_id = #{student.id}", :joins => "INNER JOIN finance_transactions ON finance_transactions.finance_id = finance_fees.id")
+                unless fees.blank?
+                  fees.each do |fee|
+                    finance_transactions = fee.finance_transactions
+                    unless finance_transactions.blank?
+                      finance_transactions.each do |finance_transaction|
+                        fees_paid = FinanceTransactionParticular.find(:all, :conditions => "finance_transaction_particulars.finance_transaction_id = #{finance_transaction.id} and finance_transaction_particulars.particular_type = 'Particular' AND finance_transaction_particulars.transaction_type = 'Fee Collection' and finance_fee_particulars.finance_fee_particular_category_id = #{transaction_summary_header}", :joins => "INNER JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id", :group => "finance_transaction_particulars.particular_id")
+                        paid_amount = 0
+                        unless fees_paid.blank?
+                          paid_amount = fees_paid.map{|p| p.amount}.sum.to_f
+                        end
+                        fees_discount = FinanceTransactionParticular.find(:all, :conditions => "finance_transaction_particulars.finance_transaction_id = #{finance_transaction.id} and finance_transaction_particulars.particular_type = 'Adjustment' AND finance_transaction_particulars.transaction_type = 'Discount' and fee_discounts.finance_fee_particular_category_id = #{transaction_summary_header}", :joins => "INNER JOIN fee_discounts ON fee_discounts.id = finance_transaction_particulars.particular_id", :group => "finance_transaction_particulars.particular_id")
+                        discount_amount = 0
+                        unless fees_discount.blank?
+                          discount_amount = fees_discount.map{|p| p.amount}.sum.to_f
+                        end
+                        amtt = paid_amount.to_f - discount_amount.to_f
+                        if amtt < 0
+                          amtt = 0
+                        end
+                        amt += amtt.to_f
+                      end
+                    end
+                    tmp[transaction_summary_header.to_s.to_sym] = amt
+                  end
+                else
+                  tmp[transaction_summary_header.to_s.to_sym] = 0.0
+                end
+              else
+                tmp[transaction_summary_header.to_s.to_sym] = 0.0
+              end
+              
+             else
+               tmp[transaction_summary_header.to_s.to_sym] = 0.0
+             end
+             tot_amt_exta += amt
+          end
+        end
+        tmp[:tot_amt_exta] = tot_amt_exta
+        
+        tot_amt = 0
+        ranges.each do |range|
+          begin_month = range.to_date.beginning_of_month
+          end_month = range.to_date.end_of_month
+          dates = student.batch.finance_fee_collections.all(:conditions => "start_date >= '#{begin_month.strftime("%Y-%m-%d")}' and start_date <= '#{end_month.strftime("%Y-%m-%d")}'")
+          #total_date_id = dates.map(&:id)
+          unless dates.blank?
+            fees = FinanceFee.find(:all, :conditions => "finance_fees.fee_collection_id IN (#{dates.map(&:id).join(",")}) and finance_fees.student_id = #{student.id} and finance_transactions.payee_id = #{student.id}", :joins => "INNER JOIN finance_transactions ON finance_transactions.finance_id = finance_fees.id")
+            unless fees.blank?
+              amt = 0
+              month_transaction = "" 
+              month_transaction = PaymentNewConfiguration.config_value("month_transaction_" + MultiSchool.current_school.id.to_s) 
+
+              month_transaction = "" if month_transaction.blank?
+
+              fees.each do |fee|
+                finance_transactions = fee.finance_transactions
+                unless finance_transactions.blank?
+                  finance_transactions.each do |finance_transaction|
+                    if month_transaction == ""
+                      amount = finance_transaction.amount
+                      amt += amount.to_f
+                    else
+                      if month_transaction == "all"
+                        amount = finance_transaction.amount
+                        amt += amount.to_f
+                      else
+                        unless month_transaction.index("in_").nil?
+                          month_transaction_a = month_transaction.gsub("in_","").split(",").map(&:to_i)
+                          fees_paid = FinanceTransactionParticular.find(:all, :conditions => "finance_transaction_particulars.finance_transaction_id = #{finance_transaction.id} and finance_transaction_particulars.particular_type = 'Particular' AND finance_transaction_particulars.transaction_type = 'Fee Collection' and finance_fee_particulars.finance_fee_particular_category_id IN (#{month_transaction_a.join(",")})", :joins => "INNER JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id", :group => "finance_transaction_particulars.particular_id")
+                          paid_amount = 0
+                          unless fees_paid.blank?
+                            paid_amount = fees_paid.map{|p| p.amount}.sum.to_f
+                          end
+                          fees_discount = FinanceTransactionParticular.find(:all, :conditions => "finance_transaction_particulars.finance_transaction_id = #{finance_transaction.id} and finance_transaction_particulars.particular_type = 'Adjustment' AND finance_transaction_particulars.transaction_type = 'Discount' and fee_discounts.finance_fee_particular_category_id IN (#{month_transaction_a.join(",")})", :joins => "INNER JOIN fee_discounts ON fee_discounts.id = finance_transaction_particulars.particular_id", :group => "finance_transaction_particulars.particular_id")
+                          discount_amount = 0
+                          unless fees_discount.blank?
+                            discount_amount = fees_discount.map{|p| p.amount}.sum.to_f
+                          end
+                          amtt = paid_amount.to_f - discount_amount.to_f
+                          if amtt < 0
+                            amtt = 0
+                          end
+                          amt += amtt.to_f
+                        end
+                        unless month_transaction.index("ex_").nil?
+                          month_transaction_a = month_transaction.gsub("ex_","").split(",").map(&:to_i)
+                          fees_paid = FinanceTransactionParticular.find(:all, :conditions => "finance_transaction_particulars.finance_transaction_id = #{finance_transaction.id} and finance_transaction_particulars.particular_type = 'Particular' AND finance_transaction_particulars.transaction_type = 'Fee Collection' and finance_fee_particulars.finance_fee_particular_category_id IN (#{month_transaction_a.join(",")})", :joins => "INNER JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id", :group => "finance_transaction_particulars.particular_id")
+                          paid_amount = 0
+                          unless fees_paid.blank?
+                            paid_amount = fees_paid.map{|p| p.amount}.sum.to_f
+                          end
+                          fees_discount = FinanceTransactionParticular.find(:all, :conditions => "finance_transaction_particulars.finance_transaction_id = #{finance_transaction.id} and finance_transaction_particulars.particular_type = 'Adjustment' AND finance_transaction_particulars.transaction_type = 'Discount' and fee_discounts.finance_fee_particular_category_id IN (#{month_transaction_a.join(",")})", :joins => "INNER JOIN fee_discounts ON fee_discounts.id = finance_transaction_particulars.particular_id", :group => "finance_transaction_particulars.particular_id")
+                          discount_amount = 0
+                          unless fees_discount.blank?
+                            discount_amount = fees_discount.map{|p| p.amount}.sum.to_f
+                          end
+                          amtt = paid_amount.to_f - discount_amount.to_f
+                          if amtt < 0
+                            amtt = 0
+                          end
+                          tamt = finance_transaction.amount - amtt
+                          amt += tamt.to_f
+                        end
+                      end
+                    end
+                  end
+                end
+                tmp[begin_month.strftime("%b").to_sym] = amt
+                tot_amt += amt
+              end
+            else
+              tmp[begin_month.strftime("%b").to_sym] = 0.0
+            end
+          else
+            tmp[begin_month.strftime("%b").to_sym] = 0.0
+          end
+          #student
+        end
+        tmp[:tot_amt] = tot_amt
+        students_fees << tmp
+      end
+    end
+    #abort(students_fees.inspect)
+    @students_fees = students_fees
+    
+    c_header = []
     @transactions_headers = [] 
+    @transactions_headers << {:name => "Admission No", :key => "admission_no", :width => "80px", :is_num => false, :align => "center"}
+    @transactions_headers << {:name => "Roll No", :key => "roll_no", :width => "50px", :is_num => false, :align => "center"}
+    @transactions_headers << {:name => "Student Category Name", :key => "category_name", :width => "150px", :is_num => false, :align => "center"}
     unless transaction_summary_headers.blank?
       transaction_summary_headers.each do |transaction_summary_header|
-         header = transaction_summary_header
-         if check_if_number(header)
+         if check_if_number(transaction_summary_header)
           finance_fee_particular_category = FinanceFeeParticularCategory.find(:first, :conditions => "id = #{transaction_summary_header}")
           unless finance_fee_particular_category.blank?
-            @transactions_headers << finance_fee_particular_category.name
+            @transactions_headers << {:name => finance_fee_particular_category.name, :key => transaction_summary_header, :width => "100px", :is_num => true, :align => "right"}
+            c_header << finance_fee_particular_category.name
           else
-            @transactions_headers << transaction_summary_header
+            @transactions_headers << {:name => transaction_summary_header, :key => transaction_summary_header, :width => "100px", :is_num => true, :align => "right"}
+            c_header << transaction_summary_header
           end
          else
-           @transactions_headers << transaction_summary_header
+           @transactions_headers << {:name => transaction_summary_header, :key => transaction_summary_header, :width => "100px", :is_num => true, :align => "right"}
+           c_header << transaction_summary_header
          end
       end
     end
-    abort(@transactions_headers.inspect)
+    ranges.each do |range|
+      begin_month = range.to_date.beginning_of_month
+      @transactions_headers << {:name => begin_month.strftime("%b"), :key => begin_month.strftime("%b"), :width => "100px", :is_num => true, :align => "right"}
+    end
+    @transactions_headers << {:name => "Total Amount", :key => "tot_amt", :width => "100px", :is_num => true, :align => "right"}
+    unless transaction_summary_headers.blank?
+      @transactions_headers << {:name => c_header.join(", "), :key => "tot_amt_exta", :width => "100px", :is_num => true, :align => "right"}
+    end
+    
+    render :partial => "summary_transaction"
+  end
+  
+  def summary_transaction_xls
+    unless params[:batch_id].blank?
+      @batch = Batch.find params[:batch_id]
+      if params[:query].blank?
+        @students = Student.find_all_by_batch_id(params[:batch_id],:conditions=>"has_paid_fees=#{false}", :order => 'if(students.class_roll_no = \'\' or students.class_roll_no is null,0,cast(students.class_roll_no as unsigned)),students.first_name ASC')
+      else
+        @students = Student.active.find(:all,
+        :conditions => ["(first_name LIKE ? OR middle_name LIKE ? OR last_name LIKE ?
+                        OR admission_no LIKE ? OR (concat(first_name, \" \", last_name) LIKE ? ) OR (concat(first_name, \"+\", last_name) LIKE ? )) and batch_id = ? ",
+        "#{params[:query]}%","#{params[:query]}%","#{params[:query]}%",
+        "%#{params[:query]}%", "%#{params[:query]}%", "%#{params[:query]}%", params[:batch_id] ],
+        :order => "if(students.class_roll_no = \'\' or students.class_roll_no is null,0,cast(students.class_roll_no as unsigned)),students.first_name ASC") unless params[:query] == ''
+      end  
+    else
+      @students = Student.active.find(:all,
+      :conditions => ["first_name LIKE ? OR middle_name LIKE ? OR last_name LIKE ?
+                        OR admission_no LIKE ? OR (concat(first_name, \" \", last_name) LIKE ? ) OR (concat(first_name, \"+\", last_name) LIKE ? ) ",
+        "#{params[:query]}%","#{params[:query]}%","#{params[:query]}%",
+        "%#{params[:query]}%", "%#{params[:query]}%", "%#{params[:query]}%" ],
+      :order => "if(students.class_roll_no = \'\' or students.class_roll_no is null,0,cast(students.class_roll_no as unsigned)),students.first_name ASC") unless params[:query] == ''
+    end  
+    start_year = Date.today.beginning_of_year
+    end_year = Date.today.end_of_year
+    #start_year = Date.new(Date..current.year, 1)
+    #end_year = Date.new(Date..current.year, 12)
+    ranges = (start_year..end_year).select {|d| d.day == 1}
+    students_fees = []
+    
+    transaction_summary_headers = [] 
+    transaction_summary_headers = PaymentNewConfiguration.config_value("transaction_summary_header_" + MultiSchool.current_school.id.to_s) 
+
+    transaction_summary_headers = transaction_summary_headers.split(",") unless transaction_summary_headers.blank?
+    transaction_summary_headers ||= Array.new
+    
+    unless @students.blank?
+      @students.each do |student|
+        tmp = {}
+        tmp[:id] = student.id
+        tmp[:full_name] = student.full_name
+        tmp[:admission_no] = student.admission_no
+        tmp[:roll_no] = student.class_roll_no
+        tmp[:category_name] = student.student_category.name
+        
+        tot_amt_exta = 0
+        unless transaction_summary_headers.blank?
+          transaction_summary_headers.each do |transaction_summary_header|
+             amt = 0
+             if check_if_number(transaction_summary_header)
+              dates = student.batch.finance_fee_collections.all(:conditions => "start_date >= '#{start_year.strftime("%Y-%m-%d")}' and end_date <= '#{end_year.strftime("%Y-%m-%d")}'")
+              unless dates.blank?
+                fees = FinanceFee.find(:all, :conditions => "finance_fees.fee_collection_id IN (#{dates.map(&:id).join(",")}) and finance_fees.student_id = #{student.id} and finance_transactions.payee_id = #{student.id}", :joins => "INNER JOIN finance_transactions ON finance_transactions.finance_id = finance_fees.id")
+                unless fees.blank?
+                  fees.each do |fee|
+                    finance_transactions = fee.finance_transactions
+                    unless finance_transactions.blank?
+                      finance_transactions.each do |finance_transaction|
+                        fees_paid = FinanceTransactionParticular.find(:all, :conditions => "finance_transaction_particulars.finance_transaction_id = #{finance_transaction.id} and finance_transaction_particulars.particular_type = 'Particular' AND finance_transaction_particulars.transaction_type = 'Fee Collection' and finance_fee_particulars.finance_fee_particular_category_id = #{transaction_summary_header}", :joins => "INNER JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id", :group => "finance_transaction_particulars.particular_id")
+                        paid_amount = 0
+                        unless fees_paid.blank?
+                          paid_amount = fees_paid.map{|p| p.amount}.sum.to_f
+                        end
+                        fees_discount = FinanceTransactionParticular.find(:all, :conditions => "finance_transaction_particulars.finance_transaction_id = #{finance_transaction.id} and finance_transaction_particulars.particular_type = 'Adjustment' AND finance_transaction_particulars.transaction_type = 'Discount' and fee_discounts.finance_fee_particular_category_id = #{transaction_summary_header}", :joins => "INNER JOIN fee_discounts ON fee_discounts.id = finance_transaction_particulars.particular_id", :group => "finance_transaction_particulars.particular_id")
+                        discount_amount = 0
+                        unless fees_discount.blank?
+                          discount_amount = fees_discount.map{|p| p.amount}.sum.to_f
+                        end
+                        amtt = paid_amount.to_f - discount_amount.to_f
+                        if amtt < 0
+                          amtt = 0
+                        end
+                        amt += amtt.to_f
+                      end
+                    end
+                    tmp[transaction_summary_header.to_s.to_sym] = amt
+                  end
+                else
+                  tmp[transaction_summary_header.to_s.to_sym] = 0.0
+                end
+              else
+                tmp[transaction_summary_header.to_s.to_sym] = 0.0
+              end
+              
+             else
+               tmp[transaction_summary_header.to_s.to_sym] = 0.0
+             end
+             tot_amt_exta += amt
+          end
+        end
+        tmp[:tot_amt_exta] = tot_amt_exta
+        
+        tot_amt = 0
+        ranges.each do |range|
+          begin_month = range.to_date.beginning_of_month
+          end_month = range.to_date.end_of_month
+          dates = student.batch.finance_fee_collections.all(:conditions => "start_date >= '#{begin_month.strftime("%Y-%m-%d")}' and start_date <= '#{end_month.strftime("%Y-%m-%d")}'")
+          #total_date_id = dates.map(&:id)
+          unless dates.blank?
+            fees = FinanceFee.find(:all, :conditions => "finance_fees.fee_collection_id IN (#{dates.map(&:id).join(",")}) and finance_fees.student_id = #{student.id} and finance_transactions.payee_id = #{student.id}", :joins => "INNER JOIN finance_transactions ON finance_transactions.finance_id = finance_fees.id")
+            unless fees.blank?
+              amt = 0
+              month_transaction = "" 
+              month_transaction = PaymentNewConfiguration.config_value("month_transaction_" + MultiSchool.current_school.id.to_s) 
+
+              month_transaction = "" if month_transaction.blank?
+
+              fees.each do |fee|
+                finance_transactions = fee.finance_transactions
+                unless finance_transactions.blank?
+                  finance_transactions.each do |finance_transaction|
+                    if month_transaction == ""
+                      amount = finance_transaction.amount
+                      amt += amount.to_f
+                    else
+                      if month_transaction == "all"
+                        amount = finance_transaction.amount
+                        amt += amount.to_f
+                      else
+                        unless month_transaction.index("in_").nil?
+                          month_transaction_a = month_transaction.gsub("in_","").split(",").map(&:to_i)
+                          fees_paid = FinanceTransactionParticular.find(:all, :conditions => "finance_transaction_particulars.finance_transaction_id = #{finance_transaction.id} and finance_transaction_particulars.particular_type = 'Particular' AND finance_transaction_particulars.transaction_type = 'Fee Collection' and finance_fee_particulars.finance_fee_particular_category_id IN (#{month_transaction_a.join(",")})", :joins => "INNER JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id", :group => "finance_transaction_particulars.particular_id")
+                          paid_amount = 0
+                          unless fees_paid.blank?
+                            paid_amount = fees_paid.map{|p| p.amount}.sum.to_f
+                          end
+                          fees_discount = FinanceTransactionParticular.find(:all, :conditions => "finance_transaction_particulars.finance_transaction_id = #{finance_transaction.id} and finance_transaction_particulars.particular_type = 'Adjustment' AND finance_transaction_particulars.transaction_type = 'Discount' and fee_discounts.finance_fee_particular_category_id IN (#{month_transaction_a.join(",")})", :joins => "INNER JOIN fee_discounts ON fee_discounts.id = finance_transaction_particulars.particular_id", :group => "finance_transaction_particulars.particular_id")
+                          discount_amount = 0
+                          unless fees_discount.blank?
+                            discount_amount = fees_discount.map{|p| p.amount}.sum.to_f
+                          end
+                          amtt = paid_amount.to_f - discount_amount.to_f
+                          if amtt < 0
+                            amtt = 0
+                          end
+                          amt += amtt.to_f
+                        end
+                        unless month_transaction.index("ex_").nil?
+                          month_transaction_a = month_transaction.gsub("ex_","").split(",").map(&:to_i)
+                          fees_paid = FinanceTransactionParticular.find(:all, :conditions => "finance_transaction_particulars.finance_transaction_id = #{finance_transaction.id} and finance_transaction_particulars.particular_type = 'Particular' AND finance_transaction_particulars.transaction_type = 'Fee Collection' and finance_fee_particulars.finance_fee_particular_category_id IN (#{month_transaction_a.join(",")})", :joins => "INNER JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id", :group => "finance_transaction_particulars.particular_id")
+                          paid_amount = 0
+                          unless fees_paid.blank?
+                            paid_amount = fees_paid.map{|p| p.amount}.sum.to_f
+                          end
+                          fees_discount = FinanceTransactionParticular.find(:all, :conditions => "finance_transaction_particulars.finance_transaction_id = #{finance_transaction.id} and finance_transaction_particulars.particular_type = 'Adjustment' AND finance_transaction_particulars.transaction_type = 'Discount' and fee_discounts.finance_fee_particular_category_id IN (#{month_transaction_a.join(",")})", :joins => "INNER JOIN fee_discounts ON fee_discounts.id = finance_transaction_particulars.particular_id", :group => "finance_transaction_particulars.particular_id")
+                          discount_amount = 0
+                          unless fees_discount.blank?
+                            discount_amount = fees_discount.map{|p| p.amount}.sum.to_f
+                          end
+                          amtt = paid_amount.to_f - discount_amount.to_f
+                          if amtt < 0
+                            amtt = 0
+                          end
+                          tamt = finance_transaction.amount - amtt
+                          amt += tamt.to_f
+                        end
+                      end
+                    end
+                  end
+                end
+                tmp[begin_month.strftime("%b").to_sym] = amt
+                tot_amt += amt
+              end
+            else
+              tmp[begin_month.strftime("%b").to_sym] = 0.0
+            end
+          else
+            tmp[begin_month.strftime("%b").to_sym] = 0.0
+          end
+          #student
+        end
+        tmp[:tot_amt] = tot_amt
+        students_fees << tmp
+      end
+    end
+    #abort(students_fees.inspect)
+    @students_fees = students_fees
+    
+    c_header = []
+    @transactions_headers = [] 
+    @transactions_headers << {:name => "Roll", :key => "roll_no", :width => "20", :is_num => false, :align => "center"}
+    @transactions_headers << {:name => "Student Name", :key => "full_name", :width => "40", :is_num => false, :align => "center"}
+    @transactions_headers << {:name => "Category", :key => "category_name", :width => "30", :is_num => false, :align => "center"}
+    unless transaction_summary_headers.blank?
+      transaction_summary_headers.each do |transaction_summary_header|
+         if check_if_number(transaction_summary_header)
+          finance_fee_particular_category = FinanceFeeParticularCategory.find(:first, :conditions => "id = #{transaction_summary_header}")
+          unless finance_fee_particular_category.blank?
+            @transactions_headers << {:name => finance_fee_particular_category.name, :key => transaction_summary_header, :width => "20", :is_num => true, :align => "right"}
+            c_header << finance_fee_particular_category.name
+          else
+            @transactions_headers << {:name => transaction_summary_header, :key => transaction_summary_header, :width => "20", :is_num => true, :align => "right"}
+            c_header << transaction_summary_header
+          end
+         else
+           @transactions_headers << {:name => transaction_summary_header, :key => transaction_summary_header, :width => "20", :is_num => true, :align => "right"}
+           c_header << transaction_summary_header
+         end
+      end
+    end
+    ranges.each do |range|
+      begin_month = range.to_date.beginning_of_month
+      @transactions_headers << {:name => begin_month.strftime("%b"), :key => begin_month.strftime("%b"), :width => "20", :is_num => true, :align => "right"}
+    end
+    @transactions_headers << {:name => "Total Amount", :key => "tot_amt", :width => "20", :is_num => true, :align => "right"}
+    unless transaction_summary_headers.blank?
+      @transactions_headers << {:name => c_header.join(", "), :key => "tot_amt_exta", :width => "20", :is_num => true, :align => "right"}
+    end
+    
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+
+    amount_format = Spreadsheet::Format.new({
+        :horizontal_align => :right,
+        :number_format    => "0.00",
+        :vertical_align => :centre
+    });
+
+    title_format = Spreadsheet::Format.new({
+      :weight           => :bold,
+      :size             => 11,
+      :horizontal_align => :centre,
+      :vertical_align => :centre
+    })
+
+    center_format = Spreadsheet::Format.new({
+      :horizontal_align => :centre,
+      :vertical_align => :centre
+    });
+    vertical_format = Spreadsheet::Format.new({
+      :vertical_align => :centre
+    });
+
+    date = Spreadsheet::Format.new :number_format => 'MM/DD/YYYY'
+    
+    row_1 = []
+    @transactions_headers.each do |transactions_header|
+      row_1 << transactions_header[:name]
+    end
+    
+    # Create a new Workbook
+    new_book = Spreadsheet::Workbook.new
+
+    # Create the worksheet
+    new_book.create_worksheet :name => 'Transaction Summary ' + start_year.strftime("%Y")
+
+    # Add row_1
+    new_book.worksheet(0).insert_row(0, row_1)
+
+    row_1.each_with_index do |e, ind_row|
+      new_book.worksheet(0).row(0).set_format(ind_row, title_format)
+    end
+    new_book.worksheet(0).row(0).height = 22
+    ind = 1
+    @students_fees.each do |students_fee|
+      row_new = []
+      @transactions_headers.each do |transactions_header|
+        row_new << students_fee[transactions_header[:key].to_sym]
+      end
+      new_book.worksheet(0).insert_row(ind, row_new)
+      new_book.worksheet(0).row(ind).height = 20
+      k = 0
+      @transactions_headers.each do |transactions_header|
+        if transactions_header[:is_num]
+          new_book.worksheet(0).row(ind).set_format(k, amount_format)
+        else
+          new_book.worksheet(0).row(ind).set_format(k, center_format)
+        end
+        new_book.worksheet(0).column(k).width = transactions_header[:width]
+        k += 1
+      end
+      ind += 1
+    end
+    spreadsheet = StringIO.new 
+    new_book.write spreadsheet 
+
+    send_data spreadsheet.string, :filename => "Transaction Summary-#{start_year.strftime("%Y")}.xls", :type =>  "application/vnd.ms-excel"
   end
   
   def delete_fee_discount

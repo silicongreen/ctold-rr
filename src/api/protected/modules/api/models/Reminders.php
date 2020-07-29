@@ -194,7 +194,7 @@ class Reminders extends CActiveRecord
             {
                 if( $std_data )
                 {
-                    $criteria->addCondition("( batch_id = '".$user_data->batch_id."' or batch_id is null or batch_id = 0 )");
+                    $criteria->addCondition("( batch_id = '".$std_data->batch_id."' or batch_id is null or batch_id = 0 )");
                 }
             }
             $criteria->compare('is_deleted_by_sender', 0);

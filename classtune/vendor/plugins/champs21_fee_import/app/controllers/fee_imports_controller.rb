@@ -150,8 +150,25 @@ class FeeImportsController < ApplicationController
         "%#{params[:query]}%", "%#{params[:query]}%", "%#{params[:query]}%" ],
       :order => "batch_id asc,first_name asc") unless params[:query] == ''
     end  
-    
-    render :partial => 'summary_transaction'
+    unless @students.blank?
+      @student = @students.first
+
+      collection_dates
+      
+      @fee_collection_dates=@fee_collection_dates.uniq
+
+      unless MultiSchool.current_school.id == 3481
+        @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
+        @student_fees = @finance_fees.map{|s| s.fee_collection_id}
+        @payed_fees=FinanceFee.find(:all,:joins=>"INNER JOIN fee_transactions on fee_transactions.finance_fee_id=finance_fees.id INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fees.student_id=#{@student.id} ",:select=>"finance_fees.fee_collection_id").map{|s| s.fee_collection_id}
+      else
+        #already_assigned_ids = [2569,2570,2571,2644]
+        already_assigned_ids = []
+        @student_fees = already_assigned_ids #@fee_collection_dates.map{|fc| fc.id}
+      end
+      @payed_fees ||= []
+    end
+    render :partial => 'batch_student_list'
   end
 
   def list_fees_for_student

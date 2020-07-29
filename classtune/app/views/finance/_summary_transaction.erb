@@ -1,0 +1,131 @@
+<% unless @students_fees.blank? %>  
+<h2 style="padding-left: 10px;">Transaction Summary</h2>
+<div id="table-scroll" class="table-scroll">
+    <div class="table-wrap">
+        <table class="table-bordered main-table" id="table-scroll" cellspacing="0" cellpadding="0" border="0" style="width: 98%; table-layout:fixed;">
+            <thead><!-- class="thead-inverse" -->
+              <tr>
+                <th class="fixed-side" scope="col" style="width: 200px; text-align: center; vertical-align: middle;">Student Info</th>
+                <% @transactions_headers.each do |transactions_header| %>
+                  <th style="width: <%= transactions_header[:width] %>; text-align: center; vertical-align: middle;"><%= transactions_header[:name] %></th>
+                <% end %>
+              </tr>
+            </thead>
+            <tbody>
+                  <% @students_fees.each do |students_fee| %>
+                  <tr class="tr-odd">
+                      <% student = Student.find(:first, :conditions => "id = #{students_fee[:id]}") %>
+                      <% if student.nil?  %>
+                      <% student = ArchivedStudent.find(:first, :conditions => "former_id = #{students_fee[:id]}") %>
+                      <% end %>
+                      <th style="vertical-align: middle; text-align: left; color: #000;" class="fixed-side">
+                          <%= student.full_name unless student.full_name.nil? %><br />
+                      </th>
+                      <% i = 1 %>
+                      <% @transactions_headers.each do |transactions_header| %>
+                        <td style="white-space: nowrap; text-align: <%= transactions_header[:align] %>; padding-right: 10px; z-index: 1; position: relative;">
+                            <% if transactions_header[:is_num] %>
+                              <%= to_comma_seperated_precision_label students_fee[transactions_header[:key].to_sym] %>
+                            <% else %>
+                              <%= students_fee[transactions_header[:key].to_sym] %>
+                            <% end %>
+                        </td>
+                        <% i += 1 %>
+                      <% end %>
+                  </tr>
+                <% end %>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<div style="padding-bottom: 20px;">
+  <%= link_to " ► #{t('download_as_excel')}",
+                {:controller => "finance", :action => "summary_transaction_xls", :batch_id => @batch.id},:target => '_blank', :class=> 'user_button' %>
+</div>
+<% else %>
+<h2 style="border-bottom: 2px solid #ccc; padding-bottom: 10px;">Date Wise Particular Report</h2>
+<p>No records found</p>
+<% end %>  
+
+
+<style>
+    .user_button{
+      margin-left: 400px;
+    }
+    .table-scroll {
+	position:relative;
+	max-width:1000px;
+	margin:auto;
+	overflow:hidden;
+	border:1px solid #ddd;
+    }
+    .table-wrap {
+            width:100%;
+            overflow:auto;
+    }
+    .table-scroll table {
+            width:100%;
+            margin:auto;
+            border-collapse:separate;
+            border-spacing:0;
+    }
+    .table-scroll th, .table-scroll td {
+            padding:5px 10px;
+            border:1px solid #000;
+            background:#fff;
+            vertical-align:middle;
+    }
+    .table-scroll thead, .table-scroll tfoot {
+            background:#f9f9f9;
+    }
+    .clone {
+            position:absolute;
+            top:0;
+            left:0;
+    }
+    .clone th, .clone td {
+            visibility:hidden
+    }
+    .clone td, .clone th {
+            border-color:transparent
+    }
+    .clone tbody th {
+            visibility:visible;
+            color:red;
+    }
+    .clone .fixed-side {
+            background:#eee;
+            visibility:visible;
+            z-index: 1;
+            border-left: 1px solid #ccc;
+            position: relative;
+            border-bottom: 1px solid #AAA;
+    }
+    .clone .fixed-side:not(:last-child) {
+            background:#eee;
+            visibility:visible;
+            z-index: 1;
+            border-left: 1px solid #ccc;
+            position: relative;
+            border-bottom: 1px solid #AAA;
+    }
+    a:hover {
+        text-decoration: none !important;
+    }
+    .clone thead, .clone tfoot{background:transparent;}
+</style>   
+
+<script>
+  j("td").each(function(e){
+    if(j(this).html() == "-")
+    {
+      j(this).addClass("align-center");
+    }  
+  });
+  
+  j(document).ready(function() {
+    j(".main-table").clone(true).appendTo('#table-scroll').addClass('clone');   
+  });
+  
+</script>  

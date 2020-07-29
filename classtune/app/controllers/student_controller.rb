@@ -51,6 +51,8 @@ class StudentController < ApplicationController
   def student_photo_download
     require 'zip/zipfilesystem'
     batch_id = params[:batch_id]
+    batch = Batch.find_by_id(batch_id)
+    zip_name = batch.course.course_name+" "+batch.course.section_name+".zip"
     students = Student.find_all_by_batch_id(batch_id)
     rails_tmp_path = File.join(RAILS_ROOT, "/tmp/")
     tmp_zip_path = File.join(rails_tmp_path, "pictures.zip")
@@ -77,7 +79,7 @@ class StudentController < ApplicationController
           end
         end
       end
-      send_file  tmp_zip_path,:filename => "pictures.zip"
+      send_file  tmp_zip_path,:filename => zip_name
     end
   end
   

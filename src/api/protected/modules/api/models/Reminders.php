@@ -178,9 +178,25 @@ class Reminders extends CActiveRecord
         } 
         public function getUserReminderNew($user_id,$page_number,$page_size,$created_at="",$rtype="")
         {
+            $user_modal = new Users();
+            $user_data = $user_modal->findByPk($user_id);
+            if( $user_data->student )
+            {
+                $std = new Students();
+                $std_data = $std->getStudentByUserId($user_id);
+                
+            }
+            
             $criteria = new CDbCriteria;
             $criteria->select = 't.id,t.subject,t.body,t.rtype,t.rid,t.is_read,t.batch_id,t.student_id,t.created_at';
             $criteria->compare('recipient', $user_id);
+            if ( $user_data->student && isset($std_data) )
+            {
+                if( $std_data )
+                {
+                    $criteria->addCondition("( batch_id = '".$user_data->batch_id."' or batch_id is null or batch_id = 0 )");
+                }
+            }
             $criteria->compare('is_deleted_by_sender', 0);
             $criteria->compare('is_deleted_by_recipient', 0);
             if($created_at && $rtype)

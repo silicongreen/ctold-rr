@@ -1258,7 +1258,7 @@
                         {:controller => "finance", :action => "student_fee_receipt_pdf_multiple", :id => @student.id, :fees=> @collection_fees, :multiple => true},:target => '_blank', :class=> 'user_button', :style => style %>
                       <% end %>  
                 <% end %>  
-                <% if @gateway_settings.length == 1 %>
+                <% #if @gateway_settings.length == 1 %>
                   <% if @gateway_settings.keys.include?('bkash') or @gateway_settings.keys.include?('citybank') %>
                     <%
                       if @gateway_settings.keys.include?('citybank')
@@ -1283,7 +1283,7 @@
                       <%= image_tag "/images/card.png", :class => "", :id => "", :style => "float: right;" %>  
                     <% end %> 
                   <% end %>
-                <% end %>      
+                <% #end %>      
                 </div></div>  
               </td>
             </tr>

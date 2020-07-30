@@ -1069,7 +1069,7 @@
                         {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id},:target => '_blank', :class=> 'user_button_new', :style => style %>
                       <% end %>  
                       <% end %>  
-                      <% if @gateway_settings.length == 1 %>
+                      <%# if @gateway_settings.length == 1 %>
                         <% if @gateway_settings.keys.include?('bkash') or @gateway_settings.keys.include?('citybank') %>
                           <%
                             if @gateway_settings.keys.include?('citybank')
@@ -1094,7 +1094,7 @@
                             <%= image_tag "/images/card.png", :class => "", :id => "", :style => "" %>  
                           <% end %>
                         <% end %>
-                      <% end %>    
+                      <%# end %>    
                       </div></div>    
                     </td>
                   </tr>

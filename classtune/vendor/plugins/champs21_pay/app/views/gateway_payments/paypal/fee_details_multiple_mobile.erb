@@ -1165,7 +1165,7 @@
                           <% end %>  
                           <% end %>  
                           <% end %>  
-                            <% if @gateway_settings.length == 1 %>
+                            <% #if @gateway_settings.length == 1 %>
                   <% if @gateway_settings.keys.include?('bkash') or @gateway_settings.keys.include?('citybank') %>
                     <%
                       if @gateway_settings.keys.include?('citybank')
@@ -1190,7 +1190,7 @@
                       <%= image_tag "/images/card.png", :class => "", :id => "", :style => "float: right;" %>  
                     <% end %> 
                   <% end %>
-                <% end %> 
+                <%# end %> 
                         </div></div>  
                   </td>
                 </tr>

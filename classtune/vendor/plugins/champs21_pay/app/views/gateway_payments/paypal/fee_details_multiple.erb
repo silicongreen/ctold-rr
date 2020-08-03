@@ -1374,7 +1374,7 @@
               </div>
           </div>
           <div class="modal-footer">
-              <button type="button" id="close_pop_" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" id="close_pop_success" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
@@ -1723,6 +1723,10 @@ encrypted = [cipher].pack('m')
               j(".loading_single_bkash").hide();
 
             }
+        });
+        
+        j(document).on('click', "#close_pop_success", function(){
+            location.reload();
         });
         
         /*j(document).on("click", "#pay_fees_multiple", function(){

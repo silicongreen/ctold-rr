@@ -1203,10 +1203,6 @@
                       <% style = "padding: 14px 10px; margin: 18px 10px 0 !important;" %>    
                     <% end %>
                   <% end %>    
-                <% if MultiSchool.current_school.id != 352 and MultiSchool.current_school.id != 2 %>  
-                     <%= link_to "► #{t('print_receipt')}",
-                        {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id},:target => '_blank', :class=> 'user_button', :style=> style %>
-                <% end %> 
                 <%# if @gateway_settings.length == 1 %>
                     <% if @gateway_settings.keys.include?('bkash') or @gateway_settings.keys.include?('citybank') %>
                       <%
@@ -1228,11 +1224,15 @@
                       <% unless no_charge_apply.include?(MultiSchool.current_school.id) %>
                         <span style="float: right; display: block; padding-top: 8px; width: 100%; text-align: right; color: #000;">*1.5% convenience fee applicable.</span><br />
                       <% end %>
-                      <% if @gateway_settings.keys.include?('citybank') %>  
+                      <% if @gateway_settings.length == 1 and @gateway_settings.keys.include?('citybank') %>  
                         <%= image_tag "/images/card.png", :class => "", :id => "", :style => "float: right;" %>  
                       <% end %>  
                     <% end %>
                   <%# end %>  
+                  <% if MultiSchool.current_school.id != 352 and MultiSchool.current_school.id != 2 %>  
+                        <%= link_to "► #{t('print_receipt')}",
+                           {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id},:target => '_blank', :class=> 'user_button', :style=> style %>
+                   <% end %>       
                   </div></div>  
               </td>
             </tr>

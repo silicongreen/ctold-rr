@@ -1025,7 +1025,7 @@
                         <%= image_tag "/images/bkash-logo.png", :class => "gateway_image_single_bkash", :id => "pay_fees_multiple", :style => "", :onclick => "initBkash(this);" %>
       
                         <% else %>
-                        <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button' %>
+                        <%= submit_tag "â–º #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button' %>
                         <% end %>
                       <% else %>
                         <div style="width: 100%; float: right; text-align: right;">
@@ -1053,8 +1053,8 @@
                               <% end %>
                           <% end %>
                         </div>    
-                        <button type="button" id="pay_fees_multiple" class="submit_button" style="display: none;" disabled><%= "► #{t('pay_fees')}" %></button>
-                        <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button submit_pay' , :id => 'submit_button_multiple', :style=>"display: none;" %>
+                        <button type="button" id="pay_fees_multiple" class="submit_button" style="display: none;" disabled><%= "â–º #{t('pay_fees')}" %></button>
+                        <%= submit_tag "â–º #{t('pay_fees')}",:class=>'submit_button submit_pay' , :id => 'submit_button_multiple', :style=>"display: none;" %>
                       <% end %>
                       <% style = "" %>    
                       <% if @gateway_settings.length == 1 %>
@@ -1062,13 +1062,7 @@
                           <% style = "padding: 14px 10px; margin: 18px 10px 0 !important;" %>    
                         <% end %>
                       <% end %>     
-                      <% if MultiSchool.current_school.id != 352 %>  
-                      <% show_print_receipt = false %>
-                      <% if show_print_receipt %>  
-                      <%= link_to "► #{t('print_receipt')}",
-                        {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id},:target => '_blank', :class=> 'user_button_new', :style => style %>
-                      <% end %>  
-                      <% end %>  
+                        
                       <%# if @gateway_settings.length == 1 %>
                         <% if @gateway_settings.keys.include?('bkash') or @gateway_settings.keys.include?('citybank') %>
                           <%
@@ -1090,11 +1084,18 @@
                           <% unless no_charge_apply.include?(MultiSchool.current_school.id) %>
                             <p style="text-align: right; display: block; padding-top: 80px;">*1.5% convenience fee applicable.</p>
                           <% end %>  
-                          <% if @gateway_settings.keys.include?('citybank') %>  
+                          <% if @gateway_settings.length == 1 and @gateway_settings.keys.include?('citybank') %>  
                             <%= image_tag "/images/card.png", :class => "", :id => "", :style => "" %>  
                           <% end %>
                         <% end %>
                       <%# end %>    
+                      <% if MultiSchool.current_school.id != 352 %>  
+                      <% show_print_receipt = false %>
+                      <% if show_print_receipt %>  
+                      <%= link_to "► º #{t('print_receipt')}",
+                        {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id},:target => '_blank', :class=> 'user_button_new', :style => style %>
+                      <% end %>  
+                      <% end %>      
                       </div></div>    
                     </td>
                   </tr>
@@ -1513,11 +1514,11 @@
     j(document).ready(function(){
         <% if @gateway_settings.keys.include?('bkash')  %>
         bKash.init({ 
-          paymentMode: 'checkout', //fixed value ‘checkout’ 
+          paymentMode: 'checkout', //fixed value â€˜checkoutâ€™ 
           //paymentRequest format: {amount: AMOUNT, intent: INTENT} 
           //intent options 
-          //1) ‘sale’ – immediate transaction (2 API calls) 
-          //2) ‘authorization’ – deferred transaction (3 API calls) 
+          //1) â€˜saleâ€™ â€“ immediate transaction (2 API calls) 
+          //2) â€˜authorizationâ€™ â€“ deferred transaction (3 API calls) 
           paymentRequest: { 
             amount: <%= precision_label total_fees %>, //max two decimal points allowed 
             intent: 'sale' 
@@ -1528,7 +1529,7 @@
               j("#radio_bkash").prop('check',false);
               j("#bKashFrameWrapper").css('display','none');
               j("#pay_fees_multiple").prop('disabled',false);
-              j("#pay_fees_multiple").html("<%= "► #{t('pay_fees')}" %>");
+              j("#pay_fees_multiple").html("<%= "â–º #{t('pay_fees')}" %>");
               j("#bKashFrameWrapper").css('display','none');
               
               j.ajax({
@@ -1565,7 +1566,7 @@
                         bKash.create().onError(); 
                         alert(data.errorMessage);
                         j("#pay_fees_multiple").prop('disabled',false);
-                        j("#pay_fees_multiple").html("<%= "► #{t('pay_fees')}" %>");
+                        j("#pay_fees_multiple").html("<%= "â–º #{t('pay_fees')}" %>");
                         j("#bKashFrameWrapper").css('display','none');
                         j.ajax({
                             url: '/student/regenerate_order_id',
@@ -1582,7 +1583,7 @@
                 error: function () {
                     j(".loading").hide();
                     j("#pay_fees_multiple").prop('disabled',false);
-                    j("#pay_fees_multiple").html("<%= "► #{t('pay_fees')}" %>");
+                    j("#pay_fees_multiple").html("<%= "â–º #{t('pay_fees')}" %>");
                     j("#bKashFrameWrapper").css('display','none');
                     bKash.create().onError(); 
                     j.ajax({
@@ -1606,7 +1607,7 @@
             if ( bkashLoad == false )
             {
               j("#pay_fees_multiple").prop('disabled',false);
-              j("#pay_fees_multiple").html("<%= "► #{t('pay_fees')}" %>");
+              j("#pay_fees_multiple").html("<%= "â–º #{t('pay_fees')}" %>");
 
             }
         });

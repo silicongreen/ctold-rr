@@ -30,12 +30,18 @@
 </div>
 <div style="clear: both; height: 12px;"></div> 
 <div id="batch_panel_student" style="display: none;">
+  <div class="label-container"><label>Student Options</label></div>
+  <div class="text-input-bg" style="width: 300px; margin-top: 10px;">
+        <input type="radio" name="student_option" id="student_options_present" value="0" style="width: auto; height: auto;" checked="" />&nbsp;&nbsp; Present Student 
+        <input type="radio" name="student_option" id="student_options_former" value="1" style="width: auto; height: auto;" />&nbsp;&nbsp; Former Student 
+   </div>
+   <div style="clear: both; height: 12px;"></div>
     <div class="label-container"><label><%= t('select_a_batch') %>:</label> </div>
     <div class="text-input-bg text-input-bg2" style="height: 320px; "><%= select :send_sms, :batch_id,
        @batches.map {|b| [b.full_name, b.id]},
        {:prompt => "Select"},
        {:multiple => true,:onChange => "#{remote_function(:url => {:action => "list_students_new"},
-       :with => "'batch_id='+j('#send_sms_batch_id').val()",
+       :with => "'batch_id='+j('#send_sms_batch_id').val()+'&student_opt='+j('input[name=student_option]:checked').val()",
        :before => "Element.show('loader')",
        :success => "Element.hide('loader')"
        )}"} %>

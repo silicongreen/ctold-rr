@@ -641,7 +641,6 @@ p.flash-msg
       j(document).on("change","#is_test_student",function(){
           if ( Number(this.value) == 1 )
           {
-            alert(this.value)
               new Ajax.Request('/sms/show_test_student', 
                   {
                     asynchronous:true, 

@@ -205,8 +205,13 @@ class SmsController < ApplicationController
   def list_students_new
     @students = []
     unless params[:batch_id].blank?
-      batch_ids = params[:batch_id].split(",")
-      @students = Student.find_all_by_batch_id(batch_ids,:conditions=>"is_sms_enabled=true")
+      if params[:student_opt].to_i == 0
+        batch_ids = params[:batch_id].split(",")
+        @students = Student.find_all_by_batch_id(batch_ids,:conditions=>"is_sms_enabled=true")
+      elsif params[:student_opt].to_i == 1
+        batch_ids = params[:batch_id].split(",")
+        @students = ArchivedStudent.find_all_by_batch_id(batch_ids,:conditions=>"is_sms_enabled=true")
+      end
     end
   end
   
@@ -776,7 +781,12 @@ class SmsController < ApplicationController
               @recipients=[]
               sms_setting = SmsSetting.new()
               student_ids.each do |s_id|
-                student = Student.find(s_id)
+                is_archived_student = false
+                student = Student.find(:first, :conditions => "id = #{s_id}")
+                if student.blank?
+                  is_archived_student = true
+                  student = ArchivedStudent.find(:first, :conditions => "id = #{s_id}")
+                end
                 if sent_to.to_i == 1
                   if sms_setting.student_sms_active
                     
@@ -785,10 +795,11 @@ class SmsController < ApplicationController
                     else
                       @recipients.push student.sms_number unless (student.sms_number.nil? or student.sms_number == "")
                     end
-                    
-                    guardian = student.immediate_contact
-                    unless guardian.nil?
-                      @recipients.push guardian.mobile_phone unless (guardian.mobile_phone.nil? or guardian.mobile_phone == "")
+                    unless is_archived_student
+                      guardian = student.immediate_contact
+                      unless guardian.nil?
+                        @recipients.push guardian.mobile_phone unless (guardian.mobile_phone.nil? or guardian.mobile_phone == "")
+                      end
                     end
                   end
                 elsif sent_to.to_i == 2

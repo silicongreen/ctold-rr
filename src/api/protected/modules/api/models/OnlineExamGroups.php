@@ -316,6 +316,7 @@ class OnlineExamGroups extends CActiveRecord {
                         $q_image = Settings::content_images(utf8_encode($questions->question),$url);
                         $response_array['question'][$i]['id'] = $questions->id;
                         $response_array['question'][$i]['question'] = Settings::substr_with_unicode(utf8_encode($questions->question), true);
+                        $response_array['question'][$i]['question_html'] = utf8_encode($questions->question);
                         $response_array['question'][$i]['explanation'] = "";
                         if ($questions->explanation) {
                             $response_array['question'][$i]['explanation'] = utf8_encode($questions->explanation);
@@ -334,6 +335,7 @@ class OnlineExamGroups extends CActiveRecord {
                             $a_image = "";
                             $a_image = Settings::content_images(utf8_encode($options->option),$url);
                             $response_array['question'][$i]['option'][$j]['id'] = $options->id;
+                            $response_array['question'][$i]['option'][$j]['answer_html'] = utf8_encode($options->option);
                             $response_array['question'][$i]['option'][$j]['answer'] = Settings::substr_with_unicode(utf8_encode($options->option));
                             $response_array['question'][$i]['option'][$j]['answer_image'] = $a_image;
 

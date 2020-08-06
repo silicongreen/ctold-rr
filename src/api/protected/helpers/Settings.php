@@ -279,7 +279,7 @@ class Settings {
                 
                 
             }
-            $url = $school_url. "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment2s/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/".$homework->attachment_file_name;
+            $url = $school_url. "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachments/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/".$homework->attachment_file_name;
             $array['att1'] = $url;
         }
         if ($homework->attachment2_file_name)

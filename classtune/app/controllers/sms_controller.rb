@@ -800,6 +800,13 @@ class SmsController < ApplicationController
                       unless guardian.nil?
                         @recipients.push guardian.mobile_phone unless (guardian.mobile_phone.nil? or guardian.mobile_phone == "")
                       end
+                    else
+                      unless student.immediate_contact_id.blank?
+                        guardian = Guardian.find(:first, :conditions => "id = #{student.immediate_contact_id}")
+                        unless guardian.nil?
+                          @recipients.push guardian.mobile_phone unless (guardian.mobile_phone.nil? or guardian.mobile_phone == "")
+                        end
+                      end
                     end
                   end
                 elsif sent_to.to_i == 2
@@ -809,7 +816,13 @@ class SmsController < ApplicationController
                     @recipients.push student.sms_number unless (student.sms_number.nil? or student.sms_number == "")
                   end
                 elsif sent_to.to_i == 3
-                  guardian = student.immediate_contact
+                  unless is_archived_student
+                    guardian = student.immediate_contact
+                  else
+                    unless student.immediate_contact_id.blank?
+                      guardian = Guardian.find(:first, :conditions => "id = #{student.immediate_contact_id}")
+                    end
+                  end
                   unless guardian.nil?
                     @recipients.push guardian.mobile_phone unless (guardian.mobile_phone.nil? or guardian.mobile_phone == "")
                   end

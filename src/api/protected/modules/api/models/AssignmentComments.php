@@ -139,6 +139,11 @@ class AssignmentComments extends CActiveRecord
                     $userdata = $user->findByPk($value->author_id);
                     if( $userdata )
                     {
+                        $merge['is_author'] = 0;
+                        if( Yii::app()->user->id == $value->author_id )
+                        {
+                            $merge['is_author'] = 1;
+                        }
                         $merge['comments'] = $value->content;
                         $merge['created_at'] = $value->created_at;
                         $merge['user_name'] = trim($userdata->first_name." ".$userdata->last_name);

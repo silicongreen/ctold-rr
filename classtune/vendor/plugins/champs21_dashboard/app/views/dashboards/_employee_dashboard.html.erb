@@ -179,7 +179,7 @@ employee_id = @current_user.employee_record.id
       <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#27aa80; color:white;'><span style='text-align:center;width:80%; float:left;'>ClassliveBD</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'online_meeting_rooms', :action => 'index' %>  
       <% end %>
       <% if @current_user.admin? %>
-        <% unless session[:access_token].blank? %>
+        <% unless session[:access_token].blank? %> 
           <a href="http://dashboard.classtune.com?access_token=<%=session[:access_token]%>&dom=<%=MultiSchool.current_school.code%>&username=<%=@current_user.username%>" ><div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#CFB53B; color:white;'><span style='text-align:center;width:80%; float:left;'>New Dashboard</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div></a>
         <% end %>
         <% if @current_user.id != 639 && @current_user.id != 49510  %>
@@ -197,17 +197,17 @@ employee_id = @current_user.employee_record.id
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#27aa80; color:white;'><span style='text-align:center;width:80%; float:left;'>Confidential Card</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'other', :action => 'student_record' %>
       <% end %>
       <%  if (@current_user.admin? || @current_user.privileges.include?(Privilege.find_by_name('SMSManagement'))) && sms_enable? && @current_user.id != 33910 %> 
-        <% if MultiSchool.current_school.id == 352 or  MultiSchool.current_school.id == 357 or  MultiSchool.current_school.id == 319 or  MultiSchool.current_school.id == 360 or  MultiSchool.current_school.id == 361 or  MultiSchool.current_school.id == 362 or  MultiSchool.current_school.id == 323 %> 
+        <% if MultiSchool.current_school.id == 352 or  MultiSchool.current_school.id == 357 or  MultiSchool.current_school.id == 319 or  MultiSchool.current_school.id == 360 or  MultiSchool.current_school.id == 361 or  MultiSchool.current_school.id == 362 or  MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 312  %> 
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#58b368; color:white;'><span style='text-align:center;width:80%; float:left;'>Send Sms</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'sms', :action => 'panel' %>	
        <% else %>
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#27aa80; color:white;'><span style='text-align:center;width:80%; float:left;'>Send Sms To Students</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'sms', :action => 'students' %>	
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#58b368; color:white;'><span style='text-align:center;width:80%; float:left;'>Send Sms To Employee</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'sms', :action => 'employees' %>	
-       <% end %>
+       <% end %> 
       <% end %>
       <% if (@current_user.employee or @current_user.admin) and can_access_request? :connect_exam,:marks %>
         <% if MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 246 or MultiSchool.current_school.code == "oisd" or MultiSchool.current_school.code == "baghc"  %>
           <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#27aa80; color:white;'><span style='text-align:center;width:80%; float:left;'>Marks Entry</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'marks', :action => 'index' %>
-        <% else %>
+        <% else %> 
           <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#27aa80; color:white;'><span style='text-align:center;width:80%; float:left;'>Marks Entry</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'marks', :action => 'connect_exam' %>
         <% end %>  
       <% end %>

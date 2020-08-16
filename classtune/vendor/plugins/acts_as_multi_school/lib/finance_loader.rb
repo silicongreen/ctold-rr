@@ -2939,7 +2939,17 @@ module FinanceLoader
 #  abort(status.inspect)
 #end
     result = Base64.decode64(status)
-
+now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+      activity_log = ActivityLog.new
+      activity_log.user_id = current_user.id
+      activity_log.controller = "Finance Log - Get_Transaction_Ref"
+      activity_log.action = o.to_s
+      activity_log.post_requests = result
+      activity_log.ip = request.remote_ip
+      activity_log.user_agent = request.user_agent
+      activity_log.created_at = now
+      activity_log.updated_at = now
+      activity_log.save
     ref_id = ""
     orderId = ""
     name = ""
@@ -3137,6 +3147,17 @@ module FinanceLoader
     end
 
     result = Base64.decode64(status)
+    now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+      activity_log = ActivityLog.new
+      activity_log.user_id = current_user.id
+      activity_log.controller = "Finance Log - Transaction_Verify_Details"
+      activity_log.action = o.to_s
+      activity_log.post_requests = result
+      activity_log.ip = request.remote_ip
+      activity_log.user_agent = request.user_agent
+      activity_log.created_at = now
+      activity_log.updated_at = now
+      activity_log.save
     verification_verified = 0
     
     xml_str = Nokogiri::XML(result)

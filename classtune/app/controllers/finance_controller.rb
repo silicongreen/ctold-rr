@@ -17793,7 +17793,35 @@ class FinanceController < ApplicationController
     vertical_format = Spreadsheet::Format.new({
       :vertical_align => :centre
     });
-
+  
+    
+    
+    format = Spreadsheet::Format.new
+    format.bottom = :thin
+    format.top = :thin
+  
+    header_title_format = Spreadsheet::Format.new({
+      :weight           => :bold,
+      :size             => 18,
+      :horizontal_align => :centre,
+      :vertical_align   => :centre,
+    })
+    sub_header_title_format = Spreadsheet::Format.new({
+      :weight           => :bold,
+      :size             => 11,
+      :horizontal_align => :centre,
+      :vertical_align   => :centre,
+      :top              =>  :thin,
+      :bottom           =>  :thin
+    })
+    top_border_format = Spreadsheet::Format.new({
+      :top              =>  :thin,
+    })
+    bottom_border_format = Spreadsheet::Format.new({
+      :bottom           =>  :thin
+    })
+  
+  
     date = Spreadsheet::Format.new :number_format => 'MM/DD/YYYY'
     
     row_1 = []
@@ -17807,14 +17835,86 @@ class FinanceController < ApplicationController
     # Create the worksheet
     new_book.create_worksheet :name => 'Transaction Summary ' + start_year.strftime("%Y")
 
+    
+    row_loop = 0
+    row_header = [Configuration.get_config_value('InstitutionName')]
+    new_book.worksheet(0).insert_row(row_loop, row_header)
+    #new_book.worksheet(0).row(row_loop).border(0)
+    
+    row_loop += 1
+    new_book.worksheet(0).insert_row(row_loop, row_1)
+    row_loop += 1
+    new_book.worksheet(0).insert_row(row_loop, row_1)
+    new_book.worksheet(0).merge_cells(0, 0, row_loop, 7)
+    new_book.worksheet(0).row(0).set_format(0, header_title_format)
+    #new_book.worksheet(0).format.border(1, 1, 1, 1)
+    
+    row_loop += 1
+    unless @batch.blank?
+      batch_version = @batch.name.split(" ")
+      current_row = row_loop
+      
+      if batch_version[1].blank?
+        row_1 = ["#{t('shift')} :"+ " " "#{batch_version[0].strip}",'',"#{t('version')} :"+ " " "N/A", "","#{t('class')} :"+ " " "#{@batch.course.course_name}", "", "#{t('section')} :"+ " " "#{@batch.course.section_name}",'']
+      else  
+        row_1 = ["#{t('shift')} :"+ " " "#{batch_version[0].strip}",'',"#{t('version')} :"+ " " "#{batch_version[1].strip}", "","#{t('class')} :"+ " " "#{@batch.course.course_name}", "", "#{t('section')} :"+ " " "#{@batch.course.section_name}",'']
+      end
+      new_book.worksheet(0).insert_row(row_loop, row_1)
+      row_loop += 1
+      
+      row_1 = [""]
+      new_book.worksheet(0).insert_row(row_loop, row_1)
+      row_loop += 1
+      
+      row_1 = [""]
+      new_book.worksheet(0).insert_row(row_loop, row_1)
+      
+      new_book.worksheet(0).merge_cells(current_row, 0, row_loop, 1)
+      new_book.worksheet(0).merge_cells(current_row, 2, row_loop, 3)
+      new_book.worksheet(0).merge_cells(current_row, 4, row_loop, 5)
+      new_book.worksheet(0).merge_cells(current_row, 6, row_loop, 7)
+      new_book.worksheet(0).row(current_row).set_format(0, sub_header_title_format)
+      new_book.worksheet(0).row(current_row).set_format(1, sub_header_title_format)
+      new_book.worksheet(0).row(current_row).set_format(2, sub_header_title_format)
+      new_book.worksheet(0).row(current_row).set_format(3, sub_header_title_format)
+      new_book.worksheet(0).row(current_row).set_format(4, sub_header_title_format)
+      new_book.worksheet(0).row(current_row).set_format(5, sub_header_title_format)
+      new_book.worksheet(0).row(current_row).set_format(6, sub_header_title_format)
+      new_book.worksheet(0).row(current_row).set_format(7, sub_header_title_format)
+      
+      new_book.worksheet(0).row(row_loop).set_format(0, bottom_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(1, bottom_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(2, bottom_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(3, bottom_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(4, bottom_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(5, bottom_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(6, bottom_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(7, bottom_border_format)
+      row_loop += 1
+    else
+      row_1 = [""]
+      new_book.worksheet(0).insert_row(row_loop, row_1)
+      new_book.worksheet(0).merge_cells(row_loop, 0, row_loop, 7)
+      new_book.worksheet(0).row(row_loop).set_format(0, top_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(1, top_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(2, top_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(3, top_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(4, top_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(5, top_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(6, top_border_format)
+      new_book.worksheet(0).row(row_loop).set_format(7, top_border_format)
+      
+      row_loop += 1
+    end
+    
     # Add row_1
-    new_book.worksheet(0).insert_row(0, row_1)
+    new_book.worksheet(0).insert_row(row_loop, row_1)
 
     row_1.each_with_index do |e, ind_row|
       new_book.worksheet(0).row(0).set_format(ind_row, title_format)
     end
     new_book.worksheet(0).row(0).height = 22
-    ind = 1
+    ind = row_loop + 1
     @students_fees.each do |students_fee|
       row_new = []
       @transactions_headers.each do |transactions_header|

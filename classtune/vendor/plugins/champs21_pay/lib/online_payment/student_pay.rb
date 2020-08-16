@@ -81,8 +81,7 @@ module OnlinePayment
           #@fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }
           #@total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
           
-          if request.post? 
-             ## and params[:order_id].present?
+          if request.post? and params[:order_id].present?
             
             @fee_collection_name = ( params[:fee_collection_name].blank? ) ? "Student Fees" : params[:fee_collection_name]
             @user_gateway = @gateway_settings.keys[0].to_s
@@ -239,7 +238,7 @@ module OnlinePayment
                 fee_requests = params[:id2]
               end
             end
-            #if params[:CheckoutXmlMsg].present?
+            if params[:order_id].present?
               now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
               activity_log = ActivityLog.new
               activity_log.user_id = current_user.id
@@ -251,7 +250,7 @@ module OnlinePayment
               activity_log.created_at = now
               activity_log.updated_at = now
               activity_log.save
-            #end
+            end
             if params[:create_transaction].present?
               
               validate_payment_types(params)

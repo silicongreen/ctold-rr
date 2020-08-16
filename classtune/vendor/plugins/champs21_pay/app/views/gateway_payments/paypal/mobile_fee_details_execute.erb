@@ -74,8 +74,8 @@
     <% options['orderID'] = @finance_order.order_id %>
     <% success_url = "https://#{request.host_with_port}#{request.fullpath}" %>
     <% #success_url %>
-    <% success_url += success_url.index("?").nil? ? '?' : "&" %>
-    <% options['PaymentSuccessUrl'] = "#{success_url}create_transaction=1&target_gateway=#{gateway}" + extra_string %>
+    <% success_url += success_url.index("?").nil? ? '?t=1' : "" %>
+    <% options['PaymentSuccessUrl'] = "#{success_url}&create_transaction=1&target_gateway=#{gateway}" + extra_string %>
     <% #options['PaymentSuccessUrl'] = "https://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&target_gateway=#{gateway}" + extra_string %>
     <%= pay_button(options, gateway) %>   
   <% elsif gateway == "citybank" %>  

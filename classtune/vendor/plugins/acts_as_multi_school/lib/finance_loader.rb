@@ -4699,7 +4699,7 @@ module FinanceLoader
         activity_log.user_id = current_user.id
         activity_log.controller = "Finance Log - CheckoutXmlMsg"
         activity_log.action = orderId.to_s
-        activity_log.post_requests = xml_response_data
+        activity_log.post_requests = gateway_response
         activity_log.ip = request.remote_ip
         activity_log.user_agent = request.user_agent
         activity_log.created_at = now

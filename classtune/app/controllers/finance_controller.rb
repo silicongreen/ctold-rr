@@ -17837,9 +17837,9 @@ class FinanceController < ApplicationController
     #new_book.worksheet(0).row(row_loop).border(0)
     
     row_loop += 1
-    new_book.worksheet(0).insert_row(row_loop, row_1)
+    new_book.worksheet(0).insert_row(row_loop, row_header)
     row_loop += 1
-    new_book.worksheet(0).insert_row(row_loop, row_1)
+    new_book.worksheet(0).insert_row(row_loop, row_header)
     new_book.worksheet(0).merge_cells(0, 0, row_loop, 7)
     new_book.worksheet(0).row(0).set_format(0, header_title_format)
     #new_book.worksheet(0).format.border(1, 1, 1, 1)

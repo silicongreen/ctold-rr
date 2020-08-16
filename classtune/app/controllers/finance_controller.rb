@@ -17864,14 +17864,14 @@ class FinanceController < ApplicationController
       row_1 = [""]
       new_book.worksheet(0).insert_row(row_loop, row_1)
       
-      new_book.worksheet(0).merge_cells(current_row, 0, row_loop, 2)
-      new_book.worksheet(0).merge_cells(current_row, 3, row_loop, 5)
-      new_book.worksheet(0).merge_cells(current_row, 6, row_loop, 8)
-      new_book.worksheet(0).merge_cells(current_row, 9, row_loop, @transactions_headers.length - 1)
+      new_book.worksheet(0).merge_cells(current_row, 0, row_loop, 1)
+      new_book.worksheet(0).merge_cells(current_row, 2, row_loop, 3)
+      new_book.worksheet(0).merge_cells(current_row, 4, row_loop, 5)
+      new_book.worksheet(0).merge_cells(current_row, 6, row_loop, 7)
       @transactions_headers.each_with_index do |e, ind_row|
         new_book.worksheet(0).row(current_row).set_format(ind_row, title_format)
         
-        new_book.worksheet(0).row(row_loop).set_format(0, bottom_border_format)
+        new_book.worksheet(0).row(row_loop).set_format(ind_row, bottom_border_format)
       end
 #      new_book.worksheet(0).row(current_row).set_format(0, sub_header_title_format)
 #      new_book.worksheet(0).row(current_row).set_format(1, sub_header_title_format)

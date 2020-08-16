@@ -2939,17 +2939,7 @@ module FinanceLoader
 #  abort(status.inspect)
 #end
     result = Base64.decode64(status)
-now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
-      activity_log = ActivityLog.new
-      activity_log.user_id = current_user.id
-      activity_log.controller = "Finance Log - Get_Transaction_Ref"
-      activity_log.action = o.to_s
-      activity_log.post_requests = result
-      activity_log.ip = request.remote_ip
-      activity_log.user_agent = request.user_agent
-      activity_log.created_at = now
-      activity_log.updated_at = now
-      activity_log.save
+
     ref_id = ""
     orderId = ""
     name = ""
@@ -2975,6 +2965,18 @@ now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
     card_order_status = ""
 
     xml_str = Nokogiri::XML(result)
+    
+    now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+      activity_log = ActivityLog.new
+      activity_log.user_id = current_user.id
+      activity_log.controller = "Finance Log - Get_Transaction_Ref"
+      activity_log.action = o.to_s
+      activity_log.post_requests = xml_str
+      activity_log.ip = request.remote_ip
+      activity_log.user_agent = request.user_agent
+      activity_log.created_at = now
+      activity_log.updated_at = now
+      activity_log.save
 
     verifiedId = 0 
     found_verified = false 
@@ -3147,20 +3149,21 @@ now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
     end
 
     result = Base64.decode64(status)
+    
+    verification_verified = 0
+    
+    xml_str = Nokogiri::XML(result)
     now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
       activity_log = ActivityLog.new
       activity_log.user_id = current_user.id
       activity_log.controller = "Finance Log - Transaction_Verify_Details"
       activity_log.action = o.to_s
-      activity_log.post_requests = result
+      activity_log.post_requests = xml_str
       activity_log.ip = request.remote_ip
       activity_log.user_agent = request.user_agent
       activity_log.created_at = now
       activity_log.updated_at = now
       activity_log.save
-    verification_verified = 0
-    
-    xml_str = Nokogiri::XML(result)
     xml_response = Hash.from_xml(xml_str.to_s)
     xml_response_data = xml_response[:Response]
     validation_response = {}
@@ -4672,24 +4675,25 @@ now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
         end
       elsif params[:target_gateway] == "trustbank"
         result = Base64.decode64(params[:CheckoutXmlMsg])
-        if params[:target_gateway] == "trustbank"
-        now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
-        activity_log = ActivityLog.new
-        activity_log.user_id = current_user.id
-        activity_log.controller = "Finance Log - CheckoutXmlMsg"
-        activity_log.action = orderId.to_s
-        activity_log.post_requests = result
-        activity_log.ip = request.remote_ip
-        activity_log.user_agent = request.user_agent
-        activity_log.created_at = now
-        activity_log.updated_at = now
-        activity_log.save
-      end
+        
         #result = '<Response date="2016-06-20 10:14:53.213">  <RefID>133783A000129D</RefID>  <OrderID>O1052536</OrderID>  <Name> Customer1</Name>  <Email> mr.customer@gmail.com </Email>  <Amount>2090.00</Amount>  <ServiceCharge>0.00</ServiceCharge>  <Status>1</Status>  <StatusText>PAID</StatusText>  <Used>0</Used>  <Verified>0</Verified>  <PaymentType>ITCL</PaymentType>  <PAN>712300XXXX1277</PAN>  <TBMM_Account></TBMM_Account>  <MarchentID>SAGC</MarchentID>  <OrderDateTime>2016-06-20 10:14:24.700</OrderDateTime>  <PaymentDateTime>2016-06-20 10:21:34.303</PaymentDateTime>  <EMI_No>0</EMI_No>  <InterestAmount>0.00</InterestAmount>  <PayWithCharge>1</PayWithCharge>  <CardResponseCode>00</CardResponseCode>  <CardResponseDescription>APPROVED</CardResponseDescription>  <CardOrderStatus>APPROVED</CardOrderStatus> </Response> '
         xml_res = Nokogiri::XML(result)
         
         xml_response = Hash.from_xml(xml_res.to_s)
         xml_response_data = xml_response[:Response]
+        
+        now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+        activity_log = ActivityLog.new
+        activity_log.user_id = current_user.id
+        activity_log.controller = "Finance Log - CheckoutXmlMsg"
+        activity_log.action = orderId.to_s
+        activity_log.post_requests = xml_response_data
+        activity_log.ip = request.remote_ip
+        activity_log.user_agent = request.user_agent
+        activity_log.created_at = now
+        activity_log.updated_at = now
+        activity_log.save
+        
         gateway_response = {}
         xml_response_data.each do |k,v|
           gateway_response[k.underscore.to_sym] = v

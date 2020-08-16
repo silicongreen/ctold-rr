@@ -238,6 +238,17 @@ module OnlinePayment
                 fee_requests = params[:id2]
               end
             end
+            now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+            activity_log = ActivityLog.new
+            activity_log.user_id = current_user.id
+            activity_log.controller = "Finance Log - POST CHECK"
+            activity_log.action = "CHECKING...."
+            activity_log.post_requests = params
+            activity_log.ip = request.remote_ip
+            activity_log.user_agent = request.user_agent
+            activity_log.created_at = now
+            activity_log.updated_at = now
+            activity_log.save
             if params[:create_transaction].present?
               
               validate_payment_types(params)

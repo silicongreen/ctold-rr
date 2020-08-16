@@ -17840,7 +17840,7 @@ class FinanceController < ApplicationController
     new_book.worksheet(0).insert_row(row_loop, row_header)
     row_loop += 1
     new_book.worksheet(0).insert_row(row_loop, row_header)
-    new_book.worksheet(0).merge_cells(0, 0, row_loop, 7)
+    new_book.worksheet(0).merge_cells(0, 0, row_loop, @transactions_headers.length)
     new_book.worksheet(0).row(0).set_format(0, header_title_format)
     #new_book.worksheet(0).format.border(1, 1, 1, 1)
     
@@ -17864,10 +17864,10 @@ class FinanceController < ApplicationController
       row_1 = [""]
       new_book.worksheet(0).insert_row(row_loop, row_1)
       
-      new_book.worksheet(0).merge_cells(current_row, 0, row_loop, 1)
-      new_book.worksheet(0).merge_cells(current_row, 2, row_loop, 3)
-      new_book.worksheet(0).merge_cells(current_row, 4, row_loop, 5)
-      new_book.worksheet(0).merge_cells(current_row, 6, row_loop, 7)
+      new_book.worksheet(0).merge_cells(current_row, 0, row_loop, 3)
+      new_book.worksheet(0).merge_cells(current_row, 4, row_loop, 7)
+      new_book.worksheet(0).merge_cells(current_row, 8, row_loop, 12)
+      new_book.worksheet(0).merge_cells(current_row, 13, row_loop, @transactions_headers.length)
       new_book.worksheet(0).row(current_row).set_format(0, sub_header_title_format)
       new_book.worksheet(0).row(current_row).set_format(1, sub_header_title_format)
       new_book.worksheet(0).row(current_row).set_format(2, sub_header_title_format)
@@ -17889,7 +17889,7 @@ class FinanceController < ApplicationController
     else
       row_1 = [""]
       new_book.worksheet(0).insert_row(row_loop, row_1)
-      new_book.worksheet(0).merge_cells(row_loop, 0, row_loop, 7)
+      new_book.worksheet(0).merge_cells(row_loop, 0, row_loop, @transactions_headers.length)
       new_book.worksheet(0).row(row_loop).set_format(0, top_border_format)
       new_book.worksheet(0).row(row_loop).set_format(1, top_border_format)
       new_book.worksheet(0).row(row_loop).set_format(2, top_border_format)
@@ -17910,9 +17910,9 @@ class FinanceController < ApplicationController
     new_book.worksheet(0).insert_row(row_loop, row_1)
 
     row_1.each_with_index do |e, ind_row|
-      new_book.worksheet(0).row(0).set_format(ind_row, title_format)
+      new_book.worksheet(0).row(row_loop).set_format(ind_row, title_format)
     end
-    new_book.worksheet(0).row(0).height = 22
+    new_book.worksheet(0).row(row_loop).height = 22
     ind = row_loop + 1
     @students_fees.each do |students_fee|
       row_new = []

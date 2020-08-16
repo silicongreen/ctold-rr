@@ -17824,11 +17824,6 @@ class FinanceController < ApplicationController
   
     date = Spreadsheet::Format.new :number_format => 'MM/DD/YYYY'
     
-    row_1 = []
-    @transactions_headers.each do |transactions_header|
-      row_1 << transactions_header[:name]
-    end
-    
     # Create a new Workbook
     new_book = Spreadsheet::Workbook.new
 
@@ -17908,6 +17903,10 @@ class FinanceController < ApplicationController
     end
     
     # Add row_1
+    row_1 = []
+    @transactions_headers.each do |transactions_header|
+      row_1 << transactions_header[:name]
+    end
     new_book.worksheet(0).insert_row(row_loop, row_1)
 
     row_1.each_with_index do |e, ind_row|

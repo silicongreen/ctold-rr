@@ -81,6 +81,19 @@ module OnlinePayment
           #@fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }
           #@total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
           
+          if request.post? 
+            now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+            activity_log = ActivityLog.new
+            activity_log.user_id = current_user.id
+            activity_log.controller = "Finance Log - ONLY POST"
+            activity_log.action = params[:order_id].to_s
+            activity_log.post_requests = params
+            activity_log.ip = request.remote_ip
+            activity_log.user_agent = request.user_agent
+            activity_log.created_at = now
+            activity_log.updated_at = now
+            activity_log.save
+          end
           if request.post? and params[:order_id].present?
             
             @fee_collection_name = ( params[:fee_collection_name].blank? ) ? "Student Fees" : params[:fee_collection_name]

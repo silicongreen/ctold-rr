@@ -239,7 +239,7 @@ module OnlinePayment
                 fee_requests = params[:id2]
               end
             end
-            if params[:CheckoutXmlMsg].present?
+            #if params[:CheckoutXmlMsg].present?
               now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
               activity_log = ActivityLog.new
               activity_log.user_id = current_user.id
@@ -251,7 +251,7 @@ module OnlinePayment
               activity_log.created_at = now
               activity_log.updated_at = now
               activity_log.save
-            end
+            #end
             if params[:create_transaction].present?
               
               validate_payment_types(params)

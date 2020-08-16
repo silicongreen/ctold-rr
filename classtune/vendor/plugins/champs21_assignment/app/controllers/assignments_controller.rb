@@ -1133,6 +1133,10 @@ class AssignmentsController < ApplicationController
       else
         render :action=>:new
       end  
+    else
+      render :update do |page|
+        page << 'alert("invalid Request, No Student Selected");'
+      end
     end
   end
 

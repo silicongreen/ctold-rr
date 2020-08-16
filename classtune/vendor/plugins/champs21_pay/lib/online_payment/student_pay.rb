@@ -242,7 +242,7 @@ module OnlinePayment
             activity_log = ActivityLog.new
             activity_log.user_id = current_user.id
             activity_log.controller = "Finance Log - POST CHECK"
-            activity_log.action = "CHECKING...."
+            activity_log.action = params[:order_id].to_s
             activity_log.post_requests = params
             activity_log.ip = request.remote_ip
             activity_log.user_agent = request.user_agent

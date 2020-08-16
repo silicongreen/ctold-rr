@@ -4682,6 +4682,18 @@ module FinanceLoader
         xml_response = Hash.from_xml(xml_res.to_s)
         xml_response_data = xml_response[:Response]
         
+        
+        gateway_response = {}
+        xml_response_data.each do |k,v|
+          gateway_response[k.underscore.to_sym] = v
+        end
+        #abort(xml_response_data.inspect)
+        #xml_response_data.each { |k,v| k.underscore.to_sym = v }
+        verified = xml_response_data[:Verified]
+        orderId = xml_response_data[:OrderID]
+        order_datetime = xml_response_data[:OrderDateTime]
+        trans_date = xml_response_data[:PaymentDateTime]
+        
         now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
         activity_log = ActivityLog.new
         activity_log.user_id = current_user.id
@@ -4694,16 +4706,6 @@ module FinanceLoader
         activity_log.updated_at = now
         activity_log.save
         
-        gateway_response = {}
-        xml_response_data.each do |k,v|
-          gateway_response[k.underscore.to_sym] = v
-        end
-        #abort(xml_response_data.inspect)
-        #xml_response_data.each { |k,v| k.underscore.to_sym = v }
-        verified = xml_response_data[:Verified]
-        orderId = xml_response_data[:OrderID]
-        order_datetime = xml_response_data[:OrderDateTime]
-        trans_date = xml_response_data[:PaymentDateTime]
         
         #order_datetime = gateway_response[:OrderDateTime]
 

@@ -17767,7 +17767,7 @@ class FinanceController < ApplicationController
     end
     @transactions_headers << {:name => "Total Amount", :key => "tot_amt", :width => "20", :is_num => true, :align => "right"}
     unless transaction_summary_headers.blank?
-      @transactions_headers << {:name => c_header.join(", "), :key => "tot_amt_exta", :width => "20", :is_num => true, :align => "right"}
+      @transactions_headers << {:name => c_header.join(", "), :key => "tot_amt_exta", :width => "50", :is_num => true, :align => "right"}
     end
     
     require 'spreadsheet'
@@ -17840,7 +17840,8 @@ class FinanceController < ApplicationController
     new_book.worksheet(0).insert_row(row_loop, row_header)
     row_loop += 1
     new_book.worksheet(0).insert_row(row_loop, row_header)
-    new_book.worksheet(0).merge_cells(0, 0, row_loop, 10)
+    new_book.worksheet(0).merge_cells(0, 0, row_loop, 11)
+    new_book.worksheet(0).merge_cells(0, 12, row_loop, @transactions_headers.length - 1)
     new_book.worksheet(0).row(0).set_format(0, header_title_format)
     #new_book.worksheet(0).format.border(1, 1, 1, 1)
     
@@ -17850,9 +17851,9 @@ class FinanceController < ApplicationController
       current_row = row_loop
       
       if batch_version[1].blank?
-        row_1 = ["#{t('shift')} :"+ " " "#{batch_version[0].strip}",'',"#{t('version')} :"+ " " "N/A", "","#{t('class')} :"+ " " "#{@batch.course.course_name}", "", "#{t('section')} :"+ " " "#{@batch.course.section_name}",'']
+        row_1 = ["#{t('shift')} :"+ " " "#{batch_version[0].strip}",'','',"#{t('version')} :"+ " " "N/A", "", "","#{t('class')} :"+ " " "#{@batch.course.course_name}", "", "", "#{t('section')} :"+ " " "#{@batch.course.section_name}", "",'']
       else  
-        row_1 = ["#{t('shift')} :"+ " " "#{batch_version[0].strip}",'',"#{t('version')} :"+ " " "#{batch_version[1].strip}", "","#{t('class')} :"+ " " "#{@batch.course.course_name}", "", "#{t('section')} :"+ " " "#{@batch.course.section_name}",'']
+        row_1 = ["#{t('shift')} :"+ " " "#{batch_version[0].strip}", "",'',"#{t('version')} :"+ " " "#{batch_version[1].strip}", "", "","#{t('class')} :"+ " " "#{@batch.course.course_name}", "", "", "#{t('section')} :"+ " " "#{@batch.course.section_name}", "",'']
       end
       new_book.worksheet(0).insert_row(row_loop, row_1)
       row_loop += 1
@@ -17864,10 +17865,11 @@ class FinanceController < ApplicationController
       row_1 = [""]
       new_book.worksheet(0).insert_row(row_loop, row_1)
       
-      new_book.worksheet(0).merge_cells(current_row, 0, row_loop, 1)
-      new_book.worksheet(0).merge_cells(current_row, 2, row_loop, 3)
-      new_book.worksheet(0).merge_cells(current_row, 4, row_loop, 5)
-      new_book.worksheet(0).merge_cells(current_row, 6, row_loop, 7)
+      new_book.worksheet(0).merge_cells(current_row, 0, row_loop, 2)
+      new_book.worksheet(0).merge_cells(current_row, 3, row_loop, 5)
+      new_book.worksheet(0).merge_cells(current_row, 6, row_loop, 8)
+      new_book.worksheet(0).merge_cells(current_row, 9, row_loop, 11)
+      new_book.worksheet(0).merge_cells(current_row, 12, row_loop, @transactions_headers.length - 1)
       @transactions_headers.each_with_index do |e, ind_row|
         new_book.worksheet(0).row(current_row).set_format(ind_row, title_format)
         
@@ -17896,7 +17898,7 @@ class FinanceController < ApplicationController
       new_book.worksheet(0).insert_row(row_loop, row_1)
       new_book.worksheet(0).merge_cells(row_loop, 0, row_loop, @transactions_headers.length - 1)
       @transactions_headers.each_with_index do |e, ind_row|
-        new_book.worksheet(0).row(row_loop).set_format(0, top_border_format)
+        new_book.worksheet(0).row(row_loop).set_format(ind_row, top_border_format)
       end
       
 #      new_book.worksheet(0).row(row_loop).set_format(0, top_border_format)

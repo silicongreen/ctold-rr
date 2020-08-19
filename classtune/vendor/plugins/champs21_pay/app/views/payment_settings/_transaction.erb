@@ -305,12 +305,14 @@
             </td>
             <% elsif @gateway == "citybank" %>
               <td style="vertical-align: middle; text-align: center;">
-                <% if payment.gateway_response[:Message][:OrderStatus] == "APPROVED" %>  
-                  <i class="fa fa-check" style="color: #49BB4B; font-size: 14px;"></i><br />
-                <% else %>  
-                  <i class="fa fa-close" style="color: #AB0D14; font-size: 14px;"></i><br />
+                <% unless payment.gateway_response[:Message].blank?  %>  
+                  <% if payment.gateway_response[:Message][:OrderStatus] == "APPROVED" %>  
+                    <i class="fa fa-check" style="color: #49BB4B; font-size: 14px;"></i><br />
+                  <% else %>  
+                    <i class="fa fa-close" style="color: #AB0D14; font-size: 14px;"></i><br />
+                  <% end %>  
+                  <%= payment.gateway_response[:Message][:OrderStatus] %>
                 <% end %>  
-                <%= payment.gateway_response[:Message][:OrderStatus] %>
               </td>
             <% elsif @gateway == "bkash" %>
               <td style="vertical-align: middle; text-align: center;">

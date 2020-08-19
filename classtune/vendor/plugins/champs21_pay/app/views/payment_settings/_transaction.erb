@@ -152,8 +152,13 @@
             <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:ref_id] unless payment.gateway_response[:ref_id].blank?}" %></td>
             <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:order_id] unless payment.gateway_response[:order_id].blank?}" %></td>
             <% elsif @gateway == "citybank" %>
-            <td style="vertical-align: middle; text-align: left;"><%= "Card Holder Name: <br />#{payment.gateway_response[:Message][:CardHolderName] unless payment.gateway_response[:Message].blank? and payment.gateway_response[:Message][:CardHolderName].blank?}<hr style='border:1px solid #ccc;' />Card No.: <br />#{payment.gateway_response[:Message][:PAN] unless  payment.gateway_response[:Message].blank? and payment.gateway_response[:Message][:PAN].blank?}" %></td>
-            <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:Message][:OrderID] unless payment.gateway_response[:Message].blank? and  payment.gateway_response[:Message][:OrderID].blank?}" %></td>
+            <% unless payment.gateway_response[:Message].blank? %>
+            <td style="vertical-align: middle; text-align: left;"><%= "Card Holder Name: <br />#{payment.gateway_response[:Message][:CardHolderName] unless payment.gateway_response[:Message][:CardHolderName].blank?}<hr style='border:1px solid #ccc;' />Card No.: <br />#{payment.gateway_response[:Message][:PAN] unless payment.gateway_response[:Message][:PAN].blank?}" %></td>
+            <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:Message][:OrderID] unless payment.gateway_response[:Message][:OrderID].blank?}" %></td>
+            <% else %>
+            <td style="vertical-align: middle; text-align: left;">&nbsp;</td>
+            <td style="vertical-align: middle; text-align: center;">&nbsp;</td>
+            <% end %>
             <td style="vertical-align: middle; text-align: center;"><%= "#{payment.order_id}" %></td>
             <% elsif @gateway == "citybank" %>
             <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:payment_type] unless payment.gateway_response[:payment_type].blank?}" %></td>

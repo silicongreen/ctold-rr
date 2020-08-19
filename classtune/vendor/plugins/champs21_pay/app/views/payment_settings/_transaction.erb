@@ -176,7 +176,10 @@
                 amount ||= payment.gateway_response[:x_amount]
               elsif @gateway == "citybank"
                 fee_percent = 0.00
-                amount_return = payment.gateway_response[:Message][:TotalAmount].to_f / 100
+                unless payment.gateway_response[:Message].blank? 
+                  amount_return = payment.gateway_response[:Message][:TotalAmount].to_f / 100
+                else
+                end
                 amount = amount_return
                 paid_amount = 0
                 total_payments = Payment.find(:all, :conditions => "order_id = '#{payment.order_id}' and gateway_response like \'%OrderDescription:%\'")
@@ -196,6 +199,10 @@
                       end
                     end
                   end
+                end
+                if payment.gateway_response[:Message].blank? 
+                  amount_return = paid_amount
+                  amount = amount_return
                 end
                 fee_percent = paid_amount.to_f * (1.5 / 100)
                 

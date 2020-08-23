@@ -48,41 +48,6 @@ class StudentController < ApplicationController
     @graduation_session = BatchTransfer.find(:all,:conditions=>["from_id IN (?) and to_id = ?",@schoo_batch_id,0],:limit=>100,:order=>'created_at DESC')
   end
   
-  def student_photo_download
-    require 'zip/zipfilesystem'
-    batch_id = params[:batch_id]
-    batch = Batch.find_by_id(batch_id)
-    zip_name = batch.course.course_name+" "+batch.course.section_name+".zip"
-    students = Student.find_all_by_batch_id(batch_id)
-    rails_tmp_path = File.join(RAILS_ROOT, "/tmp/")
-    tmp_zip_path = File.join(rails_tmp_path, "pictures.zip")
-    File.delete(tmp_zip_path) if File.exist?(tmp_zip_path)
-    unless students.blank?
-      Zip::ZipFile.open(tmp_zip_path,Zip::ZipFile::CREATE) do |zipfile|
-        students.each do |student|
-          unless student.photo_file_name.blank?
-            file_extenstion = ""
-            if student.photo_content_type == "image/jpeg" or student.photo_content_type == "image/jpg"
-              file_extenstion = "jpg"
-            end
-            if student.photo_content_type == "image/png"
-              file_extenstion = "png"
-            end
-            if student.photo_content_type == "image/gif"
-              file_extenstion = "gif"
-            end
-            img_name = student.admission_no+"-"+student.full_name+"."+file_extenstion
-            if File.exists? student.photo.path
-              img = open(student.photo.path)
-              zipfile.add(img_name, img.path)
-            end
-          end
-        end
-      end
-      send_file  tmp_zip_path,:filename => zip_name
-    end
-  end
-  
   def regenerate_order_id
     require "openssl"
     require 'digest/sha2'
@@ -6009,6 +5974,17 @@ class StudentController < ApplicationController
   end
 
   def fee_details
+    now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+    activity_log = ActivityLog.new
+    activity_log.user_id = current_user.id
+    activity_log.controller = "NF Log - STUDENT"
+    activity_log.action = params[:id].to_s
+    activity_log.post_requests = params
+    activity_log.ip = request.remote_ip
+    activity_log.user_agent = request.user_agent
+    activity_log.created_at = now
+    activity_log.updated_at = now
+    activity_log.save
     advance_fee_collection = false
     @self_advance_fee = false
     @fee_has_advance_particular = false

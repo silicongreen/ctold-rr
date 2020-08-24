@@ -3790,6 +3790,7 @@ authorization do
       :get_classes_publisher,
       :get_batches,
       ]  
+    has_permission_on [:other], :to => [:admit_card,:list_students,:print_admit_card,:student_record,:list_student_record,:print_student_record,:excel_student_record,:print_bus_card,:print_bus_card_excell,:list_student_bus_card,:bus_card]
     has_permission_on [:meetings], :to => [:index,:forwarded,:inbox,:outbox, :new, :create, :edit, :update,:update_forwarded, :show,:show_forwarded, :destroy, :get_classes, :get_classes_publisher, :get_batches, :get_section_data, :list_students_by_course]
     has_permission_on [:timetable],:to => [:employee_timetable,:update_employee_tt,:teacher_timetable_pdf]
     has_permission_on [:event], :to => [:event_details]

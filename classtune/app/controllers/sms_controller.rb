@@ -1235,7 +1235,7 @@ class SmsController < ApplicationController
     end
     
     if sent_to.to_i == 1 or sent_to.to_i == 3
-      guardians = Guardian.find(:all, :conditions => "ward_id IN (#{student_ids.join(',')}) and user_id not null and user_id != ''").map(&:user_id)
+      guardians = Guardian.find(:all, :conditions => "ward_id IN (#{student_ids.join(',')}) and user_id is not null and user_id != ''").map(&:user_id)
       
       if MultiSchool.current_school.id == 352
         sql = "SELECT g.first_name, g.last_name, s.sms_number, g.mobile_phone,fu.paid_username,fu.paid_password FROM guardians as g INNER join students s ON s.id = g.ward_id left join tds_free_users as fu on g.user_id=fu.paid_id where fu.paid_school_id=#{MultiSchool.current_school.id} and fu.paid_id IN (#{guardians.join(',')}) and fu.paid_username LIKE '%p1%' and s.is_deleted = 0" 

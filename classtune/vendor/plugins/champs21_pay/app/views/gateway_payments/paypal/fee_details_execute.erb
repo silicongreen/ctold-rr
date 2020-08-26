@@ -80,7 +80,7 @@
     <%
       now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
       activity_log = ActivityLog.new
-      activity_log.user_id = current_user.id
+      activity_log.user_id = @current_user.id
       activity_log.controller = "SUM LOG - generate"
       activity_log.action = params[:id].to_s
       activity_log.post_requests =  options['PaymentSuccessUrl']

@@ -6,19 +6,6 @@ module OnlinePayment
     end
 
     def fee_details_with_gateway
-      now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
-      activity_log = ActivityLog.new
-      activity_log.user_id = current_user.id
-      activity_log.controller = "LOL Log - STUDENT PAY"
-      activity_log.action = params[:id].to_s
-      activity_log.post_requests =  "https://#{request.host_with_port}#{request.fullpath}"
-      activity_log.ip = request.remote_ip
-      activity_log.user_agent = request.user_agent
-      activity_log.created_at = now
-      activity_log.updated_at = now
-      activity_log.save
-      
-      
       require 'net/http'
       require 'soap/wsdlDriver'
       require 'uri'
@@ -95,18 +82,6 @@ module OnlinePayment
           #@total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
           
           if request.post? and params[:order_id].present?
-            now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
-            activity_log = ActivityLog.new
-            activity_log.user_id = current_user.id
-            activity_log.controller = "LOL Log - IN POST"
-            activity_log.action = params[:id].to_s
-            activity_log.post_requests =  "https://#{request.host_with_port}#{request.fullpath}"
-            activity_log.ip = request.remote_ip
-            activity_log.user_agent = request.user_agent
-            activity_log.created_at = now
-            activity_log.updated_at = now
-            activity_log.save
-            
             
             @fee_collection_name = ( params[:fee_collection_name].blank? ) ? "Student Fees" : params[:fee_collection_name]
             @user_gateway = @gateway_settings.keys[0].to_s

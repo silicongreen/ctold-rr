@@ -728,6 +728,17 @@ class ApplicationController < ActionController::Base
   end
   def login_required
     unless session[:user_id]
+      now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+    activity_log = ActivityLog.new
+    activity_log.user_id = current_user.id
+    activity_log.controller = "LOL Log - GO OUT"
+    activity_log.action = params[:id].to_s
+    activity_log.post_requests = "https://#{request.host_with_port}#{request.fullpath}"
+    activity_log.ip = request.remote_ip
+    activity_log.user_agent = request.user_agent
+    activity_log.created_at = now
+    activity_log.updated_at = now
+    activity_log.save
       session[:back_url] = request.url
       redirect_to '/'
     end

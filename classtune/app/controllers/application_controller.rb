@@ -433,7 +433,7 @@ class ApplicationController < ActionController::Base
           activity_log.user_id = current_user.id
           activity_log.controller = params[:controller]
           activity_log.action = params[:action]
-          activity_log.post_requests = params
+          activity_log.post_requests = "https://#{request.host_with_port}#{request.fullpath}"
           activity_log.ip = request.remote_ip
           activity_log.user_agent = request.user_agent
           activity_log.created_at = now

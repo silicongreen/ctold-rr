@@ -20,4 +20,24 @@
   %>
   <%= render  :partial=>"/connect_exam/south_point/highest_marks2" %>
 <% end %>
+<% if @connect_exam_obj.result_type.to_i == 12 %>
+    <%
+      if @tabulation_data.blank?
+        student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,false)
+        @tabulation_data = []
+        if student_response['status']['code'].to_i == 200
+          @tabulation_data = student_response['data']
+        end
+        @exam_type_course = 1
+        @course_name = @batch.course.course_name
+        if @course_name == "Grade 1" or @course_name == "Grade 2"
+          @exam_type_course = 2
+        end
+        if @course_name == "Grade 9" or @course_name == "Grade 10" or @course_name == "Grade 11" or @course_name == "Grade 12"
+          @exam_type_course = 3
+        end
+      end
+  %>
+  <%= render  :partial=>"/connect_exam/south_point/highest_marks3" %>
+<% end %>
 <%= render  :partial=>"/connect_exam/south_point/group_report_type_"+@connect_exam_obj.result_type.to_s %>

@@ -1,0 +1,268 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="page-yield" class="available_sections1 marksheet4">
+  <div class="page1"> </div>
+  <div class="section1 row" >
+    <center>
+      <h3 align="center">Mark Sheet</h3>
+      <div class="hor_line"></div>
+      <h4 align="center">For Subject Teacher</h4>
+      
+      <div id ="main_info">
+          <table width="100%">
+              <tr>
+                 <% if !@employee.nil? %> 
+                  <td align='left'><h4>Teacher's Name : <%=  @employee.full_name %></h4></td>
+                  <td align='center'><h4>Subject : <%= @subject.name %></h4></td>
+                 <% else %>
+                  <td align='left'><h4>Subject : <%= @subject.name %></h4></td>
+                 <% end %> 
+                  
+                  <td align='center'><h4>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %></h4></td>
+                  <td align='right'><h4>Section : <%= @batch.course.section_name %></h4></td>
+              </tr>    
+          </table>    
+       
+      </div>
+      <% unless @report_data.blank?  or  @report_data['result'].blank? %>
+      <% c = 'even' %>
+      <%
+        @exam_type_course = 1
+        @course_name = @batch.course.course_name
+        if @course_name == "Grade 1" or @course_name == "Grade 2"
+          @exam_type_course = 2
+        end
+        if @course_name == "Grade 9" or @course_name == "Grade 10" or @course_name == "Grade 11" or @course_name == "Grade 12"
+          @exam_type_course = 3
+        end
+      %>
+      <% stcount = 0 %>
+      <% ctcount = 0 %>
+      <% unless @report_data['result']['ST'].blank?  %>
+        <% stcount = @report_data['result']['ST'].size+1  %>
+      <% end %>
+      <% unless @report_data['result']['CT'].blank?  %>
+        <% ctcount = @report_data['result']['CT'].size+1  %>
+      <% end %>
+      
+      <% max_mark_st = @report_data['result']['max_mark_st']  %>
+      <% max_mark_ct = @report_data['result']['max_mark_ct']  %>
+      <% main_total_marks = max_mark_st.to_i+max_mark_ct.to_i  %>
+      <table id="pdf-table" width="100%" cellspacing="0">
+        <tr class="table-header">
+          <td class="name">Roll NO.</td>
+          <td class="name">Name</td>
+          <% unless @report_data['result']['ST'].blank?  %>
+          <td colspan="<%= stcount %>">
+              <p>Surprise Test (S.T.)</p>
+              <% if @exam_type_course == 1 %>
+                <p>Average of 2 out of 3 for full-unit, Best 1 out of 2 for half-unit</p>
+                <p>10 marks each for full-unit,5 marks each for half-unit</p>
+              <% elsif @exam_type_course == 2 %>
+                <p>Best 2 out of 3 for full-unit, Best 1 out of 2 for half-unit</p>
+                <p>20 marks each for full-unit,10 marks each for half-unit</p>
+              <% end %>
+          </td>
+          <% end %>
+          <% unless stcount.blank? %>
+          <td colspan="<%= ctcount %>">
+              <p>Class Test (C.T.)</p>
+              <% unless @report_data['result']['ST'].blank?  %>
+                <% if @exam_type_course == 1 %>
+                  <p>Best 1 out of 2 for full-unit, Best 1 out of 2 for half-unit</p>
+                  <p>20 marks each for full-unit, 10 marks each for half-unit</p>
+                <% else %>
+                  <p>Best 2 out of 3 for full-unit, Best 1 out of 2 for half-unit</p>
+                  <p>30 marks each for full-unit, 20 marks each for half-unit</p>
+                <% end %>  
+              <% end %>
+          </td>
+          <% end %>
+          <% if @exam_type_course == 1 %>
+            <% if max_mark_ct == 30 %>
+              <% main_total_marks = 50 %>
+            <% else %>
+              <% main_total_marks = 25 %>
+            <% end %>
+          <% end %>
+          <td>Total (<%=  main_total_marks %>)</td>
+          <td>Grade</td>
+        
+        </tr>
+        <tr class="table-header">
+          <td class="name"></td>
+          <td class="name"></td>
+          <% unless @report_data['result']['ST'].blank?  %>
+          <% i=1 %>
+          <% @report_data['result']['ST'].each do |st| %>
+          <td><%= i %></td>
+          <% i = i+1 %>
+          <% end %>
+          <td>Average</td>
+          <% end %>
+          
+          <% i=1 %>
+          <% @report_data['result']['CT'].each do |ct| %>
+          <td><%= i %></td>
+          <% i = i+1 %>
+          <% end %>
+          <td>Average</td>
+          
+          
+          <td></td>
+          <td></td>
+        </tr>
+        <% extender = 0 %>
+        <% std_count = 0 %>
+        <% colspan = stcount+ctcount+4 %>
+        <% unless @report_data['result']['students'].blank? %>
+        <% @report_data['result']['students'].each do |std| %>
+          <%  std_count = std_count+1; %>
+          
+          <% if std_count>13 && extender ==0 %>
+              <% std_count = 0 %>
+              <% extender = 1 %>
+              <tr class="page-break">
+                  <td colspan="100">&nbsp;</td>
+              </tr>    
+          <% elsif std_count>22 && extender ==1 %>
+              <% std_count = 0 %>
+              <% extender = 1 %>
+              <tr class="page-break">
+                  <td colspan="100">&nbsp;</td>
+              </tr> 
+          <% end %>
+          
+          <% if @subject.no_exams == true %>
+           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+            <td class="name"><%= std['class_roll_no'] %></td>
+            <td class="no-warp"><%= std['name'] %></td> 
+            <td class="col-pdf" colspan="<%= stcount+ctcount+1 %>">-</td>
+            <% @comment_std = ExamConnectSubjectComment.find_by_student_id_and_exam_connect_id_and_subject_id(std['id'].to_i,@connect_exam_obj.id,@subject.id) %>
+            
+            <td class="col-pdf"><%= @comment_std.comments unless @comment_std.blank? %></td>
+           </tr> 
+          <% else %>
+        
+          <% st_marks = [] %>
+          <% ct_marks = [] %>
+          <% total_mark = 0 %>
+          <% avg_mark = 0 %>
+          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+            <td class="name"><%= std['class_roll_no'] %></td>
+            <td class="name-std"><%= std['name'] %></td>
+            <% unless @report_data['result']['ST'].blank?  %>
+            <% @report_data['result']['ST'].each do |st| %>
+              <td>
+                 <% if !st['students'].blank? && !st['students'][std['id']].blank? && !st['students'][std['id']]['score'].blank? %>
+                    <%= st['students'][std['id']]['score'] %>
+                    <% total_mark = total_mark.to_f+st['students'][std['id']]['score'].to_f %>
+                    <% st_marks << st['students'][std['id']]['score'].to_f %>
+                  <% else %>
+                      AB
+                     <% st_marks << 0 %>
+                 <% end %> 
+              </td>
+              
+            <% end %> 
+            <% st_marks.sort! {|x,y| y <=> x } %>
+
+
+            <% 
+              if @exam_type_course == 1
+                if max_mark_st.to_i == 10 
+                  avg_mark = (st_marks[0].to_f+st_marks[1].to_f)/2
+                else
+                  avg_mark = st_marks[0].to_f
+                end
+              end
+              if @exam_type_course == 2
+                if max_mark_st.to_i == 20 
+                    avg_mark = st_marks[0].to_f+st_marks[1].to_f
+                else 
+                    avg_mark = st_marks[0].to_f
+                end
+              end
+            %>
+           <td class="name"><%= sprintf( "%0.02f", avg_mark) %></td> 
+           <% end %>
+
+           <% avg_mark2 = 0; %>
+           <% total_mark = 0 %>
+           <% @report_data['result']['CT'].each do |ct| %>
+              <% if !ct['students'].blank? && !ct['students'][std['id']].blank? && !ct['students'][std['id']]['score'].blank? %>
+              <td><%= ct['students'][std['id']]['score'] %></td>
+              <% total_mark = total_mark.to_f+ct['students'][std['id']]['score'].to_f %>
+              <% ct_marks << ct['students'][std['id']]['score'].to_f %>
+              <% else %>
+              <td>AB</td>
+                <% st_marks << 0 %>
+              <% end %> 
+              
+            <% end %> 
+            <% ct_marks.sort! {|x,y| y <=> x } %>
+
+
+            <% 
+              if @exam_type_course == 1
+                avg_mark2 = ct_marks[0].to_f
+              end
+              if @exam_type_course == 2
+                if max_mark_ct.to_i == 30 
+                    avg_mark2 = ct_marks[0].to_f+ct_marks[1].to_f
+                else 
+                    avg_mark2 = ct_marks[0].to_f
+                end
+              end
+              if @exam_type_course == 3
+                avg_mark2 = (ct_marks[0].to_f+ct_marks[1].to_f)/2
+              end
+            %>
+           <td class="name"><%= sprintf( "%0.02f", avg_mark2) %></td> 
+
+           <% total_mark = avg_mark.to_f+avg_mark2.to_f %>
+           <%  full_mark = max_mark_ct.to_f+max_mark_st.to_f %>
+           
+           <% total_mark = (total_mark.to_f/full_mark.to_f)*main_total_marks %>
+
+           <% main_mark = (total_mark.round()/main_total_marks.to_f)*100 %>
+
+           <td class="name"><%= total_mark.round().to_s %></td>
+
+           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+           <% if !grade.blank? and !grade.name.blank? %>
+            <td class="col-2"><b><%= grade.name %></b></td>
+          <% else %>
+            <td class="col-2"><b>-</b></td>
+          <% end %>
+        </tr>
+          <% end %>
+        <% end %>
+        <% end %>
+        <tr class="page-last-element">
+          <td colspan="<%= colspan %>">&nbsp;</td>
+        </tr>
+      </table>
+      <% end %>
+    </center>
+  </div>
+  
+  
+</div>

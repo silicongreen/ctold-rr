@@ -4840,9 +4840,9 @@ module FinanceLoader
           #          end
           # abort(orderId.inspect)
           unless order_verify_trust_bank(orderId)
-if MultiSchool.current_school.id == 2
-abort('here')
-      end
+#if MultiSchool.current_school.id == 2
+#abort('here')
+ #     end
 
             if gateway_response[:card_order_status].to_s == "DECLINED"
               msg = "Payment DECLINED!!!"

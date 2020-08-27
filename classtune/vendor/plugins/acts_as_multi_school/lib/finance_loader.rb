@@ -2935,10 +2935,23 @@ module FinanceLoader
     unless xml_res.xpath("/").empty?
       status = xml_res.xpath("/").text
     end
+    if status.include? 'Server was unable to process request'
+	flash[:notice] = status
+	@new_error_txt = "If you see this error, please take a screenshot and share with us <br /><br />" + status
+        @new_error = 'error_gateway'
+	return
+    end
+ #if MultiSchool.current_school.id == 361
+  #      abort(status.inspect)
+   #   end
+
 #if MultiSchool.current_school.id == 357
 #  abort(status.inspect)
 #end
     result = Base64.decode64(status)
+ #if MultiSchool.current_school.id == 361
+  #      abort(result.inspect)
+   #   end
 
     ref_id = ""
     orderId = ""
@@ -4695,7 +4708,7 @@ module FinanceLoader
       end
       
       payment_saved = false
-      unless params[:target_gateway] == "trustbank"
+      if params[:target_gateway] == "trustbank"
         unless request_params.nil?
           multiple = request_params[:multiple]
           unless multiple.nil?
@@ -4742,7 +4755,6 @@ module FinanceLoader
       if gateway_response[:card_order_status].to_s == "DECLINED"
         payment_saved = false
       end
-      
       
       if payment_saved
         gateway_status = false
@@ -4834,6 +4846,8 @@ abort('here')
 
             if gateway_response[:card_order_status].to_s == "DECLINED"
               msg = "Payment DECLINED!!!"
+            elsif @new_error == 'error_gateway'
+		msg = @new_error_txt
             else
               msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
             end

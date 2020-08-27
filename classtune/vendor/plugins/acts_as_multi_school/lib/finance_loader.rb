@@ -4652,7 +4652,6 @@ module FinanceLoader
         end
       elsif params[:target_gateway] == "trustbank"
         result = Base64.decode64(params[:CheckoutXmlMsg])
-        
         #result = '<Response date="2016-06-20 10:14:53.213">  <RefID>133783A000129D</RefID>  <OrderID>O1052536</OrderID>  <Name> Customer1</Name>  <Email> mr.customer@gmail.com </Email>  <Amount>2090.00</Amount>  <ServiceCharge>0.00</ServiceCharge>  <Status>1</Status>  <StatusText>PAID</StatusText>  <Used>0</Used>  <Verified>0</Verified>  <PaymentType>ITCL</PaymentType>  <PAN>712300XXXX1277</PAN>  <TBMM_Account></TBMM_Account>  <MarchentID>SAGC</MarchentID>  <OrderDateTime>2016-06-20 10:14:24.700</OrderDateTime>  <PaymentDateTime>2016-06-20 10:21:34.303</PaymentDateTime>  <EMI_No>0</EMI_No>  <InterestAmount>0.00</InterestAmount>  <PayWithCharge>1</PayWithCharge>  <CardResponseCode>00</CardResponseCode>  <CardResponseDescription>APPROVED</CardResponseDescription>  <CardOrderStatus>APPROVED</CardOrderStatus> </Response> '
         xml_res = Nokogiri::XML(result)
         
@@ -4670,19 +4669,6 @@ module FinanceLoader
         orderId = xml_response_data[:OrderID]
         order_datetime = xml_response_data[:OrderDateTime]
         trans_date = xml_response_data[:PaymentDateTime]
-        
-        now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
-        activity_log = ActivityLog.new
-        activity_log.user_id = current_user.id
-        activity_log.controller = "Finance Log - CheckoutXmlMsg"
-        activity_log.action = orderId.to_s
-        activity_log.post_requests = result
-        activity_log.ip = request.remote_ip
-        activity_log.user_agent = request.user_agent
-        activity_log.created_at = now
-        activity_log.updated_at = now
-        activity_log.save
-        
         
         #order_datetime = gateway_response[:OrderDateTime]
 
@@ -4709,7 +4695,7 @@ module FinanceLoader
       end
       
       payment_saved = false
-      unless params[:target_gateway] == 'citybank'
+      unless params[:target_gateway] == "trustbank"
         unless request_params.nil?
           multiple = request_params[:multiple]
           unless multiple.nil?
@@ -4752,7 +4738,7 @@ module FinanceLoader
           end
         end
       end
-      
+
       if gateway_response[:card_order_status].to_s == "DECLINED"
         payment_saved = false
       end
@@ -4842,6 +4828,10 @@ module FinanceLoader
           #          end
           # abort(orderId.inspect)
           unless order_verify_trust_bank(orderId)
+if MultiSchool.current_school.id == 2
+abort('here')
+      end
+
             if gateway_response[:card_order_status].to_s == "DECLINED"
               msg = "Payment DECLINED!!!"
             else

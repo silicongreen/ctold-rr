@@ -34,7 +34,13 @@ module OnlinePayment
 #      s = "2020-02-25T13:22:32:790 GMT+0000"
 #      abort(DateTime.parse(s).to_datetime.strftime("%Y-%m-%d %H:%M:%S"))
 
-      
+      if MultiSchool.current_school.id == 361
+        tmp_student = Student.find(params[:id]) 
+	finance_orders = FinanceOrder.find(:all, :conditions => "student_id = #{tmp_student.id} and status = 0")
+        finance_orders.each do |finance_order|
+	   finance_order.update_attributes(:status => 1)
+        end
+      end	      
       transaction_datetime = now
       if Champs21Plugin.can_access_plugin?("champs21_pay")
         if (PaymentConfiguration.config_value("enabled_fees").present? and PaymentConfiguration.config_value("enabled_fees").include? "Student Fee") 
@@ -238,20 +244,8 @@ module OnlinePayment
                 fee_requests = params[:id2]
               end
             end
-             now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
-              activity_log = ActivityLog.new
-              activity_log.user_id = current_user.id
-              activity_log.controller = "LOL - CHECK"
-              activity_log.action = params[:id].to_s
-              activity_log.post_requests =  "https://#{request.host_with_port}#{request.fullpath}"
-              activity_log.ip = request.remote_ip
-              activity_log.user_agent = request.user_agent
-              activity_log.created_at = now
-              activity_log.updated_at = now
-              activity_log.save
             
             if params[:create_transaction].present?
-              
               validate_payment_types(params)
             end
             unless multiple_param.nil?

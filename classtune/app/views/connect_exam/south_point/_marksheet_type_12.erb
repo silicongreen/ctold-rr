@@ -136,20 +136,6 @@
         <% @report_data['result']['students'].each do |std| %>
           <%  std_count = std_count+1; %>
           
-          <% if std_count>13 && extender ==0 %>
-              <% std_count = 0 %>
-              <% extender = 1 %>
-              <tr class="page-break">
-                  <td colspan="100">&nbsp;</td>
-              </tr>    
-          <% elsif std_count>22 && extender ==1 %>
-              <% std_count = 0 %>
-              <% extender = 1 %>
-              <tr class="page-break">
-                  <td colspan="100">&nbsp;</td>
-              </tr> 
-          <% end %>
-          
           <% if @subject.no_exams == true %>
            <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
             <td class="name"><%= std['class_roll_no'] %></td>

@@ -102,18 +102,18 @@
                             if @exam_type_course == 2
                               if ct_full_mark.to_i == 30 
                                   avg_mark_ct = ct_marks[0].to_f+ct_marks[1].to_f
-                                  main_full_mark = ct_full_mark.to_i+ct_full_mark.to_i
+                                  main_full_mark = main_full_mark+ct_full_mark.to_i+ct_full_mark.to_i
                               else 
                                   avg_mark_ct = ct_marks[0].to_f
-                                  main_full_mark = ct_full_mark.to_i
+                                  main_full_mark = main_full_mark+ct_full_mark.to_i
                               end 
                               
                               if st_full_mark.to_i == 20 
                                   avg_mark_st = st_marks[0].to_f+st_marks[1].to_f
-                                  main_full_mark = st_full_mark.to_i+st_full_mark.to_i
+                                  main_full_mark = main_full_mark+st_full_mark.to_i+st_full_mark.to_i
                               else 
                                   avg_mark_st = st_marks[0].to_f
-                                  main_full_mark = st_full_mark.to_i
+                                  main_full_mark = main_full_mark+st_full_mark.to_i
                               end
                               
                               total_mark = avg_mark_ct+avg_mark_st

@@ -239,7 +239,9 @@
 
            <% total_mark = avg_mark.to_f+avg_mark2.to_f %>
            <%  full_mark = max_mark_ct.to_f+max_mark_st.to_f %>
-           
+           <% if @exam_type_course == 2 && max_mark_ct.to_i == 30  %>
+            <% full_mark = full_mark*2 %>
+           <% end %>
            <% total_mark = (total_mark.to_f/full_mark.to_f)*main_total_marks %>
 
            <% main_mark = (total_mark.round()/main_total_marks.to_f)*100 %>

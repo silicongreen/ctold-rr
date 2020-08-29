@@ -188,6 +188,9 @@
                             <td class="col-pdf td-align-left"><%= report['subject_name'] %></td>
                             <td class="col-pdf"></td>
                             <td class="col-pdf"></td>
+                            <% if @exam_type_course == 2 %>
+                            <td class="col-pdf"></td>
+                            <% end %>
                             <td class="col-pdf"><%= report['subject_comment'] %></td>
                             <td class="col-pdf">&nbsp;</td>
                             </tr>

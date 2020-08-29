@@ -25,6 +25,9 @@
                       <td class="col-pdf"><%= "Subject" %></td>
                       <td class="col-pdf">Full Mark</td>
                       <td class="col-pdf">Obtained Mark</td>
+                      <% if @exam_type_course == 2 %>
+                        <td class="col-pdf">Converted Mark (50/25)</td>
+                      <% end %>
                       <td class="col-pdf">Grade</td>
                       <td class="col-pdf">Highest Mark</td>
                       
@@ -88,6 +91,7 @@
                             st_marks.sort! {|x,y| y <=> x }
                             ct_marks.sort! {|x,y| y <=> x }
                             main_full_mark = 0
+                            main_mark_obtain = 0
                             
                             if @exam_type_course == 1
                               avg_mark_ct = ct_marks[0].to_f
@@ -116,7 +120,7 @@
                                   main_full_mark = main_full_mark+st_full_mark.to_i
                               end
                               
-                              total_mark = avg_mark_ct+avg_mark_st
+                              main_mark_obtain = total_mark = avg_mark_ct+avg_mark_st
                               full_mark = ct_full_mark.to_i+st_full_mark.to_i
                               
                               if main_full_mark == 100
@@ -139,6 +143,9 @@
 
 
                           <td class="col-pdf"><%= main_full_mark.round().to_s %></td>
+                          <% if @exam_type_course == 2 %>
+                            <td class="col-pdf"><%= main_mark_obtain.to_f %></td>
+                          <% end %>
                           <td class="col-pdf"><%= obtained_mark.round().to_s %></td>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>

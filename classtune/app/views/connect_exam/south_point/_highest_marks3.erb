@@ -250,6 +250,11 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
         st_marks1.sort! {|x,y| y <=> x }
         ct_marks1.sort! {|x,y| y <=> x }
         
+        main_full_mark1 = 0
+        main_full_mark2 = 0
+        main_full_mark3 = 0
+        main_full_mark4 = 0
+        
         if @exam_type_course == 1
           avg_mark_ct1 = ct_marks1[0].to_f
           if st_full_mark1.to_i == 10 
@@ -263,24 +268,28 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
         if @exam_type_course == 2
           if ct_full_mark1.to_i == 30 
               avg_mark_ct1 = ct_marks1[0].to_f+ct_marks1[1].to_f
+              main_full_mark1 = main_full_mark1+ct_full_mark1.to_i+ct_full_mark1.to_i
           else 
               avg_mark_ct1 = ct_marks1[0].to_f
+              main_full_mark1 = main_full_mark1+ct_full_mark1.to_i
           end 
 
           if st_full_mark1.to_i == 20 
               avg_mark_st1 = st_marks1[0].to_f+st_marks1[1].to_f
+              main_full_mark1 = main_full_mark1+st_full_mark1.to_i+st_full_mark1.to_i
           else 
               avg_mark_st1 = st_marks1[0].to_f
+              main_full_mark1 = main_full_mark1+st_full_mark1.to_i
           end
 
           total_mark1 = avg_mark_ct1+avg_mark_st1
           full_mark1 = ct_full_mark1.to_i+st_full_mark1.to_i
 
-          if full_mark1 == 100
+          if main_full_mark1 == 100
             full_mark1 = 50
             obtained_mark1 = (total_mark1.to_f/2.00)
           else
-            obtained_mark1 = (total_mark1.to_f/full_mark1.to_f)*25
+            obtained_mark1 = (total_mark1.to_f/main_full_mark1.to_f)*25
             full_mark1 = 25
           end  
         end 
@@ -310,24 +319,28 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
         if @exam_type_course == 2
           if ct_full_mark2.to_i == 30 
               avg_mark_ct2 = ct_marks2[0].to_f+ct_marks2[1].to_f
+              main_full_mark2 = main_full_mark2+ct_full_mark2.to_i+ct_full_mark2.to_i
           else 
               avg_mark_ct2 = ct_marks2[0].to_f
+              main_full_mark2 = main_full_mark2+ct_full_mark2.to_i
           end 
 
           if st_full_mark2.to_i == 20 
               avg_mark_st2 = st_marks2[0].to_f+st_marks2[1].to_f
+              main_full_mark2 = main_full_mark2+st_full_mark2.to_i+st_full_mark2.to_i
           else 
               avg_mark_st2 = st_marks2[0].to_f
+              main_full_mark2 = main_full_mark2+st_full_mark2.to_i
           end
 
           total_mark2 = avg_mark_ct2+avg_mark_st2
           full_mark2 = ct_full_mark2.to_i+st_full_mark2.to_i
 
-          if full_mark2 == 100
+          if main_full_mark2 == 100
             full_mark2 = 50
             obtained_mark2 = (total_mark2.to_f/2.00)
           else
-            obtained_mark2 = (total_mark2.to_f/full_mark2.to_f)*25
+            obtained_mark2 = (total_mark2.to_f/main_full_mark2.to_f)*25
             full_mark2 = 25
           end  
         end 
@@ -358,24 +371,28 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
         if @exam_type_course == 2
           if ct_full_mark3.to_i == 30 
               avg_mark_ct3 = ct_marks3[0].to_f+ct_marks3[1].to_f
+              main_full_mark3 = main_full_mark3+ct_full_mark3.to_i+ct_full_mark3.to_i
           else 
               avg_mark_ct3 = ct_marks3[0].to_f
+              main_full_mark3 = main_full_mark3+ct_full_mark3.to_i
           end 
 
           if st_full_mark3.to_i == 20 
               avg_mark_st3 = st_marks3[0].to_f+st_marks3[1].to_f
+              main_full_mark3 = main_full_mark3+st_full_mark3.to_i+st_full_mark3.to_i
           else 
               avg_mark_st3 = st_marks3[0].to_f
+              main_full_mark3 = main_full_mark3+st_full_mark3.to_i
           end
 
           total_mark3 = avg_mark_ct3+avg_mark_st3
           full_mark3 = ct_full_mark3.to_i+st_full_mark3.to_i
 
-          if full_mark3 == 100
+          if main_full_mark3 == 100
             full_mark3 = 50
             obtained_mark3 = (total_mark3.to_f/2.00)
           else
-            obtained_mark3 = (total_mark3.to_f/full_mark3.to_f)*25
+            obtained_mark3 = (total_mark3.to_f/main_full_mark3.to_f)*25
             full_mark3 = 25
           end  
         end 
@@ -407,24 +424,28 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
         if @exam_type_course == 2
           if ct_full_mark4.to_i == 30 
               avg_mark_ct4 = ct_marks4[0].to_f+ct_marks4[1].to_f
+              main_full_mark4 = main_full_mark4+ct_full_mark4.to_i+ct_full_mark4.to_i
           else 
               avg_mark_ct4 = ct_marks4[0].to_f
+              main_full_mark4 = main_full_mark4+ct_full_mark4.to_i
           end 
 
           if st_full_mark4.to_i == 20 
               avg_mark_st4 = st_marks4[0].to_f+st_marks4[1].to_f
+              main_full_mark4 = main_full_mark4+st_full_mark4.to_i+st_full_mark4.to_i
           else 
               avg_mark_st4 = st_marks4[0].to_f
+              main_full_mark4 = main_full_mark4+st_full_mark4.to_i
           end
 
           total_mark4 = avg_mark_ct4+avg_mark_st4
           full_mark4 = ct_full_mark4.to_i+st_full_mark4.to_i
 
-          if full_mark4 == 100
+          if main_full_mark4 == 100
             full_mark4 = 50
             obtained_mark4 = (total_mark4.to_f/2.00)
           else
-            obtained_mark4 = (total_mark4.to_f/full_mark4.to_f)*25
+            obtained_mark4 = (total_mark4.to_f/main_full_mark4.to_f)*25
             full_mark4 = 25
           end  
         end 

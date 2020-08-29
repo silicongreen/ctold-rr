@@ -168,7 +168,7 @@
                          <%   
                             st_marks.sort! {|x,y| y <=> x }
                             ct_marks.sort! {|x,y| y <=> x }
-
+                            main_full_mark = 0
                             if @exam_type_course == 1
                               avg_mark_ct = ct_marks[0].to_f
                               if st_full_mark.to_i == 10 
@@ -182,24 +182,28 @@
                             if @exam_type_course == 2
                               if ct_full_mark.to_i == 30 
                                   avg_mark_ct = ct_marks[0].to_f+ct_marks[1].to_f
+                                  main_full_mark = main_full_mark+ct_full_mark.to_i+ct_full_mark.to_i
                               else 
                                   avg_mark_ct = ct_marks[0].to_f
+                                  main_full_mark = main_full_mark+ct_full_mark.to_i
                               end 
                               
                               if st_full_mark.to_i == 20 
                                   avg_mark_st = st_marks[0].to_f+st_marks[1].to_f
+                                  main_full_mark = main_full_mark+st_full_mark.to_i+st_full_mark.to_i
                               else 
                                   avg_mark_st = st_marks[0].to_f
+                                  main_full_mark = main_full_mark+st_full_mark.to_i
                               end
                               
                               total_mark = avg_mark_ct+avg_mark_st
                               full_mark = ct_full_mark.to_i+st_full_mark.to_i
                               
-                              if full_mark == 100
+                              if main_full_mark == 100
                                 full_mark = 50
                                 obtained_mark = (total_mark.to_f/2.00)
                               else
-                                obtained_mark = (total_mark.to_f/full_mark.to_f)*25
+                                obtained_mark = (total_mark.to_f/main_full_mark.to_f)*25
                                 full_mark = 25
                               end  
                             end 

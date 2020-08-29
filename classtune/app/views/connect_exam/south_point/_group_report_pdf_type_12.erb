@@ -119,11 +119,11 @@
                               total_mark = avg_mark_ct+avg_mark_st
                               full_mark = ct_full_mark.to_i+st_full_mark.to_i
                               
-                              if full_mark == 100
+                              if main_full_mark == 100
                                 full_mark = 50
                                 obtained_mark = (total_mark.to_f/2.00)
                               else
-                                obtained_mark = (total_mark.to_f/full_mark.to_f)*25
+                                obtained_mark = (total_mark.to_f/main_full_mark.to_f)*25
                                 full_mark = 25
                               end  
                             end 

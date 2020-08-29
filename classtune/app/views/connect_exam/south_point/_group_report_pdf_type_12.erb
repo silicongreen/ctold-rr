@@ -87,6 +87,7 @@
                             
                             st_marks.sort! {|x,y| y <=> x }
                             ct_marks.sort! {|x,y| y <=> x }
+                            main_full_mark = 0
                             
                             if @exam_type_course == 1
                               avg_mark_ct = ct_marks[0].to_f
@@ -95,7 +96,7 @@
                               else
                                 avg_mark_st = st_marks[0].to_f
                               end
-                              full_mark = ct_full_mark.to_i+st_full_mark.to_i
+                              main_full_mark = full_mark = ct_full_mark.to_i+st_full_mark.to_i
                               obtained_mark = avg_mark_ct.to_f+avg_mark_st.to_f
                             end   
                             if @exam_type_course == 2
@@ -112,7 +113,7 @@
                               end
                               
                               total_mark = avg_mark_ct+avg_mark_st
-                              full_mark = ct_full_mark.to_i+st_full_mark.to_i
+                              main_full_mark = full_mark = ct_full_mark.to_i+st_full_mark.to_i
                               
                               if full_mark == 100
                                 full_mark = 50
@@ -126,14 +127,14 @@
                             if @exam_type_course == 3
                               avg_mark_ct = (ct_marks[0].to_f+ct_marks[1].to_f)/2
                               obtained_mark = avg_mark_ct
-                              full_mark = ct_full_mark
+                              main_full_mark = full_mark = ct_full_mark
                             end 
                             main_mark = (obtained_mark.round().to_f/full_mark.to_f)*100 
                             
                             %>
 
 
-                          <td class="col-pdf"><%= full_mark.round().to_s %></td>
+                          <td class="col-pdf"><%= main_full_mark.round().to_s %></td>
                           <td class="col-pdf"><%= obtained_mark.round().to_s %></td>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>

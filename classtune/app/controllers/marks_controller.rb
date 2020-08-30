@@ -288,7 +288,7 @@ class MarksController < ApplicationController
     @subjects.reject! {|s| !s.batch or !s.batch.is_active}
     @exams = []
     all_sub_id = @subjects.map(&:id)
-    all_exams =  Exam.find_all_by_subject_id(all_sub_id,:include=>[{:exam_group=>[:batch]},:subject],:conditions =>["batches.is_deleted = ? and exam_group.is_deleted = ?",false, false])
+    all_exams =  Exam.find_all_by_subject_id(all_sub_id,:include=>[{:exam_group=>[:batch]},:subject],:conditions =>["batches.is_deleted = ? and exam_groups.is_deleted = ?",false, false])
     all_exams.each do |exam|
       @exams.push exam unless exam.nil?
     end 

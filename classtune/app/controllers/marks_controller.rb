@@ -288,7 +288,7 @@ class MarksController < ApplicationController
     @subjects.reject! {|s| !s.batch or !s.batch.is_active}
     @exams = []
     all_sub_id = @subjects.map(&:id)
-    all_exams =  Exam.find_all_by_subject_id(all_sub_id,:include=>[{:exam_group=>[:batch]},:subject],:conditions =>["batches.is_deleted = ?",false])
+    all_exams =  Exam.find_all_by_subject_id(all_sub_id,:include=>[{:exam_group=>[:batch]},:subject],:conditions =>["batches.is_deleted = ? and exam_group.is_deleted = ?",false, false])
     all_exams.each do |exam|
       @exams.push exam unless exam.nil?
     end 
@@ -301,7 +301,7 @@ class MarksController < ApplicationController
       unless @exam_group.blank?
         exam_group_batch = @exam_group.batch
         exam_subject = exam.subject
-        if !exam_subject.blank?  and !exam_group_batch.blank? and @exam_group.is_deleted == false
+        unless exam_subject.blank?  or exam_group_batch.blank? or @exam_group.is_deleted == true or (@exam_group.result_published == true and MultiSchool.current_school.id != 323)
           data[k] = []
 
           data[k][0] = @template.link_to exam_group_batch.full_name, [@exam_group, exam], :target => "_blank"

@@ -6,7 +6,9 @@
 # no regular words or you'll be exposed to dictionary attacks.
 ActionController::Base.session = {
   :key         => '_champs21_session_',
-  :secret      => '93bd9933128611446605e1d410d003a6643d59c4494a56e538f4bb154284c14f5a56c8ed9e7b1b38593e6f557b1f28d763f0b0093e12ff515dea1107d2e1306b'
+  :secret      => '93bd9933128611446605e1d410d003a6643d59c4494a56e538f4bb154284c14f5a56c8ed9e7b1b38593e6f557b1f28d763f0b0093e12ff515dea1107d2e1306b',
+  :secure      => true,
+  :path	       => '/; SameSite=none'
 }
 
 # Use the database for sessions instead of the cookie-based default,

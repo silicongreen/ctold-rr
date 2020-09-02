@@ -3544,9 +3544,14 @@ module FinanceLoader
     unless xml_res.xpath("/").empty?
       status = xml_res.xpath("/").text
     end
-abort(status.inspect)
+    if status.include? 'Server was unable to process request'
+      flash[:notice] = status
+      @new_error_txt = "If you see this error, please take a screenshot and share with us <br /><br />" + status
+            @new_error = 'error_gateway'
+      return
+    end
     result = Base64.decode64(status)
-    abort(result.inspect)
+    #abort(result.inspect)
     verification_verified = 0
     
     xml_str = Nokogiri::XML(result)

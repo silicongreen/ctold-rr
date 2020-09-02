@@ -3461,6 +3461,398 @@ module FinanceLoader
     verify_order
   end
   
+  def order_verify_direct(gateway_response)
+    
+    testtrustbank = false
+    if PaymentConfiguration.config_value('is_test_trustbank').to_i == 1
+      if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config_tcash.yml")
+        payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config_tcash.yml"))
+        unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
+          testtrustbank = payment_configs["testtrustbank"]
+        end
+      end
+    end
+    if testtrustbank
+      merchant_info = payment_configs["merchant_info_" + MultiSchool.current_school.id.to_s]
+      unless merchant_info.blank?
+        @merchant_id = merchant_info["merchant_id"]
+        @keycode = merchant_info["keycode"]
+      else
+        @merchant_id = PaymentConfiguration.config_value("trustbank_merchant_id")
+        @keycode = PaymentConfiguration.config_value("trustbank_keycode_verification")
+      end
+      @verification_url = payment_configs["validation_api"]
+      @merchant_id ||= String.new
+      @keycode ||= String.new
+      @verification_url ||= "https://ibanking.tblbd.com/TestCheckout/Services/Payment_Info.asmx"
+    else  
+      if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+        payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+        @verification_url = payment_urls["trustbank_verification_url"]
+        @verification_url ||= "https://ibanking.tblbd.com/Checkout/Services/Payment_Info.asmx"
+      else
+        @verification_url ||= "https://ibanking.tblbd.com/Checkout/Services/Payment_Info.asmx"
+      end
+      @merchant_id = PaymentConfiguration.config_value("trustbank_merchant_id")
+      @keycode = PaymentConfiguration.config_value("trustbank_keycode_verification")
+      @merchant_id ||= String.new
+      @keycode ||= String.new
+    end
+    
+    o = gateway_response[:order_id]
+    
+    orderID = gateway_response[:order_id] 
+    trans_date = gateway_response[:trans_date] 
+    order_datetime = gateway_response[:order_date_time] 
+    name = gateway_response[:name] 
+    dt = trans_date.split(".")
+    transaction_datetime = dt[0]
+
+    if verified.to_i == 0
+      if transaction_datetime.nil?
+        dt = order_datetime.split(".")
+        transaction_datetime = dt[0]
+      end
+    end
+
+    archived = false
+    #admission_no = admission_nos[i]
+    admission_no = name
+    @student = Student.find_by_admission_no(admission_no)
+
+
+    if @student.nil?
+      archived = true
+      @student = ArchivedStudent.find_by_admission_no(admission_no)
+    end
+
+    request_url = @verification_url + '/Transaction_Verify_Details'
+    uri = URI(request_url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+    auth_req.set_form_data({"OrderID" => orderId, "MerchantID" => @merchant_id, "RefID" => ref_id})
+
+    http.use_ssl = true
+    auth_res = http.request(auth_req)
+
+    xml_res = Nokogiri::XML(auth_res.body)
+    status = ""
+    unless xml_res.xpath("/").empty?
+      status = xml_res.xpath("/").text
+    end
+
+    result = Base64.decode64(status)
+    
+    verification_verified = 0
+    
+    xml_str = Nokogiri::XML(result)
+    xml_response = Hash.from_xml(xml_str.to_s)
+    xml_response_data = xml_response[:Response]
+    validation_response = {}
+    xml_response_data.each do |k,v|
+      validation_response[k.underscore.to_sym] = v
+    end
+    #xml_response_data.each { |k,v| k.underscore.to_sym = v }
+    verification_verified = xml_response_data[:Verified]
+    verification_trans_date = xml_response_data[:PaymentDateTime]
+
+    verify_order = false
+    if verified.to_i == 1 or verification_verified.to_i == 1
+      if verified.to_i == 0
+        if verification_verified.to_i == 1
+          gateway_response = validation_response
+        end
+      end
+      verify_order = true
+    end
+    #verify_order = true
+
+    finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and request_params is null")
+    unless finance_orders.blank? 
+      finance_orders.each do |finance_order|
+        finance_order.destroy
+      end
+    end
+    #abort(verify_order.inspect)
+    if verify_order
+      #@student = Student.find(29341)
+      unless @student.nil?
+        finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and request_params is not null")
+        unless finance_orders.blank?
+          request_params = finance_orders[0].request_params
+          unless request_params["fees"].blank?
+            fees = request_params["fees"].split(",")
+          else
+            fees = []
+            fees << request_params["id2"]
+          end
+          unless fees.blank?
+            fees.each do |fee|
+              finance_order = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and finance_fee_id = #{fee} and request_params is not null")
+              unless finance_order.blank?
+                if finance_order.length > 1
+                  finance_order_attributes = finance_order[0].attributes
+                  finance_order.each do |fo|
+                    fo.destroy
+                  end
+                  finance_order_new = FinanceOrder.new(finance_order_attributes)
+                  finance_order_new.save
+                end
+              else
+                finance_order_attributes = finance_orders[0].attributes
+                finance_order_attributes.delete "finance_fee_id"
+                finance_order_attributes.merge!(:finance_fee_id=>fee)
+                #finance_order_attributes.finance_fee_id = fee
+                finance_order_new = FinanceOrder.new(finance_order_attributes)
+                finance_order_new.save
+              end
+            end
+          end
+        end
+
+        finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{o}' and request_params is not null")
+        #abort(finance_orders.map(&:id).inspect)
+        unless finance_orders.nil?
+
+          finance_orders.each do |finance_order|
+            #abort(finance_order.inspect)
+            request_params = finance_order.request_params
+
+            fee_id = finance_order.finance_fee_id
+
+            fee = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and id = #{fee_id}")
+            unless fee.nil?
+              payment = Payment.find(:first, :conditions => "order_id = '#{finance_order.order_id}' and payee_id = #{@student.id} and payment_id = #{fee.id}")
+              if payment.nil?
+                payment = Payment.new(:payee => @student,:payment => fee, :order_id => finance_order.order_id,:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
+                payment.save
+              else
+                payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
+              end
+              
+              
+              unless fee.is_paid
+                date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
+                unless date.nil?
+                  @financefee = FinanceFee.find(fee.id)
+
+
+                  fee_collection_id = fee.fee_collection_id
+                  advance_fee_collection = false
+                  @self_advance_fee = false
+                  @fee_has_advance_particular = false
+
+                  @date = @fee_collection = FinanceFeeCollection.find(fee_collection_id)
+                  @student_has_due = false
+                  @std_finance_fee_due = FinanceFee.find(:first,:conditions=>["finance_fee_collections.due_date < ? and finance_fees.is_paid = 0 and finance_fees.student_id = ?", @date.due_date,@student.id],:include=>"finance_fee_collection")
+                  unless @std_finance_fee_due.blank?
+                    @student_has_due = true
+                  end
+                  unless archived
+                    @financefee = @student.finance_fee_by_date(@date)
+                  else
+                    @financefee = FinanceFee.find_by_fee_collection_id_and_student_id(@date.id, @student.former_id)
+                  end
+
+                  if @financefee.has_advance_fee_id
+                    if @date.is_advance_fee_collection
+                      @self_advance_fee = true
+                      advance_fee_collection = true
+                    end
+                    @fee_has_advance_particular = true
+                    @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+                    @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
+                  end
+
+                  @due_date = @fee_collection.due_date
+                  @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
+
+                  @paid_fees = @financefee.finance_transactions
+
+                  if advance_fee_collection
+                    fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
+                    if fee_collection_advances_particular.include?(0)
+                      @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{fee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==fee.batch) }
+                    else
+                      @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{fee.batch_id} and finance_fee_particular_category_id IN (#{fee_collection_advances_particular.join(",")})").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==fee.batch) }
+                    end
+                  else
+                    @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{fee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==fee.batch) }
+                  end
+
+                  particular_exclude = []
+                  @fee_particulars.select{ |stt| stt.receiver_type == 'Student' }.each do |fp|
+                    finance_fee_category_id = fp.finance_fee_category_id
+                    finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+                    parent_id = fp.parent_id
+                    change_for = fp.change_for
+                    if change_for > 0
+                      fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+                      unless fchange_for.blank?
+                        receiver_type = fchange_for.receiver_type
+                        ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                        unless ff.blank?
+                          ff.each do |fo|
+                            particular_exclude << fo.id
+                          end
+                        end
+                      else
+                        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+                        unless fchange_for.blank?
+                          receiver_type = fchange_for.receiver_type
+                          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                          unless ff.blank?
+                            ff.each do |fo|
+                              particular_exclude << fo.id
+                            end
+                          end
+                        end
+                      end
+                    end
+                  end
+                  @fee_particulars.select{ |stt| stt.receiver_type == 'StudentCategory' }.each do |fp|
+                    finance_fee_category_id = fp.finance_fee_category_id
+                    finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+                    parent_id = fp.parent_id
+                    change_for = fp.change_for
+                    if change_for > 0
+                      fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{change_for}")
+                      unless fchange_for.blank?
+                        receiver_type = fchange_for.receiver_type
+                        ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                        unless ff.blank?
+                          ff.each do |fo|
+                            particular_exclude << fo.id
+                          end
+                        end
+                      else
+                        fchange_for = FinanceFeeParticular.find(:first, :conditions => "id = #{parent_id}")
+                        unless fchange_for.blank?
+                          receiver_type = fchange_for.receiver_type
+                          ff = @fee_particulars.select{ |stt| stt.receiver_type == receiver_type and stt.finance_fee_category_id == finance_fee_category_id and stt.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                          unless ff.blank?
+                            ff.each do |fo|
+                              particular_exclude << fo.id
+                            end
+                          end
+                        end
+                      end
+                    end
+                  end
+
+                  #if date.id == 1719
+                  #  abort(fee_particulars.map(&:id).inspect)
+                  #end
+                  #particular_exclude = []
+                  total_payable=@fee_particulars.map{|st| st.amount unless particular_exclude.include?(st.id)}.compact.sum.to_f
+                  @fee_particulars = @fee_particulars.select{|st| st unless particular_exclude.include?(st.id)}
+                  
+                  if advance_fee_collection
+                    month = 1
+                    payable = 0
+                    @fee_collection_advances.each do |fee_collection_advance|
+                      @fee_particulars.each do |particular|
+                        if fee_collection_advance.particular_id == particular.finance_fee_particular_category_id
+                          payable += particular.amount * fee_collection_advance.no_of_month.to_i
+                        else
+                          payable += particular.amount
+                        end
+                      end
+                    end
+                    @total_payable=payable.to_f
+                  else  
+                    @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
+                  end
+
+                  @total_discount = 0
+
+                  #calculate_discount(@date, @financefee.batch, @student, @financefee.is_paid)
+                  @adv_fee_discount = false
+                  @actual_discount = 1
+
+                  if advance_fee_collection
+                    calculate_discount(@date, fee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+                  else
+                    if @fee_has_advance_particular
+                      calculate_discount(@date, fee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+                    else
+                      calculate_discount(@date, fee.batch, @student, false, nil, @fee_has_advance_particular)
+                    end
+                  end
+
+                  bal=(@total_payable-@total_discount).to_f
+                  
+                  
+                  days=(verification_trans_date.to_date-@date.due_date.to_date).to_i
+                  
+                  fine_enabled = true
+                  student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and date_id = #{@date.id} and config_key = 'fine_payment_student'")
+                  unless student_fee_configuration.blank?
+                    if student_fee_configuration.config_value.to_i == 1
+                      fine_enabled = true
+                    else
+                      fine_enabled = false
+                    end
+                  end
+                  
+
+                  auto_fine=@date.fine
+                  #                 
+                  @fine_amount = 0
+                  @has_fine_discount = false
+                  if days > 0 and auto_fine and fine_enabled #and @financefee.is_paid == false
+                    @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
+                    @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
+
+                    calculate_extra_fine(@date, fee.batch, @student, @fine_rule)
+
+                    @new_fine_amount = @fine_amount
+                    get_fine_discount(@date, @batch, @student)
+                    #abort(@new_fine_amount.to_s)
+                    if @fine_amount < 0
+                      @fine_amount = 0
+                    end
+                  end
+                  
+
+                  unless advance_fee_collection
+                    if @total_discount == 0
+                      @adv_fee_discount = true
+                      @actual_discount = 0
+                      calculate_discount(@date, fee.batch, @student, false, nil, @fee_has_advance_particular)
+                    end
+                  end
+                  #abort(@fine_amount.inspect)
+                  total_fees = fee.balance.to_f+@fine_amount.to_f
+
+                  amount_from_gateway = amount
+
+                  #abort(amount_from_gateway.to_s + " " + total_fees.to_s + "  " + @fine_amount.to_s)
+                  pay_student(amount_from_gateway, total_fees, request_params, finance_order.order_id, verification_trans_date, ref_id, "TBL")
+                end
+              else
+                paid_fees = fee.finance_transactions
+                unless paid_fees.nil?
+                  paid_fees.each do |paid_fee|
+                    payment_all = Payment.find(:all, :conditions => "finance_transaction_id = #{paid_fee.id}")
+                    unless payment_all.blank?
+                      payment_all.each do |pay_data|
+                        pay_data.update_attributes(:finance_transaction_id => nil)
+                      end
+                    end
+                    payment.update_attributes(:finance_transaction_id => paid_fee.id)
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+    
+    verify_order
+  end
+  
   def get_citybank_token()
     payment_urls = Hash.new
     if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
@@ -4671,10 +5063,19 @@ module FinanceLoader
         xml_response = Hash.from_xml(xml_res.to_s)
         xml_response_data = xml_response[:Response]
         
-        
+        #Jhamela
         gateway_response = {}
         xml_response_data.each do |k,v|
-          gateway_response[k.underscore.to_sym] = v
+          if k.to_s == "CardResponseDescription"
+            l = "CardResponseDesc"
+            gateway_response[l.underscore.to_sym] = v
+          elsif k.to_s == "PaymentDateTime"
+            l = "TranDate"
+            gateway_response[l.underscore.to_sym] = v
+          else  
+            gateway_response[k.underscore.to_sym] = v
+          end
+          
         end
         #abort(xml_response_data.inspect)
         #xml_response_data.each { |k,v| k.underscore.to_sym = v }
@@ -4840,18 +5241,21 @@ module FinanceLoader
           #          end
           # abort(orderId.inspect)
           if MultiSchool.current_school.id == 361
-            abort(gateway_response.inspect)
-            unless order_verify_trust_bank(orderId)
-              if gateway_response[:card_order_status].to_s == "DECLINED"
-                msg = "Payment DECLINED!!!"
-              elsif @new_error == 'error_gateway'
-                msg = @new_error_txt
+            unless gateway_response.blank?
+              unless order_verify_direct(gateway_response)
+                if gateway_response[:card_order_status].to_s == "DECLINED"
+                  msg = "Payment DECLINED!!!"
+                elsif @new_error == 'error_gateway'
+                  msg = @new_error_txt
+                else
+                  msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
+                end
+                gateway_status = false
               else
-                msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
+                gateway_status = true
               end
-              gateway_status = false
             else
-              gateway_status = true
+              msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
             end
           else  
             unless order_verify_trust_bank(orderId)

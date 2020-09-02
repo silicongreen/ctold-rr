@@ -6,19 +6,6 @@ module OnlinePayment
     end
 
     def fee_details_with_gateway
-    now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
-    activity_log = ActivityLog.new
-    activity_log.user_id = current_user.id
-    activity_log.controller = "Checking...."
-    activity_log.action = params[:id].to_s
-    activity_log.post_requests = params
-    activity_log.ip = request.remote_ip
-    activity_log.user_agent = "https://#{request.host_with_port}#{request.fullpath}"
-    activity_log.created_at = now
-    activity_log.updated_at = now
-    activity_log.save
-
-
       require 'net/http'
       require 'soap/wsdlDriver'
       require 'uri'
@@ -215,28 +202,14 @@ module OnlinePayment
             #end
             if params[:create_transaction].present?
               if params[:target_gateway] == "trustbank"
-		orderId = ""
-		unless params[:CheckoutXmlMsg].blank?
-                	result = Base64.decode64(params[:CheckoutXmlMsg])
+                orderId = ""
+		            	result = Base64.decode64(params[:CheckoutXmlMsg])
                 	#result = '<Response date="2016-06-20 10:14:53.213">  <RefID>133783A000129D</RefID>  <OrderID>O100010</OrderID>  <Name> Customer1</Name>  <Email> mr.customer@gmail.com </Email>  <Amount>2090.00</Amount>  <ServiceCharge>0.00</ServiceCharge>  <Status>1</Status>  <StatusText>PAID</StatusText>  <Used>0</Used>  <Verified>0</Verified>  <PaymentType>ITCL</PaymentType>  <PAN>712300XXXX1277</PAN>  <TBMM_Account></TBMM_Account>  <MarchentID>SAGC</MarchentID>  <OrderDateTime>2016-06-20 10:14:24.700</OrderDateTime>  <PaymentDateTime>2016-06-20 10:21:34.303</PaymentDateTime>  <EMI_No>0</EMI_No>  <InterestAmount>0.00</InterestAmount>  <PayWithCharge>1</PayWithCharge>  <CardResponseCode>00</CardResponseCode>  <CardResponseDescription>APPROVED</CardResponseDescription>  <CardOrderStatus>APPROVED</CardOrderStatus> </Response> '
                 	xml_res = Nokogiri::XML(result)
                 	orderId = ""
                 	unless xml_res.xpath("//Response/OrderID").empty?
                   		orderId = xml_res.xpath("//Response/OrderID").text
                 	end
-		else
-			now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
-    activity_log = ActivityLog.new
-    activity_log.user_id = current_user.id
-    activity_log.controller = "No - CheckoutXmlMsg"
-    activity_log.action = params[:id].to_s
-    activity_log.post_requests = "https://#{request.host_with_port}#{request.fullpath}"
-    activity_log.ip = request.remote_ip
-    activity_log.user_agent = request.user_agent
-    activity_log.created_at = now
-    activity_log.updated_at = now
-    activity_log.save
-		end
               elsif params[:target_gateway] == "citybank"
                 orderId = params[:order_id_in_trans]
               end

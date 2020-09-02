@@ -77,19 +77,6 @@
     <% options['PaymentSuccessUrl'] = "#{success_url}&create_transaction=1&target_gateway=#{gateway}" + extra_string %>
     <%#= options['PaymentSuccessUrl']  %>
     <% #options['PaymentSuccessUrl'] = "https://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&target_gateway=#{gateway}" + extra_string %>
-    <%
-      now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
-      activity_log = ActivityLog.new
-      activity_log.user_id = @current_user.id
-      activity_log.controller = "SUM LOG - generate"
-      activity_log.action = params[:id].to_s
-      activity_log.post_requests =  options['PaymentSuccessUrl']
-      activity_log.ip = request.remote_ip
-      activity_log.user_agent = request.user_agent
-      activity_log.created_at = now
-      activity_log.updated_at = now
-      activity_log.save
-    %>
     <%= pay_button(options, gateway) %>  
   <% elsif gateway == "citybank" %>  
     <% options = {} %>

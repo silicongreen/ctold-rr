@@ -4839,21 +4839,33 @@ module FinanceLoader
           #            arrange_pay(params[:id], params[:id2], params[:submission_date])
           #          end
           # abort(orderId.inspect)
-          unless order_verify_trust_bank(orderId)
-#if MultiSchool.current_school.id == 2
-#abort('here')
- #     end
-
-            if gateway_response[:card_order_status].to_s == "DECLINED"
-              msg = "Payment DECLINED!!!"
-            elsif @new_error == 'error_gateway'
-		msg = @new_error_txt
+          if MultiSchool.current_school.id == 361
+            abort(gateway_response.inspect)
+            unless order_verify_trust_bank(orderId)
+              if gateway_response[:card_order_status].to_s == "DECLINED"
+                msg = "Payment DECLINED!!!"
+              elsif @new_error == 'error_gateway'
+                msg = @new_error_txt
+              else
+                msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
+              end
+              gateway_status = false
             else
-              msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
+              gateway_status = true
             end
-            gateway_status = false
-          else
-            gateway_status = true
+          else  
+            unless order_verify_trust_bank(orderId)
+              if gateway_response[:card_order_status].to_s == "DECLINED"
+                msg = "Payment DECLINED!!!"
+              elsif @new_error == 'error_gateway'
+                msg = @new_error_txt
+              else
+                msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
+              end
+              gateway_status = false
+            else
+              gateway_status = true
+            end
           end
         end
         

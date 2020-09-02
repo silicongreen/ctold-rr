@@ -5974,18 +5974,6 @@ class StudentController < ApplicationController
   end
 
   def fee_details
-    now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
-    activity_log = ActivityLog.new
-    activity_log.user_id = current_user.id
-    activity_log.controller = "Checking Student...."
-    activity_log.action = params[:id].to_s
-    activity_log.post_requests = params
-    activity_log.ip = request.remote_ip
-    activity_log.user_agent = "https://#{request.host_with_port}#{request.fullpath}"
-    activity_log.created_at = now
-    activity_log.updated_at = now
-    activity_log.save
-
     advance_fee_collection = false
     @self_advance_fee = false
     @fee_has_advance_particular = false

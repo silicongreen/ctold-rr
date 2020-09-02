@@ -3501,8 +3501,9 @@ module FinanceLoader
     
     o = gateway_response[:order_id]
     
+    ref_id = gateway_response[:ref_id] 
     verified = gateway_response[:verified] 
-    orderID = gateway_response[:order_id] 
+    orderId = gateway_response[:order_id] 
     trans_date = gateway_response[:payment_date_time] 
     order_datetime = gateway_response[:order_date_time] 
     name = gateway_response[:name] 
@@ -3516,7 +3517,7 @@ module FinanceLoader
         transaction_datetime = dt[0]
       end
     end
-abort(verified.to_s + "  " + orderID.to_s + "  " + trans_date.to_s + "  " + order_datetime.to_s + "  " + name.to_s)
+
     archived = false
     #admission_no = admission_nos[i]
     admission_no = name
@@ -3544,7 +3545,7 @@ abort(verified.to_s + "  " + orderID.to_s + "  " + trans_date.to_s + "  " + orde
     end
 
     result = Base64.decode64(status)
-    
+    abort(result.inspect)
     verification_verified = 0
     
     xml_str = Nokogiri::XML(result)

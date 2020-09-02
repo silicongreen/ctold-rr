@@ -3535,7 +3535,7 @@ module FinanceLoader
     http = Net::HTTP.new(uri.host, uri.port)
     auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
     auth_req.set_form_data({"OrderID" => orderId, "MerchantID" => @merchant_id, "RefID" => ref_id})
-abort({"OrderID" => orderId, "MerchantID" => @merchant_id, "RefID" => ref_id}.inspect)
+
     http.use_ssl = true
     auth_res = http.request(auth_req)
 
@@ -3544,7 +3544,7 @@ abort({"OrderID" => orderId, "MerchantID" => @merchant_id, "RefID" => ref_id}.in
     unless xml_res.xpath("/").empty?
       status = xml_res.xpath("/").text
     end
-
+abort(status.inspect)
     result = Base64.decode64(status)
     abort(result.inspect)
     verification_verified = 0

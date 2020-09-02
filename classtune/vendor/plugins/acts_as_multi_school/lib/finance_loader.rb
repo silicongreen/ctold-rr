@@ -3552,7 +3552,7 @@ module FinanceLoader
     end
     
     result = Base64.decode64(status)
-    abort(result.inspect)
+    #abort(result.inspect)
     verification_verified = 0
     
     xml_str = Nokogiri::XML(result)

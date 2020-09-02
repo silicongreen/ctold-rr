@@ -5241,25 +5241,9 @@ module FinanceLoader
           #            arrange_pay(params[:id], params[:id2], params[:submission_date])
           #          end
           # abort(orderId.inspect)
-          if MultiSchool.current_school.id == 352
-            unless gateway_response.blank?
-              unless order_verify_direct(gateway_response)
-                if gateway_response[:card_order_status].to_s == "DECLINED"
-                  msg = "Payment DECLINED!!!"
-                elsif @new_error == 'error_gateway'
-                  msg = @new_error_txt
-                else
-                  msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
-                end
-                gateway_status = false
-              else
-                gateway_status = true
-              end
-            else
-              msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
-            end
-          else  
-            unless order_verify_trust_bank(orderId)
+          #if MultiSchool.current_school.id == 352
+          unless gateway_response.blank?
+            unless order_verify_direct(gateway_response)
               if gateway_response[:card_order_status].to_s == "DECLINED"
                 msg = "Payment DECLINED!!!"
               elsif @new_error == 'error_gateway'
@@ -5271,7 +5255,23 @@ module FinanceLoader
             else
               gateway_status = true
             end
+          else
+            msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
           end
+#          else  
+#            unless order_verify_trust_bank(orderId)
+#              if gateway_response[:card_order_status].to_s == "DECLINED"
+#                msg = "Payment DECLINED!!!"
+#              elsif @new_error == 'error_gateway'
+#                msg = @new_error_txt
+#              else
+#                msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
+#              end
+#              gateway_status = false
+#            else
+#              gateway_status = true
+#            end
+#          end
         end
         
         if params[:target_gateway] != "citybank"  

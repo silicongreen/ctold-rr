@@ -3501,10 +3501,12 @@ module FinanceLoader
     
     o = gateway_response[:order_id]
     
+    verified = gateway_response[:verified] 
     orderID = gateway_response[:order_id] 
     trans_date = gateway_response[:payment_date_time] 
     order_datetime = gateway_response[:order_date_time] 
     name = gateway_response[:name] 
+    abort(verified.to_s + "  " + orderID.to_s + "  " + trans_date.to_s + "  " + order_datetime.to_s + "  " + name.to_s)
     dt = trans_date.split(".")
     transaction_datetime = dt[0]
 

@@ -3506,7 +3506,7 @@ module FinanceLoader
     trans_date = gateway_response[:payment_date_time] 
     order_datetime = gateway_response[:order_date_time] 
     name = gateway_response[:name] 
-    abort(verified.to_s + "  " + orderID.to_s + "  " + trans_date.to_s + "  " + order_datetime.to_s + "  " + name.to_s)
+    
     dt = trans_date.split(".")
     transaction_datetime = dt[0]
 
@@ -3516,7 +3516,7 @@ module FinanceLoader
         transaction_datetime = dt[0]
       end
     end
-
+abort(verified.to_s + "  " + orderID.to_s + "  " + trans_date.to_s + "  " + order_datetime.to_s + "  " + name.to_s)
     archived = false
     #admission_no = admission_nos[i]
     admission_no = name

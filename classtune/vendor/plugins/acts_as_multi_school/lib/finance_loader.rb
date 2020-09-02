@@ -5241,7 +5241,7 @@ module FinanceLoader
           #            arrange_pay(params[:id], params[:id2], params[:submission_date])
           #          end
           # abort(orderId.inspect)
-          if MultiSchool.current_school.id == 361
+          if MultiSchool.current_school.id == 352
             unless gateway_response.blank?
               unless order_verify_direct(gateway_response)
                 if gateway_response[:card_order_status].to_s == "DECLINED"

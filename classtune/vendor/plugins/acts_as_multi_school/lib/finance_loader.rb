@@ -3502,10 +3502,9 @@ module FinanceLoader
     o = gateway_response[:order_id]
     
     orderID = gateway_response[:order_id] 
-    trans_date = gateway_response[:trans_date] 
+    trans_date = gateway_response[:payment_date_time] 
     order_datetime = gateway_response[:order_date_time] 
     name = gateway_response[:name] 
-    abort(gateway_response.inspect)
     dt = trans_date.split(".")
     transaction_datetime = dt[0]
 
@@ -5067,16 +5066,7 @@ module FinanceLoader
         #Jhamela
         gateway_response = {}
         xml_response_data.each do |k,v|
-          if k.to_s == "CardResponseDescription"
-            l = "CardResponseDesc"
-            gateway_response[l.underscore.to_sym] = v
-          elsif k.to_s == "PaymentDateTime"
-            l = "TranDate"
-            gateway_response[l.underscore.to_sym] = v
-          else  
-            gateway_response[k.underscore.to_sym] = v
-          end
-          
+          gateway_response[k.underscore.to_sym] = v
         end
         #abort(xml_response_data.inspect)
         #xml_response_data.each { |k,v| k.underscore.to_sym = v }

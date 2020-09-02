@@ -34,7 +34,7 @@
 
     <% form_for :student, :url => {:action => 'edit_student_guardian'}, :html => {:multipart => true, :id => 'new_student'} do |s| %>
       <%= error_messages_for 'student' %>
-      <%  if MultiSchool.current_school.id == 346 or MultiSchool.current_school.id == 348 or MultiSchool.current_school.id == 361  %>
+      <%  if MultiSchool.current_school.id == 346 or MultiSchool.current_school.id == 348  %>
       <div id="admission1-form">
         <div class="label-field-pair">
             <label for="student_image_file"><%= t('upload_photo') %> (<%= t('max_size') %>)</label>
@@ -74,6 +74,12 @@
 
           <div id="admission1_form_vertical_block_right">
               <% if MultiSchool.current_school.id == 361 %>
+              <div id="admission1-form">
+                <div class="label-field-pair">
+                    <label for="student_image_file"><%= t('upload_photo') %> (<%= t('max_size') %>)</label>
+                    <%= s.file_field :photo, :size=>12, :class=>"form-control" %>
+                </div>
+              </div>
               <div class="label-field-pair">
                   <label for="student_grade"><%= t('first_name') %><span class="necessary-field">*</span> </label>
                   <div class="text-input-bg"><%= s.text_field :first_name, :value => @student.first_name %></div>

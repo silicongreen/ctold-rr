@@ -129,6 +129,7 @@
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
             <% total_mark = 0 %>
+            <% total_mark_main = 0 %>
             <% grades = [] %>
             <% grade_count = {} %>
             <% @report_data['report']['subjects'].each do |sub| %>
@@ -227,7 +228,7 @@
                         %>  
                       <td>
                          <% if obtained_mark.round() > 0 %>
-                          <% total_mark = total_mark+obtained_mark.round() %>
+                          <% total_mark_main = total_mark_main+obtained_mark.round() %>
                           <%= obtained_mark.round().to_s %><hr/>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>
@@ -267,7 +268,7 @@
                     <% end %> 
               <% end %>
               <td>
-                   <%= total_mark.round().to_s %>    
+                   <%= total_mark_main.round().to_s %>    
               </td>    
               <td>
                   <% i = 1 %>

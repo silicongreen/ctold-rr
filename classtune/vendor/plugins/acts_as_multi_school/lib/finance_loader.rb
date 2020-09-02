@@ -3530,12 +3530,12 @@ module FinanceLoader
     end
 
     request_url = @verification_url + '/Transaction_Verify_Details'
-    abort(request_url.inspect)
+    
     uri = URI(request_url)
     http = Net::HTTP.new(uri.host, uri.port)
     auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
     auth_req.set_form_data({"OrderID" => orderId, "MerchantID" => @merchant_id, "RefID" => ref_id})
-
+abort({"OrderID" => orderId, "MerchantID" => @merchant_id, "RefID" => ref_id}.inspect)
     http.use_ssl = true
     auth_res = http.request(auth_req)
 

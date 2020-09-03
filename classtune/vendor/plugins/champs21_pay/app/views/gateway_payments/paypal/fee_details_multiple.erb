@@ -1204,7 +1204,7 @@
                       <% if @gateway_settings.keys.include?('bkash') %>
                       <i class='fa fa-spin fa-spinner loading_single_bkash' style="position: absolute; right: 10px; top: 5px; display: none;"></i>
                       <span style="float: right; display: block; padding-right: 80px; padding-bottom: 5px; font-size: 16px; width: 100%; text-align: right; color: #000;">Pay With</span><br />
-                      <%= image_tag "/images/bkash-logo.png", :class => "gateway_image_single_bkash", :id => "pay_fees_multiple", :style => "", :onclick=> "initBkash(this);" %>
+                      <%= image_tag "/images/bkash-logo.png", :class => "gateway_image_single_bkash gateway_bkash_img", :id => "pay_fees_multiple", :style => "", :onclick=> "initBkash(this);" %>
                       <% else %>
                       <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button' %>
                       <% end %>
@@ -1550,7 +1550,7 @@ encrypted = [cipher].pack('m')
                                     //j(".loading_single_bkash").hide();
                                     j(".loading").hide();
                                     j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
-                                    j("#pay_fees_multiple").removeClass('gateway_image_single_bkash_disabled');
+                                    j(".gateway_bkash_img").removeClass('gateway_image_single_bkash_disabled');
                                     if (data && data.paymentID != null) 
                                     {
                                       bkashLoad = true;
@@ -1634,11 +1634,11 @@ encrypted = [cipher].pack('m')
               bkashLoad = false;
               bKash.create().onError(); 
               j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
-              j("#pay_fees_multiple").removeClass('gateway_image_single_bkash_disabled');
+              j(".gateway_bkash_img").removeClass('gateway_image_single_bkash_disabled');
               //j(".loading_single_bkash").hide();
               j("#bKashFrameWrapper").css('display','none');
               j(".loading").hide();
-              j("#pay_fees_multiple").addClass('gateway_image_single_bkash_disabled');
+              j(".gateway_bkash_img").addClass('gateway_image_single_bkash_disabled');
               j("#pay_fees_multiple").attr('id',"pay_fees_multiple_1");
               //j(".loading_single_bkash").show();
               
@@ -1659,7 +1659,7 @@ encrypted = [cipher].pack('m')
           },
           executeRequestOnAuthorization: function() { 
             j("#bKashFrameWrapper").css('display','none');
-            j("#pay_fees_multiple").addClass('gateway_image_single_bkash_disabled');
+            j(".gateway_bkash_img").addClass('gateway_image_single_bkash_disabled');
             //j(".loading_single_bkash").show();
             j("#pay_fees_multiple").prop('disabled',true);
             j("#pay_fees_multiple").attr('id',"pay_fees_multiple_1");
@@ -1673,7 +1673,7 @@ encrypted = [cipher].pack('m')
                       if (data && data.paymentID != null) 
                       {
                         j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
-                        j("#pay_fees_multiple").removeClass('gateway_image_single_bkash_disabled');
+                        j(".gateway_bkash_img").removeClass('gateway_image_single_bkash_disabled');
                         //j(".loading_single_bkash").hide();
                         j("#bKashFrameWrapper").css('display','none');
                         j('#success_label').html("Thanks for your payment, payment was Successfull. Your order ID is: " + j("#fees_form").find("input#order_id").val());
@@ -1720,7 +1720,7 @@ encrypted = [cipher].pack('m')
             if ( bkashLoad == false )
             {
               j("#pay_fees_multiple_1").attr('id',"pay_fees_multiple");
-              j("#pay_fees_multiple").removeClass('gateway_image_single_bkash_disabled');
+              j(".gateway_bkash_img").removeClass('gateway_image_single_bkash_disabled');
               j(".loading_single_bkash").hide();
 
             }

@@ -1222,7 +1222,7 @@
                             <% if key == "bkash" %>
                             <div class="gateway_image_panel" data-gateway="<%= key %>" style="position: relative;">
                                 <i class='fa fa-spin fa-spinner loading_single_bkash' style="position: absolute; right: 10px; top: 5px; display: none;"></i>
-                                <%= image_tag "/images/bkash-logo.png", :class => "gateway_image_single_bkash", :id => "pay_fees_multiple", :style => "padding: 0;", :onclick => "j('#user_gateway').val('bkash'); initBkash(this);" %>
+                                <%= image_tag "/images/bkash-logo.png", :class => "gateway_image_single_bkash gateway_bkash_img", :id => "pay_fees_multiple", :style => "padding: 0;", :onclick => "j('#user_gateway').val('bkash'); initBkash(this);" %>
                             </div>
                             <% else %>
                               <% unless key == "citybank" %>
@@ -1546,6 +1546,7 @@ encrypted = [cipher].pack('m')
                               type: 'POST',
                               data: j("#data-form-val").serialize() + "&gateway=bkash",
                               success: function (data) {
+					//alert('here');
                                     bkash_clicked = false;
                                     //j(".loading_single_bkash").hide();
                                     j(".loading").hide();
@@ -1638,8 +1639,8 @@ encrypted = [cipher].pack('m')
               //j(".loading_single_bkash").hide();
               j("#bKashFrameWrapper").css('display','none');
               j(".loading").hide();
-              j(".gateway_bkash_img").addClass('gateway_image_single_bkash_disabled');
-              j("#pay_fees_multiple").attr('id',"pay_fees_multiple_1");
+              //j(".gateway_bkash_img").addClass('gateway_image_single_bkash_disabled');
+              //j("#pay_fees_multiple").attr('id',"pay_fees_multiple_1");
               //j(".loading_single_bkash").show();
               
               new Ajax.Request('/student/regenerate_order_id', 

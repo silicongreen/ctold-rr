@@ -3507,6 +3507,7 @@ module FinanceLoader
     trans_date = gateway_response[:payment_date_time] 
     order_datetime = gateway_response[:order_date_time] 
     name = gateway_response[:name] 
+    amount = gateway_response[:amount].to_f
     
     dt = trans_date.split(".")
     transaction_datetime = dt[0]

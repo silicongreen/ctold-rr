@@ -477,7 +477,7 @@ class AssignmentsController < ApplicationController
       end
       @subjects = @normal_subjects+@elective_subjects
       
-      @assignments = Assignment.paginate  :conditions=>"FIND_IN_SET(#{student.id},student_list) and is_published=1",:order=>"created_at desc", :page=>params[:page], :per_page => 10
+      @assignments = Assignment.paginate  :conditions=>"FIND_IN_SET(#{student.id},student_list) and is_published=1 and batch_id = #{student.batch_id}",:order=>"created_at desc", :page=>params[:page], :per_page => 10
 
     elsif    @current_user.parent?
       target = @current_user.guardian_entry.current_ward_id      
@@ -490,7 +490,7 @@ class AssignmentsController < ApplicationController
         @elective_subjects.push Subject.find(e.subject_id)
       end
       @subjects = @normal_subjects+@elective_subjects
-      @assignments = Assignment.paginate  :conditions=>"FIND_IN_SET(#{student.id},student_list) and is_published=1",:order=>"created_at desc", :page=>params[:page], :per_page => 10
+      @assignments = Assignment.paginate  :conditions=>"FIND_IN_SET(#{student.id},student_list) and is_published=1 and batch_id = #{student.batch_id}",:order=>"created_at desc", :page=>params[:page], :per_page => 10
       
 
     elsif @current_user.admin?

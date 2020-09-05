@@ -3531,20 +3531,32 @@ module FinanceLoader
     end
 
     request_url = @verification_url + '/Transaction_Verify_Details'
-    
+    if MultiSchool.current_school.id == 361
+	request_url = 'https://ibanking.tblbd.com/testcheckout/services/Payment_Info.asmx/Transaction_Verify_Details'
+    	#abort(request_url.inspect)
+    end 	 
     uri = URI(request_url)
     http = Net::HTTP.new(uri.host, uri.port)
     auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
     auth_req.set_form_data({"OrderID" => orderId, "MerchantID" => @merchant_id, "RefID" => ref_id})
-
+    #if MultiSchool.current_school.id == 361
+    #	abort({"OrderID" => orderId, "MerchantID" => @merchant_id, "RefID" => ref_id}.inspect)
+    #end
     http.use_ssl = true
     auth_res = http.request(auth_req)
 
     xml_res = Nokogiri::XML(auth_res.body)
+    #if MultiSchool.current_school.id == 361
+    #    abort(auth_res.body.inspect)
+    #end
+
     status = ""
     unless xml_res.xpath("/").empty?
       status = xml_res.xpath("/").text
     end
+    #if MultiSchool.current_school.id == 361
+    #    abort(status.inspect)
+    #end
     if status.include? 'Server was unable to process request'
       flash[:notice] = status
       @new_error_txt = "If you see this error, please take a screenshot and share with us <br /><br />" + status

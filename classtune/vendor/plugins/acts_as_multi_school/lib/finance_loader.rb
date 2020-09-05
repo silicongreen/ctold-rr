@@ -3532,7 +3532,9 @@ module FinanceLoader
 
     request_url = @verification_url + '/Transaction_Verify_Details'
     if MultiSchool.current_school.id == 361
-	request_url = 'https://ibanking.tblbd.com/testcheckout/services/Payment_Info.asmx/Transaction_Verify_Details'
+	unless testtrustbank
+		request_url = 'https://ibanking.tblbd.com/testcheckout/services/Payment_Info.asmx/Transaction_Verify_Details'
+	end
     	#abort(request_url.inspect)
     end 	 
     uri = URI(request_url)

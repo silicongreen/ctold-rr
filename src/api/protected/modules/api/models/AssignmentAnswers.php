@@ -252,7 +252,7 @@ class AssignmentAnswers extends CActiveRecord
         function mark($assignment_id, $student_id)
         {
              $criteria = new CDbCriteria();
-             $criteria->select = 't.id,t.status';
+             $criteria->select = 't.id,t.status,t.mark';
              $criteria->compare('t.student_id', $student_id);
              $criteria->compare('t.assignment_id', $assignment_id);
              

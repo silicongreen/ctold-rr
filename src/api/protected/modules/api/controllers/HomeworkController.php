@@ -886,8 +886,11 @@ class HomeworkController extends Controller
                 {
                     $robject = new Reminders();
                     $robject->ReadReminderNew(Yii::app()->user->id, 0, 4, $id);
+                    
+                    $attachments = Settings::attachmentUrlAssignment($id);
 
                     $response['data']['homework'] = $homework_data[0];
+                    $response['data']['attachments'] = $attachments;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "Data Found";
                 } else
@@ -1750,7 +1753,63 @@ class HomeworkController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end(); 
         
+    }   
+    
+    
+    public function actionSaveCommentsStudent()
+    {
+        $id = Yii::app()->request->getPost('id');
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $comment = Yii::app()->request->getPost('comment'); 
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isStudent && $id && $comment)
+        {
+            $student_id = Yii::app()->user->profileId;
+            $assignmentCommentsObj = new AssignmentComments();
+            $assignmentCommentsObj->assignment_id = $id;
+            $assignmentCommentsObj->student_id = $student_id;
+            $assignmentCommentsObj->content = $comment;
+            $assignmentCommentsObj->author_id = Yii::app()->user->id;
+            $assignmentCommentsObj->created_at = date('Y-m-d H:i:s', strtotime("-6 hours"));
+            $assignmentCommentsObj->updated_at = date('Y-m-d H:i:s', strtotime("-6 hours"));
+            $assignmentCommentsObj->school_id = Yii::app()->user->schoolId;
+            $assignmentCommentsObj->insert();
+            $response['data']['msg'] = "Success";
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Data Found";
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }  
+        echo CJSON::encode($response);
+        Yii::app()->end(); 
+    }        
+
+
+    public function actionCommentsStudent()
+    {
+        $id = Yii::app()->request->getPost('id');
+        $user_secret = Yii::app()->request->getPost('user_secret'); 
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isStudent && $id && $student_id)
+        {
+            $student_id = Yii::app()->user->profileId;
+            $assignmentCommentsObj = new AssignmentComments();
+            $comments = $assignmentCommentsObj->getComments($id,$student_id);
+            $response['data']['comments'] = $comments;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Data Found";
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }  
+        echo CJSON::encode($response);
+        Yii::app()->end(); 
+        
     }         
+    
     
     public function actionSaveMark()
     {

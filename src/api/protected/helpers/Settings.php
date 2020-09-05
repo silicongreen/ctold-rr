@@ -236,6 +236,52 @@ class Settings {
     );
     public static $_ar_language = array('en' => 'ENG', 'bn' => 'BAN',);
     
+    public function attachmentUrlAssignment($id)
+    {
+       
+        if ($id)
+        {
+            $array = ["att1"=>"","att2"=>"","att3"=>""];
+            $school_id = Yii::app()->user->schoolId;
+            $schoolObj = new Schools();
+            $schooldata = $schoolObj->findByPk($school_id);
+            $school_url = "https://".$schooldata->code.".classtune.com/";
+            $assignment = new Assignments();
+            $assignmentobj = $assignment->findByPk($id);
+            if ( $assignmentobj && ($assignmentobj->attachment_file_name or $assignmentobj->attachment2_file_name or $assignmentobj->attachment3_file_name))
+            {
+                $attachment_datetime_chunk = explode(" ", $assignmentobj->updated_at);
+
+                $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
+                $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);
+
+                $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
+                $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
+
+                if( $assignmentobj->attachment_file_name ) 
+                {
+                    $url = $school_url.  "uploads/assignments/attachments/" . $id . "/original/" . urlencode($assignmentobj->attachment_file_name) . "?" . $attachment_extra;
+                     $array['att1'] = $url;
+                } 
+                if( $assignmentobj->attachment2_file_name)
+                {
+                    $url = $school_url. "uploads/assignments/attachment2s/" . $id . "/original/" . urlencode($assignmentobj->attachment2_file_name) . "?" . $attachment_extra;
+
+                    $array['att2'] = $url;
+                }
+                if( $assignmentobj->attachment3_file_name)
+                {
+                    $url = $school_url. "uploads/assignments/attachment3s/" . $id . "/original/" . urlencode($assignmentobj->attachment3_file_name) . "?" . $attachment_extra;
+                    $array['att3'] = $url;
+                }    
+                  
+                    
+                
+            } 
+            return $array;
+        }
+    }
+    
     
     public static function attachmentUrl($answer_id)
     {
@@ -275,9 +321,7 @@ class Settings {
                 $file_name_explode = explode(".", $homework->attachment_file_name);
                 $extension = $file_name_explode[count($file_name_explode)-1];
                 $file_name = str_replace(".".$extension,"", $homework->attachment_file_name);
-                $homework->attachment_file_name = $file_name."_".$homework->id.".".$extension;
-                
-                
+                $homework->attachment_file_name = $file_name."_".$homework->id.".".$extension; 
             }
             $url = $school_url. "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachments/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/".$homework->attachment_file_name;
             $array['att1'] = $url;

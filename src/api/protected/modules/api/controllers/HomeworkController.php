@@ -841,7 +841,9 @@ class HomeworkController extends Controller
             if ($homework_data)
             {
 
+                $attachments = Settings::attachmentUrlAssignment($id);
                 $response['data']['homework'] = $homework_data[0];
+                $response['data']['attachments'] = $attachments;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Data Found";
             } else

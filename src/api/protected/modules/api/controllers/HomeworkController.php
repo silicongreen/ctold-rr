@@ -1461,6 +1461,7 @@ class HomeworkController extends Controller
         $assignment_type = Yii::app()->request->getPost('type');
         $duedate = Yii::app()->request->getPost('duedate');
         $students_array = Yii::app()->request->getPost('students');
+        $total_mark = Yii::app()->request->getPost('total_mark');
         $school_id = Yii::app()->user->schoolId;
         $id = Yii::app()->request->getPost('id');
 
@@ -1491,6 +1492,10 @@ class HomeworkController extends Controller
 
                         $homework->subject_id = $subject_id;
                         $homework->content = $content;
+                        if($total_mark)
+                        {
+                         $homework->total_mark = $total_mark;
+                        }
                         $homework->title = $title;
                         $homework->duedate = $duedate;
                         $homework->school_id = Yii::app()->user->schoolId;

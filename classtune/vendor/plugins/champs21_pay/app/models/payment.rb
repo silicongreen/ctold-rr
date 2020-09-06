@@ -5,6 +5,8 @@ class Payment < ActiveRecord::Base
 
   serialize :gateway_response
   serialize :validation_response
+
+  before_save :remove_other
   
 #  before_create :change_table
 #  before_save :change_table
@@ -35,6 +37,15 @@ class Payment < ActiveRecord::Base
 #      end
 #    end
 #  end
+
+  def remove_other
+     payments = Payment.find(:all, :conditions => "gateway_txt != '#{gateway_txt}' and order_id = '#{order_id}' and payment_id = '#{payment_id}' and payee_id = '#{payee_id}'")
+     unless payments.blank?
+	payments.each do |p|
+	    p.destroy
+	end
+     end
+  end
 
   def payee_name
     if payee.nil?

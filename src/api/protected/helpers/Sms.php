@@ -9,7 +9,7 @@
 class Sms
 {
 
-    public static $sms_attendence_school = [2, 296,319,352,356,312,357];
+    public static $sms_attendence_school = [2, 296,352,356,312,357];
     public static $sms_all_guardian = [2];
     public static $sms_subject_attendence_school = [2];
     //296

@@ -69,11 +69,16 @@
                 trans_data = I18n.l(payment.transaction_datetime.to_date,:format=>"%d-%m-%Y")
                 #trans_data = I18n.l((payment.created_at.to_time + 6.hours).to_datetime,:format=>"%d-%m-%Y")
                 trans_id = payment.gateway_response[:order_id]
+		if payment.gateway_txt == 'bkash'
+		trans_type = "bKash Online Payment "
+		trans_id = payment.order_id	
+		else
                 if payment.gateway_response[:payment_type] == "MB"
                   trans_type = "TBL Mobile banking"
                 else
                   trans_type = "TBL Card Payment"
                 end
+		end
               else
                 unless params[:trn_id].nil?
                   @paid_fees.select{ |f| f.id.to_i == params[:trn_id].to_i}.each do |p|

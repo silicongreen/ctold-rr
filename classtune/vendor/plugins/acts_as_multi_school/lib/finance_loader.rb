@@ -3531,12 +3531,12 @@ module FinanceLoader
     end
 
     request_url = @verification_url + '/Transaction_Verify_Details'
-    if MultiSchool.current_school.id == 361
+    #if MultiSchool.current_school.id == 361
 	if testtrustbank
 		request_url = 'https://ibanking.tblbd.com/testcheckout/services/Payment_Info.asmx/Transaction_Verify_Details'
 	end
     	#abort(request_url.inspect)
-    end 	 
+    #end 	 
     uri = URI(request_url)
     http = Net::HTTP.new(uri.host, uri.port)
     auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})

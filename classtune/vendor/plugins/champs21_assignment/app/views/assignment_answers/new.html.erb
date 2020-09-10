@@ -27,7 +27,7 @@
           </div>
 
           <div class="label-field-pair">
-            <label ><%= "#{t('attach_a_file')}"%></label>
+              <label ><%= "#{t('attach_a_file')}"%> <b style="color:red;">*</b></label>
             <div  class="text-input-bg" id="assignment-attachment"><%= f.file_field  :attachment %></div>
           </div>
             
@@ -48,7 +48,7 @@
           </div>
         
 
-          <%= f.submit "#{t('submit_answer')}" ,:class=>"submit_button", :disable_with => "#{t('please_wait')}"%>
+          <%= f.submit "#{t('submit_answer')}" ,:class=>"submit_button"  %>
         </div>
 
 
@@ -58,3 +58,21 @@
     <% end %>
   </div>
 </div>
+
+<script>
+  j(document).on(".submit_button","click",function(event){
+    event.preventDefault();
+    var file_added = false;
+    if( document.getElementById("attachment").files.length != 0 || document.getElementById("attachment2").files.length != 0 || document.getElementById("attachment3").files.length != 0 ){
+      file_added = true;
+    }
+    if(file_added == false)
+    {
+      if(confirm("Do you want to continue without any attachment?"))
+      {
+        j(".new_assignment_answer").submit();
+      }
+    }
+  });
+  
+</script>  

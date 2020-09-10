@@ -182,11 +182,26 @@ class AssignmentAnswersController < ApplicationController
         abort(@assignment_answer.attachment.path)
       end
       if @number.blank? or @number.to_i == 1
-        send_file  @assignment_answer.attachment.path, :type=>@assignment_answer.attachment.content_type
+        spilt_file_name = @assignment_answer.attachment_file_name.split(".")
+        total_count = spilt_file_name.count-1
+        file_extenstion = spilt_file_name[total_count]
+        student = @assignment_answer.student
+        file_name = student.full_name+"-1."+file_extenstion
+        send_file  @assignment_answer.attachment.path, :type=>@assignment_answer.attachment.content_type,:filename => file_name
       elsif @number.to_i == 2
-        send_file  @assignment_answer.attachment2.path, :type=>@assignment_answer.attachment2.content_type
+        spilt_file_name = @assignment_answer.attachment2_file_name.split(".")
+        total_count = spilt_file_name.count-1
+        file_extenstion = spilt_file_name[total_count]
+        student = @assignment_answer.student
+        file_name = student.full_name+"-1."+file_extenstion
+        send_file  @assignment_answer.attachment2.path, :type=>@assignment_answer.attachment2.content_type,:filename => file_name
       elsif @number.to_i == 3
-        send_file  @assignment_answer.attachment3.path, :type=>@assignment_answer.attachment3.content_type
+        spilt_file_name = @assignment_answer.attachment3_file_name.split(".")
+        total_count = spilt_file_name.count-1
+        file_extenstion = spilt_file_name[total_count]
+        student = @assignment_answer.student
+        file_name = student.full_name+"-1."+file_extenstion
+        send_file  @assignment_answer.attachment3.path, :type=>@assignment_answer.attachment3.content_type,:filename => file_name
       end 
       
     else

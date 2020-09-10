@@ -1501,7 +1501,7 @@ class AssignmentsController < ApplicationController
     unless @assignment.blank?
       batch_id = @assignment.subject.batch_id
       batch = Batch.find_by_id(batch_id)
-      zip_name = batch.course.course_name+" "+batch.course.section_name+" "+@assignment.title+".zip"
+      zip_name = batch.course.course_name+" "+batch.course.section_name+"-"+@assignment.title+".zip"
       answers = AssignmentAnswer.find_all_by_assignment_id(@assignment.id)
       rails_tmp_path = File.join(RAILS_ROOT, "/tmp/")
       tmp_zip_path = File.join(rails_tmp_path, "assignmnet_attachments.zip")

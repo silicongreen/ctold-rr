@@ -232,7 +232,10 @@
           <% unless @defaulter_registered.blank? %>
             <%= link_to "Defaulter List (#{@defaulter_registered.assignment_not_given})", { :action => 'defaulter_students', :id =>params[:id]},  :class => "user_button" %>
           <% end %>
-          <% end %>  
+          <% end %> 
+          <% if @assignment.assignment_type == 2 && @answered_count.to_i > 0 %>
+            <%= link_to "► Download All Attachment", { :action => 'assignment_all_attchment_download', :id =>params[:id]},  :class => "user_button" %>
+          <% end %>
         </div>
          
         <% if @assignment.assignment_type == 2 %>  
@@ -422,7 +425,16 @@
   }
   
   #comments-heading{border-bottom:2px solid gray;padding:0 0 10px}
-#leave-a-comment{margin:40px 0 10px}
+#leave-a-comment {
+    margin: 40px 0 10px;
+    float: left;
+    clear: both;
+}
+#assignment_ajax_msg .answer, #assignment_ajax_msg .answer .user_button {
+    margin-left: 0px !important;
+    float: left;
+    margin-bottom: 10px;
+}
 #comments-list{padding:0 0 20px}
 #comments-list li{border-bottom:1px solid #aaa;list-style-type:none;margin:20px 0 0;padding:10px 0}
 #comments-list li .comment-details{color:#888;font-size:80%;height:15px;margin:0 0 10px}

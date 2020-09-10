@@ -1506,7 +1506,7 @@ class AssignmentsController < ApplicationController
       rails_tmp_path = File.join(RAILS_ROOT, "/tmp/")
       tmp_zip_path = File.join(rails_tmp_path, "assignmnet_attachments.zip")
       File.delete(tmp_zip_path) if File.exist?(tmp_zip_path)
-      unless assignments.blank?
+      unless answers.blank?
         Zip::ZipFile.open(tmp_zip_path,Zip::ZipFile::CREATE) do |zipfile|
           answers.each do |answer|
             unless answer.attachment_file_name.blank?

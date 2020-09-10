@@ -1,36 +1,66 @@
-<div class="partial_attendance" <%  if check_free_school? %> style="float:right; width:40%;"<% end %>> 
+<div class="partial_attendance"  <%  if check_free_school? %> style="float:right; width:40%;"<% end %>> 
  <%  if !check_free_school? %>
  <div class="portlet-subcontent">  
  <% end %>    
-   <div class="timetable_left arrow" <%  if check_free_school? %> style="float:right;"<% end %>>
-     
-     <% unless @att_image.empty? %>
-        <% @profile_image = @att_image %>
-      <% else %>
-        <% if @current_user.employee? || @current_user.admin? %>
-          <% @profile_image = "/images/HR/default_employee.png" %>
-        <% else %>
-          <% @profile_image = "/images/master_student/profile/default_student.png" %>
-        <% end %>
-      <% end %>
+   <div class="timetable_left arrow">
+     <%#= debug @main_user_data %>
+      
+
+        <!-- FOR ROUND PICTURE<div id="profile_image_div" style="
+            margin:5px 30px; width: 60px;
+            height: 60px;
+            border-radius: 28px;
+            -webkit-border-radius: 28px;
+            -moz-border-radius: 28px;
+            background: url(<%#=  @profile_image %>) no-repeat;
+            background-position: 50%;
+            background-size:125%;">
+                           
+        </div>-->
+        <% 
+            @attendence_text_default = get_attendence_data_all 
+            @att_text_default = ''
+            @att_image_default = ''
+            if @attendence_text_default['status']['code'].to_i == 200
+              @att_text_default = @attendence_text_default['data']['text']
+              @att_image_default = @attendence_text_default['data']['profile_picture']
+            end
+        %>
         
-        <%  profile_text = "<img src='#{@profile_image}'
-            style='height: 120px;
-            width: 120px;' />" %>
+         <% unless @att_image_default.empty? %>
+          <% @profile_image = @att_image_default %>
+          <% else %>
+            <% if @current_user.employee? || @current_user.admin? %>
+              <% @profile_image = "/images/HR/default_employee.png" %>
+            <% else %>
+              <% @profile_image = "/images/master_student/profile/default_student.png" %>
+            <% end %>
+          <% end %>
         
         <%if @current_user.parent? %>
-        <% 
-            student_id = @current_user.guardian_entry.current_ward_id      
-            student = Student.find_by_id(student_id)
-        %>
-        <%  if !check_free_school? %>
-          <%= link_to profile_text, :controller => "student", :action => "profile", :id => student_id %>
-        <% else  %>
-          <%= link_to profile_text, :controller => "student", :action => "profile", :id => student_id %>
-        <% end %>
-        
+            <% 
+                student_id = @current_user.guardian_entry.current_ward_id      
+                student = Student.find_by_id(student_id)
+            %>
+         
+            <%  profile_text = "<img src='#{@profile_image}'
+            style='height: 120px;
+            width: 120px;' />" %>
+            <%  if !check_free_school? %>
+              <%= link_to profile_text, :controller => "student", :action => "profile", :id => student_id %>
+            <% else  %>
+              <%= link_to profile_text, :controller => "student", :action => "profile", :id => student_id %>
+            <% end %>
+
+           
        <% elsif @current_user.student? %>
-        <% student_id = @current_user.student_record.id  %>  
+        <% student_id = @current_user.student_record.id 
+            student = Student.find_by_id(student_id)
+      %>  
+           
+            <%  profile_text = "<img src='#{@profile_image}'
+            style='height: 120px;
+            width: 120px;' />" %>
         <%  if !check_free_school? %>
           <%= link_to profile_text, :controller => "student", :action => "profile", :id => student_id %>
         <% else  %>
@@ -38,15 +68,27 @@
         <% end %>
        
       <% elsif @current_user.employee? || @current_user.admin? %> 
-        <% employee_id = @current_user.employee_record.id  %>  
+        <% employee_id = @current_user.employee_record.id
+           employee = Employee.find_by_id(employee_id)
+      %>  
+            
+            <%  profile_text = "<img src='#{@profile_image}'
+            style='height: 120px;
+            width: 120px;' />" %>
         <%  if !check_free_school? %>
           <%= link_to profile_text, :controller => "employee", :action => "profile", :id => employee_id %>
         <% else  %>
           <%= link_to profile_text, :controller => "employee", :action => "profile", :id => employee_id %>
         <% end %>
-       
+        
       <% else %> 
-       
+            
+            
+            
+            <%  profile_text = "<img src='#{@profile_image}'
+            style='height: 120px;
+            width: 120px;' />" %>
+        <p><%= @main_user_data.full_name %></p>
        <% end %>
      
    </div>
@@ -57,19 +99,18 @@
                             font-size: 12px;
                             margin-left: 75px;
                             margin-top: 23px;">
-           <%if @current_user.employee? || @current_user.admin? %>
+                  <%if @current_user.employee? || @current_user.admin? %>
                   <%= link_to "ATTENDANCE", :controller => "attendances", :action => "index" %>
                   <% else %>
                   <%= link_to "ATTENDANCE", :controller => "student_attendance", :action => "student", :id => student_id %>
                   <% end %>
-           
-           </p>       
+        </p>       
      </div>      
      <div class="subcontent-info">
        <ul class="champs21_feed">             
             
            <li class="att-name">
-             <%if @current_user.parent? %>
+              <%if @current_user.parent? %>
               <% 
                   student_id = @current_user.guardian_entry.current_ward_id      
                   student = Student.find_by_id(student_id)
@@ -81,12 +122,14 @@
              <% else %>  
                <% employee_id = @current_user.employee_record.id  %>
                 <%= link_to @main_user_data.full_name, :controller => "employee", :action => "profile", :id => employee_id %>
-             <% end %>  
+             <% end %> 
            </li>              
        </ul>
      </div>              
-   </div>   
+   </div>  
+    
  </div>
+    
  <% end %> 
 </div>
 <style>
@@ -103,6 +146,7 @@
   color: #ffffff;
   font-size: 12px; 
   cursor: pointer;
+  text-decoration: none;
 }
 .timetable_right div .att-name a
 {
@@ -110,6 +154,7 @@
     margin: 20px 10px;
     color:#49BB4B;
     cursor: pointer;
+    text-decoration: none;
 }
 </style>  
 

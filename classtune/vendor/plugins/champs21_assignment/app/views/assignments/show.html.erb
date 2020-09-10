@@ -86,7 +86,7 @@
 			  <% elsif answer.status=="ACCEPTED" %>
 			   <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> ACCEPTED</a>
 			  <% else  %>
-			   <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> PENDING</a>
+			   <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> SUBMITTED</a>
 			  <% end %>
 			  <% break %>
 			<% end %>
@@ -104,7 +104,7 @@
 			  <% elsif answer.status=="ACCEPTED" %>
 			   <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> ACCEPTED</a>
 			  <% else  %>
-			   <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> PENDING</a>
+			   <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> SUBMITTED</a>
 			  <% end %>
 			  <% break %>
 			<% end %>
@@ -125,7 +125,7 @@
           <% elsif answer.status=="ACCEPTED" %>
              <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> ACCEPTED</a>
           <% else  %>
-             <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> PENDING</a>
+             <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> SUBMITTED</a>
           <% end %>
           <% break %>
         <% end %>
@@ -298,7 +298,7 @@
               <% elsif answer.status=="ACCEPTED" %>
                 <b>Status : <%= "#{t('hostel_accepted')}"%></b>
               <% else  %>
-                <b>Status : Pending</b>
+                <b>Status : SUBMITTED</b>
               <% end %>
               <% break %>
             <% end %>
@@ -316,7 +316,7 @@
                 <% elsif answer.status=="ACCEPTED" %>
                  <b>Status : <%= "#{t('hostel_accepted')}"%></b>
                 <% else  %>
-                 <b>Status : Pending</b>
+                 <b>Status : SUBMITTED</b>
                 <% end %>
                 <% break %>
               <% end %>

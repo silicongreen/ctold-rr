@@ -5,7 +5,7 @@
   <% elsif @assignment_answer.status=="ACCEPTED" %>
     <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> ACCEPTED</a>
   <% else  %>
-    <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> PENDING</a>
+    <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> SUBMITTED</a>
   <% end %>
  <% else %>
     <%= link_to_remote "Done" , :url => {:controller => 'assignment_answers', :action => "done", :assignment_id => @aid } , :update=> 'done_'+@aid.to_s, :html => { :class  => "user_button",:style=>"margin-left:0px;width:85%;" }%>

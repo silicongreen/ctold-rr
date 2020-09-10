@@ -3981,16 +3981,18 @@ class StudentController < ApplicationController
     if request.post?
       if MultiSchool.current_school.id != 352 and MultiSchool.current_school.id != 346
         params[:student].delete "pass"
-        params[:student_additional_details].each_pair do |k, v|
-          additional_detail=StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
-          unless additional_detail.blank?
-            if v['additional_info'].blank?
-              additional_detail.destroy
-            else 
-              StudentAdditionalDetail.update(additional_detail.id,:additional_info => v['additional_info'])
+        unless @additional_fields.blank?
+          params[:student_additional_details].each_pair do |k, v|
+            additional_detail=StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
+            unless additional_detail.blank?
+              if v['additional_info'].blank?
+                additional_detail.destroy
+              else 
+                StudentAdditionalDetail.update(additional_detail.id,:additional_info => v['additional_info'])
+              end
+            else
+              StudentAdditionalDetail.create(:student_id=>@student.id,:additional_field_id=>k,:additional_info=>v['additional_info'])
             end
-          else
-            StudentAdditionalDetail.create(:student_id=>@student.id,:additional_field_id=>k,:additional_info=>v['additional_info'])
           end
         end
       end

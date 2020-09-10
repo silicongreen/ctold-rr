@@ -60,12 +60,13 @@
 </div>
 
 <script>
-  j(document).on(".submit_button","click",function(event){
+  j(".submit_button").on("click",function(event){
     event.preventDefault();
     var file_added = false;
     if( document.getElementById("attachment").files.length != 0 || document.getElementById("attachment2").files.length != 0 || document.getElementById("attachment3").files.length != 0 ){
       file_added = true;
     }
+    alert("here");
     if(file_added == false)
     {
       if(confirm("Do you want to continue without any attachment?"))

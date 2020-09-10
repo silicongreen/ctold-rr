@@ -260,18 +260,26 @@ class Settings {
 
                 if( $assignmentobj->attachment_file_name ) 
                 {
-                    $url = $school_url.  "uploads/assignments/attachments/" . $id . "/original/" . urlencode($assignmentobj->attachment_file_name) . "?" . $attachment_extra;
+                     $origin = Settings::$paid_image_path."uploads/assignments/attachments/" . $id . "/original/" .$assignmentobj->attachment_file_name . "?" . $attachment_extra;
+                     $uploads_dir = Settings::$paid_image_path."uploads/assignments/attachments/" . $id . "/original/" . $assignmentobj->attachment_file_name;
+                     @copy($origin, "$uploads_dir");
+                     $url = $school_url.  "uploads/assignments/attachments/" . $id . "/original/" . urlencode($assignmentobj->attachment_file_name);
                      $array['att1'] = $url;
                 } 
                 if( $assignmentobj->attachment2_file_name)
                 {
-                    $url = $school_url. "uploads/assignments/attachment2s/" . $id . "/original/" . urlencode($assignmentobj->attachment2_file_name) . "?" . $attachment_extra;
-
+                    $origin = Settings::$paid_image_path."uploads/assignments/attachment2s/" . $id . "/original/" .$assignmentobj->attachment_file_name . "?" . $attachment_extra;
+                    $uploads_dir = Settings::$paid_image_path."uploads/assignments/attachment2s/" . $id . "/original/" . $assignmentobj->attachment_file_name;
+                    @copy($origin, "$uploads_dir");
+                    $url = $school_url. "uploads/assignments/attachment2s/" . $id . "/original/" . urlencode($assignmentobj->attachment2_file_name);
                     $array['att2'] = $url;
                 }
                 if( $assignmentobj->attachment3_file_name)
                 {
-                    $url = $school_url. "uploads/assignments/attachment3s/" . $id . "/original/" . urlencode($assignmentobj->attachment3_file_name) . "?" . $attachment_extra;
+                    $origin = Settings::$paid_image_path."uploads/assignments/attachment3s/" . $id . "/original/" . $assignmentobj->attachment3_file_name . "?" . $attachment_extra;
+                    $uploads_dir = Settings::$paid_image_path."uploads/assignments/attachment3s/" . $id . "/original/" . $assignmentobj->attachment3_file_name;
+                    @copy($origin, "$uploads_dir");
+                    $url = $school_url. "uploads/assignments/attachment3s/" . $id . "/original/" . urlencode($assignmentobj->attachment3_file_name);
                     $array['att3'] = $url;
                 }    
                   

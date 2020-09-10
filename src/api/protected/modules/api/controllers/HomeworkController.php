@@ -1798,7 +1798,7 @@ class HomeworkController extends Controller
     {
         $id = Yii::app()->request->getPost('id');
         $user_secret = Yii::app()->request->getPost('user_secret'); 
-        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isStudent && $id && $student_id)
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isStudent && $id )
         {
             $student_id = Yii::app()->user->profileId;
             $assignmentCommentsObj = new AssignmentComments();

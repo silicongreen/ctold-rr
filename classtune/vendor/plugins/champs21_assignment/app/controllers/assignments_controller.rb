@@ -1495,6 +1495,69 @@ class AssignmentsController < ApplicationController
     redirect_to :action=>"show",:id=>@assignment.id
   end
   
+  def assignment_all_attchment_download
+    require 'zip/zipfilesystem'
+    @assignment =Assignment.active.find params[:id]
+    unless @assignment.blank?
+      batch_id = @assignment.subject.batch_id
+      batch = Batch.find_by_id(batch_id)
+      zip_name = batch.course.course_name+" "+batch.course.section_name+" "+@assignment.title+".zip"
+      answers = AssignmentAnswer.find_all_by_assignment_id(@assignment.id)
+      rails_tmp_path = File.join(RAILS_ROOT, "/tmp/")
+      tmp_zip_path = File.join(rails_tmp_path, "assignmnet_attachments.zip")
+      File.delete(tmp_zip_path) if File.exist?(tmp_zip_path)
+      unless assignments.blank?
+        Zip::ZipFile.open(tmp_zip_path,Zip::ZipFile::CREATE) do |zipfile|
+          answers.each do |answer|
+            unless answer.attachment_file_name.blank?
+              spilt_file_name = answer.attachment_file_name.split(".")
+              total_count = spilt_file_name.count-1
+              if total_count > 0
+                file_extenstion = spilt_file_name[total_count]
+                student = answer.student
+                img_name = student.admission_no+"-"+student.full_name+"-1."+file_extenstion
+                if File.exists? answer.attachment.path
+                  attachment = open(answer.attachment.path)
+                  zipfile.add(img_name, attachment.path)
+                end
+              end
+            end
+            
+            unless answer.attachment2_file_name.blank?
+              spilt_file_name = answer.attachment2_file_name.split(".")
+              total_count = spilt_file_name.count-1
+              if total_count > 0
+                file_extenstion = spilt_file_name[total_count]
+                student = answer.student
+                img_name = student.admission_no+"-"+student.full_name+"-2."+file_extenstion
+                if File.exists? answer.attachment2.path
+                  attachment = open(answer.attachment2.path)
+                  zipfile.add(img_name, attachment.path)
+                end
+              end
+            end
+            
+            unless answer.attachment3_file_name.blank?
+              spilt_file_name = answer.attachment3_file_name.split(".")
+              total_count = spilt_file_name.count-1
+              if total_count > 0
+                file_extenstion = spilt_file_name[total_count]
+                student = answer.student
+                img_name = student.admission_no+"-"+student.full_name+"-3."+file_extenstion
+                if File.exists? answer.attachment3.path
+                  attachment = open(answer.attachment3.path)
+                  zipfile.add(img_name, attachment.path)
+                end
+              end
+            end
+            
+          end
+        end
+        send_file  tmp_zip_path,:filename => zip_name
+      end
+    end
+  end
+  
   def download_attachment
     #download the  attached file
     @number = params[:number]

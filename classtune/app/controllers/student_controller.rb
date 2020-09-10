@@ -1056,6 +1056,41 @@ class StudentController < ApplicationController
     
   end
   
+  def student_photo_download
+    require 'zip/zipfilesystem'
+    batch_id = params[:batch_id]
+    batch = Batch.find_by_id(batch_id)
+    zip_name = batch.course.course_name+" "+batch.course.section_name+".zip"
+    students = Student.find_all_by_batch_id(batch_id)
+    rails_tmp_path = File.join(RAILS_ROOT, "/tmp/")
+    tmp_zip_path = File.join(rails_tmp_path, "pictures.zip")
+    File.delete(tmp_zip_path) if File.exist?(tmp_zip_path)
+    unless students.blank?
+      Zip::ZipFile.open(tmp_zip_path,Zip::ZipFile::CREATE) do |zipfile|
+        students.each do |student|
+          unless student.photo_file_name.blank?
+            file_extenstion = ""
+            if student.photo_content_type == "image/jpeg" or student.photo_content_type == "image/jpg"
+              file_extenstion = "jpg"
+            end
+            if student.photo_content_type == "image/png"
+              file_extenstion = "png"
+            end
+            if student.photo_content_type == "image/gif"
+              file_extenstion = "gif"
+            end
+            img_name = student.admission_no+"-"+student.full_name+"."+file_extenstion
+            if File.exists? student.photo.path
+              img = open(student.photo.path)
+              zipfile.add(img_name, img.path)
+            end
+          end
+        end
+      end
+      send_file  tmp_zip_path,:filename => zip_name
+    end
+  end
+  
   def remove_photo
     @student = Student.find(params[:id])
     @student.photo.destroy

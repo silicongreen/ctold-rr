@@ -2,6 +2,9 @@ testtrustbank: true
 merchant_info_352:
   merchant_id: SAGC
   keycode: b28eaabc-1840-4b9b-b519-41d8accd31fd
+merchant_info_361:
+  merchant_id: NASCD
+  keycode: e83a999c-bc78-4f18-bbd7-c712e9d5bef7
 trustbank_api_url: https://ibanking.tblbd.com/TestCheckout/Checkout_Payment.aspx
 validation_api: https://ibanking.tblbd.com/TestCheckout/Checkout_Payment_Verify.asmx?WSDL
 verification_api: https://ibanking.tblbd.com/TestCheckout/Services/Payment_Info.asmx

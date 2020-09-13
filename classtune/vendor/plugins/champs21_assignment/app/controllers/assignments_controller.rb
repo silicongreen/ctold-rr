@@ -1506,9 +1506,14 @@ class AssignmentsController < ApplicationController
       rails_tmp_path = File.join(RAILS_ROOT, "/tmp/")
       tmp_zip_path = File.join(rails_tmp_path, "assignmnet_attachments.zip")
       File.delete(tmp_zip_path) if File.exist?(tmp_zip_path)
+      users_exits = []
       unless answers.blank?
         Zip::ZipFile.open(tmp_zip_path,Zip::ZipFile::CREATE) do |zipfile|
           answers.each do |answer|
+            if users_exits.include?(answer.student.id)
+              next
+            end
+            users_exits << answer.student.id
             unless answer.attachment_file_name.blank?
               spilt_file_name = answer.attachment_file_name.split(".")
               total_count = spilt_file_name.count-1
@@ -1516,6 +1521,7 @@ class AssignmentsController < ApplicationController
                 file_extenstion = spilt_file_name[total_count]
                 student = answer.student
                 img_name = student.admission_no+"-"+student.full_name+"-1."+file_extenstion
+                zip_file_list = img_name
                 if File.exists? answer.attachment.path
                   attachment = open(answer.attachment.path)
                   zipfile.add(img_name, attachment.path)

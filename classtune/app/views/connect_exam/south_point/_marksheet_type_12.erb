@@ -113,7 +113,11 @@
           <td><%= i %></td>
           <% i = i+1 %>
           <% end %>
-          <td>Average</td>
+          <% if @exam_type_course == 2 %>
+            <td>Sum</td>
+          <% else %>
+            <td>Average</td>
+          <% end %>
           <% end %>
           
           <% i=1 %>
@@ -121,7 +125,11 @@
           <td><%= i %></td>
           <% i = i+1 %>
           <% end %>
-          <td>Average</td>
+          <% if @exam_type_course == 2 %>
+            <td>Sum</td>
+          <% else %>
+            <td>Average</td>
+          <% end %>
           
           
           <td></td>

@@ -3227,12 +3227,18 @@ module FinanceLoader
             request_params = finance_order.request_params
 
             fee_id = finance_order.finance_fee_id
-
+            payments = Payment.find(:all, :conditions => "order_id = '#{finance_order.order_id}' and payee_id = #{@student.id} and gateway_txt != 'trustbank'")
+            unless payments.blank?
+              payments.each do |p|
+                p.destroy
+              end
+            end
+            
             fee = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and id = #{fee_id}")
             unless fee.nil?
-              payment = Payment.find(:first, :conditions => "order_id = '#{finance_order.order_id}' and payee_id = #{@student.id} and payment_id = #{fee.id}")
+              payment = Payment.find(:first, :conditions => "order_id = '#{finance_order.order_id}' and payee_id = #{@student.id} and payment_id = #{fee.id} and gateway_txt = 'trustbank'")
               if payment.nil?
-                payment = Payment.new(:payee => @student,:payment => fee, :order_id => finance_order.order_id,:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
+                payment = Payment.new(:payee => @student,:payment => fee, :order_id => finance_order.order_id,:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime, :gateway_txt => "trustbank")
                 payment.save
               else
                 payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
@@ -3645,11 +3651,18 @@ module FinanceLoader
 
             fee_id = finance_order.finance_fee_id
 
+            payments = Payment.find(:all, :conditions => "order_id = '#{finance_order.order_id}' and payee_id = #{@student.id} and gateway_txt != 'trustbank'")
+            unless payments.blank?
+              payments.each do |p|
+                p.destroy
+              end
+            end
+            
             fee = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and id = #{fee_id}")
             unless fee.nil?
-              payment = Payment.find(:first, :conditions => "order_id = '#{finance_order.order_id}' and payee_id = #{@student.id} and payment_id = #{fee.id}")
+              payment = Payment.find(:first, :conditions => "order_id = '#{finance_order.order_id}' and payee_id = #{@student.id} and payment_id = #{fee.id} and gateway_txt = 'trustbank'")
               if payment.nil?
-                payment = Payment.new(:payee => @student,:payment => fee, :order_id => finance_order.order_id,:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
+                payment = Payment.new(:payee => @student,:payment => fee, :order_id => finance_order.order_id,:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime, :gateway_txt => "trustbank")
                 payment.save
               else
                 payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
@@ -4122,7 +4135,12 @@ module FinanceLoader
       transaction_datetime = (DateTime.parse(response_ssl[:createTime]).to_time + 6.hours).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
       orderId = response_ssl[:merchantInvoiceNumber].to_s
       @finance_order = FinanceOrder.find_by_order_id(orderId.strip)
-      
+      payments = Payment.find(:all, :conditions => "order_id = '#{orderId}' and payee_id = #{@finance_order.student_id} and gateway_txt != 'bkash'")
+      unless payments.blank?
+        payments.each do |p|
+          p.destroy
+        end
+      end
       unless @finance_order.blank?
         student_id = @finance_order.student_id
         request_params = @finance_order.request_params
@@ -4247,6 +4265,12 @@ module FinanceLoader
       transaction_datetime = (DateTime.parse(response_ssl[:completedTime]).to_time + 6.hours).to_datetime.strftime("%Y-%m-%d %H:%M:%S")
       orderId = response_ssl[:merchantInvoiceNumber].to_s
       @finance_order = FinanceOrder.find_by_order_id(orderId.strip)
+      payments = Payment.find(:all, :conditions => "order_id = '#{orderId}' and payee_id = #{@finance_order.student_id} and gateway_txt != 'bkash'")
+      unless payments.blank?
+        payments.each do |p|
+          p.destroy
+        end
+      end
       #abort(response_ssl.inspect)
       unless @finance_order.blank?
         student_id = @finance_order.student_id
@@ -4691,7 +4715,12 @@ module FinanceLoader
     @finance_order = FinanceOrder.find_by_order_id_and_student_id(orderId.strip, student_id)
     #abort(@finance_order.inspect)
     request_params = @finance_order.request_params
-
+    payments = Payment.find(:all, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and gateway_txt != 'citybank'")
+    unless payments.blank?
+      payments.each do |p|
+        p.destroy
+      end
+    end
     unless request_params.nil?
       multiple = request_params[:multiple]
       unless multiple.nil?
@@ -4742,6 +4771,12 @@ module FinanceLoader
 
       @student = Student.find(student_id)
       @finance_order = FinanceOrder.find_by_order_id_and_student_id(orderId.strip, student_id)
+      payments = Payment.find(:all, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and gateway_txt != 'citybank'")
+      unless payments.blank?
+        payments.each do |p|
+          p.destroy
+        end
+      end
       #abort(@finance_order.inspect)
       request_params = @finance_order.request_params
       amount_to_pay = @finance_order.request_params[:total_payable]
@@ -5013,7 +5048,14 @@ module FinanceLoader
               @finance_order = FinanceOrder.find_by_order_id_and_student_id(orderId.strip, student_id)
               #abort(@finance_order.inspect)
               request_params = @finance_order.request_params
-                
+              
+              payments = Payment.find(:all, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and gateway_txt != 'citybank'")
+              unless payments.blank?
+                payments.each do |p|
+                  p.destroy
+                end
+              end
+              
               payment_saved = false
               unless request_params.nil?
                 multiple = request_params[:multiple]
@@ -5126,6 +5168,12 @@ module FinanceLoader
       
       payment_saved = false
       if params[:target_gateway] == "trustbank"
+        payments = Payment.find(:all, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and gateway_txt != 'trustbank'")
+        unless payments.blank?
+          payments.each do |p|
+            p.destroy
+          end
+        end
         unless request_params.nil?
           multiple = request_params[:multiple]
           unless multiple.nil?

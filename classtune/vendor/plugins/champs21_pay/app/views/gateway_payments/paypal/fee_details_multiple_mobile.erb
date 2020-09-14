@@ -1110,6 +1110,34 @@
                             <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button' %>
                             <% end %>
                           <% else %>
+				<% if MultiSchool.current_school.id == 352 %>
+				<div style="width: 100%; float: right; text-align: right;">
+				<% @gateway_settings.keys.each do |key| %>
+                                  <% if key == "trustbank" %>
+					<div class="gateway_image_panel" data-gateway="<%= key %>" style="position: relative;">
+                                        <input type="radio" id="radio_<%= key %>" name="gateway_radio" class="gateway_radio" value="<%= key %>" style="position: absolute; top: 0; right: 4px;" autocomplete="off" />
+                                        <%= image_tag "/images/gateway_images/#{key}-ico.png", :class => "gateway_image", :id => "#{key}", :style => "vertical-align: baseline; #{key == 'citybank' ? 'height:70px;' : 'height: 65px;'}" %>
+                                    </div>
+                                  <% end %>
+                              <% end %>
+                              <% @gateway_settings.keys.each do |key| %>
+                                  <% if key == "citybank" %>
+                                  <div class="gateway_image_panel" data-gateway="<%= key %>" style="position: relative;">
+                                      <input type="radio" id="radio_<%= key %>" name="gateway_radio" class="gateway_radio" value="<%= key %>" style="position: absolute; top: 0; right: 4px;" autocomplete="off" />
+                                      <%= image_tag "/images/gateway_images/#{key}-ico.png", :class => "gateway_image", :id => "#{key}", :style => "vertical-align: baseline; #{key == 'citybank' ? 'height:70px;' : 'height: 65px;'}" %>
+                                  </div>
+                                  <% end %>
+                              <% end %>
+                              <% @gateway_settings.keys.each do |key| %>
+                                  <% if key == "bkash" %>
+                                  <div class="gateway_image_panel" data-gateway="<%= key %>" style="position: relative;">
+                                      <i class='fa fa-spin fa-spinner loading_single_bkash' style="position: absolute; right: 10px; top: 5px; display: none;"></i>
+                                      <%= image_tag "/images/bkash-logo.png", :class => "gateway_image_single_bkash", :id => "pay_fees_multiple", :style => "padding: 0;", :onclick => "j('#user_gateway').val('bkash'); initBkash(this);" %>
+                                  </div>
+                                  <% end %>
+                              <% end %>
+                            </div>    
+				<% else %>
                             <div style="width: 100%; float: right; text-align: right;">
                               <% @gateway_settings.keys.each do |key| %>
                                   <% if key == "citybank" %>
@@ -1135,6 +1163,7 @@
                                   <% end %>
                               <% end %>
                             </div>    
+				<% end %>
                             <button type="button" id="pay_fees_multiple" class="submit_button" style="display: none;" disabled><%= "► #{t('pay_fees')}" %></button>
                             <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button submit_pay' , :id => 'submit_button_multiple', :style=>"display: none;" %>
                           <% end %>
@@ -1164,7 +1193,11 @@
                       end
                     %>        
                     <% unless no_charge_apply.include?(MultiSchool.current_school.id) %>
-                      <p style="text-align: right; display: block; padding-top: 80px;">*1.5% convenience fee applicable.</p>
+			<% charge = "1.5% " %>
+			<% if MultiSchool.current_school.id == 352 %>
+			<% charge = "" %>
+			<% end %>
+                      <p style="text-align: right; display: block; padding-top: 80px;">*<%= charge %>convenience fee applicable.</p>
                     <% end %>  
                     <% if @gateway_settings.length == 1 and @gateway_settings.keys.include?('citybank') %>  
                       <%= image_tag "/images/card.png", :class => "", :id => "", :style => "float: right;" %>  

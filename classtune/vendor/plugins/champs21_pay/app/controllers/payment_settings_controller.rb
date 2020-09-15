@@ -181,8 +181,8 @@ class PaymentSettingsController < ApplicationController
             
             unless current_user.username.index('tbl').blank?
               @gateway = 'trustbank'
-              @payment_gateway ||= Array.new
-              @payment_gateway << "trustbank" 
+              @payment_gateway = []
+              @payment_gateway[0] = "trustbank" 
             end
             
             start_date = params[:start_date]

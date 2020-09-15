@@ -519,6 +519,11 @@
             <% else %>
               <%= link_to "<div id='institution-name1'>#{t('home')}</div>",{:controller=>"user",:action=>"dashboard"} %>
             <% end %>
+            <% show_links = false %>  
+            <% if @user.admin? or @user.student? or @user.parent? or @user.employee? %>  
+              <% show_links = true %>  
+            <% end %>  
+            <% if show_links %>      
             <div class="right-links" id="top-right-links">
               <%  if !check_free_school? %>
                 <% reminder_count = @current_user.check_reminders %>
@@ -581,6 +586,8 @@
                 <%= render :partial => "layouts/autosuggest_menu" %>
               </div>
             <% end %>  
+            <% end %>  
+              
           </div>
         </nav>
         

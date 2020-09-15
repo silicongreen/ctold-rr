@@ -260,6 +260,12 @@ class Settings {
 
                 if( $assignmentobj->attachment_file_name ) 
                 {
+                     $uploads_dir_main = Settings::$paid_image_path . "uploads/assignments/attachments/" . $id . "/";
+                     @chmod($uploads_dir_main, 0777);
+                     $uploads_dir_main = $uploads_dir_main."/original/";
+                     @chmod($uploads_dir_main, 0777);
+                     $uploads_dir_main = $uploads_dir_main.urlencode($assignmentobj->attachment_file_name) . "?" . $attachment_extra;
+                     @chmod($uploads_dir_main, 0777);
                      $origin = Settings::$paid_image_path."uploads/assignments/attachments/" . $id . "/original/" .urlencode($assignmentobj->attachment_file_name) . "?" . $attachment_extra;
                      $uploads_dir = Settings::$paid_image_path."uploads/assignments/attachments/" . $id . "/original/" . urlencode($assignmentobj->attachment_file_name);
                      @copy($origin, "$uploads_dir");
@@ -268,14 +274,28 @@ class Settings {
                 } 
                 if( $assignmentobj->attachment2_file_name)
                 {
-                    $origin = Settings::$paid_image_path."uploads/assignments/attachment2s/" . $id . "/original/" .urlencode($assignmentobj->attachment_file_name) . "?" . $attachment_extra;
-                    $uploads_dir = Settings::$paid_image_path."uploads/assignments/attachment2s/" . $id . "/original/" . urlencode($assignmentobj->attachment_file_name);
+                    $uploads_dir_main = Settings::$paid_image_path . "uploads/assignments/attachment2s/" . $id . "/";
+                    @chmod($uploads_dir_main, 0777);
+                    $uploads_dir_main = $uploads_dir_main."/original/";
+                    @chmod($uploads_dir_main, 0777);
+                    $uploads_dir_main = $uploads_dir_main.urlencode($assignmentobj->attachment2_file_name) . "?" . $attachment_extra;
+                    @chmod($uploads_dir_main, 0777);
+                    
+                    $origin = Settings::$paid_image_path."uploads/assignments/attachment2s/" . $id . "/original/" .urlencode($assignmentobj->attachment2_file_name) . "?" . $attachment_extra;
+                    $uploads_dir = Settings::$paid_image_path."uploads/assignments/attachment2s/" . $id . "/original/" . urlencode($assignmentobj->attachment2_file_name);
                     @copy($origin, "$uploads_dir");
                     $url = $school_url. "uploads/assignments/attachment2s/" . $id . "/original/" . urlencode($assignmentobj->attachment2_file_name);
                     $array['att2'] = $url;
                 }
                 if( $assignmentobj->attachment3_file_name)
                 {
+                    $uploads_dir_main = Settings::$paid_image_path . "uploads/assignments/attachment3s/" . $id . "/";
+                    @chmod($uploads_dir_main, 0777);
+                    $uploads_dir_main = $uploads_dir_main."/original/";
+                    @chmod($uploads_dir_main, 0777);
+                    $uploads_dir_main = $uploads_dir_main.urlencode($assignmentobj->attachment3_file_name) . "?" . $attachment_extra;
+                    @chmod($uploads_dir_main, 0777);
+                    
                     $origin = Settings::$paid_image_path."uploads/assignments/attachment3s/" . $id . "/original/" . urlencode($assignmentobj->attachment3_file_name) . "?" . $attachment_extra;
                     $uploads_dir = Settings::$paid_image_path."uploads/assignments/attachment3s/" . $id . "/original/" . urlencode($assignmentobj->attachment3_file_name);
                     @copy($origin, "$uploads_dir");

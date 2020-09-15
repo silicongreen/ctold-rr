@@ -179,7 +179,7 @@ class PaymentSettingsController < ApplicationController
               end
             end
             
-            if current_user.index('tbl')
+            unless current_user.username.index('tbl').blank?
               @gateway = 'trustbank'
             end
             

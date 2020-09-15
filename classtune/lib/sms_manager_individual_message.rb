@@ -55,7 +55,7 @@ class SmsManagerIndividualMessage
 
   def perform
     if @config.present?
-      power_sms_schools = [2,357,352,361,3]
+      power_sms_schools = [2,357,352,361,3,360]
       @sms_hash = {"user"=>@username,"pass"=>@password,"sid" =>@sendername}
      
       if power_sms_schools.include?(MultiSchool.current_school.id)

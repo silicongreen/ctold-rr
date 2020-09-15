@@ -262,7 +262,7 @@ class Settings {
                 {
                      $uploads_dir_main = Settings::$paid_image_path . "uploads/assignments/attachments/" . $id . "/";
                      @chmod($uploads_dir_main, 0777);
-                     $uploads_dir_main = $uploads_dir_main."/original/";
+                     $uploads_dir_main = $uploads_dir_main."original/";
                      @chmod($uploads_dir_main, 0777);
                      $uploads_dir_main = $uploads_dir_main.urlencode($assignmentobj->attachment_file_name) . "?" . $attachment_extra;
                      @chmod($uploads_dir_main, 0777);
@@ -276,7 +276,7 @@ class Settings {
                 {
                     $uploads_dir_main = Settings::$paid_image_path . "uploads/assignments/attachment2s/" . $id . "/";
                     @chmod($uploads_dir_main, 0777);
-                    $uploads_dir_main = $uploads_dir_main."/original/";
+                    $uploads_dir_main = $uploads_dir_main."original/";
                     @chmod($uploads_dir_main, 0777);
                     $uploads_dir_main = $uploads_dir_main.urlencode($assignmentobj->attachment2_file_name) . "?" . $attachment_extra;
                     @chmod($uploads_dir_main, 0777);
@@ -291,7 +291,7 @@ class Settings {
                 {
                     $uploads_dir_main = Settings::$paid_image_path . "uploads/assignments/attachment3s/" . $id . "/";
                     @chmod($uploads_dir_main, 0777);
-                    $uploads_dir_main = $uploads_dir_main."/original/";
+                    $uploads_dir_main = $uploads_dir_main."original/";
                     @chmod($uploads_dir_main, 0777);
                     $uploads_dir_main = $uploads_dir_main.urlencode($assignmentobj->attachment3_file_name) . "?" . $attachment_extra;
                     @chmod($uploads_dir_main, 0777);

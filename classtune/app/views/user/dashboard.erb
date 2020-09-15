@@ -173,6 +173,11 @@
             :class => "option_buttons", :id => "timetable_button",:title => t('timetable_link_title') %>
         </div>
       <% end %>  
+      <% show_links = false %>  
+      <% if @current_user.admin? or @current_user.student? or @current_user.parent? or @current_user.employee? %>  
+        <% show_links = true %>  
+      <% end %>   
+      <% if show_links %>  
       <div class="button-box">
         <% unless @user.check_reminders == 0 %>
           <% if @dashboard_modules.find{|d| d['name']=="remainders"}["visible"] %>
@@ -194,6 +199,7 @@
           <%= link_to "<div class ='button-label'><p>#{t('academics')}</p></div>", {:controller => "student", :action => "reports",:id => @student.id},
             :class => "option_buttons", :id => "academic_button",:title => "         #{t('academic_reports')}   "  %>
         </div>
+      <% end %>  
       <% end %>  
     </div>
 
@@ -218,12 +224,7 @@
     </div>
     <% end %>
     
-    <% show_links = false %>  
-    <% if @current_user.admin? or @current_user.student? or @current_user.parent? or @current_user.employee? %>  
-      <% show_links = true %>  
-    <% end %>  
-    
-    <% if @config.include?('HR') and show_links %>
+    <% if @config.include?('HR') %>
       <% if @dashboard_modules.find{|d| d['name']=="my_profile" and d['target_controller'] == "employee" and d['target_action']=="profile"}["visible"] %>
         <div class="button-box">
           <%= link_to "<div class ='button-label'><p>#{t('my_profile')}</p></div>", {:controller => "employee", :action => "profile",:id => @employee.id},

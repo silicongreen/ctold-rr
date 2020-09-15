@@ -217,7 +217,13 @@
         :class => "option_buttons", :id => "my_profile_button", :title => "  #{t('profile_online_payment')}" %>
     </div>
     <% end %>
-    <% if @config.include?('HR') %>
+    
+    <% show_links = false %>  
+    <% if @current_user.admin? or @current_user.student? or @current_user.parent? or @current_user.employee? %>  
+      <% show_links = true %>  
+    <% end %>  
+    
+    <% if @config.include?('HR') and show_links %>
       <% if @dashboard_modules.find{|d| d['name']=="my_profile" and d['target_controller'] == "employee" and d['target_action']=="profile"}["visible"] %>
         <div class="button-box">
           <%= link_to "<div class ='button-label'><p>#{t('my_profile')}</p></div>", {:controller => "employee", :action => "profile",:id => @employee.id},

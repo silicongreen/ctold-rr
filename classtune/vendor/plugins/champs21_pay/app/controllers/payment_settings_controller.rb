@@ -179,10 +179,16 @@ class PaymentSettingsController < ApplicationController
               end
             end
             
-            unless current_user.username.index('tbl').blank?
+            unless current_user.username.index('-tbl').blank?
               @gateway = 'trustbank'
               @payment_gateway = []
               @payment_gateway[0] = "trustbank" 
+            end
+            
+            unless current_user.username.index('-city').blank?
+              @gateway = 'citybank'
+              @payment_gateway = []
+              @payment_gateway[0] = "citybank" 
             end
             
             start_date = params[:start_date]

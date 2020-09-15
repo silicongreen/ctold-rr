@@ -452,6 +452,45 @@
                 <%= render :partial => "layouts/autosuggest_menu" %>
               </div>
             <% end %>  
+            <% else %>  
+              <div class="right-links" id="top-right-links">
+                <%siblings_list= @current_user.guardian_entry.guardian_student if @current_user.parent? %>
+                <%#  siblings_list= @current_user.guardian_entry.current_ward.siblings.select{|p| p.immediate_contact_id=@current_user.id} if @current_user.parent? %>
+                <%=link_to "<div class='top-right-link' id='lower-profile-link'><div id='profile-link-img'></div></div>", "#",:onClick=>"lower_st_switch(event);return false;"  %>
+                <div class="leg" style="width:40px;clear:both;">
+                  <div id="profile-menu">
+                    <li class="a">
+                      <div id="switch-student">
+                        <ul class="level-1" style="display:none;position: absolute !important;">
+                          <li><div class="ns">
+                              <div class="not-selected-list" style="margin-top:5px !important;">
+                                <%=link_to @main_user_data.full_name,{ :controller => '/user', :action => 'profile', :id => @main_user_data.username }%></div><br />
+                              <div class="bottom-line"></div>
+                            </div>
+                          </li>
+                          <%if siblings_list.present?%>
+                            <li style="color:#808080;font-size:11px;padding-left:23px;padding-top:5px;padding-bottom:5px"><%=t('switch_student')%> :</li>
+                          <% end %>
+                          <li><div class="ns" >
+                              <%if siblings_list.present?%>
+                                <%@sibling_student=@current_user.guardian_entry.current_ward%>
+                                <%@sibling_students=siblings_list%>
+                                <div class="selected_student"><%=link_to "#{'&#10003;'}#{shorten_string(@sibling_student.full_name,15)}",:controller=>'user',:action=>'dashboard',:id=>@sibling_student.id%></div><br/>
+                                <%(@sibling_students).each do|s|%>
+                                  <% if s.id!=@sibling_student.id %>
+                                  <div class="not-selected-list" >
+                                    <%=link_to shorten_string(s.full_name,15),:controller=>'user',:action=>'dashboard',:id=>s.id%></div><br />
+                                  <% end %>  
+                                <%end%>
+
+                                <div class="bottom-line"></div>
+                              <% end %>
+                              <div class="not-selected-list" style="margin-bottom:5px !important;" ><%= link_to t("log_out"), { :controller => '/user', :action => 'logout' } %></div>
+                            </div></li>
+                        </ul></div>
+                    </li></div></div>
+    <%#= link_to "<div class='top-right-link'><div id='logout-link-img'></div></div>", :controller => '/user', :action => 'logout' %>
+              </div>
             <% end %>  
           </div>
         </nav>

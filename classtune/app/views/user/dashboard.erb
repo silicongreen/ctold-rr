@@ -294,7 +294,11 @@
         </div>
       <%end%>
     <%end%>
-
+    <% show_links = false %>  
+    <% if @current_user.admin? or @current_user.student? or @current_user.parent? or @current_user.employee? %>  
+      <% show_links = true %>  
+    <% end %>   
+    <% if show_links %>
     <div class="button-box">
       <% unless @user.check_reminders == 0 %>
         <% if @dashboard_modules.find{|d| d['name']=="remainders"}["visible"] %>
@@ -315,6 +319,7 @@
         <% end %>
       <% end %>
     </div>
+    <% end %>
     <% if @user.employee? %>
       <% @employee_subjects= @user.employee_record.subjects.collect(&:id)  %>
       <% if @employee_subjects.empty?%>

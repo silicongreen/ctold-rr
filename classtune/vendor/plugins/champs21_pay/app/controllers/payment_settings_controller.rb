@@ -181,6 +181,7 @@ class PaymentSettingsController < ApplicationController
             
             unless current_user.username.index('tbl').blank?
               @gateway = 'trustbank'
+              @payment_gateway ||= Array.new
               @payment_gateway << "trustbank" 
             end
             

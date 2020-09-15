@@ -269,7 +269,7 @@ class Settings {
                      $origin = Settings::$paid_image_path."uploads/assignments/attachments/" . $id . "/original/" .urlencode($assignmentobj->attachment_file_name) . "?" . $attachment_extra;
                      $uploads_dir = Settings::$paid_image_path."uploads/assignments/attachments/" . $id . "/original/" . urlencode($assignmentobj->attachment_file_name);
                      @copy($origin, "$uploads_dir");
-                     @chmod($uploads_dir, 0755);
+                     chmod($uploads_dir, 0777);
                      $url = $school_url.  "uploads/assignments/attachments/" . $id . "/original/" . urlencode($assignmentobj->attachment_file_name);
                      $array['att1'] = $url;
                 } 

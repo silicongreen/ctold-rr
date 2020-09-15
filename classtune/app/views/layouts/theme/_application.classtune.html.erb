@@ -520,7 +520,7 @@
               <%= link_to "<div id='institution-name1'>#{t('home')}</div>",{:controller=>"user",:action=>"dashboard"} %>
             <% end %>
             <% show_links = false %>  
-            <% if @user.admin? or @user.student? or @user.parent? or @user.employee? %>  
+            <% if @current_user.admin? or @current_user.student? or @current_user.parent? or @current_user.employee? %>  
               <% show_links = true %>  
             <% end %>  
             <% if show_links %>      

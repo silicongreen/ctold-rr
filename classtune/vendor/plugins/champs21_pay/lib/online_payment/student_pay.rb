@@ -30,6 +30,7 @@ module OnlinePayment
           found_test_user = true
         end
       end
+      #abort(MultiSchool.current_school.classpay_enabled.inspect)
 #      require 'date'
 #      s = "2020-02-25T13:22:32:790 GMT+0000"
 #      abort(DateTime.parse(s).to_datetime.strftime("%Y-%m-%d %H:%M:%S"))

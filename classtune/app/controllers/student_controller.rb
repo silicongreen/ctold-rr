@@ -5994,19 +5994,25 @@ class StudentController < ApplicationController
   
 
   def fees
-    @dates=FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} and ((finance_fees.balance > 0 and finance_fees.batch_id<>#{@student.batch_id}) or (finance_fees.batch_id=#{@student.batch_id}) )").uniq
+    if MultiSchool.current_school.classpay_enabled
+      unless params[:mobile_view].blank?
+        render "mobile_fees",:layout => false
+      end
+    else  
+      @dates=FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} and ((finance_fees.balance > 0 and finance_fees.batch_id<>#{@student.batch_id}) or (finance_fees.batch_id=#{@student.batch_id}) )").uniq
     
-    #@dates_paid = FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} and ((finance_fees.balance = 0))", :order=>'finance_fee_collections.due_date DESC').uniq # and finance_fees.batch_id = #{@student.batch_id}
-    #@dates_unpaid = FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} and ((finance_fees.balance > 0)  )", :order=>'finance_fee_collections.due_date DESC').uniq # and finance_fees.batch_id = #{@student.batch_id}
-    @dates_all = FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} ", :order=>'finance_fee_collections.due_date DESC').uniq # and finance_fees.batch_id = #{@student.batch_id}
-    
-    if request.post?
-      @student.update_attribute(:has_paid_fees,params[:fee][:has_paid_fees]) unless params[:fee].nil?
-      flash[:notice] = "#{t('status_updated')}"
-      redirect_to :action => "fees", :id => @student.id
-    end
-    unless params[:mobile_view].blank?
-      render "mobile_fees",:layout => false
+      #@dates_paid = FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} and ((finance_fees.balance = 0))", :order=>'finance_fee_collections.due_date DESC').uniq # and finance_fees.batch_id = #{@student.batch_id}
+      #@dates_unpaid = FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} and ((finance_fees.balance > 0)  )", :order=>'finance_fee_collections.due_date DESC').uniq # and finance_fees.batch_id = #{@student.batch_id}
+      @dates_all = FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} ", :order=>'finance_fee_collections.due_date DESC').uniq # and finance_fees.batch_id = #{@student.batch_id}
+
+      if request.post?
+        @student.update_attribute(:has_paid_fees,params[:fee][:has_paid_fees]) unless params[:fee].nil?
+        flash[:notice] = "#{t('status_updated')}"
+        redirect_to :action => "fees", :id => @student.id
+      end
+      unless params[:mobile_view].blank?
+        render "mobile_fees",:layout => false
+      end
     end
   end
 

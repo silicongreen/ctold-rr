@@ -25,6 +25,7 @@
             <li class="active">
                 <%= link_to "#{t('fees_text')}", {:controller => 'student', :action => 'fees', :id => @student.id}, {:class => 'f2'} %>
             </li>
+            <% unless MultiSchool.current_school.classpay_enabled %>
             <li>
                 <%= link_to "#{t('view_refunds')}", {:controller => 'finance', :action => "refund_student_view",:id => @student.id}, {:class => 'f2'} %>
             </li>
@@ -34,6 +35,7 @@
             <li>
                 <%= link_to "#{t('student_profile')}", {:controller => 'student', :action => 'profile', :id => @student.id}, {:class => 'f2'} %>
             </li>
+            <% end %>
         </ul>
         <% end %>
     </div>
@@ -102,7 +104,7 @@
             </div>
           </div>
           
-          
+          <% unless MultiSchool.current_school.classpay_enabled %>
           <div id="student_profile_heading1">
               <div id="student_main_info1">
                   <span class="name" style="width: 70%; display: inline-block;"><h1> Student Fees</h1> </span>
@@ -376,6 +378,22 @@
                 </div>
               </div>
               </div>
+              <% else %>
+                <div id="student_profile_heading1">
+                    <div id="student_main_info1">
+                        <span class="name" style="width: 70%; display: inline-block;"><h1> Student Fees</h1> </span>
+                    </div>
+                    <div class="extender"> </div>
+                </div>
+                <hr style="border: 1px solid #ccc;" />  
+                <div id="fee_div">
+                    <div style="background: url('/images/background_myfees.png'); height: 98px; width: 88%; margin-left: 4%; margin-bottom: 24px; padding: 20px;">
+                        <img src="/images/Apps-system-software-update-icon.png" style="height: 100%;">
+                        <h1 style="width: 80%; color: #fff; display: inline-table; padding-left: 13px; vertical-align: top; font-family: verdana; font-size: 22px;">Due to an upgradation of our payment system, you can't able to make any fees payment, Hope we will be back soon. Thanks  </h1>
+                    </div>
+                        
+                </div>
+              <% end %>
             </div>
       </div>
     <% else %>

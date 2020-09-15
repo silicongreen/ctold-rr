@@ -137,6 +137,7 @@
 
     <div style="clear: both; height:10px;"></div>
     <h2>Student Fee Information</h2>
+<% unless MultiSchool.current_school.classpay_enabled %>    
     <hr style="border: 1px solid #ccc;" />
     <% if @fees_collections.length == 1 %>
       <% fee_collection_name = ""  %>
@@ -1473,6 +1474,16 @@
       background: #e5e5e5;
     }
 </style>
+<% else %>
+<hr style="border: 1px solid #ccc;" />  
+<div id="fee_div">
+    <div style="background: url('/images/background_myfees.png'); height: 98px; width: 88%; margin-left: 4%; margin-bottom: 24px; padding: 20px;">
+        <img src="/images/Apps-system-software-update-icon.png" style="height: 100%;">
+        <h1 style="width: 80%; color: #fff; display: inline-table; padding-left: 13px; vertical-align: top; font-family: verdana; font-size: 22px;">Due to an upgradation of our payment system, you can't able to make any fees payment, Hope we will be back soon. Thanks  </h1>
+    </div>
+
+</div>
+<% end %>
 <%
 require "openssl"
 require 'digest/sha2'

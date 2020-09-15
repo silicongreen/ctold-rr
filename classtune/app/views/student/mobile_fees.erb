@@ -9,6 +9,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <body>
+        <% unless MultiSchool.current_school.classpay_enabled %>
         <% combine_fees_enabled = false %>
         <% @include_combined_fees = PaymentConfiguration.find_by_config_key("include_combined_fees").try(:config_value)    %>
         <% unless @include_combined_fees.blank? %>
@@ -144,6 +145,15 @@
           <% else %>
             <div class="alert alert-info" role="alert">Coming Soon</div>
           <% end %>
+          <% else %>  
+          <div id="fee_div">
+              <div style="background: url('/images/background_myfees.png'); height: 98px; width: 88%; margin-left: 4%; margin-bottom: 24px; padding: 20px;">
+                  <img src="/images/Apps-system-software-update-icon.png" style="height: 100%;">
+                  <h1 style="width: 80%; color: #fff; display: inline-table; padding-left: 13px; vertical-align: top; font-family: verdana; font-size: 22px;">Due to an upgradation of our payment system, you can't able to make any fees payment, Hope we will be back soon. Thanks  </h1>
+              </div>
+
+          </div>  
+          <% end %>  
     </body>
 
 </html>

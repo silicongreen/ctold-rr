@@ -179,6 +179,10 @@ class PaymentSettingsController < ApplicationController
               end
             end
             
+            if current_user.index('tbl')
+              @gateway = 'trustbank'
+            end
+            
             start_date = params[:start_date]
             start_date ||= Date.today
             end_date = params[:end_date]

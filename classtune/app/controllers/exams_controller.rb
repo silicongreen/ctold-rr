@@ -485,7 +485,10 @@ class ExamsController < ApplicationController
                 class_roll_no = student.class_roll_no.to_i
               end
               @students.push [class_roll_no,student.first_name.to_s, student.id.to_i, student] unless student.nil? 
-            end
+            elsif !student.first_name.blank? and !student.id.blank?
+              class_roll_no = 1000
+              @students.push [class_roll_no,student.first_name.to_s, student.id.to_i, student] unless student.nil?
+            end  
           end
         end
       end

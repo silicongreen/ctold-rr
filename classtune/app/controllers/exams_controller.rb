@@ -489,6 +489,7 @@ class ExamsController < ApplicationController
           end
         end
       end
+      abort(@students.inspect)
       unless @students.blank?
         @ordered_students = @students.sort
         @students=[]

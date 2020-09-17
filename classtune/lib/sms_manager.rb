@@ -57,7 +57,7 @@ class SmsManager
 
   def perform
     if @config.present?
-      power_sms_schools = [2,357,352,361,3,360,312]
+      power_sms_schools = [2,357,352,361,3,360,312,319]
       message_log = SmsMessage.new(:body=> @message)
       message_log.save
       encoded_message = @message

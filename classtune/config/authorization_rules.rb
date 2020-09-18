@@ -3004,6 +3004,7 @@ authorization do
       :previous_report,:get_previous_exam,:save_roll_no,
       :graduation_lists,
       :student_photo_download,
+      :student_photo_download_all,
       :get_graduation_students,
       :search_ajax,
       :student_annual_overview,

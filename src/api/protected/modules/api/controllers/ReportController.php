@@ -41,7 +41,7 @@ class ReportController extends Controller
             {
                 $class_pay = 0;
                 $class_pay_key = "";
-                $userobj = new User();
+                $userobj = new Users();
                 $user_data = $userobj->findByPk(Yii::app()->user->id);
                 $userauth = new Userauth();
                 $userauth->user_id = Yii::app()->user->id;

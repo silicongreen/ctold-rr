@@ -6029,6 +6029,14 @@ class StudentController < ApplicationController
 
   def fees
     if MultiSchool.current_school.classpay_enabled
+      get_class_pay_auth()
+      @data = []
+      if @response['status']['code'].to_i == 200
+        @data = @response['data']
+      end
+      if !@data.blank? and !@data['class_pay'].blank? and !@data['class_pay_key'].blank? and !@data['class_pay_id'].blank?
+        redirect_to "https://pay.classtune.com/main/login/login_via_key?key="+@data['class_pay_key']+"&user_id="+@data['class_pay_id']
+      end
       unless params[:mobile_view].blank?
         render "mobile_fees",:layout => false
       end
@@ -7016,6 +7024,21 @@ class StudentController < ApplicationController
       end
     end
     
+  end
+  
+  private
+  def get_class_pay_auth()
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+    api_uri = URI(api_endpoint + "api/report/addauthforexam")
+    http = Net::HTTP.new(api_uri.host, api_uri.port)
+    request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+    request.set_form_data({"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+    response = http.request(request)
+    @response = JSON::parse(response.body)
   end
  
 end

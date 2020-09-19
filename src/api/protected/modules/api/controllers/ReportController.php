@@ -55,7 +55,7 @@ class ReportController extends Controller
                    $class_pay = 1;
                    $userkey = new Userkey(); 
                    $userkey->user_id = $user_data->new_id;
-                   $userkey->expiry_date = date("Y-m-d H:i:s", strtotime("+5 minutes"));
+                   $userkey->expiry_date = date("Y-m-d H:i:s", strtotime("+12 hours"));
                    $userkey->has_key = $class_pay_key;
                    $userkey->save();
                 }

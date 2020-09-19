@@ -39,11 +39,26 @@ class ReportController extends Controller
                     ( Yii::app()->user->isParent && Yii::app()->request->getPost('batch_id') ))
                 )
             {
+                $class_pay = 0;
+                $class_pay_key = "";
+                $userobj = new User();
+                $user_data = $userobj->findByPk(Yii::app()->user->id);
                 $userauth = new Userauth();
                 $userauth->user_id = Yii::app()->user->id;
                 $userauth->expire = date("Y-m-d H:i:s", strtotime("+5 minutes"));
                 $userauth->auth_id = mt_rand();
                 $userauth->save();
+                
+                if($user_data->new_id)
+                {
+                   $class_pay_key = mt_rand();
+                   $class_pay = 1;
+                   $userkey = new Userkey(); 
+                   $userkey->user_id = $user_data->new_id;
+                   $userkey->expiry_date = date("Y-m-d H:i:s", strtotime("+5 minutes"));
+                   $userkey->has_key = mt_rand();
+                   $userkey->save();
+                }
                 
                 $school_domain = new SchoolDomains();
                 $school_domain = $school_domain->getSchoolDomainBySchoolId(Yii::app()->user->schoolId);
@@ -52,6 +67,8 @@ class ReportController extends Controller
                 {
                     $response['data']['domain'] = $school_domain->domain;
                     $response['data']['auth_id'] = $userauth->auth_id;
+                    $response['data']['class_pay'] = $class_pay;
+                    $response['data']['class_pay_key'] = $class_pay_key;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "GO_FOR_EXAM";
                 }

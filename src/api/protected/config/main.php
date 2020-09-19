@@ -103,6 +103,7 @@ return array(
 
         // uncomment the following to use a MySQL database
         'db' => $db_con,
+        'secondDB' => $db_con2,
         'cache' => array(
             'class' => 'system.caching.CFileCache',
             'cachePath' => 'protected/runtime/cache/news'

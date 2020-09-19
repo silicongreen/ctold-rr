@@ -6034,8 +6034,8 @@ class StudentController < ApplicationController
       if @response['status']['code'].to_i == 200
         @data = @response['data']
       end
-      if !@data.blank? and !@data['class_pay'].blank? and !@data['class_pay_key'].blank? and !@data['class_pay_id'].blank?
-#        redirect_to "https://pay.classtune.com/main/login/login_via_key?key="+@data['class_pay_key'].to_s+"&user_id="+@data['class_pay_id'].to_s
+      if !@data.blank? and !@data['class_pay'].blank? and !@data['class_pay_key'].blank? and !@data['class_pay_id'].blank? and !params[:class_pay].blank?
+        redirect_to "https://pay.classtune.com/main/login/login_via_key?key="+@data['class_pay_key'].to_s+"&user_id="+@data['class_pay_id'].to_s
       end
       unless params[:mobile_view].blank?
         render "mobile_fees",:layout => false

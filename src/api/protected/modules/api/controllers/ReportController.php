@@ -39,6 +39,7 @@ class ReportController extends Controller
             {
                 $class_pay = 0;
                 $class_pay_key = "";
+                $class_pay_id = 0;
                 $userobj = new Users();
                 $user_data = $userobj->findByPk(Yii::app()->user->id);
                 $userauth = new Userauth();
@@ -49,12 +50,13 @@ class ReportController extends Controller
                 
                 if($user_data->new_id)
                 {
+                   $class_pay_id = $user_data->new_id;
                    $class_pay_key = mt_rand();
                    $class_pay = 1;
                    $userkey = new Userkey(); 
                    $userkey->user_id = $user_data->new_id;
                    $userkey->expiry_date = date("Y-m-d H:i:s", strtotime("+5 minutes"));
-                   $userkey->has_key = mt_rand();
+                   $userkey->has_key = $class_pay_key;
                    $userkey->save();
                 }
                 
@@ -67,6 +69,7 @@ class ReportController extends Controller
                     $response['data']['auth_id'] = $userauth->auth_id;
                     $response['data']['class_pay'] = $class_pay;
                     $response['data']['class_pay_key'] = $class_pay_key;
+                    $response['data']['class_pay_id'] = $class_pay_id;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "GO_FOR_EXAM";
                 }

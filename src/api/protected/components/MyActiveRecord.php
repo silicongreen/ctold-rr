@@ -8,7 +8,7 @@ class MyActiveRecord extends CActiveRecord {
             return self::$dbadvert;
         else
         {
-            self::$dbadvert = Yii::app()->db;
+            self::$dbadvert = Yii::app()->dbadvert;
             if (self::$dbadvert instanceof CDbConnection)
             {
                 self::$dbadvert->setActive(true);

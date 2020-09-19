@@ -11,15 +11,17 @@
  * The followings are the available model relations:
  * @property PostTags[] $postTags
  */
-class Userkey extends CActiveRecord
+class Userkey extends MyActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
-        public function init()
-	{
-            self::$db = Yii::app()->secondDB;
-	}
+    
+        public function getDbConnection()
+        {
+            return self::getAdvertDbConnection();
+        }
+       
 	public function tableName()
 	{
 		return 'user_key';

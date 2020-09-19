@@ -35,9 +35,7 @@ class ReportController extends Controller
         {
             $user_secret = Yii::app()->request->getPost('user_secret');
             $response = array();
-            if (Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || 
-                    ( Yii::app()->user->isParent && Yii::app()->request->getPost('batch_id') ))
-                )
+            if (Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || Yii::app()->user->isParent))
             {
                 $class_pay = 0;
                 $class_pay_key = "";

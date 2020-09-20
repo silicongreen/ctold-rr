@@ -65,7 +65,55 @@ class FinanceController < ApplicationController
   end
 
   def donation
-    if MultiSchool.current_school.id == 352
+    if MultiSchool.current_school.id == 357
+      now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+      activity_log = ActivityLog.new
+      activity_log.user_id = current_user.id
+      activity_log.controller = "checking Finance Fees"
+      activity_log.action = "checking Finance Fees"
+      activity_log.post_requests = "0"
+      activity_log.ip = request.remote_ip
+      activity_log.user_agent = request.user_agent
+      activity_log.created_at = now
+      activity_log.updated_at = now
+      activity_log.save
+      activity_log_id = activity_log.id
+      
+      error_order = []
+      @students = Student.find(:all, :order => 'id ASC', :conditions => ["is_deleted = 0 and id > 0"]) #, :group => "ledger_date"
+      unless @students.blank?
+        @students.each do |st|
+          finance_fees = FinanceFee.find(:all, :conditions => "student_id = '#{st.id}'")
+          unless finance_fees.blank?
+            finance_fees.each do |fee|
+              unless fee.blank?
+                sid = fee.student_id
+                s = Student.find(:first, :conditions => "id = #{sid}")
+                unless s.blank?
+                  date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
+                  unless date.blank?
+                    balance = FinanceFee.get_student_actual_balance(date, s, fee)
+                    if balance.to_f > 0
+                        if balance.to_f != fee.balance
+                          finance_fee = FinanceFee.find fee.id
+                          finance_fee.update_attributes( :balance=>balance.to_f, :is_paid => 0)
+                        end
+                      elsif balance.to_f == 0
+                        finance_fee = FinanceFee.find fee.id
+                        finance_fee.update_attributes( :balance=>0, :is_paid => 1)
+                    end
+                  end
+                end
+              end
+              activity_log = ActivityLog.find activity_log_id
+              pr = st.id
+              activity_log.update_attributes( :post_requests=> pr.to_s)
+            end
+          end
+        end
+      end
+      #abort()
+      
       abort('here')
       now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
       activity_log = ActivityLog.new
@@ -151,52 +199,7 @@ class FinanceController < ApplicationController
       end
       abort('here - done')
       
-      now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
-      activity_log = ActivityLog.new
-      activity_log.user_id = current_user.id
-      activity_log.controller = "checking Finance Fees"
-      activity_log.action = "checking Finance Fees"
-      activity_log.post_requests = "0"
-      activity_log.ip = request.remote_ip
-      activity_log.user_agent = request.user_agent
-      activity_log.created_at = now
-      activity_log.updated_at = now
-      activity_log.save
-      activity_log_id = activity_log.id
       
-      error_order = []
-      @students = Student.find(:all, :order => 'id ASC', :conditions => ["is_deleted = 0 and id > 0"]) #, :group => "ledger_date"
-      unless @students.blank?
-        @students.each do |s|
-          finance_fees = FinanceFee.find(:all, :conditions => "student_id = '#{s.id}'")
-          unless finance_fees.blank?
-            finance_fees.each do |fee|
-              unless fee.blank?
-                sid = fee.student_id
-                s = Student.find(:first, :conditions => "id = #{sid}")
-                unless s.blank?
-                  date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
-                  unless date.blank?
-                    balance = FinanceFee.get_student_actual_balance(date, s, fee)
-                    if balance.to_f > 0
-                        if balance.to_f != fee.balance
-                          finance_fee = FinanceFee.find fee.id
-                          finance_fee.update_attributes( :balance=>balance.to_f, :is_paid => 0)
-                        end
-                      elsif balance.to_f == 0
-                        finance_fee = FinanceFee.find fee.id
-                        finance_fee.update_attributes( :balance=>0, :is_paid => 1)
-                    end
-                  end
-                end
-              end
-              activity_log = ActivityLog.find activity_log_id
-              pr = s.id
-              activity_log.update_attributes( :post_requests=> pr.to_s)
-            end
-          end
-        end
-      end
     end
     abort(error_order.inspect)
     #@students = Student.active

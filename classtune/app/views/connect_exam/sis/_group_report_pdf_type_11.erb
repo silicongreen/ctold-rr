@@ -35,7 +35,7 @@
       </div>
       
       <% year_month = I18n.l(@connect_exam_obj.published_date,:format=>"%Y-%m") %>
-      <% if year_month.to_s == "2020-07" %>
+      <% if year_month.to_s == "2020-07" or year_month.to_s == "2020-08" or year_month.to_s == "2020-09" or year_month.to_s == "2020-10" %>
         <% covid = 1 %>
       <% end %>
       <div class ="current_batch" style="margin-left:0px;">

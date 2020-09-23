@@ -7,9 +7,9 @@
                 <h4 align="center" class="height-50">
                 <% unless @covid_main.blank? %>
                   <% if @batch.course.course_name.upcase.index("PLAYGROUP").nil? and @batch.course.course_name.upcase.index("NURSERY").nil? and @batch.course.course_name.upcase.index("PG").nil? and  @batch.course.course_name.upcase.index("KG").nil? %>
-                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/summer.jpg")),:width=> '70%' %>
+                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/summer.jpg")),:width=> '40%' %>
                   <% else %>
-                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/tinytots.png")),:width=> '70%' %>
+                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/tinytots.png")),:width=> '40%' %>
                   <% end %>
                 <% else %>
                     &nbsp;
@@ -366,7 +366,7 @@
               <% if @batch.course.course_name == "VI" or @batch.course.course_name == "VII" or @batch.course.course_name == "STD-VI" or @batch.course.course_name == "STD-VII" %>
               <table id="pdf-table" width="48%" class="left-table even-table signature" cellspacing="0">
                 <tr class="even">
-                    <td class="small-height"><b>Signature of Class Teacher</b></td>
+                    <td class="small-height"><b>Section in charge's Signature</b></td>
                 </tr> 
                 <tr class="even">
                    <td></td>

@@ -65,7 +65,33 @@ class FinanceController < ApplicationController
   end
 
   def donation
-    if MultiSchool.current_school.id == 357
+    if MultiSchool.current_school.id == 352
+      @particulars = FinanceFeeParticular.find(:all, :order => 'id ASC', :conditions => ["is_deleted = 0 and finance_fee_category_id = 771"]) #, :group => "ledger_date"
+      @particulars.each do |particular|
+        particular.update_attributes( :finance_fee_category_id=>762)
+        @collection_particulars = CollectionParticular.find_or_create_by_finance_fee_collection_id_and_finance_fee_particular_id(2988, particular.id)
+      end
+      finance_fees = FinanceFee.find(:all, :conditions => "fee_collection_id = '2988'")
+      finance_fees.each do |fee|
+        s = Student.find(:first, :conditions => "id = #{fee.student_id}")
+        unless s.blank?
+          date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
+          unless date.blank?
+            balance = FinanceFee.get_student_actual_balance(date, s, fee)
+            if balance.to_f > 0
+                if balance.to_f != fee.balance
+                  finance_fee = FinanceFee.find fee.id
+                  finance_fee.update_attributes( :balance=>balance.to_f, :is_paid => 0)
+                end
+              elsif balance.to_f == 0
+                finance_fee = FinanceFee.find fee.id
+                finance_fee.update_attributes( :balance=>0, :is_paid => 1)
+            end
+          end
+        end
+      end
+      
+      abort('here')
       now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
       activity_log = ActivityLog.new
       activity_log.user_id = current_user.id

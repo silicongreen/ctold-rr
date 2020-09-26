@@ -50,6 +50,7 @@ multi_school_models:
 - StudentAdditionalField
 - Event
 - EventCategory
+- AdmissionPayment
 - ArchivedEmployeeAdditionalDetail
 - Student
 - FinanceTransactionTrigger

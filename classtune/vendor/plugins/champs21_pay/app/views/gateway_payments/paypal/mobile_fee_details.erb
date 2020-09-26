@@ -1745,7 +1745,9 @@
                 j("#radio_" + gateway).prop('checked', true);
                 j("#user_gateway").val(gateway);
                 j("#pay_fees_multiple").removeAttr('disabled');
-                j(".submit_pay").show();
+                //j(".submit_pay").show();
+                //j(".submit_pay").show();
+                j(".submit_pay").trigger('click');
             }
             else
             {

@@ -1,0 +1,71 @@
+<% if @payment_mode == "TrustBank" %>
+<div class="label-field-pair" style="width: 99%; height: 24px; display: none;">
+    <div class="label-container">&nbsp;</div>
+    <div class="input-container">
+      <span class="small" style="margin-left: 12px;">
+        <%= link_to_remote "Select Order ID", :url => {:action => 'assign_order_id', :target => "TrustBank"} %>
+      </span>  
+    </div>
+</div>
+<div class="label-field-pair" style="width: 99%;">
+    <div class="label-container">Order ID: </div>
+    <div class="input-container"><%= text_field :admission, :order_id, :style => "width: 80% !important;" %></div>
+</div>
+<div class="label-field-pair" style="width: 99%;">
+    <div class="label-container">Ref Id: </div>
+    <div class="input-container"><%= text_field :admission, :ref_id, :style => "width: 80% !important;" %></div>
+</div>
+<div class="label-field-pair" style="width: 99%;">
+    <div class="label-container">Transaction Type: </div>
+    <div class="input-container">
+      <%= select :admission, :payment_trans_type, [["TBL Mobile banking", "TBL Mobile banking"],["TBL Card Online", "TBL Card Online"]], {} %>
+    </div>
+</div>
+<% elsif @payment_mode == "citybank" %>
+<div class="label-field-pair" style="width: 99%; height: 24px; display: none; display: none;">
+    <div class="label-container">&nbsp;</div>
+    <div class="input-container">
+      <span class="small" style="margin-left: 12px;">
+        <%= link_to_remote "Select Order ID", :url => {:action => 'assign_order_id', :target => "citybank"} %>
+      </span>  
+    </div>
+</div>
+<div class="label-field-pair" style="width: 99%;">
+    <div class="label-container">Order ID: </div>
+    <div class="input-container"><%= text_field :admission, :order_id, :style => "width: 80% !important;" %></div>
+</div>
+<div class="label-field-pair" style="width: 99%;">
+    <div class="label-container">Session ID: </div>
+    <div class="input-container"><%= text_field :admission, :session_id, :style => "width: 80% !important;" %></div>
+</div>
+<div class="label-field-pair" style="width: 99%;">
+    <div class="label-container">ApprovalCode: </div>
+    <div class="input-container"><%= text_field :admission, :approval_code, :style => "width: 80% !important;" %></div>
+</div>
+<div class="label-field-pair" style="width: 99%;">
+    <div class="label-container">CityBank Order ID: </div>
+    <div class="input-container"><%= text_field :admission, :ref_id, :style => "width: 80% !important;" %></div>
+</div>
+<% elsif @payment_mode == "Bkash" %>
+<div class="label-field-pair" style="width: 99%; height: 24px; display: none;">
+    <div class="label-container">&nbsp;</div>
+    <div class="input-container">
+      <span class="small" style="margin-left: 12px;">
+        <%= link_to_remote "Select Order ID", :url => {:action => 'assign_order_id', :target => "Bkash"} %>
+      </span>  
+    </div>
+</div>
+<div class="label-field-pair" style="width: 99%;">
+    <div class="label-container">Order ID: </div>
+    <div class="input-container"><%= text_field :admission, :order_id, :style => "width: 80% !important;" %></div>
+</div>
+<div class="label-field-pair" style="width: 99%;">
+    <div class="label-container">Payment Id: </div>
+    <div class="input-container"><%= text_field :admission, :payment_id, :style => "width: 80% !important;" %></div>
+</div>
+<div class="label-field-pair" style="width: 99%;">
+    <div class="label-container">BKash Transaction ID: </div>
+    <div class="input-container"><%= text_field :admission, :trxID, :style => "width: 80% !important;" %></div>
+</div>
+<% end %>
+

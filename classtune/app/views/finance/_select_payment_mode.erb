@@ -1,5 +1,40 @@
+<% if @payment_mode.to_i == 1 %>
 <div class="label-field-pair" style="width: 99%;">
     <div class="label-container">Other Payment Mode: </div>
     <div class="input-container"><%= text_field :fees, :payment_mode, :style => "width: 80% !important;" %></div>
 </div>
+<% else %>
+<div class="label-field-pair" style="width: 99%;">
+    <div class="label-container">Payment Type: </div>
+    <div class="input-container">
+      <%= select :admission, :payment_mode_admission, [["TrustBank", "TrustBank"],["citybank", "citybank"],["Bkash", "Bkash"]], {} ,{:onChange => "#{remote_function(:url => {:action => "select_admission_payment_mode"},
+          :with => "'payment_mode='+value",:before => "$('loader1').show();",
+          :success => "$('loader1').hide();")}"}  %>
+    </div>
+</div>
+<div id="admission_payment_mode">
+  <div class="label-field-pair" style="width: 99%; height: 24px; display: none;">
+      <div class="label-container">&nbsp;</div>
+      <div class="input-container">
+        <span class="small" style="margin-left: 12px;">
+          <%= link_to_remote "Select Order ID", :url => {:action => 'assign_order_id', :target => "TrustBank"} %>
+        </span>  
+      </div>
+  </div>
+  <div class="label-field-pair" style="width: 99%;">
+      <div class="label-container">Order ID: </div>
+      <div class="input-container"><%= text_field :admission, :order_id, :style => "width: 80% !important;" %></div>
+  </div>
+  <div class="label-field-pair" style="width: 99%;">
+      <div class="label-container">Ref Id: </div>
+      <div class="input-container"><%= text_field :admission, :ref_id, :style => "width: 80% !important;" %></div>
+  </div>
+  <div class="label-field-pair" style="width: 99%;">
+      <div class="label-container">Transaction Type: </div>
+      <div class="input-container">
+        <%= select :admission, :payment_trans_type, [["TBL Mobile banking", "TBL Mobile banking"],["TBL Card Online", "TBL Card Online"]], {} %>
+      </div>
+  </div>
+</div>
+<% end %>
 

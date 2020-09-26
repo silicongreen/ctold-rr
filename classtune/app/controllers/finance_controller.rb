@@ -742,21 +742,30 @@ class FinanceController < ApplicationController
         end
         #abort(extra_params.inspect)
         @filter_by_payment_type = params[:filter_by_payment_type]
+        payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
         unless params[:filter_by_payment_type].nil?
           if params[:filter_by_payment_type].to_i != 0
-            filter_by_payment_type = "MB"
-            if params[:filter_by_payment_type].to_i == 1
+            if params[:filter_by_payment_type].to_i > 0 and params[:filter_by_payment_type].to_i < 3
               filter_by_payment_type = "MB"
-            elsif params[:filter_by_payment_type].to_i == 2
-              filter_by_payment_type = "ITCL"
-            end 
-            extra_params += ' and gateway_response like \'%%:payment_type: ' + filter_by_payment_type + '%%\''
+              if params[:filter_by_payment_type].to_i == 1
+                filter_by_payment_type = "MB"
+              elsif params[:filter_by_payment_type].to_i == 2
+                filter_by_payment_type = "ITCL"
+              end 
+              extra_params += ' and gateway_response like \'%%:payment_type: ' + filter_by_payment_type + '%%\''
+            elsif params[:filter_by_payment_type].to_i == 3
+              extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'trustbank'"
+            elsif params[:filter_by_payment_type].to_i == 4
+              extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'bkash'"
+            elsif params[:filter_by_payment_type].to_i == 5
+              extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'citybank'"
+            end
             #extra_params += " and payments.gateway_response like '%:payment_type: " + filter_by_payment_type + "%'"
             #extra_params += " and payments.gateway_response like '%" + params[:filter_by_payment_type].to_s + "%'"
           end
         end
         
-        payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
+        #payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
         @particular_wise_transactions_payee = FinanceTransaction.paginate(:all, :select => "finance_transactions.payee_id, finance_transactions.id, sum( finance_transactions.amount ) as amount", :order => payment_table + '.payee_id ASC', :conditions => ["#{payment_table}.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and #{payment_table}.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'" + extra_params], :joins => "INNER JOIN #{payment_table} ON finance_transactions.id = #{payment_table}.finance_transaction_id " + extra_joins, :group => "finance_transactions.payee_id",:page => params[:page],:per_page => 10)
         #@particular_wise_transactions_payee = FinanceTransactionParticular.paginate(:all, :select => "finance_transactions.payee_id, finance_transactions.id, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false}"], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = finance_fee_particulars.finance_fee_particular_category_id", :group => "finance_transactions.payee_id, finance_transaction_particulars.particular_id",:page => params[:page],:per_page => 10)
         particular_wise_transactions_payee = @particular_wise_transactions_payee.map(&:payee_id)
@@ -865,22 +874,33 @@ class FinanceController < ApplicationController
           extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
         end
         @filter_by_payment_type = params[:filter_by_payment_type]
+        payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
         unless params[:filter_by_payment_type].nil?
           if params[:filter_by_payment_type].to_i != 0
-            filter_by_payment_type = "MB"
-            if params[:filter_by_payment_type].to_i == 1
+            if params[:filter_by_payment_type].to_i > 0 and params[:filter_by_payment_type].to_i < 3
               filter_by_payment_type = "MB"
-            elsif params[:filter_by_payment_type].to_i == 2
-              filter_by_payment_type = "ITCL"
-            end 
-            extra_params += ' and gateway_response like \'%%:payment_type: ' + filter_by_payment_type + '%%\''
+              if params[:filter_by_payment_type].to_i == 1
+                filter_by_payment_type = "MB"
+              elsif params[:filter_by_payment_type].to_i == 2
+                filter_by_payment_type = "ITCL"
+              end 
+              extra_params += ' and gateway_response like \'%%:payment_type: ' + filter_by_payment_type + '%%\''
+            elsif params[:filter_by_payment_type].to_i == 3
+              extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'trustbank'"
+            elsif params[:filter_by_payment_type].to_i == 4
+              extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'bkash'"
+            elsif params[:filter_by_payment_type].to_i == 5
+              extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'citybank'"
+            end
+            #extra_params += " and payments.gateway_response like '%:payment_type: " + filter_by_payment_type + "%'"
+            #extra_params += " and payments.gateway_response like '%" + params[:filter_by_payment_type].to_s + "%'"
           end
         end
         
         @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
         @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
 
-        payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
+        #payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
         @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "CAST(#{payment_table}.transaction_datetime as DATE) as transaction_date, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection' and #{payment_table}.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and #{payment_table}.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false} " + extra_params], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN #{payment_table} ON finance_transactions.id = #{payment_table}.finance_transaction_id LEFT JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = finance_fee_particulars.finance_fee_particular_category_id " + extra_joins, :group => "transaction_date, finance_fee_particular_categories.id")
         tot_amount = 0
         @particular_wise_transactions.each do |pwt|
@@ -1141,21 +1161,30 @@ class FinanceController < ApplicationController
         end
         #abort(extra_params.inspect)
         @filter_by_payment_type = params[:filter_by_payment_type]
+        payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
         unless params[:filter_by_payment_type].nil?
           if params[:filter_by_payment_type].to_i != 0
-            filter_by_payment_type = "MB"
-            if params[:filter_by_payment_type].to_i == 1
+            if params[:filter_by_payment_type].to_i > 0 and params[:filter_by_payment_type].to_i < 3
               filter_by_payment_type = "MB"
-            elsif params[:filter_by_payment_type].to_i == 2
-              filter_by_payment_type = "ITCL"
-            end 
-            extra_params += ' and gateway_response like \'%%:payment_type: ' + filter_by_payment_type + '%%\''
+              if params[:filter_by_payment_type].to_i == 1
+                filter_by_payment_type = "MB"
+              elsif params[:filter_by_payment_type].to_i == 2
+                filter_by_payment_type = "ITCL"
+              end 
+              extra_params += ' and gateway_response like \'%%:payment_type: ' + filter_by_payment_type + '%%\''
+            elsif params[:filter_by_payment_type].to_i == 3
+              extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'trustbank'"
+            elsif params[:filter_by_payment_type].to_i == 4
+              extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'bkash'"
+            elsif params[:filter_by_payment_type].to_i == 5
+              extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'citybank'"
+            end
             #extra_params += " and payments.gateway_response like '%:payment_type: " + filter_by_payment_type + "%'"
             #extra_params += " and payments.gateway_response like '%" + params[:filter_by_payment_type].to_s + "%'"
           end
         end
         
-        payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
+        #payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
         @particular_wise_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, finance_transactions.amount as amount, #{payment_table}.order_id", :order => payment_table + '.payee_id ASC', :conditions => ["#{payment_table}.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and #{payment_table}.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'" + extra_params], :joins => "INNER JOIN #{payment_table} ON finance_transactions.id = #{payment_table}.finance_transaction_id " + extra_joins, :group => "#{payment_table}.order_id")
         @order_ids = @particular_wise_transactions.map(&:order_id).uniq
 
@@ -1332,21 +1361,30 @@ class FinanceController < ApplicationController
         end
         #abort(extra_params.inspect)
         @filter_by_payment_type = params[:filter_by_payment_type]
+        payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
         unless params[:filter_by_payment_type].nil?
           if params[:filter_by_payment_type].to_i != 0
-            filter_by_payment_type = "MB"
-            if params[:filter_by_payment_type].to_i == 1
+            if params[:filter_by_payment_type].to_i > 0 and params[:filter_by_payment_type].to_i < 3
               filter_by_payment_type = "MB"
-            elsif params[:filter_by_payment_type].to_i == 2
-              filter_by_payment_type = "ITCL"
-            end 
-            extra_params += ' and gateway_response like \'%%:payment_type: ' + filter_by_payment_type + '%%\''
+              if params[:filter_by_payment_type].to_i == 1
+                filter_by_payment_type = "MB"
+              elsif params[:filter_by_payment_type].to_i == 2
+                filter_by_payment_type = "ITCL"
+              end 
+              extra_params += ' and gateway_response like \'%%:payment_type: ' + filter_by_payment_type + '%%\''
+            elsif params[:filter_by_payment_type].to_i == 3
+              extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'trustbank'"
+            elsif params[:filter_by_payment_type].to_i == 4
+              extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'bkash'"
+            elsif params[:filter_by_payment_type].to_i == 5
+              extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'citybank'"
+            end
             #extra_params += " and payments.gateway_response like '%:payment_type: " + filter_by_payment_type + "%'"
             #extra_params += " and payments.gateway_response like '%" + params[:filter_by_payment_type].to_s + "%'"
           end
         end
         
-        payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
+        #payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
         @particular_wise_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, finance_transactions.amount as amount, #{payment_table}.order_id", :order => payment_table + '.payee_id ASC', :conditions => ["#{payment_table}.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and #{payment_table}.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'" + extra_params], :joins => "INNER JOIN #{payment_table} ON finance_transactions.id = #{payment_table}.finance_transaction_id " + extra_joins, :group => "#{payment_table}.order_id")
         @order_ids = @particular_wise_transactions.map(&:order_id).uniq
         
@@ -1766,15 +1804,24 @@ class FinanceController < ApplicationController
         end
         #abort(extra_params.inspect)
         @filter_by_payment_type = params[:filter_by_payment_type]
+        payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
         unless params[:filter_by_payment_type].nil?
           if params[:filter_by_payment_type].to_i != 0
-            filter_by_payment_type = "MB"
-            if params[:filter_by_payment_type].to_i == 1
+            if params[:filter_by_payment_type].to_i > 0 and params[:filter_by_payment_type].to_i < 3
               filter_by_payment_type = "MB"
-            elsif params[:filter_by_payment_type].to_i == 2
-              filter_by_payment_type = "ITCL"
-            end 
-            extra_params += ' and gateway_response like \'%%:payment_type: ' + filter_by_payment_type + '%%\''
+              if params[:filter_by_payment_type].to_i == 1
+                filter_by_payment_type = "MB"
+              elsif params[:filter_by_payment_type].to_i == 2
+                filter_by_payment_type = "ITCL"
+              end 
+              extra_params += ' and gateway_response like \'%%:payment_type: ' + filter_by_payment_type + '%%\''
+            elsif params[:filter_by_payment_type].to_i == 3
+              extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'trustbank'"
+            elsif params[:filter_by_payment_type].to_i == 4
+              extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'bkash'"
+            elsif params[:filter_by_payment_type].to_i == 5
+              extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'citybank'"
+            end
             #extra_params += " and payments.gateway_response like '%:payment_type: " + filter_by_payment_type + "%'"
             #extra_params += " and payments.gateway_response like '%" + params[:filter_by_payment_type].to_s + "%'"
           end
@@ -1784,7 +1831,6 @@ class FinanceController < ApplicationController
         @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
         
         #abort("finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false} " + extra_params)
-        payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
         @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "CAST(#{payment_table}.transaction_datetime as DATE) as transaction_date, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection' and #{payment_table}.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and #{payment_table}.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false} " + extra_params], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN #{payment_table} ON finance_transactions.id = #{payment_table}.finance_transaction_id LEFT JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = finance_fee_particulars.finance_fee_particular_category_id " + extra_joins, :group => "transaction_date, finance_fee_particular_categories.id")
         tot_amount = 0
         @particular_wise_transactions.each do |pwt|
@@ -2997,22 +3043,33 @@ class FinanceController < ApplicationController
           extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
         end
         @filter_by_payment_type = params[:filter_by_payment_type]
+        payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
         unless params[:filter_by_payment_type].nil?
           if params[:filter_by_payment_type].to_i != 0
-            filter_by_payment_type = "MB"
-            if params[:filter_by_payment_type].to_i == 1
+            if params[:filter_by_payment_type].to_i > 0 and params[:filter_by_payment_type].to_i < 3
               filter_by_payment_type = "MB"
-            elsif params[:filter_by_payment_type].to_i == 2
-              filter_by_payment_type = "ITCL"
-            end 
-            extra_params += ' and gateway_response like \'%%:payment_type: ' + filter_by_payment_type + '%%\''
+              if params[:filter_by_payment_type].to_i == 1
+                filter_by_payment_type = "MB"
+              elsif params[:filter_by_payment_type].to_i == 2
+                filter_by_payment_type = "ITCL"
+              end 
+              extra_params += ' and gateway_response like \'%%:payment_type: ' + filter_by_payment_type + '%%\''
+            elsif params[:filter_by_payment_type].to_i == 3
+              extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'trustbank'"
+            elsif params[:filter_by_payment_type].to_i == 4
+              extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'bkash'"
+            elsif params[:filter_by_payment_type].to_i == 5
+              extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'citybank'"
+            end
+            #extra_params += " and payments.gateway_response like '%:payment_type: " + filter_by_payment_type + "%'"
+            #extra_params += " and payments.gateway_response like '%" + params[:filter_by_payment_type].to_s + "%'"
           end
         end
         
         @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
         @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
 
-        payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
+        #payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
         @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "CAST(#{payment_table}.transaction_datetime as DATE) as transaction_date, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection' and #{payment_table}.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and #{payment_table}.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false} " + extra_params], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN #{payment_table} ON finance_transactions.id = #{payment_table}.finance_transaction_id LEFT JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = finance_fee_particulars.finance_fee_particular_category_id " + extra_joins, :group => "transaction_date, finance_fee_particular_categories.id")
         tot_amount = 0
         @particular_wise_transactions.each do |pwt|
@@ -5751,6 +5808,11 @@ class FinanceController < ApplicationController
       @batch_id = params[:batch_id]
       @fee_collection_discount = FeeDiscountCollection.active.find_all_by_finance_fee_collection_id_and_batch_id(@fee_collection_id, params[:batch_id]).map(&:fee_discount_id)
     end
+  end
+  
+  def assign_order_id
+    target = params[:target]
+    @orders = AdmissionPayment.find(:all, :conditions => "gateway = #{target}")
   end
   
   def assign_fee_discount_to_collection_student
@@ -10395,6 +10457,91 @@ class FinanceController < ApplicationController
         if transaction.save
           is_paid = remaining_amount<=0 ? true : false
           @financefee.update_attributes( :is_paid=>is_paid)
+          
+          unless params[:fees][:payment_mode].blank?
+            #@student = Student.find(params[:student]) if params[:student]
+            if params[:fees][:payment_mode] == "Admission Payment"
+              gateway = params[:admission][:payment_mode_admission].downcase
+              if params[:admission][:payment_mode_admission] == "TrustBank"
+                payment_type = (params[:admission][:payment_trans_type] == "TBL Mobile banking") ? "MB" : "ITCL"
+                gateway_response = {
+                  :status_text => "PAID",
+                  :date => params[:fees][:transaction_date].to_date.strftime("%Y-%m-%d %H:%M:%S"),
+                  :email => "-",
+                  :status => "1",
+                  :card_response_description => "",
+                  :used => "0",
+                  :order_id => params[:admission][:order_id],
+                  :card_order_status => "",
+                  :order_date_time => params[:fees][:transaction_date].to_date.strftime("%Y-%m-%d %H:%M:%S"),
+                  :verified => "1",
+                  :emi_no=> "0",
+                  :payment_type=> payment_type,
+                  :amount=> params[:tot_fee_amount].to_f,
+                  :interest_amount=> "0.00",
+                  :payment_date_time=> params[:fees][:transaction_date].to_date.strftime("%Y-%m-%d %H:%M:%S"),
+                  :pan=> "",
+                  :service_chargeo=> "20.00",
+                  :pay_with_charge=> "1",
+                  :tbmm_account=> "",
+                  :name=> @student.admission_no,
+                  :total_amount=> params[:tot_fee_amount].to_f,
+                  :card_response_code=> "",
+                  :ref_id=> params[:admission][:ref_id],
+                  :marchent_id=> "SAGC"
+                }
+              elsif params[:admission][:payment_mode_admission] == "citybank"
+                message = {
+                    :ApprovalCodeScr => params[:admission][:approval_code],
+                    :ApprovalCode => params[:admission][:approval_code],
+                    :TranDateTime => params[:fees][:transaction_date].to_date.strftime("%Y-%m-%d %H:%M:%S"),
+                    :Currency => "050",
+                    :TransactionType => "Purchase",
+                    :ResponseCode => "001",
+                    :OrderStatusScr => "APPROVED",
+                    :OrderStatus => "APPROVED",
+                    :TotalAmount => params[:tot_fee_amount].to_f * 100,
+                    :PurchaseAmount => params[:tot_fee_amount].to_f * 100,
+                    :PurchaseAmountScr => params[:tot_fee_amount].to_f,
+                    :TotalAmountScr => params[:tot_fee_amount].to_f,
+                    :OrderID => params[:admission][:order_id],
+                    :SessionId => params[:admission][:session_id],
+                    :SessionID => params[:admission][:session_id],
+                    :Version => "1.0",
+                    :date => params[:fees][:transaction_date].to_date.strftime("%d/%m/%Y %H:%M:%S"),
+                    :CurrencyScr => "BDT",
+                }
+                gateway_response = {
+                  :Message => message
+                }
+              elsif params[:admission][:payment_mode_admission] == "Bkash"
+                gateway_response = {
+                    :paymentID => params[:admission][:payment_id],
+                    :trxID => params[:admission][:trxID],
+                    :createTime => params[:fees][:transaction_date].to_date.strftime("%Y-%m-%d %H:%M:%S"),
+                    :updateTime => params[:fees][:transaction_date].to_date.strftime("%Y-%m-%d %H:%M:%S"),
+                    :intent => "sale",
+                    :TransactionType => "transactionStatus",
+                    :amount => params[:tot_fee_amount].to_f,
+                    :merchantInvoiceNumber => params[:admission][:order_id],
+                    :currency => "BDT"
+                }
+              end
+              payment = Payment.new(:order_id => params[:admission][:order_id], :payee => @student,:payment => @financefee,:gateway_response => gateway_response, :transaction_datetime => params[:fees][:transaction_date].to_date.strftime("%Y-%m-%d %H:%M:%S"), :gateway_txt => gateway, :validation_response => gateway_response, :finance_transaction_id => transaction.id)
+              payment.save
+
+              student_fee_ledger = StudentFeeLedger.new
+              student_fee_ledger.student_id = @student.id
+              student_fee_ledger.ledger_date = transaction.transaction_date
+              student_fee_ledger.ledger_title = ""
+              student_fee_ledger.amount_to_pay = 0.0
+              student_fee_ledger.fee_id = @financefee.id
+              student_fee_ledger.amount_paid = transaction.amount
+              student_fee_ledger.transaction_id = transaction.id
+              student_fee_ledger.order_id = params[:admission][:order_id]
+              student_fee_ledger.save
+            end
+          end
 
           @paid_fees = @financefee.finance_transactions
             
@@ -10567,6 +10714,8 @@ class FinanceController < ApplicationController
       @paid_fees = @financefee.finance_transactions
       @financefee.errors.add_to_base("#{t('flash23')}")
     end
+    
+    #if 
     
     @fine_amount=0 if @financefee.is_paid
     
@@ -12657,6 +12806,12 @@ class FinanceController < ApplicationController
 
   def select_payment_mode
     if  params[:payment_mode]=="#{t('others')}"
+      @payment_mode = 1
+      render :update do |page|
+        page.replace_html "payment_mode", :partial => "select_payment_mode"
+      end
+    elsif  params[:payment_mode]=="Admission Payment"
+      @payment_mode = 2
       render :update do |page|
         page.replace_html "payment_mode", :partial => "select_payment_mode"
       end
@@ -12664,6 +12819,13 @@ class FinanceController < ApplicationController
       render :update do |page|
         page.replace_html "payment_mode", :text=>""
       end
+    end
+  end
+
+  def select_admission_payment_mode
+    @payment_mode = params[:payment_mode]
+    render :update do |page|
+        page.replace_html "admission_payment_mode", :partial => "select_admission_payment_mode"
     end
   end
 

@@ -169,9 +169,9 @@
                                     <% end %>
                                     
                                 
-                                    <% if att_percentize < 60 %>
-                                        <% att_percentize = 60 %>
-                                    <% end %>
+                                    <%# if att_percentize < 60 %>
+                                        <%# att_percentize = 60 %>
+                                    <%# end %>
                                     <% if @connect_exam_obj.id == 1113 or @connect_exam_obj.id == 1114 %>
                                         <% if @student.id == 10305 or @student.id == 10309 or @student.id == 10383 or @student.id == 14636 %>
                                           <% att_percentize = 82.64 %>
@@ -180,7 +180,11 @@
                                           <% att_percentize = 92.33 %>
                                         <% end %>
                                     <% end %>
-                                    <%= sprintf( "%0.02f", att_percentize) %> %
+                                    <% if subjects['name'].upcase != "ECONOMICS" %>
+                                      <%= sprintf( "%0.02f", att_percentize) %> %
+                                    <% else %>
+                                    <%= "-" %>
+                                    <% end %>
                                 <% else %> 
                                     <%= "-" %>
                                 <% end %> 
@@ -204,7 +208,7 @@
                   <tr class="even">
                       <td><b>Result Issue Date</b></td>
                       <td><b>Signature of the Section In-Charge</b></td>
-                      <td><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/signature-new.jpg")) %></td>
+                      <td><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/signature.png")) %></td>
                   </tr> 
                   <tr class="odd">
                       <td><%= @connect_exam_obj.published_date %></td>

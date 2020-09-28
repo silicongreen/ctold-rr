@@ -120,6 +120,7 @@
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
             <% total_mark = 0 %>
+            <% total_mark_main = 0 %>
             <% grades = [] %>
             <% grade_count = {} %>
             <% @report_data['report']['subjects'].each do |sub| %>
@@ -217,24 +218,28 @@
 
                         %>  
                       <td>
-                         <% total_mark = total_mark+obtained_mark.round() %>
-                         <%= obtained_mark.round().to_s %><hr/>
-                         <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
-                         <% if !grade.blank? and !grade.name.blank? %>
-                             <%
-                                if grades.include?(grade.name.to_s)
-                                  grade_count[grade.name.to_s] = grade_count[grade.name.to_s]+1
-                                else
-                                  grades << grade.name.to_s
-                                  grade_count[grade.name.to_s] = 1
-                                end  
-                             %>
-                            <%= grade.name %>  
+                         <% if obtained_mark.round() > 0 %>
+                          <% total_mark_main = total_mark_main+obtained_mark.round() %>
+                          <%= obtained_mark.round().to_s %><hr/>
+                          <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                          <% if !grade.blank? and !grade.name.blank? %>
+                              <%
+                                 if grades.include?(grade.name.to_s)
+                                   grade_count[grade.name.to_s] = grade_count[grade.name.to_s]+1
+                                 else
+                                   grades << grade.name.to_s
+                                   grade_count[grade.name.to_s] = 1
+                                 end  
+                              %>
+                             <%= grade.name %>  
+                          <% else %>
+                             -  
+                          <% end %>
                          <% else %>
-                            -  
-                         <% end %>
-                      </td>  
-                  <% end %>    
+                            &nbsp;<hr/>&nbsp;
+                         <% end %>   
+                      </td>
+                    <% end %>
             <% end %> 
             <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
                     <% if !sub['subject_comment'][std['id']].nil? %>
@@ -254,10 +259,7 @@
                     <% end %> 
               <% end %>
               <td>
-                   <%= total_mark.round().to_s %>    
-              </td>
-              <td>
-                  &nbsp;&nbsp;
+                   <%= total_mark_main.round().to_s %>    
               </td>    
               <td>
                   <% i = 1 %>
@@ -270,6 +272,13 @@
                       <% i = i+1 %>
                   <% end %>
               </td> 
+              <% unless @student_position.blank? %>
+                           <% unless @student_position[std['id'].to_i].blank? %>
+                              <td><%= @student_position[std['id'].to_i] %></td>
+                           <% else %>
+                              <td>-</td>
+                           <% end %>
+                        <% end %>
               <%# @exam_comment.each do |exm_cmt| %>
               <%# if exm_cmt.student_id.to_i == std['id'].to_i %>
                 <%#*<td>%>

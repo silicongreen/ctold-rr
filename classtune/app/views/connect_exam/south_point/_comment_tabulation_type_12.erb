@@ -49,7 +49,9 @@
           <% end %> 
           
           <td>Total</td>
-          <td>Position Section</td>
+          <% unless @student_position.blank? %>
+                <td>Position Section</td>
+                <% end %>
           <td>Grade Count</td>
           <%#*<td>Remark</td>%>
         

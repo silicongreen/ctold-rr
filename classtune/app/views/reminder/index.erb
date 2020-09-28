@@ -69,10 +69,10 @@
 
 
               <% @reminders.each do |ur| %>
-                <% if ur.rid>0 && (ur.rtype==4 or ur.rtype==31) %>
+                <% if ur.rid>0 && (ur.rtype==4 or ur.rtype==31 or ur.rtype==601 or ur.rtype==602) %>
                     <%
                       controller_name = "classworks"
-                      if ur.rtype==4 
+                      if ur.rtype==4 or ur.rtype==601 or ur.rtype==602
                         controller_name = "assignments"
                       end
                   

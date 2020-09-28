@@ -1738,8 +1738,8 @@ class HomeworkController extends Controller
                 {
                     $reminder = new Reminders();
                     $reminder->sender = Yii::app()->user->id;
-                    $reminder->subject = "New Message added in homework";
-                    $reminder->body = "New Message added in homework Please check the homework For details";
+                    $reminder->subject = "New Commment Added By Teacher";
+                    $reminder->body = "New Commment Added By Teacher. Please check the homework For details";
                     $reminder->recipient = $value;
                     $reminder->school_id = Yii::app()->user->schoolId;
                     $reminder->rid = $id;
@@ -1826,8 +1826,8 @@ class HomeworkController extends Controller
                 {
                     $reminder = new Reminders();
                     $reminder->sender = Yii::app()->user->id;
-                    $reminder->subject = "New Message added in homework";
-                    $reminder->body = "New Message added in homework Please check the homework For details";
+                    $reminder->subject = "New Commment Added By student in homework";
+                    $reminder->body = "New Commment added by student in homework Please check the homework For details";
                     $reminder->recipient = $value;
                     $reminder->school_id = Yii::app()->user->schoolId;
                     $reminder->rid = $id;

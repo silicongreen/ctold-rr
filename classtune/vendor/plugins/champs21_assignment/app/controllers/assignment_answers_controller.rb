@@ -242,12 +242,12 @@ class AssignmentAnswersController < ApplicationController
       Delayed::Job.enqueue(
         DelayedReminderJob.new( :sender_id  => current_user.id,
           :recipient_ids => user_ass,
-          :subject=>"New Commment Added By Teacher",
-          :rtype=>4,
+          :subject=>"New Commment Added By Teacher in homework",
+          :rtype=>601,
           :rid=>@assignment.id,
           :student_id => student_ids,
           :batch_id => batch_ids,
-          :body=>"New Commment Added By Teacher ("+current_user.employee_record.full_name+")")
+          :body=>"New Commment Added By Teacher in homework. Please check the homework For details")
       )     
     else
       user_ass = []
@@ -259,12 +259,12 @@ class AssignmentAnswersController < ApplicationController
       Delayed::Job.enqueue(
         DelayedReminderJob.new( :sender_id  => current_user.id,
           :recipient_ids => user_ass,
-          :subject=>"New Commment Added By Student",
-          :rtype=>4,
+          :subject=>"New Commment Added By student in homework",
+          :rtype=>602,
           :rid=>@assignment.id,
           :student_id => student_ids,
           :batch_id => batch_ids,
-          :body=>"New Commment Added By Student ("+current_user.student_record.full_name+")")
+          :body=>"New Commment Added By student in homework. Please check the homework For details")
       )
     end
     

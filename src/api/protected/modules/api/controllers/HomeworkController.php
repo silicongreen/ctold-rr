@@ -1725,6 +1725,37 @@ class HomeworkController extends Controller
             $assignmentCommentsObj->updated_at = date('Y-m-d H:i:s', strtotime("-6 hours"));
             $assignmentCommentsObj->school_id = Yii::app()->user->schoolId;
             $assignmentCommentsObj->insert();
+            $stdobj = new Students();
+            $studentsobj = $stdobj->findByPk($student_id);
+            $notification_ids = array();
+            $reminderrecipients = array();
+            if($studentsobj)
+            {
+                $reminderrecipients[] = $studentsobj->user_id;
+                $batch_ids[$studentsobj->user_id] = $studentsobj->batch_id;
+                $student_ids[$studentsobj->user_id] = $studentsobj->id;
+                foreach ($reminderrecipients as $value)
+                {
+                    $reminder = new Reminders();
+                    $reminder->sender = Yii::app()->user->id;
+                    $reminder->subject = "New Message added in homework";
+                    $reminder->body = "New Message added in homework Please check the homework For details";
+                    $reminder->recipient = $value;
+                    $reminder->school_id = Yii::app()->user->schoolId;
+                    $reminder->rid = $id;
+                    $reminder->rtype = 601;
+                    $reminder->batch_id = $batch_ids[$value];
+                    $reminder->student_id = $student_ids[$value];
+                    $reminder->created_at = date("Y-m-d H:i:s");
+                    $reminder->updated_at = date("Y-m-d H:i:s");
+                    $reminder->save();
+                    $notification_ids[] = $reminder->id;
+                    $notification_id = implode("*", $notification_ids);
+                    $user_id = implode("*", $reminderrecipients);
+                    Settings::sendNotification($notification_id, $user_id);
+                }
+            }
+            
             $response['data']['msg'] = "Success";
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Data Found";
@@ -1780,6 +1811,38 @@ class HomeworkController extends Controller
             $assignmentCommentsObj->updated_at = date('Y-m-d H:i:s', strtotime("-6 hours"));
             $assignmentCommentsObj->school_id = Yii::app()->user->schoolId;
             $assignmentCommentsObj->insert();
+            
+            $assignmentObj = new Assignments();
+            $assignment = $assignmentObj->findByPk($id);
+            $employee_id = $assignment->employee_id;
+            $employeeOj = new Employees();
+            $employee = $employeeOj->findByPk($employee_id);
+            $notification_ids = array();
+            $reminderrecipients = array();
+            if($employee)
+            {
+                $reminderrecipients[] = $employee->user_id;
+                foreach ($reminderrecipients as $value)
+                {
+                    $reminder = new Reminders();
+                    $reminder->sender = Yii::app()->user->id;
+                    $reminder->subject = "New Message added in homework";
+                    $reminder->body = "New Message added in homework Please check the homework For details";
+                    $reminder->recipient = $value;
+                    $reminder->school_id = Yii::app()->user->schoolId;
+                    $reminder->rid = $id;
+                    $reminder->rtype = 602;
+                    $reminder->batch_id = 0;
+                    $reminder->student_id = 0;
+                    $reminder->created_at = date("Y-m-d H:i:s");
+                    $reminder->updated_at = date("Y-m-d H:i:s");
+                    $reminder->save();
+                    $notification_ids[] = $reminder->id;
+                    $notification_id = implode("*", $notification_ids);
+                    $user_id = implode("*", $reminderrecipients);
+                    Settings::sendNotification($notification_id, $user_id);
+                }
+            }    
             $response['data']['msg'] = "Success";
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Data Found";

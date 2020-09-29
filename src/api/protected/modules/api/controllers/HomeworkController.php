@@ -1869,7 +1869,7 @@ class HomeworkController extends Controller
             $assignment = new Assignments();
             $assignment_data = $assignment->findByPk($id);
             $employeeObj = new Employees();
-            $employee_data = $assignment->findByPk($assignment_data->employee_id);
+            $employee_data = $employeeObj->findByPk($assignment_data->employee_id);
             $free_user = new Freeusers();
             $user = new Users();
             $userdata = $user->findByPk($employee_data->user_id);

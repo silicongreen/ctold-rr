@@ -253,8 +253,8 @@ class AssignmentAnswersController < ApplicationController
       user_ass = []
       student_ids = []
       batch_ids = []
-      student_ids << 0
-      batch_ids << 0
+      student_ids << std_info.batch_id
+      batch_ids << std_info.user_id
       user_ass << @assignment.employee.user_id
       Delayed::Job.enqueue(
         DelayedReminderJob.new( :sender_id  => current_user.id,

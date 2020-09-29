@@ -1822,6 +1822,9 @@ class HomeworkController extends Controller
             if($employee)
             {
                 $reminderrecipients[] = $employee->user_id;
+                $stdObj = new Students();
+                $std_details = $stdObj->findByPk($student_id);
+                $batch_id = $std_details->batch_id;
                 foreach ($reminderrecipients as $value)
                 {
                     $reminder = new Reminders();
@@ -1832,8 +1835,8 @@ class HomeworkController extends Controller
                     $reminder->school_id = Yii::app()->user->schoolId;
                     $reminder->rid = $id;
                     $reminder->rtype = 602;
-                    $reminder->batch_id = 0;
-                    $reminder->student_id = 0;
+                    $reminder->batch_id = $batch_id;
+                    $reminder->student_id = $student_id;
                     $reminder->created_at = date("Y-m-d H:i:s");
                     $reminder->updated_at = date("Y-m-d H:i:s");
                     $reminder->save();
@@ -1863,9 +1866,24 @@ class HomeworkController extends Controller
         $user_secret = Yii::app()->request->getPost('user_secret'); 
         if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isStudent && $id )
         {
+            $assignment = new Assignments();
+            $assignment_data = $assignment->findByPk($id);
+            $employeeObj = new Employees();
+            $employee_data = $assignment->findByPk($assignment_data->employee_id);
+            $free_user = new Freeusers();
+            $user = new Users();
+            $userdata = $user->findByPk($employee_data->user_id);
+            $response['data']['employee_name'] = trim(str_replace("  "," ", $employee_data->first_name." ".$employee_data->middle_name." ".$employee_data->last_name));
             $student_id = Yii::app()->user->profileId;
             $assignmentCommentsObj = new AssignmentComments();
             $comments = $assignmentCommentsObj->getComments($id,$student_id);
+            $response['data']['employee_image'] = "";
+            $free_user_id = $free_user->getFreeuserPaid($userdata->id,$userdata->school_id);
+            if($free_user_id)
+            {
+                $response['data']['employee_image'] = Settings::getProfileImage($free_user_id);
+            }
+            
             $response['data']['comments'] = $comments;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Data Found";

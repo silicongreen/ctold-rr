@@ -1777,6 +1777,8 @@ class HomeworkController extends Controller
         $student_id = Yii::app()->request->getPost('student_id');  
         if(Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $id && $student_id)
         {
+            $robject = new Reminders();
+            $robject->ReadReminderNew(Yii::app()->user->id, 0, 602, $id);
             $assignmentCommentsObj = new AssignmentComments();
             $comments = $assignmentCommentsObj->getComments($id,$student_id);
             $response['data']['comments'] = $comments;
@@ -1866,6 +1868,8 @@ class HomeworkController extends Controller
         $user_secret = Yii::app()->request->getPost('user_secret'); 
         if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isStudent && $id )
         {
+            $robject = new Reminders();
+            $robject->ReadReminderNew(Yii::app()->user->id, 0, 601, $id);
             $assignment = new Assignments();
             $assignment_data = $assignment->findByPk($id);
             $employeeObj = new Employees();

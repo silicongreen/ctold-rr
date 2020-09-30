@@ -32,11 +32,32 @@ class OnlineStudentExamController < ApplicationController
   end
   
   def exam_result_details
+    server_time = Time.now
+    server_time_to_gmt = server_time.getgm
+    local_tzone_time = server_time
+    time_zone = Configuration.find_by_config_key("TimeZone")
+    unless time_zone.nil?
+      unless time_zone.config_value.nil?
+        zone = TimeZone.find(time_zone.config_value)
+        if zone.difference_type=="+"
+          local_tzone_time = server_time_to_gmt + zone.time_difference
+        else
+          local_tzone_time = server_time_to_gmt - zone.time_difference
+        end
+      end
+    end
+
+    time_now = local_tzone_time.strftime("%H:%M:%S")
     @exam_attendance = OnlineExamAttendance.find_by_online_exam_group_id_and_student_id(params[:id],@current_user.student_record.id)
-    @exam_group = OnlineExamGroup.find(@exam_attendance.online_exam_group_id,:include => [:subject])
-    @exam_result = OnlineExamScoreDetail.find_all_by_online_exam_attendance_id(@exam_attendance.id)
-    @attendance = @exam_group.has_attendence
-    @exam_questions = @exam_group.online_exam_questions.all(:include=>[:online_exam_options])
+    @exam_group = OnlineExamGroup.find_by_id(@exam_attendance.online_exam_group_id,:conditions=>"end_date < '#{local_tzone_time.to_date}'" ,:include => [:subject])
+    unless @exam_group.blank?
+      @exam_result = OnlineExamScoreDetail.find_all_by_online_exam_attendance_id(@exam_attendance.id)
+      @attendance = @exam_group.has_attendence
+      @exam_questions = @exam_group.online_exam_questions.all(:include=>[:online_exam_options])
+    else
+      flash[:notice]="Sorry Exam Day must be over before you can see the exam details"
+      redirect_to :controller => 'user', :action => 'dashboard'
+    end
   end
 
   def start_exam

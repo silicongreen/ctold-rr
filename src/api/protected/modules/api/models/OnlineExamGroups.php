@@ -476,6 +476,7 @@ class OnlineExamGroups extends CActiveRecord {
 
                     $exam_array[$i]['id'] = $value->id;
                     $exam_array[$i]['timeover'] = 0;
+                    $exam_array[$i]['show_details'] = 0;
                     $exam_array[$i]['not_started'] = 0;
                     if (
                             $cur_date > date("Y-m-d", strtotime($value->end_date))
@@ -483,6 +484,11 @@ class OnlineExamGroups extends CActiveRecord {
                     ) {
                         $exam_array[$i]['timeover'] = 1;
                     }
+                    if($cur_date > date("Y-m-d", strtotime($value->end_date)))
+                    {
+                        $exam_array[$i]['show_details'] = 1;
+                    }
+                    
                     if ($cur_date < date("Y-m-d", strtotime($value->start_date))
                             or ( $cur_date == date("Y-m-d", strtotime($value->start_date)) and $cur_time < $value->start_time )
                     ) {

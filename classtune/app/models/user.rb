@@ -361,8 +361,8 @@ class User < ActiveRecord::Base
   
   def all_new_reminders_user
     if self.student?
-      student_id = self.student_record.id
-      new_reminder = Reminder.find_all_by_recipient(self.id, :conditions=>"is_read = false and is_deleted_by_recipient = false and (student_id = '#{student_id}' or student_id is null or student_id = 0)",:limit=>10,:order=>"created_at DESC") 
+      batch_id = self.student_record.batch_id
+      new_reminder = Reminder.find_all_by_recipient(self.id, :conditions=>"is_read = false and is_deleted_by_recipient = false and (batch_id = '#{batch_id}' or batch_id is null or batch_id = 0)",:limit=>10,:order=>"created_at DESC") 
     else
       new_reminder = Reminder.find_all_by_recipient(self.id, :conditions=>"is_read = false and is_deleted_by_recipient = false",:limit=>10,:order=>"created_at DESC")
     end  
@@ -398,8 +398,8 @@ class User < ActiveRecord::Base
 
   def reminder_count
     if self.student?
-      student_id = self.student_record.id
-      reminders = Reminder.count(:all,:group =>  'rtype' , :conditions => ["recipient = '#{self.id}' and is_read= 0  and (student_id = '#{student_id}' or student_id is null or student_id = 0)"])
+      batch_id = self.student_record.batch_id      
+      reminders = Reminder.count(:all,:group =>  'rtype' , :conditions => ["recipient = '#{self.id}' and is_read= 0 and (batch_id = '#{batch_id}' or batch_id is null or batch_id = 0)"])
     else
       reminders = Reminder.count(:all,:group =>  'rtype' , :conditions => ["recipient = '#{self.id}' and is_read= 0"])
     end  
@@ -407,8 +407,8 @@ class User < ActiveRecord::Base
   end
   def check_reminders
     if self.student?
-      student_id = self.student_record.id
-      count = Reminder.count(:all , :conditions => ["recipient = '#{self.id}' and is_read= 0 and (student_id = '#{student_id}' or student_id is null or student_id = 0)"])
+      batch_id = self.student_record.batch_id
+      count = Reminder.count(:all , :conditions => ["recipient = '#{self.id}' and is_read= 0 and (batch_id = '#{batch_id}' or batch_id is null or batch_id = 0)"])
     else
       count = Reminder.count(:all , :conditions => ["recipient = '#{self.id}' and is_read= 0"])
     end

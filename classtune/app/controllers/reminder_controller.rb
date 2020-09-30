@@ -24,10 +24,10 @@ class ReminderController < ApplicationController
   def index
     @user = current_user
     if current_user.student?
-      student_id = current_user.student_record.id
-      @reminders = Reminder.paginate(:page => params[:page], :conditions=>["recipient = '#{@user.id}' and is_deleted_by_recipient = false and (student_id = '#{student_id}' or student_id is null or student_id = 0)"], :order=>"is_read ASC, created_at DESC",:include=>:user)
-      @read_reminders = Reminder.find_all_by_recipient(@user.id, :conditions=>"is_read = true and is_deleted_by_recipient = false and (student_id = '#{student_id}' or student_id is null or student_id = 0)", :order=>"created_at DESC")
-      @new_reminder_count = Reminder.find_all_by_recipient(@user.id, :conditions=>"is_read = false and is_deleted_by_recipient = false and (student_id = '#{student_id}' or student_id is null or student_id = 0)")
+      batch_id = current_user.student_record.batch_id
+      @reminders = Reminder.paginate(:page => params[:page], :conditions=>["recipient = '#{@user.id}' and is_deleted_by_recipient = false and (batch_id = '#{batch_id}' or batch_id is null or batch_id = 0)"], :order=>"is_read ASC, created_at DESC",:include=>:user)
+      @read_reminders = Reminder.find_all_by_recipient(@user.id, :conditions=>"is_read = true and is_deleted_by_recipient = false and (batch_id = '#{batch_id}' or batch_id is null or batch_id = 0)", :order=>"created_at DESC")
+      @new_reminder_count = Reminder.find_all_by_recipient(@user.id, :conditions=>"is_read = false and is_deleted_by_recipient = false and (batch_id = '#{batch_id}' or batch_id is null or batch_id = 0)")
     else
       @reminders = Reminder.paginate(:page => params[:page], :conditions=>["recipient = '#{@user.id}' and is_deleted_by_recipient = false"], :order=>"is_read ASC, created_at DESC",:include=>:user)
       @read_reminders = Reminder.find_all_by_recipient(@user.id, :conditions=>"is_read = true and is_deleted_by_recipient = false", :order=>"created_at DESC")

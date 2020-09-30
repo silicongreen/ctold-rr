@@ -48,7 +48,11 @@ class OnlineStudentExamController < ApplicationController
     end
 
     time_now = local_tzone_time.strftime("%H:%M:%S")
-    @exam_attendance = OnlineExamAttendance.find_by_online_exam_group_id_and_student_id(params[:id],@current_user.student_record.id)
+    target = @current_user.student_record.id
+    if current_user.parent
+      target = current_user.guardian_entry.current_ward_id     
+    end
+    @exam_attendance = OnlineExamAttendance.find_by_online_exam_group_id_and_student_id(params[:id],target)
     @exam_group = OnlineExamGroup.find_by_id(params[:id],:conditions=>"end_date < '#{local_tzone_time.to_date}'" ,:include => [:subject])
     unless @exam_group.blank?
       @exam_result = OnlineExamScoreDetail.find_all_by_online_exam_attendance_id(@exam_attendance.id)

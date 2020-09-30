@@ -4330,7 +4330,7 @@ class StudentController < ApplicationController
     end
     #@batch = @student.batch
     #abort params[:batch_id].inspect
-    @batch = Batch.find_by_id(params[:batch_id])
+    @batch = Batch.find_by_id(@student.batch_id)
     @exam_groups = @batch.exam_groups
     @exam_groups.reject!{|e| e.result_published==false or e.exam_category!=3}
     

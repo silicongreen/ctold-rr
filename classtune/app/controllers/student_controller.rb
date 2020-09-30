@@ -4011,7 +4011,7 @@ class StudentController < ApplicationController
   end
   
   def edit_guardian_own
-    @parent = Guardian.find(current_user.guardian_entry.id)
+    @parent = Guardian.find(params[:id])
     
     @countries = Country.all
     params[:parent_detail].delete "ward_id" if  params[:parent_detail]

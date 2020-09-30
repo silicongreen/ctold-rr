@@ -161,7 +161,7 @@
             <% @config = Configuration.find_by_config_key('ParentCanEdit') %>
             <% if !@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1 %>
               <%= link_to "► #{t('edit_text')}",
-                { :controller => 'student', :action => 'edit_guardian_own'}, :class=>"user_button" %>
+                { :controller => 'student', :action => 'edit_guardian_own', :id => p.id}, :class=>"user_button" %>
             <% end %>
           <% end %>  
           <% if permitted_to? :edit_guardian,:student %>

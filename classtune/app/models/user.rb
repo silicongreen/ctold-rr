@@ -360,7 +360,12 @@ class User < ActiveRecord::Base
   end
   
   def all_new_reminders_user
-    new_reminder = Reminder.find_all_by_recipient(self.id, :conditions=>"is_read = false and is_deleted_by_recipient = false",:limit=>10,:order=>"created_at DESC")
+    if current_user.student?
+      student_id = current_user.student_record.id
+      new_reminder = Reminder.find_all_by_recipient(self.id, :conditions=>"is_read = false and is_deleted_by_recipient = false and (student_id = '#{student_id}' or student_id is null or student_id = 0)",:limit=>10,:order=>"created_at DESC") 
+    else
+      new_reminder = Reminder.find_all_by_recipient(self.id, :conditions=>"is_read = false and is_deleted_by_recipient = false",:limit=>10,:order=>"created_at DESC")
+    end  
     return new_reminder
   end
   
@@ -392,11 +397,21 @@ class User < ActiveRecord::Base
 
 
   def reminder_count
-    reminders = Reminder.count(:all,:group =>  'rtype' , :conditions => ["recipient = '#{self.id}' and is_read= 0"])
+    if current_user.student?
+      student_id = current_user.student_record.id
+      reminders = Reminder.count(:all,:group =>  'rtype' , :conditions => ["recipient = '#{self.id}' and is_read= 0  and (student_id = '#{student_id}' or student_id is null or student_id = 0)"])
+    else
+      reminders = Reminder.count(:all,:group =>  'rtype' , :conditions => ["recipient = '#{self.id}' and is_read= 0"])
+    end  
     return reminders
   end
   def check_reminders
-    count = Reminder.count(:all , :conditions => ["recipient = '#{self.id}' and is_read= 0"])
+    if current_user.student?
+      student_id = current_user.student_record.id
+      count = Reminder.count(:all , :conditions => ["recipient = '#{self.id}' and is_read= 0 and (student_id = '#{student_id}' or student_id is null or student_id = 0)"])
+    else
+      count = Reminder.count(:all , :conditions => ["recipient = '#{self.id}' and is_read= 0"])
+    end
     return count
   end
 

@@ -20,6 +20,8 @@
                 :before => "Element.show('loader');",
                 :success => "Element.hide('loader');",
                 :url => {:controller=>"dashboards", :action => "quiz_result_data_student", :id => h['id']} %>
+              &nbsp;&nbsp;
+              <a href="/online_exam/exam_result_details/<%= h['id'] %>"><div class="box-text-time-out">Details</div></a>
             <% elsif h['timeover']==1 %>
               <div class="box-text-time-out">Time Over</div>
             <% elsif h['not_started']==0 %>

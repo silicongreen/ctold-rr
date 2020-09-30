@@ -87,7 +87,8 @@ authorization do
       :save_scores,
       :save_history,
       :started_exam,
-      :exam_list
+      :exam_list,
+      :exam_result_details
     ]
   end
   
@@ -100,7 +101,8 @@ authorization do
       :save_scores,
       :save_history,
       :started_exam,
-      :exam_list
+      :exam_list,
+      :exam_result_details
     ]
   end
 

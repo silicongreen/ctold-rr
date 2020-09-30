@@ -30,6 +30,14 @@ class OnlineStudentExamController < ApplicationController
       end
     end
   end
+  
+  def exam_result_details
+    @exam_attendance = OnlineExamAttendance.find_by_id_and_student_id(params[:id],@current_user.student_record.id)
+    @exam_group = OnlineExamGroup.find(@exam_attendance.online_exam_group_id,:include => [:subject])
+    @exam_result = OnlineExamScoreDetail.find_all_by_online_exam_attendance_id(@exam_attendance.id)
+    @attendance = @exam_group.has_attendence
+    @exam_questions = @exam_group.online_exam_questions.all(:include=>[:online_exam_options])
+  end
 
   def start_exam
     @student = Student.find_by_user_id(current_user.id,:select=>"id,batch_id")

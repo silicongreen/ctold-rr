@@ -1,6 +1,6 @@
 
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-              <table id="pdf-table" width="100%" cellspacing="0">
+             <table id="pdf-table" width="100%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
                   <tr class="table-header">
@@ -12,7 +12,9 @@
                           </td> 
                         <% end %>
                       <% end %>
-
+                      <% if @subject_att.include?(@batch.course.course_name) %>
+                        <td class="col-pdf">Class Attendance</td>
+                      <% end %>
                       <td class="col-pdf">Total Marks (<%= total_mark_of_allexam %>)</td>
                       <td class="col-pdf">Grade</td>
                       <td class="col-pdf">Highest Marks</td>
@@ -26,8 +28,8 @@
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% subjectdata = Subject.find(subjects['id'].to_i) %>
-                      <% check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(@student.id,subjects['id'].to_i) %>
-                      <% if check_std_subject.blank? and !subjectdata.elective_group_id.blank? %>
+                      <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                      <% if @has_exam_student == false %>
                          
                       <% else %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -38,9 +40,7 @@
                           <% grade_i = false %>
                           <% grade_w = false %>
 
-                          <td class="col-pdf"><% unless @current_user.student? or @current_user.parent? %>
-                  <%= link_to "#{subjects['name']}",
-        {:action => "marksheet", :subject_id => subjects['id'],:id=>@connect_exam_obj.id},:target => '_blank' %><% else %><%= subjects['name'] %><% end %></td>
+                          <td class="col-pdf  td-align-left"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
                               <td class="col-pdf">
@@ -92,6 +92,50 @@
                             main_mark = 0
                             end  
                         %>
+                         <% if @subject_att.include?(@batch.course.course_name) %>
+                          <td class="col-pdf">
+                             <% total_att = 0 %>
+                             <% absent_att = 0 %>   
+                                
+                             <% e_subject_id = 0 %>
+                             <% unless @std_subject_elective.blank? %>
+                                <% @std_subject_elective.each do |esub| %>
+                                    <% unless esub.subject.blank? %>
+                                    <% if esub.subject.name.include?(subjects['name']) && esub.subject.id != subjects['id'].to_i %>
+                                        <% e_subject_id = esub.subject.id %>
+                                        <% total_att_temp = SubjectAttendanceRegister.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
+                                        <% absent_att_temp = SubjectAttendance.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:is_late=>0,:student_id=>@student.id,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
+                                        <% total_att = total_att+total_att_temp.to_i %>
+                                        <% absent_att = absent_att+absent_att_temp.to_i %>
+                                    <% end %>
+                                    <% end %>
+                                <% end %>
+                             <% end %> 
+                             <% if e_subject_id != 0 %>
+                               
+
+                                <% att_percentize = 0 %>  
+                                <% if total_att.to_i > 0 %>
+                                    <% total_present = total_att-absent_att  %>
+                                    <% if total_present > 0 %>
+                                      <% att_percentize = ((total_present.to_f)/total_att.to_f)*100  %>
+
+                                    <% end %>
+                                    
+                                    <% if subjects['name'].upcase != "ECONOMICS" %>
+                                      <%= sprintf( "%0.02f", att_percentize) %> %
+                                    <% else %>
+                                    <%= "-" %>
+                                    <% end %>
+                                <% else %> 
+                                    <%= "-" %>
+                                <% end %> 
+                                
+                             <% end %>   
+                            
+                            
+                            </td> 
+                            <% end %>
 
                           <% if full_mark.to_f > 0 %>
                             <td class="col-pdf"><%= total_mark.to_f %></td>
@@ -118,6 +162,7 @@
                             <td class="col-pdf">-</td>
                             <td class="col-pdf">-</td>
                             <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
                            
                           <% end %>      
 
@@ -126,15 +171,5 @@
                     <% end %>  
                   <% end %>     
 
-              </table>
-              <table id="pdf-table" class="margin-top-20" width="100%" cellspacing="0">
-                <tr class="even">
-                  <td class="no-warp" colspan="3"><b>Number of Students</b></td>
-                  <td class="no-warp" colspan="1"><b><%= @batch.students.count %></b></td>
-                  <td class="no-warp" colspan="3"><b>Number of Working Days</b></td>
-                  <td class="no-warp" colspan="1"><b><%=  @report_data['total'].to_i %></b></td>
-                  <td class="no-warp" colspan="3"><b>Number of Days Present</b></td>
-                  <td class="no-warp" colspan="1"><b><%=  @report_data['present'].to_i %></b></td>
-                </tr>
-              </table>             
+              </table>           
 <% end %>

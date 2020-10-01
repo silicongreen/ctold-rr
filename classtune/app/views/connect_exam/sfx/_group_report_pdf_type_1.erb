@@ -1,6 +1,7 @@
 
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-  <div id="page-yield"  class="available_sections1 sfx">
+ 
+<div id="page-yield"  class="available_sections1 sfx">
       
       <h4 align="center">&nbsp;</h4>
       
@@ -41,7 +42,9 @@
                           </td> 
                         <% end %>
                       <% end %>
-
+                      <% if @subject_att.include?(@batch.course.course_name) %>
+                        <td class="col-pdf">Class Attendance</td>
+                      <% end %>
                       <td class="col-pdf">Total Marks (<%= total_mark_of_allexam %>)</td>
                       <td class="col-pdf">Grade</td>
                       <td class="col-pdf">Highest Marks</td>
@@ -119,6 +122,50 @@
                             main_mark = 0
                             end  
                         %>
+                         <% if @subject_att.include?(@batch.course.course_name) %>
+                          <td class="col-pdf">
+                             <% total_att = 0 %>
+                             <% absent_att = 0 %>   
+                                
+                             <% e_subject_id = 0 %>
+                             <% unless @std_subject_elective.blank? %>
+                                <% @std_subject_elective.each do |esub| %>
+                                    <% unless esub.subject.blank? %>
+                                    <% if esub.subject.name.include?(subjects['name']) && esub.subject.id != subjects['id'].to_i %>
+                                        <% e_subject_id = esub.subject.id %>
+                                        <% total_att_temp = SubjectAttendanceRegister.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
+                                        <% absent_att_temp = SubjectAttendance.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:is_late=>0,:student_id=>@student.id,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
+                                        <% total_att = total_att+total_att_temp.to_i %>
+                                        <% absent_att = absent_att+absent_att_temp.to_i %>
+                                    <% end %>
+                                    <% end %>
+                                <% end %>
+                             <% end %> 
+                             <% if e_subject_id != 0 %>
+                               
+
+                                <% att_percentize = 0 %>  
+                                <% if total_att.to_i > 0 %>
+                                    <% total_present = total_att-absent_att  %>
+                                    <% if total_present > 0 %>
+                                      <% att_percentize = ((total_present.to_f)/total_att.to_f)*100  %>
+
+                                    <% end %>
+                                    
+                                    <% if subjects['name'].upcase != "ECONOMICS" %>
+                                      <%= sprintf( "%0.02f", att_percentize) %> %
+                                    <% else %>
+                                    <%= "-" %>
+                                    <% end %>
+                                <% else %> 
+                                    <%= "-" %>
+                                <% end %> 
+                                
+                             <% end %>   
+                            
+                            
+                            </td> 
+                            <% end %>
 
                           <% if full_mark.to_f > 0 %>
                             <td class="col-pdf"><%= total_mark.to_f %></td>

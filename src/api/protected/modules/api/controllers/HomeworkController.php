@@ -1800,7 +1800,7 @@ class HomeworkController extends Controller
             $free_user_id = $free_user->getFreeuserPaid($userdata->id,$userdata->school_id);
             if($free_user_id)
             {
-                $response['data']['employee_image'] = Settings::getProfileImage($free_user_id);
+                $response['data']['student_image'] = Settings::getProfileImage($free_user_id);
             }
             
             $assignmentCommentsObj = new AssignmentComments();

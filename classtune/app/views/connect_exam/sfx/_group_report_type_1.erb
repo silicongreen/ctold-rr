@@ -24,7 +24,7 @@
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>
                   <% exam_marks = 0 %>
-                  
+                  <% @std_subject_elective = StudentsSubject.find_all_by_student_id(@student.id)  %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% subjectdata = Subject.find(subjects['id'].to_i) %>
@@ -112,8 +112,6 @@
                                 <% end %>
                              <% end %> 
                              <% if e_subject_id != 0 %>
-                               
-
                                 <% att_percentize = 0 %>  
                                 <% if total_att.to_i > 0 %>
                                     <% total_present = total_att-absent_att  %>
@@ -121,12 +119,7 @@
                                       <% att_percentize = ((total_present.to_f)/total_att.to_f)*100  %>
 
                                     <% end %>
-                                    
-                                    <% if subjects['name'].upcase != "ECONOMICS" %>
-                                      <%= sprintf( "%0.02f", att_percentize) %> %
-                                    <% else %>
-                                    <%= "-" %>
-                                    <% end %>
+                                    <%= sprintf( "%0.02f", att_percentize) %> %
                                 <% else %> 
                                     <%= "-" %>
                                 <% end %> 

@@ -54,7 +54,7 @@
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>
                   <% exam_marks = 0 %>
-                  
+                  <% @std_subject_elective = StudentsSubject.find_all_by_student_id(@student.id)  %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% subjectdata = Subject.find(subjects['id'].to_i) %>

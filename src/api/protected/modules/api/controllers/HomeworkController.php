@@ -1779,6 +1779,30 @@ class HomeworkController extends Controller
         {
             $robject = new Reminders();
             $robject->ReadReminderNew(Yii::app()->user->id, 0, 602, $id);
+            
+            $assignment = new Assignments();
+            $assignment_data = $assignment->findByPk($id);
+            $subject = new Subjects();
+            $subject_data = $subject->findByPk($assignment_data->subject_id);
+            
+            $student = new Students();
+            $student_data = $student->findByPk($student_id);
+            
+            $free_user = new Freeusers();
+            $user = new Users();
+            $userdata = $user->findByPk($student_data->user_id);
+            $response['data']['student_name'] = trim(str_replace("  "," ", $student_data->first_name." ".$student_data->middle_name." ".$student_data->last_name));
+            $response['data']['roll'] = $student_data->class_roll_no;
+            
+            $response['data']['student_image'] = "";
+            $response['data']['assignment_title'] = $assignment_data->title;
+            $response['data']['subject'] = $subject_data->name;
+            $free_user_id = $free_user->getFreeuserPaid($userdata->id,$userdata->school_id);
+            if($free_user_id)
+            {
+                $response['data']['employee_image'] = Settings::getProfileImage($free_user_id);
+            }
+            
             $assignmentCommentsObj = new AssignmentComments();
             $comments = $assignmentCommentsObj->getComments($id,$student_id);
             $response['data']['comments'] = $comments;
@@ -1872,6 +1896,8 @@ class HomeworkController extends Controller
             $robject->ReadReminderNew(Yii::app()->user->id, 0, 601, $id);
             $assignment = new Assignments();
             $assignment_data = $assignment->findByPk($id);
+            $subject = new Subjects();
+            $subject_data = $subject->findByPk($assignment_data->subject_id);
             $employeeObj = new Employees();
             $employee_data = $employeeObj->findByPk($assignment_data->employee_id);
             $free_user = new Freeusers();
@@ -1882,6 +1908,8 @@ class HomeworkController extends Controller
             $assignmentCommentsObj = new AssignmentComments();
             $comments = $assignmentCommentsObj->getComments($id,$student_id);
             $response['data']['employee_image'] = "";
+            $response['data']['assignment_title'] = $assignment_data->title;
+            $response['data']['subject'] = $subject_data->name;
             $free_user_id = $free_user->getFreeuserPaid($userdata->id,$userdata->school_id);
             if($free_user_id)
             {

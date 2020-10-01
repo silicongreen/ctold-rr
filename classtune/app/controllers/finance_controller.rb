@@ -12023,13 +12023,29 @@ class FinanceController < ApplicationController
 #    abort(error.inspect)
     
     if current_user.id == 60257
+      now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+      activity_log = ActivityLog.new
+      activity_log.user_id = current_user.id
+      activity_log.controller = "Ledger Input"
+      activity_log.action = "Ledger Input"
+      activity_log.post_requests = "0"
+      activity_log.ip = request.remote_ip
+      activity_log.user_agent = request.user_agent
+      activity_log.created_at = now
+      activity_log.updated_at = now
+      activity_log.save
+      activity_log_id = activity_log.id
     @students = Student.active
 ##    #@students = Student.find(:all, :conditions => "id = 24170")
 #    #abort(@student.inspect)
     @students.each do |s|
+      adminision_date = '2019-01-01'
+      if s.admission_date.blank?
+        adminision_date = s.admission_date
+      end
       student_fee_ledger = StudentFeeLedger.new
       student_fee_ledger.student_id = s.id
-      student_fee_ledger.ledger_date = s.admission_date
+      student_fee_ledger.ledger_date = adminision_date
       student_fee_ledger.save
     end
 
@@ -12053,6 +12069,9 @@ class FinanceController < ApplicationController
           end
         end
       end
+      activity_log = ActivityLog.find activity_log_id
+      pr = s.id
+      activity_log.update_attributes( :post_requests=> pr.to_s)
     end
     abort('done')
     end

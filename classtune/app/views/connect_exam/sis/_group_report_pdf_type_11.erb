@@ -369,7 +369,7 @@
                     <td class="small-height"><b>Section in charge's Signature</b></td>
                 </tr> 
                 <tr class="even">
-                   <td></td>
+                   <td><% if @covid_main == 1 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/#{@section_in_charge}.png")), :width=>"30%" %><% end %></td>
                 </tr> 
               </table>
               <% if @covid_main == 0 %>

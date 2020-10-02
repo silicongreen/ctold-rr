@@ -1268,7 +1268,6 @@ class AssignmentsController < ApplicationController
   end
   def update
     @assignment = Assignment.find_by_id(params[:id])
-    updated_at = @assignment.updated_at
     unless @assignment.nil?
       student_ids = params[:assignment][:student_ids]
       params[:assignment].delete(:student_ids)

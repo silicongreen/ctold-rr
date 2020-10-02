@@ -553,8 +553,10 @@ class ClassworksController < ApplicationController
       student_ids = params[:classwork][:student_ids]
       params[:classwork].delete(:student_ids)
       @classwork.student_list = student_ids.join(",") unless student_ids.nil?
+      Classwork.record_timestamps=false
       if  @classwork.update_attributes(params[:classwork])
         flash[:notice]="#{t('classwork_details_updated')}"
+        Classwork.record_timestamps=true
         redirect_to @classwork
       else
         load_data

@@ -271,23 +271,36 @@
                 padding_comments = (1100-4-(total_comments_grade.to_i*25))/(total_comments_grade.to_f*2)
                 padding_comments = padding_comments.round
               %>
-              
+              <% if @covid_main == 0 %>
+                <table id="pdf-table" width="48%" class="left-table even-table signature" cellspacing="0">
+                  <tr class="even">
+                      <td class="small-height"><b>Signature of Class Teacher</b></td>
+                  </tr> 
+                  <tr class="even">
+                     <td></td>
+                  </tr> 
+                </table>
+                <table id="pdf-table" width="48%" class="left-table odd-table signature" cellspacing="0">
+                  <tr class="even">
+                      <td class="small-height"><b>Signature of Parent</b></td>
+                  </tr> 
+                  <tr class="even">
+                     <td></td>
+                  </tr> 
+                </table>
+              <% end %>
               <table id="pdf-table" width="48%" class="left-table even-table signature" cellspacing="0">
-                <tr class="even">
-                    <td class="small-height"><b>Signature of Class Teacher</b></td>
-                </tr> 
-                <tr class="even">
-                   <td></td>
-                </tr> 
-              </table>
-              <table id="pdf-table" width="48%" class="left-table odd-table signature" cellspacing="0">
-                <tr class="even">
-                    <td class="small-height"><b>Signature of Parent</b></td>
-                </tr> 
-                <tr class="even">
-                   <td></td>
-                </tr> 
-              </table>
+                  <tr class="even">
+                      <td class="small-height"><b>Section in charge's Signature</b></td>
+                  </tr> 
+                  <tr class="even">
+                      <td>
+                       <% if @covid_main == 1 %>
+                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/#{@section_in_charge}.png")), :width=>"30%" %>
+                       <% end %>
+                      </td>
+                  </tr> 
+                </table>
 
               
 

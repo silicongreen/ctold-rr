@@ -17,8 +17,9 @@
  <% if @batch.full_name.index("Mohammadpur") && ( @batch.course_name == "VI" or @batch.course_name == "VII" or @batch.course_name == "VIII" or @batch.course_name == "IX"  or @batch.course_name == "X"  or @batch.course_name == "A Level" or @batch.course_name == "AS January 2019" or @batch.course_name == "AS July 2019") %>
     <% @section_in_charge = "mercy-sanabam"  %>
  <% end %>
+<% @covid_main = 0 %>
 <% year_month = I18n.l(@connect_exam_obj.published_date,:format=>"%Y-%m") %>
-<% if year_month.to_s == "2020-07" or year_month.to_s == "2020-08" or year_month.to_s == "2020-09" or year_month.to_s == "2020-10" %>
+<% if year_month.to_s == "2020-07" or year_month.to_s == "2020-08" or year_month.to_s == "2020-09" or year_month.to_s == "2020-10" or year_month.to_s == "2020-11" %>
   <% @covid_main = 1 %>
 <% end %>
 

@@ -37,14 +37,13 @@
                   <% if @batch.course.course_name.upcase == "JPG" or @batch.course.course_name.upcase == "JUNIOR PLAYGROUP" %>
                   
                     
-                      <tr class="odd"><td class="col-pdf align-left"><b>NAME : </b><%= @student.full_name %></td><td class="col-pdf align-left" rowspan="3">
+                      <tr class="odd"><td class="col-pdf align-left"><b>NAME : </b><%= @student.full_name %></td><td class="col-pdf align-left" rowspan="2">
                             <b>
                             <%= "A - Excellent" %><br/>
                             <%= "B+ - Very Good" %><br/>
                             <%= "B - Good" %>
                             </b>
-                          </td></tr>
-                      <tr class="odd"><td class="col-pdf align-left"><b>SHIFT : </b><%= @batch.name %></td></tr>
+                      </td></tr>
                       <tr class="odd"><td class="col-pdf align-left"><b>DATE : </b><%= I18n.l(@connect_exam_obj.published_date,:format=>"%d %B %Y") %></td></tr>
                      
                     <% else %>  
@@ -53,10 +52,8 @@
                           <table class="std_info_table" width="100%" cellspacing="0">
                             <tr>
                                 <td>NAME </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @student.full_name %></td>
-                                <td>SHIFT </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @batch.name %></td>
                             </tr>
                             <tr>
-                                <td>DATE OF BIRTH </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>"%d %B %Y") unless @student.date_of_birth.nil? %></td>
                                 <td>DATE </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= I18n.l(@connect_exam_obj.published_date,:format=>"%d %B %Y") %></td>
                             </tr>
                           </table>
@@ -157,7 +154,7 @@
 
               </table>
               <table id="pdf-table" width="99.8%" cellspacing="0">
-                  <% if covid.blank? %>
+                  <% if @covid_main == 0 %>
                     <tr class="even">
                           
                           <td class="col-pdf no-warp align-left" width="50%"><b>Class Teacher</b></td>

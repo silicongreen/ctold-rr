@@ -257,7 +257,7 @@
               
                 </table>
                 <table id="pdf-table" width="72%" class="left-table odd-table signature_table" cellspacing="0">
-                    <% if covid.blank? %>
+                    <% if @covid_main == 0 %>
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td class="col-pdf no-warp align-left"><b>Class Teacher</b></td>
                       <td class="col-pdf no-warp align-left width-60"><br/></td>
@@ -265,11 +265,11 @@
                      <% end %>
                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td class="col-pdf no-warp align-left"><b>Section-in-charge</b></td>
-                      <td class="col-pdf no-warp align-left width-60"><% if !covid.blank? %>
+                      <td class="col-pdf no-warp align-left width-60"><% if @covid_main == 1 %>
                           <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/#{@section_in_charge}.png")), :width=>"30%" %>
                       <% end %></td>
                      </tr>
-                     <% if covid.blank? %>
+                     <% if @covid_main == 0 %>
                       <% if @batch.course.course_name.upcase == "NURSERY" %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                        <td class="col-pdf no-warp align-left"><b>Principal</b></td>
@@ -277,11 +277,12 @@
                       </tr>
                       <% end %>
                      <% end %>
-                    
+                    <% if @covid_main == 0 %>
                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td class="col-pdf no-warp align-left"><b>Parent's Signature</b></td>
                       <td class="col-pdf no-warp align-left width-60"><br/></td>
                      </tr>
+                    <% end %> 
                      <% if @connect_exam_obj.quarter_number == 5 %>
                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td class="col-pdf no-warp align-left"><b>Next term begins on </b></td>

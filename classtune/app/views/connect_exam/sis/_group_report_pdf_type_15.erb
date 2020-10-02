@@ -192,14 +192,26 @@
               
               <table id="pdf-table" width="100%" class="left-table even-table signature" cellspacing="0">
                 <tr class="even">
+                    <% if @covid_main == 0 %>
                     <td class="small-height"><b>Signature of Class Teacher</b></td>
+                    <% end %>
                     <td class="small-height"><b>Signature of In-Charge</b></td>
+                    <% if @covid_main == 0 %>
                     <td class="small-height"><b>Signature of Parent(s)</b></td>
+                    <% end %>
                 </tr> 
                 <tr class="even">
+                   <% if @covid_main == 0 %>
                    <td></td>
+                   <% end %>
+                   <td>
+                   <% if @covid_main == 1 %>
+                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/#{@section_in_charge}.png")), :width=>"30%" %>
+                   <% end %>   
+                   </td>
+                   <% if @covid_main == 0 %>
                    <td></td>
-                   <td></td>
+                   <% end %>
                 </tr> 
               </table>
 

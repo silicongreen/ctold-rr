@@ -12035,23 +12035,23 @@ class FinanceController < ApplicationController
       activity_log.updated_at = now
       activity_log.save
       activity_log_id = activity_log.id
-    @students = Student.active
-##    #@students = Student.find(:all, :conditions => "id = 24170")
-#    #abort(@student.inspect)
-    @students.each do |s|
-      adminision_date = '2019-01-01'
-      if s.admission_date.blank?
-        adminision_date = s.admission_date
-      end
-      student_fee_ledger = StudentFeeLedger.new
-      student_fee_ledger.student_id = s.id
-      student_fee_ledger.ledger_date = adminision_date
-      student_fee_ledger.save
-    end
+#    @students = Student.active
+###    #@students = Student.find(:all, :conditions => "id = 24170")
+##    #abort(@student.inspect)
+#    @students.each do |s|
+#      adminision_date = '2019-01-01'
+#      if s.admission_date.blank?
+#        adminision_date = s.admission_date
+#      end
+#      student_fee_ledger = StudentFeeLedger.new
+#      student_fee_ledger.student_id = s.id
+#      student_fee_ledger.ledger_date = adminision_date
+#      student_fee_ledger.save
+#    end
 
    
-    @students = Student.active
-#    #@students = Student.find(:all, :conditions => "id = 24170")
+    #@students = Student.active
+    @students = Student.find(:all, :conditions => "id > 26228")
     @students.each do |s|
       finance_fees = FinanceFee.find(:all, :conditions => "student_id = #{s.id}")
       unless finance_fees.nil?

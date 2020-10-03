@@ -12099,7 +12099,7 @@ class FinanceController < ApplicationController
             student_fee_ledger.is_fine = 1
             student_fee_ledger.save
             activity_log = ActivityLog.find activity_log_id
-            pr = s.id.to_s + "-" + student_fee_ledger.id
+            pr = s.id.to_s + "-" + student_fee_ledger.id.to_s
             activity_log.update_attributes( :post_requests=> pr.to_s)
           end
           
@@ -12119,7 +12119,7 @@ class FinanceController < ApplicationController
               student_fee_ledger.order_id = order_ids.join(",")
               student_fee_ledger.save
               activity_log = ActivityLog.find activity_log_id
-              pr = s.id.to_s + "-" + student_fee_ledger.id
+              pr = s.id.to_s + "-" + student_fee_ledger.id.to_s
               activity_log.update_attributes( :post_requests=> pr.to_s)
             end
           end

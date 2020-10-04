@@ -1247,7 +1247,7 @@ class FinanceController < ApplicationController
     ind = 1
     total_amount = 0.00
     @student_ids.each_with_index do |student, i|
-      pt = @particular_wise_transactions.select{|pwt| pwt.student_id == student }.first
+      pt = @particular_wise_transactions.select{|pwt| pwt.payee_id == student }.first
       transaction_id = pt.id
       std_id = pt.payee_id
       student = Student.find(:first, :conditions => "id = #{std_id}")

@@ -1191,7 +1191,7 @@ class FinanceController < ApplicationController
         end
         
         #payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
-        @particular_wise_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, finance_transactions.amount as amount, #{payment_table}.order_id", :order => payment_table + '.payee_id ASC', :conditions => ["#{payment_table}.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and #{payment_table}.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'" + extra_params], :joins => "INNER JOIN #{payment_table} ON finance_transactions.id = #{payment_table}.finance_transaction_id " + extra_joins, :group => "#{payment_table}.order_id")
+        @particular_wise_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, finance_transactions.amount as amount, #{payment_table}.order_id", :order => payment_table + '.payee_id ASC', :conditions => ["#{payment_table}.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and #{payment_table}.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'" + extra_params], :joins => "INNER JOIN #{payment_table} ON finance_transactions.id = #{payment_table}.finance_transaction_id " + extra_joins, :group => "#{payment_table}.payee_id")
         @order_ids = @particular_wise_transactions.map(&:order_id).uniq
 
       end
@@ -1393,7 +1393,7 @@ class FinanceController < ApplicationController
         end
         
         #payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
-        @particular_wise_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, finance_transactions.amount as amount, #{payment_table}.order_id", :order => payment_table + '.payee_id ASC', :conditions => ["#{payment_table}.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and #{payment_table}.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'" + extra_params], :joins => "INNER JOIN #{payment_table} ON finance_transactions.id = #{payment_table}.finance_transaction_id " + extra_joins, :group => "#{payment_table}.order_id")
+        @particular_wise_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, finance_transactions.amount as amount, #{payment_table}.order_id", :order => payment_table + '.payee_id ASC', :conditions => ["#{payment_table}.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and #{payment_table}.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'" + extra_params], :joins => "INNER JOIN #{payment_table} ON finance_transactions.id = #{payment_table}.finance_transaction_id " + extra_joins, :group => "#{payment_table}.payee_id")
         @order_ids = @particular_wise_transactions.map(&:order_id).uniq
         
       end

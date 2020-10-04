@@ -759,6 +759,8 @@ class FinanceController < ApplicationController
               extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'bkash'"
             elsif params[:filter_by_payment_type].to_i == 5
               extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'citybank'"
+	    elsif params[:filter_by_payment_type].to_i == 6
+              extra_params += " and finance_transactions.payment_mode = 'Admission Payment'"
             end
             #extra_params += " and payments.gateway_response like '%:payment_type: " + filter_by_payment_type + "%'"
             #extra_params += " and payments.gateway_response like '%" + params[:filter_by_payment_type].to_s + "%'"
@@ -891,6 +893,8 @@ class FinanceController < ApplicationController
               extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'bkash'"
             elsif params[:filter_by_payment_type].to_i == 5
               extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'citybank'"
+	    elsif params[:filter_by_payment_type].to_i == 6
+              extra_params += " and finance_transactions.payment_mode = 'Admission Payment'"
             end
             #extra_params += " and payments.gateway_response like '%:payment_type: " + filter_by_payment_type + "%'"
             #extra_params += " and payments.gateway_response like '%" + params[:filter_by_payment_type].to_s + "%'"
@@ -1178,6 +1182,8 @@ class FinanceController < ApplicationController
               extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'bkash'"
             elsif params[:filter_by_payment_type].to_i == 5
               extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'citybank'"
+	    elsif params[:filter_by_payment_type].to_i == 6
+              extra_params += " and finance_transactions.payment_mode = 'Admission Payment'"
             end
             #extra_params += " and payments.gateway_response like '%:payment_type: " + filter_by_payment_type + "%'"
             #extra_params += " and payments.gateway_response like '%" + params[:filter_by_payment_type].to_s + "%'"
@@ -1378,6 +1384,8 @@ class FinanceController < ApplicationController
               extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'bkash'"
             elsif params[:filter_by_payment_type].to_i == 5
               extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'citybank'"
+	    elsif params[:filter_by_payment_type].to_i == 6
+              extra_params += " and finance_transactions.payment_mode = 'Admission Payment'"
             end
             #extra_params += " and payments.gateway_response like '%:payment_type: " + filter_by_payment_type + "%'"
             #extra_params += " and payments.gateway_response like '%" + params[:filter_by_payment_type].to_s + "%'"
@@ -1821,6 +1829,8 @@ class FinanceController < ApplicationController
               extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'bkash'"
             elsif params[:filter_by_payment_type].to_i == 5
               extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'citybank'"
+	    elsif params[:filter_by_payment_type].to_i == 6
+              extra_params += " and finance_transactions.payment_mode = 'Admission Payment'"
             end
             #extra_params += " and payments.gateway_response like '%:payment_type: " + filter_by_payment_type + "%'"
             #extra_params += " and payments.gateway_response like '%" + params[:filter_by_payment_type].to_s + "%'"
@@ -3060,6 +3070,8 @@ class FinanceController < ApplicationController
               extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'bkash'"
             elsif params[:filter_by_payment_type].to_i == 5
               extra_params += " and LOWER(#{payment_table}.gateway_txt) = 'citybank'"
+	    elsif params[:filter_by_payment_type].to_i == 6
+              extra_params += " and finance_transactions.payment_mode = 'Admission Payment'"
             end
             #extra_params += " and payments.gateway_response like '%:payment_type: " + filter_by_payment_type + "%'"
             #extra_params += " and payments.gateway_response like '%" + params[:filter_by_payment_type].to_s + "%'"

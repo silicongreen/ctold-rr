@@ -1261,11 +1261,11 @@ class FinanceController < ApplicationController
       #if 
       amount = pt.amount
       if payment.gateway_txt == "bkash" or payment.gateway_txt == "citybank"
-	if payment.order_id != ''
-           amount = 0
-	else
+	#if payment.order_id != ''
+        #   amount = 0
+	#else
 	   amount = pt.amount
-	end
+	#end
         payments = Payment.find(:all, :conditions => "payee_id = '#{student}'")
         unless payments.blank?
           payments.each do |p|

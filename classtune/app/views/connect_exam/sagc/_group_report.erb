@@ -8,7 +8,7 @@
     end
     end
 %>
-  <%= render  :partial=>"/connect_exam/sagc/finding_data_5" %>
+  
   <%= stylesheet_link_tag 'list_table' %>
   <style>
       td.extra_height
@@ -178,7 +178,11 @@
     end
     end
 %>
-  <%= render  :partial=>"/connect_exam/sagc/finding_data_5" %>
+  <% if @connect_exam_obj.result_type.to_i == 13 %>
+    <%= render  :partial=>"/connect_exam/sagc/finding_data_6" %>
+  <% else %>
+    <%= render  :partial=>"/connect_exam/sagc/finding_data_5" %>
+  <% end %>
   <%= stylesheet_link_tag 'list_table' %>
   <style>
       div.baf_shaheen

@@ -1195,10 +1195,21 @@
                     %>        
                     <% unless no_charge_apply.include?(MultiSchool.current_school.id) %>
 			<% charge = "1.5% " %>
+			<% sttr = "*" %>
+			<% width = "100%" %>
+			<% text_align = "right" %>
+			<% extra = "" %>
 			<% if MultiSchool.current_school.id == 352 %>
-			<% charge = "" %>
+				<% charge = "" %>
 			<% end %>
-                      <p style="text-align: right; display: block; padding-top: 80px;">*<%= charge %>convenience fee applicable.</p>
+			<% if MultiSchool.current_school.id == 361 %>
+                                <% charge = "1. " %>
+				<% sttr = "" %>
+				<% width = "30%; line-height: 30px" %>
+				<% text_align = "left" %>
+				<% extra = "2. Bkash - 1.5% of transaction value <br />3. T-Cash = TK 10/00 (Fixed) Only <br />4. TBL Card = TK 10/00 (Fixed) Only <br /> <b>For TBL Card and T-Cash please click T-Cash logo</b>"%>
+                        <% end %>
+                        <span style="float: right; display: block; padding-top: 8px; width: <%= width %>; text-align: <%= text_align %>; color: #000;"><%= sttr %><%= charge%>convenience fee applicable.<br /><%= extra%></span>
                     <% end %>  
                     <% if @gateway_settings.length == 1 and @gateway_settings.keys.include?('citybank') %>  
                       <%= image_tag "/images/card.png", :class => "", :id => "", :style => "float: right;" %>  

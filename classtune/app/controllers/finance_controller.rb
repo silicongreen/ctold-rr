@@ -1256,10 +1256,11 @@ class FinanceController < ApplicationController
       end
       
       payment = Payment.find_by_finance_transaction_id(transaction_id)
+      order = payment.order_id
       amount = payment.gateway_response[:amount]
       if payment.gateway_txt == "bkash" or payment.gateway_txt == "citybank"
         amount = 0
-        payments = Payment.find(:all, :conditions => "order_id = '#{order}'")
+        payments = Payment.find(:all, :conditions => "payee_id = '#{student}'")
         unless payments.blank?
           payments.each do |p|
             finance_transaction = FinanceTransaction.find(p.finance_transaction_id)

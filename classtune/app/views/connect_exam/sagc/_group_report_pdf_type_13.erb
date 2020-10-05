@@ -61,6 +61,9 @@
                       <td class="col-pdf">
                           <b>Full Marks</b>
                       </td>
+                      <td class="col-pdf">
+                          <b>Marks Obtain</b>
+                      </td>
                       <td class="col-pdf"><b>Letter Grade</b></td>
                       
                   </tr>
@@ -106,6 +109,7 @@
 
                           <% if full_mark.to_f > 0 %>
                             <td class="col-pdf"><%= full_mark.to_i %></td>
+                            <td class="col-pdf"><%= total_mark.to_i %></td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <% if grade.credit_points.to_i == 0 %>

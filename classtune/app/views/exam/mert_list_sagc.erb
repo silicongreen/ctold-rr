@@ -154,7 +154,7 @@ end
                         <td class="col-pdf no-warp"><%= std_result['sid'].to_s %></td> 
                         <td class="col-pdf no-warp"><%= std_result['roll'].to_s %></td> 
                         <td class="col-pdf no-warp"><%= std_result['name'].to_s %></td>
-                        <td class="col-pdf no-warp"><%= std_result['batch_data'].to_s %>|<%= std_result['batch_id'].to_i %>|<%= std_result['id'].to_i %></td>
+                        <td class="col-pdf no-warp"><%= std_result['batch_data'].to_s %></td>
                         <td class="col-pdf no-warp">
                         <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
                           <%= std_result['gpa'].to_s %>

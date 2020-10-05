@@ -7846,7 +7846,6 @@ class ExamController < ApplicationController
           end 
         end
       end
-      abort(@section_all_position_batch.inspect)
     end
   end
   

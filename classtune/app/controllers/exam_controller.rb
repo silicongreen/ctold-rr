@@ -3140,9 +3140,7 @@ class ExamController < ApplicationController
     else
       finding_data5()
     end
-    unless @class.blank?
-      abort(@section_all_position_batch.inspect)
-    end
+    
     
  
     @std_resutl = []

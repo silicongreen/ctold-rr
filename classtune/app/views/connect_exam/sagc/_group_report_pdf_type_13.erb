@@ -80,9 +80,24 @@
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
-                          <% total_subject = total_subject+1 %>
-                          <td class="col-pdf"><%= total_subject %></td>
-                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %></td>
+                          <%
+                            third_subject = "";
+                            fourth_subject = "";
+                          %>
+                          <% if !@std_subject_hash_type.blank? %>
+                            <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||4") %>
+                              <% fourth_subject = "(4th)" %>
+                            <% end %>
+                            <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||3") %>
+                              <% third_subject = "(3rd)" %>
+                            <% end %>
+                          <% end %>
+                          <% if fourth_subject.blank? %>
+                            <% total_subject = total_subject+1 %>
+                          <% end %>
+                          <% total_subject_main = total_subject_main+1 %>
+                          <td class="col-pdf"><%= total_subject_main %></td>
+                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %><%= fourth_subject %><%= third_subject %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
@@ -112,11 +127,20 @@
                             <td class="col-pdf"><%= total_mark.to_i %></td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
-                              <% if grade.credit_points.to_i == 0 or total_mark < 20 %>
+                              <% if (grade.credit_points.to_i == 0 or total_mark < 20) and fourth_subject.blank? %>
                                 <% failed = true %>
                                 <% grade.name = "F" %>
+                              <% elsif grade.credit_points.to_i == 0 or total_mark < 20 %>
+                                <% grade.name = "F" %>
                               <% end %>
-                              <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
+                              <% if fourth_subject.blank? %>
+                                <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
+                              <% else %>
+                                <% new_grade_point = grade.credit_points.to_f-2 %>
+                                <% if new_grade_point > 0 %>
+                                 <% total_grade = total_grade.to_f+new_grade_point.to_f %>
+                                <% end %>  
+                              <% end %>
                               <td class="col-pdf"><%= grade.name %></td>
                             <% else %>
                               <td class="col-pdf">-</td>

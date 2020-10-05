@@ -114,6 +114,7 @@
                             <% if !grade.blank? and !grade.name.blank? %>
                               <% if grade.credit_points.to_i == 0 or total_mark < 20 %>
                                 <% failed = true %>
+                                <% grade.name = "F" %>
                               <% end %>
                               <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
                               <td class="col-pdf"><%= grade.name %></td>

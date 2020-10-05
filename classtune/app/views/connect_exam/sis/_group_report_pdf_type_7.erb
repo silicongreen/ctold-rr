@@ -23,10 +23,8 @@
         <table class="std_info_table" width="99.5%" cellspacing="0">
           <tr>
               <td>NAME </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @student.full_name %></td>
-              <td>SHIFT </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @batch.name %></td>
           </tr>
           <tr>
-              <td>DATE OF BIRTH </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>"%d %B %Y") unless @student.date_of_birth.nil? %></td>
               <td>DATE </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= I18n.l(@connect_exam_obj.published_date,:format=>"%d %B %Y") %></td>
           </tr>
         </table>

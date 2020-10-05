@@ -582,6 +582,11 @@ class AttendancesController < ApplicationController
     @date_today = @local_tzone_time.to_date
     if current_user.admin?
       @batches = Batch.active
+    elsif @current_user.privileges.map{|p| p.name}.include?('StudentAttendanceRegister')
+      @batches = @current_user.employee_record.batches
+      @batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+      @batches += TimetableSwap.find_all_by_employee_id(@current_user.employee_record.try(:id)).map(&:subject).flatten.compact.map(&:batch)
+      @batches = @batches.uniq unless @batches.empty
     elsif @current_user.employee?
       @batches = @current_user.employee_record.batches
       @batches += @current_user.employee_record.subjects.collect{|b| b.batch}

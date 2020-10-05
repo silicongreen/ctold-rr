@@ -13,6 +13,12 @@
           </tr> 
           <% prev_score = 0 %>
           <% @grading_levels.each_with_index do |grade,index| %>
+            <% if grade.name == "D" and @connect_exam_obj.result_type == 13 %>
+              <% next %>
+            <% end %>
+            <% if grade.name == "F" and @connect_exam_obj.result_type == 13 %>
+              <% grade.max_score = 39.00 %>
+            <% end %>
              <tr class="even">
             
             <td class="small"><%= grade.name %></td>

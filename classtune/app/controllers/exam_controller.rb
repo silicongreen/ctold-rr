@@ -7600,7 +7600,7 @@ class ExamController < ApplicationController
                 end
                 main_mark = (total_mark_subject.to_f/full_mark_subject.to_f)*100
                 grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                if !grade.blank? and !grade.name.blank? and grade.credit_points.to_i == 0
+                if !grade.blank? and !grade.name.blank? and ( grade.credit_points.to_i == 0 or total_mark_subject < 20 )
                   if fourth_subject.blank?
                     u_grade = u_grade+1
                     subject_failed = true

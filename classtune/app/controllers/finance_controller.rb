@@ -1191,7 +1191,7 @@ class FinanceController < ApplicationController
         end
         
         #payment_table = MultiSchool.current_school.id == 352 ? "payments" : MultiSchool.current_school.code + "_payments"
-        @particular_wise_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, finance_transactions.amount as amount, #{payment_table}.order_id, #{payment_table}.payee_id", :order => payment_table + '.payee_id ASC', :conditions => ["#{payment_table}.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and #{payment_table}.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'" + extra_params], :joins => "INNER JOIN #{payment_table} ON finance_transactions.id = #{payment_table}.finance_transaction_id " + extra_joins, :group => "#{payment_table}.payee_id")
+        @particular_wise_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, SUM(finance_transactions.amount) as amount, #{payment_table}.order_id", :order => payment_table + '.payee_id ASC', :conditions => ["#{payment_table}.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and #{payment_table}.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'" + extra_params], :joins => "INNER JOIN #{payment_table} ON finance_transactions.id = #{payment_table}.finance_transaction_id " + extra_joins, :group => "#{payment_table}.payee_id")
         @student_ids = @particular_wise_transactions.map(&:payee_id).uniq
 
       end
@@ -1260,20 +1260,20 @@ class FinanceController < ApplicationController
       #amount = payment.gateway_response[:amount]
       #if 
       amount = pt.amount
-      if payment.gateway_txt == "bkash" or payment.gateway_txt == "citybank"
+      #if payment.gateway_txt == "bkash" or payment.gateway_txt == "citybank"
 	#if payment.order_id != ''
         #   amount = 0
 	#else
-	   amount = pt.amount
+	   #amount = 0
 	#end
-        payments = Payment.find(:all, :conditions => "payee_id = '#{student}'")
-        unless payments.blank?
-          payments.each do |p|
-            finance_transaction = FinanceTransaction.find(p.finance_transaction_id)
-            amount += finance_transaction.amount 
-          end
-        end
-      end 
+#        payments = Payment.find(:all, :conditions => "payee_id = '#{student}'")
+#        unless payments.blank?
+#          payments.each do |p|
+#            finance_transaction = FinanceTransaction.find(p.finance_transaction_id)
+#            amount += finance_transaction.amount 
+#          end
+#        end
+      #end 
       
       total_amount += amount.to_f
       row_new = [i+1, student.full_name, student.admission_no, order, amount.to_f]

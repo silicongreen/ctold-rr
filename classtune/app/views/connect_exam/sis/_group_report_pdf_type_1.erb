@@ -163,7 +163,7 @@
                   <% end %>
                    <tr class="even">
                           
-                          <td class="col-pdf no-warp align-left" width="50%"><b>Section-in-charge<%= mloop %></b></td>
+                          <td class="col-pdf no-warp align-left" width="50%"><b>Section-in-charge</b></td>
                           <td class="col-pdf no-warp align-left" width="50%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/#{@section_in_charge}.png")), :width=>"30%" %></td>    
                    </tr>  
               </table>
@@ -214,6 +214,23 @@
 <% end %>
 <% if !mloop.blank? && mloop>=28 && mloop<35 %>
 .page-break-grade td{
+      height: 7px;
+      border: 1px solid #fff;
+      border-top: 1px solid Black;
+      border-bottom: 1px solid Black;
+}
+.sis table tr.odd td, .sis table tr.even td
+{
+    font-size: 21px !important;
+    padding: 4px 15px !important;
+}
+.sis table tr.odd table.std_info_table tr td
+{
+    font-size: 21px !important;
+}
+<% end %>
+<% if !mloop.blank? && mloop>=35 %>
+.page-break-grade td{
       height: 6px;
       border: 1px solid #fff;
       border-top: 1px solid Black;
@@ -223,23 +240,6 @@
 {
     font-size: 20px !important;
     padding: 4px 15px !important;
-}
-.sis table tr.odd table.std_info_table tr td
-{
-    font-size: 20px !important;
-}
-<% end %>
-<% if !mloop.blank? && mloop>=35 %>
-.page-break-grade td{
-      height: 5px;
-      border: 1px solid #fff;
-      border-top: 1px solid Black;
-      border-bottom: 1px solid Black;
-}
-.sis table tr.odd td, .sis table tr.even td
-{
-    font-size: 20px !important;
-    padding: 2px 15px !important;
 }
 .sis table tr.odd table.std_info_table tr td
 {

@@ -120,6 +120,7 @@
                   <% student = ArchivedStudent.find(:first, :conditions => "former_id = #{std_id}") %>
                   <% end %>
                   <% payment = Payment.find_by_finance_transaction_id(transaction_id) %>
+                  <% order_id = payment.order_id %>
                   <% amount = pt.amount %>  
                   <% if pg == 1 %>
                     <% if j == tar1 %>
@@ -142,7 +143,7 @@
                       <% if MultiSchool.current_school.id == 312 %>
                       <td style="text-align: left; padding-left: 20px;"><%= student.batch.full_name %></td>
                       <% end %>
-                      <td style="text-align: left; padding-left: 20px;"><%= order %></td>
+                      <td style="text-align: left; padding-left: 20px;"><%= order_id %></td>
                       <td style="text-align: right; padding-right: 20px;">
                         <%= to_comma_seperated_precision_label amount.to_f %>
                       </td>

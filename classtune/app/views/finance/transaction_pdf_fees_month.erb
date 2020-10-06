@@ -110,9 +110,9 @@
                     <td style="width: 300px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Amount</td>
                 </tr>
                 <% tot_amount = 0 %>
-                <% @order_ids.each_with_index do |order, i| %>
+                <% @student_ids.each_with_index do |student, i| %>
                   
-                  <% pt = @particular_wise_transactions.select{|pwt| pwt.order_id == order }.first %>
+                  <% pt = @particular_wise_transactions.select{|pwt| pwt.payee_id == student }.first %>
                   <% std_id = pt.payee_id %>
                   <% transaction_id = pt.id %>
                   <% student = Student.find(:first, :conditions => "id = #{std_id}") %>
@@ -120,19 +120,7 @@
                   <% student = ArchivedStudent.find(:first, :conditions => "former_id = #{std_id}") %>
                   <% end %>
                   <% payment = Payment.find_by_finance_transaction_id(transaction_id) %>
-                  <% amount = payment.gateway_response[:amount] %>  
-                  <% if payment.gateway_txt == "bkash" or payment.gateway_txt == "citybank" %>
-                    <%
-                      amount = 0
-                      payments = Payment.find(:all, :conditions => "order_id = '#{order}'")
-                      unless payments.blank?
-                        payments.each do |p|
-                          finance_transaction = FinanceTransaction.find(p.finance_transaction_id)
-                          amount += finance_transaction.amount 
-                        end
-                      end
-                    %>
-                  <% end %>
+                  <% amount = pt.amount %>  
                   <% if pg == 1 %>
                     <% if j == tar1 %>
                       <tr><td colspan="3" style="height: 40px;"></td></tr>

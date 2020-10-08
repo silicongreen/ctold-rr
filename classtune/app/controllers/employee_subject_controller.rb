@@ -28,10 +28,10 @@ class EmployeeSubjectController < ApplicationController
     employee_subject = EmployeesSubject.find_by_employee_id_and_subject_id(@current_user.employee_record.id,params[:id])
     @subject = Subject.find(employee_subject.subject_id)
     if TimetableEntry.find_all_by_subject_id_and_employee_id(@subject.id,employee_subject.employee_id).blank?
-      EmployeesSubject.find(params[:id]).destroy
+      EmployeesSubject.find(employee_subject.id).destroy
     else
       TimetableEntry.destroy_all(:subject_id => @subject.id,:employee_id=>employee_subject.employee_id)
-      EmployeesSubject.find(params[:id]).destroy
+      EmployeesSubject.find(employee_subject.id).destroy
     end
     flash[:notice] = "Subject successfully deleted"
     redirect_to :controller => "employee_subject", :action => "add_subject"

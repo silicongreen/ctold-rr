@@ -3791,6 +3791,7 @@ authorization do
       :all_employee_leave_applications,
       :individual_payslip_pdf,
       :show,
+      :update_subjects,
       :profile_pdf
     ]
      has_permission_on [:student],

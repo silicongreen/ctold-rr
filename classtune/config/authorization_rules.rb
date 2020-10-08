@@ -3752,6 +3752,11 @@ authorization do
   # employee -privileges
   role :employee do
     includes :open
+    has_permission_on [:employee_subject],
+    :to => 
+    [
+      :add_subject,:delete_employee_subject
+    ] 
     has_permission_on [:employee],
       :to => [
       :profile,

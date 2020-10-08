@@ -1,0 +1,69 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="content-header">
+ <h1><%= link_to "Board Exam",{:action => "index"} %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'>Student Group</div>
+
+</div>
+<div id="page-yield">
+
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+    
+  <%- form_for :employee_subject do |c| -%>
+
+    <%= error_messages_for :board_exam_group %>
+   <div id="form-content">
+      <div class="label-field-pair">    
+        <label> <%= t('shift_label') %>: </label>
+        <div class="text-input-bg">
+        <%= select :student, :batch_name, options_for_select(Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]}, @batch_no.to_i), 
+            {:prompt => "#{t('select')}"},
+            {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&page=courses_employee_subject_assignment&partial_view=student/courses_employee_subject_assignment_view&section_page=sections_employee_subject_assignment&section_partial=student/sections_employee_subject_assignment_view'" ,:before => "$('loading_2').show();",
+            :success => "$('loading_2').hide();")}"} %>
+            <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>            
+        </div>
+        <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loader", :style =>"display: none;" ) %><div class="extender"></div>
+      </div>
+ 
+    <div class="label-field-pair">
+      <label for="student_grade"><%= t('class_label') %></label>
+      <div class="text-input-bg"><div id="courses_employee_subject_assignment"> <%= render :partial => 'student/courses_employee_subject_assignment_view', :object => @courses %></div></div>
+    </div>
+    <div class="label-field-pair">
+      <label for="student_grade"><%= t('section_label') %></label>
+      <div class="text-input-bg"><div id="sections_employee_subject_assignment"> <%= render :partial => 'student/sections_employee_subject_assignment_view', :object => @classes %></div></div>
+    </div>
+    <div id="subjects1"> <%= render :partial => 'subjects', :object => @subjects %></div>
+    <div id="submit-button">
+          <%=submit_tag("► #{t('create_text')}", :disable_with => "► #{t('please_wait')}") %>
+      </div>
+  </div>
+ <% end %> 
+
+
+
+  <div id="category-list">
+    <%= render :partial => "subjects" %>
+  </div>
+
+</div>

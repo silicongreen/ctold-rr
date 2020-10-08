@@ -29,9 +29,9 @@
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
     
-  <%- form_for :employee_subject do |c| -%>
+  <%- form_for :employee_subject, :html=> {:id=>'new_student'} do |c| -%>
 
-    <%= error_messages_for :board_exam_group %>
+    <%= error_messages_for :employee_subject %>
    <div id="form-content">
       <div class="label-field-pair">    
         <label> <%= t('shift_label') %>: </label>

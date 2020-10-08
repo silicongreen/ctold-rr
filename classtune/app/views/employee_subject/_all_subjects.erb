@@ -23,7 +23,7 @@
         <li class="list<%=cycle('odd', 'even')%>">
           <div class="category-name">
             <div class="detail-box">
-              <%= c.subject.batch.full_name %>&nbsp;>>&nbsp;<%= c.subject.name %>
+              <%= c.batch.full_name %>&nbsp;>>&nbsp;<%= c.name %>
             </div>
           </div>
           <div class="category-edit"><%= link_to "<i class='fa fa-trash'></i> #{t('delete_text')}", {:action => "delete_employee_subject", :id=>c.id}, :confirm => "#{t('delete_confirm_msg')}" %></div>

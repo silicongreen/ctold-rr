@@ -16,13 +16,16 @@ class EmployeeSubjectController < ApplicationController
     @subjects = []
     if request.post? && !params[:subject_assignment].blank? && !params[:subject_assignment][:subject_id].blank?
       subject_id = params[:subject_assignment][:subject_id]
-      EmployeesSubject.create(:employee_id => employee.id, :subject_id => subject_id)
+      employee_subject = EmployeeSubject.find_by_employee_id_and_subject_id(employee.id,subject_id)
+      if employee_subject.blank?
+        EmployeesSubject.create(:employee_id => employee.id, :subject_id => subject_id)
+      end
       flash[:notice] = "Subject successfully saved"
       redirect_to :controller => "employee_subject", :action => "add_subject"
     end
   end
   def delete_employee_subject
-    employee_subject = EmployeeSubject.find_by_id(params[:id])
+    employee_subject = EmployeeSubject.find_by_employee_id_and_subject_id(@current_user.employee_record.id,params[:id])
     @subject = Subject.find(employee_subject.subject_id)
     if TimetableEntry.find_all_by_subject_id_and_employee_id(@subject.id,employee_subject.employee_id).blank?
       EmployeeSubject.find(params[:id]).destroy

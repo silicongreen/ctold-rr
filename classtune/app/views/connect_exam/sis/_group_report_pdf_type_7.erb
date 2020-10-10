@@ -262,7 +262,7 @@
                      </tr>
                      <% end %>
                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td class="col-pdf no-warp align-left"><b>Section-in-charge</b></td>
+                      <td class="col-pdf no-warp align-left"><b>Section In-Charge</b></td>
                       <td class="col-pdf no-warp align-left width-60"><% if @covid_main == 1 %>
                           <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/#{@section_in_charge}.png")), :width=>"30%" %>
                       <% end %></td>

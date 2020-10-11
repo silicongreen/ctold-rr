@@ -666,6 +666,36 @@ class OnlineExamController < ApplicationController
     @attendance.reject!{|s|s.student.nil?}
     @attendance.sort! { |a, b|  a.student.class_roll_no.to_i <=> b.student.class_roll_no.to_i }
   end
+  
+  def exam_import
+    @exam_group = OnlineExamGroup.find(params[:exam_import][:online_exam_group_id])
+    @attendance = @exam_group.online_exam_attendances
+    @attendance.reject!{|s|s.student.nil?}
+    @exam_id = params[:exam_import][:exam_id]
+    
+    unless @attendance.blank?
+      @exam_group.exam_id = @exam_id
+      @exam_group.save
+      @attendance.each do |att|
+        marks = 0
+        unless att.total_score.blank?
+          marks = att.total_score
+        end
+        @exam_score = ExamScore.find(:first, :conditions => {:exam_id => @exam_id, :student_id => att.student_id} )
+        unless @exam_score.blank?
+          @exam_score.update_attribute("marks",marks)
+        else
+           ExamScore.create do |score|
+              score.exam_id          = @exam_id
+              score.student_id       = att.student_id
+              score.user_id          = current_user.id
+              score.marks            = marks
+            end
+          
+        end  
+      end
+    end
+  end
     
   def exam_result_pdf
     @exam_group = OnlineExamGroup.find(params[:id])

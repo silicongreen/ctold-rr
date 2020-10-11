@@ -47,6 +47,25 @@
       <% end %>
    
     <div class="extender"></div>
+    <% if MultiSchool.current_school.id == 2 %>
+      <% unless @attendance.blank? %>
+        <% if @exam_group.exam_id.blank? %>
+          <% exams = Exam.find_all_by_subject_id(@exam_group.subject_id,:conditions=>["exam_groups.batch_id = ?",@exam_group.batch_id],:include=>[:exam_group]) %>
+          <% unless exams.blank? %>
+            <% form_for :exam_import, :url=>{:action=>'exam_import'}, :html=> {:id=>'new_student'} do |x| %>
+              <div style="width:100%" class="text-input-bg label-field-pair" id="exam-group-select">
+                <label for="exam_group_id">Exams</label>
+                <%= select :exam_import, :exam_id, exams.map{|exam| [exam.exam_group.name,exam.id]} %>
+              </div>
+              <%= x.hidden_field :online_exam_group_id , :value=> @exam_group.id %>
+              <%  x.submit 'Import Marks' %>
+            <% end %>
+          <% end %>
+        <% else %>
+          <p class="flash-msg">Marks Already Imported To Exam</p>
+        <% end %>
+      <% end %>
+    <% end %>     
   </div></div>
 <style>
     #listing tr td.col-2

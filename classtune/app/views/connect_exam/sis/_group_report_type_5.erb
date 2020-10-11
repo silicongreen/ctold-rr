@@ -88,13 +88,17 @@
                   <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
                     <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
 
-                    <%  if @all_subjects.include?(report['id'].to_i) && !report['subject_comment'].blank? %>
+                    <%  if @all_subjects.include?(report['id'].to_i) %>
                          <% total_subject = total_subject+1 %>
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         
                           <td class="col-pdf left-td"><b><%= report['subject_name'] %></b></td>
                           <td class="col-pdf">-</td>
-                          <td class="col-pdf"><b><%= report['subject_comment'] %></td>
+                          <% unless report['subject_comment'].blank? %>
+                            <td class="col-pdf"><b><%= report['subject_comment'] %></b></td>
+                          <% else %>
+                            <td class="col-pdf"><b>-</b></td>
+                          <% end %> 
                         </tr>
                       <% end %>
                     <% end %>

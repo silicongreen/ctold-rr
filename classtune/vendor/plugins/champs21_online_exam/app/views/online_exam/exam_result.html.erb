@@ -58,7 +58,7 @@
                 <%= select :exam_import, :exam_id, exams.map{|exam| [exam.exam_group.name,exam.id]} %>
               </div>
               <%= x.hidden_field :online_exam_group_id , :value=> @exam_group.id %>
-              <%  x.submit 'Import Marks' %>
+              <%=  x.submit 'Import Marks' %>
             <% end %>
           <% end %>
         <% else %>

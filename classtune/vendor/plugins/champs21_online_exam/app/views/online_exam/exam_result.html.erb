@@ -76,11 +76,11 @@
                     </div>
                     <div class="form-group col-sm-6">
                         <label for="student_admission_no"><%= "Combine Number" %> </label>   
-                        <input type="checkbox" value="1" name="combine_number" />
+                        <input type="checkbox" value="1" name="combine_number" class="form-control" />
                     </div>
                     <div class="form-group col-sm-6 even">
                         <label for="student_admission_no"><%= "Convert Number" %> </label>   
-                        <%= x.text_field :convert_number %>
+                        <%= x.text_field :convert_number, :class=>"form-control" %>
                     </div>
                     <div class="form-group col-sm-6 even">
                       <%= submit_tag "", :value => "► Import Marks", :class => "btn btn-success", :disable_with => "► #{t('please_wait')}" %>

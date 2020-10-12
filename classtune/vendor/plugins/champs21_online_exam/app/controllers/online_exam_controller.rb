@@ -676,13 +676,25 @@ class OnlineExamController < ApplicationController
     unless @attendance.blank?
       @exam_group.exam_id = @exam_id
       @exam_group.save
+      total_mark = @exam_group.online_exam_questions.sum('mark')
       @attendance.each do |att|
         marks = 0
         unless att.total_score.blank?
           marks = att.total_score
         end
+        unless params[:exam_import][:convert_number].blank?
+          convert_number = params[:exam_import][:convert_number].to_i
+          if marks > 0 && total_mark > 0 && convert_number > 0
+            marks = (marks.to_f/total_mark.to_f)*convert_number
+            marks = marks.round()
+          end
+          
+        end
         @exam_score = ExamScore.find(:first, :conditions => {:exam_id => @exam_id, :student_id => att.student_id} )
         unless @exam_score.blank?
+          unless params[:combine_number].blank?
+            marks = @exam_score.marks
+          end
           @exam_score.update_attribute("marks",marks)
         else
            ExamScore.create do |score|
@@ -692,7 +704,9 @@ class OnlineExamController < ApplicationController
               score.marks            = marks
             end
           
-        end  
+        end 
+        flash[:notice]="Exam Mark Imported"
+        redirect_to :action=>:exam_result,:id=>@exam_group.id
       end
     end
   end

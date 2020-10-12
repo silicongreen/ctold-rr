@@ -66,7 +66,7 @@
           <% exams = Exam.find_all_by_subject_id(@exam_group.subject_id,:conditions=>["exam_groups.batch_id = ?",@exam_group.batch_id],:include=>[:exam_group]) %>
           <% unless exams.blank? %>
             <% form_for :exam_import, :url=>{:action=>'exam_import'}, :html=> {:id=>'new_student'} do |x| %>
-              <div class="col-sm-12" style="padding:0px;">
+              <div class="col-sm-12">
                 <fieldset>
                     <legend>Import Number From This Exam</legend>
                     <%= x.hidden_field :online_exam_group_id , :value=> @exam_group.id %>

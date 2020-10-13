@@ -1687,7 +1687,7 @@ module FinanceLoader
           message = "Fees received BDT #AMOUNT# for #UNAME#(#UID#) as on #PAIDDATE# by #{gateway}. TranID-#TRANID# TranRef-#TRANREF#"
           if File.exists?("#{Rails.root}/config/sms_text_#{MultiSchool.current_school.id}.yml")
             sms_text_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/sms_text_#{MultiSchool.current_school.id}.yml")['school']
-            message = sms_text_config['feepaid']
+#            message = sms_text_config['feepaid']
           end
           recipients = []
           unless @student.sms_number.nil? or @student.sms_number.empty? or @student.sms_number.blank?

@@ -3415,7 +3415,7 @@ class StudentController < ApplicationController
     
     @student_electives =StudentsSubject.all(:conditions=>{:student_id=>@student.id,:batch_id=>@student.batch.id,:subjects=>{:is_deleted=>false}},:joins=>[:subject])
     @std_sub_map = @student_electives.map(&:subject_id)
-    @elective_subjects = Subject.find_all_by_batch_id(@student.batch_id,:include=>[:elective_group],:conditions=>["subjects.elective_group_id IS NOT NULL AND subjects.is_deleted = false AND elective_group.batch_id = ?",@student.batch_id])
+    @elective_subjects = Subject.find_all_by_batch_id(@student.batch_id,:include=>[:elective_group],:conditions=>["subjects.elective_group_id IS NOT NULL AND subjects.is_deleted = false AND elective_groups.batch_id = ?",@student.batch_id])
     guardians = @student.student_guardian
     unless guardians.blank?
       iloop = 0

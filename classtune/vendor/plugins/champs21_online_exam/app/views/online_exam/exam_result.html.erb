@@ -63,7 +63,7 @@
     
       <% unless @attendance.blank? %>
         <% if @exam_group.exam_id == 0 %>
-          <% exams = Exam.find_all_by_subject_id(@exam_group.subject_id,:conditions=>["exam_groups.batch_id = ? AND exam_groups.is_published = ? AND exam_groups.is_deleted = ?",@exam_group.batch_id,false,false],:include=>[:exam_group]) %>
+          <% exams = Exam.find_all_by_subject_id(@exam_group.subject_id,:conditions=>["exam_groups.batch_id = ? AND exam_groups.result_published = ? AND exam_groups.is_deleted = ?",@exam_group.batch_id,false,false],:include=>[:exam_group]) %>
           <% unless exams.blank? %>
             <% form_for :exam_import, :url=>{:action=>'exam_import'}, :html=> {:id=>'new_student'} do |x| %>
               <div class="col-sm-12">

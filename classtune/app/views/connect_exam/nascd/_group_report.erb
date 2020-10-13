@@ -1,12 +1,32 @@
 <%= render  :partial=>"/connect_exam/nascd/group_report_pdf_type_"+@connect_exam_obj.result_type.to_s %>
 <style>
-.potrait_header_south_point h4
+#pdf-header-south table
 {
-    font-size:30px !important;
+    width: 100%;
 }
-.potrait_header_south_point h5
+#pdf-header-south table td.south-logo span
 {
-    font-size:16px !important;
+    margin-top:-20px;
+    float:left;
 }
-    
+#pdf-header-south table td
+{
+    width: 10%;
+}
+#pdf-header-south table td.name-td
+{
+    width: 70%;
+    text-align: left;
+}
+
+#pdf-header-south table td.name-td h4, #pdf-header-south table td.name-td h5
+{
+    width: 85%;
+}
+#pdf-header-south table td.name-td h5
+{
+    font-size: 22px !important;
+    font-weight: normal !important;
+
+}
 </style>    

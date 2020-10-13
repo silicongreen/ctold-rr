@@ -704,11 +704,11 @@ class OnlineExamController < ApplicationController
               score.marks            = marks
             end
           
-        end 
-        flash[:notice]="Exam Mark Imported"
-        redirect_to :action=>:exam_result,:id=>@exam_group.id
+        end
       end
     end
+    flash[:notice]="Exam Mark Imported"
+    redirect_to :action=>:exam_result,:id=>@exam_group.id
   end
     
   def exam_result_pdf

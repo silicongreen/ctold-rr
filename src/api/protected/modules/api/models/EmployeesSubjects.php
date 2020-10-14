@@ -272,6 +272,60 @@ class EmployeesSubjects extends CActiveRecord
 
             return $subject;
         }
+        public function getSubjectIds($all_sub_id = array())
+        {
+            $criteria = new CDbCriteria;
+            $criteria->select = 't.id';
+            $criteria->compare("t.employee_id", Yii::app()->user->profileId);
+            $criteria->with = array(
+                'subject' => array(
+                    'select' => 'subject.id,subject.name',
+                    'joinType' => "INNER JOIN",
+                    'with' => array(
+                        "Subjectbatch" => array(
+                            "select" => "Subjectbatch.name",
+                            'joinType' => "INNER JOIN",
+                            'with' => array(
+                                "courseDetails" => array(
+                                    "select" => "courseDetails.course_name, courseDetails.section_name,courseDetails.no_call",
+                                    'joinType' => "INNER JOIN",
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+           
+            $criteria->compare('subject.is_deleted', 0);
+            $criteria->compare("Subjectbatch.is_deleted", 0);
+            $criteria->compare("courseDetails.is_deleted", 0);
+            $obj_subject = $this->findAll($criteria);
+            foreach ($obj_subject as $value)
+            {
+                
+                if($value['subject']->elective_group_id)
+                {
+                    $sub_obj = new Subjects();
+                    $e_subject = $sub_obj->getSubjectElectiveGroup($value['subject']->elective_group_id);
+                    if($e_subject)
+                    {
+                        foreach($e_subject as $e_sub)
+                        {
+                            if(!in_array($e_sub->id, $all_sub_id))
+                            {
+                                $all_sub_id[] = $e_sub->id;
+                            }
+                        }    
+                    }
+                    
+                }
+                else
+                {
+                    $all_sub_id[] = $value['subject']->id;
+                }    
+            }
+            return $all_sub_id;
+        }
         public function getAllSubject($employee_id)
         {
             $criteria = new CDbCriteria;

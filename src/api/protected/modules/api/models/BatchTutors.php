@@ -183,6 +183,8 @@ class BatchTutors extends CActiveRecord
                 {
                     $sub = new Subjects();
                     $sub_ids = $sub->getAllSubByBatchId($batch_ids);
+                    $empSub = new EmployeesSubjects();
+                    $sub_ids = $empSub->getSubjectIds($sub_ids);
                 }
             }
             

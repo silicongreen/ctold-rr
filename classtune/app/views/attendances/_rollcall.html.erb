@@ -14,7 +14,7 @@
       <%= hidden_field_tag 'attandence_date',@date_today, :id=>'attandence_date' %>
       <% end %>
       
-      <% if !@current_user.admin? and MultiSchool.current_school.code != "sfx" %>
+      <% if !@current_user.admin? and MultiSchool.current_school.code == "sfx" %>
         <% @batches.reject!{|c| c.course.no_call.to_i == 0} %>
       <% end %>
       <div class="row" style="width:45%;">  

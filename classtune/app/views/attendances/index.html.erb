@@ -162,6 +162,7 @@
   }
   var jq = jQuery.noConflict();
   jq(document).ready(function () {
+      j("select2-combo").select2();
       if (window.location.hash) {
           var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
           jq("#" + hash).trigger("click");
@@ -170,4 +171,5 @@
           
       }
   });
+      
 </script>

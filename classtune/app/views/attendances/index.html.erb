@@ -129,6 +129,10 @@
     {
         background: #383838;
     }
+    .select2-container .select2-selection--single
+    {
+      hight:35px;
+    }
 </style>  
 
 <% content_for :head do %>
@@ -138,6 +142,8 @@
 
 <%= stylesheet_link_tag 'tadded-header' %>
 <%= stylesheet_link_tag 'inline-calendar' %>
+
+
 
 <script>
   function show_student_list(type)

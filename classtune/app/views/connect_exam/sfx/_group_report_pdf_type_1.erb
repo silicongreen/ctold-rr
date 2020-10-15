@@ -251,6 +251,30 @@
                   </td>
               </table>
               
+              <%
+              present = 0
+              comments = ""
+              if !@exam_comment.blank?
+                all_comments = @exam_comment.comments
+                if !all_comments.blank?
+                  all_comments_array = all_comments.split("-")
+                  if !all_comments_array[1].nil?
+                    present = all_comments_array[1].to_i
+                    comments = all_comments_array[0]
+                    else
+                    present = all_comments_array[0].to_i
+                  end
+                end
+                end
+            %>
+              <% unless @subject_att.include?(@batch.course.course_name) %>
+              <table id="pdf-table" width="99.8%" cellspacing="0">
+                  <tr class="even"><td class=" align-left-baf" width="30%">NO. OF WORKING DAYS</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days %></td></tr>
+                  <tr class="even"><td class=" align-left-baf" width="30%">PRESENT</td><td class=" align-left-baf"><%= present %></td></tr>
+                  <tr class="even"><td class=" align-left-baf" width="30%">ABSENT</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days.to_i - present.to_i %></td></tr>
+              </table>
+              <% end %>
+              
               <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
               <% if @grading_levels.blank? %>
               <% @grading_levels = GradingLevel.default %>

@@ -163,7 +163,7 @@
                         end
                       end
                     %>
-              <table id="pdf-table"  width="100%" class="left-table odd-table height-exam ev-table" cellspacing="0" >
+              <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >
                   <tr class="table-header">
                       <td>Position In Class</td>
                       <td><% if !@student_position[@student.id.to_i].blank? %> 
@@ -229,7 +229,7 @@
                   <% @grading_levels = GradingLevel.default %>
                 <% end %>
               <% end %>
-              <table id="pdf-table"  width="46%" class="left-table break-table ev-table height-exam table-padding-big" cellspacing="0" >
+              <table id="pdf-table"  width="46%" class="left-table ev-table height-exam table-padding-big" cellspacing="0" >
                   <tr class="table-header">
                       <td>Grade</td>
                       <td>Range</td>
@@ -265,7 +265,7 @@
                    </tr>
               </table>
 
-              <table id="pdf-table"  width="100%" class="left-table odd-table height-exam ev-table" cellspacing="0" >
+              <table id="pdf-table"  width="100%" class="left-table break-table odd-table height-exam ev-table" cellspacing="0" >
                   <tr class="even">
                       <td width='50%' class='align-left border-right-none'></td>
                       <td class='border-left-none'><br/><br/><hr/>Signature of the Class Teacher</td>    

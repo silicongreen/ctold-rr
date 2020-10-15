@@ -165,7 +165,7 @@
                     %>
               <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >
                   <tr class="table-header">
-                      <td>Position In Class</td>
+                      <td class="col-pdf  no-warp align-left-baf" width="60%">Position In Class</td>
                       <td><% if !@student_position[@student.id.to_i].blank? %> 
                             <%= @student_position[@student.id.to_i] %>
                           <% else %>
@@ -173,19 +173,19 @@
                           <% end %></td>
                   </tr>
                   <tr class="table-header">
-                      <td>total Number Of Student</td>
+                      <td class="col-pdf  no-warp align-left-baf" width="60%">total Number Of Student</td>
                       <td><%= @total_std %></td>
                   </tr>
                   <tr class="table-header">
-                      <td>Number of working days</td>
+                      <td class="col-pdf  no-warp align-left-baf" width="60%">Number of working days</td>
                       <td><%= @report_data['total'] %></td>
                   </tr>
                   <tr class="table-header">
-                      <td>Days Present</td>
+                      <td class="col-pdf  no-warp align-left-baf" width="60%">Days Present</td>
                       <td><%= @report_data['present'] %></td>
                   </tr>
                   <tr class="table-header">
-                      <td>Days Absent</td>
+                      <td class="col-pdf  no-warp align-left-baf" width="60%">Days Absent</td>
                       <td><%= @report_data['total'].to_i-@report_data['present'].to_i %></td>
                   </tr>
               </table>
@@ -201,7 +201,7 @@
                     end
                     end 
                 %>
-              <table id="pdf-table"  width="46%" class="left-table break-table ev-table height-exam table-padding-big" cellspacing="0" >
+              <table id="pdf-table"  width="48%" class="left-table break-table ev-table height-exam" cellspacing="0" >
                   <tr class="table-header">
                       <td colspan='2'><b>ATTITUDE AND CONDUCT</b></td>
                   </tr>
@@ -229,7 +229,7 @@
                   <% @grading_levels = GradingLevel.default %>
                 <% end %>
               <% end %>
-              <table id="pdf-table"  width="46%" class="left-table ev-table height-exam table-padding-big" cellspacing="0" >
+              <table id="pdf-table"  width="48%" class="left-table ev-table height-exam" cellspacing="0" >
                   <tr class="table-header">
                       <td>Grade</td>
                       <td>Range</td>

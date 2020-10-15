@@ -164,28 +164,28 @@
                       end
                     %>
               <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >
-                  <tr class="table-header">
-                      <td class="col-pdf  no-warp align-left-baf" width="60%">Position In Class</td>
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf  no-warp align-left-baf" width="60%"><b>Position In Class</b></td>
                       <td><% if !@student_position[@student.id.to_i].blank? %> 
                             <%= @student_position[@student.id.to_i] %>
                           <% else %>
                             -
                           <% end %></td>
                   </tr>
-                  <tr class="table-header">
-                      <td class="col-pdf  no-warp align-left-baf" width="60%">total Number Of Student</td>
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf  no-warp align-left-baf" width="60%"><b>Total Number Of Student</b></td>
                       <td><%= @total_std %></td>
                   </tr>
-                  <tr class="table-header">
-                      <td class="col-pdf  no-warp align-left-baf" width="60%">Number of working days</td>
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf  no-warp align-left-baf" width="60%"><b>Number of working days</b></td>
                       <td><%= @report_data['total'] %></td>
                   </tr>
-                  <tr class="table-header">
-                      <td class="col-pdf  no-warp align-left-baf" width="60%">Days Present</td>
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf  no-warp align-left-baf" width="60%"><b>Days Present</b></td>
                       <td><%= @report_data['present'] %></td>
                   </tr>
-                  <tr class="table-header">
-                      <td class="col-pdf  no-warp align-left-baf" width="60%">Days Absent</td>
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf  no-warp align-left-baf" width="60%"><b>Days Absent</b></td>
                       <td><%= @report_data['total'].to_i-@report_data['present'].to_i %></td>
                   </tr>
               </table>

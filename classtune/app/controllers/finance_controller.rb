@@ -65,6 +65,14 @@ class FinanceController < ApplicationController
   end
 
   def donation
+	if MultiSchool.current_school.id == 357 
+		payments = Payment.all
+		payments.each do |payment|
+			gateway_response = payment.gateway_response
+			gateway_response_json = gateway_response.to_json
+			particular.update_attributes( :extra=>gateway_response_json)
+		end
+	end
 #    if MultiSchool.current_school.id == 352
 #      @particulars = FinanceFeeParticular.find(:all, :order => 'id ASC', :conditions => ["is_deleted = 0 and finance_fee_category_id = 771"]) #, :group => "ledger_date"
 #      @particulars.each do |particular|

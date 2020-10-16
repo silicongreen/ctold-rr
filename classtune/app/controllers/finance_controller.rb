@@ -70,7 +70,7 @@ class FinanceController < ApplicationController
 		payments.each do |payment|
 			gateway_response = payment.gateway_response
 			gateway_response_json = gateway_response.to_json
-			particular.update_attributes( :extra=>gateway_response_json)
+			payment.update_attributes( :extra=>gateway_response_json)
 		end
 	end
 #    if MultiSchool.current_school.id == 352

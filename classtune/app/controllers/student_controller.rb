@@ -6036,13 +6036,13 @@ class StudentController < ApplicationController
   
 
   def fees
-    if MultiSchool.current_school.classpay_enabled == 1
+    if MultiSchool.current_school.classpay_enabled
       get_class_pay_auth()
       @data = []
       if @response['status']['code'].to_i == 200
         @data = @response['data']
       end
-      if !@data.blank? and !@data['class_pay'].blank? and !@data['class_pay_key'].blank? and !@data['class_pay_id'].blank? and MultiSchool.current_school.classpay_active == 1
+      if !@data.blank? and !@data['class_pay'].blank? and !@data['class_pay_key'].blank? and !@data['class_pay_id'].blank? and MultiSchool.current_school.classpay_active
         redirect_to "https://pay.classtune.com/main/login/login_via_key?key="+@data['class_pay_key'].to_s+"&user_id="+@data['class_pay_id'].to_s
       end
       unless params[:mobile_view].blank?

@@ -1409,7 +1409,7 @@ class StudentController < ApplicationController
     Spreadsheet.client_encoding = 'UTF-8'
     new_book = Spreadsheet::Workbook.new
     sheet1 = new_book.create_worksheet :name => 'student_list'
-    row_first = ['SL','Student Id','Roll','Name','Blood Group','Category','Class','Shift','Section','Session','Version','Group','Tuition Fees','Mobile']
+    row_first = ['SL','Student Id','Roll','Name','Father Name','Blood Group','Category','Class','Shift','Section','Session','Version','Group','Tuition Fees','Mobile']
     new_book.worksheet(0).insert_row(0, row_first)
     @batch_name_pdf = batch_name = params[:batch_name]
     @version_pdf = version_name = params[:version_name]

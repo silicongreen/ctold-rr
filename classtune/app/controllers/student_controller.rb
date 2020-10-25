@@ -1500,11 +1500,28 @@ class StudentController < ApplicationController
           unless student.student_category.blank?
             std_category = student.student_category.name
           end
+          father_name = ""
+          mother_name = ""
+          guardians = student.student_guardian  
+          unless guardians.nil?
+            p_loop = 0
+            guardians.each do |guardian|
+              if p_loop == 0
+                father_name = guardian.first_name.to_s+" "+guardian.last_name.to_s
+              else
+                mother_name = guardian.first_name.to_s+" "+guardian.last_name.to_s
+                break
+              end
+              p_loop = p_loop+1
+            end
+          end
+          
           tmp_row = []
           tmp_row << std_loop
           tmp_row << student.admission_no
           tmp_row << student.class_roll_no
           tmp_row << student.full_name
+          tmp_row << father_name
           tmp_row << student.blood_group unless student.blood_group.nil?
           tmp_row << std_category
           tmp_row << student.batch.course.course_name

@@ -18,5 +18,21 @@ class MyActiveRecord extends CActiveRecord {
                 throw new CDbException(Yii::t('yii','Active Record requires a "db" CDbConnection application component.'));
         }
     }
+    protected static function getAdvertDbConnection2()
+    {
+        if (self::$dbadvert2 !== null)
+            return self::$dbadvert2;
+        else
+        {
+            self::$dbadvert2 = Yii::app()->dbadvert2;
+            if (self::$dbadvert2 instanceof CDbConnection)
+            {
+                self::$dbadvert2->setActive(true);
+                return self::$dbadvert2;
+            }
+            else
+                throw new CDbException(Yii::t('yii','Active Record requires a "db" CDbConnection application component.'));
+        }
+    }
     
 }   

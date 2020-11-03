@@ -23,7 +23,7 @@ class HomeworkController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'homeworkintelligence','totalclass','submittedlist','savemark','statuschange','singlesubmit','savecomments','comments','savecommentsstudent','commentsstudent','submit','submitdelete','defaulterList','delete','getdefaulterlist','adddefaulter','getsubjectstudents', 'teacherintelligence', 'Done', 'subjects', 'publishhomework', 'singleteacher', 'assessmentscore', 'singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus', 'teacherQuiz'),
+                'actions' => array('index', 'homeworkintelligence','addauthforquiz','totalclass','submittedlist','savemark','statuschange','singlesubmit','savecomments','comments','savecommentsstudent','commentsstudent','submit','submitdelete','defaulterList','delete','getdefaulterlist','adddefaulter','getsubjectstudents', 'teacherintelligence', 'Done', 'subjects', 'publishhomework', 'singleteacher', 'assessmentscore', 'singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus', 'teacherQuiz'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -31,6 +31,64 @@ class HomeworkController extends Controller
             ),
         );
     }
+    
+    public function actionAddAuthForQuiz()
+    {
+        if (isset($_POST) && !empty($_POST))
+        {
+            $user_secret = Yii::app()->request->getPost('user_secret');
+            $response = array();
+            if (Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || Yii::app()->user->isParent))
+            {
+                
+                $quiz = 0;
+                $quiz_key = "";
+                $quiz_user_id = 0;
+                $userobj = new Users();
+                $user_data = $userobj->findByPk(Yii::app()->user->id);
+                $userquiz = new UserQuiz();
+                $user = $userquiz->getQuizUser($user_data->id);
+               
+                if($user)
+                {
+                   $quiz_user_id = $user->id;
+                   $quiz_key = mt_rand();
+                   $quiz = 1;
+                   $userkey = new UserkeyQuiz(); 
+                   $userkey->user_id = $user->id;
+                   $userkey->expiry_date = date("Y-m-d H:i:s", strtotime("+12 hours"));
+                   $userkey->has_key = $quiz_key;
+                   $userkey->save();
+                   $response['data']['quiz'] = $quiz;
+                   $response['data']['quiz_key'] = $quiz_key;
+                   $response['data']['quiz_user_id'] = $quiz_user_id;
+                   $response['status']['code'] = 200;
+                   $response['status']['msg'] = "GO_FOR_EXAM";
+                }
+                else
+                {
+                    $response['data']['quiz'] = $quiz;
+                    $response['data']['quiz_key'] = $quiz_key;
+                    $response['data']['quiz_user_id'] = $quiz_user_id;
+                    $response['status']['code'] = 200;
+                    $response['status']['msg'] = "Old Quiz";
+                }    
+                
+            }
+            else
+            {
+                $response['status']['code'] = 403;
+                $response['status']['msg'] = "Access Denied.";
+            }
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    } 
     public function actionDefaulterList()
     {
        $user_secret = Yii::app()->request->getPost('user_secret');

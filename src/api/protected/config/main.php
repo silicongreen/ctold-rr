@@ -104,6 +104,7 @@ return array(
         // uncomment the following to use a MySQL database
         'db' => $db_con,
         'dbadvert' => $db_con2,
+        'dbadvert2' => $db_con3,
         'cache' => array(
             'class' => 'system.caching.CFileCache',
             'cachePath' => 'protected/runtime/cache/news'

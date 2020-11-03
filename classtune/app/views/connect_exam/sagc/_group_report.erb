@@ -6,10 +6,10 @@
     if student_response['status']['code'].to_i == 200
       @tabulation_data = student_response['data']
     end
-    end
+  end
 %>
   
-  <%= stylesheet_link_tag 'list_table' %>
+ <%= render  :partial=>"/connect_exam/sagc/finding_data_5" %> <%= stylesheet_link_tag 'list_table' %>
   <style>
       td.extra_height
       {

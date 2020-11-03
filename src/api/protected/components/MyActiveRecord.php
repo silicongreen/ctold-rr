@@ -1,6 +1,7 @@
 <?php
 class MyActiveRecord extends CActiveRecord {
     private static $dbadvert = null;
+    private static $dbadvert2 = null;
 
     protected static function getAdvertDbConnection()
     {

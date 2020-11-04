@@ -234,7 +234,9 @@
                         end
                       end
                     end
+		    balance = '%.2f' % balance.to_f
                     paid_amount -= advance_amount_paid  
+		    paid_amount = '%.2f' % paid_amount
                     bal = balance.to_f.round(2) - paid_amount.to_f.round(2)
                     
                     if bal.to_f > 0

@@ -235,7 +235,7 @@
                       end
                     end
                     paid_amount -= advance_amount_paid  
-                    bal = balance.to_d - paid_amount.to_d
+                    bal = balance.to_i - paid_amount.to_i
                     
                     if bal.to_f > 0
                       fees_to_paid += 1

@@ -102,7 +102,7 @@
 
               </div>
               <hr class="label-underline"></hr>
-              <div class="label-field-pair">
+              <div class="label-field-pair radio_type">
                   <label for="student_grade"><%= t('gender') %></label>
                   <div class="text-input-bg">
                     <%= s.radio_button  "gender", "m" %><%= t('male') %>&nbsp&nbsp;&nbsp;<%= s.radio_button  "gender", "f" %><%= t('female') %>
@@ -263,3 +263,9 @@
 <% content_for :head do %>
   <%= javascript_include_tag "custom/student_edit_velki" %>
 <% end %>
+<style>
+    .label-field-pair.radio_type input
+    {
+      width:28px;
+    }
+</style>    

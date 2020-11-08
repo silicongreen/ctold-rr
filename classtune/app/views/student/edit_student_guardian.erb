@@ -98,19 +98,27 @@
   I18n.l(@student.date_of_birth,:format=>"%d %b %Y") , :year_range => 72.years.ago..0.years.ago,:popup=>"force", :class=>"form-control form-control-date" %></div>
 
               </div>
+              <div class="label-field-pair">
+                  <label for="student_grade"><%= t('gender') %></label>
+                  <div>
+                    <label class="radio-inline"><%= s.radio_button  "gender", "m" %><%= t('male') %></label>
+                    <label class="radio-inline"><%= s.radio_button  "gender", "f" %><%= t('female') %></label>
+                  </div>
+              </div>
+              
               
               <div class="label-field-pair">
                   <label for="student_blood_group"><%= t('blood_group') %></label>
-                  <div class="text-select-bg"><%= select :student, :blood_group, ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"],{:prompt=> "#{t('select_blood_group')}"},:selected => @student.blood_group %></div>
+                  <div class="text-input-bg"><%= select :student, :blood_group, ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"],{:prompt=> "#{t('select_blood_group')}"},:selected => @student.blood_group %></div>
               </div>
               <div class="label-field-pair">
                   <label for="student_nationality"><%= t("nationality") %><span class="necessary-field">*</span></label>
-                  <div class="text-select-bg"><%= select :student, :nationality_id, Country.all.map {|c| [c.nationality.blank? ? c.name: c.nationality.nationality, c.id]}, :selected => @student.nationality.id %></div>
+                  <div class="text-input-bg"><%= select :student, :nationality_id, Country.all.map {|c| [c.nationality.blank? ? c.name: c.nationality.nationality, c.id]}, :selected => @student.nationality.id %></div>
 
               </div>
               <div class="label-field-pair">
                   <label for="student_religion"><%= t('religion') %></label>
-                  <div class="text-select-bg"><%= select :student, :religion, ["Islam", "Hindu", "Christian", "Buddhist", "Other"],:selected=> @student.religion %></div>
+                  <div class="text-input-bg"><%= select :student, :religion, ["Islam", "Hindu", "Christian", "Buddhist", "Other"],:selected=> @student.religion %></div>
               </div>
             
               <% end %>
@@ -119,6 +127,12 @@
                   <div class="text-input-bg"><%= s.text_field :address_line1, :value => @student.address_line1 %></div>
               </div>
 
+              <hr class="label-underline"></hr>
+              
+              <div class="label-field-pair">
+                  <label for="student_permanent_address"><%= "Permanent Address" %></label>
+                  <div class="text-input-bg"><%= s.text_field :permanent_address, :class=>"form-control" %></div>
+              </div>
               <hr class="label-underline"></hr>
 
               <div class="label-field-pair">

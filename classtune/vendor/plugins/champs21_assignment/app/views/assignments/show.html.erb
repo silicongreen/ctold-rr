@@ -245,9 +245,8 @@
           <div id="quickinfo">  <h5><%= link_to_remote  "#{t('assigned')} (#{@students_assigned_count})",:update=>"assigned_students",:url=>{:action=>:assignment_student_list,:id=>@assignment.id,:status=>"assigned"},   :before => "Element.show('loader')", :success => "Element.hide('loader')"%></h5>
             <h5> <%= link_to_remote  "#{t('answered')} (#{@answered_count})",:update=>"assigned_students",:url=>{:action=>:assignment_student_list,:id=>@assignment.id,:status=>"answered"},   :before => "Element.show('loader')", :success => "Element.hide('loader')"%></h5>
             <h5> <%= link_to_remote  "#{t('pending')} (#{@pending_count})",:update=>"assigned_students",:url=>{:action=>:assignment_student_list,:id=>@assignment.id,:status=>"pending"},   :before => "Element.show('loader')", :success => "Element.hide('loader')"%></h5>
-            <% if MultiSchool.current_school.id == 2 %>
-              <h5> <%= link_to_remote  "Comments (#{@comments_count})",:update=>"assigned_students",:url=>{:action=>:assignment_student_list,:id=>@assignment.id,:status=>"comments"},   :before => "Element.show('loader')", :success => "Element.hide('loader')"%></h5>
-            <% end %>
+            <h5> <%= link_to_remote  "Comments (#{@comments_count})",:update=>"assigned_students",:url=>{:action=>:assignment_student_list,:id=>@assignment.id,:status=>"comments"},   :before => "Element.show('loader')", :success => "Element.hide('loader')"%></h5>
+          
           </div>
 
           
@@ -329,7 +328,7 @@
       
     <% end %>
       
-   <% if MultiSchool.current_school.id == 2 and @current_user.student? %>
+   <% if @current_user.student? %>
             <h4 id="leave-a-comment"><%= t('leave_comment') %>   <%= image_tag("loader.gif",
             :align => "absmiddle",
             :border => 0,

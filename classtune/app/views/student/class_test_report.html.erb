@@ -44,7 +44,7 @@
                       :success => "Element.hide('loader');j('.header-tabs li').removeClass('active');j('.header-tabs li.progress_report').addClass('active');",
                       :url => {:controller=>"student",:action => "progress_report"} %>
                 </li>
-                <li  class='<% if @extra == "groupexam"  %>active <% end %> groupexam_report f2'>
+                <li  class='<% if @extra == "groupexam"  %>active <% end %> groupexam_report f2' id="combined_exam">
                     <%= link_to_remote "Combined Exam",
                       :update => "report-data-all",
                       :before => "Element.show('loader')",
@@ -315,3 +315,10 @@
   <%= javascript_include_tag "custom/assignment" %>
 <% end %>
 <%= stylesheet_link_tag 'pagination_and_table' %>
+
+<script type="text/javascript">
+ j(document).ready(function(){
+     j("#combined_exam a").trigger("click"); 
+ });
+        
+</script>  

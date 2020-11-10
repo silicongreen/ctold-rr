@@ -113,6 +113,15 @@
               <%= link_to "View Applications", :controller=>"student", :action=>"studentformlist" %>
           <% end %>
       
+          <% if @new_reminder.rtype==2001 %>
+              <% if @current_user.parent? %>
+                <%= link_to "#{t('view_exam_report_reminder')}", :controller=>"exam", :action=>"generated_report5",:connect_exam=>@new_reminder.rid,:student=>session[:student_id],:type=>"grouped" %>
+             <% else %>
+                <% @student = @current_user.student_record %>
+                <%= link_to "#{t('view_exam_report_reminder')}", :controller=>"exam", :action=>"generated_report5",:connect_exam=>@new_reminder.rid,:student=>@student.id,:type=>"grouped" %>
+             <% end %>
+          <% end %>
+      
           <% if @new_reminder.rtype==1000 and @current_user.parent? %>
               <%= link_to "View Applications", :controller=>"student", :action=>"form_to_apply", :id=>@new_reminder.student_id %>
           <% end %>

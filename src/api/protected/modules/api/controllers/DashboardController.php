@@ -356,7 +356,7 @@ class DashboardController extends Controller
                         $i++;
                     }
                 } 
-                else if($value['rtype']==3)
+                else if($value['rtype']==3 or $value['rtype']==2001)
                 {
                     $exam = new ExamGroups();
                     $examsdata = $exam->findByPk($id);
@@ -370,7 +370,7 @@ class DashboardController extends Controller
                         $formated_feed[$i]['attachment_file_name'] = "";
                        
                         $formated_feed[$i]['is_read'] = $value['is_read']; 
-                        $formated_feed[$i]['rtype'] = $value['rtype'];
+                        $formated_feed[$i]['rtype'] = 3;
                         $formated_feed[$i]['rid'] = $value['rid'];
                         $i++;
                     }

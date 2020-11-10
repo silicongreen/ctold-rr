@@ -1138,7 +1138,7 @@ class ExamController < ApplicationController
           DelayedReminderJob.new( :sender_id  => current_user.id,
             :recipient_ids => available_user_ids,
             :subject=>"#{t('result_published')}",
-            :rtype=>3,
+            :rtype=>2001,
             :student_id => student_ids,
             :batch_id => batch_ids,
             :rid=>@exam_connect.id,

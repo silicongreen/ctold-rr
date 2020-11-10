@@ -359,7 +359,15 @@ class DashboardController extends Controller
                 else if($value['rtype']==3 or $value['rtype']==2001)
                 {
                     $exam = new ExamGroups();
-                    $examsdata = $exam->findByPk($id);
+                    if($value['rtype']==2001)
+                    {
+                       $exam_connect = new ExamConnect();
+                       $examsdata = $exam_connect->findByPk($id); 
+                    }
+                    else {
+                        $examsdata = $exam->findByPk($id);
+                    }
+                    
                     if($examsdata)
                     {
                         $formated_feed[$i]['title'] = "<b>".$examsdata->name."</b>";

@@ -172,8 +172,9 @@
                   </tr>   
 
               </table>
-
-              
+              <% if !@exam_comment.blank? %>
+                <% @report_data['present'] = @exam_comment.comments %> 
+              <% end %>
               <h4 class="h4-evaluation"><b>Evaluation</b></h4>
               <table id="pdf-table" class="evaluation" width="99.8%" >
                    

@@ -18,7 +18,7 @@
 #under the License. -%>
 
 <div class="box">
-  <% form_for :upload_syllabus, :url => {:action => 'upload_syllabus',:batch_name=> @batch_name,:course_name=> @course_name} do |f| %>
+  <% form_for :upload_syllabus, :html => { :multipart => true }, :url => {:action => 'upload_syllabus',:batch_name=> @batch_name,:course_name=> @course_name} do |f| %>
     <%= error_messages_for 'upload_syllabus', :header_message => nil %>
     <div class="label-field-pair">
       <label>Title : </label>

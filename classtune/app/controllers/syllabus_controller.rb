@@ -147,7 +147,7 @@ class SyllabusController < ApplicationController
     if request.post?
       @upload_syllabus.batch_name = @batch_name
       @upload_syllabus.course_name = @course_name
-      @upload_syllabus.auther_id = current_user.id
+      @upload_syllabus.author_id = current_user.id
       if @upload_syllabus.save
         flash[:notice] = "Successfully Saved"
         redirect_to :action => 'upload_syllabus'

@@ -80,6 +80,15 @@
             :html => {:class => 'f2'}
         %>
         </li>
+        <li>
+          <%= link_to_remote "Uplods",
+            :before => "Element.show('loader2');",
+            :success => "Element.hide('loader2');",
+            :update => 'data_div',
+            :url=>{:controller=>"syllabus", :action=>"syllabus_by_upload"},
+            :html => {:class => 'f2'}
+        %>
+        </li>
       </ul>
     </div>
   </div>

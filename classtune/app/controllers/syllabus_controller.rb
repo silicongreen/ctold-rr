@@ -45,6 +45,18 @@ class SyllabusController < ApplicationController
       @data = terms['data']
     end
   end
+  def syllabus_by_upload
+    if current_user.parent?
+      student_id = current_user.guardian_entry.current_ward_id 
+    else
+      student_id = current_user.student_record.id
+    end 
+    @student_data = Student.find student_id
+    @batch_name =  @student_data.batch.name
+    @course_name = @student_data.batch.course.course_name
+    @syllabus_uploads = UploadSyllabus.find_all_by_batch_name_and_course_name(@batch_name,@course_name)
+    render :partial => 'syllabus_by_upload_list'
+  end
   
   def syllabus_by_term
     

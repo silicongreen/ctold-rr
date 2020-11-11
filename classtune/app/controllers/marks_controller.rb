@@ -301,14 +301,30 @@ class MarksController < ApplicationController
       unless @exam_group.blank?
         exam_group_batch = @exam_group.batch
         exam_subject = exam.subject
+        show_exam = true
+        all_group_exam = GroupedExam.find_all_by_exam_group_id(@exam_group.id)
+        unless all_group_exam.blank?
+          map_connect_id = all_group_exam.map(&:connect_exam_id)
+          all_exam_connect = ExamConnect.find_all_by_id(map_connect_id)
+          unless all_exam_connect.blank?
+            all_exam_connect.each do |exam_connect|
+              if exam_connect.is_published.to_i == 1
+                show_exam = false
+                break
+              end
+            end
+          end
+        end
         unless exam_subject.blank?  or exam_group_batch.blank? or @exam_group.is_deleted == true or (@exam_group.result_published == true and MultiSchool.current_school.id != 323)
-          data[k] = []
+          if show_exam == true
+            data[k] = []
 
-          data[k][0] = @template.link_to exam_group_batch.full_name, [@exam_group, exam], :target => "_blank"
-          data[k][1] = @template.link_to @exam_group.name, [@exam_group, exam], :target => "_blank"
-          data[k][2] = @template.link_to exam_subject.name, [@exam_group, exam], :target => "_blank"
+            data[k][0] = @template.link_to exam_group_batch.full_name, [@exam_group, exam], :target => "_blank"
+            data[k][1] = @template.link_to @exam_group.name, [@exam_group, exam], :target => "_blank"
+            data[k][2] = @template.link_to exam_subject.name, [@exam_group, exam], :target => "_blank"
 
-          k = k+1
+            k = k+1
+          end
         end
       end
     end

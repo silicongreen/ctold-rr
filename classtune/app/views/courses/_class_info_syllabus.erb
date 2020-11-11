@@ -22,7 +22,7 @@
             <%#*new_batch_exam_group_path(Batch.find(batch_id),:class_exam=>true)%>
             <% unless @batch_data.nil? %>
             <%= link_to t('syllabus_text'), {:controller => "syllabus", :action => 'show_syllabus', :batch_id => @batch_data.id, :batch_name => @batch_data.name, :course_name => course.course_name,:class=>true},:target => "_blank", :class => "user_button", :style => "margin-top: 0px;"  %> 
-            &nbsp;&nbsp;<%= link_to "Upload Syllabus", {:controller => "syllabus", :action => 'upload_syllabus',:batch_name => @batch_data.name, :course_name => course.course_name},:target => "_blank", :class => "user_button", :style => "margin-top: 0px;"  %>
+            &nbsp;&nbsp;<%= link_to "Uploads", {:controller => "syllabus", :action => 'upload_syllabus',:batch_name => @batch_data.name, :course_name => course.course_name},:target => "_blank", :class => "user_button", :style => "margin-top: 0px;"  %>
             <% end %>
         </div>
       </li>

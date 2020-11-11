@@ -2,7 +2,7 @@
 #page.visual_effect(:highlight, 'student-category-list')
 unless @upload_syllabus.errors.full_messages.present?
   page.replace_html 'syllabus-upload-form', :partial => 'syllabus_upload_add_form'
-  page.replace_html 'syllabus-upload-list', :partial => 'syllabus-upload-list'
+  page.replace_html 'syllabus-upload-list', :partial => 'syllabus_upload_list'
   page.replace_html 'flash_box', :text => "<p class='flash-msg'>Successfully updated</p>"
 else
   page.replace_html 'syllabus-upload-form', :partial => 'syllabus_upload_edit_form'

@@ -167,3 +167,8 @@
     width: 35px;
 }
 
+#category-list li div.category-name {
+    width: 360px;
+    font-weight: bold;
+    font-size: 13px;
+}

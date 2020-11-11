@@ -167,3 +167,7 @@
     text-decoration: line-through;
     width: 35px;
 }
+#category-list li div.category-name
+{
+    width: 380px;
+}

@@ -96,7 +96,6 @@
     width: 612px  !important;
     height: 194px !important;
 }
-
 #category-list {
     clear : both;
     padding : 10px 0 40px 0px;
@@ -166,8 +165,4 @@
     font-size: 0.9em;
     text-decoration: line-through;
     width: 35px;
-}
-#category-list li div.category-name
-{
-    width: 380px;
 }

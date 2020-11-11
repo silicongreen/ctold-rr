@@ -138,6 +138,54 @@ class SyllabusController < ApplicationController
     end
   end
   
+  def upload_syllabus 
+    @batch_name =  params[:batch_name]
+    @course_name = params[:course_name]
+    @syllabus_uploads = UploadSyllabus.find_all_by_batch_name_and_course_name(@batch_name,@course_name)
+    @upload_syllabus = UploadSyllabus.new(params[:upload_syllabus])
+    
+    if request.post?
+      if @upload_syllabus.save
+        flash[:notice] = "Successfully Saved"
+        redirect_to :action => 'upload_syllabus'
+      end
+    end
+  end
+  
+  def upload_syllabus_delete
+    @upload_syllabus = UploadSyllabus.find(params[:id])
+    @batch_name = @upload_syllabus.batch_name
+    @course_name = @upload_syllabus.course_name
+    @upload_syllabus.destroy
+    @syllabus_uploads = UploadSyllabus.find_all_by_batch_name_and_course_name(@batch_name,@course_name)
+  end
+
+  def edit_upload_syllabus
+    @upload_syllabus = UploadSyllabus.find(params[:id])
+  end
+
+  def upload_syllabus_edit
+    @upload_syllabus = UploadSyllabus.find(params[:id])
+    @batch_name = @upload_syllabus.batch_name
+    @course_name = @upload_syllabus.course_name
+    if @upload_syllabus.update_attributes(params[:upload_syllabus])
+      @syllabus_uploads = UploadSyllabus.find_all_by_batch_name_and_course_name(@batch_name,@course_name)
+      @upload_syllabus = UploadSyllabus.new
+    end
+  end
+  def download_attachment
+    @upload_syllabus = UploadSyllabus.find params[:id]
+    filename = @upload_syllabus.attachment_file_name
+    unless @upload_syllabus.nil?
+        send_file  @upload_syllabus.attachment.path , :type=>@upload_syllabus.attachment.content_type, :filename => filename
+    else
+      flash[:notice]= "#{t('flash_msg4')}"
+      redirect_to :controller=>:user ,:action=>:dashboard
+    end
+  end
+  
+  
+  
   def new
     @is_class = false
     unless params[:class].nil? 

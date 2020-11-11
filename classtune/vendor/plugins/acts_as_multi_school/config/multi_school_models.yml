@@ -157,6 +157,7 @@ multi_school_models:
 - StudentCategoryLog
 - StudentBatchLog
 - AttendanceVehicle
+- UploadSyllabus
 
 general_models: 
 - PrivilegeTag

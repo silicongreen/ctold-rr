@@ -1,0 +1,4 @@
+
+page.replace_html 'syllabus-upload-form', :partial => 'syllabus_upload_edit_form'
+page.replace_html 'syllabus-upload-list',""
+page.replace_html 'flash_box', :text => ""

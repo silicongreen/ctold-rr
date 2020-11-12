@@ -244,6 +244,37 @@ class Reminders extends CActiveRecord
                 $i = 0;
                 foreach($obj_reminder as $value)
                 {
+                   if($user_data->student && isset($std_data) && $value->rtype == 4 or $value->rtype == 31)
+                   {
+                       $id = $value['rid'];
+                       if($value->rtype == 4)
+                       {
+                            $assignment = new Assignments();
+                            $homework_data = $assignment->getAssignment("",array(), "", 1, null, 1, 1,$id);
+                            if($homework_data)
+                            {
+                                $subjectObj = new Subjects();
+                                $subject_data = $subjectObj->findByPk($homework_data->subject_id);
+                            }
+                       }
+                       if($value->rtype == 31)
+                       {
+                            $classwork = new Classworks();
+                            $classwork_data = $classwork->getClasswork("",array(), "", 1, null, 1, 1,$id);
+                            if($classwork_data)
+                            {
+                                $subjectObj = new Subjects();
+                                $subject_data = $subjectObj->findByPk($classwork_data->subject_id);
+                            }
+                       }
+                       if(isset($subject_data))
+                       {
+                           if($std_data->batch_id != $subject_data->batch_id)
+                           {
+                               continue;
+                           }
+                       }
+                   }
                    $rid_rtype_string = $value->rid."-".$value->rtype;
                    if(in_array($rid_rtype_string, $rid_rtype))
                    {

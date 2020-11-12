@@ -26,7 +26,9 @@
         <div class="category-delete"><%= link_to_remote "#{t('delete_text')}", :url => { :action => 'upload_syllabus_delete', :id => c.id } , :confirm =>"#{t('delete_confirm_msg')}"%>
         </div>
         <div class="category-edit">
-          <%= link_to 'Download Syllabus', :controller => "syllabus", :action => "download_attachment" , :id=>c.id %>
+          <% unless c.attachment_file_name.nil? %>
+              <%= link_to 'Download Syllabus', :controller => "syllabus", :action => "download_attachment" , :id=>c.id %>
+            <% end %>
         </div>    
       </li>
      <% end %>

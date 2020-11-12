@@ -331,7 +331,7 @@
                                                             <p style="font-size: 17px;font-weight: 500;">This is to certify that,</p>
                                                         </div>
                                                         <div class="col-7 applied_b">
-                                                            <p style="margin-left: -30px;font-style: italic;">
+                                                            <p style="margin-left: -30px;margin-top: -5px;font-style: italic;">
                                                                 <%= @student.full_name %>
                                                             </p>
                                                         </div>
@@ -343,7 +343,7 @@
                                                             <p style="font-size: 17px;font-weight: 500;">date of birth</p>
                                                         </div>
                                                         <div class="col-7 birth_day">
-                                                            <p style="margin-left: -30px;font-style: italic;">
+                                                            <p style="margin-left: -30px;margin-top: -5px;font-style: italic;">
                                                                 <%= I18n.l(@student.date_of_birth,:format=>"%d %b %Y") unless @student.date_of_birth.nil? %>
                                                             </p>
                                                         </div>
@@ -357,7 +357,7 @@
                                                             <p style="font-size: 17px;font-weight: 500;">Class:</p>
                                                         </div>
                                                         <div class="col-6 class_b">
-                                                            <p style="margin-left: -15px;font-style: italic;">
+                                                            <p style="margin-left: -15px;margin-top: -5px;font-style: italic;">
                                                                 <%= @student.batch.course.course_name %>
                                                             </p>
                                                         </div>
@@ -369,7 +369,7 @@
                                                             <p style="font-size: 17px;font-weight: 500;">father's name:</p>
                                                         </div>
                                                         <div class="col-7 pl-0 pr-0 father_b">
-                                                            <p style="margin-left: 0px;font-style: italic;">
+                                                            <p style="margin-left: 0px;margin-top: -5px;font-style: italic;">
                                                                 <%= @std_guardians[0].full_name unless @std_guardians.blank? or @std_guardians[0].blank? %>
                                                             </p>
                                                         </div>
@@ -381,7 +381,7 @@
                                                             <p style="font-size: 17px;font-weight: 500;">mother's name:</p>
                                                         </div>
                                                         <div class="col-6 pl-0 pr-0 mother_b">
-                                                            <p style="font-style: italic;">
+                                                            <p style="font-style: italic;margin-top: -5px;">
                                                                 <%= @std_guardians[1].full_name unless @std_guardians.blank? or @std_guardians[1].blank? %>
                                                             </p>
                                                         </div>
@@ -396,7 +396,7 @@
                                                             <p style="font-size: 17px;font-weight: 500;">vill/area:</p>
                                                         </div>
                                                         <div class="col-6 village_b">
-                                                            <p style="margin-left: -60px;font-style: italic;">
+                                                            <p style="margin-left: -60px;margin-top: -5px;font-style: italic;">
                                                                 <%= @student.address_line2 %>
                                                             </p>
                                                         </div>
@@ -408,7 +408,7 @@
                                                             <p style="font-size: 17px;font-weight: 500;">post office:</p>
                                                         </div>
                                                         <div class="col-7 pl-0 pr-0 village_b1">
-                                                            <p style="margin-left: -15px;font-style: italic;">
+                                                            <p style="margin-left: -15px;margin-top: -5px;font-style: italic;">
                                                                
                                                             </p>
                                                         </div>
@@ -420,7 +420,7 @@
                                                             <p style="font-size: 17px;font-weight: 500;">police station:</p>
                                                         </div>
                                                         <div class="col-6 pl-0 pr-0 village_b2">
-                                                            <p style="margin-left: -5px;font-style: italic;">
+                                                            <p style="margin-left: -5px;margin-top: -5px;font-style: italic;">
                                                                 
                                                             </p>
                                                         </div>
@@ -435,7 +435,7 @@
                                                             <p style="font-size: 17px;font-weight: 500;">district:</p>
                                                         </div>
                                                         <div class="col-6 district_b">
-                                                            <p style="margin-left: -40px;font-style: italic;">
+                                                            <p style="margin-left: -40px;margin-top: -5px;font-style: italic;">
                                                                 <%= @student.city %>
                                                             </p>
                                                         </div>
@@ -447,7 +447,7 @@
                                                             <p style="font-size: 17px;font-weight: 500;">He/she has studied in this school from</p>
                                                         </div>
                                                         <div class="col-3 pl-0 pr-0 district_b1">
-                                                            <p style="margin-left: -5px;font-style: italic;">
+                                                            <p style="margin-left: -5px;font-style: italic;margin-top: -5px;">
                                                                 <%= I18n.l(@student.admission_date,:format=>"%b %Y") unless @student.admission_date.nil? %>
                                                             </p>
                                                         </div>
@@ -459,7 +459,7 @@
                                                             <p style="font-size: 17px;font-weight: 500;">to</p>
                                                         </div>
                                                         <div class="col-10 pl-0 pr-0 district_b3">
-                                                            <p style="margin-left: 0px;font-style: italic;">
+                                                            <p style="margin-left: 0px;font-style: italic;margin-top: -5px;">
                                                                 <%= I18n.l(@student.date_of_leaving,:format=>"%b %Y") unless @student.date_of_leaving.nil? %>
                                                             </p>
                                                         </div>

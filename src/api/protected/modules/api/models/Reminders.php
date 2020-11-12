@@ -250,7 +250,7 @@ class Reminders extends CActiveRecord
                        if($value->rtype == 4)
                        {
                             $assignment = new Assignments();
-                            $homework_data = $assignment->getAssignment("",array(), "", 1, null, 1, 1,$id);
+                            $homework_data = $assignment->findByPk($id);
                             if($homework_data)
                             {
                                 $subjectObj = new Subjects();
@@ -260,7 +260,7 @@ class Reminders extends CActiveRecord
                        if($value->rtype == 31)
                        {
                             $classwork = new Classworks();
-                            $classwork_data = $classwork->getClasswork("",array(), "", 1, null, 1, 1,$id);
+                            $classwork_data = $classwork->findByPk($id);
                             if($classwork_data)
                             {
                                 $subjectObj = new Subjects();

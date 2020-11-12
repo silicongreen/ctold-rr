@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>admit</title>
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400;600;700;900&family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet"> 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    </head>
+    <body>
+        <style type="text/css">
+            body{
+                background-color:  rgb(82, 86, 89);
+                margin-top: 40px;
+            }
+            .download_admit_all_content{
+                position: relative;
+            }
+            .ad_down{
+                position: absolute;
+                top: 34%;
+                left: calc(50% - 64px);
+            }
+            .ad_down{
+                display: none;
+            }
+            .admit_row_one{
+                padding-bottom: 11px;
+                padding-top: 12px;
+            }
+            .baner_img img {
+                width: 70px;
+                height: 70px;
+            }
+            .admint_stu_name{
+                font-family: 'Roboto', sans-serif;
+                font-size: 18px;
+                font-weight: 500;
+                margin: 0;
+            }
+            .admit_card_area{
+                width: 100%;
+                height: auto;
+            }
+            .admit_card{
+                width: 1041px;
+                margin: 0 auto;
+                background-color: #fff;
+                padding: 80px;
+            }
+            .border_area{
+                padding: 12px 18px 12px 18px;
+                border: 2px solid #000;
+            }
+            .admit_logo_area{
+                margin-bottom: 20px;
+            }
+            .admit_logo img{
+                width: 100%;
+                margin-left: 0px;
+            }
+            .admit_logo_text h3{
+                font-size: 20px;
+                font-weight: bold;
+                margin: 0;
+            }
+            .admit_logo_text p{
+                font-family: 'Roboto', sans-serif;
+                margin: 0;
+                font-size: 14px;
+                line-height: 20px;
+                color: #000;
+                font-weight: 400;
+            }
+            .header_table{
+                width: 100%;
+                border-collapse: collapse;
+            }
+            .header_table td{
+                border-top: 1px solid #000;
+                border-left: 1px solid #000;
+            }
+            .header_table tr:last-child{
+                border-bottom: 1px solid #000;
+            }
+            .header_table tr td:last-child{
+                border-right: 1px solid #000;
+            }
+            .headet_table_title td{
+                text-align: center;
+                font-size: 22px !important;
+                font-weight: 400 !important;
+                background: #F2F2F2 !important;
+                padding: 4px 0px !important;
+            }
+            .header_table tr td{
+                padding: 3px 0px 3px 10px;
+                font-size: 14px;
+                font-weight: 400;
+                color: #312e2e;
+                font-family: 'Roboto', sans-serif;
+            }
+            .body_row_one{
+                margin-top: 12px;
+            }
+            .admit_body_col .row{
+                margin-bottom: 0px;
+            }
+            .a_col_1 p:after{
+                content: '';
+                position: absolute;
+                width: 737px;
+                height: 1px;
+                border-bottom: 2px dotted #000;
+                bottom: 18px;
+                left: -8px;
+                font-family: 'Roboto', sans-serif;
+            }
+            .a_col_2 p:after{
+                content: '';
+                position: absolute;
+                width: 744px;
+                height: 1px;
+                border-bottom: 2px dotted #000;
+                bottom: 18px;
+                left: -16px;
+                font-family: 'Roboto', sans-serif;
+            }
+            .a_col_3 p:after{
+                content: '';
+                position: absolute;
+                width: 739px;
+                height: 1px;
+                border-bottom: 2px dotted #000;
+                bottom: 18px;
+                left: -10px;
+                font-family: 'Roboto', sans-serif;
+            }
+            .a_col_4 p:after{
+                content: '';
+                position: absolute;
+                width: 726px;
+                height: 1px;
+                border-bottom: 2px dotted #000;
+                bottom: 18px;
+                left: -73px;
+                font-family: 'Roboto', sans-serif;
+            }
+
+            .admit_card .admit_student_img img{
+                width: 130px;
+                height: 123px;
+                margin-left: -10px;
+            }
+            .a_up_row p{
+                margin: 0px;
+            }
+            .applied_b::after{
+                content: '';
+                position: absolute;
+                width: 343px;
+                height: 1px;
+                border-bottom: 2px dotted #000;
+                bottom: 18px;
+                left: -33px;
+                font-family: 'Roboto', sans-serif;
+            }
+            .birth_day::after{
+                content: '';
+                position: absolute;
+                width: 224px;
+                height: 1px;
+                border-bottom: 2px dotted #000;
+                bottom: 18px;
+                left: -37px;
+                font-family: 'Roboto', sans-serif;
+            }
+            .class_b::after{
+                content: '';
+                position: absolute;
+                width: 84px;
+                height: 1px;
+                border-bottom: 2px dotted #000;
+                bottom: 18px;
+                left: -11px;
+                font-family: 'Roboto', sans-serif;
+            }
+            .father_b::after{
+                content: '';
+                position: absolute;
+                width: 193px;
+                height: 1px;
+                border-bottom: 2px dotted #000;
+                bottom: 18px;
+                left: -10px;
+                font-family: 'Roboto', sans-serif;
+            }
+            .mother_b::after{
+                content: '';
+                position: absolute;
+                width: 276px;
+                height: 1px;
+                border-bottom: 2px dotted #000;
+                bottom: 18px;
+                left: -10px;
+                font-family: 'Roboto', sans-serif;
+            }
+            .village_b::after{
+                content: '';
+                position: absolute;
+                width: 203px;
+                height: 1px;
+                border-bottom: 2px dotted #000;
+                bottom: 18px;
+                left: -59px;
+                font-family: 'Roboto', sans-serif;
+            }
+            .village_b1::after{
+                content: '';
+                position: absolute;
+                width: 214px;
+                height: 1px;
+                border-bottom: 2px dotted #000;
+                bottom: 18px;
+                left: -32px;
+                font-family: 'Roboto', sans-serif;
+            }
+            .village_b2::after{
+                content: '';
+                position: absolute;
+                width: 140px;
+                height: 1px;
+                border-bottom: 2px dotted #000;
+                bottom: 18px;
+                left: -18px;
+                font-family: 'Roboto', sans-serif;
+            }
+            .district_b::after{
+                content: '';
+                position: absolute;
+                width: 141px;
+                height: 1px;
+                border-bottom: 2px dotted #000;
+                bottom: 18px;
+                left: -32px;
+                font-family: 'Roboto', sans-serif;
+
+            }
+            .district_b1::after{
+                content: '';
+                position: absolute;
+                width: 150px;
+                height: 1px;
+                border-bottom: 2px dotted #000;
+                bottom: 18px;
+                left: -28px;
+                font-family: 'Roboto', sans-serif;
+
+            }
+            .district_b3::after{
+                content: '';
+                position: absolute;
+                width: 157px;
+                height: 1px;
+                border-bottom: 2px dotted #000;
+                bottom: 18px;
+                left: 0px;
+                font-family: 'Roboto', sans-serif;
+            }
+            .sign_b:after{
+                content: '';
+                position: absolute;
+                width: 233px;
+                height: 1px;
+                border-bottom: 2px solid #000;
+                bottom: 0;
+                left: -18px;
+                font-family: 'Roboto', sans-serif;
+            }
+            .a_up_row{
+                margin-top: 18px;
+            }
+            .admit_principal{
+                margin-top: 25px;
+            }
+            .admit_principal p:last-child{
+                font-size: 16px;
+                text-align: center;
+                font-weight: 500;
+                margin: 0;
+            }
+        </style>
+
+        <div class="container">
+            <div class="row admit_row_one">
+                <div class="col-md-12 my my-auto admit_column_content">
+                    <div class="admit_card_area">
+                        <div class="admit_card">
+                            <div class="admit_border">
+                                <div class="border_area">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="admit_logo">
+                                                <img src="nascd.png">
+                                            </div>
+                                        </div>
+                                        <div class="col-9 pr-0 my-auto text-center" style="margin-left: -53px;">
+                                            <h3 style="font-size: 34px;font-weight: 700;">Nau Paribar Shishu Niketon Dhaka</h3>
+                                            <p style="font-size: 21px;margin-bottom: 1px;">Bangladesh Navy Family Welfare Association Dhaka</p>
+                                            <p style="font-size: 21px;">Navy Colony, Lalasarai, Mirpur - 14 <br> Dhaka - 1206</p>
+                                        </div>
+                                    </div>
+                                    <div class="row a_up_row">
+                                        <div class="col-md-12 my-auto">
+                                            <div class="row">
+                                                <div class="col-10"></div>
+                                                <div class="col-2 pl-0">
+                                                    <div class="serial_l">
+                                                        <p style="font-size: 17px;font-weight: 500;margin-top: -36px;">SL No - <span>85842</span></p>
+                                                    </div>	
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 text-center my-auto">
+                                            <h2 style="font-size: 23px;font-weight: bold;;text-transform: uppercase;margin-bottom: 15px;">Transfer Certificate</h2>
+                                        </div>
+                                    </div>
+                                    <div class="row body_row_one">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 admit_body_col">
+                                            <div class="row">
+                                                <div class="col-7">
+                                                    <div class="row">
+                                                        <div class="col-5">
+                                                            <p style="font-size: 17px;font-weight: 500;">This is to certify that,</p>
+                                                        </div>
+                                                        <div class="col-7 applied_b">
+                                                            <p style="margin-left: -40px;font-style: italic;">
+                                                                <%= @student.full_name %>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-5">
+                                                    <div class="row">
+                                                        <div class="col-5">
+                                                            <p style="font-size: 17px;font-weight: 500;">date of birth</p>
+                                                        </div>
+                                                        <div class="col-7 birth_day">
+                                                            <p style="margin-left: -40px;font-style: italic;">
+                                                                <%= I18n.l(@student.date_of_birth,:format=>"%d %b %Y") unless @student.date_of_birth.nil? %>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-2">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p style="font-size: 17px;font-weight: 500;">Class:</p>
+                                                        </div>
+                                                        <div class="col-6 class_b">
+                                                            <p style="margin-left: -19px;font-style: italic;">
+                                                                <%= @student.batch.course.course_name %>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="row">
+                                                        <div class="col-5 pr-0 pl-0">
+                                                            <p style="font-size: 17px;font-weight: 500;">father's name:</p>
+                                                        </div>
+                                                        <div class="col-7 pl-0 pr-0 father_b">
+                                                            <p style="margin-left: -5px;font-style: italic;">
+                                                                <%= @std_guardians[0].full_name unless @std_guardians.blank? or @std_guardians[0].blank? %>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="row">
+                                                        <div class="col-6 pr-0">
+                                                            <p style="font-size: 17px;font-weight: 500;">mother's name:</p>
+                                                        </div>
+                                                        <div class="col-6 pl-0 pr-0 mother_b">
+                                                            <p style="font-style: italic;">
+                                                                <%= @std_guardians[1].full_name unless @std_guardians.blank? or @std_guardians[1].blank? %>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p style="font-size: 17px;font-weight: 500;">vill/area:</p>
+                                                        </div>
+                                                        <div class="col-6 village_b">
+                                                            <p style="margin-left: -68px;font-style: italic;">
+                                                                <%= @student.address_line2 %>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="row">
+                                                        <div class="col-5 pr-0 pl-0">
+                                                            <p style="font-size: 17px;font-weight: 500;">post office:</p>
+                                                        </div>
+                                                        <div class="col-7 pl-0 pr-0 village_b1">
+                                                            <p style="margin-left: -22px;font-style: italic;">
+                                                               
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="row">
+                                                        <div class="col-6 pr-0">
+                                                            <p style="font-size: 17px;font-weight: 500;">police station:</p>
+                                                        </div>
+                                                        <div class="col-6 pl-0 pr-0 village_b2">
+                                                            <p style="margin-left: -11px;font-style: italic;">
+                                                                
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p style="font-size: 17px;font-weight: 500;">district:</p>
+                                                        </div>
+                                                        <div class="col-6 district_b">
+                                                            <p style="margin-left: -45px;font-style: italic;">
+                                                                <%= @student.city %>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="row">
+                                                        <div class="col-9 pr-0 pl-0">
+                                                            <p style="font-size: 17px;font-weight: 500;">He/she has studied in this school from</p>
+                                                        </div>
+                                                        <div class="col-3 pl-0 pr-0 district_b1">
+                                                            <p style="margin-left: -22px;font-style: italic;">
+                                                                <%= I18n.l(@student.admission_date,:format=>"%b %Y") unless @student.admission_date.nil? %>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="row">
+                                                        <div class="col-2 pr-0">
+                                                            <p style="font-size: 17px;font-weight: 500;">to</p>
+                                                        </div>
+                                                        <div class="col-10 pl-0 pr-0 district_b3">
+                                                            <p style="margin-left: 5px;font-style: italic;">
+                                                                <%= I18n.l(@student.date_of_leaving,:format=>"%b %Y") unless @student.date_of_leaving.nil? %>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p style="font-size: 17px;font-weight: 500;line-height: 38px; margin-bottom: 0px;">and all his/her dues has been issued. To the best of my knowledge, he/she is honest, humble and bears a good character. I wish him/her a bright future.</p>
+                                            <div class="row">
+                                                <div class="col-7 my-auto">
+                                                    <p style="font-size: 17px;font-weight: 500;margin-bottom: -24px;">Date:</p>
+                                                </div>
+                                                <div class="col-5">
+                                                    <div class="admit_principal">
+                                                        <div class="row">
+                                                            <div class="col-4">
+                                                                <p>Signature: </p>
+                                                            </div>
+                                                            <div class="col-8">
+                                                                <p style="margin-left: 5px;font-style: italic;" class="sign_b">
+                                                                    &nbsp;
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <p style="font-size: 20px;text-align: center;font-weight: 700;margin: 0;">Principal</p>
+                                                        <p style="font-style: italic;">Nau Paribar Shishu Niketon Dhaka</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>	            					
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </body>
+</html>
+<style type="text/css" media="print">
+    @page { size: landscape; }
+</style>
+<script>
+  window.print();
+</script>  

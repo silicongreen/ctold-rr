@@ -3033,6 +3033,8 @@ class StudentController < ApplicationController
       unless @student.immediate_contact_id.nil? or @student.immediate_contact_id == ''
     if MultiSchool.current_school.code == "sagc"
       render :template => "student/generate_tc", :layout => false  
+    elsif MultiSchool.current_school.code == "npsnd"
+      render :template => "student/generate_tc_npsnd", :layout => false
     else 
       render :pdf=>'generate_tc_pdf'
     end

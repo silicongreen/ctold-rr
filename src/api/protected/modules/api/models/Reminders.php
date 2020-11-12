@@ -244,7 +244,7 @@ class Reminders extends CActiveRecord
                 $i = 0;
                 foreach($obj_reminder as $value)
                 {
-                   if($user_data->student && isset($std_data) && $value->rtype == 4 or $value->rtype == 31)
+                   if($user_data->student && isset($std_data) && ($value->rtype == 4 or $value->rtype == 31))
                    {
                        $id = $value['rid'];
                        if($value->rtype == 4)

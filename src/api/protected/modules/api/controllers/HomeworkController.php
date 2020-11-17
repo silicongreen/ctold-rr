@@ -48,8 +48,9 @@ class HomeworkController extends Controller
                 $user_data = $userobj->findByPk(Yii::app()->user->id);
                 $userquiz = new UserQuiz();
                 $user = $userquiz->getQuizUser($user_data->id);
-               
-                if($user)
+                $schoolObj = new Schools();
+                $school_data = $schoolObj->findByPk(Yii::app()->user->schoolId);
+                if($user && $school_data && $school_data->quiz_active == 1)
                 {
                    $quiz_user_id = $user->id;
                    $quiz_key = mt_rand();

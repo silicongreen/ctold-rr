@@ -19,7 +19,7 @@ class UserQuiz extends MyActiveRecord
      */
     public function getDbConnection()
     {
-        return self::getAdvertDbConnection2();
+        return self::getAdvertDbConnection();
     }
 
     public function tableName()

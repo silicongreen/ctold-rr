@@ -38,7 +38,7 @@ class OnlineStudentExamController < ApplicationController
         @data = @response['data']
       end
       if !@data.blank? and !@data['quiz'].blank? and !@data['quiz_key'].blank? and !@data['quiz_user_id'].blank?
-        redirect_to "https://pay.classtune.com/main/login/login_via_key?key="+@data['quiz_key'].to_s+"&user_id="+@data['quiz_user_id'].to_s
+        redirect_to "https://quiz.classtune.com/main/login/login_via_key?key="+@data['quiz_key'].to_s+"&user_id="+@data['quiz_user_id'].to_s
       else
         redirect_to  :action => 'index'
       end  

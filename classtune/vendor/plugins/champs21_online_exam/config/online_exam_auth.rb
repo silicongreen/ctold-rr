@@ -89,6 +89,7 @@ authorization do
       :save_scores,
       :save_history,
       :started_exam,
+      :go_to_online_quiz,
       :exam_list,
       :exam_result_details
     ]
@@ -103,6 +104,7 @@ authorization do
       :save_scores,
       :save_history,
       :started_exam,
+      :go_to_online_quiz,
       :exam_list,
       :exam_result_details
     ]

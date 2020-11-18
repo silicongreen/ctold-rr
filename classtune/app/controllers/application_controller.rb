@@ -420,10 +420,19 @@ class ApplicationController < ActionController::Base
       end  
     end 
     return free
-  end  
+  end 
+  
+  def gc_check
+    if ObjectSpace.each_object(File).to_a.size > 30  
+      GC.start if GC.enable
+    else
+      GC.disable
+    end
+  end
   
   def activity_check
     #abort('here')
+    gc_check
     @session_end_time_diff = 15
     now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
     unless current_user.blank?

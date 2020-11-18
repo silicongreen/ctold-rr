@@ -425,8 +425,6 @@ class ApplicationController < ActionController::Base
   def gc_check
     if ObjectSpace.each_object(File).to_a.size > 30  
       GC.start if GC.enable
-    else
-      GC.disable
     end
   end
   

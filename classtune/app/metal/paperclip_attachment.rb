@@ -40,6 +40,7 @@ class PaperclipAttachment
           file_open = File.open(file_attachment.path(:original))
           cache_expire = 60*60*24*365
           return [200, {"Content-Type" => file_attachment.content_type, "Etag" => "'#{record.updated_at.strftime('%Y%m%d%H%m%S')}'", "Cache-Control" => "private", "Connection" => "keep-alive", "Expires" => Time.at(Time.now.to_i + cache_expire).strftime("%a, %d %b %Y %H:%m:%S GMT")}, [file_open.read]]
+          file_open.close
         else
           return [401, {"Content-Type" => "text/html"}, ["Unauthorized Access."]]
         end

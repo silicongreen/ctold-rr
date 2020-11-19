@@ -132,6 +132,11 @@ AND exam_groups.result_published = 1"
                                   :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .report_box_icon').addClass('active');",
                                   :url => {:controller=>"dashboards",:action => "exam_result_data_student"} %>
                             </li>
+                            <% if MultiSchool.current_school.quiz_active %>
+                            <li class="als-item">
+                                <%=  link_to "<div class='quiz_box_icon'><span class='f2'>QUIZ</span></div>", :controller => 'online_student_exam', :action => 'go_to_online_quiz' %>
+                            </li>
+                            <% else %>
                             <li class="als-item">
                                 <%          
                                 sql = "SELECT COUNT( reminders.id ) AS total_count
@@ -158,6 +163,7 @@ AND online_exam_groups.is_published = 1"
                                   :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .quiz_box_icon').addClass('active');",
                                   :url => {:controller=>"dashboards",:action => "quize_data"} %>
                             </li>
+                            <% end %>
                            
                             
                            

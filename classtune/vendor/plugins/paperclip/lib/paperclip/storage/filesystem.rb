@@ -40,7 +40,7 @@ module Paperclip
           log("saving #{path(style_name)}")
           FileUtils.mv(file.path, path(style_name))
           FileUtils.chmod(0644, path(style_name))
-          file.unlink
+          #file.unlink
         end
         @queued_for_write = {}
       end

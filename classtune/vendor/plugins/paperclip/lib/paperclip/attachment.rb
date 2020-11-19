@@ -116,7 +116,7 @@ module Paperclip
       instance_write(:fingerprint, generate_fingerprint(@queued_for_write[:original]))
     ensure
       uploaded_file.close if close_uploaded_file
-      uploaded_file.unlink if close_uploaded_file
+      #uploaded_file.unlink if close_uploaded_file
     end
 
     # Returns the public URL of the attachment, with a given style. Note that

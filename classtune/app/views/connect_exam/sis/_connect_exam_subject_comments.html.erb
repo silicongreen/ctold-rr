@@ -197,8 +197,8 @@
                                                         <% exam_group_remarks = exam_score_split[@group_loop.to_i] %>
                                                       <% end %>
                                                     <% end %>
-                                                    <%= group_name.name.upcase %>
-                                                    <% if group_name.name.upcase == "ATTENDANCE" or group_name.name.upcase == "HOMEWORK"  %>
+                                                    
+                                                    <% if group_name.name.upcase.strip == "ATTENDANCE"  %>
                                                       <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
                                                         <option value="NA" >Select</option>
                                                         <option value="R" <% if exam_group_remarks.to_s == 'R' %> selected="selected" <% end %>  >Regular</option>
@@ -239,7 +239,7 @@
                                                           <option value="4" <% if exam_group_remarks.to_i == 4 %> selected="selected" <% end %>  >Needs Improvement</option>
                                                           <option value="5" <% if exam_group_remarks.to_i == 5 %> selected="selected" <% end %>  >Causing Concern</option>
                                                       </select>
-                                                    <% elsif group_name.name.upcase == "HOMEWORK" %>
+                                                    <% elsif group_name.name.upcase.strip == "HOMEWORK" %>
                                                       <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
                                                         <option value="NA" >Select</option>
                                                         <option value="R" <% if exam_group_remarks.to_s == 'R' %> selected="selected" <% end %>  >Regular</option>

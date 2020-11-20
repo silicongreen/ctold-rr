@@ -197,6 +197,7 @@
                                                         <% exam_group_remarks = exam_score_split[@group_loop.to_i] %>
                                                       <% end %>
                                                     <% end %>
+                                                    <%= group_name.name.upcase %>
                                                     <% if group_name.name.upcase == "ATTENDANCE" or group_name.name.upcase == "HOMEWORK"  %>
                                                       <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
                                                         <option value="NA" >Select</option>

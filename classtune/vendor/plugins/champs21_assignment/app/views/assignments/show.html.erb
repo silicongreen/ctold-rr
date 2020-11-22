@@ -44,7 +44,7 @@
             emp_name += ' ' + @assignment.employee.last_name
           end
         end
-        unless @assignment.content.index("</").nil? && !@assignment.created_at.blank? && @assignment.created_at.to_s < "2020-11-08 01:17:00"
+        unless @assignment.content.index("</").nil? && !@assignment.created_at.blank? && (@assignment.created_at.to_s < "2020-11-08 01:17:00" || @assignment.created_at.to_s > "2020-11-22 01:17:00")
           @assignment.created_at = @assignment.created_at.to_time + 6*60*60
         end
       %>

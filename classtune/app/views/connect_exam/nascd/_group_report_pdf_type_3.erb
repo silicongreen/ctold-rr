@@ -1,0 +1,447 @@
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+  <%= render  :partial=>"/connect_exam/nascd/header" %>
+  <div id="page-yield"  class="available_sections1 sjis-new sfx">
+      <table id="pdf-table" class="margin-top-bottom-20" width="99.8%" cellspacing="0">
+          <tr class="even">
+              <td>Student's Name : <b><%= @student.full_name %></b></td>
+              <td>Class : <b><%= @batch.course.course_name %></b></td>
+              <td>Section : <b><%= @batch.course.section_name %></b></td>
+              <td>Roll : <b><%= @student.class_roll_no %></b></td>
+          </tr>
+          <tr class="even">
+              <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
+              <td colspan="1">Academic Year : 
+                  <b>
+                      <% if month_number.to_i>7 %>
+                        <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>
+                      <% else %>
+                        <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>
+                      <% end %>
+                  </b>  
+              </td>
+              <td colspan="3">Class Teacher's Name : 
+                  <% unless @assigned_employee.blank? %>
+                    <% @assigned_employee.each do |emp| %>
+                      <% emp_full_name = emp.first_name.to_s+" "+emp.last_name.to_s  %>
+                      <b><%= emp.first_name %>&nbsp;<%= emp.last_name %></b>
+                      <% break %>
+                    <% end %>
+                  <% end %>
+              </td>
+
+
+          </tr>
+      </table>
+      <div class ="current_batch" style="margin-left:0px;">
+          <div id="grouped_exam_report">
+
+
+
+              <table id="pdf-table" width="99.8%" cellspacing="0">
+                  <% c = 'even'  %>
+
+                  <tr class="table-header">
+                      <td colspan='8'><b><%= @connect_exam_obj.name %></b></td>
+                  </tr>
+                  <tr class="table-header">
+                      <td class="col-pdf no-warp" rowspan="2"><b><%= "Subject" %></b></td>
+                      <td class="col-pdf no-warp" rowspan="2"><b><%= "Full Marks" %></b></td>
+
+                      <td class="col-pdf no-warp" colspan="2"><b><%= "Term Exam" %></b></td>
+                      <td class="col-pdf no-warp" rowspan="2"><b><%= "Total Marks" %></b></td>
+                      <td class="col-pdf no-warp" rowspan="2"><b><%= "Highest Marks" %></b></td>
+                      <td class="col-pdf no-warp" rowspan="2"><b><%= "Grading" %></b></td>
+                      <td class="col-pdf no-warp" rowspan="2"><b><%= "Grade Point" %></b></td>
+                  </tr>
+                  <tr class="table-header">
+                      <% unless @report_data['report']['exams'].blank? %>
+                        <% @report_data['report']['exams'].each do |report| %>
+                          <td class="col-pdf"><%= report['exam_name'] %></td>
+                        <% end %>
+                      <% end %> 
+                  </tr>
+                  <% total_mark = 0 %>
+                  <% full_mark = 0 %>
+                  <% total_grade = 0 %>
+                  <% total_subject = 0 %>
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% subjectdata = Subject.find(subjects['id'].to_i) %>
+                      <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                      <% if @has_exam_student == false %>
+                        <% next %>
+                      <% end %>
+                      <% if subjects['no_exams_sjws'].to_i == 1  %>
+                        <% next %>
+                      <% end %>
+                      <% total_subject = total_subject+1 %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                          <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>
+                          <% max_mark = 0 %>
+                          <% obtain_mark = 0 %>
+                          <% unless @report_data['report']['exams'].blank? %>
+                            <% @report_data['report']['exams'].each do |report| %>
+                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                <% max_mark = max_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                              <% end %>
+                            <% end %>
+                          <% end %>
+                          <td class="col-pdf"><%= max_mark.round() %></td>
+                          <% unless @report_data['report']['exams'].blank? %>
+                            <% @report_data['report']['exams'].each do |report| %>
+                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %></td>
+                                <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                              <% else %>
+                                <td class="col-pdf">-</td>
+                              <% end %>  
+                            <% end %>
+                          <% end %>
+                          <% obtain_mark = obtain_mark.round() %>
+                          <td class="col-pdf"><%= obtain_mark %></td>
+                          
+                          
+                          <%
+                              main_mark = 0
+                              if obtain_mark > 0
+                                main_mark = (obtain_mark.to_f/max_mark.to_f)*100
+                              end
+                              grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                              highest_mark = 0
+                              if !@subject_highest.blank? and !@subject_highest[subjects['id'].to_i].blank?
+                                highest_mark = @subject_highest[subjects['id'].to_i].to_f
+                              end
+                          %>
+                          <td class="col-pdf"><%= highest_mark %></td>
+                          <% if !grade.blank? and !grade.name.blank? %>
+                            <td class="col-pdf"><%= grade.name %></td>
+                            <td class="col-pdf"><%= grade.credit_points.to_f %></td>
+                            <% total_grade = total_grade+grade.credit_points.to_f %>
+                          <% end %>
+                          <% total_mark = total_mark+obtain_mark %>
+                          <% full_mark = full_mark+max_mark %>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                  <% grade_point_avg = 0 %>
+                  <% if total_grade > 0 && total_subject > 0 %>
+                      <% grade_point_avg = total_grade.to_f/total_subject.to_f %>
+                      <% grade_point_avg = (grade_point_avg.to_f*100).to_f.round() %>
+                      <% grade_point_avg = grade_point_avg.to_f/100 %>
+                  <% end %>
+                  <% grade = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id) %>
+                  <tr class="table-header">
+                      <td><b>Total Marks, Grade and GPA</b></td>   
+                      <td><b><%= full_mark %></b></td>
+                      <td colspan="2"></td>
+                      <td><b><%= total_mark %></b></td>
+                      <td></td>
+                      <td><b>
+                      <% if !grade.blank? and !grade.name.blank? %>
+                        <%= grade.name %>
+                      <% else %>
+                        -
+                      <% end %>
+                      </b></td>
+                      <td><b><%= total_grade %></b></td>
+                  </tr>
+                  
+                  
+
+              </table>
+              <% 
+                      total_att = ""
+                      absent = ""
+                      if !@exam_comment.blank?
+                        all_comments = @exam_comment.comments
+                        if !all_comments.blank?
+                          all_comments_array = all_comments.split("|")
+                          @report_data['total'] = all_comments_array[0]
+                          if !all_comments_array[1].nil?
+                            @report_data['present'] = all_comments_array[1]
+                          end
+                        end
+                      end
+                    %>
+              <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf  no-warp align-left-baf" width="60%"><b>Position In Class</b></td>
+                      <td><% if !@student_position[@student.id.to_i].blank? %> 
+                            <%= @student_position[@student.id.to_i] %>
+                          <% else %>
+                            -
+                          <% end %></td>
+                  </tr>
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf  no-warp align-left-baf" width="60%"><b>Total Number Of Student</b></td>
+                      <td><%= @total_std %></td>
+                  </tr>
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf  no-warp align-left-baf" width="60%"><b>Number of working days</b></td>
+                      <td><%= @report_data['total'] %></td>
+                  </tr>
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf  no-warp align-left-baf" width="60%"><b>Days Present</b></td>
+                      <td><%= @report_data['present'] %></td>
+                  </tr>
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf  no-warp align-left-baf" width="60%"><b>Days Absent</b></td>
+                      <td><%= @report_data['total'].to_i-@report_data['present'].to_i %></td>
+                  </tr>
+              </table>
+              <%
+                  group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
+                  @all_subjects = []
+                  group_exams.each do |group_exam|
+                    allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
+                    allexams.each do |exam|
+                      if !@all_subjects.include?(exam.subject.id)
+                        @all_subjects << exam.subject.id
+                      end
+                    end
+                    end 
+                %>
+              <table id="pdf-table"  width="49.2%" class="left-table break-table ev-table height-exam" cellspacing="0" >
+                  <tr class="table-header">
+                      <td colspan='2'><b>ATTITUDE AND CONDUCT</b></td>
+                  </tr>
+                  <tr class="table-header">
+                      <td><%= @connect_exam_obj.name %></td>
+                      <td><%= "Grade" %></td>
+                  </tr>
+                  <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                    <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
+                      <%  if @all_subjects.include?(report['id'].to_i) %>
+
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+
+                            <td class="col-pdf no-warp align-left-baf"><%= report['subject_name'] %></td>
+                            <td class="col-pdf"><b><%= report['subject_comment'] %></b></td>
+                        </tr>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+
+              </table> 
+              <% if @grading_levels.blank? %>
+                <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+                <% if @grading_levels.blank? %>
+                  <% @grading_levels = GradingLevel.default %>
+                <% end %>
+              <% end %>
+              <table id="pdf-table"  width="49%" class="left-table ev-table height-exam" cellspacing="0" >
+                  <tr class="table-header">
+                      <td>Grade</td>
+                      <td>Range</td>
+                      <td>GP</td>
+                  </tr>
+                  <% prev_score = 0 %>
+                  <% @grading_levels.each_with_index do |grade,index| %>
+                    <tr class="table-header">
+
+                        <td><%= grade.name %></td>
+                        <td class="no-warp">
+                            <% if grade.max_score.nil? %> 
+                              <% if grade.min_score.to_i == 0 %>
+                                <&nbsp;<%= '%i%' % prev_score %>
+                              <% else %>
+                                <%= '%i%' % grade.min_score %> 
+                              <% end %>
+                            <% else %> 
+                              <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>
+                            <% end %>
+                            <%  prev_score = grade.min_score %>
+                        </td>
+                        <td><%= grade.credit_points %></td>
+                    </tr> 
+                  <% end %>
+                   <tr class="table-header">
+                      <td>S</td>
+                      <td colspan="2">Satisfactory</td>
+                   </tr>
+                   <tr class="table-header">
+                      <td>U</td>
+                      <td colspan="2">Unsatisfactory</td>
+                   </tr>
+              </table>
+
+              <table id="pdf-table"  width="100%" class="left-table break-table odd-table height-exam ev-table" cellspacing="0" >
+                  <tr class="even">
+                      <td width='50%' class='align-left border-right-none'></td>
+                      <td class='border-left-none'><br/><br/><hr/>Signature of the Class Teacher</td>    
+                  </tr>
+                  <tr class="even">
+                      <td width='50%'><br/><br/><hr/>Signature of the Principal</td>
+                      <td width='50%'><br/><br/><hr/>Signature of the Parent</td>
+                  </tr>
+
+              </table> 
+          </div>
+      </div>
+
+
+
+  </div>
+<% end %>
+<%= stylesheet_link_tag 'list_table' %>
+<style>
+    .sfx margin-top-bottom-50
+    {
+        margin: 50px !important;
+    }
+    .sfx .margin-top-50
+    {
+        margin-top: 50px !important;
+    }
+
+    .sfx
+    {
+        font-family: serif;
+    }
+    sfx  .table-header td{
+        color: #000;
+        font-weight: bold;
+    }
+    .sjis-new .left-table.small_table
+    {
+        float:left;
+        margin:20px 0px 20px 10px !important;
+    }
+    .sjis-new .left-table.ev-table
+    {
+        float:left;
+        margin:20px 0px 20px 20px !important;
+    }
+
+    .sfx .left-table
+    {
+        float:left;
+    }
+    .sfx .right-table
+    {
+        float:left;
+        margin-left:21px;
+    }
+    .sfx td.remarks_code_table2
+    {
+        text-align: left;
+        font-size:14px;
+    }
+    .sfx td.remarks_code_table
+    {
+        text-align: left;
+        font-size:17px;
+    }
+    .sfx td.remarks_code_table span
+    {
+        float:left;
+    }
+    .sfx td.remarks_code_table table
+    {
+        float:left;
+        clear:both;
+        text-align: left;
+        border:none;
+
+    }
+    .sfx td.remarks_code_table table tr
+    {
+        border:none;
+    }
+    .sfx td.remarks_code_table table tr td
+    {
+        border:none;
+        padding: 2px 2px 2px 0px;
+        text-align: left;
+        font-size:17px;
+    }
+    .no-warp
+    {
+        white-space: nowrap !important;
+    }
+    .sfx table.td-align-left td
+    {
+        text-align: left;
+    }
+    .sfx table.text-size-18 tr td
+    {
+        font-size: 17px; 
+    }
+
+
+    .sfx table td.td-align-left
+    {
+        text-align: left;
+    }
+
+    .sfx table td.td-align-right
+    {
+        text-align: right;
+    }
+    .sjis table td.border-left-none{
+        border-left: 1px solid #000000 !important; 
+    } 
+    .sjis table td.border-right-none{
+        border-right: 1px solid #000000 !important;  
+    }
+    div.sjis-new
+    {
+        border: none;
+    }
+
+    .sfx table#pdf-table.break-table
+    {
+        clear: both !important;
+        margin-left: 0px !important;
+    }
+
+
+    .sjis-new .table_1 tr.odd td
+    {
+        padding: 2px !important;  
+        border: 1px solid #000000;
+        font-size:19px;
+    }
+    .sjis-new .table_1 tr.even td
+    {
+        padding: 2px !important;  
+        border: 1px solid #000000;
+        font-size:19px;
+    }
+    .sjis-new .table_2 tr.odd td
+    {
+        padding: 5px !important; 
+        border: 1px solid #000000;
+        font-size:19px;
+    }
+    .sjis-new .table_2 tr.even td
+    {
+        padding: 5px !important; 
+        border: 1px solid #000000;
+        font-size:19px;
+    }
+    .sjis-new .table_3 tr.odd td
+    {
+        padding: 5px 5px 6px 5px  !important;  
+        border: 1px solid #000000;
+        font-size:19px;
+    }
+    .sjis-new .table_3 tr.even td
+    {
+        padding: 5px 5px 6px 5px  !important; 
+        border: 1px solid #000000;
+        font-size:19px;
+    }
+
+    .sjis-new .table-padding-big tr.even td
+    {
+        padding: 14px  !important;
+    }
+    
+    .sjis-new table.margin-top-bottom-20
+    {
+        margin: 5px 0px !important;
+    }
+
+
+</style>    

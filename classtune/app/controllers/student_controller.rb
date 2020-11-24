@@ -5801,10 +5801,11 @@ class StudentController < ApplicationController
       @batch = @main_batch
     end
     batch_split = @batch.name.split(" ")
-    sheet1.add_header("SHAHEED BIR UTTAM LT. ANWAR GIRLS' COLLEGE STUDENT LIST("+@elective_subject.name.to_s+")
-     Program :"+@batch.course.course_name.to_s+" || Group :"+@batch.course.group.to_s+" || Session :"+@batch.course.session.to_s+" || Version :"+batch_split[1]+"
-            ")
-    
+    if Multischool.current_school.id == 352
+      sheet1.add_header("SHAHEED BIR UTTAM LT. ANWAR GIRLS' COLLEGE STUDENT LIST("+@elective_subject.name.to_s+")
+       Program :"+@batch.course.course_name.to_s+" || Group :"+@batch.course.group.to_s+" || Session :"+@batch.course.session.to_s+" || Version :"+batch_split[1]+"
+              ")
+    end
     spreadsheet = StringIO.new 
     new_book.write spreadsheet 
     send_data spreadsheet.string, :filename => @batch.full_name + "-" + @elective_subject.name + ".xls", :type =>  "application/vnd.ms-excel"

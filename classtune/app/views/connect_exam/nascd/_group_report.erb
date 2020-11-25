@@ -1,16 +1,3 @@
-<%
-if @tabulation_data.nil?
-  student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
-  @tabulation_data = []
-  if student_response['status']['code'].to_i == 200
-    @tabulation_data = student_response['data']
-  end
-  %>
-  <%= render  :partial=>"/connect_exam/nascd/finding_data" %>
-  <%
-end
-%>
-<%= render  :partial=>"/connect_exam/nascd/group_report_pdf_type_"+@connect_exam_obj.result_type.to_s %>
 <style>
 #pdf-header-south table
 {
@@ -31,7 +18,7 @@ end
     text-align: left;
 }
 
-#pdf-header-south table td.name-td h4, #pdf-header-south table td.name-td h5
+#pdf-header-south table td.name-td h4,#pdf-header-south table td.name-td h3, #pdf-header-south table td.name-td h5
 {
     line-height: 10px !important;
     width: 90%;
@@ -42,9 +29,24 @@ end
     font-weight: normal !important;
 
 }
-#pdf-header-south table td.name-td h4
+#pdf-header-south table td.name-td ,#pdf-header-south table td.name-td h3
 {
     font-size: 40px !important;
 
 }
-</style>    
+</style>   
+
+<%
+if @tabulation_data.nil?
+  student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+  @tabulation_data = []
+  if student_response['status']['code'].to_i == 200
+    @tabulation_data = student_response['data']
+  end
+  %>
+  <%= render  :partial=>"/connect_exam/nascd/finding_data" %>
+  <%
+end
+%>
+<%= render  :partial=>"/connect_exam/nascd/group_report_pdf_type_"+@connect_exam_obj.result_type.to_s %>
+ 

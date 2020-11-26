@@ -1356,8 +1356,8 @@ class HomeworkController extends Controller
         $file['attachment_file_name']['name'] = Settings::clean($file['attachment_file_name']['name']);
 
         $uploads_dir = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachments/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/";
-        
-        $file_name = $file['attachment_file_name']['name'];
+        $rand = rand();
+        $file_name = "F-".$rand."-".$file['attachment_file_name']['name'];
         $tmp_name = $file["attachment_file_name"]["tmp_name"];
 
         if (!is_dir($uploads_dir))
@@ -1378,7 +1378,7 @@ class HomeworkController extends Controller
 
         if (@move_uploaded_file($tmp_name, "$uploads_dir"))
         {
-            $homework->attachment_file_name = $file['attachment_file_name']['name'];
+            $homework->attachment_file_name = $file_name;
             if( !$homework->attachment_content_type )
             {
                 if( strpos($homework->attachment_file_name, ".jpeg") !== false or strpos($homework->attachment_file_name, ".jpg") !== false )
@@ -2293,8 +2293,8 @@ class HomeworkController extends Controller
         $school_ids = str_split($new_id, 3);
 
         $uploads_dir = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment3s/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/attach3/";
-        
-        $file_name = $file['attachment3_file_name']['name'];
+        $rand = rand();
+        $file_name = "F-".$rand."-".$file['attachment3_file_name']['name'];
         $tmp_name = $file["attachment3_file_name"]["tmp_name"];
 
         if (!is_dir($uploads_dir))
@@ -2317,7 +2317,7 @@ class HomeworkController extends Controller
 
         if (@move_uploaded_file($tmp_name, "$uploads_dir"))
         {
-            $homework->attachment3_file_name = $file['attachment3_file_name']['name'];
+            $homework->attachment3_file_name = $file_name;
             $homework->save();
         }
         return $uploads_dir;
@@ -2354,7 +2354,8 @@ class HomeworkController extends Controller
 
         $uploads_dir = Settings::$paid_image_path . "uploads/".$school_ids[0]."/".$school_ids[1]."/".$school_ids[2]."/assignment_answers/attachment2s/".$ass_ids[0]."/".$ass_ids[1]."/".$ass_ids[2]."/attach2/";
         
-        $file_name = $file['attachment2_file_name']['name'];
+        $rand = rand();
+        $file_name = "F-".$rand."-".$file['attachment2_file_name']['name'];
         $tmp_name = $file["attachment2_file_name"]["tmp_name"];
 
         if (!is_dir($uploads_dir))
@@ -2377,7 +2378,7 @@ class HomeworkController extends Controller
 
         if (@move_uploaded_file($tmp_name, "$uploads_dir"))
         {
-            $homework->attachment2_file_name = $file['attachment2_file_name']['name'];
+            $homework->attachment2_file_name = $file_name;
             $homework->save();
         }
         return $uploads_dir;

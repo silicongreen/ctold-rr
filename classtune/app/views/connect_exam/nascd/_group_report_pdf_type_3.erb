@@ -19,7 +19,7 @@
                   <% c = 'even'  %>
 
                   <tr class="table-header">
-                      <td colspan='9'><b><%= @connect_exam_obj.name %></b></td>
+                      <td colspan='8'><b><%= @connect_exam_obj.name %></b></td>
                   </tr>
                   <tr class="table-header">
                       <td class="col-pdf no-warp"><b><%= "Subject" %></b></td>
@@ -101,7 +101,7 @@
                     <% end %>
                   <% end %>
                   <tr class="even">
-                      <td colspan="9">Optional Subject</td>
+                      <td colspan="8">Optional Subject</td>
                   </tr>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
@@ -180,7 +180,7 @@
                   <tr class="table-header">
                       <td><b>Total Marks, Grade and GPA</b></td>   
                       <td><b><%= full_mark %></b></td>
-                      <td colspan="3"></td>
+                      <td colspan="2"></td>
                       <td><b><%= total_mark %></b></td>
                       <td><b>
                               <% if !grade.blank? and !grade.name.blank? %>

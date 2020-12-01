@@ -166,7 +166,7 @@
         <% elective_group = [] %>
         
         <% exam_score.each do |es| %>
-          <% if !es.exam.subject.elective_group_id.blank? && !elective_group.include?(es.exam.subject.elective_group_id)  %>
+          <% if !es.exam.subject.elective_group_id.blank? && !elective_group.include?(es.exam.subject.elective_group_id) && elective_group_mark[es.exam.subject.elective_group_id] != -1  %>
           <% elective_group << es.exam.subject.elective_group_id %>
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
               

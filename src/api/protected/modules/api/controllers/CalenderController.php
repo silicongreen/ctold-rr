@@ -737,7 +737,8 @@ class CalenderController extends Controller
                 if ($late == 1)
                     $message = "Respected Parents, your daughter (".$studentdata->first_name . " " . $studentdata->last_name . ") is Present but Late from the class On (" . $newattendence->month_date."). Principal-SAGC";
                 else
-                    $message = "Respected Parents, your daughter (".$studentdata->first_name . " " . $studentdata->last_name . ") is absent from the class On (" . $newattendence->month_date."). Principal-SAGC";
+                    $message = "সম্মানিত অভিভাবক, আসসালামু আলাইকুম, আপনার সন্তান অনলাইন শ্রেণি কার্যক্রমে অনুপস্থিত থাকছে আপনাকে অবহিত করা হলো। অতি সত্ত্বর শ্রেণি শিক্ষকের সাথে যোগাযোগ করুন। সুস্থ ও নিরাপদ থাকুন। অধ্যক্ষ-এসএজিসি";
+                    //$message = "Respected Parents, your daughter (".$studentdata->first_name . " " . $studentdata->last_name . ") is absent from the class On (" . $newattendence->month_date."). Principal-SAGC";
 
                 $sms_msg_array[] = $message;
             }

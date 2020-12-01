@@ -230,30 +230,7 @@
         <% end %>  
         <% end %>
         
-       <% unless elective_groups_student.blank? %>   
-          <% elective_groups_student.each do |esub| %>
-            <% if !elective_group.include?(esub.subject.elective_group_id) && exam_subjects.include?(esub.subject.id) %>
-            <% elective_group << esub.subject.elective_group_id %>
-            <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-              
-             <td class="col-pdf no-warp  align-left"> <%= esub.subject.elective_group.name %></td>
-             <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
-             <td class="col-pdf">
-                 AB      
-             </td>
-             <% end %>
-             <td class="col-pdf">
-                 AB      
-             </td>
-             <td class="col-pdf  ">-</td>
-             <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" && @batch.course.course_name == "IX" %>
-             <td class="col-pdf  ">-</td>
-             <% end %>
-          </tr>
-          
-          <% end %>
-          <% end %>
-       <% end %>
+      
           
       
           

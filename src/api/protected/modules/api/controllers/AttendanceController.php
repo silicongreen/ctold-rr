@@ -740,6 +740,17 @@ class AttendanceController extends Controller
             {
                 $message = $value->first_name . " " . $value->last_name . " is absent in " . $sub_data->name . " on " . $att_date;
             }
+            if($value->school_id == 352)
+            {
+                if ($late[$key] == 1)
+                {
+                    $message = $value->first_name . " " . $value->last_name . " is Present but Late in " . $sub_data->name . " on " . $att_date;
+                }
+                else 
+                {
+                    $message = "সম্মানিত অভিভাবক, আসসালামু আলাইকুম, আপনার সন্তান অনলাইন শ্রেণি কার্যক্রমে অনুপস্থিত থাকছে আপনাকে অবহিত করা হলো। অতি সত্ত্বর শ্রেণি শিক্ষকের সাথে যোগাযোগ করুন। সুস্থ ও নিরাপদ থাকুন। অধ্যক্ষ-এসএজিসি";
+                }
+            }
             if($value->school_id != 352)
             {
                 if ($value->phone2)
@@ -752,6 +763,7 @@ class AttendanceController extends Controller
                     $sms_numbers[] = $value['guradianDetails']->mobile_phone;
                     $sms_msg_array[] = $message;
                 }
+                
             }
             else if($value->sms_number)
             {

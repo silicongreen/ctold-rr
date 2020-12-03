@@ -1,5 +1,3 @@
-
-
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <%= render  :partial=>"/connect_exam/nascd/header_2" %>
    <% father = mother = Guardian.new %>
@@ -182,7 +180,32 @@
                           <% unless @report_data['report']['exams'].blank? %>
                             <% @report_data['report']['exams'].each do |report| %>
                                 <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
-                                  <td class="col-pdf"><b><%= report['result'][report['exam_id']][subjects['id']]['remarks'] %></b></td>
+                                  <% remarks_exam = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
+                                  <% if subjects['code'].upcase.index("BANG").nil? %>
+                                      <% if remarks_exam.to_i == 1 %>
+                                              অতি উত্তম
+                                        <% elsif remarks_exam.to_i == 2 %>
+                                              উত্তম
+                                        <% elsif remarks_exam.to_i == 3 %>
+                                              ভাল
+                                        <% elsif remarks_exam.to_i == 4 %>
+                                              অগ্রগতি প্রয়োজন
+                                        <% end %> 
+                                  <% else %>
+                                      <td class="col-pdf"><b>
+                                        <% if remarks_exam.to_i == 1 %>
+                                              Excellent
+                                        <% elsif remarks_exam.to_i == 2 %>
+                                              Very Good
+                                        <% elsif remarks_exam.to_i == 3 %>
+                                              Good
+                                        <% elsif remarks_exam.to_i == 4 %>
+                                              Progress Improvement
+                                        <% end %>      
+                                        </b></td>
+                          
+                                  <% end %>
+                                  
                                 <% else %>
                                   <td class="col-pdf"><b>-</b></td>
                                 <% end %>

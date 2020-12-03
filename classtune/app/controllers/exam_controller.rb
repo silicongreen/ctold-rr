@@ -851,11 +851,16 @@ class ExamController < ApplicationController
 
                     end
                   else
+                    remarks = ""
+                    unless details[:remarks].blank?
+                      remarks  = details[:remarks]
+                    end
                     ExamScore.create do |score|
                       score.exam_id          = @exam.id
                       score.student_id       = student_id
                       score.user_id          = current_user.id
                       score.marks            = details[:marks]
+                      score.remarks          = remarks
                     end
                   end
                 
@@ -923,6 +928,23 @@ class ExamController < ApplicationController
     end
     
     @exams = []
+    @no_exams = []
+    
+    
+    if !@exam_subject.no_exams.blank?
+      @group_exam = GroupedExam.find_all_by_connect_exam_id_and_show_in_connect(@exam_connect.id,1, :order=>"priority ASC")
+      unless @group_exam.blank?
+        @group_exam.each do |group_exam|
+          exam_group = ExamGroup.active.find(group_exam.exam_group_id)
+          unless exam_group.blank?
+            exam = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,@exam_subject.id)
+            unless exam.blank?
+              @no_exams << exam
+            end
+          end  
+        end
+      end 
+    end
     
     if @exam_subject.no_exams.blank?
       @group_exam = GroupedExam.find_all_by_connect_exam_id_and_show_in_connect(@exam_connect.id,1, :order=>"priority ASC")

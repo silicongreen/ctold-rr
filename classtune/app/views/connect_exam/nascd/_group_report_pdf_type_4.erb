@@ -172,7 +172,7 @@
                    <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
                     <% @report_data['report']['no_exam_subject_resutl'].each do |subjects| %>
 
-                    <%  if @all_subjects.include?(report['id'].to_i) %>
+                    <%  if @all_subjects.include?(subjects['id'].to_i) %>
                         <% total_subject = total_subject+1 %>
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         

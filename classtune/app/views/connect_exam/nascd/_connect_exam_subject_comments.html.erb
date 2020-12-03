@@ -259,10 +259,9 @@
                                   <% unless @exam_score.blank? or @exam_score.remarks.blank?  %>
                                     <% exam_group_remarks = @exam_score.remarks %>
                                   <% end %>
-                               
                                   <% if @exam_subject.name.upcase == "BANGLA" %>
                                   <td>
-                                    <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks]" >
+                                    <select name="exam_remarks[<%=exam.id%>][<%=student.id%>][remarks]" >
                                         <option value="0" >Select</option>
                                         <option value="1" <% if exam_group_remarks.to_i == 1 %> selected="selected" <% end %> >অতি উত্তম</option>
                                         <option value="2" <% if exam_group_remarks.to_i == 2 %> selected="selected" <% end %> >উত্তম</option>
@@ -273,7 +272,7 @@
 
                                   <% else %>
                                   <td>
-                                    <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks]" >
+                                    <select name="exam_remarks[<%=exam.id%>][<%=student.id%>][remarks]" >
                                         <option value="0" >Select</option>
                                         <option value="1" <% if exam_group_remarks.to_i == 1 %> selected="selected" <% end %> >Excellent</option>
                                         <option value="2" <% if exam_group_remarks.to_i == 2 %> selected="selected" <% end %> >Very Good</option>

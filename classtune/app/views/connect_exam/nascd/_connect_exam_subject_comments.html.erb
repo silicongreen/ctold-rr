@@ -128,7 +128,15 @@
                           <% end %>
                         <% end %>  
                         <% if @exam_subject.no_exams_sjws.to_i != 1 %>
-                            <td><b><%= t('remarks') %>/<%= t('grade') %></b></td>
+                            <% if @exam_connect.result_type == 4 %>
+                              <% unless @exams.blank? %>
+                                <% @exams.each do |exam| %>
+                                  <td><b><%= exam.exam_group.name %></b></td>
+                                <% end %>
+                              <% end %>
+                            <% else %>  
+                              <td><b><%= t('remarks') %>/<%= t('grade') %></b></td>
+                            <% end %>
                         <% end %> 
 
                     </tr>
@@ -243,7 +251,36 @@
                             <% end %>  
                           <% end %>
                           <% if @exam_subject.no_exams_sjws.to_i != 1 %>
-                            <td><%= text_field_tag "exam[#{student.id}][comments]", exam_comment, :size => '30' %></td>
+                            <% if @exam_connect.result_type == 4 %>
+                              <% unless @exams.blank? %>
+                                <% iloop = 0 %>
+                                <% @exams.each do |exam| %>
+                                <% @exam_score = exam.score_for(student) %>
+                                <% unless @exam_score.blank? or @exam_score.remarks.blank?  %>
+                                  <% exam_score_split = @exam_score.remarks.split("|") %>
+                                <% end %>
+                                <% exam_group_remarks = "" %>
+                                <% unless @exam_score.blank? or @exam_score.remarks.blank?  %>
+                                  <% if !exam_score_split.blank? and !exam_score_split[iloop].blank? %>
+                                    <% exam_group_remarks = exam_score_split[iloop] %>
+                                  <% end %>
+                                <% end %>
+                                <% iloop = iloop+1 %>
+                                <td>
+                                  <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
+                                      <option value="0" >Select</option>
+                                      <option value="1" <% if exam_group_remarks.to_i == 1 %> selected="selected" <% end %> >Excellent</option>
+                                      <option value="2" <% if exam_group_remarks.to_i == 2 %> selected="selected" <% end %> >Very Good</option>
+                                      <option value="3" <% if exam_group_remarks.to_i == 3 %> selected="selected" <% end %> >Good</option>
+                                      <option value="4" <% if exam_group_remarks.to_i == 4 %> selected="selected" <% end %> >Satisfactory</option>
+                                      <option value="5" <% if exam_group_remarks.to_i == 5 %> selected="selected" <% end %> >Need Improvement</option>
+                                  </select> 
+                                </td>
+                                <% end %>
+                              <% end %>
+                            <% else %> 
+                              <td><%= text_field_tag "exam[#{student.id}][comments]", exam_comment, :size => '30' %></td>
+                            <% end %>
                           <% end %>
 
 

@@ -259,7 +259,7 @@
                                   <% unless @exam_score.blank? or @exam_score.remarks.blank?  %>
                                     <% exam_group_remarks = @exam_score.remarks %>
                                   <% end %>
-                                  <% if !@exam_subject.code.index("বাংলা").nil? or !@exam_subject.code.upcase.index("BANGLA").nil?%>
+                                  <% if !@exam_subject.code.upcase.index("BANG").nil?%>
                                   <td>
                                     <select name="exam_remarks[<%=exam.id%>][<%=student.id%>][remarks]" >
                                         <option value="0" >Select</option>

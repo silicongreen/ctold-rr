@@ -153,11 +153,48 @@
                     <% end %>
                   <% end %>
                   <% grade = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id) %>
-                  
+                      
+                  <%  
+                    
+                    group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
+                    
+                    @all_subjects = []
+                    group_exams.each do |group_exam|
+                      allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
+                      allexams.each do |exam|
+                        if !@all_subjects.include?(exam.subject.id)
+                          @all_subjects << exam.subject.id
+                        end
+                      end
+                    end 
+                  %>
+                      
+                   <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                    <% @report_data['report']['no_exam_subject_resutl'].each do |subjects| %>
 
-
+                    <%  if @all_subjects.include?(report['id'].to_i) %>
+                        <% total_subject = total_subject+1 %>
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        
+                          <td class="col-pdf left-td"><b><%= subjects['subject_name'] %></b></td>
+                          <% unless @report_data['report']['exams'].blank? %>
+                            <% @report_data['report']['exams'].each do |report| %>
+                                <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
+                                  <td class="col-pdf"><b><%= report['result'][report['exam_id']][subjects['id']]['remarks'] %></b></td>
+                                <% else %>
+                                  <td class="col-pdf"><b>-</b></td>
+                                <% end %>
+                            <% end %>
+                          <% end %>
+                           
+                        </tr>
+                      <% end %>
+                    <% end %>
+                  <% end %>
 
               </table>
+              
+              
               
               <table id="pdf-table"  width="100%" class="left-table break-table odd-table height-exam ev-table" cellspacing="0" >
                   <tr class="even">

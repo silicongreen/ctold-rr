@@ -178,7 +178,7 @@
     end
     end
 %>
-  <% if @connect_exam_obj.result_type.to_i == 13 %>
+  <% if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 %>
     <%= render  :partial=>"/connect_exam/sagc/finding_data_6" %>
   <% else %>
     <%= render  :partial=>"/connect_exam/sagc/finding_data_5" %>

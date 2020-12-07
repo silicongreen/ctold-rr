@@ -3129,7 +3129,7 @@ class ExamController < ApplicationController
       end
     end
     @class = params[:class]
-    if @connect_exam_obj.result_type.to_i == 13
+    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14
       finding_data_sagc_covid()
     else
       finding_data5()
@@ -3157,7 +3157,7 @@ class ExamController < ApplicationController
       end
     end
     @class = params[:class]
-    if @connect_exam_obj.result_type.to_i == 13
+    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14
       finding_data_sagc_covid()
     else
       finding_data5()
@@ -3216,7 +3216,7 @@ class ExamController < ApplicationController
       end
     end
     @class = params[:class]
-    if @connect_exam_obj.result_type.to_i == 13
+    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14
       finding_data_sagc_covid()
     else
       finding_data5()
@@ -5149,7 +5149,7 @@ class ExamController < ApplicationController
         @tabulation_data = student_response['data']
       end
     end
-    if @connect_exam_obj.result_type.to_i == 13
+    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14
       finding_data_sagc_covid()
     else
       finding_data5()

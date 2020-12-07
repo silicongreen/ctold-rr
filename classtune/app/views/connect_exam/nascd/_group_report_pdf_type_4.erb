@@ -37,7 +37,17 @@
           <tr class="table-header"ss>
               <td colspan='2'>Father's Name</td><td colspan='2'><%= father.first_name unless father.blank? %> <%= father.last_name unless father.blank? %></td>
               <td>Cell</td><td colspan='3'><%= father.mobile_phone unless father.blank? %></td>
-              <td colspan='2'>      
+              <td>
+                  Cell
+              </td>
+              <td>
+              <% unless @assigned_employee.blank? %>
+                  <% @assigned_employee.each do |emp| %>
+                      <% emp_full_name = emp.first_name.to_s+" "+emp.last_name.to_s  %>
+                      <b><%= emp.mobile_phone %></b>
+                    <% break %>
+                  <% end %>
+                <% end %>        
               </td>
           </tr>
 
@@ -200,7 +210,7 @@
                                         <% elsif remarks_exam.to_i == 3 %>
                                               Good
                                         <% elsif remarks_exam.to_i == 4 %>
-                                              Progress Improvement
+                                              Need Improvement
                                         <% end %>      
                                         </b></td>
                           
@@ -240,7 +250,7 @@
                       <td width='50%'><br/><br/><br/></td>  
                   </tr>
                   <tr class="even">
-                      <td>Signature of Class Teacher</td>
+                      <td>Signature of The Class Teacher</td>
                       <td>Signature of the Principal</td>
                   </tr>
                   

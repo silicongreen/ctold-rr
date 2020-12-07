@@ -186,7 +186,7 @@
                         <% total_subject = total_subject+1 %>
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         
-                          <td class="col-pdf left-td"><b><%= subjects['subject_name'] %></b></td>
+                          <td class="col-pdf no-warp align-left-baf"><b><%= subjects['subject_name'] %></b></td>
                           <% unless @report_data['report']['exams'].blank? %>
                             <% @report_data['report']['exams'].each do |report| %>
                                 <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>

@@ -7568,7 +7568,6 @@ class ExamController < ApplicationController
             total_std_subject = all_total_std_subject.select{|val| val.student_id.to_i == std['id'].to_i }
             std_subject_id = total_std_subject.map(&:subject_id)
             total_subject = 0
-            subject_grade_done = []
             subject_array = []
             tab['subjects'].each do |sub|
               if subject_array.include?(sub['id'].to_i)
@@ -7604,7 +7603,7 @@ class ExamController < ApplicationController
                 next
               end
               if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
-                if fourth_subject == false && sub['subject_group_id'].to_i == 0 &&  sub['grade_subject'].to_i == 0 and !subject_grade_done.include?(sub['id'].to_i)
+                if fourth_subject == false && sub['subject_group_id'].to_i == 0 &&  sub['grade_subject'].to_i == 0
                   total_subject = total_subject+1
                 end
                 subject_failed = false
@@ -7624,7 +7623,7 @@ class ExamController < ApplicationController
                 end
                 main_mark = (total_mark_subject.to_f/full_mark_subject.to_f)*100
                 grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                if !grade.blank? and !grade.name.blank? and ( grade.credit_points.to_i == 0 or total_mark_subject < 20 ) and sub['subject_group_id'].to_i == 0
+                if !grade.blank? and !grade.name.blank? and ( grade.credit_points.to_i == 0 or total_mark_subject < 20 )
                   if fourth_subject.blank?
                     u_grade = u_grade+1
                     subject_failed = true
@@ -7632,40 +7631,6 @@ class ExamController < ApplicationController
                     four_subject_failed = true
                   end
                 end
-              
-                if sub['subject_group_id'].to_i > 0
-                  tab['subjects'].each do |sub2|
-                  if subject_array.include?(sub2['id'].to_i) or sub['subject_group_id'].to_i != sub2['subject_group_id'].to_i
-                    next
-                  end
-                  fourth_subject = false
-                  if !@std_subject_hash_type.blank?
-                    if @std_subject_hash_type.include?(std['id'].to_s+"|||"+sub2['id'].to_s+"|||4")
-                      fourth_subject = true
-                    end  
-                  end
-                  subject_grade_done << sub2['id'].to_i
-                  full_mark_subject2 = full_mark_subject
-                  total_mark_subject2 = total_mark_subject
-                  tab['exams'].each do |rs|
-                    if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub2['id']].blank? and !rs['result'][rs['exam_id']][sub2['id']][std['id']].blank?
-                      full_mark_subject2 = full_mark_subject2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
-                      total_mark_subject2 = total_mark_subject2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
-                    end
-                  end
-                  main_mark = (total_mark_subject2.to_f/full_mark_subject2.to_f)*100
-                  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                  if !grade.blank? and !grade.name.blank? and grade.credit_points.to_i == 0 and sub['subject_group_id'].to_i > 0
-                    if fourth_subject.blank?
-                      u_grade = u_grade+1
-                      subject_failed = true
-                    else
-                      four_subject_failed = true
-                    end
-                  end
-              
-                end
-            
                 if @student_subject_marks[sub['id'].to_i].blank?
                   @student_subject_marks[sub['id'].to_i] = {}
                 end
@@ -7673,19 +7638,18 @@ class ExamController < ApplicationController
                 grand_total = grand_total+total_mark_subject
                 grand_total_with_fraction = grand_total_with_fraction+total_mark_subject
                
-                unless subject_grade_done.include?(sub['id'].to_i)
-                  if fourth_subject.blank? && subject_failed == false
-                    grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                    if !grade.blank? and !grade.name.blank?
-                      grand_grade_point = grand_grade_point+grade.credit_points.to_f
-                    end
-                  elsif subject_failed == false and four_subject_failed == false
-                    grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                    if !grade.blank? and !grade.name.blank?
-                      new_grade_point = grade.credit_points.to_f-2
-                      if new_grade_point > 0
-                        grand_grade_point = grand_grade_point+new_grade_point.to_f
-                      end
+                
+                if fourth_subject.blank? && subject_failed == false
+                  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                  if !grade.blank? and !grade.name.blank?
+                    grand_grade_point = grand_grade_point+grade.credit_points.to_f
+                  end
+                elsif subject_failed == false and four_subject_failed == false
+                  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                  if !grade.blank? and !grade.name.blank?
+                    new_grade_point = grade.credit_points.to_f-2
+                    if new_grade_point > 0
+                      grand_grade_point = grand_grade_point+new_grade_point.to_f
                     end
                   end
                 end
@@ -7905,7 +7869,6 @@ class ExamController < ApplicationController
           end 
         end
       end
-      
     end
   end
   

@@ -133,7 +133,8 @@
 
 
                           <% 
-                            
+                            total_mark = total_mark*2
+                            full_mark = full_mark*2
                             total_mark = total_mark.round()
                             grand_total_fraction = grand_total_fraction.to_f+total_mark
                             if total_mark.to_f>0 and full_mark.to_f>0
@@ -164,11 +165,11 @@
                                   <% unless @report_data['report']['exams'].blank? %>  
                                   <% @report_data['report']['exams'].each do |report| %>   
                                     <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].blank? %>                                   
-                                      <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
+                                      <% total_mark = total_mark.to_f+(report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f*2) %>
                                     <% else %>
                                     <% end %>
                                     <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['full_mark'].blank? %>
-                                      <% full_mark = full_mark+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
+                                      <% full_mark = full_mark+(report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i*2) %>
                                     <% end %> 
                                   <% end %>
                                 <% end %>
@@ -184,11 +185,11 @@
                             
                                 <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                 <% if !grade.blank? and !grade.name.blank? %>
-                                  <% if (grade.credit_points.to_i == 0 or total_mark < 20) and fourth_subject.blank? %>
+                                  <% if (grade.credit_points.to_i == 0 or total_mark < 80) and fourth_subject.blank? %>
                                     <% failed = true %>
                                     <% grade.name = "F" %>
                                     <% grade.credit_points = 0.0 %>
-                                  <% elsif grade.credit_points.to_i == 0 or total_mark < 20 %>
+                                  <% elsif grade.credit_points.to_i == 0 or total_mark < 80 %>
                                     <% grade.name = "F" %>
                                     <% grade.credit_points = 0.0 %>
                                   <% end %>
@@ -211,11 +212,11 @@
                             <% else %>
                               <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                               <% if !grade.blank? and !grade.name.blank? %>
-                                <% if (grade.credit_points.to_i == 0 or total_mark < 20) and fourth_subject.blank? %>
+                                <% if (grade.credit_points.to_i == 0 or total_mark < 40) and fourth_subject.blank? %>
                                   <% failed = true %>
                                   <% grade.name = "F" %>
                                   <% grade.credit_points = 0.0 %>
-                                <% elsif grade.credit_points.to_i == 0 or total_mark < 20 %>
+                                <% elsif grade.credit_points.to_i == 0 or total_mark < 40 %>
                                   <% grade.name = "F" %>
                                   <% grade.credit_points = 0.0 %>
                                 <% end %>
@@ -265,7 +266,7 @@
                       
                           <% total_subject_main = total_subject_main+1 %>
                           <td class="col-pdf"><%= total_subject_main %></td>
-                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %><%= fourth_subject %><%= third_subject %></td>
+                          <td class="col-pdf no-warp align-left-baf"><%= subjects2['name'] %><%= fourth_subject %><%= third_subject %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].blank? %>                                   
@@ -280,7 +281,8 @@
 
 
                           <% 
-                            
+                            total_mark = total_mark*2
+                            full_mark = full_mark*2
                             total_mark = total_mark.round()
                             grand_total_fraction = grand_total_fraction.to_f+total_mark
                             if total_mark.to_f>0 and full_mark.to_f>0

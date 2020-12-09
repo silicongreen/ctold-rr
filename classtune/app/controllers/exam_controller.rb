@@ -7627,6 +7627,7 @@ class ExamController < ApplicationController
                 
                 main_mark = (total_mark_subject.to_f/full_mark_subject.to_f)*100
                 main_mark = main_mark.round()
+                real_main_mark = main_mark
                 grand_total = grand_total+main_mark
                 grand_total_with_fraction = grand_total_with_fraction+main_mark
                 grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
@@ -7641,7 +7642,7 @@ class ExamController < ApplicationController
 
                 if sub['subject_group_id'].to_i > 0
                   tab['subjects'].each do |sub2|
-                    if sub['subject_group_id'].to_i != sub2['subject_group_id'].to_i && sub['code'] != main_sub_id
+                    if sub['subject_group_id'].to_i != sub2['subject_group_id'].to_i or sub2['code'] == main_sub_id
                       next
                     end
                     fourth_subject = false
@@ -7680,7 +7681,7 @@ class ExamController < ApplicationController
                 if @student_subject_marks[sub['id'].to_i].blank?
                   @student_subject_marks[sub['id'].to_i] = {}
                 end
-                @student_subject_marks[sub['id'].to_i][std['id'].to_i] = main_mark
+                @student_subject_marks[sub['id'].to_i][std['id'].to_i] = real_main_mark
                 
 
                 unless subject_grade_done.include?(sub['id'].to_i)
@@ -7704,15 +7705,15 @@ class ExamController < ApplicationController
                 if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
 
                   if appeared
-                    @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = total_mark_subject
+                    @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = real_main_mark
                   else
                     @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = "AB"
                   end     
 
 
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = total_mark_subject
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = real_main_mark
 
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = total_mark_subject.round()
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = real_main_mark.round()
 
 
                   if @subject_result[main_sub_id].blank?
@@ -7727,8 +7728,8 @@ class ExamController < ApplicationController
                     @subject_result[main_sub_id]['total'] = @subject_result[main_sub_id]['total']+1
                   end
 
-                  if main_mark >= 40
-                    @student_result[loop_std]['subjects'][main_sub_id]['result']['parcent'] = main_mark
+                  if real_main_mark >= 40
+                    @student_result[loop_std]['subjects'][main_sub_id]['result']['parcent'] = real_main_mark
                   end
 
                   grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)

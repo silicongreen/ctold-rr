@@ -7627,6 +7627,8 @@ class ExamController < ApplicationController
                 
                 main_mark = (total_mark_subject.to_f/full_mark_subject.to_f)*100
                 main_mark = main_mark.round()
+                grand_total = grand_total+main_mark
+                grand_total_with_fraction = grand_total_with_fraction+main_mark
                 grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                 if !grade.blank? and !grade.name.blank? and ( grade.credit_points.to_i == 0 or total_mark_subject < 20 or (@connect_exam_obj.result_type.to_i == 14 and main_mark < 40) ) and sub['subject_group_id'].to_i == 0
                   if fourth_subject.blank?
@@ -7679,8 +7681,7 @@ class ExamController < ApplicationController
                   @student_subject_marks[sub['id'].to_i] = {}
                 end
                 @student_subject_marks[sub['id'].to_i][std['id'].to_i] = main_mark
-                grand_total = grand_total+main_mark
-                grand_total_with_fraction = grand_total_with_fraction+main_mark
+                
 
                 unless subject_grade_done.include?(sub['id'].to_i)
                   if fourth_subject.blank? && subject_failed == false

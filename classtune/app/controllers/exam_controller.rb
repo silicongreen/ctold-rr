@@ -7604,8 +7604,10 @@ class ExamController < ApplicationController
                 next
               end
               if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
-                if fourth_subject == false && sub['subject_group_id'].to_i == 0 &&  sub['grade_subject'].to_i == 0 and !subject_grade_done.include?(sub['id'].to_i)
-                  total_subject = total_subject+1
+                if fourth_subject == false &&  sub['grade_subject'].to_i == 0 and !subject_grade_done.include?(sub['id'].to_i)
+                 unless subject_grade_done.include?(sub['id'].to_i)
+                    total_subject = total_subject+1
+                 end
                 end
                 subject_failed = false
                 appeared = false
@@ -7676,9 +7678,9 @@ class ExamController < ApplicationController
                 if @student_subject_marks[sub['id'].to_i].blank?
                   @student_subject_marks[sub['id'].to_i] = {}
                 end
-                @student_subject_marks[sub['id'].to_i][std['id'].to_i] = total_mark_subject
-                grand_total = grand_total+total_mark_subject
-                grand_total_with_fraction = grand_total_with_fraction+total_mark_subject
+                @student_subject_marks[sub['id'].to_i][std['id'].to_i] = main_mark
+                grand_total = grand_total+main_mark
+                grand_total_with_fraction = grand_total_with_fraction+main_mark
 
                 unless subject_grade_done.include?(sub['id'].to_i)
                   if fourth_subject.blank? && subject_failed == false

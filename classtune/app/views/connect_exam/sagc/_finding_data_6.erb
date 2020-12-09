@@ -158,13 +158,11 @@ if @total_std.blank?
                     total_mark_subject = total_mark_subject+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                   end
                 end
-                if @connect_exam_obj.result_type.to_i == 14
-                  full_mark_subject = full_mark_subject*2
-                  total_mark_subject = total_mark_subject*2
-                end
+                
                 main_mark = (total_mark_subject.to_f/full_mark_subject.to_f)*100
+                main_mark = main_mark.round()
                 grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                if !grade.blank? and !grade.name.blank? and ( grade.credit_points.to_i == 0 or total_mark_subject < 20 or (@connect_exam_obj.result_type.to_i == 14 and total_mark_subject < 40) ) and sub['subject_group_id'].to_i == 0
+                if !grade.blank? and !grade.name.blank? and ( grade.credit_points.to_i == 0 or total_mark_subject < 20 or (@connect_exam_obj.result_type.to_i == 14 and main_mark < 40) ) and sub['subject_group_id'].to_i == 0
                   if fourth_subject.blank?
                     u_grade = u_grade+1
                     subject_failed = true
@@ -189,19 +187,17 @@ if @total_std.blank?
                     total_mark_subject2 = 0
                     tab['exams'].each do |rs|
                       if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub2['id']].blank? and !rs['result'][rs['exam_id']][sub2['id']][std['id']].blank?
-                        full_mark_subject2 = full_mark_subject2+(rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f*2)
-                        total_mark_subject2 = total_mark_subject2+(rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f*2)
+                        full_mark_subject2 = full_mark_subject2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
+                        total_mark_subject2 = total_mark_subject2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                       end
                     end
-                    if @connect_exam_obj.result_type.to_i == 14
-                      full_mark_subject2 = full_mark_subject2*2
-                      total_mark_subject2 = total_mark_subject2*2
-                    end
+                  
                     total_mark_subject2 = total_mark_subject2+total_mark_subject
                     full_mark_subject2 = full_mark_subject2+full_mark_subject
                     main_mark = (total_mark_subject2.to_f/full_mark_subject2.to_f)*100
+                    main_mark = main_mark.round()
                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                    if !grade.blank? and !grade.name.blank? and (grade.credit_points.to_i == 0 or (@connect_exam_obj.result_type.to_i == 14 and total_mark_subject < 80)) and sub['subject_group_id'].to_i > 0
+                    if !grade.blank? and !grade.name.blank? and (grade.credit_points.to_i == 0 or (@connect_exam_obj.result_type.to_i == 14 and main_mark < 40)) and sub['subject_group_id'].to_i > 0
                       if fourth_subject.blank?
                         u_grade = u_grade+1
                         subject_failed = true

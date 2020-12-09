@@ -188,11 +188,11 @@
                             
                                 <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                 <% if !grade.blank? and !grade.name.blank? %>
-                                  <% if (grade.credit_points.to_i == 0 or total_mark < 80) and fourth_subject.blank? %>
+                                  <% if (grade.credit_points.to_i == 0 or main_mark < 40) and fourth_subject.blank? %>
                                     <% failed = true %>
                                     <% grade.name = "F" %>
                                     <% grade.credit_points = 0.0 %>
-                                  <% elsif grade.credit_points.to_i == 0 or total_mark < 80 %>
+                                  <% elsif grade.credit_points.to_i == 0 or main_mark < 40 %>
                                     <% grade.name = "F" %>
                                     <% grade.credit_points = 0.0 %>
                                   <% end %>

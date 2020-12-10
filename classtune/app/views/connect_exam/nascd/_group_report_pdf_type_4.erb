@@ -191,16 +191,18 @@
                             <% @report_data['report']['exams'].each do |report| %>
                                 <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                                   <% remarks_exam = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
-                                  <% if subjects['code'].upcase.index("BANG").nil? %>
-                                      <% if remarks_exam.to_i == 1 %>
-                                              অতি উত্তম
-                                        <% elsif remarks_exam.to_i == 2 %>
-                                              উত্তম
-                                        <% elsif remarks_exam.to_i == 3 %>
-                                              ভাল
-                                        <% elsif remarks_exam.to_i == 4 %>
-                                              অগ্রগতি প্রয়োজন
-                                        <% end %> 
+                                  <% if !subjects['code'].upcase.index("BANG").nil? %>
+                                      <td class="col-pdf"><b>
+                                          <% if remarks_exam.to_i == 1 %>
+                                                অতি উত্তম
+                                          <% elsif remarks_exam.to_i == 2 %>
+                                                উত্তম
+                                          <% elsif remarks_exam.to_i == 3 %>
+                                                ভাল
+                                          <% elsif remarks_exam.to_i == 4 %>
+                                                অগ্রগতি প্রয়োজন
+                                          <% end %> 
+                                        </b></td>
                                   <% else %>
                                       <td class="col-pdf"><b>
                                         <% if remarks_exam.to_i == 1 %>
@@ -212,7 +214,7 @@
                                         <% elsif remarks_exam.to_i == 4 %>
                                               Need Improvement
                                         <% end %>      
-                                        </b></td>
+                                      </b></td>
                           
                                   <% end %>
                                   

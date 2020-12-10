@@ -302,8 +302,8 @@
 
                                       
 
-                                      <td style="text-align:center;padding:3px;font-size: 11px; white-space:normal; width:60px; border:1px solid black;">
-                                          <select name="exam_remarks[<%=exam.id%>][<%=student.id%>][remarks][]" >
+                                      <td style="text-align:center;padding:3px;font-size: 11px; border:none; white-space:normal; width:60px; border:1px solid black;">
+                                          <select name="exam_remarks[<%=exam.id%>][<%=student.id%>][remarks][]" style="height:22px;">
                                               <option value="0" >Select</option>
                                               <option value="1" <% if exam_group_remarks.to_i == 1 %> selected="selected" <% end %> >Excellent</option>
                                               <option value="2" <% if exam_group_remarks.to_i == 2 %> selected="selected" <% end %> >Very Good</option>

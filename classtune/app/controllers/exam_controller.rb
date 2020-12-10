@@ -816,6 +816,9 @@ class ExamController < ApplicationController
               end
               
             else
+              if details[:remarks].kind_of?(Array)
+                details[:remarks] = details[:remarks].join("|")
+              end
               @exam_score.update_attributes(details)
             end  
           end

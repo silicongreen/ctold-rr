@@ -131,7 +131,30 @@
                             <% if @exam_connect.result_type == 4 %>
                               <% unless @no_exams.blank? %>
                                 <% @no_exams.each do |exam| %>
-                                  <td><b><%= exam.exam_group.name %></b></td>
+                                  <% if has_subject_group(@exam_subject.id) %>
+                                    
+                                      <% subject_groups = get_subject_group(@exam_subject.id) %>
+                                      <td style="padding:0px; border:none;">
+                                          <table width="100%" style="height: 63px;">
+                                              <tr>
+                                                  <td colspan="100" style="text-align:center; border:1px solid black;"><b><%= exam.exam_group.name %></b>
+                                                  </td></tr><tr>
+                                                  <% subject_groups.each do |group_name| %>
+
+                                                  <% subject_subgroup = get_subject_sub_group(group_name.id) %>
+                                                   
+                                                  <td style="text-align:center;padding:3px;font-size: 11px; white-space:normal; width:60px; border:1px solid black;">
+                                                      <%= group_name.name %>
+                                                  </td>  
+
+                                                  <% end %>
+                                              </tr>
+                                          </table>
+                                      </td>
+                              
+                                  <% else %>
+                                    <td><b><%= exam.exam_group.name %></b></td>
+                                  <% end %>
                                 <% end %>
                               <% end %>
                             <% else %>  
@@ -215,7 +238,7 @@
                                                     </select>
                                                     <div class="date2" ><span class="themed_text"><%=  student.full_name %><div> <%= exam.exam_group.name.to_s %></div><div> <%= group_name.name.to_s %></div></span></div>
 
-                                                    <% @group_loop = @group_loop+1 %>
+                                                                    <% @group_loop = @group_loop+1 %>
                                                 </td>
                                               <% end %> 
 
@@ -258,28 +281,65 @@
                                   <% @exam_score = exam.score_for(student) %>
                                   <% unless @exam_score.blank? or @exam_score.remarks.blank?  %>
                                     <% exam_group_remarks = @exam_score.remarks %>
+                                    <% exam_remarks_split = @exam_score.remarks.split("|") %>
                                   <% end %>
-                                  <% if !@exam_subject.code.upcase.index("BANG").nil?%>
-                                  <td>
-                                    <select name="exam_remarks[<%=exam.id%>][<%=student.id%>][remarks]" >
-                                        <option value="0" >Select</option>
-                                        <option value="1" <% if exam_group_remarks.to_i == 1 %> selected="selected" <% end %> >অতি উত্তম</option>
-                                        <option value="2" <% if exam_group_remarks.to_i == 2 %> selected="selected" <% end %> >উত্তম</option>
-                                        <option value="3" <% if exam_group_remarks.to_i == 3 %> selected="selected" <% end %> >ভাল</option>
-                                        <option value="4" <% if exam_group_remarks.to_i == 4 %> selected="selected" <% end %> >অগ্রগতি প্রয়োজন</option>
-                                    </select> 
-                                  </td>
+                                  <% if has_subject_group(@exam_subject.id) %>
+                                      <td>
+                                       <table width="100%">
+                                          <tr>
+                                           <% @group_loop = 0 %>
+                                      <% subject_groups = get_subject_group(@exam_subject.id) %>
+                                      
+                                      <% subject_groups.each do |group_name| %>
+                                       <% exam_group_remarks = "" %>
+                                        <% unless @exam_score.blank? or @exam_score.remarks.blank?  %>
 
+                                          <% unless exam_remarks_split[@group_loop.to_i].blank? %>
+
+                                            <% exam_group_remarks = exam_remarks_split[@group_loop.to_i] %>
+                                          <% end %>
+                                        <% end %>
+
+                                      
+
+                                      <td style="text-align:center;padding:3px;font-size: 11px; white-space:normal; width:60px; border:1px solid black;">
+                                          <select name="exam_remarks[<%=exam.id%>][<%=student.id%>][remarks][]" >
+                                              <option value="0" >Select</option>
+                                              <option value="1" <% if exam_group_remarks.to_i == 1 %> selected="selected" <% end %> >Excellent</option>
+                                              <option value="2" <% if exam_group_remarks.to_i == 2 %> selected="selected" <% end %> >Very Good</option>
+                                              <option value="3" <% if exam_group_remarks.to_i == 3 %> selected="selected" <% end %>  >Good</option>
+                                              <option value="4" <% if exam_group_remarks.to_i == 4 %> selected="selected" <% end %>  >Satisfactory</option>
+                                          </select>
+                                      </td>  
+                                      <% @group_loop = @group_loop+1 %>
+                                      <% end %>
+                                          </tr>
+                                       </table>
+                                      </td>    
+                              
                                   <% else %>
-                                  <td>
-                                    <select name="exam_remarks[<%=exam.id%>][<%=student.id%>][remarks]" >
-                                        <option value="0" >Select</option>
-                                        <option value="1" <% if exam_group_remarks.to_i == 1 %> selected="selected" <% end %> >Excellent</option>
-                                        <option value="2" <% if exam_group_remarks.to_i == 2 %> selected="selected" <% end %> >Very Good</option>
-                                        <option value="3" <% if exam_group_remarks.to_i == 3 %> selected="selected" <% end %> >Good</option>
-                                        <option value="4" <% if exam_group_remarks.to_i == 4 %> selected="selected" <% end %> >Need Improvement</option>
-                                    </select> 
-                                  </td>
+                                    <% if !@exam_subject.code.upcase.index("BANG").nil?%>
+                                    <td>
+                                      <select name="exam_remarks[<%=exam.id%>][<%=student.id%>][remarks]" >
+                                          <option value="0" >Select</option>
+                                          <option value="1" <% if exam_group_remarks.to_i == 1 %> selected="selected" <% end %> >অতি উত্তম</option>
+                                          <option value="2" <% if exam_group_remarks.to_i == 2 %> selected="selected" <% end %> >উত্তম</option>
+                                          <option value="3" <% if exam_group_remarks.to_i == 3 %> selected="selected" <% end %> >ভাল</option>
+                                          <option value="4" <% if exam_group_remarks.to_i == 4 %> selected="selected" <% end %> >অগ্রগতি প্রয়োজন</option>
+                                      </select> 
+                                    </td>
+
+                                    <% else %>
+                                    <td>
+                                      <select name="exam_remarks[<%=exam.id%>][<%=student.id%>][remarks]" >
+                                          <option value="0" >Select</option>
+                                          <option value="1" <% if exam_group_remarks.to_i == 1 %> selected="selected" <% end %> >Excellent</option>
+                                          <option value="2" <% if exam_group_remarks.to_i == 2 %> selected="selected" <% end %> >Very Good</option>
+                                          <option value="3" <% if exam_group_remarks.to_i == 3 %> selected="selected" <% end %> >Good</option>
+                                          <option value="4" <% if exam_group_remarks.to_i == 4 %> selected="selected" <% end %> >Need Improvement</option>
+                                      </select> 
+                                    </td>
+                                    <% end %>
                                   <% end %>
                                 <% end %>
                               <% end %>

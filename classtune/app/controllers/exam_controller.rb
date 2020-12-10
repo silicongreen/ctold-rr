@@ -969,7 +969,7 @@ class ExamController < ApplicationController
     if is_elective == nil
       if MultiSchool.current_school.id == 319
         @students = Student.active.find_all_by_batch_id(@batch.id, :order => 'CONCAT(first_name,middle_name,last_name) ASC')
-      elsif MultiSchool.current_school.id == 342 or MultiSchool.current_school.id == 362
+      elsif MultiSchool.current_school.id == 342 or MultiSchool.current_school.id == 361
         @students = Student.active.find_all_by_batch_id(@batch.id, :order => 'class_roll_no ASC')
       else
         @students = Student.active.find_all_by_batch_id(@batch.id, :order => 'if(class_roll_no = "" or class_roll_no is null,0,cast(class_roll_no as unsigned)),first_name ASC')
@@ -987,7 +987,7 @@ class ExamController < ApplicationController
               @studentids << student.id
               if MultiSchool.current_school.id == 319
                 @students.push [student.first_name,student.last_name, student.id, student]
-              elsif MultiSchool.current_school.id == 342 or MultiSchool.current_school.id == 362
+              elsif MultiSchool.current_school.id == 342 or MultiSchool.current_school.id == 361
                 @students.push [student.class_roll_no,student.first_name, student.id, student] 
               else
                 @students.push [student.class_roll_no.to_i,student.first_name, student.id, student] 

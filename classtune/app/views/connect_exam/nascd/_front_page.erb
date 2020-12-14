@@ -1,33 +1,203 @@
+<%= stylesheet_link_tag 'list_table' %>
+<style>
+    table.evaluation tr.border-bottom-1-px td.no-border
+    {
+        border-bottom: none !important;
+    }
+    .text-align-center
+    {
+        text-align: center;
+    }
+    .sfx margin-top-bottom-50
+    {
+        margin: 50px !important;
+    }
+    .sfx .margin-top-50
+    {
+        margin-top: 50px !important;
+    }
+
+    .sfx
+    {
+        font-family: serif;
+    }
+    sfx  .table-header td{
+        color: #000;
+        font-weight: bold;
+    }
+    .sjis-new .left-table.small_table
+    {
+        float:left;
+        margin:20px 0px 20px 10px !important;
+    }
+    .sjis-new .left-table.ev-table
+    {
+        float:left;
+        margin:20px 0px 20px 20px !important;
+    }
+
+    .sfx .left-table
+    {
+        float:left;
+    }
+    .sfx .right-table
+    {
+        float:left;
+        margin-left:21px;
+    }
+    .sfx td.remarks_code_table2
+    {
+        text-align: left;
+        font-size:14px;
+    }
+    .sfx td.remarks_code_table
+    {
+        text-align: left;
+        font-size:17px;
+    }
+    .sfx td.remarks_code_table span
+    {
+        float:left;
+    }
+    .sfx td.remarks_code_table table
+    {
+        float:left;
+        clear:both;
+        text-align: left;
+        border:none;
+
+    }
+    .sfx td.remarks_code_table table tr
+    {
+        border:none;
+    }
+    .sfx td.remarks_code_table table tr td
+    {
+        border:none;
+        padding: 2px 2px 2px 0px;
+        text-align: left;
+        font-size:17px;
+    }
+    .no-warp
+    {
+        white-space: nowrap !important;
+    }
+    .sfx table.td-align-left td
+    {
+        text-align: left;
+    }
+    .sfx table.text-size-18 tr td
+    {
+        font-size: 17px; 
+    }
+
+
+    .sfx table td.td-align-left
+    {
+        text-align: left;
+    }
+
+    .sfx table td.td-align-right
+    {
+        text-align: right;
+    }
+    .sjis table td.border-left-none{
+        border-left: 1px solid #000000 !important; 
+    } 
+    .sjis table td.border-right-none{
+        border-right: 1px solid #000000 !important;  
+    }
+    div.sjis-new
+    {
+        border: none;
+    }
+
+    .sfx table#pdf-table.break-table
+    {
+        clear: both !important;
+        margin-left: 0px !important;
+    }
+
+
+    .sjis-new .table_1 tr.odd td
+    {
+        padding: 2px !important;  
+        border: 1px solid #000000;
+        font-size:19px;
+    }
+    .sjis-new .table_1 tr.even td
+    {
+        padding: 2px !important;  
+        border: 1px solid #000000;
+        font-size:19px;
+    }
+    .sjis-new .table_2 tr.odd td
+    {
+        padding: 5px !important; 
+        border: 1px solid #000000;
+        font-size:19px;
+    }
+    .sjis-new .table_2 tr.even td
+    {
+        padding: 5px !important; 
+        border: 1px solid #000000;
+        font-size:19px;
+    }
+    .sjis-new .table_3 tr.odd td
+    {
+        padding: 5px 5px 6px 5px  !important;  
+        border: 1px solid #000000;
+        font-size:19px;
+    }
+    .sjis-new .table_3 tr.even td
+    {
+        padding: 5px 5px 6px 5px  !important; 
+        border: 1px solid #000000;
+        font-size:19px;
+    }
+
+    .sjis-new .table-padding-big tr.even td
+    {
+        padding: 14px  !important;
+    }
+
+    .sjis-new table.margin-top-bottom-20
+    {
+        margin: 5px 0px !important;
+    }
+
+
+</style> 
 <p>&nbsp;</p>
 <div id="pdf-header-south" class="general-header potrait_header_south_point text-color-dart-red">
     <table width="100%">
-        
+
         <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/logo.jpg")),:width=> '100%' %></span></td>
-        
+
         <td class="name-td">
-              <h3 align="center">&nbsp;&nbsp;&nbsp;&nbsp;Navy Anchorage School And College Dhaka</h3>
-              <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.name %> - <%=  @connect_exam_obj.published_date.strftime("%Y") %></h5>
-              <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;</h5>
-               
+            <h3 align="center">&nbsp;&nbsp;&nbsp;&nbsp;Navy Anchorage School And College Dhaka</h3>
+            <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.name %> - <%=  @connect_exam_obj.published_date.strftime("%Y") %></h5>
+            <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;</h5>
+
         </td>
         <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/mujib.jpeg")),:width=> '130%' %></span></td>
     </table>   
 </div>
 
-  <% unless @batch.course.course_name.upcase.index("PLAY").nil? %>
-  <p align="center" style="font-size: 32px;">Play</p>
+<% unless @batch.course.course_name.upcase.index("PLAY").nil? %>
+  <p align="center"  style="font-size: 32px;">Play</p>
   <p align="center">&nbsp;</p>
   <p align="center" style="width:100%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/play.jpg")),:width=> '90%' %></p>
-  <% end %>
-  <% unless @batch.course.course_name.upcase.index("NURSERY").nil? %>
+<% end %>
+<% unless @batch.course.course_name.upcase.index("NURSERY").nil? %>
   <p align="center" style="font-size: 32px;">Nursery</p>
-  <p align="center">&nbsp;</p>
+  <p align="center" >&nbsp;</p>
   <p align="center" style="width:100%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/nursury.jpg")),:width=> '90%' %></p>
-  <% end %>
-  <% unless @batch.course.course_name.upcase.index("KG").nil? %>
+<% end %>
+<% unless @batch.course.course_name.upcase.index("KG").nil? %>
   <p align="center" style="font-size: 32px;">KG</p>
   <p align="center">&nbsp;</p>
   <p align="center" style="width:100%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/kg.jpg")),:width=> '90%' %></p>
-  <% end %>
+<% end %>
 
 <div class="page-break-main"></div>

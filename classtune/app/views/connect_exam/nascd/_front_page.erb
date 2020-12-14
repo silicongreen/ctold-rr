@@ -169,35 +169,37 @@
 
 </style> 
 <p>&nbsp;</p>
-<div id="pdf-header-south" class="general-header potrait_header_south_point text-color-dart-red">
-    <table width="100%">
+<div id="page-yield"  class="available_sections1 sjis-new sfx">
+    <div id="pdf-header-south" class="general-header potrait_header_south_point text-color-dart-red">
+        <table width="100%">
 
-        <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/logo.jpg")),:width=> '100%' %></span></td>
+            <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/logo.jpg")),:width=> '100%' %></span></td>
 
-        <td class="name-td">
-            <h3 align="center">&nbsp;&nbsp;&nbsp;&nbsp;Navy Anchorage School And College Dhaka</h3>
-            <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.name %> - <%=  @connect_exam_obj.published_date.strftime("%Y") %></h5>
-            <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;</h5>
+            <td class="name-td">
+                <h3 align="center">&nbsp;&nbsp;&nbsp;&nbsp;Navy Anchorage School And College Dhaka</h3>
+                <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.name %> - <%=  @connect_exam_obj.published_date.strftime("%Y") %></h5>
+                <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;</h5>
 
-        </td>
-        <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/mujib.jpeg")),:width=> '130%' %></span></td>
-    </table>   
+            </td>
+            <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/mujib.jpeg")),:width=> '130%' %></span></td>
+        </table>   
+    </div>
+
+    <% unless @batch.course.course_name.upcase.index("PLAY").nil? %>
+      <p align="center"  style="font-size: 32px;">Play</p>
+      <p align="center">&nbsp;</p>
+      <p align="center" style="width:100%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/play.jpg")),:width=> '90%' %></p>
+    <% end %>
+    <% unless @batch.course.course_name.upcase.index("NURSERY").nil? %>
+      <p align="center" style="font-size: 32px;">Nursery</p>
+      <p align="center" >&nbsp;</p>
+      <p align="center" style="width:100%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/nursury.jpg")),:width=> '90%' %></p>
+    <% end %>
+    <% unless @batch.course.course_name.upcase.index("KG").nil? %>
+      <p align="center" style="font-size: 32px;">KG</p>
+      <p align="center">&nbsp;</p>
+      <p align="center" style="width:100%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/kg.jpg")),:width=> '90%' %></p>
+    <% end %>
 </div>
-
-<% unless @batch.course.course_name.upcase.index("PLAY").nil? %>
-  <p align="center"  style="font-size: 32px;">Play</p>
-  <p align="center">&nbsp;</p>
-  <p align="center" style="width:100%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/play.jpg")),:width=> '90%' %></p>
-<% end %>
-<% unless @batch.course.course_name.upcase.index("NURSERY").nil? %>
-  <p align="center" style="font-size: 32px;">Nursery</p>
-  <p align="center" >&nbsp;</p>
-  <p align="center" style="width:100%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/nursury.jpg")),:width=> '90%' %></p>
-<% end %>
-<% unless @batch.course.course_name.upcase.index("KG").nil? %>
-  <p align="center" style="font-size: 32px;">KG</p>
-  <p align="center">&nbsp;</p>
-  <p align="center" style="width:100%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/kg.jpg")),:width=> '90%' %></p>
-<% end %>
 
 <div class="page-break-main"></div>

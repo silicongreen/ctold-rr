@@ -195,7 +195,7 @@
                           <td class="col-pdf no-warp align-left-baf"><b><%= subjects['subject_name'] %></b></td>
                           <% unless @report_data['report']['exams'].blank? %>
                             <% @report_data['report']['exams'].each do |report| %>
-                                <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
+                                <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                                   <% remarks_exam = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                                   <% if !subjects['code'].upcase.index("BANG").nil? %>
                                       <td class="col-pdf"><b>

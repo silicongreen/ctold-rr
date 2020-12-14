@@ -11,34 +11,36 @@
         </tr>
     </table>   
 </div> 
-<% unless @batch.course.course_name.upcase.index("PLAY").nil? %>
-<h4 align="center">Play</h4>
-<h4 align="center">&nbsp;</h4>
-<h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/play.jpg")),:width=> '100%' %></h4>
-<% end %>
-<% unless @batch.course.course_name.upcase.index("NURSERY").nil? %>
-<h4 align="center">Nursery</h4>
-<h4 align="center">&nbsp;</h4>
-<h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/nursury.jpg")),:width=> '100%' %></h4>
-<% end %>
-<% unless @batch.course.course_name.upcase.index("KG").nil? %>
-<h4 align="center">KG</h4>
-<h4 align="center">&nbsp;</h4>
-<h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/kg.jpg")),:width=> '100%' %></h4>
-<% end %>
+<div id="pdf-header-south" class="general-header potrait_header_south_point text-color-dart-red">
+  <% unless @batch.course.course_name.upcase.index("PLAY").nil? %>
+  <h4 align="center">Play</h4>
+  <h4 align="center">&nbsp;</h4>
+  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/play.jpg")),:width=> '100%' %></h4>
+  <% end %>
+  <% unless @batch.course.course_name.upcase.index("NURSERY").nil? %>
+  <h4 align="center">Nursery</h4>
+  <h4 align="center">&nbsp;</h4>
+  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/nursury.jpg")),:width=> '100%' %></h4>
+  <% end %>
+  <% unless @batch.course.course_name.upcase.index("KG").nil? %>
+  <h4 align="center">KG</h4>
+  <h4 align="center">&nbsp;</h4>
+  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/kg.jpg")),:width=> '100%' %></h4>
+  <% end %>
 
-<table width="100%" clas="text-color-dart-red">
-    <tr>
-        <td width="60%">
-            Name: <%= @student.full_name %>
-        </td>
-        <td width="20%">
-            Roll: <%= @student.class_roll_no %>
-        </td>
-        <td width="20%">
-            Section: <%= @batch.course.section_name %>
-        </td>
-    </tr>
-</table>
+  <table width="100%" class="text-color-dart-red">
+      <tr>
+          <td width="60%">
+              Name: <%= @student.full_name %>
+          </td>
+          <td width="20%">
+              Roll: <%= @student.class_roll_no %>
+          </td>
+          <td width="20%">
+              Section: <%= @batch.course.section_name %>
+          </td>
+      </tr>
+  </table>
+</div> 
 
 <div class="page-break-main"></div>

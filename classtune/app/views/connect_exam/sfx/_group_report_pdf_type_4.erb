@@ -176,6 +176,29 @@
               </table>
               <h3>**CT = Class Test, CP = Class Performance, PCT = Percentage</h3>
               
+              <%
+              present = 0
+              comments = ""
+              if !@exam_comment.blank?
+                all_comments = @exam_comment.comments
+                if !all_comments.blank?
+                  all_comments_array = all_comments.split("-")
+                  if !all_comments_array[1].nil?
+                    present = all_comments_array[1].to_i
+                    comments = all_comments_array[0]
+                    else
+                    present = all_comments_array[0].to_i
+                  end
+                end
+                end
+            %>
+              
+              <table id="pdf-table"  class="margin-top-20 class-text-align-left" width="99.8%" cellspacing="0">
+                    <tr class="even"><td class=" align-left-baf" width="30%">NO. OF WORKING DAYS</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days %></td></tr>
+                    <tr class="even"><td class=" align-left-baf" width="30%">PRESENT</td><td class=" align-left-baf"><%= present %></td></tr>
+                    <tr class="even"><td class=" align-left-baf" width="30%">ABSENT</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days.to_i - present.to_i %></td></tr>
+                </table>
+              
               <% attpercentage = (@report_data['present'].to_f/@report_data['total'].to_f)*100 %>
               <table id="pdf-table" class="margin-top-20 class-text-align-left" width="100%" cellspacing="0">
                   <tr class="even">
@@ -183,7 +206,7 @@
                   </tr>
                   <tr class="odd ">
                       
-                      <td class="td-align-left"><b>&nbsp;<% if !@exam_comment.blank? %><b><%= @exam_comment.comments %></b><% else %><br/>&nbsp;<br/>&nbsp;<br/><% end %></b>
+                      <td class="td-align-left"><b>&nbsp;<% if !comments.blank? %><b><%= comments %></b><% else %><br/>&nbsp;<br/>&nbsp;<br/><% end %></b>
                   </td>
                   
               </table>
@@ -196,7 +219,7 @@
                   </tr> 
                   <tr class="odd">
                       <td></td>
-                      <td><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/signature2.jpg")),:width=> '30%' %></td>
+                      <td><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/IMG_20201125_0002.jpg")),:width=> '30%' %></td>
                   </tr>
               </table>
 

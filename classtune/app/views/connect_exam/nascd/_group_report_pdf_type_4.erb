@@ -14,16 +14,16 @@
       <% end %>
     <% end %>
   <div id="page-yield"  class="available_sections1 sjis-new sfx">
-      <table id="pdf-table" class="margin-top-bottom-20" width="99.8%" cellspacing="0">
+      <table id="pdf-table" class="margin-top-bottom-20 td-all-align-left" width="99.8%" cellspacing="0">
           <tr class="table-header">
-              <td colspan='2'>Student's Name<td><td colspan='2'><%= @student.full_name %></td>
+              <td colspan='2'>Student's Name</td><td colspan='2'><%= @student.full_name %></td>
               <td>Section</td><td><%= @batch.course.section_name %></td>
               <td>Roll</td><td><%= @student.class_roll_no %></td>            
               <td colspan='2'>Class Teacher's Name</td>
           </tr>
           <tr class="table-header"ss>
               <td colspan='2'>Mother's Name</td><td colspan='2'><%= mother.first_name unless mother.blank? %> <%= mother.last_name unless mother.blank? %></td>
-              <td>Cell</td><td colspan='3'><%= mother.mobile_phone unless mother.blank? %></td>
+              <td width="10%">Cell</td><td colspan='3'><%= mother.mobile_phone unless mother.blank? %></td>
               <td colspan='2'>
               <% unless @assigned_employee.blank? %>
                   <% @assigned_employee.each do |emp| %>
@@ -36,8 +36,8 @@
           </tr>
           <tr class="table-header"ss>
               <td colspan='2'>Father's Name</td><td colspan='2'><%= father.first_name unless father.blank? %> <%= father.last_name unless father.blank? %></td>
-              <td>Cell</td><td colspan='3'><%= father.mobile_phone unless father.blank? %></td>
-              <td>
+              <td width="10%">Cell</td><td colspan='3'><%= father.mobile_phone unless father.blank? %></td>
+              <td width="10%">
                   Cell
               </td>
               <td>

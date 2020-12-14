@@ -1,47 +1,15 @@
 <p>&nbsp;</p>
-<div id="pdf-header-south" class="general-header potrait_header_south_point text-color-dart-red">
-    <table width="100%" class="no-border no-border-td">
-        <tr>
-          <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/logo.jpg")),:width=> '100%' %></span></td>
-
-          <td class="name-td name-td-south">
-                <h4 align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Navy Anchorage School And College Dhaka</h4>
-                <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assessment Record- <%=  @connect_exam_obj.published_date.strftime("%Y") %></h5>  
-          </td>
-          <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/mujib.jpeg")),:width=> '130%' %></span></td>
-        </tr>
+<div id="pdf-header-south" class="general-header potrait_header_south_point">
+    <table width="100%">
+        
+        <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/logo.jpg")),:width=> '100%' %></span></td>
+        
+        <td class="name-td">
+              <h3 align="center">&nbsp;&nbsp;&nbsp;&nbsp;Navy Anchorage School And College Dhaka</h3>
+              <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.name %> - <%=  @connect_exam_obj.published_date.strftime("%Y") %></h5>
+              <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;Class : <%= @batch.course.course_name %></h5>
+               
+        </td>
+        <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/mujib.jpeg")),:width=> '130%' %></span></td>
     </table>   
 </div> 
-<div id="pdf-header-south" class="general-header potrait_header_south_point text-color-dart-red  no-border no-border-td">
-  <% unless @batch.course.course_name.upcase.index("PLAY").nil? %>
-  <h4 align="center">Play</h4>
-  <h4 align="center">&nbsp;</h4>
-  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/play.jpg")),:width=> '90%' %></h4>
-  <% end %>
-  <% unless @batch.course.course_name.upcase.index("NURSERY").nil? %>
-  <h4 align="center">Nursery</h4>
-  <h4 align="center">&nbsp;</h4>
-  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/nursury.jpg")),:width=> '90%' %></h4>
-  <% end %>
-  <% unless @batch.course.course_name.upcase.index("KG").nil? %>
-  <h4 align="center">KG</h4>
-  <h4 align="center">&nbsp;</h4>
-  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/kg.jpg")),:width=> '90%' %></h4>
-  <% end %>
-
-  <table width="100%" class="text-color-dart-red no-border no-border-td">
-      <tr>
-          <td width="60%">
-              Name: <%= @student.full_name %>
-          </td>
-          <td width="20%">
-              Roll: <%= @student.class_roll_no %>
-          </td>
-          <td width="20%">
-              Section: <%= @batch.course.section_name %>
-          </td>
-      </tr>
-  </table>
-</div> 
-
-<div class="page-break-main"></div>

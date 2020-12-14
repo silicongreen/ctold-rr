@@ -80,10 +80,10 @@
                   
                   <% else %>
                   <tr class="table-header">
-                      <td class="col-pdf no-warp"><b><%= "Subject" %></b></td>
+                      <td class="col-pdf no-warp" width="50%"><b><%= "Subject" %></b></td>
                       <% unless @report_data['report']['exams'].blank? %>
                         <% @report_data['report']['exams'].each do |report| %>
-                          <td class="col-pdf"><%= report['exam_name'] %></td>
+                          <td class="col-pdf"  width="50%"><%= report['exam_name'] %></td>
                         <% end %>
                       <% end %> 
                   </tr>

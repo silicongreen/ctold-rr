@@ -34,6 +34,11 @@
     font-size: 40px !important;
 
 }
+.text-color-dart-red tr td
+{
+  color: darkred !important;
+  font-size: 20px !important;
+}
 </style>   
 
 <%
@@ -48,5 +53,8 @@ if @tabulation_data.nil?
   <%
 end
 %>
+<% if !@batch.course.course_name.upcase.index("PLAY").nil? or !@batch.course.course_name.upcase.index("NURSERY").nil? or !@batch.course.course_name.upcase.index("KG").nil?  %>
+  <%= render  :partial=>"/connect_exam/nascd/front_page" %>
+<% end %>
 <%= render  :partial=>"/connect_exam/nascd/group_report_pdf_type_"+@connect_exam_obj.result_type.to_s %>
  

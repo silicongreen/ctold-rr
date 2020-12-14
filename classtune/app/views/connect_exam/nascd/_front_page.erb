@@ -1,6 +1,6 @@
 <p>&nbsp;</p>
 <div id="pdf-header-south" class="general-header potrait_header_south_point text-color-dart-red">
-    <table width="100%">
+    <table width="100%" class="no-border no-border-td">
         <tr>
           <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/logo.jpg")),:width=> '100%' %></span></td>
 
@@ -12,7 +12,7 @@
         </tr>
     </table>   
 </div> 
-<div id="pdf-header-south" class="general-header potrait_header_south_point text-color-dart-red">
+<div id="pdf-header-south" class="general-header potrait_header_south_point text-color-dart-red  no-border no-border-td">
   <% unless @batch.course.course_name.upcase.index("PLAY").nil? %>
   <h4 align="center">Play</h4>
   <h4 align="center">&nbsp;</h4>
@@ -29,7 +29,7 @@
   <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/kg.jpg")),:width=> '90%' %></h4>
   <% end %>
 
-  <table width="100%" class="text-color-dart-red">
+  <table width="100%" class="text-color-dart-red no-border no-border-td">
       <tr>
           <td width="60%">
               Name: <%= @student.full_name %>

@@ -187,7 +187,7 @@
                     present = all_comments_array[1].to_i
                     comments = all_comments_array[0]
                     else
-                    comments = all_comments_array[0].to_i
+                    comments = all_comments_array[0]
                   end
                 end
                 end
@@ -219,7 +219,7 @@
                   </tr> 
                   <tr class="odd">
                       <td></td>
-                      <td><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sign_new.jpg")),:width=> '30%' %></td>
+                      <td><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sign_new.jpeg")),:width=> '30%' %></td>
                   </tr>
               </table>
 

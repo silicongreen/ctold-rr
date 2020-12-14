@@ -200,6 +200,19 @@
       <p align="center">&nbsp;</p>
       <p align="center" style="width:100%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/kg.jpg")),:width=> '70%' %></p>
     <% end %>
+    <table width="100%" style="font-size: 32px; color:darkred;">
+      <tr>
+          <td width="60%">
+              Name: <%= @student.full_name %>
+          </td>
+          <td width="20%">
+              Roll: <%= @student.class_roll_no %>
+          </td>
+          <td width="20%">
+              Section: <%= @batch.course.section_name %>
+          </td>
+      </tr>
+  </table>
 </div>
 
 <div class="page-break-main"></div>

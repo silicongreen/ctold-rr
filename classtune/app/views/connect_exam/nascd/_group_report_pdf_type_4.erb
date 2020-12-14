@@ -173,12 +173,7 @@
                       allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
                       allexams.each do |exam|
                         if !@all_subjects.include?(exam.subject.id)
-                          subjectdata = Subject.find(exam.subject.id) %>
-                          <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>exam.subject.id.to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
-                          <% 
-                          if @has_exam_student == false
-                            next
-                          end
+                          
                           @all_subjects << exam.subject.id
                         end
                       end
@@ -187,6 +182,11 @@
                       
                    <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
                     <% @report_data['report']['no_exam_subject_resutl'].each do |subjects| %>
+                      <% subjectdata = Subject.find(subjects['id'].to_i) %>
+                      <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                      <% if @has_exam_student == false %>
+                        <% next %>
+                      <% end %>
 
                     <%  if @all_subjects.include?(subjects['id'].to_i) %>
                         <% total_subject = total_subject+1 %>

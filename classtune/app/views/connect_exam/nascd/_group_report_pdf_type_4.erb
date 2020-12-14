@@ -173,6 +173,12 @@
                       allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
                       allexams.each do |exam|
                         if !@all_subjects.include?(exam.subject.id)
+                          subjectdata = Subject.find(exam.subject.id) %>
+                          <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>exam.subject.id.to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                          <% 
+                          if @has_exam_student == false
+                            next
+                          end
                           @all_subjects << exam.subject.id
                         end
                       end

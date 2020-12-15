@@ -217,12 +217,13 @@
                 end
                 end
             %>
-              
+              <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
               <table id="pdf-table"  class="margin-top-20 class-text-align-left" width="99.8%" cellspacing="0">
                     <tr class="even"><td class=" align-left-baf" width="30%">NO. OF WORKING DAYS</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days %></td></tr>
                     <tr class="even"><td class=" align-left-baf" width="30%">PRESENT</td><td class=" align-left-baf"><%= present %></td></tr>
                     <tr class="even"><td class=" align-left-baf" width="30%">ABSENT</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days.to_i - present.to_i %></td></tr>
                 </table>
+              <% end %>
               
               <% attpercentage = (@report_data['present'].to_f/@report_data['total'].to_f)*100 %>
               <table id="pdf-table" class="margin-top-20 class-text-align-left" width="100%" cellspacing="0">

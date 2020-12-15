@@ -3115,7 +3115,7 @@ class ExamController < ApplicationController
       end
     end
     @class = params[:class]
-    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14
+    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15
       finding_data_sagc_covid()
     else
       finding_data5()
@@ -3143,7 +3143,7 @@ class ExamController < ApplicationController
       end
     end
     @class = params[:class]
-    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14
+    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15
       finding_data_sagc_covid()
     else
       finding_data5()
@@ -3171,7 +3171,7 @@ class ExamController < ApplicationController
       end
     end
     @class = params[:class]
-    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14
+    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15
       finding_data_sagc_covid()
     else
       finding_data5()
@@ -3230,7 +3230,7 @@ class ExamController < ApplicationController
       end
     end
     @class = params[:class]
-    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14
+    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15
       finding_data_sagc_covid()
     else
       finding_data5()
@@ -5163,7 +5163,7 @@ class ExamController < ApplicationController
         @tabulation_data = student_response['data']
       end
     end
-    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14
+    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15
       finding_data_sagc_covid()
     else
       finding_data5()
@@ -7645,7 +7645,7 @@ class ExamController < ApplicationController
                 grand_total = grand_total+main_mark
                 grand_total_with_fraction = grand_total_with_fraction+main_mark
                 grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                if !grade.blank? and !grade.name.blank? and ( grade.credit_points.to_i == 0 or total_mark_subject < 20 or (@connect_exam_obj.result_type.to_i == 14 and main_mark < 40) ) and sub['subject_group_id'].to_i == 0
+                if !grade.blank? and !grade.name.blank? and ( grade.credit_points.to_i == 0 or total_mark_subject < 20 or (@connect_exam_obj.result_type.to_i == 14 and main_mark < 40) or (@connect_exam_obj.result_type.to_i == 15 and main_mark < 45) ) and sub['subject_group_id'].to_i == 0
                   if fourth_subject.blank?
                     u_grade = u_grade+1
                     subject_failed = true

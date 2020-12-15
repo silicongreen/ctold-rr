@@ -654,7 +654,7 @@
 </style> 
 
 <style>
-<% if covid.blank? and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
+<% if @covid_main.blank? and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
 table.height-exam tr td
 {
     height: 33px !important;

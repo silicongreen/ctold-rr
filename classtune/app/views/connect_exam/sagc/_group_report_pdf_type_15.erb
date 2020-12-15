@@ -186,7 +186,13 @@
                       
                   <% if total_grade > 0 && total_subject > 0 %>
                       <% grade_point_avg = total_grade.to_f/total_subject.to_f %>
-                  <% end %>  
+                  <% end %>
+                  <tr class="even">
+                      <td class="col-pdf align-left-baf" colspan="3"><b>Total Marks & Total GP</b></td>
+                      <td class="col-pdf no-warp"><b><%= grand_total_fraction %></b></td>
+                      <td class="col-pdf no-warp" colspan="2"></b></td>
+                      <td class="col-pdf"><b><%= total_grade %></b></td>
+                  </tr> 
 
               </table>
                 

@@ -3,7 +3,7 @@
   <div id="page-yield"  class="available_sections1 baf_shaheen">
       <%= render  :partial=>"/connect_exam/bncd/header" %>
      
-      <table id="pdf-table" class="tbl-lign-left" width="100%" cellspacing="0">
+      <table id="pdf-table" width="100%" cellspacing="0">
           <tr class="even">
               <td class="align-right col-pdf" width="20%">Student ID </td>
               <td colspan="3" class="align-left"><b><%= @student.admission_no %></b></td>
@@ -117,7 +117,7 @@
               </table>
               <div class='fine'></div>
               <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
-                  <tr class="tabbed-header">
+                  <tr class="table-header">
                     <td class="col-pdf no-warp align-left-baf">Final Remarks</td>
                     <td class="col-pdf no-warp align-left-baf"><% if !@exam_comment.blank? %><%= @exam_comment.comments %><% end %></td>
                   </tr>

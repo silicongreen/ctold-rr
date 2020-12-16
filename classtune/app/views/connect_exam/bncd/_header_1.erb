@@ -1,0 +1,20 @@
+<p>&nbsp;</p>
+<center>
+  <p><font size="6"><b><%=Configuration.get_config_value('InstitutionName'); %></b></font></p>
+  <p><font size="5"><%= @connect_exam_obj.name %></font></p>
+  <p><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/bncd/logo.png")),:width=> '8%' %></p>
+  <p><font size="5">&nbsp;</font></p>
+</center>
+<style>
+  div.baf_shaheen table.center-header
+  {
+      float:left !important;
+      margin-left: 4% !important;
+      margin-top: -10px !important;
+      width: 100% !important;
+  }
+  tr.text-align-center td
+  {
+      text-align: center !important;
+  }
+</style>    

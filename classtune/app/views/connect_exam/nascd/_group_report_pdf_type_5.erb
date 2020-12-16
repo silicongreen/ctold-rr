@@ -54,35 +54,28 @@
                   <% c = 'even'  %>
                   
                    <tr class="table-header">
-                       <td class="col-pdf no-warp" rowspan="4"><b><%= "Subject" %></b></td>
-                       <td class="col-pdf" colspan="4" ><b>Obtain Marks</b></td>
+                       <td class="col-pdf no-warp" rowspan="2"><b><%= "Subject" %></b></td>
+                       <td class="col-pdf" colspan="2" ><b>Allotted Marks</b></td>
+                       <td class="col-pdf" colspan="3" ><b>Obtain Marks</b></td>
                        <td class="col-pdf" colspan="2" ><b>Grade</b></td>
                    </tr>
-                   <tr class="table-header">
-                       <td class="col-pdf" colspan="4" >Model Test</td>
-                       <td class="col-pdf" rowspan="2" >Point</td>
-                       <td class="col-pdf" rowspan="2" >Letter</td>
-                   </tr>
                     <tr class="table-header">
-                        <td class="col-pdf"><b>Full Marks</b></td>
+                        
+                        <% unless @report_data['report']['exams'].blank? %>
+                          <% @report_data['report']['exams'].each do |report| %>
+                            <td class="col-pdf"><b><%= @exam_marks[report['exam_id'].to_s] %></b></td>
+                          <% end %>
+                        <% end %> 
                         <% unless @report_data['report']['exams'].blank? %>
                           <% @report_data['report']['exams'].each do |report| %>
                             <td class="col-pdf"><b><%= @exam_marks[report['exam_id'].to_s] %></b></td>
                           <% end %>
                         <% end %> 
                         <td class="col-pdf"><b>Total</b></td>
+                        <td class="col-pdf">Point</td>
+                        <td class="col-pdf">Letter</td>
                     </tr>
-                    <tr class="table-header">
-                        <td class="col-pdf">100</td>
-                        <% unless @report_data['report']['exams'].blank? %>
-                          <% @report_data['report']['exams'].each do |report| %>
-                            <td class="col-pdf"><b><%= report['maximum_marks'].to_i %></b></td>
-                          <% end %>
-                        <% end %> 
-                        <td class="col-pdf">100</td>
-                        <td class="col-pdf"></td>
-                        <td class="col-pdf"></td>
-                    </tr>
+                    
                  
                   <% total_mark = 0 %>
                   <% full_mark = 0 %>
@@ -111,11 +104,13 @@
                           <% unless @report_data['report']['exams'].blank? %>
                             <% @report_data['report']['exams'].each do |report| %>
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %></td>
                                 <% max_mark = max_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
-                              <% end %>
+                              <% else %>
+                                <td class="col-pdf">-</td>
+                              <% end %>  
                             <% end %>
                           <% end %>
-                          <td class="col-pdf"><%= max_mark.to_i %></td>
                           <% unless @report_data['report']['exams'].blank? %>
                             <% @report_data['report']['exams'].each do |report| %>
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
@@ -170,7 +165,7 @@
                       
                   <tr class="even">
                       <td class="col-pdf align-left-baf"></td>
-                      <td class="col-pdf no-warp"  colspan="3"><b>Grand Total</b></td>
+                      <td class="col-pdf no-warp"  colspan="4"><b>Grand Total & GPA</b></td>
                       <td class="col-pdf no-warp"><b><%= total_mark %></b></td>
                       <td class="col-pdf"><b><%= total_grade %></b></td>
                       <td class="col-pdf">
@@ -197,10 +192,10 @@
                       <td colspan="2"><b>Gradding</b></td>
                       <td class='align-left-baf padding-0-text-left' rowspan="9">
                           <ul>
-                              <li>This report card is issued each term to let you know our evaluation regarding the progress of your child.</li>
-                              <li>At school, we consider each student as an individual who will develop intellectually, physically and socially to his or her abilities
-                               and opportunities.</li> 
-                              <li>Parents are always welcome to make an appointment to discuss about the progress of their children.</li>  
+                              <li><p>This report card is issued each term to let you know our evaluation regarding the progress of your child.</p></li>
+                              <li><p>At school, we consider each student as an individual who will develop intellectually, physically and socially to his or her abilities
+                               and opportunities.</p></li> 
+                              <li><p>Parents are always welcome to make an appointment to discuss about the progress of their children.</p></li>  
                           </ul>
                       </td>
                   </tr>

@@ -63,12 +63,12 @@
                         
                         <% unless @report_data['report']['exams'].blank? %>
                           <% @report_data['report']['exams'].each do |report| %>
-                            <td class="col-pdf"><b><%= @exam_marks[report['exam_id'].to_s] %></b></td>
+                            <td class="col-pdf"><b><%= report['exam_name'] %></b></td>
                           <% end %>
                         <% end %> 
                         <% unless @report_data['report']['exams'].blank? %>
                           <% @report_data['report']['exams'].each do |report| %>
-                            <td class="col-pdf"><b><%= @exam_marks[report['exam_id'].to_s] %></b></td>
+                            <td class="col-pdf"><b><%= report['exam_name'] %></b></td>
                           <% end %>
                         <% end %> 
                         <td class="col-pdf"><b>Total</b></td>

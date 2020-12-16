@@ -10,6 +10,8 @@
   <%= render  :partial=>"/connect_exam/oisd/connect_exam_subject_comments" %>
 <% elsif MultiSchool.current_school.code == "nascd" %> 
   <%= render  :partial=>"/connect_exam/nascd/connect_exam_subject_comments" %>
+<% elsif MultiSchool.current_school.code == "bncd" %> 
+  <%= render  :partial=>"/connect_exam/bncd/connect_exam_subject_comments" %>
 <% else %>
   <%= render  :partial=>"/connect_exam/connect_exam_subject_comments" %>
 <% end %>

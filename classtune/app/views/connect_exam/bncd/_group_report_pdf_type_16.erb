@@ -3,7 +3,7 @@
   <div id="page-yield"  class="available_sections1 baf_shaheen">
       <%= render  :partial=>"/connect_exam/bncd/header" %>
      
-      <table id="pdf-table" class="tbl-lign-left" width="52%" cellspacing="0">
+      <table id="pdf-table" class="tbl-lign-left" width="100%" cellspacing="0">
           <tr class="even">
               <td class="align-right col-pdf" width="20%">Student ID </td>
               <td colspan="3" class="align-left"><b><%= @student.admission_no %></b></td>
@@ -42,9 +42,6 @@
               <td class="align-left"><%= @student.student_category.name unless @student.student_category.blank? %></td>
           </tr>
       </table>
-      <div class="grade_information">
-          <%= render  :partial=>"/connect_exam/bncd/gradding_level" %>
-      </div>
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
 

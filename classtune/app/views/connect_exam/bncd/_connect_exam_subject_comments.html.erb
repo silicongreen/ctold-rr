@@ -60,6 +60,7 @@
                 <table class="zui-table">
 
                     <tr class="tr-head fixed-position">
+                        <td  class="zui-sticky-col" style="width:18%;"><b><%= "Roll" %></b></td>
                         <td  class="zui-sticky-col2"><b><%= t('name') %></b></td>
                         <% unless @exams.blank? %>
                         
@@ -165,6 +166,7 @@
                     </tr>
                     <% @students.each do |student| %>
                       <tr class="tr-<%= cycle('odd', 'even') %>">
+                          <td class="col-2 zui-sticky-col" style="width: 18%;" ><%= student.class_roll_no %> </td>
                           <td class="col-2 zui-sticky-col2"  style="padding: 13px 10px"><%= student.full_name %> </td>
                           <%
                             exam_comment = ""

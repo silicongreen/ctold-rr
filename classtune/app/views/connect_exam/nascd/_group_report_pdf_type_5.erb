@@ -56,7 +56,7 @@
                    <tr class="table-header">
                        <td class="col-pdf no-warp" rowspan="2"><b><%= "Subject" %></b></td>
                        <td class="col-pdf" colspan="2" ><b>Allotted Marks</b></td>
-                       <td class="col-pdf" colspan="3" ><b>Obtain</b></td>
+                       <td class="col-pdf" colspan="3" ><b>Obtained Marks</b></td>
                        <td class="col-pdf" colspan="2" ><b>Grade</b></td>
                    </tr>
                     <tr class="table-header">
@@ -191,10 +191,12 @@
                   <tr class="table-header">
                       <td colspan="2" width="30%"><b>Gradding</b></td>
                       <td class='align-left-baf padding-0-text-left' rowspan="9">
-                          <p>&bull;We issue this report card to let you know our evaluation regarding the progress of your child.</p>
-                          <p>&bull;At school, we consider each student as an individual who will develop intellectually, physically and
-socially to his or her abilities and opportunities.</p>
-                          <p>&bull;Parents are always wellcome to make an appointment to discuss about the progress of their children.</p>
+                          <ul>
+                              <li><p>We issue this report card to let you know our evaluation regarding the progress of your child.</p></li>
+                              <li><p>At school, we consider each student as an individual who will develop intellectually, physically and
+socially to his or her abilities and opportunities.</p></li> 
+                              <li><p>Parents are always wellcome to make an appointment to discuss about the progress of their children.</p></li>  
+                          </ul>
                       </td>
                   </tr>
                   <tr class="table-header">
@@ -204,7 +206,7 @@ socially to his or her abilities and opportunities.</p>
                   <% prev_score = 0 %>
                   <% @grading_levels.each_with_index do |grade,index| %>
                     <tr class="table-header">
-                        <td class="no-warp" height="30px">
+                        <td class="no-warp">
                             <% if grade.max_score.nil? %> 
                               <% if grade.min_score.to_i == 0 %>
                                 <&nbsp;<%= '%i%' % prev_score %>
@@ -216,7 +218,7 @@ socially to his or her abilities and opportunities.</p>
                             <% end %>
                             <%  prev_score = grade.min_score %>
                         </td>
-                        <td height="30px"><%= grade.name %></td>
+                        <td><%= grade.name %></td>
                     </tr> 
                   <% end %>  
               </table>
@@ -412,11 +414,14 @@ socially to his or her abilities and opportunities.</p>
             .sjis-new tr.table-header td.padding-0-text-left ul li
             {
                text-align: left !important;
+               font-size:19px;
             }
             .sjis-new tr.table-header td.padding-0-text-left ul
             {
                text-align: left !important;
             }
+            
+            
 
 
         </style>    

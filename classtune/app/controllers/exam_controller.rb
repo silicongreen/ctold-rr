@@ -5626,6 +5626,11 @@ class ExamController < ApplicationController
         report_data
       }
     end
+    @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id) 
+    @student_exam_comment = {}
+    @exam_comment.each do |cmt|
+      @student_exam_comment[cmt.student_id.to_s] = cmt.comments
+    end 
      
   
        

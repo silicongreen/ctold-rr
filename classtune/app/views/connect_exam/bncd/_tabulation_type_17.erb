@@ -245,58 +245,70 @@ unless @ranked_student.blank?
 
                               <% main_mark1 = 0 %>
                               <% main_mark2 = 0 %>
-                              <% if subject_obtain_mark.to_i > 0 and subject_full_mark.to_i > 0 %>
-                                <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
+                              <% if subject_obtain_mark1.to_i > 0 and subject_full_mark1.to_i > 0 %>
+                                <% main_mark1 = (subject_obtain_mark1.to_f/subject_full_mark1.to_f)*100 %>  
                               <% end %> 
+                              <% if subject_obtain_mark2.to_i > 0 and subject_full_mark2.to_i > 0 %>
+                                <% main_mark2 = (subject_obtain_mark2.to_f/subject_full_mark2.to_f)*100 %>  
+                              <% end %>
                               <% if has_exam == true %>
-                                    <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                                    <%  grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id) %>
                                     <% if !grade.blank? and !grade.name.blank? %>
-                                      <% total_grade = total_grade+grade.credit_points.to_f %>
+                                      <% total_grade1 = total_grade1+grade.credit_points.to_f %>
+                                    <% end %>
+                                    <%  grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id) %>
+                                    <% if !grade.blank? and !grade.name.blank? %>
+                                      <% total_grade2 = total_grade2+grade.credit_points.to_f %>
                                     <% end %>
                                 </td> 
                               <% end %>  
                           <% end %> 
 
-                          <% percentage = 0 %>      
-                          <% if full_mark_all > 0 &&  total_mark > 0 %>
-                            <% percentage = (total_mark.to_f/full_mark_all.to_f)*100 %> 
-                          <% end %>      
-                          <td>
-                              <%= sprintf( "%0.02f", total_mark) %>    
-                          </td>
-                          <td>
-                              <%= sprintf( "%0.02f", percentage) %>    
-                          </td>
-                          <td>
-                              <% if !@student_position_batch[std['id'].to_i].blank? %> 
-                                <%= @student_position_batch[std['id'].to_i] %>
-                              <% else %>
-                                -
-                              <% end %>
-                          </td>
-                          <td>
-                              <% if !@student_position[std['id'].to_i].blank? %> 
-                                <%= @student_position[std['id'].to_i] %>
-                              <% else %>
-                                -
-                              <% end %>
-                          </td>
-
-                          <td>
-                              <%= sprintf( "%0.02f", total_grade) %>
-                          </td>
-                          <% grade_point_avg = 0.00 %>
-                          <% if total_grade > 0 && subject_count > 0 %>
-                            <% grade_point_avg = total_grade.to_f/subject_count.to_f %>
-                            <% if grade_point_avg > 5 %>
-                              <% grade_point_avg = 5.00 %>
+                          
+                          <% grade_point_avg1 = 0.00 %>
+                          <% grade_point_avg2 = 0.00 %>
+                          <% if total_grade1 > 0 && subject_count > 0 %>
+                            <% grade_point_avg1 = total_grade1.to_f/subject_count.to_f %>
+                            <% if grade_point_avg1 > 5 %>
+                              <% grade_point_avg1 = 5.00 %>
                             <% end %>  
                           <% end %> 
-                          <% grade_point_avg = (grade_point_avg.to_f*100).to_f.round() %>
-                          <% grade_point_avg = grade_point_avg.to_f/100 %>
+                           
+                          <% if total_grade2 > 0 && subject_count > 0 %>
+                            <% grade_point_avg2 = total_grade2.to_f/subject_count.to_f %>
+                            <% if grade_point_avg2 > 5 %>
+                              <% grade_point_avg2 = 5.00 %>
+                            <% end %>  
+                          <% end %> 
+                             
+                          <% if grade_point_avg1 > 0 %>      
+                            <% grade_point_avg1 = (grade_point_avg1.to_f*100).to_f.round() %>
+                            <% grade_point_avg1 = grade_point_avg1.to_f/100 %>
+                          <% end %>      
+                          <% if grade_point_avg2 > 0 %>      
+                            <% grade_point_avg2 = (grade_point_avg2.to_f*100).to_f.round() %>
+                            <% grade_point_avg2 = grade_point_avg2.to_f/100 %>
+                          <% end %>      
                           <td>
-                              <%= sprintf( "%0.02f", grade_point_avg) %>
+                              <%= sprintf( "%0.02f", grade_point_avg1) %>
                           </td> 
+                          <td>
+                              <%= sprintf( "%0.02f", grade_point_avg2) %>
+                          </td>
+                          <td>
+                              -
+                          </td>
+                          <%
+                            cmt = "&nbsp;"
+  
+                              if !@student_exam_comment[std['id'].to_s].blank?
+                                cmt = @student_exam_comment[std['id'].to_s]
+                              end 
+                        
+                          %>
+                          <td>
+                              <%= cmt %>
+                          </td>
                       </tr>
                     <% end %>
                   <% end %>

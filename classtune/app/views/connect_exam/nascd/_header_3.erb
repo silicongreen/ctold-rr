@@ -1,0 +1,16 @@
+<p>&nbsp;</p>
+<div id="pdf-header-south" class="general-header potrait_header_south_point">
+    <table width="100%">
+        
+        <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/logo.jpg")),:width=> '100%' %></span></td>
+        
+        <td class="name-td">
+              <h3 align="center">&nbsp;&nbsp;&nbsp;&nbsp;Navy Anchorage School And College Dhaka</h3>
+              <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.name %> - <%=  @connect_exam_obj.published_date.strftime("%Y") %></h5>
+              <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;Model Test</h5>
+              <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;Class : <%= @batch.course.course_name %></h5>
+               
+        </td>
+        <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/mujib.jpeg")),:width=> '130%' %></span></td>
+    </table>   
+</div> 

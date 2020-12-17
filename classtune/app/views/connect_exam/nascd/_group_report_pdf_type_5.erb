@@ -56,7 +56,7 @@
                    <tr class="table-header">
                        <td class="col-pdf no-warp" rowspan="2"><b><%= "Subject" %></b></td>
                        <td class="col-pdf" colspan="2" ><b>Allotted Marks</b></td>
-                       <td class="col-pdf" colspan="3" ><b>Obtain Marks</b></td>
+                       <td class="col-pdf" colspan="3" ><b>Obtain</b></td>
                        <td class="col-pdf" colspan="2" ><b>Grade</b></td>
                    </tr>
                     <tr class="table-header">
@@ -167,7 +167,7 @@
                       <td class="col-pdf align-left-baf"></td>
                       <td class="col-pdf no-warp"  colspan="4"><b>Grand Total & GPA</b></td>
                       <td class="col-pdf no-warp"><b><%= total_mark %></b></td>
-                      <td class="col-pdf"><b><%= total_grade %></b></td>
+                      <td class="col-pdf"><b><%= grade_point_avg %></b></td>
                       <td class="col-pdf">
                         <% if !grade.blank? and !grade.name.blank? %>
                           <b><%= grade.name %></b>
@@ -189,13 +189,13 @@
                     <% end %>
                   <% end %>
                   <tr class="table-header">
-                      <td colspan="2"><b>Gradding</b></td>
+                      <td colspan="2" width="30%"><b>Gradding</b></td>
                       <td class='align-left-baf padding-0-text-left' rowspan="9">
                           <ul>
-                              <li><p>This report card is issued each term to let you know our evaluation regarding the progress of your child.</p></li>
-                              <li><p>At school, we consider each student as an individual who will develop intellectually, physically and socially to his or her abilities
-                               and opportunities.</p></li> 
-                              <li><p>Parents are always welcome to make an appointment to discuss about the progress of their children.</p></li>  
+                              <li><p>We issue this report card to let you know our evaluation regarding the progress of your child.</p></li>
+                              <li><p>At school, we consider each student as an individual who will develop intellectually, physically and
+socially to his or her abilities and opportunities.</p></li> 
+                              <li><p>Parents are always wellcome to make an appointment to discuss about the progress of their children.</p></li>  
                           </ul>
                       </td>
                   </tr>
@@ -225,16 +225,13 @@
               <h2>&nbsp;</h2>
               <table id="pdf-table"  width="100%" class="left-table break-table odd-table height-exam ev-table" cellspacing="0" >
                   <tr class="even">
-                      <td width='34%'><% if !@exam_comment.blank? %><%= @exam_comment.comments %><% else %><br/><br/><br/><% end %></td>
-                      <td width='33%'><br/><br/><br/></td>
-                      <td width='33%'><br/><br/><br/></td>  
+                      <td width='50%'><br/><br/><br/></td>
+                      <td width='50%'><br/><br/><br/></td>  
                   </tr>
                   <tr class="even">
-                      <td>Comment of the Class Teacher</td>
                       <td>Signature of the Class Teacher</td>
                       <td>Signature of the Principal</td>
                   </tr>
-                  
               </table>
 
 

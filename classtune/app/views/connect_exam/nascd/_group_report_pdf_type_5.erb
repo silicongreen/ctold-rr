@@ -81,6 +81,7 @@
                   <% full_mark = 0 %>
                   <% total_grade = 0 %>
                   <% total_subject = 0 %>
+                  <% falied = false %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% subjectdata = Subject.find(subjects['id'].to_i) %>
@@ -138,6 +139,11 @@
                             end
                           %>
                           <% if !grade.blank? and !grade.name.blank? %>
+                            <%
+                              if grade.credit_points.to_i == 0
+                                falied = true
+                              end
+                            %>
                             <td class="col-pdf"><%= grade.credit_points %></td>
                             <td class="col-pdf"><%= grade.name %></td>
                             <% total_grade = total_grade+grade.credit_points.to_f %>
@@ -161,7 +167,12 @@
                       <% grade_point_avg = 5.00 %>
                     <% end %>
                   <% end %>
+                      
                   <% grade = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id) %>
+                  <% if falied == true %>
+                      <% grade_point_avg = 0 %>
+                      <% grade.name = "F" %>
+                  <% end %>
                       
                   <tr class="even">
                       <td class="col-pdf align-left-baf"></td>

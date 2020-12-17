@@ -466,15 +466,18 @@ class ReportController extends Controller
                        {
                             $examData = $connectexmObj->findByPk($value);
                             $exam_report_main = $exam_report[] = $groupexam->getTabulation($examData->batch_id,$value);
-                            $batch_ids[] = $examData->batch_id;
-                            $first_term_id = $cont_exam->getConnectExamFirstTerm($examData->batch_id);
-                   
-                            $attandence = new Attendances();
-                            $adata[$examData->batch_id] = $attandence->getTotalPrsent($examData->batch_id, $value,$exam_report_main['students']);
-
-                            if($first_term_id && $first_term_id!=$value)
+                            if(isset($exam_report_main['students']))
                             {
-                               $adata_first_term[$examData->batch_id] = $attandence->getTotalPrsent($examData->batch_id, $first_term_id, $exam_report_main['students']);
+                                $batch_ids[] = $examData->batch_id;
+                                $first_term_id = $cont_exam->getConnectExamFirstTerm($examData->batch_id);
+
+                                $attandence = new Attendances();
+                                $adata[$examData->batch_id] = $attandence->getTotalPrsent($examData->batch_id, $value,$exam_report_main['students']);
+
+                                if($first_term_id && $first_term_id!=$value)
+                                {
+                                   $adata_first_term[$examData->batch_id] = $attandence->getTotalPrsent($examData->batch_id, $first_term_id, $exam_report_main['students']);
+                                }
                             }
                        }    
                    }

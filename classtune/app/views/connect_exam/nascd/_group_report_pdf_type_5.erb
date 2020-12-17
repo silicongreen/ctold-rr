@@ -206,7 +206,7 @@ socially to his or her abilities and opportunities.</p></li>
                   <% prev_score = 0 %>
                   <% @grading_levels.each_with_index do |grade,index| %>
                     <tr class="table-header">
-                        <td class="no-warp">
+                        <td class="no-warp" height="30px">
                             <% if grade.max_score.nil? %> 
                               <% if grade.min_score.to_i == 0 %>
                                 <&nbsp;<%= '%i%' % prev_score %>
@@ -218,7 +218,7 @@ socially to his or her abilities and opportunities.</p></li>
                             <% end %>
                             <%  prev_score = grade.min_score %>
                         </td>
-                        <td><%= grade.name %></td>
+                        <td height="30px"><%= grade.name %></td>
                     </tr> 
                   <% end %>  
               </table>

@@ -172,11 +172,11 @@ if !@report_data['total'].blank? and @report_data['total'].to_i>0 and !@report_d
 
 <table id="pdf-table" class="margin-top-20 left-table" width="100%" cellspacing="0">
     <tr class="odd">
-        <td class='td-align-left' width='20%'>Section Incharge's Signature</td>
-        <td width='80%'><br/><br/></td>
+        <td class='td-align-left' width='20%'>A Level Section Head Signature</td>
+        <td width='80%'><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sister_rumi.png")), :width=>"30%" %></td>
     </tr>
     <tr class="odd">
         <td class='td-align-left' width='20%'>Principal's Signature</td>
-        <td width='80%'><br/><br/></td>
+        <td width='80%'><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-1.png")), :width=>"30%" %></td>
     </tr>
 </table>

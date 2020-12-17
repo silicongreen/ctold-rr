@@ -184,7 +184,9 @@
                           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
                               <td class="col-pdf td-align-left"><%= report['subject_name'] %></td>
-                              <td colspan="<%= colspan %>"></td>
+                              <% (1..colspan).each do |i| %>
+                              <td>&nbsp;</td>
+                              <% end %>
                             <% if report['subject_comment'].blank? %>
                               <td   width="32%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <% else %>
@@ -223,9 +225,9 @@
             %>
               <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
               <table id="pdf-table"  class="margin-top-20 class-text-align-left" width="99.8%" cellspacing="0">
-                    <tr class="even"><td class=" align-left-baf" width="30%">NO. OF WORKING DAYS</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days %></td></tr>
-                    <tr class="even"><td class=" align-left-baf" width="30%">PRESENT</td><td class=" align-left-baf"><%= present %></td></tr>
-                    <tr class="even"><td class=" align-left-baf" width="30%">ABSENT</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days.to_i - present.to_i %></td></tr>
+                    <tr class="even"><td class="col-pdf td-align-left" width="30%">No of working days</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days %></td></tr>
+                    <tr class="even"><td class="col-pdf td-align-left" width="30%">Present</td><td class=" align-left-baf"><%= present %></td></tr>
+                    <tr class="even"><td class="col-pdf td-align-left" width="30%">Absent</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days.to_i - present.to_i %></td></tr>
                 </table>
               <% end %>
               

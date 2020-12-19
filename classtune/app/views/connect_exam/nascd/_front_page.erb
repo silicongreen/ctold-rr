@@ -186,17 +186,17 @@
     </div>
 
     <% unless @batch.course.course_name.upcase.index("PLAY").nil? %>
-      <p align="center"  style="font-size: 32px; color:darkred;">Play Group</p>
+      <p align="center"  style="font-size: 32px; color:darkred;">Play Group (<%= @batch.name %>)</p>
       <p align="center">&nbsp;</p>
       <p align="center" style="width:100%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/play.jpg")),:width=> '70%' %></p>
     <% end %>
     <% unless @batch.course.course_name.upcase.index("NURSERY").nil? %>
-      <p align="center" style="font-size: 32px; color:darkred;">Nursery</p>
+      <p align="center" style="font-size: 32px; color:darkred;">Nursery (<%= @batch.name %>)</p>
       <p align="center" >&nbsp;</p>
       <p align="center" style="width:100%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/nursury.jpg")),:width=> '70%' %></p>
     <% end %>
     <% unless @batch.course.course_name.upcase.index("KG").nil? %>
-      <p align="center" style="font-size: 32px; color:darkred;">KG</p>
+      <p align="center" style="font-size: 32px; color:darkred;">KG (<%= @batch.name %>)</p>
       <p align="center">&nbsp;</p>
       <p align="center" style="width:100%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/kg.jpg")),:width=> '70%' %></p>
     <% end %>

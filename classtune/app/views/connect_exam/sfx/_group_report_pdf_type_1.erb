@@ -152,9 +152,7 @@
                                     <% @std_subject_elective.each do |esub| %>
                                         <% unless esub.subject.blank? %>
                                         <% if esub.subject.name.include?(subjects['name']) %>
-                                            <% if subjects['name'] == "Computer Science" %>
-                                              <%=  esub.subject.id %>
-                                            <% end %>
+                                            
                                             <% e_subject_id = esub.subject.id %>
                                             <% total_att_temp = SubjectAttendanceRegister.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
                                             <% absent_att_temp = SubjectAttendance.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:is_late=>0,:student_id=>@student.id,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
@@ -163,10 +161,9 @@
                                         <% end %>
                                         <% end %>
                                     <% end %>
-                                 <% end %> 
+                                 <% end %>
+                                 <%= e_subject_id %>
                                  <% if e_subject_id != 0 %>
-
-
                                     <% att_percentize = 0 %>  
                                     <% if total_att.to_i > 0 %>
                                         <% total_present = total_att-absent_att  %>

@@ -34,7 +34,7 @@ end
 if !@student_position.blank? and !@student_position_batch.blank?
   @student_position_first_term_batch = @student_position_batch
   @student_position_first_term = @student_position
-  if @connect_exam_obj.result_type != 13 and @connect_exam_obj.result_type != 14
+  if @connect_exam_obj.result_type < 13
     @section_all_position_batch = @section_all_position_batch_final_term
   end
 elsif !@student_position_second_term.blank?  and !@student_position_second_term_batch.blank?

@@ -247,6 +247,10 @@
                       <td width="81%"><% if !@exam_comment.blank? %><b>&nbsp;<%= @exam_comment.comments %></b><% else %><br/>&nbsp;<br/><br/>&nbsp;<br/><% end %>
                   </td>
               </table>
+              <% if total_subject < 11 %>
+              
+              <p>&nbsp;</p>
+              <% end %>
               
               <%
               present = 0

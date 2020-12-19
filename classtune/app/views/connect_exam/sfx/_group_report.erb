@@ -45,6 +45,20 @@
     end
  end
 %>
+<style>
+    div.sfx-header h2
+    {
+        font-size: 28px !important;
+    }
+    div.sfx h4
+    {
+        font-size: 24px !important;
+    }
+    table.sign-table tr.even td, table.sign-table tr.odd td
+    {
+        height: 100px !important;
+    }
+</style>    
 <%= render  :partial=>"/connect_exam/sfx/group_report_pdf_type_"+@connect_exam_obj.result_type.to_s %>
 <% if @connect_exam_obj.result_type.to_i == 6 and @connect_exam_obj.result_type.to_i != 6 %>
   <%= render  :partial=>"/connect_exam/sfx/att" %>

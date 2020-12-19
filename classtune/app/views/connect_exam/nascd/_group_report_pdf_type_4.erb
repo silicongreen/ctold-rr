@@ -172,7 +172,7 @@
                       end
                     end 
                   %>
-                      
+                   <% no_exam_subject = 0 %> 
                    <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
                     <% @report_data['report']['no_exam_subject_resutl'].each do |subjects| %>
                       <% subjectdata = Subject.find(subjects['id'].to_i) %>
@@ -184,7 +184,7 @@
                     <%  if @all_subjects.include?(subjects['id'].to_i) %>
                         <% total_subject = total_subject+1 %>
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                        
+                            <% no_exam_subject = no_exam_subject+1 %>
                           <td class="col-pdf no-warp align-left-baf"><b><%= subjects['subject_name'] %></b></td>
                           <% unless @report_data['report']['exams'].blank? %>
                             <% @report_data['report']['exams'].each do |report| %>
@@ -245,6 +245,9 @@
                   </tr>  
               </table>
               <h2>&nbsp;</h2>
+              <% if no_exam_subject == 7 %>
+              <h2>&nbsp;</h2>
+              <% end %>
               <table id="pdf-table"  width="100%" class="left-table break-table odd-table height-exam ev-table" cellspacing="0" >
                   <tr class="even">
                       <td width='50%'><br/><br/><br/></td>

@@ -7,7 +7,11 @@
         <td class="name-td">
               <h3 align="center">&nbsp;&nbsp;&nbsp;&nbsp;Navy Anchorage School And College Dhaka</h3>
               <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.name %> - <%=  @connect_exam_obj.published_date.strftime("%Y") %></h5>
-              <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;Class : <%= @batch.course.course_name %></h5>
+              <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;Class : <%= @batch.course.course_name %>
+              <% if !@batch.course.course_name.upcase.index("PLAY").nil? or !@batch.course.course_name.upcase.index("NURSERY").nil? or !@batch.course.course_name.upcase.index("KG").nil?  %>
+                  &nbsp;(<%= @batch.name %>)
+              <% end %>
+              </h5>
                
         </td>
         <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/mujib.jpeg")),:width=> '130%' %></span></td>

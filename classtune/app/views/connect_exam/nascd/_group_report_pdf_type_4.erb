@@ -245,7 +245,7 @@
                   </tr>  
               </table>
               <h2>&nbsp;</h2>
-              <% if no_exam_subject == 7 %>
+              <% if no_exam_subject == 7 or @batch.course.course_name == "III"  or @batch.course.course_name == "IV" %>
               <h2>&nbsp;</h2>
               <% end %>
               <table id="pdf-table"  width="100%" class="left-table break-table odd-table height-exam ev-table" cellspacing="0" >

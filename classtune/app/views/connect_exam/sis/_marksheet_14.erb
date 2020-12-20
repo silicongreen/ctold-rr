@@ -59,9 +59,10 @@
                       <% @report_data['result']['ALL'].each do |rs| %>
                         <%  if (exam_type == 1 and rs['quarter'] == '5') or (rs['quarter'] == '6' && exam_type == 2) %>  
                           <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
+                          <% total_full_mark = total_full_mark+rs['maximum_marks'].to_i %>
                         <% end %>
                       <% end %> 
-                      <td>Total (70)</td>
+                      <td>Total (<%= total_full_mark.to_i %>)</td>
                       <td>Grade</td>
 
                   </tr>

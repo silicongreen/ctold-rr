@@ -224,10 +224,10 @@
                 end
             %>
               <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
-              <table id="pdf-table"  class="margin-top-20 class-text-align-left" width="99.8%" cellspacing="0">
-                    <tr class="even"><td class="col-pdf td-align-left" width="30%">No of working days</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days %></td></tr>
-                    <tr class="even"><td class="col-pdf td-align-left" width="30%">Present</td><td class=" align-left-baf"><%= present %></td></tr>
-                    <tr class="even"><td class="col-pdf td-align-left" width="30%">Absent</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days.to_i - present.to_i %></td></tr>
+              <table id="pdf-table"  class="margin-top-20 class-text-align-left" width="50%" cellspacing="0">
+                    <tr class="even"><td class="col-pdf td-align-left" width="50%">No of working days</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days %></td></tr>
+                    <tr class="even"><td class="col-pdf td-align-left" width="50%">Present</td><td class=" align-left-baf"><%= present %></td></tr>
+                    <tr class="even"><td class="col-pdf td-align-left" width="50%">Absent</td><td class=" align-left-baf"><%= @connect_exam_obj.total_working_days.to_i - present.to_i %></td></tr>
                 </table>
               <% end %>
               

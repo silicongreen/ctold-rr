@@ -1,4 +1,20 @@
-
+<%
+  present = 0
+  comments = ""
+  if !@exam_comment.blank?
+    all_comments = @exam_comment.comments
+    if !all_comments.blank?
+      all_comments_array = all_comments.split("-")
+      if !all_comments_array[1].nil?
+        present = all_comments_array[1].to_i
+        comments = all_comments_array[0]
+        else
+        comments = all_comments_array[0]
+      end
+    end
+    end
+  @exam_comment.comments = comments
+%>
 <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
               <% if @grading_levels.blank? %>
                 <% @grading_levels = GradingLevel.default %>
@@ -49,7 +65,24 @@
                           <td colspan="1" class="col-pdf"><b>&nbsp;</b></td>
                           <td colspan="2" class="col-pdf"><b>Attendance</b></td>
                          </tr>
+                         <% if @connect_exam_obj.total_working_days > 0 %>
+                         <tr class="odd">
+                                <td class="col-pdf">Total Working day</td>
+                                <td class="col-pdf"><%= @connect_exam_obj.total_working_days %></td>
+                         </tr>
+                         <tr class="odd">
+                                <td class="col-pdf">Days Present</td>
+                                <td class="col-pdf"><%= present %></td>
+                         </tr>
+                         <tr class="odd">
+                                <td class="col-pdf">Days Absent</td>
+                                <td class="col-pdf"><%= @connect_exam_obj.total_working_days.to_i-present.to_i %></td>
+                                
+                            
+                         </tr>
                           
+                         
+                         <% else %>
                          <tr class="odd">
                                 <td class="col-pdf">Total Working day</td>
                                 <td class="col-pdf"><%= @report_data['total'] %></td>
@@ -72,6 +105,7 @@
                                 
                             
                          </tr>
+                         <% end %>
                    
 
                     </table>     

@@ -13,7 +13,9 @@
       end
     end
     end
-  @exam_comment.comments = comments
+  if !@exam_comment.blank?
+    @exam_comment.comments = comments
+  end  
 %>
 <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
               <% if @grading_levels.blank? %>

@@ -5,7 +5,7 @@
   if !@exam_comment.blank?
     all_comments = @exam_comment.comments
     if !all_comments.blank?
-      all_comments_array = all_comments.split("-")
+      all_comments_array = all_comments.split("|")
       if !all_comments_array[1].nil?
         present = all_comments_array[1].to_i
         comments = all_comments_array[0]

@@ -1,6 +1,7 @@
 <%
   present = 0
   comments = ""
+  @main_comments = 
   if !@exam_comment.blank?
     all_comments = @exam_comment.comments
     if !all_comments.blank?
@@ -13,9 +14,8 @@
       end
     end
     end
-  if !@exam_comment.blank?
-    @exam_comment.comments = comments
-  end  
+    @main_comments = comments
+ 
 %>
 <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
               <% if @grading_levels.blank? %>

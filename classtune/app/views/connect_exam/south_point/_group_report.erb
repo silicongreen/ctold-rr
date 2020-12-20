@@ -22,7 +22,7 @@
   %>
   <%= render  :partial=>"/connect_exam/south_point/highest_marks2" %>
 <% end %>
-<% if @connect_exam_obj.result_type.to_i == 12 %>
+<% if @connect_exam_obj.result_type.to_i == 12 or @connect_exam_obj.result_type.to_i == 13 %>
     <%
       if @tabulation_data.blank?
         student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,false)

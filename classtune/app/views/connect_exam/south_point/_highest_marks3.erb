@@ -471,6 +471,10 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
         elsif obtained_mark4>0
           quarter_mark = obtained_mark4.round()
         end
+      
+        if obtained_mark1>0 && obtained_mark2 > 0
+          quarter_mark = obtained_mark2.round()+obtained_mark1.round()
+        end  
         
        
 

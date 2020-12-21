@@ -596,7 +596,7 @@ class MarksController < ApplicationController
                 if (exam_connect.result_type >= 17 and  school_id != 352)
                   data[k][0] = exam_connect_batch.to_s
                   data[k][1] = "<a href='/exam/tabulation/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>"
-                  data[k][2] = ""
+                  data[k][2] = "-"
                   data[k][3] = "-"
                   data[k][4] = "-"
                   data[k][5] = "-"
@@ -604,6 +604,18 @@ class MarksController < ApplicationController
                   data[k][7] = "-"
                   data[k][8] = "-"
                   data[k][9] = "-"
+                  c_exam_array << exam_connect.id.to_i
+                elsif (exam_connect.result_type >= 18 and  school_id != 352)
+                  data[k][0] = exam_connect_batch.to_s
+                  data[k][1] = "-"
+                  data[k][2] = "-"
+                  data[k][3] = "-"
+                  data[k][4] = "-"
+                  data[k][5] = "-"
+                  data[k][6] = "-"
+                  data[k][7] = "-"
+                  data[k][8] = "-"
+                  data[k][9] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>REPORT CARD</a>"
                   c_exam_array << exam_connect.id.to_i
                 elsif (exam_connect.result_type >= 13 and  school_id != 352)
                   data[k][0] = exam_connect_batch.to_s

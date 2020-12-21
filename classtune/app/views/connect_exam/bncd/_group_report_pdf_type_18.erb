@@ -1,0 +1,279 @@
+
+  <% total_u = 0 %>
+  <div id="page-yield"  class="available_sections1 baf_shaheen">
+      <%= render  :partial=>"/connect_exam/bncd/header_1" %>
+     
+      <table id="pdf-table"  class="top-left-center" width="99.8%" cellspacing="0">
+          <tr class="even">
+              <td class="align-right col-pdf" width="20%">Student ID </td>
+              <td colspan="3" class="align-left"><b><%= @student.admission_no %></b></td>
+          </tr>
+          <tr class="odd">
+              <td class="align-right col-pdf col-pdf" width="20%">Name </td>
+              <td colspan="3" class="align-left"><%= @student.full_name.upcase %></td>
+          </tr>
+          <tr class="even">
+              <td class="align-right" width="20%">Roll </td>
+              <td colspan="3" class="align-left"><%= @student.class_roll_no %></td>
+          </tr>
+          <tr class="odd">
+              <td class="align-right col-pdf" width="20%">Class/Program </td>
+              <td colspan="3" class="align-left"><b><%= @batch.course.course_name %></b></td>
+          </tr>
+           
+          <tr class="even">
+              <td class="align-right col-pdf" width="20%">Section </td><td class="align-left"><%= @batch.course.section_name %></td>
+              <% batch_split = @batch.name.split(" ") %>
+              <td class="align-right col-pdf" width="20%" >Shift </td><td class="align-left"><%= batch_split[0] %></td>   
+          </tr>
+          <tr class="even">
+              <% group_split = @batch.course.group.split(" ") %>
+              <% unless group_split[2].blank? %>
+                <% group_split[0] = group_split[0]+" "+group_split[1] %>
+              <% end %>
+              <% 
+                if !@batch.course.group.blank? && !@batch.course.group.index("--").nil? 
+                  group_split[0] = ""
+                end 
+              %>
+              <td class="align-right col-pdf" width="20%">Group </td>
+              <td class="align-left"><%= group_split[0] %></td>
+              <td class="align-right col-pdf" width="20%" >Category </td>
+              <td class="align-left"><%= @student.student_category.name unless @student.student_category.blank? %></td>
+          </tr>
+      </table>
+      <div class ="current_batch" style="margin-left:0px;">
+          <div id="grouped_exam_report">
+              <%  
+                    
+                    group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
+                    
+                    @all_subjects = []
+                    group_exams.each do |group_exam|
+                      allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
+                      allexams.each do |exam|
+                        if !@all_subjects.include?(exam.subject.id)
+                          
+                          @all_subjects << exam.subject.id
+                        end
+                      end
+                    end 
+                  %>
+              <% remarks_exam = 0 %>
+              <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                        <% @report_data['report']['no_exam_subject_resutl'].each do |subjects| %>
+                            <% subjectdata = Subject.find(subjects['id'].to_i) %>
+                            <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                            <% if @has_exam_student == false %>
+                              <% next %>
+                            <% end %>
+                            <%  if @all_subjects.include?(subjects['id'].to_i) %>
+                              <% unless @report_data['report']['exams'].blank? %>
+                                <% @report_data['report']['exams'].each do |report| %>
+                                  <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
+                                    <% remarks_exam = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
+                                    <% break %>
+                                  <% end %>
+                                <% end %>
+                              <% end %>  
+                            <% end %>
+                        <% end %>
+                    <% end %> 
+              
+              <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
+                  <tr class="table-header">
+                    <td class="col-pdf no-warp align-left-baf">Final Remarks</td>
+                    <td class="col-pdf no-warp align-left-baf" rowspan="2">Promoted to next Class</td>
+                  </tr>
+                  <tr class="table-header">
+                    <td class="col-pdf no-warp align-left-baf">
+                      <% if remarks_exam.to_i == 1 %>
+                            Excellent
+                      <% elsif remarks_exam.to_i == 2 %>
+                            Very Good
+                      <% elsif remarks_exam.to_i == 3 %>
+                            Good
+                      <% elsif remarks_exam.to_i == 4 %>
+                            Need to improve
+                      <% end %>      
+                    </td>     
+                  </tr>
+              </table>
+              
+              <div class='fine'></div>
+              <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
+
+                  <tr class="even border-bottom-1-px">
+                      <td class="col-pdf " width="30%">
+                          <br/><br/><br/>
+                      </td> 
+                      <td class="col-pdf no-border" width="40%"></td>
+                      <td class="col-pdf" width="30%">
+                          <br/><br/><br/>
+                      </td>  
+                  </tr>
+                  <tr class="even">
+
+                      <td class="col-pdf" width="30%">
+                          Class Teacher
+                      </td>
+                      <td class="col-pdf " width="30%">
+                          Fauzia Binte Ahmed<br/>
+                          Assistant Headmaster
+                      </td> 
+
+                  </tr>
+
+              </table>
+              
+              <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
+                  <tr class="even border-bottom-1-px">
+                      <td class="col-pdf " width="100%">
+                          Counter Signatures
+                          <br/><br/><br/>
+                      </td> 
+                  </tr>
+                  <tr class="even">
+
+                      <td class="col-pdf" width="100%">
+                          Principal
+                      </td>
+                  </tr>
+                </table>
+              
+          </div>
+      </div>
+
+
+
+  </div>
+
+
+<%= stylesheet_link_tag 'list_table' %>
+
+
+  <style>
+
+
+    div.baf_shaheen
+    {
+        border:none;
+    }
+    .baf_shaheen td.align-right
+    {
+        text-align: right !important;
+    }
+    .baf_shaheen td.align-left
+    {
+        text-align: left !important;
+    }
+    .baf_shaheen table.tbl-lign-left tr.even td,.baf_shaheen table.tbl-lign-left tr.odd td
+    {
+        font-weight: normal !important;
+        padding: 7px !important; 
+    }
+    .baf_shaheen table.tbl-lign-left-100 tr.even td,.baf_shaheen table.tbl-lign-left-100 tr.odd td
+    {
+        font-weight: normal !important;
+        padding: 7px !important; 
+    }
+    .baf_shaheen table.tbl-lign-left-100
+    {
+        float:left !important;
+        width: 99.8% !important;
+        margin-left: 4% !important;
+    }
+    .baf_shaheen table.tbl-lign-left
+    {
+        float:left !important;
+        width: 52% !important;
+        margin-left: 4% !important;
+    }
+    .baf_shaheen div.grade_information
+    {
+        margin-left:3%;
+        float:left;
+        width: 34.7%;
+        font-size: 14px;
+
+    }
+    .baf_shaheen div.grade_information table#pdf-table tr.even td
+    {
+        padding: 8px !important;
+    }
+    div.baf_shaheen h2
+    {
+        font-weight: normal !important;
+        font-size: 32px !important;
+    }
+    div.baf_shaheen table.top-center
+    {
+        margin:30px auto !important;
+        width: 40% !important;
+    }
+    div.baf_shaheen table.top-left-center
+    {
+        float:left !important;
+        margin-top:30px !important;
+        margin-left: 4% !important;
+        width: 90% !important;
+    }
+    
+    div.baf_shaheen tr.odd td
+    {
+        padding: 2px 10px !important; 
+        border: 1px solid #000000;
+        font-size:21px;
+    }
+    div.baf_shaheen tr.even td
+    {
+        padding: 2px 10px !important;
+        border: 1px solid #000000;
+        font-size:21px;
+    }
+    div.baf_shaheen table#pdf-table tr.header-shade td
+    {
+        padding: 2px 3px !important;
+    }
+
+    .top-margin-20
+    {
+        margin-top:30px !important;
+    }
+    .letter-grade tr td
+    {
+        font-size: 21px !important;
+    }
+    div.baf_shaheen table#pdf-table tr.header-shade
+    {
+        background: #e8e9ed !important;
+    }
+    div.baf_shaheen div.fine
+    {
+        float:left;
+        clear:both;
+        margin-top:40px;
+        margin-bottom:20px;
+        margin-left: 4% !important;
+        width: 90% !important
+    }
+    .letter-grade tr td.font-size-45
+    {
+        font-size:45px !important;
+    }
+    .page-break-grade td{
+        height: 0px;
+        border: 1px solid #fff;
+        border-top: 1px solid Black;
+        border-bottom: 1px solid Black;
+    }
+    table#pdf-table tr.even td, table#pdf-table tr.table-header td, table#pdf-table tr.odd td
+    {
+        padding: 10px !important;
+        font-size: 28px !important;
+    }
+    
+
+
+</style>     
+     

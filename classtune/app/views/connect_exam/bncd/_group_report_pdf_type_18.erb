@@ -99,17 +99,22 @@
                     </td>     
                   </tr>
               </table>
-              
+              <div class='fine'></div>
               <div class='fine'></div>
               <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
 
                   <tr class="even border-bottom-1-px">
                       <td class="col-pdf " width="30%">
-                          <br/><br/><br/>
+                          <% if !@assigned_employee.blank? %>
+                            <% @assigned_employee.each do |emp| %>
+                               <%= emp.first_name %>&nbsp;<%= emp.last_name %>
+                               <% break %>
+                            <% end %>
+                           <% end %>
                       </td> 
                       <td class="col-pdf no-border" width="40%"></td>
                       <td class="col-pdf" width="30%">
-                          <br/><br/><br/>
+                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/bncd/assisstant-headmaster.png")), :width=>"60%" %>
                       </td>  
                   </tr>
                   <tr class="even">
@@ -131,7 +136,7 @@
                   <tr class="even border-bottom-1-px">
                       <td class="col-pdf " width="100%">
                           Counter Signatures
-                          <br/><br/><br/>
+                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/bncd/principal-sig.png")), :width=>"50%" %>
                       </td> 
                   </tr>
                   <tr class="even">

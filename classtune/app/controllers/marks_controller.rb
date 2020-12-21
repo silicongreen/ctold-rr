@@ -605,9 +605,9 @@ class MarksController < ApplicationController
                   data[k][8] = "-"
                   data[k][9] = "-"
                   c_exam_array << exam_connect.id.to_i
-                elsif (exam_connect.result_type >= 18 and  school_id != 352)
+                elsif (exam_connect.result_type == 18 and  school_id != 352)
                   data[k][0] = exam_connect_batch.to_s
-                  data[k][1] = "-"
+                  data[k][1] = exam_connect.name.to_s
                   data[k][2] = "-"
                   data[k][3] = "-"
                   data[k][4] = "-"

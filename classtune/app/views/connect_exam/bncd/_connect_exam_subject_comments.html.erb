@@ -276,7 +276,7 @@
                             <% end %>  
                           <% end %>
                           <% if @exam_subject.no_exams_sjws.to_i != 1 %>
-                            <% if @exam_connect.result_type == 16 %>
+                            <% if @exam_connect.result_type == 16 or @exam_connect.result_type == 18 %>
                               <% unless @no_exams.blank? %>
                                 <% exam_group_remarks = "" %>
                                 <% @no_exams.each do |exam| %>

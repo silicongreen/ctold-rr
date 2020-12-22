@@ -223,11 +223,11 @@
               <table id="pdf-table"  width="100%" class="left-table even-table signature" cellspacing="0" >
                   <tr class="even">
                       <td class="align-left"  width="30%" style="background-color:#e3f2fd">Comment on Overall Performance:</td>
-                      <td width="70%"  style="padding:10px !important;"><input type="checkbox" <%  if comment_on_overall_performance == 1 %> checked="checked" <% end %>>&nbsp;<b>Excellent</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" <%  if comment_on_overall_performance == 2 %> checked="checked" <% end %>>&nbsp;<b>Very Good</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  <%  if comment_on_overall_performance == 3 %> checked="checked" <% end %>>&nbsp;<b>Good</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  <%  if comment_on_overall_performance == 4 %> checked="checked" <% end %>>&nbsp;<b>Satisfactory</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  <%  if comment_on_overall_performance == 5 %> checked="checked" <% end %>>&nbsp;<b>Needs Improvement</b></td>
+                      <td width="70%"  style="padding:5px !important;"><input type="checkbox" <%  if comment_on_overall_performance == 1 %> checked="checked" <% end %>>&nbsp;<b>Excellent</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" <%  if comment_on_overall_performance == 2 %> checked="checked" <% end %>>&nbsp;<b>Very Good</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  <%  if comment_on_overall_performance == 3 %> checked="checked" <% end %>>&nbsp;<b>Good</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  <%  if comment_on_overall_performance == 4 %> checked="checked" <% end %>>&nbsp;<b>Satisfactory</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  <%  if comment_on_overall_performance == 5 %> checked="checked" <% end %>>&nbsp;<b>Needs Improvement</b></td>
                   </tr>    
                   <tr class="even">    
                       <td class="align-left" style="background-color:#e3f2fd">Grading System</td>
-                      <td width="70%"  style="padding:10px !important;">A* = 91 - 100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A = 81 - 90&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B = 71 - 80&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C = 61 - 70&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D = 50 - 60</td>
+                      <td width="70%"  style="padding:5px !important;">A* = 91 - 100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A = 81 - 90&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B = 71 - 80&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C = 61 - 70&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D = 50 - 60</td>
                   </tr>
                   
               </table>
@@ -236,11 +236,11 @@
               <table id="pdf-table"  width="35%" class="left-table even-table signature" cellspacing="0" >
                   <tr class="even">
                       <td class="align-left" style="background-color:#e3f2fd">Total Working Days:</td>
-                      <td  style="padding:10px !important;"><%= @report_data['total'] %></td>
+                      <td  style="padding:5px !important;"><%= @report_data['total'] %></td>
                   </tr>    
                   <tr class="even">    
                       <td class="align-left" style="background-color:#e3f2fd">Attendance:</td>
-                      <td  style="padding:10px !important;"><%= @report_data['present'] %></td>
+                      <td  style="padding:5px !important;"><%= @report_data['present'] %></td>
                   </tr>
                   
               </table>
@@ -253,7 +253,7 @@
               <table id="pdf-table"  width="61%" class="left-table odd-table signature" cellspacing="0" >
                  
                   <tr class="even">
-                      <td class="width-30 align-left" width="30%" rowspan="2" style="background-color:#e3f2fd"   style="padding:10px !important;">Next Term begins on:</td>
+                      <td class="width-30 align-left" width="30%" rowspan="2" style="background-color:#e3f2fd;padding:5px !important">Next Term begins on:</td>
                       <td colspan="2">D</td>
                       <td colspan="2">M</td>
                       <td colspan="4">Y</td>

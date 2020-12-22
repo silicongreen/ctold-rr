@@ -24,22 +24,22 @@
           <tr>
               <td class="align-left" width="28%">&nbsp;</td>
 
-              <td class="align-left" width="6%">  
+              <td class="align-left" width="6%" style="vertical-align: top;">  
                   <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/logo.jpg")),:width=> '90%' %>  
               </td>
               <% month_number = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
               <td width="28%">
                   <h4 align="center"><font size="5">EUROPEAN STANDARD SCHOOL(ESS)</font></h4>
-                  <h4 align="center" style="margin-top:-10px;"><font size="5"><%= @batch.name %> Campus</font></h4>
-                  <h4 align="center" style="margin-top:-10px;"><font size="4" color="#000">Subject Wise Mark Sheet</font></h4>
-                  <h4 align="center" style="margin-top:-10px;"><font size="4" color="#000"><%= @connect_exam_obj.name %>, 
+                  <h4 align="center" style="margin-top:-15px;"><font size="5"><%= @batch.name %> Campus</font></h4>
+                  <h4 align="center" style="margin-top:-15px;"><font size="4" color="#000">Subject Wise Mark Sheet</font></h4>
+                  <h4 align="center" style="margin-top:-15px;"><font size="4" color="#000"><%= @connect_exam_obj.name %>, 
                       <% if month_number.to_i>6 %>
                         Session : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %>
                       <% else %>
                         Session : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>
                       <% end %></font></h4>
                   
-                  <h4 align="center" style="margin-top:-10px;">
+                  <h4 align="center" style="margin-top:-15px;">
                     <font size="4" color="#000">
                       Class <%= @batch.course.course_name %>, Section <%= @batch.course.section_name %>
                     </font>

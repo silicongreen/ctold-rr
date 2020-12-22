@@ -215,8 +215,7 @@
                   
                  
               </table>
-              <p>&nbsp</p>
-              <table id="pdf-table"  width="100%" class="left-table even-table signature" cellspacing="0" >
+              <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:10px !important;" cellspacing="0" >
                   <tr class="even">
                       <td class="align-left"  width="30%" style="background-color:#e3f2fd">Comment on Overall Performance:</td>
                       <td width="70%"  style="padding:5px !important;"><input type="checkbox" <%  if comment_on_overall_performance == 1 %> checked="checked" <% end %>>&nbsp;<b>Excellent</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" <%  if comment_on_overall_performance == 2 %> checked="checked" <% end %>>&nbsp;<b>Very Good</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  <%  if comment_on_overall_performance == 3 %> checked="checked" <% end %>>&nbsp;<b>Good</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  <%  if comment_on_overall_performance == 4 %> checked="checked" <% end %>>&nbsp;<b>Satisfactory</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  <%  if comment_on_overall_performance == 5 %> checked="checked" <% end %>>&nbsp;<b>Needs Improvement</b></td>
@@ -228,8 +227,8 @@
                   
               </table>
               
-              <p>&nbsp</p>
-              <table id="pdf-table"  width="35%" class="left-table even-table signature" cellspacing="0" >
+             
+              <table id="pdf-table"  width="35%" class="left-table even-table signature" style="margin-top:10px !important;" cellspacing="0" >
                   <tr class="even">
                       <td class="align-left" style="background-color:#e3f2fd">Total Working Days:</td>
                       <td  style="padding:5px !important;"><%= @report_data['total'] %></td>

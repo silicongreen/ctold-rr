@@ -280,6 +280,25 @@
                       <% end %>
                   </tr>
               </table>
+              
+              <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
+                  <tr class="even border-bottom-1-px">
+                      <td class="col-pdf no-border" width="70%"></td>
+                      
+                       <td class="col-pdf" width="30%">
+                        
+                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"20%" %>
+                      </td>
+                  </tr>
+                  <tr class="even">
+                      <td class="col-pdf no-border" width="70%"></td>
+                      <td class="col-pdf" width="30%">
+                          Principal
+                      </td>
+
+                  </tr>
+
+              </table>
 
 
           </div>
@@ -316,4 +335,8 @@
 {
     height: 18px !important; 
 }
+ table.evaluation tr.border-bottom-1-px td.no-border
+            {
+                border-bottom: none !important;
+            }
 </style>    

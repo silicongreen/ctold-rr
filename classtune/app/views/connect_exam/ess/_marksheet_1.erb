@@ -20,7 +20,7 @@
   <div class="page1"> </div>
   <div class="section1 row" >
     <center>
-      <table id="pdf-table"  width="100%" class="no-border left-clear-both margin-bottom-20"  cellspacing="0" >
+      <table id="pdf-table"  width="100%" class="no-border left-clear-both margin-bottom-20" style="border:none !important;"  cellspacing="0" >
           <tr>
               <td class="align-left" width="28%">&nbsp;</td>
 
@@ -30,16 +30,16 @@
               <% month_number = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
               <td width="28%">
                   <h4 align="center"><font size="5">EUROPEAN STANDARD SCHOOL(ESS)</font></h4>
-                  <h4 align="center" style="margin-top:-5px;"><font size="5"><%= @batch.name %> Campus</font></h4>
-                  <h4 align="center" style="margin-top:-5px;"><font size="4" color="#000">Subject Wise Mark Sheet</font></h4>
-                  <h4 align="center" style="margin-top:-5px;"><font size="4" color="#000"><%= @connect_exam_obj.name %>, 
+                  <h4 align="center" style="margin-top:-10px;"><font size="5"><%= @batch.name %> Campus</font></h4>
+                  <h4 align="center" style="margin-top:-10px;"><font size="4" color="#000">Subject Wise Mark Sheet</font></h4>
+                  <h4 align="center" style="margin-top:-10px;"><font size="4" color="#000"><%= @connect_exam_obj.name %>, 
                       <% if month_number.to_i>6 %>
                         Session : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %>
                       <% else %>
                         Session : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>
                       <% end %></font></h4>
                   
-                  <h4 align="center" style="margin-top:-5px;">
+                  <h4 align="center" style="margin-top:-10px;">
                     <font size="4" color="#000">
                       Class <%= @batch.course.course_name %>, Section <%= @batch.course.section_name %>
                     </font>
@@ -52,11 +52,11 @@
       </table>
       
       <div id ="main_info">
-          <table>
+          <table width="100%">
               <tr>
                  <% if !@employee.nil? %> 
                   <td align='left'><h4>Teacher's Name : <%=  @employee.full_name %></h4></td>
-                  <td align='right'><h4>Subject : <%= @subject.name %></h4></td>
+                  <td align='right' style="text-align:right !important;"><h4>Subject : <%= @subject.name %></h4></td>
                  <% else %>
                   <td align='left'><h4>Subject : <%= @subject.name %></h4></td>
                  <% end %> 
@@ -121,8 +121,10 @@
           <% full_mark = 0 %>
               
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+            <td class="name"><%= std['admission_no'] %></td>
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['name'] %></td>
+            <td></td>
             <% @report_data['result']['ALL'].each do |rs| %>
               <td>
               <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
@@ -139,15 +141,11 @@
               </td>
               
             <% end %> 
-             
-           <% main_mark = 0 %>
-           <% if total_mark.to_i > 0 %>   
-            <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
-           <% end %>    
+            
 
-           <td class="name"><%= sprintf( "%0.02f", main_mark) %> %</td>
+           <td class="name"><%= sprintf( "%0.02f", total_mark) %></td>
 
-           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+           <%  grade = GradingLevel.percentage_to_grade(total_mark, @batch.id) %>
            <% if !grade.blank? and !grade.name.blank? %>
             <td class="col-2"><b><%= grade.name %></b></td>
           <% else %>

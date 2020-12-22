@@ -247,20 +247,20 @@
                             avg_mark_st = 0
 
                             if ct_full_mark2.to_i == 30 
-                                avg_mark_ct = ct_marks1[0].to_f+ct_marks1[1].to_f
-                                main_full_mark = main_full_mark+ct_full_mark2.to_i+ct_full_mark2.to_i
-                            else 
-                                avg_mark_ct = ct_marks1[0].to_f
-                                main_full_mark = main_full_mark+ct_full_mark2.to_i
-                            end 
-
-                            if st_full_mark2.to_i == 20 
-                                avg_mark_st = st_marks1[0].to_f+st_marks1[1].to_f
-                                main_full_mark = main_full_mark+st_full_mark2.to_i+st_full_mark2.to_i
-                            else 
-                                avg_mark_st = st_marks1[0].to_f
-                                main_full_mark = main_full_mark+st_full_mark2.to_i
-                            end
+                                  avg_mark_ct = ct_marks2[0].to_f+ct_marks2[1].to_f
+                                  main_full_mark = main_full_mark+ct_full_mark2.to_i+ct_full_mark2.to_i
+                              else 
+                                  avg_mark_ct = ct_marks2[0].to_f
+                                  main_full_mark = main_full_mark+ct_full_mark2.to_i
+                              end 
+                              
+                              if st_full_mark2.to_i == 20 
+                                  avg_mark_st = st_marks2[0].to_f+st_marks2[1].to_f
+                                  main_full_mark = main_full_mark+st_full_mark2.to_i+st_full_mark2.to_i
+                              else 
+                                  avg_mark_st = st_marks2[0].to_f
+                                  main_full_mark = main_full_mark+st_full_mark2.to_i
+                              end
 
                             main_mark_obtain = total_mark = avg_mark_ct+avg_mark_st
                             full_mark = ct_full_mark2.to_i+st_full_mark2.to_i

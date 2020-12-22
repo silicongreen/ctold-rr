@@ -186,7 +186,7 @@
                         <% subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
                         <% iloop = 0 %>
                         <% subject_groups.each do |group_name| %>
-                            <% if group_nmae == "Comment on Overall Performance" %>
+                            <% if group_name == "Comment on Overall Performance" %>
                               <% if !wordString.blank? and !wordString[iloop].blank? %>
                                 <% comment_on_overall_performance = wordString[iloop].to_i %>
                               <% end %>

@@ -5,12 +5,12 @@
               
                   <table id="pdf-table"  width="100%" class="no-border left-clear-both margin-bottom-20"  cellspacing="0" >
                       <tr>
-                          <td class="align-left" width="15%">&nbsp;</td>
+                          <td class="align-left" width="10%">&nbsp;</td>
                           
                           <td class="align-left" width="10%">  
                               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/logo.jpg")),:width=> '90%' %>  
                           </td>
-                          <td width="60%">
+                          <td width="70%">
                               <h4 align="center"><font size="7" color="#4CAEE3">EUROPEAN STANDARD SCHOOL</font></h2>
                               <h4 align="center" style="margin-top:-5px;"><font size="6" color="#000"><%= @connect_exam_obj.name %></font></h2>
                               <% month_number = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
@@ -29,7 +29,7 @@
                                 </font>
                               </h4>  
                           </td>
-                          <td class="align-left" width="15%">&nbsp;</td>
+                          <td class="align-left" width="10%">&nbsp;</td>
                           
                      </tr>
                      <tr><td colspan="3">&nbsp;</td></tr>

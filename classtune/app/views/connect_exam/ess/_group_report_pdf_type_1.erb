@@ -36,6 +36,13 @@
                   </table>
             
       </div>
+      <% class_teacher = "" %>
+      <% if !@assigned_employee.blank? %>
+        <% @assigned_employee.each do |emp| %>
+           <% class_teacher = emp.first_name %>&nbsp;<%= emp.last_name %>
+           <% break %>
+        <% end %>
+       <% end %>
       <div class="student_information">
           <table class="std_info_table" width="100%" cellspacing="0" style="background-color:#e3f2fd">
               <tr>
@@ -47,22 +54,12 @@
               <tr>
                   
                   <td class="align-left" colspan="4">Class Teacher :
-                    <% if !@assigned_employee.blank? %>
-                     <% @assigned_employee.each do |emp| %>
-                        <%= emp.first_name %>&nbsp;<%= emp.last_name %>
-                        <% break %>
-                     <% end %>
-                    <% end %>  
+                      <%= class_teacher  %>
                   </td>
               </tr>
           </table>
       </div>
-      <% year_month = I18n.l(@connect_exam_obj.published_date,:format=>"%Y-%m") %>
-      <% if year_month.to_s == "2020-07" %>
-        <% covid = 1 %>
-      <% end %>
-      <% total_subject = 0 %>
-      <% total_comments_grade = 3 %>
+     
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
               <table id="pdf-table"  width="30%" class="left-table even-table exam-marks" cellspacing="0" style="border-top:none !important;" >

@@ -1,0 +1,87 @@
+
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+             <table id="pdf-table"  width="30%" class="left-table even-table exam-marks" cellspacing="0" style="border-top:none !important;" >
+                  <% c = 'even'  %>
+                  <tr class="even no-border" style="border:none !important;border-top:none !important;">
+                      <td colspan="2" class="no-border" style="border-right:none !important;border-top:none !important;border-left:none !important; color:#111e6c !important;padding:5px !important;font-weight: bold;">Academic Performance</td>
+                  </tr>
+                  <tr class="even" style="background-color:#e3f2fd">
+                    <td class="col-pdf" style="padding:10px !important;"><b><%= "Subject" %></b></td>
+                    <td class="col-pdf height-18" style="padding:10px !important;"><b>Grade</b></td>
+                  </tr>
+              
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% if subjects['no_exams_sjws'].to_i == 1  %>
+                        <% next %>
+                      <% end %>
+                        
+                        <%
+                          full_mark = 0
+                          obtain_mark = 0
+                          unless @report_data['report']['exams'].blank?   
+                            @report_data['report']['exams'].each do |report| 
+                             
+                              if report['quarter'] == '1'
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
+                                  obtain_mark = obtain_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                end
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
+                                  full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                end
+                              end
+                              
+                            end 
+                          end 
+                        %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>" style="background-color:#e3f2fd">
+
+                          <td class="col-pdf no-warp  align-left"  style="padding:10px !important;"><%= subjects['name'] %></td>
+                          <% 
+                          
+                          main_mark = 0
+                          if full_mark > 0 && obtain_mark > 0
+                            main_mark = (obtain_mark.to_f/full_mark.to_f)*100
+                          end  
+                          
+                          main_mark = main_mark.round()
+                          grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                           
+                          
+                          %>
+                         
+                          <% if !grade.blank? and !grade.name.blank? %>
+                            <td class="col-pdf"  style="padding:10px !important;"><b><%= grade.name %></b></td>
+                          <% else %>
+                            <td class="col-pdf"  style="padding:10px !important;"><b>-</b></td>
+                          <% end %> 
+                          
+
+                      </tr>
+                    <% end %>  
+                  <% end %>   
+                  <% 
+                    group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
+                    @all_subjects = []
+                    group_exams.each do |group_exam|
+                      allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
+                      allexams.each do |exam|
+                        if !@all_subjects.include?(exam.subject.id)
+                            @all_subjects << exam.subject.id
+                        end
+                      end
+                    end 
+                  %>
+                  <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                    <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
+                      <%  if @all_subjects.include?(report['id'].to_i) %>
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>" style="background-color:#e3f2fd">
+                            <td class="col-pdf no-warp  align-left"  style="padding:10px !important;"><%= report['subject_name'] %></td>
+                            <td class="col-pdf"  style="padding:10px !important;"><b><%= report['subject_comment'] unless report['subject_comment'].blank? %></b></td>
+                        </tr>
+                      <% end %>
+                    <% end %>
+                  <% end %>    
+
+              </table>          
+<% end %>

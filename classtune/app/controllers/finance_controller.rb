@@ -114,7 +114,8 @@ class FinanceController < ApplicationController
       activity_log_id = activity_log.id
       
       error_order = []
-      @students = Student.find(:all, :order => 'id ASC', :conditions => ["is_deleted = 0 and id > 0"]) #, :group => "ledger_date"
+	  @stdent_id = 23863;
+      @students = Student.find(:all, :order => 'id ASC', :conditions => ["is_deleted = 0 and id > #{@stdent_id}"]) #, :group => "ledger_date"
       unless @students.blank?
         @students.each do |st|
           finance_fees = FinanceFee.find(:all, :conditions => "student_id = '#{st.id}'")

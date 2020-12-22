@@ -20,22 +20,46 @@
   <div class="page1"> </div>
   <div class="section1 row" >
     <center>
-      <h3 align="center">Mark Sheet</h3>
-      <div class="hor_line"></div>
-      <h4 align="center">For Subject Teacher</h4>
+      <table id="pdf-table"  width="100%" class="no-border left-clear-both margin-bottom-20"  cellspacing="0" >
+          <tr>
+              <td class="align-left" width="28%">&nbsp;</td>
+
+              <td class="align-left" width="6%">  
+                  <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/logo.jpg")),:width=> '90%' %>  
+              </td>
+              <% month_number = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
+              <td width="28%">
+                  <h4 align="center"><font size="5">EUROPEAN STANDARD SCHOOL(ESS)</font></h4>
+                  <h4 align="center" style="margin-top:-5px;"><font size="5"><%= @batch.name %> Campus</font></h4>
+                  <h4 align="center" style="margin-top:-5px;"><font size="4" color="#000">Subject Wise Mark Sheet</font></h4>
+                  <h4 align="center" style="margin-top:-5px;"><font size="4" color="#000"><%= @connect_exam_obj.name %>, 
+                      <% if month_number.to_i>6 %>
+                        Session : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %>
+                      <% else %>
+                        Session : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>
+                      <% end %></font></h4>
+                  
+                  <h4 align="center" style="margin-top:-5px;">
+                    <font size="4" color="#000">
+                      Class <%= @batch.course.course_name %>, Section <%= @batch.course.section_name %>
+                    </font>
+                  </h4>  
+              </td>
+              <td class="align-left" width="28%">&nbsp;</td>
+
+         </tr>
+         <tr><td colspan="3">&nbsp;</td></tr>
+      </table>
       
       <div id ="main_info">
           <table>
               <tr>
                  <% if !@employee.nil? %> 
                   <td align='left'><h4>Teacher's Name : <%=  @employee.full_name %></h4></td>
-                  <td align='center'><h4>Subject : <%= @subject.name %></h4></td>
+                  <td align='right'><h4>Subject : <%= @subject.name %></h4></td>
                  <% else %>
                   <td align='left'><h4>Subject : <%= @subject.name %></h4></td>
                  <% end %> 
-                  
-                  <td align='center'><h4>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %></h4></td>
-                  <td align='right'><h4>Section : <%= @batch.course.section_name %></h4></td>
               </tr>    
           </table>    
        
@@ -46,17 +70,24 @@
       <% colspan = 0 %>
       <table id="pdf-table" width="100%" cellspacing="0">
         <tr class="table-header">
-          <td class="name">Roll NO.</td>
-          <td class="name">Name</td>
+          <td rowspan="2">A/C Code</td>  
+          <td class="name" rowspan="2">Roll NO.</td>
+          <td class="name" rowspan="2">Name</td>
+          <td class="name"></td>
           <% @report_data['result']['ALL'].each do |rs| %>
-            <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
-            
-            <% colspan = colspan+1 %>
+            <td><%=  rs['name'] %></td>
           <% end %>  
           
           <td>Total</td>
-          <td>Grade</td>
+          <td rowspan="2">Grade</td>
         
+        </tr>
+        <tr class="table-header">
+          <td class="name">Marks</td>
+          <% @report_data['result']['ALL'].each do |rs| %>
+            <td><%= rs['maximum_marks'] %></td>
+          <% end %> 
+          <td class="name">100</td>
         </tr>
         
         <% extender = 0 %>

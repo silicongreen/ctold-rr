@@ -6927,15 +6927,27 @@ class ExamController < ApplicationController
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_footer.html'}}
     elsif MultiSchool.current_school.code == "ess"
-      render :pdf => template,
+      if @connect_exam_obj.result_type == 1 
+        render :pdf => template,
+          :save_only    => for_save,
+          :orientation => 'Landscape',
+          :margin => {:top=> 10,
+          :bottom => 10,
+          :left=> 10,
+          :right => 10},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      else
+        render :pdf => template,
         :save_only    => for_save,
-        :orientation => 'Landscape',
+        :orientation => 'Portrait',
         :margin => {:top=> 10,
         :bottom => 10,
         :left=> 10,
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      end
     elsif MultiSchool.current_school.code == "nascd"
       render :pdf => template,
           

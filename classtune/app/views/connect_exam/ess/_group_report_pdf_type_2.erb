@@ -185,101 +185,89 @@
 
               </table>
               
-              <% if @grading_levels.blank? %>
-                <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+              <div style="width:35%; float: left; margin-top: 15px;" >
                 <% if @grading_levels.blank? %>
-                  <% @grading_levels = GradingLevel.default %>
+                  <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+                  <% if @grading_levels.blank? %>
+                    <% @grading_levels = GradingLevel.default %>
+                  <% end %>
                 <% end %>
-              <% end %>
-              <%  unless @grading_levels.empty? %>
-                <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
+                <%  unless @grading_levels.empty? %>
+                  <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
+                      <tr class="even">
+                          <td>Grading</td>
+                          <td>System</td>  
+                      </tr> 
+                      <% prev_score = 0 %>
+                      <% @grading_levels.each_with_index do |grade,index| %>
+                         <tr class="odd">
+                             <td><%= grade.name %></td>
+                            <td>
+                                <% if grade.max_score.nil? %> 
+                                  <% if grade.min_score.to_i == 0 %>
+                                    <&nbsp;<%= '%i%' % prev_score %>
+                                  <% else %>
+                                      <%= '%i%' % grade.min_score %> 
+                                  <% end %>
+                                <% else %> 
+                                  <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>
+                                <% end %>
+                                <%  prev_score = grade.min_score %>
+                            </td>
+                          </tr> 
+                      <% end %> 
+
+                  </table>
+
+                <% end %> 
+              </div>
+              <div style="width:60%; float: left; margin-left: 3%; margin-top: 15px;" >
+                <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:10px !important;" cellspacing="0" >
                     <tr class="even">
-                        <td>Grading</td>
-                        <td>System</td>  
-                    </tr> 
-                    <% prev_score = 0 %>
-                    <% @grading_levels.each_with_index do |grade,index| %>
-                       <tr class="odd">
-                      <td>
-                          <% if grade.max_score.nil? %> 
-                            <% if grade.min_score.to_i == 0 %>
-                              <&nbsp;<%= '%i%' % prev_score %>
-                            <% else %>
-                                <%= '%i%' % grade.min_score %> 
-                            <% end %>
-                          <% else %> 
-                            <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>
-                          <% end %>
-                          <%  prev_score = grade.min_score %>
-                      </td>
-                      <td><%= grade.name %></td>
-                        </tr> 
-                    <% end %> 
+                        <td class="align-left" style="background-color:#e3f2fd">Total Working Days:</td>
+                        <td  style="padding:5px !important;"><%= @connect_exam_obj.total_working_days %></td>
+                        <td class="align-left" style="background-color:#e3f2fd">Attendance:</td>
+                        <td  style="padding:5px !important;"></td>
+                    </tr>
 
                 </table>
+                <%  
+                  date_string = @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d%m%Y")
+                  unless date_string.blank? 
+                    date_split = date_string.split("")
+                  end
+                %>
+                <table id="pdf-table"  width="100%" class="left-table odd-table signature" cellspacing="0" >
 
-              <% end %> 
-              
-              <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:10px !important;" cellspacing="0" >
-                  <tr class="even">
-                      <td class="align-left"  width="30%" style="background-color:#e3f2fd">Comment on Overall Performance:</td>
-                      <td width="70%"  style="padding:5px !important;"><input type="checkbox" <%  if comment_on_overall_performance == 1 %> checked="checked" <% end %>>&nbsp;<b>Excellent</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" <%  if comment_on_overall_performance == 2 %> checked="checked" <% end %>>&nbsp;<b>Very Good</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  <%  if comment_on_overall_performance == 3 %> checked="checked" <% end %>>&nbsp;<b>Good</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  <%  if comment_on_overall_performance == 4 %> checked="checked" <% end %>>&nbsp;<b>Satisfactory</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  <%  if comment_on_overall_performance == 5 %> checked="checked" <% end %>>&nbsp;<b>Needs Improvement</b></td>
-                  </tr>    
-                  <tr class="even">    
-                      <td class="align-left" style="background-color:#e3f2fd">Grading System</td>
-                      <td width="70%"  style="padding:5px !important;">A* = 91 - 100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A = 81 - 90&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B = 71 - 80&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C = 61 - 70&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D = 50 - 60</td>
-                  </tr>
-                  
-              </table>
-              
-             
-              <table id="pdf-table"  width="35%" class="left-table even-table signature" style="margin-top:10px !important;" cellspacing="0" >
-                  <tr class="even">
-                      <td class="align-left" style="background-color:#e3f2fd">Total Working Days:</td>
-                      <td  style="padding:5px !important;"><%= @report_data['total'] %></td>
-                  </tr>    
-                  <tr class="even">    
-                      <td class="align-left" style="background-color:#e3f2fd">Attendance:</td>
-                      <td  style="padding:5px !important;"><%= @report_data['present'] %></td>
-                  </tr>
-                  
-              </table>
-              <%  
-                date_string = @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d%m%Y")
-                unless date_string.blank? 
-                  date_split = date_string.split("")
-                end
-              %>
-              <table id="pdf-table"  width="61%" class="left-table odd-table signature" cellspacing="0" >
-                 
-                  <tr class="even">
-                      <td class="width-30 align-left" width="30%" rowspan="2" style="background-color:#e3f2fd;">Next Term begins on:</td>
-                      <td colspan="2" style="padding:5px !important">D</td>
-                      <td colspan="2" style="padding:5px !important">M</td>
-                      <td colspan="4" style="padding:5px !important">Y</td>
-                  </tr>
-                  <tr class="even">
-                      <% unless date_split.blank? %>
-                        <td style="padding:5px !important"><%= date_split[0] %></td>
-                        <td style="padding:5px !important"><%= date_split[1] %></td>
-                        <td><%= date_split[2] %></td>
-                        <td><%= date_split[3] %></td>
-                        <td><%= date_split[4] %></td>
-                        <td><%= date_split[5] %></td>
-                        <td><%= date_split[6] %></td>
-                        <td><%= date_split[7] %></td>
-                      <% else %>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      <% end %>
-                  </tr>
-              </table>
+                    <tr class="even">
+                        <td class="width-30 align-left" width="30%" rowspan="2">Next Term begins on:</td>
+                        <td colspan="2">D</td>
+                        <td colspan="2">M</td>
+                        <td colspan="4">Y</td>
+                    </tr>
+                    <tr class="even">
+                        <% unless date_split.blank? %>
+                          <td><%= date_split[0] %></td>
+                          <td><%= date_split[1] %></td>
+                          <td><%= date_split[2] %></td>
+                          <td><%= date_split[3] %></td>
+                          <td><%= date_split[4] %></td>
+                          <td><%= date_split[5] %></td>
+                          <td><%= date_split[6] %></td>
+                          <td><%= date_split[7] %></td>
+                        <% else %>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        <% end %>
+                    </tr>
+                </table>
+              </div>    
               
               <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
                   <tr class="even border-bottom-1-px">

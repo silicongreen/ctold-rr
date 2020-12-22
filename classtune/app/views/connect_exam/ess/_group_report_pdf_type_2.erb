@@ -74,13 +74,14 @@
                       <td><b>Online First Term Examination(40/20)</b></td>
                       <td><b>100/50</b></td>
                   </tr>
-              
+                  <% total_marks = 0 %>
+                  <% subject_count = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['no_exams_sjws'].to_i == 1  %>
                         <% next %>
                       <% end %>
-                        
+                        <% subject_count = subject_count+1 %>
                         <%
                           full_mark1 = 0
                           obtain_mark1 = 0
@@ -140,6 +141,7 @@
                           end  
                           
                           main_mark = main_mark.round()
+                          total_marks = total_marks+obtain_mark
                           grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                            
                           
@@ -157,7 +159,11 @@
                       </tr>
                     <% end %>  
                   <% end %>   
-                  <% 
+                  <%
+                    percent = 0
+                    if total_marks > 0 && subject_count > 0
+                      percent = total_marks.to_f/subject_count.to_f
+                    end
                     group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
                     @all_subjects = []
                     group_exams.each do |group_exam|
@@ -222,6 +228,16 @@
                 <% end %> 
               </div>
               <div style="width:71%; float: left; margin-left: 3%; margin-top: 5px;" >
+                <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
+                    <tr class="even">
+                        <td class="align-left" >Total Marks:</td>
+                        <td  style="padding:5px !important;"><%= total_marks %></td>
+                        <td class="align-left" >Percentage::</td>
+                        <td  style="padding:5px !important;"><%= sprintf( "%0.02f", percent) %></td>
+                    </tr>
+
+                </table>
+                <p>&nbsp;</p>
                 <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
                         <td class="align-left" >Total Working Days:</td>

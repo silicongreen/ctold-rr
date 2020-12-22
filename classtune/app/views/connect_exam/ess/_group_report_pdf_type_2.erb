@@ -119,7 +119,7 @@
                             end 
                           end 
                         %>
-                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>" style="background-color:#e3f2fd">
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>" >
 
                           <td class="col-pdf no-warp  align-left"  style="padding:10px !important;"><%= subjects['name'] %></td>
                           <% 
@@ -185,7 +185,7 @@
 
               </table>
               
-              <div style="width:25%; float: left; margin-top: 15px;" >
+              <div style="width:25%; float: left; margin-top: 25px;" >
                 <% if @grading_levels.blank? %>
                   <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
                   <% if @grading_levels.blank? %>
@@ -221,12 +221,12 @@
 
                 <% end %> 
               </div>
-              <div style="width:70%; float: left; margin-left: 3%; margin-top: 15px;" >
+              <div style="width:70%; float: left; margin-left: 3%; margin-top: 25px;" >
                 <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:10px !important;" cellspacing="0" >
                     <tr class="even">
-                        <td class="align-left" style="background-color:#e3f2fd">Total Working Days:</td>
+                        <td class="align-left" >Total Working Days:</td>
                         <td  style="padding:5px !important;"><%= @connect_exam_obj.total_working_days %></td>
-                        <td class="align-left" style="background-color:#e3f2fd">Attendance:</td>
+                        <td class="align-left" >Attendance:</td>
                         <td  style="padding:5px !important;"></td>
                     </tr>
 
@@ -237,7 +237,7 @@
                     date_split = date_string.split("")
                   end
                 %>
-                <table id="pdf-table"  width="100%" class="left-table odd-table signature" cellspacing="0" >
+                <table id="pdf-table"  width="100%" class="even-table signature" cellspacing="0" >
 
                     <tr class="even">
                         <td class="width-30 align-left" width="30%" rowspan="2">Next Term begins on:</td>

@@ -69,7 +69,7 @@
               <table id="pdf-table"  width="30%" class="left-table even-table exam-marks" cellspacing="0" style="border-top:none !important;" >
                   <% c = 'even'  %>
                   <tr class="even no-border" style="border:none !important;border-top:none !important;">
-                      <td colspan="2" class="no-border" style="border-right:none !important;border-top:none !important;border-left:none !important; color:#111e6c !important;padding:10px !important;">Academic Performance</td>
+                      <td colspan="2" class="no-border" style="border-right:none !important;border-top:none !important;border-left:none !important; color:#111e6c !important;padding:10px !important;font-weight: bold;">Academic Performance</td>
                   </tr>
                   <tr class="even" style="background-color:#e3f2fd">
                     <td class="col-pdf" style="padding:10px !important;"><b><%= "Subject" %></b></td>
@@ -152,7 +152,7 @@
               </table>
               <table id="pdf-table"  width="66%" class="left-table odd-table height-exam" cellspacing="0" style="border-top:none !important;">
                   <tr class="even no-border"  style="border:none !important;border-top:none !important;">
-                      <td colspan="6" class="no-border" style="border-right:none !important;border-top:none !important;border-left:none !important; color:#111e6c !important;padding:5px !important;">Personal, Emotional & Social Development</td>
+                      <td colspan="6" class="no-border" style="border-right:none !important;border-top:none !important;border-left:none !important; color:#111e6c !important;padding:5px !important;font-weight: bold;">Personal, Emotional & Social Development</td>
                   </tr>
                   <tr class="odd" style="background-color:#e3f2fd">
                       <td class="col-pdf"><%= "Assessment" %></td>
@@ -196,11 +196,11 @@
                             <% if !wordString.blank? and !wordString[iloop].blank? %>
                            <tr class="odd">
                                <td class="col-pdf align-left" style="background-color:#e3f2fd"><%= group_name.name %></td>
-                               <td class="col-pdf" style="background-color:#FBE4D5" ><%  if wordString[iloop].to_i == 5 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
-                               <td class="col-pdf"  style="background-color:#FBE4D5"><%  if wordString[iloop].to_i == 4 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
-                               <td class="col-pdf" style="background-color:#FBE4D5"><%  if wordString[iloop].to_i == 3 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
-                               <td class="col-pdf" style="background-color:#FBE4D5"><%  if wordString[iloop].to_i == 2 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
-                               <td class="col-pdf" style="background-color:#FBE4D5"><%  if wordString[iloop].to_i == 1 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
+                               <td class="col-pdf" style="background-color:#FBE4D5" ><%  if wordString[iloop].to_i == 5 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/tick-transparent.png")) %><% end %></td>
+                               <td class="col-pdf"  style="background-color:#FBE4D5"><%  if wordString[iloop].to_i == 4 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/tick-transparent.png")) %><% end %></td>
+                               <td class="col-pdf" style="background-color:#FBE4D5"><%  if wordString[iloop].to_i == 3 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/tick-transparent.png")) %><% end %></td>
+                               <td class="col-pdf" style="background-color:#FBE4D5"><%  if wordString[iloop].to_i == 2 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/tick-transparent.png")) %><% end %></td>
+                               <td class="col-pdf" style="background-color:#FBE4D5"><%  if wordString[iloop].to_i == 1 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/tick-transparent.png")) %><% end %></td>
                            </tr>
                            <% else %>
                            <tr class="even">

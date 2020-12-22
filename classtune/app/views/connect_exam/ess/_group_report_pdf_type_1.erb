@@ -6,10 +6,10 @@
               
                   <table id="pdf-table"  width="100%" class="no-border left-clear-both margin-bottom-20"  cellspacing="0" >
                       <tr>
-                          <td class="align-left width-33 height-50">  
+                          <td class="align-left" wid="30%">  
                               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/logo.jpg")),:width=> '20%' %>  
                           </td>
-                          <td class="width-33">
+                          <td width="70%">
                               <h2 align="center"><font size="6" color="#36346B"><%= @connect_exam_obj.name %></font></h2>
                               <% month_number = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
                               <h3 align="center">
@@ -223,11 +223,11 @@
               <table id="pdf-table"  width="100%" class="left-table even-table signature" cellspacing="0" >
                   <tr class="even">
                       <td class="align-left" width="30%">Comment on Overall Performance:</td>
-                      <td width="70%">&nbsp;&nbsp;<input type="checkbox" <%  if comment_on_overall_performance == 1 %> checked="checked" <% end %>>&nbsp;<b>Excellent</b>&nbsp;&nbsp;&nbsp;<input type="checkbox" <%  if comment_on_overall_performance == 2 %> checked="checked" <% end %>>&nbsp;<b>Very Good</b>&nbsp;&nbsp;<input type="checkbox"  <%  if comment_on_overall_performance == 3 %> checked="checked" <% end %>>&nbsp;<b>Good</b>&nbsp;&nbsp;<input type="checkbox"  <%  if comment_on_overall_performance == 4 %> checked="checked" <% end %>>&nbsp;<b>Satisfactory</b>&nbsp;&nbsp;<input type="checkbox"  <%  if comment_on_overall_performance == 5 %> checked="checked" <% end %>>&nbsp;<b>Needs Improvement</b></td>
+                      <td width="70%"><input type="checkbox" <%  if comment_on_overall_performance == 1 %> checked="checked" <% end %>>&nbsp;<b>Excellent</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" <%  if comment_on_overall_performance == 2 %> checked="checked" <% end %>>&nbsp;<b>Very Good</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  <%  if comment_on_overall_performance == 3 %> checked="checked" <% end %>>&nbsp;<b>Good</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  <%  if comment_on_overall_performance == 4 %> checked="checked" <% end %>>&nbsp;<b>Satisfactory</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  <%  if comment_on_overall_performance == 5 %> checked="checked" <% end %>>&nbsp;<b>Needs Improvement</b></td>
                   </tr>    
                   <tr class="even">    
                       <td class="align-left">Grading System</td>
-                      <td width="70%">&nbsp;&nbsp;&nbsp;&nbsp;A* = 91 - 100&nbsp;&nbsp;&nbsp;A = 81 - 90&nbsp;&nbsp;&nbsp;B = 71 - 80&nbsp;&nbsp;&nbsp;C = 61 - 70&nbsp;&nbsp;&nbsp;D = 50 - 60</td>
+                      <td width="70%">A* = 91 - 100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A = 81 - 90&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B = 71 - 80&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C = 61 - 70&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D = 50 - 60</td>
                   </tr>
                   
               </table>

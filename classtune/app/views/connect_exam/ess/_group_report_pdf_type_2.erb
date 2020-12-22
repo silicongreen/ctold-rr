@@ -5,9 +5,9 @@
               
                   <table id="pdf-table"  width="100%" class="no-border left-clear-both margin-bottom-20"  cellspacing="0" >
                       <tr>
-                          <td class="align-left" width="10%">&nbsp;</td>
+                          <td class="align-left" width="15%">&nbsp;</td>
                           
-                          <td class="align-left" width="20%">  
+                          <td class="align-left" width="10%">  
                               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/logo.jpg")),:width=> '90%' %>  
                           </td>
                           <td width="60%">
@@ -29,7 +29,7 @@
                                 </font>
                               </h4>  
                           </td>
-                          <td class="align-left" width="10%">&nbsp;</td>
+                          <td class="align-left" width="15%">&nbsp;</td>
                           
                      </tr>
                      <tr><td colspan="3">&nbsp;</td></tr>
@@ -185,7 +185,7 @@
 
               </table>
               
-              <div style="width:35%; float: left; margin-top: 15px;" >
+              <div style="width:25%; float: left; margin-top: 15px;" >
                 <% if @grading_levels.blank? %>
                   <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
                   <% if @grading_levels.blank? %>
@@ -221,7 +221,7 @@
 
                 <% end %> 
               </div>
-              <div style="width:60%; float: left; margin-left: 3%; margin-top: 15px;" >
+              <div style="width:70%; float: left; margin-left: 3%; margin-top: 15px;" >
                 <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:10px !important;" cellspacing="0" >
                     <tr class="even">
                         <td class="align-left" style="background-color:#e3f2fd">Total Working Days:</td>
@@ -301,17 +301,17 @@
 <style>
 .sis-final #grouped_exam_report table.exam-marks tr.odd td.col-pdf, .sis-final #grouped_exam_report table.exam-marks tr.even td.col-pdf
   {
-     padding: 1px 5px !important;
-     font-size: 14px !important;
+     padding: 5px 5px !important;
+     font-size: 18px !important;
   }
 .landscape table tr.odd td, .landscape table tr.even td
 {
-    padding: 1px 5px !important;
+    padding: 5px 5px !important;
 
 } 
 .landscape table.signature tr.odd td, .landscape table.signature tr.even td
 {
-    padding: 1px 5px !important;
+    padding: 5px 5px !important;
 
 }
 .landscape table.signature2 tr.odd td, .landscape table.signature2 tr.even td

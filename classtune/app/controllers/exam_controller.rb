@@ -6926,6 +6926,16 @@ class ExamController < ApplicationController
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_footer.html'}}
+    elsif MultiSchool.current_school.code == "ess"
+      render :pdf => template,
+        :save_only    => for_save,
+        :orientation => 'Landscape',
+        :margin => {:top=> 10,
+        :bottom => 10,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
     elsif MultiSchool.current_school.code == "nascd"
       render :pdf => template,
           

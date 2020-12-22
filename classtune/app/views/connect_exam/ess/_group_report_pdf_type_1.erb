@@ -39,8 +39,7 @@
       <% class_teacher = "" %>
       <% if !@assigned_employee.blank? %>
         <% @assigned_employee.each do |emp| %>
-           <% class_teacher = emp.first_name %>&nbsp;<%= emp.last_name %>
-           <% break %>
+           <% class_teacher = emp.first_name+" "+emp.last_name %>
         <% end %>
        <% end %>
       <div class="student_information">

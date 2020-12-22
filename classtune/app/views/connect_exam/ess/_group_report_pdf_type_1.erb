@@ -196,11 +196,11 @@
                             <% if !wordString.blank? and !wordString[iloop].blank? %>
                            <tr class="odd">
                                <td class="col-pdf align-left" style="background-color:#e3f2fd"><%= group_name.name %></td>
-                               <td class="col-pdf" style="background-color:#FBE4D5" ><%  if wordString[iloop].to_i == 5 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/tick-transparent.png")),:width=> '50%' %><% end %></td>
-                               <td class="col-pdf"  style="background-color:#FBE4D5"><%  if wordString[iloop].to_i == 4 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/tick-transparent.png")),:width=> '50%' %><% end %></td>
-                               <td class="col-pdf" style="background-color:#FBE4D5"><%  if wordString[iloop].to_i == 3 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/tick-transparent.png")),:width=> '50%' %><% end %></td>
-                               <td class="col-pdf" style="background-color:#FBE4D5"><%  if wordString[iloop].to_i == 2 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/tick-transparent.png")),:width=> '50%' %><% end %></td>
-                               <td class="col-pdf" style="background-color:#FBE4D5"><%  if wordString[iloop].to_i == 1 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/tick-transparent.png")),:width=> '50%' %><% end %></td>
+                               <td class="col-pdf" style="background-color:#FBE4D5" ><%  if wordString[iloop].to_i == 5 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/tick-transparent.png")),:width=> '20%' %><% end %></td>
+                               <td class="col-pdf"  style="background-color:#FBE4D5"><%  if wordString[iloop].to_i == 4 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/tick-transparent.png")),:width=> '20%' %><% end %></td>
+                               <td class="col-pdf" style="background-color:#FBE4D5"><%  if wordString[iloop].to_i == 3 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/tick-transparent.png")),:width=> '20%' %><% end %></td>
+                               <td class="col-pdf" style="background-color:#FBE4D5"><%  if wordString[iloop].to_i == 2 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/tick-transparent.png")),:width=> '20%' %><% end %></td>
+                               <td class="col-pdf" style="background-color:#FBE4D5"><%  if wordString[iloop].to_i == 1 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/tick-transparent.png")),:width=> '20%' %><% end %></td>
                            </tr>
                            <% else %>
                            <tr class="even">

@@ -68,7 +68,7 @@
           <div id="grouped_exam_report">
               <table id="pdf-table"  width="30%" class="left-table even-table exam-marks" cellspacing="0" >
                   <% c = 'even'  %>
-                  <tr class="even no-border" style="border:none !important;">
+                  <tr class="even no-border" style="border:none !important;border-top:none !important;">
                       <td colspan="2" class="no-border" style="border-right:none !important;border-top:none !important;border-left:none !important; color:#111e6c !important;padding:10px !important;">Academic Performance</td>
                   </tr>
                   <tr class="even" style="background-color:#e3f2fd">
@@ -151,7 +151,7 @@
 
               </table>
               <table id="pdf-table"  width="66%" class="left-table odd-table height-exam" cellspacing="0" >
-                  <tr class="even no-border"  style="border:none !important;">
+                  <tr class="even no-border"  style="border:none !important;border-top:none !important;">
                       <td colspan="6" class="no-border" style="border-right:none !important;border-top:none !important;border-left:none !important; color:#111e6c !important;padding:10px !important;">Personal, Emotional & Social Development</td>
                   </tr>
                   <tr class="odd" style="background-color:#e3f2fd">
@@ -253,15 +253,15 @@
               <table id="pdf-table"  width="61%" class="left-table odd-table signature" cellspacing="0" >
                  
                   <tr class="even">
-                      <td class="width-30 align-left" width="30%" rowspan="2" style="background-color:#e3f2fd;padding:5px !important">Next Term begins on:</td>
-                      <td colspan="2">D</td>
-                      <td colspan="2">M</td>
-                      <td colspan="4">Y</td>
+                      <td class="width-30 align-left" width="30%" rowspan="2" style="background-color:#e3f2fd;">Next Term begins on:</td>
+                      <td colspan="2" style="padding:5px !important">D</td>
+                      <td colspan="2" style="padding:5px !important">M</td>
+                      <td colspan="4" style="padding:5px !important">Y</td>
                   </tr>
                   <tr class="even">
                       <% unless date_split.blank? %>
-                        <td><%= date_split[0] %></td>
-                        <td><%= date_split[1] %></td>
+                        <td style="padding:5px !important"><%= date_split[0] %></td>
+                        <td style="padding:5px !important"><%= date_split[1] %></td>
                         <td><%= date_split[2] %></td>
                         <td><%= date_split[3] %></td>
                         <td><%= date_split[4] %></td>

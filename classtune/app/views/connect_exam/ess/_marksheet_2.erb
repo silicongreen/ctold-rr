@@ -70,7 +70,7 @@
       <% colspan = 0 %>
       <table id="pdf-table" width="100%" cellspacing="0">
         <tr class="table-header">
-          <td rowspan="2">A/C Code</td>  
+          <td rowspan="2" >A/C Code</td>  
           <td class="name" rowspan="2">Roll NO.</td>
           <td class="name" rowspan="2">Name</td>
           <td class="name"></td>
@@ -83,7 +83,7 @@
         
         </tr>
         <tr class="table-header">
-          <td class="name">Marks</td>
+          <td class="name" style="padding: 25px 2px !important;">Marks</td>
           <% @report_data['result']['ALL'].each do |rs| %>
             <td><%= rs['maximum_marks'] %></td>
           <% end %> 
@@ -109,7 +109,7 @@
           <% full_mark = 0 %>
               
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-            <td class="name" style="padding: 20px 2px !important;"><%= std['admission_no'] %></td>
+            <td class="name" style="padding: 25px 2px !important;"><%= std['admission_no'] %></td>
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['name'] %></td>
             <td></td>

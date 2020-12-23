@@ -162,8 +162,6 @@
             <% @report_data['result']['ALL'].each do |rs| %>
               <% if rs['exam_category'] == "2" %>
                 <% start_rt = 1 %>
-              <% elsif rs['exam_category'] != "3" %>
-                <% marks_count = marks_count+rs['maximum_marks'] %>
               <% end %>
               <% if rs['exam_category'] != "2" && start_rt == 1 %>
                   <% if total_marks == 100 && rt_marks > 0 %>

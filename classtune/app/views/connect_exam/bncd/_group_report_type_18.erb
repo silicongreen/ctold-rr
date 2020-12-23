@@ -1,0 +1,59 @@
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+              <%  
+                    
+                    group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
+                    
+                    @all_subjects = []
+                    group_exams.each do |group_exam|
+                      allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
+                      allexams.each do |exam|
+                        if !@all_subjects.include?(exam.subject.id)
+                          
+                          @all_subjects << exam.subject.id
+                        end
+                      end
+                    end 
+                  %>
+              <% remarks_exam = 0 %>
+              <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                        <% @report_data['report']['no_exam_subject_resutl'].each do |subjects| %>
+                            <% subjectdata = Subject.find(subjects['id'].to_i) %>
+                            <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                            <% if @has_exam_student == false %>
+                              <% next %>
+                            <% end %>
+                            <%  if @all_subjects.include?(subjects['id'].to_i) %>
+                              <% unless @report_data['report']['exams'].blank? %>
+                                <% @report_data['report']['exams'].each do |report| %>
+                                  <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
+                                    <% remarks_exam = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
+                                    <% break %>
+                                  <% end %>
+                                <% end %>
+                              <% end %>  
+                            <% end %>
+                        <% end %>
+                    <% end %> 
+              <div class='fine'></div>
+              <table id="pdf-table" class="top-left-center top-margin" width="99.8%" cellspacing="0">
+                  <tr class="table-header">
+                    <td class="col-pdf no-warp align-left-baf">Final Remarks</td>
+                    <td class="col-pdf no-warp align-left-baf" rowspan="2">Promoted to next Class<% if remarks_exam.to_i == 4 %> on Consideration<% end %></td>
+                  </tr>
+                  <tr class="table-header">
+                    <td class="col-pdf no-warp align-left-baf">
+                      <% if remarks_exam.to_i == 1 %>
+                            Excellent
+                      <% elsif remarks_exam.to_i == 2 %>
+                            Very Good
+                      <% elsif remarks_exam.to_i == 3 %>
+                            Good
+                      <% elsif remarks_exam.to_i == 4 %>
+                            Need to improve
+                      <% end %>      
+                    </td>     
+                  </tr>
+              </table>
+                
+                
+<% end %>

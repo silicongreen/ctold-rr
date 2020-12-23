@@ -1,0 +1,74 @@
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+              <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
+                  <% c = 'even'  %>
+                  <tr class="even">
+                      <td class="col-pdf">
+                          <b>Sl.</b>
+                      </td>
+                      <td class="col-pdf no-warp  align-left-baf"><b><%= "Subjects" %></b></td>
+                      <td class="col-pdf"><b>Remarks</b></td>
+                  </tr>
+                   <%  
+                    
+                    group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
+                    
+                    @all_subjects = []
+                    group_exams.each do |group_exam|
+                      allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
+                      allexams.each do |exam|
+                        if !@all_subjects.include?(exam.subject.id)
+                          
+                          @all_subjects << exam.subject.id
+                        end
+                      end
+                    end 
+                  %>
+                  <% total_subject = 0 %>
+                  <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                    <% @report_data['report']['no_exam_subject_resutl'].each do |subjects| %>
+                      <% subjectdata = Subject.find(subjects['id'].to_i) %>
+                      <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                      <% if @has_exam_student == false %>
+                        <% next %>
+                      <% end %>
+
+                    <%  if @all_subjects.include?(subjects['id'].to_i) %>
+                        <% total_subject = total_subject+1 %>
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                           <td class="col-pdf  no-warp"><%= total_subject %></td>
+                        
+                          <td class="col-pdf no-warp align-left-baf"><b><%= subjects['subject_name'] %></b></td>
+                          <% unless @report_data['report']['exams'].blank? %>
+                            <% @report_data['report']['exams'].each do |report| %>
+                                <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
+                                  <% remarks_exam = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
+                                 
+                                      <td class="col-pdf"><b>
+                                        <% if remarks_exam.to_i == 1 %>
+                                              Excellent
+                                        <% elsif remarks_exam.to_i == 2 %>
+                                              Very Good
+                                        <% elsif remarks_exam.to_i == 3 %>
+                                              Good
+                                        <% elsif remarks_exam.to_i == 4 %>
+                                              Need to improve
+                                        <% end %>      
+                                      </b></td>
+                                  
+                                <% else %>
+                                  <td class="col-pdf"><b>-</b></td>
+                                <% end %>
+                            <% end %>
+                          <% end %>
+                           
+                        </tr>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                  
+                  
+                  
+              </table>
+                
+                
+<% end %>

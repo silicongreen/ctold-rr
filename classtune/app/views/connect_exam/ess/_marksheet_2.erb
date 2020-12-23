@@ -110,7 +110,7 @@
             <% if rs['exam_category'] == "2" %>
               <% start_rt = 1 %>
             <% elsif rs['exam_category'] != "3" %>
-              <% marks_count = marks_count+rs['maximum_marks'] %>
+              <% marks_count = marks_count+rs['maximum_marks'].to_i %>
             <% end %>
             <% if rs['exam_category'] == "3" %>
               <td><%= marks_count %></td>

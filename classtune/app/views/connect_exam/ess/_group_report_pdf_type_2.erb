@@ -207,8 +207,8 @@
                       <% prev_score = 0 %>
                       <% @grading_levels.each_with_index do |grade,index| %>
                          <tr class="odd">
-                             <td style="padding:10px !important;"><%= grade.name %></td>
-                             <td style="padding:10px !important;">
+                             <td style="padding:11px !important;"><%= grade.name %></td>
+                             <td style="padding:11px !important;">
                                 <% if grade.max_score.nil? %> 
                                   <% if grade.min_score.to_i == 0 %>
                                     <&nbsp;<%= '%i%' % prev_score %>
@@ -227,7 +227,7 @@
 
                 <% end %> 
               </div>
-              <div style="width:71%; float: left; margin-left: 3%; margin-top: 5px;" >
+              <div style="width:71.5%; float: left; margin-left: 3%; margin-top: 5px;" >
                 <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
                         <td class="align-left" >Total Marks:</td>

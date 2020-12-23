@@ -70,7 +70,7 @@
       <% colspan = 0 %>
         <% total_marks = 0 %>
         <% @report_data['result']['ALL'].each do |rs| %>
-            <% total_marks = total_marks+rs['maximum_marks'] %>
+            <% total_marks = total_marks+rs['maximum_marks'].to_i %>
         <% end %>
         <% if total_marks > 50 && total_marks < 100 %>
           <% total_marks = 100 %>

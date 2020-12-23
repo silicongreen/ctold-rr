@@ -11,6 +11,10 @@
         all_comments_array = all_comments.split("**")
       end
     end
+  present = 0
+  unless all_comments_array[10].blank?
+    present = all_comments_array[10].to_i
+  end  
   %>
 
  <td colspan="100" class="comment_input_box_connect_td" id="commentstd_<%= @std_id_comment %>">
@@ -31,7 +35,7 @@
      
      <% i = i+1 %> 
      <% end %>
-     <input type="number" name="commentstd_<%= @std_id_comment %>_<%= i %>" value="<%=cmt.to_i%>" class="comment_input_box_connect_exam_multiple_<%= @std_id_comment %>" id="commentstd_<%= @std_id_comment %>_<%= i %>" style="width:<%= width_percentize %>%; margin:5px 5px 0px 0px;" /> 
+     <input type="number" name="commentstd_<%= @std_id_comment %>_10" value="<%=  present.to_i%>" class="comment_input_box_connect_exam_multiple_<%= @std_id_comment %>" id="commentstd_<%= @std_id_comment %>_10" style="width:<%= width_percentize %>%; margin:5px 5px 0px 0px;" /> 
  </td>
 
 </tr>

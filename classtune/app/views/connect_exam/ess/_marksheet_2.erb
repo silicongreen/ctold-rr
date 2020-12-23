@@ -68,14 +68,34 @@
       <% c = 'even' %>
       <% full_mark = 0 %>
       <% colspan = 0 %>
+        <% total_marks = 0 %>
+        <% @report_data['result']['ALL'].each do |rs| %>
+            <% total_marks = total_marks+rs['maximum_marks'] %>
+        <% end %>
+        <% if total_marks > 50 && total_marks < 100 %>
+          <% total_marks = 100 %>
+        <% end %>
       <table id="pdf-table" width="100%" cellspacing="0">
         <tr class="table-header">
           <td rowspan="2" >A/C Code</td>  
           <td class="name" rowspan="2">Roll NO.</td>
           <td class="name" rowspan="2">Name</td>
           <td class="name"></td>
+          <% start_rt = 0 %>
           <% @report_data['result']['ALL'].each do |rs| %>
+            <% if rs['exam_category'] == "2" %>
+              <% start_rt = 1 %>
+            <% end %>
+            <% if rs['exam_category'] != "2" && start_rt == 1 %>
+              <% start_rt = 0 %>
+              <td style="white-space: normal !important;">Total RT</td>
+            <% end %>
+            <% if rs['exam_category'] == "3" %>
+              <td style="white-space: normal !important;">Total</td>
+            <% end %>
             <td style="white-space: normal !important;"><%=  rs['name'] %></td>
+            
+            
           <% end %>  
           
           <td>Total</td>
@@ -84,10 +104,33 @@
         </tr>
         <tr class="table-header">
           <td class="name" style="padding: 25px 2px !important;">Marks</td>
+          <% marks_count = 0 %>
+          <% start_rt = 0 %>
           <% @report_data['result']['ALL'].each do |rs| %>
+            <% if rs['exam_category'] == "2" %>
+              <% start_rt = 1 %>
+            <% elsif rs['exam_category'] != "3" %>
+              <% marks_count = marks_count+rs['maximum_marks'] %>
+            <% end %>
+            <% if rs['exam_category'] == "3" %>
+              <td><%= marks_count %></td>
+            <% end %>
+            <% if rs['exam_category'] != "2" && start_rt == 1 %>
+              <% start_rt = 0 %>
+              <td>
+                  (R1+R2)
+                  <% if total_marks == 100 %>
+                    Converted into 20
+                    <% marks_count = marks_count+20 %>
+                  <% else %>
+                    10
+                    <% marks_count = marks_count+10 %>
+                  <% end %>
+              </td>
+            <% end %>
             <td><%= rs['maximum_marks'] %></td>
           <% end %> 
-          <td class="name">100</td>
+          <td class="name"><%= total_marks %></td>
         </tr>
         
         <% extender = 0 %>
@@ -113,27 +156,52 @@
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['name'] %></td>
             <td></td>
+            <% rt_marks = 0 %>
+            <% total_mark = 0 %>
+            <% start_rt = 0 %>
             <% @report_data['result']['ALL'].each do |rs| %>
-              <td>
-              <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
-                  <%= rs['students'][std['id']]['score'] %>
-                  <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
-                  
-                 
-              <% else %>
-                  -
+              <% if rs['exam_category'] == "2" %>
+                <% start_rt = 1 %>
+              <% elsif rs['exam_category'] != "3" %>
+                <% marks_count = marks_count+rs['maximum_marks'] %>
               <% end %>
-              <% if !rs['maximum_marks'].blank? %>    
-                <% full_mark = full_mark+rs['maximum_marks'].to_i %> 
-              <% end %>    
+              <% if rs['exam_category'] != "2" && start_rt == 1 %>
+                  <% if total_marks == 100 && rt_marks > 0 %>
+                      <% rt_marks = rt_marks*2 %>
+                  <% end %>
+                <td><%= rt_marks %></td>
+                <% total_mark = total_mark+rt_marks %>
+              <% end %>
+              <% if rs['exam_category'] == "3" %>
+                <td><%= total_mark %></td>
+              <% end %>  
+              <td>
+                  <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
+                      <%= rs['students'][std['id']]['score'] %>
+                      <% if rs['exam_category'] != "2" %>
+                        <% total_mark = total_mark+rs['students'][std['id']]['score'].to_f %>
+                      <% end %>
+                      <% if rs['exam_category'] == "2" %>
+                        <% rt_marks = rt_marks+rs['students'][std['id']]['score'].to_ %>
+                      <% end %>
+                  
+                  <% else %>
+                      -
+                  <% end %>    
               </td>
               
             <% end %> 
             
 
            <td class="name"><%= sprintf( "%0.02f", total_mark) %></td>
+           <%
+           main_mark = 0
+              if total_mark > 0 && total_marks > 0
+                main_mark = (total_mark.to_f/total_marks.to_f)*100
+              end
+            %>
 
-           <%  grade = GradingLevel.percentage_to_grade(total_mark, @batch.id) %>
+           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
            <% if !grade.blank? and !grade.name.blank? %>
             <td class="col-2"><b><%= grade.name %></b></td>
           <% else %>

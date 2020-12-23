@@ -88,12 +88,12 @@
             <% end %>
             <% if rs['exam_category'] != "2" && start_rt == 1 %>
               <% start_rt = 0 %>
-              <td style="white-space: normal !important;">Total RT</td>
+              <td style="white-space: normal !important;">Total RT <%= rs['exam_category'] %></td>
             <% end %>
             <% if rs['exam_category'] == "3" %>
               <td style="white-space: normal !important;">Total</td>
             <% end %>
-            <td style="white-space: normal !important;"><%=  rs['name'] %></td>
+            <td style="white-space: normal !important;"><%=  rs['name'] %><%= rs['exam_category'] %></td>
             
             
           <% end %>  

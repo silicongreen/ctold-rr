@@ -9,6 +9,10 @@
       all_comments_array = all_comments.split("**")
     end
   end
+  @present_lower_grade = 0
+  unless all_comments_array[10].blank?
+    @present_lower_grade = all_comments_array[10].to_i
+  end 
 %>
 <%= render  :partial=>"/connect_exam/south_point/header" %>
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>

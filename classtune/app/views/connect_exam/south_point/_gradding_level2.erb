@@ -15,6 +15,10 @@
     end
     end
     @main_comments = comments
+    
+    unless @present_lower_grade.blank?
+      present = @present_lower_grade
+    end
  
 %>
 <% @grading_levels = GradingLevel.for_batch(@batch.id) %>

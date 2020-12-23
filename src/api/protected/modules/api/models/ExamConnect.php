@@ -202,7 +202,7 @@ class ExamConnect extends CActiveRecord
                                         'with' => array(
                                             'Students' => array(
                                                 'joinType' => 'LEFT JOIN',
-                                                'select' => 'Students.first_name,Students.last_name,Students.middle_name,Students.class_roll_no,Students.id,Students.batch_id',
+                                                'select' => 'Students.first_name,Students.last_name,Students.middle_name,Students.class_roll_no,Students.admission_no,Students.id,Students.batch_id',
                                             ),
                                         )
                                     ),
@@ -269,6 +269,7 @@ class ExamConnect extends CActiveRecord
                                     $result['students'][$j]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
                                     $result['students'][$j]['id'] = $scores['Students']->id;
                                     $result['students'][$j]['class_roll_no'] = $scores['Students']->class_roll_no;
+                                    $result['students'][$j]['admission_no'] = $scores['Students']->admission_no;
                                     $j++;
                                 }
                                 
@@ -318,6 +319,7 @@ class ExamConnect extends CActiveRecord
                                     $result['students'][$j]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
                                     $result['students'][$j]['id'] = $scores['Students']->id;
                                     $result['students'][$j]['class_roll_no'] = $scores['Students']->class_roll_no;
+                                    $result['students'][$j]['admission_no'] = $scores['Students']->admission_no;
                                     $j++;
                                 }
                                 $result['ST'][$k]['students'][$scores['Students']->id]['score'] = $scores->marks;
@@ -359,6 +361,7 @@ class ExamConnect extends CActiveRecord
                                 $result['al_students'][$m]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
                                 $result['al_students'][$m]['id'] = $scores['Students']->id;
                                 $result['al_students'][$m]['class_roll_no'] = $scores['Students']->class_roll_no;
+                                $result['al_students'][$m]['admission_no'] = $scores['Students']->admission_no;
                                 $m++;
                             }
 
@@ -385,6 +388,7 @@ class ExamConnect extends CActiveRecord
                         $result['al_students'][$m]['name'] = $svalue['student_name'];
                         $result['al_students'][$m]['id'] = $svalue['student_id'];
                         $result['al_students'][$m]['class_roll_no'] = $svalue['roll_no'];
+                        $result['al_students'][$m]['admission_no'] = $svalue['admission_no'];
                         $m++;
                     }
                 }
@@ -396,6 +400,7 @@ class ExamConnect extends CActiveRecord
                         $result['students'][$j]['name'] = $svalue['student_name'];
                         $result['students'][$j]['id'] = $svalue['student_id'];
                         $result['students'][$j]['class_roll_no'] = $svalue['roll_no'];
+                        $result['students'][$j]['admission_no'] = $svalue['admission_no'];
                         $j++;
                     }
                 }

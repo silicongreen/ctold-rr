@@ -450,7 +450,7 @@ class Students extends CActiveRecord
     public function getBatchStudentFull($batch_id)
     {
         $criteria = new CDbCriteria();
-        $criteria->select = 't.id,t.first_name,t.middle_name,t.last_name,t.immediate_contact_id,t.class_roll_no';
+        $criteria->select = 't.id,t.first_name,t.middle_name,t.last_name,t.immediate_contact_id,t.class_roll_no,t.admission_no';
         $criteria->compare('batch_id', $batch_id);
         if(Yii::app()->user->schoolId == 319)
         {
@@ -475,6 +475,7 @@ class Students extends CActiveRecord
             $students_name = rtrim($value->first_name.' '.$middle_name.$value->last_name);
             $return_array[$i]['student_id'] = $value->id;
             $return_array[$i]['roll_no'] = $value->class_roll_no;
+            $return_array[$i]['admission_no'] = $value->admission_no;
             $return_array[$i]['student_name'] = $students_name;
             $return_array[$i]['att'] = 0;
             $i++;

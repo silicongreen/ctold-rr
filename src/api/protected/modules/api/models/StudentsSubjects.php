@@ -146,6 +146,7 @@ class StudentsSubjects extends CActiveRecord
                 $students_name = rtrim($value["Subjectstudent"]->first_name.' '.$middle_name.$value["Subjectstudent"]->last_name);
                 $return_array[$i]['student_id'] = $value->student_id;
                 $return_array[$i]['roll_no'] = $value["Subjectstudent"]->class_roll_no;
+                $return_array[$i]['admission_no'] = $value["Subjectstudent"]->admission_no;
                 $return_array[$i]['student_name'] = $students_name;
                 $return_array[$i]['att'] = 0;
                 $i++;

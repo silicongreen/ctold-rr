@@ -194,7 +194,7 @@
                         date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
                         unless date.blank?
 			  @std = Student.find(payment.payee_id)
-                          if @student.nil?
+                          if @std.nil?
                             @std = ArchivedStudent.find_by_former_id(payment.payee_id)
                           end
                           paid_amount += FinanceFee.get_student_balance(date, @std, fee)
@@ -242,7 +242,7 @@
 			
                         unless date.blank?
 			  @std = Student.find(payment.payee_id)
-                          if @student.nil?
+                          if @std.nil?
                             @std = ArchivedStudent.find_by_former_id(payment.payee_id)
                           end
                           paid_amount += FinanceFee.get_student_balance(date, @std, fee)

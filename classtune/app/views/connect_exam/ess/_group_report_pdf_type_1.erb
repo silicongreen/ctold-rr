@@ -158,25 +158,24 @@
                   <% comment_on_overall_performance = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
-                      <% if subjects['no_exams_sjws'].to_i == 0  or !has_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
+                      <% if subjects['no_exams_sjws'].to_i == 0  or !has_subject_group(subjects['id'].to_i) %>
                         <% next %>
                       <% end %>
                       <% wordString_main = "" %>
                   
                       <% @report_data['report']['exams'].each do |report| %>
-                         <% if subjects['no_exams_sjws'].to_i == 0  or !has_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
+                         <% if subjects['no_exams_sjws'].to_i == 0  or !has_subject_group(subjects['id'].to_iddd) %>
                            <% next %>
                          <% end %>
                          <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
-                          <% if @connect_exam_obj.quarter_number.to_i == report['quarter'].to_i %>
+                         
                             <% wordString_main = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                             <% break %>
-                          <% end %>
                          <% end %>
                       <% end %> 
                       <% wordString = wordString_main.split("|") %>
                       
-                        <% subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
+                        <% subject_groups = get_subject_group(subjects['id'].to_i) %>
                         <% iloop = 0 %>
                         <% subject_groups.each do |group_name| %>
                             <% if group_name.name == "Comment on Overall Performance" %>

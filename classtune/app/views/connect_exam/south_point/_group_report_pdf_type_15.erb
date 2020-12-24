@@ -77,6 +77,7 @@
                           <% first_term_mark = 0 %>
                           <% first_term_ab = false %>
                           <% first_term_full_mark = 0 %>
+                          <% first_term_full_mark_main = 0 %>
                           <% first_term_avg_mark = 0 %>
                           
                             <% 
@@ -145,9 +146,10 @@
                                    
                                    #Calculation First Term (40/20) Mark
                                    if report['quarter'] == '5'
+                                     first_term_full_mark_main = 0 
                                      if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
-                                        first_term_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
-                                        if(first_term_full_mark == 100)
+                                        first_term_full_mark_main = first_term_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                        if(first_term_full_mark == 100 or ct_full_mark1.to_i = 30)
                                           first_term_full_mark = 40
                                         else
                                           first_term_full_mark = 20
@@ -162,9 +164,9 @@
                                      
                                      unless first_term_ab == true
                                        if first_term_full_mark == 40
-                                         first_term_mark = (first_term_mark/100)*40
+                                         first_term_mark = (first_term_mark/first_term_full_mark_main.to_f)*40
                                        else
-                                         first_term_mark = (first_term_mark/50)*20
+                                         first_term_mark = (first_term_mark/first_term_full_mark_main.to_f)*20
                                        end
                                      end
                                      

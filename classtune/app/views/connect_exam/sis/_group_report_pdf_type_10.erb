@@ -324,7 +324,7 @@
                   <tr class="odd">
                       <td class="col-pdf"><%= "Assessment" %></td>
                       <td class="col-pdf width-15">Excellent</td>
-                      <td class="col-pdf width-15">Good</td>
+                      <td class="col-pdf width-15">Very Good</td>
                       <td class="col-pdf width-15">Satisfactory</td>
                       <td class="col-pdf width-15">Needs Improvement</td>
                       <td class="col-pdf width-15">Causing Concern</td>
@@ -432,7 +432,7 @@
                   end
                 end
               %>
-              <% if @covid_main == 0 || @batch.course.course_name == "IX" %>
+              <% if @covid_main == 0 %>
               <table id="pdf-table"  width="30%" class="left-table even-table signature" cellspacing="0" >
                   <tr class="even">
                       <td class="align-left">Total Working Days</td>
@@ -449,7 +449,7 @@
               <% if @grading_levels.blank? %>
               <% @grading_levels = GradingLevel.default %>
               <% end %>
-              <table id="pdf-table"  <% if @covid_main == 0  || @batch.course.course_name == "IX" %>width="42%" class="left-table odd-table signature"<% else %>  width="72%" class="left-table even-table signature" <% end %> cellspacing="0" >
+              <table id="pdf-table"  <% if @covid_main == 0 %>width="42%" class="left-table odd-table signature"<% else %>  width="72%" class="left-table even-table signature" <% end %> cellspacing="0" >
                   <tr class="even">
                       <%  unless @grading_levels.empty? %>
                         <% i = 0 %>

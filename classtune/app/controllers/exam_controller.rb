@@ -5595,7 +5595,7 @@ class ExamController < ApplicationController
   
   def tabulation
     @id = params[:id]
-    @connect_exam_obj = ExamConnect.active.find(@id)
+    @connect_exam_obj = ExamConnect.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
     @assigned_employee=@batch.all_class_teacher
     

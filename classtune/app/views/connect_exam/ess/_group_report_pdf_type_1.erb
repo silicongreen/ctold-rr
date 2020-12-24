@@ -164,7 +164,7 @@
                       <% wordString_main = "" %>
                   
                       <% @report_data['report']['exams'].each do |report| %>
-                         <% if subjects['no_exams_sjws'].to_i == 0  or !has_subject_group(subjects['id'].to_iddd) %>
+                         <% if subjects['no_exams_sjws'].to_i == 0  or !has_subject_group(subjects['id'].to_i) %>
                            <% next %>
                          <% end %>
                          <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>

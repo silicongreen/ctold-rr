@@ -44,7 +44,7 @@
         <% end %>
        <% end %>
       <% unless class_teachers.blank? %>
-        <% class_teacher = class_teachers.implode(", ") %>
+        <% class_teacher = class_teachers.join(", ") %>
       <% end %>
       <div class="student_information">
           <table class="std_info_table" width="100%" cellspacing="0">

@@ -5751,6 +5751,11 @@ class ExamController < ApplicationController
     #      redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/marksheet/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
     #    else
     @grades = @batch.grading_level_list
+    
+    @employee_sub_all = EmployeesSubject.find_all_by_subject_id(@subject_id)
+    if !@employee_sub_all.nil?
+      @employee_all << Employee.find(@employee_all.employee_id)
+    end
 
     @employee_sub = EmployeesSubject.find_by_subject_id(@subject_id)
     if !@employee_sub.nil?

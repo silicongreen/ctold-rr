@@ -16,6 +16,20 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
+<%
+employee_group = []
+employee_string = ""
+unless @employee_all.blank?
+  @employee_all.each do |employee|
+    employee_group << employee.full_name
+  end  
+end  
+
+unless employee_group.blank?
+  employee_string = employee_group.join(", ")
+end  
+
+%>
 <div id="page-yield" class="available_sections1">
   <div class="page1"> </div>
   <div class="section1 row" >
@@ -55,7 +69,7 @@
           <table width="100%">
               <tr>
                  <% if !@employee.nil? %> 
-                  <td align='left'><h4>Teacher's Name : <%=  @employee.full_name %></h4></td>
+                  <td align='left'><h4>Teacher's Name : <%=  employee_string %></h4></td>
                   <td align='right' style="text-align:right !important;"><h4>Subject : <%= @subject.name %></h4></td>
                  <% else %>
                   <td align='left'><h4>Subject : <%= @subject.name %></h4></td>

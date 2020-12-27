@@ -64,15 +64,15 @@
               <table id="pdf-table"  width="100%" class="left-table even-table exam-marks" cellspacing="0">
                   <% c = 'even'  %>
                   <tr class="even">
-                    <td rowspan="2"><b><%= "Subject" %></b></td>
+                    <td class="col-pdf" rowspan="2"><b><%= "Subject" %></b></td>
                     <td colspan="2"><b>Academic Performance</b></td>
                     <td class="no-warp"><b>Total Marks</b></td>
                     <td  rowspan="2"><b>Grade</b></td>
                   </tr>
                   <tr class="even">
-                      <td><b>Online Cumulative Assessment(60)</b></td>
-                      <td><b>Online First Term Examination(40)</b></td>
-                      <td><b>100</b></td>
+                      <td class="col-pdf"><b>Online Cumulative Assessment(60)</b></td>
+                      <td class="col-pdf"><b>Online First Term Examination(40)</b></td>
+                      <td class="col-pdf"><b>100</b></td>
                   </tr>
                   <% total_marks = 0 %>
                   <% total_full_marks = 0 %>
@@ -123,7 +123,7 @@
                         %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>" >
 
-                          <td class="no-warp  align-left"  style="padding:10px !important;"><%= subjects['name'] %></td>
+                          <td class="col-pdf no-warp  align-left"  style="padding:10px !important;"><%= subjects['name'] %></td>
                           <% 
                           show_full_mark = true
                           full_mark = full_mark1+full_mark2+full_mark3
@@ -150,13 +150,13 @@
                            
                           
                           %>
-                          <td><b><%=  oher_exam_mark %><% if show_full_mark == true %>/30<% end %></b></td>
-                          <td><b><%=  obtain_mark3 %><% if show_full_mark == true %>/20<% end %></b></td>
-                          <td><b><%=  obtain_mark %><% if show_full_mark == true %>/50<% end %></b></td>
+                          <td class="col-pdf"><b><%=  oher_exam_mark %><% if show_full_mark == true %>/30<% end %></b></td>
+                          <td class="col-pdf"><b><%=  obtain_mark3 %><% if show_full_mark == true %>/20<% end %></b></td>
+                          <td class="col-pdf"><b><%=  obtain_mark %><% if show_full_mark == true %>/50<% end %></b></td>
                           <% if !grade.blank? and !grade.name.blank? %>
-                            <td><b><%= grade.name %></b></td>
+                            <td class="col-pdf"><b><%= grade.name %></b></td>
                           <% else %>
-                            <td><b>-</b></td>
+                            <td class="col-pdf"><b>-</b></td>
                           <% end %> 
                           
 
@@ -183,11 +183,11 @@
                     <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
                       <%  if @all_subjects.include?(report['id'].to_i) %>
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                            <td class="no-warp  align-left"><%= report['subject_name'] %></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><b><%= report['subject_comment'] unless report['subject_comment'].blank? %></b></td>
+                            <td class="col-pdf no-warp  align-left"><%= report['subject_name'] %></td>
+                            <td class="col-pdf"></td>
+                            <td class="col-pdf"></td>
+                            <td class="col-pdf"></td>
+                            <td class="col-pdf"><b><%= report['subject_comment'] unless report['subject_comment'].blank? %></b></td>
                         </tr>
                       <% end %>
                     <% end %>
@@ -292,14 +292,14 @@
                   <tr class="even border-bottom-1-px">
                       <td class="col-pdf no-border" width="70%"></td>
                       
-                       <td width="30%">
+                       <td class="col-pdf" width="30%">
                         
                               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"60%" %>
                       </td>
                   </tr>
                   <tr class="even">
                       <td class="col-pdf no-border" width="70%"></td>
-                      <td width="30%">
+                      <td class="col-pdf" width="30%">
                           Principal
                       </td>
 

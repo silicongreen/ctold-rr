@@ -5753,6 +5753,7 @@ class ExamController < ApplicationController
     @grades = @batch.grading_level_list
     
     @employee_sub_all = EmployeesSubject.find_all_by_subject_id(@subject_id)
+    @employee_all = []
     if !@employee_sub_all.nil?
       @employee_sub_all.each do |emp_sub|
         @employee_all << Employee.find(emp_sub.employee_id)

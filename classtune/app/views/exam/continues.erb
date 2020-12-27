@@ -3,7 +3,7 @@
   <% @all_subject_exam = @report_data['report']['subjects'] %>
   <% @all_student_subject = StudentsSubject.find_all_by_batch_id(@batch.id) %>
   <% @total_std_in_class = @report_data['report']['students'].count %>
-  <%= debug @all_subject_exam.inspect %>
+  
   <% @report_data['report']['students'].each do |std| %>
     <%
     subjects_new = []
@@ -28,7 +28,9 @@
       if @student_main_id.to_i != std['id'].to_i
         next
       end  
-    end  
+    end %>  
+    <%= debug @report_data['report']['subjects'].inspect %>
+    <%
     @student = Student.find_by_id(std['id'].to_i,:include=>["student_category"])
 
     unless @student.blank?

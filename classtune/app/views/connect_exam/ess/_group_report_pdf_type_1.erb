@@ -158,6 +158,8 @@
                   <% comment_on_overall_performance = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
+                      <%= subjects['id'].to_i  %>
+                      <%= subjects['no_exams_sjws'].to_i  %>
                       <% if subjects['no_exams_sjws'].to_i == 0  or !has_subject_group(subjects['id'].to_i) %>
                         <% next %>
                       <% end %>

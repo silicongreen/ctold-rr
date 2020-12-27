@@ -15,7 +15,8 @@
         <p class="left-font" id="left-position-8"><%= I18n.l(@student.date_of_birth,:format=>"%d %b %Y") unless @student.date_of_birth.nil? %></p>
         <p class="left-font" id="left-position-9"><%= I18n.l(@student.date_of_leaving,:format=>"%b %Y") unless @student.date_of_leaving.nil? %></p>
         <p class="left-font" id="left-position-10"><%= @student.batch.course.course_name %></p>
-        <p class="left-font" id="left-position-11"></p>
+        <p class="left-font" id="left-position-11"><%= @student.batch.course.section_name %></p>
+        <p class="left-font" id="left-position-11-2"><%= @student.batch.course.class_roll_no %></p>
         <p class="left-font" id="left-position-12"><%= @group %></p>
         <p class="left-font" id="left-position-13"><%= I18n.l(@student.date_of_leaving,:format=>"%Y") unless @student.date_of_leaving.nil? %></p>
         <% unless params[:sign].blank? %>
@@ -33,7 +34,8 @@
         <p id="position-8"><%= I18n.l(@student.date_of_birth,:format=>"%d %b %Y") unless @student.date_of_birth.nil? %></p>
         <p id="position-9"><%= I18n.l(@student.date_of_leaving,:format=>"%b %Y") unless @student.date_of_leaving.nil? %></p>
         <p id="position-10"><%= @student.batch.course.course_name %></p>
-        <p id="position-11"></p>
+        <p id="position-11"><%= @student.batch.course.section_name %></p>
+        <p id="position-11-2"><%= @student.batch.course.class_roll_no %></p>
         <p id="position-12"><%= @group %></p>
         <p id="position-13"><%= I18n.l(@student.date_of_leaving,:format=>"%Y") unless @student.date_of_leaving.nil? %></p>
         <% unless params[:sign].blank? %>
@@ -63,186 +65,198 @@
     #left-position-0
     {
         position: fixed;
-        left: 57;
-        top: 155;
+        left: 67;
+        top: 160;
         font-weight: bold;
     }
     #left-position-1
     {
         position: fixed;
-        left: 115;
-        top: 180;
+        left: 125;
+        top: 185;
     }
     #left-position-2
     {
         position: fixed;
-        left: 55;
-        top: 209;
+        left: 65;
+        top: 214;
     }
     #left-position-3
     {
         position: fixed;
-        left: 55;
-        top: 243;
+        left: 65;
+        top: 248;
     }
     #left-position-4
     {
         position: fixed;
-        left: 60;
-        top: 276;
+        left: 70;
+        top: 281;
     }
     #left-position-5
     {
         position: fixed;
-        left: 140;
-        top: 300;
+        left: 150;
+        top: 305;
     }
     #left-position-6
     {
         position: fixed;
-        left: 222;
-        top: 300;
+        left: 232;
+        top: 305;
     }
     #left-position-7
     {
         position: fixed;
-        left: 220;
-        top: 330;
+        left: 230;
+        top: 335;
     }
     #left-position-8
     {
         position: fixed;
-        left: 55;
-        top: 387;
+        left: 65;
+        top: 392;
     }
     #left-position-9
     {
         position: fixed;
-        left: 63;
-        top: 417;
+        left: 73;
+        top: 422;
     }
     #left-position-10
     {
         position: fixed;
-        left: 250;
-        top: 447;
+        left: 152;
+        top: 452;
     }
     
  
     #left-position-11
     {
         position: fixed;
-        left: 70;
-        top: 473;
+        left: 232;
+        top: 452;
+    }
+    #left-position-11-2
+    {
+        position: fixed;
+        left: 65;
+        top: 478;
     }
     #left-position-12
     {
         position: fixed;
-        left: 180;
-        top: 473;
+        left: 190;
+        top: 478;
     }
     #left-position-13
     {
         position: fixed;
-        left: 10;
-        top: 534;
+        left: 20;
+        top: 539;
     }
     #left-position-14
     {
         position: fixed;
-        left: 225;
-        top: 598;
+        left: 235;
+        top: 603;
     }
     
     #position-0
     {
         position: fixed;
-        left: 437;
-        top: 85;
+        left: 447;
+        top: 90;
     }
     #position-1
     {
         position: fixed;
-        left: 563;
-        top: 126;
+        left: 573;
+        top: 131;
     }
     #position-2
     {
         position: fixed;
-        left: 480;
-        top: 159;
+        left: 490;
+        top: 164;
     }
     #position-3
     {
         position: fixed;
-        left: 480;
-        top: 192;
+        left: 490;
+        top: 197;
     }
     #position-4
     {
         position: fixed;
-        left: 485;
-        top: 227;
+        left: 495;
+        top: 232;
     }
     #position-5
     {
         position: fixed;
-        left: 580;
-        top: 261;
+        left: 590;
+        top: 266;
     }
     #position-6
     {
         position: fixed;
-        left: 900;
-        top: 261;
+        left: 910;
+        top: 266;
     }
     #position-7
     {
         position: fixed;
-        left: 635;
-        top: 294;
+        left: 645;
+        top: 299;
     }
     #position-8
     {
         position: fixed;
         left: 635;
-        top: 325;
+        top: 335;
     }
     #position-9
     {
         position: fixed;
-        left: 570;
-        top: 359;
+        left: 580;
+        top: 364;
     }
     #position-10
     {
         position: fixed;
-        left: 550;
-        top: 394;
+        left: 485;
+        top: 401;
     }
     #position-11
     {
         position: fixed;
-        left: 688;
-        top: 394;
+        left: 582;
+        top: 401;
+    }
+    #position-11-2
+    {
+        position: fixed;
+        left: 782;
+        top: 401;
     }
     #position-12
     {
         position: fixed;
-        left: 870;
-        top: 394;
+        left: 880;
+        top: 401;
     }
     #position-13
     {
         position: fixed;
         left: 790;
-        top: 427;
+        top: 432;
     }
     #position-14
     {
         position: fixed;
-        left: 800;
-        top: 560;
+        left: 810;
+        top: 565;
     }
 </style>
 <style type="text/css" media="print">

@@ -1,5 +1,5 @@
 school:
- upass: "To login college website (https://sagc.edu.bd) your User ID: #UNAME# and Password: #PASSWORD#, as given by institution. Principal - SAGC"
- epass: "To login college website (https://sagc.edu.bd) your User ID: #UNAME# and Password: #PASSWORD#, as given by institution. Principal - SAGC"
+ upass: "To login college website (https://sagc.edu.bd) or Classtune Apps for pay tuition fee your User ID: #UNAME# and Password: #PASSWORD#. Principal,  SAGC"
+ epass: "To login college website (https://sagc.edu.bd) or Classtune Apps for submit Assignment and Homework your User ID: #UNAME# and Password: #PASSWORD#. Principal,  SAGC"
  feedues: "Tuition Fee of January & Session Charge of #UNAME# ID #UID# is TK #AMOUNT#. Pay this amount within 28 Jan 2019 through online. Principal, SAGC"
  feepaid: "Fees received BDT #AMOUNT# for #UNAME#(#UID#) as on #PAIDDATE# by TBL. TranID-#TRANID# TranRef-#TRANREF#, Sender - SAGC"

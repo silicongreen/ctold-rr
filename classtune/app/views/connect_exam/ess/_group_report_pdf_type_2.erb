@@ -183,7 +183,7 @@
                     <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
                       <%  if @all_subjects.include?(report['id'].to_i) %>
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                            <td class="col-pdf no-warp  align-left"><%= report['subject_name'] %></td>
+                            <td class="col-pdf no-warp  align-left"  style="padding:5px !important;"><%= report['subject_name'] %></td>
                             <td class="col-pdf"></td>
                             <td class="col-pdf"></td>
                             <td class="col-pdf"></td>

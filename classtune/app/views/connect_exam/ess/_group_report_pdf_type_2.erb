@@ -218,7 +218,7 @@
                                       <%= '%i%' % grade.min_score %> 
                                   <% end %>
                                 <% else %> 
-                                  <%= grade.min_score.to_i + " - " + grade.max_score.to_i %> <% if grade.min_score.to_i == 0 %>(Below Average)<% end %>
+                                  <%= grade.min_score.to_i.to_s + " - " + grade.max_score.to_i.to_s %> <% if grade.min_score.to_i == 0 %>(Below Average)<% end %>
                                 <% end %>
                                 <%  prev_score = grade.min_score %>
                             </td>

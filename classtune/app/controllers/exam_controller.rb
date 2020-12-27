@@ -5754,7 +5754,9 @@ class ExamController < ApplicationController
     
     @employee_sub_all = EmployeesSubject.find_all_by_subject_id(@subject_id)
     if !@employee_sub_all.nil?
-      @employee_all << Employee.find(@employee_all.employee_id)
+      @employee_sub_all.each do |emp_sub|
+        @employee_all << Employee.find(emp_sub.employee_id)
+      end
     end
 
     @employee_sub = EmployeesSubject.find_by_subject_id(@subject_id)

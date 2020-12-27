@@ -37,11 +37,15 @@
             
       </div>
       <% class_teacher = "" %>
+      <% class_teachers = [] %>
       <% if !@assigned_employee.blank? %>
         <% @assigned_employee.each do |emp| %>
-           <% class_teacher = emp.first_name+" "+emp.last_name %>
+           <% class_teachers[] = emp.first_name+" "+emp.last_name %>
         <% end %>
        <% end %>
+      <% unless class_teachers.blank? %>
+        <% class_teacher = class_teachers.implode(", ") %>
+      <% end %>
       <div class="student_information">
           <table class="std_info_table" width="100%" cellspacing="0">
               <tr>

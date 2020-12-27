@@ -148,9 +148,9 @@
                            
                           
                           %>
-                          <td class="col-pdf"><b><%=  oher_exam_mark %><% if show_full_mark == true %>/30<% end %></b></td>
-                          <td class="col-pdf"><b><%=  obtain_mark3 %><% if show_full_mark == true %>/20<% end %></b></td>
-                          <td class="col-pdf"><b><%=  obtain_mark %><% if show_full_mark == true %>/50<% end %></b></td>
+                          <td class="col-pdf"><b><%= sprintf( "%0.02f", oher_exam_mark) %><% if show_full_mark == true %>/30<% end %></b></td>
+                          <td class="col-pdf"><b><%= sprintf( "%0.02f", obtain_mark3) %><% if show_full_mark == true %>/20<% end %></b></td>
+                          <td class="col-pdf"><b><%= sprintf( "%0.02f", obtain_mark) %><% if show_full_mark == true %>/50<% end %></b></td>
                           <% if !grade.blank? and !grade.name.blank? %>
                             <td class="col-pdf"><b><%= grade.name %></b></td>
                           <% else %>
@@ -218,7 +218,7 @@
                                       <%= '%i%' % grade.min_score %> 
                                   <% end %>
                                 <% else %> 
-                                  <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>
+                                  <%= grade.min_score.to_i + " - " + grade.max_score.to_i %> <% if grade.min_score.to_i == 0 %>(Below Average)<% end %>
                                 <% end %>
                                 <%  prev_score = grade.min_score %>
                             </td>
@@ -232,8 +232,8 @@
               <div style="width:71.5%; float: left; margin-left: 3%; margin-top: 5px;" >
                 <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
-                        <td class="align-left" >Total Marks:</td>
-                        <td  style="padding:5px !important;"><%= total_marks %></td>
+                        <td class="align-left" >Total Marks (Out Of <%= sprintf( "%0.02f", total_full_marks) %>):</td>
+                        <td  style="padding:5px !important;"><%= sprintf( "%0.02f", total_marks) %></td>
                         <td class="align-left" >Percentage:</td>
                         <td  style="padding:5px !important;"><%= sprintf( "%0.02f", percent) %></td>
                     </tr>

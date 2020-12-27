@@ -16,7 +16,7 @@
         <p class="left-font" id="left-position-9"><%= I18n.l(@student.date_of_leaving,:format=>"%b %Y") unless @student.date_of_leaving.nil? %></p>
         <p class="left-font" id="left-position-10"><%= @student.batch.course.course_name %></p>
         <p class="left-font" id="left-position-11"><%= @student.batch.course.section_name %></p>
-        <p class="left-font" id="left-position-11-2"><%= @student.batch.course.class_roll_no %></p>
+        <p class="left-font" id="left-position-11-2"><%= @student.class_roll_no %></p>
         <p class="left-font" id="left-position-12"><%= @group %></p>
         <p class="left-font" id="left-position-13"><%= I18n.l(@student.date_of_leaving,:format=>"%Y") unless @student.date_of_leaving.nil? %></p>
         <% unless params[:sign].blank? %>
@@ -35,7 +35,7 @@
         <p id="position-9"><%= I18n.l(@student.date_of_leaving,:format=>"%b %Y") unless @student.date_of_leaving.nil? %></p>
         <p id="position-10"><%= @student.batch.course.course_name %></p>
         <p id="position-11"><%= @student.batch.course.section_name %></p>
-        <p id="position-11-2"><%= @student.batch.course.class_roll_no %></p>
+        <p id="position-11-2"><%= @student.class_roll_no %></p>
         <p id="position-12"><%= @group %></p>
         <p id="position-13"><%= I18n.l(@student.date_of_leaving,:format=>"%Y") unless @student.date_of_leaving.nil? %></p>
         <% unless params[:sign].blank? %>

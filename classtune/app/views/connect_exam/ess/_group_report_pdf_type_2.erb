@@ -64,14 +64,14 @@
               <table id="pdf-table"  width="100%" class="left-table even-table exam-marks" cellspacing="0">
                   <% c = 'even'  %>
                   <tr class="even">
-                    <td class="col-pdf no-warp" rowspan="2"><b><%= "Subject" %></b></td>
-                    <td colspan="2" class="no-warp"><b>Academic Performance</b></td>
-                    <td  class="no-warp"><b>Total Marks</b></td>
+                    <td class="col-pdf" rowspan="2"><b><%= "Subject" %></b></td>
+                    <td colspan="2"><b>Academic Performance</b></td>
+                    <td ><b>Total Marks</b></td>
                     <td  rowspan="2"><b>Grade</b></td>
                   </tr>
                   <tr class="even">
-                      <td class="no-warp"><b>Online Cumulative Assessment(60)</b></td>
-                      <td class="no-warp"><b>Online First Term Examination(40)</b></td>
+                      <td><b>Online Cumulative Assessment(60)</b></td>
+                      <td><b>Online First Term Examination(40)</b></td>
                       <td><b>100</b></td>
                   </tr>
                   <% total_marks = 0 %>
@@ -319,10 +319,10 @@
 
 <style>
 .sis-final #grouped_exam_report table.exam-marks tr.odd td, .sis-final #grouped_exam_report table.exam-marks tr.even td
-  {
-     padding: 3px !important;
-     font-size: 23px !important;
-  }
+{
+   padding: 3px !important;
+   font-size: 23px !important;
+}
 .landscape table tr.odd td, .landscape table tr.even td
 {
     padding: 4px 4px !important;

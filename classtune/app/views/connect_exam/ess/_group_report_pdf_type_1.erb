@@ -155,6 +155,7 @@
                       <td class="col-pdf width-15">Very Good</td>
                       <td class="col-pdf width-15">Excellent</td> 
                   </tr>
+                  <tr class="odd"><td><%= debug @report_data['report']['subjects'].inspect %></td></tr>
                   <% comment_on_overall_performance = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>

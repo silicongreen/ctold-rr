@@ -75,6 +75,7 @@
                       <td><b>100</b></td>
                   </tr>
                   <% total_marks = 0 %>
+                  <% total_full_marks = 0 %>
                   <% subject_count = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
@@ -135,6 +136,7 @@
                               
                             end
                           end  
+                          total_full_marks = total_full_marks+full_mark
                           obtain_mark = obtain_mark1+obtain_mark2+obtain_mark3
                           oher_exam_mark = obtain_mark-obtain_mark3 
                           main_mark = 0
@@ -164,7 +166,7 @@
                   <%
                     percent = 0
                     if total_marks > 0 && subject_count > 0
-                      percent = total_marks.to_f/subject_count.to_f
+                      percent = (total_marks.to_f/total_full_marks.to_f)*100
                     end
                     group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
                     @all_subjects = []
@@ -234,7 +236,7 @@
                     <tr class="even">
                         <td class="align-left" >Total Marks:</td>
                         <td  style="padding:5px !important;"><%= total_marks %></td>
-                        <td class="align-left" >Percentage::</td>
+                        <td class="align-left" >Percentage:</td>
                         <td  style="padding:5px !important;"><%= sprintf( "%0.02f", percent) %></td>
                     </tr>
 
@@ -243,9 +245,7 @@
                 <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
                         <td class="align-left" >Total Working Days:</td>
-                        <td  style="padding:5px !important;"><%= @connect_exam_obj.total_working_days %></td>
-                        <td class="align-left" >Attendance:</td>
-                        <td  style="padding:5px !important;">&nbsp;&nbsp;</td>
+                        <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.total_working_days %></td>
                     </tr>
 
                 </table>
@@ -320,17 +320,17 @@
 <style>
 .sis-final #grouped_exam_report table.exam-marks tr.odd td.col-pdf, .sis-final #grouped_exam_report table.exam-marks tr.even td.col-pdf
   {
-     padding: 5px 5px !important;
-     font-size: 25px !important;
+     padding: 4px 4px !important;
+     font-size: 24px !important;
   }
 .landscape table tr.odd td, .landscape table tr.even td
 {
-    padding: 5px 5px !important;
+    padding: 4px 4px !important;
 
 } 
 .landscape table.signature tr.odd td, .landscape table.signature tr.even td
 {
-    padding: 5px 5px !important;
+    padding: 4px 4px !important;
 
 }
 .landscape table.signature2 tr.odd td, .landscape table.signature2 tr.even td

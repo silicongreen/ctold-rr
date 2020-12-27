@@ -28,9 +28,7 @@
       if @student_main_id.to_i != std['id'].to_i
         next
       end  
-    end %>  
-    <%= debug @report_data['report']['subjects'].inspect %>
-    <%
+    end 
     @student = Student.find_by_id(std['id'].to_i,:include=>["student_category"])
 
     unless @student.blank?

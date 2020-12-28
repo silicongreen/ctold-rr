@@ -113,27 +113,27 @@ class FinanceController < ApplicationController
       activity_log.save
       activity_log_id = activity_log.id
       
-	  @finance_transactions = FinanceTransaction.find(:all , :conditions => ["amount = 0"])
-	  unless @finance_transactions.blank?
-		@finance_transactions.each do |finance_transaction|
-			finance_transaction_id = finance_transaction.id
-			finance_id = finance_transaction.finance_id
-			f_transactions = FinanceTransaction.find(:all , :conditions => ["finance_id = #{finance_id}"])
-			if f_transactions.length > 1
-				f_transaction = FinanceTransaction.find(:first , :conditions => ["finance_id = #{finance_id} and amount > 0"])
-				unless f_transaction.blank?
-					payment = Payment.find(:first, :conditions => ["finance_transaction_id = #{finance_transaction_id}"])
-					unless payment.blank?
-					payment.update_attributes( :finance_transaction_id=>f_transaction.id)
-					end
-				end
-			end
-			finance_transaction.destroy
-		end
-	  end
-	  abort('here')
+#	  @finance_transactions = FinanceTransaction.find(:all , :conditions => ["amount = 0"])
+#	  unless @finance_transactions.blank?
+#		@finance_transactions.each do |finance_transaction|
+#			finance_transaction_id = finance_transaction.id
+#			finance_id = finance_transaction.finance_id
+#			f_transactions = FinanceTransaction.find(:all , :conditions => ["finance_id = #{finance_id}"])
+#			if f_transactions.length > 1
+#				f_transaction = FinanceTransaction.find(:first , :conditions => ["finance_id = #{finance_id} and amount > 0"])
+#				unless f_transaction.blank?
+#					payment = Payment.find(:first, :conditions => ["finance_transaction_id = #{finance_transaction_id}"])
+#					unless payment.blank?
+#					payment.update_attributes( :finance_transaction_id=>f_transaction.id)
+#					end
+#				end
+#			end
+#			finance_transaction.destroy
+#		end
+#	  end
+#	  abort('here')
       error_order = []
-	  @stdent_id = 40369;
+	  @stdent_id = 0;
       @students = Student.find(:all, :order => 'id ASC', :conditions => ["is_deleted = 0 and id > #{@stdent_id}"]) #, :group => "ledger_date"
       unless @students.blank?
         @students.each do |st|

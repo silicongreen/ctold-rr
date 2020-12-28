@@ -161,7 +161,7 @@ class MarksController < ApplicationController
           data[k] = "<a href='javascript:void(0);' id='exams_id_"+exam_connect.id.to_s+"' onclick='get_exam_subject("+exam_connect.id.to_s+")' >"+exam_connect.name.to_s+"</a>"
           k = k+1
         elsif data_type.to_i == 6
-          if exam_connect.result_type == 1 or exam_connect.result_type == 2 or exam_connect.result_type == 8 or exam_connect.result_type == 9
+          if exam_connect.result_type == 1 or exam_connect.result_type == 2 or exam_connect.result_type == 8 or exam_connect.result_type == 9 or result_type=13  or result_type=14  or result_type=15
             data[k] = "<a href='javascript:void(0);' id='exams_id_"+exam_connect.id.to_s+"' onclick='get_exam_subject_participation("+exam_connect.id.to_s+")' >"+exam_connect.name.to_s+"</a>"
             k = k+1
           end

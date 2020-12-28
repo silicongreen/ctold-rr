@@ -152,7 +152,7 @@
                            
                           
                           %>
-                          <td class="col-pdf"><b><%= sprintf( "%0.02f", oher_exam_mark) %><% if show_full_mark == true %>/30<% end %></b></td>
+                          <td class="col-pdf"><b><%= total_full_marks %><%= sprintf( "%0.02f", oher_exam_mark) %><% if show_full_mark == true %>/30<% end %></b></td>
                           <td class="col-pdf"><b><%= sprintf( "%0.02f", obtain_mark3) %><% if show_full_mark == true %>/20<% end %></b></td>
                           <td class="col-pdf"><b><%= sprintf( "%0.02f", obtain_mark) %><% if show_full_mark == true %>/50<% end %></b></td>
                           <% if !grade.blank? and !grade.name.blank? %>

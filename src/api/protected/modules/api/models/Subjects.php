@@ -368,7 +368,7 @@ class Subjects extends CActiveRecord
     public function getSubject($batch_id,$student_id=0,$subjects_ids = false,$send_no_exam=false)
     {
         $criteria = new CDbCriteria();
-        $criteria->select = 't.name,t.id,t.icon_number,t.no_exams,t.code,t.no_exams_sjws,t.grade_subject,t.subject_group_id';
+        $criteria->select = 't.name,t.id,t.icon_number,t.priority,t.no_exams,t.code,t.no_exams_sjws,t.grade_subject,t.subject_group_id';
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.is_deleted', 0);
         $criteria->compare('Subjectbatch.is_deleted', 0);
@@ -403,6 +403,7 @@ class Subjects extends CActiveRecord
                 if($subjects_ids===false || in_array($value->id, $subjects_ids) )
                 {
                     $subject_array[$i]['name'] = $value->name;
+                    $subject_array[$i]['priority'] = $value->priority;
                     $subject_array[$i]['code'] = $value->code;
                     $subject_array[$i]['id'] = $value->id;
                     $subject_array[$i]['elective_group_id'] = 0;
@@ -427,6 +428,7 @@ class Subjects extends CActiveRecord
                 {
                     $subject_elective[] = $value->id;
                     $subject_array[$i]['name'] = $value->name;
+                    $subject_array[$i]['priority'] = $value->priority;
                     $subject_array[$i]['code'] = $value->code;
                     $subject_array[$i]['id'] = $value->id;
                     $subject_array[$i]['icon'] = "";
@@ -455,7 +457,7 @@ class Subjects extends CActiveRecord
         if(Yii::app()->user->schoolId == 319 or Yii::app()->user->schoolId == 324)
         {
             $criteria = new CDbCriteria();
-            $criteria->select = 't.name,t.id,t.icon_number,t.no_exams,t.code,t.no_exams_sjws,t.grade_subject,t.subject_group_id';
+            $criteria->select = 't.name,t.id,t.icon_number,t.priority,t.no_exams,t.code,t.no_exams_sjws,t.grade_subject,t.subject_group_id';
             $criteria->compare('t.batch_id', $batch_id);
             $criteria->compare('t.is_deleted', 0);
             $criteria->compare('t.no_exams', 0);
@@ -471,6 +473,7 @@ class Subjects extends CActiveRecord
                     {
                         $subject_array[$i]['name'] = $value->name;
                         $subject_array[$i]['code'] = $value->code;
+                        $subject_array[$i]['priority'] = $value->priority;
                         $subject_array[$i]['id'] = $value->id;
                         $subject_array[$i]['elective_group_id'] = 0;
                         $subject_array[$i]['subject_group_id'] = $value->subject_group_id;
@@ -487,6 +490,10 @@ class Subjects extends CActiveRecord
                 }    
             }
         }
+        
+        usort($subject_array, function($a, $b) {
+                            return $a['priority'] - $b['priority'];
+              });
         
         
         return $subject_array;

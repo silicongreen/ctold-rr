@@ -134,9 +134,7 @@
                             end 
                           end 
                         %>
-                      <% if first_term_fullmark == 0 and final_term_fullmark == 0 %>
-                        <% next %>
-                      <% end %>
+                    
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
                           <td class="col-pdf no-warp  align-left"><%= subjects['name'] %></td>

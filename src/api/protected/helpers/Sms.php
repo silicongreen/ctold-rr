@@ -372,7 +372,7 @@ class Sms
         }
         else
         {
-            self::send_power_sms($sms_numbers, $sms_msg_array, $school_id);
+            //self::send_power_sms($sms_numbers, $sms_msg_array, $school_id);
            
             $sms_params = array();
             if ($sms_numbers && in_array($school_id, self::$sms_attendence_school))

@@ -5927,6 +5927,18 @@ class ExamController < ApplicationController
     
     @connect_exam_obj = ExamConnect.active.find(@connect_exam)
     
+    if !current_user.admin? and !current_user.employee? and @connect_exam_obj.is_common.to_i == 0
+      student_list = @connect_exam_obj.students
+      if student_list
+        std_array = student_list.split(",")
+        if !std_array.include?(params[:student].to_s)
+          flash[:notice] = "Your result is pending. please contact school admin"
+          redirect_to :controller=>"user", :action=>"dashboard"
+        end
+      end
+      
+    end
+    
     
     
     
@@ -6103,6 +6115,17 @@ class ExamController < ApplicationController
     end 
     
     @connect_exam_obj = ExamConnect.active.find(@connect_exam)
+    
+    if !current_user.admin? and !current_user.employee? and @connect_exam_obj.is_common.to_i == 0
+      student_list = @connect_exam_obj.students
+      if student_list
+        std_array = student_list.split(",")
+        if !std_array.include?(params[:student].to_s)
+          flash[:notice] = "Your result is pending. please contact school admin"
+          redirect_to :controller=>"user", :action=>"dashboard"
+        end
+      end 
+    end
     
     if params[:student].nil?
       @type = params[:type]

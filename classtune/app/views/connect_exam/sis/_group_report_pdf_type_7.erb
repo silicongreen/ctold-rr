@@ -15,11 +15,40 @@
                     &nbsp;
                 <% end %>    
                 </h4> 
-                <h2 align="center"><%= @batch.course.course_name %>: <%= @connect_exam_obj.name %></h2>
+                <% if @batch.course.course_name == "Nursery" %>
+                  <h2 align="center"><%= @connect_exam_obj.name %></h2>
+                <% else %>
+                  <h2 align="center"><%= @batch.course.course_name %>: <%= @connect_exam_obj.name %></h2>
+                <% end %>
             </div>
           </center>
       </div>
       <div class="student_information">
+        <% if @batch.course.course_name == "Nursery" %>
+        <%
+                  session = ""
+                  shift = ""
+                  batch_explode = @batch.name.split("(")
+                  unless batch_explode[1].blank?
+                    session = batch_explode[1].gsub(")","")
+                  end
+                  unless batch_explode[0].blank?
+                    shift_explode = batch_explode[0].split(" ")
+                    shift = shift_explode[0]
+                  end
+                  
+              %>
+        <table class="std_info_table" width="99.5%" cellspacing="0">
+          <tr>
+              <td>NAME </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @student.full_name %></td>
+              <td>DATE </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= I18n.l(@connect_exam_obj.published_date,:format=>"%d %B %Y") %></td>
+          </tr>
+          <tr>
+            <td>CLASS </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @batch.course.course_name %></td> 
+            <td>SESSION </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= session %></td>
+          </tr>
+        </table>
+        <% else %>
         <table class="std_info_table" width="99.5%" cellspacing="0">
           <tr>
               <td>NAME </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @student.full_name %></td>
@@ -28,6 +57,7 @@
               <td>DATE </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= I18n.l(@connect_exam_obj.published_date,:format=>"%d %B %Y") %></td>
           </tr>
         </table>
+        <% end %>  
       </div>
       
       <% year_month = I18n.l(@connect_exam_obj.published_date,:format=>"%Y-%m") %>

@@ -212,19 +212,19 @@
                             
                             
                           %>
-                          <td class="col-pdf td-align-left no-warp"><%= subjects['name'] %></td>
-                          <td class="col-pdf"><%= obtained_mark1.round().to_s %></td>
-                          <td class="col-pdf"><%= obtained_mark2.round().to_s %></td>
-                          <td class="col-pdf"><%= (first_term_ab == true)?"0":first_term_mark.round().to_s %></td>
-                          <td class="col-pdf"><%= full_mark.to_i  %></td>
-                          <td class="col-pdf"><%= obtained_mark.round().to_s %></td>
+                          <td class="col-pdf td-align-left no-warp" style="padding:1px 2px !important;"><%= subjects['name'] %></td>
+                          <td class="col-pdf" style="padding:1px 2px !important;"><%= obtained_mark1.round().to_s %></td>
+                          <td class="col-pdf" style="padding:1px 2px !important;"><%= obtained_mark2.round().to_s %></td>
+                          <td class="col-pdf" style="padding:1px 2px !important;"><%= (first_term_ab == true)?"0":first_term_mark.round().to_s %></td>
+                          <td class="col-pdf" style="padding:1px 2px !important;"><%= full_mark.to_i  %></td>
+                          <td class="col-pdf" style="padding:1px 2px !important;"><%= obtained_mark.round().to_s %></td>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>
-                              <td class="col-pdf"><b><%= grade.name %></b></td>
+                              <td class="col-pdf" style="padding:1px 2px !important;"><b><%= grade.name %></b></td>
                           <% else %>
-                              <td class="col-pdf"><b>-</b></td>
+                              <td class="col-pdf" style="padding:1px 2px !important;"><b>-</b></td>
                           <% end %>
-                          <td class="col-pdf">
+                          <td class="col-pdf" style="padding:1px 2px !important;">
                             <% if !@subject_highest_mark_first_term[subjects['id'].to_i].blank? %>  
                               <%= @subject_highest_mark_first_term[subjects['id'].to_i].to_i %>
                             <% end %> 
@@ -261,25 +261,25 @@
                      
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         
-                        <td class="col-pdf td-align-left"><%= report['subject_name'] %></td>
-                        <td class="col-pdf">
+                        <td class="col-pdf td-align-left" style="padding:1px 2px !important;"><%= report['subject_name'] %></td>
+                        <td class="col-pdf" style="padding:1px 2px !important;">
                            <% if !@report_data['report']['quarter_result'].blank? && !@report_data['report']['quarter_result'][report['id'].to_s].blank? && !@report_data['report']['quarter_result'][report['id'].to_s]['subject_comment1'].blank? && !@report_data['report']['quarter_result'][report['id'].to_s]['subject_comment1'][@student.id.to_s].blank? %>
                             <%= @report_data['report']['quarter_result'][report['id'].to_s]['subject_comment1'][@student.id.to_s] %>
                           <% end %> 
                         </td>
-                        <td class="col-pdf">
+                        <td class="col-pdf" style="padding:1px 2px !important;">
                           <% if !@report_data['report']['quarter_result'].blank? && !@report_data['report']['quarter_result'][report['id'].to_s].blank? && !@report_data['report']['quarter_result'][report['id'].to_s]['subject_comment2'].blank? && !@report_data['report']['quarter_result'][report['id'].to_s]['subject_comment2'][@student.id.to_s].blank? %>
                             <%= @report_data['report']['quarter_result'][report['id'].to_s]['subject_comment2'][@student.id.to_s] %>
                           <% end %> 
                         </td>
-                        <td class="col-pdf">
+                        <td class="col-pdf" style="padding:1px 2px !important;">
                            <%= report['subject_comment'] %>  
                         </td>
-                        <td class="col-pdf"></td>
-                        <td class="col-pdf"></td>
+                        <td class="col-pdf" style="padding:1px 2px !important;"></td>
+                        <td class="col-pdf" style="padding:1px 2px !important;"></td>
                         
-                        <td class="col-pdf"><b><%= report['subject_comment'] %></b></td>
-                        <td class="col-pdf"></td>
+                        <td class="col-pdf" style="padding:1px 2px !important;"><b><%= report['subject_comment'] %></b></td>
+                        <td class="col-pdf" style="padding:1px 2px !important;"></td>
                         </tr>
                       <% end %>
                     <% end %>
@@ -300,15 +300,15 @@
                         <% end %>
                         <tr class="odd">
                         
-                        <td class="col-pdf td-align-left"><%= "Class Participation" %></td>
-                        <td class="col-pdf"></td>
-                        <td class="col-pdf"></td>
-                        <td class="col-pdf"></td>
-                        <td class="col-pdf">50</td>
-                        <td class="col-pdf"><%= class_per_percentize %></td>
+                        <td class="col-pdf td-align-left" style="padding:1px 2px !important;"><%= "Class Participation" %></td>
+                        <td class="col-pdf" style="padding:1px 2px !important;"></td>
+                        <td class="col-pdf" style="padding:1px 2px !important;"></td>
+                        <td class="col-pdf" style="padding:1px 2px !important;"></td>
+                        <td class="col-pdf" style="padding:1px 2px !important;">50</td>
+                        <td class="col-pdf" style="padding:1px 2px !important;"><%= class_per_percentize %></td>
                         
-                        <td class="col-pdf"><%= class_per_grade%></td>
-                        <td class="col-pdf"></td>
+                        <td class="col-pdf" style="padding:1px 2px !important;"><%= class_per_grade%></td>
+                        <td class="col-pdf" style="padding:1px 2px !important;"></td>
                         </tr>
 
               </table>

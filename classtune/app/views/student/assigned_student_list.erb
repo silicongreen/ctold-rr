@@ -40,21 +40,7 @@
               <% end %>
               <% j = j+1 %>
               <%  std_count = std_count+1; %>
-              <% if std_count > 24 && page == 0 %>
-                <% std_count = 0 %>
-                <% page = 1 %>
-                <tr class="page-break">
-                    <td colspan="100">&nbsp;</td>
-                </tr>
-              <% end %>
-                
-              <% if std_count > 26 && page == 1 %>
-                <% std_count = 0 %>
-                <% page = 1 %>
-                <tr class="page-break">
-                    <td colspan="100">&nbsp;</td>
-                </tr>
-              <% end %>
+             
               <tr>
                   <td class="col-pdf sl"><%= j %></td>
                   <td class="col-pdf name"><%= sub_std.student.full_name %></td>

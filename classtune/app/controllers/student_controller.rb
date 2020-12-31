@@ -5730,7 +5730,7 @@ class StudentController < ApplicationController
     @subject_students = StudentsSubject.find_all_by_subject_id(subject_ids,:include=>[{:student=>{:batch=>[:course]}}])
     unless @subject_students.blank?
       @subject_students.each do |std|
-        if @main_batch.blank?
+        if @main_batch.blank? && !std.student.blank?
           unless std.student.batch.blank?
             @main_batch = std.student.batch
             break
@@ -5791,7 +5791,7 @@ class StudentController < ApplicationController
       else 
         etype = 'NA'   
       end 
-      if @main_batch.blank?
+      if @main_batch.blank? && !std.student.blank?
         unless std.student.batch.blank?
           @main_batch = std.student.batch
         end

@@ -5731,8 +5731,10 @@ class StudentController < ApplicationController
     unless @subject_students.blank?
       @subject_students.each do |std|
         if @main_batch.blank?
-          @main_batch = std.student.batch
-          break
+          unless std.student.batch.blank?
+            @main_batch = std.student.batch
+            break
+          end
         end
       end
     end
@@ -5790,7 +5792,9 @@ class StudentController < ApplicationController
         etype = 'NA'   
       end 
       if @main_batch.blank?
-        @main_batch = std.student.batch
+        unless std.student.batch.blank?
+          @main_batch = std.student.batch
+        end
       end
       
       row_new = [sl, std.student.full_name , std.student.class_roll_no, std.student.admission_no, etype ]

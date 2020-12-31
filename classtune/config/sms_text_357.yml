@@ -1,5 +1,6 @@
 school:
  upass: "Dear guardian, for paying fees please login: (https://classtune.com)or (class tune app)& use your ID: #UNAME#, Password: #PASSWORD# .BNCD"
  epass: "Dear guardian, For class information to join online exam login: (https://classtune.com)or (class tune app)& student  ID: #UNAME#. Password: #PASSWORD# .BNCD."
+ tpass: "Dear Employee, fto login ClassTune (https://classtune.com or mobile app) your User ID: #UNAME#, Password: #PASSWORD# .BNCD"
  feedues: "Tuition Fee of January & Session Charge of #UNAME# ID #UID# is TK #AMOUNT#. Pay this amount within 28 Jan 2019 through online. BNCD"
  feepaid: "Fees received BDT #AMOUNT# for #UNAME#(#UID#) as on #PAIDDATE# by TBL. TranID-#TRANID# TranRef-#TRANREF#, BNCD"

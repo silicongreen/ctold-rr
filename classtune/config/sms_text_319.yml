@@ -1,5 +1,6 @@
 school:
  upass: "Dear Parents/students, to login ClassTune (https://classtune.com or mobile app) your User ID: #UNAME# & Password: #PASSWORD#, as given by institution. SFX"
  epass: "Dear Parents/students, to login ClassTune (https://classtune.com or mobile app) your User ID: #UNAME# & Password: #PASSWORD#, as given by institution. SFX"
+ tpass: "Dear Employee, to login ClassTune (https://classtune.com or mobile app) your User ID: #UNAME# & Password: #PASSWORD#, as given by institution. SFX"
  feedues: "Tuition Fee of January & Session Charge of #UNAME# ID #UID# is TK #AMOUNT#. Pay this amount within 28 Jan 2019 through online. SFX"
  feepaid: "Fees received BDT #AMOUNT# for #UNAME#(#UID#) as on #PAIDDATE# by TBL. TranID-#TRANID# TranRef-#TRANREF#, SFX"

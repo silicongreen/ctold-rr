@@ -78,7 +78,7 @@
                     <td class="col-pdf"><b><%= "Subject" %></b></td>
                     <% unless @report_data['report']['exams'].blank? %>
                         <% @report_data['report']['exams'].each do |report| %>
-                        <td colspan="2"><b>
+                        <td><b>
                         <%= report['exam_name'] %>
                         (Out of )
                         </b></td>

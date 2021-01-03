@@ -73,6 +73,7 @@
                   <tr class="even">
                       <td colspan="6"><b>FIRST TERM ASSESSMENT REPORT</b></td>
                   </tr>
+                  <% total_mark_of_allexam = 0 %>
                   <tr class="even">
                     <td class="col-pdf"><b><%= "Subject" %></b></td>
                     <% unless @report_data['report']['exams'].blank? %>
@@ -83,7 +84,7 @@
                         </b></td>
                         <% end %>
                     <% end %>
-                    <td ><b>Total</b></td>
+                        <td ><b>Total<br/>(Out of <%= total_mark_of_allexam %>)</b></td>
                     <td><b>Grade</b></td>
                   </tr>
                   <% total_marks = 0 %>

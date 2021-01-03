@@ -74,6 +74,7 @@
                       <td colspan="6"><b>FIRST TERM ASSESSMENT REPORT</b></td>
                   </tr>
                   <% total_mark_of_allexam = 0 %>
+                  <%= debug @exam_marks.inpsect %>
                   <tr class="even">
                     <td class="col-pdf"><b><%= "Subject" %></b></td>
                     <% unless @report_data['report']['exams'].blank? %>
@@ -177,7 +178,7 @@
                   <% end %>    
 
               </table>
-              
+              <br/>
               <h3>Comment on overall performance: <% unless @exam_comment.blank? %><%= @exam_comment.comments %> <% end %> </h3>
               <h3>Total number of working days: <%= @connect_exam_obj.total_working_days %>< </h3>
               <h3>Next Academic Session begins on:  <%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %>< </h3>
@@ -185,20 +186,20 @@
               
               <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
                   <tr class="even border-bottom-1-px">
-                       <td class="col-pdf" width="30%">
+                       <td class="col-pdf" width="40%">
                         
                               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"60%" %>
                       </td>
-                      <td class="col-pdf no-border" width="70%"></td>
+                      <td class="col-pdf no-border" width="60%"></td>
                   </tr>
                   <tr class="even">
                       
-                      <td class="col-pdf" width="30%">
-                          <h3>MD. MORSHEDUL ISLAM</h3>
-                          <h3>Principal</h3>
-                          <h3>European Standard School (ESS)</h3>
+                      <td class="col-pdf" width="40%">
+                          <p>MD. MORSHEDUL ISLAM</p>
+                          <p>Principal</p>
+                          <p>European Standard School (ESS)</p>
                       </td>
-                      <td class="col-pdf no-border" width="70%"></td>
+                      <td class="col-pdf no-border" width="60%"></td>
 
                   </tr>
 

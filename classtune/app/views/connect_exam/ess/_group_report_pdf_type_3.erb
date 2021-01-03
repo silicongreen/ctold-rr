@@ -74,14 +74,13 @@
                       <td colspan="6"><b>FIRST TERM ASSESSMENT REPORT</b></td>
                   </tr>
                   <% total_mark_of_allexam = 0 %>
-                  <%= debug @exam_marks.inpsect %>
                   <tr class="even">
                     <td class="col-pdf"><b><%= "Subject" %></b></td>
                     <% unless @report_data['report']['exams'].blank? %>
                         <% @report_data['report']['exams'].each do |report| %>
                         <td><b>
-                        <%= report['exam_name'] %>
-                        (Out of )
+                        <%= report['exam_name'] %><br/>
+                        (Out of <% unless @exam_marks[report['exam_id'].to_s].blank?  %><% total_mark_of_allexam = total_mark_of_allexam+@exam_marks[report['exam_id'].to_s].to_i  %><%= @exam_marks[report['exam_id'].to_s] %><% end %>)
                         </b></td>
                         <% end %>
                     <% end %>

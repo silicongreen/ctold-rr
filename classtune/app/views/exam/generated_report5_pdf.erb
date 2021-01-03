@@ -3,7 +3,7 @@
     @report_data['total'] = @report_data['total_new_std']
   end
 %>
-<% if MultiSchool.current_school.id != 357 && MultiSchool.current_school.code != "ess" %>
+<% if MultiSchool.current_school.id != 357 && (MultiSchool.current_school.code != "ess" || @connect_exam_obj.result_type > 2) %>
   <%= render  :partial=>"connect_result_reformate" %>
 <% end %>
 <% if MultiSchool.current_school.id == 283 %>

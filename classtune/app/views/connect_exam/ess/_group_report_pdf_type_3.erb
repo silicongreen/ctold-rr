@@ -79,7 +79,7 @@
                         <% @report_data['report']['exams'].each do |report| %>
                         <td colspan="2"><b>
                         <%= report['exam_name'] %>
-                        (Out of 25)
+                        (Out of <% unless @exam_marks[report['exam_id'].to_s].blank?  %><% total_mark_of_allexam = total_mark_of_allexam+@exam_marks[report['exam_id'].to_s].to_i  %><%= @exam_marks[report['exam_id'].to_s] %><% end %>)
                         </b></td>
                         <% end %>
                     <% end %>
@@ -177,115 +177,27 @@
 
               </table>
               
-              <div style="width:25.5%; float: left; margin-top: 25px;" >
-                <% if @grading_levels.blank? %>
-                  <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
-                  <% if @grading_levels.blank? %>
-                    <% @grading_levels = GradingLevel.default %>
-                  <% end %>
-                <% end %>
-                <%  unless @grading_levels.empty? %>
-                  <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
-                      <tr class="even">
-                          <td>Grading</td>
-                          <td>System</td>  
-                      </tr> 
-                      <% prev_score = 0 %>
-                      <% @grading_levels.each_with_index do |grade,index| %>
-                         <tr class="odd">
-                             <td style="padding:11px !important;"><%= grade.name %></td>
-                             <td style="padding:11px !important;">
-                                <% if grade.max_score.nil? %> 
-                                  <% if grade.min_score.to_i == 0 %>
-                                    <&nbsp;<%= '%i%' % prev_score %>
-                                  <% else %>
-                                      <%= '%i%' % grade.min_score %> 
-                                  <% end %>
-                                <% else %> 
-                                  <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>
-                                <% end %>
-                                <%  prev_score = grade.min_score %>
-                            </td>
-                          </tr> 
-                      <% end %> 
-
-                  </table>
-
-                <% end %> 
-              </div>
-              <div style="width:71.5%; float: left; margin-left: 3%; margin-top: 5px;" >
-                <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
-                    <tr class="even">
-                        <td class="align-left" >Total Marks:</td>
-                        <td  style="padding:5px !important;"><%= total_marks %></td>
-                        <td class="align-left" >Percentage::</td>
-                        <td  style="padding:5px !important;"><%= sprintf( "%0.02f", percent) %></td>
-                    </tr>
-
-                </table>
-                <p>&nbsp;</p>
-                <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
-                    <tr class="even">
-                        <td class="align-left" >Total Working Days:</td>
-                        <td  style="padding:5px !important;"><%= @connect_exam_obj.total_working_days %></td>
-                        <td class="align-left" >Attendance:</td>
-                        <td  style="padding:5px !important;">&nbsp;&nbsp;</td>
-                    </tr>
-
-                </table>
-                <%  
-                  date_string = @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d%m%Y")
-                  unless date_string.blank? 
-                    date_split = date_string.split("")
-                  end
-                %>
-                  <p>&nbsp;</p>
-                <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:20px !important;" cellspacing="0" >
-
-                    <tr class="even">
-                        <td class="width-30 align-left" width="30%" rowspan="2">Next Term begins on:</td>
-                        <td colspan="2">D</td>
-                        <td colspan="2">M</td>
-                        <td colspan="4">Y</td>
-                    </tr>
-                    <tr class="even">
-                        <% unless date_split.blank? %>
-                          <td><%= date_split[0] %></td>
-                          <td><%= date_split[1] %></td>
-                          <td><%= date_split[2] %></td>
-                          <td><%= date_split[3] %></td>
-                          <td><%= date_split[4] %></td>
-                          <td><%= date_split[5] %></td>
-                          <td><%= date_split[6] %></td>
-                          <td><%= date_split[7] %></td>
-                        <% else %>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        <% end %>
-                    </tr>
-                </table>
-              </div>    
+              <h3>Comment on overall performance: <% unless @exam_comment.blank? %><%= @exam_comment.comments %> <% end %> </h3>
+              <h3>Total number of working days: <%= @connect_exam_obj.total_working_days %>< </h3>
+              <h3>Next Academic Session begins on:  <%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %>< </h3>
+              
               
               <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
                   <tr class="even border-bottom-1-px">
-                      <td class="col-pdf no-border" width="70%"></td>
-                      
                        <td class="col-pdf" width="30%">
                         
                               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"60%" %>
                       </td>
+                      <td class="col-pdf no-border" width="70%"></td>
                   </tr>
                   <tr class="even">
-                      <td class="col-pdf no-border" width="70%"></td>
+                      
                       <td class="col-pdf" width="30%">
-                          Principal
+                          <h3>MD. MORSHEDUL ISLAM</h3>
+                          <h3>Principal</h3>
+                          <h3>European Standard School (ESS)</h3>
                       </td>
+                      <td class="col-pdf no-border" width="70%"></td>
 
                   </tr>
 

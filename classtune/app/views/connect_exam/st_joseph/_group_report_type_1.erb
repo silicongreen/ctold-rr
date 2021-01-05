@@ -208,10 +208,6 @@
 
                   <tr class="table-header">
 
-                      <td class="col-pdf">Working Days : <%= @report_data['total'] %></td>
-
-                      <td class="col-pdf">Days Present : <%= @report_data['present'] %> </td>
-                      <td class="col-pdf">Days Absent : <%= @report_data['total']-@report_data['present'] %> </td>
                       <td class="col-pdf">Average Marks : <%= sprintf( "%0.02f",avgparcent) %> % </td>
                       <td class="col-pdf">Detention : <%= @student_detention_count  %> </td>
                   </tr> 

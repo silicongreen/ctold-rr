@@ -465,6 +465,18 @@
 
 
   </div>
+<% extra_br = "<br/>" %>
+
+  <% if total_subject == 8 %>
+    <% extra_br = "<br/><br/><br/><br/><br/>" %>
+  <% elsif total_subject == 9 %>
+    <% extra_br = "<br/><br/><br/><br/>" %>
+  <% elsif total_subject == 10 %>
+    <% extra_br = "<br/><br/><br/>" %>
+  <% elsif total_subject == 11 %>
+    <% extra_br = "<br/><br/>" %>
+  <% end %>
+<%= extra_br  %>
 <%= render  :partial=>"/connect_exam/st_joseph/pdf_footer" %>
 <% end %>
 

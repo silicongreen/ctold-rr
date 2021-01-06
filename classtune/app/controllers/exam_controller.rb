@@ -6957,6 +6957,17 @@ class ExamController < ApplicationController
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_footer.html'}}
+    elsif MultiSchool.current_school.id == 280
+      render :pdf => template,
+        
+        :save_only    => for_save,
+        :orientation => 'Landscape',
+        :margin => {:top=> 40,
+        :bottom => 40,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_footer.html'}}
     elsif MultiSchool.current_school.code == "ess"
       if @connect_exam_obj.result_type == 1 
         render :pdf => template,

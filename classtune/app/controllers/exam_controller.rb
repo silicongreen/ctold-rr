@@ -6962,8 +6962,8 @@ class ExamController < ApplicationController
         
         :save_only    => for_save,
         :orientation => 'Landscape',
-        :margin => {:top=> 40,
-        :bottom => 40,
+        :margin => {:top=> 30,
+        :bottom => 50,
         :left=> 10,
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_header.html'}},

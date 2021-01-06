@@ -26,7 +26,7 @@
                 <% else %>
                 <% unless @connect_exam_obj.blank? and @batch.blank? %>
                    <h5 align="center"   class="bold-all step-1">Progress Report</h5>
-                   <h5 align="center" class="step-2"><%= @batch.course.course_name %></h5>
+                   <h5 align="center" class="step-2"><%= @batch.course.course_name+", Section - "+@batch.course.section_name %></h5>
                    <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
                    <h5 align="center" class="step-2" >
                      

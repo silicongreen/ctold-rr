@@ -1,4 +1,5 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
+  <%= render  :partial=>"/connect_exam/bncd/pdf_header" %>
   <div id="page-yield"  class="available_sections1 st_joseph_bg">
 
       <p>&nbsp;<p>
@@ -311,7 +312,7 @@
 
 
   </div>
-
+<%= render  :partial=>"/connect_exam/bncd/pdf_footer" %>
 <% end %>
 <%= stylesheet_link_tag 'list_table' %>
 

@@ -16,36 +16,39 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-<% if MultiSchool.current_school.code != "oisd" and MultiSchool.current_school.code != "sis" and MultiSchool.current_school.code != "sfx" and MultiSchool.current_school.code != "ess" %>
-<div class="powered-text">
-    <font size='1'>Print Date: <%= Time.now.strftime("%Y/%m/%d") %></font>
-    <p>Powered by <b>ClassTune</b></p>
-</div>
-<style>
-    .powered-text
-    {
-       float:left;
-       margin-left: 10px !important;
-       padding: 0px !important;
-    }
-    .powered-text font
-    {
-       font-size: 10px !important;
-    }
-</style> 
-<% end %>
+<% if MultiSchool.current_school.code != "sjs" %> 
+  <% if MultiSchool.current_school.code != "oisd" and MultiSchool.current_school.code != "sis" and MultiSchool.current_school.code != "sfx" and MultiSchool.current_school.code != "ess" %>
+  <div class="powered-text">
+      <font size='1'>Print Date: <%= Time.now.strftime("%Y/%m/%d") %></font>
+      <p>Powered by <b>ClassTune</b></p>
+  </div>
+  <style>
+      .powered-text
+      {
+         float:left;
+         margin-left: 10px !important;
+         padding: 0px !important;
+      }
+      .powered-text font
+      {
+         font-size: 10px !important;
+      }
+  </style> 
+  <% end %>
 
-<% if MultiSchool.current_school.code == "ess" %>
-<div class="powered-text">
-    <p >Powered by <b>ClassTune</b></p>
-</div>
-<style>
-    .powered-text
-    {
-       font-size: 13px !important;
-       color:#4CAEE3 !important;
-    }
-</style>
+  <% if MultiSchool.current_school.code == "ess" %>
+  <div class="powered-text">
+      <p >Powered by <b>ClassTune</b></p>
+  </div>
+  <style>
+      .powered-text
+      {
+         font-size: 13px !important;
+         color:#4CAEE3 !important;
+      }
+  </style>
+
+  <% end %>
 
 <% end %>
 

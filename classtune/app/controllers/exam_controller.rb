@@ -6962,12 +6962,12 @@ class ExamController < ApplicationController
         
         :save_only    => for_save,
         :orientation => 'Landscape',
-        :margin => {:top=> 30,
-        :bottom => 50,
+        :margin => {:top=> 10,
+        :bottom => 10,
         :left=> 10,
         :right => 10},
-        :header => {:html => { :template=> 'layouts/pdf_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_footer.html'}}
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
     elsif MultiSchool.current_school.code == "ess"
       if @connect_exam_obj.result_type == 1 
         render :pdf => template,

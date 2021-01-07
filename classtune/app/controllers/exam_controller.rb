@@ -6952,11 +6952,11 @@ class ExamController < ApplicationController
         :save_only    => for_save,
         :orientation => 'Landscape',
         :margin => {:top=> 10,
-        :bottom => 40,
+        :bottom => 5,
         :left=> 10,
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_footer.html'}}
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
     elsif MultiSchool.current_school.id == 280
       render :pdf => template,
         

@@ -1409,7 +1409,7 @@ class StudentController < ApplicationController
     Spreadsheet.client_encoding = 'UTF-8'
     new_book = Spreadsheet::Workbook.new
     sheet1 = new_book.create_worksheet :name => 'student_list'
-    row_first = ['SL','Student Id','Roll','Name','Father Name','Blood Group','Category','Class','Shift','Section','Session','Version','Group','Tuition Fees','Mobile']
+    row_first = ['SL','Student Id','Roll','Name','Father Name','Blood Group','Category','Class','Shift','Section','Session','Version','Group','Tuition Fees','GPA','Mobile']
     new_book.worksheet(0).insert_row(0, row_first)
     @batch_name_pdf = batch_name = params[:batch_name]
     @version_pdf = version_name = params[:version_name]
@@ -1531,6 +1531,7 @@ class StudentController < ApplicationController
           tmp_row << version
           tmp_row << student.batch.course.group
           tmp_row << monthly_fee
+          tmp_row << student.gpa
           tmp_row << student.sms_number
           new_book.worksheet(0).insert_row(std_loop, tmp_row)
           std_loop = std_loop+1

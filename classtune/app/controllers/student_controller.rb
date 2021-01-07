@@ -5722,7 +5722,7 @@ class StudentController < ApplicationController
     @elective_subject = Subject.find(params[:id2])
     
     @batch_only = params[:batch_only]
-    if @batch_only == 1
+    if @batch_only == "1"
       @subject_students_all = StudentsSubject.find_all_by_subject_id(@elective_subject.id,:include=>[{:student=>{:batch=>[:course]}}])
       @subject_students = []
       unless @subject_students_all.blank?

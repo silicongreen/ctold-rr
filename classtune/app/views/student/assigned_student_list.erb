@@ -13,8 +13,12 @@
 <% end %>
 <div id="page-yield" class="available_sections1" style="width:1250px !important;">
     <div class="heading-section" >
-        <div class="box info" >
-            <span>Course: <strong> <%= @batch.course.course_name  %> </strong> </span><br>
+        <div class="box info"  style="width:500px !important;">
+            <% if @batch_only == 1 %>
+              <span>Course: <strong> <%= @batch.course.course_name  %> </strong>, Section: <strong> <%= @batch.course.section_name  %> </strong> </span><br>
+            <% else %>
+              <span>Course: <strong> <%= @batch.course.course_name  %> </strong> </span><br>
+            <% end %>
             <% unless @main_batch.blank? %>
               <span>Group: <strong> <%= group_split[0] unless @main_batch.course.group.nil?  %> </strong> </span><br>
             <% end %>

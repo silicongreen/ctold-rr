@@ -5721,19 +5721,33 @@ class StudentController < ApplicationController
     @batch = Batch.find(params[:id])
     @elective_subject = Subject.find(params[:id2])
     
-    @courses = Course.find_all_by_course_name(@batch.course.course_name) 
-    course_ids = @courses.map(&:id)
-    @batches = Batch.find_all_by_course_id(course_ids)
-    batch_ids = @batches.map(&:id)
-    @subjects = Subject.find_all_by_batch_id_and_code(batch_ids,@elective_subject.code)
-    subject_ids = @subjects.map(&:id)
-    @subject_students = StudentsSubject.find_all_by_subject_id(subject_ids,:include=>[{:student=>{:batch=>[:course]}}])
-    unless @subject_students.blank?
-      @subject_students.each do |std|
-        if @main_batch.blank? && !std.student.blank?
-          unless std.student.batch.blank?
-            @main_batch = std.student.batch
-            break
+    @batch_only = params[:batch_only]
+    if @batch_only == 1
+      @subject_students_all = StudentsSubject.find_all_by_subject_id(@elective_subject.id,:include=>[{:student=>{:batch=>[:course]}}])
+      @subject_students = []
+      unless @subject_students_all.blank?
+        @subject_students_all.each do |std|
+          if std.batch_id == @batch.id
+            @subject_students << std
+          end
+        end
+      end
+      @main_batch = @batch
+    else
+      @courses = Course.find_all_by_course_name(@batch.course.course_name) 
+      course_ids = @courses.map(&:id)
+      @batches = Batch.find_all_by_course_id(course_ids)
+      batch_ids = @batches.map(&:id)
+      @subjects = Subject.find_all_by_batch_id_and_code(batch_ids,@elective_subject.code)
+      subject_ids = @subjects.map(&:id)
+      @subject_students = StudentsSubject.find_all_by_subject_id(subject_ids,:include=>[{:student=>{:batch=>[:course]}}])
+      unless @subject_students.blank?
+        @subject_students.each do |std|
+          if @main_batch.blank? && !std.student.blank?
+            unless std.student.batch.blank?
+              @main_batch = std.student.batch
+              break
+            end
           end
         end
       end

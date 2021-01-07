@@ -86,8 +86,13 @@
   <div class="name" style="padding-top: 7px;"><%= t('subject') %></div><div class="val themed_text" style="padding-top: 7px;"><span>:</span><%= @elective_subject.name %><%= @s_message_for_subject %></div>
   <% end %>
   <br />
-   <%= link_to "PDF",{:controller => 'student', :action => 'assigned_student_list',:id=>@batch.id,:id2=>@elective_subject.id},{:style=>"background-color: green;color: white;padding: 5px 7px;text-decoration: none;text-transform: uppercase;", :target => '_blank'}%>
-   <%= link_to "Excel",{:controller => 'student', :action => 'assigned_excel_list',:id=>@batch.id,:id2=>@elective_subject.id},{:style=>"background-color: green;color: white;padding: 5px 7px; margin-left:3px; text-decoration: none;text-transform: uppercase;"}%>
+  <% if @show_batch_subject %> 
+   <%= link_to "PDF",{:controller => 'student', :action => 'assigned_student_list',:id=>@batch.id,:id2=>@elective_subject.id,:batch_only => "1"},{:style=>"background-color: green;color: white;padding: 5px 7px;text-decoration: none;text-transform: uppercase;", :target => '_blank'}%>
+   <%= link_to "Excel",{:controller => 'student', :action => 'assigned_excel_list',:id=>@batch.id,:id2=>@elective_subject.id,:batch_only => "1"},{:style=>"background-color: green;color: white;padding: 5px 7px; margin-left:3px; text-decoration: none;text-transform: uppercase;"}%>
+  <% else %>
+   <%= link_to "PDF",{:controller => 'student', :action => 'assigned_student_list',:id=>@batch.id,:id2=>@elective_subject.id,:batch_only => "0"},{:style=>"background-color: green;color: white;padding: 5px 7px;text-decoration: none;text-transform: uppercase;", :target => '_blank'}%>
+   <%= link_to "Excel",{:controller => 'student', :action => 'assigned_excel_list',:id=>@batch.id,:id2=>@elective_subject.id,:batch_only => "0"},{:style=>"background-color: green;color: white;padding: 5px 7px; margin-left:3px; text-decoration: none;text-transform: uppercase;"}%>
+  <% end %>
 <hr/>
   <%unless @students.empty?%>
   <ul id="category-list">

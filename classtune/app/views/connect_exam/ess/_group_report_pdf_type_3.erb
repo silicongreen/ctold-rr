@@ -51,12 +51,14 @@
               <tr>
                   <td class="align-left">Name : <%= @student.full_name %></td>
                   <td class="align-left">Roll : <%= @student.class_roll_no %></td>
-                  <td class="align-left">Section : <%= @batch.course.section_name %></td>
+                  <% unless @batch.course.section_name.blank? %>
+                    <td class="align-left">Section : <%= @batch.course.section_name %></td>
+                  <% end %>
                   <td class="align-left">A /C ID : <%= @student.admission_no %></td>
               </tr>
               <tr>
                   
-                  <td class="align-left" colspan="4">Class Teacher :
+                  <td class="align-left" <% unless @batch.course.section_name.blank? %>colspan="4"<% else %>colspan="3"<% end %>>Class Teacher :
                       <%= class_teacher  %>
                   </td>
               </tr>
@@ -192,12 +194,12 @@
               <p>&nbsp;</p>
              
               <h3>Total number of working days: <%= @connect_exam_obj.total_working_days %> Days </h3>
-              <h3>Next Academic Session begins on:  <%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %></h3>
+              <h3>Next Academic Session begins on:  <%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%B %d, %Y") %></h3>
               
               
               <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
                   <tr class="even border-bottom-1-px">
-                       <td class="col-pdf" width="40%">
+                       <td class="col-pdf" width="40%" style="text-align:left !important;">
                         
                               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"60%" %>
                       </td>

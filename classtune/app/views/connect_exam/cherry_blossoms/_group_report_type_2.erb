@@ -69,15 +69,15 @@
                               <% unless @report_data['report']['exams'].blank? %>  
                               <% count = @report_data['report']['exams'].count %>                        
                                 <% @report_data['report']['exams'].each do |report| %>
-                                  <% w = 60/count%>
-                              <td width='<%=  ("#{w}%")%>'>
+                                  <% w = 70/count%>
+                                    <td width='<%=  ("#{w}%")%>'>
                                     <table width='100%' border="0">
                                         <tr>
-                                            <td width="100%" colspan="2" class="special_top special_left special_right"><%= report['exam_name'] %></td>
+                                            <td style="white-space: nowrap !important;" width="100%" colspan="2" class="special_top special_left special_right"><%= report['exam_name'] %></td>
                                         </tr>
                                         <tr>
-                                            <td width="50%" class="special_bottom special_left">Full Marks</td>
-                                            <td width="50%" class="special_bottom special_right">Marks Obtained</td>
+                                            <td style="white-space: nowrap !important;" width="50%" class="special_bottom special_left">Full Marks</td>
+                                            <td style="white-space: nowrap !important;" width="50%" class="special_bottom special_right">Marks Obtained</td>
                                         </tr>
 
                                     </table>

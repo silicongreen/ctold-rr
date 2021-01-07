@@ -93,14 +93,14 @@
                           <% end %>  
                           <tr>
                               <td class='subjects'>Subject Name </td>
-                              <td width='20%'>
+                              <td width='10%'>
                                 <table width='100%' border="0">
                                     <tr>
-                                        <td width="100%" colspan="2" class="special_top special_left special_right"><%= extra_string %>Class Assessment <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
+                                        <td colspan="2" style="white-space: nowrap !important;" class="special_top special_left special_right"><%= extra_string %>Class Assessment <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
                                     </tr>
                                     <tr>
-                                        <td width="50%" class="special_bottom special_left">Full Marks</td>
-                                        <td width="50%" class="special_bottom special_right">Marks Obtained</td>
+                                        <td  style="white-space: nowrap !important;" class="special_bottom special_left">Full Marks</td>
+                                        <td style="white-space: nowrap !important;" class="special_bottom special_right">Marks Obtained</td>
                                     </tr>
 
                                 </table>
@@ -116,15 +116,15 @@
                                                      
                                 <% @report_data['report']['exams'].each do |report| %>
                                   <% if report['exam_category'] != '1' %>
-                                  <% w = 30/count%>
+                                  <% w = 60/count%>
                                   <td width='<%=  ("#{w}%")%>'>
                                     <table width='100%' border="0">
                                         <tr>
-                                            <td width="100%" colspan="2" class="special_top special_left special_right"><%= report['exam_name'] %></td>
+                                            <td  style="white-space: nowrap !important;" width="100%" colspan="2" class="special_top special_left special_right"><%= report['exam_name'] %></td>
                                         </tr>
                                         <tr>
-                                            <td width="50%" class="special_bottom special_left">Full Marks</td>
-                                            <td width="50%" class="special_bottom special_right">Marks Obtained</td>
+                                            <td style="white-space: nowrap !important;" width="50%" class="special_bottom special_left">Full Marks</td>
+                                            <td style="white-space: nowrap !important;" width="50%" class="special_bottom special_right">Marks Obtained</td>
                                         </tr>
 
                                     </table>
@@ -171,7 +171,7 @@
                                     ct_mark =  ct_mark_array[0]
                                   %>
                                 <% end %>
-                                <td width='20%'>
+                                <td width='10%'>
 
                                     <table width="100%" CELLPADDING="3" CELLSPACING="3">
 

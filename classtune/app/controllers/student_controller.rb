@@ -5728,7 +5728,7 @@ class StudentController < ApplicationController
       @subject_students = []
       unless @subject_students_all.blank?
         @subject_students_all.each do |std|
-          if std.batch_id == @batch.id
+          if std.student.batch_id == @batch.id
             @subject_students << std
           end
         end
@@ -5770,6 +5770,7 @@ class StudentController < ApplicationController
     sheet1 = new_book.create_worksheet :name => 'Assigned-Students'
     row_1 = ['Serial','Student Name','Student Roll','Admission No','Elective Type']
 
+    @batch_only = params[:batch_only]
     # Add row_1
     new_book.worksheet(0).insert_row(0, row_1)  
     @batch = Batch.find(params[:id])
@@ -5778,7 +5779,12 @@ class StudentController < ApplicationController
     @courses = Course.find_all_by_course_name_and_is_deleted(@batch.course.course_name,false) 
     course_ids = @courses.map(&:id)
     @batches = Batch.find_all_by_course_id_and_is_deleted(course_ids,false)
-    batch_ids = @batches.map(&:id)
+    batch_ids = []
+    if @batch_only == "1"
+      batch_ids << @elective_subject.batch_id
+    else
+      batch_ids = @batches.map(&:id)
+    end
     @subjects = Subject.find_all_by_batch_id_and_code_and_is_deleted(batch_ids,@elective_subject.code,false)
     subject_ids = @subjects.map(&:id)
     @subject_students = StudentsSubject.find_all_by_subject_id_and_batch_id(subject_ids,batch_ids,:include=>[{:student=>{:batch=>[:course]}}])

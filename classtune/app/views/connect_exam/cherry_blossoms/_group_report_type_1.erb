@@ -109,7 +109,7 @@
                               <% unless @report_data['report']['exams'].blank? %>  
                                 
                                 <% @report_data['report']['exams'].each do |report| %>
-                                  <% if report['exam_category'] != '1' %>
+                                    <% if report['exam_category'] != '1' %>
                                     <% count = count+1 %>
                                   <% end %>
                                 <% end %>

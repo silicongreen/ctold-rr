@@ -158,7 +158,7 @@
                               No. of Working Days
                           </td> 
                           <td class="col-pdf" width='50%'>
-                              <% if @report_data['total'] == "1" %>
+                              <% if @report_data['total'].to_i == 1 %>
                                 N/A
                               <% else %>
                                 <%= @report_data['total'] %>
@@ -170,7 +170,7 @@
                               Attendance
                           </td> 
                           <td class="col-pdf" width='50%'>
-                              <% if @report_data['total'] == "1" %>
+                              <% if @report_data['total'].to_i == 1 %>
                                 N/A
                               <% else %>
                                 <%= @report_data['present'] %>

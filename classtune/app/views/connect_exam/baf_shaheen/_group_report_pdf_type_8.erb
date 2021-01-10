@@ -321,7 +321,11 @@
                               No. of Working Days
                           </td> 
                           <td class="col-pdf align-center border-right-none" width="50%">
-                              <%= @report_data['total'] %>
+                              <% if @report_data['total'] == "1" %>
+                                N/A
+                              <% else %>
+                                <%= @report_data['total'] %>
+                              <% end %>
                           </td>
                       </tr>
                       <tr class="odd">
@@ -330,7 +334,11 @@
                           </td> 
                           <td class="col-pdf align-center  border-right-none" width="50%">
                               <%#= @report_data['present'] %>
-                              <%= @report_data['present'] %>
+                              <% if @report_data['total'] == "1" %>
+                                N/A
+                              <% else %>
+                                <%= @report_data['present'] %>
+                              <% end %>
                           </td>
                       </tr>
                      

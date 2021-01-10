@@ -394,7 +394,11 @@
                               No. of Working Days
                           </td> 
                           <td class="col-pdf align-center" width="33%">
-                              <%= @report_data['total'] %>
+                              <% if @report_data['total'] == "1" %>
+                                N/A
+                              <% else %>
+                                <%= @report_data['total'] %>
+                              <% end %>
                           </td>
                           <td class="col-pdf no-border" width="33%" >
                               
@@ -405,7 +409,11 @@
                               Attendance
                           </td> 
                           <td class="col-pdf align-center" width="33%">
-                              <%= @report_data['present'] %>
+                              <% if @report_data['total'] == "1" %>
+                                N/A
+                              <% else %>
+                                <%= @report_data['present'] %>
+                              <% end %>
                           </td>
                           <td class="col-pdf no-border" width="33%">
                               
@@ -527,7 +535,11 @@
                               No. of Working Days
                           </td> 
                           <td class="col-pdf align-center" width="33%">
-                              <%= @report_data['total'] %>
+                              <% if @report_data['total'] == "1" %>
+                                N/A
+                              <% else %>
+                                <%= @report_data['total'] %>
+                              <% end %>
                           </td>
                           <td class="col-pdf no-border" width="33%" >
                               
@@ -538,7 +550,11 @@
                               Attendance
                           </td> 
                           <td class="col-pdf align-center" width="33%">
-                              <%= @report_data['present'] %>
+                               <% if @report_data['total'] == "1" %>
+                                N/A
+                              <% else %>
+                                <%= @report_data['present'] %>
+                              <% end %>
                           </td>
                           <td class="col-pdf no-border" width="33%">
                               

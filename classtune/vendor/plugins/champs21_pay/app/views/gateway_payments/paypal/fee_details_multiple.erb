@@ -1127,6 +1127,7 @@
         });
       </script>
       <% end %>
+         
       <% has_dues = false %>
       <% paid_fee = 0.00 %>
       <% @fees_collections.reverse.each do |fee| %>
@@ -1182,19 +1183,23 @@
         #  end
         #end
       %>
+      <% has_permission = true %>    	      
       <% under_maintenance = false %>
       <% if MultiSchool.current_school.id == 357 and !@current_user.admin? %>
         <% if @student.id != 44129 %>
         <% #has_dues = true %>
         <% end %>
       <% end %>
+      <% if @current_user.student? %>
+	   <% has_permission = false %>  
+      <% end %>	 	      
       <% if MultiSchool.current_school.id == 2461 %>
         <% unless @current_user.admin? %>
           <% under_maintenance = true %>
         <% end %>
       <% end %>
       <% has_dues = false %>
-      <% if has_dues == false %>
+      <% if has_dues == false and has_permission %>
         <% if total_fees > 0 and found and under_maintenance == false %>
             <tr>
               <td colspan="5" style="padding-bottom: 30px;">
@@ -1354,6 +1359,7 @@
              </td>
          </tr>  
          <% else %>      
+	    <% if has_permission %>  
             <% if found == false and total_fees > 0 %>
                 <tr>
                     <td colspan="5">
@@ -1369,6 +1375,7 @@
                 <% end %>    
 
           <% end %>
+	  <% end %>    
         <% end %>
     </table>
     <% if @gateway_settings.keys.include?('bkash') or @gateway_settings.keys.include?('citybank')  %>

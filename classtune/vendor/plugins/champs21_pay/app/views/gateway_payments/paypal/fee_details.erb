@@ -1127,10 +1127,14 @@
             }
         });
       </script>
+      <% has_permission = true %> 	      
       <% under_maintenance = false %>
       <% if MultiSchool.current_school.id == 352 %>
       <% @student_has_due = false %> 
       <% end %>
+      <% if @current_user.student? %>
+	   <% has_permission = false %>  
+      <% end %>	      
       <% if MultiSchool.current_school.id == 357 and !@current_user.admin? %>
         <% if @student.id != 44129 %>
         <% #@student_has_due = true %>
@@ -1150,7 +1154,7 @@
       <% unless prev_dues_school.include?(MultiSchool.current_school.id) %>
       <% @student_has_due = false %>
       <% end %>
-      <% if @student_has_due == false #and @financefee.batch_id == @student.batch_id %>
+      <% if @student_has_due == false and has_permission #and @financefee.batch_id == @student.batch_id %>
         <%#= total_fees.to_s + " DID DID DID" %>
         <% if total_fees > 0 and under_maintenance == false  %>
             <% @amount_to_pay = precision_label(balance+@fine_amount.to_f) %> 
@@ -1301,20 +1305,22 @@
                 </td>
             </tr>  
             <% else %>
-              <% if @financefee.batch_id != @student.batch_id and total_fees > 0 %>
-                <tr>
-                    <td colspan="5">
-                      <center><font color="red">***Your class or Section has been changes, Please contact admin to update your payment info***</font></center> 
-                    </td>
-                </tr>    
-                <% elsif total_fees > 0 %>
-                <tr>
-                    <td colspan="5">
-                      <center><font color="red">***Student Has Previous Due***</font></center> 
-                    </td>
-                </tr> 
-              <% end %>
-            <% end %>
+	      <% if has_permission %>
+		      <% if @financefee.batch_id != @student.batch_id and total_fees > 0 %>
+			<tr>
+			    <td colspan="5">
+			      <center><font color="red">***Your class or Section has been changes, Please contact admin to update your payment info***</font></center> 
+			    </td>
+			</tr>    
+			<% elsif total_fees > 0 %>
+			<tr>
+			    <td colspan="5">
+			      <center><font color="red">***Student Has Previous Due***</font></center> 
+			    </td>
+			</tr> 
+		      <% end %>
+		    <% end %>
+	    <% end %>  
       <% end %>    
     </table>
     <% if @gateway_settings.keys.include?('bkash') or @gateway_settings.keys.include?('citybank')  %>

@@ -372,7 +372,7 @@ class PaymentSettingsController < ApplicationController
                             date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
                             unless date.blank?
                               #paid_amount += FinanceFee.get_student_balance(date, payment.payee, fee)
-                              @std = Student.find(payment.payee_id)
+                              @std = Student.find(:first, :conditions => "id = #{payment.payee_id}")
                               if @std.nil?
                                 @std = ArchivedStudent.find_by_former_id(payment.payee_id)
                               end

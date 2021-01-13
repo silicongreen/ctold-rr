@@ -867,11 +867,10 @@ class TimetableController < ApplicationController
       if params[:employee_subjects].present?
         params[:employee_subjects].each do |subj_id,emp_id|
           
+          EmployeesSubject.destroy_all(:subject_id=>subj_id)
           if !sub_amployee[subj_id.to_s].blank? && sub_amployee[subj_id.to_s] == emp_id
             next
           end
-          
-          EmployeesSubject.destroy_all(:subject_id=>subj_id)
           unless emp_id.blank?
             emp_ids = emp_id.split(",")
             emp_ids.each do |employee_number|

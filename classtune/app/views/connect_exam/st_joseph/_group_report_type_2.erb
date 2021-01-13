@@ -27,7 +27,15 @@
       </table>
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
-
+              <% has_practical = false %>
+              <% unless @report_data['report']['exams'].blank? %>  
+                     <% @report_data['report']['exams'].each do |report| %>
+                      <% if !report['exam_name'].downcase.index('prac').nil? %>
+                        <% has_practical = true %>
+                      <% end %>
+                    <% end %>
+              
+              <% end %>
 
               <table id="pdf-table" width="100%" cellspacing="0">
                   <% c = 'even'  %>
@@ -35,7 +43,11 @@
                       <td class="col-pdf"><b><%= "Subject" %></b></td>
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% @top_exam_group.each do |top_exam| %>
-                          <td class="col-pdf group_exam" colspan="3"><%= top_exam %></td>
+                          <% if has_practical == true %>
+                            <td class="col-pdf group_exam" colspan="3"><%= top_exam %></td>
+                          <% else %>
+                            <td class="col-pdf group_exam" colspan="2"><%= top_exam %></td>
+                          <% end %>
                         <% end %>
                       <% end %>
                       
@@ -55,9 +67,11 @@
                           <td class="col-pdf">
                               Objective
                           </td>
+                          <% if has_practical == true %>
                           <td class="col-pdf">
                               Practical
                           </td>
+                          <% end %>
                         <% end %>
                       <% end %>
 

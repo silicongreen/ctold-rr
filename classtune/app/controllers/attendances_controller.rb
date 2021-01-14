@@ -107,8 +107,7 @@ class AttendancesController < ApplicationController
       @batches = Batch.active
     elsif @current_user.employee?
       @batches = @current_user.employee_record.batches
-      @batches += @current_user.employee_record.subjects.collect{|b| b.batch}
-      @batches += TimetableSwap.find_all_by_employee_id(@current_user.employee_record.try(:id)).map(&:subject).flatten.compact.map(&:batch)
+      @batches += @current_user.employee_record.subjects.collect{|b| b.batch}  
       @batches = @batches.uniq unless @batches.empty
     end
     render :partial=>"subject_report"
@@ -587,7 +586,6 @@ class AttendancesController < ApplicationController
     elsif @current_user.employee?
       @batches = @current_user.employee_record.batches
       @batches += @current_user.employee_record.subjects.collect{|b| b.batch}
-      @batches += TimetableSwap.find_all_by_employee_id(@current_user.employee_record.try(:id)).map(&:subject).flatten.compact.map(&:batch)
       @batches = @batches.uniq unless @batches.empty
     end
     render :partial=>"rollcall"

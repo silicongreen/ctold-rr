@@ -585,7 +585,7 @@ class AttendancesController < ApplicationController
       @batches = Batch.active
     elsif @current_user.employee?
       @batches = @current_user.employee_record.batches
-      @batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+#      @batches += @current_user.employee_record.subjects.collect{|b| b.batch}
       @batches = @batches.uniq unless @batches.empty
     end
     render :partial=>"rollcall"

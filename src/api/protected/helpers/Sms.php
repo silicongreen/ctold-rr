@@ -11,7 +11,7 @@ class Sms
 
     public static $sms_attendence_school = [2, 296,352,356,312,357];
     public static $sms_all_guardian = [2];
-    public static $sms_subject_attendence_school = [2,357];
+    public static $sms_subject_attendence_school = [2,357,319];
     //296
 
     public static $sms_school_host = array(2 => "host_ssd",357 => "host_ssd", 296 => "host_ssd", 319 => "host_ssd", 312 => "host_ssd", 352 => "host_ssd", 346 => "host_ssd", 356 => "host_ssd");
@@ -305,6 +305,53 @@ class Sms
         
     }
     
+    public static function send_power_sms_sfx($sms_numbers, $sms_msg_array, $school_id)
+    {
+        if ($sms_numbers && (in_array($school_id, self::$sms_attendence_school) || in_array($school_id, self::$sms_subject_attendence_school)))
+        {
+            foreach ($sms_numbers as $key => $value)
+                {
+                    $sms_msg = new SmsMessages();
+                    $sms_msg->body = str_replace(" ", "+", $sms_msg_array[$key]);
+                    $sms_msg->created_at = date("Y-m-d H:i:s");
+                    $sms_msg->updated_at = date("Y-m-d H:i:s");
+                    $sms_msg->school_id = $school_id;
+                    $sms_msg->save();
+                    if ($sms_msg)
+                    {
+                        $sms_log = new SmsLogs();
+                        $sms_log->mobile = $value;
+                        $sms_log->sms_message_id = $sms_msg->id;
+                        $sms_log->gateway_response = "Success";
+                        $sms_log->created_at = date("Y-m-d H:i:s");
+                        $sms_log->updated_at = date("Y-m-d H:i:s");
+                        $sms_log->school_id = $school_id;
+                        $sms_log->save();
+                    }
+                    $sms_url = "https://classtune.powersms.net.bd/httpapi/sendsms";
+                    $parsed_url = $sms_url."?userId=sfxsms&password=sfx@4321&smsText=".urlencode($sms_msg_array[$key])."&commaSeperatedReceiverNumbers=".$value;
+                    $crl = curl_init();
+                    curl_setopt($crl, CURLOPT_SSL_VERIFYPEER, FALSE);
+                    curl_setopt($crl, CURLOPT_SSL_VERIFYHOST, 2);
+                    curl_setopt($crl, CURLOPT_URL, $parsed_url);
+                    curl_setopt($crl, CURLOPT_HEADER, 0);
+                    curl_setopt($crl, CURLOPT_RETURNTRANSFER, 1);
+                    $response = curl_exec($crl);
+                    curl_close($crl);
+                }
+                $configobj = new Configurations();
+                $config_id = $configobj->getConfigId("TotalSmsCount", $school_id);
+                if ($config_id)
+                {
+                    $configmain = $configobj->findByPk($config_id);
+                    $configmain->config_value = $configmain->config_value + count($sms_numbers);
+                    $configmain->save();
+                }
+            
+        }
+        
+    }
+    
     public static function send_power_sms_bncd($sms_numbers, $sms_msg_array, $school_id)
     {
         if ($sms_numbers && in_array($school_id, self::$sms_attendence_school))
@@ -356,7 +403,7 @@ class Sms
     {
         if ($school_id == 319)
         {
-            self::send_sms_sfx($sms_numbers, $sms_msg_array, $school_id);
+            self::send_power_sms_sfx($sms_numbers, $sms_msg_array, $school_id);
         } 
         else if ($school_id == 356)
         {

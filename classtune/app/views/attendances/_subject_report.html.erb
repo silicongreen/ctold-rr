@@ -1,4 +1,8 @@
 <% form_for(@student, :url => {:action=> 'show'}, :html=> {:id=>'new_student'}) do |s| %>
+  <% if !@current_user.admin? and MultiSchool.current_school.code == "sfx" %>
+    <% @batches.reject!{|c| c.course.no_call.to_i == 0} %>
+  <% end %>
+  <% @batches.reject!{|c| c.is_deleted == true} %>
   <div id="page-yield"  style="margin-top:0px;"> 
       <div class="label-field-pair" style="float:left; clear:both; width:80%; margin-bottom:5px;">
         <label for="duedate">Select Date</label>

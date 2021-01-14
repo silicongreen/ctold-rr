@@ -106,7 +106,7 @@ class AttendancesController < ApplicationController
     elsif @current_user.employee?
       @batches = @current_user.employee_record.batches
       @batches += @current_user.employee_record.subjects.collect{|b| b.batch}
-      @batches = @batches.uniq unless @batches.empty
+      @batches = @batches.uniq unless @batches.blank
     end
     render :partial=>"subject_report"
   end
@@ -582,7 +582,7 @@ class AttendancesController < ApplicationController
     elsif @current_user.employee?
       @batches = @current_user.employee_record.batches
       @batches += @current_user.employee_record.subjects.collect{|b| b.batch}
-      @batches = @batches.uniq unless @batches.empty
+      @batches = @batches.uniq unless @batches.blank?
     end
     render :partial=>"rollcall"
   end

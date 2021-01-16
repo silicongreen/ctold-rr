@@ -65,7 +65,7 @@ class FinanceController < ApplicationController
   end
 
   def donation
-	if MultiSchool.current_school.id == 362
+	if MultiSchool.current_school.id == 361
 		payments = Payment.all
 		payments.each do |payment|
 			gateway_response = payment.gateway_response
@@ -104,8 +104,8 @@ class FinanceController < ApplicationController
       now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
       activity_log = ActivityLog.new
       activity_log.user_id = current_user.id
-      activity_log.controller = "checking Finance Fees Adjustment - NASCD"
-      activity_log.action = "checking Finance Fees Adjustment - NASCD"
+      activity_log.controller = "Finance Fees Adjustment - NASCD"
+      activity_log.action = "Finance Fees Adjustment - NASCD"
       activity_log.post_requests = "0"
       activity_log.ip = request.remote_ip
       activity_log.user_agent = request.user_agent

@@ -4360,7 +4360,7 @@ class StudentController < ApplicationController
     #abort params[:batch_id].inspect
     @batch = Batch.find_by_id(@student.batch_id)
     @exam_groups = @batch.exam_groups
-    @exam_groups.reject!{|e| e.result_published==false or e.exam_category!=3}
+    @exam_groups.reject!{|e| e.result_published==false or e.exam_category==1}
     
     render :partial=>"term_test", :locals=>{:exam_groups=>@exam_groups}
   end

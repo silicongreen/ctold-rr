@@ -248,7 +248,7 @@ class SmsController < ApplicationController
               #batches_id = 
             end
             fee_collection_students = fee_collection_students.reject { |c| c.empty? }
-            @students = Student.find(:all,:conditions=>"is_sms_enabled=true and id IN (#{fee_collection_students.join(",")})")
+            @students = Student.find(:all,:conditions=>"batch_id in (#{params[:batch_id]}) and is_sms_enabled=true and id IN (#{fee_collection_students.join(",")})")
           end
         else
           fee_collection = FinanceFeeCollection.find(params[:fee_id])
@@ -258,7 +258,7 @@ class SmsController < ApplicationController
             fee_collections = FinanceFeeCollection.find_all_by_name(fee_collection_name)
             #student_ids = fee_collection.finance_fees.find_all_by_batch_id(batch_ids).collect(&:student_id).join(',')
             fees_students = FinanceFee.find(:all, :conditions=>"fee_collection_id IN (#{fee_collections.map(&:id).join(",")}) and finance_fees.batch_id IN (#{batch_ids.join(",")}) and is_paid = #{false} and balance > 0 " ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
-            @students = Student.find_all_by_id(fees_students,:conditions=>"is_sms_enabled=true")
+            @students = Student.find_all_by_id(fees_students,:conditions=>"batch_id in (#{params[:batch_id]}) and is_sms_enabled=true")
           end
         end
       end

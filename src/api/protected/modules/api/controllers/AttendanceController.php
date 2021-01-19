@@ -831,9 +831,9 @@ class AttendanceController extends Controller
         if ($all_rids)
         {
             $all_rid_string = implode(",", $all_rids);
-            Reminders::model()->deleteAll(
-                    "`rid` IN (:rid) AND `rtype`=:rtype", array(':rid' => $all_rid_string, ':rtype' => 45)
-            );
+//            Reminders::model()->deleteAll(
+//                    "`rid` IN (:rid) AND `rtype`=:rtype", array(':rid' => $all_rid_string, ':rtype' => 45)
+//            );
         }
         SubjectAttendances::model()->deleteAll(
                 "`attendance_date` =:attendance_date AND `subject_id`=:subject_id", array(':attendance_date' => $date, ':subject_id' => $subject_id)

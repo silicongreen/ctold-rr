@@ -244,10 +244,12 @@ class AttendanceController extends Controller
             }
             $subatt = new SubjectAttendances();
             $att_data_current = $subatt->getAttendence($subject_id, $date);
+            $current_att = [];
             if($att_data_current)
             {
                 foreach($att_data_current as $value)
                 {
+                    $current_att[] = $value->student_id;
                     Settings::save_attt_to_log($value,2,true);
                 }    
             }
@@ -296,7 +298,10 @@ class AttendanceController extends Controller
                     $newattendence->school_id = Yii::app()->user->schoolId;
                     $newattendence->save();
                     Settings::save_attt_to_log($newattendence,$att_type,true);
-                    $att_id[] = $newattendence->id;
+                    if(!in_array($student_id, $current_att))
+                    {
+                        $att_id[] = $newattendence->id;
+                    }
                 }
                 if ($att_id)
                 {

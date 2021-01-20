@@ -98,7 +98,7 @@
         <%= select :batch, :id,
           @batches.map {|b| [b.full_name, b.id] },
           {:prompt => t('select_a_batch')},
-          {:onchange => "#{remote_function(
+          {:class => "select2-class",:onchange => "#{remote_function(
           :url => { :action => 'new_entry' },
           :with => "'batch_id='+value + '&timetable_id=' +#{@timetable.id}",
           :before => "Element.show('loader')",
@@ -134,3 +134,6 @@
   </div>
 
 </div>
+<script type="text/javascript" charset="utf-8">
+    j('.select2-class').select2();
+</script>

@@ -244,7 +244,11 @@
                 <% unless @student.class_roll_no.nil? or @student.class_roll_no.blank? %>
                 <div class="row">
                     <div class="row_label">
-                        <div><%= t('roll_number') %></div>
+                        <div><% if MultiSchool.current_school.code == "sfx" %>
+                              <%= t('adm_no') %>
+                            <% else %>
+                              <%= t('roll_number') %>
+                            <% end %></div>
                     </div>
                     <div class="row_data">
                         <div><%= @student.class_roll_no %></div>

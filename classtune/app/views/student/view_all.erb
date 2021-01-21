@@ -215,7 +215,13 @@
               <thead>
               <th data-orderable="false"><%= "Photo" %></th>
               <th data-orderable="false"><%= "ID" %></th>
-              <th data-orderable="false"><%= "Roll" %></th>
+              <th data-orderable="false">
+                  <% if MultiSchool.current_school.code == "sfx" %>
+                    <%= "Student Id" %>
+                  <% else %>
+                    <%= "Roll" %>
+                  <% end %>
+              </th>
               <th data-orderable="false"><%= "Name" %></th>
               <th data-orderable="false"><%= "Blood Group" %></th>
               <th data-orderable="false"><%= "Admission Date" %></th>

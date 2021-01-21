@@ -119,7 +119,11 @@
                           <strong class="std-name"> <%= card.full_name  %> </strong> <br/> 
                           of class: <strong><%= card.batch.course.course_name %></strong> 
                           Section: <strong class="sectionname"><%= card.batch.course.section_name  %> </strong>
-                          Roll No: <strong><%= card.class_roll_no %></strong><br/> 
+                          <% if MultiSchool.current_school.code == "sfx" %>
+                              <%= t('adm_no') %>
+                            <% else %>
+                              <%= t('roll_number') %>
+                            <% end %>: <strong><%= card.class_roll_no %></strong><br/> 
                           Date of Issue: <strong><%= Date.today  %> </strong>
                       </p>
                       <div class="authorisation">

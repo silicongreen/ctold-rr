@@ -62,7 +62,11 @@
         <table id="pdf-table" width="100%" cellspacing="0">
             <tr class="table-header">
                 <td class="col-pdf aling-left no-warp"><b>ID</b></td> 
-                <td class="col-pdf aling-left no-warp"><b>Roll</b></td> 
+                <td class="col-pdf aling-left no-warp"><b><% if MultiSchool.current_school.code == "sfx" %>
+                              <%= t('adm_no') %>
+                            <% else %>
+                              <%= t('roll_number') %>
+                            <% end %></b></td> 
                 <td class="col-pdf aling-left no-warp"><b>Name</b></td> 
                 <% if @section_pdf.blank? %>
                   <td class="col-pdf aling-left no-warp"><b>Section</b></td>
@@ -147,7 +151,11 @@
                   </tr>
                   <tr class="table-header">
                       <td class="col-pdf aling-left no-warp"><b>ID</b></td> 
-                      <td class="col-pdf aling-left no-warp"><b>Roll</b></td> 
+                      <td class="col-pdf aling-left no-warp"><b><% if MultiSchool.current_school.code == "sfx" %>
+                              <%= t('adm_no') %>
+                            <% else %>
+                              <%= t('roll_number') %>
+                            <% end %></b></td> 
                       <td class="col-pdf aling-left no-warp"><b>Name</b></td> 
                       <% if @section_pdf.blank? %>
                         <td class="col-pdf aling-left no-warp"><b>Section</b></td>

@@ -27,7 +27,11 @@
                     <td class="col-pdf aling-left no-warp" colspan="2"><%= student.batch.course.section_name %></td> 
                   </tr>
                   <tr class="table-header">
-                    <td class="col-pdf aling-left no-warp"><b>Roll</b></td> 
+                    <td class="col-pdf aling-left no-warp"><b><% if MultiSchool.current_school.code == "sfx" %>
+                              <%= t('adm_no') %>
+                            <% else %>
+                              <%= t('roll_number') %>
+                            <% end %></b></td> 
                     <td class="col-pdf aling-left no-warp"><%= student.class_roll_no %></td> 
                     <td class="col-pdf aling-left no-warp" style="text-align:right;"><b>Version</b></td> 
                     <td class="col-pdf aling-left no-warp"><%= batch_split[1] unless batch_split[1].blank? %></td> 

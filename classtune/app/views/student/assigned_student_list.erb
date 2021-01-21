@@ -31,7 +31,12 @@
             <tr class="table-header">
                 <th class="col-pdf sl">Serial</th>
                 <th class="col-pdf name">Student Name</th>
-                <th class="col-pdf name">Roll</th>
+                <th class="col-pdf name">
+                            <% if MultiSchool.current_school.code == "sfx" %>
+                              <%= t('adm_no') %>
+                            <% else %>
+                              <%= t('roll_number') %>
+                            <% end %></th>
                 <th class="col-pdf admn_no">Admission No</th>
                 <th class="col-pdf elective_type">Elective Type</th>
             </tr>

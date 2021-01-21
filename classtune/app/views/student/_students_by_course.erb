@@ -30,7 +30,11 @@
         <td><%= t('sl_no') %></td>
         <td><%= t('name') %></td>
         <% if MultiSchool.current_school.id != 340 %>
-        <td><%= t('roll_number') %></td>
+          <% if MultiSchool.current_school.code == "sfx" %>
+            <td><%= t('adm_no') %></td>
+          <% else %>
+            <td><%= t('roll_number') %></td>
+          <% end %>
         <% else %>
         <td style='white-space:nowrap;'><%= t('date_of_birth') %></td>
         <% end %>
@@ -38,7 +42,7 @@
           <td style='white-space:nowrap;'><%= "GPA" %></td>
         <% end %>
         
-        <td><%= t('adm_no') %></td>
+        <td>Admission No.</td>
         <td></td>
       </tr>
       <% @students.each_with_index do |r, i| %>

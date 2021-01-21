@@ -71,7 +71,11 @@
           <hr class="sub-heading"></hr>
 
           <div class="label-field-pair">
-              <label for="class_roll_no"><%= t('roll_number') %></label>
+              <label for="class_roll_no"><% if MultiSchool.current_school.code == "sfx" %>
+                              <%= t('adm_no') %>
+                            <% else %>
+                              <%= t('roll_number') %>
+                            <% end %></label>
               <div class="text-input-bg"><%= s.text_field :class_roll_no %></div>
           </div>
 

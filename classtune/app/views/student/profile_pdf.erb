@@ -102,7 +102,11 @@
           <td class="col-pdf no-border" colspan="2"></td>
         </tr>
         <tr>
-          <td class="col-pdf" colspan="1"><%= "Class Roll" %></td>
+          <td class="col-pdf" colspan="1"><% if MultiSchool.current_school.code == "sfx" %>
+                              <%= t('adm_no') %>
+                            <% else %>
+                              <%= t('roll_number') %>
+                            <% end %></td>
           <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= @student.class_roll_no unless @student.class_roll_no.nil? %></td>
           <td class="col-pdf no-border" colspan="2"></td>
         </tr>

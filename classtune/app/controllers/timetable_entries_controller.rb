@@ -30,6 +30,7 @@ class TimetableEntriesController < ApplicationController
       emp_batches = @current_user.employee_record.batches
       emp_batches_id = emp_batches.map(&:batch_id)
       @batches = @batches.reject{|b| !emp_batches_id.include?(b.id.to_s)}
+      @batches.reject! {|b| b.is_deleted?}
     end
   
   end

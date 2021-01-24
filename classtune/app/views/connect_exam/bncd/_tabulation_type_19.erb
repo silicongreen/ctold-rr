@@ -228,7 +228,7 @@
                     <% if !std.blank? and !std['first_name'].blank? %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
-                    <% if std_count>12 && extender ==0 %>
+                    <% if std_count>20 && extender ==0 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -269,10 +269,10 @@
                           <% next %>
                         <% end %>
                         <% if has_exam == true %>
-                          <td><%=  "S-1" %></td>
-                          <td><%=  "S-2" %></td>
-                          <td><%=  "CQ" %></td>
-                          <td><%=  "TM" %></td>
+                          <td class="no-warp"><%=  "S-1" %></td>
+                          <td class="no-warp"><%=  "S-2" %></td>
+                          <td class="no-warp"><%=  "CQ" %></td>
+                          <td class="no-warp"><%=  "TM" %></td>
                         <% end %>
                       <% end %>
 
@@ -289,15 +289,15 @@
                           <% next %>
                         <% end %>
                         <% if has_exam == true %>
-                          <td><%=  "20" %></td>
-                          <td><%=  "20" %></td>
-                          <td><%=  "10" %></td>
-                          <td><%=  "50" %></td>
+                          <td class="no-warp"><%=  "20" %></td>
+                          <td class="no-warp"><%=  "20" %></td>
+                          <td class="no-warp"><%=  "10" %></td>
+                          <td class="no-warp"><%=  "50" %></td>
                         <% end %>
                       <% end %>
 
                   </tr>
-                    <% elsif std_count>13 && extender ==1 %>
+                    <% elsif std_count>22 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -338,10 +338,10 @@
                           <% next %>
                         <% end %>
                         <% if has_exam == true %>
-                          <td><%=  "S-1" %></td>
-                          <td><%=  "S-2" %></td>
-                          <td><%=  "CQ" %></td>
-                          <td><%=  "TM" %></td>
+                          <td class="no-warp"><%=  "S-1" %></td>
+                          <td class="no-warp"><%=  "S-2" %></td>
+                          <td class="no-warp"><%=  "CQ" %></td>
+                          <td class="no-warp"><%=  "TM" %></td>
                         <% end %>
                       <% end %>
 
@@ -358,10 +358,10 @@
                           <% next %>
                         <% end %>
                         <% if has_exam == true %>
-                          <td><%=  "20" %></td>
-                          <td><%=  "20" %></td>
-                          <td><%=  "10" %></td>
-                          <td><%=  "50" %></td>
+                          <td class="no-warp"><%=  "20" %></td>
+                          <td class="no-warp"><%=  "20" %></td>
+                          <td class="no-warp"><%=  "10" %></td>
+                          <td class="no-warp"><%=  "50" %></td>
                         <% end %>
                       <% end %>
 
@@ -431,7 +431,9 @@
 
 
                               %>
-                              <% end %>
+                              <% else %>
+                                <td>-</td>
+                              <% end %>  
                             <% end %> 
                             <% total_mark = total_mark+subject_obtain_mark.to_f %>
                             <td><%= sprintf( "%0.02f", subject_obtain_mark) %></td>

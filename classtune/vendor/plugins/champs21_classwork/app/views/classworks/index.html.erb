@@ -132,14 +132,13 @@
 
                           </div>
                           <%
-                                    emp_name = ""
-                                    unless classwork.subject.employees[0].nil?
-                                      emp_name = classwork.subject.employees[0].first_name
-                                      unless classwork.subject.employees[0].middle_name.nil?
-                                        emp_name += ' ' + classwork.subject.employees[0].middle_name
+                                    unless classwork.employee.nil?
+                                      emp_name = classwork.employee.first_name
+                                      unless classwork.employee.middle_name.nil?
+                                        emp_name += ' ' + classwork.employee.middle_name
                                       end
-                                      unless classwork.subject.employees[0].last_name.nil?
-                                        emp_name += ' ' + classwork.subject.employees[0].last_name
+                                      unless classwork.employee.last_name.nil?
+                                        emp_name += ' ' + classwork.employee.last_name
                                       end
                                     end
                                   %>

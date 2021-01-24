@@ -248,7 +248,7 @@
                           <% next %>
                         <% end %>
                         <% if has_exam == true %>
-                          <td colspan="4"><%=  sub['name'] %></td>
+                          <td colspan="4"><%=  sub['name'].gsub(" 1st Paper","").upcase %></td>
                         <% end %>
                       <% end %>
                       <td rowspan="3">Total</td>

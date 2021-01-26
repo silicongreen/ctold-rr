@@ -48,7 +48,10 @@ class ReportController extends Controller
                 $userauth->auth_id = mt_rand();
                 $userauth->save();
                 
-                if($user_data->new_id)
+                $schoolObj = new Schools();
+                $school_data = $schoolObj->findByPk(Yii::app()->user->schoolId);
+                
+                if($user_data->new_id  && $school_data && $school_data->classpay_active == 1)
                 {
                    $class_pay_id = $user_data->new_id;
                    $class_pay_key = mt_rand();

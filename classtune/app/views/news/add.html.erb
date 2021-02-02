@@ -162,7 +162,7 @@
       </div>
       <div class="news_label_field hidden_field_class_department hidden_field_class_department_employee" style="float: left; display:none;clear: both;width: 100%;margin: 10px 0px;" >
           <label >Select Department</label>
-          <div class="text-input-bg">
+          <div class="text-input-bg2">
 
               <%= select :employee, :department_id,
         @employee_department.map {|b| [b.name, b.id]},
@@ -183,7 +183,7 @@
       <% end %>
       <div class="news_label_field hidden_field_class_department hidden_field_class_department_student" style="float: left; display:none;clear: both;width: 100%;margin: 10px 0px;" >
           <label >Select Class</label>
-          <div class="text-input-bg">
+          <div class="text-input-bg2">
 
               <%= select :batch, :batch_id,
         @batches.map {|b| [b.full_name, b.id]},
@@ -303,5 +303,9 @@ label {display:inline;}
 }
 #list li label input {
     margin-right:10px;
+}
+.text-input-bg2 select
+{
+   height: 300px;
 }
 </style>    

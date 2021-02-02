@@ -167,8 +167,8 @@
               <%= select :employee, :department_id,
         @employee_department.map {|b| [b.name, b.id]},
         {:prompt => "Select A Department"},
-        {:onChange => "#{remote_function(:url => {:action => "list_employees"},
-        :with => "'department_id='+ value",
+        {:multiple => true,:onChange => "#{remote_function(:url => {:action => "list_employees"},
+        :with => "'department_id='+jj('#employee_department_id').val()",
         :before => "Element.show('loader2')",
         :success => "Element.hide('loader2')"
         )}"} %>
@@ -188,8 +188,8 @@
               <%= select :batch, :batch_id,
         @batches.map {|b| [b.full_name, b.id]},
         {:prompt => "#{t('select_a_batch')}"},
-        {:onChange => "#{remote_function(:url => {:action => "list_students"},
-        :with => "'batch_id='+ value",
+        {:multiple => true,:onChange => "#{remote_function(:url => {:action => "list_students"},
+        :with => "'batch_id='+jj('#batch_batch_id').val()",
         :before => "Element.show('loader')",
         :success => "Element.hide('loader')"
         )}"} %>

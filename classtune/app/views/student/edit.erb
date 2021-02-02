@@ -225,7 +225,7 @@
               </div>
               <div class="form-group col-sm-6 even" >
                   <label for="student_blood_group"><%= t('blood_group') %></label>
-                  <%= select :student, :blood_group, ["#{t('unknown')}","A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"],{:prompt=> "#{t('select_blood_group')}"},:selected => @student.blood_group %>
+                  <%= select :student, :blood_group, ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"],{:prompt=> "#{t('select_blood_group')}"},:selected => @student.blood_group %>
               </div>
               <div class="form-group col-sm-6"  style="display: none;">
                   <label for="student_birth_place"><%= t('birth_place') %></label>
@@ -239,7 +239,7 @@
               </div>
               <div class="form-group col-sm-6 even">
                   <label for="student_religion"><%= t('religion') %></label>
-                  <%= select :student, :religion, ["Select Religion","Islam", "Hindu", "Christian", "Buddhist", "Other"],:selected=> @student.religion %>
+                  <%= select :student, :religion, options_for_select(["N/A","Islam", "Hindu", "Christian", "Buddhist", "Other"],:selected=> @student.religion),{:prompt=> "Select Religion"} %>
               </div>
               <div class="form-group col-sm-6">
                   <label for="student_nationality"><%= t("dual_nationality") %></label>

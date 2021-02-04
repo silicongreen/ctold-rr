@@ -1589,7 +1589,7 @@ class SmsController < ApplicationController
       fee_collections_ids << FinanceFeeCollection.find_all_by_name(fee_collection_name).map(&:id)
     end
     fee_collections_ids = fee_collections_ids.reject { |c| c.empty? }
-    fees_students = FinanceFee.find(:all, :conditions=>"fee_collection_id IN (#{fee_collections_ids.join(",")}) and is_paid = #{false} and balance > 0 and students.id IN (#{student_ids.join(',')})" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id  and finance_fees.batch_id = students.batch_id INNER JOIN finance_fee_collections ON finance_fees.fee_collection_id = finance_fee_collections.id ')
+    fees_students = FinanceFee.find(:all, :conditions=>"fee_collection_id IN (#{fee_collections_ids.join(",")}) and is_paid = #{false} and balance > 0 and students.id IN (#{student_ids.join(',')})" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id INNER JOIN finance_fee_collections ON finance_fees.fee_collection_id = finance_fee_collections.id ')
     
     @recipients=[]
     i = 0

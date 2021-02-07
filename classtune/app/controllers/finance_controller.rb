@@ -104,8 +104,8 @@ class FinanceController < ApplicationController
       now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
       activity_log = ActivityLog.new
       activity_log.user_id = current_user.id
-      activity_log.controller = "Finance Fees Adjustment - NASCD"
-      activity_log.action = "Finance Fees Adjustment - NASCD"
+      activity_log.controller = "Finance Fees Adjustment - SAGC"
+      activity_log.action = "Finance Fees Adjustment - SAGC"
       activity_log.post_requests = "0"
       activity_log.ip = request.remote_ip
       activity_log.user_agent = request.user_agent
@@ -134,7 +134,7 @@ class FinanceController < ApplicationController
 #	  end
 #	  abort('here')
       error_order = []
-	  @stdent_id = 0;
+	  @stdent_id = 31961;
       @students = Student.find(:all, :order => 'id ASC', :conditions => ["is_deleted = 0 and id > #{@stdent_id}"]) #, :group => "ledger_date"
       unless @students.blank?
         @students.each do |st|

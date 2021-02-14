@@ -86,6 +86,7 @@
                                     if last_mark > 0
                                       main_mark = (last_mark.to_f/last_full_mark.to_f)*100
                                     end
+                                    main_mark = main_mark.round()
                                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                                     if !grade.blank? and !grade.name.blank? 
                                           if grade.credit_points.to_i == 0

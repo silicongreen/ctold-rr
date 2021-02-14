@@ -141,12 +141,12 @@
                   <% end %>
                   <tr class="table-header">
                       <td><b>GPA Without Optional Subject</b></td>   
-                      <td colspan="<%= colspan_exam+3 %>"></td>
+                      <td colspan="<%= colspan_exam+2 %>"></td>
                       <td><b><%= grade_point_avg %></b></td>
                   </tr>
 
                   <tr class="even">
-                      <td colspan="<%= colspan_exam+5 %>">Optional Subject</td>
+                      <td colspan="<%= colspan_exam+4 %>">Optional Subject</td>
                   </tr>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>

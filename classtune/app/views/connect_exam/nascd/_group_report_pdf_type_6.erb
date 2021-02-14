@@ -42,6 +42,7 @@
                   <% total_subject = 0 %>
                   <% last_full_mark = 0 %> 
                   <% last_mark = 0 %>
+                  <% failed = false %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% subjectdata = Subject.find(subjects['id'].to_i) %>
@@ -89,6 +90,7 @@
                                     if !grade.blank? and !grade.name.blank? 
                                           if grade.credit_points.to_i == 0
                                             subject_failed = true
+                                            failed = true
                                           end
                                     end
                                     %>
@@ -123,6 +125,11 @@
                           <% if !grade.blank? and !grade.name.blank? %>
                             <td class="col-pdf"><%= grade.name %></td>
                             <td class="col-pdf"><%= grade.credit_points.to_f %></td>
+                            <%
+                            if grade.credit_points.to_i == 0
+                                failed = true
+                            end
+                            %>
                             <% total_grade = total_grade+grade.credit_points.to_f %>
                           <% end %>
                           <% total_mark = total_mark+obtain_mark %>
@@ -229,7 +236,11 @@
                       <td><b><%= total_mark %></b></td>
                       <td><b>
                               <% if !grade.blank? and !grade.name.blank? %>
-                                <%= grade.name %>
+                                <% if failed == true %>
+                                    F
+                                <% else %>
+                                 <%= grade.name %>
+                                <% end%>
                               <% else %>
                                 -
                               <% end %>

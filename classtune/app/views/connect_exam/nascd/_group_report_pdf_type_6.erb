@@ -241,10 +241,7 @@
 
 
               </table>
-              <br/>
-              <br/>
-
-              <p class="text-align-center"><b>Date of result publish : <%= @connect_exam_obj.published_date.blank?  ? "" : I18n.l(@connect_exam_obj.published_date,:format=>"%d %B %Y") %></b></p>
+              
               <br/>
               <br/>
               <br/>
@@ -290,6 +287,11 @@
                   </tr>
 
               </table>
+
+              <br/>
+              <br/>
+
+              <p class="text-align-center"><b>Date of result publish : <%= @connect_exam_obj.published_date.blank?  ? "" : I18n.l(@connect_exam_obj.published_date,:format=>"%d %B %Y") %></b></p>
 
 
 

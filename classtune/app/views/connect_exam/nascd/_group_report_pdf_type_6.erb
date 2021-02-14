@@ -91,8 +91,9 @@
                                     if !grade.blank? and !grade.name.blank? 
                                           if grade.credit_points.to_i == 0
                                             subject_failed = true
-                                            failed = true
-                                            <td class="col-pdf"><%= main_mark%></td>
+                                            failed = true %>
+                                            <td class="col-pdf"><%= main_mark %></td>
+                                            <%
                                           end
                                     end
                                     %>

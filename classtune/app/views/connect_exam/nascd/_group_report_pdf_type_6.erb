@@ -68,13 +68,17 @@
                             <% @report_data['report']['exams'].each do |report| %>
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                 <% max_mark = max_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
-                                <% last_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                
                               <% end %>
                             <% end %>
                           <% end %>
                           <% exam_loop = 0 %> 
                           <% unless @report_data['report']['exams'].blank? %>
                             <% @report_data['report']['exams'].each do |report| %>
+
+                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                <% last_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                              <% end %>
                               
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                 <% exam_loop = exam_loop+1 %> 

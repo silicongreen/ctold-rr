@@ -77,7 +77,7 @@
                             <% @report_data['report']['exams'].each do |report| %>
                               <% exam_loop = exam_loop+1 %> 
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                <td class="col-pdf"><%= last_full_mark %>|<%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %></td>
+                                <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %></td>
                                 <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                 <% last_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                 <% if exam_loop < 3 %>
@@ -91,9 +91,7 @@
                                     if !grade.blank? and !grade.name.blank? 
                                           if grade.credit_points.to_i == 0
                                             subject_failed = true
-                                            failed = true %>
-                                            <td class="col-pdf"><%= main_mark %></td>
-                                            <%
+                                            failed = true
                                           end
                                     end
                                     %>

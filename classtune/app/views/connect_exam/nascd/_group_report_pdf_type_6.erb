@@ -180,6 +180,7 @@
                         <% end %>
                       <% end %>
                       <% exam_loop = 0 %>
+                      <% subject_failed = false %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>
                           <% max_mark = 0 %>

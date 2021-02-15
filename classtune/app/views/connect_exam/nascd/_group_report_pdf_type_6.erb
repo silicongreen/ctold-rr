@@ -82,8 +82,7 @@
                               
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                 <% exam_loop = exam_loop+1 %> 
-                                <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %></td>
-                                <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                <% failed_class = "" %>
                                 <% last_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                 <% if exam_loop < 3 %>
                                     <%
@@ -97,10 +96,14 @@
                                           if grade.credit_points.to_i == 0
                                             subject_failed = true
                                             failed = true
+                                            failed_class = "underscore" 
                                           end
                                     end
                                     %>
-                                <% end %>    
+                                <% end %>   
+                                <td class="col-pdf <%= failed_class%>"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %></td>
+                                <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                 
                               <% else %>
                                 <td class="col-pdf">-</td>
                               <% end %>  
@@ -176,6 +179,7 @@
                           <% next %>
                         <% end %>
                       <% end %>
+                      <% exam_loop = 0 %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>
                           <% max_mark = 0 %>
@@ -189,8 +193,31 @@
                           <% end %>
                           <% unless @report_data['report']['exams'].blank? %>
                             <% @report_data['report']['exams'].each do |report| %>
+                              
+                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                <% last_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                              <% end %>
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %></td>
+                                <% exam_loop = exam_loop+1 %> 
+                                <% failed_class = "" %>
+                                <% last_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                <% if exam_loop < 3 %>
+                                    <%
+                                    main_mark = 0
+                                    if last_mark > 0
+                                      main_mark = (last_mark.to_f/last_full_mark.to_f)*100
+                                    end
+                                    main_mark = main_mark.round()
+                                    grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                                    if !grade.blank? and !grade.name.blank? 
+                                          if grade.credit_points.to_i == 0
+                                            subject_failed = true
+                                            failed_class = "underscore" 
+                                          end
+                                    end
+                                    %>
+                                <% end %>   
+                                <td class="col-pdf <%= failed_class%>"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %></td>
                                 <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                               <% else %>
                                 <td class="col-pdf">-</td>
@@ -207,6 +234,12 @@
                             main_mark = (obtain_mark.to_f/max_mark.to_f)*100
                             end
                           grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                          if subject_failed == true
+                            if !grade.blank? and !grade.name.blank? 
+                              grade.name = "F"
+                              grade.credit_points = 0.00
+                            end  
+                          end
                           highest_mark = 0
                           if !@subject_highest.blank? and !@subject_highest[subjects['id'].to_i].blank?
                             highest_mark = @subject_highest[subjects['id'].to_i].to_f
@@ -482,6 +515,9 @@
             {
                 margin: 5px 0px !important;
             }
-
+            .underscore
+            {
+               text-decoration: underline;
+            }
 
         </style>    

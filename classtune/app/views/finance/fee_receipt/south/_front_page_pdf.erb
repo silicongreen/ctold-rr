@@ -38,7 +38,7 @@
                 <tr>
                     <td colspan="1"><%= "Shift" %></td> <td colspan="7">:&nbsp; <%=  "#{@student.batch.name}" %></td>
                     <td colspan="10"></td>
-                    <td colspan="1" class="td-align-right"><%= "Year" %></td> <td colspan="4">:&nbsp; <%=  Time.now.strftime("%Y") %>-<%=  Time.now.strftime("%Y").to_i+1 %></td>
+                    <td colspan="1" class="td-align-right"><%= "Year" %></td> <td colspan="4">:&nbsp; <%=  Time.now.strftime("%Y").to_i - 1 %>-<%=  Time.now.strftime("%Y").to_i %></td>
                 </tr>
                     <td colspan="1"><%= "Class" %></td> <td colspan="7">:&nbsp; <%=  "#{@student.batch.course.course_name}" %></td>
                     <td colspan="1" class="td-align-right"><%= "Section" %></td> <td colspan="7">:&nbsp; <%=  "#{@student.batch.course.section_name}" %></td>

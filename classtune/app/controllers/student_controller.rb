@@ -1638,23 +1638,23 @@ class StudentController < ApplicationController
         std_category = student.student_category.name
       end
       password = "";
-      # guardians = student.student_guardian
+      guardians = student.student_guardian
       
-      # unless guardians.nil?
-      #   guardians.each do |guardian|
-      #     guser = User.find_by_id(guardian.user_id)
-      #     unless guser.blank?
-      #       unless guser.username.index("p1").blank?
-      #         @paid_data = TdsFreeUser.find_by_paid_id(guser.id)
-      #         unless @paid_data.blank?
-      #           password = @paid_data.paid_password
-      #         end
-      #         break
-      #       end
-      #     end
+      unless guardians.nil?
+        guardians.each do |guardian|
+          guser = User.find_by_id(guardian.user_id)
+          unless guser.blank?
+            unless guser.username.index("p1").blank?
+              @paid_data = TdsFreeUser.find_by_paid_id(guser.id)
+              unless @paid_data.blank?
+                password = @paid_data.paid_password
+              end
+              break
+            end
+          end
           
-      #   end
-      # end
+        end
+      end
       
       if student.photo.file? 
         @profile_image = student.photo.url 

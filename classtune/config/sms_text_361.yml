@@ -1,6 +1,6 @@
 school:
- upass: "Dear Parents, to login ClassTune (classtune.com or mobile app) your User ID: #UNAME# & Password: #PASSWORD# , Helpline 01753467785 & 01740212121. NASCD"
- epass: "Dear Parents, to login ClassTune (classtune.com or mobile app) your User ID: #UNAME# & Password: #PASSWORD# , Helpline 01753467785 & 01740212121. NASCD"
- tpass: "Dear Employee, to login ClassTune (classtune.com or mobile app) your User ID: #UNAME# & Password: #PASSWORD# , Helpline 01753467785 & 01740212121. NASCD"
+ upass: "Dear Parents, to login ClassTune (classtune.com or mobile app) your User ID: #UNAME# & Password: #PASSWORD# . NASCD"
+ epass: "Dear Parents, to login ClassTune (classtune.com or mobile app) your User ID: #UNAME# & Password: #PASSWORD# . NASCD"
+ tpass: "Dear Employee, to login ClassTune (classtune.com or mobile app) your User ID: #UNAME# & Password: #PASSWORD# . NASCD"
  feedues: "Tuition Fee of January & Session Charge of #UNAME# ID #UID# is TK #AMOUNT#. Pay this amount within 28 Jan 2019 through online. NASCD"
  feepaid: "Fees received BDT #AMOUNT# for #UNAME#(#UID#) as on #PAIDDATE# by TBL. TranID-#TRANID# TranRef-#TRANREF#, NASCD"

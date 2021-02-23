@@ -131,10 +131,10 @@ class Guardian < ActiveRecord::Base
         end
       end while user_record.present?
       u.username = u_name
-      password_auto = (('2'..'9').to_a + ('a'..'h').to_a + ('p'..'z').to_a + ('A'..'H').to_a + ('P'..'Z').to_a).shuffle.first(6).join
-      if MultiSchool.current_school.code == "oids" or MultiSchool.current_school.code == "mevsc" or MultiSchool.current_school.code == "cbis"
+      # password_auto = (('2'..'9').to_a + ('a'..'h').to_a + ('p'..'z').to_a + ('A'..'H').to_a + ('P'..'Z').to_a).shuffle.first(6).join
+      # if MultiSchool.current_school.code == "oids" or MultiSchool.current_school.code == "mevsc" or MultiSchool.current_school.code == "cbis"
         password_auto = "123456"
-      end
+      # end
       u.password = password_auto
       u.role = 'Parent'
       u.email = ( email == '' or User.active.find_by_email(self.email) ) ? self.email.to_s : ""

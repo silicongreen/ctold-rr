@@ -88,7 +88,7 @@
                   <% total_marks = 0 %>
                   <% total_marks_obtain = 0 %>
                   <% subject_count = 0 %>
-                  <% @std_subject_elective = StudentsSubject.find_all_by_student_id(@student.id)  %>
+                  <% @batch_subjects = Subject.find_all_by_batch_id(@batch.id)  %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                     <%
@@ -147,11 +147,11 @@
                           <% absent_att = 0 %>   
                             
                           <% e_subject_id = 0 %>
-                          <% unless @std_subject_elective.blank? %>
-                            <% @std_subject_elective.each do |esub| %>
-                                <% unless esub.subject.blank? %>
-                                <% if esub.subject.name.include?(subjects['name']) %>
-                                    <% e_subject_id = esub.subject.id %>
+                          <% unless @batch_subjects.blank? %>
+                            <% @batch_subjects.each do |subject| %>
+                                <% unless subject.blank? %>
+                                <% if subject.name.include?(subjects['name']) %>
+                                    <% e_subject_id = subject.id %>
                                     <% total_att_temp = SubjectAttendanceRegister.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
                                     <% absent_att_temp = SubjectAttendance.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:is_late=>0,:student_id=>@student.id,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
                                     <% total_att = total_att+total_att_temp.to_i %>

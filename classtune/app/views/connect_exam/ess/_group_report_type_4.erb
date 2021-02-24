@@ -1,0 +1,89 @@
+
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+             <table id="pdf-table"  width="100%" class="left-table even-table exam-marks" cellspacing="0">
+                  <% c = 'even'  %>
+                  <tr class="even">
+                      <td colspan="5" ><b>ACADEMIC PERFORMANCE</b></td>
+                  </tr>
+                  <% total_mark_of_allexam = 0 %>
+                  <tr class="even">
+                    <td class="col-pdf" rowspan="2"><b><%= "Subject" %></b></td>
+                    <td colspan="2" ><b>Class Test 1</b></td>
+                    <td colspan="2" ><b>Attendance</b></td>
+                  </tr>
+                  <tr class="even">
+                    <td><b>Full Marks</b></td>
+                    <td><b>Obtained Marks</b></td>
+                    <td><b>No. of Classes</b></td>
+                    <td><b>Present</b></td>
+                  </tr>
+                  
+                  <% total_marks = 0 %>
+                  <% subject_count = 0 %>
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                    <%
+                      has_mark = 0
+                       unless @report_data['report']['exams'].blank?   
+                            @report_data['report']['exams'].each do |report| 
+                             
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
+                                  has_mark = has_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                end
+                            end
+                       end  
+                  
+                    %>
+                      <% if subjects['no_exams_sjws'].to_i == 1 or has_mark == 0 %>
+                        <% next %>
+                      <% end %>
+                        <% subject_count = subject_count+1 %>
+                        
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>" >
+
+                          <td class="col-pdf no-warp  align-left"  style="padding:5px !important;"><%= subjects['name'] %></td>
+                          <%
+                          full_mark = 0
+                          obtain_mark = 0
+                          unless @report_data['report']['exams'].blank?   
+                            @report_data['report']['exams'].each do |report| 
+                             
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
+                                  obtain_mark = obtain_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                end
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
+                                  full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                end
+                              
+                            end 
+                          end 
+                        %>
+
+                          <% 
+                          
+                          main_mark = 0
+                          if full_mark > 0 && obtain_mark > 0
+                            main_mark = (obtain_mark.to_f/full_mark.to_f)*100
+                          end  
+                          
+                          main_mark = main_mark.round()
+                          grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                           
+                          
+                          %>
+                          <td class="col-pdf"><b><%=  full_mark %></b></td>
+                          <td class="col-pdf"><b><%=  obtain_mark %></b></td>
+                          <% total_att = SubjectAttendanceRegister.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>subjects['id'].to_i,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
+                          <% absent_att = SubjectAttendance.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>subjects['id'].to_i,:is_late=>0,:student_id=>@student.id,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
+                          <% present = total_att.to_i - absent_att.to_i %>
+                          <td class="col-pdf"><b><%=  total_att.to_i %></b></td>
+                          <td class="col-pdf"><b><%=  present %></b></td>
+                          
+
+                      </tr>
+                    <% end %>  
+                  <% end %>   
+                  
+
+              </table>    
+<% end %>

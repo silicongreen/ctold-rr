@@ -76,13 +76,10 @@
                   <tr class="even">
                     <td class="col-pdf" rowspan="2"><b><%= "Subject" %></b></td>
                     <td colspan="2" ><b>Class Test 1</b></td>
-                    <td colspan="2" ><b>Attendance</b></td>
                   </tr>
                   <tr class="even">
                     <td><b>Full Marks</b></td>
                     <td><b>Obtained Marks</b></td>
-                    <td><b>No. of Classes</b></td>
-                    <td><b>Present</b></td>
                   </tr>
                   
                   <% total_marks = 0 %>
@@ -142,7 +139,7 @@
                           
                           %>
                           <td class="col-pdf"><b><%=  full_mark %></b></td>
-                          <td class="col-pdf"><b><%=  obtain_mark %></b></td>
+                          <td class="col-pdf"><b><%= sprintf( "%0.02f", obtain_mark) %></b></td>
                           <% total_att = 0 %>
                           <% absent_att = 0 %>   
                             
@@ -161,26 +158,47 @@
                             <% end %>
                           <% end %> 
                           <% present = total_att.to_i - absent_att.to_i %>
-                          <td class="col-pdf"><b><%=  total_att.to_i %></b></td>
-                          <td class="col-pdf"><b><%=  present %></b></td>
                           
 
                       </tr>
                     <% end %>  
                   <% end %>   
+                  <%
+                    
+                    group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
+                    @all_subjects = []
+                    group_exams.each do |group_exam|
+                      allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
+                      allexams.each do |exam|
+                        if !@all_subjects.include?(exam.subject.id)
+                            @all_subjects << exam.subject.id
+                        end
+                      end
+                    end 
+                  %>
+                  <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                    <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
+                      <%  if @all_subjects.include?(report['id'].to_i) %>
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                            <td class="col-pdf no-warp  align-left"><%= report['subject_name'] %></td>
+                            <td class="col-pdf" colspan="2"><b><%= report['subject_comment'] unless report['subject_comment'].blank? %></b></td>
+                        </tr>
+                      <% end %>
+                    <% end %>
+                  <% end %> 
                   <tr class="even"> 
-                    <td>Total Marks</td>
+                    <td class="col-pdf no-warp  align-left">Total Marks</td>
                     <td>
-                      <%= total_marks %>
+                      <b><%= total_marks %></b>
                     </td>
                     <td>
-                      <%= total_marks_obtain %>
+                      <b><%= total_marks_obtain %></b>
                     </td>
                     <td colspan="2">
                     </td>
                   </tr>
                   <tr class="even"> 
-                    <td>Comment on Overall Performance</td>
+                    <td class="col-pdf no-warp  align-left">Comment on Overall Performance</td>
                     <td colspan="4">
                     <% if !@exam_comment.blank? %>
                       <%= @exam_comment.comments %>
@@ -189,13 +207,15 @@
                     </td>
                   </tr>
                   <tr class="even"> 
-                    <td>Total No. of Working Days </td>
-                    <td colspan="4"><%= @connect_exam_obj.total_working_days %> Days</td>
+                    <td  class="col-pdf no-warp  align-left">Total No. of Working Days </td>
+                    <td colspan="4"><b><%= @connect_exam_obj.total_working_days %> Days</b></td>
                   </tr>
                   <tr class="even"> 
                     <td>Signature of Principal</td>
                     <td colspan="4">
                       <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"30%" %>
+                      <br/>
+                      <%= Time.now.strftime("%Y/%m/%d") %>
                     </td>
                   </tr>
 

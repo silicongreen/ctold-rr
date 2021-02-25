@@ -1,26 +1,6 @@
 
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-           <table class="std_info_table" width="100%" cellspacing="0">
-              <tr>
-                  <td class="align-left">Name : <%= @student.full_name %></td>
-                  <td class="align-left">Roll : <%= @student.class_roll_no %></td>
-                  <% unless @batch.course.section_name.blank? %>
-                    <td class="align-left">Section : <%= @batch.course.section_name %></td>
-                  <% end %>
-                  <td class="align-left">A /C ID : <%= @student.admission_no %></td>
-              </tr>
-              <tr>
-                  
-                  <td class="align-left" <% unless @batch.course.section_name.blank? %>colspan="4"<% else %>colspan="3"<% end %>>Class Teacher :
-                      <%= class_teacher  %>
-                  </td>
-              </tr>
-          </table>
-      </div>
-     
-      <div class ="current_batch" style="margin-left:0px;">
-          <div id="grouped_exam_report">
-              <table id="pdf-table"  width="100%" class="left-table even-table exam-marks" cellspacing="0">
+            <table id="pdf-table"  width="100%" class="left-table even-table exam-marks" cellspacing="0">
                   <% c = 'even'  %>
                   <tr class="even">
                       <td colspan="3" ><b>ACADEMIC PERFORMANCE</b></td>
@@ -43,20 +23,24 @@
                     <% @report_data['report']['subjects'].each do |subjects| %>
                     <%
                       has_mark = 0
+                      absent = true
                        unless @report_data['report']['exams'].blank?   
                             @report_data['report']['exams'].each do |report| 
                              
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   has_mark = has_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                  if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s != "AB"
+                                    absent = false
+                                  end
                                 end
                             end
                        end  
                   
                     %>
-                      <% if subjects['no_exams_sjws'].to_i == 1 or has_mark == 0 %>
+                      <% if subjects['no_exams_sjws'].to_i == 1 %>
                         <% next %>
                       <% end %>
-                        <% subject_count = subject_count+1 %>
+                      <% subject_count = subject_count+1 %>
                         
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>" >
 
@@ -92,7 +76,11 @@
                           
                           %>
                           <td class="col-pdf"><b><%=  full_mark %></b></td>
-                          <td class="col-pdf"><b><%= sprintf( "%0.02f", obtain_mark) %></b></td>
+                          <% if absent == true %>
+                            AB
+                          <% else %>
+                            <td class="col-pdf"><b><%= sprintf( "%0.02f", obtain_mark) %></b></td>
+                          <% end %>
                           <% total_att = 0 %>
                           <% absent_att = 0 %>   
                             

@@ -118,7 +118,6 @@ class GroupedExams extends CActiveRecord
         
            if($unsolved_exam)
            {
-               exit;
                 $criteria->with = array(
                     'examgroup' => array(
                         'select' => 'examgroup.id',

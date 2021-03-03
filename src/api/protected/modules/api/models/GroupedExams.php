@@ -109,30 +109,98 @@ class GroupedExams extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        public function getContinuesResult($batch_id,$connect_exam_id, $previous_exam = 0)
+        public function getContinuesResult($batch_id,$connect_exam_id, $previous_exam = 0, $unsolved_exam = false)
         {
+           $students_ids = [];
            $criteria=new CDbCriteria;
            $criteria->compare('connect_exam_id',$connect_exam_id);
            $criteria->select = 't.*'; 
-           $criteria->with = array(
-                'examgroup' => array(
-                    'select' => 'examgroup.id',
-                    'with' => array('Exams' => array(
-                            'select' => 'Exams.maximum_marks,Exams.id,Exams.weightage',
-                            'with' => array(
-                                'Subjects' => array(
-                                    'select' => 'Subjects.id',
+        
+           if($unsolved_exam)
+           {
+                $criteria->with = array(
+                    'examgroup' => array(
+                        'select' => 'examgroup.id',
+                        'with' => array('Exams' => array(
+                                'select' => 'Exams.maximum_marks,Exams.id,Exams.weightage',
+                                'with' => array(
+                                    'Scores' => array(
+                                        'select' => 'Scores.id',
+                                        'with' => array(
+                                                'Students' => array(
+                                                    'select' => 'Students.id',
+                                                ),
+                                         )
+                                    ),
+                                    'Subjects' => array(
+                                        'select' => 'Subjects.id',
+                                    )
                                 )
                             )
                         )
-                    )
-                ),
-                'examconnect' => array(
-                    'select' => "examconnect.id,examconnect.result_type"
-                 )   
-            );
-            $criteria->order = "t.priority ASC,examgroup.created_at ASC";
-            $examgroups = $this->findAll($criteria);
+                    ),
+                    'examconnect' => array(
+                        'select' => "examconnect.id,examconnect.result_type"
+                    )   
+                );
+                $criteria->order = "t.priority ASC,examgroup.created_at ASC";
+                $examgroups = $this->findAll($criteria);
+                
+                if($examgroups)
+                {
+                    foreach($examgroups as $value)
+                    {
+                    
+                        if(isset($value['examgroup']['Exams']))
+                        {
+                            
+                            foreach($value['examgroup']['Exams'] as $exam)
+                            {
+                                
+                                if(isset($exam['Scores']->id))
+                                {
+                                    foreach($exam['Scores'] as $key=>$score)
+                                    {
+                                        if(isset($score['Students']->id))
+                                        {
+                                            if(!in_array($score['Students']->id, $students_ids))
+                                            {
+                                                $students_ids[] =$score['Students']->id; 
+                                            }   
+                                        }
+                                    }      
+                                }    
+                            }
+                            
+                        }
+                    }
+                }
+           }
+           else
+           {
+                $criteria->with = array(
+                    'examgroup' => array(
+                        'select' => 'examgroup.id',
+                        'with' => array('Exams' => array(
+                                'select' => 'Exams.maximum_marks,Exams.id,Exams.weightage',
+                                'with' => array(
+                                    'Subjects' => array(
+                                        'select' => 'Subjects.id',
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    'examconnect' => array(
+                        'select' => "examconnect.id,examconnect.result_type"
+                    )   
+                );
+                $criteria->order = "t.priority ASC,examgroup.created_at ASC";
+                $examgroups = $this->findAll($criteria);
+           }
+
+           
+            
            
             $subjects_ids = array();
             $exam_ids = array();
@@ -175,8 +243,8 @@ class GroupedExams extends CActiveRecord
             if($examgroups)
             {
                 $stdobj = new Students();
-                $batch_student = $stdobj->getStudentByBatch($batch_id);
-                $batch_student_full = $stdobj->getStudentByBatchFull($batch_id);
+                $batch_student = $stdobj->getStudentByBatch($batch_id,0,false,$students_ids);
+                $batch_student_full = $stdobj->getStudentByBatchFull($batch_id,0,false,$students_ids);
                 $examsGroupObj = new ExamGroups();
                 $cont_exam = new ExamConnect();
                 $connect_exam = $cont_exam->findByPk($connect_exam_id);

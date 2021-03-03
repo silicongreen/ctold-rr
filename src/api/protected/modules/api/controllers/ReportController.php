@@ -296,9 +296,14 @@ class ReportController extends Controller
         $user_secret = Yii::app()->request->getPost('user_secret');
         $connect_exam_id = Yii::app()->request->getPost('connect_exam_id');
         $is_finished = Yii::app()->request->getPost('is_finished');
+        $is_unsolved = Yii::app()->request->getPost('is_unsolved');
         if(!$is_finished)
         {
             $is_finished = 0;
+        }
+        if(!$is_unsolved)
+        {
+            $is_unsolved = 0;
         }
         $batch_id = Yii::app()->request->getPost('batch_id');
         $response = array();
@@ -329,7 +334,7 @@ class ReportController extends Controller
             
 
             $groupexam = new GroupedExams();
-            $exam_report = $groupexam->getContinuesResult($batch_id,$connect_exam_id,$previous_exam);
+            $exam_report = $groupexam->getContinuesResult($batch_id,$connect_exam_id,$previous_exam,$is_unsolved);
             $attandence = new Attendances();
             $adata = $attandence->getTotalPrsent($batch_id, $connect_exam_id,$exam_report['students']);
             

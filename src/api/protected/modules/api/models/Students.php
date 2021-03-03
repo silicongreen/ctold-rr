@@ -485,13 +485,17 @@ class Students extends CActiveRecord
         return $return_array;
     }
 
-    public function getStudentByBatchFull($batch_id,$connect_exam_id=0,$deleted_exam=false)
+    public function getStudentByBatchFull($batch_id,$connect_exam_id=0,$deleted_exam=false,$students_ids=[])
     {
 
         $criteria = new CDbCriteria();
 
         $criteria->select = 't.id,t.first_name,t.middle_name,t.last_name,t.immediate_contact_id,t.class_roll_no';
-        if($connect_exam_id!=0 && $deleted_exam==true)
+        if($students_ids)
+        {
+            $criteria->addInCondition('id', $students_ids);
+        }
+        else if($connect_exam_id!=0 && $deleted_exam==true)
         {
             $exam_conn_std = new ExamConnectStudents();
             $all_std = $exam_conn_std->all_students($connect_exam_id);
@@ -525,13 +529,17 @@ class Students extends CActiveRecord
     }
     
 
-    public function getStudentByBatch($batch_id,$connect_exam_id=0,$deleted_exam=false)
+    public function getStudentByBatch($batch_id,$connect_exam_id=0,$deleted_exam=false,$students_ids=[])
     {
 
         $criteria = new CDbCriteria();
 
         $criteria->select = 't.id';
-        if($connect_exam_id!=0 && $deleted_exam==true)
+        if($students_ids)
+        {
+            $criteria->addInCondition('id', $students_ids);
+        }
+        else if($connect_exam_id!=0 && $deleted_exam==true)
         {
             $exam_conn_std = new ExamConnectStudents();
             $all_std = $exam_conn_std->all_students($connect_exam_id);

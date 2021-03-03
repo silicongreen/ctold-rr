@@ -157,7 +157,7 @@ class GroupedExams extends CActiveRecord
                             foreach($value['examgroup']['Exams'] as $exam)
                             {
                                 
-                                if(isset($exam['Scores']->id))
+                                if(isset($exam['Scores']))
                                 {
                                     foreach($exam['Scores'] as $key=>$score)
                                     {
@@ -165,7 +165,7 @@ class GroupedExams extends CActiveRecord
                                         {
                                             if(!in_array($score['Students']->id, $students_ids))
                                             {
-                                                $students_ids[] =$score['Students']->id; 
+                                                $students_ids[] = $score['Students']->id; 
                                             }   
                                         }
                                     }      

@@ -109,7 +109,7 @@ class GroupedExams extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        public function getContinuesResult($batch_id,$connect_exam_id, $previous_exam = 0, $unsolved_exam = false)
+        public function getContinuesResult($batch_id,$connect_exam_id, $previous_exam = 0, $unsolved_exam = 0)
         {
            $students_ids = [];
            $criteria=new CDbCriteria;
@@ -118,11 +118,12 @@ class GroupedExams extends CActiveRecord
         
            if($unsolved_exam)
            {
+               exit;
                 $criteria->with = array(
                     'examgroup' => array(
                         'select' => 'examgroup.id',
                         'with' => array('Exams' => array(
-                                'select' => 'Exams.maximum_marks1,Exams.id,Exams.weightage',
+                                'select' => 'Exams.maximum_marks,Exams.id,Exams.weightage',
                                 'with' => array(
                                     'Scores' => array(
                                         'select' => 'Scores.id',

@@ -5365,6 +5365,7 @@ class ExamController < ApplicationController
     @id = params[:id]
     @transcript = params[:transscript]
     @student_main_id = params[:student]
+    @unsolved_exam = params[:unsolved_exam]
     
     @connect_exam_obj = ExamConnect.find_by_id(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id,:include=>["course"])
@@ -5381,7 +5382,7 @@ class ExamController < ApplicationController
     #    api_from = champs21_config['from']
    
     @assigned_employee=@batch.all_class_teacher
-    get_continues(@id,@batch.id)
+    get_continues(@id,@batch.id,@unsolved_exam)
     @report_data = []
     if @student_response['status']['code'].to_i == 200
       @report_data = @student_response['data']
@@ -7246,7 +7247,7 @@ class ExamController < ApplicationController
     @student_response = JSON::parse(response.body)
 
   end
-  def get_continues(connect_exam_id,batch_id)
+  def get_continues(connect_exam_id,batch_id,unsolved_exam = 0)
     require 'net/http'
     require 'uri'
     require "yaml"
@@ -7256,7 +7257,7 @@ class ExamController < ApplicationController
     api_uri = URI(api_endpoint + "api/report/continues")
     http = Net::HTTP.new(api_uri.host, api_uri.port)
     request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
-    request.set_form_data({"connect_exam_id"=>connect_exam_id,"batch_id"=>batch_id,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+    request.set_form_data({"connect_exam_id"=>connect_exam_id,"batch_id"=>batch_id,"call_from_web"=>1,"is_unsolved"=>unsolved_exam,"user_secret" =>session[:api_info][0]['user_secret']})
     response = http.request(request)
     @student_response = JSON::parse(response.body)
 

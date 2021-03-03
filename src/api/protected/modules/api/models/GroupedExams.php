@@ -122,7 +122,7 @@ class GroupedExams extends CActiveRecord
                     'examgroup' => array(
                         'select' => 'examgroup.id',
                         'with' => array('Exams' => array(
-                                'select' => 'Exams.maximum_marks,Exams.id,Exams.weightage',
+                                'select' => 'Exams.maximum_marks1,Exams.id,Exams.weightage',
                                 'with' => array(
                                     'Scores' => array(
                                         'select' => 'Scores.id',

@@ -112,6 +112,8 @@ class GroupedExams extends CActiveRecord
         public function getContinuesResult($batch_id,$connect_exam_id, $previous_exam = 0, $unsolved_exam = 0)
         {
            $students_ids = [];
+           $cont_exam = new ExamConnect();
+           $connect_exam = $cont_exam->findByPk($connect_exam_id);
            $criteria=new CDbCriteria;
            $criteria->compare('connect_exam_id',$connect_exam_id);
            $criteria->select = 't.*'; 
@@ -232,8 +234,8 @@ class GroupedExams extends CActiveRecord
             
             $subjectObj = new Subjects();
             
-            $all_subject_without_no_exam = $subjectObj->getSubject($batch_id,0,$subjects_ids);
-            $subject_no_exam = $subjectObj->getSubjectNoExam($batch_id,0,$subjects_ids);
+            $all_subject_without_no_exam = $subjectObj->getSubject($batch_id,0,$subjects_ids,$connect_exam->result_type);
+            $subject_no_exam = $subjectObj->getSubjectNoExam($batch_id,0,$subjects_ids,$connect_exam->result_type);
             $results = array();
             
            
@@ -246,8 +248,7 @@ class GroupedExams extends CActiveRecord
                 $batch_student = $stdobj->getStudentByBatch($batch_id,0,false,$students_ids);
                 $batch_student_full = $stdobj->getStudentByBatchFull($batch_id,0,false,$students_ids);
                 $examsGroupObj = new ExamGroups();
-                $cont_exam = new ExamConnect();
-                $connect_exam = $cont_exam->findByPk($connect_exam_id);
+                
                 $first_term_id = 0;
                 $final_term_id = 0;
                 $i = 0;

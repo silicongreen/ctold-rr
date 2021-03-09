@@ -298,7 +298,7 @@ class Subjects extends CActiveRecord
             return $subject;
     }
     
-    public function getSubjectNoExam($batch_id,$student_id=0,$subjects_ids = false)
+    public function getSubjectNoExam($batch_id,$student_id=0,$subjects_ids = false,$result_type = 0)
     {
         $criteria = new CDbCriteria();
         $criteria->select = 't.name,t.id,t.icon_number,t.no_exams,t.code';
@@ -363,9 +363,15 @@ class Subjects extends CActiveRecord
                 }
             }    
         } 
+        if(Yii::app()->user->schoolId == 319 && $result_type == 4 )
+        {
+            usort($subject_array, function($a, $b) {
+                return $a['name'] - $b['name'];
+            });
+        }
         return $subject_array;
     }
-    public function getSubject($batch_id,$student_id=0,$subjects_ids = false,$send_no_exam=false)
+    public function getSubject($batch_id,$student_id=0,$subjects_ids = false,$send_no_exam=false,$result_type = 0)
     {
         $criteria = new CDbCriteria();
         $criteria->select = 't.name,t.id,t.icon_number,t.priority,t.no_exams,t.code,t.no_exams_sjws,t.grade_subject,t.subject_group_id';
@@ -376,7 +382,8 @@ class Subjects extends CActiveRecord
         if($send_no_exam == false)
         $criteria->compare('t.no_exams', 0);
         $criteria->addCondition("t.elective_group_id IS NULL");
-	$criteria->order = "t.priority asc";
+       
+	    $criteria->order = "t.priority asc";
         $criteria->with =array(
                       "Subjectbatch" => array(
                           "select" => "Subjectbatch.name",
@@ -490,10 +497,21 @@ class Subjects extends CActiveRecord
                 }    
             }
         }
+
+        if(Yii::app()->user->schoolId == 319 && $result_type == 4 )
+        {
+            usort($subject_array, function($a, $b) {
+                return $a['name'] - $b['name'];
+            });
+        }
+        else
+        {
+            usort($subject_array, function($a, $b) {
+                return $a['priority'] - $b['priority'];
+            });
+        }
         
-        usort($subject_array, function($a, $b) {
-                            return $a['priority'] - $b['priority'];
-              });
+        
         
         
         return $subject_array;

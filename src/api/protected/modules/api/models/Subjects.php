@@ -363,6 +363,12 @@ class Subjects extends CActiveRecord
                 }
             }    
         } 
+        if(Yii::app()->user->schoolId == 319 && $result_type == 4 )
+        {
+            usort($subject_array, function($a, $b) {
+                return $a['name'] - $b['name'];
+            });
+        }
         return $subject_array;
     }
     public function getSubject($batch_id,$student_id=0,$subjects_ids = false,$send_no_exam=false,$result_type = 0)

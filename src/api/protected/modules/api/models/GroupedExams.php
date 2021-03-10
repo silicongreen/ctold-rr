@@ -234,7 +234,7 @@ class GroupedExams extends CActiveRecord
             
             $subjectObj = new Subjects();
             
-            $all_subject_without_no_exam = $subjectObj->getSubject($batch_id,0,$subjects_ids,$connect_exam->result_type);
+            $all_subject_without_no_exam = $subjectObj->getSubject($batch_id,0,$subjects_ids,false,$connect_exam->result_type);
             $subject_no_exam = $subjectObj->getSubjectNoExam($batch_id,0,$subjects_ids,$connect_exam->result_type);
             $results = array();
             

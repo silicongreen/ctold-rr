@@ -494,6 +494,7 @@ class ReportController extends Controller
                 }
                 else 
                 {
+                    $batch_ids[] = $batch_id;
                   $new_connect_exam_id = $connect_exam_id;
                    $exam_report = array();
                    if($send_array)

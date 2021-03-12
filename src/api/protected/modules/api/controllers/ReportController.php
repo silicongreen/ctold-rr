@@ -498,7 +498,10 @@ class ReportController extends Controller
                    {
                         $exam_report_main = $exam_report[] = $groupexam->getTabulation($batch_id,$connect_exam_id); 
                    }
-                   $exam_report_main = $exam_report = $groupexam->getTabulation($batch_id,$connect_exam_id);
+                   else
+                   {
+                        $exam_report_main = $exam_report = $groupexam->getTabulation($batch_id,$connect_exam_id);
+                   }
                    $first_term_id = $cont_exam->getConnectExamFirstTerm($batch_id);
                    
                    $attandence = new Attendances();

@@ -24,7 +24,7 @@
       batch_data = Batch.find(@tabulation_data['batches'][batch_loop])
       
       batch_loop = batch_loop+1
-      if batch_data.batch_id != @batch.id
+      if batch_data.id != @batch.id
           next
       end
       std_group_name = batch_data.course.group

@@ -494,6 +494,8 @@ class ReportController extends Controller
                 }
                 else 
                 {
+                  $new_connect_exam_id = $connect_exam_id;
+                   $exam_report = array();
                    if($send_array)
                    {
                         $exam_report_main = $exam_report[] = $groupexam->getTabulation($batch_id,$connect_exam_id); 

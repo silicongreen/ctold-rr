@@ -10,9 +10,7 @@
   @student_list2 = []
   @student_list3 = []
   batchobj = Batch.find_by_id(@batch.id) 
-  courseObj = Course.find_by_id(batchobj.course_id) %>
-  <%= debug $tabulation_data.inspect %>
-  <%
+  courseObj = Course.find_by_id(batchobj.course_id)
   unless @tabulation_data.blank?
     connect_exam = 0
     batch_loop = 0

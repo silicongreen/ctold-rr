@@ -401,7 +401,6 @@ class ReportController extends Controller
             $batch_id = Yii::app()->request->getPost('batch_id');
             $all_class_report = Yii::app()->request->getPost('all_class_report');
             $failed_list = Yii::app()->request->getPost('failed_list');
-            $send_array= Yii::app()->request->getPost('send_array');
             $data_type = 2;
             if($all_class_report)
             {
@@ -494,32 +493,19 @@ class ReportController extends Controller
                 }
                 else 
                 {
-                   $batch_ids[] = $batch_id;
-                   $new_connect_exam_id = $connect_exam_id;
-                   $exam_report = array();
-                   if($send_array)
-                   {
-                        $exam_report_main = $exam_report[] = $groupexam->getTabulation($batch_id,$connect_exam_id); 
-                   }
-                   else
-                   {
-                        $exam_report_main = $exam_report = $groupexam->getTabulation($batch_id,$connect_exam_id);
-                   }
+                  
+                   $exam_report = $groupexam->getTabulation($batch_id,$connect_exam_id);
+                   
                    $first_term_id = $cont_exam->getConnectExamFirstTerm($batch_id);
                    
                    $attandence = new Attendances();
-                   if($send_array)
-                   {
-                        $adata[$batch_id] = $attandence->getTotalPrsent($batch_id, $connect_exam_id,$exam_report_main['students']);
-                   }
-                   else
-                   {
-                        $adata = $attandence->getTotalPrsent($batch_id, $connect_exam_id,$exam_report_main['students']);
-                   }
+                  
+                   $adata = $attandence->getTotalPrsent($batch_id, $connect_exam_id,$exam_report['students']);
+                   
                    $adata_first_term = array();
                    if($first_term_id && $first_term_id!=$connect_exam_id)
                    {
-                      $adata_first_term = $attandence->getTotalPrsent($batch_id, $first_term_id, $exam_report_main['students']);
+                      $adata_first_term = $attandence->getTotalPrsent($batch_id, $first_term_id, $exam_report['students']);
                    }
                    
                 }

@@ -22,7 +22,11 @@
       batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
       batch_subject_id = batch_subject.map(&:id)
       batch_data = Batch.find(@tabulation_data['batches'][batch_loop])
+      
       batch_loop = batch_loop+1
+      if batch_data.batch_id != @batch.id
+          next
+      end
       std_group_name = batch_data.course.group
       if (std_group_name != group_name)
         next

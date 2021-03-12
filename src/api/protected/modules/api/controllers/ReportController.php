@@ -502,8 +502,14 @@ class ReportController extends Controller
                    $first_term_id = $cont_exam->getConnectExamFirstTerm($batch_id);
                    
                    $attandence = new Attendances();
-                   $adata = $attandence->getTotalPrsent($batch_id, $connect_exam_id,$exam_report_main['students']);
-
+                   if($send_array)
+                   {
+                        $adata[$batch_id] = $attandence->getTotalPrsent($batch_id, $connect_exam_id,$exam_report_main['students']);
+                   }
+                   else
+                   {
+                        $adata = $attandence->getTotalPrsent($batch_id, $connect_exam_id,$exam_report_main['students']);
+                   }
                    $adata_first_term = array();
                    if($first_term_id && $first_term_id!=$connect_exam_id)
                    {

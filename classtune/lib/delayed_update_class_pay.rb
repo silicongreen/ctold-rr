@@ -24,22 +24,23 @@ require "yaml"
 require 'translator'
 
 class DelayedUpdateClassPay
-  attr_accessor :student,:new_record_user, :employee, :school_code,:student_id,:guardain_id
+  attr_accessor :student,:new_record, :employee, :school_code,:student_id,:guardain_id
 
-  def initialize(student, new_record_user,employee, school_code, student_id, guardain_id)
+  def initialize(student, new_record,employee, school_code, student_id, guardain_id)
     @student = student
     @employee = employee
     @school_code = school_code
     @student_id = student_id
     @guardain_id = guardain_id 
-    @new_record_user = new_record_user
+    @new_record = new_record
   end
 
   def perform
     api_endpoint = "https://pay.classtune.com/"
     school_array = ['bncd','ess','sis','nascd']
     
-    if @new_record_user?
+    if @new_record.blank?
+
     end  
     unless api_link.blank?
       parsed_url = api_endpoint+api_link

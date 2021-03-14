@@ -98,10 +98,9 @@ class User < ActiveRecord::Base
           guardian_id = self.guardian_entry.id
         end  
     end  
-    Delayed::Job.enqueue(DelayedUpdateClassPay.new( :student  => student,
-      :employee => employee,
-      :school_code=>school_code,:student_id=>student_id,
-      :guardain_id=>guardain_id,:new_record=>new_record))
+    Delayed::Job.enqueue(DelayedUpdateClassPay.new(student, 
+      new_record,employee, school_code, student_id, guardain_id)
+    )
 
   end  
 

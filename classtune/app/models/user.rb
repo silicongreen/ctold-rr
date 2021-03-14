@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
   named_scope :activevisible, :conditions => { :is_deleted => false,:is_visible=> 1 }
   named_scope :inactive, :conditions => { :is_deleted => true }
 
-  after_save :create_default_menu_links, :save_user_to_free,:save_to_class_pay
+  after_save :create_default_menu_links, :save_user_to_free, :save_to_class_pay
 
   def before_destroy
     free_user = TdsFreeUser.find_by_paid_id(self.id)
@@ -75,6 +75,7 @@ class User < ActiveRecord::Base
 
   def save_to_class_pay
     require 'net/http'
+    require 'net/https'
     require 'uri'
     require "yaml"
     require "openssl"
@@ -90,13 +91,15 @@ class User < ActiveRecord::Base
         end  
       end  
     else
-      if self.student
-        student_id = self.student_entry.id
-        api_link = "commands/update_student.php?student_id="+student_id.to_s
-      elsif self.guardian
-        guardian_id = self.guardian_entry.id
-        api_link = "commands/update_guardain.php?guardian_id="+guardian_id.to_s
-      end  
+      if school_array.include?(MultiSchool.current_school.code.to_s)
+        if self.student
+          student_id = self.student_entry.id
+          api_link = "commands/update_student.php?student_id="+student_id.to_s
+        elsif self.guardian
+          guardian_id = self.guardian_entry.id
+          api_link = "commands/update_guardain.php?guardian_id="+guardian_id.to_s
+        end  
+      end
     end  
     parsed_url = api_endpoint+api_link
     uri = URI(parsed_url)

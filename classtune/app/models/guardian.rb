@@ -31,8 +31,31 @@ class Guardian < ActiveRecord::Base
   before_destroy :immediate_contact_nil
   before_validation :email_strip
   before_save :add_attr_vals
-  after_save :reset_argv
+  after_save :reset_argv, :save_to_class_pay
   #after_create :set_sibling_id
+
+  def save_to_class_pay
+    require 'net/http'
+    require 'net/https'
+    require 'uri'
+    require "yaml"
+    api_endpoint = "https://pay.classtune.com/"
+    school_array = ['bncd','ess','sis','nascd']
+    
+    if !self.new_record?
+      if school_array.include?(MultiSchool.current_school.code.to_s)
+          guardian_id = self.guardian_entry.id
+          api_link = "commands/update_guardain.php?guardian_id="+guardian_id.to_s 
+      end
+    end  
+    unless api_link.blank?
+      parsed_url = api_endpoint+api_link
+      uri = URI(parsed_url)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      @data = http.get(uri.request_uri)
+    end
+  end  
 
   def email_strip
     self.email = self.email.strip if email

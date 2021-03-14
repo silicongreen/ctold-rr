@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
   named_scope :activevisible, :conditions => { :is_deleted => false,:is_visible=> 1 }
   named_scope :inactive, :conditions => { :is_deleted => true }
 
-  after_save :create_default_menu_links, :save_user_to_free, :save_to_class_pay
+  after_save :create_default_menu_links, :save_user_to_free
 
   def before_destroy
     free_user = TdsFreeUser.find_by_paid_id(self.id)
@@ -72,43 +72,7 @@ class User < ActiveRecord::Base
       self.is_first_login = true
     end
   end
-
-  def save_to_class_pay
-    require 'net/http'
-    require 'net/https'
-    require 'uri'
-    require "yaml"
-    api_endpoint = "https://pay.classtune.com/"
-    school_array = ['bncd','ess','sis','nascd']
-    
-    if self.new_record?
-      if school_array.include?(MultiSchool.current_school.code.to_s)
-        if self.student
-          api_link = "commands/import_student_"+MultiSchool.current_school.code.to_s+".php"
-        elsif self.employee and MultiSchool.current_school.code.to_s != "sis"
-          api_link = "commands/import_employee_"+MultiSchool.current_school.code.to_s+".php"
-        end  
-      end  
-    else
-      if school_array.include?(MultiSchool.current_school.code.to_s)
-        if self.student
-          student_id = self.student_entry.id
-          api_link = "commands/update_student.php?student_id="+student_id.to_s
-        elsif self.guardian
-          guardian_id = self.guardian_entry.id
-          api_link = "commands/update_guardain.php?guardian_id="+guardian_id.to_s
-        end  
-      end
-    end  
-    unless api_link.blank?
-      parsed_url = api_endpoint+api_link
-      uri = URI(parsed_url)
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
-      @data = http.get(uri.request_uri)
-    end
-  end  
-
+  
   def save_user_to_free
     unless self.save_to_free.nil?
       if self.save_to_free

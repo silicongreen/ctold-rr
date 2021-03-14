@@ -78,7 +78,7 @@ class Employee < ActiveRecord::Base
   validates_attachment_size :photo, :less_than => 512000,\
     :message=>'must be less than 500 KB.',:if=> Proc.new { |p| p.photo_file_name_changed? }
 
-  after_create :setup_employee_leave
+  after_create :setup_employee_leave, :save_to_class_pay
 
   #  def after_initialize
   #    self.biometric_id = biometric_id.present? ? biometric_id : BiometricInformation.find_by_user_id(user_id).try(:biometric_id)
@@ -94,6 +94,30 @@ class Employee < ActiveRecord::Base
 #      end  
 #    end
 #  end
+
+def save_to_class_pay
+  require 'net/http'
+  require 'net/https'
+  require 'uri'
+  require "yaml"
+  api_endpoint = "https://pay.classtune.com/"
+  school_array = ['bncd','ess','sis','nascd']
+  
+  if self.new_record?
+    if school_array.include?(MultiSchool.current_school.code.to_s)
+      if MultiSchool.current_school.code.to_s != "sis"
+        api_link = "commands/import_employee_"+MultiSchool.current_school.code.to_s+".php"
+      end  
+    end  
+  end  
+  unless api_link.blank?
+    parsed_url = api_endpoint+api_link
+    uri = URI(parsed_url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    @data = http.get(uri.request_uri)
+  end
+end  
   
   def setup_employee_leave
     leave_type = EmployeeLeaveType.all

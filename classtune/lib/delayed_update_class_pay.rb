@@ -41,15 +41,15 @@ class DelayedUpdateClassPay
     school_array = ['bncd','ess','sis','nascd']
     
     if @new_record?
-      if school_array.include?(MultiSchool.current_school.code.to_s)
+      if school_array.include?(@school_code)
         if @student
-          api_link = "commands/import_student_"+MultiSchool.current_school.code.to_s+".php"
+          api_link = "commands/import_student_"+@school_code.to_s+".php"
         elsif @employee and @school_code != "sis"
-          api_link = "commands/import_employee_"+MultiSchool.current_school.code.to_s+".php"
+          api_link = "commands/import_employee_"+@school_code+".php"
         end  
       end  
     else
-      if school_array.include?(MultiSchool.current_school.code.to_s)
+      if school_array.include?(@school_code)
         if @student_id
           student_id = @student_id
           api_link = "commands/update_student.php?student_id="+student_id.to_s

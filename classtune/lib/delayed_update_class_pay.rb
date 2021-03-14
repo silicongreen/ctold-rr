@@ -37,35 +37,5 @@ class DelayedUpdateClassPay
 
   def perform
 
-    api_endpoint = "https://pay.classtune.com/"
-    school_array = ['bncd','ess','sis','nascd']
-    
-    if @new_record?
-      if school_array.include?(@school_code)
-        if @student
-          api_link = "commands/import_student_"+@school_code.to_s+".php"
-        elsif @employee and @school_code != "sis"
-          api_link = "commands/import_employee_"+@school_code+".php"
-        end  
-      end  
-    else
-      if school_array.include?(@school_code)
-        if @student_id
-          student_id = @student_id
-          api_link = "commands/update_student.php?student_id="+student_id.to_s
-        elsif @guardain_id
-          guardian_id = @guardain_id
-          api_link = "commands/update_guardain.php?guardian_id="+guardian_id.to_s
-        end  
-      end
-    end  
-    unless api_link.blank?
-      parsed_url = api_endpoint+api_link
-      uri = URI(parsed_url)
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
-      @data = http.get(uri.request_uri)
-    end
-    
   end
 end  

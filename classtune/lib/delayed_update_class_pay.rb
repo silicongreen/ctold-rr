@@ -38,10 +38,6 @@ class DelayedUpdateClassPay
   def perform
     api_endpoint = "https://pay.classtune.com/"
     school_array = ['bncd','ess','sis','nascd']
-    
-    if @new_record?
-     
-    end  
     unless api_link.blank?
       parsed_url = api_endpoint+api_link
       uri = URI(parsed_url)

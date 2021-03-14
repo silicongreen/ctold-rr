@@ -90,15 +90,13 @@ class User < ActiveRecord::Base
           student = true
         elsif self.employee
           employee = true
-        end  
-      end  
+        end    
     else
         if self.student
           student_id = self.student_entry.id 
         elsif self.guardian
           guardian_id = self.guardian_entry.id
         end  
-      end
     end  
     Delayed::Job.enqueue(DelayedUpdateClassPay.new( :student  => student,
       :employee => employee,

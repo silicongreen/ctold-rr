@@ -101,7 +101,6 @@ class User < ActiveRecord::Base
       end
     end  
     unless api_link.blank?
-      abort(api_endpoint+api_link)
       parsed_url = api_endpoint+api_link
       uri = URI(parsed_url)
       http = Net::HTTP.new(uri.host, uri.port)

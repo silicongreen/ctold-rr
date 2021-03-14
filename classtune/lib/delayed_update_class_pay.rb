@@ -24,14 +24,15 @@ require "yaml"
 require 'translator'
 
 class DelayedUpdateClassPay
-  attr_accessor :student, :employee, :school_code,:student_id,:guardain_id
+  attr_accessor :student,:new_record, :employee, :school_code,:student_id,:guardain_id
 
-  def initialize(student, employee, school_code, student_id, guardain_id)
+  def initialize(student, new_record,employee, school_code, student_id, guardain_id)
     @student = student
     @employee = employee
     @school_code = school_code
     @student_id = student_id
     @guardain_id = guardain_id 
+    @new_record = new_record
   end
 
   def perform
@@ -65,7 +66,6 @@ class DelayedUpdateClassPay
       http.use_ssl = true
       @data = http.get(uri.request_uri)
     end
-   
     
   end
 end  

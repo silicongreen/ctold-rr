@@ -83,7 +83,9 @@ class User < ActiveRecord::Base
     school_code = MultiSchool.current_school.code.to_s
     student_id = 0
     guardain_id = 0
+    new_record = false
     if self.new_record?
+        new_record = true
         if self.student
           student = true
         elsif self.employee
@@ -101,7 +103,7 @@ class User < ActiveRecord::Base
     Delayed::Job.enqueue(DelayedUpdateClassPay.new( :student  => student,
       :employee => employee,
       :school_code=>school_code,:student_id=>student_id,
-      :guardain_id=>guardain_id)
+      :guardain_id=>guardain_id,:new_record=>new_record)
 
   end  
 

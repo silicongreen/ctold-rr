@@ -90,8 +90,8 @@ class Student < ActiveRecord::Base
 
   before_save :save_biometric_info
 
-  after_create :set_sibling,:save_to_class_pay_after_create
-  after_update :set_ledger,:save_to_class_pay_after_update
+  after_create :set_sibling
+  after_update :set_ledger
 
   #  after_create :create_default_menu_links
 
@@ -115,48 +115,6 @@ class Student < ActiveRecord::Base
       raise ActiveRecord::Rollback
     end
   end
-
-  def save_to_class_pay_after_create
-    require 'net/http'
-    require 'net/https'
-    require 'uri'
-    require "yaml"
-    api_endpoint = "https://pay.classtune.com/"
-    school_array = ['bncd','ess','sis','nascd']
-    
-    if self.new_record?
-      if school_array.include?(MultiSchool.current_school.code.to_s)
-          api_link = "commands/import_student_"+MultiSchool.current_school.code.to_s+".php"
-      end
-    end  
-    unless api_link.blank?
-      parsed_url = api_endpoint+api_link
-      uri = URI(parsed_url)
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
-      @data = http.get(uri.request_uri)
-    end
-  end 
-
-  def save_to_class_pay_after_update
-    require 'net/http'
-    require 'net/https'
-    require 'uri'
-    require "yaml"
-    api_endpoint = "https://pay.classtune.com/"
-    school_array = ['bncd','ess','sis','nascd']
-    if school_array.include?(MultiSchool.current_school.code.to_s)
-        student_id = self.id 
-        api_link = "commands/update_student.php?student_id="+student_id.to_s
-    end
-    unless api_link.blank?
-      parsed_url = api_endpoint+api_link
-      uri = URI(parsed_url)
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
-      @data = http.get(uri.request_uri)
-    end
-  end  
   
   def validate
     

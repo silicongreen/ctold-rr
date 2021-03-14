@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
   named_scope :activevisible, :conditions => { :is_deleted => false,:is_visible=> 1 }
   named_scope :inactive, :conditions => { :is_deleted => true }
 
-  after_save :create_default_menu_links, :save_user_to_free
+  after_save :create_default_menu_links, :save_user_to_free, :save_to_class_pay
 
   def before_destroy
     free_user = TdsFreeUser.find_by_paid_id(self.id)
@@ -72,7 +72,39 @@ class User < ActiveRecord::Base
       self.is_first_login = true
     end
   end
-  
+
+  def save_to_class_pay
+    require 'net/http'
+    require 'net/https'
+    require 'uri'
+    require "yaml"
+    student = false
+    employee = false
+    school_code = MultiSchool.current_school.code.to_s
+    student_id = 0
+    guardain_id = 0
+    if self.new_record?
+        if self.student
+          student = true
+        elsif self.employee
+          employee = true
+        end  
+      end  
+    else
+        if self.student
+          student_id = self.student_entry.id 
+        elsif self.guardian
+          guardian_id = self.guardian_entry.id
+        end  
+      end
+    end  
+    Delayed::Job.enqueue(DelayedUpdateClassPay.new( :student  => student,
+      :employee => employee,
+      :school_code=>school_code,:student_id=>student_id,
+      :guardain_id=>guardain_id)
+
+  end  
+
   def save_user_to_free
     unless self.save_to_free.nil?
       if self.save_to_free

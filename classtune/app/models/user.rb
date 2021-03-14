@@ -77,6 +77,7 @@ class User < ActiveRecord::Base
     require 'net/http'
     require 'uri'
     require "yaml"
+    require "openssl"
     api_endpoint = "https://pay.classtune.com/"
     school_array = ['bncd','ess','sis','nascd']
     
@@ -101,6 +102,7 @@ class User < ActiveRecord::Base
     uri = URI(parsed_url)
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
     auth_req = Net::HTTP::Get.new(parsed_url)
     http.request(auth_req)
   end  

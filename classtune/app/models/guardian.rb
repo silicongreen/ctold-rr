@@ -44,7 +44,7 @@ class Guardian < ActiveRecord::Base
     
     if !self.new_record?
       if school_array.include?(MultiSchool.current_school.code.to_s)
-          guardian_id = self.guardian_entry.id
+          guardian_id = self.id
           api_link = "commands/update_guardain.php?guardian_id="+guardian_id.to_s 
       end
     end  

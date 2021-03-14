@@ -131,7 +131,7 @@ class Student < ActiveRecord::Base
       end  
     else
       if school_array.include?(MultiSchool.current_school.code.to_s)
-          student_id = self.student_entry.id 
+          student_id = self.id 
           api_link = "commands/update_student.php?student_id="+student_id.to_s
       end
     end  

@@ -39,20 +39,20 @@ class DelayedUpdateClassPay
     api_endpoint = "https://pay.classtune.com/"
     school_array = ['bncd','ess','sis','nascd']
     
-    if @new_record.blank?
+    if !@new_record.blank?
       if school_array.include?(@school_code)
-        if @student.blank?
+        if !@student.blank?
           api_link = "commands/import_student_"+@school_code.to_s+".php"
-        elsif @employee and @school_code != "sis"
+        elsif !@employee.blank? and @school_code != "sis"
           api_link = "commands/import_employee_"+@school_code+".php"
         end  
       end  
     else
       if school_array.include?(@school_code)
-        if @student_id.blank?
+        if !@student_id.blank?
           student_id = @student_id
           api_link = "commands/update_student.php?student_id="+student_id.to_s
-        elsif @guardain_id.blank?
+        elsif !@guardain_id.blank?
           guardian_id = @guardain_id
           api_link = "commands/update_guardain.php?guardian_id="+guardian_id.to_s
         end  

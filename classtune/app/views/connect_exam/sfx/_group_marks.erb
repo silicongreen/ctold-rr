@@ -1,6 +1,6 @@
 <% @subject_att = ["AS","A2","VIII","IX","X"] %> 
 <% 
- if @connect_exam_obj.result_type.to_i > 8
+ if @connect_exam_obj.result_type.to_i > 8  && @connect_exam_obj.result_type.to_i != 10
     if @all_exam_groups.nil?
         @all_group_exams = GroupedExam.find(
                 :all,

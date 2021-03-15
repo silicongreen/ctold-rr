@@ -126,9 +126,6 @@
         <td>
          Marks
         </td>
-        <td>
-         Result Issue Date
-        </td>
     </tr>
     <tr class="odd">
         <td>
@@ -149,9 +146,6 @@
         <td>
          59 and Below
         </td>
-        <td>
-         <%= @connect_exam_obj.published_date.blank?  ? "" : I18n.l(@connect_exam_obj.published_date,:format=>"%d %B %Y") %>
-        </td>
     </tr>
     <tr class="odd">
         <td>
@@ -166,8 +160,7 @@
         <td>
          60 - 69
         </td>
-        <td colspan="3">
-         School Reopens On : <%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %>
+        <td colspan="2">
         </td>
     </tr>
    

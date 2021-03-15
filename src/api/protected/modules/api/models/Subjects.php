@@ -371,7 +371,7 @@ class Subjects extends CActiveRecord
         }
         return $subject_array;
     }
-    public function getSubject($batch_id,$student_id=0,$subjects_ids = false,$send_no_exam=false,$result_type = 0)
+    public function getSubject($batch_id,$student_id=0,$subjects_ids = array(),$send_no_exam=false,$result_type = 0)
     {
         $criteria = new CDbCriteria();
         $criteria->select = 't.name,t.id,t.icon_number,t.priority,t.no_exams,t.code,t.no_exams_sjws,t.grade_subject,t.subject_group_id';

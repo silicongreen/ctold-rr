@@ -501,7 +501,7 @@ class Subjects extends CActiveRecord
         if(Yii::app()->user->schoolId == 319 && $result_type == 1 )
         {
             usort($subject_array, function($a, $b) {
-                return $a['name'] - $b['name'];
+                return strcasecmp($a['name'],$b['name']);
             });
         }
         else

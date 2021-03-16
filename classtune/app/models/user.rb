@@ -97,6 +97,13 @@ class User < ActiveRecord::Base
         elsif self.guardian
           guardian_id = self.guardian_entry.id
         end  
+        tds_freeuser = TdsFreeUser.find_by_paid_id(self.id)
+        unless tds_freeuser.blank?
+          unless self.pass.blank?
+            tds_freeuser.paid_password = self.pass
+            tds_freeuser.save
+          end
+        end
     end  
     Delayed::Job.enqueue(DelayedUpdateClassPay.new(student, 
       new_record,employee, school_code, student_id, guardain_id)

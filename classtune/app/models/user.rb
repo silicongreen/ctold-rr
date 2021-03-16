@@ -99,8 +99,8 @@ class User < ActiveRecord::Base
         end  
         tds_freeuser = TdsFreeUser.find_by_paid_id(self.id)
         unless tds_freeuser.blank?
-          unless self.pass.blank?
-            tds_freeuser.paid_password = self.pass
+          unless self.password.blank?
+            tds_freeuser.paid_password = self.password
             tds_freeuser.save
           end
         end

@@ -86,7 +86,7 @@ class User < ActiveRecord::Base
     new_record = false
     if self.new_record?
         new_record = true
-        if self.student
+        if self.student or self.guardian
           student = true
         elsif self.employee
           employee = true

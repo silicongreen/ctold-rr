@@ -19,7 +19,7 @@
 class User < ActiveRecord::Base
   attr_accessor :password, :role, :old_password, :new_password, :confirm_password
   
-  attr_accessor :pass, :save_to_free, :gender, :nationality_id, :birth_date
+  attr_accessor :pass, :save_to_free, :gender, :nationality_id, :birth_date,:new_record_before
   attr_accessor :middle_name, :save_to_log, :guardian, :admission_no
 
   validates_uniqueness_of :username #, :email
@@ -61,6 +61,7 @@ class User < ActiveRecord::Base
     end
   end
   def before_save
+    self.new_record_before = false
     self.salt = random_string(8) if self.salt == nil
     self.hashed_password = Digest::SHA1.hexdigest(self.salt + self.password) unless self.password.nil?
     if self.new_record?
@@ -69,6 +70,7 @@ class User < ActiveRecord::Base
       self.student  = true if self.role == 'Student'
       self.employee = true if self.role == 'Employee'
       self.parent = true if self.role == 'Parent'
+      self.new_record_before = true
       self.is_first_login = true
     end
   end
@@ -84,7 +86,7 @@ class User < ActiveRecord::Base
     student_id = 0
     guardain_id = 0
     new_record = false
-    if self.new_record?
+    if self.new_record_before?
         new_record = true
         if self.student or self.guardian
           student = true

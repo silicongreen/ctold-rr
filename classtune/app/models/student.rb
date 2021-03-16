@@ -269,10 +269,6 @@ class Student < ActiveRecord::Base
       return false unless errors.blank?
     else
       if student_category_id_changed?
-#        student_fees2=finance_fees.find(:all,:joins=>"INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fee_collections.is_deleted=0 and finance_fees.balance ='#{0}'")
-        
-        
-#        errors.add_to_base(t('cant_change_category_when_unpaid_fees_exists'))   if student_fees2.present?
       end
       self.user.role = "Student"
       changes_to_be_checked = ['admission_no','first_name','last_name','email','immediate_contact_id']
@@ -289,7 +285,7 @@ class Student < ActiveRecord::Base
         self.user.first_name = self.first_name if check_changes.include?('first_name')
         self.user.last_name = self.last_name if check_changes.include?('last_name')
         self.user.email = self.email if check_changes.include?('email')
-#        self.user.password = ("123456") if check_changes.include?('admission_no')
+
         self.user.save if check_user_errors(self.user)
         
         tds_freeuser = TdsFreeUser.find_by_paid_id(self.user.id)

@@ -511,20 +511,24 @@ class NewsController < ApplicationController
     if !@departmentnews.blank?
       @department_ids = @departmentnews.map{|d| d.department_id} 
     end
-    @batch_id_for_user_news = 0
+    @batch_id_for_user_news = []
     if !@usernews.blank?
       @usernews_ids = @usernews.map{|d| d.user_id} 
       @usernews.each do |d|
-        if @batch_id_for_user_news == 0
+        if @batch_id_for_user_news.include?()
           if  @news.is_common == 2
             std = Student.find_by_user_id(d.user_id)
             unless std.blank? 
-              @batch_id_for_user_news = std.batch_id
+              if !@batch_id_for_user_news.include?(std.batch_id)
+                @batch_id_for_user_news << std.batch_id
+              end
             end
           elsif @news.is_common == 3
             employee = Employee.find_by_user_id(d.user_id)
             unless employee.blank? 
-              @batch_id_for_user_news = employee.employee_department_id
+              if !@batch_id_for_user_news.include?(employee.employee_department_id)
+                @batch_id_for_user_news = employee.employee_department_id
+              end
             end
           end  
           break

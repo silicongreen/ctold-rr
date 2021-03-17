@@ -151,7 +151,7 @@
               <%= select :employee, :department_id,
                 options_for_select(@employee_department.map {|b| [b.name, b.id]},@batch_id_for_user_news),
         {:prompt => "Select A Department"},
-        {:onChange => "#{remote_function(:url => {:action => "list_employees"},
+        {:multiple => true,:onChange => "#{remote_function(:url => {:action => "list_employees"},
         :with => "'department_id='+ value",
         :before => "Element.show('loader2')",
         :success => "Element.hide('loader2')"
@@ -186,7 +186,7 @@
           </div>
       </div>
       <div id="student-list"  style="float: left;clear: both;width: 100%;margin: 10px 0px;">
-          <% if @batch_id_for_user_news != 0 %>
+          <% if !@batch_id_for_user_news.blank? %>
             <% if @news.is_common == 2 %>
             <% @students_all = Student.find_all_by_batch_id(@batch_id_for_user_news) %>
             <div id="list">

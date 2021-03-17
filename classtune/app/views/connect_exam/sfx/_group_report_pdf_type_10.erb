@@ -129,11 +129,9 @@
                 <h5><b>&nbsp;</b></h5>
                 <table id="pdf-table" width="99.8%" cellspacing="0">
                     <tr>
-                        <% if senior_setion == true %>
-                          <td>&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sis-signature-6-10.jpg")),:width=> '30%' %></td>
-                        <% else %>
-                          <td>&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-2.png")), :width=>"30%" %></td>
-                        <% end %>
+                     
+                        <td>&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sis-signature-6-10.jpg")),:width=> '30%' %></td>
+                        
                         <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-1.png")), :width=>"30%" %></td>
                     </tr>
                     <% if senior_setion == false %>

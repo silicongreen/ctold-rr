@@ -172,7 +172,7 @@
               <%= select :batch, :batch_id,
                 options_for_select(@batches.map {|b| [b.full_name, b.id]},@batch_id_for_user_news),
         {:prompt => "#{t('select_a_batch')}"},
-        {:onChange => "#{remote_function(:url => {:action => "list_students"},
+        {:multiple => true,:onChange => "#{remote_function(:url => {:action => "list_students"},
         :with => "'batch_id='+ value",
         :before => "Element.show('loader')",
         :success => "Element.hide('loader')"

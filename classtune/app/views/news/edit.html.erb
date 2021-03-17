@@ -146,7 +146,7 @@
       </div>
       <div class="news_label_field hidden_field_class_department hidden_field_class_department_employee" style="float: left; <% if @news.is_common!=3 %> display:none;<% end %>clear: both;width: 100%;margin: 10px 0px;" >
           <label >Select Department</label>
-          <div class="text-input-bg">
+          <div class="text-input-bg2">
 
               <%= select :employee, :department_id,
                 options_for_select(@employee_department.map {|b| [b.name, b.id]},@batch_id_for_user_news),
@@ -167,7 +167,7 @@
       <% end %>
       <div class="news_label_field hidden_field_class_department hidden_field_class_department_student" style="float: left; <% if @news.is_common!=2 %> display:none;<% end %>clear: both;width: 100%;margin: 10px 0px;" >
           <label >Select Class</label>
-          <div class="text-input-bg">
+          <div class="text-input-bg2">
 
               <%= select :batch, :batch_id,
                 options_for_select(@batches.map {|b| [b.full_name, b.id]},@batch_id_for_user_news),
@@ -330,5 +330,9 @@ label {display:inline;}
 }
 #list li label input {
     margin-right:10px;
+}
+.text-input-bg2 select
+{
+   height: 300px;
 }
 </style>  

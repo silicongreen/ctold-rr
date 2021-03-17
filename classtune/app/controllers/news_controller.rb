@@ -515,7 +515,6 @@ class NewsController < ApplicationController
     if !@usernews.blank?
       @usernews_ids = @usernews.map{|d| d.user_id} 
       @usernews.each do |d|
-        if @batch_id_for_user_news.include?()
           if  @news.is_common == 2
             std = Student.find_by_user_id(d.user_id)
             unless std.blank? 
@@ -530,9 +529,7 @@ class NewsController < ApplicationController
                 @batch_id_for_user_news = employee.employee_department_id
               end
             end
-          end  
-          break
-        end
+          end 
       end
       
     end

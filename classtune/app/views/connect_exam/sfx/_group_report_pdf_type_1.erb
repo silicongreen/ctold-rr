@@ -340,12 +340,8 @@
                       <td width="64%" style="height: 100px !important; padding:5px;"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-1.png")), :width=>"70%" %></td>
                   </tr>
                    <tr class="even">
-                      <% unless class_teacher.blank? %>
-                        <td><b><%= class_teacher  %></b></td>
-                      <% else %>
-                          <td><b>Class Teacher</b></td>
-                      <% end %>
-                      <td><br/><br/></td>
+                      <td><b>Class Teacher</b></td>
+                      <td><b><%= class_teacher  %></b></td>
                   </tr> 
                 
               </table>

@@ -320,6 +320,16 @@
                   
               </table>
               <% end %>
+              <% class_teacher = "" %>
+              <% class_teachers = [] %>
+              <% if !@assigned_employee.blank? %>
+                <% @assigned_employee.each do |emp| %>
+                  <% class_teachers << emp.first_name+" "+emp.last_name %>
+                <% end %>
+              <% end %>
+              <% unless class_teachers.blank? %>
+                <% class_teacher = class_teachers.join(", ") %>
+              <% end %>
               <table id="pdf-table" class="margin-top-20  right-table sign-table" width="58%" cellspacing="0">
                   <tr class="even">
                       <td width="36%" style="height: 100px !important; padding:5px;"><b>Section In-Charge</b></td>
@@ -330,7 +340,11 @@
                       <td width="64%" style="height: 100px !important; padding:5px;"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-1.png")), :width=>"70%" %></td>
                   </tr>
                    <tr class="even">
-                      <td><b>Class Teacher</b></td>
+                      <% unless class_teacher.blank? %>
+                        <td><b>Class Teacher</b></td>
+                      <% else %>
+                          <td><b> <%= class_teacher  %></b></td>
+                      <% end %>
                       <td><br/><br/></td>
                   </tr> 
                 

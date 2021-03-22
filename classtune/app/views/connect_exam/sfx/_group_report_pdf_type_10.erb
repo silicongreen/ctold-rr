@@ -127,19 +127,31 @@
                 <%= render  :partial=>"/connect_exam/sfx/comments7" %> 
                  
                 <h5><b>&nbsp;</b></h5>
+                <% class_teacher = "" %>
+                <% class_teachers = [] %>
+                <% if !@assigned_employee.blank? %>
+                  <% @assigned_employee.each do |emp| %>
+                    <% class_teachers << emp.first_name+" "+emp.last_name %>
+                  <% end %>
+                <% end %>
+                <% unless class_teachers.blank? %>
+                  <% class_teacher = class_teachers.join(", ") %>
+                <% end %>
                 <table id="pdf-table" width="99.8%" cellspacing="0">
                     <tr>
                      
                         <td>&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sis-signature-6-10.jpg")),:width=> '30%' %></td>
                         
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-1.png")), :width=>"30%" %></td>
+                        <td>&nbsp;&nbsp;&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-1.png")), :width=>"30%" %></td>
+                        <td>&nbsp;<%= class_teacher %></td>
                     </tr>
-                    <% if senior_setion == false %>
-                      <tr><td>&nbsp;HEAD OF SECTION</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRINCIPAL'S SIGNATURE</td></tr>
-                    <% else %>
-                      <tr><td>&nbsp;SENIOR SECTION HEAD</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRINCIPAL,<br/>
-                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S.F.X Greenherald International school</td></tr>
-                    <% end %>
+                   
+                    <tr>
+                    <td>&nbsp;HEAD OF SECTION</td>
+                    <td>&nbsp;&nbsp;&nbsp;PRINCIPAL'S SIGNATURE</td>
+                    <td>&nbsp;Class Teacher</td>
+                    </tr>
+                   
                 </table>
               
           </div>

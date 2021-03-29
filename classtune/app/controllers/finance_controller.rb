@@ -65,8 +65,8 @@ class FinanceController < ApplicationController
   end
 
   def donation
-	if MultiSchool.current_school.id == 361
-		payments = Payment.all
+	if MultiSchool.current_school.id == 3521
+		payments = Payment.find(:all, :order => 'id ASC', :conditions => ["extra IS NULL"]) #, :group => "ledger_date"
 		payments.each do |payment|
 			gateway_response = payment.gateway_response
 			gateway_response_json = gateway_response.to_json
@@ -134,7 +134,7 @@ class FinanceController < ApplicationController
 #	  end
 #	  abort('here')
       error_order = []
-	  @stdent_id = 31961;
+	  @stdent_id = 56283;
       @students = Student.find(:all, :order => 'id ASC', :conditions => ["is_deleted = 0 and id > #{@stdent_id}"]) #, :group => "ledger_date"
       unless @students.blank?
         @students.each do |st|
@@ -12080,8 +12080,8 @@ class FinanceController < ApplicationController
       now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
       activity_log = ActivityLog.new
       activity_log.user_id = current_user.id
-      activity_log.controller = "Ledger"
-      activity_log.action = "Ledger"
+      activity_log.controller = "Finance Fees Adjustment - SAGC"
+      activity_log.action = "Finance Fees Adjustment - SAGC"
       activity_log.post_requests = "0"
       activity_log.ip = request.remote_ip
       activity_log.user_agent = request.user_agent
@@ -12089,7 +12089,7 @@ class FinanceController < ApplicationController
       activity_log.updated_at = now
       activity_log.save
       activity_log_id = activity_log.id
-    @students = Student.active
+    @students = Student.find(:all, :conditions => "id < 0")
 ###    #@students = Student.find(:all, :conditions => "id = 24170")
 ##    #abort(@student.inspect)
     @students.each do |s|
@@ -12101,11 +12101,14 @@ class FinanceController < ApplicationController
       student_fee_ledger.student_id = s.id
       student_fee_ledger.ledger_date = adminision_date
       student_fee_ledger.save
+	  activity_log = ActivityLog.find activity_log_id
+      pr = s.id
+      activity_log.update_attributes( :post_requests=> pr.to_s + "-SAGC")
     end
 
    
-    @students = Student.active
-    #@students = Student.find(:all, :conditions => "id > 52895")
+    #@students = Student.active
+    @students = Student.find(:all, :conditions => "id < 0")
     @students.each do |s|
       finance_fees = FinanceFee.find(:all, :conditions => "student_id = #{s.id}")
       unless finance_fees.nil?
@@ -12125,13 +12128,13 @@ class FinanceController < ApplicationController
       end
       activity_log = ActivityLog.find activity_log_id
       pr = s.id
-      activity_log.update_attributes( :post_requests=> "Still In Fees " + pr.to_s)
+      activity_log.update_attributes( :post_requests=> pr.to_s)
     end
     #abort('done')
     #end
 #    
-    @students = Student.active
-##    #@students = Student.find(:all, :conditions => "id = 24170")
+    #@students = Student.active
+    @students = Student.find(:all, :conditions => "id > 56283")
     @students.each do |s|
       finance_transactions = FinanceTransaction.find(:all, :conditions => "finance_transactions.payee_id = #{s.id} AND finance_transactions.finance_id IS NOT NULL ", :joins => "INNER JOIN payments ON payments.finance_transaction_id = finance_transactions.id")
       unless finance_transactions.nil?

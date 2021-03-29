@@ -112,7 +112,11 @@
                               <td rowspan="2">SL</td>
                               <td rowspan="2">Subjects</td>
                               <td rowspan="2">CQ/SQ</td>
-                              <td rowspan="2">MCQ</td>
+                              <% if @connect_exam_obj.batch.course_name == "XI"%>
+                                <td rowspan="2">MTA/MCQ</td>
+                              <% else %> 
+                                <td rowspan="2">MCQ</td>
+                              <% end %>
                               <td rowspan="2">MTT/Prac</td>
                               <td colspan="4">Result</td>  
                           </tr>

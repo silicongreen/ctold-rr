@@ -143,6 +143,22 @@ class Subjects extends CActiveRecord
     {
        $criteria = new CDbCriteria(); 
        $criteria->select = 't.*';
+       $criteria->with = array(
+            "Subjectbatch" => array(
+                "select" => "Subjectbatch.name",
+                'joinType' => "INNER JOIN",
+                'with' => array(
+                    "courseDetails" => array(
+                        "select" => "courseDetails.course_name, courseDetails.section_name,courseDetails.no_call",
+                        'joinType' => "INNER JOIN",
+                    )
+                )
+            )
+              
+        );
+        $criteria->compare('subject.is_deleted', 0);
+        $criteria->compare("Subjectbatch.is_deleted", 0);
+        $criteria->compare("courseDetails.is_deleted", 0);
        $criteria->compare('t.elective_group_id', $id);
        $subjects = $this->findAll($criteria);
        return $subjects;

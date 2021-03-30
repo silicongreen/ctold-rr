@@ -156,9 +156,9 @@ class Subjects extends CActiveRecord
             )
               
         );
-        $criteria->compare('subject.is_deleted', 0);
-        $criteria->compare("Subjectbatch.is_deleted", 0);
-        $criteria->compare("courseDetails.is_deleted", 0);
+       $criteria->compare('t.is_deleted', 0);
+       $criteria->compare("Subjectbatch.is_deleted", 0);
+       $criteria->compare("courseDetails.is_deleted", 0);
        $criteria->compare('t.elective_group_id', $id);
        $subjects = $this->findAll($criteria);
        return $subjects;

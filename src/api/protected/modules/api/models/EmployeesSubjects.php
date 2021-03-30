@@ -361,6 +361,10 @@ class EmployeesSubjects extends CActiveRecord
             $i = 0;
             foreach ($obj_subject as $value)
             {
+                if(in_array($e_sub->id, $all_sub_id))
+                {
+                    continue;
+                }
                 $all_sub_id[] = $value['subject']->id;
                 $all_subject[$i]['id'] = $value['subject']->id;
                 $all_subject[$i]['name'] = $value['subject']->name." - ".$value['subject']['Subjectbatch']->name." ".$value['subject']['Subjectbatch']['courseDetails']->course_name." ".$value['subject']['Subjectbatch']['courseDetails']->section_name;

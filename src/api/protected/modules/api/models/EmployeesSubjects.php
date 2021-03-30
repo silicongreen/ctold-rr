@@ -361,7 +361,7 @@ class EmployeesSubjects extends CActiveRecord
             $i = 0;
             foreach ($obj_subject as $value)
             {
-                if(in_array($e_sub->id, $all_sub_id))
+                if(in_array($value['subject']->id, $all_sub_id))
                 {
                     continue;
                 }

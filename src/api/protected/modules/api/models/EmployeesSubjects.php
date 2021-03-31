@@ -361,14 +361,15 @@ class EmployeesSubjects extends CActiveRecord
             $i = 0;
             foreach ($obj_subject as $value)
             {
-                if(in_array($value['subject']->id, $all_sub_id))
+                
+                $name = $value['subject']->name." - ".$value['subject']['Subjectbatch']->name." ".$value['subject']['Subjectbatch']['courseDetails']->course_name." ".$value['subject']['Subjectbatch']['courseDetails']->section_name;
+                if(in_array($name, $all_sub_id))
                 {
                     continue;
                 }
-                $all_sub_id[] = $value['subject']->id;
                 $all_subject[$i]['id'] = $value['subject']->id;
-                $all_subject[$i]['name'] = $value['subject']->name." - ".$value['subject']['Subjectbatch']->name." ".$value['subject']['Subjectbatch']['courseDetails']->course_name." ".$value['subject']['Subjectbatch']['courseDetails']->section_name;
-                
+                $all_subject[$i]['name'] = $name;
+                $all_sub_id[] = $name;
                 $i++;
                 if($value['subject']->elective_group_id)
                 {
@@ -378,11 +379,13 @@ class EmployeesSubjects extends CActiveRecord
                     {
                         foreach($e_subject as $e_sub)
                         {
-                            if(!in_array($e_sub->id, $all_sub_id))
+                            $name = $sub_obj->getSubjectFullName($e_sub->id);
+                            if(!in_array($name, $all_sub_id))
                             {
-                                $all_sub_id[] = $e_sub->id;
+                                
+                                $all_sub_id[] = $name;
                                 $all_subject[$i]['id'] = $e_sub->id;
-                                $all_subject[$i]['name'] = $sub_obj->getSubjectFullName($e_sub->id);
+                                $all_subject[$i]['name'] = $name;
                                 $i++;
                             }
                         }    

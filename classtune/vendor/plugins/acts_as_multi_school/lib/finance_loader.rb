@@ -2916,23 +2916,23 @@ module FinanceLoader
       @keycode ||= String.new
     end
 
-     #request_url = @verification_url + '/Transaction_Verify_Details'
-    #uri = URI(request_url)
-   # http = Net::HTTP.new(uri.host, uri.port)
-    #auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
-    #auth_req.set_form_data({"OrderID" => o.to_s, "MerchantID" => @merchant_id, "RefID" => "1343E96005ADC8"})
+     request_url = @verification_url + '/Transaction_Verify_Details'
+    uri = URI(request_url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+    auth_req.set_form_data({"OrderID" => o.to_s, "MerchantID" => @merchant_id, "RefID" => "1346294000EA58"})
 
-    #http.use_ssl = true
-   # auth_res = http.request(auth_req)
+    http.use_ssl = true
+    auth_res = http.request(auth_req)
 
-    #xml_res = Nokogiri::XML(auth_res.body)
-    #status = ""
-    #unless xml_res.xpath("/").empty?
-    #  status = xml_res.xpath("/").text
-    #end
+    xml_res = Nokogiri::XML(auth_res.body)
+    status = ""
+    unless xml_res.xpath("/").empty?
+      status = xml_res.xpath("/").text
+    end
 
-    #result = Base64.decode64(status)
-#abort(result.inspect)
+    result = Base64.decode64(status)
+abort(result.inspect)
 
     #abort(@verification_url + "  " + @merchant_id.to_s + " " + @keycode.to_s)
     request_url = @verification_url + '/Get_Transaction_Ref'

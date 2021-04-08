@@ -72,7 +72,11 @@ c<% unless @report_data.blank?  or  @report_data['report'].blank? %>
                  
                   <% total_mark_of_allexam = 0 %>
                   <tr class="even">
-                    <td class="col-pdf"><b><%= "Subject" %></b></td>
+                      <td class="col-pdf" rowspan="2"><b><%= "Subject" %></b></td>
+                      <td class="col-pdf" colspan="4"><b><%= "Class Test 2 (Out of 25)" %></b></td>
+                  </tr>
+                  <tr class="even">
+                    
                     <% unless @report_data['report']['exams'].blank? %>
                         <% @report_data['report']['exams'].each do |report| %>
                         <td><b>
@@ -81,7 +85,7 @@ c<% unless @report_data.blank?  or  @report_data['report'].blank? %>
                         </b></td>
                         <% end %>
                     <% end %>
-                    <td><b>Grade</b></td>
+                    <td><b>Total<br/>25</b></td>
                   </tr>
                   <% total_marks = 0 %>
                   <% subject_count = 0 %>
@@ -143,11 +147,8 @@ c<% unless @report_data.blank?  or  @report_data['report'].blank? %>
                            
                           
                           %>
-                          <% if !grade.blank? and !grade.name.blank? %>
-                            <td class="col-pdf" style="padding:5px !important;"><b><%= grade.name %></b></td>
-                          <% else %>
-                            <td class="col-pdf" style="padding:5px !important;"><b>-</b></td>
-                          <% end %> 
+                          <td class="col-pdf" style="padding:5px !important;"><b><%= obtain_mark.round() %></b></td>
+                         
                           
 
                       </tr>

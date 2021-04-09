@@ -154,19 +154,19 @@
                       <% comment_grade = 100 %>
                       <%
                         parcentise = parcentise.round()
-                        if parcentise > 91 && parcentise <= 100
+                        if parcentise >= 91 && parcentise <= 100
                           comment_grade = 1
                         end
-                        if parcentise > 81 && parcentise <= 90
+                        if parcentise >= 81 && parcentise <= 90
                           comment_grade = 2
                         end
-                        if parcentise > 71 && parcentise <= 80
+                        if parcentise >= 71 && parcentise <= 80
                           comment_grade = 3
                         end
-                        if parcentise > 61 && parcentise <= 70
+                        if parcentise >= 61 && parcentise <= 70
                           comment_grade = 4
                         end
-                        if parcentise > 50 && parcentise <= 60
+                        if parcentise >= 50 && parcentise <= 60
                           comment_grade = 5
                         end
                       %>

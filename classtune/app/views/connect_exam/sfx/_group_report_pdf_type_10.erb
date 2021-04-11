@@ -46,8 +46,15 @@
                   <% c = 'even'  %>
                   <tr class="table-header">
                       <td class="col-pdf"><b><%= "SUBJECTS" %></b></td>
-                      <td class="col-pdf">Actual</td>
-                      <td class="col-pdf">Exam Score</td>
+                      <% unless @report_data['report']['exams'].blank? %>  
+                        <% @report_data['report']['exams'].each do |report| %>
+                          <td class="col-pdf">
+                              <%= report['exam_name'] %>
+                          </td> 
+                        <% end %>
+                      <% end %>
+                      <td class="col-pdf">Total</td>
+                      <td class="col-pdf">100%</td>
                       <td class="col-pdf">Grade</td>
                       <td class="col-pdf">Remarks</td>
                   </tr>
@@ -84,7 +91,10 @@
                             <% @report_data['report']['exams'].each do |report| %>
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                   <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                              <% end %>
+                                  <td><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
+                              <% else %>
+                                  <td>-</td>
+                              <% end %> 
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                 <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                               <% end %> 

@@ -415,8 +415,17 @@ class ReportController extends Controller
             $new_connect_exam_id = array();
             if ($connect_exam_id && Yii::app()->user->user_secret === $user_secret &&  (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin || Yii::app()->user->isStudent || Yii::app()->user->isParent ))
             {
+                $connectexmObj = new ExamConnect();
+                $data = $connectexmObj->findByPk($connect_exam_id);
+                
                 $objPreviousExam = new PreviousExams();
-                $finish_exam = $objPreviousExam->getFinishExam($connect_exam_id,$data_type);
+                if($data->is_published == 1)
+                {
+                    $finish_exam = $objPreviousExam->getFinishExamALL($connect_exam_id,$data_type);
+                }
+                else {
+                    $finish_exam = $objPreviousExam->getFinishExam($connect_exam_id,$data_type);
+                }
                 if($finish_exam)
                 {
                     echo $finish_exam;
@@ -425,8 +434,7 @@ class ReportController extends Controller
                 }
                 if($all_class_report)
                 {
-                    $connectexmObj = new ExamConnect();
-                    $data = $connectexmObj->findByPk($connect_exam_id);
+                   
                     $objBatch = new Batches();
                     $batchData = $objBatch->findByPk($data->batch_id);
                     

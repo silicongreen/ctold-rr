@@ -49,6 +49,20 @@ class PreviousExams extends CActiveRecord
         return array(
         );
     }
+
+    public function getFinishExamALL($connect_exam_id,$data_type=1,$subject_id=0,$is_finished=1)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.data';
+        $criteria->compare('t.data_type',$data_type);
+        $criteria->compare('t.connect_exam_id',$connect_exam_id);
+        $data = $this->find($criteria);
+        if($data)
+        {
+            return $data->data;
+        }        
+        return false;
+    }
     
     public function getFinishExam($connect_exam_id,$data_type=1,$subject_id=0,$is_finished=1)
     {

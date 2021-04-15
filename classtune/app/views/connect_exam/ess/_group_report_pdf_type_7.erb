@@ -235,7 +235,7 @@
                         if parcentise >= 61 && parcentise <= 70
                           comment_grade = 4
                         end
-                        if parcentise >= 50 && parcentise <= 60
+                        if parcentise >= 0 && parcentise <= 60
                           comment_grade = 5
                         end
                       %>
@@ -243,7 +243,7 @@
                       &nbsp;&nbsp;<input type="checkbox" <% if comment_grade == 2 %> checked = "checked" <% end %>>&nbsp;Very Good (81-90)%
                       &nbsp;&nbsp;<input type="checkbox" <% if comment_grade == 3 %> checked = "checked" <% end %>>&nbsp;Good (71-80)%<br/>
                       <input type="checkbox" <% if comment_grade == 4 %> checked = "checked" <% end %>>&nbsp;Satisfactory (61-70)%
-                      &nbsp;&nbsp;<input type="checkbox" <% if comment_grade == 5 %> checked = "checked" <% end %>>&nbsp;Needs Improvement (50-60)%
+                      &nbsp;&nbsp;<input type="checkbox" <% if comment_grade == 5 %> checked = "checked" <% end %>>&nbsp;Needs Improvement (0-60)%
                     </td>
                   </tr>
                   <tr class="even"> 
@@ -255,7 +255,7 @@
                     <td colspan="4">
                       <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"30%" %>
                       <br/>
-                      <%= Time.now.strftime("%d/%m/%Y") %>
+                      <%= @connect_exam_obj.published_date.strftime("%d/%m/%Y") %>
                     </td>
                   </tr>
 

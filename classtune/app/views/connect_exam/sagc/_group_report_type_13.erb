@@ -1,0 +1,246 @@
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+           
+             <table id="pdf-table" class="top-left-center" width="80.5%" cellspacing="0">
+                  <% c = 'even'  %>
+                  <% total_mark_of_allexam = 0 %>
+                 
+                  <tr class="even header-shade">
+                      <td class="col-pdf">
+                          <b>Sl.</b>
+                      </td>
+                      <td class="col-pdf no-warp  align-left-baf"><b><%= "Subjects" %></b></td>
+                     
+
+                      <td class="col-pdf">
+                          <b>Full Marks</b>
+                      </td>
+                      <td class="col-pdf">
+                          <b>Marks Obtain</b>
+                      </td>
+                      <td class="col-pdf" ><b>Highest Marks</b></td>
+                      <td class="col-pdf"><b>Letter Grade</b></td>
+                      <td class="col-pdf"><b>Grade Point</b></td>
+                      
+                  </tr>
+
+                  <% total_grade = 0 %>
+                  <% total_subject = 0 %>
+                  <% grade_point_avg = 0 %>
+                  <% failed = false %>
+                  <% total_subject_main = 0 %>
+                  <% grand_total_fraction = 0 %>
+                  
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                          <% total_mark = 0 %>
+                          <% full_mark = 0 %>
+                          <%
+                            third_subject = "";
+                            fourth_subject = "";
+                          %>
+                          <% if !@std_subject_hash_type.blank? %>
+                            <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||4") %>
+                              <% fourth_subject = "(4th)" %>
+                            <% end %>
+                            <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||3") %>
+                              <% third_subject = "(3rd)" %>
+                            <% end %>
+                          <% end %>
+                          <% if fourth_subject.blank? %>
+                            <% total_subject = total_subject+1 %>
+                          <% end %>
+                          <% total_subject_main = total_subject_main+1 %>
+                          <td class="col-pdf"><%= total_subject_main %></td>
+                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %><%= fourth_subject %><%= third_subject %></td>
+                          <% unless @report_data['report']['exams'].blank? %>  
+                            <% @report_data['report']['exams'].each do |report| %>   
+                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
+                                <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                              <% else %>
+                              <% end %>
+                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                              <% end %> 
+                            <% end %>
+                          <% end %>
+
+
+                          <% 
+                            
+                            total_mark = total_mark.round()
+                            grand_total_fraction = grand_total_fraction.to_f+total_mark
+                            if total_mark.to_f>0 and full_mark.to_f>0
+                              main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                            else
+                              main_mark = 0
+                            end 
+                          %>
+                          <% 
+                            highest_mark = 0
+                            if !@subject_highest.blank? and !@subject_highest[subjects['id'].to_i].blank?
+                              highest_mark = @subject_highest[subjects['id'].to_i].to_f
+                            end
+
+                          %>
+
+                          <% if full_mark.to_f > 0 %>
+                            <td class="col-pdf"><%= full_mark.to_i %></td>
+                            <td class="col-pdf"><%= total_mark.to_i %></td>
+                            <td class="col-pdf no-warp">
+                               <%= highest_mark.to_f.round.to_i %>
+                            </td>
+                            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <% if (grade.credit_points.to_i == 0 or total_mark < 20) and fourth_subject.blank? %>
+                                <% failed = true %>
+                                <% grade.name = "F" %>
+                                <% grade.credit_points = 0.0 %>
+                              <% elsif grade.credit_points.to_i == 0 or total_mark < 20 %>
+                                <% grade.name = "F" %>
+                                <% grade.credit_points = 0.0 %>
+                              <% end %>
+                              <% if fourth_subject.blank? %>
+                                <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
+                              <% else %>
+                                <% new_grade_point = grade.credit_points.to_f-2 %>
+                                <% if new_grade_point > 0 %>
+                                 <% total_grade = total_grade.to_f+new_grade_point.to_f %>
+                                <% end %>  
+                              <% end %>
+                              <td class="col-pdf"><%= grade.name %></td>
+                              <td class="col-pdf"><%= grade.credit_points %></td>
+                            <% else %>
+                              <td class="col-pdf">-</td>
+                            <% end %>
+                          <% else  %>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
+                          <% end %>      
+
+                      </tr> 
+                    <% end %>  
+                  <% end %>
+                      
+                  <% if total_grade > 0 && total_subject > 0 %>
+                      <% grade_point_avg = total_grade.to_f/total_subject.to_f %>
+                  <% end %>  
+
+              </table>
+<% end %>
+
+<style>
+
+
+    div.baf_shaheen
+    {
+        border:none;
+    }
+    .baf_shaheen td.align-right
+    {
+        text-align: right !important;
+    }
+    .baf_shaheen td.align-left
+    {
+        text-align: left !important;
+    }
+    .baf_shaheen table.tbl-lign-left tr.even td,.baf_shaheen table.tbl-lign-left tr.odd td
+    {
+        font-weight: normal !important;
+        padding: 7px !important; 
+    }
+    .baf_shaheen table.tbl-lign-left-100 tr.even td,.baf_shaheen table.tbl-lign-left-100 tr.odd td
+    {
+        font-weight: normal !important;
+        padding: 7px !important; 
+    }
+    .baf_shaheen table.tbl-lign-left-100
+    {
+        float:left !important;
+        width: 99.8% !important;
+        margin-left: 4% !important;
+    }
+    .baf_shaheen table.tbl-lign-left
+    {
+        float:left !important;
+        width: 52% !important;
+        margin-left: 4% !important;
+    }
+    .baf_shaheen div.grade_information
+    {
+        margin-left:3%;
+        float:left;
+        width: 34.7%;
+        font-size: 14px;
+
+    }
+    .baf_shaheen div.grade_information table#pdf-table tr.even td
+    {
+        padding: 8px !important;
+    }
+    div.baf_shaheen h2
+    {
+        font-weight: normal !important;
+        font-size: 32px !important;
+    }
+    div.baf_shaheen table.top-left-center
+    {
+        float:left !important;
+        margin-top:30px !important;
+        margin-left: 4% !important;
+        width: 90% !important;
+    }
+    
+    div.baf_shaheen tr.odd td
+    {
+        padding: 2px 10px !important; 
+        border: 1px solid #000000;
+        font-size:21px;
+    }
+    div.baf_shaheen tr.even td
+    {
+        padding: 2px 10px !important;
+        border: 1px solid #000000;
+        font-size:21px;
+    }
+    div.baf_shaheen table#pdf-table tr.header-shade td
+    {
+        padding: 2px 3px !important;
+    }
+
+    .top-margin-20
+    {
+        margin-top:30px !important;
+    }
+    .letter-grade tr td
+    {
+        font-size: 21px !important;
+    }
+    div.baf_shaheen table#pdf-table tr.header-shade
+    {
+        background: #e8e9ed !important;
+    }
+    div.baf_shaheen div.fine
+    {
+        float:left;
+        clear:both;
+        margin-top:40px;
+        margin-bottom:20px;
+        margin-left: 4% !important;
+        width: 90% !important
+    }
+    .letter-grade tr td.font-size-45
+    {
+        font-size:45px !important;
+    }
+    .page-break-grade td{
+        height: 0px;
+        border: 1px solid #fff;
+        border-top: 1px solid Black;
+        border-bottom: 1px solid Black;
+    }
+    
+
+
+</style> 

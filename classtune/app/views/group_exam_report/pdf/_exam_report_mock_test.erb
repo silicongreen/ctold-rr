@@ -237,7 +237,15 @@
           
  
       </table>
-      <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
+      <% has_no_exam = false %>
+      <% exam_score.each do |es| %>
+          <% if es.exam.subject.no_exams %>
+            <% has_no_exam = true %>
+            <% break %>
+          <% end %>
+       <% end %>   
+
+      <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" && has_no_exam == true %>
       <h4 class="h4-evaluation"><b>Personal & Social Development</b></h4>
       <table id="pdf-table" width="99.8%" class="table_99" cellspacing="0">
         <% c = 'even'  %>

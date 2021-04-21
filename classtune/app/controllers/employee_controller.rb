@@ -42,6 +42,7 @@ class EmployeeController < ApplicationController
     @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
     @date_to_use = @local_tzone_time.to_date
     @weekday_id = @date_to_use.strftime("%w")
+    @subjects = []
     unless @current_timetable.blank?
       @employee_subjects = @employee.subjects
       subjects = @employee_subjects.select{|sub| sub.elective_group_id.nil?}

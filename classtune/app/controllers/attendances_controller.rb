@@ -146,7 +146,7 @@ class AttendancesController < ApplicationController
       @subjects = Subject.find_all_by_batch_id(params[:batch_id])
       @students = Student.find_all_by_batch_id(params[:batch_id])
       std_subject = StudentsSubject.find_all_by_batch_id(params[:batch_id])
-      std_subject_hash = []
+      @std_subject_hash = []
       unless std_subject.blank?
         std_subject.each do |std_sub|
           @std_subject_hash << std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s

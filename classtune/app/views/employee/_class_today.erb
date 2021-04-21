@@ -31,7 +31,7 @@
     <td><%= sub.name %></td>
     <% entry = @entries.find{|val| val.subject_id.to_i == sub.id.to_i }%>
     
-    <td><%= entry.start_time.strftime("%I:%M %p") unless entry.blank? %></td>
+    <td><%= entry.class_timing.start_time.strftime("%I:%M %p") unless entry.blank? %></td>
     <% attendance = @attenadnce_register.find{|val| val.subject_id.to_i == sub.id.to_i }%>
     <td><%= "Yes" unless attendance.blank? %></td>
   </tr>

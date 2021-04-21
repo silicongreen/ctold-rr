@@ -36,6 +36,57 @@ class EmployeeController < ApplicationController
     flash[:notice] = "Photo Successfully Removed"
     redirect_to :controller => "employee", :action => "profile", :id=>params[:id]
   end
+  def class_today
+    @employee = Employee.find(params[:id])
+    @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
+    @date_to_use = params[:date_to_use].to_date
+    @weekday_id = @date_to_use.strftime("%w")
+    unless @current_timetable.blank?
+      @employee_subjects = @employee.subjects
+      subjects = @employee_subjects.select{|sub| sub.elective_group_id.nil?}
+      electives = @employee_subjects.select{|sub| sub.elective_group_id.present?}
+      
+      elective_subjects = []
+      unless electives.blank?
+        electives.each do |esubject|
+          all_e_subject = Subject.active.find_all_by_elective_group_id(esubject.elective_group_id)
+          unless all_e_subject.blank?
+            all_e_subject.each do |subelective|
+              elective_subjects << subelective.id
+            end
+          end
+        end
+      end
+
+      @entries=[]
+      @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:weekday_id=>@weekday_id.to_i,:employee_id => @employee.id},:inlude=>:class_timing,:order=>"class_timings.start_time")
+      @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:subject_id=>elective_subjects,:weekday_id=>@weekday_id.to_i},:inlude=>:class_timing,:order=>"class_timings.start_time")
+      @attenadnce_register = SubjectAttendanceRegister.find(:all,:conditions=>["attendance_date = ?",@local_tzone_time.to_date])
+      unless @entries.blank?
+        @entries.each do |te|
+          @timetable_subject = Subject.active.find_by_id(te.subject_id)
+          unless @timetable_subject.blank?
+            if @timetable_subject.elective_group_id.present?
+              @all_sub_elective = Subject.active.find_all_by_elective_group_id(@timetable_subject.elective_group_id)    
+              unless @all_sub_elective.blank?
+                @all_sub_elective.each do |esub|
+                  if @employee_subjects.include?(esub) && !@subjects.include?(esub)
+                    @subjects << esub
+                  end  
+                end
+                
+              end
+            else
+              @subjects << @timetable_subject
+                
+            end
+          end
+        end
+      end
+    end
+    render :partial => "class_today"
+  end  
+
   def late_employee
     @today = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d')
     @employee = Employee.all

@@ -40,7 +40,12 @@ class EmployeeController < ApplicationController
   def class_today
     @employee = Employee.find(params[:id])
     @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
-    @date_to_use = @local_tzone_time.to_date
+    unless params['date_report'].blank?
+      @date_to_use = params['date_report'].to_date
+    else  
+      @date_to_use = @local_tzone_time.to_date
+    end
+    $date_today = @date_to_use
     @weekday_id = @date_to_use.strftime("%w")
     @subjects = []
     unless @current_timetable.blank?
@@ -88,7 +93,9 @@ class EmployeeController < ApplicationController
         end
       end
     end
-    render :partial => "class_today"
+    if params['date_report'].blank?
+      render :partial => "class_today"
+    end
   end  
 
   def late_employee

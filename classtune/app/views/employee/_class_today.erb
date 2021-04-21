@@ -18,6 +18,22 @@
 #under the License. -%>
 
 <% unless @subjects.blank? %>
+<div class="row" style="width:50%">
+    <div class="row_label" >
+      <div>
+        Select date
+      </div>
+    </div>
+    <div class="row_data">
+      <div>
+        <%= calendar_date_select_tag "select_date",I18n.l(@date_today,:format=>"%d %b %Y"), :readonly=> true,:onchange => "#{remote_function(
+      :url => { :action => 'class_today' },
+      :with => "'employee_id="+@employee.id.to_s+"&date_report='+value",
+      :before => "Element.show('loader')",
+      :success => "Element.hide('loader')"  )}", :popup=>:force, :placeholder => '', :image => '/images/icons/calendar/calendar-icon.png' %>
+      </div>
+    </div>
+  </div>
 <table width="700">
   <tr class="even">
     <td>Class</td>

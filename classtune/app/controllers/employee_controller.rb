@@ -23,6 +23,7 @@ class EmployeeController < ApplicationController
   before_filter :set_precision
   before_filter :check_permission, :only => [:index,:profile,:settings,:hr,:employee_attendance,:payslip,:search,:department_payslip]
   before_filter :only_allowed_when_parmitted, :only => [:edit_employee_own]
+  before_filter :default_time_zone_present_time
 
   before_filter :protect_other_employee_data, :only => [:individual_payslip_pdf,:timetable,:timetable_pdf,:profile_payroll_details,\
       :view_payslip ]

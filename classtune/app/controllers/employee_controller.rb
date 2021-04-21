@@ -40,7 +40,7 @@ class EmployeeController < ApplicationController
   def class_today
     @employee = Employee.find(params[:id])
     @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
-    @date_to_use = params[:date_to_use].to_date
+    @date_to_use = @local_tzone_time.to_date
     @weekday_id = @date_to_use.strftime("%w")
     unless @current_timetable.blank?
       @employee_subjects = @employee.subjects

@@ -19,14 +19,14 @@
 
 <% unless @subjects.blank? %>
 <table width="700">
-  <tr class="header">
+  <tr class="odd">
     <td>Class</td>
     <td>Subject</td>
     <td>Start Time</td>
     <td>Attendance Taken</td>
   </tr>  
   <% @subjects.each do |sub| %>
-  <tr class="odd">
+  <tr class="even">
     <td><%= sub.batch.full_name %></td>
     <td><%= sub.name %></td>
     <% entry = @entries.find{|val| val.subject_id.to_i == sub.id.to_i }%>
@@ -42,7 +42,7 @@
 <% else %>
 
 <table width="700">
-  <tr class="header">
+  <tr class="odd">
     <td>No Class Today</td>
   </tr>
 

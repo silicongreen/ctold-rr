@@ -45,7 +45,7 @@ class EmployeeController < ApplicationController
     else  
       @date_to_use = @local_tzone_time.to_date
     end
-    $date_today = @date_to_use
+    @date_today = @date_to_use
     @weekday_id = @date_to_use.strftime("%w")
     @subjects = []
     unless @current_timetable.blank?

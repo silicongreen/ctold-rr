@@ -24,7 +24,7 @@
         Select date
       </div>
     </div>
-    <div class="row_data">
+    <div class="row_data calender-div">
       <div>
         <%= calendar_date_select_tag "select_date",I18n.l(@date_today,:format=>"%d %b %Y"), :readonly=> true,:onchange => "#{remote_function(
       :url => { :action => 'class_today' },
@@ -34,7 +34,14 @@
       </div>
     </div>
   </div>
-<table width="700">
+   <div class="loader-image">
+        <%= image_tag("loader.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader",
+          :style =>"display: none;" ) %>
+    </div>
+<table width="700" style="margin-top:10px;">
   <tr class="even">
     <td>Class</td>
     <td>Subject</td>
@@ -64,3 +71,16 @@
 
 </table>
 <% end %>  
+
+<style>
+.calender-div image
+{
+    width: 30px;
+    margin-bottom: -10px;
+}
+.calender-div input
+{
+    height: 27px;
+    width: 200px;
+}
+</style>

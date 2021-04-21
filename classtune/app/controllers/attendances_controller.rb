@@ -131,8 +131,8 @@ class AttendancesController < ApplicationController
   #      page.replace_html 'subjects', :partial=> 'subjects2'
   #    end
   #  end
-
-  def batch_subject_report
+  
+  def subjects3
     if params[:batch_id].present?
       @batch_id = params[:batch_id]
       @date_to = @local_tzone_time.to_date.strftime("%Y-%m-%d")
@@ -155,12 +155,7 @@ class AttendancesController < ApplicationController
       @subject_att_register = SubjectAttendanceRegister.find(:all,:select=>"sum(id) as total_register,subject_id",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ?",params[:batch_id],@date_form,@date_to],:group=>"subject_id")
       @subject_att = SubjectAttendance.find(:all,:select=>"sum(id) as total_absent,student_id",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ? and is_late = 0",params[:batch_id],@date_form,@date_to],:group=>"student_id")
     end   
-    render(:update) do |page|
-      page.replace_html 'attendance_report', :partial=> 'batch_attendance_report'
-    end
-  end  
-  
-  def subjects3
+
     @subjects = []
     if params[:batch_id].present?
       @batch = Batch.find(params[:batch_id])
@@ -253,6 +248,7 @@ class AttendancesController < ApplicationController
    
     render(:update) do |page|
       page.replace_html 'subjects', :partial=> 'subjects3'
+      page.replace_html 'register', :partial=> 'batch_attendance_report'
     end
   end
   

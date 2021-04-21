@@ -45,8 +45,8 @@
                   <td class="col-2 left-align"><%= std.full_name %></td>
                   <%
                     total = 0
-                    unless subject_att_register.blank?
-                      subject_att_register.each do |att|
+                    unless @subject_att_register.blank?
+                      @subject_att_register.each do |att|
                         subject_data = @subjects.find{|val| val.id.to_i == att.subject_id.to_i }
                         unless subject_data.blank?
                           if subject_data.elective_group_id.blank?

@@ -248,7 +248,7 @@ class AttendancesController < ApplicationController
    
     render(:update) do |page|
       page.replace_html 'subjects', :partial=> 'subjects3'
-      page.replace_html 'register', :partial=> 'batch_attendance_report'
+     
     end
   end
   

@@ -1,0 +1,97 @@
+</div>
+<div id="page-yield">
+
+    <h4 align="center"><%= @subject.name+" Attendance Report " %>,<%= Time.now.strftime("%Y") %></h4> 
+    <hr />
+    <div>
+        <% if @batch.name == "General" %>
+          <h4 align="left"> <%= @batch.course.full_name %></h4>
+        <% else %>
+          <h4 align="left"> <%= @batch.name %> - <%= @batch.course.full_name %></h4>
+        <% end %>
+    </div>
+    <% unless @data.nil? %>
+      <div id="pdf-info">
+          <table id="pdf-table" width="99%" cellspacing="0">
+              <% c = 'even'  %>
+              <tr class="even">
+                  <td class="col-pdf"><b><%= "Roll" %></b></td>
+                  <td class="col-pdf"><b><%= "Name" %></b></td>
+                  <td class="col-pdf"><b><%= "Total" %></b></td>
+                  <td class="col-pdf"><b><%= "Present" %></b></td>
+                  <td class="col-pdf"><b><%= "Absent" %></b></td>
+              </tr>
+              <tr class="tr-blank"></tr>
+              <% std_count = 0 %>
+              <% extender = 0 %>
+              <% unless @students.blank? %>
+                <% @students.each do |std| %>
+                  <% std_count = std_count+1 %>
+                  <% if std_count>37 && extender ==0 %>
+                    <% std_count = 0 %>
+                    <% extender = 1 %>
+                    <tr class="page-break">
+                        <td colspan="100">&nbsp;</td>
+                    </tr> 
+                    <tr class="even">
+                        <td class="col-pdf"><b><%= "Roll" %></b></td>
+                        <td class="col-pdf"><b><%= "Name" %></b></td>
+                        <td class="col-pdf"><b><%= "Total" %></b></td>
+                        <td class="col-pdf"><b><%= "Present" %></b></td>
+                        <td class="col-pdf"><b><%= "Absent" %></b></td>
+                    </tr>
+                  <% elsif std_count>40 && extender ==1 %>
+                    <% std_count = 0 %>
+                    <% extender = 1 %>
+                    <tr class="page-break">
+                        <td colspan="100">&nbsp;</td>
+                    </tr> 
+                    <tr class="even">
+                        <td class="col-pdf"><b><%= "Roll" %></b></td>
+                        <td class="col-pdf"><b><%= "Name" %></b></td>
+                        <td class="col-pdf"><b><%= "Total" %></b></td>
+                        <td class="col-pdf"><b><%= "Present" %></b></td>
+                        <td class="col-pdf"><b><%= "Absent" %></b></td>
+                    </tr>
+                  <% end %> 
+
+
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf"><%= std.class_roll_no %></td>
+                      <td class="col-pdf"><%= std.full_name %></td>
+                       <%
+                        total = 0
+                        unless @subject_att_register.blank?
+                          @subject_att_register.each do |att|
+                            subject_data = @subject_batch.find{|val| val.id.to_i == att.subject_id.to_i }
+                            unless subject_data.blank?
+                              if subject_data.elective_group_id.blank?
+                                  total = total+att.total_register.to_i
+                              else
+                                subejct_hash_string = std.id.to_s+"|||"+att.subject_id.to_s
+                                if @std_subject_hash.include?(subejct_hash_string)
+                                  total = total+att.total_register.to_i
+                                end
+                              end
+                            end
+                          
+                          end
+                        end
+                        total_absent = 0
+                        absent = @subject_att.find{|val| val.student_id.to_i == std.id.to_i }
+                        unless absent.blank?
+                          total_absent = absent.total_absent.to_i
+                        end
+                        present = total-total_absent
+                      %>
+                      <td class="col-pdf"><%= total %></td>
+                      <td class="col-pdf"><%= present %></td>
+                      <td class="col-pdf"><%= total_absent %></td>
+                  </tr>
+                <% end %>
+              <% end %>
+
+          </table>
+      </div>
+    <% end %>
+</div>

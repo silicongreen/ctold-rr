@@ -143,7 +143,7 @@ class AttendancesController < ApplicationController
       if !params[:date_form].blank?
         @date_form = params[:date_form].to_date.strftime("%Y-%m-%d")
       end
-      @subjects = Subject.find_all_by_batch_id(params[:batch_id])
+      @subject_batch = Subject.find_all_by_batch_id(params[:batch_id])
       @students = Student.find_all_by_batch_id(params[:batch_id])
       std_subject = StudentsSubject.find_all_by_batch_id(params[:batch_id])
       @std_subject_hash = []
@@ -248,7 +248,7 @@ class AttendancesController < ApplicationController
    
     render(:update) do |page|
       page.replace_html 'subjects', :partial=> 'subjects3'
-     
+      page.replace_html 'register', :partial=> 'batch_attendance_report'
     end
   end
   

@@ -38,8 +38,8 @@
                <b>Absent</b>
               </td> 
             </tr> 
-            <% unless @students.blank? %>
-              <% @students.each do |std| %>
+            <% unless @subject_batch .blank? %>
+              <% @subject_batch.each do |std| %>
                 <tr>
                   <td class="col-2"><%= std.class_roll_no %></td>
                   <td class="col-2 left-align"><%= std.full_name %></td>
@@ -50,11 +50,11 @@
                         subject_data = @subjects.find{|val| val.id.to_i == att.subject_id.to_i }
                         unless subject_data.blank?
                           if subject_data.elective_group_id.blank?
-                              total = total+att.total_register
+                              total = total+att.total_register.to_i
                           else
                             subejct_hash_string = std.id.to_s+"|||"+att.subject_id.to_s
                             if @std_subject_hash.include?(subejct_hash_string)
-                              total = total+att.total_register
+                              total = total+att.total_register.to_i
                             end
                           end
                         end
@@ -64,7 +64,7 @@
                     total_absent = 0
                     absent = @subject_att.find{|val| val.student_id.to_i == std.id.to_i }
                     unless absent.blank?
-                      total_absent = absent.total_absent
+                      total_absent = absent.total_absent.to_i
                     end
                     present = total-total_absent
                   %>

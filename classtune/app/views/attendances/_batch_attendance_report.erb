@@ -43,6 +43,7 @@
                 <tr>
                   <td class="col-2"><%= std.class_roll_no %></td>
                   <td class="col-2 left-align"><%= std.full_name %></td>
+                  <%= debug @subject_att_register.inspect %>
                   <%
                     total = 0
                     unless @subject_att_register.blank?

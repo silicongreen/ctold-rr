@@ -10,7 +10,7 @@
           <h4 align="left"> <%= @batch.name %> - <%= @batch.course.full_name %></h4>
         <% end %>
     </div>
-    <% unless @data.nil? %>
+    <% unless @students.nil? %>
       <div id="pdf-info">
           <table id="pdf-table" width="99%" cellspacing="0">
               <% c = 'even'  %>

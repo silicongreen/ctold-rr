@@ -152,9 +152,9 @@ class AttendancesController < ApplicationController
           @std_subject_hash << std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s
         end
       end
-      @subject_att_register = SubjectAttendanceRegister.find.all(:select=>"sum(id) as total_register,subject_id",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ?",params[:batch_id],@date_form,@date_to],:group=>"subject_id")
+      @subject_att_register = SubjectAttendanceRegister.all(:select=>"sum(id) as total_register,subject_id",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ?",params[:batch_id],@date_form,@date_to],:group=>"subject_id")
       
-      @subject_att = SubjectAttendance.find.all(:select=>"sum(id) as total_absent,student_id",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ? and is_late = 0",params[:batch_id],@date_form,@date_to],:group=>"student_id")
+      @subject_att = SubjectAttendance.all(:select=>"sum(id) as total_absent,student_id",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ? and is_late = 0",params[:batch_id],@date_form,@date_to],:group=>"student_id")
     end   
 
     @subjects = []

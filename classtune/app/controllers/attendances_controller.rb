@@ -140,8 +140,8 @@ class AttendancesController < ApplicationController
       if !params[:date_to].blank?
         @date_to = params[:date_to].to_date.strftime("%Y-%m-%d")
       end
-      if !params[:date_form].blank?
-        @date_form = params[:date_form].to_date.strftime("%Y-%m-%d")
+      if !params[:date_from].blank?
+        @date_form = params[:date_from].to_date.strftime("%Y-%m-%d")
       end
       @subject_batch = Subject.find_all_by_batch_id(params[:batch_id])
       @students = Student.find_all_by_batch_id(params[:batch_id])
@@ -152,9 +152,9 @@ class AttendancesController < ApplicationController
           @std_subject_hash << std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s
         end
       end
-      @subject_att_register = SubjectAttendanceRegister.all(:select=>"sum(id) as total_register,subject_id",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date1 <= ?",params[:batch_id],@date_form,@date_to],:group=>"subject_id")
+      @subject_att_register = SubjectAttendanceRegister.all(:select=>"count(id) as total_register,subject_id",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ?",params[:batch_id],@date_form,@date_to],:group=>"subject_id")
       
-      @subject_att = SubjectAttendance.all(:select=>"sum(id) as total_absent,student_id",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ? and is_late = 0",params[:batch_id],@date_form,@date_to],:group=>"student_id")
+      @subject_att = SubjectAttendance.all(:select=>"count(id) as total_absent,student_id",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ? and is_late = 0",params[:batch_id],@date_form,@date_to],:group=>"student_id")
     end   
 
     @subjects = []

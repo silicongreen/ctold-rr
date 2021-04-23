@@ -27,7 +27,7 @@
               <% unless @students.blank? %>
                 <% @students.each do |std| %>
                   <% std_count = std_count+1 %>
-                  <% if std_count>41 && extender ==0 %>
+                  <% if std_count>47 && extender ==0 %>
                     <% std_count = 0 %>
                     <% extender = 1 %>
                     <tr class="page-break">
@@ -40,7 +40,7 @@
                         <td class="col-pdf"><b><%= "Present" %></b></td>
                         <td class="col-pdf"><b><%= "Absent" %></b></td>
                     </tr>
-                  <% elsif std_count>44 && extender ==1 %>
+                  <% elsif std_count>50 && extender ==1 %>
                     <% std_count = 0 %>
                     <% extender = 1 %>
                     <tr class="page-break">

@@ -680,6 +680,15 @@ class MarksController < ApplicationController
               data[k][3] = "-"
               data[k][4] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}#view=FitH' target='_blank'>Results</a>"
               k = k+1
+            elsif exam_connect.result_type == 12 and  school_id != 323
+              data[k] = []
+              data[k][0] = exam_connect_batch.to_s
+              data[k][1] = "<a href='/exam/tabulation/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>"
+              data[k][2] = "-"
+              data[k][3] = "-"
+              data[k][4] = "-"
+              c_exam_array << exam_connect.id.to_i
+              k = k+1
             else
               data[k] = []
               data[k][0] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>#{exam_connect_batch.to_s} (All Result)</a>"

@@ -120,7 +120,7 @@
         <% @report_data['report']['students'].each do |std| %>
           <% j = j+1 %>
           <%  std_count = std_count+1; %>
-          <% if std_count>8 && extender ==0 %>
+          <% if std_count>12 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
@@ -140,7 +140,7 @@
                   <% end %> 
 
               </tr>
-          <% elsif std_count>9 && extender ==1 %>
+          <% elsif std_count>13 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break2-bf">
@@ -215,8 +215,11 @@
                    <% end %>
                      
                       M1: <%= subject_mock1.to_i %>
+                      <hr/>
                       M2: <%= subject_mock2.to_i %>
+                      <hr/>
                       M3: <%= subject_mock3.to_i %>
+                      <hr/>
                   </td>   
                        
                            
@@ -237,7 +240,7 @@
 </div>
 <style>
 .baf_shaheen table#pdf-table tr.table-header td, .baf_shaheen table#pdf-table tr.even td,.baf_shaheen table#pdf-table tr.odd td{
-        padding: 2px 0px !important;
+        padding: 2px 1px !important;
         font-size: 10px !important;
     }  
 

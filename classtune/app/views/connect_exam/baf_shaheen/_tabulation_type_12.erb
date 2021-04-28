@@ -214,12 +214,11 @@
                     <% end %>
                    <% end %>
                      
-                      M1: <%= subject_mock1.to_i %>
+                      <span class="no-warp">M1: <%= subject_mock1.to_i %></span>
                       <hr/>
-                      M2: <%= subject_mock2.to_i %>
+                      <span class="no-warp">M2: <%= subject_mock2.to_i %></span>
                       <hr/>
-                      M3: <%= subject_mock3.to_i %>
-                      <hr/>
+                      <span class="no-warp">M3: <%= subject_mock3.to_i %></span>
                   </td>   
                        
                            
@@ -240,8 +239,12 @@
 </div>
 <style>
 .baf_shaheen table#pdf-table tr.table-header td, .baf_shaheen table#pdf-table tr.even td,.baf_shaheen table#pdf-table tr.odd td{
-        padding: 2px 1px !important;
+        padding: 2px 0px !important;
         font-size: 10px !important;
     }  
+    .no-warp
+    {
+      white-space: nowrap;
+    }
 
 </style>

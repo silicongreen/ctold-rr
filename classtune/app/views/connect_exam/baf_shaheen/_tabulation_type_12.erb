@@ -110,7 +110,7 @@
             <td><%=  sub['code'] %></td>
             <% end %> 
           <% end %> 
-        
+          <td class="col-pdf">Total</td>
         </tr>
         
         <% extender = 0 %>
@@ -138,6 +138,7 @@
                     <td><%=  sub['code'] %></td>
                     <% end %> 
                   <% end %> 
+                <td class="col-pdf">Total</td>
 
               </tr>
           <% elsif std_count>10 && extender ==1 %>
@@ -158,6 +159,7 @@
                     <td><%=  sub['code'] %></td>
                     <% end %> 
                   <% end %> 
+                <td class="col-pdf">Total</td>  
 
               </tr>
           <% end %>    
@@ -174,6 +176,11 @@
             <td class="name-std"><%= "-" %></td>
             <% end %>
             <% total_mark = 0 %>
+            <%
+            mock_1_total = 0
+            mock_2_total = 0
+            mock_3_total = 0
+            %>
             <% grades = [] %>
             <% grade_count = {} %>
             <% @report_data['report']['subjects'].each do |sub| %>
@@ -213,7 +220,11 @@
                         
                     <% end %>
                    <% end %>
-                     
+                      <%
+                      mock_1_total = mock_1_total+subject_mock1.to_i
+                      mock_2_total = mock_1_total+subject_mock2.to_i
+                      mock_3_total = mock_1_total+subject_mock3.to_i
+                      %>
                       <span class="no-warp">M1: <%= subject_mock1.to_i %></span>
                       <hr/>
                       <span class="no-warp">M2: <%= subject_mock2.to_i %></span>
@@ -225,8 +236,13 @@
                     
                      
              <% end %> 
-            
-              
+                <td>
+                      <span class="no-warp">T1: <%= mock_1_total.to_i %></span>
+                      <hr/>
+                      <span class="no-warp">T2: <%= mock_2_total.to_i %></span>
+                      <hr/>
+                      <span class="no-warp">T3: <%= mock_3_total.to_i %></span>
+                  </td>  
            
         </tr>
         <% end %>

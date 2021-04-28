@@ -207,16 +207,16 @@
                       <% elsif iloop == 3 %>
                         <%  subject_mock3 = subject_mock3+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
                       <% end %>
-                      M1: <%= subject_mock1 %>
-                      M2: <%= subject_mock2 %>
-                      M3: <%= subject_mock3 %>
+                    
                       
                       
                         
                     <% end %>
                    <% end %>
                      
-                      
+                      M1: <%= subject_mock1 %>
+                      M2: <%= subject_mock2 %>
+                      M3: <%= subject_mock3 %>
                   </td>   
                        
                            
@@ -236,7 +236,7 @@
   
 </div>
 <style>
-tr.table-header td, tr.even td,tr.odd td{
+.baf_shaheen table#pdf-table tr.table-header td, .baf_shaheen table#pdf-table tr.even td,.baf_shaheen table#pdf-table tr.odd td{
         padding: 2px 2px !important;
         font-size: 12px !important;
     }  

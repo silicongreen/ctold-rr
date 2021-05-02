@@ -242,7 +242,7 @@ class NewsController < ApplicationController
     @students = []
     unless params[:batch_id].blank?
       batch_ids = params[:batch_id].split(",")
-      @students = Student.find_all_by_batch_id(batch_ids)
+      @students = Student.find_all_by_batch_id(batch_ids,:order=>"first_name asc")
     end
     render :update do |page|
       page.replace_html 'student-list', :partial => 'list_students'

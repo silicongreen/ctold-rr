@@ -176,8 +176,14 @@
                   </div>
                 <% end %>
                 <div class="infos">
+                    
                     <div><%= @student.admission_no %></div>
-                    <div><%= t('adm_no') %></div>
+                    <% if MultiSchool.current_school.code == "sfx" %>
+                            <div><%= "Classtune Id" %></div>
+                    <% else %>
+                            <div><%= t('adm_no') %></div>
+                    <% end %>
+                    
                 </div>
                 <div class="infos last">
                     <% unless  @student.batch.course.section_name.empty? %>

@@ -198,7 +198,7 @@ class SmsController < ApplicationController
     @students = []
     unless params[:batch_id].blank?
       batch_ids = params[:batch_id].split(",")
-      @students = Student.find_all_by_batch_id(batch_ids,:conditions=>"is_sms_enabled=true")
+      @students = Student.find_all_by_batch_id(batch_ids,:conditions=>"is_sms_enabled=true",:order=>"first_name asc")
     end
   end
   
@@ -207,10 +207,10 @@ class SmsController < ApplicationController
     unless params[:batch_id].blank?
       if params[:student_opt].to_i == 0
         batch_ids = params[:batch_id].split(",")
-        @students = Student.find_all_by_batch_id(batch_ids,:conditions=>"is_sms_enabled=true")
+        @students = Student.find_all_by_batch_id(batch_ids,:conditions=>"is_sms_enabled=true",:order=>"first_name asc")
       elsif params[:student_opt].to_i == 1
         batch_ids = params[:batch_id].split(",")
-        @students = ArchivedStudent.find_all_by_batch_id(batch_ids,:conditions=>"is_sms_enabled=true")
+        @students = ArchivedStudent.find_all_by_batch_id(batch_ids,:conditions=>"is_sms_enabled=true",:order=>"first_name asc")
       end
     end
   end
@@ -219,7 +219,7 @@ class SmsController < ApplicationController
     @students = []
     unless params[:batch_id].blank?
       batch_ids = params[:batch_id].split(",")
-      @students = Student.find_all_by_batch_id(batch_ids,:conditions=>"is_sms_enabled=true")
+      @students = Student.find_all_by_batch_id(batch_ids,:conditions=>"is_sms_enabled=true",:order=>"first_name asc")
     end
   end
 

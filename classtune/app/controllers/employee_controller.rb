@@ -68,7 +68,7 @@ class EmployeeController < ApplicationController
       @entries=[]
       @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:weekday_id=>@weekday_id.to_i,:employee_id => @employee.id},:include=>:class_timing,:order=>"class_timings.start_time")
       @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:subject_id=>elective_subjects,:weekday_id=>@weekday_id.to_i},:include=>:class_timing,:order=>"class_timings.start_time")
-      @attenadnce_register = SubjectAttendanceRegister.find(:all,:conditions=>["attendance_date = ?",@local_tzone_time.to_date])
+      @attenadnce_register = SubjectAttendanceRegister.find(:all,:conditions=>["attendance_date = ?",@date_to_use.to_date])
       unless @entries.blank?
         @entries.each do |te|
           @timetable_subject = Subject.active.find_by_id(te.subject_id)

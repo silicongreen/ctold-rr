@@ -82,7 +82,7 @@
 
 
   </table>
-  <%= link_to "►#{t('pdf_report')}", {:controller=>'employee', :action=> 'att_report',:id=>@employee.id,:date_report=> @date_today ,:end_date => @end_date } ,{:target => '_blank',:class=>'user_button' } %>
+  
 <% else %>
   <table width="700" style="margin-top:10px;">
     <tr class="even">
@@ -104,6 +104,7 @@
 
 
   </table>
+  <%= link_to "►#{t('pdf_report')}", {:controller=>'employee', :action=> 'att_report',:id=>@employee.id,:date_report=> @date_today ,:end_date => @end_date } ,{:target => '_blank',:class=>'user_button' } %>
 <% end %>  
 <% else %>
 

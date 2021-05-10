@@ -1,0 +1,32 @@
+</div>
+<div id="page-yield">
+
+    <h4 align="center"><%= @employee.full_name+" Attendance Report " %></h4> 
+    <h4 align="center"><%= @date_today.strftime("%Y-%m-%d") %> - <%= @end_date.strftime("%Y-%m-%d") %></h4>
+    <hr />
+  
+    <% unless @subjects.blank? %>
+      <div id="pdf-info">
+          <table id="pdf-table" width="99%" cellspacing="0">
+              <% c = 'even'  %>
+              <tr class="even">
+                  <td>Class</td>
+                  <td>Subject</td>
+                  <td>Attendance Taken</td>
+                  <td>Assignment</td>
+              </tr>
+              <% @subjects.each do |sub| %>
+              <tr class="odd">
+                <td><%= sub.batch.full_name %></td>
+                <td><%= sub.name %></td>
+                <% attendance = @attenadnce_register.select{|val| val.subject_id.to_i == sub.id.to_i }%>
+                <td><%= attendance.count unless attendance.blank? %></td>
+                <% assignment = @assignment_register.select{|val| val.subject_id.to_i == sub.id.to_i }%>
+                <td><%= assignment.count unless assignment.blank? %></td>
+              </tr>
+              <% end %>
+
+          </table>
+      </div>
+    <% end %>
+</div>

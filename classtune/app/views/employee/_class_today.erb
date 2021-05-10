@@ -76,12 +76,13 @@
       <% attendance = @attenadnce_register.find{|val| val.subject_id.to_i == sub.id.to_i }%>
       <td><%= "Yes" unless attendance.blank? %></td>
       <% assignment = @assignment_register.find{|val| val.subject_id.to_i == sub.id.to_i }%>
-      <td><%= "Yes" unless assignment.blank? %></td>
+      <td><%= assignment.title  unless assignment.blank? %></td>
     </tr>
     <% end %>
 
 
   </table>
+  <%= link_to "►#{t('pdf_report')}", {:controller=>'employee', :action=> 'att_report',:id=>@employee.id,:date_report=> @date_today ,:end_date => @end_date } ,{:target => '_blank',:class=>'user_button' } %>
 <% else %>
   <table width="700" style="margin-top:10px;">
     <tr class="even">

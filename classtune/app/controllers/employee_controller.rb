@@ -37,6 +37,79 @@ class EmployeeController < ApplicationController
     flash[:notice] = "Photo Successfully Removed"
     redirect_to :controller => "employee", :action => "profile", :id=>params[:id]
   end
+
+  def att_report
+    @employee = Employee.find(params[:id])
+    @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
+    unless params['date_report'].blank?
+      @date_to_use = params['date_report'].to_date
+    end
+
+    unless params['end_date'].blank?
+      @end_date = params['end_date'].to_date
+    end
+
+    @date_today = @date_to_use
+    @weekday_id = @date_to_use.strftime("%w")
+    @subjects = []
+    unless @current_timetable.blank?
+      @employee_subjects = @employee.subjects
+      subjects = @employee_subjects.select{|sub| sub.elective_group_id.nil?}
+      electives = @employee_subjects.select{|sub| sub.elective_group_id.present?}
+      
+      elective_subjects = []
+      unless electives.blank?
+        electives.each do |esubject|
+          all_e_subject = Subject.active.find_all_by_elective_group_id(esubject.elective_group_id)
+          unless all_e_subject.blank?
+            all_e_subject.each do |subelective|
+              elective_subjects << subelective.id
+            end
+          end
+        end
+      end
+
+      @entries=[]
+     
+      @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:employee_id => @employee.id},:include=>:class_timing,:order=>"class_timings.start_time")
+      @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:subject_id=>elective_subjects},:include=>:class_timing,:order=>"class_timings.start_time")
+      @attenadnce_register = SubjectAttendanceRegister.find(:all,:conditions=>["attendance_date >= ? and attendance_date <= ?",@date_to_use.to_date,@end_date.to_date])
+      @assignment_register = Assignment.find(:all,:conditions=>["date(created_at) >= ? and date(created_at) <= ?",@date_to_use.to_date,@end_date.to_date])
+        
+      unless @entries.blank?
+        @entries.each do |te|
+          @timetable_subject = Subject.active.find_by_id(te.subject_id)
+          unless @timetable_subject.blank?
+            if @timetable_subject.elective_group_id.present?
+              @all_sub_elective = Subject.active.find_all_by_elective_group_id(@timetable_subject.elective_group_id)    
+              unless @all_sub_elective.blank?
+                @all_sub_elective.each do |esub|
+                  unless @employee_subjects.blank?
+                    if @employee_subjects.include?(esub) && !@subjects.include?(esub)
+                      @subjects << esub
+                    end  
+                  end
+                end
+                
+              end
+            else
+              @subjects << @timetable_subject
+                
+            end
+          end
+        end
+      end
+    end
+    render :pdf => 'att_report',
+      :page_size => 'A4',
+      :margin => {:top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end 
+
   def class_today
     @employee = Employee.find(params[:id])
     @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])

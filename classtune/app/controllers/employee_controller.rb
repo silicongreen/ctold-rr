@@ -45,6 +45,13 @@ class EmployeeController < ApplicationController
     else  
       @date_to_use = @local_tzone_time.to_date
     end
+
+    unless params['end_date'].blank?
+      @end_date = params['end_date'].to_date
+    else  
+      @end_date = @local_tzone_time.to_date
+    end
+
     @date_today = @date_to_use
     @weekday_id = @date_to_use.strftime("%w")
     @subjects = []
@@ -66,9 +73,17 @@ class EmployeeController < ApplicationController
       end
 
       @entries=[]
-      @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:weekday_id=>@weekday_id.to_i,:employee_id => @employee.id},:include=>:class_timing,:order=>"class_timings.start_time")
-      @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:subject_id=>elective_subjects,:weekday_id=>@weekday_id.to_i},:include=>:class_timing,:order=>"class_timings.start_time")
-      @attenadnce_register = SubjectAttendanceRegister.find(:all,:conditions=>["attendance_date = ?",@date_to_use.to_date])
+      if @date_to_use == @end_date
+        @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:weekday_id=>@weekday_id.to_i,:employee_id => @employee.id},:include=>:class_timing,:order=>"class_timings.start_time")
+        @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:subject_id=>elective_subjects,:weekday_id=>@weekday_id.to_i},:include=>:class_timing,:order=>"class_timings.start_time")
+        @attenadnce_register = SubjectAttendanceRegister.find(:all,:conditions=>["attendance_date = ?",@date_to_use.to_date])
+        @assignment_register = Assignment.find(:all,:conditions=>["date(created_at) = ?",@date_to_use.to_date])
+      else
+        @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:employee_id => @employee.id},:include=>:class_timing,:order=>"class_timings.start_time")
+        @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:subject_id=>elective_subjects},:include=>:class_timing,:order=>"class_timings.start_time")
+        @attenadnce_register = SubjectAttendanceRegister.find(:all,:conditions=>["attendance_date >= ? and attendance_date <= ?",@date_to_use.to_date,@end_date.to_date])
+        @assignment_register = Assignment.find(:all,:conditions=>["date(created_at) >= ? and date(created_at) <= ?",@date_to_use.to_date,@end_date.to_date])
+      end  
       unless @entries.blank?
         @entries.each do |te|
           @timetable_subject = Subject.active.find_by_id(te.subject_id)

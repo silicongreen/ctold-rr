@@ -94,9 +94,6 @@
     <tr class="odd">
       <td><%= sub.batch.full_name %></td>
       <td><%= sub.name %></td>
-      <% entry = @entries.find{|val| val.subject_id.to_i == sub.id.to_i }%>
-      
-      <td><%= entry.class_timing.start_time.strftime("%I:%M %p") unless entry.blank? %></td>
       <% attendance = @attenadnce_register.select{|val| val.subject_id.to_i == sub.id.to_i }%>
       <td><%= attendance.count unless attendance.blank? %></td>
       <% assignment = @assignment_register.select{|val| val.subject_id.to_i == sub.id.to_i }%>

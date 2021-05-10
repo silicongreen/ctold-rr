@@ -42,7 +42,7 @@
     </div>
     <div class="row_data calender-div">
       <div>
-        <%= calendar_date_select_tag "end_date",I18n.l(@date_today,:format=>"%d %b %Y"), :readonly=> true,:onchange => "#{remote_function(
+        <%= calendar_date_select_tag "end_date",I18n.l(@end_date,:format=>"%d %b %Y"), :readonly=> true,:onchange => "#{remote_function(
       :url => { :action => 'class_today' },
       :with => "'employee_id="+@employee.id.to_s+"&end_date='+value+'&date_report='+$('start_date').value",
       :before => "Element.show('loader')",

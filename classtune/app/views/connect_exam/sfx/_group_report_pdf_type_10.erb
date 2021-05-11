@@ -57,6 +57,7 @@
                       <td class="col-pdf">100%</td>
                       <td class="col-pdf">Grade</td>
                       <td class="col-pdf">Remarks</td>
+                      <td class="col-pdf">CAIE Threshold Grade</td>
                   </tr>
 
                   <% total_mark_all_subject = 0 %>
@@ -113,9 +114,9 @@
                             <td class="col-pdf"><%= main_mark.round() %></td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
-                              <td class="col-pdf border-right-non"><%= grade.name %></td>
+                              <td class="col-pdf"><%= grade.name %></td>
                             <% else %>
-                              <td class="col-pdf border-right-non">-</td>
+                              <td class="col-pdf">-</td>
                             <% end %>
                           <% else  %>
                             <td class="col-pdf">-</td>
@@ -128,7 +129,13 @@
                                 <%= @report_data['report']['comments'][subjects['id']] %> 
                               <% end %>
                             <% end %>
-                          </td>    
+                          </td>  
+                          <%  grade = SubjectGradingLevel.percentage_to_grade(main_mark, @batch.id, subjects['id'].to_i) %>
+                          <% if !grade.blank? and !grade.name.blank? %>
+                            <td class="col-pdf border-right-non"><%= grade.name %></td>
+                          <% else %>
+                            <td class="col-pdf border-right-non">-</td>
+                          <% end %> 
 
                       </tr> 
                     <% end %>  

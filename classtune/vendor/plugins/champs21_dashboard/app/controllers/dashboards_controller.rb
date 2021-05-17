@@ -7,6 +7,21 @@ class DashboardsController < ApplicationController
       unless MultiSchool.current_school.is_test_school == 2
         require "yaml"
         require "time"
+
+        @redirect_url = ""
+        if MultiSchool.current_school.quiz_active
+          get_quiz_auth()
+          @data = []
+          if @response['status']['code'].to_i == 200
+            @data = @response['data']
+          end
+          if !@data.blank? and !@data['quiz'].blank? and !@data['quiz_key'].blank? and !@data['quiz_user_id'].blank?
+            @redirect_url = "https://quiz.classtune.com/main/login/login_via_key?key="+@data['quiz_key'].to_s+"&user_id="+@data['quiz_user_id'].to_s
+          end  
+        end 
+
+
+
         time_now = Time.now
         detention_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/detention.yml")['school']
         all_schools = detention_config['numbers'].split(",")
@@ -664,7 +679,6 @@ class DashboardsController < ApplicationController
   end
   
   def employee_quiz_data
-    
     @data = {}
     @view_layout = 'student'
     
@@ -1554,6 +1568,20 @@ class DashboardsController < ApplicationController
 
     response = http.request(request)
     @search_result = JSON::parse(response.body)
+  end
+
+  def get_quiz_auth()
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+    api_uri = URI(api_endpoint + "api/homework/AddAuthForQuiz")
+    http = Net::HTTP.new(api_uri.host, api_uri.port)
+    request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+    request.set_form_data({"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+    response = http.request(request)
+    @response = JSON::parse(response.body)
   end
   
 end

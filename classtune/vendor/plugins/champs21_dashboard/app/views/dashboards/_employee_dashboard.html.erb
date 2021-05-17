@@ -96,14 +96,19 @@ employee_id = @current_user.employee_record.id
                   :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .exam_box_icon').addClass('active');",
                   :url => {:controller=>"dashboards",:action => "employee_exam_routine_data"} %>
               </li>
-             
-              <li class="als-item" >
-                <%= link_to_remote "<div class='quiz_box_icon'><span class='f2'>QUIZ</span></div>",
-                  :update => "dashboard-data",
-                  :before => "Element.show('loader');j('.partial_homework').empty();",
-                  :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .quiz_box_icon').addClass('active');",
-                  :url => {:controller=>"dashboards",:action => "employee_quiz_data"} %>
-              </li>
+             <% unless @redirect_url.blank? %>
+                <li class="als-item" >
+                  <a href="<%= @redirect_url %>"><div class='quiz_box_icon'><span class='f2'>QUIZ</span></div></a>
+                </li>
+              <% else %>
+                <li class="als-item" >
+                  <%= link_to_remote "<div class='quiz_box_icon'><span class='f2'>QUIZ</span></div>",
+                    :update => "dashboard-data",
+                    :before => "Element.show('loader');j('.partial_homework').empty();",
+                    :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .quiz_box_icon').addClass('active');",
+                    :url => {:controller=>"dashboards",:action => "employee_quiz_data"} %>
+                </li>
+              <% end %>
               
               <li class="als-item" >
                 <%= link_to_remote "<div class='task_box_icon'><span class='f2'>TASK</span></div>",

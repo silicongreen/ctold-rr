@@ -94,7 +94,7 @@
     </tr> 
     <% (@date_to_use..@end_date).each do |date| %> 
       <% weekday_id = date.strftime("%w") %>
-      h
+      <%= weekday_id %>
       <% @subjects.each do |sub| %>
       <% entry = @entries.find{|val| val.subject_id.to_i == sub.id.to_i and val.weekday_id == weekday_id }%>
         <% unless entry.blank? %>

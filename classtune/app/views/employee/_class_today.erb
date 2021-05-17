@@ -92,12 +92,11 @@
       <td>Attendance Taken</td>
       <td>Assignment</td>
     </tr> 
-    <%= debug @entries.inspect %>
     <% (@date_to_use..@end_date).each do |date| %> 
       <% weekday_id = date.strftime("%w") %>
       <% @subjects.each do |sub| %>
       
-      <% entry = @entries.find{|val| val.subject_id.to_i == sub.id.to_i and val.weekday_id == weekday_id }%>
+      <% entry = @entries.find{|val| val.subject_id.to_i == sub.id.to_i and val.weekday_id.to_i == weekday_id.to_i }%>
         <% unless entry.blank? %>
           <tr class="odd">
             <td><%= sub.batch.full_name %></td>

@@ -38,7 +38,7 @@ class HomeworkController extends Controller
         {
             $user_secret = Yii::app()->request->getPost('user_secret');
             $response = array();
-            if (Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || Yii::app()->user->isParent))
+            if (Yii::app()->user->user_secret === $user_secret)
             {
                 
                 $quiz = 0;

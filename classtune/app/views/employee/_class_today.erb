@@ -96,6 +96,7 @@
       <% weekday_id = date.strftime("%w") %>
       <%= weekday_id %>
       <% @subjects.each do |sub| %>
+      <%= debug @entries.inspect %>
       <% entry = @entries.find{|val| val.subject_id.to_i == sub.id.to_i and val.weekday_id == weekday_id }%>
         <% unless entry.blank? %>
           <tr class="odd">

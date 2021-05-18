@@ -18,10 +18,13 @@
               </tr> 
               <% (@date_to_use..@end_date).each do |date| %> 
                 <% weekday_id = date.strftime("%w") %>
+                <% sublists = [] %>
                 <% @subjects.each do |sub| %>
                 
                 <% entry = @entries.find{|val| val.subject_id.to_i == sub.id.to_i and val.weekday_id.to_i == weekday_id.to_i }%>
-                  <% unless entry.blank? %>
+                  <% unless entry.blank? or sublists.include?(sublists)%>
+                  <% sublists = sub.id.to_i %>
+                    
                     <tr class="odd">
                       <td><%= sub.batch.full_name %></td>
                       <td><%= sub.name %></td>

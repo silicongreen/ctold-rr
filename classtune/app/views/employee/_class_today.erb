@@ -100,7 +100,7 @@
       
       <% entry = @entries.find{|val| val.subject_id.to_i == sub.id.to_i and val.weekday_id.to_i == weekday_id.to_i }%>
         <% unless entry.blank? or sublists.include?(sub.id.to_i)%>
-        <% sublists = sub.id.to_i %>
+        <% sublists << sub.id.to_i %>
           
           <tr class="odd">
             <td><%= sub.batch.full_name %></td>

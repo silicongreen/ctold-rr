@@ -75,6 +75,7 @@ class EmployeeController < ApplicationController
       @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:subject_id=>elective_subjects},:include=>:class_timing,:order=>"class_timings.start_time")
       @attenadnce_register = SubjectAttendanceRegister.find(:all,:conditions=>["attendance_date >= ? and attendance_date <= ?",@date_to_use.to_date,@end_date.to_date])
       @assignment_register = Assignment.find(:all,:conditions=>["date(created_at) >= ? and date(created_at) <= ?",@date_to_use.to_date,@end_date.to_date])
+      @events = Event.find(:all,:conditions=>["date(start_date) >= ? and date(end_date) <= ? and is_holiday = ? and is_common = ?",@date_to_use.to_date,@end_date.to_date,true,true])
         
       unless @entries.blank?
         @entries.each do |te|
@@ -151,11 +152,13 @@ class EmployeeController < ApplicationController
         @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:subject_id=>elective_subjects,:weekday_id=>@weekday_id.to_i},:include=>:class_timing,:order=>"class_timings.start_time")
         @attenadnce_register = SubjectAttendanceRegister.find(:all,:conditions=>["attendance_date = ?",@date_to_use.to_date])
         @assignment_register = Assignment.find(:all,:conditions=>["date(created_at) = ?",@date_to_use.to_date])
+        @events = Event.find(:all,:conditions=>["date(start_date) >= ? and date(end_date) <= ? and is_holiday = ? and is_common = ?",@date_to_use.to_date,@date_to_use.to_date,true,true])
       else
         @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:employee_id => @employee.id},:include=>:class_timing,:order=>"class_timings.start_time")
         @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:subject_id=>elective_subjects},:include=>:class_timing,:order=>"class_timings.start_time")
         @attenadnce_register = SubjectAttendanceRegister.find(:all,:conditions=>["attendance_date >= ? and attendance_date <= ?",@date_to_use.to_date,@end_date.to_date])
         @assignment_register = Assignment.find(:all,:conditions=>["date(created_at) >= ? and date(created_at) <= ?",@date_to_use.to_date,@end_date.to_date])
+        @events = Event.find(:all,:conditions=>["date(start_date) >= ? and date(end_date) <= ? and is_holiday = ? and is_common = ?",@date_to_use.to_date,@end_date.to_date,true,true])
       end  
       unless @entries.blank?
         @entries.each do |te|

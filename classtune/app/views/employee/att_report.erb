@@ -19,23 +19,30 @@
               <% (@date_to_use..@end_date).each do |date| %> 
                 <% weekday_id = date.strftime("%w") %>
                 <% sublists = [] %>
-                <% @subjects.each do |sub| %>
-                
-                <% entry = @entries.find{|val| val.subject_id.to_i == sub.id.to_i and val.weekday_id.to_i == weekday_id.to_i }%>
-                  <% unless entry.blank? or sublists.include?(sub.id.to_i)%>
-                  <% sublists << sub.id.to_i %>
-                    
-                    <tr class="odd">
-                      <td><%= sub.batch.full_name %></td>
-                      <td><%= sub.name %></td>
-                      <td><%= date.strftime("%Y-%m-%d")%></td>
-                      <td><%= entry.class_timing.start_time.strftime("%I:%M %p") unless entry.blank? %></td>
-                      <% attendance = @attenadnce_register.find{|val| val.subject_id.to_i == sub.id.to_i and val.attendance_date.strftime("%a %d %y") == date.strftime("%a %d %y")  }%>
-                      <td><%= "Yes" unless attendance.blank? %></td>
-                      <% assignment = @assignment_register.find{|val| val.subject_id.to_i == sub.id.to_i and val.created_at.strftime("%a %d %y") == date.strftime("%a %d %y") }%>
-                      <td><%= assignment.title  unless assignment.blank? %></td>
-                    </tr>
+                <% has_event = @events.find{|val| val.start_date.strftime("%a %d %y") >= date.strftime("%a %d %y") and val.end_date.strftime("%a %d %y") <= date.strftime("%a %d %y")  }%>
+                <% if has_event.blank? %>
+                  <% @subjects.each do |sub| %>
+                  
+                  <% entry = @entries.find{|val| val.subject_id.to_i == sub.id.to_i and val.weekday_id.to_i == weekday_id.to_i }%>
+                    <% unless entry.blank? or sublists.include?(sub.id.to_i)%>
+                    <% sublists << sub.id.to_i %>
+                      
+                      <tr class="odd">
+                        <td><%= sub.batch.full_name %></td>
+                        <td><%= sub.name %></td>
+                        <td><%= date.strftime("%Y-%m-%d")%></td>
+                        <td><%= entry.class_timing.start_time.strftime("%I:%M %p") unless entry.blank? %></td>
+                        <% attendance = @attenadnce_register.find{|val| val.subject_id.to_i == sub.id.to_i and val.attendance_date.strftime("%a %d %y") == date.strftime("%a %d %y")  }%>
+                        <td><%= "Yes" unless attendance.blank? %></td>
+                        <% assignment = @assignment_register.find{|val| val.subject_id.to_i == sub.id.to_i and val.created_at.strftime("%a %d %y") == date.strftime("%a %d %y") }%>
+                        <td><%= assignment.title  unless assignment.blank? %></td>
+                      </tr>
+                    <% end %>
                   <% end %>
+                <% else %>
+                  <tr class="odd">
+                        <td colspan="100">No Class Today</td>
+                </tr>
                 <% end %>
               <% end %>
 

@@ -66,18 +66,25 @@
       <td>Attendance Taken</td>
       <td>Assignment</td>
     </tr>  
-    <% @subjects.each do |sub| %>
-    <tr class="odd">
-      <td><%= sub.batch.full_name %></td>
-      <td><%= sub.name %></td>
-      <% entry = @entries.find{|val| val.subject_id.to_i == sub.id.to_i }%>
-      
-      <td><%= entry.class_timing.start_time.strftime("%I:%M %p") unless entry.blank? %></td>
-      <% attendance = @attenadnce_register.find{|val| val.subject_id.to_i == sub.id.to_i }%>
-      <td><%= "Yes" unless attendance.blank? %></td>
-      <% assignment = @assignment_register.find{|val| val.subject_id.to_i == sub.id.to_i }%>
-      <td><%= assignment.title  unless assignment.blank? %></td>
-    </tr>
+    <% has_event = @events.find{|val| val.start_date.strftime("%a %d %y") >= @date_to_use.strftime("%a %d %y") and val.end_date.strftime("%a %d %y") <= @date_to_use.strftime("%a %d %y")  }%>
+    <% unless has_event.blank? %>
+      <tr class="odd">
+        <td colspan="100">No Class Today</td>
+      </tr>
+    <% else %>
+      <% @subjects.each do |sub| %>
+      <tr class="odd">
+        <td><%= sub.batch.full_name %></td>
+        <td><%= sub.name %></td>
+        <% entry = @entries.find{|val| val.subject_id.to_i == sub.id.to_i }%>
+        
+        <td><%= entry.class_timing.start_time.strftime("%I:%M %p") unless entry.blank? %></td>
+        <% attendance = @attenadnce_register.find{|val| val.subject_id.to_i == sub.id.to_i }%>
+        <td><%= "Yes" unless attendance.blank? %></td>
+        <% assignment = @assignment_register.find{|val| val.subject_id.to_i == sub.id.to_i }%>
+        <td><%= assignment.title  unless assignment.blank? %></td>
+      </tr>
+      <% end %>
     <% end %>
 
 
@@ -97,7 +104,7 @@
       <% weekday_id = date.strftime("%w") %>
       <% sublists = [] %>
       <% has_event = @events.find{|val| val.start_date.strftime("%a %d %y") >= date.strftime("%a %d %y") and val.end_date.strftime("%a %d %y") <= date.strftime("%a %d %y")  }%>
-      <% unless has_event.blank? %>
+      <% if has_event.blank? %>
         <% @subjects.each do |sub| %>
         
         <% entry = @entries.find{|val| val.subject_id.to_i == sub.id.to_i and val.weekday_id.to_i == weekday_id.to_i }%>

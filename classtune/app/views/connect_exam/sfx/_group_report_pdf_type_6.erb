@@ -46,6 +46,7 @@
                       <% if @connect_exam_obj.id != 1113 or @connect_exam_obj.id != 1114  %>
                       <td class="col-pdf"></td>
                       <% end %>
+                      <td class="col-pdf" rowspan="2">CAIE Threshold Grade</td>
                   </tr>
                   <tr class="table-header">
                       <td class="col-pdf"><b><%= "SUBJECTS" %></b></td>
@@ -109,6 +110,7 @@
                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? and check_exam == true  %>
                                        
                                         <%= report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i  %>
+                                        <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% else %>
                                          -
                                       <% end %>
@@ -116,6 +118,7 @@
                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                         <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i > -1 and check_exam == true %>
                                           <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                          <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                         <% elsif check_exam == false %>
                                            -
                                         <% elsif report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i == -1 %>
@@ -194,6 +197,19 @@
                             
                             </td>  
                             <% end %>
+                            <%
+                            main_mark = 0
+                            if total_mark.to_f>0 and full_mark.to_f>0
+                              main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                              main_mark = main_mark.round()
+                            end
+                            %>
+                            <%  grade = SubjectGradingLevel.percentage_to_grade(main_mark, @batch.id, subjects['id'].to_i) %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <td class="col-pdf border-right-non"><%= grade.name %></td>
+                            <% else %>
+                              <td class="col-pdf border-right-non">-</td>
+                            <% end %> 
                       </tr> 
                       <% end %>
                     <% end %>  

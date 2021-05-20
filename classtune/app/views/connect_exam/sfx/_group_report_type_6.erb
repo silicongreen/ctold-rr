@@ -15,6 +15,7 @@
                       <% if @connect_exam_obj.id != 1113 or @connect_exam_obj.id != 1114  %>
                       <td class="col-pdf"></td>
                       <% end %>
+                      <td class="col-pdf" rowspan="2">CAIE Threshold Grade</td>
                   </tr>
                   <tr class="table-header">
                       <td class="col-pdf"><b><%= "SUBJECTS" %></b></td>
@@ -34,15 +35,15 @@
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>
                   <% exam_marks = 0 %>
-                  
+                  <% @std_subject_elective = StudentsSubject.find_all_by_student_id(@student.id)  %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% subjectdata = Subject.find(subjects['id'].to_i) %>
-                      <% check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(@student.id,subjects['id'].to_i) %>
-                      <% if check_std_subject.blank? and !subjectdata.elective_group_id.blank? %>
+                      <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                      <% if @has_exam_student == false %>
                             
-                        <% else %>
-                        <% subjec_marks = 0 %>
+                      <% else %>
+                      <% subjec_marks = 0 %>
                       <% unless @report_data['report']['exams'].blank? %>
                         <% @report_data['report']['exams'].each do |report| %>
                            <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
@@ -62,10 +63,10 @@
                           <% exam_marks = 0 %>
                           <% grade_i = false %>
                           <% grade_w = false %>
-                          <% @std_subject_elective = StudentsSubject.find_all_by_student_id(@student.id)  %>
+                          
 
-                          <td class="col-pdf td-align-left"><%= subjects['name'] %></td>
-                          <td class="col-pdf">Full Marks <hr/> Marks Obtained</td>
+                          <td class="col-pdf td-align-left"><b><%= subjects['name'] %></b></td>
+                          <td class="col-pdf"><span class="no-warp">Full Marks</span> <hr/><span class="no-warp">Marks Obtained</span></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
                               <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>report['exam_id'].to_s,:subject_id=>subjects['id'].to_s} %>
@@ -73,17 +74,20 @@
                               <% if @check_exam_score==true %>
                                 <% check_exam = true %>
                               <% end %>
+                              
                               <td class="col-pdf">
                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? and check_exam == true  %>
                                        
                                         <%= report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i  %>
+                                        <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% else %>
-
+                                         -
                                       <% end %>
                                       <hr/>
                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                         <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i > -1 and check_exam == true %>
                                           <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                          <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                         <% elsif check_exam == false %>
                                            -
                                         <% elsif report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i == -1 %>
@@ -108,7 +112,7 @@
                           <% end %>
                             <% if @connect_exam_obj.id != 1113 or @connect_exam_obj.id != 1114  %>
                             <td class="col-pdf">
-                            <% total_att = 0 %>
+                             <% total_att = 0 %>
                              <% absent_att = 0 %>   
                                 
                              <% e_subject_id = 0 %>
@@ -135,9 +139,11 @@
                                       <% att_percentize = ((total_present.to_f)/total_att.to_f)*100  %>
 
                                     <% end %>
-                                    <% if att_percentize < 60 %>
-                                        <% att_percentize = 60 %>
-                                    <% end %>
+                                    
+                                
+                                    <%# if att_percentize < 60 %>
+                                        <%# att_percentize = 60 %>
+                                    <%# end %>
                                     <% if @connect_exam_obj.id == 1113 or @connect_exam_obj.id == 1114 %>
                                         <% if @student.id == 10305 or @student.id == 10309 or @student.id == 10383 or @student.id == 14636 %>
                                           <% att_percentize = 82.64 %>
@@ -146,15 +152,33 @@
                                           <% att_percentize = 92.33 %>
                                         <% end %>
                                     <% end %>
-                                    <%= sprintf( "%0.02f", att_percentize) %> %
+                                    <% if subjects['name'].upcase != "ECONOMICS" %>
+                                      <%= sprintf( "%0.02f", att_percentize) %> %
+                                    <% else %>
+                                    <%= "-" %>
+                                    <% end %>
                                 <% else %> 
                                     <%= "-" %>
                                 <% end %> 
                                 
-                             <% end %>
+                             <% end %>   
+                            
                             
                             </td>  
                             <% end %>
+                            <%
+                            main_mark = 0
+                            if total_mark.to_f>0 and full_mark.to_f>0
+                              main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                              main_mark = main_mark.round()
+                            end
+                            %>
+                            <%  grade = SubjectGradingLevel.percentage_to_grade(main_mark, @batch.id, subjects['id'].to_i) %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <td class="col-pdf border-right-non"><%= grade.name %></td>
+                            <% else %>
+                              <td class="col-pdf border-right-non">-</td>
+                            <% end %> 
                       </tr> 
                       <% end %>
                     <% end %>  

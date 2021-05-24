@@ -19,7 +19,7 @@
               <% (@date_to_use..@end_date).each do |date| %> 
                 <% weekday_id = date.strftime("%w") %>
                 <% sublists = [] %>
-                <% has_event = @events.find{|val| val.start_date.strftime("%a %d %y") <= date.strftime("%a %d %y") and val.end_date.strftime("%a %d %y") >= date.strftime("%a %d %y")  }%>
+                <% has_event = @events.find{|val| date.strftime("%y%m%d") >= val.start_date.strftime("%y%m%d")  and date.strftime("%y%m%d") <= val.end_date.strftime("%y%m%d")   }%>
                 <% if has_event.blank? %>
                   <% @subjects.each do |sub| %>
                   

@@ -93,9 +93,9 @@
 <% else %>
   <table width="700" style="margin-top:10px;">
     <tr class="even">
+      <td>Date</td>
       <td>Class</td>
       <td>Subject</td>
-      <td>Date</td>
       <td>Start Time</td>
       <td>Attendance Taken</td>
       <td>Assignment</td>
@@ -112,9 +112,10 @@
           <% sublists << sub.id.to_i %>
             
             <tr class="odd">
+              <td><%= date.strftime("%Y-%m-%d")%></td>
               <td><%= sub.batch.full_name %></td>
               <td><%= sub.name %></td>
-              <td><%= date.strftime("%Y-%m-%d")%></td>
+              
               <td><%= entry.class_timing.start_time.strftime("%I:%M %p") unless entry.blank? %></td>
               <% attendance = @attenadnce_register.find{|val| val.subject_id.to_i == sub.id.to_i and val.attendance_date.strftime("%a %d %y") == date.strftime("%a %d %y")  }%>
               <td><%= "Yes" unless attendance.blank? %></td>
@@ -125,7 +126,8 @@
         <% end %>
       <% else %>
         <tr class="odd">
-              <td colspan="100">No Class Today</td>
+              <td><%= date.strftime("%Y-%m-%d")%></td>
+              <td colspan="5">No Class Today</td>
        </tr>
       <% end %>
     <% end %>

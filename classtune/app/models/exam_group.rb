@@ -28,7 +28,6 @@ class ExamGroup < ActiveRecord::Base
   accepts_nested_attributes_for :exams
 
   attr_accessor :maximum_marks, :minimum_marks, :weightage
-  validates_associated :exams
 
   after_save :invalidate_student_cache, :on=>:update
   named_scope :active, :conditions => {:is_deleted=>false}

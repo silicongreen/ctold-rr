@@ -65,6 +65,7 @@
       <td>Start Time</td>
       <td>Attendance Taken</td>
       <td>Assignment</td>
+      <td>Classwork</td>
     </tr>  
     <% has_event = @events.find{|val| val.start_date.strftime("%a %d %y") >= @date_to_use.strftime("%a %d %y") and val.end_date.strftime("%a %d %y") <= @date_to_use.strftime("%a %d %y")  }%>
     <% unless has_event.blank? %>
@@ -83,6 +84,8 @@
         <td><%= "Yes" unless attendance.blank? %></td>
         <% assignment = @assignment_register.find{|val| val.subject_id.to_i == sub.id.to_i }%>
         <td><%= assignment.title  unless assignment.blank? %></td>
+        <% classwork = @classwork_register.find{|val| val.subject_id.to_i == sub.id.to_i }%>
+        <td><%= classwork.title  unless classwork.blank? %></td>
       </tr>
       <% end %>
     <% end %>
@@ -99,6 +102,7 @@
       <td>Start Time</td>
       <td>Attendance Taken</td>
       <td>Assignment</td>
+      <td>Classwork</td>
     </tr> 
     <% (@date_to_use..@end_date).each do |date| %> 
       <% weekday_id = date.strftime("%w") %>
@@ -121,6 +125,8 @@
               <td><%= "Yes" unless attendance.blank? %></td>
               <% assignment = @assignment_register.find{|val| val.subject_id.to_i == sub.id.to_i and val.created_at.strftime("%a %d %y") == date.strftime("%a %d %y") }%>
               <td><%= assignment.title  unless assignment.blank? %></td>
+              <% classwork = @classwork_register.find{|val| val.subject_id.to_i == sub.id.to_i and val.created_at.strftime("%a %d %y") == date.strftime("%a %d %y") }%>
+              <td><%= classwork.title  unless classwork.blank? %></td>
             </tr>
           <% end %>
         <% end %>

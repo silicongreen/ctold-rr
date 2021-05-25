@@ -4,6 +4,21 @@
                   <% c = 'even'  %>
                  
                   <% total_mark_of_allexam = 0 %>
+                  <% if @batch.course.course_name == "X" or @batch.course.course_name == "XI" or @batch.course.course_name == "XII" %>
+                     <tr class="even">
+                      <td class="col-pdf"><b><%= "Subject" %></b></td>
+                      <% unless @report_data['report']['exams'].blank? %>
+                          <% @report_data['report']['exams'].each do |report| %>
+                          <td><b>
+                          <%= report['exam_name'] %><br/>
+                          (Out of <% unless @exam_marks[report['exam_id'].to_s].blank?  %><% total_mark_of_allexam = total_mark_of_allexam+@exam_marks[report['exam_id'].to_s].to_i  %><%= @exam_marks[report['exam_id'].to_s] %><% end %>)
+                          </b></td>
+                          <% end %>
+                      <% end %>
+                      <td><b>Total<br/>100</b></td>
+                    </tr>
+
+                  <% else %>
                   <tr class="even">
                       <td class="col-pdf" rowspan="2"><b><%= "Subject" %></b></td>
                       <td class="col-pdf" colspan="4"><b><%= "Class Test 2 (Out of 25)" %></b></td>
@@ -20,6 +35,7 @@
                     <% end %>
                     <td><b>Total<br/>25</b></td>
                   </tr>
+                  <% end %>
                   <% total_marks = 0 %>
                   <% subject_count = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 

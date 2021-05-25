@@ -71,7 +71,7 @@ c<% unless @report_data.blank?  or  @report_data['report'].blank? %>
                   <% c = 'even'  %>
                  
                   <% total_mark_of_allexam = 0 %>
-                  <% if @batch.course.course_name == "X" %>
+                  <% if @batch.course.course_name == "X" or @batch.course.course_name == "XI" or @batch.course.course_name == "XII" %>
                      <tr class="even">
                       <td class="col-pdf"><b><%= "Subject" %></b></td>
                       <% unless @report_data['report']['exams'].blank? %>

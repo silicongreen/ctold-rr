@@ -22,7 +22,7 @@ if !@report_data['total'].blank? and @report_data['total'].to_i>0 and !@report_d
 <table id="pdf-table" class="margin-top-20 td-align-left text-size-18" width="100%" cellspacing="0">
     <tr class="even">
         <td class="no-warp" colspan="1">&nbsp;School begins On</td>
-        <td class="no-warp" colspan="1">&nbsp;<%=  @connect_exam_obj.attandence_start_date.strftime("%d %b %Y") %></td>
+        <td class="no-warp" colspan="1">&nbsp;<%=  @connect_exam_obj.next_session_begins.strftime("%d %b %Y") unless @connect_exam_obj.next_session_begins.blank? %></td>
         <td class="no-warp" colspan="1">&nbsp;Total Working Days</td>
         <td class="no-warp" colspan="1">&nbsp;<%= @connect_exam_obj.total_working_days %></td>
         <td class="no-warp" colspan="1">&nbsp;Attendance Percentage</td>

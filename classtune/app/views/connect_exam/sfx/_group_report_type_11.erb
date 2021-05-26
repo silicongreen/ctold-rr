@@ -19,16 +19,17 @@
                       <td class="col-pdf" rowspan="2">Remarks</td>
                       <td class="col-pdf" rowspan="2">CAIE Threshold Grade</td>
                   </tr>
-                  <tr class="table-header">
+                 <tr class="table-header">
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
-                           <% if report['exam_category'] != '1' %>
+                          <% if report['exam_category'] != '1' %>
                           <td class="col-pdf">
                               <%= report['exam_name'] %>
                           </td> 
                           <% end %>
                         <% end %>
                       <% end %>
+                      <td class="col-pdf">60%</td>
                   </tr>
 
                   <% total_mark_all_subject = 0 %>

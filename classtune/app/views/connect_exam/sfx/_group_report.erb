@@ -23,7 +23,10 @@
         unless @all_exam_groups.blank?
           @all_exam_groups.each do |exam_group|
             exam_group_name_array = exam_group.name.split(" ")
-            main_exam_name = exam_group_name_array[0]+" "+exam_group_name_array[1]
+            main_exam_name = exam_group_name_array[0]
+            unless exam_group_name_array[1].blank?
+              main_exam_name = exam_group_name_array[0]+" "+exam_group_name_array[1]
+            end
             if !@top_exam_group.include?(main_exam_name)
                @top_exam_group << main_exam_name
             end  

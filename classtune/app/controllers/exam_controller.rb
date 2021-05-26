@@ -7632,7 +7632,9 @@ class ExamController < ApplicationController
             grand_total_main = 0
             grade_poin_main = 0
             @student_tab = @student_all_tab.find{|val| val.id.to_i == std['id'].to_i }
-            @student_tab = @student_all_tab.find{|val| val.id.to_i == std['id'].to_i }
+            if @student_tab.blank?
+              next
+            end  
             if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
               if @student_result[loop_std].blank?
                 @student_result[loop_std] = {}

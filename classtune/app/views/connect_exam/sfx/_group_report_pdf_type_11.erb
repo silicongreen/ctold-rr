@@ -64,10 +64,11 @@
                   <tr class="table-header">
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
-                           <% if report['exam_category'] != '1' %>
+                          <% if report['exam_category'] != '1' %>
                           <td class="col-pdf">
                               <%= report['exam_name'] %>
                           </td> 
+                          <% end %>
                         <% end %>
                       <% end %>
                   </tr>

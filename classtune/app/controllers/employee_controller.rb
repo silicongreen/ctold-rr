@@ -38,6 +38,8 @@ class EmployeeController < ApplicationController
     redirect_to :controller => "employee", :action => "profile", :id=>params[:id]
   end
 
+    
+
   def att_report
     @employee = Employee.find(params[:id])
     @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
@@ -111,6 +113,34 @@ class EmployeeController < ApplicationController
       :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
       :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end 
+
+  def lessonplan
+    @employee = Employee.find(params[:id])
+    @employee_subjects = @employee.subjects
+    @lesson_plans = []
+    unless @employee_subjects.blank?
+      @employee_subjects.each do |emp_sub|
+        @lessonplans = Lessonplan.find(:all,:conditions => ["FIND_IN_SET(#{emp_sub.id},subject_ids) AND publish_date is not null AND is_show = 1"], :include=>[:author]) 
+        unless @lessonplans.blank?
+          @lessonplans.each do |lessonplan|
+            @lesson_plans << lessonplan
+          end  
+        end  
+      end 
+    end 
+
+    unless @lesson_plans.blank?
+      @lesson_plans.sort! {|x,y| x.publish_date <=> y.publish_date }
+    end  
+   
+    render :partial => "lesson_plan"
+   
+  end
+
+  def quiz
+    @employee = Employee.find(params[:id])
+    render :partial => "quiz"
+  end  
 
   def class_today
     @employee = Employee.find(params[:id])

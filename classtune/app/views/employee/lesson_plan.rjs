@@ -1,0 +1,1 @@
+page.replace_html 'profile-infos', :partial => 'lesson_plan'

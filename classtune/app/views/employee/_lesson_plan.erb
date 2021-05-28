@@ -36,7 +36,7 @@
             <% end %>
       <% end %>
       <tr class="odd">
-        <td><%= lesson_plan.publis_date %></td>
+        <td><%= lesson_plan.publish_date %></td>
         <td><% unless @sdata.nil? %>
               <%  @sdata.each do |z|%>                           
                 <div class="subject_tag"><% sub =  Subject.find_by_id(z) %>

@@ -135,6 +135,7 @@ class AttendancesController < ApplicationController
   def get_subject_batch_report_pdf
     if params[:batch_id].present?
       @batch_id = params[:batch_id]
+      @batch = Batch.find(@batch_id)
       @date_to = @local_tzone_time.to_date.strftime("%Y-%m-%d")
       @date_form = @local_tzone_time.to_date.strftime("%Y-%m-%d")
       if !params[:date_to].blank?

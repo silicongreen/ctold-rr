@@ -56,11 +56,10 @@
                   <% end %> 
 
 
-                    <tr>
-                      <td class="col-2"><%= std.class_roll_no %></td>
-                      <td class="col-2 left-align"><%= std.full_name %></td>
-                    
-                      <%
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf"><%= std.class_roll_no %></td>
+                      <td class="col-pdf"><%= std.full_name %></td>
+                       <%
                         total = 0
                         unless @subject_att_register.blank?
                           @subject_att_register.each do |att|
@@ -85,10 +84,10 @@
                         end
                         present = total-total_absent
                       %>
-                      <td class="col-2"><%= total %></td>
-                      <td class="col-2"><%= present %></td>
-                      <td class="col-2"><%= total_absent %></td>
-                    </tr>
+                      <td class="col-pdf"><%= total %></td>
+                      <td class="col-pdf"><%= present %></td>
+                      <td class="col-pdf"><%= total_absent %></td>
+                  </tr>
                 <% end %>
               <% end %>
 

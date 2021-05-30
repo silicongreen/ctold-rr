@@ -142,9 +142,9 @@ class AttendancesController < ApplicationController
         @date_to = params[:date_to].to_date.strftime("%Y-%m-%d")
       end
       if !params[:date_from].blank?
-        @date_form = params[:date_from].to_date.strftime("%Y-%m-%d")
+        @date_form = params[:date_form].to_date.strftime("%Y-%m-%d")
       end
-      abort(@date_form);
+ 
       @subject_batch = Subject.find_all_by_batch_id(params[:batch_id])
       @students = Student.find_all_by_batch_id(params[:batch_id])
       std_subject = StudentsSubject.find_all_by_batch_id(params[:batch_id])

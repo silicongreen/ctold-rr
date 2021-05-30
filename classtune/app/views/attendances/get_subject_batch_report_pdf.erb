@@ -21,6 +21,7 @@
                   <td class="col-pdf"><b><%= "Total" %></b></td>
                   <td class="col-pdf"><b><%= "Present" %></b></td>
                   <td class="col-pdf"><b><%= "Absent" %></b></td>
+                  <td class="col-pdf"><b><%= "Percent" %></b></td>
               </tr>
               <tr class="tr-blank"></tr>
               <% std_count = 0 %>
@@ -40,6 +41,7 @@
                         <td class="col-pdf"><b><%= "Total" %></b></td>
                         <td class="col-pdf"><b><%= "Present" %></b></td>
                         <td class="col-pdf"><b><%= "Absent" %></b></td>
+                        <td class="col-pdf"><b><%= "Percent" %></b></td>
                     </tr>
                   <% elsif std_count>50 && extender ==1 %>
                     <% std_count = 0 %>
@@ -53,6 +55,7 @@
                         <td class="col-pdf"><b><%= "Total" %></b></td>
                         <td class="col-pdf"><b><%= "Present" %></b></td>
                         <td class="col-pdf"><b><%= "Absent" %></b></td>
+                        <td class="col-pdf"><b><%= "Percent" %></b></td>
                     </tr>
                   <% end %> 
 
@@ -84,10 +87,16 @@
                           total_absent = absent.total_absent.to_i
                         end
                         present = total-total_absent
+                        percent = 0
+                        if present > 0 and total > 0
+                            percent = (present.to_f/total.to_f)*100
+                            percent  = percent.round()
+                        end
                       %>
                       <td class="col-pdf"><%= total %></td>
                       <td class="col-pdf"><%= present %></td>
                       <td class="col-pdf"><%= total_absent %></td>
+                       <td class="col-pdf"><%= percent %></td>
                   </tr>
                 <% end %>
               <% end %>

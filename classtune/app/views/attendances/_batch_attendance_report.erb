@@ -37,6 +37,7 @@
               <td class="col-2">
                <b>Absent</b>
               </td> 
+              <td class="col-2"><b><%= "Percent" %></b></td>
             </tr> 
              
             <% unless @students.blank? %>
@@ -69,10 +70,17 @@
                       total_absent = absent.total_absent.to_i
                     end
                     present = total-total_absent
+
+                    percent = 0
+                    if present > 0 and total > 0
+                        percent = (present.to_f/total.to_f)*100
+                        percent  = percent.round()
+                    end
                   %>
                   <td class="col-2"><%= total %></td>
                   <td class="col-2"><%= present %></td>
                   <td class="col-2"><%= total_absent %></td>
+                  <td class="col-2"><%= percent %></td>
                 </tr>
               <% end %>
             <% end %>

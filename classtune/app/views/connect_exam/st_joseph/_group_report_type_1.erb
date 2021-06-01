@@ -26,7 +26,7 @@
                         <% @report_data['report']['exams'].each do |report| %>
                           <td class="col-pdf">
                               <%= report['exam_name'] %>
-                              <% = total_exam = total_exam+1 %>
+                              <% total_exam = total_exam+1 %>
                           </td> 
                         <% end %>
                       <% end %>

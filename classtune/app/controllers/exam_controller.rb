@@ -5359,8 +5359,6 @@ class ExamController < ApplicationController
     send_data spreadsheet.string, :filename => @batch.full_name + "-" + @connect_exam_obj.name + ".xls", :type =>  "application/vnd.ms-excel"
   end
   
-  
-  
   def continues
     @id = params[:id]
     @transcript = params[:transscript]

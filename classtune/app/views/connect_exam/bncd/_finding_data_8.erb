@@ -1,4 +1,3 @@
-
 <% if @total_std.blank? %>
   <% if @grading_levels.blank? %>
   <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
@@ -9,8 +8,10 @@
   <%
   @total_std_batch = 0
   @total_std = 0
+  @student_total_grade = []
   @student_list = []
   @student_list_batch = []
+  @subject_highest = {}
   batchobj = Batch.find_by_id(@batch.id) 
   courseObj = Course.find_by_id(batchobj.course_id)
   all_courses = Course.find_all_by_course_name(courseObj.course_name)
@@ -160,8 +161,13 @@
             end
           
           end
+          if @subject_highest[sub['id'].to_i].blank?
+            @subject_highest[sub['id'].to_i] = main_mark
+          elsif main_mark.to_f > @subject_highest[sub['id'].to_i].to_f
+            @subject_highest[sub['id'].to_i] = main_mark.to_f
+          end
         end 
-        
+        @student_total_grade[std['id'].to_i] = total_grade
         if subject_failed == false
           grand_grade_new = 50000-total_grade
           std_marks_full_new = 5000.00-grand_total.to_f

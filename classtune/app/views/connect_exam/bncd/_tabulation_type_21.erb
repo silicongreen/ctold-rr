@@ -135,7 +135,7 @@
                 <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '4%' %></h4>
                 <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
             </div>
-            <h4 align="center"><%= @connect_exam_obj.name %> Combined Tabulation Sheet Day Shift</h4>
+            <h3 align="center"><%= @connect_exam_obj.name %> Combined Tabulation Sheet Day Shift</h3>
             <table width="100%" >
                 <thead>
                     <tr>
@@ -171,8 +171,7 @@
                       <% @report_data['report']['exams'].each do |report| %>
                         <td class="col-pdf"><b>
                         <%= report['exam_name'] %>
-                        <br/>
-                        <%= report['full_mark'] %>
+                        (<%= report['full_mark'] %>)
                         </b></td>
                       <% end %>
                       <td class="col-pdf" >Total Marks</td>
@@ -206,8 +205,7 @@
                         <% @report_data['report']['exams'].each do |report| %>
                           <td class="col-pdf"><b>
                           <%= report['exam_name'] %>
-                          <br/>
-                          <%= report['full_mark'] %>
+                          (<%= report['full_mark'] %>)
                           </b></td>
                         <% end %>
                         <td class="col-pdf" >Total Marks</td>
@@ -232,8 +230,7 @@
                         <% @report_data['report']['exams'].each do |report| %>
                           <td class="col-pdf"><b>
                           <%= report['exam_name'] %>
-                          <br/>
-                          <%= report['full_mark'] %>
+                          (<%= report['full_mark'] %>)
                           </b></td>
                         <% end %>
                         <td class="col-pdf" >Total Marks</td>

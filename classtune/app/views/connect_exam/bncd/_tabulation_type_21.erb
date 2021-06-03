@@ -286,7 +286,7 @@
                                 <% fourth_subject = true %>
                               <% end %>
                             <% end %>
-                            <td><%= sub['name'] %></td>
+                            <td class="left-text"><%= sub['name'] %></td>
 
                             <% subject_full_mark = 0 %>
                             <% subject_obtain_mark = 0 %>
@@ -339,7 +339,7 @@
                                 <%= @student_position[@student.id.to_i] %>
                               <% end %>
                             </td>
-                            <td rowspan="<%= rowspan %>">
+                            <td>
                               <% unless @subject_highest[sub['id'].to_i].blank? %>
                                 <%= @subject_highest[sub['id'].to_i] %>
                               <% end %>
@@ -365,7 +365,7 @@
                                 <% fourth_subject = true %>
                               <% end %>
                             <% end %>
-                            <td><%= sub['name'] %></td>
+                            <td class="left-text"><%= sub['name'] %></td>
 
                             <% subject_full_mark = 0 %>
                             <% subject_obtain_mark = 0 %>
@@ -401,6 +401,11 @@
                             <% if subject_obtain_mark < 40 && fourth_subject == false %>
                               <% failed = true %>
                             <% end %>
+                            <td>
+                              <% unless @subject_highest[sub['id'].to_i].blank? %>
+                                <%= @subject_highest[sub['id'].to_i] %>
+                              <% end %>
+                            </td>
                           </tr>
                         <% end %>  
                      <% end %>
@@ -417,18 +422,25 @@
 <style>
 .even td{
 
-    padding: 5px 1px 5px 1px !important;
+    padding: 1px 1px 1px 1px !important;
+    font-weight: bold;
 
 }
 
 .odd td{
-    padding: 5px 1px 5px 1px !important;
+    padding: 1px 1px 1px 1px !important;
+    font-weight: bold;
 
 
 }
 .table-header td{
-    padding: 5px 1px 5px 1px !important;
+    padding: 1px 1px 1px 1px !important;
+  font-weight: bold;
 
 } 
+table td.left-text
+{
+  text-align: left !important;
+}
     
 </style>    

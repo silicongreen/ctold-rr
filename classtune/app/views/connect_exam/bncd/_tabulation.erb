@@ -11,7 +11,7 @@
   %>
   <%= render  :partial=>"/connect_exam/bncd/finding_data_7" %>
 <% end %>
-<% if @connect_exam_obj.result_type.to_i == 15  %> 
+<% if @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 21 %> 
 <%= render  :partial=>"/connect_exam/student_subject" %>
   <%
         if @tabulation_data.nil?

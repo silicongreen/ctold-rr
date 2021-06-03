@@ -454,6 +454,43 @@ table td.left-text
     border-bottom: 1px solid #000000;
 }
 
+<% if total_subject == 6 %>
+.even td{
+
+    padding: 6px 4px 6px 4px !important;
+    font-weight: bold;
+    font-size: 13px !important;
+
+}
+
+.odd td{
+    padding: 6px 4px 6px 4px !important;
+    font-weight: bold;
+    font-size: 13px !important;
+
+
+}
+.table-header td{
+  padding: 2px 4px 2px 4px !important;
+  font-weight: bold;
+  font-size: 13px !important;
+
+} 
+.page-break-less td{
+    height: 53px;
+    border: 1px solid #fff;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
+.page-break td{
+    height: 80px;
+    border: 1px solid #fff;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
+
+<% end %>
+
 <% if total_subject == 7 %>
 .even td{
 

@@ -192,7 +192,7 @@
                     <% if !std.blank? and !std['first_name'].blank? %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
-                    <% if std_count>4 && extender ==0 %>
+                    <% if std_count>3 && extender ==0 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -217,7 +217,7 @@
                         <td class="col-pdf" >Highest Marks</td>
 
                     </tr> 
-                    <% elsif std_count>4 && extender ==1 %>
+                    <% elsif std_count>3 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -421,21 +421,21 @@
 
     padding: 0px 4px 0px 4px !important;
     font-weight: bold;
-    font-size: 14px !important;
+    font-size: 13px !important;
 
 }
 
 .odd td{
     padding: 0px 4px 0px 4px !important;
     font-weight: bold;
-    font-size: 14px !important;
+    font-size: 13px !important;
 
 
 }
 .table-header td{
   padding: 0px 4px 0px 4px !important;
   font-weight: bold;
-  font-size: 14px !important;
+  font-size: 13px !important;
 
 } 
 table td.left-text

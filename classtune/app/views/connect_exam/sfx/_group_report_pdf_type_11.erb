@@ -109,7 +109,11 @@
                             <% @report_data['report']['exams'].each do |report| %>
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                   <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                  <td><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
+                                  <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f > 0 %>
+                                      <td><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
+                                  <% else %>
+                                       <td>-</td>
+                                  <% end %>
                                   <% if report['exam_category'] == '1' %>
                                     <% class_test_mark = class_test_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f  %>
                                   <% else %>

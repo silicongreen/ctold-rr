@@ -5718,7 +5718,8 @@ class ExamController < ApplicationController
     unless batch_split[1].blank?
       version = batch_split[1]
     end
-    sheet1.add_header("SHAHEED BIR UTTAM LT. ANWAR GIRLS' COLLEGE (Mark Sheet : "+@subject.name.to_s+")
+    school_data = School.find_by_id(MultiSchool.current_school.id)
+    sheet1.add_header(school_data.name+" (Mark Sheet : "+@subject.name.to_s+")
  Program :"+@batch.course.course_name.to_s+" || Group :"+group_name.to_s+" || Section :"+@batch.course.section_name.to_s+" || Shift :"+batch_split[0]+" || Session :"+@batch.course.session.to_s+" || Version :"+version+"
       ")
     spreadsheet = StringIO.new 

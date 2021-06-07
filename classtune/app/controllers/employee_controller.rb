@@ -114,6 +114,35 @@ class EmployeeController < ApplicationController
       :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end 
 
+  def lesson_plan_report
+    @employee = Employee.find(params[:id])
+    @employee_subjects = @employee.subjects
+    @lesson_plans = []
+    unless @employee_subjects.blank?
+      @employee_subjects.each do |emp_sub|
+        @lessonplans = Lessonplan.find(:all,:conditions => ["FIND_IN_SET(#{emp_sub.id},subject_ids) AND publish_date is not null AND is_show = 1"], :include=>[:author]) 
+        unless @lessonplans.blank?
+          @lessonplans.each do |lessonplan|
+            @lesson_plans << lessonplan
+          end  
+        end  
+      end 
+    end 
+
+    unless @lesson_plans.blank?
+      @lesson_plans.sort! {|x,y| x.publish_date <=> y.publish_date }
+    end 
+    render :pdf => 'lesson_plan_report',
+    :page_size => 'A4',
+    :margin => {:top=> 10,
+    :bottom => 10,
+    :left=> 10,
+    :right => 10},
+    :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+    :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
+   
+  end
+
   def lessonplan
     @employee = Employee.find(params[:id])
     @employee_subjects = @employee.subjects

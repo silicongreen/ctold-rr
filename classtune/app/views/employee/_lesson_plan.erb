@@ -52,7 +52,7 @@
 
 
   </table>
-  
+  <%= link_to "►#{t('pdf_report')}", {:controller=>'employee', :action=> 'lesson_plan_report',:id=>@employee.id } ,{:target => '_blank',:class=>'user_button' } %>
 
 <% else %>
 

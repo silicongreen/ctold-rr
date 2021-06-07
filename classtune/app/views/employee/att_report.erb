@@ -1,8 +1,9 @@
 </div>
 <div id="page-yield">
-
-    <h4 align="center"><%= @employee.full_name+" Attendance Report " %></h4> 
-    <h4 align="center"><%= @date_today.strftime("%Y-%m-%d") %> - <%= @end_date.strftime("%Y-%m-%d") %></h4>
+    <h4 align="center">Academic module report</h4>
+    <h4 align="center"><%= @employee.full_name %></h4> 
+    <h4 align="center"><%= @employee.employee_position.name+" ("+@employee.employee_department.code+")" unless @employee.employee_position.blank?  %></h4> 
+    <h4 align="center"><%= @date_today.strftime("%d-%m-%Y") %> - <%= @end_date.strftime("%d-%m-%Y") %></h4>
   
     <% unless @subjects.blank? %>
       <div id="pdf-info">

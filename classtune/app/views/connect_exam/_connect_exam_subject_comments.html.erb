@@ -135,6 +135,8 @@
             <% end %> 
             <% if MultiSchool.current_school.id == 312 && (@exam_connect.result_type == 2 || @exam_connect.result_type == 1 || @exam_connect.result_type == 8 || @exam_connect.result_type == 10 || @exam_connect.result_type == 11 || @exam_connect.result_type == 13 || @exam_connect.result_type == 14 || @exam_connect.result_type == 15)   && !@exams.blank? %>
               <td><b><%= "Class Participation" %></b></td>
+            <% elsif MultiSchool.current_school.id == 319 %> 
+                <td><b><%= t('remarks') %></b></td>
             <% elsif MultiSchool.current_school.id != 352 %>  
               <td><b><%= t('remarks') %>/<%= t('grade') %></b></td>
             <% end %>

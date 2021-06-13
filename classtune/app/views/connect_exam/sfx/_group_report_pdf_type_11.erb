@@ -39,8 +39,14 @@
       </table>
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
-
-              
+              <% colspan = 1 %>
+              <% unless @report_data['report']['exams'].blank? %>  
+                        <% @report_data['report']['exams'].each do |report| %>
+                          <% if report['exam_category'] != '1' %>
+                          <% colspan = colspan+1 %>
+                          <% end %>
+                        <% end %>
+                      <% end %>
               
               <table id="pdf-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
@@ -55,11 +61,13 @@
                           <% end %>
                         <% end %>
                       <% end %>
-                      <td class="col-pdf" colspan="4">Final Examination</td>
+                      <td class="col-pdf" colspan="<%= colspan %>">Final Examination</td>
                       <td class="col-pdf" rowspan="2">100%</td>
                       <td class="col-pdf" rowspan="2">Grade</td>
                       <td class="col-pdf" rowspan="2">Remarks</td>
+                      <% if colspan > 3 %>
                       <td class="col-pdf" rowspan="2">CAIE Threshold Grade</td>
+                      <% end %>
                   </tr>
                   <tr class="table-header">
                       <% unless @report_data['report']['exams'].blank? %>  
@@ -160,12 +168,14 @@
                               <% end %>
                             <% end %>
                           </td>  
-                          <%  grade = SubjectGradingLevel.percentage_to_grade(main_mark, @batch.id, subjects['id'].to_i) %>
-                          <% if !grade.blank? and !grade.name.blank? %>
-                            <td class="col-pdf border-right-non"><%= grade.name %></td>
-                          <% else %>
-                            <td class="col-pdf border-right-non">-</td>
-                          <% end %> 
+                          <% if colspan > 3 %>
+                            <%  grade = SubjectGradingLevel.percentage_to_grade(main_mark, @batch.id, subjects['id'].to_i) %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <td class="col-pdf border-right-non"><%= grade.name %></td>
+                            <% else %>
+                              <td class="col-pdf border-right-non">-</td>
+                            <% end %> 
+                          <% end %>
 
                       </tr> 
                     <% end %>  

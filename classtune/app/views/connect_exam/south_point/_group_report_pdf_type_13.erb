@@ -148,84 +148,84 @@
                                 end
                               end
                             
-                              #Calculation First Quarter Mark
-                              st_marks1.sort! {|x,y| y <=> x }
-                              ct_marks1.sort! {|x,y| y <=> x }
-                              main_full_mark = 0
-                              avg_mark_ct = 0
-                              avg_mark_st = 0
-                              
-                              if ct_full_mark1.to_i == 30 
-                                  avg_mark_ct = ct_marks1[0].to_f+ct_marks1[1].to_f
-                                  main_full_mark = main_full_mark+ct_full_mark1.to_i+ct_full_mark1.to_i
-                              else 
-                                  avg_mark_ct = ct_marks1[0].to_f
-                                  main_full_mark = main_full_mark+ct_full_mark1.to_i
-                              end 
-                              
-                              if st_full_mark1.to_i == 20 
-                                  avg_mark_st = st_marks1[0].to_f+st_marks1[1].to_f
-                                  main_full_mark = main_full_mark+st_full_mark1.to_i+st_full_mark1.to_i
-                              else 
-                                  avg_mark_st = st_marks1[0].to_f
-                                  main_full_mark = main_full_mark+st_full_mark1.to_i
-                              end
-                              
-                              main_mark_obtain = total_mark = avg_mark_ct+avg_mark_st
-                              full_mark = ct_full_mark1.to_i+st_full_mark1.to_i
-                              
-                              if main_full_mark == 100
-                                full_mark = 50
-                                obtained_mark = (total_mark.to_f/2.00)
-                              else
-                                obtained_mark = (total_mark.to_f/main_full_mark.to_f)*25
-                                full_mark = 25
-                              end 
-                            
-                              obtained_mark1 = obtained_mark
-                              full_mark1 = full_mark
-                            
-                              
-                              
-                              
-                              
-                              #Calculation 2nd Quarter Mark
-                              st_marks2.sort! {|x,y| y <=> x }
-                              ct_marks2.sort! {|x,y| y <=> x }
-                              
-                              main_full_mark = 0
-                              avg_mark_ct = 0
-                              avg_mark_st = 0
-                              
-                              if ct_full_mark2.to_i == 30 
-                                  avg_mark_ct = ct_marks2[0].to_f+ct_marks2[1].to_f
-                                  main_full_mark = main_full_mark+ct_full_mark2.to_i+ct_full_mark2.to_i
-                              else 
-                                  avg_mark_ct = ct_marks2[0].to_f
-                                  main_full_mark = main_full_mark+ct_full_mark2.to_i
-                              end 
-                              
-                              if st_full_mark2.to_i == 20 
-                                  avg_mark_st = st_marks2[0].to_f+st_marks2[1].to_f
-                                  main_full_mark = main_full_mark+st_full_mark2.to_i+st_full_mark2.to_i
-                              else 
-                                  avg_mark_st = st_marks2[0].to_f
-                                  main_full_mark = main_full_mark+st_full_mark2.to_i
-                              end
-                              
-                              main_mark_obtain = total_mark = avg_mark_ct+avg_mark_st
-                              full_mark = ct_full_mark2.to_i+st_full_mark2.to_i
-                              
-                              if main_full_mark == 100
-                                full_mark = 50
-                                obtained_mark = (total_mark.to_f/2.00)
-                              else
-                                obtained_mark = (total_mark.to_f/main_full_mark.to_f)*25
-                                full_mark = 25
-                              end 
-                            
-                              obtained_mark2 = obtained_mark
-                              full_mark2 = full_mark
+                          #Calculation First Quarter Mark
+                          st_marks1.sort! {|x,y| y <=> x }
+                          ct_marks1.sort! {|x,y| y <=> x }
+                          main_full_mark = 0
+                          avg_mark_ct = 0
+                          avg_mark_st = 0
+                          
+                          if ct_full_mark1.to_i == 30 
+                              avg_mark_ct = ct_marks1[0].to_f+ct_marks1[1].to_f
+                              main_full_mark = main_full_mark+ct_full_mark1.to_i+ct_full_mark1.to_i
+                          else 
+                              avg_mark_ct = ct_marks1[0].to_f
+                              main_full_mark = main_full_mark+ct_full_mark1.to_i
+                          end 
+                          
+                          if st_full_mark1.to_i == 20 
+                              avg_mark_st = st_marks1[0].to_f+st_marks1[1].to_f
+                              main_full_mark = main_full_mark+st_full_mark1.to_i+st_full_mark1.to_i
+                          else 
+                              avg_mark_st = st_marks1[0].to_f
+                              main_full_mark = main_full_mark+st_full_mark1.to_i
+                          end
+                          
+                          main_mark_obtain = total_mark = avg_mark_ct+avg_mark_st
+                          full_mark = ct_full_mark1.to_i+st_full_mark1.to_i
+                          
+                          if main_full_mark == 100
+                            full_mark = 50
+                            obtained_mark = (total_mark.to_f/2.00)
+                          else
+                            obtained_mark = (total_mark.to_f/main_full_mark.to_f)*25
+                            full_mark = 25
+                          end 
+                        
+                          obtained_mark1 = obtained_mark
+                          full_mark1 = full_mark
+                        
+                          
+                          
+                          
+                          
+                          #Calculation 2nd Quarter Mark
+                          st_marks2.sort! {|x,y| y <=> x }
+                          ct_marks2.sort! {|x,y| y <=> x }
+                          
+                          main_full_mark = 0
+                          avg_mark_ct = 0
+                          avg_mark_st = 0
+                          
+                          if ct_full_mark2.to_i == 30 
+                              avg_mark_ct = ct_marks2[0].to_f+ct_marks2[1].to_f
+                              main_full_mark = main_full_mark+ct_full_mark2.to_i+ct_full_mark2.to_i
+                          else 
+                              avg_mark_ct = ct_marks2[0].to_f
+                              main_full_mark = main_full_mark+ct_full_mark2.to_i
+                          end 
+                          
+                          if st_full_mark2.to_i == 20 
+                              avg_mark_st = st_marks2[0].to_f+st_marks2[1].to_f
+                              main_full_mark = main_full_mark+st_full_mark2.to_i+st_full_mark2.to_i
+                          else 
+                              avg_mark_st = st_marks2[0].to_f
+                              main_full_mark = main_full_mark+st_full_mark2.to_i
+                          end
+                          
+                          main_mark_obtain = total_mark = avg_mark_ct+avg_mark_st
+                          full_mark = ct_full_mark2.to_i+st_full_mark2.to_i
+                          
+                          if main_full_mark == 100
+                            full_mark = 50
+                            obtained_mark = (total_mark.to_f/2.00)
+                          else
+                            obtained_mark = (total_mark.to_f/main_full_mark.to_f)*25
+                            full_mark = 25
+                          end 
+                        
+                          obtained_mark2 = obtained_mark
+                          full_mark2 = full_mark
                               
                               #Calculation First Term (40/20) Mark
                               full_mark = full_mark1+full_mark2

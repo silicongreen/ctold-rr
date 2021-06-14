@@ -25,6 +25,10 @@
   
   student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","Grade 6","Grade 7","Grade 8","Grade 9","Grade 10","Grade 11","Grade 12"]
   
+  @date_no_1_batch = [13825,13838,13824,13825,13828,13829,13830,13831,13834,13835,13836,13837,13839,13840,13841,13842,13843,13844,13846,13847,12295,12296,12297,12298,12293,12309,12310,12367
+]
+  @date_no_2_batch = [14087,12369,12368,13845,15307,12306,12299,12300,12301,12302,12303,12304,12305,12307,12311,12312,12313,12314,12315,12308]
+  
   @promoted_to = ""
   if student_classes.include?(@batch.course.course_name)
     array_index = student_classes.index @batch.course.course_name
@@ -318,9 +322,13 @@
                     <% else %>
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         
-                        <td colspan="3"><b>Principal's permission is needed for late admission after 25th June 2020.</b><b>
-
-                        
+                      <% if @date.id == 3107 and @date_no_1_batch.include?(@batch.id) %>
+                        <td colspan="3"><b>Principal's permission is needed for late admission after 30 June 2021.</b><b>
+                      <% elsif @date.id == 3107 and @date_no_2_batch.include?(@batch.id) %>
+                        <td colspan="3"><b>Principal's permission is needed for late admission after 6 July 2021.</b><b>
+                      <% else %>    
+                          <td colspan="3"><b>Principal's permission is needed for late admission after 25th June 2020.</b><b>
+                      <% end %>    
                     </tr>
                     
                     <% end %>
@@ -459,7 +467,14 @@
                 </table>
               <% if !params[:show_one].blank? %>
                 <h3 align="center">This Fees Receipt is to be used for Enrolment in next class<% unless @promoted_to.blank? %> (<%= @promoted_to %>) <% end %>
-                of next session (<%= @date.due_date.to_date.strftime("%Y").to_s %>-<%= @date.due_date.to_date.strftime("%Y").to_i+1 %>) Last date of enrolment is <%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %>.</h3>
+                  <% if @date.id == 3107 and @date_no_1_batch.include?(@batch.id) %>
+                    of next session (<%= @date.due_date.to_date.strftime("%Y").to_s %>-<%= @date.due_date.to_date.strftime("%Y").to_i+1 %>) Last date of enrolment is <%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %>.</h3>
+                  <% elsif @date.id == 3107 and @date_no_2_batch.include?(@batch.id) %>
+                    of next session (<%= @date.due_date.to_date.strftime("%Y").to_s %>-<%= @date.due_date.to_date.strftime("%Y").to_i+1 %>) Last date of enrolment is 6 July 2021.</h3>
+                  <% else %>    
+                    of next session (<%= @date.due_date.to_date.strftime("%Y").to_s %>-<%= @date.due_date.to_date.strftime("%Y").to_i+1 %>) Last date of enrolment is <%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %>.</h3>
+                  <% end %> 
+                
               <% end %>
               <% if !params[:show_one].blank? && !@promoted_to.blank? && @promoted_to == "Grade 9" %>
                 <h3 align="center">N.B. Laboratory fees will be taken after subject selection within one month of regular classes.</h3>
@@ -467,7 +482,14 @@
               <% if !params[:report].blank? %>
                 <h3 align="center">N.B. Roll No. in the new class will be set as per merit list of the final result
                 <% if !params[:enrolment].blank? %>
-                   &nbsp;if enrolment procedure is completed by 25th June 2020. 
+                    <% if @date.id == 3107 and @date_no_1_batch.include?(@batch.id) %>
+                        &nbsp;if enrolment procedure is completed by 30 June 2021
+                    <% elsif @date.id == 3107 and @date_no_2_batch.include?(@batch.id) %>
+                      &nbsp;if enrolment procedure is completed by 6 July 2021 
+                    <% else %>    
+                        &nbsp;if enrolment procedure is completed by 25th June 2020. 
+                    <% end %> 
+                   
                 <% else %>
                    .
                 <% end %>   

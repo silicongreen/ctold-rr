@@ -136,7 +136,7 @@ class MarksController < ApplicationController
     elsif data_type.to_i == 1
       @exam_connect = ExamConnect.active.find(:all,:conditions=>"batch_id="+batch_id+" and (result_type=3 or result_type=4 or result_type=9  or result_type=12) and is_deleted=0")
     elsif data_type.to_i == 2
-      @exam_connect = ExamConnect.active.find(:all,:conditions=>"batch_id="+batch_id+" and (result_type=1 or result_type=2 or result_type=5  or result_type=6  or result_type=7  or result_type=8  or result_type=10  or result_type=11  or result_type=13  or result_type=14  or result_type=15) and is_deleted=0")
+      @exam_connect = ExamConnect.active.find(:all,:conditions=>"batch_id="+batch_id+" and (result_type=1 or result_type=2 or result_type=5  or result_type=6  or result_type=7  or result_type=8  or result_type=10  or result_type=11  or result_type=13  or result_type=14  or result_type=15 or result_type=16) and is_deleted=0")
     else
       @exam_connect = ExamConnect.active.find(:all,:conditions=>"batch_id="+batch_id+" and is_deleted=0")
     end 

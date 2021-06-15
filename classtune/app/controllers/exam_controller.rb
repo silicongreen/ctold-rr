@@ -3276,9 +3276,13 @@ class ExamController < ApplicationController
         row_first << sub['code']
       end
       row_first << "Total"
+      if MultiSchool.current_school.id == 280
+        row_first << "Raniking"
+      end  
       i = 2
       new_book.worksheet(0).insert_row(2, row_first)
       sheet1.row(2).default_format = center_align_format
+      rank = 0
       @report_data['report']['students'].each do |std|
         i = i+1
         row = []
@@ -3288,6 +3292,7 @@ class ExamController < ApplicationController
         elsif !std['first_name'].blank?
           row << std['first_name']
         end  
+        rank = rank+1
         total_mark = 0
         @report_data['report']['subjects'].each do |sub|
           subject_full_mark = 0 
@@ -3367,6 +3372,9 @@ class ExamController < ApplicationController
           end  
         end
         row << total_mark
+        if MultiSchool.current_school.id == 280
+          row << rank
+        end
         new_book.worksheet(0).insert_row(i, row)
         sheet1.row(i).default_format = center_align_format
         

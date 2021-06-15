@@ -13,8 +13,9 @@
     <% senior_setion2 = true %>
   <% end %>
   <div id="pdf-header-south" class="sfx-header">
-    <h2 align="center">S.F.X Greenherald International School</h2>
-  </div> 
+      <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/2/sfx-logo.png")),:width=> '10%' %></h4>
+      <h2 align="center" class="sfx-header-h2" style="font-size:32px !important;">S.F.X Greenherald International School</h2>
+  </div>
   <div id="page-yield"  class="available_sections1 sjis-new sfx">
       <h2 align="center"><%= @connect_exam_obj.name %></h2>
       <table id="pdf-table" class="margin-top-bottom-20" width="100%" cellspacing="0">

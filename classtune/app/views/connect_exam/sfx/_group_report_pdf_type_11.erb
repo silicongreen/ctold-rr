@@ -168,7 +168,75 @@
                           
 
                       </tr> 
-                    <% end %>  
+                    <% end %> 
+                    <%  
+
+                  group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
+
+                  @all_subjects = []
+                  @all_subject_grade = []
+                  group_exams.each do |group_exam|
+                    allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
+                    allexams.each do |exam|
+                      if !@all_subjects.include?(exam.subject.id) && exam.subject.grade_subject.to_i == 0
+                        @all_subjects << exam.subject.id
+                      end
+                    end
+                    end 
+                  group_exams.each do |group_exam|
+                    allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
+                    allexams.each do |exam|
+                      if !@all_subject_grade.include?(exam.subject.id) && exam.subject.grade_subject.to_i == 1
+                        @all_subject_grade << exam.subject.id
+                      end
+                    end
+                    end 
+                %>  
+                  <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                    <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
+
+                      <%  if @all_subjects.include?(report['id'].to_i) %>
+
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+
+                            <td class="col-pdf   align-left-baf"><%= report['subject_name'] %></td>
+
+                            <% if group_count > 1 %>
+                              <% unless @report_data['report']['exams'].blank? %> 
+                                <% jloop = 0 %>
+                                <% @top_exam_group.each do |top_exam| %>
+                                  <% colspan = @top_exam_group_count[jloop]-1 %>
+                                  <% total_exam = 0 %>
+                                  <% @report_data['report']['exams'].each do |report_main| %>
+                                    <% if !report_main['exam_name'].index(top_exam).nil? %>
+                                      <% total_exam = total_exam+1 %>
+                                    <% end %>
+                                  <% end %>
+                                  <% if total_exam > 1 %>
+                                    <% colspan = colspan+1 %>
+                                  <% end %>
+                                  <% (1..colspan).each do |i| %>
+                                    <td class="col-pdf group_exam"></td>
+                                  <% end %>
+                                  <% jloop = jloop+1 %>
+                                  <% if jloop == 1 %>
+                                    <td class="col-pdf"></td>
+                                  <% else %>
+                                    <td class="col-pdf"></td>
+                                  <% end %>
+                                <% end %>
+                              <% end %>  
+                            <% else %>
+                              <td class="col-pdf group_exam" colspan="<%= @top_exam_group_count[0]-1 %>"></td>  
+                            <% end %>
+                            <% if senior_setion %>
+                              <td class="col-pdf"></td>
+                            <% end %>
+                            <td class="col-pdf"></td>
+                            <td class="col-pdf  "><%= report['subject_comment'] %></td>
+                        </tr>
+                      <% end %>
+                    <% end %> 
                   <% end %>
               </table>
                 <%= render  :partial=>"/connect_exam/sfx/comments7" %> 

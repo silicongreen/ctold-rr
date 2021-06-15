@@ -85,6 +85,7 @@
      <% unless split_comments[1].blank? %>
           <% @report_data['total_new_std'] = "" %>
           <% @report_data['present'] = split_comments[1] %>
+          <% @report_data['absent'] = @report_data['total'].to_i - @report_data['present'].to_i %>
      <% end %>
       
   <% end %>

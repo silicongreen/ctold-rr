@@ -1512,6 +1512,9 @@ class AssignmentsController < ApplicationController
             if users_exits.include?(answer.student.id)
               next
             end
+            if answer.student.blank?
+              next
+            end  
             users_exits << answer.student.id
             unless answer.attachment_file_name.blank?
               spilt_file_name = answer.attachment_file_name.split(".")

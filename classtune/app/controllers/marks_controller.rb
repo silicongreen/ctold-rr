@@ -672,6 +672,14 @@ class MarksController < ApplicationController
               data[k][3] = "<a href='/exam/comment_tabulation_pdf/#{exam_connect.id.to_s}#view=FitH' target='_blank'>Comment Entry</a>"
               data[k][4] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}#view=FitH' target='_blank'>Results</a>"
               k = k+1
+            elsif school_id == 280
+              data[k] = []
+              data[k][0] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>#{exam_connect_batch.to_s} (All Result)</a>"
+              data[k][1] = "<a href='/exam/tabulation/#{exam_connect.id.to_s}#view=FitH' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>&nbsp;&nbsp;<a href='/exam/tabulation_excell_sjis/#{exam_connect.id.to_s}'>Excel</a>"
+              data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>#{exam.subject_name.to_s} (Marksheet)</a>"
+              data[k][3] = "<a href='/exam/comment_tabulation_pdf/#{exam_connect.id.to_s}#view=FitH' target='_blank'>Comment Entry</a>"
+              data[k][4] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}#view=FitH' target='_blank'>Results</a>"
+              k = k+1
             elsif school_id == 362
               data[k] = []
               data[k][0] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>#{exam_connect_batch.to_s} (All Result)</a>"

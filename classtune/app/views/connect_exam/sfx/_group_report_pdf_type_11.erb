@@ -197,7 +197,7 @@
                         <%  if @all_subjects.include?(report['id'].to_i) %>
                             <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                                <td class="col-pdf   align-left-baf"><%= report['subject_name'] %></td>
-                               <% @report_data['report']['exams'].each do |report| %>
+                               <% @report_data['report']['exams'].each do |report_main| %>
                                   <td class="col-pdf "></td>
                                <% end %>
                                <td class="col-pdf "></td>

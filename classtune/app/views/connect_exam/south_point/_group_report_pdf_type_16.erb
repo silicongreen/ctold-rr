@@ -89,7 +89,7 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% total_subject = total_subject+1 %>
-                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <tr  class="table-header">
                           <% obtained_mark = 0 %>
                           <% full_mark = 0 %>
                           <% highest_mark = 0 %>
@@ -526,7 +526,7 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
 
                       <%  if @all_subjects.include?(report['id'].to_i) %>
 
-                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        <tr  class="table-header">
 
                             <td class="col-pdf"><%= report['subject_name'] %></td>
                             <td class="col-pdf" colspan="4"></td>
@@ -571,7 +571,7 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
                     %>
                   <% end %>
                         
-                  <tr class="odd">
+                  <tr  class="table-header">
                       <td class="col-pdf"><%= "Class Participation" %></td>
                       <td class="col-pdf" colspan="3"></td>
                       <td class="col-pdf">

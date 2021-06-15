@@ -78,6 +78,18 @@
   %>
   <%= render  :partial=>"/connect_exam/south_point/highest_marks16" %>
 <% end %>
+<% if !@exam_comment.blank? %>
+  <% split_comments = @exam_comment.comments.split("||") %>
+  <% if @connect_exam_obj.total_working_days > 0 %>
+     <% @report_data['total'] = @connect_exam_obj.total_working_days %>
+     <% unless split_comments[1].blank? %>
+          <% @report_data['total_new_std'] = "" %>
+          <% @report_data['present'] = split_comments[1] %>
+     <% end %>
+      
+  <% end %>
+<% end %>
+
 <%= render  :partial=>"/connect_exam/south_point/group_report_pdf_type_"+@connect_exam_obj.result_type.to_s %>
 <style>
     #pdf-header-south table td.name-td h5.step-1, #pdf-header-south table td.name-td h5.step-2

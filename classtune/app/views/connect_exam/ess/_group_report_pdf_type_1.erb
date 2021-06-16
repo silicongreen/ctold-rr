@@ -244,13 +244,13 @@
 
                 <% end %> 
               </div>
-              <div style="width:71.5%; float: left; margin-left: 3%; margin-top: 5px;" >
+              <div style="width:71.5%; float: left; margin-left: 3%; margin-top: 10px;" >
                 <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
                       <td class="align-left" style="background-color:#e3f2fd">Total Working Days:</td>
-                      <td  style="padding:12px !important;"><%= @connect_exam_obj.total_working_days %></td>
+                      <td  style="padding:6px !important;"><%= @connect_exam_obj.total_working_days %></td>
                       <td class="align-left" style="background-color:#e3f2fd">Attendance:</td>
-                      <td  style="padding:12px !important;"></td>
+                      <td  style="padding:6px !important;"></td>
                     </tr>
 
                 </table>
@@ -258,7 +258,7 @@
                 <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
                         <td class="align-left"  style="background-color:#e3f2fd">Promoted To class:</td>
-                        <td  style="padding:10px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
+                        <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
                     </tr>
 
                 </table>
@@ -278,9 +278,9 @@
                         <td class="width-30 align-left" width="30%" rowspan="2" style="background-color:#e3f2fd;">Next Term begins on:</td>
                       <% end %>
                       
-                      <td colspan="2" style="padding:5px !important">D</td>
-                      <td colspan="2" style="padding:5px !important">M</td>
-                      <td colspan="4" style="padding:5px !important">Y</td>
+                      <td colspan="2" style="padding:3px !important">D</td>
+                      <td colspan="2" style="padding:3px !important">M</td>
+                      <td colspan="4" style="padding:3px !important">Y</td>
                   </tr>
                   <tr class="even">
                       <% unless date_split.blank? %>

@@ -199,7 +199,7 @@
 
               </table>
               
-              <div style="width:25.5%; float: left; margin-top: 25px;" >
+              <div style="width:25.5%; float: left; clear:both; margin-top: 25px;" >
                 <% if @grading_levels.blank? %>
                   <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
                   <% if @grading_levels.blank? %>
@@ -235,7 +235,7 @@
 
                 <% end %> 
               </div>
-              <div style="width:71.5%; float: left; clear:both; margin-left: 3%; margin-top: 5px;" >
+              <div style="width:71.5%; float: left; margin-left: 3%; margin-top: 5px;" >
                 <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
                         <td class="align-left" >Total Marks (Out of <%= total_full_marks %>):</td>

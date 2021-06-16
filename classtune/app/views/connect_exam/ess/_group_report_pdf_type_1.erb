@@ -23,6 +23,7 @@
                                   <% end %>
                                 </font>
                               </h4>
+                              <h4 align="center" style="margin-top:-5px;"><font size="4" color="#000"><%= @batch.name %> Campus</font></h2>
                               <h4 align="center" style="margin-top:-5px;">
                                 <font size="4" color="#000">
                                   Class : <%= @batch.course.course_name %>
@@ -208,7 +209,7 @@
                  
               </table>
 
-              <div style="width:25.5%; float: left; clear:both; margin-top: 8px;" >
+              <div style="width:30%; float: left; clear:both; margin-top: 8px;" >
                 <% if @grading_levels.blank? %>
                   <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
                   <% if @grading_levels.blank? %>
@@ -244,7 +245,7 @@
 
                 <% end %> 
               </div>
-              <div style="width:71.5%; float: left; margin-left: 3%; margin-top:5px;" >
+              <div style="width:60%; float: left; margin-left: 3%; margin-top:5px;" >
                 <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
                       <td class="align-left" style="background-color:#e3f2fd">Total Working Days:</td>

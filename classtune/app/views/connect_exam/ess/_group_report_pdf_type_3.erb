@@ -64,7 +64,13 @@ c<% unless @report_data.blank?  or  @report_data['report'].blank? %>
               </tr>
           </table>
       </div>
-     
+     <% total_exam = 0 %>
+      <% unless @report_data['report']['exams'].blank? %>
+          <% @report_data['report']['exams'].each do |report| %>
+            <% total_exam = total_exam+1%>
+          <% end %>
+      <% end %>                  
+
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
               <table id="pdf-table"  width="100%" class="left-table even-table exam-marks" cellspacing="0">
@@ -73,18 +79,31 @@ c<% unless @report_data.blank?  or  @report_data['report'].blank? %>
                       <td colspan="6" ><b>Cumulative Assessment</b></td>
                   </tr>
                   <tr class="even">
-                      <td colspan="6"><b>FIRST TERM ASSESSMENT REPORT</b></td>
+                      <% if @connect_exam_obj.name.index("Final").blank? %>
+                        <td colspan="6"><b>FIRST TERM ASSESSMENT REPORT</b></td>
+                      <% else %>
+                        <td colspan="6"><b>FINAL TERM ASSESSMENT REPORT</b></td>
+                      <% end %>
                   </tr>
                   <% total_mark_of_allexam = 0 %>
                   <tr class="even">
                     <td class="col-pdf"><b><%= "Subject" %></b></td>
+                    <% number_of_exam = 0 %>
                     <% unless @report_data['report']['exams'].blank? %>
                         <% @report_data['report']['exams'].each do |report| %>
-                        <td><b>
-                        <%= report['exam_name'] %><br/>
-                        (Out of <% unless @exam_marks[report['exam_id'].to_s].blank?  %><% total_mark_of_allexam = total_mark_of_allexam+@exam_marks[report['exam_id'].to_s].to_i  %><%= @exam_marks[report['exam_id'].to_s] %><% end %>)
-                        </b></td>
-                        <% end %>
+                          <% number_of_exam = number_of_exam+1 %>
+                          <% if total_exam > 3 &&  number_of_exam == 2%>
+                              <td><b>Class Test 2 </b></td>
+                          <% elsif total_exam > 3  && number_of_exam < 5 %>
+
+                          <% else %>
+                            <td><b>
+                            <%= report['exam_name'] %><br/>
+                            (Out of <% unless @exam_marks[report['exam_id'].to_s].blank?  %><%= @exam_marks[report['exam_id'].to_s] %><% end %>)
+                            </b></td>
+                          <% end %>
+                          <% unless @exam_marks[report['exam_id'].to_s].blank?  %><% total_mark_of_allexam = total_mark_of_allexam+@exam_marks[report['exam_id'].to_s].to_i  %><% end %>
+                        <% end %> 
                     <% end %>
                         <td ><b>Total<br/>(Out of <%= total_mark_of_allexam %>)</b></td>
                     <td><b>Grade</b></td>
@@ -116,22 +135,36 @@ c<% unless @report_data.blank?  or  @report_data['report'].blank? %>
                           <%
                           full_mark = 0
                           obtain_mark = 0
+                          class_test2_mark = 0
+                          number_of_exam = 0
+                          
                           unless @report_data['report']['exams'].blank?   
                             @report_data['report']['exams'].each do |report| 
-                             
+                                number_of_exam = number_of_exam+1
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   obtain_mark = obtain_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                   %>
+                                    <% if total_exam == 3 ||  number_of_exam < 2 || number_of_exam > 4 %>
                                     <td class="col-pdf no-warp"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
+                                    <% else %>
+                                        <% class_test2_mark = class_test2_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                        
+                                    <% end %>
                                 <%
                                 else
                                   %>
+                                    <% if total_exam == 3 ||  number_of_exam < 2 || number_of_exam > 4 %>
                                     <td class="col-pdf no-warp">-</td>
+                                    <% end %>
                                 <% 
                                 end
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
                                   full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
                                 end
+                                if number_of_exam == 4
+                                %>
+                                <td class="col-pdf no-warp"><%= class_test2_mark %></td>
+                                <% end
                               
                             end 
                           end 

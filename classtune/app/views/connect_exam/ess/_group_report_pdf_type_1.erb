@@ -248,16 +248,16 @@
                 <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
                       <td class="align-left" style="background-color:#e3f2fd">Total Working Days:</td>
-                      <td  style="padding:3px !important;"><%= @connect_exam_obj.total_working_days %></td>
+                      <td  style="padding:5px !important;"><%= @connect_exam_obj.total_working_days %></td>
                       <td class="align-left" style="background-color:#e3f2fd">Attendance:</td>
-                      <td  style="padding:3px !important;"></td>
+                      <td  style="padding:5px !important;"></td>
                     </tr>
 
                 </table>
                 <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
                         <td class="align-left"  style="background-color:#e3f2fd">Promoted To class:</td>
-                        <td  style="padding:3px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
+                        <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
                     </tr>
 
                 </table>
@@ -267,7 +267,7 @@
                     date_split = date_string.split("")
                   end
                 %>
-                <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:20px !important;" cellspacing="0" >
+                <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:5px !important;" cellspacing="0" >
 
                     <tr class="even">
                       <% unless @connect_exam_obj.name.index("Final").blank? %>

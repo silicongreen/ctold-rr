@@ -235,7 +235,7 @@
 
                 <% end %> 
               </div>
-              <div style="width:71.5%; float: left; margin-left: 3%; margin-top: 5px;" >
+              <div style="width:71.5%; float: left; clear:both; margin-left: 3%; margin-top: 5px;" >
                 <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
                         <td class="align-left" >Total Marks (Out of <%= total_full_marks %>):</td>
@@ -245,14 +245,24 @@
                     </tr>
 
                 </table>
-                <p>&nbsp;</p>
-                <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
+                <table id="pdf-table"  width="100%" style="margin-top: 10px;" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
                         <td class="align-left" >Total Working Days:</td>
-                        <td  style="padding:10px !important;" width="30%"><%= @connect_exam_obj.total_working_days %></td>
+                        <td  style="padding:5px !important;" ><%= @connect_exam_obj.total_working_days %></td>
+                        <td class="align-left" >Attendance:</td>
+                        <td  style="padding:5px !important;"></td>
+                    </tr>
+
+
+                </table>
+                <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:10px !important;"  cellspacing="0" >
+                    <tr class="even">
+                        <td class="align-left">Promoted To class:</td>
+                        <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
                     </tr>
 
                 </table>
+                
                 <%  
                   date_string = @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d%m%Y")
                   unless date_string.blank? 
@@ -260,7 +270,7 @@
                   end
                 %>
                   <p>&nbsp;</p>
-                <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:20px !important;" cellspacing="0" >
+                <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:10px !important;" cellspacing="0" >
 
                     <tr class="even">
                         <td class="width-30 align-left" width="30%" rowspan="2">Next Term begins on:</td>

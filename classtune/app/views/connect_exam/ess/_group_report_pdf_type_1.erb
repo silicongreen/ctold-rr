@@ -272,7 +272,7 @@
                 <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:20px !important;" cellspacing="0" >
 
                     <tr class="even">
-                      <% unkless @connect_exam_obj.name.index("Final").blank? %>
+                      <% unless @connect_exam_obj.name.index("Final").blank? %>
                         <td class="width-30 align-left" width="30%" rowspan="2" style="background-color:#e3f2fd;">Next Academic Session Begins on:</td>
                       <% else %>
                         <td class="width-30 align-left" width="30%" rowspan="2" style="background-color:#e3f2fd;">Next Term begins on:</td>

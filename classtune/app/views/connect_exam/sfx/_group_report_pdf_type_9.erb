@@ -3,7 +3,7 @@
   <% senior_setion1 = false %> 
   <% senior_setion2 = false %> 
   <% course_name = @batch.course.course_name  %>
-  <% if  course_name == "VI" or course_name == "VII" or course_name == "VIII" or course_name == "IX" %> 
+  <% if  course_name == "VI" or course_name == "VII" or course_name == "VIII" or course_name == "IX" or course_name == "X" or course_name == "AS" or course_name == "A2" %> 
     <% senior_setion = true %>
   <% end %> 
   <% if  course_name == "VI" or course_name == "VII" %> 
@@ -208,7 +208,7 @@
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% subjectdata = Subject.find(subjects['id'].to_i) %>
                       <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
-                      <% if @has_exam_student == false && senior_setion2 == true %>
+                      <% if @has_exam_student == false %>
                          <% next %>
                       <% end %>
                       <% has_exam = false %>
@@ -571,7 +571,7 @@
                         <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-1.png")), :width=>"30%" %></td>
                     </tr>
                     <% if senior_setion == false %>
-                      <tr><td>&nbsp;HEAD OF SECTION</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRINCIPAL'S SIGNATURE</td></tr>
+                      <tr><td>&nbsp;JUNIOR SECTION INCHARGE</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRINCIPAL'S SIGNATURE</td></tr>
                     <% else %>
                       <tr><td>&nbsp;SENIOR SECTION HEAD</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRINCIPAL,<br/>
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S.F.X Greenherald International school</td></tr>

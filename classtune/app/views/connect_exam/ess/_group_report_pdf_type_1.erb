@@ -244,7 +244,7 @@
 
                 <% end %> 
               </div>
-              <div style="width:71.5%; float: left; margin-left: 3%; margin-top: 10px;" >
+              <div style="width:71.5%; float: left; margin-left: 3%;" >
                 <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
                       <td class="align-left" style="background-color:#e3f2fd">Total Working Days:</td>
@@ -254,7 +254,7 @@
                     </tr>
 
                 </table>
-                <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
+                <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:10px !important;"  cellspacing="0" >
                     <tr class="even">
                         <td class="align-left"  style="background-color:#e3f2fd">Promoted To class:</td>
                         <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
@@ -267,7 +267,7 @@
                     date_split = date_string.split("")
                   end
                 %>
-                <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:5px !important;" cellspacing="0" >
+                <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:10px !important;" cellspacing="0" >
 
                     <tr class="even">
                       <% unless @connect_exam_obj.name.index("Final").blank? %>

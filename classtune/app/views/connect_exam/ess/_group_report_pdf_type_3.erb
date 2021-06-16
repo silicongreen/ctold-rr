@@ -93,7 +93,7 @@ c<% unless @report_data.blank?  or  @report_data['report'].blank? %>
                         <% @report_data['report']['exams'].each do |report| %>
                           <% number_of_exam = number_of_exam+1 %>
                           <% if total_exam > 3 &&  number_of_exam == 2 %>
-                              <td><b>Class Test 2 </b></td>
+                              <td><b>Class Test 2 <br/>(Out of 25)</b></td>
                           <% elsif total_exam > 3  && number_of_exam < 5 && number_of_exam > 1 %>
 
                           <% else %>

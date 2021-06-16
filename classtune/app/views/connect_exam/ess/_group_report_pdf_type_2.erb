@@ -23,6 +23,7 @@
                                   <% end %>
                                 </font>
                               </h4>
+                              <h4 align="center" style="margin-top:-5px;"><font size="4" color="#000"><%= @batch.name %> Campus</font></h2>
                               <h4 align="center" style="margin-top:-5px;">
                                 <font size="6" color="#000">
                                   Class : <%= @batch.course.course_name %>
@@ -75,7 +76,11 @@
                   </tr>
                   <tr class="even">
                       <td class="col-pdf"><b>Online Cumulative Assessment(60)</b></td>
-                      <td class="col-pdf"><b>Online First Term Examination(40)</b></td>
+                      <% if @connect_exam_obj.name.index("Final").blank? %>
+                        <td class="col-pdf"><b>Online Final Term Examination(40)</b></td>
+                      <% else %>
+                        <td class="col-pdf"><b>Online First Term Examination(40)</b></td>
+                      <% end %>
                       <td class="col-pdf"><b>100</b></td>
                   </tr>
                   <% total_marks = 0 %>
@@ -303,7 +308,7 @@
               
               <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
                   <tr class="even border-bottom-1-px">
-                      <td class="col-pdf no-border" width="70%"></td>
+                      <td class="col-pdf no-border" width="70%" style="text-align:left !important"><b>Date Of Issue: <%= @connect_exam_obj.published_date.strftime("%d-%m-%Y") %></b></td>
                       
                        <td class="col-pdf" width="30%">
                         

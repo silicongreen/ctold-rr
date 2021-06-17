@@ -619,7 +619,9 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
                           <table id="pdf-table" class="font-size-20" width="100%" >
                               <tr class="table-header">
                                   <td class="col-pdf promoted_section_final"  valign="top">
-                                      <% if u_count < 3 && @promoted_to %>
+                                      <% if @connect_exam_obj.id == 5903 && @student.class_roll_no == "21"  %>
+                                        Promoted to: Grade 3( on consideration)
+                                      <% elsif u_count < 3 && @promoted_to %>
                                       Promoted To&nbsp:&nbsp;<%= @promoted_to %><% if u_count > 0 %> (on consideration)<% end %>
                                       <% elsif @promoted_to %>
                                       Not Promoted.

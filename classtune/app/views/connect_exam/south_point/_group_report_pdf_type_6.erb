@@ -343,7 +343,26 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
 
               </table>
               
+              <%
+              if !@exam_comment.blank?
+                split_comments = @exam_comment.comments.split("**")
+                unless split_comments[11].blank?
+                  first_term = kgfirstterm(@batch.id)
+                  unless first_term.blank?
+                      @report_data['total_new_std_first_term'] = ""
+                      @report_data['total_new_std'] = ""
+                      @report_data['total_first_term'] = first_term.total_working_days
+                      @report_data['present_first_term'] = split_comments[11]
+                      @report_data['total'] = @connect_exam_obj.total_working_days
+                      @report_data['present'] = split_comments[10]
+                      @report_data['absent_first_term'] = @report_data['total_first_term'].to_i - @report_data['present_first_term'].to_i
+                      @report_data['absent'] = @report_data['total'].to_i - @report_data['present'].to_i
+                  end
+
+                end
+              end
               
+              %>
               <%= render  :partial=>"/connect_exam/south_point/gradding_level6" %>
               
               <%= render  :partial=>"/connect_exam/south_point/sign_south_4" %>
@@ -404,7 +423,7 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
   }
   .st_joseph_bg #grouped_exam_report table#pdf-table tr.table-header td.col-pdf, .st_joseph_bg #grouped_exam_report table#pdf-table tr.even td.col-pdf, .st_joseph_bg #grouped_exam_report table#pdf-table tr.odd td.col-pdf
   {
-      padding: 1px 5px !important;
+      padding: 0px 5px !important;
   }
   #grouped_exam_report #pdf-table td.align-left
   {

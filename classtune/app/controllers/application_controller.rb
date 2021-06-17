@@ -19,6 +19,7 @@
 class ApplicationController < ActionController::Base
   helper :all
   helper_method :has_subject_group
+  helper_method :kgfirstterm
   helper_method :get_subject_group
   helper_method :get_subject_sub_group
   helper_method :can_access_request?
@@ -163,6 +164,11 @@ class ApplicationController < ActionController::Base
     end
     return subject_subgroup  
   end
+   
+  def kgfirstterm(batch_id)
+    connect_exam = ExamConnect.find(:first,:conditions=>["batch_id=? and is_deleted=? and result_type = ?",batch_id,false,5])
+    return connect_exam
+  end  
   
   def get_subject_sub_group(subject_subgroup_id,quarter_number = 0)
     require "yaml"

@@ -357,6 +357,10 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
                       @report_data['present'] = split_comments[10]
                       @report_data['absent_first_term'] = @report_data['total_first_term'].to_i - @report_data['present_first_term'].to_i
                       @report_data['absent'] = @report_data['total'].to_i - @report_data['present'].to_i
+                  else
+                    @report_data['total'] = @connect_exam_obj.total_working_days
+                    @report_data['present'] = split_comments[10]
+                    @report_data['absent'] = @report_data['total'].to_i - @report_data['present'].to_i
                   end
 
                 end

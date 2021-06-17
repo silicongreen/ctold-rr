@@ -41,7 +41,11 @@
       <% class_teachers = [] %>
       <% if !@assigned_employee.blank? %>
         <% @assigned_employee.each do |emp| %>
-           <% class_teachers << emp.first_name+" "+emp.last_name %>
+            <% unless emp.last_name.blank? %>
+              <% class_teachers << emp.first_name+" "+emp.last_name %>
+            <% else %>
+                <% class_teachers << emp.first_name %>
+            <% end %>
         <% end %>
        <% end %>
       <% unless class_teachers.blank? %>
@@ -76,7 +80,7 @@
                   </tr>
                   <tr class="even">
                       <td class="col-pdf"><b>Online Cumulative Assessment(60)</b></td>
-                      <% if @connect_exam_obj.name.index("Final").blank? %>
+                      <% unless @connect_exam_obj.name.index("Final").blank? %>
                         <td class="col-pdf"><b>Online Final Term Examination(40)</b></td>
                       <% else %>
                         <td class="col-pdf"><b>Online First Term Examination(40)</b></td>
@@ -145,6 +149,7 @@
                               obtain_mark2 = (obtain_mark2/full_mark2)*20  
                             end
                           end  
+                          full_mark_first = full_mark1+full_mark2
                           total_full_marks = total_full_marks+full_mark
                           obtain_mark = obtain_mark1+obtain_mark2+obtain_mark3
                           oher_exam_mark = obtain_mark-obtain_mark3 
@@ -159,9 +164,9 @@
                            
                           
                           %>
-                          <td class="col-pdf"><b><%= sprintf( "%0.02f", oher_exam_mark) %><% if show_full_mark == true %>/30<% end %></b></td>
-                          <td class="col-pdf"><b><%= sprintf( "%0.02f", obtain_mark3) %><% if show_full_mark == true %>/20<% end %></b></td>
-                          <td class="col-pdf"><b><%= sprintf( "%0.02f", obtain_mark) %><% if show_full_mark == true %>/50<% end %></b></td>
+                          <td class="col-pdf"><b><%= sprintf( "%0.02f", oher_exam_mark) %><% if show_full_mark == true %>/<%= full_mark_first %><% end %></b></td>
+                          <td class="col-pdf"><b><%= sprintf( "%0.02f", obtain_mark3) %><% if show_full_mark == true %>/<%= full_mark3 %><% end %></b></td>
+                          <td class="col-pdf"><b><%= sprintf( "%0.02f", obtain_mark) %><% if show_full_mark == true %>/<%= full_mark %><% end %></b></td>
                           <% if !grade.blank? and !grade.name.blank? %>
                             <td class="col-pdf"><b><%= grade.name %></b></td>
                           <% else %>

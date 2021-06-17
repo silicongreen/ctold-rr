@@ -248,7 +248,7 @@
               <div style="width:66%; float: left; margin-left: 4%; margin-top:5px;" >
                 <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
-                      <td class="align-left" style="background-color:#e3f2fd">Total Working Days:</td>
+                      <td class="align-left" style="background-color:#e3f2fd">Total No. of Working Days:</td>
                       <td  style="padding:5px !important;"><%= @report_data['total'] %></td>
                       <td class="align-left" style="background-color:#e3f2fd">Attendance:</td>
                       <td  style="padding:5px !important;"><%= @report_data['present'] %></td>
@@ -257,7 +257,7 @@
                 </table>
                 <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:20px !important;"  cellspacing="0" >
                     <tr class="even">
-                        <td class="align-left"  style="background-color:#e3f2fd">Promoted To class:</td>
+                        <td class="align-left"  style="background-color:#e3f2fd">Promoted to/ To Repeat Class:</td>
                         <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
                     </tr>
 
@@ -317,7 +317,7 @@
                       </td>
                   </tr>
                   <tr class="even">
-                      <td class="col-pdf no-border" width="70%" style="text-align:left !important"><b>Date Of Issue: <%= @connect_exam_obj.published_date.strftime("%d/%m/%Y") %></b></td>
+                      <td class="col-pdf no-border" width="70%" style="text-align:left !important"><b>Date of Issue: <%= @connect_exam_obj.published_date.strftime("%d/%m/%Y") %></b></td>
                       <td class="col-pdf" width="30%">
                           Principal
                       </td>

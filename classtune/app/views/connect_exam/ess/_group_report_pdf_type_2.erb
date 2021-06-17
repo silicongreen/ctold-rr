@@ -23,7 +23,7 @@
                                   <% end %>
                                 </font>
                               </h4>
-                              <h4 align="center" style="margin-top:-5px;"><font size="6" color="#000"><%= @batch.name %> Campus</font></h2>
+                              <h4 align="center" style="margin-top:-5px;"><font size="6" color="#000"><%= @batch.name %></font></h2>
                               <h4 align="center" style="margin-top:-5px;">
                                 <font size="6" color="#000">
                                   Class : <%= @batch.course.course_name %>
@@ -161,6 +161,10 @@
                           main_mark = main_mark.round()
                           total_marks = total_marks+obtain_mark
                           grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                          show_full_mark = false
+                          if full_mark == 50
+                            show_full_mark = true
+                          end
                            
                           
                           %>
@@ -257,7 +261,7 @@
                 </table>
                 <table id="pdf-table"  width="100%" style="margin-top: 13px;" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
-                        <td class="align-left" >Total Working Days:</td>
+                        <td class="align-left" >Total No. of Working Days:</td>
                         <td  style="padding:5px !important;width: 10%;" ><%= @report_data['total'] %></td>
                         <td class="align-left" >Attendance:</td>
                         <td  style="padding:5px !important; width: 10%;"><%= @report_data['present'] %></td>
@@ -267,7 +271,7 @@
                 </table>
                 <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:13px !important;"  cellspacing="0" >
                     <tr class="even">
-                        <td class="align-left">Promoted To class:</td>
+                        <td class="align-left">Promoted to/ To Repeat Class:</td>
                         <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
                     </tr>
 
@@ -321,7 +325,7 @@
                       </td>
                   </tr>
                   <tr class="even">
-                      <td class="col-pdf no-border" width="70%" style="text-align:left !important"><b>Date Of Issue: <%= @connect_exam_obj.published_date.strftime("%d/%m/%Y") %></b></td>
+                      <td class="col-pdf no-border" width="70%" style="text-align:left !important"><b>Date of Issue: <%= @connect_exam_obj.published_date.strftime("%d/%m/%Y") %></b></td>
                       <td class="col-pdf" width="30%">
                           Principal
                       </td>

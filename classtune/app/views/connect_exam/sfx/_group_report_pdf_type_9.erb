@@ -554,7 +554,7 @@
                     <h3>GENERAL COMMENTS: <%= comments %></h3>
                   <% end %>
                 <% end %>
-                <% if (@connect_exam_obj.id == 5817 &&  && @student.class_roll_no == "1541080") || (@connect_exam_obj.id == 5812 && @student.class_roll_no == "1901009") %>
+                <% if (@connect_exam_obj.id == 5817 && @student.class_roll_no == "1541080") || (@connect_exam_obj.id == 5812 && @student.class_roll_no == "1901009") %>
                   <h3>NOT PROMOTED</h3>
                 <% else %>
                   <h3>PROMOTED TO: <%= @connect_exam_obj.promoted_to %></h3>

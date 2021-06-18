@@ -554,7 +554,11 @@
                     <h3>GENERAL COMMENTS: <%= comments %></h3>
                   <% end %>
                 <% end %>
-                <h3>PROMOTED TO: <%= @connect_exam_obj.promoted_to %></h3>
+                <% if (@connect_exam_obj.id == 5817 &&  && @student.class_roll_no == "1541080") || (@connect_exam_obj.id == 5812 && @student.class_roll_no == "1901009") %>
+                  <h3>NOT PROMOTED</h3>
+                <% else %>
+                  <h3>PROMOTED TO: <%= @connect_exam_obj.promoted_to %></h3>
+                <% end %>
                 <% if senior_setion == false %>
                   <h3>SCHOOL REOPENS ON: <%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %></h3>
                 <% end %>

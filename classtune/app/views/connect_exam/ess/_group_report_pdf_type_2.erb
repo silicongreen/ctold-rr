@@ -271,10 +271,12 @@
                 </table>
                 <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:13px !important;"  cellspacing="0" >
                     <tr class="even">
-                        <td class="align-left">Promoted to/ To Repeat Class:</td>
+                        
                         <% if @connect_exam_obj.id == 6032 && @student.admission_no == "7292" %>
+                          <td class="align-left">To Repeat Class:</td>
                           <td  style="padding:5px !important;" width="30%"><%= @batch.course.course_name %></td>
                         <% else %>
+                          <td class="align-left">Promoted to/ To Repeat Class:</td>
                           <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
                         <% end %>
                     </tr>

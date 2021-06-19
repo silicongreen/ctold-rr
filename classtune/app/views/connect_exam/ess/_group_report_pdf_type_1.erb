@@ -251,11 +251,7 @@
                       <td class="align-left" style="background-color:#e3f2fd">Total No. of Working Days:</td>
                       <td  style="padding:5px !important;"><%= @report_data['total'] %></td>
                       <td class="align-left" style="background-color:#e3f2fd">Attendance:</td>
-                      <% if @connect_exam_obj.id == 5984 && @student.admission_no == "7261" %>
-                        <td  style="padding:5px !important;">0</td>
-                      <% else %>
-                        <td  style="padding:5px !important;"><%= @report_data['present'] %></td>
-                      <% end %>
+                      <td  style="padding:5px !important;"><%= @report_data['present'] %></td>
                     </tr>
 
                 </table>

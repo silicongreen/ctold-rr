@@ -226,8 +226,8 @@ c<% unless @report_data.blank?  or  @report_data['report'].blank? %>
               </table>
               <p>&nbsp;</p>
              
-              <h3>Total number of working days: <%= @connect_exam_obj.total_working_days %> Days </h3>
-              <h3>Next Academic Session begins on:  <%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%B %d, %Y") %></h3>
+              <h3>Total Number of Working Days: <%= @connect_exam_obj.total_working_days %> Days </h3>
+              <h3>Next Academic Session Begins on:  <%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%B %d, %Y") %></h3>
               
               
               <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >

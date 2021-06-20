@@ -128,7 +128,7 @@
                           <% end %>
                         <% end %>  
                         <% if @exam_subject.no_exams_sjws.to_i != 1 %>
-                            <% if @exam_connect.result_type == 4 %>
+                            <% if @exam_connect.result_type == 4 or @exam_connect.result_type == 7 %>
                               <% unless @no_exams.blank? %>
                                 <% @no_exams.each do |exam| %>
                                   <% if has_subject_group(@exam_subject.id) %>
@@ -274,7 +274,7 @@
                             <% end %>  
                           <% end %>
                           <% if @exam_subject.no_exams_sjws.to_i != 1 %>
-                            <% if @exam_connect.result_type == 4 %>
+                            <% if @exam_connect.result_type == 4 or @exam_connect.result_type == 7 %>
                               <% unless @no_exams.blank? %>
                                 <% exam_group_remarks = "" %>
                                 <% @no_exams.each do |exam| %>

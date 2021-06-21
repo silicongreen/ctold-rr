@@ -102,7 +102,7 @@ class ExamConnect extends CActiveRecord
     
     public function getConnectExamFirstTerm($batch_id)
     {
-        $res_type = array(2,8,13);
+        $res_type = array(2,8,13,14);
         $quarter_number = 0;
         if(Yii::app()->user->schoolId == 352)
         {

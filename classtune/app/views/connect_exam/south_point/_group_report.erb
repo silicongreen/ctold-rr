@@ -93,13 +93,13 @@
   <% end %>
 <% end %>
 
-<% if !@report_data['total_first_term'].nil?  && @connect_exam_obj.result_type.to_s == "1" %>
+<% if !@report_data['total_first_term'].blank? && @report_data['total_first_term'] == 1  && @connect_exam_obj.result_type.to_s == "1" %>
 <%
 
-  unless @first_term_connect_exam_main.blank?
+  if @first_term_connect_exam_main.blank?
     @first_term_connect_exam_main = ExamConnect.find_by_batch_id_and_is_deleted_and_result_type(@batch.id,false,14)
   end
-  unless @first_term_connect_exam_main.blank?
+  if @first_term_connect_exam_main.blank?
     @first_term_connect_exam_main = ExamConnect.find_by_batch_id_and_is_deleted_and_result_type(@batch.id,false,1)
   end 
   unless @first_term_connect_exam_main.blank?

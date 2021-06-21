@@ -220,7 +220,6 @@ admission_no_not_promoted = ["BDSMAAY899", "BDSMACC754","BDSFABF310"]
                 <%= render  :partial=>"/connect_exam/sfx/comments7" %> 
                  <h5><b>&nbsp;</b></h5>
                  <h5><b>&nbsp;</b></h5>
-                 <h5><b>&nbsp;</b></h5>
                 <% if admission_no_on_condition.include?(@student.admission_no)  %>
                    <p><b>PROMOTED TO : <%= @connect_exam_obj.promoted_to %> (On condition)</b></p>
                 <% elsif admission_no_not_promoted.include?(@student.admission_no)  %>

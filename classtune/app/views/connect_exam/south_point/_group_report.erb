@@ -108,6 +108,7 @@
     unless @exam_comments_first_term.blank?
         all_comments_array = @exam_comments_first_term.comments.split("|")
         if !all_comments_array[1].nil?
+          @report_data['total_new_std_first_term'] = ""
           @report_data['present_first_term'] = all_comments_array[1].to_i
         end  
     end

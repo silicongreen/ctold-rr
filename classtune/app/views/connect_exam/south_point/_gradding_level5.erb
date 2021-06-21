@@ -78,9 +78,9 @@
                             <% elsif l == 2 %>
                                 <td class="col-pdf">Days Present</td>
                                 <% unless @report_data['total_new_std_first_term'].blank?  %>
-                                  <td class="col-pdf">2<%= @report_data['total_new_std_first_term'].to_i-@report_data['absent_first_term'].to_i %></td>
+                                  <td class="col-pdf"><%= @report_data['total_new_std_first_term'].to_i-@report_data['absent_first_term'].to_i %></td>
                                 <% else %>
-                                  <td class="col-pdf">1<%= @exam_comments_first_term.comments unless @exam_comments_first_term.comments.blank? %><%= @report_data['present_first_term'] %></td>
+                                  <td class="col-pdf"><%= @report_data['present_first_term'] %></td>
                                 <% end %>
                                 <% unless @report_data['total_new_std'].blank?  %>
                                   <td class="col-pdf"><%= @report_data['total_new_std'].to_i-@report_data['absent'].to_i %></td>

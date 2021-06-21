@@ -80,9 +80,11 @@
 <% end %>
 <% if !@exam_comment.blank? %>
   <% split_comments = @exam_comment.comments.split("[]") %>
+  
   <% if @connect_exam_obj.total_working_days > 0 %>
      <% @report_data['total'] = @connect_exam_obj.total_working_days %>
      <% unless split_comments[1].blank? %>
+          <% @exam_comment.comments = split_comments[0] %>
           <% @report_data['total_new_std'] = "" %>
           <% @report_data['present'] = split_comments[1] %>
           <% @report_data['absent'] = @report_data['total'].to_i - @report_data['present'].to_i %>

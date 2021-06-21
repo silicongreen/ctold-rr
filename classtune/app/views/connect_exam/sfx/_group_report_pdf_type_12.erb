@@ -181,9 +181,32 @@ admission_no_not_promoted = ["BDSMAAY899", "BDSMACC754"]
               </table>
                 <h5><b>&nbsp;</b></h5>
                 <%= render  :partial=>"/connect_exam/sfx/comments7" %> 
-                <% if admission_no_on_condition.include?(@student.admission_no) %>
+                <% if admission_no_on_condition.include?(@student.admission_no)  %>
                    <p><b>PROMOTED TO : <%= @connect_exam_obj.promoted_to %> (On condition)</b></p>
-                <% elsif admission_no_not_promoted.include?(@student.admission_no) %>
+                <% elsif admission_no_not_promoted.include?(@student.admission_no)  %>
+                    <p><b>NOT PROMOTED</b></p>
+                <% else %>
+                  <p><b>PROMOTED TO : <%= @connect_exam_obj.promoted_to %></b></p>
+                <% end %>
+                
+                <% class_teacher = "" %>
+                <% class_teachers = [] %>
+                <% if !@assigned_employee.blank? %>
+                  <% @assigned_employee.each do |emp| %>
+                    <% class_teacher = emp.first_name+" "+emp.last_name %>
+                  <% end %>
+                <% end %>
+                <% unless class_teachers.blank? %>
+                  <% class_teacher = class_teachers.join(", ") %>
+                <% end %>
+                <table id="pdf-table" width="99.8%" cellspacing="0">
+                    <tr>
+                     
+                        <td>&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sis-signature-6-10.jpg")),:width=> '45%' %></td>
+                        
+                        <td>&nbsp;&nbsp;&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sfx-1.png")), :width=>"35%" %></td>
+                        <% if course_name == "X" %>
+                            <% if @batch.course.section_name == "Jupiter" %>
                               <td>&nbsp;&nbsp;&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/jupiter.png")), :width=>"50%" %></td>
                             <% else %>
                               <td>&nbsp;&nbsp;&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/mars.png")), :width=>"50%" %></td>

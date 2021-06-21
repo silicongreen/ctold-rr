@@ -179,15 +179,16 @@ admission_no_not_promoted = ["BDSMAAY899", "BDSMACC754"]
                     <% end %>  
                   <% end %>
               </table>
+                <h5><b>&nbsp;</b></h5>
                 <%= render  :partial=>"/connect_exam/sfx/comments7" %> 
                 <% if admission_no_on_condition.include?(@student.admission_no) && @connect_exam_obj.id == 5758 %>
-                   <h5><b>PROMOTED TO : <%= @connect_exam_obj.promoted_to %> (On condition)</b></h5>
+                   <p><b>PROMOTED TO : <%= @connect_exam_obj.promoted_to %> (On condition)</b></p>
                 <% elsif admission_no_not_promoted.include?(@student.admission_no) && @connect_exam_obj.id == 5758 %>
-                    <h5><b>NOT PROMOTED</b></h5>
+                    <p><b>NOT PROMOTED</b></p>
                 <% else %>
                   <p><b>PROMOTED TO : <%= @connect_exam_obj.promoted_to %></b></p>
                 <% end %>
-                <h5><b>&nbsp;</b></h5>
+                
                 <% class_teacher = "" %>
                 <% class_teachers = [] %>
                 <% if !@assigned_employee.blank? %>

@@ -91,7 +91,7 @@
   <% end %>
 <% end %>
 
-<% if !@report_data['total_first_term'].nil? && @report_data['total_first_term'] == "1" && @connect_exam_obj.result_type.to_s == "1" %>
+<% if !@report_data['total_first_term'].nil?  && @connect_exam_obj.result_type.to_s == "1" %>
 <%
 
   unless @first_term_connect_exam_main.blank?

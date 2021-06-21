@@ -106,7 +106,7 @@
     @report_data['total_first_term'] = @first_term_connect_exam_main.total_working_days
     @exam_comments_first_term = ExamConnectComment.find_by_exam_connect_id_and_student_id(@first_term_connect_exam_main.id,@student.id)
     unless @exam_comments_first_term.blank?
-        all_comments_array = @exam_comments_first_term.split("|")
+        all_comments_array = @exam_comments_first_term.comments.split("|")
         if !all_comments_array[1].nil?
           @report_data['present_first_term'] = all_comments_array[1].to_i
         end  

@@ -78,6 +78,18 @@
   %>
   <%= render  :partial=>"/connect_exam/south_point/highest_marks16" %>
 <% end %>
+<% if @connect_exam_obj.result_type.to_i == 17 %>
+<%
+      if @tabulation_data.blank?
+        student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,false)
+        @tabulation_data = []
+        if student_response['status']['code'].to_i == 200
+          @tabulation_data = student_response['data']
+        end
+      end
+  %>
+  <%= render  :partial=>"/connect_exam/south_point/highest_marks17" %>
+<% end %>
 <% if !@exam_comment.blank? %>
   <% split_comments = @exam_comment.comments.split("[]") %>
   
@@ -93,7 +105,7 @@
   <% end %>
 <% end %>
 
-<% if !@report_data['total_first_term'].blank? && @report_data['total_first_term'] == 1  && @connect_exam_obj.result_type.to_s == "1" %>
+<% if !@report_data['total_first_term'].blank? && @report_data['total_first_term'] == 1  && (@connect_exam_obj.result_type.to_s == "1" or @connect_exam_obj.result_type.to_s == "17")%>
 <%
 
   if @first_term_connect_exam_main.blank?

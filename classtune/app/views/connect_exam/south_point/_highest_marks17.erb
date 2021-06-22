@@ -337,11 +337,7 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
           quarter_mark = obtained_mark4.round()
           end
         
-        if @subject_highest_mock_test[sub['id'].to_i].blank?
-          @subject_highest_mock_test[sub['id'].to_i] = mock_test_mark
-        elsif mock_test_mark.to_i > @subject_highest_mock_test[sub['id'].to_i].to_i
-          @subject_highest_mock_test[sub['id'].to_i] = mock_test_mark.to_i
-        end
+       
 
         if @subject_highest_quarter[sub['id'].to_i].blank?
           @subject_highest_quarter[sub['id'].to_i] = quarter_mark

@@ -16,8 +16,6 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-
-<% unless @subjects.blank? %>
 <div class="row" style="width:50%">
     <div class="row_label" >
       <div>
@@ -57,6 +55,8 @@
           :id => "loader",
           :style =>"display: none;" ) %>
     </div>
+<% unless @subjects.blank? %>
+
 <% if @date_to_use == @end_date %>    
   <table width="700" style="margin-top:10px;">
     <tr class="even">

@@ -328,7 +328,7 @@
                         
                       <% if @date.id == 3107 and @date_no_1_batch.include?(@batch.id) %>
                         <td colspan="3"><b>Principal's permission is needed for late admission after 30 June 2021.</b><b>
-                      <% elsif @date.id == 3107 and @date_no_2_batch.include?(@batch.id) %>
+                      <% elsif (@date.id == 3107 or @date.id == 3108 or @date.id == 3110 or @date.id == 3112) and @date_no_2_batch.include?(@batch.id) %>
                         <td colspan="3"><b>Principal's permission is needed for late admission after 6 July 2021.</b><b>
                       <% else %>    
                           <td colspan="3"><b>Principal's permission is needed for late admission after 25th June 2020.</b><b>
@@ -473,7 +473,7 @@
                 <h3 align="center">This Fees Receipt is to be used for Enrolment in next class<% unless @promoted_to.blank? %> (<%= @promoted_to %>) <% end %>
                   <% if @date.id == 3107 and @date_no_1_batch.include?(@batch.id) %>
                     of next session (<%= @date.due_date.to_date.strftime("%Y").to_s %>-<%= @date.due_date.to_date.strftime("%Y").to_i+1 %>) Last date of enrolment is <%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %>.</h3>
-                  <% elsif @date.id == 3107 and @date_no_2_batch.include?(@batch.id) %>
+                  <% elsif (@date.id == 3107 or @date.id == 3108 or @date.id == 3110 or @date.id == 3112) and @date_no_2_batch.include?(@batch.id) %>
                     of next session (<%= @date.due_date.to_date.strftime("%Y").to_s %>-<%= @date.due_date.to_date.strftime("%Y").to_i+1 %>) Last date of enrolment is 6 July 2021.</h3>
                   <% else %>    
                     of next session (<%= @date.due_date.to_date.strftime("%Y").to_s %>-<%= @date.due_date.to_date.strftime("%Y").to_i+1 %>) Last date of enrolment is <%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %>.</h3>
@@ -488,7 +488,7 @@
                 <% if !params[:enrolment].blank? %>
                     <% if @date.id == 3107 and @date_no_1_batch.include?(@batch.id) %>
                         &nbsp;if enrolment procedure is completed by 30 June 2021
-                    <% elsif @date.id == 3107 and @date_no_2_batch.include?(@batch.id) %>
+                    <% elsif (@date.id == 3107 or @date.id == 3108 or @date.id == 3110 or @date.id == 3112) and @date_no_2_batch.include?(@batch.id) %>
                       &nbsp;if enrolment procedure is completed by 6 July 2021 
                     <% else %>    
                         &nbsp;if enrolment procedure is completed by 25th June 2020. 

@@ -30,7 +30,7 @@
   <tr class="odd left"><td><%= t('grade') %></td><td class="right"><%= @employee.employee_grade.name unless @employee.employee_grade.nil? %></td></tr>
   <tr class="even left"><td><%= t('job_title') %></td><td class="right"><%= @employee.job_title %></td></tr>
 
-  <tr class="odd left">
+  <tr class="odd left" style="display:none">
     <td><%= "Line Manager" %></td>
     <td class="right">
       <% if @reporting_manager.present? and @reporting_manager.employee_record.present? %>

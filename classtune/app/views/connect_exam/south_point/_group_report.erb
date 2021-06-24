@@ -114,6 +114,9 @@
   if @first_term_connect_exam_main.blank?
     @first_term_connect_exam_main = ExamConnect.find_by_batch_id_and_is_deleted_and_result_type(@batch.id,false,1)
   end 
+  if @first_term_connect_exam_main.blank?
+    @first_term_connect_exam_main = ExamConnect.find_by_batch_id_and_is_deleted_and_result_type(@batch.id,false,15)
+  end 
   unless @first_term_connect_exam_main.blank?
     @report_data['total_first_term'] = @first_term_connect_exam_main.total_working_days
     @exam_comments_first_term = ExamConnectComment.find_by_exam_connect_id_and_student_id(@first_term_connect_exam_main.id,@student.id)

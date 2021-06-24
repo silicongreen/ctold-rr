@@ -558,10 +558,10 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
                               <tr class="table-header">
                                   <td class="col-pdf promoted_section_final"  valign="top">
 
-                                      <% if @connect_exam_obj.id == 5903 && @student.class_roll_no == "21"  %>
-                                        Promoted to: Grade 3( on consideration)
+                                      <% if (@connect_exam_obj.id == 5881 && @student.class_roll_no == "16") || (@connect_exam_obj.id == 5879 && @student.class_roll_no == "19") || (@connect_exam_obj.id == 5885 && @student.class_roll_no == "25") %>
+                                        Promoted to : <%= @promoted_to %>( on consideration)
                                       <% elsif u_count < 3 && @promoted_to %>
-                                        Promoted To&nbsp:&nbsp;<%= @promoted_to %><% if u_count > 0 %> (on consideration)<% end %>
+                                        Promoted To&nbsp;:&nbsp;<%= @promoted_to %><% if u_count > 0 %> (on consideration)<% end %>
                                       <% elsif @promoted_to %>
                                         Not Promoted.
                                       <% end %>

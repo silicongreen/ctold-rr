@@ -309,7 +309,7 @@
                                       elsif mock_number == 2
                                         mock2_full_mark = mock2_full_mark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                       else
-                                        mock3_full_mark = mock2_full_mark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                        mock3_full_mark = mock3_full_mark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                       end
                                     end
                                     if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
@@ -317,9 +317,9 @@
                                        if mock_number == 1
                                          mock1 = mock1+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                        elsif mock_number == 2
-                                         mock2 = mock1+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                         mock2 = mock2+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                        else
-                                         mock3 = mock2+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                         mock3 = mock3+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                        end
                                     end
                                     mock_number = mock_number+1

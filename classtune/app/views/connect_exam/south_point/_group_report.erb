@@ -122,6 +122,8 @@
         if !all_comments_array[1].nil?
           @report_data['total_new_std_first_term'] = ""
           @report_data['present_first_term'] = all_comments_array[1].to_i
+          
+          @report_data['absent_first_term'] = @report_data['total_first_term'].to_i - all_comments_array[1].to_i
         end  
     end
   end

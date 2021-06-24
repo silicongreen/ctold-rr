@@ -105,7 +105,7 @@
   <% end %>
 <% end %>
 
-<% if !@report_data['total_first_term'].blank? && @report_data['total_first_term'] == 1  && (@connect_exam_obj.result_type.to_s == "1" or @connect_exam_obj.result_type.to_s == "17")%>
+<% if ((!@report_data['total_first_term'].blank? && @report_data['total_first_term'] == 1) ||  @report_data['total_first_term'].blank?) && (@connect_exam_obj.result_type.to_s == "1" or @connect_exam_obj.result_type.to_s == "17")%>
 <%
 
   if @first_term_connect_exam_main.blank?

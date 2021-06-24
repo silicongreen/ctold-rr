@@ -57,7 +57,7 @@
         <% @report_data['report']['students'].each do |std| %>
           <% j = j+1 %>
           <%  std_count = std_count+1; %>
-          <% if std_count>6 && extender ==0 %>
+          <% if std_count>5 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break3">
@@ -115,10 +115,11 @@
             <td class="col-pdf"><%= j %></td>
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
-            <td class="name-std">M1<hr/>M2<hr/>AVG<hr/>CMB</td>
+            <td class="name-std">M1<hr/>M2<hr/>M3<hr/>AVG<hr/>CMB</td>
             <% total_mark = 0 %>
             <% q1_mark = 0 %>
             <% q2_mark = 0 %>
+            <% q3_mark = 0 %>
             <% f_mark = 0 %>
             <% tf_mark = 0 %>
             <% cmb_mark = 0 %>
@@ -133,6 +134,9 @@
             
             <% grades4 = [] %>
             <% grade_count4 = {} %>
+
+            <% grades5 = [] %>
+            <% grade_count5 = {} %>
             
             <% grades = [] %>
             <% grade_count = {} %>
@@ -197,6 +201,8 @@
                         mock2 = 0
                         mock1_full_mark = 0
                         mock2_full_mark = 0
+                        mock3 = 0
+                        mock3_full_mark = 0
                         mock_number = 1
                       %>
                       <% 
@@ -300,19 +306,23 @@
                                       final_term_full_mark = final_term_full_mark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                       if mock_number == 1
                                         mock1_full_mark = mock1_full_mark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                      else
+                                      elsif mock_number == 2
                                         mock2_full_mark = mock2_full_mark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                      else
+                                        mock3_full_mark = mock2_full_mark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                       end
                                     end
                                     if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
                                        final_term_mark = final_term_mark+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                        if mock_number == 1
                                          mock1 = mock1+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                       elsif mock_number == 2
+                                         mock2 = mock1+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                        else
-                                         mock2 = mock2+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                         mock3 = mock2+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                        end
                                     end
-                                    mock_number = 2
+                                    mock_number = mock_number+1
                                     
 
                                   end
@@ -379,17 +389,22 @@
                           
                           main_mark_mock1 = 0
                           main_mark_mock2 = 0
+                          main_mark_mock3 = 0
                           if mock1 > 0
                             main_mark_mock1 = (mock1.to_f/mock1_full_mark)*100
                           end
                           if mock2 > 0
                             main_mark_mock2 = (mock2.to_f/mock2_full_mark)*100
                           end
+                          if mock3 > 0
+                            main_mark_mock3 = (mock3.to_f/mock3_full_mark)*100
+                          end
 
                           grade_name1 = "-"
                           grade_name2 = "-"
                           grade_name3 = "-"
                           grade_name4  = "-"
+                          grade_name5 = "-"
                           grade_name  = "-"
 
                           grade = GradingLevel.percentage_to_grade(main_mark_mock1, @batch.id)
@@ -414,7 +429,7 @@
                             end
                           end
 
-                          grade = GradingLevel.percentage_to_grade(main_mark_only_final_term, @batch.id)
+                          grade = GradingLevel.percentage_to_grade(main_mark_mock3, @batch.id)
                           if !grade.blank? and !grade.name.blank?
                             grade_name3 = grade.name
                             if grades3.include?(grade.name.to_s)
@@ -425,7 +440,7 @@
                             end
                           end
 
-                          grade = GradingLevel.percentage_to_grade(main_mark_only_first_term, @batch.id)
+                          grade = GradingLevel.percentage_to_grade(main_mark_only_final_term, @batch.id)
                           if !grade.blank? and !grade.name.blank?
                             grade_name4 = grade.name
                             if grades4.include?(grade.name.to_s)
@@ -433,6 +448,17 @@
                             else
                               grades4 << grade.name.to_s
                               grade_count4[grade.name.to_s] = 1
+                            end
+                          end
+
+                          grade = GradingLevel.percentage_to_grade(main_mark_only_first_term, @batch.id)
+                          if !grade.blank? and !grade.name.blank?
+                            grade_name5 = grade.name
+                            if grades5.include?(grade.name.to_s)
+                              grade_count5[grade.name.to_s] = grade_count5[grade.name.to_s]+1
+                            else
+                              grades5 << grade.name.to_s
+                              grade_count5[grade.name.to_s] = 1
                             end
                           end
 
@@ -455,13 +481,15 @@
                         <%
                         q1_mark = q1_mark+mock1.round()
                         q2_mark = q2_mark+mock2.round()
+                        q3_mark = q3_mark+mock3.round()
                         tf_mark = tf_mark+main_mark_only_final_term.round()
                         cmb_mark = cmb_mark+main_mark.round()
 
                         %>
                           <%= mock1.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name1+"<hr/>" %>
                           <%= mock2.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name2+"<hr/>" %>
-                          <%= main_mark_only_final_term.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name3+"<hr/>" %>
+                          <%= mock3.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name3ß+"<hr/>" %>
+                          <%= main_mark_only_final_term.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name4+"<hr/>" %>
                           <%= main_mark.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name %>
                           
                           
@@ -522,6 +550,9 @@
                           &nbsp;
                         <% end %> 
                          <hr/>
+                          
+                          &nbsp; 
+                         <hr/>
                          
                          
                          
@@ -548,7 +579,7 @@
                 
                   <%= q1_mark.round().to_s+"<hr/>" %> 
                   <%= q2_mark.round().to_s+"<hr/>" %> 
-                  
+                  <%= q3_mark.round().to_s+"<hr/>" %> 
                   <%= tf_mark.round().to_s+"<hr/>" %> 
                   <%= cmb_mark.round().to_s %> 
                   
@@ -579,6 +610,16 @@
                   <% total_grade_std = grades3.count  %>
                   <% grades3.each do |grade| %>
                       <%= grade.to_s+"-"+grade_count3[grade].to_s %>
+                      <% if i!=total_grade_std %>
+                      ,
+                      <% end %>
+                      <% i = i+1 %>
+                  <% end %>
+                  <hr/>
+                  <% i = 1 %>
+                  <% total_grade_std = grades4.count  %>
+                  <% grades4.each do |grade| %>
+                      <%= grade.to_s+"-"+grade_count4[grade].to_s %>
                       <% if i!=total_grade_std %>
                       ,
                       <% end %>

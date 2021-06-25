@@ -321,6 +321,11 @@ class GroupedExams extends CActiveRecord
                     {
                         $first_term_id_for_class_performance = $cont_exam->getConnectExamByBatch($batch_id,8);
                     }    
+                    if(!$first_term_id_for_class_performance)
+                    {
+                        $first_term_id_for_class_performance = $cont_exam->getConnectExamByBatch($batch_id,15);
+
+                    }
                     if($first_term_id_for_class_performance)
                     {
                         $sub_comments = $cmt_connect->getCommentAllSubjects($first_term_id_for_class_performance,$sub_id_with_exam,$batch_student);

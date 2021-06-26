@@ -365,6 +365,28 @@
                             end
                           end
 
+                          if @batch.course.course_name == "Grade 9"
+                          #Calculation First Quarter Mark
+                          st_marks1.sort! {|x,y| y <=> x }
+                          ct_marks1.sort! {|x,y| y <=> x }
+
+                          avg_mark_ct1 = (ct_marks1[0].to_f+ct_marks1[1].to_f)/2
+
+                          obtained_mark1 = avg_mark_ct1.to_f
+                          full_mark1 = ct_full_mark1.to_i
+                          main_mark1 = (obtained_mark1.round().to_f/full_mark1.to_f)*100
+
+                          #Calculation 2nd Quarter Mark
+                          st_marks2.sort! {|x,y| y <=> x }
+                          ct_marks2.sort! {|x,y| y <=> x }
+
+                          avg_mark_ct2 = (ct_marks2[0].to_f+ct_marks2[1].to_f)/2
+
+                          obtained_mark2 = avg_mark_ct2.to_f
+                          full_mark2 = ct_full_mark2.to_i
+                          main_mark2 = (obtained_mark2.round().to_f/full_mark2.to_f)*100
+
+                        else 
                           #Calculation First Quarter Mark
                           st_marks1.sort! {|x,y| y <=> x }
                           ct_marks1.sort! {|x,y| y <=> x }
@@ -395,6 +417,8 @@
                           obtained_mark2 = avg_mark_ct2.to_f+avg_mark_st2.to_f
                           full_mark2 = ct_full_mark2.to_i+st_full_mark2.to_i
                           main_mark2 = (obtained_mark2.round().to_f/full_mark2.to_f)*100
+
+                        end
 
                           #Calculation 3rd Quarter Mark
                           st_marks3.sort! {|x,y| y <=> x }

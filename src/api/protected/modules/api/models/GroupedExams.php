@@ -795,14 +795,31 @@ class GroupedExams extends CActiveRecord
                 $results['comments2'] = array();
                 if($exm_connect_data->result_type==1 || $exm_connect_data->result_type == 10 || $exm_connect_data->result_type == 11)
                 {
-                    if( $exm_connect_data->result_type == 1 || $exm_connect_data->result_type == 10 )
+                    if($connect_exam->result_type == 1)
                     {
-                        $first_term_id_for_class_performance = $exam_connect_obj->getConnectExamByBatch($batch_id,2);
+                       $first_term_id_for_class_performance = $cont_exam->getConnectExamByBatch($batch_id,2);
+                        
+                    }
+                    else if($connect_exam->result_type == 17)
+                    {
+                        $first_term_id_for_class_performance = $cont_exam->getConnectExamByBatch($batch_id,14);
+                    }
+                    else if($connect_exam->result_type == 10)
+                    {
+                        $first_term_id_for_class_performance = $cont_exam->getConnectExamByBatch($batch_id,2);
+                    }
+                    else if($connect_exam->result_type == 16)
+                    {
+                        $first_term_id_for_class_performance = $cont_exam->getConnectExamByBatch($batch_id,13);
                     }
                     else
                     {
-                        $first_term_id_for_class_performance = $exam_connect_obj->getConnectExamByBatch($batch_id,8);
-                    } 
+                        $first_term_id_for_class_performance = $cont_exam->getConnectExamByBatch($batch_id,8);
+                    }    
+                    if(!$first_term_id_for_class_performance)
+                    {
+                        $first_term_id_for_class_performance = $cont_exam->getConnectExamByBatch($batch_id,15);
+                    }
                 
                     //$first_term_id_for_class_performance = $exam_connect_obj->getConnectExamByBatch($batch_id,2);
                     if($first_term_id_for_class_performance)

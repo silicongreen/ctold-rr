@@ -339,6 +339,26 @@
                           full_mark2 = ct_full_mark2.to_i
                           main_mark2 = (obtained_mark2.round().to_f/full_mark2.to_f)*100
 
+                          #Calculation 3rd Quarter Mark
+                          st_marks3.sort! {|x,y| y <=> x }
+                          ct_marks3.sort! {|x,y| y <=> x }
+                          
+                          avg_mark_ct3 = (ct_marks3[0].to_f+ct_marks3[1].to_f)/2
+                          
+                          obtained_mark3 = avg_mark_ct3.to_f
+                          full_mark3 = ct_full_mark3.to_i
+                          main_mark3 = (obtained_mark3.round().to_f/full_mark3.to_f)*100
+
+                          #Calculation 4th Quarter Mark
+                          st_marks4.sort! {|x,y| y <=> x }
+                          ct_marks4.sort! {|x,y| y <=> x }
+                          
+                          avg_mark_ct4 = (ct_marks4[0].to_f+ct_marks4[1].to_f)/2
+                          
+                          obtained_mark4 = avg_mark_ct4.to_f
+                          full_mark4 = ct_full_mark4.to_i
+                          main_mark4 = (obtained_mark4.round().to_f/full_mark4.to_f)*100
+
                         else 
                           #Calculation First Quarter Mark
                           st_marks1.sort! {|x,y| y <=> x }
@@ -371,38 +391,41 @@
                           full_mark2 = ct_full_mark2.to_i+st_full_mark2.to_i
                           main_mark2 = (obtained_mark2.round().to_f/full_mark2.to_f)*100
 
-                        end
+                          
 
-                        #Calculation 3rd Quarter Mark
-                        st_marks3.sort! {|x,y| y <=> x }
-                        ct_marks3.sort! {|x,y| y <=> x }
                         
-                        avg_mark_ct3 = ct_marks3[0].to_f
-                        if st_full_mark3.to_i == 10 
-                          avg_mark_st3 = (st_marks3[0].to_f+st_marks3[1].to_f)/2
-                        else
-                          avg_mark_st3 = st_marks3[0].to_f
+
+                          #Calculation 3rd Quarter Mark
+                          st_marks3.sort! {|x,y| y <=> x }
+                          ct_marks3.sort! {|x,y| y <=> x }
+                          
+                          avg_mark_ct3 = ct_marks3[0].to_f
+                          if st_full_mark3.to_i == 10 
+                            avg_mark_st3 = (st_marks3[0].to_f+st_marks3[1].to_f)/2
+                          else
+                            avg_mark_st3 = st_marks3[0].to_f
+                          end
+                          
+                          obtained_mark3 = avg_mark_ct3.to_f+avg_mark_st3.to_f
+                          full_mark3 = ct_full_mark3.to_i+st_full_mark3.to_i
+                          main_mark3 = (obtained_mark3.round().to_f/full_mark2.to_f)*100
+                          
+                          #Calculation 4th Quarter Mark
+                          st_marks4.sort! {|x,y| y <=> x }
+                          ct_marks4.sort! {|x,y| y <=> x }
+                          
+                          avg_mark_ct4 = ct_marks4[0].to_f
+                          if st_full_mark4.to_i == 10 
+                            avg_mark_st4 = (st_marks4[0].to_f+st_marks4[1].to_f)/2
+                          else
+                            avg_mark_st4 = st_marks4[0].to_f
+                          end
+                          
+                        
+                          obtained_mark4 = avg_mark_ct4.to_f+avg_mark_st4.to_f
+                          full_mark4 = ct_full_mark4.to_i+st_full_mark4.to_i
+                          main_mark4 = (obtained_mark4.round().to_f/full_mark2.to_f)*100
                         end
-                        
-                        obtained_mark3 = avg_mark_ct3.to_f+avg_mark_st3.to_f
-                        full_mark3 = ct_full_mark3.to_i+st_full_mark3.to_i
-                        main_mark3 = (obtained_mark3.round().to_f/full_mark2.to_f)*100
-                        
-                        #Calculation 4th Quarter Mark
-                        st_marks4.sort! {|x,y| y <=> x }
-                        ct_marks4.sort! {|x,y| y <=> x }
-                        
-                        avg_mark_ct4 = ct_marks4[0].to_f
-                        if st_full_mark4.to_i == 10 
-                          avg_mark_st4 = (st_marks4[0].to_f+st_marks4[1].to_f)/2
-                        else
-                          avg_mark_st4 = st_marks4[0].to_f
-                        end
-                        
-                      
-                        obtained_mark4 = avg_mark_ct4.to_f+avg_mark_st4.to_f
-                        full_mark4 = ct_full_mark4.to_i+st_full_mark4.to_i
-                        main_mark4 = (obtained_mark4.round().to_f/full_mark2.to_f)*100
 
                         #Calculation First Term (40/20) Mark
                         full_mark_first_term = full_mark1+full_mark2+first_term_full_mark

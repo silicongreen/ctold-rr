@@ -794,7 +794,7 @@ class GroupedExams extends CActiveRecord
                 } 
                 $results['comments2'] = array();
                 $cont_exam = new ExamConnect();
-                if($exm_connect_data->result_type==1 || $exm_connect_data->result_type == 10 || $exm_connect_data->result_type == 11)
+                if($exm_connect_data->result_type==1 || $exm_connect_data->result_type == 10 || $exm_connect_data->result_type == 11 || $exm_connect_data->result_type == 16 || $exm_connect_data->result_type == 17)
                 {
                     if($exm_connect_data->result_type == 1)
                     {

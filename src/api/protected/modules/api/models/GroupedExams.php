@@ -793,22 +793,23 @@ class GroupedExams extends CActiveRecord
                      
                 } 
                 $results['comments2'] = array();
+                $cont_exam = new ExamConnect();
                 if($exm_connect_data->result_type==1 || $exm_connect_data->result_type == 10 || $exm_connect_data->result_type == 11)
                 {
-                    if($connect_exam->result_type == 1)
+                    if($exm_connect_data->result_type == 1)
                     {
                        $first_term_id_for_class_performance = $cont_exam->getConnectExamByBatch($batch_id,2);
                         
                     }
-                    else if($connect_exam->result_type == 17)
+                    else if($exm_connect_data->result_type == 17)
                     {
                         $first_term_id_for_class_performance = $cont_exam->getConnectExamByBatch($batch_id,14);
                     }
-                    else if($connect_exam->result_type == 10)
+                    else if($exm_connect_data->result_type == 10)
                     {
                         $first_term_id_for_class_performance = $cont_exam->getConnectExamByBatch($batch_id,2);
                     }
-                    else if($connect_exam->result_type == 16)
+                    else if($exm_connect_data->result_type == 16)
                     {
                         $first_term_id_for_class_performance = $cont_exam->getConnectExamByBatch($batch_id,13);
                     }

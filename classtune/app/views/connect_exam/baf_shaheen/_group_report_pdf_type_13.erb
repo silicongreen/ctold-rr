@@ -456,7 +456,7 @@
                  <% else %>
                   <% result = "Passed" %>
                  <% end %>
-                 <% if @promoted_to!="0" %>
+                 <% if @promoted_to!="0" && !@promoted_to.blank? %>
                  <% promotion_status = "Promoted to STD- "+@promoted_to %>
                  <% else %>
                  <% promotion_status = "-" %>

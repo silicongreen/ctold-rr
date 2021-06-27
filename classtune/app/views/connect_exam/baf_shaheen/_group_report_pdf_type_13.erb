@@ -137,14 +137,14 @@
                               <td class="col-pdf no-warp">
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %> 
                                     
-                                    <% marks_obtain = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f*2.00 %>
+                                    <% marks_obtain = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <%= sprintf( "%0.02f", marks_obtain)%>
                                     <% total_mark = total_mark.to_f+marks_obtain.to_f %>
                                   <% else %>
                                     -
                                   <% end %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
-                                    <% new_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f*2.00 %>
+                                    <% new_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f %>
                                     <% full_mark = full_mark+new_full_mark %>
                                   <% end %>
                               </td>

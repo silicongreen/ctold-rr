@@ -7114,7 +7114,7 @@ class ExamController < ApplicationController
           :right => 10},
           :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
           :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-      elsif MultiSchool.current_school.id == 323 and (@connect_exam_obj.result_type == 9 or @connect_exam_obj.result_type == 11 or @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 8 or @connect_exam_obj.result_type == 10)
+      elsif MultiSchool.current_school.id == 323 and (@connect_exam_obj.result_type == 9 or @connect_exam_obj.result_type == 11 or @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 8 or @connect_exam_obj.result_type == 10 or @connect_exam_obj.result_type == 13)
         render :pdf => template,
           
           :save_only    => for_save,

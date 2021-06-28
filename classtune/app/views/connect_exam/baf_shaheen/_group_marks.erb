@@ -12,6 +12,8 @@
     <%= render  :partial=>"/connect_exam/baf_shaheen/finding_data2" %>
   <% elsif @connect_exam_obj.result_type.to_i == 10 %>
     <%= render  :partial=>"/connect_exam/baf_shaheen/finding_data3" %>
+  <% elsif @connect_exam_obj.result_type.to_i == 14 %>
+    <%= render  :partial=>"/connect_exam/baf_shaheen/finding_data5" %>
   <% elsif @connect_exam_obj.result_type.to_i == 13 %>
     <%= render  :partial=>"/connect_exam/baf_shaheen/finding_data4" %>
   <% else %>

@@ -546,6 +546,7 @@
                       </td>
                   </tr>
               <table>
+              <% if !@current_user.student? && !@current_user.parent? %>
               <h4 class="h4-evaluation"><b>Evaluation</b></h4>    
               <table id="pdf-table" class="evaluation" width="99.8%" >
                   <tr class="odd">
@@ -590,6 +591,7 @@
                           </td>
                       </tr>
               </table>
+              <% end %>
               
               
           </div>

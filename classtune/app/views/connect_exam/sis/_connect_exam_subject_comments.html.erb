@@ -204,6 +204,12 @@
                                                         <option value="R" <% if exam_group_remarks.to_s == 'R' %> selected="selected" <% end %>  >Regular</option>
                                                         <option value="IR" <% if exam_group_remarks.to_s == 'IR' %> selected="selected" <% end %>  >Irregular</option>
                                                       </select>
+                                                    <% elsif group_name.name.upcase.strip == "HOMEWORK" %>
+                                                      <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
+                                                        <option value="NA" >Select</option>
+                                                        <option value="R" <% if exam_group_remarks.to_s == 'R' %> selected="selected" <% end %>  >Regular</option>
+                                                        <option value="IR" <% if exam_group_remarks.to_s == 'IR' %> selected="selected" <% end %>  >Irregular</option>
+                                                      </select>
                                                     <% elsif (@exam_connect.result_type == 8 or @exam_connect.result_type == 14) and (@batch.course.course_name == "KG-I" or @batch.course.course_name == "KG-II" or @batch.course.course_name == "KG I" or @batch.course.course_name == "KG II") %>
                                                       <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
                                                           <option value="0" >Select</option>
@@ -239,12 +245,7 @@
                                                           <option value="4" <% if exam_group_remarks.to_i == 4 %> selected="selected" <% end %>  >Needs Improvement</option>
                                                           <option value="5" <% if exam_group_remarks.to_i == 5 %> selected="selected" <% end %>  >Causing Concern</option>
                                                       </select>
-                                                    <% elsif group_name.name.upcase.strip == "HOMEWORK" %>
-                                                      <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
-                                                        <option value="NA" >Select</option>
-                                                        <option value="R" <% if exam_group_remarks.to_s == 'R' %> selected="selected" <% end %>  >Regular</option>
-                                                        <option value="IR" <% if exam_group_remarks.to_s == 'IR' %> selected="selected" <% end %>  >Irregular</option>
-                                                      </select>
+                                                    
                                                     <% elsif (@exam_connect.result_type > 2 && @exam_connect.result_type < 7) or @exam_connect.result_type.to_i == 11 or @exam_connect.result_type.to_i == 12 %>
                                                       <% @batch = @exam_subject.batch %>
                                                       <% if @exam_connect.result_type == 3 or @batch.course.course_name == "KG-I" or @batch.course.course_name == "KG-II"or @batch.course.course_name == "KG I" or @batch.course.course_name == "KG II" %>

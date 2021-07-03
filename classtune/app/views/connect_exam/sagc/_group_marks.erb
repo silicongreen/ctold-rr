@@ -60,7 +60,7 @@
   %>
   <%= render  :partial=>"/connect_exam/sagc/finding_data_5" %>
 <% end %>
-<% if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 16 %>
+<% if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 16 or @connect_exam_obj.result_type.to_i == 17 %>
 <%= render  :partial=>"/connect_exam/student_subject" %>
   <%
         if @tabulation_data.nil?
@@ -71,7 +71,7 @@
           end
         end
   %>
-  <%= render  :partial=>"/connect_exam/sagc/finding_data_5" %>
+  <%= render  :partial=>"/connect_exam/sagc/finding_data_6" %>
 <% end %>
 
 <%= render  :partial=>"/connect_exam/sagc/group_report_type_"+@connect_exam_obj.result_type.to_s %>

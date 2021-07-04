@@ -266,16 +266,16 @@
               @student_position[prev_student] = @student_position[prev_student].to_s+position_rank[p_rank_loop].to_s
             end
             p_rank_loop = p_rank_loop+1
-            @student_position[s[1].to_i] = position.to_s+position_rank[p_rank_loop].to_s      
+            @student_position[s[3].to_i] = position.to_s+position_rank[p_rank_loop].to_s      
           else
             position = position+1
-            @student_position[s[1].to_i] = position
-            prev_student = s[1].to_i
+            @student_position[s[3].to_i] = position
+            prev_student = s[3].to_i
             p_rank_loop = 0
           end
           prev_mark = s[0]
           real_position = real_position+1
-          @student_real_position[s[1].to_i] = real_position
+          @student_real_position[s[3].to_i] = real_position
       end
 
       @iloop = 0

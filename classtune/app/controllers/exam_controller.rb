@@ -12330,322 +12330,322 @@ class ExamController < ApplicationController
         end
       end
       @student_list = []
-  @student_subject_marks = {}
-  @student_subject_mark_test = {}
-  @subject_highest = {}
-  @student_avg_mark = {}
-  unless @tabulation_data.blank?
-    connect_exam = 0
-    batch_loop = 0
-    @tabulation_data['report'].each do |tab|
-      if tab.kind_of?(Array) or tab.blank? or tab['students'].blank?
-        next
-      end
-      batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
-      batch_subject_id = batch_subject.map(&:id)
-      batch_loop = batch_loop+1
-      connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
-      connect_exam = connect_exam+1
-      
-      tab['students'].each do |std| 
-        subject_count_std = 0
-        total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
-        std_subject_id = total_std_subject.map(&:subject_id)
-        
-        std_marks_full = 0
-        std_marks_core_subject = 0
-        total_subject = 0
-        u_grade = 0
-        tab['subjects'].each do |sub|
-         
-          has_exam = true
-          loop = 0
-           
-          if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
-            
-            subject_count_std = subject_count_std+1
-            std_subject_marks_final = 0
-            class_test = []
-            tab['exams'].each do |rs|
-              if rs['exam_category'] != '1' or rs['quarter'] != '6'
-                next
-              end  
-              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-                obt_mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*7.5
-                class_test << obt_mark.round(2)
-              else
-                class_test << 0
-              end  
-            end 
-            class_test.sort! {|x,y| y <=> x }
-            std_subject_marks_final = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f
-            tab['exams'].each do |rs|
-              if rs['exam_category'] == '1' or rs['exam_category'] == '3' or rs['quarter'] != '6'
-                next
-              end  
-              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-                obt_mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*2.5
-                std_subject_marks_final = std_subject_marks_final+obt_mark.to_f
-              end  
-            end
+      @student_subject_marks = {}
+      @student_subject_mark_test = {}
+      @subject_highest = {}
+      @student_avg_mark = {}
+      unless @tabulation_data.blank?
+        connect_exam = 0
+        batch_loop = 0
+        @tabulation_data['report'].each do |tab|
+          if tab.kind_of?(Array) or tab.blank? or tab['students'].blank?
+            next
+          end
+          batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
+          batch_subject_id = batch_subject.map(&:id)
+          batch_loop = batch_loop+1
+          connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
+          connect_exam = connect_exam+1
           
-            tab['exams'].each do |rs|
-              if rs['exam_category'] != '3' or rs['quarter'] != '6'
-                next
-              end  
-              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-                obt_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                std_subject_marks_final = std_subject_marks_final+obt_mark.to_f
-              end  
-            end
-
-            std_subject_marks_mid = 0
-            class_test = []
+          tab['students'].each do |std| 
+            subject_count_std = 0
+            total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
+            std_subject_id = total_std_subject.map(&:subject_id)
             
+            std_marks_full = 0
+            std_marks_core_subject = 0
+            total_subject = 0
+            u_grade = 0
+            tab['subjects'].each do |sub|
             
-            tab['exams'].each do |rs|
-              if rs['exam_category'] != '1' or rs['quarter'] == '6'
-                next
-              end  
-              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-                obt_mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*7.5
-                class_test << obt_mark.round(2)
-              else
-                class_test << 0
-              end  
-            end 
-            class_test.sort! {|x,y| y <=> x }
-            std_subject_marks_mid = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f
-            tab['exams'].each do |rs|
-              if rs['exam_category'] == '1' or rs['exam_category'] == '3' or rs['quarter'] == '6'
-                next
-              end  
-              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-                obt_mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*2.5
-                std_subject_marks_mid = std_subject_marks_mid+obt_mark.to_f
-              end  
-            end
-            
-            
-            tab['exams'].each do |rs|
-              if rs['exam_category'] != '3' or rs['quarter'] == '6'
-                next
-              end  
-              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-                obt_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                std_subject_marks_mid = std_subject_marks_mid+obt_mark.to_f
-              end  
-            end
-            
-            std_subject_marks_mid = std_subject_marks_mid.round()
-            std_subject_marks_final = std_subject_marks_final.round()
-            subject_full_marks = ((std_subject_marks_final.to_f*70)/100)+((std_subject_marks_mid.to_f*30)/100)
-
-            std_marks_full = std_marks_full+subject_full_marks.round()
-            
-            if @student_subject_marks[sub['id'].to_i].blank?
-              @student_subject_marks[sub['id'].to_i] = {}
-            end
-          
-            if @student_subject_mark_test[std['id'].to_i].blank?
-              @student_subject_mark_test[std['id'].to_i] = {}
-            end
-          
-            
-            @student_subject_mark_test[std['id'].to_i][sub['id'].to_i] = subject_full_marks.round()
-            @student_subject_marks[sub['id'].to_i][std['id'].to_i] = subject_full_marks.round()
-           
-           subject_grade = ""
-           grade = GradingLevel.percentage_to_grade(subject_full_marks, @batch.id)
-           if !grade.blank? and !grade.name.blank?
-             if grade.name == "U"
-              u_grade = u_grade+1
-             end
-           end   
-           
-
-            if @subject_highest[sub['id'].to_i].blank?
-              @subject_highest[sub['id'].to_i] = subject_full_marks
-            elsif subject_full_marks.to_f > @subject_highest[sub['id'].to_i].to_f
-               @subject_highest[sub['id'].to_i] = subject_full_marks.to_f
-            end
-
-
-
-            if subject_count_std<4
-               std_marks_core_subject = std_marks_core_subject+subject_full_marks.round()
-            end 
-          end  
-        end
-
-        @exam_comment_main_all = ExamConnectComment.find_by_exam_connect_id_and_student_id(connect_exam_id,std['id'].to_i)
-        result = ""
-        promotion_status = ""
-        merit_position = ""
-        new_roll = ""
-        new_section = ""
-        if !@exam_comment_main_all.blank?
-          all_comments = @exam_comment_main_all.comments
-          if !all_comments.blank?
-            all_comments_array = all_comments.split("|")
-            result = all_comments_array[0]
-            if !all_comments_array[1].nil?
-              promotion_status = all_comments_array[1]
-              if !all_comments_array[2].nil?
-                merit_position = all_comments_array[2]
-                if !all_comments_array[3].nil?
-                  new_roll = all_comments_array[3]
-                  if !all_comments_array[4].nil?
-                    new_section = all_comments_array[4]
-                  end
+              has_exam = true
+              loop = 0
+              
+              if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
+                
+                subject_count_std = subject_count_std+1
+                std_subject_marks_final = 0
+                class_test = []
+                tab['exams'].each do |rs|
+                  if rs['exam_category'] != '1' or rs['quarter'] != '6'
+                    next
+                  end  
+                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                    obt_mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*7.5
+                    class_test << obt_mark.round(2)
+                  else
+                    class_test << 0
+                  end  
+                end 
+                class_test.sort! {|x,y| y <=> x }
+                std_subject_marks_final = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f
+                tab['exams'].each do |rs|
+                  if rs['exam_category'] == '1' or rs['exam_category'] == '3' or rs['quarter'] != '6'
+                    next
+                  end  
+                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                    obt_mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*2.5
+                    std_subject_marks_final = std_subject_marks_final+obt_mark.to_f
+                  end  
+                end
+              
+                tab['exams'].each do |rs|
+                  if rs['exam_category'] != '3' or rs['quarter'] != '6'
+                    next
+                  end  
+                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                    obt_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    std_subject_marks_final = std_subject_marks_final+obt_mark.to_f
+                  end  
                 end
 
-              end
+                std_subject_marks_mid = 0
+                class_test = []
+                
+                
+                tab['exams'].each do |rs|
+                  if rs['exam_category'] != '1' or rs['quarter'] == '6'
+                    next
+                  end  
+                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                    obt_mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*7.5
+                    class_test << obt_mark.round(2)
+                  else
+                    class_test << 0
+                  end  
+                end 
+                class_test.sort! {|x,y| y <=> x }
+                std_subject_marks_mid = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f
+                tab['exams'].each do |rs|
+                  if rs['exam_category'] == '1' or rs['exam_category'] == '3' or rs['quarter'] == '6'
+                    next
+                  end  
+                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                    obt_mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*2.5
+                    std_subject_marks_mid = std_subject_marks_mid+obt_mark.to_f
+                  end  
+                end
+                
+                
+                tab['exams'].each do |rs|
+                  if rs['exam_category'] != '3' or rs['quarter'] == '6'
+                    next
+                  end  
+                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                    obt_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    std_subject_marks_mid = std_subject_marks_mid+obt_mark.to_f
+                  end  
+                end
+                
+                std_subject_marks_mid = std_subject_marks_mid.round()
+                std_subject_marks_final = std_subject_marks_final.round()
+                subject_full_marks = ((std_subject_marks_final.to_f*70)/100)+((std_subject_marks_mid.to_f*30)/100)
 
+                std_marks_full = std_marks_full+subject_full_marks.round()
+                
+                if @student_subject_marks[sub['id'].to_i].blank?
+                  @student_subject_marks[sub['id'].to_i] = {}
+                end
+              
+                if @student_subject_mark_test[std['id'].to_i].blank?
+                  @student_subject_mark_test[std['id'].to_i] = {}
+                end
+              
+                
+                @student_subject_mark_test[std['id'].to_i][sub['id'].to_i] = subject_full_marks.round()
+                @student_subject_marks[sub['id'].to_i][std['id'].to_i] = subject_full_marks.round()
+              
+              subject_grade = ""
+              grade = GradingLevel.percentage_to_grade(subject_full_marks, @batch.id)
+              if !grade.blank? and !grade.name.blank?
+                if grade.name == "U"
+                  u_grade = u_grade+1
+                end
+              end   
+              
+
+                if @subject_highest[sub['id'].to_i].blank?
+                  @subject_highest[sub['id'].to_i] = subject_full_marks
+                elsif subject_full_marks.to_f > @subject_highest[sub['id'].to_i].to_f
+                  @subject_highest[sub['id'].to_i] = subject_full_marks.to_f
+                end
+
+
+
+                if subject_count_std<4
+                  std_marks_core_subject = std_marks_core_subject+subject_full_marks.round()
+                end 
+              end  
             end
+
+            @exam_comment_main_all = ExamConnectComment.find_by_exam_connect_id_and_student_id(connect_exam_id,std['id'].to_i)
+            result = ""
+            promotion_status = ""
+            merit_position = ""
+            new_roll = ""
+            new_section = ""
+            if !@exam_comment_main_all.blank?
+              all_comments = @exam_comment_main_all.comments
+              if !all_comments.blank?
+                all_comments_array = all_comments.split("|")
+                result = all_comments_array[0]
+                if !all_comments_array[1].nil?
+                  promotion_status = all_comments_array[1]
+                  if !all_comments_array[2].nil?
+                    merit_position = all_comments_array[2]
+                    if !all_comments_array[3].nil?
+                      new_roll = all_comments_array[3]
+                      if !all_comments_array[4].nil?
+                        new_section = all_comments_array[4]
+                      end
+                    end
+
+                  end
+
+                end
+              end
+            end
+            
+            
+            
+            if subject_count_std>0 and (u_grade==0 or (@batch.course.course_name!="VIII" and @batch.course.course_name!="IX" and @batch.course.course_name!="X" and  u_grade<2))           
+              
+              std_marks_full_new = std_marks_full.to_f/subject_count_std.to_f
+              std_marks_full_new = 5000.00-std_marks_full_new.to_f
+              std_marks_core_subject = 5000-std_marks_core_subject.round()
+              subject_count_std = 5000-subject_count_std
+              @student_avg_mark[std['id'].to_i] = u_grade
+              @student_list << [std_marks_full_new.to_f,std['id'].to_i,std_marks_full.to_f]
+            else
+              @student_avg_mark[std['id'].to_i] = u_grade
+            end  
+
           end
         end
-        
-        
-        
-        if subject_count_std>0 and (u_grade==0 or (@batch.course.course_name!="VIII" and @batch.course.course_name!="IX" and @batch.course.course_name!="X" and  u_grade<2))           
-          
-          std_marks_full_new = std_marks_full.to_f/subject_count_std.to_f
-          std_marks_full_new = 5000.00-std_marks_full_new.to_f
-          std_marks_core_subject = 5000-std_marks_core_subject.round()
-          subject_count_std = 5000-subject_count_std
-          @student_avg_mark[std['id'].to_i] = u_grade
-          @student_list << [std_marks_full_new.to_f,std_marks_core_subject,std['first_name'],std['id'].to_i]
-        else
-          @student_avg_mark[std['id'].to_i] = u_grade
+      end
+
+        @student_real_position = {}
+        @student_position = {}
+        @student_section = {}
+        @student_roll = {}
+
+        @sections = ["A","B","C"]
+        student_classes = ["KG","I","II","III","IV","V","VI","VII","VIII","IX","X"]
+        @promoted_to = "";
+        if student_classes.include?(@batch.course.course_name)
+          array_index = student_classes.index @batch.course.course_name
+          if array_index < student_classes.count
+              @promoted_to = student_classes[array_index+1]
+              if @promoted_to == "I"
+                @sections = ["Marigold","Camellia","Jasmine","Lily"]
+              end
+              if @promoted_to == "II"
+                @sections = ["Rose","Sunflower","Gardenia","Lotus"]
+              end
+              if @promoted_to == "III"
+                @sections = ["Orchid","Tulip","Cosmos","Lilac"]
+              end
+              if @promoted_to == "IV"
+                @sections = ["Daisy","Daffodil","Salvia","Dahlia"]
+              end
+              if @promoted_to == "V"
+                @sections = ["Bluebell","Lavender","Zinia","Rosemary"]
+              end
+              if @promoted_to == "VI"
+                @sections = ["Primrose","Snowdrop","Magnolia","Carnation"]
+              end
+              if @promoted_to == "VII"
+                @sections = ["Parrot","Swift","Bluebird"]
+              end
+              if @promoted_to == "VIII"
+                @sections = ["Kingfisher","Nightingale"]
+              end
+              if @promoted_to == "IX"
+                @sections = ["Robin","Seagull"]
+              end
+              if @promoted_to == "X"
+                @sections = ["Penguin","Pelican"]
+              end
+
+
+          else
+              @promoted_to = "0"
+          end
         end  
 
+        unless @student_list.blank?
+          position_rank = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+          @sorted_students = @student_list.sort
+          position = 0
+          real_position = 0
+          p_rank_loop = 0
+          prev_student = 0
+          prev_mark = 0
+          @sorted_students.each do|s|
+              new_mark = s[0]
+              if new_mark == prev_mark and position != 0
+                if p_rank_loop == 0
+                  @student_position[prev_student] = @student_position[prev_student].to_s+position_rank[p_rank_loop].to_s
+                end
+                p_rank_loop = p_rank_loop+1
+                @student_position[s[1].to_i] = position.to_s+position_rank[p_rank_loop].to_s      
+              else
+                position = position+1
+                @student_position[s[1].to_i] = position
+                prev_student = s[1].to_i
+                p_rank_loop = 0
+              end
+              prev_mark = s[0]
+              real_position = real_position+1
+              @student_real_position[s[1].to_i] = real_position
+          end
+
+          @iloop = 0
+          @jloop = 0
+
+          @sloop = 0
+
+          @s_a_loop = 1
+          @s_b_loop = 1
+          @s_c_loop = 1
+          @s_d_loop = 1
+          @new_sections = @sections
+          while @iloop < @sorted_students.count do
+              if @jloop > (@new_sections.count-1)
+                @jloop = 0
+                @new_sections = @new_sections.reverse
+              end
+              @iloop +=1 
+              
+              @student_section[@iloop] = @new_sections[@jloop]
+              if @new_sections[@jloop] == @sections[0]
+                @student_roll[@iloop] = @s_a_loop
+                @s_a_loop +=1
+              end
+
+              if @new_sections[@jloop] == @sections[1]
+                @student_roll[@iloop] = @s_b_loop
+                @s_b_loop +=1
+              end
+
+              if @sections.count>2
+                if @new_sections[@jloop] == @sections[2]
+                  @student_roll[@iloop] = @s_c_loop
+                  @s_c_loop +=1
+                end
+              end
+              if @sections.count>3
+                if @new_sections[@jloop] == @sections[3]
+                  @student_roll[@iloop] = @s_d_loop
+                  @s_d_loop +=1
+                end
+              end
+              @jloop +=1
+              @sloop +=1
+          end
+
+        end
       end
-    end
-   end
-
-    @student_real_position = {}
-    @student_position = {}
-    @student_section = {}
-    @student_roll = {}
-
-    @sections = ["A","B","C"]
-    student_classes = ["KG","I","II","III","IV","V","VI","VII","VIII","IX","X"]
-    @promoted_to = "";
-    if student_classes.include?(@batch.course.course_name)
-      array_index = student_classes.index @batch.course.course_name
-      if array_index < student_classes.count
-          @promoted_to = student_classes[array_index+1]
-          if @promoted_to == "I"
-            @sections = ["Marigold","Camellia","Jasmine","Lily"]
-          end
-          if @promoted_to == "II"
-            @sections = ["Rose","Sunflower","Gardenia","Lotus"]
-          end
-          if @promoted_to == "III"
-            @sections = ["Orchid","Tulip","Cosmos","Lilac"]
-          end
-          if @promoted_to == "IV"
-            @sections = ["Daisy","Daffodil","Salvia","Dahlia"]
-          end
-          if @promoted_to == "V"
-            @sections = ["Bluebell","Lavender","Zinia","Rosemary"]
-          end
-          if @promoted_to == "VI"
-            @sections = ["Primrose","Snowdrop","Magnolia","Carnation"]
-          end
-          if @promoted_to == "VII"
-            @sections = ["Parrot","Swift","Bluebird"]
-          end
-          if @promoted_to == "VIII"
-            @sections = ["Kingfisher","Nightingale"]
-          end
-          if @promoted_to == "IX"
-            @sections = ["Robin","Seagull"]
-          end
-          if @promoted_to == "X"
-            @sections = ["Penguin","Pelican"]
-          end
-
-
-      else
-          @promoted_to = "0"
-      end
-    end  
-
-    unless @student_list.blank?
-      position_rank = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
-      @sorted_students = @student_list.sort
-      position = 0
-      real_position = 0
-      p_rank_loop = 0
-      prev_student = 0
-      prev_mark = 0
-      @sorted_students.each do|s|
-          new_mark = s[0]
-          if new_mark == prev_mark and position != 0
-            if p_rank_loop == 0
-              @student_position[prev_student] = @student_position[prev_student].to_s+position_rank[p_rank_loop].to_s
-            end
-            p_rank_loop = p_rank_loop+1
-            @student_position[s[3].to_i] = position.to_s+position_rank[p_rank_loop].to_s      
-          else
-            position = position+1
-            @student_position[s[3].to_i] = position
-            prev_student = s[3].to_i
-            p_rank_loop = 0
-          end
-          prev_mark = s[0]
-          real_position = real_position+1
-          @student_real_position[s[3].to_i] = real_position
-      end
-
-      @iloop = 0
-      @jloop = 0
-
-      @sloop = 0
-
-      @s_a_loop = 1
-      @s_b_loop = 1
-      @s_c_loop = 1
-      @s_d_loop = 1
-      @new_sections = @sections
-      while @iloop < @sorted_students.count do
-          if @jloop > (@new_sections.count-1)
-            @jloop = 0
-            @new_sections = @new_sections.reverse
-          end
-          @iloop +=1 
-          
-          @student_section[@iloop] = @new_sections[@jloop]
-          if @new_sections[@jloop] == @sections[0]
-            @student_roll[@iloop] = @s_a_loop
-            @s_a_loop +=1
-          end
-
-          if @new_sections[@jloop] == @sections[1]
-            @student_roll[@iloop] = @s_b_loop
-            @s_b_loop +=1
-          end
-
-          if @sections.count>2
-            if @new_sections[@jloop] == @sections[2]
-              @student_roll[@iloop] = @s_c_loop
-              @s_c_loop +=1
-            end
-          end
-          if @sections.count>3
-            if @new_sections[@jloop] == @sections[3]
-              @student_roll[@iloop] = @s_d_loop
-              @s_d_loop +=1
-            end
-          end
-          @jloop +=1
-          @sloop +=1
-      end
-
-    end
-  end
   end
   
   def finding_data_sems5
@@ -12658,508 +12658,505 @@ class ExamController < ApplicationController
       end
       
       @student_list = []
-  @student_subject_marks = {}
-  @subject_highest = {}
-  @student_avg_mark = {}
-  unless @tabulation_data.blank?
-    connect_exam = 0
-    batch_loop = 0
-    @tabulation_data['report'].each do |tab|
-      if tab.kind_of?(Array) or tab.blank? or tab['students'].blank?
-        next
-      end
-      batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
-      batch_subject_id = batch_subject.map(&:id)
-      batch_id = @tabulation_data['batches'][batch_loop]
-      batch_loop = batch_loop+1
-      connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
-      connect_exam = connect_exam+1
-      std_marks_core_subject = 0
-      
-      tab['students'].each do |std| 
-        total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
-        std_subject_id = total_std_subject.map(&:subject_id)
-        
-      
-        assessment = 0 
-        hw = 0 
-        cw = 0 
-        total_mark = 0 
-        total_subject = 0
-        subject_count_std = 0
-        unless tab['subjects'].blank? 
-          tab['subjects'].each do |sub|
-            if sub['grade_subject'].to_i == 1
-              next
-            end
-            if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
-              next
-            end  
-
-            subjectdata = Subject.find(sub['id'].to_i)
-
-            has_exam = false
-            loop=0
-            subject_count_std = subject_count_std+1
-           
-            sub_assessment = 0
-            sub_hw = 0
-            sub_cw = 0
-            sub_hw_full_mark = 0
-            sub_cw_full_mark = 0
-            total_subject = total_subject+1
-            class_test = []
-
-            unless tab['exams'].blank?  
-              tab['exams'].each do |rs|
-                if rs['quarter'] != '6' 
-                  next
-                end
-                if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-
-                  if rs['exam_category'] == '7'
-                    sub_hw = sub_hw.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                  end
-                  if rs['exam_category'] == '8'
-                    sub_cw = sub_cw.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                  end
-                  if rs['exam_category'] == '7'
-                    sub_hw_full_mark = sub_hw_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                  end
-                  if rs['exam_category'] == '8'
-                    sub_cw_full_mark = sub_cw_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                  end
-                end
-              end
-            end
-
-            unless tab['exams'].blank?  
-              tab['exams'].each do |rs|
-                if rs['quarter'] != '6'
-                  next
-                end
-                if rs['exam_category'] == '6'
-                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-                    class_test << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                    sub_assessment = sub_assessment.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                    else
-                    class_test << 0
-                  end
-
-                end
-              end
-            end
-
-
-            hw_avg = 0
-            assessment_avg = 0
-            cw_avg = 0
-
-            if sub_assessment > 0
-              class_test.sort! {|x,y| y <=> x }
-              ass_total_mark = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f
-              assessment_avg = (ass_total_mark.to_f/30.00)*50
-              assessment_avg = assessment_avg.round()
-              assessment = assessment+assessment_avg
-              end
-            if sub_hw > 0
-              hw_avg = (sub_hw.to_f/sub_hw_full_mark.to_f)*30
-              hw_avg = hw_avg.round()
-              hw = hw+hw_avg
-            end
-            if sub_cw > 0
-              cw_avg = (sub_cw.to_f/sub_cw_full_mark.to_f)*10
-              cw_avg = cw_avg.round()
-              cw = cw+cw_avg
-            end 
-            if subject_count_std == 3
-              std_marks_core_subject = assessment.to_f+hw.to_f+cw.to_f
-            end
-          end  
-        end
-      
-        ag_hw = 0
-        ag_assessment = 0
-        ag_cw = 0
-
-        if total_subject > 0 && 
-          if assessment > 0
-            ag_assessment = assessment.to_f/total_subject.to_f
-            ag_assessment = sprintf( "%0.01f", ag_assessment)
+      @student_subject_marks = {}
+      @subject_highest = {}
+      @student_avg_mark = {}
+      unless @tabulation_data.blank?
+        connect_exam = 0
+        batch_loop = 0
+        @tabulation_data['report'].each do |tab|
+          if tab.kind_of?(Array) or tab.blank? or tab['students'].blank?
+            next
           end
-          if hw > 0
-            ag_hw = hw.to_f/total_subject.to_f
-            ag_hw = sprintf( "%0.01f", ag_hw)
-          end
-          if cw > 0
-            ag_cw = cw.to_f/total_subject.to_f
-            ag_cw = sprintf( "%0.01f", ag_cw)
-          end
-        end
-        total_mark = total_mark+ag_assessment.to_f+ag_hw.to_f+ag_cw.to_f
-
-        unless tab['subjects'].blank? 
-            finish = false
-            total_mark_life = 0
-            start = true
-           
-            tab['subjects'].each do |sub|
-              if sub['grade_subject'].to_i != 1
-                next
-              end
-              if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
-                next
-              end
-
+          batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
+          batch_subject_id = batch_subject.map(&:id)
+          batch_id = @tabulation_data['batches'][batch_loop]
+          batch_loop = batch_loop+1
+          connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
+          connect_exam = connect_exam+1
+          
+          
+          tab['students'].each do |std| 
+            subject_count_std = 0
+            total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
+            std_subject_id = total_std_subject.map(&:subject_id)
             
-              sub_mark = 0
-              unless tab['exams'].blank?  
-                tab['exams'].each do |rs|
+          
+            assessment = 0 
+            hw = 0 
+            cw = 0 
+            total_mark = 0 
+            total_subject = 0
+            unless tab['subjects'].blank? 
+              tab['subjects'].each do |sub|
+                if sub['grade_subject'].to_i == 1
+                  next
+                end
+                if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
+                  next
+                end  
+    
+                subjectdata = Subject.find(sub['id'].to_i)
+    
+                has_exam = false
+                loop=0
+               
+                sub_assessment = 0
+                sub_hw = 0
+                sub_cw = 0
+                sub_hw_full_mark = 0
+                sub_cw_full_mark = 0
+                total_subject = total_subject+1
+                class_test = []
+    
+                unless tab['exams'].blank?  
+                  tab['exams'].each do |rs|
                     if rs['quarter'] != '6' 
                       next
                     end
                     if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-                      if rs['exam_category'] == '6'
-                        sub_mark = sub_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                      end 
+    
+                      if rs['exam_category'] == '7'
+                        sub_hw = sub_hw.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        end
+                      if rs['exam_category'] == '8'
+                        sub_cw = sub_cw.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                      end
+                      if rs['exam_category'] == '7'
+                        sub_hw_full_mark = sub_hw_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                        end
+                      if rs['exam_category'] == '8'
+                        sub_cw_full_mark = sub_cw_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                      end
                     end
-                end
-              end   
-              sub_mark = sprintf( "%0.01f", sub_mark)
-              total_mark_life = total_mark_life+sub_mark.to_f
-            end
-            total_mark_life = sprintf( "%0.01f", total_mark_life)
-            total_mark = total_mark+total_mark_life.to_f
-        end
-
-      
-        total_mark = sprintf( "%0.01f", total_mark)
-        total_mark_final_term = total_mark
-        
-        
-        assessment = 0 
-        hw = 0 
-        cw = 0 
-        total_mark = 0 
-        total_subject = 0
-        unless tab['subjects'].blank? 
-          tab['subjects'].each do |sub|
-            if sub['grade_subject'].to_i == 1
-              next
-            end
-            if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
-              next
-            end
-
-            subjectdata = Subject.find(sub['id'].to_i)
-
-            has_exam = false
-            loop=0
-           
-            sub_assessment = 0
-            sub_hw = 0
-            sub_cw = 0
-            sub_hw_full_mark = 0
-            sub_cw_full_mark = 0
-            total_subject = total_subject+1
-            class_test = []
-
-            unless tab['exams'].blank?  
-              tab['exams'].each do |rs|
-                if rs['quarter'] == '6' 
-                  next
-                end
-                if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-
-                  if rs['exam_category'] == '7'
-                    sub_hw = sub_hw.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                  end
+                  end
+    
+                unless tab['exams'].blank?  
+                  tab['exams'].each do |rs|
+                    if rs['quarter'] != '6'
+                      next
                     end
-                  if rs['exam_category'] == '8'
-                    sub_cw = sub_cw.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                  end
-                  if rs['exam_category'] == '7'
-                    sub_hw_full_mark = sub_hw_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                    if rs['exam_category'] == '6'
+                      if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                        class_test << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        sub_assessment = sub_assessment.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        else
+                        class_test << 0
+                      end
+    
                     end
-                  if rs['exam_category'] == '8'
-                    sub_cw_full_mark = sub_cw_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                   end
-                end
-              end
-              end
-
-            unless tab['exams'].blank?  
-              tab['exams'].each do |rs|
-                if rs['quarter'] == '6' 
-                  next
-                end
-                if rs['exam_category'] == '6'
-                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-                    class_test << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                    sub_assessment = sub_assessment.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                    else
-                    class_test << 0
                   end
-
+    
+    
+                hw_avg = 0
+                assessment_avg = 0
+                cw_avg = 0
+    
+                if sub_assessment > 0
+                  class_test.sort! {|x,y| y <=> x }
+                  ass_total_mark = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f
+                  assessment_avg = (ass_total_mark.to_f/30.00)*50
+                  assessment_avg = assessment_avg.round()
+                  assessment = assessment+assessment_avg
+                  end
+                if sub_hw > 0
+                  hw_avg = (sub_hw.to_f/sub_hw_full_mark.to_f)*30
+                  hw_avg = hw_avg.round()
+                  hw = hw+hw_avg
                 end
+                if sub_cw > 0
+                  cw_avg = (sub_cw.to_f/sub_cw_full_mark.to_f)*10
+                  cw_avg = cw_avg.round()
+                  cw = cw+cw_avg
+                end  
+              end  
+            end
+          
+            ag_hw = 0
+            ag_assessment = 0
+            ag_cw = 0
+    
+            if total_subject > 0 && 
+              if assessment > 0
+                ag_assessment = assessment.to_f/total_subject.to_f
+                ag_assessment = sprintf( "%0.01f", ag_assessment)
               end
+              if hw > 0
+                ag_hw = hw.to_f/total_subject.to_f
+                ag_hw = sprintf( "%0.01f", ag_hw)
               end
-
-
-            hw_avg = 0
-            assessment_avg = 0
-            cw_avg = 0
-
-            if sub_assessment > 0
-              class_test.sort! {|x,y| y <=> x }
-              ass_total_mark = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f
-              assessment_avg = (ass_total_mark.to_f/30.00)*50
-              assessment_avg = assessment_avg.round()
-              assessment = assessment+assessment_avg
+              if cw > 0
+                ag_cw = cw.to_f/total_subject.to_f
+                ag_cw = sprintf( "%0.01f", ag_cw)
               end
-            if sub_hw > 0
-              hw_avg = (sub_hw.to_f/sub_hw_full_mark.to_f)*30
-              hw_avg = hw_avg.round()
-              hw = hw+hw_avg
-              end
-            if sub_cw > 0
-              cw_avg = (sub_cw.to_f/sub_cw_full_mark.to_f)*10
-              cw_avg = cw_avg.round()
-              cw = cw+cw_avg
-            end  
-          end  
-        end
-      
-        ag_hw = 0
-        ag_assessment = 0
-        ag_cw = 0
-
-        if total_subject > 0 && 
-          if assessment > 0
-            ag_assessment = assessment.to_f/total_subject.to_f
-            ag_assessment = sprintf( "%0.01f", ag_assessment)
-          end
-          if hw > 0
-            ag_hw = hw.to_f/total_subject.to_f
-            ag_hw = sprintf( "%0.01f", ag_hw)
-          end
-          if cw > 0
-            ag_cw = cw.to_f/total_subject.to_f
-            ag_cw = sprintf( "%0.01f", ag_cw)
-          end
-        end
-        total_mark = total_mark+ag_assessment.to_f+ag_hw.to_f+ag_cw.to_f
-
-        unless tab['subjects'].blank? 
-            finish = false
-            total_mark_life = 0
-            start = true
+            end
+            total_mark = total_mark+ag_assessment.to_f+ag_hw.to_f+ag_cw.to_f
+    
+            unless tab['subjects'].blank? 
+                finish = false
+                total_mark_life = 0
+                start = true
+               
+                tab['subjects'].each do |sub|
+                  if sub['grade_subject'].to_i != 1
+                    next
+                  end
+                  if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
+                    next
+                  end
+    
+                
+                  sub_mark = 0
+                  unless tab['exams'].blank?  
+                    tab['exams'].each do |rs|
+                        if rs['quarter'] != '6' 
+                          next
+                        end
+                        if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                          if rs['exam_category'] == '6'
+                            sub_mark = sub_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                          end 
+                        end
+                    end
+                  end   
+                  sub_mark = sprintf( "%0.01f", sub_mark)
+                  total_mark_life = total_mark_life+sub_mark.to_f
+                end
+                total_mark_life = sprintf( "%0.01f", total_mark_life)
+                total_mark = total_mark+total_mark_life.to_f
+            end
+    
+          
+            total_mark = sprintf( "%0.01f", total_mark)
+            total_mark_final_term = total_mark
             
-            tab['subjects'].each do |sub|
-              if sub['grade_subject'].to_i != 1
-                next
-              end
-              if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
-                next
-              end
-
-              
-              sub_mark = 0
-              unless tab['exams'].blank?  
-                tab['exams'].each do |rs|
+            
+            assessment = 0 
+            hw = 0 
+            cw = 0 
+            total_mark = 0 
+            total_subject = 0
+            unless tab['subjects'].blank? 
+              tab['subjects'].each do |sub|
+                if sub['grade_subject'].to_i == 1
+                  next
+                end
+                if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
+                  next
+                end
+    
+                subjectdata = Subject.find(sub['id'].to_i)
+    
+                has_exam = false
+                loop=0
+               
+                sub_assessment = 0
+                sub_hw = 0
+                sub_cw = 0
+                sub_hw_full_mark = 0
+                sub_cw_full_mark = 0
+                total_subject = total_subject+1
+                class_test = []
+    
+                unless tab['exams'].blank?  
+                  tab['exams'].each do |rs|
                     if rs['quarter'] == '6' 
                       next
                     end
                     if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-                      if rs['exam_category'] == '6'
-                        sub_mark = sub_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                      end 
+    
+                      if rs['exam_category'] == '7'
+                        sub_hw = sub_hw.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        end
+                      if rs['exam_category'] == '8'
+                        sub_cw = sub_cw.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                      end
+                      if rs['exam_category'] == '7'
+                        sub_hw_full_mark = sub_hw_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                        end
+                      if rs['exam_category'] == '8'
+                        sub_cw_full_mark = sub_cw_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                      end
                     end
-                end
-              end   
-              sub_mark = sprintf( "%0.01f", sub_mark)
-              total_mark_life = total_mark_life+sub_mark.to_f
-            end
-            total_mark_life = sprintf( "%0.01f", total_mark_life)
-            total_mark = total_mark+total_mark_life.to_f
-        end
-
-       
-        total_mark = sprintf( "%0.01f", total_mark)
-        total_mark_mid_term = total_mark
-        total_30 = (total_mark_mid_term.to_f*30)/100
-        total_70 = (total_mark_final_term.to_f*70)/100
-        main_total = total_70+total_30
-        main_total = sprintf( "%0.01f", main_total)
-        main_total = main_total.to_f
-        grade = GradingLevel.percentage_to_grade(main_total, @batch.id)
-        u_grade = 0
-        if !grade.blank? and !grade.name.blank?
-          if grade.name == "U"
-           u_grade = u_grade+1
-          end
-        end
-        
-
-        @exam_comment_main_all = ExamConnectComment.find_by_exam_connect_id_and_student_id(connect_exam_id,std['id'].to_i)
-        result = ""
-        promotion_status = ""
-        merit_position = ""
-        new_roll = ""
-        new_section = ""
-        if !@exam_comment_main_all.blank?
-          all_comments = @exam_comment_main_all.comments
-          if !all_comments.blank?
-            all_comments_array = all_comments.split("|")
-            result = all_comments_array[0]
-            if !all_comments_array[1].nil?
-              promotion_status = all_comments_array[1]
-              if !all_comments_array[2].nil?
-                merit_position = all_comments_array[2]
-                if !all_comments_array[3].nil?
-                  new_roll = all_comments_array[3]
-                  if !all_comments_array[4].nil?
-                    new_section = all_comments_array[4]
                   end
-                end
-
-              end
-
+                  end
+    
+                unless tab['exams'].blank?  
+                  tab['exams'].each do |rs|
+                    if rs['quarter'] == '6' 
+                      next
+                    end
+                    if rs['exam_category'] == '6'
+                      if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                        class_test << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        sub_assessment = sub_assessment.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        else
+                        class_test << 0
+                      end
+    
+                    end
+                  end
+                  end
+    
+    
+                hw_avg = 0
+                assessment_avg = 0
+                cw_avg = 0
+    
+                if sub_assessment > 0
+                  class_test.sort! {|x,y| y <=> x }
+                  ass_total_mark = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f
+                  assessment_avg = (ass_total_mark.to_f/30.00)*50
+                  assessment_avg = assessment_avg.round()
+                  assessment = assessment+assessment_avg
+                  end
+                if sub_hw > 0
+                  hw_avg = (sub_hw.to_f/sub_hw_full_mark.to_f)*30
+                  hw_avg = hw_avg.round()
+                  hw = hw+hw_avg
+                  end
+                if sub_cw > 0
+                  cw_avg = (sub_cw.to_f/sub_cw_full_mark.to_f)*10
+                  cw_avg = cw_avg.round()
+                  cw = cw+cw_avg
+                end  
+              end  
             end
-          end
-        end
-        if u_grade == 0  
-          std_marks_full_new = 5000.00-main_total.to_f
-          std_marks_core_subject = 5000-std_marks_core_subject.round()
-          @student_list << [std_marks_full_new.to_f,std_marks_core_subject.to_f,std['first_name'],std['id'].to_i]
-        end
-         
-
-      end
-    end
-   end
-
-    @student_real_position = {}
-    @student_position = {}
-    @student_section = {}
-    @student_roll = {}
-
-    @sections = ["A","B","C"]
-    student_classes = ["KG","I","II","III","IV","V","VI","VII","VIII","IX","X"]
-    @promoted_to = "";
-    if student_classes.include?(@batch.course.course_name)
-      array_index = student_classes.index @batch.course.course_name
-      if array_index < student_classes.count
-          @promoted_to = student_classes[array_index+1]
-          if @promoted_to == "I"
-            @sections = ["Marigold","Camellia","Jasmine","Lily"]
-          end
-          if @promoted_to == "II"
-            @sections = ["Rose","Sunflower","Gardenia","Lotus"]
-          end
-          if @promoted_to == "III"
-            @sections = ["Orchid","Tulip","Cosmos","Lilac"]
-          end
-          if @promoted_to == "IV"
-            @sections = ["Daisy","Daffodil","Salvia","Dahlia"]
-          end
-          if @promoted_to == "V"
-            @sections = ["Bluebell","Lavender","Zinia","Rosemary"]
-          end
-          if @promoted_to == "VI"
-            @sections = ["Primrose","Snowdrop","Magnolia"]
-          end
-          if @promoted_to == "VII"
-            @sections = ["Parrot","Swift"]
-          end
-          if @promoted_to == "VIII"
-            @sections = ["Kingfisher","Nightingale"]
-          end
-          if @promoted_to == "IX"
-            @sections = ["Robin","Seagull"]
-          end
-          if @promoted_to == "X"
-            @sections = ["Penguin","Pelican"]
-          end
-
-
-      else
-          @promoted_to = "0"
-      end
-    end  
-
-    unless @student_list.blank?
-      position_rank = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
-      @sorted_students = @student_list.sort
-      position = 0
-      real_position = 0
-      p_rank_loop = 0
-      prev_student = 0
-      prev_mark = 0
-      @sorted_students.each do|s|
-          new_mark = s[0]
-          if new_mark == prev_mark and position != 0
-            if p_rank_loop == 0
-              @student_position[prev_student] = @student_position[prev_student].to_s+position_rank[p_rank_loop].to_s
-            end
-            p_rank_loop = p_rank_loop+1
-            @student_position[s[3].to_i] = position.to_s+position_rank[p_rank_loop].to_s      
-          else
-            position = position+1
-            @student_position[s[3].to_i] = position
-            prev_student = s[3].to_i
-            p_rank_loop = 0
-          end
-          prev_mark = s[0]
-          real_position = real_position+1
-          @student_real_position[s[3].to_i] = real_position
-      end
-
-      @iloop = 0
-      @jloop = 0
-
-      @sloop = 0
-
-      @s_a_loop = 1
-      @s_b_loop = 1
-      @s_c_loop = 1
-      @s_d_loop = 1
-      @new_sections = @sections
-      while @iloop < @sorted_students.count do
-          if @jloop > (@new_sections.count-1)
-            @jloop = 0
-            @new_sections = @new_sections.reverse
-          end
-          @iloop +=1 
           
-          @student_section[@iloop] = @new_sections[@jloop]
-          if @new_sections[@jloop] == @sections[0]
-            @student_roll[@iloop] = @s_a_loop
-            @s_a_loop +=1
-          end
-
-          if @new_sections[@jloop] == @sections[1]
-            @student_roll[@iloop] = @s_b_loop
-            @s_b_loop +=1
-          end
-
-          if @sections.count>2
-            if @new_sections[@jloop] == @sections[2]
-              @student_roll[@iloop] = @s_c_loop
-              @s_c_loop +=1
+            ag_hw = 0
+            ag_assessment = 0
+            ag_cw = 0
+    
+            if total_subject > 0 && 
+              if assessment > 0
+                ag_assessment = assessment.to_f/total_subject.to_f
+                ag_assessment = sprintf( "%0.01f", ag_assessment)
+              end
+              if hw > 0
+                ag_hw = hw.to_f/total_subject.to_f
+                ag_hw = sprintf( "%0.01f", ag_hw)
+              end
+              if cw > 0
+                ag_cw = cw.to_f/total_subject.to_f
+                ag_cw = sprintf( "%0.01f", ag_cw)
+              end
             end
-          end
-          if @sections.count>3
-            if @new_sections[@jloop] == @sections[3]
-              @student_roll[@iloop] = @s_d_loop
-              @s_d_loop +=1
+            total_mark = total_mark+ag_assessment.to_f+ag_hw.to_f+ag_cw.to_f
+    
+            unless tab['subjects'].blank? 
+                finish = false
+                total_mark_life = 0
+                start = true
+                
+                tab['subjects'].each do |sub|
+                  if sub['grade_subject'].to_i != 1
+                    next
+                  end
+                  if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
+                    next
+                  end
+    
+                  
+                  sub_mark = 0
+                  unless tab['exams'].blank?  
+                    tab['exams'].each do |rs|
+                        if rs['quarter'] == '6' 
+                          next
+                        end
+                        if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                          if rs['exam_category'] == '6'
+                            sub_mark = sub_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                          end 
+                        end
+                    end
+                  end   
+                  sub_mark = sprintf( "%0.01f", sub_mark)
+                  total_mark_life = total_mark_life+sub_mark.to_f
+                end
+                total_mark_life = sprintf( "%0.01f", total_mark_life)
+                total_mark = total_mark+total_mark_life.to_f
             end
+    
+           
+            total_mark = sprintf( "%0.01f", total_mark)
+            total_mark_mid_term = total_mark
+            total_30 = (total_mark_mid_term.to_f*30)/100
+            total_70 = (total_mark_final_term.to_f*70)/100
+            main_total = total_70+total_30
+            main_total = sprintf( "%0.01f", main_total)
+            main_total = main_total.to_f
+            grade = GradingLevel.percentage_to_grade(main_total, @batch.id)
+            u_grade = 0
+            if !grade.blank? and !grade.name.blank?
+              if grade.name == "U"
+               u_grade = u_grade+1
+              end
+            end
+            
+    
+            @exam_comment_main_all = ExamConnectComment.find_by_exam_connect_id_and_student_id(connect_exam_id,std['id'].to_i)
+            result = ""
+            promotion_status = ""
+            merit_position = ""
+            new_roll = ""
+            new_section = ""
+            if !@exam_comment_main_all.blank?
+              all_comments = @exam_comment_main_all.comments
+              if !all_comments.blank?
+                all_comments_array = all_comments.split("|")
+                result = all_comments_array[0]
+                if !all_comments_array[1].nil?
+                  promotion_status = all_comments_array[1]
+                  if !all_comments_array[2].nil?
+                    merit_position = all_comments_array[2]
+                    if !all_comments_array[3].nil?
+                      new_roll = all_comments_array[3]
+                      if !all_comments_array[4].nil?
+                        new_section = all_comments_array[4]
+                      end
+                    end
+    
+                  end
+    
+                end
+              end
+            end
+            if u_grade == 0  
+              std_marks_full_new = 5000.00-main_total.to_f
+              @student_list << [std_marks_full_new.to_f,std['id'].to_i]
+            end
+             
+    
           end
-          @jloop +=1
-          @sloop +=1
+        end
+       end
+    
+        @student_real_position = {}
+        @student_position = {}
+        @student_section = {}
+        @student_roll = {}
+    
+        @sections = ["A","B","C"]
+        student_classes = ["KG","I","II","III","IV","V","VI","VII","VIII","IX","X"]
+        @promoted_to = "";
+        if student_classes.include?(@batch.course.course_name)
+          array_index = student_classes.index @batch.course.course_name
+          if array_index < student_classes.count
+              @promoted_to = student_classes[array_index+1]
+              if @promoted_to == "I"
+                @sections = ["Marigold","Camellia","Jasmine","Lily"]
+              end
+              if @promoted_to == "II"
+                @sections = ["Rose","Sunflower","Gardenia","Lotus"]
+              end
+              if @promoted_to == "III"
+                @sections = ["Orchid","Tulip","Cosmos","Lilac"]
+              end
+              if @promoted_to == "IV"
+                @sections = ["Daisy","Daffodil","Salvia","Dahlia"]
+              end
+              if @promoted_to == "V"
+                @sections = ["Bluebell","Lavender","Zinia","Rosemary"]
+              end
+              if @promoted_to == "VI"
+                @sections = ["Primrose","Snowdrop","Magnolia"]
+              end
+              if @promoted_to == "VII"
+                @sections = ["Parrot","Swift"]
+              end
+              if @promoted_to == "VIII"
+                @sections = ["Kingfisher","Nightingale"]
+              end
+              if @promoted_to == "IX"
+                @sections = ["Robin","Seagull"]
+              end
+              if @promoted_to == "X"
+                @sections = ["Penguin","Pelican"]
+              end
+    
+    
+          else
+              @promoted_to = "0"
+          end
+        end  
+    
+        unless @student_list.blank?
+          position_rank = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+          @sorted_students = @student_list.sort
+          position = 0
+          real_position = 0
+          p_rank_loop = 0
+          prev_student = 0
+          prev_mark = 0
+          @sorted_students.each do|s|
+              new_mark = s[0]
+              if new_mark == prev_mark and position != 0
+                if p_rank_loop == 0
+                  @student_position[prev_student] = @student_position[prev_student].to_s+position_rank[p_rank_loop].to_s
+                end
+                p_rank_loop = p_rank_loop+1
+                @student_position[s[1].to_i] = position.to_s+position_rank[p_rank_loop].to_s      
+              else
+                position = position+1
+                @student_position[s[1].to_i] = position
+                prev_student = s[1].to_i
+                p_rank_loop = 0
+              end
+              prev_mark = s[0]
+              real_position = real_position+1
+              @student_real_position[s[1].to_i] = real_position
+          end
+    
+          @iloop = 0
+          @jloop = 0
+    
+          @sloop = 0
+    
+          @s_a_loop = 1
+          @s_b_loop = 1
+          @s_c_loop = 1
+          @s_d_loop = 1
+          @new_sections = @sections
+          while @iloop < @sorted_students.count do
+              if @jloop > (@new_sections.count-1)
+                @jloop = 0
+                @new_sections = @new_sections.reverse
+              end
+              @iloop +=1 
+              
+              @student_section[@iloop] = @new_sections[@jloop]
+              if @new_sections[@jloop] == @sections[0]
+                @student_roll[@iloop] = @s_a_loop
+                @s_a_loop +=1
+              end
+    
+              if @new_sections[@jloop] == @sections[1]
+                @student_roll[@iloop] = @s_b_loop
+                @s_b_loop +=1
+              end
+    
+              if @sections.count>2
+                if @new_sections[@jloop] == @sections[2]
+                  @student_roll[@iloop] = @s_c_loop
+                  @s_c_loop +=1
+                end
+              end
+              if @sections.count>3
+                if @new_sections[@jloop] == @sections[3]
+                  @student_roll[@iloop] = @s_d_loop
+                  @s_d_loop +=1
+                end
+              end
+              @jloop +=1
+              @sloop +=1
+          end
+    
+        end
       end
 
-    end
-  end 
+  end  
   
   
 end

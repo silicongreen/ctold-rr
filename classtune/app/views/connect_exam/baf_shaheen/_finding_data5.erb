@@ -24,10 +24,9 @@
       batch_loop = batch_loop+1
       connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
       connect_exam = connect_exam+1
-      
+      std_marks_core_subject = 0
       
       tab['students'].each do |std| 
-        subject_count_std = 0
         total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
         std_subject_id = total_std_subject.map(&:subject_id)
         
@@ -37,6 +36,7 @@
         cw = 0 
         total_mark = 0 
         total_subject = 0
+        subject_count_std = 0
         unless tab['subjects'].blank? 
           tab['subjects'].each do |sub|
             if sub['grade_subject'].to_i == 1
@@ -50,6 +50,7 @@
 
             has_exam = false
             loop=0
+            subject_count_std = subject_count_std+1
            
             sub_assessment = 0
             sub_hw = 0
@@ -68,19 +69,19 @@
 
                   if rs['exam_category'] == '7'
                     sub_hw = sub_hw.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                    end
+                  end
                   if rs['exam_category'] == '8'
                     sub_cw = sub_cw.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                   end
                   if rs['exam_category'] == '7'
                     sub_hw_full_mark = sub_hw_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                    end
+                  end
                   if rs['exam_category'] == '8'
                     sub_cw_full_mark = sub_cw_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                   end
                 end
               end
-              end
+            end
 
             unless tab['exams'].blank?  
               tab['exams'].each do |rs|
@@ -97,7 +98,7 @@
 
                 end
               end
-              end
+            end
 
 
             hw_avg = 0
@@ -120,7 +121,10 @@
               cw_avg = (sub_cw.to_f/sub_cw_full_mark.to_f)*10
               cw_avg = cw_avg.round()
               cw = cw+cw_avg
-            end  
+            end 
+            if subject_count_std == 4
+              std_marks_core_subject = assessment.to_f+hw.to_f+cw.to_f
+            end
           end  
         end
       
@@ -375,7 +379,8 @@
         end
         if u_grade == 0  
           std_marks_full_new = 5000.00-main_total.to_f
-          @student_list << [std_marks_full_new.to_f,std['id'].to_i]
+          std_marks_core_subject = 5000-std_marks_core_subject.round()
+          @student_list << [std_marks_full_new.to_f,std_marks_core_subject.to_f,std['first_name'],std['id'].to_i]
         end
          
 

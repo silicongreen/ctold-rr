@@ -419,13 +419,7 @@ class ReportController extends Controller
                 $data = $connectexmObj->findByPk($connect_exam_id);
                 
                 $objPreviousExam = new PreviousExams();
-                if($data->is_published == 1)
-                {
-                    $finish_exam = $objPreviousExam->getFinishExamALL($connect_exam_id,$data_type);
-                }
-                else {
-                    $finish_exam = $objPreviousExam->getFinishExam($connect_exam_id,$data_type);
-                }
+                $finish_exam = $objPreviousExam->getFinishExam($connect_exam_id,$data_type);
                 if($finish_exam)
                 {
                     echo $finish_exam;

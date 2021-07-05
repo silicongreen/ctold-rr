@@ -12518,7 +12518,7 @@ class ExamController < ApplicationController
               std_marks_core_subject = 5000-std_marks_core_subject.round()
               subject_count_std = 5000-subject_count_std
               @student_avg_mark[std['id'].to_i] = u_grade
-              @student_list << [std_marks_full_new.to_f,std['id'].to_i,std_marks_full.to_f]
+              @student_list << [std_marks_full_new.to_f,std_marks_core_subject,std['first_name'],std['id'].to_i]
             else
               @student_avg_mark[std['id'].to_i] = u_grade
             end  
@@ -12591,16 +12591,16 @@ class ExamController < ApplicationController
                   @student_position[prev_student] = @student_position[prev_student].to_s+position_rank[p_rank_loop].to_s
                 end
                 p_rank_loop = p_rank_loop+1
-                @student_position[s[1].to_i] = position.to_s+position_rank[p_rank_loop].to_s      
+                @student_position[s[3].to_i] = position.to_s+position_rank[p_rank_loop].to_s      
               else
                 position = position+1
-                @student_position[s[1].to_i] = position
-                prev_student = s[1].to_i
+                @student_position[s[3].to_i] = position
+                prev_student = s[3].to_i
                 p_rank_loop = 0
               end
               prev_mark = s[0]
               real_position = real_position+1
-              @student_real_position[s[1].to_i] = real_position
+              @student_real_position[s[3].to_i] = real_position
           end
 
           @iloop = 0
@@ -12681,6 +12681,7 @@ class ExamController < ApplicationController
           
           tab['students'].each do |std| 
             subject_count_std = 0
+            std_marks_core_subject = 0
             total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
             std_subject_id = total_std_subject.map(&:subject_id)
             
@@ -12703,6 +12704,7 @@ class ExamController < ApplicationController
     
                 has_exam = false
                 loop=0
+                subject_count_std = subject_count_std+1
                
                 sub_assessment = 0
                 sub_hw = 0
@@ -12773,7 +12775,10 @@ class ExamController < ApplicationController
                   cw_avg = (sub_cw.to_f/sub_cw_full_mark.to_f)*10
                   cw_avg = cw_avg.round()
                   cw = cw+cw_avg
-                end  
+                end 
+                if subject_count_std == 3
+                  std_marks_core_subject = assessment.to_f+hw.to_f+cw.to_f
+                end 
               end  
             end
           
@@ -13028,7 +13033,8 @@ class ExamController < ApplicationController
             end
             if u_grade == 0  
               std_marks_full_new = 5000.00-main_total.to_f
-              @student_list << [std_marks_full_new.to_f,std['id'].to_i]
+              std_marks_core_subject = 5000-std_marks_core_subject.round()
+              @student_list << [std_marks_full_new.to_f,std_marks_core_subject.to_f,std['first_name'],std['id'].to_i]
             end
              
     
@@ -13100,16 +13106,16 @@ class ExamController < ApplicationController
                   @student_position[prev_student] = @student_position[prev_student].to_s+position_rank[p_rank_loop].to_s
                 end
                 p_rank_loop = p_rank_loop+1
-                @student_position[s[1].to_i] = position.to_s+position_rank[p_rank_loop].to_s      
+                @student_position[s[3].to_i] = position.to_s+position_rank[p_rank_loop].to_s      
               else
                 position = position+1
-                @student_position[s[1].to_i] = position
-                prev_student = s[1].to_i
+                @student_position[s[3].to_i] = position
+                prev_student = s[3].to_i
                 p_rank_loop = 0
               end
               prev_mark = s[0]
               real_position = real_position+1
-              @student_real_position[s[1].to_i] = real_position
+              @student_real_position[s[3].to_i] = real_position
           end
     
           @iloop = 0

@@ -24,12 +24,12 @@
       batch_loop = batch_loop+1
       connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
       connect_exam = connect_exam+1
-      std_marks_core_subject = 0
+      
       
       tab['students'].each do |std| 
         total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
         std_subject_id = total_std_subject.map(&:subject_id)
-        
+        std_marks_core_subject = 0
       
         assessment = 0 
         hw = 0 

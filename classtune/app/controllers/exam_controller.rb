@@ -5948,7 +5948,7 @@ class ExamController < ApplicationController
     row_first = ['','','','','','','','','','','']
     @all_subject_connect_exam.each do |sub_result|
       key = sub_result.code.to_s
-      unless std_result['subjects'][key].blank?
+      unless @subject_result['subjects'][key].blank?
         row_first << "AT"
         row_first << "CW"
         row_first << "OB"
@@ -6022,17 +6022,28 @@ class ExamController < ApplicationController
       unless std_result['subjects'].blank?
         @all_subject_connect_exam.each do |value|
           key = value.code.to_s
-          unless std_result['subjects'][key].blank?
-            
-            tmp_row << std_result['subjects'][key]['result']['at'].to_s
-            tmp_row << std_result['subjects'][key]['result']['cw'].to_s
-            tmp_row << std_result['subjects'][key]['result']['ob'].to_s
-            tmp_row << std_result['subjects'][key]['result']['sb'].to_s
-            tmp_row << std_result['subjects'][key]['result']['pr'].to_s
-            tmp_row << std_result['subjects'][key]['result']['rt'].to_s
-            tmp_row << std_result['subjects'][key]['result']['ct'].to_s
-            tmp_row << std_result['subjects'][key]['result']['lg'].to_s       
-          end  
+          unless @subject_result['subjects'][key].blank?
+            unless std_result['subjects'][key].blank?
+              
+              tmp_row << std_result['subjects'][key]['result']['at'].to_s
+              tmp_row << std_result['subjects'][key]['result']['cw'].to_s
+              tmp_row << std_result['subjects'][key]['result']['ob'].to_s
+              tmp_row << std_result['subjects'][key]['result']['sb'].to_s
+              tmp_row << std_result['subjects'][key]['result']['pr'].to_s
+              tmp_row << std_result['subjects'][key]['result']['rt'].to_s
+              tmp_row << std_result['subjects'][key]['result']['ct'].to_s
+              tmp_row << std_result['subjects'][key]['result']['lg'].to_s       
+            else
+              tmp_row << "-"
+              tmp_row << "-"
+              tmp_row << "-"
+              tmp_row << "-"
+              tmp_row << "-"
+              tmp_row << "-"
+              tmp_row << "-"
+              tmp_row << "-"
+            end 
+          end 
         end
       end
       subject_std = std_subject.find{|val| val.student_id.to_i == std_result['id'].to_i and subject_map.include?(val.subject_id.to_i) }

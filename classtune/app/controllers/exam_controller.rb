@@ -5911,6 +5911,9 @@ class ExamController < ApplicationController
     @all_subject_connect_exam = Subject.find_all_by_code(sub_id_array,:conditions=>["batch_id = ?",@batch.id],:order=>"priority asc")
     subject_map = @all_subject_connect_exam.map(&:id)
     @all_subject_connect_exam.each do |value|
+      if @subject_result[key].blank?
+        next
+      end  
       key = value.code.to_s
       end_row = starting_row+7
       (starting_row..end_row).each do |i|

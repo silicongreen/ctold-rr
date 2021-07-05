@@ -5948,7 +5948,7 @@ class ExamController < ApplicationController
     row_first = ['','','','','','','','','','','']
     @all_subject_connect_exam.each do |sub_result|
       key = sub_result.code.to_s
-      unless @subject_result['subjects'][key].blank?
+      unless @subject_result[key].blank?
         row_first << "AT"
         row_first << "CW"
         row_first << "OB"
@@ -6022,7 +6022,7 @@ class ExamController < ApplicationController
       unless std_result['subjects'].blank?
         @all_subject_connect_exam.each do |value|
           key = value.code.to_s
-          unless @subject_result['subjects'][key].blank?
+          unless @subject_result[key].blank?
             unless std_result['subjects'][key].blank?
               
               tmp_row << std_result['subjects'][key]['result']['at'].to_s

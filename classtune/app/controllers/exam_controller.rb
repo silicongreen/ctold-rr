@@ -5947,14 +5947,17 @@ class ExamController < ApplicationController
     
     row_first = ['','','','','','','','','','','']
     @all_subject_connect_exam.each do |sub_result|
-      row_first << "AT"
-      row_first << "CW"
-      row_first << "OB"
-      row_first << "SB"
-      row_first << "PR"
-      row_first << "+RT"
-      row_first << "+CT"
-      row_first << "LG"
+      key = sub_result.code.to_s
+      unless std_result['subjects'][key].blank?
+        row_first << "AT"
+        row_first << "CW"
+        row_first << "OB"
+        row_first << "SB"
+        row_first << "PR"
+        row_first << "+RT"
+        row_first << "+CT"
+        row_first << "LG"
+      end
     end
     row_first << ""
     new_book.worksheet(0).insert_row(1, row_first)
@@ -6028,17 +6031,7 @@ class ExamController < ApplicationController
             tmp_row << std_result['subjects'][key]['result']['pr'].to_s
             tmp_row << std_result['subjects'][key]['result']['rt'].to_s
             tmp_row << std_result['subjects'][key]['result']['ct'].to_s
-            tmp_row << std_result['subjects'][key]['result']['lg'].to_s
-          else
-            tmp_row << "-"
-            tmp_row << "-"
-            tmp_row << "-"
-            tmp_row << "-"
-            tmp_row << "-"
-            tmp_row << "-"
-            tmp_row << "-"
-            tmp_row << "-"
-            
+            tmp_row << std_result['subjects'][key]['result']['lg'].to_s       
           end  
         end
       end

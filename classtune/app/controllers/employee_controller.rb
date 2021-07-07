@@ -877,6 +877,7 @@ class EmployeeController < ApplicationController
   def edit_employee_own
     @countries = @nationalities = Country.find(:all)
     @employee = Employee.find(current_user.employee_entry.id)
+    @positions = EmployeePosition.find_all_by_employee_category_id(@employee.employee_category_id)
     unless @employee.gender.nil?
       @employee.gender=@employee.gender.downcase
     end

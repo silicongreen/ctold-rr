@@ -1752,8 +1752,11 @@ class StudentController < ApplicationController
     unless batch_name.blank?
       if current_user.employee
         if params[:page].blank? or params[:page] != "sections_employee_subject_assignment"
+          @config = Configuration.find_by_config_key('StudentAttendanceType')
           batches_all = @current_user.employee_record.batches
-          batches_all += @current_user.employee_record.subjects.collect{|b| b.batch}
+          if params[:page] != "courses_attendances_batch" || @config.config_value != 'Daily'
+            batches_all += @current_user.employee_record.subjects.collect{|b| b.batch}
+          end
           batches_all = batches_all.uniq unless batches_all.empty?
           batches_all.reject! {|s| s.name!=batch_name}
         else
@@ -1827,12 +1830,16 @@ class StudentController < ApplicationController
     
     if current_user.employee
       if params[:page].blank? or params[:page] != "courses_employee_subject_assignment"
+        @config = Configuration.find_by_config_key('StudentAttendanceType')
         batches_all = @current_user.employee_record.batches
-        batches_all += @current_user.employee_record.subjects.collect{|b| b.batch}
+        if params[:page] != "courses_attendances_batch" || @config.config_value != 'Daily'
+          batches_all += @current_user.employee_record.subjects.collect{|b| b.batch}
+        end
         batches_all = batches_all.uniq unless batches_all.empty?
         batches_all.reject! {|s| s.name!=batch_name}
       else
         batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+        
       end  
     else
       batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)

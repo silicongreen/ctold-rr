@@ -196,7 +196,13 @@
       </div>
       <hr class="label-underline"></hr>
       <div class="label-field-pair">
-        <label for="employee_total-experience"><%= t('total_exp') %></label>
+        <label for="employee_total-experience">
+        <% if MultiSchool.current_school.code == "sagc" %>
+          <%= t('total_exp_sagc') %>
+        <% else %>
+          <%= t('total_exp') %>
+        <% end %>
+        </label>
         <div class="text-input-bg"><%= select :employee, :experience_year, (0..50),{:prompt=>"#{t('year')}"} %>
           <%= select :employee, :experience_month, (0..11),{:prompt=>"#{t('month')}"} %></div>
       </div>

@@ -49,7 +49,14 @@
   <!--<tr class="odd left"><td><%#= t('email') %></td><td class="right"><%#= @employee.email %></td></tr>-->
   <tr class="even left"><td><%= t('status') %></td><td class="right"><%= t("#{@status.downcase}") %></td></tr>
   <tr class="odd left"><td><%= t('qualification') %></td><td class="right"><%= @employee.qualification %></td></tr>
-  <tr class="even left"><td><%= t('total_exp') %></td><td class="right">
+  <tr class="even left"><td>
+  <% if MultiSchool.current_school.code == "sagc" %>
+    <%= t('total_exp_sagc') %>
+  <% else %>
+    <%= t('total_exp') %>
+  <% end %>
+  
+  </td><td class="right">
           <% if !@employee.experience_year.nil? && @employee.experience_year.to_i>0 %>
           <%= @employee.experience_year.to_s+" #{t('years')} " %>
           <% end %>

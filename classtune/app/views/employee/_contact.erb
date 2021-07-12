@@ -18,11 +18,15 @@
 #under the License. -%>
 
 <table width="700">
-  <tr class="odd left"><td><%= t('office_phone1') %></td><td class="right"><%= @employee.office_phone1 %></td></tr>
-  <tr class="even left"><td><%= t('office_phone2') %></td><td class="right"><%= @employee.office_phone2 %></td></tr>
+  <% if MultiSchool.current_school.code != "sagc" %>
+    <tr class="odd left"><td><%= t('office_phone1') %></td><td class="right"><%= @employee.office_phone1 %></td></tr>
+    <tr class="even left"><td><%= t('office_phone2') %></td><td class="right"><%= @employee.office_phone2 %></td></tr>
+  <% end %>
   <tr class="odd left"><td><%= t('mobile') %></td><td class="right"><%= @employee.mobile_phone %></td></tr>
   <tr class="even left"><td><%= t('home_phone') %></td><td class="right"><%= @employee.home_phone %></td></tr>
-  <tr class="odd left"><td><%= t('fax') %></td><td class="right"><%=  @employee.fax %></td></tr>
+  <% if MultiSchool.current_school.code != "sagc" %>
+    <tr class="odd left"><td><%= t('fax') %></td><td class="right"><%=  @employee.fax %></td></tr>
+  <% end %>
 </table>
 
 <div class="edit-pdf-group">

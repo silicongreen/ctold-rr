@@ -42,51 +42,65 @@
           <div class="text-input-bg"><%= a.text_field :home_address_line1 %></div>
           <div class="extender"></div>
         </div>
+        <% if MultiSchool.current_school.code != "sagc" %>
         <hr class="label-underline"></hr>
         <div class="label-field-pair">
           <label><%= t('line_2') %></label>
           <div class="text-input-bg"><%= a.text_field :home_address_line2 %></div>
           <div class="extender"></div>
         </div>
+        <% end %>
         <hr class="label-underline"></hr>
         <div class="label-field-pair">
           <label><%= t('city') %></label>
           <div class="text-input-bg"><%= a.text_field :home_city %></div>
           <div class="extender"></div>
         </div>
+        <% if MultiSchool.current_school.code != "sagc" %>
         <hr class="label-underline"></hr>
         <div class="label-field-pair">
           <label><%=  t('state')  %></label>
           <div class="text-input-bg"><%= a.text_field :home_state %></div>
           <div class="extender"></div>
         </div>
+        <% end %>
         <hr class="label-underline"></hr>
         <div class="label-field-pair">
           <label><%=  t('country')  %></label>
           <div class="text-input-bg"><%= select :employee, :home_country_id, @countries.map {|c| [c.name, c.id]}, :selected => @employee.home_country_id || @selected_value.to_i %></div>
           <div class="extender"></div>
         </div>
+        <% if MultiSchool.current_school.code != "sagc" %>
         <hr class="label-underline"></hr>
         <div class="label-field-pair">
           <label><%=  t('zip')  %></label>
           <div class="text-input-bg"><%= a.text_field :home_pin_code %></div>
           <div class="extender"></div>
         </div>
+        <% end %>
       <br/>
         <span class="span-sub-heading"><%= t('office_address') %></span>
       <hr class="sub-heading"></hr>
 
         <div class="label-field-pair">
           <label><%= t('line_1') %></label>
-          <div class="text-input-bg"><%= a.text_field :office_address_line1 %></div>
+          <div class="text-input-bg">
+          <% if MultiSchool.current_school.code != "sagc" %>
+            <%= a.text_field :office_address_line1 %>
+          <% else %>
+            <%= a.text_field :office_address_line1,:value=>"Dhaka Cantonment, Dhaka" %>
+          <% end %>  
+          </div>
           <div class="extender"></div>
         </div>
+        <% if MultiSchool.current_school.code != "sagc" %>
         <hr class="label-underline"></hr>
         <div class="label-field-pair">
           <label><%= t('line_2') %></label>
           <div class="text-input-bg"><%= a.text_field :office_address_line2 %></div>
           <div class="extender"></div>
         </div>
+        <% end %>
         <hr class="label-underline"></hr>
         <div class="label-field-pair">
           <label><%= t('city') %></label>
@@ -105,14 +119,17 @@
           <div class="text-input-bg"><%= select :employee, :office_country_id, @countries.map {|c| [c.name, c.id]}, :selected => @employee.office_country_id || @selected_value.to_i %></div>
           <div class="extender"></div>
         </div>
+        <% if MultiSchool.current_school.code != "sagc" %>
         <hr class="label-underline"></hr>
         <div class="label-field-pair">
           <label><%= t('zip') %></label>
           <div class="text-input-bg"><%= a.text_field :office_pin_code %></div>
           <div class="extender"></div>
         </div>
+        <% end %>
       <br/>
         <span class="span-sub-heading"><%= t('contact_details') %></span>
+        <% if MultiSchool.current_school.code != "sagc" %>
     <hr class="sub-heading"></hr>
 
         <div class="label-field-pair">
@@ -126,6 +143,7 @@
           <div class="text-input-bg"><%= a.text_field :office_phone2 %></div>
           <div class="extender"></div>
         </div>
+        <% end %>
         <hr class="label-underline"></hr>
         <div class="label-field-pair">
           <label><%= t('mobile') %></label>
@@ -138,12 +156,14 @@
           <div class="text-input-bg"><%= a.text_field :home_phone %></div>
           <div class="extender"></div>
         </div>
+        <% if MultiSchool.current_school.code != "sagc" %>
         <hr class="label-underline"></hr>
         <div class="label-field-pair">
           <label><%= t('fax') %></label>
           <div class="text-input-bg"><%= a.text_field :fax %></div>
           <div class="extender"></div>
         </div>
+        <% end %>
     </div>
 
   <div class="save-proceed-button">

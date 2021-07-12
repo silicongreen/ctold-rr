@@ -860,6 +860,7 @@ class AttendancesController < ApplicationController
       if @config.config_value == 'Daily'
         @batches = @current_user.employee_record.batches
       else
+        
         @batches = @current_user.employee_record.batches
         @batches += @current_user.employee_record.subjects.collect{|b| b.batch}
         @batches += TimetableSwap.find_all_by_employee_id(@current_user.employee_record.try(:id)).map(&:subject).flatten.compact.map(&:batch)

@@ -21,7 +21,7 @@
         </div>
         <% 
          
-            batches = @batches
+            batches = Batch.active.find(:all,:select=>"batches.id as batch_id, batches.name as name", :group => "name")
         %>  
         <div class="row_data">
           <div>

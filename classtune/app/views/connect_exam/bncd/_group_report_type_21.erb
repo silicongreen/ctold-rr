@@ -2,25 +2,26 @@
               <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
-                 
+                  <% full_mark_of_allexam = 0 %>
+                  <% total_grade_of_allexam = 0 %>
                   <tr class="even header-shade">
                       <td class="col-pdf">
                           <b>Sl.</b>
                       </td>
+                      <% number_of_exam = 0%>
                       <td class="col-pdf no-warp  align-left-baf"><b><%= "SUBJECTS" %></b></td>
                       <% unless @report_data['report']['exams'].blank? %>
                         <% @report_data['report']['exams'].each do |report| %>
+                          <% number_of_exam = number_of_exam+1 %>
                           <td class="col-pdf"><%= report['exam_name'] %></td>
                         <% end %>
                       <% end %> 
                       
-                      <td class="col-pdf"><b>Total</b></td>
-                      <td class="col-pdf"><b>Conv Total</b></td>
-                      <td class="col-pdf"><b>Letter Grade</b></td>
-                      <td class="col-pdf"><b>Grade Point</b></td> 
+                      <td class="col-pdf"><b>Total Marks</b></td>
+                      <td class="col-pdf"><b>Grade</b></td>
+                      <td class="col-pdf"><b>GP</b></td> 
                   </tr>
-                  <% total_mark_of_allexam = 0 %>
-                  <% total_grade_of_allexam = 0 %>
+                  
                   <% sl = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %>
                     <% @report_data['report']['subjects'].each do |subjects| %>
@@ -64,16 +65,17 @@
                               <td class="col-pdf">-</td>
                             <% end %>  
                             <% total_mark_of_allexam = total_mark_of_allexam+obtain_mark %>
+                            <% full_mark_of_allexam = full_mark_of_allexam+total_mark %>
                       </tr>
                     <% end %>
                   
                   <% end %>
               
-                  
+                  <% colspan= number_of_exam+ 2%>
                   <tr class="even" >
-                    <td class="col-pdf  no-warp align-right" colspan="2"><b>GRAND TOTAL</b></td>
+                    <td class="col-pdf  no-warp align-right" colspan="<%= colspan %>"><b>GRAND TOTAL</b></td>
                     <td class="col-pdf  no-warp"><b><%= total_mark_of_allexam %></b></td>
-                    <td class="col-pdf  no-warp">Total Grade</td>
+                    <td class="col-pdf  no-warp" colspan="2">Total Grade</td>
                     <td class="col-pdf  no-warp"><%= total_grade_of_allexam %></td>
                   </tr>
                   

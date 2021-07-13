@@ -91,11 +91,7 @@
               end  
             end  
           end
-          if @subject_highest[sub['id'].to_i].blank?
-            @subject_highest[sub['id'].to_i] = main_mark
-          elsif main_mark.to_f > @subject_highest[sub['id'].to_i].to_f
-            @subject_highest[sub['id'].to_i] = main_mark.to_f
-          end
+          main_mark = 0
           if full_mark > 0
             if subject_marks > 0
               main_mark = ( subject_marks.to_f/full_mark.to_f )*100.00
@@ -117,6 +113,11 @@
             elsif fourth_subject == false
               subject_failed = true
             end  
+          end
+          if @subject_highest[sub['id'].to_i].blank?
+            @subject_highest[sub['id'].to_i] = main_mark
+          elsif main_mark.to_f > @subject_highest[sub['id'].to_i].to_f
+            @subject_highest[sub['id'].to_i] = main_mark.to_f
           end
         end 
         @student_total_grade[std['id'].to_i] = total_grade

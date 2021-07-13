@@ -103,7 +103,6 @@
                             <%
                               main_mark = (obtain_mark.to_f/total_mark.to_f)*100
                             %>
-                            <td class="col-pdf"><%= main_mark %></td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><%= grade.name %></td>

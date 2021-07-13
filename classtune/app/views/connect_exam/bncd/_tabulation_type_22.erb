@@ -320,7 +320,7 @@
                             %>
                             <%  grade = GradingLevel.percentage_to_grade(main_marks, @batch.id) %>
                              <% if !grade.blank? and !grade.name.blank? %>
-                              <td><%= grade.name %></td>
+                              <td><%= grade.name %><%= subject_full_mark %><%= subject_obtain_mark %></td>
                               <td><%= grade.credit_points %></td>
                              <% else %>
                               <td>-</td>

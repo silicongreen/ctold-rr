@@ -314,11 +314,11 @@
                             <%
                             main_marks = 0
                             if subject_obtain_mark > 0
-                                main_mark = ( subject_obtain_mark.to_f/subject_full_mark.to_f )*100.00
+                                main_marks = ( subject_obtain_mark.to_f/subject_full_mark.to_f )*100.00
                             end
                             
                             %>
-                            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                            <%  grade = GradingLevel.percentage_to_grade(main_marks, @batch.id) %>
                              <% if !grade.blank? and !grade.name.blank? %>
                               <td><%= grade.name %></td>
                               <td><%= grade.credit_points %></td>

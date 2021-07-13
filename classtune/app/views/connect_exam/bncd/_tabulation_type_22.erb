@@ -320,12 +320,12 @@
                             %>
                             <%  grade = GradingLevel.percentage_to_grade(main_marks, @batch.id) %>
                              <% if !grade.blank? and !grade.name.blank? %>
-                              <td><%= grade.name %><%= subject_full_mark %><%= subject_obtain_mark %></td>
+                              <td><%= grade.name %> %></td>
                               <td><%= grade.credit_points %></td>
                              <% else %>
                               <td>-</td>
                              <% end %>
-                            <% if subject_obtain_mark < 40 && fourth_subject == false %>
+                            <% if subject_obtain_mark < 20 && fourth_subject == false %>
                               <% failed = true %>
                             <% end %>
                             <td rowspan="<%= rowspan %>">
@@ -399,14 +399,21 @@
                             <% end %> 
                             <% total_mark = total_mark+subject_obtain_mark.to_f %>
                             <td><%= subject_obtain_mark.to_i %></td>
-                            <%  grade = GradingLevel.percentage_to_grade(subject_obtain_mark, @batch.id) %>
+                            <%
+                            main_marks = 0
+                            if subject_obtain_mark > 0
+                                main_marks = ( subject_obtain_mark.to_f/subject_full_mark.to_f )*100.00
+                            end
+                            
+                            %>
+                            <%  grade = GradingLevel.percentage_to_grade(main_marks, @batch.id) %>
                              <% if !grade.blank? and !grade.name.blank? %>
                               <td><%= grade.name %></td>
                               <td><%= grade.credit_points %></td>
                              <% else %>
                               <td>-</td>
                              <% end %>
-                            <% if subject_obtain_mark < 40 && fourth_subject == false %>
+                            <% if subject_obtain_mark < 20 && fourth_subject == false %>
                               <% failed = true %>
                             <% end %>
                             <td>

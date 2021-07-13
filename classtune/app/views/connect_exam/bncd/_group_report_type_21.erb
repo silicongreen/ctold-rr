@@ -1,0 +1,83 @@
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+              <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
+                  <% c = 'even'  %>
+                  <% total_mark_of_allexam = 0 %>
+                 
+                  <tr class="even header-shade">
+                      <td class="col-pdf">
+                          <b>Sl.</b>
+                      </td>
+                      <td class="col-pdf no-warp  align-left-baf"><b><%= "SUBJECTS" %></b></td>
+                      <% unless @report_data['report']['exams'].blank? %>
+                        <% @report_data['report']['exams'].each do |report| %>
+                          <td class="col-pdf"><%= report['exam_name'] %></td>
+                        <% end %>
+                      <% end %> 
+                      
+                      <td class="col-pdf"><b>Total</b></td>
+                      <td class="col-pdf"><b>Conv Total</b></td>
+                      <td class="col-pdf"><b>Letter Grade</b></td>
+                      <td class="col-pdf"><b>Grade Point</b></td> 
+                  </tr>
+                  <% total_mark_of_allexam = 0 %>
+                  <% total_grade_of_allexam = 0 %>
+                  <% sl = 0 %>
+                  <% unless @report_data['report']['subjects'].blank? %>
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% total_mark = 0 %>
+                      <% obtain_mark = 0 %>
+                      
+                      <% subjectdata = Subject.find(subjects['id'].to_i) %>
+                      <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                      <% if @has_exam_student == false %>
+                         <% next %>
+                      <% end %>
+                      <% sl = sl+1 %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                            <td class="col-pdf  no-warp"><%= sl %></td>
+                            <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>
+                            <% unless @report_data['report']['exams'].blank? %>  
+                                <% @report_data['report']['exams'].each do |report| %>  
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
+                                    <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
+                                  <% else %>
+                                    <td class="col-pdf">-</td>
+                                  <% end %>   
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                    <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                  <% end %>
+                                <% end %>
+                            <% end %>
+                            <td class="col-pdf"><%= obtain_mark %></td>
+                            <%
+                              main_mark = (obtain_mark.to_f/total_mark.to_f)*100
+                            %>
+                            <td class="col-pdf"><%= main_mark %></td>
+                            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <td class="col-pdf"><%= grade.name %></td>
+                              <td class="col-pdf"><%= grade.credit_points %></td>
+                              <% total_grade_of_allexam = total_grade_of_allexam+grade.credit_points %>
+                            <% else %>
+                              <td class="col-pdf">-</td>
+                              <td class="col-pdf">-</td>
+                            <% end %>  
+                            <% total_mark_of_allexam = total_mark_of_allexam+obtain_mark %>
+                      </tr>
+                    <% end %>
+                  
+                  <% end %>
+              
+                  
+                  <tr class="even" >
+                    <td class="col-pdf  no-warp align-right" colspan="2"><b>GRAND TOTAL</b></td>
+                    <td class="col-pdf  no-warp"><b><%= total_mark_of_allexam %></b></td>
+                    <td class="col-pdf  no-warp">Total Grade</td>
+                    <td class="col-pdf  no-warp"><%= total_grade_of_allexam %></td>
+                  </tr>
+                  
+              </table>
+                
+                
+<% end %>

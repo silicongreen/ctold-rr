@@ -322,20 +322,20 @@
                               <% failed = true %>
                             <% end %>
                             <td rowspan="<%= rowspan %>">
-                              <% if @student_total_grade[@student.id.to_i].blank? %>
+                              <% if @student_total_grade[std['id'].to_i].blank? %>
                                 0.00
                               <% else %>
-                                <%= sprintf( "%0.02f", @student_total_grade[@student.id.to_i]) %>
+                                <%= sprintf( "%0.02f", @student_total_grade[std['id'].to_i]) %>
                               <% end %>
                             </td>
                             <td rowspan="<%= rowspan %>">
-                              <% unless @student_position_batch[@student.id.to_i].blank? %>
-                                <%= @student_position_batch[@student.id.to_i] %>
+                              <% unless @student_position_batch[std['id'].to_i].blank? %>
+                                <%= @student_position_batch[std['id'].to_i] %>
                               <% end %>
                             </td>
                             <td rowspan="<%= rowspan %>">
-                              <% unless @student_position[@student.id.to_i].blank? %>
-                                <%= @student_position[@student.id.to_i] %>
+                              <% unless @student_position[std['id'].to_i].blank? %>
+                                <%= @student_position[std['id'].to_i] %>
                               <% end %>
                             </td>
                             <td>

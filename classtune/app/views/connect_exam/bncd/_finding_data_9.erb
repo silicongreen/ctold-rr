@@ -83,7 +83,7 @@
               if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
                 grand_total = grand_total.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                 subject_marks = subject_marks+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                full_mark = full_mark+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f 
+                full_mark = full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f 
               end  
             end  
           end

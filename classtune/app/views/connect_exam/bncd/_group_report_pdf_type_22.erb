@@ -105,7 +105,6 @@
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><%= grade.name %></td>
-                              <% total_grade_of_allexam = total_grade_of_allexam+grade.credit_points %>
                             <% else %>
                               <td class="col-pdf">-</td>
                             <% end %>  

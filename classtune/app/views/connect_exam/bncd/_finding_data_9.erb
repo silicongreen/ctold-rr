@@ -12,6 +12,7 @@
   @student_list = []
   @student_list_batch = []
   @student_total_grade = {}
+  @subject_highest = {}
 
   batchobj = Batch.find_by_id(@batch.id) 
   courseObj = Course.find_by_id(batchobj.course_id)
@@ -89,6 +90,11 @@
                 full_mark = full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f 
               end  
             end  
+          end
+          if @subject_highest[sub['id'].to_i].blank?
+            @subject_highest[sub['id'].to_i] = main_mark
+          elsif main_mark.to_f > @subject_highest[sub['id'].to_i].to_f
+            @subject_highest[sub['id'].to_i] = main_mark.to_f
           end
           if full_mark > 0
             if subject_marks > 0

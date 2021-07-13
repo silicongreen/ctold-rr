@@ -67,6 +67,7 @@
                       <td class="col-pdf"><b>Total</b></td>
                       <td class="col-pdf"><b>Conv Total</b></td>
                       <td class="col-pdf"><b>Letter Grade</b></td>
+                      <td class="col-pdf"><b>Grade Point</b></td> 
                   </tr>
                   
                   <% sl = 0 %>
@@ -105,7 +106,10 @@
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><%= grade.name %></td>
+                              <td class="col-pdf"><%= grade.credit_points %></td>
+                              <% total_grade_of_allexam = total_grade_of_allexam+grade.credit_points %>
                             <% else %>
+                              <td class="col-pdf">-</td>
                               <td class="col-pdf">-</td>
                             <% end %>  
                             <% total_mark_of_allexam = total_mark_of_allexam+obtain_mark %>

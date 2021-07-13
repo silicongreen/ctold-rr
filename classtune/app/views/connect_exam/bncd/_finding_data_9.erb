@@ -78,6 +78,7 @@
             end  
           end   
           subject_marks = 0
+          full_mark = 0
           unless tab['exams'].blank? 
             tab['exams'].each do |rs|
               if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?

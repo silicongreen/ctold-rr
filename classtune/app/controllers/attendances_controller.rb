@@ -854,7 +854,7 @@ class AttendancesController < ApplicationController
     @date_today = @local_tzone_time.to_date
     if current_user.admin?
       @batches = Batch.active
-    elsif MultiSchool.current_school.code == "sagc" AND @current_user.employee?
+    elsif MultiSchool.current_school.code == "sagc" && @current_user.employee?
       batches = BatchTutor.find_by_employee_id_and_class_teacher(@current_user.employee_record.id,true).map(&:batch_id)
       unless batches.blank?
         @batches = Batch.find_all_by_id(batches)

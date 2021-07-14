@@ -206,6 +206,28 @@ class EmployeesSubjects extends CActiveRecord
 
             return $subject;
         }
+
+        public function getClassTeacherBatches($employee_id)
+        {
+            $subject = array();
+            $i = 0;
+            $batch_id  = array();
+            $btobj = new BatchTutors();
+            $batches = $btobj->get_employee_class_teacher();
+            if($batches)
+            {
+                foreach($batches as $value)
+                {
+                    if(!in_array($value['id'], $batch_id))
+                    {
+                        $subject[$i] = $value;
+                        $i++;
+                    }
+                }
+            }
+
+            return $subject;
+        }
         
         public function getBatch($employee_id)
         {

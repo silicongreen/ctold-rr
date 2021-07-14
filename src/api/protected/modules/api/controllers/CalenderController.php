@@ -1787,7 +1787,16 @@ class CalenderController extends Controller
         if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher)
         {
             $emplyee_subject = new EmployeesSubjects();
-            $bacthes = $emplyee_subject->getBatch(Yii::app()->user->profileId);
+            if(Yii::app()->user->schoolId == 352)
+            {
+                $bacthes = $emplyee_subject->getClassTeacherBatches(Yii::app()->user->profileId);
+            }
+            else
+            {
+                $bacthes = $emplyee_subject->getBatch(Yii::app()->user->profileId);
+            }
+
+            
             $response['data']['batches'] = $bacthes;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "EVENTS_FOUND";

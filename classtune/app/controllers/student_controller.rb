@@ -1752,10 +1752,18 @@ class StudentController < ApplicationController
     unless batch_name.blank?
       if current_user.employee
         if params[:page].blank? or params[:page] != "sections_employee_subject_assignment"
-          batches_all = @current_user.employee_record.batches
-          batches_all += @current_user.employee_record.subjects.collect{|b| b.batch}
-          batches_all = batches_all.uniq unless batches_all.empty?
-          batches_all.reject! {|s| s.name!=batch_name}
+          if MultiSchool.current_school.code == "sagc"
+            batches = BatchTutor.find_by_employee_id_and_class_teacher(@current_user.employee_record.id,true).map(&:batch_id)
+            batches_all = []
+            unless batches.blank?
+              batches_all = Batch.find_all_by_id(batches)
+            end 
+          else  
+            batches_all = @current_user.employee_record.batches
+            batches_all += @current_user.employee_record.subjects.collect{|b| b.batch}
+            batches_all = batches_all.uniq unless batches_all.empty?
+            batches_all.reject! {|s| s.name!=batch_name}
+          end
         else
           batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
         end  
@@ -1827,10 +1835,18 @@ class StudentController < ApplicationController
     
     if current_user.employee
       if params[:page].blank? or params[:page] != "courses_employee_subject_assignment"
-        batches_all = @current_user.employee_record.batches
-        batches_all += @current_user.employee_record.subjects.collect{|b| b.batch}
-        batches_all = batches_all.uniq unless batches_all.empty?
-        batches_all.reject! {|s| s.name!=batch_name}
+        if MultiSchool.current_school.code == "sagc"
+          batches = BatchTutor.find_by_employee_id_and_class_teacher(@current_user.employee_record.id,true).map(&:batch_id)
+          batches_all = []
+          unless batches.blank?
+            batches_all = Batch.find_all_by_id(batches)
+          end 
+        else  
+          batches_all = @current_user.employee_record.batches
+          batches_all += @current_user.employee_record.subjects.collect{|b| b.batch}
+          batches_all = batches_all.uniq unless batches_all.empty?
+          batches_all.reject! {|s| s.name!=batch_name}
+        end
       else
         batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
         

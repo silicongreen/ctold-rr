@@ -13,6 +13,7 @@
       <% else %>
       <%= hidden_field_tag 'attandence_date',@date_today, :id=>'attandence_date' %>
       <% end %>
+      <% unless @batches.blank? %>
       <div class="row">  
         <div class="row_label">
           <div>
@@ -26,7 +27,7 @@
         <div class="row_data">
           <div>
             <div class="custom_drop_wrapper">
-             <%= select :student, :batch_name, options_for_select(batches.map {|b| [b.name, b.batch_id]}, @batch_no.to_i), 
+             <%= select :student, :batch_name, options_for_select(@batches.map {|b| [b.name, b.batch_id]}, @batch_no.to_i), 
               {:prompt => "#{t('select')}"},
               {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&page=courses_attendances_batch&partial_view=student/courses_attendances_batch_view&section_page=sections_attendances_batch&section_partial=student/sections_attendances_batch_view'" ,:before => "$('loading_2').show();",
               :success => "$('loading_2').hide();")}"} %>
@@ -65,6 +66,10 @@
           </div>
         </div>
       </div>
+      <% else %>
+
+      <p>No Class Found</p>
+      <% end %>
       
      
       

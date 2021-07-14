@@ -855,7 +855,7 @@ class AttendancesController < ApplicationController
     if current_user.admin?
       @batches = Batch.active
     elsif MultiSchool.current_school.code == "sagc" && @current_user.employee?
-      class_teachers = BatchTutor.find_by_employee_id_and_class_teacher(@current_user.employee_record.id,true)
+      class_teachers = BatchTutor.find_all_by_employee_id_and_class_teacher(@current_user.employee_record.id,true)
       unless class_teachers.blank?
         batches = class_teachers.map(&:batch_id)
         unless batches.blank?

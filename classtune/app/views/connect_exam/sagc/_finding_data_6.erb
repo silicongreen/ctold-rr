@@ -167,14 +167,17 @@ if @total_std.blank?
                 grand_total_with_fraction = grand_total_with_fraction+main_mark
                 grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                 if @connect_exam_obj.result_type.to_i == 16 and grade.credit_points.to_i == 0 and sub['subject_group_id'].to_i == 0
-                 abort(main_mark.to_s+"-"+total_mark_subject.to_s)
+                 if total_mark_subject > 0
+                  abort(main_mark.to_s+"-"+total_mark_subject.to_s)
+                 end
                  if fourth_subject.blank?
                       u_grade = u_grade+1
                       subject_failed = true
                   else
                     four_subject_failed = true
                   end
-                else
+                elsif sub['subject_group_id'].to_i == 0
+                  abort("here")
                   if !grade.blank? and !grade.name.blank? and ( grade.credit_points.to_i == 0 or total_mark_subject < 20 or (@connect_exam_obj.result_type.to_i == 14 and main_mark < 40)  or (@connect_exam_obj.result_type.to_i == 15 and main_mark < 45) ) and sub['subject_group_id'].to_i == 0
                     if fourth_subject.blank?
                       u_grade = u_grade+1

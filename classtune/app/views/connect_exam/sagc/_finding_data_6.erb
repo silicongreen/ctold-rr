@@ -167,7 +167,8 @@ if @total_std.blank?
                 grand_total_with_fraction = grand_total_with_fraction+main_mark
                 grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                 if @connect_exam_obj.result_type.to_i == 16 and grade.credit_points.to_i == 0 and sub['subject_group_id'].to_i == 0
-                  if fourth_subject.blank?
+                 abort(main_mark.to_s+"-"+total_mark_subject.to_s)
+                 if fourth_subject.blank?
                       u_grade = u_grade+1
                       subject_failed = true
                   else

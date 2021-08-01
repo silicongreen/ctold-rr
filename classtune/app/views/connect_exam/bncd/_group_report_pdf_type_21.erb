@@ -101,14 +101,7 @@
                             <% unless @report_data['report']['exams'].blank? %>  
                                 <% @report_data['report']['exams'].each do |report| %>  
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
-                                    <% if fourth_subject.blank? %>
-                                      <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
-                                    <% else %>
-                                      <% new_marks = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i - 40 %>
-                                      <% if new_marks > 0 %>
-                                        <% obtain_mark = obtain_mark+new_marks.to_i %>
-                                      <% end %>
-                                    <% end %>
+                                    
                                     <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
                                   <% else %>
                                     <td class="col-pdf">-</td>
@@ -137,7 +130,13 @@
                             <% else %>
                               <td class="col-pdf">-</td>
                               <td class="col-pdf">-</td>
-                            <% end %>  
+                            <% end %> 
+                            <% if !fourth_subject.blank? %>
+                              <% new_marks = obtain_mark - 40 %>
+                              <% if new_marks > 0 %>
+                                <% obtain_mark = obtain_mark+new_marks.to_i %>
+                              <% end %>
+                            <% end %> 
                             <% total_mark_of_allexam = total_mark_of_allexam+obtain_mark %>
                             <% full_mark_of_allexam = full_mark_of_allexam+total_mark %>
                       </tr>

@@ -60,7 +60,19 @@
   %>
   <%= render  :partial=>"/connect_exam/bncd/finding_data_6" %>
 <% end %>
-<% if @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 21  %> 
+<% if @connect_exam_obj.result_type.to_i == 21  %> 
+  <%
+        if @tabulation_data.nil?
+          student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+          @tabulation_data = []
+          if student_response['status']['code'].to_i == 200
+            @tabulation_data = student_response['data']
+          end
+        end
+  %>
+  <%= render  :partial=>"/connect_exam/bncd/finding_data_7" %>
+<% end %>
+<% if @connect_exam_obj.result_type.to_i == 14  %> 
   <%
         if @tabulation_data.nil?
           student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)

@@ -136,7 +136,7 @@
                             <% if !fourth_subject.blank? %>
                               <% new_marks = obtain_mark - 40 %>
                               <% if new_marks > 0 %>
-                                <% obtain_mark = obtain_mark+new_marks.to_i %>
+                                <% obtain_mark = new_marks.to_i %>
                               <% end %>
                             <% end %> 
                             <% total_mark_of_allexam = total_mark_of_allexam+obtain_mark %>

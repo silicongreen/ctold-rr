@@ -33,14 +33,28 @@
                       <% if @has_exam_student == false %>
                          <% next %>
                       <% end %>
+                       <%
+                          third_subject = ""
+                          fourth_subject = ""
+                        %>
+                          <% if !@std_subject_hash_type.blank? %>
+                            <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||4") %>
+                              <% fourth_subject = "(4th)" %>
+                            <% end %>
+                            <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||3") %>
+                              <% third_subject = "(3rd)" %>
+                            <% end %>
+                          <% end %>
                       <% sl = sl+1 %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                             <td class="col-pdf  no-warp"><%= sl %></td>
-                            <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>
+                            <td class="col-pdf align-left-baf no-warp"><%= subjects['name'] %><%= fourth_subject %><%= third_subject %></td>
                             <% unless @report_data['report']['exams'].blank? %>  
                                 <% @report_data['report']['exams'].each do |report| %>  
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
-                                    <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                    
+                                      <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                   
                                     <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
                                   <% else %>
                                     <td class="col-pdf">-</td>
@@ -58,11 +72,24 @@
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><%= grade.name %></td>
                               <td class="col-pdf"><%= grade.credit_points %></td>
-                              <% total_grade_of_allexam = total_grade_of_allexam+grade.credit_points %>
+                              <% if fourth_subject.blank? %>
+                                <% total_grade_of_allexam = total_grade_of_allexam.to_f+grade.credit_points.to_f %>
+                              <% else %>
+                                <% new_grade_point = grade.credit_points.to_f-2 %>
+                                <% if new_grade_point > 0 %>
+                                  <% total_grade_of_allexam = total_grade_of_allexam.to_f+new_grade_point.to_f %>
+                                <% end %>  
+                              <% end %>
                             <% else %>
                               <td class="col-pdf">-</td>
                               <td class="col-pdf">-</td>
-                            <% end %>  
+                            <% end %> 
+                            <% if !fourth_subject.blank? %>
+                              <% new_marks = obtain_mark - 40 %>
+                              <% if new_marks > 0 %>
+                                <% obtain_mark = new_marks.to_i %>
+                              <% end %>
+                            <% end %> 
                             <% total_mark_of_allexam = total_mark_of_allexam+obtain_mark %>
                             <% full_mark_of_allexam = full_mark_of_allexam+total_mark %>
                       </tr>
@@ -79,6 +106,5 @@
                   </tr>
                   
               </table>
-                
                 
 <% end %>

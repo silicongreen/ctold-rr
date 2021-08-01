@@ -94,7 +94,7 @@
               end  
             end  
           end
-          if sub['subject_group_id'].to_i == 0
+          if sub['subject_group_id'].to_i == 0 or sub['subject_group_id'].to_i != 0
             if full_mark > 0
               if subject_marks > 0
                 main_mark = ( subject_marks.to_f/full_mark.to_f )*100.00

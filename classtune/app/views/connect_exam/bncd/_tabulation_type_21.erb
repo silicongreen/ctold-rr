@@ -135,7 +135,7 @@
                 <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '4%' %></h4>
                 <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
             </div>
-            <h5 align="center"><%= @connect_exam_obj.name %> Combined Tabulation Sheet Day Shift</h5>
+            <h5 align="center"><%= @connect_exam_obj.name %> Combined Tabulation Sheet <%= @batch.name %> Shift</h5>
             <table width="100%" >
                 <thead>
                     <tr>
@@ -272,12 +272,16 @@
                         <% grades = [] %>
                         <% grade_count = {} %>
                         <% failed = false %>
+                        <% subject_done = [] %>
                         <% @report_data['report']['subjects'].each do |sub| %>
-                          
+                          <% if subject_done.include?(sub['id'].to_i) %>
+                              <% next %>
+                          <% end %>
                           <% subjectdata = Subject.find(sub['id'].to_i) %>
                           <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
                           
                           <% if @has_exam_student != false %>
+                            <% subject_done << sub['id'].to_i %>
                             
                             <% fourth_subject = false %>
                             <% if !@std_subject_hash_type.blank? %>

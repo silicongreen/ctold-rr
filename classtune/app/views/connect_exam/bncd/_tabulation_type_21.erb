@@ -251,7 +251,12 @@
                     <% bonus_mark = 0 %> 
                     
                     <% rowspan = 0 %>
+                    <% subject_done = [] %>
                     <% @report_data['report']['subjects'].each do |sub| %>
+                          <% if subject_done.include?(sub['id'].to_i) %>
+                              <% next %>
+                          <% end %>
+                          <% subject_done << sub['id'].to_i %>
                       <% subjectdata = Subject.find(sub['id'].to_i) %>
                           <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>   
                           <% if @has_exam_student != false %> 
@@ -272,16 +277,13 @@
                         <% grades = [] %>
                         <% grade_count = {} %>
                         <% failed = false %>
-                        <% subject_done = [] %>
+                       
                         <% @report_data['report']['subjects'].each do |sub| %>
-                          <% if subject_done.include?(sub['id'].to_i) %>
-                              <% next %>
-                          <% end %>
+                        
                           <% subjectdata = Subject.find(sub['id'].to_i) %>
                           <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
                           
                           <% if @has_exam_student != false %>
-                            <% subject_done << sub['id'].to_i %>
                             
                             <% fourth_subject = false %>
                             <% if !@std_subject_hash_type.blank? %>
@@ -354,6 +356,7 @@
                     </tr>
                     <% sub_loop = 0 %>
                     <% total_subject = 1 %>
+                     <% subject_done = [] %>
                     <% @report_data['report']['subjects'].each do |sub| %>
                    
                     <% subjectdata = Subject.find(sub['id'].to_i) %>

@@ -366,6 +366,9 @@
                             <% sub_loop = 1 %>
                             <% next %>
                           <% end %>
+                          <% if subject_done.include?(sub['id'].to_i) %>
+                              <% next %>
+                          <% end %>
                           <% subject_done << sub['id'].to_i %>
                           <% total_subject = total_subject+1 %>
                           

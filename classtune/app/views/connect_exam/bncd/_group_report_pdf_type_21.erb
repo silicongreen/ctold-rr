@@ -102,6 +102,8 @@
                                 <% @report_data['report']['exams'].each do |report| %>  
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
                                     
+                                      <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                   
                                     <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
                                   <% else %>
                                     <td class="col-pdf">-</td>

@@ -129,7 +129,15 @@
               unless tab['exams'].blank? 
                 tab['exams'].each do |rs|
                   if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub2['id']].blank? and !rs['result'][rs['exam_id']][sub2['id']][std['id']].blank?
-                    grand_total = grand_total.to_f+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
+                    if fourth_subject == false
+                      grand_total = grand_total.to_f+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
+                    else
+                      new_mark = rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f - 40.00
+                      if new_mark > 0
+                          grand_total = grand_total.to_f+new_mark
+                      end
+
+                    end
                     subject_marks = subject_marks+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f  
                     full_mark = full_mark+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
                   end  

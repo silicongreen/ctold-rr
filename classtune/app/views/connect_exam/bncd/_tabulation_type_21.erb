@@ -355,9 +355,7 @@
                     <% sub_loop = 0 %>
                     <% total_subject = 1 %>
                     <% @report_data['report']['subjects'].each do |sub| %>
-                    <% if subject_done.include?(sub['id'].to_i) %>
-                              <% next %>
-                          <% end %>
+                   
                     <% subjectdata = Subject.find(sub['id'].to_i) %>
                       <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
                        <% if @has_exam_student != false %>
@@ -365,7 +363,9 @@
                             <% sub_loop = 1 %>
                             <% next %>
                           <% end %>
+                          <% subject_done << sub['id'].to_i %>
                           <% total_subject = total_subject+1 %>
+                          
                           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                             <% fourth_subject = false %>
                             <% if !@std_subject_hash_type.blank? %>
@@ -373,7 +373,6 @@
                                 <% fourth_subject = true %>
                               <% end %>
                             <% end %>
-                            <% subject_done << sub['id'].to_i %>
                             <td class="left-text"><%= sub['name'] %></td>
 
                             <% subject_full_mark = 0 %>

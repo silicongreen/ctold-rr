@@ -77,6 +77,89 @@
                                 <% if first_one_done == false %>
                                   <% first_one_done = true %>
                                   <% @report_data['report']['subjects'].each do |subjects2| %>
+                              <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
+                  <% c = 'even'  %>
+                  <% total_mark_of_allexam = 0 %>
+                  <% full_mark_of_allexam = 0 %>
+                  <% total_grade_of_allexam = 0 %>
+                  <tr class="even header-shade">
+                      <td class="col-pdf">
+                          <b>Sl.</b>
+                      </td>
+                      <% number_of_exam = 0%>
+                      <td class="col-pdf no-warp  align-left-baf"><b><%= "SUBJECTS" %></b></td>
+                      <% unless @report_data['report']['exams'].blank? %>
+                        <% @report_data['report']['exams'].each do |report| %>
+                          <% number_of_exam = number_of_exam+1 %>
+                          <td class="col-pdf"><%= report['exam_name'] %></td>
+                        <% end %>
+                      <% end %> 
+                      
+                      <td class="col-pdf"><b>Total Marks</b></td>
+                      <td class="col-pdf"><b>Grade</b></td>
+                      <td class="col-pdf"><b>GP</b></td> 
+                  </tr>
+                  
+                  <% sl = 0 %>
+                  <% subjects_done  = [] %>
+                  <% first_one_done = false %>
+                  <% subject_count = 0 %>
+                  <% unless @report_data['report']['subjects'].blank? %>
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% total_mark = 0 %>
+                      <% obtain_mark = 0 %>
+                      
+                      <% subjectdata = Subject.find(subjects['id'].to_i) %>
+                      <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                      <% if @has_exam_student == false %>
+                         <% next %>
+                      <% end %>
+                       <%
+                          third_subject = ""
+                          fourth_subject = ""
+                        %>
+                          <% if !@std_subject_hash_type.blank? %>
+                            <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||4") %>
+                              <% fourth_subject = "(4th)" %>
+                            <% end %>
+                            <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||3") %>
+                              <% third_subject = "(3rd)" %>
+                            <% end %>
+                          <% end %>
+                      <% if subjects_done.include?(subjects['id'].to_i) %>
+                          <%
+                            next
+                          %>
+                      <% end %>
+                      <% if subjects['subject_group_id'].to_i == 0 or first_one_done == false  %>
+                        <% sl = sl+1 %>
+                      <% end %>
+                      <% subject_count = subject_count+ 1 %>
+
+                      <% subjects_done << subjects['id'].to_i %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                            <td class="col-pdf  no-warp"><%= subject_count %></td>
+                            <td class="col-pdf align-left-baf no-warp"><%= subjects['name'] %><%= fourth_subject %><%= third_subject %></td>
+                            <% unless @report_data['report']['exams'].blank? %>  
+                                <% @report_data['report']['exams'].each do |report| %>  
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
+                                    
+                                      <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                   
+                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
+                                  <% else %>
+                                    <td class="col-pdf">-</td>
+                                  <% end %>   
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                    <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                  <% end %>
+                                <% end %>
+                            <% end %>
+                            <td class="col-pdf"><%= obtain_mark %></td>
+                            <% if subjects['subject_group_id'].to_i > 0 %>
+                                <% if first_one_done == false %>
+                                  <% first_one_done = true %>
+                                  <% @report_data['report']['subjects'].each do |subjects2| %>
                                     <% if subjects2['subject_group_id'].to_i != subjects['subject_group_id'].to_i || subjects2['id'].to_i == subjects['id'].to_i  %>
                                       <% next %>
                                     <% end %>

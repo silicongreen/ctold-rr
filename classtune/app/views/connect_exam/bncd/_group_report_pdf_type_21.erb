@@ -74,6 +74,7 @@
                   <% sl = 0 %>
                   <% subjects_done  = [] %>
                   <% first_one_done = false %>
+                  <% subject_count = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %>
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% total_mark = 0 %>
@@ -101,10 +102,14 @@
                             next
                           %>
                       <% end %>
-                      <% sl = sl+1 %>
+                      <% if subjects['subject_group_id'].to_i == 0 or first_one_done == false  %>
+                        <% sl = sl+1 %>
+                      <% end %>
+                      <% subject_count = subject_count+ 1 %>
+
                       <% subjects_done << subjects['id'].to_i %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                            <td class="col-pdf  no-warp"><%= sl %></td>
+                            <td class="col-pdf  no-warp"><%= subject_count %></td>
                             <td class="col-pdf align-left-baf no-warp"><%= subjects['name'] %><%= fourth_subject %><%= third_subject %></td>
                             <% unless @report_data['report']['exams'].blank? %>  
                                 <% @report_data['report']['exams'].each do |report| %>  

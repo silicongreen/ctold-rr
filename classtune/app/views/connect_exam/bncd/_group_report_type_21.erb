@@ -24,6 +24,7 @@
                   
                   <% sl = 0 %>
                   <% subjects_done  = [] %>
+                  <% first_one_done = false %>
                   <% unless @report_data['report']['subjects'].blank? %>
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% total_mark = 0 %>

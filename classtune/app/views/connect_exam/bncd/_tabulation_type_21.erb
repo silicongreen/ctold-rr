@@ -252,6 +252,7 @@
                     
                     <% rowspan = 0 %>
                     <% subject_done = [] %>
+                    
                     <% @report_data['report']['subjects'].each do |sub| %>
                           <% if subject_done.include?(sub['id'].to_i) %>
                               <% next %>

@@ -124,7 +124,7 @@
                             <td class="col-pdf"><%= obtain_mark %></td>
                             <% if subjects['subject_group_id'].to_i > 0 %>
                                 <% if first_one_done == false %>
-                                  <% first_one_done == true %>
+                                  <% first_one_done = true %>
                                   <% @report_data['report']['subjects'].each do |subjects2| %>
                                     <% if subjects2['subject_group_id'].to_i != subjects['subject_group_id'].to_i || subjects2['id'].to_i == subjects['id'].to_i  %>
                                       <% next %>
@@ -170,7 +170,7 @@
                                     <% end %>
 
                                 <% else %>
-                                  <% first_one_done == false %>
+                                  <% first_one_done = false %>
                                 <% end %>
 
                             <% else %>

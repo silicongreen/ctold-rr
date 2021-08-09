@@ -1783,11 +1783,13 @@ class CalenderController extends Controller
     public function actionGetBatch()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
+        $all = Yii::app()->request->getPost('all');
+      
 
         if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher)
         {
             $emplyee_subject = new EmployeesSubjects();
-            if(Yii::app()->user->schoolId == 352)
+            if(Yii::app()->user->schoolId == 352 && !$all)
             {
                 $bacthes = $emplyee_subject->getClassTeacherBatches(Yii::app()->user->profileId);
             }

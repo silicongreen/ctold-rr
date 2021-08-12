@@ -49,8 +49,7 @@
     </div>    
 
   <div class="header-form-wrapper">
-      <div class='header-right-button'><%= link_to "#{t('view_all')}", :controller => 'assignment', :action => 'assignment_result' %></div>
-        <% if permitted_to? :add_assignment_result,:assignment %>
+        <% if permitted_to? :add_assignment_result,:assignments %>
           <div class='header-right-button'><%= link_to "#{t('add')}", :controller => 'assignment', :action => 'add_assignment_result' %></div>
         <% end %>
   </div>

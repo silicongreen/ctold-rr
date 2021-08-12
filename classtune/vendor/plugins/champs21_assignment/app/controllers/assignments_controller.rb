@@ -464,6 +464,7 @@ class AssignmentsController < ApplicationController
   def deleteassignment_result
     @page = params[:page]
     @assignment_result = AssignmentResult.find(params[:id])
+    abort(@current_user.employee_record.id)
     abort(@assignment_result.inspect)
     if !@assigned_result.blank? && @assigned_result.employee_id == @current_user.employee_record.id
       @assignment_result.destroy

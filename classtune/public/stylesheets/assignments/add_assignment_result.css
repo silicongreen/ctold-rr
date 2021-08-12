@@ -1,0 +1,255 @@
+.ch_homework_answers_wrapper
+{
+    float: left;
+    width: 95%;   
+    background-color: #fff;
+    padding:0px 30px 30px;  
+    border:1px solid #CCC;
+}
+.assignment_container{
+    width: 950px;
+    overflow:hidden;
+
+}
+.assignment_form{
+    float:left;
+    width: 540px;
+    padding-top:20px;;
+}
+#subjects_student_list{
+    float:left;
+    margin-left:0px;
+    width: 390px;
+    padding-top: 30px;
+}
+
+.scrollable{
+    width: 250px;
+    background-color: #EEE;
+    padding :7px;
+    -webkit-border-radius : 10px;
+    -moz-border-radius : 10px;
+}
+#scrollable-list {
+    width: 250px;
+    overflow: auto;
+    height: 160px;
+}
+.select_all{
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom:10px;
+}
+.select_all a {
+    color: #9F0C14;
+    text-decoration: none;
+}
+.select_all a:hover {
+    color: #9F0C14;
+    text-decoration: none;
+}
+.listitem{
+    margin-bottom: 2px;
+    border-bottom: 1px solid #DDDDDD;
+    overflow: hidden;
+    font-size:14px;
+}
+.listitem .check_box {
+    float:left;
+    width: 5px;
+}
+.listitem .student_name {
+    float:left;
+    width: 200px;
+}
+
+#assignment_description{
+    height:150px;
+    overflow: hidden;
+
+}
+.submit_button {
+    margin-left: 210px;
+    padding: 7px 10px;
+    color: #fff;
+    background: #db3434;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    font-weight: bold;
+    font-size: 14px;
+    border:none;
+    cursor:pointer;
+}
+.submit_button:hover {
+    background:#7e0000;
+}
+
+.text-input-bg textarea  {
+    -moz-border-radius:10px 10px 10px 10px;
+    -webkit-border-radius:10px;
+    background-color:#EEEEEE;
+    border:1px solid #C6C6C6;
+    height:120px;
+    margin:5px 0 0 10px;
+    padding:3px 6px;
+    width:215px;
+}
+
+.text-input-bg textarea:focus{
+    background: #fff;
+    border: 1px solid #9e0f15;
+}
+
+#assignment-attachment input{
+    height: 24px;
+}
+.text-input-bg img{
+    padding-top:10px;
+    padding-left: 2px;
+}
+.label-field-pair a {
+    color: #000;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+}
+.label-field-pair a:hover{
+    text-decoration: underline;
+}
+.label-field-pair label {
+/*    width: 122px;*/
+}
+#assignment-submit{
+    padding-top : 30px;
+}
+
+.homework_content
+{
+    height: 40px;
+    padding-top: 3px;
+    width: 100%;
+}
+.homework_content_label
+{
+    color: #444;
+    display: block;
+    float: left;
+    font-size: 14px;
+    font-weight: 600;
+    width: 100%;
+}
+.homework_content_div
+{
+    background-color: #eee;
+    border: 1px solid #c6c6c6;
+    border-radius: 10px;
+    float: left;
+    clear:both;
+    height: 273px;
+    margin-top: 5px;
+    padding: 10px;
+    width: 90%;
+}
+
+.redactor_editor {
+    height: 192px !important;
+    width: 463px !important;
+}
+.ch_news_wrapper
+{
+    float: left;
+    width: 95%;
+    background-color: #fff;
+    padding:30px; 
+    border:1px solid #CCC;
+}
+#add_news_form {
+    padding-left:50px;
+}
+.news_label_field {
+    width:285px;
+}
+.news_label_field label {
+    font-weight:bold;
+    display:block;
+    color:#444;
+    margin-bottom:10px;
+}
+#news_title_text_field_bg {
+    background-color: #eee;
+    height:46px;
+    border: 1px solid #c6c6c6;
+    margin-bottom:20px;
+    width:652px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+}
+#news_title_text_field_bg input {
+    width:615px;
+    height:33px;
+    background:transparent;
+    border:none;
+    padding-left:10px;
+    padding-top:5px;
+    font-weight:bold;
+    font-size:25px;
+}
+#news_content_text_field_bg {
+    background-color: #eee;
+    border: 1px solid #c6c6c6;
+    height: 273px;
+    margin: 0 0 20px 0;
+    padding: 10px;
+    width:632px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+}
+#news_content_text_field_bg textarea {
+    background:transparent;
+    border:2px solid #ddd;
+}
+#announcement_content {
+    width:615px;
+    height:260px;
+    background:transparent;
+    padding: 5px 0 0 10px;
+    font-size:18px;
+}
+.news_publish_button {
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    background:#db3434 none repeat scroll 0 0;
+    color:#FFFFFF;
+    font-size:14px;
+    font-weight:bold;
+    margin-left:270px;
+    margin-top:30px;
+    padding:7px 10px;
+    border:none;
+    cursor:pointer;
+}
+.news_publish_button:hover{
+    background:  #7e0000;
+}
+.fieldWithErrors {
+    height: 42px;
+    width: 648px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+}
+#page-yield #news_title:focus {
+    background: none !important;
+    border: none !important;
+}
+
+/** redactor styles **/
+#news_content_text_field_bg .redactor_box ul{
+    width: 630px !important;
+}
+#news_content_text_field_bg .redactor_box{
+    width: 630px !important;
+}
+#news_content_text_field_bg .redactor_editor{
+    width: 612px  !important;
+    height: 194px !important;
+}

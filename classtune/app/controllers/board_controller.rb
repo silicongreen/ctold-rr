@@ -38,7 +38,8 @@ class BoardController < ApplicationController
     row_first = ['SL','ID','Class Roll','Name','Father Name','Sms Number','Exam Reg. No.','Exam Roll No','Session','GPA']
     new_book.worksheet(0).insert_row(0, row_first)
     @board_exam = BoardExam.find(params[:id],:include=>["board_exam_name","board_exam_group","board_session"])
-    @board_exam_students = BoardExamStudent.find_all_by_batch_id(params[:id2])
+    @board_exam_students = BoardExamStudent.find_all_by_board_exam_id(params[:id],:include=>[:batch,{:student=>[:student_category]},:board_grading_level])
+    # @board_exam_students = BoardExamStudent.find_all_by_batch_id(params[:id2])
     @batch = Batch.find(params[:id2])
     batch_split = @batch.name.split(" ")
     std_loop = 1

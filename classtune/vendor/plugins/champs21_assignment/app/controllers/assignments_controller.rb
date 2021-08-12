@@ -447,11 +447,14 @@ class AssignmentsController < ApplicationController
   end
 
   def add_assignment_result
-    @assignment_result = AssignmentResult.new(params[:assignment_result])
-    @assignment_result.employee_id = @current_user.employee_record.id
-    if request.post? and @assignment_result.save
-      flash[:notice] = "Assignment Result Successfully Added"
-      redirect_to :controller => 'assignment', :action => 'assignment_result'
+    @assignment_result = AssignmentResult.new
+    if request.post?
+      @assignment_result = AssignmentResult.new(params[:assignment_result])
+      @assignment_result.employee_id = @current_user.employee_record.id
+      if @assignment_result.save
+        flash[:notice] = "Assignment Result Successfully Added"
+        redirect_to :controller => 'assignment', :action => 'assignment_result'
+      end
     end  
   end  
 

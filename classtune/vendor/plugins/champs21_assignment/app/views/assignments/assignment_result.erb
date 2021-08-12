@@ -91,7 +91,7 @@
             <td class="col-3">
               <%= I18n.l(r.created_at,:format=>"%A, %d %B, %Y") %>
             </td>
-            <td>
+            <td style="text-align: center;"  class="col-3">
               <%= link_to "<i class='fa fa-trash'></i> #{t('delete_text')}", {:action => "deleteassignment_result", :id=>r.id,:page=>params[:page]}, :confirm => "#{t('delete_confirm_msg')}" %>
             </td>
           </tr>

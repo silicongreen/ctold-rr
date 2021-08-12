@@ -103,11 +103,6 @@ authorization do
       :to=>[
       :defaulter_registration,
       :defaulter_students,
-      :assignment_result,
-      :download_attachment_result,
-      :view_assignment_result,
-      :deleteassignment_result,
-      :add_assignment_result,
       :get_homework_filter,
       :get_homework_filter_publisher,
       :assignment_student_list,

@@ -447,6 +447,9 @@ class AssignmentsController < ApplicationController
   end
 
   def add_assignment_result
+    emp_record = current_user.employee_record 
+    @subjects = emp_record.subjects.active
+    @subjects.reject! {|s| !s.batch.is_active}
     @assignment_result = AssignmentResult.new
     if request.post?
       @assignment_result = AssignmentResult.new(params[:assignment_result])

@@ -464,15 +464,13 @@ class AssignmentsController < ApplicationController
   def deleteassignment_result
     @page = params[:page]
     @assignment_result = AssignmentResult.find(params[:id])
-    abort(@current_user.employee_record.id.to_s)
-    abort(@assignment_result.inspect)
-    if !@assigned_result.blank? && @assigned_result.employee_id == @current_user.employee_record.id
+    if !@assignment_result.blank? && @assignment_result.employee_id == @current_user.employee_record.id
       @assignment_result.destroy
       flash[:notice] = "Assignment Result Removed"
     else
       flash[:notice] = "Sorry you are not allowed to remove this assignment"  
     end
-    redirect_to :controller => 'assignments', :action => 'assignment_result',:page => @page
+    redirect_to :controller => 'assignments', :action => 'assignment_result'
   end
 
   def view_assignment_result

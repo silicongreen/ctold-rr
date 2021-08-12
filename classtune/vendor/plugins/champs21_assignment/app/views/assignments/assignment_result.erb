@@ -100,12 +100,15 @@
 
       </table>
     </div>
+    <div class="extender"></div>
+    <div class="clearfix"></div>
+
+    <%= will_paginate assignment_results %>
   <% else %>
       <p class="flash-msg">No Record Found</p>
   <% end %>
 
-  <div class="extender"></div>
-  <div class="clearfix"></div>
-    <%= will_paginate assignment_results %>
+  
+    
 </div>
 <%= stylesheet_link_tag 'tadded-header' %>

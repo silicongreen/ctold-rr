@@ -1,0 +1,71 @@
+.partial_homework
+{
+    clear: both;
+}
+.partial_homework h2 {
+  color: #2dc99a;
+  float: left;
+  font-size: 38px;
+  font-weight: normal;
+  margin: 0;
+}
+.partial_homework .date_title
+{
+    height:25px;
+    color: #2DC99A;
+    text-align: right;
+    clear: both;
+    font-size: 11px;
+    font-weight: bold;
+}
+.partial_homework .portlet-subcontent {
+  background-color: #ffffff;
+  float: left;
+  width: 80%;
+  border: 1px solid #ccc;
+}
+.partial_homework .timetable_left {
+  border-right: 1px dotted #cccccc;
+  float: left;
+  height: 70px;
+  padding: 10px 0;
+  width: 12%;
+}
+.partial_homework .timetable_right
+{
+    float:right;
+    width:78%;
+}
+.partial_homework .timetable_left img {
+  height: 55px;
+  margin-left: 22px;
+  width: 70px;
+  margin-top: 8px;
+}
+.partial_homework .subcontent-header {
+  color: #000000;
+  float: left;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+  padding: 2px 12px;
+  width: 93%;
+}
+
+.partial_homework .subcontent-info {
+  color: #999999;
+  float: left;
+  font-size: 15px;
+  margin-top: 5px;
+  padding: 2px 12px;
+  width: 93%;
+}
+
+.partial_homework .subcontent-date {
+  color: #999;
+  float: left;
+  font-size: 14px;
+  margin-top: 10px;
+  padding: 2px 15px;
+  width: 93%;
+}

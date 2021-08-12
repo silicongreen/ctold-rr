@@ -70,7 +70,8 @@
           <div class="label-container"><label  for="assignment_subject"><%= "Subject Class"%></label></div>    
               <div class="input-container">  <%= select :assignment_result, :subject_id,
               @subjects.map {|s| ["#{s.name}  - #{s.batch.full_name}",s.id]},
-              {:prompt=>"#{t('select_subject_and_class')}"} %></div>
+              {:prompt=>"#{t('select_subject_and_class')}"} %>
+              </div>
       </div>
       <div class="label-field-pair">
         <div class="label-container"><label for="title"><%= t('title') %></label></div>
@@ -94,45 +95,10 @@
 <%= stylesheet_link_tag 'tadded-header' %>
 
 <style>
-   #employee_department_id
-   {
-     margin:0px;
-   }
-   #batch_batch_id
-   {
-     margin:0px;
-   }
-   .name_listodd{
-    background:#E4EBFE;
-    height:30px;
-    width:400px;
-    border-top:1px solid #C2CEEF;
-}
-.name_listeven{
-    background:#DAE6FF;
-    height:30px;
-    width:400px;
-    border-top:1px solid #C2CEEF;
-}
-.att_list_names {
-    display:inline;
-    font-weight: 600;
-    font-size: 13px;
-}
-label {display:inline;}
-
-#list {
-    width:400px;
-}
-#list li {
-    padding:6px 0 0 50px;
-    list-style-type:none;
-}
-#list li label input {
-    margin-right:10px;
-}
-.text-input-bg2 select
-{
-   height: 300px;
-}
+  .input-container select
+  {
+    width: 32%;
+    margin:5px 0 0 10px;
+    display: initial;
+  }
 </style>    

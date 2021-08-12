@@ -85,7 +85,7 @@
   <% unless @assignment_result.attachment_file_name.nil? %>
   <div class="portlet-subcontent atachment_div" style="width:100%">
     <div style=" float: left; clear:both;  margin: 10px 0px;">
-      <%= link_to 'Download Attachment', :controller => "assignment", :action => "download_attachment_result" , :id=>@assignment_result.id %>
+      <%= link_to 'Download Attachment', :controller => "assignments", :action => "download_attachment_result" , :id=>@assignment_result.id %>
     </div>
   </div>  
   <% end %>

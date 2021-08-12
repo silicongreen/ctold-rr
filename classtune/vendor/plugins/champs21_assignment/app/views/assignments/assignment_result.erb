@@ -83,7 +83,7 @@
               <%= i+1 %>
             </td>
             <td class="col-4">
-              <%=  link_to link_value, :controller => 'assignment', :action => 'view_assignment_result', :id => r.id%>
+              <%=  link_to link_value, :controller => 'assignments', :action => 'view_assignment_result', :id => r.id%>
             </td>
             <td class="col-3">
               <%= r.subject.batch.full_name %> <%= r.subject.name %>

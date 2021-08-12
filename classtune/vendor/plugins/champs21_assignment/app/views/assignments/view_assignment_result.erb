@@ -50,28 +50,38 @@
     </div>    
 
   <div class="header-form-wrapper">
-      <div class='header-right-button'><%= link_to "#{t('view_all')}", :controller => 'assignment', :action => 'assignment_result' %></div>
+      <div class='header-right-button'><%= link_to "#{t('view_all')}", :controller => 'assignments', :action => 'assignment_result' %></div>
         <% if permitted_to? :add_assignment_result,:assignments %>
           <div class='header-right-button'><%= link_to "#{t('add')}", :controller => 'assignments', :action => 'add_assignment_result' %></div>
         <% end %>
   </div>
 </div>
-<div id="page-yield" class="ch_news_wrapper" style="margin-top: 0px;">
+<div id="page-yield" class="partial_homework" style="margin-top: 0px;">
 
-  <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
+  <div class="portlet-subcontent" style="width:100%">     
+  <div class="timetable_left">
+     <% if @assignment_result.subject.icon_number %>
+          <%= image_tag("icons/subjects/"+@assignment_result.subject.icon_number , :size=> "83x60", :alt=> @assignment_result.subject.name) %>
+        <% else %>
+          <%= image_tag("icons/subjects/8.png" , :size=> "83x60", :alt=> @assignment_result.subject.name) %>
+    <% end %>
 
-  <div id="news_title">
-    <%= @assignment_result.title %>
   </div>
-  <div id="news_title">
-    <%= @assignment_result.subject.batch.full_name %> <%= @assignment_result.subject.name %>
+  <div class="timetable_right"  style="float:left;height: 70px;width: 40%;padding: 10px 0;">
+    <div class="subcontent-header themed_text">
+        <%=  @assignment_result.subject.name.to_s+' - '+@assignment_result.title %>
+    </div>                           
+    <div class="subcontent-info"><%= @assignment_result.subject.batch.full_name %> </div>              
   </div>
-
-  
-  <div id="create_date" class="themed_text">
-    <%= t('posted_on') %> <%= I18n.l(@assignment_result.created_at,:format=>"%A, %d %B, %Y") %>
+  <div class="timetable_right"  style="float:left;height: 70px;width: 35%;padding: 10px 0;border-left:1px dotted #cccccc">                            
+    <div class="subcontent-date" style="color:#000;"><b>Created Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> 
+    <% unless @assignment_result.created_at.blank? %>
+    <%="<small>#{@assignment_result.created_at.strftime("%A, %d %B, %Y")}</small>"%>
+    <% end %>
+    
+    </div>                                     
   </div>
-  
+  </div>
   <% unless @assignment_result.attachment_file_name.nil? %>
   <div class="portlet-subcontent atachment_div" style="width:100%">
     <div style=" float: left; clear:both;  margin: 10px 0px;">

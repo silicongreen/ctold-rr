@@ -448,7 +448,6 @@ class AssignmentsController < ApplicationController
 
   def add_assignment_result
     @assignment_result = AssignmentResult.new
-    abort("here")
     if request.post?
       @assignment_result = AssignmentResult.new(params[:assignment_result])
       @assignment_result.employee_id = @current_user.employee_record.id

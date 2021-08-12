@@ -52,6 +52,11 @@ authorization do
     has_permission_on [:assignments],
       :to=>[
       :defaulter_registration,
+      :assignment_result,
+      :download_attachment_result,
+      :view_assignment_result,
+      :deleteassignment_result,
+      :add_assignment_result,
       :defaulter_students,
       :get_homework_filter_publisher,
       :assignment_student_list,

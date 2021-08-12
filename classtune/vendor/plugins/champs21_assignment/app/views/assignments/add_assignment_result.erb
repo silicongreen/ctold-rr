@@ -1,0 +1,128 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<!--<div id="content-header">
+  <%#= show_header_icon %>
+  <h1><%#= t('add') + ' ' + t('news_text') %></h1>
+  <div class='header-sep'>|</div>
+  <div class='sub-header'><%#= t('publish_t') + ' ' + t('school_news') %></div>
+
+</div>-->
+<div class="header-wrapper">
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/notice.png', :html => {:alt => 'Notice'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+       <a href="/assignment/assignment_result">Assignment Results</a>
+      </div>
+      <div class="header-title-sub-text f5">
+
+        </div>
+      </div>
+    </div>    
+
+  <div class="header-form-wrapper">
+      <div class='header-right-button'><%= link_to "#{t('view_all')}", :controller => 'assignment', :action => 'assignment_result' %></div>
+        <% if permitted_to? :add_assignment_result,:assignment %>
+          <div class='header-right-button'><%= link_to "#{t('add')}", :controller => 'assignment', :action => 'add_assignment_result' %></div>
+        <% end %>
+  </div>
+</div>
+
+<div id="page-yield" class="ch_news_wrapper" style="margin-top: 0px;">
+
+  <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
+
+  <% form_for :assignment_result , :html => { :multipart => true } do |f| %>
+
+    <%= error_messages_for :assignment_result %>
+
+    <div id="add_news_form">
+      <div class="news_label_field">
+          <label  for="assignment_subject"><%= "Subject Class"%></label>    
+              <div class="news_title_text_field_bg" >    <%= select :assignment_result, :subject_id,
+              @subjects.map {|s| ["#{s.name}  - #{s.batch.full_name}",s.id]},
+              {:prompt=>"#{t('select_subject_and_class')}"} %></div>
+        </div>
+      <div class="news_label_field">
+        <label for="title"><%= t('title') %></label>
+        <div id="news_title_text_field_bg"><%= f.text_field :title %></div>
+      </div>
+    
+    
+      <div class="news_label_field" >
+          <label >Attach a File</label>
+          <div  class="text-input-bg" id="assignment-attachment"><%= f.file_field  :attachment %></div>
+      </div>
+      
+      
+
+    <%= submit_tag "", :value => "► Save", :class => "news_publish_button", :disable_with => "► #{t('please_wait')}" %>
+  
+    
+
+  <% end %>
+</div>
+<%= stylesheet_link_tag 'tadded-header' %>
+
+<style>
+   #employee_department_id
+   {
+     margin:0px;
+   }
+   #batch_batch_id
+   {
+     margin:0px;
+   }
+   .name_listodd{
+    background:#E4EBFE;
+    height:30px;
+    width:400px;
+    border-top:1px solid #C2CEEF;
+}
+.name_listeven{
+    background:#DAE6FF;
+    height:30px;
+    width:400px;
+    border-top:1px solid #C2CEEF;
+}
+.att_list_names {
+    display:inline;
+    font-weight: 600;
+    font-size: 13px;
+}
+label {display:inline;}
+
+#list {
+    width:400px;
+}
+#list li {
+    padding:6px 0 0 50px;
+    list-style-type:none;
+}
+#list li label input {
+    margin-right:10px;
+}
+.text-input-bg2 select
+{
+   height: 300px;
+}
+</style>    

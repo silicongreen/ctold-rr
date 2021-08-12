@@ -445,6 +445,55 @@ class AssignmentsController < ApplicationController
       page.replace_html 'subject_assignments_list', :partial=>'approved_homework'
     end
   end
+
+  def add_assignment_result
+    @assignment_result = AssignmentResult.new(params[:assignment_result])
+    @assignment_result.employee_id = @current_user.employee_record.id
+    if request.post? and @assignment_result.save
+      flash[:notice] = "Assignment Result Successfully Added"
+      redirect_to :controller => 'assignment', :action => 'assignment_result'
+    end  
+  end  
+
+  def deleteassignment_result
+    @page = params[:page]
+    @assignment_result = AssignmentResult.find(params[:id])
+    if !@assigned_result.blank? && @assigned_result.employee_id == @current_user.employee_record.id
+      @assignment_result.destroy
+      flash[:notice] = "Assignment Result Removed"
+    else
+      flash[:notice] = "Sorry you are not allowed to remove this assignment"  
+    end
+    redirect_to :controller => 'assignment', :action => 'assignment_result',:page => @page
+  end
+
+  def view_assignment_result
+    @assignment_result = AssignmentResult.find(params[:id])
+  end  
+
+  def download_attachment_result
+    @assignment_result =AssignmentResult.find params[:id]
+    unless @assignment_result.nil?
+      if @assignment_result.download_allowed_for(current_user)
+          filename = @assignment_result.attachment_file_name
+          send_file  @assignment_result.attachment.path , :type=>@assignment_result.attachment.content_type,:filename => filename 
+      else
+        flash[:notice] = "#{t('you_are_not_allowed_to_download_that_file')}"
+        redirect_to :controller=>:assignments, :action => 'assignment_result'
+      end
+    else
+      flash[:notice]=t('flash_msg4')
+      redirect_to :controller=>:user ,:action=>:dashboard
+    end
+  end
+
+  def assignment_result
+    @current_user = current_user 
+    if @current_user.employee? or @current_user.admin?
+      emp_record = current_user.employee_record 
+      @assignment_results = AssignmentResult.paginate  :conditions=>["employee_id = ?",emp_record.id],:order=>"created_at desc", :page=>params[:page], :per_page => 10
+    end 
+  end  
   
   def index
     @current_user = current_user

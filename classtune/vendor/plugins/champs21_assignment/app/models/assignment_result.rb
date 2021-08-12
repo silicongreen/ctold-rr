@@ -18,7 +18,7 @@
 
 class AssignmentResult < ActiveRecord::Base
   belongs_to :employee
-  belongs_to :Subject
+  belongs_to :subject
 
   validates_presence_of :employee_id
   validates_presence_of :subject_id

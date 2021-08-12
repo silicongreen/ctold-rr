@@ -456,7 +456,7 @@ class AssignmentsController < ApplicationController
       @assignment_result.employee_id = @current_user.employee_record.id
       if @assignment_result.save
         flash[:notice] = "Assignment Result Successfully Added"
-        redirect_to :controller => 'assignment', :action => 'assignment_result'
+        redirect_to :controller => 'assignments', :action => 'assignment_result'
       end
     end  
   end  
@@ -470,7 +470,7 @@ class AssignmentsController < ApplicationController
     else
       flash[:notice] = "Sorry you are not allowed to remove this assignment"  
     end
-    redirect_to :controller => 'assignment', :action => 'assignment_result',:page => @page
+    redirect_to :controller => 'assignments', :action => 'assignment_result',:page => @page
   end
 
   def view_assignment_result

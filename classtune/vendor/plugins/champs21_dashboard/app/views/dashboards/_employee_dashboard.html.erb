@@ -219,6 +219,9 @@ employee_id = @current_user.employee_record.id
           <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#27aa80; color:white;'><span style='text-align:center;width:80%; float:left;'>Marks Entry</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'marks', :action => 'connect_exam' %>
         <% end %>  
       <% end %>
+      <% if @current_user.employee? and (MultiSchool.current_school.id == 2 or MultiSchool.current_school.id == 361) %>
+        <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#27aa80; color:white;'><span style='text-align:center;width:80%; float:left;'>Assignment Result</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'assignments', :action => 'assignment_result' %>
+      <% end %>
       <% if @current_user.admin? and (MultiSchool.current_school.id == 348) %>
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#58b368; color:white;'><span style='text-align:center;width:80%; float:left;'>Employee Birthday Calender</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'employee', :action => 'birthday_calender' %>
       <% end %>

@@ -461,6 +461,8 @@ class AssignmentsController < ApplicationController
     end  
   end  
 
+
+
   def deleteassignment_result
     @page = params[:page]
     @assignment_result = AssignmentResult.find(params[:id])
@@ -495,9 +497,12 @@ class AssignmentsController < ApplicationController
 
   def assignment_result
     @current_user = current_user 
-    if @current_user.employee? or @current_user.admin?
+    if @current_user.employee?
       emp_record = current_user.employee_record 
       @assignment_results = AssignmentResult.paginate  :conditions=>["employee_id = ?",emp_record.id],:order=>"created_at desc", :page=>params[:page], :per_page => 10
+    end 
+    if @current_user.admin?
+      @assignment_results = AssignmentResult.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
     end 
   end  
   

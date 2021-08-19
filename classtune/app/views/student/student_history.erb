@@ -83,6 +83,30 @@
 
   </div>
   <div id="page-yield" class="bg-disable">
+      <div class="row" style="width:50%">
+        <div class="row_label" >
+          <div>
+            from date
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <%= calendar_date_select_tag "from_date",I18n.l(@to_date,:format=>"%d %b %Y"), :readonly=> true, :popup=>:force, :placeholder => '', :image => '/images/icons/calendar/calendar-icon.png' %>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="width:50%">
+        <div class="row_label" >
+          <div>
+            To date
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <%= calendar_date_select_tag "to_date",I18n.l(@to_date,:format=>"%d %b %Y"), :readonly=> true, :popup=>:force, :placeholder => '', :image => '/images/icons/calendar/calendar-icon.png' %>
+          </div>
+        </div>
+      </div>
     <div id="report-roll-call">
         <div id="page-yield" style="margin-top:0px;">
           <div id="att_report">

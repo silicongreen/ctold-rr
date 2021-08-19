@@ -51,11 +51,11 @@ class StudentController < ApplicationController
   def student_history
     from_date = @local_tzone_time.to_date
     to_date = @local_tzone_time.to_date
-    if !parems[:from_date].blank?
-      from_date = parems[:from_date].to_date
+    if !params[:from_date].blank?
+      from_date = params[:from_date].to_date
     end 
-    if !parems[:to_date].blank?
-      to_date = parems[:to_date].to_date
+    if !params[:to_date].blank?
+      to_date = params[:to_date].to_date
     end  
     @total_student = Student.count
     @total_admitted = Student.count(:conditions=>["admission_date between ? AND ?",from_date,to_date])
@@ -65,11 +65,11 @@ class StudentController < ApplicationController
   def student_list_history
     from_date = @local_tzone_time.to_date
     to_date = @local_tzone_time.to_date
-    if !parems[:from_date].blank?
-      from_date = parems[:from_date].to_date
+    if !params[:from_date].blank?
+      from_date = params[:from_date].to_date
     end 
-    if !parems[:to_date].blank?
-      to_date = parems[:to_date].to_date
+    if !params[:to_date].blank?
+      to_date = params[:to_date].to_date
     end  
     histroy_type = params[:history_type]
     if histroy_type == 1

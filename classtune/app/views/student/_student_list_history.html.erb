@@ -30,6 +30,16 @@
         
      
       <table id="listing table-design">
+            <th class="table-header">
+              <td class="col-2">Roll</td>
+              <td class="col-2">Name</td>
+              <td class="col-2">Class</td>
+              <% if @history_type.to_i == 1 %>
+                <td class="col-2">Admission Date</td>
+              <% else %>
+                <td class="col-2">Archived Date</td>
+              <% end %>
+            </th> 
         
         <% @students.each do |student| %>
                   
@@ -39,6 +49,11 @@
               </td>
               <td class="col-2"><%= student.batch.full_name %>
               </td>
+              <% if @history_type.to_i == 1 %>
+                <td class="col-2"><%= I18n.l(@student.admission_date,:format=>"%d %b %Y") %></td>
+              <% else %>
+                  <td class="col-2"><%= I18n.l(@student.date_of_leaving,:format=>"%d %b %Y") %></td>
+              <% end %>
               
             </tr>          
         <% end %>

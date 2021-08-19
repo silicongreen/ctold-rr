@@ -72,7 +72,7 @@ class StudentController < ApplicationController
       @to_date = params[:to_date].to_date
     end  
     @histroy_type = params[:history_type]
-    if @histroy_type == 1
+    if @histroy_type.to_i == 1
       @students = Student.paginate(:conditions=>["admission_date between ? AND ?",@from_date,@to_date],:include=>[{:batch=>[:course]},:student_category], :page => params[:page], :per_page => 10)
     else
       @students = ArchivedStudent.paginate(:conditions=>["date_of_leaving between ? AND ?",@from_date,@to_date],:include=>[{:batch=>[:course]},:student_category], :page => params[:page], :per_page => 10)

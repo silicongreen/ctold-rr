@@ -95,7 +95,7 @@ class StudentController < ApplicationController
       if @history_type.to_i == 1
         @students = Student.find(:all,:conditions=>["admission_date between ? AND ?",@from_date,@to_date],:include=>[{:batch=>[:course]},:student_category])
       else
-        @students = ArchivedStudent.paginate(:all,:conditions=>["date_of_leaving between ? AND ?",@from_date,@to_date],:include=>[{:batch=>[:course]},:student_category])
+        @students = ArchivedStudent.find(:all,:conditions=>["date_of_leaving between ? AND ?",@from_date,@to_date],:include=>[{:batch=>[:course]},:student_category])
       end  
       Spreadsheet.client_encoding = 'UTF-8'
       new_book = Spreadsheet::Workbook.new

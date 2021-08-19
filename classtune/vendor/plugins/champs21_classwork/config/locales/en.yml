@@ -37,7 +37,7 @@ en:
   deleted_student: "Deleted Student"
 
   classworks:
-    max_size: "5MB max"
+    max_size: "75MB max"
     on_text: "On "
     change_subject: "Change Subject"
     create_new_classwork: "Create new Classwork"

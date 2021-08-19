@@ -30,7 +30,7 @@
         
      
       <table id="listing table-design">
-            <th class="table-header">
+            <tr class="table-header">
               <td class="col-2">Roll</td>
               <td class="col-2">Name</td>
               <td class="col-2">Class</td>
@@ -39,16 +39,14 @@
               <% else %>
                 <td class="col-2">Archived Date</td>
               <% end %>
-            </th> 
+            </tr> 
         
         <% @students.each do |student| %>
                   
             <tr class="tr-<%= cycle('odd', 'even') %>">
               <td class="col-2"><%= student.class_roll_no %></td>
-              <td class="col-2"><%= student.full_name %>
-              </td>
-              <td class="col-2"><%= student.batch.full_name %>
-              </td>
+              <td class="col-2"><%= student.full_name %></td>
+              <td class="col-2"><%= student.batch.full_name %></td>
               <% if @history_type.to_i == 1 %>
                 <td class="col-2"><%= I18n.l(student.admission_date,:format=>"%d %b %Y") %></td>
               <% else %>

@@ -1,0 +1,279 @@
+<%-# Champs21
+   #Copyright 2010 teamCreative Private Limited
+   #
+   #This product includes software developed at
+   #Project Champs21 - http://www.champs21.com/
+   #
+   #Licensed under the Apache License, Version 2.0 (the "License");
+   #you may not use this file except in compliance with the License.
+   #You may obtain a copy of the License at
+   #
+   #  http://www.apache.org/licenses/LICENSE-2.0
+   #
+   #Unless required by applicable law or agreed to in writing,
+   #software distributed under the License is distributed on an
+   #"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   #KIND, either express or implied.  See the License for the
+   #specific language governing permissions and limitations
+   #under the License. -%>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/dataTables.material.min.css"/>
+<script type="text/javascript" src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/dataTables.material.min.js"></script>
+<link rel="stylesheet" href="/stylesheets/select2.min.css">
+<%= javascript_include_tag 'select2.full.min.js' %>
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'form-bootstrap' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
+<div id="content">
+  <div class="header-wrapper">
+
+    <div class="header-title">
+      <div class="header-icon">
+        <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+      </div>
+      <div class="header-title-text-wrapper">
+        <div class="header-title-main-text f2">
+          <%= t('student_details') %>
+        </div>
+        <div class="clearfix"></div>
+        <div class="header-title-sub-text">
+          <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+        </div>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="tabbed-header-wrapper">
+      <ul class="header-tabs">
+        <li>
+          <%= link_to "Student Search", {:controller => 'student', :action => 'index'}, {:class => 'f2'} %>
+        </li>
+        <li>
+          <%= link_to t('view_all'), {:controller => 'student', :action => 'view_all'}, {:class => 'f2'} %>
+        </li>
+        <li class="active">
+          <%= link_to 'Students History', {:controller => 'student', :action => 'student_history'}, {:class => 'f2'} %>
+        </li>
+        <li>
+          <%= link_to 'Category Wise Students', {:controller => 'student', :action => 'category_student'}, {:class => 'f2'} %>
+        </li>
+        <li>
+          <%= link_to "Class Section", {:controller => 'student', :action => 'class_section'}, {:class => 'f2'} %>
+        </li>
+        <li>
+          <%= link_to "Graduation Lists", {:controller => 'student', :action => 'graduation_lists'}, {:class => 'f2'} %>
+        </li>
+        <li>
+          <%= link_to t('advanced'), {:controller => 'student', :action => 'advanced_search'}, {:class => 'f2'} %>
+        </li>
+
+      </ul>
+    </div>
+
+  </div>
+  <div id="page-yield" class="bg-disable">
+    <div id="report-roll-call">
+        <div id="page-yield" style="margin-top:0px;">
+          <div id="att_report">
+            <div class="clearfix"></div>
+            <div class="CSSTableGenerator" style="width: 97%;margin-top: 20px;">
+              <table>
+                <tbody>
+                <tr>
+                  <td class="col-2"><b>Type</b></td>
+                  <td class="col-2"><b>Number of Students</b></td>
+                </tr>
+              
+                <tr>
+                  <td class="col-2">
+                    <b><%= "Total Student" %></b>
+                  </td>
+                  <td class="col-2"><b><%= @total_student %></b></td>
+
+                </tr>
+                <tr>
+                  <td class="col-2">
+                    <b><%= "New Admission" %></b>
+                  </td>
+                  <td class="col-2"><b><%= @total_admitted %></b></td>
+
+                </tr>
+                <tr>
+                  <td class="col-2">
+                    <b><%= "Archived Student" %></b>
+                  </td>
+                  <td class="col-2"><b><%= @total_archived %></b></td>
+
+                </tr>
+
+                </tbody>
+              </table>
+                
+            </div>
+
+            <link href="/stylesheets/list_table.css?1526281034" media="screen" rel="stylesheet" type="text/css">
+
+            <style>
+              .CSSTableGenerator td.view:hover
+              {
+                background: #E6585A;
+                color: white;
+              }
+              .CSSTableGenerator td.view
+              {
+                cursor: pointer;
+              }
+              .CSSTableGenerator td a
+              {
+                color: inherit;
+                padding : 0;
+                background-color: inherit;
+                float: none;
+                display: block;
+                margin: -20px;
+                padding: 10px;
+              }
+              .CSSTableGenerator td
+              {
+                font-size: 20px;
+                text-align:center;
+                padding: 10px;
+              }
+              .CSSTableGenerator td a:hover
+              {
+                color: inherit;
+                padding : 0;
+                background-color: inherit;
+                float: none;
+                display: block;
+                margin: -20px;
+                padding: 10px;
+              }
+              .CSSTableGenerator table tr td
+              {
+                font-weight: bold;
+                overflow: hidden;
+              }
+              .checkmark {
+                display:inline-block;
+                width: 22px;
+                height:22px;
+                -ms-transform: rotate(45deg); /* IE 9 */
+                -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+                transform: rotate(45deg);
+              }
+
+              span div.absent {
+                position: absolute;
+                width:22px;
+                height:22px;
+                background-color: #B3B9BB;
+                border-radius:11px;
+                left:0;
+                top:0;
+              }
+
+              .checkmark_circle {
+                position: absolute;
+                width:22px;
+                height:22px;
+                background-color: #0691D5;
+                border-radius:11px;
+                left:0;
+                top:0;
+              }
+
+              .checkmark_stem {
+                position: absolute;
+                width:3px;
+                height:9px;
+                background-color:#fff;
+                left:11px;
+                top:6px;
+              }
+
+              .checkmark_kick {
+                position: absolute;
+                width:3px;
+                height:3px;
+                background-color:#fff;
+                left:8px;
+                top:12px;
+              }
+            </style>  </div>
+
+
+
+
+
+
+        </div>
+      <style>
+        .label-field-pair label {
+          width: 80px;
+        }
+        .text-input-bg img {
+          padding-top: 10px;
+          padding-left: 2px;
+        }
+        .row {
+          background-color: #f8f8fa;
+          border: 1px solid #DFE1E2;
+          float: left;
+          width: 30%;
+          margin-right: 28px;
+          border-right: 1px solid #DFE1E2;
+        }
+        .row_label {
+          background-color: #ffffff;
+          border-right: 1px solid #DFE1E2;
+          float: left;
+          width: 48.2%;
+          padding: 0px 0px;
+        }
+        .row_label div {
+          color: #868A8B;
+          float: left;
+          padding: 8px 10px;
+          width: 80%;
+        }
+        .row_data {
+          float: left;
+          width: 48.6%;
+        }
+        .custom_drop_wrapper select::-ms-expand {
+          display: none;
+        }
+        img.calendar_date_select_popup_icon
+        {
+          border: 0px;
+          cursor: pointer;
+          width: 20px;
+          float: left;
+          margin: 7px;
+        }
+        .cds_header .month
+        {
+          padding:0px;
+        }
+
+      </style>
+    </div>
+
+  </div>
+
+
+  <link href="/stylesheets/tadded-header.css?1526281034" media="screen" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/inline-calendar.css?1526281034" media="screen" rel="stylesheet" type="text/css">
+</div>

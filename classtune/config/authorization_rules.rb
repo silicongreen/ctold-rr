@@ -2978,6 +2978,8 @@ authorization do
       :category_student,
       :category_student_pdf,
       :get_section_by_class,
+      :student_history,
+      :student_list_history,
       :update_letter_status,
       :generate_pdf_letter,
       :forward_form,

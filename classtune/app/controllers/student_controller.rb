@@ -47,6 +47,39 @@ class StudentController < ApplicationController
     @schoo_batch_id = Batch.all.map(&:id)
     @graduation_session = BatchTransfer.find(:all,:conditions=>["from_id IN (?) and to_id = ?",@schoo_batch_id,0],:limit=>100,:order=>'created_at DESC')
   end
+
+  def student_history
+    from_date = @local_tzone_time.to_date
+    to_date = @local_tzone_time.to_date
+    if !parems[:from_date].blank?
+      from_date = parems[:from_date].to_date
+    end 
+    if !parems[:to_date].blank?
+      to_date = parems[:to_date].to_date
+    end  
+    @total_student = Student.count
+    @total_admitted = Student.count(:conditions=>["admission_date between ? AND ?",from_date,to_date])
+    @total_archived = ArchivedStudent.count(:conditions=>["date_of_leaving between ? AND ?",from_date,to_date])
+  end 
+  
+  def student_list_history
+    from_date = @local_tzone_time.to_date
+    to_date = @local_tzone_time.to_date
+    if !parems[:from_date].blank?
+      from_date = parems[:from_date].to_date
+    end 
+    if !parems[:to_date].blank?
+      to_date = parems[:to_date].to_date
+    end  
+    histroy_type = params[:history_type]
+    if histroy_type == 1
+      students = Student.paginate(:conditions=>["admission_date between ? AND ?",from_date,to_date],:include=>[{:batch=>[:course]},:student_category], :page => params[:page], :per_page => 10)
+    else
+      students = ArchivedStudent.paginate(:conditions=>["date_of_leaving between ? AND ?",from_date,to_date],:include=>[{:batch=>[:course]},:student_category], :page => params[:page], :per_page => 10)
+    end  
+    render :partial => "student_list_history"
+
+  end  
   
   def regenerate_order_id
     require "openssl"

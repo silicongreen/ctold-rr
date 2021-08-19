@@ -62,9 +62,7 @@
         <li>
           <%= link_to t('view_all'), {:controller => 'student', :action => 'view_all'}, {:class => 'f2'} %>
         </li>
-        <li class="active">
-          <%= link_to 'Students History', {:controller => 'student', :action => 'student_history'}, {:class => 'f2'} %>
-        </li>
+        
         <li>
           <%= link_to 'Category Wise Students', {:controller => 'student', :action => 'category_student'}, {:class => 'f2'} %>
         </li>
@@ -73,6 +71,9 @@
         </li>
         <li>
           <%= link_to "Graduation Lists", {:controller => 'student', :action => 'graduation_lists'}, {:class => 'f2'} %>
+        </li>
+        <li class="active">
+          <%= link_to 'Students History', {:controller => 'student', :action => 'student_history'}, {:class => 'f2'} %>
         </li>
         <li>
           <%= link_to t('advanced'), {:controller => 'student', :action => 'advanced_search'}, {:class => 'f2'} %>

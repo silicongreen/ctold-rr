@@ -131,7 +131,7 @@
     letter-spacing: 0.75px;
     text-decoration: none;
     display: block;
-    padding: 17px 25px;
+    padding: 17px 10px;
 }
 .header-wrapper .tabbed-header-wrapper ul.header-tabs li:hover {
     background-color: #F8F9FA;

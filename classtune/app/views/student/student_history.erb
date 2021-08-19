@@ -86,7 +86,8 @@
       
     <div id="report-roll-call">
         <div id="page-yield" style="margin-top:0px;">
-          <div class="row" style="width:50%">
+        <%- form_for :search_by_date do |c| -%>
+          <div class="row" style="width:97%">
         <div class="row_label" >
           <div>
             from date
@@ -98,7 +99,7 @@
           </div>
         </div>
       </div>
-      <div class="row" style="width:50%">
+      <div class="row" style="width:97%">
         <div class="row_label" >
           <div>
             To date
@@ -110,6 +111,12 @@
           </div>
         </div>
       </div>
+      <div id="submit-button">
+          <%=submit_tag("► #{t('create_text')}", :disable_with => "► #{t('please_wait')}") %>
+      </div>
+
+
+    <%- end -%>
           <div id="att_report">
             <div class="clearfix"></div>
             <div class="CSSTableGenerator" style="width: 97%;margin-top: 20px;">
@@ -247,6 +254,13 @@
       <style>
         .label-field-pair label {
           width: 80px;
+        }
+        #from_date,#to_date
+        {
+          margin-top: 6px;
+          height: 21px;
+          float: left;
+          margin-left: 10px;
         }
         .text-input-bg img {
           padding-top: 10px;

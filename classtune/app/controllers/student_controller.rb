@@ -109,8 +109,8 @@ class StudentController < ApplicationController
      
       std_loop = 1
       
-      unless students.blank?
-        students.each do |student|
+      unless @students.blank?
+        @students.each do |student|
           
             
         

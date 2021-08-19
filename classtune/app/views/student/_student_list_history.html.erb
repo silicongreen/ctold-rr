@@ -62,7 +62,7 @@
     <div class="clearfix"></div>
 
     <%= will_paginate @students,:params => { :from_date => @from_date,:to_date => @to_date,:history_type => @history_type }, :renderer => 'RemoteLinkRenderer', :remote=>{:update=>'students'}, :page_links => false %>
-    <div class="clearfix"></div>
+    <div class="clearfix" style="margin-top:10px;"></div>
     <%= link_to "Excell Report", {:controller => "student", :action => "student_history_excell",:from_date => @from_date,:to_date => @to_date,:history_type => @history_type },:target => '_blank' %>
   </div>
   

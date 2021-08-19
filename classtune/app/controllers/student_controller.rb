@@ -63,19 +63,19 @@ class StudentController < ApplicationController
   end 
   
   def student_list_history
-    from_date = @local_tzone_time.to_date
-    to_date = @local_tzone_time.to_date
+    @from_date = @local_tzone_time.to_date
+    @to_date = @local_tzone_time.to_date
     if !params[:from_date].blank?
-      from_date = params[:from_date].to_date
+      @from_date = params[:from_date].to_date
     end 
     if !params[:to_date].blank?
-      to_date = params[:to_date].to_date
+      @to_date = params[:to_date].to_date
     end  
-    histroy_type = params[:history_type]
-    if histroy_type == 1
-      students = Student.paginate(:conditions=>["admission_date between ? AND ?",from_date,to_date],:include=>[{:batch=>[:course]},:student_category], :page => params[:page], :per_page => 10)
+    @histroy_type = params[:history_type]
+    if @histroy_type == 1
+      @students = Student.paginate(:conditions=>["admission_date between ? AND ?",@from_date,@to_date],:include=>[{:batch=>[:course]},:student_category], :page => params[:page], :per_page => 10)
     else
-      students = ArchivedStudent.paginate(:conditions=>["date_of_leaving between ? AND ?",from_date,to_date],:include=>[{:batch=>[:course]},:student_category], :page => params[:page], :per_page => 10)
+      @students = ArchivedStudent.paginate(:conditions=>["date_of_leaving between ? AND ?",@from_date,@to_date],:include=>[{:batch=>[:course]},:student_category], :page => params[:page], :per_page => 10)
     end  
     render :partial => "student_list_history"
 

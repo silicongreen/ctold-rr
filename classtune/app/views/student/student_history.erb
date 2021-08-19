@@ -111,7 +111,7 @@
           </div>
         </div>
       </div>
-      <div class="row" style="width:97%">
+      <div class="row" style="width:95%; padding:10px;">
         <div id="submit-button">
             <%=submit_tag("Search", :disable_with => "► #{t('please_wait')}") %>
         </div>
@@ -129,21 +129,21 @@
                   <td class="col-2"><b>Number of Students</b></td>
                 </tr>
               
-                <tr>
+                <tr >
                   <td class="col-2">
                     <b><%= "Total Student" %></b>
                   </td>
                   <td class="col-2"><b><%= @total_student %></b></td>
 
                 </tr>
-                <tr>
+                <tr style="cursor:pointer;" id="new_std">
                   <td class="col-2">
                     <b><%= "New Admission" %></b>
                   </td>
                   <td class="col-2"><b><%= @total_admitted %></b></td>
 
                 </tr>
-                <tr>
+                <tr style="cursor:pointer;" id="archive_std">
                   <td class="col-2">
                     <b><%= "Archived Student" %></b>
                   </td>
@@ -154,6 +154,11 @@
                 </tbody>
               </table>
                 
+            </div>
+
+            <div id="students">
+
+
             </div>
 
             <link href="/stylesheets/list_table.css?1526281034" media="screen" rel="stylesheet" type="text/css">
@@ -318,3 +323,19 @@
   <link href="/stylesheets/tadded-header.css?1526281034" media="screen" rel="stylesheet" type="text/css">
   <link href="/stylesheets/inline-calendar.css?1526281034" media="screen" rel="stylesheet" type="text/css">
 </div>
+
+<script>
+  j('#new_std').click(function (e){
+      j.post( "/student/student_list_history", { to_date: j("#to_date").val(),from_date: j("#from_date").val(),history_type:1 })
+      .done(function( data ) {
+        j("#students").html(data);
+      });
+  });
+  j('#archive_std').click(function (e){
+      j.post( "/student/student_list_history", { to_date: j("#to_date").val(),from_date: j("#from_date").val(),history_type:2 })
+      .done(function( data ) {
+        j("#students").html(data);
+      });
+  });
+ 
+</script>

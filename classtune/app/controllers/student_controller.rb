@@ -80,6 +80,59 @@ class StudentController < ApplicationController
     render :partial => "student_list_history"
 
   end  
+
+  def student_history_excell
+      require 'spreadsheet'
+      @from_date = @local_tzone_time.to_date
+      @to_date = @local_tzone_time.to_date
+      if !params[:from_date].blank?
+        @from_date = params[:from_date].to_date
+      end 
+      if !params[:to_date].blank?
+        @to_date = params[:to_date].to_date
+      end  
+      @history_type = params[:history_type]
+      if @history_type.to_i == 1
+        @students = Student.find(:all,:conditions=>["admission_date between ? AND ?",@from_date,@to_date],:include=>[{:batch=>[:course]},:student_category], :page => params[:page], :per_page => 10)
+      else
+        @students = ArchivedStudent.paginate(:all,:conditions=>["date_of_leaving between ? AND ?",@from_date,@to_date],:include=>[{:batch=>[:course]},:student_category], :page => params[:page], :per_page => 10)
+      end  
+      Spreadsheet.client_encoding = 'UTF-8'
+      new_book = Spreadsheet::Workbook.new
+      sheet1 = new_book.create_worksheet :name => 'student_list'
+      if @history_type.to_i == 1
+        row_first = ['SL','Student Id','Student Name','class','Admission Date']
+      else
+        row_first = ['SL','Student Id','Student Name','class','Admission Date']
+      end  
+      new_book.worksheet(0).insert_row(0, row_first)
+     
+      std_loop = 1
+      
+      unless students.blank?
+        students.each do |student|
+          
+            
+        
+          tmp_row = []
+          tmp_row << std_loop
+          tmp_row << student.admission_no
+          tmp_row << student.full_name
+          tmp_row << student.batch.full_name
+          if @history_type.to_i == 1
+            tmp_row << I18n.l(student.admission_date,:format=>"%d %b %Y")
+          else   
+            tmp_row << I18n.l(student.date_of_leaving,:format=>"%d %b %Y")
+          end
+            
+          new_book.worksheet(0).insert_row(std_loop, tmp_row)
+          std_loop = std_loop+1
+        end
+      end
+      spreadsheet = StringIO.new 
+      new_book.write spreadsheet 
+      send_data spreadsheet.string, :filename => "student_list.xls", :type =>  "application/vnd.ms-excel"
+  end  
   
   def regenerate_order_id
     require "openssl"

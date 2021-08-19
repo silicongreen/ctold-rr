@@ -31,7 +31,7 @@
      
       <table id="listing table-design">
             <tr class="table-header">
-              <td class="col-2">Roll</td>
+              <td class="col-2">Student Id</td>
               <td class="col-2">Name</td>
               <td class="col-2">Class</td>
               <% if @history_type.to_i == 1 %>
@@ -44,7 +44,7 @@
         <% @students.each do |student| %>
                   
             <tr class="tr-<%= cycle('odd', 'even') %>">
-              <td class="col-2"><%= student.class_roll_no %></td>
+              <td class="col-2"><%= student.admission_no %></td>
               <td class="col-2"><%= student.full_name %></td>
               <td class="col-2"><%= student.batch.full_name %></td>
               <% if @history_type.to_i == 1 %>
@@ -60,9 +60,10 @@
    
     
     <div class="clearfix"></div>
+
     <%= will_paginate @students,:params => { :from_date => @from_date,:to_date => @to_date,:history_type => @history_type }, :renderer => 'RemoteLinkRenderer', :remote=>{:update=>'students'}, :page_links => false %>
-    
-    
+    <div class="clearfix"></div>
+    <%= link_to "Excell Report", {:controller => "student", :action => "student_history_excell",:from_date => @from_date,:to_date => @to_date,:history_type => @history_type },:target => '_blank' %>
   </div>
   
 <% end %> 

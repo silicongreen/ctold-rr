@@ -2980,6 +2980,7 @@ authorization do
       :get_section_by_class,
       :student_history,
       :student_list_history,
+      :student_history_excell,
       :update_letter_status,
       :generate_pdf_letter,
       :forward_form,

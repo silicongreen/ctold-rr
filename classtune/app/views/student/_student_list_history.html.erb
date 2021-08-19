@@ -50,9 +50,9 @@
               <td class="col-2"><%= student.batch.full_name %>
               </td>
               <% if @history_type.to_i == 1 %>
-                <td class="col-2"><%= I18n.l(@student.admission_date,:format=>"%d %b %Y") %></td>
+                <td class="col-2"><%= I18n.l(student.admission_date,:format=>"%d %b %Y") %></td>
               <% else %>
-                  <td class="col-2"><%= I18n.l(@student.date_of_leaving,:format=>"%d %b %Y") %></td>
+                  <td class="col-2"><%= I18n.l(student.date_of_leaving,:format=>"%d %b %Y") %></td>
               <% end %>
               
             </tr>          

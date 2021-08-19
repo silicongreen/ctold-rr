@@ -103,7 +103,7 @@ class StudentController < ApplicationController
       if @history_type.to_i == 1
         row_first = ['SL','Student Id','Student Name','class','Admission Date']
       else
-        row_first = ['SL','Student Id','Student Name','class','Admission Date']
+        row_first = ['SL','Student Id','Student Name','class','Archived Date']
       end  
       new_book.worksheet(0).insert_row(0, row_first)
      

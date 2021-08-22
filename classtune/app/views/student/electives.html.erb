@@ -82,7 +82,7 @@
 
   <div class="name" style="padding-top: 7px;"><%= t('subject') %></div><div class="val themed_text" style="padding-top: 7px;"><span>:</span><%= @elective_subject.name %></div>
   <% else %>
-  <div class="name"><%= "Class" %></div><div class="val themed_text"><span>:</span><%= @batch.course.name %></div>
+  <div class="name"><%= "Class" %></div><div class="val themed_text"><span>:</span><%= @batch.course.course_name %></div>
   <div class="name" style="padding-top: 7px;"><%=t('elective_group') %></div><div class="val themed_text" style="padding-top: 7px;"><span>:</span><%= @elective_group.name %><%= @s_message_for_elective %></div>
   <div class="name" style="padding-top: 7px;"><%= t('subject') %></div><div class="val themed_text" style="padding-top: 7px;"><span>:</span><%= @elective_subject.name %><%= @s_message_for_subject %></div>
   <% end %>

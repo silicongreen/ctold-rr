@@ -1,6 +1,7 @@
 <ul id="department-list">
     <% unless @assigned_subjects.empty? %>
        <% @assigned_subjects.each do |e| %>
+         <%= e.subject_id %>
          <% @subject = Subject.find_by_id(e.subject_id) %>
             <% unless $subject.blank? %>
                <li class="list<%=cycle('even', 'odd')%>">

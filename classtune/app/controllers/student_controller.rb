@@ -5837,6 +5837,9 @@ class StudentController < ApplicationController
       @subject_students = []
       unless @subject_students_all.blank?
         @subject_students_all.each do |std|
+          if std.student.blank?
+            next
+          end  
           if std.student.batch_id == @batch.id
             @subject_students << std
           end

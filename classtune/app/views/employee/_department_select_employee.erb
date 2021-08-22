@@ -1,11 +1,13 @@
 <ul id="department-list">
     <% unless @assigned_subjects.empty? %>
        <% @assigned_subjects.each do |e| %>
-         <% @subject = Subject.find(e.subject_id) %>
-           <li class="list<%=cycle('even', 'odd')%>">
-              <%= @subject.batch.full_name %>&nbsp;&nbsp;<%= @subject.name %>
-              <div class="remove"><%= link_to_remote "#{t('delete_text')}", :url => {:action => "remove_employee_subject", :id => e.employee_id, :id1=>e.subject_id},:confirm => "#{t('delete_confirm_msg')}" %></div>        </li>
-           </li>
+         <% @subject = Subject.find_by_id(e.subject_id) %>
+            <% unless $subject.blank? %>
+               <li class="list<%=cycle('even', 'odd')%>">
+                  <%= @subject.batch.full_name %>&nbsp;&nbsp;<%= @subject.name %>
+                  <div class="remove"><%= link_to_remote "#{t('delete_text')}", :url => {:action => "remove_employee_subject", :id => e.employee_id, :id1=>e.subject_id},:confirm => "#{t('delete_confirm_msg')}" %></div>        </li>
+               </li>
+           <% end %>
        <% end %>
     <% end %>
 

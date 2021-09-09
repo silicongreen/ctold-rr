@@ -152,10 +152,10 @@
                           <% absent_att = 0 %>   
                             
                           <% e_subject_id = 0 %>
-                          <% if @student.admission_date > @connect_exam_obj.attandence_start_date %>
-                            <% start_date = @student.admission_date %>
+                          <% if @student.admission_date.to_date > @connect_exam_obj.attandence_start_date.to_date %>
+                            <% start_date = @student.admission_date.to_date %>
                           <% else %>
-                            <% start_date = @connect_exam_obj.attandence_start_date %>
+                            <% start_date = @connect_exam_obj.attandence_start_date.to_date %>
                           <% end %>  
                           <% unless @batch_subjects.blank? %>
                             <% @batch_subjects.each do |subject| %>
@@ -197,7 +197,7 @@
                       <%  if @all_subjects.include?(report['id'].to_i) %>
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                             <td class="col-pdf no-warp  align-left"><%= report['subject_name'] %></td>
-                            <td class="col-pdf" colspan="2"><b><%= report['subject_comment'] unless report['subject_comment'].blank? %></b></td>
+                            <td class="col-pdf" colspan="4"><b><%= report['subject_comment'] unless report['subject_comment'].blank? %></b></td>
                         </tr>
                       <% end %>
                     <% end %>
@@ -210,10 +210,14 @@
                     <td>
                       <b><%= sprintf( "%0.02f", total_marks_obtain) %></b>
                     </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
                   </tr>
                   <tr class="even"> 
                     <td class="col-pdf no-warp  align-left">Comment on Overall Performance</td>
-                    <td colspan="2">
+                    <td colspan="4">
                     <% if !@exam_comment.blank? %>
                       <b><%= @exam_comment.comments %></b>
                     <% end %>
@@ -222,12 +226,12 @@
                   </tr>
                   <tr class="even"> 
                     <td  class="col-pdf no-warp  align-left">Total No. of Working Days </td>
-                    <td colspan="2"><b><%= @connect_exam_obj.total_working_days %> Days</b></td>
+                    <td colspan="4"><b><%= @connect_exam_obj.total_working_days %> Days</b></td>
                   </tr>
                   <tr class="even"> 
                     <td>Signature of Principal</td>
-                    <td colspan="2">
-                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"30%" %>
+                    <td colspan="4">
+                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"20%" %>
                       <br/>
                       <%= Time.now.strftime("%d/%m/%Y") %>
                     </td>

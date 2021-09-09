@@ -12,17 +12,14 @@ c<% unless @report_data.blank?  or  @report_data['report'].blank? %>
                           </td>
                           <td width="74%">
                               <h4 align="center"><font size="7" color="#4CAEE3">EUROPEAN STANDARD SCHOOL(ESS)</font></h2>
-                              <h4 align="center" style="margin-top:-5px;"><font size="6" color="#000"><%= @connect_exam_obj.name %></font></h2>
-                              <% month_number = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
                               <h4 align="center" style="margin-top:-5px;">
                                 <font size="6" color="#000">
-                                  <% if month_number.to_i>6 %>
-                                    Session : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %>
-                                  <% else %>
-                                    Session : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>
-                                  <% end %>
+                                  Assessment Report Card
                                 </font>
                               </h4>
+                              <h4 align="center" style="margin-top:-5px;"><font size="6" color="#000"><%= @connect_exam_obj.name %></font></h2>
+                              <% month_number = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
+                              <h4 align="center" style="margin-top:-5px;"><font size="6" color="#000"><%= @batch.name %></font></h4>
                               <h4 align="center" style="margin-top:-5px;">
                                 <font size="6" color="#000">
                                   Class : <%= @batch.course.course_name %>
@@ -87,8 +84,20 @@ c<% unless @report_data.blank?  or  @report_data['report'].blank? %>
 
                   <% else %>
                   <tr class="even">
+                      <td colspan="5" ><b>ACADEMIC PERFORMANCE</b></td>
+                  </tr>
+                  <tr class="even">
                       <td class="col-pdf" rowspan="2"><b><%= "Subject" %></b></td>
-                      <td class="col-pdf" colspan="4"><b><%= "Class Test 2 (Out of 25)" %></b></td>
+                      <td class="col-pdf" colspan="4"><b>
+                      <% if !@connect_exam_obj.name.upcase.index("CT 1").nil? %>
+                        <%= "Class Test 1 (Out of 25)" %>
+                      <% elsif !@connect_exam_obj.name.upcase.index("CT 2").nil? %>
+                        <%= "Class Test 2 (Out of 25)" %>
+                      <% elsif !@connect_exam_obj.name.upcase.index("CT 3").nil? %>
+                        <%= "Class Test 3 (Out of 25)" %>
+                      <% end %>
+                      </b></td>
+
                   </tr>
                   <tr class="even">
                     

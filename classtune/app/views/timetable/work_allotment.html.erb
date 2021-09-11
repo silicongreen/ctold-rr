@@ -43,7 +43,10 @@
         <li class="heading">
           <%= batch.full_name %>
         </li>
-        <% batch.subjects.each do |subj| %>
+        <%
+        subjects = Subject.find(:all,:conditions=>["subjects.batch_id = ? and subjects.is_deleted = ? and (subjects.elective_group_id is null or (elective_groups.is_deleted = ? and elective_groups.batch_id = ?))",batch.id,false,false,batch.id])
+        %>
+        <% subjects.each do |subj| %>
           <% if MultiSchool.current_school.id != 352 %>
             <% subj.employees.each do |e|  %>
               <% ep=@employees.find_by_id(e.id) %>

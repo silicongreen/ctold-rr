@@ -21,8 +21,12 @@
           </div>
         </div>
         <% 
-         
-            batches = Batch.active.find(:all,:select=>"batches.id as batch_id, batches.name as name", :group => "name")
+            batch_map = @batches.map(&:id)
+            unless batch_map.blank?
+              batches = Batch.active.find(:all,:conditions=>["id in ?",batch_map],:select=>"batches.id as batch_id, batches.name as name", :group => "name")     
+            else
+              batches = []
+            end
         %>  
         <div class="row_data">
           <div>

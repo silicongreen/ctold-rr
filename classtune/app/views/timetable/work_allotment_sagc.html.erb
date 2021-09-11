@@ -44,7 +44,7 @@
           <%= batch.full_name %>
         </li>
         <%
-        subjects = Subject.find(:all,:conditions=>["subjects.batch_id = ? and subjects.is_deleted = ? and (subjects.elective_group_id is null or (elective_groups.is_deleted = ? and elective_groups.batch_id = ?))",batch.id,false,false,batch.id])
+        subjects = Subject.find(:all,:conditions=>["subjects.batch_id = ? and subjects.is_deleted = ? and (subjects.elective_group_id is null or (elective_groups.is_deleted = ? and elective_groups.batch_id = ?))",batch.id,false,false,batch.id],:include=>[:elective_group])
         %>
         <% subjects.each do |subj| %>
           <% if !subj.is_deleted.blank? %>

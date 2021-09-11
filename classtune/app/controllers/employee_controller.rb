@@ -1979,7 +1979,7 @@ ORDER BY emp.first_name ASC"
     end
     
     batch = Batch.find(params[:batch_id])
-    @subjects = Subject.find_all_by_batch_id(batch.id,:conditions=>"is_deleted=false",:order=>'name ASC')
+    @subjects = Subject.find(:all,:conditions=>["subjects.batch_id = ? and subjects.is_deleted = ? and (subjects.elective_group_id is null or (elective_groups.is_deleted = ? and elective_groups.batch_id = ?))",batch.id,false,false,batch.id],:include=>[:elective_group])
 
     render :update do |page|
       page.replace_html 'subjects1', :partial => 'subjects', :object => @subjects

@@ -152,7 +152,7 @@
                           <% absent_att = 0 %>   
                             
                           <% e_subject_id = 0 %>
-                          <% if !@student.admission_date.blank? @student.admission_date.to_date > @connect_exam_obj.attandence_start_date.to_date %>
+                          <% if !@student.admission_date.blank? && @student.admission_date.to_date > @connect_exam_obj.attandence_start_date.to_date %>
                             <% start_date = @student.admission_date.to_date %>
                           <% else %>
                             <% start_date = @connect_exam_obj.attandence_start_date.to_date %>

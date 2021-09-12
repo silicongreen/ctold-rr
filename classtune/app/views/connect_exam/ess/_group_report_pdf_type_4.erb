@@ -161,7 +161,7 @@
                           <% unless @batch_subjects.blank? %>
                             <% @batch_subjects.each do |subject| %>
                                 <% unless subject.blank? %>
-                                <% if subject.name.include?(subjects['name']) %>
+                                <% if subject.name.include?(subjects['name']) || subjects['name'].include?(subject.name) %>
                                     <% e_subject_id = subject.id %>
                                     <% total_att_temp = SubjectAttendanceRegister.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:attendance_date => start_date..end_date}) %>
                                     <% absent_att_temp = SubjectAttendance.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:is_late=>0,:student_id=>@student.id,:attendance_date => start_date..end_date}) %>

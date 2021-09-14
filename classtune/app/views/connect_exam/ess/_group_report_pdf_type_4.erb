@@ -224,13 +224,33 @@
                     <td>
                     </td>
                   </tr>
+                  <% parcentise = 0.0 %> 
+                  <% if total_marks_obtain > 0 %>
+                      <% parcentise = (total_marks_obtain.to_f/total_marks.to_f)*100 %>
+                  <% end %>
+                  <%
+                        parcentise = parcentise.round()
+                        comments = ""
+                        if parcentise >= 91 && parcentise <= 100
+                          comments = "Excellent"
+                        end
+                        if parcentise >= 81 && parcentise <= 90
+                          comments = "Very Good"
+                        end
+                        if parcentise >= 71 && parcentise <= 80
+                          comments = "Good"
+                        end
+                        if parcentise >= 61 && parcentise <= 70
+                          comments = "Satisfactory"
+                        end
+                        if parcentise >= 0 && parcentise <= 60
+                          comments = "Needs Improvement"
+                        end
+                      %>
                   <tr class="even"> 
                     <td class="col-pdf no-warp  align-left">Comment on Overall Performance</td>
                     <td colspan="4">
-                    <% if !@exam_comment.blank? %>
-                      <b><%= @exam_comment.comments %></b>
-                    <% end %>
-                    
+                      <b><%= comments %></b>
                     </td>
                   </tr>
                   <tr class="even"> 

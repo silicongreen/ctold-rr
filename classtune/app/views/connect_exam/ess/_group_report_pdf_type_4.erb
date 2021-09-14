@@ -173,7 +173,7 @@
                                     <% absent_att_temp = SubjectAttendance.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:is_late=>0,:student_id=>@student.id,:attendance_date => start_date..end_date}) %>
                                     <% total_att_temp2 = SubjectAttendanceRegister.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:attendance_date => start_date2..end_date}) %>
                                     <% total_att = total_att+total_att_temp.to_i %>
-                                    <% total_att_main = total_att+total_att_temp2.to_i %>
+                                    <% total_att_main = total_att_main+total_att_temp2.to_i %>
                                     <% absent_att = absent_att+absent_att_temp.to_i %>
                                 <% end %>
                                 <% end %>

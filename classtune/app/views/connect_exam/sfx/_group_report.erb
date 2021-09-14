@@ -1,4 +1,4 @@
-<% @subject_att = ["AS","A2","VIII","IX","X"] %> 
+<% @subject_att = ["AS","A2","VIII","IX","X","VI"] %> 
 <% 
  if @connect_exam_obj.result_type.to_i > 8 && @connect_exam_obj.result_type.to_i != 10
     if @all_exam_groups.nil?
@@ -64,6 +64,6 @@
     }
 </style>    
 <%= render  :partial=>"/connect_exam/sfx/group_report_pdf_type_"+@connect_exam_obj.result_type.to_s %>
-<% if @connect_exam_obj.result_type.to_i != 6 %>
+<% if @connect_exam_obj.result_type.to_i == 6 and @connect_exam_obj.result_type.to_i != 6 %>
   <%= render  :partial=>"/connect_exam/sfx/att" %>
 <% end %>

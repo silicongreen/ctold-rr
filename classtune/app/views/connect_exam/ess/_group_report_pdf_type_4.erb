@@ -37,7 +37,11 @@
       <% class_teachers = [] %>
       <% if !@assigned_employee.blank? %>
         <% @assigned_employee.each do |emp| %>
-           <% class_teachers << emp.first_name+" "+emp.last_name %>
+            <% if emp.last_name.blank? %>
+               <% class_teachers << emp.first_name %>
+            <% else %>
+               <% class_teachers << emp.first_name+" "+emp.last_name %>
+            <% end %>   
         <% end %>
        <% end %>
       <% unless class_teachers.blank? %>

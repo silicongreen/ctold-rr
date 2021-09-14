@@ -3,16 +3,19 @@
             <table id="pdf-table"  width="100%" class="left-table even-table exam-marks" cellspacing="0">
                   <% c = 'even'  %>
                   <tr class="even">
-                      <td colspan="3" ><b>ACADEMIC PERFORMANCE</b></td>
+                      <td colspan="5" ><b>ACADEMIC PERFORMANCE</b></td>
                   </tr>
                   <% total_mark_of_allexam = 0 %>
                   <tr class="even">
                     <td class="col-pdf" rowspan="2"><b><%= "Subject" %></b></td>
                     <td colspan="2" ><b>Class Test 1</b></td>
+                    <td colspan="2" ><b>Attendance</b></td>
                   </tr>
                   <tr class="even">
                     <td><b>Full Marks</b></td>
                     <td><b>Obtained Marks</b></td>
+                    <td><b>No. of Classes</b></td>
+                    <td><b>Present</b></td>
                   </tr>
                   
                   <% total_marks = 0 %>
@@ -85,13 +88,19 @@
                           <% absent_att = 0 %>   
                             
                           <% e_subject_id = 0 %>
+                          <% if !@student.admission_date.blank? && @student.admission_date.to_date > @connect_exam_obj.attandence_start_date.to_date %>
+                            <% start_date = @student.admission_date.to_date %>
+                          <% else %>
+                            <% start_date = @connect_exam_obj.attandence_start_date.to_date %>
+                          <% end %>  
+                          <% end_date = @connect_exam_obj.attandence_end_date.to_date %>
                           <% unless @batch_subjects.blank? %>
                             <% @batch_subjects.each do |subject| %>
                                 <% unless subject.blank? %>
-                                <% if subject.name.include?(subjects['name']) %>
+                                <% if subject.name.include?(subjects['name']) || subjects['name'].include?(subject.name) %>
                                     <% e_subject_id = subject.id %>
-                                    <% total_att_temp = SubjectAttendanceRegister.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
-                                    <% absent_att_temp = SubjectAttendance.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:is_late=>0,:student_id=>@student.id,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
+                                    <% total_att_temp = SubjectAttendanceRegister.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:attendance_date => start_date..end_date}) %>
+                                    <% absent_att_temp = SubjectAttendance.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:is_late=>0,:student_id=>@student.id,:attendance_date => start_date..end_date}) %>
                                     <% total_att = total_att+total_att_temp.to_i %>
                                     <% absent_att = absent_att+absent_att_temp.to_i %>
                                 <% end %>
@@ -99,6 +108,9 @@
                             <% end %>
                           <% end %> 
                           <% present = total_att.to_i - absent_att.to_i %>
+
+                          <td class="col-pdf"><b><%= total_att %></b></td>
+                          <td class="col-pdf"><b><%= present %></b></td>
                           
 
                       </tr>
@@ -122,7 +134,7 @@
                       <%  if @all_subjects.include?(report['id'].to_i) %>
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                             <td class="col-pdf no-warp  align-left"><%= report['subject_name'] %></td>
-                            <td class="col-pdf" colspan="2"><b><%= report['subject_comment'] unless report['subject_comment'].blank? %></b></td>
+                            <td class="col-pdf" colspan="4"><b><%= report['subject_comment'] unless report['subject_comment'].blank? %></b></td>
                         </tr>
                       <% end %>
                     <% end %>
@@ -135,10 +147,14 @@
                     <td>
                       <b><%= sprintf( "%0.02f", total_marks_obtain) %></b>
                     </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
                   </tr>
                   <tr class="even"> 
                     <td class="col-pdf no-warp  align-left">Comment on Overall Performance</td>
-                    <td colspan="2">
+                    <td colspan="4">
                     <% if !@exam_comment.blank? %>
                       <b><%= @exam_comment.comments %></b>
                     <% end %>
@@ -147,14 +163,14 @@
                   </tr>
                   <tr class="even"> 
                     <td  class="col-pdf no-warp  align-left">Total No. of Working Days </td>
-                    <td colspan="2"><b><%= @connect_exam_obj.total_working_days %> Days</b></td>
+                    <td colspan="4"><b><%= @connect_exam_obj.total_working_days %> Days</b></td>
                   </tr>
                   <tr class="even"> 
                     <td>Signature of Principal</td>
-                    <td colspan="2">
-                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"30%" %>
+                    <td colspan="4">
+                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"20%" %>
                       <br/>
-                      <%= Time.now.strftime("%Y/%m/%d") %>
+                      <%= Time.now.strftime("%d/%m/%Y") %>
                     </td>
                   </tr>
 

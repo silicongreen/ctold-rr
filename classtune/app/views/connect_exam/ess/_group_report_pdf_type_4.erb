@@ -153,7 +153,8 @@
                             <td class="col-pdf"><b><%= sprintf( "%0.02f", obtain_mark) %></b></td>
                           <% end %>
                           <% total_att = 0 %>
-                          <% absent_att = 0 %>   
+                          <% absent_att = 0 %>
+                          <% total_att_main = 0 %>   
                             
                           <% e_subject_id = 0 %>
                           <% if !@student.admission_date.blank? && @student.admission_date.to_date > @connect_exam_obj.attandence_start_date.to_date %>
@@ -161,6 +162,7 @@
                           <% else %>
                             <% start_date = @connect_exam_obj.attandence_start_date.to_date %>
                           <% end %>  
+                          <% start_date2 = @connect_exam_obj.attandence_start_date.to_date %>
                           <% end_date = @connect_exam_obj.attandence_end_date.to_date %>
                           <% unless @batch_subjects.blank? %>
                             <% @batch_subjects.each do |subject| %>
@@ -169,7 +171,9 @@
                                     <% e_subject_id = subject.id %>
                                     <% total_att_temp = SubjectAttendanceRegister.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:attendance_date => start_date..end_date}) %>
                                     <% absent_att_temp = SubjectAttendance.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:is_late=>0,:student_id=>@student.id,:attendance_date => start_date..end_date}) %>
+                                    <% total_att_temp2 = SubjectAttendanceRegister.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:attendance_date => start_date2..end_date}) %>
                                     <% total_att = total_att+total_att_temp.to_i %>
+                                    <% total_att_main = total_att+total_att_temp2.to_i %>
                                     <% absent_att = absent_att+absent_att_temp.to_i %>
                                 <% end %>
                                 <% end %>
@@ -177,7 +181,7 @@
                           <% end %> 
                           <% present = total_att.to_i - absent_att.to_i %>
 
-                          <td class="col-pdf"><b><%= total_att %></b></td>
+                          <td class="col-pdf"><b><%= total_att_main %></b></td>
                           <td class="col-pdf"><b><%= present %></b></td>
                           
 

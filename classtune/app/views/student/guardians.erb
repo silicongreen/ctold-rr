@@ -62,9 +62,9 @@
       
 
       <% if @sms_module.include?('Finance') and permitted_to? :fees, :student and !check_free_school? %>
-        <li>
+        <!--li>
           <%= link_to "#{t('fees_text')}", {:controller => 'student', :action => 'fees', :id => @student.id}, {:class => 'f2'} %>
-        </li>
+        </li-->
       <% end %>
       <% if !check_free_school? %>
         <% Champs21Plugin::ADDITIONAL_LINKS[:student_profile_more_menu].each do |mod| %>

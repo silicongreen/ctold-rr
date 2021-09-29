@@ -13,7 +13,7 @@
                         <% if @batch.name == "General" %>
                         <%= @batch.course.full_name %>
                         <% else %>
-                           <%= @batch.name %> ,<%= @batch.course.full_name %>
+                           <%= @batch.name %>, <%= @batch.course.course_name %>, Section <%= @batch.course.section_name %>
                         <% end %></b>
                     </td>
                     

@@ -36,18 +36,23 @@
 
           <% @detention.each_with_index do |r,i| %>
             <%
+            
             if r.student.blank?
-              r.student = ArchivedStudent.find_by_former_id(r.student_id)
-              if r.student.blank?
+             
+              student = ArchivedStudent.find_by_former_id(r.student_id)
+              if student.blank?
                 next
               end
+              
+            else
+              student = r.student
             end
             %>
             <div class="portlet-subcontent">
 
                 <div class="timetable_right">
                     <div class="subcontent-header themed_text">
-                        <%= r.student.first_name %> <%= r.student.last_name %>, <%= r.batch.full_name   %>, Roll : <%= r.student.class_roll_no %>  has received a detention for
+                        <%= student.first_name %> <%= student.last_name %>, <%= r.batch.full_name   %>, Roll : <%= student.class_roll_no %>  has received a detention for
                         <%=  r.reason %> by  <%= r.employee.first_name %> <%= r.employee.last_name %> on <%= I18n.l(r.created_at.to_date, :format=>'%d/%m/%Y') %>
                         <% if @current_user.parent? and r.ackhnowledged==0 %>
                           . please click the acknowledged button to acknowledge the detention

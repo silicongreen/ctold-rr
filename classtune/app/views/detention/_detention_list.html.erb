@@ -37,7 +37,10 @@
           <% @detention.each_with_index do |r,i| %>
             <%
             if r.student.blank?
-              next
+              r.student = ArchivedStudent.find_by_former_id(r.student_id)
+              if r.student.blank?
+                next
+              end
             end
             %>
             <div class="portlet-subcontent">

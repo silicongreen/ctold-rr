@@ -35,7 +35,11 @@
 
 
           <% @detention.each_with_index do |r,i| %>
-
+            <%
+            if r.student.blank?
+              next
+            end
+            %>
             <div class="portlet-subcontent">
 
                 <div class="timetable_right">

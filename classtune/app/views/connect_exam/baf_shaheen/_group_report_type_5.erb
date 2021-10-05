@@ -62,15 +62,16 @@
                                 <% next %>
                               <% end %>
                               <td class="col-pdf no-warp">
-                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? and report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 0 %>
                                     <% obt_mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f/report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f)*7.5 %>
                                     <%= sprintf( "%0.02f", obt_mark)%>
-                                    
-                                    <% class_test << obt_mark.round(2) %>
+                                    <% if !obt_mark.blank? %>
+                                      <% class_test << obt_mark.round(2) %>
+                                    <% end %>
                                   <% else %>
                                     -
                                     <% class_test << 0 %>
-                                  <% end %>  
+                                  <% end %> 
 
 
 

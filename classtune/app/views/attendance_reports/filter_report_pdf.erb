@@ -39,9 +39,7 @@
       <%= debug course.inspect %>
         <div id ="main_info">
           <div class="info1">
-            <div class="info-left" style="width: 100%;">
-              <h4><%= t('course') %> : <%= @batch.course_id %> <%= @batch.name %> 1 <%= @batch.course.course_name %> 1<%= course.section_name %></h4>
-            </div>
+            <p><%= t('course') %> : <%= @batch.course_id %> <%= @batch.name %> 1 <%= @batch.course.course_name %> 1<%= course.section_name %></p>
             <div class="info-left" style="width: 100%;">
               <h4><%= course.section_name %><%= "Section" %> : s </h4>
             </div>

@@ -91,9 +91,6 @@
                     <% if std_count>56 && extender ==0 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
-                      <tr class="page-break">
-                          <td colspan="100">&nbsp;</td>
-                      </tr>
                       <tr class="header-td">
                           <td colspan="100">
 
@@ -101,10 +98,7 @@
                           <div id ="main_info">
                               <div class="info1">
                                   <div class="info-left">
-                                      <h5><%= t('course') %> : <%= @batch.course.full_name %></h5>
-                                  </div>
-                                  <div class="info-right">
-                                      <h5 style="color:black;"><%= @batch.full_name %></h5>
+                                      <h5><%= t('course') %> : <%= @batch.full_name %></h5>
                                   </div>
                                   <div class="hor_line1"></div>
                               </div>

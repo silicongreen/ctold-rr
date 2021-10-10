@@ -34,6 +34,7 @@
     <% working_days = @academic_days %>
     <div class="section1 row" >
       <center>
+      <% @batch = Batch.find_by_id(params[:batch]) %>
         <div id ="main_info">
           <div class="info1">
             <div class="info-left" style="width: 100%;">

@@ -36,13 +36,14 @@
       <center>
       <% @batch = Batch.find_by_id(params[:batch]) %>
       <% course = Course.find_by_id(@batch.course_id) %>
+      <%= debug course.inspect %>
         <div id ="main_info">
           <div class="info1">
             <div class="info-left" style="width: 100%;">
               <h4><%= t('course') %> : <%= @batch.course_id %> <%= @batch.name %> 1 <%= @batch.course.course_name %> 1<%= course.section_name %></h4>
             </div>
             <div class="info-left" style="width: 100%;">
-              <h4><%= "Section" %> : s <%= course.section_name %></h4>
+              <h4><%= course.section_name %><%= "Section" %> : s </h4>
             </div>
           </div>
           <div class="info1">

@@ -39,22 +39,17 @@
             <p><b><%= t('course') %> : <%= @batch.full_name %></b></p>
           </div>
           <div class="info1">
-              <div class="info-left">
               <% if @config.config_value == 'Daily' %>
                 <p><b><%= "#{t('total_no_of_wrkng_days')} = " + @academic_days.to_s %></b></p>
               <% else %>
                 <p><b><%= "#{t('total_no_of_wrkng_hours')} = " + @academic_days.to_s %></b></p>
-              </div>
-              <div class="info-right">
+              
                 <% if @subject.nil? %>
                   <p><b><%= "#{t('subject')} : " + "#{t('all_subjects')}"  %></b></p>
                 <% else %>
                   <p><b><%= "#{t('subject')} : " + @subject.name  %></b></p>
                 <% end %>
               <% end %>
-              
-              
-            </div>
               <p><b>&nbsp;&nbsp;&nbsp;<%= "#{t('filtered')}: "+ t(@range.to_s.downcase) + " " + @value.to_s + "%" %></b></p>
               <% unless @start_date_main.blank? %>
                 <p><b>&nbsp;&nbsp;&nbsp;Month: <%= @start_date_main.strftime("%B")%></b></p>

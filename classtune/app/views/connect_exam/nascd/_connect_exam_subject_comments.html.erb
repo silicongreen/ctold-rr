@@ -61,6 +61,7 @@
 
                     <tr class="tr-head fixed-position">
                         <td  class="zui-sticky-col2"><b><%= t('name') %></b></td>
+                        <td  class="zui-sticky-col2"><b><%= "Roll" %></b></td>
                         <% unless @exams.blank? %>
                         
                           <% @exams.each do |exam| %>
@@ -166,6 +167,7 @@
                     <% @students.each do |student| %>
                       <tr class="tr-<%= cycle('odd', 'even') %>">
                           <td class="col-2 zui-sticky-col2"  style="padding: 13px 10px"><%= student.full_name %> </td>
+                          <td class="col-2 zui-sticky-col2"  style="padding: 13px 10px"><%= student.class_roll_no %> </td>
                           <%
                             exam_comment = ""
                             @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@exam_connect.id,:subject_id => @exam_subject.id, :student_id => student.id} )

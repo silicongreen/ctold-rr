@@ -37,7 +37,7 @@
         <div id ="main_info">
           <div class="info1">
             <div class="info-left">
-              <h4><%= t('course') %> : <%= @batch.full_name %></h4>
+              <h4><%= t('course') %> : V<%= @batch.full_name %></h4>
             </div>
             <div class="hor_line1"></div>
           </div>
@@ -98,59 +98,8 @@
             <% c =cycle('even','odd ') %>
             <% if @leaves[student.id]['percent'].round(2) < @value.to_f and @range == 'Below' %>
               <%  std_count = std_count+1; %>
-              <% if std_count>25 && extender ==0 %>
-                  <% std_count = 0 %>
-                  <% extender = 1 %>
-                  <tr class="page-break">
-                      <td colspan="100">&nbsp;</td>
-                  </tr> 
-                  <tr class="table-header">
-                      <td class="col-pdf1"><%= "Roll" %></td>
-                      <td class="col-pdf1"><%= t('name') %></td>
-                      <td class="col-pdf1"><%= t('adm_no') %></td>
-                      <td class="col-pdf1">
-                          Present
-                      </td>
-                      <td class="col-pdf1">
-                          Late
-                      </td>
-                      <td class="col-pdf1">
-                          Absent
-                      </td>
-                      <td class="col-pdf1">
-                          Leave
-                      </td>
-                      <td class="col-pdf1"><%= t('total') %></td>
-                      <td class="col-pdf1"><%= t('percentage') %></td>
-                      <td class="col-pdf1"><%= "Mobile" %></td>
-                  </tr>
-              <% elsif std_count>29 && extender ==1 %>
-                  <% std_count = 0 %>
-                  <% extender = 1 %>
-                  <tr class="page-break">
-                      <td colspan="100">&nbsp;</td>
-                  </tr> 
-                  <tr class="table-header">
-                          <td class="col-pdf1"><%= "Roll" %></td>
-                          <td class="col-pdf1"><%= t('name') %></td>
-                          <td class="col-pdf1"><%= t('adm_no') %></td>
-                          <td class="col-pdf1">
-                              Present
-                          </td>
-                          <td class="col-pdf1">
-                              Late
-                          </td>
-                          <td class="col-pdf1">
-                              Absent
-                          </td>
-                          <td class="col-pdf1">
-                              Leave
-                          </td>
-                          <td class="col-pdf1"><%= t('total') %></td>
-                          <td class="col-pdf1"><%= t('percentage') %></td>
-                          <td class="col-pdf1"><%= "Mobile" %></td>
-                      </tr>
-              <% end %>
+              
+                
               <tr class="table-header">
                 <td class="col-pdf1"><%= student.class_roll_no %></td>
                 <td class="col-pdf"><%= student.full_name %></td>
@@ -166,60 +115,7 @@
             <% end %>
             <% if @leaves[student.id]['percent'].round(2) > @value.to_f and @range == 'Above' %>
               <%  std_count = std_count+1; %>
-              <% if std_count>24 && extender ==0 %>
-                  <% std_count = 0 %>
-                  <% extender = 1 %>
-                  <tr class="page-break">
-                      <td colspan="100">&nbsp;</td>
-                  </tr>   
-                  <tr class="table-header">
-                      <td class="col-pdf1"><%= "Roll" %></td>
-                      <td class="col-pdf1"><%= t('name') %></td>
-                      <td class="col-pdf1"><%= t('adm_no') %></td>
-                      <td class="col-pdf1">
-                          Present
-                      </td>
-                      <td class="col-pdf1">
-                          Late
-                      </td>
-                      <td class="col-pdf1">
-                          Absent
-                      </td>
-                      <td class="col-pdf1">
-                          Leave
-                      </td>
-                      <td class="col-pdf1"><%= t('total') %></td>
-                      <td class="col-pdf1"><%= t('percentage') %></td>
-                      <td class="col-pdf1"><%= "Mobile" %></td>
-                  </tr>
-              <% elsif std_count>29 && extender ==1 %>
-                  <% std_count = 0 %>
-                  <% extender = 1 %>
-                  <tr class="page-break">
-                      <td colspan="100">&nbsp;</td>
-                  </tr>
-                  <tr class="table-header">
-                      <td class="col-pdf1"><%= "Roll" %></td>
-                      <td class="col-pdf1"><%= t('name') %></td>
-                      <td class="col-pdf1"><%= t('adm_no') %></td>
-                      <td class="col-pdf1">
-                          Present
-                      </td>
-                      <td class="col-pdf1">
-                          Late
-                      </td>
-                      <td class="col-pdf1">
-                          Absent
-                      </td>
-                      <td class="col-pdf1">
-                          Leave
-                      </td>
-                      <td class="col-pdf1"><%= t('total') %></td>
-                      <td class="col-pdf1"><%= t('percentage') %></td>
-                      <td class="col-pdf1"><%= "Mobile" %></td>
-                      <td class="col-pdf1"><%= student.sms_number %></td>
-                  </tr>
-              <% end %>
+              
               <tr class="table-header">
                 <td class="col-pdf1"><%= student.class_roll_no %></td>
                 <td class="col-pdf"><%= student.full_name %></td>
@@ -234,61 +130,7 @@
             <% end %>
             <% if @leaves[student.id]['percent'].round(2) == @value.to_f and @range == 'Equals' %>
                <%  std_count = std_count+1; %>
-              <% if std_count>25 && extender ==0 %>
-                  <% std_count = 0 %>
-                  <% extender = 1 %>
-                  <tr class="page-break">
-                      <td colspan="100">&nbsp;</td>
-                  </tr>
-                  <tr class="table-header">
-                      <td class="col-pdf1"><%= "Roll" %></td>
-                      <td class="col-pdf1"><%= t('name') %></td>
-                      <td class="col-pdf1"><%= t('adm_no') %></td>
-                      <td class="col-pdf1">
-                          Present
-                      </td>
-                      <td class="col-pdf1">
-                          Late
-                      </td>
-                      <td class="col-pdf1">
-                          Absent
-                      </td>
-                      <td class="col-pdf1">
-                          Leave
-                      </td>
-                      <td class="col-pdf1"><%= t('total') %></td>
-                      <td class="col-pdf1"><%= t('percentage') %></td>
-                      <td class="col-pdf1"><%= "Mobile" %></td>
-                      <td class="col-pdf1"><%= student.sms_number %></td>
-                  </tr>
-              <% elsif std_count>29 && extender ==1 %>
-                  <% std_count = 0 %>
-                  <% extender = 1 %>
-                  <tr class="page-break">
-                      <td colspan="100">&nbsp;</td>
-                  </tr> 
-                  <tr class="table-header">
-                      <td class="col-pdf1"><%= "Roll" %></td>
-                      <td class="col-pdf1"><%= t('name') %></td>
-                      <td class="col-pdf1"><%= t('adm_no') %></td>
-                      <td class="col-pdf1">
-                          Present
-                      </td>
-                      <td class="col-pdf1">
-                          Late
-                      </td>
-                      <td class="col-pdf1">
-                          Absent
-                      </td>
-                      <td class="col-pdf1">
-                          Leave
-                      </td>
-                      <td class="col-pdf1"><%= t('total') %></td>
-                      <td class="col-pdf1"><%= t('percentage') %></td>
-                      <td class="col-pdf1"><%= "Mobile" %></td>
-                      <td class="col-pdf1"><%= student.sms_number %></td>
-                  </tr>
-              <% end %>
+              
               <tr class="table-header">
                 <td class="col-pdf1"><%= student.class_roll_no %></td>
                 <td class="col-pdf"><%= student.full_name %></td>

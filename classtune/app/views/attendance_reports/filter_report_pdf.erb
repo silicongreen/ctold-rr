@@ -34,38 +34,32 @@
     <% working_days = @academic_days %>
     <div class="section1 row" >
       <center>
-      <% @batch = Batch.find_by_id(params[:batch]) %>
-      <% course = Course.find_by_id(@batch.course_id) %>
-      <%= debug course.inspect %>
         <div id ="main_info">
           <div class="info1">
-            <p><%= t('course') %> : <%= @batch.course_id %> <%= @batch.name %> 1 <%= @batch.course.course_name %> 1<%= course.section_name %></p>
-            <div class="info-left" style="width: 100%;">
-              <h4><%= course.section_name %><%= "Section" %> : s </h4>
-            </div>
+            <p><b><%= t('course') %> : <%= @batch.full_name %></b></p>
           </div>
           <div class="info1">
               <div class="info-left">
               <% if @config.config_value == 'Daily' %>
-                <h4> <%= "#{t('total_no_of_wrkng_days')} = " + @academic_days.to_s %></h4>
+                <p><b><%= "#{t('total_no_of_wrkng_days')} = " + @academic_days.to_s %></b></p>
               <% else %>
-                <h4> <%= "#{t('total_no_of_wrkng_hours')} = " + @academic_days.to_s %></h4>
+                <p><b><%= "#{t('total_no_of_wrkng_hours')} = " + @academic_days.to_s %></b></p>
               </div>
               <div class="info-right">
                 <% if @subject.nil? %>
-                  <h4> <%= "#{t('subject')} : " + "#{t('all_subjects')}"  %></h4>
+                  <p><b><%= "#{t('subject')} : " + "#{t('all_subjects')}"  %></b></p>
                 <% else %>
-                  <h4> <%= "#{t('subject')} : " + @subject.name  %></h4>
+                  <p><b><%= "#{t('subject')} : " + @subject.name  %></b></p>
                 <% end %>
               <% end %>
               
               
             </div>
-              <h4> &nbsp;&nbsp;&nbsp;<%= "#{t('filtered')}: "+ t(@range.to_s.downcase) + " " + @value.to_s + "%" %></h4>
+              <p><b>&nbsp;&nbsp;&nbsp;<%= "#{t('filtered')}: "+ t(@range.to_s.downcase) + " " + @value.to_s + "%" %></b></p>
               <% unless @start_date_main.blank? %>
-                <h4>&nbsp;&nbsp;&nbsp;Month: <%= @start_date_main.strftime("%B")%></h4>
+                <p><b>&nbsp;&nbsp;&nbsp;Month: <%= @start_date_main.strftime("%B")%></b></p>
               <% else %>
-                <h4>&nbsp;&nbsp;&nbsp;Month: <%= @start_date.strftime("%B")%></h4>
+                <p><b>&nbsp;&nbsp;&nbsp;Month: <%= @start_date.strftime("%B")%></b></p>
               <% end %>
           </div>
         </div>

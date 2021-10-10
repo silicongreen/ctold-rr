@@ -830,7 +830,7 @@ class AttendanceReportsController < ApplicationController
     end
     render :pdf => 'report_pdf',
       :page_size => 'Legal',
-      :margin => {:top=> 40,
+      :margin => {:top=> 5,
       :bottom => 10,
       :left=> 10,
       :right => 10},
@@ -954,8 +954,8 @@ class AttendanceReportsController < ApplicationController
     else
       @report = ''
     end
-    render :pdf => 'report_pdf',
-      :margin => {:top=> 40,
+    render :pdf => 'filter_report_pdf',
+      :margin => {:top=> 5,
       :bottom => 10,
       :left=> 10,
       :right => 10},

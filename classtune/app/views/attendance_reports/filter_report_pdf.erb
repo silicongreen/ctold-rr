@@ -50,11 +50,11 @@
                   <p><b><%= "#{t('subject')} : " + @subject.name  %></b></p>
                 <% end %>
               <% end %>
-              <p><b>&nbsp;&nbsp;&nbsp;<%= "#{t('filtered')}: "+ t(@range.to_s.downcase) + " " + @value.to_s + "%" %></b></p>
+              <p><b><%= "#{t('filtered')}: "+ t(@range.to_s.downcase) + " " + @value.to_s + "%" %></b></p>
               <% unless @start_date_main.blank? %>
-                <p><b>&nbsp;&nbsp;&nbsp;Month: <%= @start_date_main.strftime("%B")%></b></p>
+                <p><b>Month: <%= @start_date_main.strftime("%B")%></b></p>
               <% else %>
-                <p><b>&nbsp;&nbsp;&nbsp;Month: <%= @start_date.strftime("%B")%></b></p>
+                <p><b>Month: <%= @start_date.strftime("%B")%></b></p>
               <% end %>
           </div>
         </div>

@@ -133,7 +133,7 @@ class ApplicationController < ActionController::Base
     return string+" Taka Only"
   end
   
-  def get_tabulation_connect_exam(connect_exam_id,batch_id,all_class_report=false,failed_list = false)
+  def get_tabulation_connect_exam(connect_exam_id,batch_id,all_class_report=false,failed_list = false,is_unsolved = 0)
     require 'net/http'
     require 'uri'
     require "yaml"

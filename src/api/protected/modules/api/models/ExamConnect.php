@@ -137,6 +137,24 @@ class ExamConnect extends CActiveRecord
         }
         return false;
     }
+
+    public function getConnectExamByBatchUnsolved($batch_id,$result_type = 4,$date)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->compare('t.batch_id', $batch_id);
+        $criteria->compare('t.published_date', $date);
+        $criteria->compare('t.result_type', $result_type);
+        $criteria->select = 't.id';
+        $criteria->order = "created_at DESC";
+        $criteria->limit = 1;
+        $connect_exam = $this->find($criteria);
+        
+        if($connect_exam)
+        {
+            return $connect_exam->id;
+        }
+        return false;
+    } 
     
    
     

@@ -456,7 +456,14 @@ class ReportController extends Controller
                     {
                         foreach($find_all_batches as $value)
                         {
-                            $new_exam = $connectexmObj->getConnectExamByBatch($value->id,$data->result_type,$data->name);
+                            if($is_unsolved)
+                            {
+                                $new_exam = $connectexmObj->getConnectExamByBatchUnsolved($value->id,$data->result_type,$data->published_date);
+                            }
+                            else
+                            {
+                                $new_exam = $connectexmObj->getConnectExamByBatch($value->id,$data->result_type,$data->name);
+                            }
                             if($new_exam)
                             {
                                 $new_connect_exam_id[] = $new_exam;
@@ -481,7 +488,7 @@ class ReportController extends Controller
                    
                    if($new_connect_exam_id)
                    {
-                    echo $is_unsolved."here";
+                    
                        foreach($new_connect_exam_id as $value)
                        {
                             $examData = $connectexmObj->findByPk($value);

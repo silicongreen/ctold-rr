@@ -466,6 +466,7 @@ class ReportController extends Controller
                     
                     
                 }    
+                echo $is_unsolved."here";
                 
                 $groupexam = new GroupedExams();
                 $cont_exam = new ExamConnect();
@@ -482,7 +483,7 @@ class ReportController extends Controller
                        foreach($new_connect_exam_id as $value)
                        {
                             $examData = $connectexmObj->findByPk($value);
-                            echo $is_unsolved;
+                           
                             $exam_report_main = $exam_report[] = $groupexam->getTabulation($examData->batch_id,$value,$is_unsolved);
                             if(isset($exam_report_main['students']))
                             {

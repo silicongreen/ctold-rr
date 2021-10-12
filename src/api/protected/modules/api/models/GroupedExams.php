@@ -483,7 +483,8 @@ class GroupedExams extends CActiveRecord
             $students_ids = [];
             $criteria=new CDbCriteria;
             $criteria->compare('connect_exam_id',$connect_exam_id);
-                
+        
+            echo $unsolved_exam."here";
             
             $criteria->compare('examgroup.is_deleted', 0);
             $criteria->compare('examconnect.is_deleted', 0);

@@ -407,9 +407,14 @@ class ReportController extends Controller
                $data_type = 3;
             }
             $is_finished = Yii::app()->request->getPost('is_finished');
+            $is_unsolved = Yii::app()->request->getPost('is_unsolved');
             if(!$is_finished)
             {
-               $is_finished = 0;
+                $is_finished = 0;
+            }
+            if(!$is_unsolved)
+            {
+                $is_unsolved = 0;
             }
             $response = array();
             $new_connect_exam_id = array();
@@ -475,7 +480,7 @@ class ReportController extends Controller
                        foreach($new_connect_exam_id as $value)
                        {
                             $examData = $connectexmObj->findByPk($value);
-                            $exam_report_main = $exam_report[] = $groupexam->getTabulation($examData->batch_id,$value);
+                            $exam_report_main = $exam_report[] = $groupexam->getTabulation($examData->batch_id,$value,$is_unsolved);
                             if(isset($exam_report_main['students']))
                             {
                                 $batch_ids[] = $examData->batch_id;
@@ -496,7 +501,7 @@ class ReportController extends Controller
                 else 
                 {
                   
-                   $exam_report = $groupexam->getTabulation($batch_id,$connect_exam_id);
+                   $exam_report = $groupexam->getTabulation($batch_id,$connect_exam_id,$is_unsolved);
                    
                    $first_term_id = $cont_exam->getConnectExamFirstTerm($batch_id);
                    

@@ -478,8 +478,9 @@ class GroupedExams extends CActiveRecord
         }
         
         
-        public function getTabulation($batch_id,$connect_exam_id,$condition_in = false)
+        public function getTabulation($batch_id,$connect_exam_id,$unsolved_exam = 0)
         {
+            $students_ids = [];
             $criteria=new CDbCriteria;
             $criteria->compare('connect_exam_id',$connect_exam_id);
                 
@@ -487,25 +488,91 @@ class GroupedExams extends CActiveRecord
             $criteria->compare('examgroup.is_deleted', 0);
             $criteria->compare('examconnect.is_deleted', 0);
             $criteria->select = 't.*'; 
-            $criteria->with = array(
-                'examgroup' => array(
-                    'select' => 'examgroup.id,examgroup.quarter',
-                    'with' => array('Exams' => array(
-                            'select' => 'Exams.maximum_marks,Exams.id,Exams.weightage',
-                            'with' => array(
-                                'Subjects' => array(
-                                    'select' => 'Subjects.id',
+
+            if($unsolved_exam)
+            {
+                    $criteria->with = array(
+                        'examgroup' => array(
+                            'select' => 'examgroup.id,examgroup.quarter',
+                            'with' => array('Exams' => array(
+                                    'select' => 'Exams.maximum_marks,Exams.id,Exams.weightage',
+                                    'with' => array(
+                                        'Scores' => array(
+                                            'select' => 'Scores.id',
+                                            'with' => array(
+                                                    'Students' => array(
+                                                        'select' => 'Students.id',
+                                                    ),
+                                            )
+                                        ),
+                                        'Subjects' => array(
+                                            'select' => 'Subjects.id',
+                                        )
+                                    )
                                 )
                             )
-                        )
-                    )
-                ),
-                'examconnect' => array(
-                    'select' => "examconnect.id"
-                 )
-            );
-            $criteria->order = "t.priority ASC,examgroup.created_at ASC";
-            $examgroups = $this->findAll($criteria);
+                        ),
+                        'examconnect' => array(
+                            'select' => "examconnect.id,examconnect.result_type"
+                        )   
+                    );
+                    $criteria->order = "t.priority ASC,examgroup.created_at ASC";
+                    $examgroups = $this->findAll($criteria);
+                    
+                    if($examgroups)
+                    {
+                        foreach($examgroups as $value)
+                        {
+                        
+                            if(isset($value['examgroup']['Exams']))
+                            {
+                                
+                                foreach($value['examgroup']['Exams'] as $exam)
+                                {
+                                    
+                                    if(isset($exam['Scores']))
+                                    {
+                                        foreach($exam['Scores'] as $key=>$score)
+                                        {
+                                            if(isset($score['Students']->id))
+                                            {
+                                                if(!in_array($score['Students']->id, $students_ids))
+                                                {
+                                                    $students_ids[] = $score['Students']->id; 
+                                                }   
+                                            }
+                                        }      
+                                    }    
+                                }
+                                
+                            }
+                        }
+                    }
+            }
+            else
+            {
+                    $criteria->with = array(
+                        'examgroup' => array(
+                            'select' => 'examgroup.id,examgroup.quarter',
+                            'with' => array('Exams' => array(
+                                    'select' => 'Exams.maximum_marks,Exams.id,Exams.weightage',
+                                    'with' => array(
+                                        'Subjects' => array(
+                                            'select' => 'Subjects.id',
+                                        )
+                                    )
+                                )
+                            )
+                        ),
+                        'examconnect' => array(
+                            'select' => "examconnect.id,examconnect.result_type"
+                        )   
+                    );
+                    $criteria->order = "t.priority ASC,examgroup.created_at ASC";
+                    $examgroups = $this->findAll($criteria);
+            }
+
+            
             
             $subjects_ids = array();
             $exam_ids = array();
@@ -546,8 +613,8 @@ class GroupedExams extends CActiveRecord
             if($examgroups)
             {
                 $stdobj = new Students();
-                $batch_student = $stdobj->getStudentByBatch($batch_id);
-                $batch_student_full = $stdobj->getStudentByBatchFull($batch_id);
+                $batch_student = $stdobj->getStudentByBatch($batch_id,0,false,$students_ids);
+                $batch_student_full = $stdobj->getStudentByBatchFull($batch_id,0,false,$students_ids);
                 $results['students'] = $batch_student_full;
                 $examsGroupObj = new ExamGroups();
                 $results['subjects'] = $all_subject_without_no_exam;

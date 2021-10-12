@@ -428,6 +428,7 @@ class ReportController extends Controller
                 $finish_exam = $objPreviousExam->getFinishExam($connect_exam_id,$data_type);
                 if($finish_exam)
                 {
+                    echo $is_unsolved;
                     echo $finish_exam;
                     Yii::app()->end();
                     exit;

@@ -476,11 +476,12 @@ class ReportController extends Controller
                 $first_term_id = 0;
                 if($all_class_report)
                 {
-                    echo $is_unsolved."here";
+                    
                    $exam_report = array();
                    
                    if($new_connect_exam_id)
                    {
+                    echo $is_unsolved."here";
                        foreach($new_connect_exam_id as $value)
                        {
                             $examData = $connectexmObj->findByPk($value);

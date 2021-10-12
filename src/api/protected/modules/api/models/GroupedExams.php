@@ -548,7 +548,7 @@ class GroupedExams extends CActiveRecord
                             }
                         }
                     }
-                    print_r($students_ids);
+                    
             }
             else
             {

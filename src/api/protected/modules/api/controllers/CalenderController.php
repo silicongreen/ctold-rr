@@ -1789,7 +1789,7 @@ class CalenderController extends Controller
         if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher)
         {
             $emplyee_subject = new EmployeesSubjects();
-            if(Yii::app()->user->schoolId == 352 && !$all)
+            if((Yii::app()->user->schoolId == 352 || Yii::app()->user->schoolId == 362) && !$all)
             {
                 $bacthes = $emplyee_subject->getClassTeacherBatches(Yii::app()->user->profileId);
             }

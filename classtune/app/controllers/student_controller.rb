@@ -1838,7 +1838,7 @@ class StudentController < ApplicationController
     unless batch_name.blank?
       if current_user.employee
         if params[:page].blank? or params[:page] != "sections_employee_subject_assignment"
-          if MultiSchool.current_school.code == "sagc"
+          if MultiSchool.current_school.code == "sagc" || MultiSchool.current_school.code == "ess"
             class_teachers = BatchTutor.find_all_by_employee_id_and_class_teacher(@current_user.employee_record.id,true)
             unless class_teachers.blank?
               batches = class_teachers.map(&:batch_id)
@@ -1924,7 +1924,7 @@ class StudentController < ApplicationController
     
     if current_user.employee
       if params[:page].blank? or params[:page] != "courses_employee_subject_assignment"
-        if MultiSchool.current_school.code == "sagc"
+        if MultiSchool.current_school.code == "sagc" || MultiSchool.current_school.code == "ess"
           class_teachers = BatchTutor.find_all_by_employee_id_and_class_teacher(@current_user.employee_record.id,true)
           unless class_teachers.blank?
             batches = class_teachers.map(&:batch_id)

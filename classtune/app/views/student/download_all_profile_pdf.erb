@@ -5,7 +5,6 @@
    
     @student = Student.find_by_id(std.id)
     unless @student.blank?
-      @current_user = current_user
       @address = @student.address_line1.to_s + ' ' + @student.address_line2.to_s
       @sms_module = Configuration.available_modules
       @biometric_id = BiometricInformation.find_by_user_id(@student.user_id).try(:biometric_id)

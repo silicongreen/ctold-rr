@@ -1,0 +1,39 @@
+<% if !@students.blank? %>
+  
+  <% @students.each do |std| %>
+    <%
+   
+    @student = Student.find_by_id(std.id)
+    unless @student.blank?
+      @current_user = current_user
+      @address = @student.address_line1.to_s + ' ' + @student.address_line2.to_s
+      @sms_module = Configuration.available_modules
+      @biometric_id = BiometricInformation.find_by_user_id(@student.user_id).try(:biometric_id)
+      @sms_setting = SmsSetting.new
+      @previous_data = StudentPreviousData.find_by_student_id(@student.id)
+      @immediate_contact = @student.immediate_contact
+      @assigned_employees = @student.batch.employees
+      @additional_details = @student.student_additional_details.find(:all,:include => [:student_additional_field],:conditions => ["student_additional_fields.status = true"],:order => "student_additional_fields.priority ASC")
+      
+      @att_text = ''
+      @att_image = ''
+      @normal_subjects = Subject.find_all_by_batch_id(@student.batch.id,:conditions=>"no_exams = false AND elective_group_id IS NULL AND is_deleted = false")
+      @student_electives =StudentsSubject.all(:conditions=>{:student_id=>@student.id,:batch_id=>@student.batch.id,:subjects=>{:is_deleted=>false}},:joins=>[:subject])
+      @elective_subjects = []
+      @student_electives.each do |e|
+        @subject_obj = Subject.find_by_id(e.subject_id)
+        if !@subject_obj.blank? && !@subject_obj.elective_group.blank? && @subject_obj.elective_group.is_deleted == false && @subject_obj.elective_group.batch_id  == @student.batch.id
+          @elective_subjects.push @subject_obj
+        end
+      end
+      @subjects = @normal_subjects+@elective_subjects
+      %>
+        <%= render :file => '/student/profile_pdf' %>
+        <% unless std.equal? @students.last %>
+          <div class="page-break-main"></div>
+        <% end %>
+      <% end %>
+    <% end %>
+
+  <% end %>
+<% end %>

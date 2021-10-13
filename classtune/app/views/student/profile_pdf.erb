@@ -55,7 +55,7 @@
                       <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/logo-sagc.png")),:width=> '85%' %>
 
                     <% else %>
-                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ current_school_detail.logo.url),:width=> '85%' %>
+                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '85%' %>
                     <% end %>
                 </td>
                 <td width="70%" style="vertical-align:top;">

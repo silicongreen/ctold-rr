@@ -353,8 +353,14 @@
                 </table>    
               </td>
               <% start_loop = 0 %>
+              <% two_side_count = 7 %>
+              <%
+              if MultiSchool.current_school.code == "ess"
+                two_side_count = 10
+              end
+              %>
               <td class="col-pdf" colspan="2">
-                <% if @subjects.count > 7 %>
+                <% if @subjects.count > two_side_count %>
                 <table id="pdf-table" width="100%">
                     <tr class="odd">
                       <td class="col-pdf"><%= "Srl" %></td>
@@ -362,7 +368,7 @@
                       <td class="col-pdf"><%= "T" %></td>
                     </tr>
                 <% @subjects.each do |subject| %>
-                    <% if start_loop < 7 %>
+                    <% if start_loop < two_side_count %>
                        <% start_loop = start_loop+1 %>
                       <% next %>
                     <% end %>

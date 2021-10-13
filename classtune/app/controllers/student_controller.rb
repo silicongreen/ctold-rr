@@ -4851,6 +4851,49 @@ class StudentController < ApplicationController
     redirect_to :controller => "student", :action => "student_security",:id=>@student.id
   end
 
+  def download_all_profile_pdf
+    @batch_name_pdf = batch_name = params[:batch_name]
+    @version_pdf = version_name = params[:version_name]
+    @class_name_pdf = class_name = params[:class_name]
+    @session_name_pdf = session_name = params[:session_name]
+    @group_name_pdf = group_name = params[:group_name]
+    @section_pdf = section_name = params[:section_name]
+    category_name = params[:category_name]
+    condition = "1 = 1"
+    unless batch_name.blank?
+      condition = condition+" and batches.name like '%"+batch_name+"%'"
+    end
+    unless version_name.blank?
+      condition = condition+" and batches.name like '%"+version_name+"%'"
+    end
+    unless class_name.blank?
+      condition = condition+" and courses.course_name = '"+class_name+"'"
+    end
+    unless section_name.blank?
+      condition = condition+" and courses.section_name = '"+section_name+"'"
+    end
+    unless session_name.blank?
+      condition = condition+" and courses.session = '"+session_name+"'"
+    end
+    unless group_name.blank?
+      condition = condition+" and courses.group = '"+group_name+"'"
+    end
+    unless category_name.blank?
+      condition = condition+" and student_categories.name = '"+category_name+"'"
+    end
+    order_str = "courses.course_name asc,courses.section_name asc,courses.session asc,if(class_roll_no = '' or class_roll_no is null,0,cast(class_roll_no as unsigned)),students.admission_no asc"
+    
+    @students = Student.find(:all,:conditions=> condition,:include=>[{:batch=>[:course]}],:order => order_str)
+    render :pdf => "download_all_profile_pdf",
+      :orientation => 'Portrait',
+      :margin => {:top=> 0,
+      :bottom => 0,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
+
   def profile_pdf
     @student = Student.find(params[:id])
     @current_user = current_user

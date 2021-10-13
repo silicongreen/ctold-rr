@@ -335,6 +335,24 @@
                    }
                    return result;" type="submit"  value="Student Labeling Card">
 
+          <input style="margin-left: 10px;"
+                 name="commit" onclick="j('#new_student').attr('action', 'download_all_profile_pdf');
+                   if (window.hiddenCommit) {
+                     window.hiddenCommit.setAttribute('value', this.value);
+                   } else {
+                     hiddenCommit = document.createElement('input');
+                     hiddenCommit.type = 'hidden';
+                     hiddenCommit.value = this.value;
+                     hiddenCommit.name = this.name;
+                     this.form.appendChild(hiddenCommit);
+                   }
+                   result = (this.form.onsubmit ? (this.form.onsubmit() ? this.form.submit() : false) : this.form.submit());
+                   if (result == false) {
+                     this.value = this.getAttribute('originalValue');
+                     this.disabled = false;
+                   }
+                   return result;" type="submit" style="display:none;" id="download_all_pdf"  value="download all Profile">
+
       </div>
     <% end %>
 
@@ -411,6 +429,14 @@
 
   });
 
+  function show_hide_download_all()
+  {
+    if(jq("#section_name").val() && jq("#class_name").val())
+    {
+      jq("#download_all_pdf").show();
+    }
+  }
+
   function filterbatch(data)
   {
       var value = jq("#batch_name").val();
@@ -419,6 +445,7 @@
           value = value + " " + jq("#version_name").val()
       }
       oDataTable.column(3).search(value).draw();
+      
 
   }
   function filterversion(data)
@@ -442,7 +469,10 @@
                       evalScripts: true
                   }
           );
+          
+          
       }
+      show_hide_download_all();
       oDataTable.column(4).search(value).draw();
 
   }
@@ -461,6 +491,7 @@
   function filtersection(data)
   {
       var value = jq("#section_name").val();
+      show_hide_download_all();
       oDataTable.column(5).search(value).draw();
 
   }

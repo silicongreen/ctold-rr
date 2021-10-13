@@ -335,7 +335,7 @@
                    }
                    return result;" type="submit"  value="Student Labeling Card">
 
-          <input style="margin-left: 10px;"
+          <input style="margin-left: 10px;display:none;"
                  name="commit" onclick="j('#new_student').attr('action', 'download_all_profile_pdf');
                    if (window.hiddenCommit) {
                      window.hiddenCommit.setAttribute('value', this.value);
@@ -351,7 +351,7 @@
                      this.value = this.getAttribute('originalValue');
                      this.disabled = false;
                    }
-                   return result;" type="submit" style="display:none;" id="download_all_pdf"  value="download all Profile">
+                   return result;" type="submit" id="download_all_pdf"  value="download all Profile">
 
       </div>
     <% end %>

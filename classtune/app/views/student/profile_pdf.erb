@@ -323,6 +323,12 @@
             <td class="col-pdf" colspan="4"><%= "Subject Course Information" %></td>
           </tr>
           <% start_loop = 0 %>
+          <% two_side_count = 6 %>
+          <%
+          if MultiSchool.current_school.code == "ess"
+            two_side_count = 9
+          end
+          %>
          
           <tr>
               <td class="col-pdf" colspan="2">
@@ -346,7 +352,7 @@
                       <td class="col-pdf"><%= t %></td>
                     </tr>
                     <% start_loop = start_loop+1 %>
-                    <% if start_loop > 6 %>
+                    <% if start_loop > two_side_count %>
                       <% break %>
                     <% end %>
                 <% end %>

@@ -63,13 +63,13 @@ h2.heading{
 
 .even td{
    
-  padding: 12px 12px 12px 15px;
+  padding: 8px 8px 8px 12px;
   border-left:  1px solid #ADACAB;
   border-bottom: 1px solid #ADACAB;
 }
 
 .odd td{
-  padding: 12px 12px 12px 15px;
+  padding: 8px 8px 8px 12px;
   border-left:  1px solid #ADACAB;
   border-bottom: 1px solid #ADACAB;
 

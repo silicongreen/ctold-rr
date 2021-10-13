@@ -323,12 +323,11 @@
             <td class="col-pdf" colspan="4"><%= "Subject Course Information" %></td>
           </tr>
           <% start_loop = 0 %>
-          <% two_side_count = 6 %>
-          <%
-          if MultiSchool.current_school.code == "ess"
-            two_side_count = 9
-          end
-          %>
+          <% 
+            two_side_count = (@subjects.count/2.00)
+            two_side_count = two_side_count.round()
+           %>
+         
          
           <tr>
               <td class="col-pdf" colspan="2">
@@ -359,12 +358,7 @@
                 </table>    
               </td>
               <% start_loop = 0 %>
-              <% two_side_count = 7 %>
-              <%
-              if MultiSchool.current_school.code == "ess"
-                two_side_count = 10
-              end
-              %>
+              <% two_side_count = two_side_count+1 %>
               <td class="col-pdf" colspan="2">
                 <% if @subjects.count > two_side_count %>
                 <table id="pdf-table" width="100%">

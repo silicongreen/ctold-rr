@@ -43,10 +43,7 @@
     <% @profile_image = "/master_student/profile/default_student.png" %>
   <% end %>
 
-<p class='ab-image'>
-    
-    <%= wicked_pdf_image_tag "/"+"#{Rails.root}/public/"+ "#{@profile_image}",:width=> '100%' %>
-</p>
+
 <div id="page-yield" class="available_sections">
     <table id="pdf-table" width="100%" cellspacing="0">
             <tr>
@@ -99,7 +96,11 @@
         <tr>
           <td class="col-pdf" colspan="1"><%= "Admission No." %></td>
           <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= @student.admission_no unless @student.admission_no.nil? %></td>
-          <td class="col-pdf no-border" colspan="2"></td>
+          <td class="col-pdf no-border" colspan="2" rowspan="5">
+            <p class='ab-image1'>
+                <%= wicked_pdf_image_tag "/"+"#{Rails.root}/public/"+ "#{@profile_image}",:width=> '100%' %>
+            </p>
+          </td>
         </tr>
         <tr>
           <td class="col-pdf" colspan="1"><% if MultiSchool.current_school.code == "sfx" %>
@@ -108,22 +109,22 @@
                               <%= t('roll_number') %>
                             <% end %></td>
           <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= @student.class_roll_no unless @student.class_roll_no.nil? %></td>
-          <td class="col-pdf no-border" colspan="2"></td>
+          
         </tr>
         <tr>
           <td class="col-pdf" colspan="1"><%= "Student's Name" %></td>
           <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= @student.full_name %></td>
-          <td class="col-pdf no-border" colspan="2"></td>
+        
         </tr>
         <tr>
           <td class="col-pdf" colspan="1"><%= "Monthly Fee" %></td>
           <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= monthly_fee %></td>
-          <td class="col-pdf no-border" colspan="2"></td>
+          
         </tr>
         <tr>
           <td class="col-pdf" colspan="1"><%= "Class" %></td>
           <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= @student.batch.course.course_name unless @student.batch.course.course_name.nil? %></td>
-          <td class="col-pdf no-border" colspan="2"></td>
+          
         </tr>
         <tr>
           <td class="col-pdf" colspan="1"><%= "Group" %></td>

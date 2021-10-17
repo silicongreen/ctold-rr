@@ -96,9 +96,9 @@
         <tr>
           <td class="col-pdf" colspan="1"><%= "Admission No." %></td>
           <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= @student.admission_no unless @student.admission_no.nil? %></td>
-          <td class="col-pdf no-border" colspan="2" rowspan="5">
+          <td class="col-pdf no-border" colspan="2" rowspan="5" style="text-align:right;">
             <p class='ab-image1'>
-                <%= wicked_pdf_image_tag "/"+"#{Rails.root}/public/"+ "#{@profile_image}",:width=> '100%' %>
+                <%= wicked_pdf_image_tag "/"+"#{Rails.root}/public/"+ "#{@profile_image}",:width=> '40%' %>
             </p>
           </td>
         </tr>

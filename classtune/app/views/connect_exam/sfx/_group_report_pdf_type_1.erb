@@ -42,6 +42,7 @@
                       <% end %>
                       
                       <td class="col-pdf">Total Marks</td>
+                      <td class="col-pdf">Total Marks(40%)</td>
                       <td class="col-pdf">Grade</td>
                       <% if @subject_att.include?(@batch.course.course_name) %>
                         <td class="col-pdf">Class Attendance</td>
@@ -125,6 +126,15 @@
 
                           <% if full_mark.to_f > 0 %>
                             <td class="col-pdf"><%= total_mark.to_f %></td>
+                            <%
+                            main_mark = main_mark.round()
+                            fourty = 0
+                            if main_mark > 0
+                              fourty = (main_mark.to_f/100)*40
+                              fourty = fourty.round()
+                            end  
+                            %>
+                            <td class="col-pdf"><%= fourty.to_i %></td>
                             <td class="col-pdf">
                             <% if grade_i %>
                               <%= "I" %>

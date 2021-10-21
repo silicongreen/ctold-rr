@@ -36,12 +36,12 @@
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
                           <td class="col-pdf">
-                              <%= report['exam_name'] %><% unless @exam_marks[report['exam_id'].to_s].blank?  %><% total_mark_of_allexam = total_mark_of_allexam+@exam_marks[report['exam_id'].to_s].to_i  %> (<%= @exam_marks[report['exam_id'].to_s] %>)<% end %>
+                              <%= report['exam_name'] %>
                           </td> 
                         <% end %>
                       <% end %>
                       
-                      <td class="col-pdf">Total Marks (<%= total_mark_of_allexam %>)</td>
+                      <td class="col-pdf">Total Marks</td>
                       <td class="col-pdf">Grade</td>
                       <% if @subject_att.include?(@batch.course.course_name) %>
                         <td class="col-pdf">Class Attendance</td>
@@ -302,15 +302,15 @@
                           <% else %>  
                             <% min_score = (exam_marks.to_f/100)*grade.min_score.to_f  %>
                             <% max_score = (exam_marks.to_f/100)*grade.max_score.to_f  %>
-                            <% min_score = min_score.to_i %>
-                            <% max_score = max_score.to_i %>
-                            <% if max_score.to_i == exam_marks.to_i  %>
-                            <%= min_score.to_s+" and above"  %>
+                            <% min_score = grade.min_score.to_i %>
+                            <% max_score = grade.max_score.to_i %>
+                            <% if max_score.to_i == 100  %>
+                            <%= min_score.to_s+"% and above"  %>
                             <% elsif min_score.to_i == 0  %>
                             <% below = max_score.to_i+1 %>
-                            <%=  "Below "+below.to_s  %>
+                            <%=  "Below "+below.to_s+"%"  %>
                             <% else %>
-                                <%= min_score.to_s + " - " + max_score.to_s %>
+                                <%= min_score.to_s + "% - " + max_score.to_s+"%" %>
                             <% end %>
                           <% end %>                      
                       </td>
@@ -333,7 +333,7 @@
               <table id="pdf-table" class="margin-top-20  right-table sign-table" width="58%" cellspacing="0">
                   <tr class="even">
                       <td width="36%" style="height: 100px !important; padding:5px;"><b>Section In-Charge</b></td>
-                      <td width="64%" style="height: 100px !important; padding:5px;"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/sis-signature-6-10.jpg")),:width=> '70%' %></td>
+                      <td width="64%" style="height: 100px !important; padding:5px;"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/319/signature_gomes.jpeg")),:width=> '70%' %></td>
                   </tr> 
                   <tr class="odd">
                       <td width="36%" style="height: 100px !important; padding:5px;"><b>Principal</b></td>

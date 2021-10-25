@@ -1,14 +1,14 @@
 </div>
-<div id="pdf-header-south" class="sfx-header">
-   <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/323/transcript.png")),:width=> '65%' %></h4>
-</div>
+<p></p>
+<p></p>
+<p></p>
 <div id="page-yield" class="available_sections1 baf_shaheen">
    
       <div class="student_information">
 
         <table class="std_info_table" width="100%" cellspacing="0">
             <tr>
-                <td colspan="2"><b>Student's Information</b></td>
+                <td colspan="2" class="underline"><b>Student's Information</b></td>
                 <td>&nbsp;&nbsp;</td>
                 
             </tr>
@@ -45,14 +45,14 @@
 
             </tr>
             <tr>
-                <td>Name of Examination </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @exam_group.name %></td>
+                <td>Name of Examination </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @exam_group.name.upcase %></td>
                 <td>&nbsp;&nbsp;</td>
-                <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%d %b, %Y"):@exam_group.exam_date.strftime("%d %b, %Y") %></td>
+                <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("b, %Y"):@exam_group.exam_date.strftime("b, %Y") %></td>
             </tr>
         </table>
     </div>
     <div class="grade_information">
-        <%= render  :partial=>"/connect_exam/baf_shaheen/gradding_level" %>
+        <%= render  :partial=>"/group_exam_report/pdf/gradding_level" %>
     </div>
       
          
@@ -155,7 +155,7 @@
           <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
             <td class="col-pdf"><%= "Attainment" %></td>
           <% end %>
-          <td class="col-pdf"><%= "Weighted Average" %></td>
+          <td class="col-pdf"><%= "Weighted Average (Out of 100)" %></td>
           <td class="col-pdf "><%= "GRADE" %></td> 
           <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" && @batch.course.course_name == "IX"%>
           <td class="col-pdf "><%= "Attendance" %></td> 
@@ -296,18 +296,6 @@
               </tr>
 
       </table>
-      
-      <h4 class="h4-evaluation"></h4>
-      <table id="pdf-table" class="evaluation table_99 tbl-td-center"  width="99.8%" >
-          <tr>
-            <td class="font-light align-left">
-                <font size="2">Published on <%=  @exam_group.publish_date.strftime("%d/%m/%Y") unless @exam_group.publish_date.blank? %></font>
-            <td>
-            <td class="font-light align-right">
-                <font size="2">Issued on <%= Time.now.strftime("%d/%m/%Y") %></font>
-            <td>
-          </tr>
-      </table>
 
     <% else %>
       <% total_marks_attained = 0 %>
@@ -418,5 +406,9 @@
   #page-yield
   {
       width: 1250px !important;
+  }
+  .underline
+  {
+     text-decoration:underline;
   }
 </style>

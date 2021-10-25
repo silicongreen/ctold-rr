@@ -2,7 +2,8 @@
 <p></p>
 <p></p>
 <p></p>
-<div id="page-yield" class="available_sections1 baf_shaheen">
+<p></p>
+<div id="page-yield" class="available_sections1 baf_shaheen border-all">
    
       <div class="student_information">
 
@@ -47,7 +48,7 @@
             <tr>
                 <td>Name of Examination </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @exam_group.name.upcase %></td>
                 <td>&nbsp;&nbsp;</td>
-                <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("b, %Y"):@exam_group.exam_date.strftime("b, %Y") %></td>
+                <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%b, %Y"):@exam_group.exam_date.strftime("%b, %Y") %></td>
             </tr>
         </table>
     </div>
@@ -410,5 +411,9 @@
   .underline
   {
      text-decoration:underline;
+  }
+  .border-all
+  {
+    border: 1px solid #ccc;
   }
 </style>

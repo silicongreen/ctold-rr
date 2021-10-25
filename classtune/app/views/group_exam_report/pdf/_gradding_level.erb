@@ -25,10 +25,10 @@
                   <% if grade.min_score.to_i == 0 %>
                     <&nbsp;<%= '%i%' % prev_score %>
                   <% else %>
-                    <%= grade.min_score.to_s + " - " + grade.max_score.to_s+" %" %>
+                    <%= grade.min_score.to_i.to_s + " - " + grade.max_score.to_i.to_s+" %" %>
                   <% end %>
                 <% end %>
-                <%  prev_score = grade.min_score %>
+                <%  prev_score = grade.min_score.to_i %>
             </td>
             <td><%= grade.name %></td>
               </tr> 

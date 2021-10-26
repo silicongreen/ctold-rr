@@ -50,7 +50,7 @@
             <tr>
                 <td>Name of Examination </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @exam_group.name.upcase %></td>
                 <td>&nbsp;&nbsp;</td>
-                <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%b, %Y"):@exam_group.exam_date.strftime("%b, %Y") %></td>
+                <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @exam_group.publish_date.blank? ? @exam_group.created_at.strftime("%b, %Y"):@exam_group.publish_date.strftime("%b, %Y") %></td>
             </tr>
         </table>
     </div>

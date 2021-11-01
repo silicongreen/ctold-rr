@@ -338,10 +338,13 @@ if @total_std.blank?
 
             end 
 
-            grade_point_avg = grand_grade_point.to_f/total_subject.to_f
-            grade_point_avg = grade_point_avg.round(2)
-            if grade_point_avg > 5
-              grade_point_avg = 5.00     
+            grade_point_avg = 0
+            if grand_grade_point > 0 && total_subject > 0
+              grade_point_avg = grand_grade_point.to_f/total_subject.to_f
+              grade_point_avg = grade_point_avg.round(2)
+              if grade_point_avg > 5
+                grade_point_avg = 5.00     
+              end
             end
             grand_total_with_fraction = sprintf( "%0.02f", grand_total_with_fraction)
             grand_total_with_fraction = grand_total_with_fraction.to_f
@@ -350,10 +353,13 @@ if @total_std.blank?
               if full_absent
                 @absent_in_all_subject = @absent_in_all_subject+1
               end
-              grade_point_avg = grand_grade_point.to_f/total_subject.to_f
-              grade_point_avg = grade_point_avg.round(2)
-              if grade_point_avg > 5
-                grade_point_avg = 5.00
+              grade_point_avg = 0
+              if grand_grade_point > 0 && total_subject > 0
+                grade_point_avg = grand_grade_point.to_f/total_subject.to_f
+                grade_point_avg = grade_point_avg.round(2)
+                if grade_point_avg > 5
+                  grade_point_avg = 5.00
+                end
               end
               @student_result[loop_std]['gpa'] = grand_grade_point
               @student_result[loop_std]['grand_total'] = grand_total

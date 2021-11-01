@@ -1,10 +1,11 @@
 school:
- numbers: "312,3,246,319"
+ numbers: "312,3,246,319,361"
  groups_312: "Teachers-1992+1995+1996+2261+2262+2265,Office Staff-1994,MLSS-2263"
  order_by_custom_312: true
  hide_blank_312: true
  hide_blank_246: false
  hide_blank_319: false
+ hide_blank_361: false
  exclude_details_dept_id_312: "2265,2261,1995"
  exclude_details_dept_id_246: "1605,2264,1604"
  exclude_details_dept_id_main_report_312: "2265"

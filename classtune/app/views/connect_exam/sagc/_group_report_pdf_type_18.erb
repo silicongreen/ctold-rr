@@ -679,8 +679,8 @@
               <table id="pdf-table" class="evaluation table_99 top-left-center"  width="99.8%" >
                   <tr class="even remarks-tr">
                     <td>
-                        <b>Remarks : </b> 
-                            <% if @student_position_first_term_batch[@student.id.to_i].blank? %>
+                        <b>Remarks : </b>
+                            <% if failed == true %>
                               Failed
                            <% else %>
                             <% if !grade.blank? and !grade.name.blank? %>
@@ -688,7 +688,7 @@
                             <% else %>
                                 
                             <% end %>
-                        <% end %>      
+                        <% end %>
                     </td>
                   </tr>
               </table>

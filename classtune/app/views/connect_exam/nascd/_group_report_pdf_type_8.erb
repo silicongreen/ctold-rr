@@ -1,35 +1,33 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-  <%= render  :partial=>"/connect_exam/nascd/header" %>
+  <%= render  :partial=>"/connect_exam/nascd/header_3" %>
   <div id="page-yield"  class="available_sections1 sjis-new sfx">
       <table id="pdf-table" class="margin-top-bottom-20" width="99.8%" cellspacing="0">
-          <tr class="even">
-              <td>Student's Name : <b><%= @student.full_name %></b></td>
-              <td>Class : <b><%= @batch.course.course_name %></b></td>
-              <td>Section : <b><%= @batch.course.section_name %></b></td>
-              <td>Roll : <b><%= @student.class_roll_no %></b></td>
+          <tr class="table-header">
+              <td width="20%">Student's Name</td><td width="40%" class="align-left-baf"><%= @student.full_name.upcase %></td>
+              <td width="10%">Section</td><td width="12%"><%= @batch.course.section_name %></td>
+              <td width="6%">Roll</td><td width="12%"><%= @student.class_roll_no %></td>
           </tr>
-          <tr class="even">
-              <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
-              <td colspan="1">Academic Year : 
-                  <b>
-                    <% if month_number.to_i>7 %>
-                      <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>
-                    <% else %>
-                      <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>
-                    <% end %>
-                  </b>  
-              </td>
-              <td colspan="3">Class Teacher's Name : 
-                <% unless @assigned_employee.blank? %>
+          <tr class="table-header">
+              <td width="20%">Class Teacher</td>
+              <td width="40%" class="align-left-baf">
+              <% unless @assigned_employee.blank? %>
                   <% @assigned_employee.each do |emp| %>
                       <% emp_full_name = emp.first_name.to_s+" "+emp.last_name.to_s  %>
                       <b><%= emp.first_name %>&nbsp;<%= emp.last_name %></b>
                     <% break %>
                   <% end %>
-                <% end %>
+                <% end %>        
               </td>
-                  
-                  
+              <td width="10%">Cell No</td>
+              <td width="30%" colspan="3">
+              <% unless @assigned_employee.blank? %>
+                  <% @assigned_employee.each do |emp| %>
+                      <% emp_full_name = emp.first_name.to_s+" "+emp.last_name.to_s  %>
+                      <b><%= emp.mobile_phone %></b>
+                    <% break %>
+                  <% end %>
+                <% end %>    
+              </td>
           </tr>
       </table>
       <div class ="current_batch" style="margin-left:0px;">

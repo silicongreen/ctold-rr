@@ -545,6 +545,7 @@
                                 end
                               end
                               %>
+                              <td class="col-pdf">100</td>
                               <% if has_ob %>
                                 <td class="col-pdf no-warp"> <%= total_ob %></td>
                               <% end %>
@@ -558,6 +559,17 @@
                                   <td class="col-pdf no-warp">-</td>
                                 <% end %>
                               <% end %>
+                                <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
+                                <td class="col-pdf no-warp">
+                                    <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
+                                </td>
+                                <%
+                                  main_mark = tota_mark_with_monthly
+                                %>
+                                
+                                <td class="col-pdf no-warp">
+                                  <%= highest_mark.to_f.round.to_i %>
+                                </td>
                             <% else  %>
                               <td class="col-pdf" colspan="100">-</td>
                             <% end %>      

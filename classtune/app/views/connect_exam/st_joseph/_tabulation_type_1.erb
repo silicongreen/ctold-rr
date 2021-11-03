@@ -284,6 +284,10 @@
                               <% next %>
                             <% end %>
                             <% has_exam = false %>
+                            <% if subject_done.include?(sub['id'].to_i) %>
+                              <% next %>
+                            <% end %>
+                            <% subject_done << sub['id'].to_i %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
@@ -324,6 +328,10 @@
                               <% next %>
                             <% end %>
                             <% has_exam = false %>
+                            <% if subject_done.include?(sub['id'].to_i) %>
+                              <% next %>
+                            <% end %>
+                            <% subject_done << sub['id'].to_i %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
@@ -356,6 +364,10 @@
                               <% next %>
                             <% end %>
                             <% has_exam = false %>
+                            <% if subject_done.include?(sub['id'].to_i) %>
+                              <% next %>
+                            <% end %>
+                            <% subject_done << sub['id'].to_i %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
@@ -411,6 +423,10 @@
                             <% subject_full_mark = 0 %>
                             <% subject_obtain_mark = 0 %>
                             <% has_exam = false %>
+                            <% if subject_done.include?(sub['id'].to_i) %>
+                              <% next %>
+                            <% end %>
+                            <% subject_done << sub['id'].to_i %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
@@ -496,6 +512,10 @@
                             <% subject_full_mark = 0 %>
                             <% subject_obtain_mark = 0 %>
                             <% has_exam = false %>
+                            <% if subject_done.include?(sub['id'].to_i) %>
+                              <% next %>
+                            <% end %>
+                            <% subject_done << sub['id'].to_i %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>

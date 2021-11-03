@@ -95,7 +95,7 @@ tr.odd_summary{
 
 .even_summary td{
 
-    padding: 4px 4px 4px 4px;
+    padding: 2px;
     border: 1px solid #000000;
     border-right: 1px solid #000;
     border-top: 1px solid #000;
@@ -104,7 +104,7 @@ tr.odd_summary{
 }
 
 .odd_summary td{
-    padding: 4px 4px 4px 4px;
+    padding: 2px;
     border: 1px solid #000000;
     border-right: 1px solid #000;
     border-top: 1px solid #000;

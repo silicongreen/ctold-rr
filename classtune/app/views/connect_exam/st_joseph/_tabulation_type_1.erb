@@ -148,7 +148,7 @@
           %>
             <% unless @report_data.blank? %>
               <% c = 'even' %>
-              
+              <% subject_done = [] %>
               <table id="pdf-table" width="100%" cellspacing="0">
                   <tr class="table-header">
 
@@ -159,10 +159,15 @@
                           <% next %>
                         <% end %>
                         <% has_exam = false %>
+                        <% if subject_done.include?(sub['id'].to_i) %>
+                          <% next %>
+                        <% end %>
+                        <% subject_done << sub['id'].to_i %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
+                          
                           <% all_mark = 0 %>
                           <% @report_data['report']['exams'].each do |rs| %>
                             <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
@@ -191,6 +196,10 @@
                           <% next %>
                         <% end %>
                         <% has_exam = false %>
+                        <% if subject_done.include?(sub['id'].to_i) %>
+                          <% next %>
+                        <% end %>
+                        <% subject_done << sub['id'].to_i %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
                           <% has_exam = true %>
                         <% end %>
@@ -231,14 +240,18 @@
                           <td colspan="100">&nbsp;</td>
                       </tr>  
                       <tr class="table-header">
-
                           <td class="col-pdf">Roll</td>
                           <td class="col-pdf">Students Name</td>
+                          <% subject_done = [] %>
                           <% @report_data['report']['subjects'].each do |sub| %>
                             <% if sub['grade_subject'].to_i == 1 %>
                               <% next %>
                             <% end %>
                             <% has_exam = false %>
+                            <% if subject_done.include?(sub['id'].to_i) %>
+                              <% next %>
+                            <% end %>
+                            <% subject_done << sub['id'].to_i %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>

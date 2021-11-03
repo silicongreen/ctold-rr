@@ -232,8 +232,10 @@
 
                   <% @report_data['report']['students'].each do |std| %>
                     <% j = j+1 %>
+                    
                     <%  std_count = std_count+1; %>
                     <% if std_count>11 && extender ==0 %>
+                      <% subject_done = [] %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -242,7 +244,7 @@
                       <tr class="table-header">
                           <td class="col-pdf">Roll</td>
                           <td class="col-pdf">Students Name</td>
-                          <% subject_done = [] %>
+                          
                           <% @report_data['report']['subjects'].each do |sub| %>
                             <% if sub['grade_subject'].to_i == 1 %>
                               <% next %>
@@ -314,6 +316,7 @@
 
                       </tr>
                     <% elsif std_count>12 && extender ==1 %>
+                      <% subject_done = [] %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -410,6 +413,7 @@
                         <% total_mark = 0 %>
                         <% grades = [] %>
                         <% grade_count = {} %>
+                        <% subject_done = [] %>
                         <% @report_data['report']['subjects'].each do |sub| %>
                           <% if sub['grade_subject'].to_i == 1 %>
                             <% next %>

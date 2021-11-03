@@ -65,60 +65,41 @@
           <center>
               <table id="pdf-table" width="99%">
                   <tr class="table-header">
-                      <td class="col-pdf1"><%= "Roll" %></td>
-                      <td class="col-pdf1"><%= t('name') %></td>
-                      <td class="col-pdf1"><%= t('adm_no') %></td>
-                      <td class="col-pdf1">
-                          Present
-                      </td>
-                      <td class="col-pdf1">
-                          Late
-                      </td>
-                      <td class="col-pdf1">
-                          Absent
-                      </td>
-                      <td class="col-pdf1">
-                          Leave
-                      </td>
-                      <td class="col-pdf1"><%= t('total') %></td>
-                      <td class="col-pdf1"><%= t('percentage') %></td>
-                      <td class="col-pdf1"><%= "Mobile" %></td>
-                  </tr>
+                    <td class="col-pdf1"><%= "Roll" %></td>
+                    <td class="col-pdf1"><%= t('name') %></td>
+                    <td class="col-pdf1"><%= t('adm_no') %></td>
+                    <td class="col-pdf1">
+                        Present
+                    </td>
+                    <td class="col-pdf1">
+                        Late
+                    </td>
+                    <td class="col-pdf1">
+                        Absent
+                    </td>
+                    <td class="col-pdf1">
+                        Leave
+                    </td>
+                    <td class="col-pdf1"><%= t('total') %></td>
+                    <td class="col-pdf1"><%= t('percentage') %></td>
+                    <td class="col-pdf1"><%= "Mobile" %></td>
+                </tr>
                   <% extender = 0 %>
                   <% std_count = 0 %>
                   <% @students.each_with_index do |student,i| %>
                     <%  std_count = std_count+1; %>
-                      <tr class="table-header">
-                          <td class="col-pdf1"><%= "Roll" %></td>
-                          <td class="col-pdf1"><%= t('name') %></td>
-                          <td class="col-pdf1"><%= t('adm_no') %></td>
-                          <td class="col-pdf1">
-                              Present
-                          </td>
-                          <td class="col-pdf1">
-                              Late
-                          </td>
-                          <td class="col-pdf1">
-                              Absent
-                          </td>
-                          <td class="col-pdf1">
-                              Leave
-                          </td>
-                          <td class="col-pdf1"><%= t('total') %></td>
-                          <td class="col-pdf1"><%= t('percentage') %></td>
-                          <td class="col-pdf1"><%= "Mobile" %></td>
-                      </tr>
+                      
                     <% c =cycle('even','odd ') %>
                     <tr class="table-header">
                         <td class="col-pdf1"><%= student.class_roll_no %></td>
-                        <td class="col-pdf1 no-warp"><%= student.full_name %></td>
-                        <td class="col-pdf1"><%= student.admission_no %></td>
-                        <td class="col-pdf1"> <%= @leaves[student.id]['present'] %></td>
-                        <td class="col-pdf1"> <%= @leaves[student.id]['late'] %></td>
-                        <td class="col-pdf1"> <%= @leaves[student.id]['absent'] %></td>
-                        <td class="col-pdf1"> <%= @leaves[student.id]['on_leave'] %></td>
-                        <td class="col-pdf1"><%= @leaves[student.id]['total'] %></td>
-                        <td class="col-pdf1"><%= @leaves[student.id]['percent'].round(2) unless @leaves[student.id]['percent'].nil? %></td>
+                        <td class="col-pdf"><%= student.full_name %></td>
+                        <td class="col-pdf"> <%= student.admission_no %></td>
+                        <td class="col-pdf"> <%= @leaves[student.id]['present'] %></td>
+                        <td class="col-pdf"> <%= @leaves[student.id]['late'] %></td>
+                        <td class="col-pdf"> <%= @leaves[student.id]['absent'] %></td>
+                        <td class="col-pdf"> <%= @leaves[student.id]['on_leave'] %></td>
+                        <td class="col-pdf"><%= @leaves[student.id]['total'] %></td>
+                        <td class="col-pdf"><%= @leaves[student.id]['percent'].round(2) unless @leaves[student.id]['percent'].nil? %></td>
                         <td class="col-pdf1"><%= student.sms_number %></td>
                     </tr>
                   <% end %>  

@@ -131,7 +131,7 @@
                   </tr>
 
               </table>
-              <table id="pdf-table"  width="100%" class="left-table break-table odd-table height-exam ev-table" cellspacing="0" >
+              <table id="pdf-table"  width="100%" class="margin-top-bottom-20 left-table break-table odd-table height-exam ev-table" cellspacing="0" >
                 <tr class="even">
                       <td class='align-left-baf padding-0-text-left' rowspan="8">
                           <ul>
@@ -163,6 +163,10 @@ socially to his or her abilities and opportunities.</i></li>
     {
         margin: 50px !important;
     }
+    .sfx margin-top-bottom-20
+    {
+        margin: 50px !important;
+    }
     .sfx .margin-top-50
     {
         margin-top: 50px !important;
@@ -172,10 +176,11 @@ socially to his or her abilities and opportunities.</i></li>
     {
         font-family: serif;
     }
-    sfx  .table-header td{
-        color: #000;
-        font-weight: bold;
+    .sfx #pdf-table tr.even td,.sfx #pdf-table tr.odd td, .sfx #pdf-table tr.table-header td
+    {
+        padding: 8px !important;
     }
+ 
     .sjis-new .left-table.small_table
     {
         float:left;
@@ -184,7 +189,7 @@ socially to his or her abilities and opportunities.</i></li>
     .sjis-new .left-table.ev-table
     {
         float:left;
-        margin:20px 0px 20px 20px !important;
+        margin:30px 0px 30px 30px !important;
     }
     table.border-none, tr.border-none, td.border-none
     {

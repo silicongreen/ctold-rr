@@ -411,7 +411,7 @@
                                      <% total_grade = total_grade.to_f+new_grade_point.to_f %>
                                     <% end %>  
                                   <% end %>
-                                  <td class="col-pdf" rowspan="2"><%= total_ob %>|<%= total_sb %>|<%= total_pr %>|<%= grade.name %></td>
+                                  <td class="col-pdf" rowspan="2"><%= total_ob %>|<%= total_sb %>|<%= total_pr %>|<%= main_mark.round() %><%= grade.name %></td>
                                   <td class="col-pdf" rowspan="2"><%= grade.credit_points %></td>
                                 <% else %>
                                   <td class="col-pdf" rowspan="2">-</td>

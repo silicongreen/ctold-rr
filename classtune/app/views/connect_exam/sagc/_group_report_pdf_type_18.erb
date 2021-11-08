@@ -387,7 +387,7 @@
                                 %> 
                                 <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
                                 <%
-                                  main_mark = (tota_mark_with_monthly.to_f.round/200)*100
+                                  main_mark = (tota_mark_with_monthly.round().to_f/200.00)*100.00
                                 %>
                                 <%  %>
                                 <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>

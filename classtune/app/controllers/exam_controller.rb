@@ -8868,6 +8868,7 @@ class ExamController < ApplicationController
                 four_subject_failed = false
                 total_mark_subject = 0
                 full_mark_subject = 0
+                main_mark = 0
                 total_sb = 0
                 total_ob = 0
                 total_pr = 0
@@ -8924,7 +8925,7 @@ class ExamController < ApplicationController
                       total_pr = total_pr.round()
                   end
                 end
-                
+                total_mark_subject = total_ob+total_sb+total_pr
                 
 
                 if sub['subject_group_id'].to_i > 0
@@ -9064,9 +9065,9 @@ class ExamController < ApplicationController
                     end
                   
                     
-                    total_mark_subject = total_ob+total_sb+total_pr
-                    grand_total = grand_total+total_mark_subject
-                    main_mark = (total_mark_subject.to_f/200)*100
+                    total_mark_subject2 = total_ob+total_sb+total_pr
+                    grand_total = grand_total+total_mark_subject2
+                    main_mark = (total_mark_subject2.to_f/200.00)*100
                     main_mark = main_mark.round()
                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                     if !grade.blank? and !grade.name.blank?

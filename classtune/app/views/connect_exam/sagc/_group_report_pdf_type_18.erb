@@ -64,14 +64,16 @@
                       <% @report_data['report']['exams'].each do |report| %>
                           <% if report['exam_category'] == '3' %>
                             <% has_sb = true %>
+                            <% colspan = colspan+2 %> 
                           <% end %>
                           <% if report['exam_category'] == '4' %>
                             <% has_ob = true %>
+                            <% colspan = colspan+2 %> 
                           <% end %>
                           <% if report['exam_category'] == '5' %>
                             <% has_pr = true %>
+                            <% colspan = colspan+2 %> 
                           <% end %>
-                          <% colspan = colspan+1 %> 
                       <% end %>
                       <% colspan = colspan+1 %> 
                       <td class="col-pdf" colspan="<%= colspan %>" rowspan="1"><b>Examination</b></td>
@@ -84,12 +86,15 @@
                   <tr class="even header-shade">
                       <% if has_ob == true %>
                             <td rowspan="1"><b>OB</b></td>
+                            <td rowspan="1"><b>Avg</b></td>
                       <% end %> 
                       <% if has_sb == true %>
                             <td rowspan="1"><b>SB</b></td>
+                            <td rowspan="1"><b>Avg</b></td>
                       <% end %> 
                       <% if has_pr == true %>
                             <td rowspan="1"><b>PR</b></td>
+                            <td rowspan="1"><b>Avg</b></td>
                       <% end %>
                       <td rowspan="1"><b>Total</b></td>
                   </tr>
@@ -191,51 +196,61 @@
                               <% end %>
                             <% end %>
                             <% end %>
+                            <% total_all = total_ob+total_sb+total_pr %>
                             <% if has_ob %>
+                              <td class="col-pdf no-warp"> <%= total_ob %></td>
+                              <%
+                              if has_ob && full_ob > 0
+                                if full_ob.to_i == 15
+                                    total_ob = total_ob*2
+                                    grand_total_fraction = grand_total_fraction+total_ob.to_f
+                                elsif total_ob > 0
+                                    total_ob = (total_ob/12.00)*25
+                                    grand_total_fraction = grand_total_fraction+total_ob.to_f
+                                    total_ob = total_ob.round()
+                                end
+                              end
+                              %>
                               <td class="col-pdf no-warp"> <%= total_ob %></td>
                             <% end %>
                             <% if has_sb %>
+                              <td class="col-pdf no-warp"><%= total_sb %></td>
+                              <%
+                                if has_sb && full_sb > 0
+                                  if full_sb.to_i == 30 && total_sb > 0
+                                      total_sb = (total_sb/30)*70
+                                      grand_total_fraction = grand_total_fraction+total_sb.to_f
+                                      total_sb = total_sb.round()
+                                  elsif total_ob > 0
+                                      total_sb = (total_sb/20.00)*50
+                                      grand_total_fraction = grand_total_fraction+total_sb.to_f
+                                      total_sb = total_sb.round()
+                                  end
+                                end
+                              %>
                               <td class="col-pdf no-warp"><%= total_sb %></td>
                             <% end %>
                             <% if has_pr %>
                               <% if full_pr > 0 %>
                                 <td class="col-pdf no-warp"><%= total_pr %></td>
+                                <%
+                                if has_pr && full_pr > 0
+                                  if total_pr > 0
+                                      total_pr = (total_pr/5.00)*25
+                                      grand_total_fraction = grand_total_fraction+total_pr.to_f
+                                      total_pr = total_pr.round()
+                                  end
+                                end
+                                %>
+                                <td class="col-pdf no-warp"><%= total_pr %></td>
                               <% else %>
+                                <td class="col-pdf no-warp">-</td>
                                 <td class="col-pdf no-warp">-</td>
                               <% end %>
                             <% end %>
-                            <% total_all = total_ob+total_sb+total_pr %>
+                            
                             <td class="col-pdf no-warp"><%= total_all %></td>
-                            <%
-                            if has_ob && full_ob > 0
-                              if full_ob.to_i == 15
-                                  total_ob = total_ob*2
-                                  grand_total_fraction = grand_total_fraction+total_ob.to_f
-                              elsif total_ob > 0
-                                  total_ob = (total_ob/12.00)*25
-                                  grand_total_fraction = grand_total_fraction+total_ob.to_f
-                                  total_ob = total_ob.round()
-                              end
-                            end
-                            if has_sb && full_sb > 0
-                              if full_sb.to_i == 30 && total_sb > 0
-                                  total_sb = (total_sb/30)*70
-                                  grand_total_fraction = grand_total_fraction+total_sb.to_f
-                                  total_sb = total_sb.round()
-                              elsif total_ob > 0
-                                  total_sb = (total_sb/20.00)*50
-                                  grand_total_fraction = grand_total_fraction+total_sb.to_f
-                                  total_sb = total_sb.round()
-                              end
-                            end
-                            if has_pr && full_pr > 0
-                              if total_pr > 0
-                                  total_pr = (total_pr/5.00)*25
-                                  grand_total_fraction = grand_total_fraction+total_pr.to_f
-                                  total_pr = total_pr.round()
-                              end
-                            end
-                            %>
+                            
                             
 
                             <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
@@ -525,59 +540,72 @@
                                   <% end %>
                                 <% end %>
                               <% end %>
+                              <% total_all = total_ob+total_sb+total_pr %>
                               <td class="col-pdf">100</td>
                               <% if has_ob %>
-                                <td class="col-pdf no-warp"> <%= total_ob %></td>
-                              <% end %>
-                              <% if has_sb %>
-                                <td class="col-pdf no-warp"><%= total_sb %></td>
-                              <% end %>
-                              <% if has_pr %>
-                                <% if full_pr > 0 %>
-                                  <td class="col-pdf no-warp"><%= total_pr %></td>
-                                <% else %>
-                                  <td class="col-pdf no-warp">-</td>
-                                <% end %>
-                              <% end %>
-                              <% total_all = total_ob+total_sb+total_pr %>
-                              <td class="col-pdf no-warp"><%= total_all %></td>
+                              <td class="col-pdf no-warp"> <%= total_ob %></td>
                               <%
                               if has_ob && full_ob > 0
                                 if full_ob.to_i == 15
                                     total_ob = total_ob*2
+                                    grand_total_fraction = grand_total_fraction+total_ob.to_f
                                 elsif total_ob > 0
                                     total_ob = (total_ob/12.00)*25
+                                    grand_total_fraction = grand_total_fraction+total_ob.to_f
                                     total_ob = total_ob.round()
                                 end
                               end
-                              if has_sb && full_sb > 0
-                                if full_sb.to_i == 30 && total_sb > 0
-                                    total_sb = (total_sb/30)*70
-                                    total_sb = total_sb.round()
-                                elsif total_ob > 0
-                                    total_sb = (total_sb/20.00)*50
-                                    total_sb = total_sb.round()
+                              %>
+                              <td class="col-pdf no-warp"> <%= total_ob %></td>
+                            <% end %>
+                            <% if has_sb %>
+                              <td class="col-pdf no-warp"><%= total_sb %></td>
+                              <%
+                                if has_sb && full_sb > 0
+                                  if full_sb.to_i == 30 && total_sb > 0
+                                      total_sb = (total_sb/30)*70
+                                      grand_total_fraction = grand_total_fraction+total_sb.to_f
+                                      total_sb = total_sb.round()
+                                  elsif total_ob > 0
+                                      total_sb = (total_sb/20.00)*50
+                                      grand_total_fraction = grand_total_fraction+total_sb.to_f
+                                      total_sb = total_sb.round()
+                                  end
                                 end
-                              end
-                              if has_pr && full_pr > 0
-                                if total_pr > 0
-                                    total_pr = (total_pr/5.00)*25
-                                    total_pr = total_pr.round()
+                              %>
+                              <td class="col-pdf no-warp"><%= total_sb %></td>
+                            <% end %>
+                            <% if has_pr %>
+                              <% if full_pr > 0 %>
+                                <td class="col-pdf no-warp"><%= total_pr %></td>
+                                <%
+                                if has_pr && full_pr > 0
+                                  if total_pr > 0
+                                      total_pr = (total_pr/5.00)*25
+                                      grand_total_fraction = grand_total_fraction+total_pr.to_f
+                                      total_pr = total_pr.round()
+                                  end
                                 end
-                              end
+                                %>
+                                <td class="col-pdf no-warp"><%= total_pr %></td>
+                              <% else %>
+                                <td class="col-pdf no-warp">-</td>
+                                <td class="col-pdf no-warp">-</td>
+                              <% end %>
+                            <% end %>
+                              
+                              <td class="col-pdf no-warp"><%= total_all %></td>   
+                              <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
+                              <td class="col-pdf no-warp">
+                                  <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
+                              </td>
+                              <%
+                                main_mark = tota_mark_with_monthly
                               %>
                               
-                                <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
-                                <td class="col-pdf no-warp">
-                                    <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
-                                </td>
-                                <%
-                                  main_mark = tota_mark_with_monthly
-                                %>
-                                
-                                <td class="col-pdf no-warp">
-                                  <%= highest_mark.to_f.round.to_i %>
-                                </td>
+                              <td class="col-pdf no-warp">
+                                <%= highest_mark.to_f.round.to_i %>
+                              </td>
                             <% else  %>
                               <td class="col-pdf" colspan="100">-</td>
                             <% end %>      

@@ -6,7 +6,11 @@ if @tabulation_data.nil?
     @tabulation_data = student_response['data']
   end
   %>
-  <%= render  :partial=>"/connect_exam/baghc/finding_data" %>
+  <% if @connect_exam_obj.result_type.to_i == 4  %> 
+    <%= render  :partial=>"/connect_exam/baghc/finding_data2" %>
+  <% else %>
+    <%= render  :partial=>"/connect_exam/baghc/finding_data" %>
+  <% end %>
   <%
 end
 %>

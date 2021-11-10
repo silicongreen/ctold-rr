@@ -195,7 +195,7 @@ if @total_std.blank?
                       total_sb = (total_sb/30)*70
                       grand_total_with_fraction = grand_total_with_fraction+total_sb.to_f
                       total_sb = total_sb.round()
-                  elsif total_ob > 0
+                  elsif total_sb > 0
                       total_sb = (total_sb/20.00)*50
                       grand_total_with_fraction = grand_total_with_fraction+total_sb.to_f
                       total_sb = total_sb.round()
@@ -270,7 +270,7 @@ if @total_std.blank?
                           grand_total_with_fraction = grand_total_with_fraction+total_ob2.to_f
                           total_ob2 = total_ob2.round()
                           total_ob =  total_ob+total_ob2
-                          if total_ob < 16
+                          if total_ob < 17
                             if fourth_subject.blank?
                               u_grade = u_grade+1 
                               subject_failed = true
@@ -293,7 +293,7 @@ if @total_std.blank?
                           grand_total_with_fraction = grand_total_with_fraction+total_sb2.to_f
                           total_sb2 = total_sb2.round()
                           total_sb =  total_sb+total_sb2
-                          if total_sb < 46
+                          if total_sb < 47
                             if fourth_subject.blank?
                               u_grade = u_grade+1 
                               subject_failed = true
@@ -301,12 +301,12 @@ if @total_std.blank?
                               four_subject_failed = true
                             end
                           end
-                      elsif total_ob2 > 0
+                      elsif total_sb2 > 0
                           total_sb2 = (total_sb2/20.00)*50
                           grand_total_with_fraction = grand_total_with_fraction+total_sb2.to_f
                           total_sb2 = total_sb2.round()
                           total_sb =  total_sb+total_sb2
-                          if total_sb < 34
+                          if total_sb < 33
                             if fourth_subject.blank?
                               u_grade = u_grade+1 
                               subject_failed = true
@@ -329,7 +329,7 @@ if @total_std.blank?
                           grand_total_with_fraction = grand_total_with_fraction+total_pr2.to_f
                           total_pr2 = total_pr2.round()
                           total_pr =  total_pr+total_pr2
-                          if total_pr < 16
+                          if total_pr < 17
                             if fourth_subject.blank?
                               u_grade = u_grade+1 
                               subject_failed = true

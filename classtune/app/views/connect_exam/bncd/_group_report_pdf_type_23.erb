@@ -637,63 +637,33 @@
                   </tr> 
 
               </table>
-              <table id="pdf-table" class="tbl-lign-left top-margin-20 letter-grade" width="100%" cellspacing="0">
-                <tr class="odd">
-                      <td class="align-left no-warp" width="50%"><b>Grade Point Avg</b></td>
-                      <td><b>
-                          <% if failed == true %>
-                            0.00
+              <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
+                  <tr class="even">
+                      <td>Result</td>
+                      <td>GPA</td>
+                      <td>Position in Section</td>
+                      <td>Position in Class</td>
+                  </tr>
+                  <tr class="even">
+                      <td class="col-pdf  no-warp"><% if !@student_position_batch[@student.id.to_i].blank? %>Pass<% else %>Failed<% end %></td>
+                      <td class="col-pdf  no-warp"><% if !@student_position_batch[@student.id.to_i].blank? %><%= sprintf( "%0.02f", grade_point_avg) %><% else %>0.00<% end %></td>
+                      <td class="col-pdf  no-warp">
+                          <% if !@student_position_batch[@student.id.to_i].blank? %> 
+                            <%= @student_position_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
                           <% else %>
-                            <%= sprintf( "%0.02f", grade_point_avg) %>
-                          <% end %></b>
-                      </td>
-                      <td class="align-left no-warp" colspan="2"><b>Position in Merit List</b></td>
-                  </tr> 
-                  <tr class="odd">
-                      <%
-                        
-                        grade = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
-                     %>
-                      <td class="align-left no-warp">Letter Grade</td>
-                      <td >
-                          <b>
-                          <% if failed == true %>
-                              F
-                          <% else %>
-                            <% if !grade.blank? and !grade.name.blank? %>
-                            <%= grade.name %>
-                            <% else %>
-                              -
-                            <% end %>
+                            -
                           <% end %>
-                          </b>
-                      </td>
-                      <td class="align-left no-warp" width="15%">Section</td>
-                      <td class="no-warp">
-                         <% if !@student_position_batch[@student.id.to_i].blank? %> 
-                          <%= @student_position_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
-                         <% else %>
-                          -
-                         <% end %> 
+                      </td> 
+                      <td class="col-pdf  no-warp">
+                          <% if !@student_position[@student.id.to_i].blank? %> 
+                            <%= @student_position[@student.id.to_i] %> out of <%= @total_std %>
+                          <% else %>
+                            -
+                          <% end %>
                       </td>
                   </tr>
-                  <tr class="odd">
-                      
-                      <td class="align-left no-warp">Total Marks</td>
-                      <td class="align-left no-warp"><b><%= sprintf( "%0.02f", grand_total_fraction)%></b></td>
-                      <td class="align-left no-warp" width="15%">Class/Group</td>
-                      <td class="no-warp">
-                          <b>
-                         <% if !@student_position[@student.id.to_i].blank? %> 
-                          <%= @student_position[@student.id.to_i] %> out of <%= @total_std %>
-                         <% else %>
-                          -
-                         <% end %> 
-                        </b>  
-                      </td>    
-                  </tr>
-                  
               </table>
+              
               <div class='fine'></div>
               <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
                 <tr class="even align-left-baf"><td>&nbsp;Remarks : <% if !@student_position_batch[@student.id.to_i].blank? %> Passed <% else %> Failed <% end %>  </td></tr>  

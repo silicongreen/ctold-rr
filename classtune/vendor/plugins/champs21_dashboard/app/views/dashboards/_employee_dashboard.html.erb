@@ -192,7 +192,7 @@ employee_id = @current_user.employee_record.id
         <% end %>
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#58b368; color:white;'><span style='text-align:center;width:80%; float:left;'>Student Attendance</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'attendances', :action => 'index',:anchor => "class_report" %>
       <% end %>
-      <% if @current_user.admin? and (MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 246   or MultiSchool.current_school.id == 2  or MultiSchool.current_school.code == "oisd"  or MultiSchool.current_school.code == "sems") %>
+      <% if @current_user.admin? and (MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 246   or MultiSchool.current_school.id == 2  or MultiSchool.current_school.code == "oisd"  or MultiSchool.current_school.code == "sems" or MultiSchool.current_school.code == "bncd") %>
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#27aa80; color:white;'><span style='text-align:center;width:80%; float:left;'>Print Admit Card</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'other', :action => 'admit_card' %>
       <% end %>
       <% if @current_user.employee? and (MultiSchool.current_school.id == 2 or MultiSchool.current_school.id == 352) %>

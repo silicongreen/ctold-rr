@@ -14,7 +14,7 @@
                     <h3 align="center"><b><%=Configuration.get_config_value('InstitutionName'); %></b></h3>
                     <h4 align="center"><b>Mirpur -13,Dhaka-1216</b></h4>
                     <h4 align="center"><b>(EIIN : 108214)</b></h4>
-                    <h4 align="center"><b>Considaring Covid-19 2021</b></h4>
+                    <h4 align="center"><b>Considering Covid-19 Pandamic 2021</b></h4>
                     <br/><br/>
                     <h3 align="center"><b><%= @connect_exam_obj.name %></b></h3>
                   </td>
@@ -274,7 +274,7 @@
                         </tr>
                         <tr class="table-header">
                             <td><p style="text-align:center;">Position: <% if !@student_position.blank? && !@student_position[@student.id.to_i].blank?  %><%= @student_position[@student.id.to_i] %><% else %>N/A<% end %></p></td>
-                            <td><p style="text-align:center;">Total Student: <%= @total_std unless @total_std.blank? %></p></td>
+                            <td><p style="text-align:center;">Remark: </p></td>
                         </tr>
                     </table>
                     <% 

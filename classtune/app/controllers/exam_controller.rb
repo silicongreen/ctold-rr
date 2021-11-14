@@ -7859,7 +7859,7 @@ class ExamController < ApplicationController
           :orientation => 'Portrait'
       end
     elsif  MultiSchool.current_school.id == 356
-      if @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 4
+      if @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6
         render :pdf => template,
           
           :save_only    => for_save,

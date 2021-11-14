@@ -8912,7 +8912,7 @@ class ExamController < ApplicationController
                       total_sb = (total_sb/30)*70
                       grand_total_with_fraction = grand_total_with_fraction+total_sb.to_f
                       total_sb = total_sb.round()
-                  elsif total_ob > 0
+                  elsif total_sb > 0
                       total_sb = (total_sb/20.00)*50
                       grand_total_with_fraction = grand_total_with_fraction+total_sb.to_f
                       total_sb = total_sb.round()
@@ -9018,7 +9018,7 @@ class ExamController < ApplicationController
                               four_subject_failed = true
                             end
                           end
-                      elsif total_ob2 > 0
+                      elsif total_sb2 > 0
                           total_sb2 = (total_sb2/20.00)*50
                           grand_total_with_fraction = grand_total_with_fraction+total_sb2.to_f
                           total_sb2 = total_sb2.round()

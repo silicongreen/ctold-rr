@@ -6,7 +6,7 @@ if @tabulation_data.nil?
     @tabulation_data = student_response['data']
   end
   %>
-  <% if @connect_exam_obj.result_type.to_i == 4 or @connect_exam_obj.result_type.to_i == 5  %> 
+  <% if @connect_exam_obj.result_type.to_i == 4 or @connect_exam_obj.result_type.to_i == 5 or @connect_exam_obj.result_type.to_i == 6 %> 
     <%= render  :partial=>"/connect_exam/baghc/finding_data2" %>
   <% else %>
     <%= render  :partial=>"/connect_exam/baghc/finding_data" %>

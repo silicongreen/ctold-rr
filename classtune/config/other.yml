@@ -2,7 +2,7 @@ resulttype:
  numbers: "323,2,325,340,312,348,3,352,346,355,356,324,357"
  type_323: "Mid Term,Final Term,Class 10 Mid Term,Class 10 Final Term,Class Test,Final Term Legal,Assessment,Mid Term New,Final Term Covid,Assessment Final,Assessment Without Attendance,Mock Test Tabulation,Final Term(70/30),Assessment Final Without Attendance"
  type_325: "Summer,Spring,Fall,Test,Final"
- type_356: "Type1,Type2,Type3,Type4"
+ type_356: "Type1,Type2,Type3,Type4,Type5"
  type_2: "Final Term,First Term,Mock Test,Quarter,KG First Term,KG Final Term"
  type_3: "Term Exam"
  type_319: "Senior Section Quarter,Type 2,Type 3,Junior Section Quarter,Type 5,Type 6,Type 7,Type 8, Type 9"

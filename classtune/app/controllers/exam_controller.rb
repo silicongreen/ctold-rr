@@ -8860,7 +8860,7 @@ class ExamController < ApplicationController
                 next
               end
               if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
-                if fourth_subject == false && sub['subject_group_id'].to_i == 0 &&  sub['grade_subject'].to_i == 0 and !subject_grade_done.include?(sub['id'].to_i)
+                if fourth_subject == false &&  sub['grade_subject'].to_i == 0 and !subject_grade_done.include?(sub['id'].to_i)
                   total_subject = total_subject+1
                 end
                 subject_failed = false

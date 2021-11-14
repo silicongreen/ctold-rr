@@ -111,9 +111,11 @@
                           <tr class="table-header">
                               <td rowspan="2">SL</td>
                               <td rowspan="2">Subjects</td>
+                              <% colspan = 0 %>
                               <% unless @report_data['report']['exams'].blank? %>
                                 <% @report_data['report']['exams'].each do |report| %>
                                   <td class="col-pdf">
+                                   <% colspan = colspan+1%>
                                     <%= report['exam_name'] %></br>
                                     <%= @exam_marks[report['exam_id'].to_s] %>
                                   </td>
@@ -238,7 +240,7 @@
                                 <td colspan="2" style="text-align:center">
                                     <b>Total</b>
                                 </td>
-                                <td colspan="3" style="text-align:center">
+                                <td colspan="<%= colspan %>" style="text-align:center">
                                     <b><%= total_mark.to_i %></b> [<%= total_full_mark.to_i %>]
                                 </td>
                                 <td style="text-align:center">

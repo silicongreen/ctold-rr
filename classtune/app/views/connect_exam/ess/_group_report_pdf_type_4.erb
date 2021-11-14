@@ -76,7 +76,11 @@
                   <% total_mark_of_allexam = 0 %>
                   <tr class="even">
                     <td class="col-pdf" rowspan="2"><b><%= "Subject" %></b></td>
-                    <td colspan="2" ><b><%= @connect_exam_obj.name %></b></td>
+                    <% if !@connect_exam_obj.name.upcase.index("CLASS TEST 2").nil? %>
+                      <td colspan="2" ><b>Class Test 2</b></td>
+                    <% else %>
+                      <td colspan="2" ><b>Class Test 1</b></td>
+                    <% end %>
                     <td colspan="2" ><b>Attendance</b></td>
                   </tr>
                   <tr class="even">

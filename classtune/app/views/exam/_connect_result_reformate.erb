@@ -73,7 +73,7 @@
   <% end %> 
 <% end %> 
 <% subjects_new.sort!{ |a, b|  a['priority'] <=> b['priority'] } %>
-<%= debug subjects_new.inspects %>
+<%= debug subjects_new.inspect %>
 <% avgparcent = total_parcent.to_f/total_subject.to_f %>
 <% grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
 <% @report_data['report']['subjects'] = subjects_new %>

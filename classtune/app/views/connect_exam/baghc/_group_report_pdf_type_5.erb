@@ -123,8 +123,8 @@
                               <% end %> 
                               <td>Obtained Marks</br>100</td>
                               <td>Obtained Heighest Marks</td>
-                              <td>GP</td>
-                              <td>LG</td>   
+                              <td>Letter Grade</td>
+                              <td>Grade Point</td>  
                           </tr>
                         </thead>
                         <% total_parcent = 0 %>
@@ -219,11 +219,12 @@
                                   <% main_failed_grade = true %>
                                 <% end %>
                                 <td>
-                                   <%= gp_point %> 
-                                </td>
-                                <td>
                                    <%= lg %> 
                                 </td>
+                                <td>
+                                   <%= gp_point %> 
+                                </td>
+                                
                                 <% end %>
                                 
                               
@@ -250,11 +251,12 @@
                                     &nbsp;
                                 </td>
                                 <td style="text-align:center">
-                                    <b><%= sprintf( "%0.02f", total_gpa) %></b>
-                                </td>
-                                <td style="text-align:center">
                                     &nbsp;
                                 </td>
+                                <td style="text-align:center">
+                                    <b><%= sprintf( "%0.02f", total_gpa) %></b>
+                                </td>
+                                
                             </tr>
                             
                             <tr class="table-header">

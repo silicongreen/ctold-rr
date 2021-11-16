@@ -105,6 +105,7 @@
                                   <% if report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != first_exam_mark %>
                                     <% rowspan = 2 %>
                                   <% end %>
+                                  <% break %>
                                 <% end %>
                           <% end %>
                       <% end %>          
@@ -120,7 +121,7 @@
                                     <% if loop_value > 2 || rowspan == 1  %>
                                     <td class="col-pdf" rowspan="<%= rowspan %>"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
                                     <% else %>
-                                    <td class="col-pdf">Subjecttive (50)</td>
+                                    <td class="col-pdf" colspan="2">Subjecttive (50)</td>
                                     <% end %>
                                   <% end %>   
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>

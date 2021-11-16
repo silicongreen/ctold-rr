@@ -72,7 +72,7 @@
                   <tr class="table-header">
                       <% unless @report_data['report']['exams'].blank? %>
                         <% @report_data['report']['exams'].each do |report| %>
-                          <td class="col-pdf"></td>
+                          <td class="col-pdf"><%= @exam_marks[report['exam_id'].to_s] %></td>
                         <% end %>
                       <% end %>   
                     <td class="col-pdf">100</td> 

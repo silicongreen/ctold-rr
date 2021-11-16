@@ -69,6 +69,14 @@
                       <td class="col-pdf"><b>Marks</b></td>
                       <td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
                   </tr>
+                  <% first_exam_mark = 0 %>
+                  <% unless @report_data['report']['exams'].blank? %>
+                    <% @report_data['report']['exams'].each do |report| %>
+                      <% first_exam_mark = @exam_marks[report['exam_id'].to_s].to_i %>
+                      <% break %>
+                    <% end %>
+                  <% end %>
+
                   <tr class="table-header">
                       <% unless @report_data['report']['exams'].blank? %>
                         <% @report_data['report']['exams'].each do |report| %>
@@ -90,16 +98,29 @@
                          <% next %>
                       <% end %>
                       <% sl = sl+1 %>
+                      <% rowspan = 1 %>
+                      <% unless @report_data['report']['exams'].blank? %>  
+                          <% @report_data['report']['exams'].each do |report| %> 
+                                <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                  <% if report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != first_exam_mark %>
+                                    <% rowspan = 2 %>
+                                  <% end %>
+                                <% end %>
+                          <% end %>
+                      <% end %>          
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                            <td class="col-pdf  no-warp"><%= sl %></td>
-                            <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>
+                            <td class="col-pdf  no-warp" rowspan="<%= rowspan %>"><%= sl %></td>
+                            <td class="col-pdf  no-warp align-left-baf" rowspan="<%= rowspan %>"><%= subjects['name'] %></td>
+                            <% loop_value = 0 %>
                             <% unless @report_data['report']['exams'].blank? %>  
-                                <% @report_data['report']['exams'].each do |report| %>  
+                                <% @report_data['report']['exams'].each do |report| %> 
+                                  <% loop_value = loop_value+1 %> 
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
                                     <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
-                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
-                                  <% else %>
-                                    <td class="col-pdf">-</td>
+                                    <% if loop_value > 2 || rowspan == 1  %>
+                                    <td class="col-pdf" rowspan="<%= rowspan %>"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
+                                    <% else %>
+                                    <td class="col-pdf">Subjecttive (50)</td>
                                   <% end %>   
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                     <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -109,17 +130,32 @@
                             <%
                               main_mark = (obtain_mark.to_f/total_mark.to_f)*100
                             %>
-                            <td class="col-pdf"><%= main_mark %></td>
+                            <td class="col-pdf" rowspan="<%= rowspan %>"><%= main_mark %></td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
-                              <td class="col-pdf"><%= grade.name %></td>
+                              <td class="col-pdf" rowspan="<%= rowspan %>"><%= grade.name %></td>
                               <% total_grade_of_allexam = total_grade_of_allexam+grade.credit_points %>
                             <% else %>
-                              <td class="col-pdf">-</td>
+                              <td class="col-pdf" rowspan="<%= rowspan %>">-</td>
                             <% end %>  
                             <% total_mark_of_allexam = total_mark_of_allexam+obtain_mark %>
                             <% full_mark_of_allexam = full_mark_of_allexam+total_mark %>
                       </tr>
+                      <% if rowspan == 2 %>
+                        <% loop_value = 0 %>
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                            <% unless @report_data['report']['exams'].blank? %>
+                            <% @report_data['report']['exams'].each do |report| %>
+                                <% loop_value = loop_value+1 %>
+                                <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                  <% if loop_value < 3  %>
+                                    <td class="col-pdf" ><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
+                                  <% end %>
+                                <% end %>
+                            <% end %>
+                          <% end %> 
+                        </tr>
+                      <% end %>
                     <% end %>
                   
                   <% end %>

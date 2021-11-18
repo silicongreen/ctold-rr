@@ -36,10 +36,8 @@
                   group_split[0] = ""
                 end 
               %>
-              <td class="align-right col-pdf" width="20%">Group </td>
-              <td class="align-left"><%= group_split[0] %></td>
               <td class="align-right col-pdf" width="20%" >Category </td>
-              <td class="align-left"><%= @student.student_category.name unless @student.student_category.blank? %></td>
+              <td class="align-left"  colspan="3" ><%= @student.student_category.name unless @student.student_category.blank? %></td>
           </tr>
       </table>
       <div class="grade_information">
@@ -53,6 +51,7 @@
                   <% total_mark_of_allexam = 0 %>
                   <% full_mark_of_allexam = 0 %>
                   <% total_grade_of_allexam = 0 %>
+                  <% total_subject = 0 %>
                   <% colspan = 0%>
                   <tr class="even header-shade">
                       <td class="col-pdf" rowspan="2">
@@ -77,7 +76,7 @@
                     <% end %>
                   <% end %>
 
-                  <tr class="table-header">
+                  <tr class="even header-shade">
                       <% unless @report_data['report']['exams'].blank? %>
                         <% @report_data['report']['exams'].each do |report| %>
                           <td class="col-pdf"><%= @exam_marks[report['exam_id'].to_s] %></td>
@@ -108,7 +107,8 @@
                                   <% break %>
                                 <% end %>
                           <% end %>
-                      <% end %>          
+                      <% end %>   
+                      <% total_subject = total_subject+1 %>       
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                             <td class="col-pdf  no-warp" rowspan="<%= rowspan %>"><%= sl %></td>
                             <td class="col-pdf  no-warp align-left-baf" rowspan="<%= rowspan %>"><%= subjects['name'] %></td>
@@ -172,28 +172,36 @@
               </table>
               <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
                   <tr class="even">
-                    <td class="col-pdf  no-warp align-center" colspan="2"><b>Position in Merit List</b></td>
-                         
+                      <td>Result</td>
+                      <td>GPA</td>
+                      <td>Total Grade</td>
+                      <td>Position in Section</td>
+                      <td>Position in Class</td>
                   </tr>
+                  <% if total_grade_of_allexam > 0 && total_subject > 0 %>
+                      <% grade_point_avg = total_grade_of_allexam.to_f/total_subject.to_f %>
+                      <% if grade_point_avg > 5 %>
+                        <% grade_point_avg = 5.00 %>
+                      <% end %>  
+                  <% end %> 
                   <tr class="even">
-                    <td class="col-pdf  no-warp align-left-baf">&nbsp;Section</td>
-                    <td class="col-pdf  no-warp align-left-baf">&nbsp;
+                      <td class="col-pdf  no-warp"><% if !@student_position_batch[@student.id.to_i].blank? %>Pass<% else %>Failed<% end %></td>
+                      <td class="col-pdf  no-warp"><% if !@student_position_batch[@student.id.to_i].blank? %><%= sprintf( "%0.02f", grade_point_avg) %><% else %>0.00<% end %></td>
+                       <td class="col-pdf  no-warp"><%= sprintf( "%0.02f", total_grade_of_allexam) %></td>
+                      <td class="col-pdf  no-warp">
                           <% if !@student_position_batch[@student.id.to_i].blank? %> 
                             <%= @student_position_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
                           <% else %>
                             -
                           <% end %>
-                    </td>     
-                  </tr>
-                  <tr class="even">
-                    <td class="col-pdf  no-warp align-left-baf">&nbsp;Group</td>
-                     <td class="col-pdf  no-warp align-left-baf">&nbsp;
+                      </td> 
+                      <td class="col-pdf  no-warp">
                           <% if !@student_position[@student.id.to_i].blank? %> 
                             <%= @student_position[@student.id.to_i] %> out of <%= @total_std %>
                           <% else %>
                             -
                           <% end %>
-                    </td>   
+                      </td>
                   </tr>
               </table>
               <div class='fine'></div>

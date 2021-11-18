@@ -90,7 +90,7 @@
                             <% @report_data['report']['exams'].each do |report| %>
                                 <% loop_value = loop_value+1 %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                  <%= total_mark_obtain = total_mark_obtain+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                  <% total_mark_obtain = total_mark_obtain+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% if loop_value > 2 || rowspan == 1  %>
                                     <td class="col-pdf"  rowspan="<%= rowspan %>" ><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
                                   <% end %>
@@ -313,6 +313,11 @@ socially to his or her abilities and opportunities.</i></li>
     {
         padding: 14px  !important;
     }
+    table#pdf-table tr.even td, table#pdf-table tr.table-header td, table#pdf-table tr.odd td
+            {
+                padding: 10px !important;
+                font-size: 24px !important;
+            }
 
 
 </style>    

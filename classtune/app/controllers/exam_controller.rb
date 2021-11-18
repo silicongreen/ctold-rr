@@ -6410,33 +6410,50 @@ class ExamController < ApplicationController
     if !@employee_sub.nil?
       @employee = Employee.find(@employee_sub.employee_id)
     end
+
+    if MultiSchool.current_school.code == "nascd" && @connect_exam_obj.result_type == 7
+      get_continues(@id,@batch.id)
+      @report_data = []
+      if @student_response['status']['code'].to_i == 200
+        @report_data = @student_response['data']
+      end 
+      row_first = ['Roll','Student Name']
+      unless @report_data['report']['exams'].blank?
+        @report_data['report']['exams'].each do |report|
+          row_first << report['name']
+        end  
+      end 
+      new_book.worksheet(0).insert_row(0, row_first)
+      iloop = 0 
+    else
     
-    get_subject_mark_sheet(@id,@subject_id)
-    @report_data = []
-    if @student_response['status']['code'].to_i == 200
-      @report_data = @student_response['data']
-    end
-    
-    row_first = ['Roll','Student Name']
-    @report_data['result']['ALL'].each do |rs|
-      row_first << rs['name']+"( "+rs['maximum_marks']+" ) "
-    end
-    new_book.worksheet(0).insert_row(0, row_first)
-    iloop = 0
-    unless @report_data['result']['al_students'].blank?
-      @report_data['result']['al_students'].each do |std|
-        iloop = iloop+1
-        rows = [std['class_roll_no'],std['name']]
-        @report_data['result']['ALL'].each do |rs|
-          if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
-            rows << rs['students'][std['id']]['score']
-          else
-            rows << ""
-          end
-        end
-        new_book.worksheet(0).insert_row(iloop, rows)
+      get_subject_mark_sheet(@id,@subject_id)
+      @report_data = []
+      if @student_response['status']['code'].to_i == 200
+        @report_data = @student_response['data']
       end
-    end
+      
+      row_first = ['Roll','Student Name']
+      @report_data['result']['ALL'].each do |rs|
+        row_first << rs['name']+"( "+rs['maximum_marks']+" ) "
+      end
+      new_book.worksheet(0).insert_row(0, row_first)
+      iloop = 0
+      unless @report_data['result']['al_students'].blank?
+        @report_data['result']['al_students'].each do |std|
+          iloop = iloop+1
+          rows = [std['class_roll_no'],std['name']]
+          @report_data['result']['ALL'].each do |rs|
+            if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
+              rows << rs['students'][std['id']]['score']
+            else
+              rows << ""
+            end
+          end
+          new_book.worksheet(0).insert_row(iloop, rows)
+        end
+      end
+    end  
     
     batch_split = @batch.name.split(" ")
     

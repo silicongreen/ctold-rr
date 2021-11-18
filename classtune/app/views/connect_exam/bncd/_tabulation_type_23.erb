@@ -199,6 +199,7 @@
                           <td><%=  "Total(100%)" %></td>
                         <% end %>
                       <% end %>
+                      <td rowspan="3"><%=  "REMARKS" %></td>
 
                   </tr>
 
@@ -406,6 +407,13 @@
                     <% end %>
                     <% end %>
                   <% end %>
+                  <td>
+                    <% if number_of_failed > 0 %>  
+                      Failed
+                    <% else %>
+                      Passed
+                    <% end %> 
+                  </td>
               </table>
             <% end %>
             <div class="page-break-main"></div>

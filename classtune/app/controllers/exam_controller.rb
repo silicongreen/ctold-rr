@@ -6428,24 +6428,27 @@ class ExamController < ApplicationController
           row_first << report['exam_name']
         end  
       end 
+    
       new_book.worksheet(0).insert_row(0, row_first)
       iloop = 0
       @report_data['report']['students'].each do |std|
         iloop = iloop+1
-        rows = [std['class_roll_no'],std['name']]
-        @report_data['report']['all_result'][std['id']]['exams'].each do |report|
+        @student = Student.find_by_id(std['id'].to_i,:include=>["student_category"])
+        rows = [@student.class_roll_no,@student.full_name]
+        @report_data['report']['exams'] = @report_data['report']['all_result'][std['id']]['exams']
+        @report_data['report']['exams'].each do |report|
           if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][@subject.id.to_s].blank? and !report['result'][report['exam_id']][@subject.id.to_s]['remarks'].blank?
             remarks_exam = report['result'][report['exam_id']][@subject.id.to_s]['remarks']
             if remarks_exam.to_i == 1
               rows << 40
             end
-            if remarks_exam.to_i == 1
+            if remarks_exam.to_i == 2
               rows << 35
             end
-            if remarks_exam.to_i == 1
+            if remarks_exam.to_i == 3
               rows << 30
             end
-            if remarks_exam.to_i == 1
+            if remarks_exam.to_i == 4
               rows << 20
             end  
           else

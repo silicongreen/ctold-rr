@@ -6413,10 +6413,15 @@ class ExamController < ApplicationController
 
     if MultiSchool.current_school.code == "nascd" && @connect_exam_obj.result_type == 7
       get_continues(@id,@batch.id)
+      
       @report_data = []
       if @student_response['status']['code'].to_i == 200
         @report_data = @student_response['data']
       end 
+      @report_data['report']['students'].each do |std|
+        @report_data['report']['exams'] = @report_data['report']['all_result'][std['id']]['exams']
+        break
+      end  
       row_first = ['Roll','Student Name']
       unless @report_data['report']['exams'].blank?
         @report_data['report']['exams'].each do |report|
@@ -6445,8 +6450,9 @@ class ExamController < ApplicationController
             end  
           else
             rows << ""
-          end  
+          end        
         end  
+        new_book.worksheet(0).insert_row(iloop, rows)
       end  
     else
     

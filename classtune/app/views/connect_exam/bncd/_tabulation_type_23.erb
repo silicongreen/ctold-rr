@@ -176,7 +176,6 @@
                           <td colspan="2"><%=  sub['name'].upcase %></td>
                           <% if loop%2 == 0 %>
                             <td rowspan="2"><%=  "LG" %></td>
-                            <td rowspan="2"><%=  "GP" %></td>
                           <% end %> 
                         <% end %>
                       <% end %>
@@ -195,7 +194,7 @@
                        
                         <% if has_exam == true %>
                           <td><%=  "TL" %></td>
-                          <td><%=  "TL(100%)" %></td>
+                          <td><%=  "TTL" %></td>
                         <% end %>
                       <% end %>
                       
@@ -233,7 +232,6 @@
                           <td colspan="2"><%=  sub['name'].upcase %></td>
                           <% if loop%2 == 0 %>
                             <td rowspan="2"><%=  "LG" %></td>
-                            <td rowspan="2"><%=  "GP" %></td>
                           <% end %> 
                         <% end %>
                       <% end %>
@@ -252,7 +250,7 @@
                        
                         <% if has_exam == true %>
                           <td><%=  "TL" %></td>
-                          <td><%=  "TL(100%)" %></td>
+                          <td><%=  "TTL" %></td>
                         <% end %>
                       <% end %>
                       
@@ -280,7 +278,6 @@
                           <td colspan="2"><%=  sub['name'].upcase %></td>
                           <% if loop%2 == 0 %>
                             <td rowspan="2"><%=  "LG" %></td>
-                            <td rowspan="2"><%=  "GP" %></td>
                           <% end %> 
                         <% end %>
                       <% end %>
@@ -299,7 +296,7 @@
                        
                         <% if has_exam == true %>
                           <td><%=  "TL" %></td>
-                          <td><%=  "TL(100%)" %></td>
+                          <td><%=  "TTL" %></td>
                         <% end %>
                       <% end %>
                       
@@ -481,9 +478,7 @@
                               %>
                               <% if !grade.blank? and !grade.name.blank? %>
                                   <td class="col-pdf" ><%= grade.name %></td>
-                                  <td class="col-pdf" ><%= grade.credit_points %></td>
                               <% else %>
-                                <td class="col-pdf" >-</td>
                                 <td class="col-pdf" >-</td>
                               <% end %>
 
@@ -552,6 +547,7 @@
 .even td{
 
     padding: 5px 0px 5px 0px !important;
+    
 
 }
 

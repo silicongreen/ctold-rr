@@ -161,12 +161,24 @@
                     <% end %>
                   
                   <% end %>
+
+                  <% if total_grade_of_allexam > 0 && total_subject > 0 %>
+                      <% grade_point_avg = total_grade_of_allexam.to_f/total_subject.to_f %>
+                      <% if grade_point_avg > 5 %>
+                        <% grade_point_avg = 5.00 %>
+                      <% end %>
+                       <% grade = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id) %>
+                  <% end %> 
               
                   <% colspan = colspan+2 %>
                   <tr class="even" >
                     <td class="col-pdf  no-warp align-right" colspan="<%= colspan %>"><b>GRAND TOTAL</b></td>
                     <td class="col-pdf  no-warp"><b><%= total_mark_of_allexam %></b></td>
-                    <td class="col-pdf  no-warp"></td>
+                    <% if !@student_position_batch[@student.id.to_i].blank? %>
+                      <td class="col-pdf  no-warp"><%= grade.name %></td>
+                    <% else %>
+                      <td class="col-pdf  no-warp">F</td>
+                    <% end %>
                   </tr>
                   
               </table>
@@ -178,12 +190,7 @@
                       <td>Position in Section</td>
                       <td>Position in Class</td>
                   </tr>
-                  <% if total_grade_of_allexam > 0 && total_subject > 0 %>
-                      <% grade_point_avg = total_grade_of_allexam.to_f/total_subject.to_f %>
-                      <% if grade_point_avg > 5 %>
-                        <% grade_point_avg = 5.00 %>
-                      <% end %>  
-                  <% end %> 
+                  
                   <tr class="even">
                       <td class="col-pdf  no-warp"><% if !@student_position_batch[@student.id.to_i].blank? %>Pass<% else %>Failed<% end %></td>
                       <td class="col-pdf  no-warp"><% if !@student_position_batch[@student.id.to_i].blank? %><%= sprintf( "%0.02f", grade_point_avg) %><% else %>0.00<% end %></td>

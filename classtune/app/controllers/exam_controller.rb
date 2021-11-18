@@ -6425,7 +6425,7 @@ class ExamController < ApplicationController
       row_first = ['Roll','Student Name']
       unless @report_data['report']['exams'].blank?
         @report_data['report']['exams'].each do |report|
-          row_first << report['name']
+          row_first << report['exam_name']
         end  
       end 
       new_book.worksheet(0).insert_row(0, row_first)

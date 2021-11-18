@@ -186,7 +186,6 @@
                   
                   
                   <tr class="table-header">
-                      <% loop = 0 %>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -195,7 +194,6 @@
                         
                        
                         <% if has_exam == true %>
-                          <% loop = loop+1 %>
                           <td><%=  "Total" %></td>
                           <td><%=  "Total(100%)" %></td>
                         <% end %>
@@ -212,6 +210,102 @@
                     <% if !std.blank? and !std['first_name'].blank? %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
+
+                     <% if std_count>25 && extender ==0 %>
+                      <% std_count = 0 %>
+                      <% extender = 1 %>
+                      <tr class="page-break">
+                          <td colspan="100">&nbsp;</td>
+                      </tr>  
+                      <tr class="table-header">
+                      
+                      <td class="col-pdf" rowspan="2">Roll</td>
+                      <td class="col-pdf" rowspan="2">Students Name</td>
+                      <% loop = 0 %>
+                      <% @report_data['report']['subjects'].each do |sub| %>
+                        <% has_exam = false %>
+                        <% if @all_subject_id.include?(sub['id'].to_i) %>
+                          <% has_exam = true %>
+                        <% end %>
+                      
+                        <% if has_exam == true %>
+                          <% loop = loop+1 %>
+                          <td colspan="2"><%=  sub['name'].upcase %></td>
+                          <% if loop%2 == 0 %>
+                            <td rowspan="2"><%=  "LG" %></td>
+                            <td rowspan="2"><%=  "GP" %></td>
+                          <% end %> 
+                        <% end %>
+                      <% end %>
+                      <td rowspan="2"><%=  "REMARKS" %></td>
+
+                  </tr>
+                  
+                  
+                  <tr class="table-header">
+                      <% @report_data['report']['subjects'].each do |sub| %>
+                        <% has_exam = false %>
+                        <% if @all_subject_id.include?(sub['id'].to_i) %>
+                          <% has_exam = true %>
+                        <% end %>
+                        
+                       
+                        <% if has_exam == true %>
+                          <td><%=  "Total" %></td>
+                          <td><%=  "Total(100%)" %></td>
+                        <% end %>
+                      <% end %>
+                      
+
+                  </tr>
+                    <% elsif std_count>27 && extender ==1 %>
+                      <% std_count = 0 %>
+                      <% extender = 1 %>
+                      <tr class="page-break">
+                          <td colspan="100">&nbsp;</td>
+                      </tr> 
+                      <tr class="table-header">
+                      
+                      <td class="col-pdf" rowspan="2">Roll</td>
+                      <td class="col-pdf" rowspan="2">Students Name</td>
+                      <% loop = 0 %>
+                      <% @report_data['report']['subjects'].each do |sub| %>
+                        <% has_exam = false %>
+                        <% if @all_subject_id.include?(sub['id'].to_i) %>
+                          <% has_exam = true %>
+                        <% end %>
+                      
+                        <% if has_exam == true %>
+                          <% loop = loop+1 %>
+                          <td colspan="2"><%=  sub['name'].upcase %></td>
+                          <% if loop%2 == 0 %>
+                            <td rowspan="2"><%=  "LG" %></td>
+                            <td rowspan="2"><%=  "GP" %></td>
+                          <% end %> 
+                        <% end %>
+                      <% end %>
+                      <td rowspan="2"><%=  "REMARKS" %></td>
+
+                  </tr>
+                  
+                  
+                  <tr class="table-header">
+                      <% @report_data['report']['subjects'].each do |sub| %>
+                        <% has_exam = false %>
+                        <% if @all_subject_id.include?(sub['id'].to_i) %>
+                          <% has_exam = true %>
+                        <% end %>
+                        
+                       
+                        <% if has_exam == true %>
+                          <td><%=  "Total" %></td>
+                          <td><%=  "Total(100%)" %></td>
+                        <% end %>
+                      <% end %>
+                      
+
+                  </tr>
+                    <% end %> 
                      
                     <%
                     failed_all = true

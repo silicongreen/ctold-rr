@@ -391,6 +391,13 @@
                             
                           <% end %>   
                         <% end %> 
+                        <td>
+                          <% if number_of_failed > 0 %>  
+                            Failed
+                          <% else %>
+                            Passed
+                          <% end %> 
+                        </td>
                     </tr>
                     <% if absent_all == true %>
                       <% absent_student = absent_student+1 %>
@@ -408,13 +415,7 @@
                     <% end %>
                     <% end %>
                   <% end %>
-                  <td>
-                    <% if failed == true %>  
-                      Failed
-                    <% else %>
-                      Passed
-                    <% end %> 
-                  </td>
+                  
               </table>
             <% end %>
             <div class="page-break-main"></div>

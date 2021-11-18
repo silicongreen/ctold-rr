@@ -328,6 +328,8 @@
                                         failed_subject = true
                                       end
                                     end
+                                elsif full_ob.to_i > 0
+                                    failed_subject = true
                                 end
                                 if full_sb.to_i == 30 && total_sb > 0
                                     total_sb = (total_sb/30)*70
@@ -347,6 +349,8 @@
                                         failed_subject = true
                                       end
                                     end
+                                elsif full_sb.to_i > 0
+                                    failed_subject = true
                                 end
                                 if total_pr > 0
                                     total_pr = (total_pr/5.00)*25
@@ -357,6 +361,8 @@
                                         failed_subject = true
                                       end
                                     end
+                                elsif full_pr.to_i > 0
+                                    failed_subject = true
                                 end
 
                                   

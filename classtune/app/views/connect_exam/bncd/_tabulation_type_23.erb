@@ -247,9 +247,13 @@
                           
                           <% subjectdata = Subject.find(sub['id'].to_i) %>
                           <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
-                          
+                          <% loop = loop+1 %>
                           <% if @has_exam_student == false %>
-                            <td colspan="4"></td>
+                            <% if loop%2 == 0 %>
+                              <td colspan="4"></td>
+                            <% else %>
+                              <td colspan="2"></td>
+                            <% end %>
                           <% else %>
                             
                             <% fourth_subject = false %>
@@ -266,7 +270,7 @@
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
-                            <% loop = loop+1 %>
+                            
                             <% if loop%2 == 0 %>
                                 <%
                                 total_sb_previous = total_sb

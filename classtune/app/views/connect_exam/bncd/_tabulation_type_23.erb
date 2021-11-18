@@ -233,6 +233,15 @@
                         <% grade_count = {} %>
                         <% failed = false %>
                         <% loop = 0 %>
+                        <%
+                          total_sb = 0
+                          total_ob = 0
+                          total_pr = 0
+                      
+                          full_sb = 0
+                          full_ob = 0
+                          full_pr = 0
+                        %> 
                         <% @report_data['report']['subjects'].each do |sub| %>
                           
                           

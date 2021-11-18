@@ -373,6 +373,7 @@
                               end
                               if failed_subject == true 
                                 number_of_failed = number_of_failed+1
+                                failed = true
                               else
                                 failed_all = false
                               end
@@ -408,7 +409,7 @@
                     <% end %>
                   <% end %>
                   <td>
-                    <% if number_of_failed > 0 %>  
+                    <% if failed == true %>  
                       Failed
                     <% else %>
                       Passed

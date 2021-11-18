@@ -109,8 +109,8 @@
                             <% @report_data['report']['exams'].each do |report| %>
                                 <% loop_value = loop_value+1 %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                  <% if loop_value < 3  %>
-                                    <td class="col-pdf" ><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
+                                  <% if loop_value < 2  %>
+                                    <td class="col-pdf" colspan="2" ><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
                                   <% end %>
                                 <% end %>
                             <% end %>

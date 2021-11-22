@@ -19,7 +19,7 @@
  <% end %>
 <% @covid_main = 0 %>
 <% year_month = I18n.l(@connect_exam_obj.published_date,:format=>"%Y-%m") %>
-<% if year_month.to_s >= "2020-07" and year_month.to_s <= "2021-10"  %>
+<% if year_month.to_s >= "2020-07" and year_month.to_s <= "2021-12"  %>
   <% @covid_main = 1 %>
 <% end %>
 

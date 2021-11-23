@@ -1,6 +1,6 @@
 
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-               <table id="pdf-table" class="margin-top-10"  width="99.8%">
+              <table id="pdf-table" class="margin-top-10"  width="99.8%">
                         <thead> 
                           <tr class="table-header">
                               <td rowspan="2">SL</td>
@@ -17,8 +17,8 @@
                               <% end %> 
                               <td>Obtained Marks</td>
                               <td>Obtained Heighest Marks</td>
-                              <td>GP</td>
-                              <td>LG</td>   
+                              <td>Letter Grade</td>
+                              <td>Grade Point</td>  
                           </tr>
                         </thead>
                         <% total_parcent = 0 %>
@@ -101,23 +101,25 @@
                                 </td>
                                 <% if failed_grade %>
                                   <% main_failed_grade = true %>
+                                  <td>
+                                   F 
+                                </td>
                                 <td>
                                    0.00
                                 </td>
-                                <td>
-                                   F 
-                                </td>
+                                
                                 
                                 <% else %>
                                 <% if gp_point.to_i == 0 %>
                                   <% main_failed_grade = true %>
                                 <% end %>
                                 <td>
-                                   <%= gp_point %> 
-                                </td>
-                                <td>
                                    <%= lg %> 
                                 </td>
+                                <td>
+                                   <%= gp_point %> 
+                                </td>
+                                
                                 <% end %>
                                 
                               
@@ -144,11 +146,12 @@
                                     &nbsp;
                                 </td>
                                 <td style="text-align:center">
-                                    <b><%= sprintf( "%0.02f", total_gpa) %></b>
-                                </td>
-                                <td style="text-align:center">
                                     &nbsp;
                                 </td>
+                                <td style="text-align:center">
+                                    <b><%= sprintf( "%0.02f", total_gpa) %></b>
+                                </td>
+                                
                             </tr>
                             
                             <tr class="table-header">

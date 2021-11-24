@@ -173,6 +173,7 @@
                               <% colspan = colspan+1 %>
                             <% end %>
                           <% end %>
+                          <% colspan = colspan+2 %>
                           <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
@@ -201,6 +202,8 @@
                           <% end %>
                         <% end %>
                       <% end %>
+                      <td rowspan="2"><%= "TTL" %></td>
+                      <td rowspan="2"><%= "GP" %></td>
 
                   </tr>
                    <tr class="table-header">
@@ -258,6 +261,7 @@
                               <% colspan = colspan+1 %>
                             <% end %>
                           <% end %>
+                           <% colspan = colspan+2 %>
                           <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
@@ -286,6 +290,8 @@
                           <% end %>
                         <% end %>
                       <% end %>
+                      <td rowspan="2"><%= "TTL" %></td>
+                      <td rowspan="2"><%= "GP" %></td>
 
                   </tr>
                    <tr class="table-header">
@@ -334,6 +340,7 @@
                               <% colspan = colspan+1 %>
                             <% end %>
                           <% end %>
+                           <% colspan = colspan+2 %>
                           <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
@@ -362,6 +369,8 @@
                           <% end %>
                         <% end %>
                       <% end %>
+                      <td rowspan="2"><%= "TTL" %></td>
+                      <td rowspan="2"><%= "GP" %></td>
 
                   </tr>
                    <tr class="table-header">
@@ -447,16 +456,20 @@
                               %>
                               <% end %>  
                             <% end %> 
+                            <td>
+                                <%= sprintf( "%0.02f", subject_obtain_mark) %>    
+                            </td>
                             <% total_mark = total_mark+subject_obtain_mark.to_f %>
                             <% main_mark = subject_obtain_mark.to_f %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <% total_grade = total_grade+grade.credit_points.to_f %>
+                              <td>
+                                <%= sprintf( "%0.02f", grade.credit_points.to_f) %>    
+                            </td>
                             <% end %>
                             <% total_mark = total_mark+subject_obtain_mark.to_f %>
                             <% full_mark_all = full_mark_all+subject_full_mark.to_f  %>
-              
-                           
                         
                           <% end %>   
                         <% end %> 

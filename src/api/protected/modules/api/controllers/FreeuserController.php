@@ -166,7 +166,7 @@ class FreeuserController extends Controller
 
                 $url = Settings::$paid_image_path . "uploads/classworks/attachments/" . $id . "/original/" . urlencode($classworkobj->attachment_file_name) . "?" . $attachment_extra;
 
-                header("Content-Disposition: attachment; filename=" . $classworkobj->attachment_file_name);
+                header('Content-Disposition: attachment; filename="' . $classworkobj->attachment_file_name.'"');
                 header("Content-Type: {$classworkobj->attachment_content_type}");
                 header("Content-Length: " . $classworkobj->attachment_file_size);
                 ob_clean();

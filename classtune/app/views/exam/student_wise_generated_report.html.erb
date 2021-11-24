@@ -1,3 +1,23 @@
+<%
+  year_start = ""
+  year_end = ""
+  month_number =@exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%-m"):@exam_group.exam_date.strftime("%-m")
+  if month_number.to_i>6
+    year_start = @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y"):@exam_group.exam_date.strftime("%Y") 
+    year_end = @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y").to_i+1:@exam_group.exam_date.strftime("%Y").to_i+1
+  else
+    year_start = @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y").to_i-1:@exam_group.exam_date.strftime("%Y").to_i-1
+    year_end = @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y"):@exam_group.exam_date.strftime("%Y")
+  end
+  session_year = year_start.to_s+"-"+year_end.to_s
+  
+  session_roll = SessionRoll.find_by_admission_no_and_session(@student.admission_no,session_year)
+  unless session_roll.blank?
+    @student.class_roll_no = session_roll.roll
+  end
+
+%>
+
 <% if @exam_group.exam_category == 5 %>
   <%= render  :partial=>"/group_exam_report/pdf/exam_report_mock_test" %>
 <% elsif MultiSchool.current_school.id == 500 %>

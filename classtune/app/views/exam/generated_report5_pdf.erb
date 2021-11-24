@@ -3,6 +3,25 @@
     @report_data['total'] = @report_data['total_new_std']
   end
 %>
+<%
+  year_start = ""
+  year_end = ""
+  month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m")
+  if month_number.to_i>6
+    year_start = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") 
+    year_end = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1
+  else
+    year_start = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1
+    year_end = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y")
+  end
+  session_year = year_start.to_s+"-"+year_end.to_s
+  
+  session_roll = SessionRoll.find_by_admission_no_and_session(@student.admission_no,session_year)
+  unless session_roll.blank?
+    @student.class_roll_no = session_roll.roll
+  end
+
+%>
 <% if MultiSchool.current_school.code != "ess" || @connect_exam_obj.result_type > 2 %>
   <%= render  :partial=>"connect_result_reformate" %>
 <% end %>

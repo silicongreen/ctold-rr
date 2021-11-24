@@ -176,11 +176,12 @@
                           <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
-                      <td rowspan="3">Grand Total</td>
-                      <td rowspan="3">Position In Class</td>
-                      <td rowspan="3">Position In Section</td>
-                      <td rowspan="3">GP</td>
-                      <td rowspan="3">GPA</td>
+                      <td class="col-pdf" rowspan="3">Grand Total</td>
+                      <td class="col-pdf" rowspan="3">Percentage(%)</td>
+                      <td class="col-pdf" rowspan="3">Position in Section</td>
+                      <td class="col-pdf" rowspan="3">Position in Class</td>
+                      <td class="col-pdf" rowspan="3">Total GP</td>
+                      <td class="col-pdf" rowspan="3">GPA</td>
 
                   </tr>
                   
@@ -260,11 +261,12 @@
                           <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
-                      <td rowspan="3">Grand Total</td>
-                      <td rowspan="3">Position In Class</td>
-                      <td rowspan="3">Position In Section</td>
-                      <td rowspan="3">GP</td>
-                      <td rowspan="3">GPA</td>
+                      <td class="col-pdf" rowspan="3">Grand Total</td>
+                      <td class="col-pdf" rowspan="3">Percentage(%)</td>
+                      <td class="col-pdf" rowspan="3">Position in Section</td>
+                      <td class="col-pdf" rowspan="3">Position in Class</td>
+                      <td class="col-pdf" rowspan="3">Total GP</td>
+                      <td class="col-pdf" rowspan="3">GPA</td>
 
                   </tr>
                   
@@ -335,11 +337,12 @@
                           <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
-                      <td rowspan="3">Grand Total</td>
-                      <td rowspan="3">Position In Class</td>
-                      <td rowspan="3">Position In Section</td>
-                      <td rowspan="3">GP</td>
-                      <td rowspan="3">GPA</td>
+                      <td class="col-pdf" rowspan="3">Grand Total</td>
+                      <td class="col-pdf" rowspan="3">Percentage(%)</td>
+                      <td class="col-pdf" rowspan="3">Position in Section</td>
+                      <td class="col-pdf" rowspan="3">Position in Class</td>
+                      <td class="col-pdf" rowspan="3">Total GP</td>
+                      <td class="col-pdf" rowspan="3">GPA</td>
 
                   </tr>
                   
@@ -401,9 +404,12 @@
                         <td class="name-std"><%= "-" %></td>
                         <% end %>
                         <% total_mark = 0 %>
+                        <% full_mark_all = 0 %>
                         <% grades = [] %>
                         <% grade_count = {} %>
+                        <% total_grade = 0 %>
                         <% failed = false %>
+                        <% subject_count = 0 %>
                         <% @report_data['report']['subjects'].each do |sub| %>
                           
                           <% subjectdata = Subject.find(sub['id'].to_i) %>
@@ -427,7 +433,7 @@
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
-
+                            <% subject_count = subject_count+1 %>
                             <% @report_data['report']['exams'].each do |rs| %>
                               <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
@@ -442,17 +448,59 @@
                               <% end %>  
                             <% end %> 
                             <% total_mark = total_mark+subject_obtain_mark.to_f %>
-                            <% main_mark = (subject_obtain_mark.to_f/50.00)*100 %>
+                            <% main_mark = subject_obtain_mark.to_f %>
+                            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <% total_grade = total_grade+grade.credit_points.to_f %>
+                            <% end %>
+                            <% total_mark = total_mark+subject_obtain_mark.to_f %>
+                            <% full_mark_all = full_mark_all+subject_full_mark.to_f  %>
               
                            
-                            
+                        
                           <% end %>   
                         <% end %> 
-                              
+                       <% percentage = 0 %>      
+                        <% if full_mark_all > 0 &&  total_mark > 0 %>
+                          <% percentage = (total_mark.to_f/full_mark_all.to_f)*100 %> 
+                        <% end %>    
 
-                        <td>
-                            <%= sprintf( "%0.02f", total_mark) %>    
-                        </td>
+                          <td>
+                              <%= sprintf( "%0.02f", total_mark) %>    
+                          </td>
+                          <td>
+                              <%= sprintf( "%0.02f", percentage) %>    
+                          </td>
+                          <td>
+                              <% if !@student_position_batch[std['id'].to_i].blank? %> 
+                                <%= @student_position_batch[std['id'].to_i] %>
+                              <% else %>
+                                -
+                              <% end %>
+                          </td>
+                          <td>
+                              <% if !@student_position[std['id'].to_i].blank? %> 
+                                <%= @student_position[std['id'].to_i] %>
+                              <% else %>
+                                -
+                              <% end %>
+                          </td>
+
+                          <td>
+                              <%= sprintf( "%0.02f", total_grade) %>
+                          </td>
+                          <% grade_point_avg = 0.00 %>
+                          <% if total_grade > 0 && subject_count > 0 %>
+                            <% grade_point_avg = total_grade.to_f/subject_count.to_f %>
+                            <% if grade_point_avg > 5 %>
+                              <% grade_point_avg = 5.00 %>
+                            <% end %>  
+                          <% end %> 
+                          <% grade_point_avg = (grade_point_avg.to_f*100).to_f.round() %>
+                          <% grade_point_avg = grade_point_avg.to_f/100 %>
+                          <td>
+                              <%= sprintf( "%0.02f", grade_point_avg) %>
+                          </td> 
 
 
                     </tr>

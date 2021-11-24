@@ -177,8 +177,8 @@
                           <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
-                      <td class="col-pdf" rowspan="3">Grand Total</td>
-                      <td class="col-pdf" rowspan="3">Percentage(%)</td>
+                      <td class="col-pdf" rowspan="3">G. Total</td>
+                      <td class="col-pdf" rowspan="3">Per(%)</td>
                       <td class="col-pdf" rowspan="3">Position in Section</td>
                       <td class="col-pdf" rowspan="3">Position in Class</td>
                       <td class="col-pdf" rowspan="3">Total GP</td>
@@ -266,8 +266,8 @@
                           <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
-                      <td class="col-pdf" rowspan="3">Grand Total</td>
-                      <td class="col-pdf" rowspan="3">Percentage(%)</td>
+                      <td class="col-pdf" rowspan="3">G. Total</td>
+                      <td class="col-pdf" rowspan="3">Per(%)</td>
                       <td class="col-pdf" rowspan="3">Position in Section</td>
                       <td class="col-pdf" rowspan="3">Position in Class</td>
                       <td class="col-pdf" rowspan="3">Total GP</td>
@@ -346,8 +346,8 @@
                           <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
-                      <td class="col-pdf" rowspan="3">Grand Total</td>
-                      <td class="col-pdf" rowspan="3">Percentage(%)</td>
+                      <td class="col-pdf" rowspan="3">G. Total</td>
+                      <td class="col-pdf" rowspan="3">Per(%)</td>
                       <td class="col-pdf" rowspan="3">Position in Section</td>
                       <td class="col-pdf" rowspan="3">Position in Class</td>
                       <td class="col-pdf" rowspan="3">Total GP</td>
@@ -460,7 +460,7 @@
                               <% end %>  
                             <% end %> 
                             <td>
-                                <%= sprintf( "%0.02f", subject_obtain_mark) %>    
+                                <%= subject_obtain_mark.to_i %>    
                             </td>
                             <% total_mark = total_mark+subject_obtain_mark.to_f %>
                             <% main_mark = subject_obtain_mark.to_f %>
@@ -468,7 +468,7 @@
                             <% if !grade.blank? and !grade.name.blank? %>
                               <% total_grade = total_grade+grade.credit_points.to_f %>
                               <td>
-                                <%= sprintf( "%0.02f", grade.credit_points.to_f) %>    
+                                <%= sprintf( "%0.01f", grade.credit_points.to_f) %>    
                             </td>
                             <% end %>
                             <% total_mark = total_mark+subject_obtain_mark.to_f %>

@@ -279,7 +279,7 @@
                      this.disabled = false;
                    }
                    return result;" type="submit"  value="PDF Download">
-
+          <% if MultiSchool.current_school.code == "sis" %>
           <input style="margin-left: 10px;"
                  name="commit" onclick="j('#new_student').attr('action', 'download_student_security');
                    if (window.hiddenCommit) {
@@ -297,7 +297,7 @@
                      this.disabled = false;
                    }
                    return result;" type="submit"  value="Security Card">
-
+          <% end %>
 
           <input style="margin-left: 10px;"
                  name="commit" onclick="j('#new_student').attr('action', 'download_student_family_list');

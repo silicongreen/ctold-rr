@@ -13,6 +13,40 @@
 <%= render  :partial=>"/connect_exam/cherry_blossoms/header" %>
 <p>&nbsp;</p>
   <div id="page-yield"  class="available_sections1 st_joseph_bg">
+      <table id="pdf-table" class="tbl-lign-left" width="52%" cellspacing="0">
+          <tr class="even">
+              <td class="align-right col-pdf" width="20%">Student ID </td>
+              <td colspan="3" class="align-left"><b><%= @student.admission_no %></b></td>
+          </tr>
+          
+          <tr class="even">
+              <td class="align-right" width="20%">Roll No</td>
+              <td colspan="3" class="align-left"><%= @student.class_roll_no %></td>
+          </tr>
+          <tr class="odd">
+              <td class="align-right col-pdf col-pdf" width="20%">Name </td>
+              <td colspan="3" class="align-left"><%= @student.full_name.upcase %></td>
+          </tr>
+          <tr class="odd">
+              <td class="align-right col-pdf" width="20%">Class </td>
+              <td class="align-left"><b><%= @batch.course.course_name %></b></td>
+              <% batch_split = @batch.name.split(" ") %>
+              <% unless batch_split[2].blank?  %>
+                <% batch_split[1] = batch_split[1]+" "+batch_split[2] %>
+              <% end %>
+              <td class="align-right col-pdf" width="20%" >Shift </td><td class="align-left"><%= batch_split[0] %></td>   
+          </tr>
+          <tr class="odd">
+              <td class="align-right col-pdf" width="20%">Session </td>
+              <td class="align-left" colspan="3"><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
+          </tr>
+      </table>
+      
+      
+     
+      <div class="grade_information">
+        <%= render  :partial=>"/connect_exam/bncd/gradding_level" %>   
+      </div>
       <table id="pdf-table" class="margin-top-bottom-10" width="99%" cellspacing="0">
           <tr class="even">
               <td>Name : <b><%= @student.full_name %></b></td>

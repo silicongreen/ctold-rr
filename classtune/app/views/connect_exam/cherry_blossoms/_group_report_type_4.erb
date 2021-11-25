@@ -15,20 +15,20 @@
   <div id="page-yield"  class="available_sections1 st_joseph_bg">
       <table id="pdf-table" class="tbl-lign-left" width="52%" cellspacing="0">
           <tr >
-              <td class="align-right col-pdf" width="5%">Student ID : </td>
+              <td class="align-right col-pdf" width="10%">Student ID : </td>
               <td  class="align-left"><b><%= @student.admission_no %></b></td>
           </tr>
           
           <tr >
-              <td class="align-right" width="5%">Roll No : </td>
+              <td class="align-right" width="10%">Roll No : </td>
               <td  class="align-left"><%= @student.class_roll_no %></td>
           </tr>
           <tr >
-              <td class="align-right col-pdf col-pdf" width="5%">Name : </td>
+              <td class="align-right col-pdf col-pdf" width="10%">Name : </td>
               <td  class="align-left"><%= @student.full_name.upcase %></td>
           </tr>
           <tr >
-              <td class="align-right col-pdf" width="5%">Class : </td>
+              <td class="align-right col-pdf" width="10%">Class : </td>
               <td class="align-left"><b><%= @batch.course.course_name %></b></td>
               <% batch_split = @batch.name.split(" ") %>
               <% unless batch_split[2].blank?  %>
@@ -37,10 +37,10 @@
                
           </tr>
           <tr >
-              <td class="align-right col-pdf" width="5%" >Shift : </td><td class="align-left"><%= batch_split[0] %></td>  
+              <td class="align-right col-pdf" width="10%" >Shift : </td><td class="align-left"><%= batch_split[0] %></td>  
           </tr>
           <tr >
-              <td class="align-right col-pdf" width="5%">Session : </td>
+              <td class="align-right col-pdf" width="10%">Session : </td>
               <td class="align-left" ><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
           </tr>
       </table>
@@ -325,23 +325,22 @@
     .st_joseph_bg table.tbl-lign-left tr td
       {
          font-weight: normal !important;
-         padding: 10px !important;
+         padding: 5px !important;
          border: none !important;
-         font-size: 16px;
+         font-size: 18px;
       }
       
       .st_joseph_bg table.tbl-lign-left
       {
           float:left !important;
           width: 62% !important;
-          margin-left: 4% !important;
           border: none !important;
       }
       .st_joseph_bg div.grade_information
     {
         margin-left:3%;
-        float:left;
-        width: 25%;
+        float:right;
+        width: 15%;
         font-size: 16px;
         margin-bottom: 20px;
 
@@ -350,11 +349,6 @@
     {
         padding: 3px !important;
         border: none !important;
-    }
-    td.align-right
-    {
-       text-align:right;
-
     }
     td.align-left
     {

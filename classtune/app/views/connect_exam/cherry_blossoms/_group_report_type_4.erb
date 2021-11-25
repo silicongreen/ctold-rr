@@ -50,14 +50,6 @@
       <div class="grade_information">
         <%= render  :partial=>"/connect_exam/cherry_blossoms/gradding_level" %>   
       </div>
-      <table id="pdf-table" class="margin-top-bottom-10" width="99%" cellspacing="0">
-          <tr class="even">
-              <td>Name : <b><%= @student.full_name %></b></td>
-              <td>Class : <b><%= @batch.course.course_name %></b></td>
-              <td>Section : <b><%= @batch.course.section_name %></b></td>
-              <td>Roll : <b><%= @student.class_roll_no %></b></td>
-          </tr>
-      </table>
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
 
@@ -330,17 +322,18 @@
         padding: 3px 2px 3px 3px !important;
         font-size:14px !important;
     }
-    .st_joseph_bg table.tbl-lign-left tr.even td,.st_joseph_bg table.tbl-lign-left tr.odd td
+    .st_joseph_bg table.tbl-lign-left tr td
       {
          font-weight: normal !important;
          padding: 10px !important;
          border: none !important;
+         font-size: 16px;
       }
       
       .st_joseph_bg table.tbl-lign-left
       {
           float:left !important;
-          width: 52% !important;
+          width: 62% !important;
           margin-left: 4% !important;
           border: none !important;
       }
@@ -348,8 +341,9 @@
     {
         margin-left:3%;
         float:left;
-        width: 35%;
-        font-size: 14px;
+        width: 25%;
+        font-size: 16px;
+        margin-bottom: 20px;
 
     }
     .st_joseph_bg div.grade_information table#pdf-table tr.even td

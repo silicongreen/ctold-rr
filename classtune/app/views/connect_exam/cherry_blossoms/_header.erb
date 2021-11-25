@@ -1,5 +1,5 @@
 <% if !@connect_exam_obj.blank? && (@connect_exam_obj.result_type.to_i == 3 || @connect_exam_obj.result_type.to_i == 4 )  %>
-  <div id="pdf-header-south" class="general-header cbis-header">
+  <div id="pdf-header-south2" class="general-header">
       <table width="100%">
         <tr>
           <td width="30%"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/cherry-logo-new.png")),:width=> '80%' %></span></td>

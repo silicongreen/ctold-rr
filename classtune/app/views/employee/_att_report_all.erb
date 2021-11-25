@@ -35,12 +35,7 @@
       <td>Total</td><td>Given</td>
       <td>Total</td><td>Given</td>
     </tr> 
-    <% has_event = @events.find{|val| val.start_date.strftime("%a %d %y") >= @date_to_use.strftime("%a %d %y") and val.end_date.strftime("%a %d %y") <= @date_to_use.strftime("%a %d %y")  }%>
-    <% unless has_event.blank? %>
-      <tr class="odd">
-        <td colspan="100">No Class Today</td>
-      </tr>
-    <% else %>
+    
       <% @data.each do |data| %>
       <tr class="odd">
         <td><%= @data[0] %></td>
@@ -58,9 +53,6 @@
         <td>Yes</td>
       </tr>
       <% end %>
-    <% end %>
-
-
   </table>
   
 

@@ -168,7 +168,7 @@
                       <% avgparcent = 0 %>
                       <% if full_marks_total > 0 %>
                         <% avgparcent = (total_marks_student.to_f/full_marks_total.to_f)*100 %>
-                        <tr>
+                        <tr class="table-header">
                             <td  align="right" colspan="50" class="avg_mark">
                                 <b><font size="2">(Average Marks : <%= sprintf( "%0.02f",avgparcent) %> %)</font></b>
                             </td>
@@ -181,14 +181,7 @@
               
               <table id="pdf-table" class="margin-top-bottom-10 font-size-20" width="99%" >
 
-                  <tr class="table-header">
-
-                      <td class="col-pdf">Working Days : <%= @report_data['total'] %></td>
-
-                      <td class="col-pdf">Days Present : <%= @report_data['present'] %> </td>
-                      <td class="col-pdf">Days Absent : <%= @report_data['total']-@report_data['present'] %> </td>
-                      
-                  </tr> 
+                  
 
 
               </table>
@@ -230,35 +223,17 @@
               <% end %>
               <%  unless @grading_levels.empty? %>
                 <table id="pdf-table" class="margin-top-bottom-10  font-size-20 float-left-10" width="60%" cellspacing="0">
-                    <tr class="even">
-                        <td><b>Grade</b></td>
+                    <tr class="table-header">
 
-
-                        <% @grading_levels.each_with_index do |grade,index| %>
-
-                          <td><%= grade.name %></td>
-
-                        <% end %> 
-                    </tr> 
-                    <tr class="odd">
-                        <td><b>marks</b></td>
-
-
-                        <% @grading_levels.each_with_index do |grade,index| %>
-
-                          <td>
-                              <% if grade.max_score.nil? %>
-                                <% if grade.min_score == 44.00 %>
-                                  <% grade.min_score = 45.00 %>
-                                <% end %>
-                                <%= '%i%' % grade.min_score %>
-                              <% else %> 
-                                <%= grade.min_score.to_i.to_s + " - " + grade.max_score.to_i.to_s %>
-                              <% end %>
-                          </td>
-
-                        <% end %> 
-                    </tr> 
+                      <td class="col-pdf">Working Days : <%= @report_data['total'] %></td>
+                    </tr>  
+                     <tr class="table-header">
+                      <td class="col-pdf">Days Present : <%= @report_data['present'] %> </td>
+                    </tr>  
+                     <tr class="table-header">
+                      <td class="col-pdf">Days Absent : <%= @report_data['total']-@report_data['present'] %> </td>
+                      
+                  </tr> 
                 </table>
 
               <% end %> 

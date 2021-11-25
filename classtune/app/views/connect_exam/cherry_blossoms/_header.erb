@@ -2,8 +2,8 @@
   <div id="pdf-header-south" class="general-header cbis-header">
       <table width="100%">
 
-          <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/cherry-logo-new.png")),:width=> '100%' %></span></td>
-          <td class="name-td name-td-south">
+          <td><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/cherry-logo-new.png")),:width=> '100%' %></span></td>
+          <td>
               <h4 align="center"><%=Configuration.get_config_value('InstitutionName').upcase; %></h4>
               <h5 align="center" class="new-step-1">(PLAY GROUP-'A' LEVEL, EDEXCEL CENTRE NO. 96440, UK)</h5>
               <h5 align="center" class="bold-all step-1"><%= @connect_exam_obj.name+" Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h5>  

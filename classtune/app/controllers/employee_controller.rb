@@ -68,6 +68,21 @@ class EmployeeController < ApplicationController
       @subjects = []
       unless @current_timetable.blank?
         @employee_subjects = employee.subjects
+        subjects = @employee_subjects.select{|sub| sub.elective_group_id.nil?}
+        electives = @employee_subjects.select{|sub| sub.elective_group_id.present?}
+        
+        elective_subjects = []
+        unless electives.blank?
+          electives.each do |esubject|
+            all_e_subject = Subject.active.find_all_by_elective_group_id(esubject.elective_group_id)
+            unless all_e_subject.blank?
+              all_e_subject.each do |subelective|
+                elective_subjects << subelective.id
+              end
+            end
+          end
+        end
+
         @entries=0
         @entries += @current_timetable.timetable_entries.count(:conditions=>{:weekday_id=>@weekday_id.to_i,:employee_id => @employee.id},:include=>:class_timing,:order=>"class_timings.start_time")
         @entries += @current_timetable.timetable_entries.count(:conditions=>{:subject_id=>elective_subjects,:weekday_id=>@weekday_id.to_i},:include=>:class_timing,:order=>"class_timings.start_time")

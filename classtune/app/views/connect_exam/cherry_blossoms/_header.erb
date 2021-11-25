@@ -12,7 +12,7 @@
           </td>
         </tr>  
       </table> 
-      <h4 align="left"><%= @connect_exam_obj.name+" Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h4>   
+      <h4 align="left"><%= @connect_exam_obj.name+", Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h4>   
   </div>
 <% else %>
   <div id="pdf-header-south" class="landscape">
@@ -32,6 +32,11 @@
 #pdf-header-south2.general-header h3.small-margin
 {
     margin-top: 5px  !important;
+}
+
+#pdf-header-south2.general-header h4
+{
+   font-size: 24px;
 }
 
 #pdf-header-south2.general-header h3,#pdf-header-south2.general-header h5

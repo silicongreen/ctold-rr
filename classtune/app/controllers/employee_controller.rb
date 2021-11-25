@@ -38,6 +38,73 @@ class EmployeeController < ApplicationController
     redirect_to :controller => "employee", :action => "profile", :id=>params[:id]
   end
 
+  def att_report_all
+    @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
+    unless params['date_report'].blank?
+      @date_to_use = params['date_report'].to_date
+    else  
+      @date_to_use = @local_tzone_time.to_date
+    end
+    dep_ids = [2304,2375,2376,2377]
+    @all_employee = Employee.find_all_by_employee_department_id(dep_ids)
+    @data = []
+    @all_employee.each do |employee|
+      temp = []
+      temp << employee.employee_number
+      temp << employee.full_name
+      temp << employee.employee_department.name
+      class_teachers = BatchTutor.find_by_employee_id_and_class_teacher(employee.id,true)
+      if class_teachers.blank?
+        temp << ""
+      else
+        att_register = AttendanceRegister.find_by_attendance_date(@date_to_use)
+        if att_register.blank? 
+          temp << "No"
+        else
+          temp << "Yes"
+        end  
+      end  
+      @weekday_id = @date_to_use.strftime("%w")
+      @subjects = []
+      unless @current_timetable.blank?
+        @employee_subjects = employee.subjects
+        subjects = @employee_subjects.select{|sub| sub.elective_group_id.nil?}
+        electives = @employee_subjects.select{|sub| sub.elective_group_id.present?}
+        
+        elective_subjects = []
+        unless electives.blank?
+          electives.each do |esubject|
+            all_e_subject = Subject.active.find_all_by_elective_group_id(esubject.elective_group_id)
+            unless all_e_subject.blank?
+              all_e_subject.each do |subelective|
+                elective_subjects << subelective.id
+              end
+            end
+          end
+        end
+
+        @entries=0
+        @entries += @current_timetable.timetable_entries.count(:conditions=>{:weekday_id=>@weekday_id.to_i,:employee_id => @employee.id},:include=>:class_timing,:order=>"class_timings.start_time")
+        @entries += @current_timetable.timetable_entries.count(:conditions=>{:subject_id=>elective_subjects,:weekday_id=>@weekday_id.to_i},:include=>:class_timing,:order=>"class_timings.start_time")
+        @assignment_register = Assignment.count(:conditions=>["date(created_at) = ?",@date_to_use.to_date])
+        @classwork_register = Classwork.count(:conditions=>["date(created_at) >= ?",@date_to_use.to_date])
+        @lesson_plan_register = Lessonplan.count(:conditions=>["author_id = ?",employee.user_id])
+        temp << @entries
+        temp << @assignment_register
+        temp << @classwork_register
+        temp << @lesson_plan_register
+      else
+        temp << ""
+        temp << ""
+        temp << ""
+        temp << ""
+      end  
+      @data << temp
+    end  
+    if params['date_report'].blank?
+      render :partial => "att_report_all"
+    end
+  end  
     
 
   def att_report

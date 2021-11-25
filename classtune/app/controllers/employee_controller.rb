@@ -71,8 +71,8 @@ class EmployeeController < ApplicationController
         @entries=0
         @entries += @current_timetable.timetable_entries.count(:conditions=>{:weekday_id=>@weekday_id.to_i,:employee_id => @employee.id},:include=>:class_timing,:order=>"class_timings.start_time")
         @entries += @current_timetable.timetable_entries.count(:conditions=>{:subject_id=>elective_subjects,:weekday_id=>@weekday_id.to_i},:include=>:class_timing,:order=>"class_timings.start_time")
-        @assignment_register = Assignment.count(:conditions=>["date(created_at) = ? and subject_id in (?)",@date_to_use.to_date,@employee_subjects.map(:&id)])
-        @classwork_register = Classwork.count(:conditions=>["date(created_at) >= ? and subject_id in (?)",@date_to_use.to_date,@employee_subjects.map(:&id)])
+        @assignment_register = Assignment.count(:conditions=>["date(created_at) = ? and subject_id in (?)",@date_to_use.to_date,@employee_subjects.map(&:id)])
+        @classwork_register = Classwork.count(:conditions=>["date(created_at) >= ? and subject_id in (?)",@date_to_use.to_date,@employee_subjects.map(&:id)])
         @lesson_plan_register = Lessonplan.count(:conditions=>["author_id = ?",employee.user_id])
         temp << @entries
         temp << @assignment_register

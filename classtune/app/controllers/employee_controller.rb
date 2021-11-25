@@ -101,7 +101,7 @@ class EmployeeController < ApplicationController
       end  
       @data << temp
     end  
-    if params['date_report'].blank?
+    if !params['date_report'].blank?
       render :partial => "att_report_all"
     end
   end  

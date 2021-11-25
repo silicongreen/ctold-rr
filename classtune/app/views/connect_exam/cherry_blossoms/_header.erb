@@ -2,7 +2,7 @@
   <div id="pdf-header-south2" class="general-header">
       <table width="100%">
         <tr>
-          <td width="30%"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/cherry-logo-new.png")),:width=> '80%' %></span></td>
+          <td width="25%"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/cherry-logo-new.png")),:width=> '100%' %></span></td>
           <td>
               <h3 align="left">CHERRY BLOSSOMS</h3>
               <h3 align="left">INTERNATIONAL</h3>
@@ -30,13 +30,9 @@
    margin-left: 200px !important;
 }
 
-div.cbis-header table td.name-td-south h4
+#pdf-header-south2.general-header h3,#pdf-header-south2.general-header h4
 {
-    float:left;
-    font-size: 23px !important;
-    font-family: sans-serif !important; 
-    margin-left: -20px;
-    margin-top: 0px  !important;
+    margin-top: -4px  !important;
 
 }
 

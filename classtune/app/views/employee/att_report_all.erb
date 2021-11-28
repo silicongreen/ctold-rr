@@ -48,6 +48,7 @@
       </div>
     </div>    
 </div>
+<div style="background-color:#fff; padding: 10px;">
 <div class="row" style="width:50%">
     <div class="row_label" >
       <div>
@@ -73,7 +74,7 @@
     </div>
   </div>
   <div class="row">
-    <button value="Search" id="search_att">
+    <button value="Search" id="search_att">Generate Report<button>
   </div>  
    <div class="loader-image">
         <%= image_tag("loader.gif",
@@ -82,6 +83,7 @@
           :id => "loader",
           :style =>"display: none;" ) %>
     </div>
+  </div>  
 
 
   <div id="report" style="background-color:white;">
@@ -103,3 +105,30 @@
 }
 </style>
 <%= stylesheet_link_tag 'tadded-header' %>
+
+<script>
+  var jj = jQuery.noConflict();
+  jj(document).ready(function () {
+      
+      jj('#search_att').click(function () {
+          var dep_id = jj("employee_department_id").val();
+          var date_to_use = jj("date_report").val(); 
+       
+          Element.show('loader');
+          new Ajax.Request('/employee/att_report_all', {
+              method: 'post',
+              onSuccess: function (data) {
+                Element.hide('loader');
+                jj("#report").html(data);
+              },
+              parameters: {
+                  date_report: date_to_use,
+                  dep_id: dep_id
+              }
+          });
+
+
+
+      });
+  });
+</script>  

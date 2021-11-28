@@ -64,7 +64,7 @@ class EmployeeController < ApplicationController
       if class_teachers.blank?
         temp << ""
       else
-        att_register = AttendanceRegister.find_by_attendance_date(@date_to_use)
+        att_register = AttendanceRegister.find_by_attendance_date_and_batch_id(@date_to_use,class_teachers.batch_id)
         if att_register.blank? 
           temp << "No"
         else

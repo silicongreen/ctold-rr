@@ -48,9 +48,44 @@
       </div>
     </div>    
 </div>
+<div class="row" style="width:50%">
+    <div class="row_label" >
+      <div>
+        Date
+      </div>
+    </div>
+    <div class="row_data calender-div">
+      <div>
+        <%= calendar_date_select_tag "date_report",I18n.l(@date_to_use,:format=>"%d %b %Y"), :readonly=> true, :popup=>:force, :image => '/images/icons/calendar/calendar-icon.png' %>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="width:50%">
+    <div class="row_label" >
+      <div>
+        Department
+      </div>
+    </div>
+    <div class="row_data calender-div">
+      <div>
+        <%= select :att, :department_id, @departments.map { |s| [s.name, s.id] },
+                                        {:prompt => "#{t('select_department')}"}, %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <button value="Search" id="search_att">
+  </div>  
+   <div class="loader-image">
+        <%= image_tag("loader.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader",
+          :style =>"display: none;" ) %>
+    </div>
 
 
-  <div id="report">
+  <div id="report" style="background-color:white;">
     <%= render :partial => "att_report_all" %>
   </div>
 

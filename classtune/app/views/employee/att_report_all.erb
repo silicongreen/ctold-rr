@@ -48,7 +48,7 @@
       </div>
     </div>    
 </div>
-<div style="background-color:#fff; padding: 10px;">
+<div style="background-color:#fff; padding: 30px;">
 <div class="row" style="width:50%">
     <div class="row_label" >
       <div>
@@ -61,7 +61,7 @@
       </div>
     </div>
   </div>
-  <div class="row" style="width:50%">
+  <div class="row" style="width:50%; margin-top:10px">
     <div class="row_label" >
       <div>
         Department
@@ -74,7 +74,7 @@
     </div>
   </div>
   <div class="row">
-    <button value="Search" id="search_att">Generate Report<button>
+    <button value="Search" id="search_att" style="height:30px; margin-top:15px;">Generate Report</button>
   </div>  
    <div class="loader-image">
         <%= image_tag("loader.gif",
@@ -103,6 +103,11 @@
     height: 27px;
     width: 200px;
 }
+select
+{
+  height: 30px;
+  width: 207px;
+}
 </style>
 <%= stylesheet_link_tag 'tadded-header' %>
 
@@ -111,21 +116,15 @@
   jj(document).ready(function () {
       
       jj('#search_att').click(function () {
-          var dep_id = jj("employee_department_id").val();
-          var date_to_use = jj("date_report").val(); 
+          var dep_id = jj("#employee_department_id").val();
+          var date_to_use = jj("#date_report").val(); 
        
           Element.show('loader');
-          new Ajax.Request('/employee/att_report_all', {
-              method: 'post',
-              onSuccess: function (data) {
-                Element.hide('loader');
-                jj("#report").html(data);
-              },
-              parameters: {
-                  date_report: date_to_use,
-                  dep_id: dep_id
-              }
-          });
+          $.post( "/employee/att_report_all", { date_report: date_to_use, dep_id: dep_id })
+            .done(function( data ) {
+              Element.hide('loader');
+              jj("#report").html(data);
+            });
 
 
 

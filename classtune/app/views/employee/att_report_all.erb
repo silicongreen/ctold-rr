@@ -120,7 +120,7 @@ select
           var date_to_use = jj("#date_report").val(); 
        
           Element.show('loader');
-          $.post( "/employee/att_report_all", { date_report: date_to_use, dep_id: dep_id })
+          jj.post( "/employee/att_report_all", { date_report: date_to_use, dep_id: dep_id })
             .done(function( data ) {
               Element.hide('loader');
               jj("#report").html(data);

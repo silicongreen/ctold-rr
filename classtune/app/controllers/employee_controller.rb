@@ -45,7 +45,14 @@ class EmployeeController < ApplicationController
     else  
       @date_to_use = @local_tzone_time.to_date
     end
+    
+      
     dep_ids = [2304,2375,2376,2377]
+    @departments = EmployeeDepartment.find_all_by_id(dep_ids)
+    if !params['dep_id'].blank?
+      dep_ids = []
+      dep_ids << params['dep_id'].to_i
+    end  
     @all_employee = Employee.find_all_by_employee_department_id(dep_ids)
     @data = []
     @all_employee.each do |employee|

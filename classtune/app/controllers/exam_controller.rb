@@ -1765,6 +1765,7 @@ class ExamController < ApplicationController
 
       exam_score = []
       elective_groups_student = StudentsSubject.find_all_by_batch_id_and_student_id(@batch.id,@student.id)
+      exam_subjects = []
       @exams.each do |exam|
         exam_score.push exam.exam_scores.find_by_student_id(@student.id) unless exam.exam_scores.find_by_student_id(@student.id).nil? 
         exam_subjects << exam.subject_id

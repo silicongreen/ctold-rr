@@ -94,7 +94,33 @@ class EmployeeController < ApplicationController
         @entriesarray += @current_timetable.timetable_entries.find(:all,:conditions=>{:weekday_id=>@weekday_id.to_i,:employee_id => employee.id},:include=>:class_timing,:order=>"class_timings.start_time")
         @entriesarray += @current_timetable.timetable_entries.find(:all,:conditions=>{:subject_id=>elective_subjects,:weekday_id=>@weekday_id.to_i},:include=>:class_timing,:order=>"class_timings.start_time")
         @all_timetable_entries = @entriesarray.select{|t| t.batch.is_active}.select{|s| s.class_timing.is_deleted==false}
-        @entries = @all_timetable_entries.count
+        @entries = 0
+
+        unless @all_timetable_entries.blank?
+          @all_timetable_entries.each do |te|
+            @timetable_subject = Subject.active.find_by_id(te.subject_id)
+            unless @timetable_subject.blank?
+              if @timetable_subject.elective_group_id.present?
+                @all_sub_elective = Subject.active.find_all_by_elective_group_id(@timetable_subject.elective_group_id)    
+                unless @all_sub_elective.blank?
+                  @all_sub_elective.each do |esub|
+                    unless @employee_subjects.blank?
+                      if @employee_subjects.include?(esub) && !@subjects.include?(esub)
+                        @entries = @entries+1
+                      end  
+                    end
+                  end
+                  
+                end
+              else
+                @entries = @entries+1  
+              end
+            end
+          end
+        end
+
+
+
         @assignment_register = Assignment.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
         @classwork_register = Classwork.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
         @lesson_plan_register = Lessonplan.count(:conditions=>["author_id = ?",employee.user_id])

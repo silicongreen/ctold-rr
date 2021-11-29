@@ -1801,7 +1801,7 @@ class ExamController < ApplicationController
           end  
           grade = GradingLevel.percentage_to_grade(elective_group_mark[es.exam.subject.elective_group_id].round(), @batch.id)
           if !grade.blank? and !grade.name.blank?
-            @subject_result[es.exam.subject.elective_group.name.gsub! ' ', '-'
+            es.exam.subject.elective_group.name.gsub! ' ', '-'
             if @subject_result[es.exam.subject.elective_group.name].blank?
               @subject_result[es.exam.subject.elective_group.name] = {}
             end  

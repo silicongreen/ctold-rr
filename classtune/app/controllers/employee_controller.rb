@@ -506,7 +506,7 @@ class EmployeeController < ApplicationController
     end
     if error == false
       flash[:notice] = "#{t('employee_attendance_added')}"
-    elsif error_all = false
+    elsif error_all == false
       flash[:notice] = "Employee Attendance added with some error"
     else
       flash[:notice] = "#{t('something_went_wrong')}"

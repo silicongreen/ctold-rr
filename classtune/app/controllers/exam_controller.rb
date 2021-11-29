@@ -1823,7 +1823,7 @@ class ExamController < ApplicationController
 
       @total_students = @total_students+1
 
-      @grade_name_main = "F"
+      @grade_name_main = "U"
       if failed == false && total_credit > 0
         grade_point_avg = total_credit.to_f/number_of_subject.to_f
         gradeObj = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)

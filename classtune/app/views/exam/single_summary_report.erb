@@ -67,7 +67,7 @@
                 <table id="pdf-table" width="60%" align="center" cellspacing="0">
                         <% total_got = 0 %>
                         <% @grading_levels.each do |grade| %>
-                          <% if grade.name != "F" %>
+                          <% if grade.name != "U" %>
                             <% unless @grade_count[grade.name].blank?  %>
                               <tr class="table-header">
                                 <td class="col-pdf right-align" >No. of Student(s) got <%= grade.name %> </td><td><%= @summary_result[grade.name] %> <% total_got = total_got+@summary_result[grade.name].to_i %> </td>
@@ -88,15 +88,15 @@
               
               
               <table id="pdf-table" width="60%" align="center" cellspacing="0">
-                    <tr>
+                    <tr class="table-header">
                       <td class="col-pdf" >Subject Name</td>
                       <% @grading_levels.each do |grade| %>
                         <td class="col-pdf" ><%= grade.name %></td>
                       <% end %>
                     </tr>
                     <% @subject_result.each do |key,value| %>
-                    <tr>
-                      <td class="col-pdf" ><% key.gsub '-',' ' %></td>
+                    <tr class="table-header">
+                      <td class="col-pdf" ><%= key.gsub '-',' ' %></td>
                       <% @grading_levels.each do |grade| %>
                         <% unless value[grade.name].blank? %>
                         <td class="col-pdf" ><%= value[grade.name] %></td>

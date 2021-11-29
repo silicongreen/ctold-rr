@@ -67,14 +67,13 @@
               <table id="pdf-table" width="60%" align="center" cellspacing="0">
                       <% total_got = 0 %>
                       <% @grading_levels.each do |grade| %>
-                      
-                      <% if grade.name != "F" %>
-                        <% unless @grade_count[grade.name].blank?  %>
-                          <tr class="table-header">
-                            <td class="col-pdf right-align" >No. of Student(s) got <%= grade.name %> </td><td><%= @summary_result[grade.name] %> <% total_got = total_got+@summary_result[grade.name].to_i %> </td>
-                          </tr>
+                        <% if grade.name != "F" %>
+                          <% unless @grade_count[grade.name].blank?  %>
+                            <tr class="table-header">
+                              <td class="col-pdf right-align" >No. of Student(s) got <%= grade.name %> </td><td><%= @summary_result[grade.name] %> <% total_got = total_got+@summary_result[grade.name].to_i %> </td>
+                            </tr>
+                          <% end %>
                         <% end %>
-                      <% end %>
                       <% end %>
                       <tr class="table-header border-top">
                         <td class="col-pdf" ></td><td><%= total_got %> </td>

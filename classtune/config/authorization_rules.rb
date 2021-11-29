@@ -2332,6 +2332,7 @@ authorization do
       :tabulation_excell_sjis,
       :mert_list_sagc,
       :summary_report,
+      :single_summary_report,
       :subject_wise_pass_failed,
       :merit_list,
       :split_pdf_and_save,

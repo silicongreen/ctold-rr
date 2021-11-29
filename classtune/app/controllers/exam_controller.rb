@@ -1835,7 +1835,15 @@ class ExamController < ApplicationController
         @failed_student = @failed_student+1
       end  
 
-    end  
+    end
+    render :pdf => 'single_summary_report',
+      :orientation => 'Portrait', :zoom => 1.00,
+      :margin => {    :top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}  
   end  
   
   def student_wise_generated_report_all  

@@ -1794,6 +1794,7 @@ class ExamController < ApplicationController
       number_of_subject = 0
       total_credit = 0
       failed = false
+      elective_group = []
       exam_score.each do |es|
         if !es.exam.subject.elective_group_id.blank? && !elective_group.include?(es.exam.subject.elective_group_id)
           elective_group << es.exam.subject.elective_group_id

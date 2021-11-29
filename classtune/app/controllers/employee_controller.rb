@@ -92,7 +92,7 @@ class EmployeeController < ApplicationController
 
         @entriesarray=[]
         @entriesarray += @current_timetable.timetable_entries.find(:all,:conditions=>{:weekday_id=>@weekday_id.to_i,:employee_id => employee.id},:include=>:class_timing,:order=>"class_timings.start_time")
-        @entriesarray += @current_timetable.timetable_entries.count(:all,:conditions=>{:subject_id=>elective_subjects,:weekday_id=>@weekday_id.to_i},:include=>:class_timing,:order=>"class_timings.start_time")
+        @entriesarray += @current_timetable.timetable_entries.find(:all,:conditions=>{:subject_id=>elective_subjects,:weekday_id=>@weekday_id.to_i},:include=>:class_timing,:order=>"class_timings.start_time")
         @all_timetable_entries = @entriesarray.select{|t| t.batch.is_active}.select{|s| s.class_timing.is_deleted==false}
         @entries = all_timetable_entries.count
         @assignment_register = Assignment.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])

@@ -1677,166 +1677,178 @@ class ExamController < ApplicationController
     @summary_result = {}
     @total_students = 0
     @failed_student = 0
-    @exam_group = ExamGroup.find(params[:exam_group])
-    if @exam_group.is_deleted.to_i == 1
-      student_list = []
-      allExam = @exam_group.exams
-      allExam.each do |exams|
-        score_data = exams.exam_scores
-        score_data.each do |sd|
-          student_list.push(sd.student_id) unless student_list.include?(sd.student_id)
-        end          
-      end
-      if student_list.nil?
-        flash[:notice] = "#{t('flash_student_notice')}"
-        redirect_to :action => 'exam_wise_report' and return
-      end
 
+    @exam_group_main = ExamGroup.find(params[:exam_group])
+    @exams_groups = [@exam_group_main]
+    unless params[:class].blank?
       @batch = @exam_group.batch
-      @students = Student.find_all_by_id(student_list,:conditions=>["is_deleted = ? and is_active = ?",false,true])
-      if @students.blank?
-        @students_archive = ArchivedStudent.find_all_by_former_id(student_list)
-        unless @students_archive.blank?
-          @students_archive.each do |std|
-            std.id = std.former_id
-            @students << std
-          end
-        end    
-      end    
-    else
-      @batch = @exam_group.batch
-      @students=@batch.students.by_first_name
-    end
-    
-    @students.sort! { |a, b|  a.class_roll_no.to_i <=> b.class_roll_no.to_i }
-    
-    @assigned_employee=@batch.all_class_teacher
-    general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL")
-    student_electives = StudentsSubject.find_all_by_batch_id(@batch.id)
-    elective_subjects = []
-    elective_subjects_id = []
-    student_electives.each do |elect|
-      if !elective_subjects_id.include?(elect.subject_id)
-        elective_subjects_id << elect.subject_id
-        subject = Subject.find_by_id(elect.subject_id)
-        unless subject.blank?
-          elective_subjects.push subject
+      course = Course.find_by_id(@batch.course_id)
+      courses = Course.find_all_by_course_name(course.name)
+      batches = Batch.find_all_by_course_id_and_is_deleted(courses.map(&:id),false)
+      @exams_groups = ExamGroup.find_all_by_batch_id_and_name(batches.map(&:id),@exam_group_main.name)
+    end  
+    @exams_groups.each do |exam_group|
+      @exam_group = exam_group
+      if @exam_group.is_deleted.to_i == 1
+        student_list = []
+        allExam = @exam_group.exams
+        allExam.each do |exams|
+          score_data = exams.exam_scores
+          score_data.each do |sd|
+            student_list.push(sd.student_id) unless student_list.include?(sd.student_id)
+          end          
         end
-      end     
-    end
-    
-    @subjects = general_subjects + elective_subjects
-    @subjects.sort! { |a, b|  a.priority.to_i <=> b.priority.to_i }
-    @exams = []
-    @subjects.each do |sub|
-      exam = Exam.find_by_exam_group_id_and_subject_id(@exam_group.id,sub.id)
-      @exams.push exam unless exam.nil?
-    end
+        if student_list.nil?
+          flash[:notice] = "#{t('flash_student_notice')}"
+          redirect_to :action => 'exam_wise_report' and return
+        end
 
-    @all_student_subject = StudentsSubject.find_all_by_batch_id(@batch.id)
-    @all_subject_exam = @exams
-    
-    @students.each do |student|
-      @student = student
-      student_subject = []
-      exam_new = []
-      unless @subjects.blank? 
-         @subjects.each do |subjects|
-           if subjects['elective_group_id'].to_i!=0
-             @all_student_subject.each do |sub_std|
-               if subjects.id.to_i == sub_std.subject_id and student.id.to_i == sub_std.student_id
-                 student_subject << subjects.id
-               end 
-             end 
-           else
-             student_subject << subjects.id 
-           end 
-         end
-      end 
-    
-      unless @all_subject_exam.blank? 
-         @all_subject_exam.each do |exam|
-           if student_subject.include?(exam.subject_id) 
-            exam_new << exam
-           end 
-         end
-      end
-      @exams = exam_new
-
-      exam_score = []
-      elective_groups_student = StudentsSubject.find_all_by_batch_id_and_student_id(@batch.id,@student.id)
-      exam_subjects = []
-      @exams.each do |exam|
-        exam_score.push exam.exam_scores.find_by_student_id(@student.id) unless exam.exam_scores.find_by_student_id(@student.id).nil? 
-        exam_subjects << exam.subject_id
-      end  
-      elective_group_mark = {}
-      elective_group_mark_total = {}
-      exam_score.each do |es|
-        if es.marks.present?
-          if elective_group_mark[es.exam.subject.elective_group_id].nil?
-            elective_group_mark[es.exam.subject.elective_group_id] = (((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
-            elective_group_mark_total[es.exam.subject.elective_group_id] = es.marks.to_f
-          else
-            if elective_group_mark[es.exam.subject.elective_group_id] == -1
-              elective_group_mark[es.exam.subject.elective_group_id] = 0
-              elective_group_mark_total[es.exam.subject.elective_group_id] = 0
-            end 
-            elective_group_mark[es.exam.subject.elective_group_id] = elective_group_mark[es.exam.subject.elective_group_id]+(((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
-            elective_group_mark_total[es.exam.subject.elective_group_id] = elective_group_mark_total[es.exam.subject.elective_group_id]+es.marks.to_f
-          end
-        else
-          if elective_group_mark[es.exam.subject.elective_group_id].nil?
-            elective_group_mark[es.exam.subject.elective_group_id] = -1
-          end  
-        end     
-      end 
-      number_of_subject = 0
-      total_credit = 0
-      failed = false
-      elective_group = []
-      exam_score.each do |es|
-        if !es.exam.subject.elective_group_id.blank? && !elective_group.include?(es.exam.subject.elective_group_id)
-          elective_group << es.exam.subject.elective_group_id
-          if elective_group_mark[es.exam.subject.elective_group_id] == -1
-              next
-          end  
-          grade = GradingLevel.percentage_to_grade(elective_group_mark[es.exam.subject.elective_group_id].round(), @batch.id)
-          if !grade.blank? and !grade.name.blank?
-            es.exam.subject.elective_group.name.gsub! ' ', '-'
-            if @subject_result[es.exam.subject.elective_group.name].blank?
-              @subject_result[es.exam.subject.elective_group.name] = {}
-            end  
-            if @subject_result[es.exam.subject.elective_group.name][grade.name].blank?
-              @subject_result[es.exam.subject.elective_group.name][grade.name] = 0
-            end 
-            total_credit = total_credit+grade.credit_points.to_f
-            if grade.credit_points.to_f == 0
-              failed = true
-            end  
-            number_of_subject = number_of_subject+1
-            @subject_result[es.exam.subject.elective_group.name][grade.name] = @subject_result[es.exam.subject.elective_group.name][grade.name]+1 
-          end  
-        end  
-
-      end  
-
-      @total_students = @total_students+1
-
-      @grade_name_main = "U"
-      if failed == false && total_credit > 0
-        grade_point_avg = total_credit.to_f/number_of_subject.to_f
-        gradeObj = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
-        if !gradeObj.blank? and !gradeObj.name.blank?
-          if @summary_result[gradeObj.name].blank?
-            @summary_result[gradeObj.name] = 0
-          end 
-          @summary_result[gradeObj.name] = @summary_result[gradeObj.name]+1 
-        end  
+        @batch = @exam_group.batch
+        @students = Student.find_all_by_id(student_list,:conditions=>["is_deleted = ? and is_active = ?",false,true])
+        if @students.blank?
+          @students_archive = ArchivedStudent.find_all_by_former_id(student_list)
+          unless @students_archive.blank?
+            @students_archive.each do |std|
+              std.id = std.former_id
+              @students << std
+            end
+          end    
+        end    
       else
-        @failed_student = @failed_student+1
-      end  
+        @batch = @exam_group.batch
+        @students=@batch.students.by_first_name
+      end
+      
+      @students.sort! { |a, b|  a.class_roll_no.to_i <=> b.class_roll_no.to_i }
+      
+      @assigned_employee=@batch.all_class_teacher
+      general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL")
+      student_electives = StudentsSubject.find_all_by_batch_id(@batch.id)
+      elective_subjects = []
+      elective_subjects_id = []
+      student_electives.each do |elect|
+        if !elective_subjects_id.include?(elect.subject_id)
+          elective_subjects_id << elect.subject_id
+          subject = Subject.find_by_id(elect.subject_id)
+          unless subject.blank?
+            elective_subjects.push subject
+          end
+        end     
+      end
+      
+      @subjects = general_subjects + elective_subjects
+      @subjects.sort! { |a, b|  a.priority.to_i <=> b.priority.to_i }
+      @exams = []
+      @subjects.each do |sub|
+        exam = Exam.find_by_exam_group_id_and_subject_id(@exam_group.id,sub.id)
+        @exams.push exam unless exam.nil?
+      end
 
+      @all_student_subject = StudentsSubject.find_all_by_batch_id(@batch.id)
+      @all_subject_exam = @exams
+      
+      @students.each do |student|
+        @student = student
+        student_subject = []
+        exam_new = []
+        unless @subjects.blank? 
+          @subjects.each do |subjects|
+            if subjects['elective_group_id'].to_i!=0
+              @all_student_subject.each do |sub_std|
+                if subjects.id.to_i == sub_std.subject_id and student.id.to_i == sub_std.student_id
+                  student_subject << subjects.id
+                end 
+              end 
+            else
+              student_subject << subjects.id 
+            end 
+          end
+        end 
+      
+        unless @all_subject_exam.blank? 
+          @all_subject_exam.each do |exam|
+            if student_subject.include?(exam.subject_id) 
+              exam_new << exam
+            end 
+          end
+        end
+        @exams = exam_new
+
+        exam_score = []
+        elective_groups_student = StudentsSubject.find_all_by_batch_id_and_student_id(@batch.id,@student.id)
+        exam_subjects = []
+        @exams.each do |exam|
+          exam_score.push exam.exam_scores.find_by_student_id(@student.id) unless exam.exam_scores.find_by_student_id(@student.id).nil? 
+          exam_subjects << exam.subject_id
+        end  
+        elective_group_mark = {}
+        elective_group_mark_total = {}
+        exam_score.each do |es|
+          if es.marks.present?
+            if elective_group_mark[es.exam.subject.elective_group_id].nil?
+              elective_group_mark[es.exam.subject.elective_group_id] = (((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
+              elective_group_mark_total[es.exam.subject.elective_group_id] = es.marks.to_f
+            else
+              if elective_group_mark[es.exam.subject.elective_group_id] == -1
+                elective_group_mark[es.exam.subject.elective_group_id] = 0
+                elective_group_mark_total[es.exam.subject.elective_group_id] = 0
+              end 
+              elective_group_mark[es.exam.subject.elective_group_id] = elective_group_mark[es.exam.subject.elective_group_id]+(((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
+              elective_group_mark_total[es.exam.subject.elective_group_id] = elective_group_mark_total[es.exam.subject.elective_group_id]+es.marks.to_f
+            end
+          else
+            if elective_group_mark[es.exam.subject.elective_group_id].nil?
+              elective_group_mark[es.exam.subject.elective_group_id] = -1
+            end  
+          end     
+        end 
+        number_of_subject = 0
+        total_credit = 0
+        failed = false
+        elective_group = []
+        exam_score.each do |es|
+          if !es.exam.subject.elective_group_id.blank? && !elective_group.include?(es.exam.subject.elective_group_id)
+            elective_group << es.exam.subject.elective_group_id
+            if elective_group_mark[es.exam.subject.elective_group_id] == -1
+                next
+            end  
+            grade = GradingLevel.percentage_to_grade(elective_group_mark[es.exam.subject.elective_group_id].round(), @batch.id)
+            if !grade.blank? and !grade.name.blank?
+              es.exam.subject.elective_group.name.gsub! ' ', '-'
+              if @subject_result[es.exam.subject.elective_group.name].blank?
+                @subject_result[es.exam.subject.elective_group.name] = {}
+              end  
+              if @subject_result[es.exam.subject.elective_group.name][grade.name].blank?
+                @subject_result[es.exam.subject.elective_group.name][grade.name] = 0
+              end 
+              total_credit = total_credit+grade.credit_points.to_f
+              if grade.credit_points.to_f == 0
+                failed = true
+              end  
+              number_of_subject = number_of_subject+1
+              @subject_result[es.exam.subject.elective_group.name][grade.name] = @subject_result[es.exam.subject.elective_group.name][grade.name]+1 
+            end  
+          end  
+
+        end  
+
+        @total_students = @total_students+1
+
+        @grade_name_main = "U"
+        if failed == false && total_credit > 0
+          grade_point_avg = total_credit.to_f/number_of_subject.to_f
+          gradeObj = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
+          if !gradeObj.blank? and !gradeObj.name.blank?
+            if @summary_result[gradeObj.name].blank?
+              @summary_result[gradeObj.name] = 0
+            end 
+            @summary_result[gradeObj.name] = @summary_result[gradeObj.name]+1 
+          end  
+        else
+          @failed_student = @failed_student+1
+        end  
+
+      end
     end
     render :pdf => 'single_summary_report',
       :orientation => 'Portrait', :zoom => 1.00,

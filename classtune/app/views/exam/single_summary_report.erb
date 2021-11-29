@@ -94,12 +94,12 @@
                         <td class="col-pdf" ><%= grade.name %></td>
                       <% end %>
                     </tr>
-                    <% @subject_result.each do |key| %>
+                    <% @subject_result.each do |key,value| %>
                     <tr>
                       <td class="col-pdf" ><% key.gsub '-',' ' %></td>
                       <% @grading_levels.each do |grade| %>
-                        <% unless key[grade.name].blank? %>
-                        <td class="col-pdf" ><%= key[grade.name] %></td>
+                        <% unless value[grade.name].blank? %>
+                        <td class="col-pdf" ><%= value[grade.name] %></td>
                         <% else %>
                         <td class="col-pdf" >0</td>
                         <% end %>

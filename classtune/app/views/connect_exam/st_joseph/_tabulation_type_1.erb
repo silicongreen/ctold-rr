@@ -183,9 +183,10 @@
                                 <% if @batch.course.course_name == "Class IX" or @batch.course.course_name == "Class X" %>
                                     <% if all_mark.to_i == 100 %>
                                         <% pass_mark = 45 %>
-                                    <% end %>
-                                    <% if all_mark.to_i == 200 %>
+                                    <% elsif all_mark.to_i == 200 %>
                                         <% pass_mark = 90 %>
+                                    <% else %>
+                                        <% pass_mark = 11 %>   
                                     <% end %>
                                 <% end %>
                                 <%= "P-"+pass_mark.to_s  %>

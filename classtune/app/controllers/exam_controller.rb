@@ -1683,7 +1683,7 @@ class ExamController < ApplicationController
     unless params[:class].blank?
       @batch = @exam_group_main.batch
       course = Course.find_by_id(@batch.course_id)
-      courses = Course.find_all_by_course_name(course.name)
+      courses = Course.find_all_by_course_name(course.course_name)
       batches = Batch.find_all_by_course_id_and_is_deleted(courses.map(&:id),false)
       @exams_groups = ExamGroup.find_all_by_batch_id_and_name(batches.map(&:id),@exam_group_main.name)
     end  

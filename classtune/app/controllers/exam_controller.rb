@@ -1673,6 +1673,10 @@ class ExamController < ApplicationController
   end
 
   def single_summary_report
+    @subject_result = {}
+    @summary_result = {}
+    @total_students = 0
+    @failed_student = 0
     @exam_group = ExamGroup.find(params[:exam_group])
     if @exam_group.is_deleted.to_i == 1
       student_list = []
@@ -1731,6 +1735,7 @@ class ExamController < ApplicationController
 
     @all_student_subject = StudentsSubject.find_all_by_batch_id(@batch.id)
     @all_subject_exam = @exams
+    
     @students.each do |student|
       @student = student
       student_subject = []
@@ -1785,8 +1790,51 @@ class ExamController < ApplicationController
           end  
         end     
       end 
+      number_of_subject = 0
+      total_credit = 0
+      failed = false
+      exam_score.each do |es|
+        if !es.exam.subject.elective_group_id.blank? && !elective_group.include?(es.exam.subject.elective_group_id)
+          elective_group << es.exam.subject.elective_group_id
+          if elective_group_mark[es.exam.subject.elective_group_id] == -1
+              next
+          end  
+          grade = GradingLevel.percentage_to_grade(elective_group_mark[es.exam.subject.elective_group_id].round(), @batch.id)
+          if !grade.blank? and !grade.name.blank?
+            @subject_result[es.exam.subject.elective_group.name.gsub! ' ', '-'
+            if @subject_result[es.exam.subject.elective_group.name].blank?
+              @subject_result[es.exam.subject.elective_group.name] = {}
+            end  
+            if @subject_result[es.exam.subject.elective_group.name][grade.name].blank?
+              @subject_result[es.exam.subject.elective_group.name][grade.name] = 0
+            end 
+            total_credit = total_credit+grade.credit_points.to_f
+            if grade.credit_points.to_f == 0
+              failed = true
+            end  
+            number_of_subject = number_of_subject+1
+            @subject_result[es.exam.subject.elective_group.name][grade.name] = @subject_result[es.exam.subject.elective_group.name][grade.name]+1 
+          end  
+        end  
 
-      
+      end  
+
+      @total_students = @total_students+1
+
+      @grade_name_main = "F"
+      if failed == false && total_credit > 0
+        grade_point_avg = total_credit.to_f/number_of_subject.to_f
+        gradeObj = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
+        if !gradeObj.blank? and !gradeObj.name.blank?
+          if @summary_result[gradeObj.name].blank?
+            @summary_result[gradeObj.name] = 0
+          end 
+          @summary_result[gradeObj.name] = @summary_result[gradeObj.name]+1 
+        end  
+      else
+        @failed_student = @failed_student+1
+      end  
+
     end  
   end  
   

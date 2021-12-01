@@ -73,7 +73,7 @@ class EmployeeController < ApplicationController
       temp << employee.employee_department.name
       class_teachers = BatchTutor.find_by_employee_id_and_class_teacher(employee.id,true)
       if class_teachers.blank?
-        temp << "Na"
+        temp << "N/A"
       else
         att_register = AttendanceRegister.find_by_attendance_date_and_batch_id(@date_to_use,class_teachers.batch_id)
         if att_register.blank? 
@@ -182,7 +182,7 @@ class EmployeeController < ApplicationController
       temp << employee.employee_department.name
       class_teachers = BatchTutor.find_by_employee_id_and_class_teacher(employee.id,true)
       if class_teachers.blank?
-        temp << "Na"
+        temp << "N/A"
       else
         att_register = AttendanceRegister.find_by_attendance_date_and_batch_id(@date_to_use,class_teachers.batch_id)
         if att_register.blank? 

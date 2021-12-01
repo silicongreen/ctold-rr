@@ -53,7 +53,7 @@ class EmployeeController < ApplicationController
     
     dep_ids = [2304,2375,2376,2377]
     @departments = EmployeeDepartment.find_all_by_id(dep_ids)
-    if !params['dep_id'].blank? && params['dep_id'] != 0
+    if !params['dep_id'].blank? && params['dep_id'].to_i != 0
       dep_ids = []
       dep_ids << params['dep_id'].to_i
     end  

@@ -38,6 +38,125 @@ class EmployeeController < ApplicationController
     redirect_to :controller => "employee", :action => "profile", :id=>params[:id]
   end
 
+  def att_report_all_excell
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    new_book = Spreadsheet::Workbook.new
+    sheet1 = new_book.create_worksheet :name => 'tabulation'
+    @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
+    unless params['date_report'].blank?
+      @date_to_use = params['date_report'].to_date
+    else  
+      @date_to_use = @local_tzone_time.to_date
+    end
+    
+    
+    dep_ids = [2304,2375,2376,2377]
+    @departments = EmployeeDepartment.find_all_by_id(dep_ids)
+    if !params['dep_id'].blank?
+      dep_ids = []
+      dep_ids << params['dep_id'].to_i
+    end  
+    @all_employee = Employee.find_all_by_employee_department_id(dep_ids)
+    @data = []
+    center_align_format = Spreadsheet::Format.new :horizontal_align => :center,  :vertical_align => :middle,:left=>:thin,:right=>:thin,:top=>:thin,:bottom=>:thin
+
+    row_first = ['ID','Teacher Name','Department Name','Attendance','Total Class','Homework','Classwork','Lessonplan','Quiz','Class Routine']
+    new_book.worksheet(0).insert_row(1, row_first)
+    sheet1.row(2).default_format = center_align_format
+    i = 1
+    @all_employee.each do |employee|
+      i = i+1
+      temp = []
+      temp << employee.employee_number
+      temp << employee.full_name
+      temp << employee.employee_department.name
+      class_teachers = BatchTutor.find_by_employee_id_and_class_teacher(employee.id,true)
+      if class_teachers.blank?
+        temp << "Na"
+      else
+        att_register = AttendanceRegister.find_by_attendance_date_and_batch_id(@date_to_use,class_teachers.batch_id)
+        if att_register.blank? 
+          temp << "No"
+        else
+          temp << "Yes"
+        end  
+      end  
+      @weekday_id = @date_to_use.strftime("%w")
+      @subjects = []
+      unless @current_timetable.blank?
+        @employee_subjects = employee.subjects
+        subjects = @employee_subjects.select{|sub| sub.elective_group_id.nil?}
+        electives = @employee_subjects.select{|sub| sub.elective_group_id.present?}
+        
+        elective_subjects = []
+        unless electives.blank?
+          electives.each do |esubject|
+            all_e_subject = Subject.active.find_all_by_elective_group_id(esubject.elective_group_id)
+            unless all_e_subject.blank?
+              all_e_subject.each do |subelective|
+                elective_subjects << subelective.id
+              end
+            end
+          end
+        end
+
+        @entriesarray=[]
+        @entriesarray += @current_timetable.timetable_entries.find(:all,:conditions=>{:weekday_id=>@weekday_id.to_i,:employee_id => employee.id},:include=>:class_timing,:order=>"class_timings.start_time")
+        @entriesarray += @current_timetable.timetable_entries.find(:all,:conditions=>{:subject_id=>elective_subjects,:weekday_id=>@weekday_id.to_i},:include=>:class_timing,:order=>"class_timings.start_time")
+        @all_timetable_entries = @entriesarray.select{|t| t.batch.is_active}.select{|s| s.class_timing.is_deleted==false}
+        @entries = 0
+
+        unless @all_timetable_entries.blank?
+          @all_timetable_entries.each do |te|
+            @timetable_subject = Subject.active.find_by_id(te.subject_id)
+            unless @timetable_subject.blank?
+              if @timetable_subject.elective_group_id.present?
+                @all_sub_elective = Subject.active.find_all_by_elective_group_id(@timetable_subject.elective_group_id)    
+                unless @all_sub_elective.blank?
+                  @all_sub_elective.each do |esub|
+                    unless @employee_subjects.blank?
+                      if @employee_subjects.include?(esub) && !@subjects.include?(esub)
+                        @entries = @entries+1
+                      end  
+                    end
+                  end
+                  
+                end
+              else
+                @entries = @entries+1  
+              end
+            end
+          end
+        end
+
+
+
+        @assignment_register = Assignment.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
+        @classwork_register = Classwork.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
+        @lesson_plan_register = Lessonplan.count(:conditions=>["author_id = ?",employee.user_id])
+        temp << @entries
+        temp << @assignment_register
+        temp << @classwork_register
+        temp << @lesson_plan_register
+        temp << 0
+        temp << "Yes"
+      else
+        temp << ""
+        temp << ""
+        temp << ""
+        temp << ""
+        temp << ""
+        temp << ""
+      end  
+      new_book.worksheet(0).insert_row(i, temp)
+      sheet1.row(i).default_format = center_align_format
+    end  
+    spreadsheet = StringIO.new 
+    new_book.write spreadsheet 
+    send_data spreadsheet.string, :filename => "All_report_employee.xls", :type =>  "application/vnd.ms-excel"
+  end  
+
   def att_report_all
     @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
     unless params['date_report'].blank?
@@ -46,12 +165,13 @@ class EmployeeController < ApplicationController
       @date_to_use = @local_tzone_time.to_date
     end
     
-      
+    @dep_id = 0 
     dep_ids = [2304,2375,2376,2377]
     @departments = EmployeeDepartment.find_all_by_id(dep_ids)
     if !params['dep_id'].blank?
       dep_ids = []
       dep_ids << params['dep_id'].to_i
+      @dep_id = params['dep_id'].to_i
     end  
     @all_employee = Employee.find_all_by_employee_department_id(dep_ids)
     @data = []

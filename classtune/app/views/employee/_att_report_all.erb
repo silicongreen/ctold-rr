@@ -54,6 +54,10 @@
       </tr>
       <% end %>
   </table>
+  <div>
+    <%= link_to " ► Excell Report",
+      {:controller => "employee", :action => "att_report_all_excell", :dep_id => @dep_id,:date_report=>@date_to_use},:target => '_blank', :class=> 'user_button' %>
+  </div>
   
 
 

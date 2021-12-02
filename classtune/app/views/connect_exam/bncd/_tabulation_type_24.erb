@@ -157,7 +157,7 @@
               <% c = 'even' %>
               <table id="pdf-table" width="100%" cellspacing="0">
                   <tr class="table-header">
-                      
+                      <td class="col-pdf" rowspan="3">SL</td>
                       <td class="col-pdf" rowspan="3">Roll</td>
                       <td class="col-pdf" rowspan="3">Students Name</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
@@ -178,11 +178,11 @@
                         <% end %>
                       <% end %>
                       <td class="col-pdf" rowspan="3">G. Total</td>
-                      <td class="col-pdf" rowspan="3">Per(%)</td>
+                       <td class="col-pdf" rowspan="3">Total GP</td>
+                      <td class="col-pdf" rowspan="3">GPA</td>
                       <td class="col-pdf" rowspan="3">Position in Section</td>
                       <td class="col-pdf" rowspan="3">Position in Class</td>
-                      <td class="col-pdf" rowspan="3">Total GP</td>
-                      <td class="col-pdf" rowspan="3">GPA</td>
+                     
 
                   </tr>
                   
@@ -245,12 +245,7 @@
                       <tr class="page-break">
                           <td colspan="100">&nbsp;</td>
                       </tr>  
-                      <tr class="table-header">
                       
-                      <td class="col-pdf" rowspan="3">Roll</td>
-                      <td class="col-pdf" rowspan="3">Students Name</td>
-                      <% @report_data['report']['subjects'].each do |sub| %>
-                        <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
                           <% has_exam = true %>
                         <% end %>
@@ -262,16 +257,16 @@
                               <% colspan = colspan+1 %>
                             <% end %>
                           <% end %>
-                           <% colspan = colspan+2 %>
+                          <% colspan = colspan+2 %>
                           <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
                       <td class="col-pdf" rowspan="3">G. Total</td>
-                      <td class="col-pdf" rowspan="3">Per(%)</td>
+                       <td class="col-pdf" rowspan="3">Total GP</td>
+                      <td class="col-pdf" rowspan="3">GPA</td>
                       <td class="col-pdf" rowspan="3">Position in Section</td>
                       <td class="col-pdf" rowspan="3">Position in Class</td>
-                      <td class="col-pdf" rowspan="3">Total GP</td>
-                      <td class="col-pdf" rowspan="3">GPA</td>
+                     
 
                   </tr>
                   
@@ -325,12 +320,7 @@
                       <tr class="page-break">
                           <td colspan="100">&nbsp;</td>
                       </tr> 
-                      <tr class="table-header">
                       
-                      <td class="col-pdf" rowspan="3">Roll</td>
-                      <td class="col-pdf" rowspan="3">Students Name</td>
-                      <% @report_data['report']['subjects'].each do |sub| %>
-                        <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
                           <% has_exam = true %>
                         <% end %>
@@ -342,16 +332,16 @@
                               <% colspan = colspan+1 %>
                             <% end %>
                           <% end %>
-                           <% colspan = colspan+2 %>
+                          <% colspan = colspan+2 %>
                           <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
                       <td class="col-pdf" rowspan="3">G. Total</td>
-                      <td class="col-pdf" rowspan="3">Per(%)</td>
+                       <td class="col-pdf" rowspan="3">Total GP</td>
+                      <td class="col-pdf" rowspan="3">GPA</td>
                       <td class="col-pdf" rowspan="3">Position in Section</td>
                       <td class="col-pdf" rowspan="3">Position in Class</td>
-                      <td class="col-pdf" rowspan="3">Total GP</td>
-                      <td class="col-pdf" rowspan="3">GPA</td>
+                     
 
                   </tr>
                   
@@ -484,23 +474,7 @@
                           <td>
                               <%= sprintf( "%0.02f", total_mark) %>    
                           </td>
-                          <td>
-                              <%= sprintf( "%0.02f", percentage) %>    
-                          </td>
-                          <td>
-                              <% if !@student_position_batch[std['id'].to_i].blank? %> 
-                                <%= @student_position_batch[std['id'].to_i] %>
-                              <% else %>
-                                -
-                              <% end %>
-                          </td>
-                          <td>
-                              <% if !@student_position[std['id'].to_i].blank? %> 
-                                <%= @student_position[std['id'].to_i] %>
-                              <% else %>
-                                -
-                              <% end %>
-                          </td>
+                          
 
                           <td>
                               <%= sprintf( "%0.02f", total_grade) %>
@@ -517,6 +491,20 @@
                           <td>
                               <%= sprintf( "%0.02f", grade_point_avg) %>
                           </td> 
+                          <td>
+                              <% if !@student_position_batch[std['id'].to_i].blank? %> 
+                                <%= @student_position_batch[std['id'].to_i] %>
+                              <% else %>
+                                -
+                              <% end %>
+                          </td>
+                          <td>
+                              <% if !@student_position[std['id'].to_i].blank? %> 
+                                <%= @student_position[std['id'].to_i] %>
+                              <% else %>
+                                -
+                              <% end %>
+                          </td>
 
 
                     </tr>

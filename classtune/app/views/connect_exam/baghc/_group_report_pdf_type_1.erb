@@ -332,8 +332,8 @@
                             <td colspan="2" class="p-without-padding" style="text-align:center;"><p style="text-align:center;">Meritocracy</p></td>
                         </tr>
                         <tr class="table-header">
-                            <td><p style="text-align:center;">Position: <% if !@student_position.blank? && !@student_position[@student.id.to_i].blank?  %><%= @student_position[@student.id.to_i] %><% else %>N/A<% end %></p></td>
-                            <td><p style="text-align:center;">Total Student: <%= @total_std unless @total_std.blank? %></p></td>
+                            <td><p style="text-align:left;">Position: <% if !@student_position.blank? && !@student_position[@student.id.to_i].blank?  %><%= @student_position[@student.id.to_i] %><% else %>N/A<% end %></p></td>
+                            <td><p style="text-align:left;">Total Student: <%= @total_std unless @total_std.blank? %></p></td>
                         </tr>
                     </table>
                     <% 

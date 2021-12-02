@@ -15,7 +15,7 @@
                     <h4 align="center"><b>www.baghc.edu.bd</b></h4>
                     <h4 align="center"><b>(EIIN : 108214)</b></h4>
                     <h4 align="center"><b>Subject-Wise Grade/Marks Sheet</b></h4>
-                    <br/><br/>
+                    <br/>
                     <h3 align="center"><b><%= @connect_exam_obj.name %></b></h3>
                   </td>
                 </tr>
@@ -118,7 +118,7 @@
                           </tr>
                           <tr class="table-header"> 
                               <td>Total(%)</td> 
-                              <td>Obtained Highest Mark(%)</td>
+                              <td>Obtained Highest Marks(%)</td>
                               <td>Letter Grade</td>
                               <td>Grade Point</td>
                           </tr>
@@ -331,8 +331,8 @@
                             <td colspan="2" class="p-without-padding" style="text-align:center;"><p style="text-align:center;">Meritocracy</p></td>
                         </tr>
                         <tr class="table-header">
-                            <td><p style="text-align:center;">Position: <% if !@student_position.blank? && !@student_position[@student.id.to_i].blank?  %><%= @student_position[@student.id.to_i] %><% else %>N/A<% end %></p></td>
-                            <td><p style="text-align:center;">Remarks:</p></td>
+                            <td><p style="text-align:left;">Position: <% if !@student_position.blank? && !@student_position[@student.id.to_i].blank?  %><%= @student_position[@student.id.to_i] %><% else %>N/A<% end %></p></td>
+                            <td><p style="text-align:left;">Remarks:</p></td>
                         </tr>
                     </table>
                     <% 

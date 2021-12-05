@@ -94,6 +94,8 @@
                                   <% if loop_value > 2 || rowspan == 1  %>
                                     <td class="col-pdf"  rowspan="<%= rowspan %>" ><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
                                   <% end %>
+                                <% else %>
+                                    <td class="col-pdf">-</td>
                                 <% end %>
                             <% end %>
                           <% end %> 

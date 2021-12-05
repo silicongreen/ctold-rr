@@ -296,5 +296,7 @@ table#pdf-table{
     font-size: 9px;
 }
 
+.page-break-main { display:block; clear:both; page-break-after:always; }
+
 
 

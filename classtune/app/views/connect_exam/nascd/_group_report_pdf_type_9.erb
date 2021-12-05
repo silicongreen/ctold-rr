@@ -142,7 +142,7 @@ socially to his or her abilities and opportunities.</i></li>
               <p>&nbsp;</p>
               <p>Final Result: </p>   
               
-              <table id="pdf-table"  width="100%" class="left-table border-none break-table odd-table height-exam ev-table" cellspacing="0" >
+              <table id="pdf-table"  width="100%" class="left-table sign-table border-none break-table odd-table height-exam ev-table" cellspacing="0" >
                   <tr class="even border-none">
                     <td width='50%' class="border-none">&nbsp;</td>
                     <td class='border-left-none border-none'><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/sign_principal.jpeg")), :width=>"20%" %>
@@ -151,7 +151,7 @@ socially to his or her abilities and opportunities.</i></li>
                   
                   <tr class="even border-none">
                     <td width='50%' class="border-none"><hr/></td>
-                    <td class='border-left-none border-none'><hr/>
+                    <td class='border-left-none border-none'><hr/></td>
                   </tr>
                   
                   <tr class="even border-none">
@@ -175,6 +175,10 @@ socially to his or her abilities and opportunities.</i></li>
     .sfx .margin-top-50
     {
         margin-top: 50px !important;
+    }
+    .sjis-new .left-table.ev-table.sign-table tr.even td
+    {
+      padding: 5px !important;
     }
 
     .sfx

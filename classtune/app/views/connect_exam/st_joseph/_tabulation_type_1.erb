@@ -179,15 +179,10 @@
                                 <%=  sub['code'] %><hr/>Grade<hr/>
                                 
                                 <% pass_mark = all_mark.to_f/2.00  %>
-                                <% pass_mark = pass_mark.round() %>
+                                
                                 <% if @batch.course.course_name == "Class IX" or @batch.course.course_name == "Class X" %>
-                                    <% if all_mark.to_i == 100 %>
-                                        <% pass_mark = 45 %>
-                                    <% elsif all_mark.to_i == 200 %>
-                                        <% pass_mark = 90 %>
-                                    <% else %>
-                                        <% pass_mark = 11 %>   
-                                    <% end %>
+                                    <% pass_mark = (all_mark.to_f/100.00)*45  %>
+                                    <% pass_mark = pass_mark.round() %>
                                 <% end %>
                                 <%= "P-"+pass_mark.to_s  %>
 

@@ -6,7 +6,13 @@
         
         <td class="name-td">
               <h3 align="center">&nbsp;&nbsp;&nbsp;&nbsp;Navy Anchorage School And College Dhaka</h3>
-              <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;Progress Report <%=  @connect_exam_obj.published_date.strftime("%Y") %></h5>
+              <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;
+              <% if @batch.course.course_name == "X" %>
+                Pre Test <%=  @connect_exam_obj.published_date.strftime("%Y") %>
+              <% else %>
+                Progress Report <%=  @connect_exam_obj.published_date.strftime("%Y") %>
+              <% end %>
+              </h5>
               <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.name %></h5>
               <h5 align="center">&nbsp;&nbsp;&nbsp;&nbsp;Class : <%= @batch.course.course_name %></h5>
                

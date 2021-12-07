@@ -21,7 +21,7 @@
     <div class="section1 row" >
         <center>
             <div id="pdf-header-south" class="general-header">
-                <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '4%' %></h4>
+                <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '8%' %></h4>
                 <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
             </div>
             <h4 align="center">Tabulation Sheet, <%= @connect_exam_obj.name %></h4>
@@ -184,7 +184,7 @@
                                     <% pass_mark = (all_mark.to_f/100.00)*45  %>
                                     <% pass_mark = pass_mark.round() %>
                                 <% end %>
-                                <%= "P-"+pass_mark.to_s  %>
+                                <%= "Pass-"+pass_mark.to_s  %>
 
                             </td>
                           <% end %>
@@ -224,7 +224,7 @@
                                     <% pass_mark = (all_mark.to_f/100.00)*45  %>
                                     <% pass_mark = pass_mark.round() %>
                                 <% end %>
-                                <%= "P-"+pass_mark.to_s  %>
+                                <%= "Pass-"+pass_mark.to_s  %>
 
                             </td>
                           <% end %>
@@ -282,7 +282,7 @@
                                         <% pass_mark = (all_mark.to_f/100.00)*45  %>
                                         <% pass_mark = pass_mark.round() %>
                                     <% end %>
-                                    <%= "P-"+pass_mark.to_s  %>
+                                    <%= "Pass-"+pass_mark.to_s  %>
 
                                 </td>
                               <% end %>
@@ -322,7 +322,7 @@
                                         <% pass_mark = (all_mark.to_f/100.00)*45  %>
                                         <% pass_mark = pass_mark.round() %>
                                     <% end %>
-                                    <%= "P-"+pass_mark.to_s  %>
+                                    <%= "Pass-"+pass_mark.to_s  %>
 
                                 </td>
                               <% end %>
@@ -371,7 +371,7 @@
                                         <% pass_mark = (all_mark.to_f/100.00)*45  %>
                                         <% pass_mark = pass_mark.round() %>
                                     <% end %>
-                                    <%= "P-"+pass_mark.to_s  %>
+                                    <%= "Pass-"+pass_mark.to_s  %>
 
                                 </td>
                               <% end %>
@@ -411,7 +411,7 @@
                                         <% pass_mark = (all_mark.to_f/100.00)*45  %>
                                         <% pass_mark = pass_mark.round() %>
                                     <% end %>
-                                    <%= "P-"+pass_mark.to_s  %>
+                                    <%= "Pass-"+pass_mark.to_s  %>
 
                                 </td>
                               <% end %>

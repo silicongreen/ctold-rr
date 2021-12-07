@@ -243,13 +243,15 @@
                     <% j = j+1 %>
                     
                     <%  std_count = std_count+1; %>
-                    <% if std_count>11 && extender ==0 %>
+                    <% if std_count>10 && extender ==0 %>
                       <% subject_done = [] %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
-                      <tr class="page-break">
-                          <td colspan="100">&nbsp;</td>
-                      </tr>  
+                       </table>
+                      <div class="page-break-main">
+                         &nbsp;
+                      </div>  
+                      <table id="pdf-table" width="100%" cellspacing="0"> 
                       <tr class="table-header">
                           <td class="col-pdf">Roll</td>
                           <td class="col-pdf">Students Name</td>
@@ -332,13 +334,15 @@
                           <td class="col-pdf">Ranking</td>
 
                       </tr>
-                    <% elsif std_count>12 && extender ==1 %>
+                    <% elsif std_count>11 && extender ==1 %>
                       <% subject_done = [] %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
-                      <tr class="page-break">
-                          <td colspan="100">&nbsp;</td>
-                      </tr> 
+                       </table>
+                      <div class="page-break-main">
+                         &nbsp;
+                      </div>  
+                      <table id="pdf-table" width="100%" cellspacing="0">
                       <tr class="table-header">
 
                           <td class="col-pdf">Roll</td>

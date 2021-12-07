@@ -1,4 +1,13 @@
+<%
+class_type = 1
+if @batch.course.course_name == "VI" or @batch.course.course_name == "VII" or @batch.course.course_name == "VIII"
+  class_type = 2
+end
+if @batch.course.course_name == "IX" or @batch.course.course_name == "X"
+  class_type = 3
+end
 
+%>
   <% total_u = 0 %>
   <div id="page-yield"  class="available_sections1 baf_shaheen">
       <%= render  :partial=>"/connect_exam/bncd/header" %>
@@ -187,14 +196,21 @@
                       <td>Result</td>
                       <td>GPA</td>
                       <td>Total Grade</td>
-                      <td>Position in Section</td>
-                      <td>Position in Class</td>
+                      <% if class_type != 1 %>
+                        <td>Position in Section</td>
+                        <% if class_type == 2 %>
+                          <td>Position in Class</td>
+                        <% else %>
+                          <td>Position in Group</td>
+                        <% end %>  
+                      <% end %>
                   </tr>
                   
                   <tr class="even">
                       <td class="col-pdf  no-warp"><% if !@student_position_batch[@student.id.to_i].blank? %>Pass<% else %>Failed<% end %></td>
                       <td class="col-pdf  no-warp"><% if !@student_position_batch[@student.id.to_i].blank? %><%= sprintf( "%0.02f", grade_point_avg) %><% else %>0.00<% end %></td>
                        <td class="col-pdf  no-warp"><%= sprintf( "%0.02f", total_grade_of_allexam) %></td>
+                      <% if class_type != 1 %>
                       <td class="col-pdf  no-warp">
                           <% if !@student_position_batch[@student.id.to_i].blank? %> 
                             <%= @student_position_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
@@ -209,6 +225,7 @@
                             -
                           <% end %>
                       </td>
+                      <% end %>
                   </tr>
               </table>
               <div class='fine'></div>
@@ -223,7 +240,13 @@
                           &nbsp;
                       </td> 
                       <td class="col-pdf " width="25%">
-                          &nbsp;
+                          <% unless @assigned_employee.blank? %>
+                            <% @assigned_employee.each do |emp| %>
+                                <% emp_full_name = emp.first_name.to_s+" "+emp.last_name.to_s  %>
+                                <b><%= emp.first_name %>&nbsp;<%= emp.last_name %></b>
+                              <% break %>
+                            <% end %>
+                          <% end %>   
                       </td> 
                       <td class="col-pdf" width="25%">
                           &nbsp;
@@ -237,13 +260,12 @@
                       <td class="col-pdf " width="25%">
                           Guardian's Sign
                       </td>
-                      <td class="col-pdf " width="25%">
-                          Asst. Headmaster's Sign
-                      </td>
                       <td class="col-pdf" width="25%">
                           Class Teacher's Sign
                       </td>
-                      
+                      <td class="col-pdf " width="25%">
+                          Asst. Headmaster's Sign
+                      </td>
                       <td class="col-pdf " width="25%">
                           Principal's Sign
                       </td> 

@@ -234,8 +234,12 @@
                   <% extender = 0 %>
                   <% std_count = 0 %>
                   <% j = 0 %>
-
+                  <% std_done = [] %>
                   <% @report_data['report']['students'].each do |std| %>
+                    <% if std_done.include?(std['id'])%>
+                      <% next %>
+                    <% end %>
+                    <% std_done << std['id'] %>
                     <% if !std.blank? and !std['first_name'].blank? %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>

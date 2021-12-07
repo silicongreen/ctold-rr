@@ -16,6 +16,7 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
+
 <% 
   if @std_subject_hash_type.nil?
     std_subject = StudentsSubject.find_all_by_batch_id(@batch.id)
@@ -127,6 +128,16 @@
   end
   
 %>
+<%
+class_type = 1
+if @batch.course.course_name == "VI" or @batch.course.course_name == "VII" or @batch.course.course_name == "VIII"
+  class_type = 2
+end
+if @batch.course.course_name == "IX" or @batch.course.course_name == "X"
+  class_type = 3
+end
+
+%>
 <div id="page-yield" class="available_sections1">
     <div class="page1"> </div>
     <div class="section1 row" >
@@ -181,7 +192,11 @@
                        <td class="col-pdf" rowspan="3">Total GP</td>
                       <td class="col-pdf" rowspan="3">GPA</td>
                       <td class="col-pdf" rowspan="3">Position in Section</td>
-                      <td class="col-pdf" rowspan="3">Position in Class</td>
+                      <% if class_type == 3 %>
+                          <td class="col-pdf" rowspan="3">Position in Group</td>
+                      <% else %>
+                          <td class="col-pdf" rowspan="3">Position in Class</td>
+                      <% end %>
                      
 
                   </tr>

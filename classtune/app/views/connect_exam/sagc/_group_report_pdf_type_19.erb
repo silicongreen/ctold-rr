@@ -173,20 +173,20 @@
                             
                             <% main_exam_mark = 0 %>
                             <% unless @report_data['report']['exams'].blank? %>  
-                            <% @report_data['report']['exams'].each do |report| %> 
-                                <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
-                                  <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                  <% if report['exam_category'] == '3' %>
-                                    <% total_sb = total_sb+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                              <% @report_data['report']['exams'].each do |report| %> 
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
+                                    <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <% if report['exam_category'] == '3' %>
+                                      <% total_sb = total_sb+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <% end %>
+                                    <% if report['exam_category'] == '4' %>
+                                      <% total_ob = total_ob+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <% end %>
+                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
+                                  <% else %>
+                                      <td class="col-pdf">-</td>
                                   <% end %>
-                                  <% if report['exam_category'] == '4' %>
-                                    <% total_ob = total_ob+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                  <% end %>
-                                  <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
-                                <% else %>
-                                    <td class="col-pdf">-</td>
-                                <% end %>
-                            <% end %>
+                              <% end %>
                             <% end %>
                             <% total_all = total_ob+total_sb %>
                             <td class="col-pdf no-warp"><%= total_all %></td>
@@ -277,8 +277,7 @@
 
                       </tr> 
                       <% end %>
-                    <% end %>  
-                  <% end %>
+                    <% end %> 
                       
                   <% if total_grade > 0 && total_subject > 0 %>
                       <% grade_point_avg = total_grade.to_f/total_subject.to_f %>

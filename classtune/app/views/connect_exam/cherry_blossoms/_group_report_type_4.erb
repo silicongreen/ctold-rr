@@ -211,9 +211,9 @@
                 <% @grading_levels = GradingLevel.default %>
               <% end %>
               <%  unless @grading_levels.empty? %>
-                <table id="pdf-table" class="margin-top-bottom-10  font-size-20 float-left-10" width="30%" cellspacing="0">
+                <table id="pdf-table" class="no-border margin-top-bottom-10  font-size-20 float-left-10" width="30%" cellspacing="0">
                     <tr>
-                      <td>Class Attendance</td>
+                      <td colspan="2" style="text-align:center; font-size: 14px;">Class Attendance</td>
                     </tr>
                     <tr class="table-header">
 
@@ -279,6 +279,10 @@
 <% end %>
 <%= stylesheet_link_tag 'list_table' %>
   <style>
+    #pdf-table .no-border
+    {
+      border-top: none !important;
+    }
     .st_joseph_bg table td
     {
         font-size:12px !important;

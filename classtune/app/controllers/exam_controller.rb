@@ -8413,8 +8413,12 @@ class ExamController < ApplicationController
                 full_mark_subject = 0
                 sb = 0
                 ob = 0
+                pr = 0
+                at = 0
+                cw = 0
                 full_sb = 0
                 full_ob = 0
+                full_pr = 0
                 tab['exams'].each do |rs|
                   if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
                     full_mark_subject = full_mark_subject+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
@@ -8425,6 +8429,16 @@ class ExamController < ApplicationController
                     if rs['exam_category'] == '4' 
                       ob = ob+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       full_ob = full_ob+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                    end 
+                    if rs['exam_category'] == '5'
+                      pr = pr+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                      full_pr = full_ob+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                    end 
+                    if rs['exam_category'] == '2'
+                      at = at+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    end 
+                    if rs['exam_category'] == '1'
+                      cw = cw+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                     end 
                     if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s != "AB"
                       appeared = true
@@ -8511,9 +8525,15 @@ class ExamController < ApplicationController
                   if appeared
                     @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = sb
                     @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = ob
+                    @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = pr
+                    @student_result[loop_std]['subjects'][main_sub_id]['result']['at'] = at
+                    @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = cw
                   else
                     @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = "AB"
                     @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = "AB"
+                    @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = "AB"
+                    @student_result[loop_std]['subjects'][main_sub_id]['result']['at'] = "AB"
+                    @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = "AB"
                   end 
 
 

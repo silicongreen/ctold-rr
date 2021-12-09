@@ -217,13 +217,13 @@
                     </tr>
                     <tr class="table-header">
 
-                      <td class="col-pdf">Working Days</td> <td><%= @report_data['total'] %></td>
+                      <td class="col-pdf" style="text-align:left;">Total Working Days</td> <td><%= @report_data['total'] %></td>
                     </tr>  
                      <tr class="table-header">
-                      <td class="col-pdf">Days Present</td> <td><%= @report_data['present'] %> </td>
+                      <td class="col-pdf" style="text-align:left;">Present</td> <td><%= @report_data['present'] %> </td>
                     </tr>  
                      <tr class="table-header">
-                      <td class="col-pdf">Days Absent</td> <td><%= @report_data['total']-@report_data['present'] %> </td>
+                      <td class="col-pdf" style="text-align:left;">Absent</td> <td><%= @report_data['total']-@report_data['present'] %> </td>
                       
                   </tr> 
                 </table>

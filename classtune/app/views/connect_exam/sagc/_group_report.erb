@@ -184,6 +184,8 @@
     <%= render  :partial=>"/connect_exam/sagc/finding_data_25" %>
   <% elsif @connect_exam_obj.result_type.to_i == 18 %> 
     <%= render  :partial=>"/connect_exam/sagc/finding_data_18" %>
+  <% elsif @connect_exam_obj.result_type.to_i == 19 %> 
+    <%= render  :partial=>"/connect_exam/sagc/finding_data_19" %>
   <% else %>
     <%= render  :partial=>"/connect_exam/sagc/finding_data_5" %>
   <% end %>

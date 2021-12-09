@@ -12,7 +12,7 @@
           </td>
         </tr>  
       </table> 
-      <hr/>
+      <hr style="width: 100%;"/>
       <h4 align="left"><%= @connect_exam_obj.name+", Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h4>
       <hr/>   
   </div>

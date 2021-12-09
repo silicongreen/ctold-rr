@@ -194,6 +194,7 @@
                             
 
                             <% tota_mark_with_monthly = main_exam_mark %>
+                            <% grand_total = grand_total+tota_mark_with_monthly%>
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
                             </td>
@@ -286,7 +287,7 @@
                       <% end %>  
                   <% end %>  
                   <tr class="even">
-                      <% colspan = colspan+3 %>
+                      <% colspan = colspan+5 %>
                       <td class="col-pdf align-left-baf" colspan="<%= colspan %>"><b>Total Marks & Total GP</b></td>
                       <td class="col-pdf no-warp align-left-baf" colspan="3">&nbsp;&nbsp;&nbsp;<b><%= grand_total %></b></td>
                       <td class="col-pdf"><b><%= total_grade %></b></td>

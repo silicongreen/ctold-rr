@@ -1,54 +1,11 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
- <% total_u = 0 %>
-  <div id="page-yield"  class="available_sections1 baf_shaheen">
-      <%= render  :partial=>"/connect_exam/sagc/header" %>
-      <h2 align="center" class="font-24"><%= @connect_exam_obj.name %> - <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></h2>
-      
-     
-      <table id="pdf-table" class="tbl-lign-left" width="52%" cellspacing="0">
-          <tr class="even">
-              <td class="align-right col-pdf" width="20%">Student ID </td><td colspan="3" class="align-left"><b><%= @student.admission_no %></b></td>
-          </tr>
-          <tr class="odd">
-              <td class="align-right col-pdf col-pdf" width="20%">Name </td><td colspan="3" class="align-left"><%= @student.full_name.upcase %></td>
-          </tr>
-          <tr class="even">
-              <td class="align-right" width="20%">Roll </td><td colspan="3" class="align-left"><%= @student.class_roll_no %></td>
-          </tr>
-          <tr class="odd">
-              <td class="align-right col-pdf" width="20%">Class/Program </td><td colspan="3" class="align-left"><b><%= @batch.course.course_name %></b></td>
-          </tr>
-           
-          <tr class="even">
-              <td class="align-right col-pdf" width="20%">Section </td><td class="align-left"><%= @batch.course.section_name %></td>
-              <% batch_split = @batch.name.split(" ") %>
-              <td class="align-right col-pdf" width="20%" >Shift </td><td class="align-left"><%= batch_split[0] %></td>   
-          </tr>
-          <tr class="odd">
-              <td class="align-right col-pdf" width="20%">Session </td>
-              <td class="align-left"><%= @batch.course.session %></td>
-              <td class="align-right col-pdf" width="20%" >Version </td><td class="align-left"><%= batch_split[1] %></td> 
-          </tr>
-          <tr class="even">
-              <td class="align-right col-pdf" width="20%">Category</td><td colspan="3" class="align-left"><%= @student.student_category.name unless @student.student_category.blank? %></td>
-          </tr>
-      </table>
-      
-      
-     <%
-        has_sb = false
-        has_ob = false
-        has_pr = false
+              <%
+                has_sb = false
+                has_ob = false
+                has_pr = false
 
-      %>
-      <div class="grade_information">
-        <%= render  :partial=>"/connect_exam/sagc/gradding_level" %>
-        
-      </div>
-      <div class ="current_batch" style="margin-left:0px;">
-          <div id="grouped_exam_report">
-
-              <table id="pdf-table" class="top-left-center" width="80%" cellspacing="0">
+              %>
+               <table id="pdf-table" class="top-left-center" width="80%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
                  
@@ -294,164 +251,119 @@
                   </tr> 
 
               </table>
-                
-             <% 
-                total_att = ""
-                absent = ""
-                if !@exam_comment.blank?
-                  all_comments = @exam_comment.comments
-                  if !all_comments.blank?
-                    all_comments_array = all_comments.split("|")
-                    total_att = all_comments_array[0]
-                    if !all_comments_array[1].nil?
-                      absent = all_comments_array[1]
-                    end
-                  end
-                end
-              %> 
-                
-              <% grade_point_avg = (grade_point_avg.to_f*100).to_f.round() %>
-              <% grade_point_avg = grade_point_avg.to_f/100 %>
-              <% if grade_point_avg > 5 %>
-                  <% grade_point_avg = 5.00 %>
-             <% end %>
-              <table id="pdf-table" class="tbl-lign-left top-margin-20 letter-grade" width="100%" cellspacing="0">
-                <tr class="odd">
-                      <td class="align-left no-warp" width="50%"><b>Grade Point Avg</b></td>
-                      <td><b>
-                          <% if failed == true %>
-                            0.00
-                          <% else %>
-                            <%= sprintf( "%0.02f", grade_point_avg) %>
-                          <% end %></b>
-                      </td>
-                      <td class="align-left no-warp" colspan="2"><b>Position in Merit List</b></td>
-                  </tr> 
-                  <tr class="odd">
-                      <%
-                        
-                        grade = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
-                     %>
-                      <td class="align-left no-warp">Letter Grade</td>
-                      <td >
-                          <b>
-                          <% if failed == true %>
-                              F
-                          <% else %>
-                            <% if !grade.blank? and !grade.name.blank? %>
-                            <%= grade.name %>
-                            <% else %>
-                              -
-                            <% end %>
-                          <% end %>
-                          </b>
-                      </td>
-                      <td class="align-left no-warp" width="15%">Section</td>
-                      <td class="no-warp">
-                         <% if !@student_position_batch[@student.id.to_i].blank? %> 
-                          <%= @student_position_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
-                         <% else %>
-                          -
-                         <% end %> 
-                      </td>
-                  </tr>
-                  <tr class="odd">
-                      
-                      <td class="align-left no-warp">Total Marks</td>
-                      <td class="align-left no-warp"><b><%= sprintf( "%0.02f", grand_total)%></b></td>
-                      <td class="align-left no-warp" width="15%">Class/Group</td>
-                      <td class="no-warp">
-                          <b>
-                         <% if !@student_position[@student.id.to_i].blank? %> 
-                          <%= @student_position[@student.id.to_i] %> out of <%= @total_std %>
-                         <% else %>
-                          -
-                         <% end %> 
-                        </b>  
-                      </td>    
-                  </tr>
-                  
-              </table>
-              <% 
-                total_att = ""
-                absent = ""
-                if !@exam_comment.blank?
-                  all_comments = @exam_comment.comments
-                  if !all_comments.blank?
-                    all_comments_array = all_comments.split("|")
-                    total_att = all_comments_array[0]
-                    if !all_comments_array[1].nil?
-                      absent = all_comments_array[1]
-                    end
-                  end
-                end
-              %>
-            
-              <table id="pdf-table" class="evaluation table_99 top-left-center"  width="99.8%" >
-                  <tr class="even remarks-tr">
-                    <td>
-                        <b>Remarks : </b>
-                            <% if failed == true %>
-                              Failed
-                           <% else %>
-                            <% if !grade.blank? and !grade.name.blank? %>
-                              <%= grade.description %>
-                            <% else %>
-                                
-                            <% end %>
-                        <% end %>
-                    </td>
-                  </tr>
-              </table>
-              
-             
-              <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
-
-                      <tr class="even border-bottom-1-px">
-                          <td class="col-pdf " width="25%">
-                               <br/><br/><br/>
-                          </td> 
-                          <td class="col-pdf" width="25%">
-                              <br/><br/><br/>
-                          </td>
-                          <td class="col-pdf" width="25%">
-                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/"+batch_split[0].downcase+".png")), :width=>"70%" %>
-                          </td> 
-                          <td class="col-pdf " width="25%">
-                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/principal-sir-signature-2019.jpg")), :width=>"70%" %>
-                          </td>
-                      </tr>
-                      <tr class="even">
-                           
-                          <td class="col-pdf" width="25%">
-                              Class Teacher
-                          </td>
-                          <td class="col-pdf " width="25%">
-                              Parents/Guardian
-                          </td>
-                          <td class="col-pdf " width="25%">
-                              Vice-Principal
-                          </td>
-                          <td class="col-pdf" width="25%">
-                              Principal
-                          </td> 
-                          
-                      </tr>
-
-              </table> 
-              
-          </div>
-      </div>
-
-
-
-  </div>
-
 <% end %>
 
 <style>
-.baf_shaheen table#pdf-table tr.even td, .baf_shaheen table#pdf-table tr.odd td 
-{
-  padding: 3px !important;
-}
-</style>
+
+
+    div.baf_shaheen
+    {
+        border:none;
+    }
+    .baf_shaheen td.align-right
+    {
+        text-align: right !important;
+    }
+    .baf_shaheen td.align-left
+    {
+        text-align: left !important;
+    }
+    .baf_shaheen table.tbl-lign-left tr.even td,.baf_shaheen table.tbl-lign-left tr.odd td
+    {
+        font-weight: normal !important;
+        padding: 7px !important; 
+    }
+    .baf_shaheen table.tbl-lign-left-100 tr.even td,.baf_shaheen table.tbl-lign-left-100 tr.odd td
+    {
+        font-weight: normal !important;
+        padding: 7px !important; 
+    }
+    .baf_shaheen table.tbl-lign-left-100
+    {
+        float:left !important;
+        width: 99.8% !important;
+        margin-left: 4% !important;
+    }
+    .baf_shaheen table.tbl-lign-left
+    {
+        float:left !important;
+        width: 52% !important;
+        margin-left: 4% !important;
+    }
+    .baf_shaheen div.grade_information
+    {
+        margin-left:3%;
+        float:left;
+        width: 34.7%;
+        font-size: 14px;
+
+    }
+    .baf_shaheen div.grade_information table#pdf-table tr.even td
+    {
+        padding: 8px !important;
+    }
+    div.baf_shaheen h2
+    {
+        font-weight: normal !important;
+        font-size: 32px !important;
+    }
+    div.baf_shaheen table.top-left-center
+    {
+        float:left !important;
+        margin-top:30px !important;
+        margin-left: 4% !important;
+        width: 90% !important;
+    }
+    
+    div.baf_shaheen tr.odd td
+    {
+        padding: 2px 10px !important; 
+        border: 1px solid #000000;
+        font-size:21px;
+    }
+    div.baf_shaheen tr.even td
+    {
+        padding: 2px 10px !important;
+        border: 1px solid #000000;
+        font-size:21px;
+    }
+    div.baf_shaheen table#pdf-table tr.header-shade td
+    {
+        padding: 2px 3px !important;
+    }
+
+    .top-margin-20
+    {
+        margin-top:30px !important;
+    }
+    .letter-grade tr td
+    {
+        font-size: 21px !important;
+    }
+    div.baf_shaheen table#pdf-table tr.header-shade
+    {
+        background: #e8e9ed !important;
+    }
+    div.baf_shaheen div.fine
+    {
+        float:left;
+        clear:both;
+        margin-top:40px;
+        margin-bottom:20px;
+        margin-left: 4% !important;
+        width: 90% !important
+    }
+    .letter-grade tr td.font-size-45
+    {
+        font-size:45px !important;
+    }
+    .page-break-grade td{
+        height: 0px;
+        border: 1px solid #fff;
+        border-top: 1px solid Black;
+        border-bottom: 1px solid Black;
+    }
+    
+
+
+</style> 

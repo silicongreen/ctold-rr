@@ -12,7 +12,9 @@
           </td>
         </tr>  
       </table> 
-      <h4 align="left"><%= @connect_exam_obj.name+", Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h4>   
+      <hr/>
+      <h4 align="left"><%= @connect_exam_obj.name+", Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h4>
+      <hr/>   
   </div>
 <% else %>
   <div id="pdf-header-south" class="landscape">

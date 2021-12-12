@@ -252,7 +252,9 @@
                                 failed_subject = true
                               end
                             end
-                            <%= ob_failed_subject %> <%= sb_failed_subject %> <%= failed_subject %>
+                            <%= debug ob_failed_subject.inspect %> 
+                            <%= debug sb_failed_subject.inspect %> 
+                            <%= debug failed_subject.inspect %>
                             if ob_failed_subject == true or sb_failed_subject == true
                               failed_subject = true
                             end

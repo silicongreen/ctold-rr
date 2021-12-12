@@ -253,9 +253,8 @@
                               end
                             end
                             %>
-                            <%= debug ob_failed_subject.inspect %> 
-                            <%= debug sb_failed_subject.inspect %> 
-                            <%= debug failed_subject.inspect %>
+                            <%= full_sb.to_s + " " + full_ob.to_s + "  " + main_exam_mark.to_s  %> 
+                            
                             <%
                             if ob_failed_subject == true or sb_failed_subject == true
                               failed_subject = true

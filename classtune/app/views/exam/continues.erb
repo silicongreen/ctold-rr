@@ -1,5 +1,5 @@
 <% if !@report_data.blank? %>
-  
+<% debug @report_data['report']['students'].inspect %>  
   <% @all_subject_exam = @report_data['report']['subjects'] %>
   <% @all_student_subject = StudentsSubject.find_all_by_batch_id(@batch.id) %>
   <% @total_std_in_class = @report_data['report']['students'].count %>

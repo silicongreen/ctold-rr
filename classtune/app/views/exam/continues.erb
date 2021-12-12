@@ -2,7 +2,7 @@
   <% @all_subject_exam = @report_data['report']['subjects'] %>
   <% @all_student_subject = StudentsSubject.find_all_by_batch_id(@batch.id) %>
   <% @total_std_in_class = @report_data['report']['students'].count %>
-  
+  <% @studenttypes = [] %>
   <% @report_data['report']['students'].each do |std| %>
     <%
     subjects_new = []
@@ -32,9 +32,11 @@
   
     if @student.blank?
       @student = ArchivedStudent.find_by_former_id(std['id'].to_i,:include=>["student_category"])
-      unless @student.blank?
-        <%= abort(@student.inspect) %>
+      if @student.blank?
+        @studenttype[@student.id] = true
       end
+    else
+      @studenttype[@student.id] = false
     end
     
     unless @student.blank?

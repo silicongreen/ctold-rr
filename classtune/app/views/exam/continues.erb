@@ -33,7 +33,7 @@
     if @student.blank?
       @student = ArchivedStudent.find_by_former_id(std['id'].to_i,:include=>["student_category"])
       unless @student.blank?
-        @student.guardians = @student.archived_guardians
+        <%= abort(@student.inspect) %>
       end
     end
     

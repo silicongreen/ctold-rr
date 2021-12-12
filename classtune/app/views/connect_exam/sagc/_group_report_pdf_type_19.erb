@@ -110,6 +110,8 @@
                         <% next %>
                       <% end %>
                       <% failed_subject = false %>
+                      <% sb_failed_subject = false %>
+                      <% ob_failed_subject = false %>
                       <%
                         total_sb = 0
                         total_ob = 0
@@ -211,16 +213,20 @@
                                 if fourth_subject.blank?
                                   failed = true
                                   failed_subject = true
+                                  sb_failed_subject = true
                                 else
                                   failed_subject = true
+                                  sb_failed_subject = true
                                 end
                               end
                               if full_sb == 35 && total_sb <16
                                 if fourth_subject.blank?
                                   failed = true
                                   failed_subject = true
+                                  sb_failed_subject = true
                                 else
                                   failed_subject = true
+                                  sb_failed_subject = true
                                 end
                               end
                             end
@@ -230,8 +236,10 @@
                                 if fourth_subject.blank?
                                   failed = true
                                   failed_subject = true
+                                  ob_failed_subject = true
                                 else
                                   failed_subject = true
+                                  ob_failed_subject = true
                                 end
                               end
                             end
@@ -245,6 +253,9 @@
                               end
                             end
                             
+                            if ob_failed_subject == true or sb_failed_subject == true
+                              failed_subject = true
+                            end
                             
                             %>
                             

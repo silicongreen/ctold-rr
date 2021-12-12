@@ -4,7 +4,7 @@
   <% @total_std_in_class = @report_data['report']['students'].count %>
   
   <% @report_data['report']['students'].each do |std| %>
-    <%= std.id %>
+    <%= std['id'].to_s + " " %>
     <%
     subjects_new = []
     subjects_ids = []

@@ -208,7 +208,7 @@
                                <%= highest_mark.to_f.round.to_i %>
                             </td>
                             <%
-                            if full_sb > 0
+                            if full_sb.to_i > 0
                               if full_sb.to_i == 50 && total_sb.to_i <23
                                 if fourth_subject.blank?
                                   failed = true
@@ -231,7 +231,7 @@
                               end
                             end
 
-                            if full_ob > 0
+                            if full_ob.to_i > 0
                               if full_ob.to_i == 16 && total_ob.to_i <7
                                 if fourth_subject.blank?
                                   failed = true
@@ -253,7 +253,7 @@
                               end
                             end
                             %>
-                            <%= sb_failed_subject.to_s + " " + ob_failed_subject.to_s + "  " + failed_subject.to_s  %> 
+                            <%= sb_failed_subject.to_s + "-" + total_sb.to_s + " " + ob_failed_subject.to_s + "-" + total_ob.to_s + "  " + failed_subject.to_s  %> 
                             
                             <%
                             if ob_failed_subject == true or sb_failed_subject == true

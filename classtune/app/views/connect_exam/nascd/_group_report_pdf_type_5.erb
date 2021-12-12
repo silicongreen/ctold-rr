@@ -1,8 +1,9 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <%= render  :partial=>"/connect_exam/nascd/header_3" %>
    <% father = mother = Guardian.new %>
-    <% if @studenttypes[@student.id] %>
-       <% @guardiansdata = @student.archived_guardians %>
+    <% std_data = Student.find_by_id(@student.id) %>
+    <% if std_data.blank? %>
+      <% @guardiansdata = @student.archived_guardians %>
     <% else %>
       <% @guardiansdata = @student.guardians %>
     <% end %>

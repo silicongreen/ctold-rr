@@ -33,7 +33,7 @@
     if @student.blank?
       @student = ArchieveStudent.find_by_former_id(std['id'].to_i,:include=>["student_category"])
     end
-    <%= @student.id %>
+    
     unless @student.blank?
       
       @report_data['report']['no_exam_subject_resutl'] = []

@@ -6318,7 +6318,6 @@ class ExamController < ApplicationController
     if @student_response['status']['code'].to_i == 200
       @report_data = @student_response['data']
     end 
-    abort(@report_data.inspect)
     @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
     render_connect_exam("continues",false)
    

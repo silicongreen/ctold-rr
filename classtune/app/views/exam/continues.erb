@@ -33,10 +33,10 @@
     if @student.blank?
       @student = ArchivedStudent.find_by_former_id(std['id'].to_i,:include=>["student_category"])
       if @student.blank?
-        @studenttype[@student.id] = true
+        @studenttypes[@student.id] = true
       end
     else
-      @studenttype[@student.id] = false
+      @studenttypes[@student.id] = false
     end
     
     unless @student.blank?

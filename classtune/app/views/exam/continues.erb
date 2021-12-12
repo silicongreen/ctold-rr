@@ -31,7 +31,7 @@
     @student = Student.find_by_id(std['id'].to_i,:include=>["student_category"])
   
     if @student.blank?
-      @student = ArchieveStudent.find_by_former_id(std['id'].to_i,:include=>["student_category"])
+      @student = ArchivedStudent.find_by_former_id(std['id'].to_i,:include=>["student_category"])
     end
     
     unless @student.blank?

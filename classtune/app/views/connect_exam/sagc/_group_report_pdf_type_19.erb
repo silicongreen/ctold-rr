@@ -230,9 +230,11 @@
                                 end
                               end
                             end
-
+                            
+                            # if full_ob.to_i == 16 && total_ob.to_i <7
+     
                             if full_ob.to_i > 0
-                              if full_ob.to_i == 16 && total_ob.to_i <7
+                              if total_ob.to_i <7
                                 if fourth_subject.blank?
                                   failed = true
                                   failed_subject = true
@@ -252,10 +254,7 @@
                                 failed_subject = true
                               end
                             end
-                            %>
-                            <%= sb_failed_subject.to_s + "-" + total_sb.to_s + " " + ob_failed_subject.to_s + "-" + full_ob.to_s + "  " + failed_subject.to_s  %> 
-                            
-                            <%
+                           
                             if ob_failed_subject == true or sb_failed_subject == true
                               failed_subject = true
                             end

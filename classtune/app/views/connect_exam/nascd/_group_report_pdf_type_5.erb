@@ -1,9 +1,14 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <%= render  :partial=>"/connect_exam/nascd/header_3" %>
    <% father = mother = Guardian.new %>
-    <% unless @student.guardians.empty? %>
+    <% if studenttypes[@student.id] %>
+       <% @guardiansdata = @student.archived_guardians %>
+    <% else %>
+      <% @guardiansdata = @student.guardians %>
+    <% end %>
+    <% unless @guardiansdata.empty? %>
       <% g_loop = 0 %>
-      <%- @student.guardians.each do |p| -%>
+      <%- @guardiansdata.each do |p| -%>
         <% if g_loop == 0 %>
           <% father = p %>
         <% end %>

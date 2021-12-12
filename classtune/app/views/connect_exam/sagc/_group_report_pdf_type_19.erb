@@ -252,7 +252,7 @@
                                 failed_subject = true
                               end
                             end
-                            
+                            <%= ob_failed_subject %> <%= sb_failed_subject %> <%= failed_subject %>
                             if ob_failed_subject == true or sb_failed_subject == true
                               failed_subject = true
                             end
@@ -267,7 +267,7 @@
                                 <% end %>
                                 <% if  failed_subject == true %>
                                   <% grade.credit_points = 0.0 %>
-                                  <% grade.name = "F1" %>
+                                  <% grade.name = "F" %>
                                 <% end %>
                                 <% if fourth_subject.blank? %>
                                     <% total_grade = total_grade.to_f+grade.credit_points.to_f %>

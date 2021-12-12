@@ -1,5 +1,4 @@
 
-SAGC
 <%
 if @total_std.blank?
       @total_std_batch = 0
@@ -153,6 +152,8 @@ if @total_std.blank?
                 ob_subject_failed = false
                 appeared = false
                 four_subject_failed = false
+                sb_four_subject_failed = false
+                ob_four_subject_failed = false
                 total_mark_subject = 0
                 full_mark_subject = 0
                 sb = 0
@@ -190,6 +191,7 @@ if @total_std.blank?
                       sb_subject_failed = true
                     else
                       four_subject_failed = true
+                      sb_four_subject_failed = true
                     end
                   end
                   if full_sb == 35 && sb <16
@@ -199,6 +201,7 @@ if @total_std.blank?
                       sb_subject_failed = true
                     else
                       four_subject_failed = true
+                      sb_four_subject_failed = true
                     end
                   end
                 end
@@ -211,6 +214,7 @@ if @total_std.blank?
                       ob_subject_failed = true
                     else
                       four_subject_failed = true
+                      ob_four_subject_failed = true
                     end
                   end
                 end
@@ -226,12 +230,12 @@ if @total_std.blank?
                 main_mark = (total_mark_subject.to_f/full_mark_subject.to_f)*100
                 main_mark = main_mark.round()
                 
-                if fourth_subject.blank? && subject_failed == false
-                  if ob_subject_failed == true or sb_subject_failed == true
-                        subject_failed = true
-                  end
+                if ob_subject_failed == true or sb_subject_failed == true
+                  subject_failed = true
                 end
-                
+                if sb_four_subject_failed == true or ob_four_subject_failed == true
+                  four_subject_failed = true
+                end
 
                 if @student_subject_marks[sub['id'].to_i].blank?
                   @student_subject_marks[sub['id'].to_i] = {}
@@ -292,7 +296,7 @@ if @total_std.blank?
 
                   grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                   if !grade.blank? && !grade.name.blank?
-                    if sb_subject_failed == true or ob_subject_failed == true or four_subject_failed == true
+                    if subject_failed == true or four_subject_failed == true
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = "F"
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = grade.name

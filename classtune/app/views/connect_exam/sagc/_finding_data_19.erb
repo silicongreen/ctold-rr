@@ -225,7 +225,11 @@ if @total_std.blank?
                 main_mark = (total_mark_subject.to_f/full_mark_subject.to_f)*100
                 main_mark = main_mark.round()
                 
-
+                if fourth_subject.blank? && subject_failed == false
+                  if ob_subject_failed == true or sb_subject_failed == true
+                        subject_failed = true
+                  end
+                end
                 
 
                 if @student_subject_marks[sub['id'].to_i].blank?

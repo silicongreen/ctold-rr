@@ -8240,7 +8240,7 @@ class ExamController < ApplicationController
     request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
     request.set_form_data({"connect_exam_id"=>connect_exam_id,"batch_id"=>batch_id,"call_from_web"=>1,"is_unsolved"=>unsolved_exam,"user_secret" =>session[:api_info][0]['user_secret']})
     response = http.request(request)
-    abort(response.body.response)
+    abort(response.body.inspect)
     @student_response = JSON::parse(response.body)
 
   end

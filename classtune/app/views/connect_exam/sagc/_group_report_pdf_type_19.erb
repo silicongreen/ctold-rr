@@ -185,18 +185,18 @@
                                       <% total_ob = total_ob+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% end %>
                                     <td class="col-pdf">
-                                     <% if @student.admission_no.to_s == '14655' %>
-                                     <%= 'AB' %>
-                                     <% else %>
+                                     <%# if @student.admission_no.to_s == '14655' %>
+                                     <%#= 'AB' %>
+                                     <%# else %>
                                      <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                     <% end %>
+                                     <%# end %>
                                    </td>
                                   <% else %>
-                                      <% if @student.admission_no.to_s == '14655' %>
-                                     <%= 'AB' %>
-                                     <% else %>
+                                      <%# if @student.admission_no.to_s == '14655' %>
+                                     <%#= 'AB' %>
+                                     <%# else %>
                                      <td class="col-pdf">-</td>
-                                     <% end %>
+                                     <%# end %>
                                   <% end %>
                               <% end %>
                             <% end %>

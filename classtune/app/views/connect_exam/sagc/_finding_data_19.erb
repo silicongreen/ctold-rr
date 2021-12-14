@@ -283,7 +283,7 @@ if @total_std.blank?
                   if @subject_result[main_sub_id].blank?
                     @subject_result[main_sub_id] = {}
                     @subject_result[main_sub_id]['id'] = main_sub_id
-                    @subject_result[main_sub_id]['name'] = sub['name'] + "  " + std['id'].to_s
+                    @subject_result[main_sub_id]['name'] = sub['name'] 
 
                   end
                   if @subject_result[main_sub_id]['total'].blank?

@@ -186,11 +186,7 @@
                                     <% end %>
                                     <td class="col-pdf">
                                      <% if @student.admission_no.to_s == '14655' %>
-                                     <% if subjects['id'].to_s == '117086' %>
-                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                     <% else %>
-                                     <%= 'AB'  %>
-                                     <% end %>
+                                     <%= 'AB' + " " + report['exam_id'].to_s  %>
                                      <% else %>
                                      <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                      <% end %>

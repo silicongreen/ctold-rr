@@ -172,7 +172,7 @@ if @total_std.blank?
                       full_ob = full_ob+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                     end 
                     if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s != "AB"
-                      if std['id'].to_i != 27768  
+                      if @id.to_i != 7039  
                         appeared = true
                         full_absent = false
                       end

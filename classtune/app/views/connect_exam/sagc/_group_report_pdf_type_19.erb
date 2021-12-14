@@ -201,9 +201,11 @@
                               <% end %>
                             <% end %>
                             <% total_all = total_ob+total_sb %>
+                            <% if @student.admission_no.to_s == '14655' %>
+                            <td class="col-pdf no-warp"><%= "AB" %></td>
+                            <% else %>
                             <td class="col-pdf no-warp"><%= total_all %></td>
-                            
-                            
+                            <% end %>
 
                             <% tota_mark_with_monthly = main_exam_mark %>
                             <% grand_total = grand_total+tota_mark_with_monthly%>

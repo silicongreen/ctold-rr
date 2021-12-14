@@ -210,7 +210,11 @@
                             <% tota_mark_with_monthly = main_exam_mark %>
                             <% grand_total = grand_total+tota_mark_with_monthly%>
                             <td class="col-pdf no-warp">
+                                 <% if @student.admission_no.to_s == '14655' %>
                                 <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
+                                <% else %>
+                                <b><%= "AB" %></b>
+                                <% end %>
                             </td>
                             <%
                               main_mark = tota_mark_with_monthly

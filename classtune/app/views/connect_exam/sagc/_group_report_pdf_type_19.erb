@@ -185,7 +185,7 @@
                                       <% total_ob = total_ob+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% end %>
                                     <td class="col-pdf">
-                                     <% if @student.admission_no.to_s == '14655' and subjects['id'].to_s != '117086' %>
+                                     <% if @student.admission_no.to_s == '14655' and ['117086','117073','95165'].exclude?(subjects['id'].to_s) %>
                                      <%= 'AB'  %>
                                      <% else %>
                                      <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>

@@ -184,9 +184,19 @@
                                     <% if report['exam_category'] == '4' %>
                                       <% total_ob = total_ob+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% end %>
-                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
+                                    <td class="col-pdf">
+                                     <% if @student.admission_no.to_s == '14655' %>
+                                     <%= 'AB' %>
+                                     <% else %>
+                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                     <% end %>
+                                   </td>
                                   <% else %>
-                                      <td class="col-pdf">-</td>
+                                      <% if @student.admission_no.to_s == '14655' %>
+                                     <%= 'AB' %>
+                                     <% else %>
+                                     <td class="col-pdf">-</td>
+                                     <% end %>
                                   <% end %>
                               <% end %>
                             <% end %>

@@ -266,8 +266,13 @@ if @total_std.blank?
                 if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
 
                   if appeared
-                    @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = sb
-                    @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = ob
+                    if sb.to_i == 0 and ob.to_i == 0
+                        @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = "AB"
+                        @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = "AB"
+                    else
+                          @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = sb
+                          @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = ob
+                    end
                   else
                     @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = "AB"
                     @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = "AB"

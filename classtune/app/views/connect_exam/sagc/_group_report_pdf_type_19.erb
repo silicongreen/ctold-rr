@@ -192,11 +192,11 @@
                                      <%# end %>
                                    </td>
                                   <% else %>
-                                      <%# if @student.admission_no.to_s == '14655' %>
-                                     <%#= 'AB' %>
-                                     <%# else %>
+                                      <% if @student.admission_no.to_s == '14655' %>
+                                     <%= 'AB' %>
+                                     <% else %>
                                      <td class="col-pdf">-</td>
-                                     <%# end %>
+                                     <% end %>
                                   <% end %>
                               <% end %>
                             <% end %>

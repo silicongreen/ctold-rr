@@ -375,7 +375,7 @@
                         <% colspan = colspan+3 %>
                       <% end %>
                       <td class="col-pdf align-left-baf" colspan="<%= colspan %>"><b>Total Marks & Total GP</b></td>
-                      <td class="col-pdf no-warp align-left-baf" colspan="3">&nbsp;&nbsp;&nbsp;<% if has_ob == true %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<% end %><b><%= grand_total %></b></td>
+                      <td class="col-pdf no-warp align-left-baf" colspan="3">&nbsp;&nbsp;&nbsp;<% if has_ob == false %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<% end %><b><%= grand_total %></b></td>
                       <td class="col-pdf"><b><%= total_grade %></b></td>
                   </tr> 
 

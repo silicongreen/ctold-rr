@@ -236,11 +236,13 @@
                                   <% end %>
                               <% end %>
                             <% end %>
-                            <% total_all = total_ob+total_sb %>
-                            <% if @student.admission_no.to_s == '14655' %>
-                            <td class="col-pdf no-warp"><%= "AB" %></td>
-                            <% else %>
-                            <td class="col-pdf no-warp"><%= total_all %></td>
+                            <% if has_ob == true %>
+                              <% total_all = total_ob+total_sb %>
+                              <% if @student.admission_no.to_s == '14655' %>
+                              <td class="col-pdf no-warp"><%= "AB" %></td>
+                              <% else %>
+                              <td class="col-pdf no-warp"><%= total_all %></td>
+                              <% end %>
                             <% end %>
 
                             <% tota_mark_with_monthly = main_exam_mark %>
@@ -346,7 +348,7 @@
                                    <% total_grade = total_grade.to_f+new_grade_point.to_f %>
                                   <% end %>  
                                 <% end %>
-                                <td class="col-pdf"><%= grade.name %></td>
+                                <td class="col-pdf"><% if has_ob == false %><%= main_mark %>|<%= full_sb %>|<%= full_ob %><% end %><%= grade.name %></td>
                                 <td class="col-pdf"><%= grade.credit_points %></td>
                               <% else %>
                                 <td class="col-pdf">-</td>

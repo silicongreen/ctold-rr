@@ -67,22 +67,22 @@
                  
                   <% if has_ob == false %>
                     <tr class="even header-shade">
-                        <td class="col-pdf" rowspan="2">
+                        <td class="col-pdf">
                             <b>Sl.</b>
                         </td>
-                        <td class="col-pdf no-warp  align-left-baf" rowspan="2"><b><%= "Subjects" %></b></td>
-                        <td class="col-pdf" rowspan="2">
+                        <td class="col-pdf no-warp  align-left-baf" ><b><%= "Subjects" %></b></td>
+                        <td class="col-pdf">
                           <b>Full Marks</b>
                         </td>
                         <% @report_data['report']['exams'].each do |report| %>
-                              <td class="col-pdf" rowspan="2">
+                              <td class="col-pdf">
                                 <b><%= report['exam_name'] %></b>
                               </td>
                         <% end %>
-                        <td class="col-pdf" rowspan="2"><b>Total Marks</b></td>
-                        <td class="col-pdf" rowspan="2"><b>Highest Marks</b></td>
-                        <td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
-                        <td class="col-pdf" rowspan="2"><b>Grade Point</b></td>
+                        <td class="col-pdf"><b>Total Marks</b></td>
+                        <td class="col-pdf"><b>Highest Marks</b></td>
+                        <td class="col-pdf"><b>Letter Grade</b></td>
+                        <td class="col-pdf"><b>Grade Point</b></td>
                         
                     </tr>
 

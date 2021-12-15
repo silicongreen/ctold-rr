@@ -51,7 +51,43 @@
               <table id="pdf-table" class="top-left-center" width="80%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
+                  <% colspan = 0 %>
+                  <% full_marks_sb = 0 %>
                  
+                  <% @report_data['report']['exams'].each do |report| %>
+                      <% if report['exam_category'] == '3' %>
+                        <% has_sb = true %>
+                        <% colspan = colspan+1 %>
+                      <% end %>
+                      <% if report['exam_category'] == '4' %>
+                        <% has_ob = true %>
+                        <% colspan = colspan+1 %> 
+                      <% end %>
+                  <% end %>
+                 
+                  <% if has_ob == false %>
+                    <tr class="even header-shade">
+                        <td class="col-pdf" rowspan="2">
+                            <b>Sl.</b>
+                        </td>
+                        <td class="col-pdf no-warp  align-left-baf" rowspan="2"><b><%= "Subjects" %></b></td>
+                        <td class="col-pdf" rowspan="2">
+                          <b>Full Marks</b>
+                        </td>
+                        <% @report_data['report']['exams'].each do |report| %>
+                              <td class="col-pdf" rowspan="2">
+                                <b><%= report['exam_name'] %></b>
+                              </td>
+                        <% end %>
+                        <td class="col-pdf" rowspan="2"><b>Total Marks</b></td>
+                        <td class="col-pdf" rowspan="2"><b>Highest Marks</b></td>
+                        <td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
+                        <td class="col-pdf" rowspan="2"><b>Grade Point</b></td>
+                        
+                    </tr>
+
+
+                  <% else %>
                   <tr class="even header-shade">
                       <td class="col-pdf" rowspan="2">
                           <b>Sl.</b>
@@ -65,17 +101,6 @@
                             <td class="col-pdf" rowspan="2">
                               <b><%= report['exam_name'] %></b>
                             </td>
-                          <% end %>
-                      <% end %>
-                      <% colspan = 0 %>
-                      <% @report_data['report']['exams'].each do |report| %>
-                          <% if report['exam_category'] == '3' %>
-                            <% has_sb = true %>
-                            <% colspan = colspan+1 %> 
-                          <% end %>
-                          <% if report['exam_category'] == '4' %>
-                            <% has_ob = true %>
-                            <% colspan = colspan+1 %> 
                           <% end %>
                       <% end %>
                       <% colspan = colspan+1 %> 
@@ -95,6 +120,7 @@
                       <% end %> 
                       <td rowspan="1"><b>Total</b></td>
                   </tr>
+                  <% end %>
 
                   <% total_grade = 0 %>
                   <% total_subject = 0 %>
@@ -171,7 +197,17 @@
                           <% divider = 3 %>
                           <% full_mark = 100 %>
                           <% if full_mark.to_f > 0 %>
-                             <td class="col-pdf">100</td>
+                             <% if has_ob == false %>
+                                <% unless @report_data['report']['exams'].blank? %>
+                                  <% @report_data['report']['exams'].each do |report| %>
+                                    <td class="col-pdf"><%= @exam_marks[report['exam_id'].to_s] %></td>
+                                    <% full_mark = @exam_marks[report['exam_id'].to_s].to_i %>
+                                    <% break %>
+                                  <% end %>
+                                <% end %> 
+                             <% else %>
+                              <td class="col-pdf">100</td>
+                             <% end %>
                             
                             <% main_exam_mark = 0 %>
                             <% unless @report_data['report']['exams'].blank? %>  
@@ -217,7 +253,12 @@
                                 <% end %>
                             </td>
                             <%
-                              main_mark = tota_mark_with_monthly
+                              if full_mark == 100 
+                                main_mark = tota_mark_with_monthly
+                              else 
+                                main_mark = (tota_mark_with_monthly.to_f/full_mark.to_f)*100
+                                main_mark = main_mark.round()
+                              end 
                             %>
                             
                             <td class="col-pdf no-warp">
@@ -236,6 +277,16 @@
                                 end
                               end
                               if full_sb.to_i == 35 && total_sb.to_i <16
+                                if fourth_subject.blank?
+                                  failed = true
+                                  failed_subject = true
+                                  sb_failed_subject = true
+                                else
+                                  failed_subject = true
+                                  sb_failed_subject = true
+                                end
+                              end
+                              if full_sb.to_i == 25 && total_sb.to_i <11
                                 if fourth_subject.blank?
                                   failed = true
                                   failed_subject = true

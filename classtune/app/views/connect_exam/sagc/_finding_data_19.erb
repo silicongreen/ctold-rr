@@ -206,10 +206,20 @@ if @total_std.blank?
                       sb_four_subject_failed = true
                     end
                   end
+                  if full_sb == 25 && sb <11
+                    if fourth_subject.blank?
+                      u_grade = u_grade+1
+                      subject_failed = true
+                      sb_subject_failed = true
+                    else
+                      four_subject_failed = true
+                      sb_four_subject_failed = true
+                    end
+                  end
                 end
 
                 if full_ob > 0
-                  if full_ob == 16 && ob <7
+                  if ob <7
                     if fourth_subject.blank?
                       u_grade = u_grade+1
                       subject_failed = true

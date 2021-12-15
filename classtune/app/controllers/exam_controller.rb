@@ -8469,6 +8469,14 @@ class ExamController < ApplicationController
                       four_subject_failed = true
                     end
                   end
+                  if full_sb == 25 && sb <11
+                    if fourth_subject.blank?
+                      u_grade = u_grade+1
+                      subject_failed = true
+                    else
+                      four_subject_failed = true
+                    end
+                  end
                 end
                 
                 #full_ob == 16 && 

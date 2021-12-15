@@ -8491,7 +8491,10 @@ class ExamController < ApplicationController
                   end
                 end
 
-                if total_mark_subject < 45
+                main_mark = (total_mark_subject.to_f/full_mark_subject.to_f)*100
+                main_mark = main_mark.round()
+
+                if main_mark < 45
                   if fourth_subject.blank?
                     u_grade = u_grade+1
                     subject_failed = true
@@ -8499,8 +8502,7 @@ class ExamController < ApplicationController
                     four_subject_failed = true
                   end
                 end
-                main_mark = (total_mark_subject.to_f/full_mark_subject.to_f)*100
-                main_mark = main_mark.round()
+                
                 
 
                 

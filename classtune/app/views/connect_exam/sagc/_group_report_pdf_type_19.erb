@@ -314,8 +314,8 @@
                                 end
                               end
                             end
-
-                            if main_exam_mark.to_i < 45
+                            
+                            if main_mark.to_i < 45
                               if fourth_subject.blank?
                                 failed = true
                                 failed_subject = true
@@ -348,7 +348,7 @@
                                    <% total_grade = total_grade.to_f+new_grade_point.to_f %>
                                   <% end %>  
                                 <% end %>
-                                <td class="col-pdf"><% if has_ob == false %><%= main_mark %>|<%= full_sb %>|<%= full_ob %><% end %><%= grade.name %></td>
+                                <td class="col-pdf"><%= grade.name %></td>
                                 <td class="col-pdf"><%= grade.credit_points %></td>
                               <% else %>
                                 <td class="col-pdf">-</td>
@@ -369,7 +369,11 @@
                       <% end %>  
                   <% end %>  
                   <tr class="even">
-                      <% colspan = colspan+5 %>
+                      <% if has_ob == true %>
+                        <% colspan = colspan+5 %>
+                      <% else %>
+                        <% colspan = colspan+3 %>
+                      <% end %>
                       <td class="col-pdf align-left-baf" colspan="<%= colspan %>"><b>Total Marks & Total GP</b></td>
                       <td class="col-pdf no-warp align-left-baf" colspan="3">&nbsp;&nbsp;&nbsp;<b><%= grand_total %></b></td>
                       <td class="col-pdf"><b><%= total_grade %></b></td>

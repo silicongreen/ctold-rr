@@ -81,7 +81,7 @@
                       &nbsp; &nbsp;<%= link_to "Excell Report", {:controller => "exam", :action => "tabulation_excell_sems",:id=>p.exam_connect_id},:target => '_blank' %>
                      <% end %>
                      <% if MultiSchool.current_school.code == "nascd" %>
-                      &nbsp; &nbsp;<%= link_to "Tabulation", {:controller => "exam", :action => "tabulation",:id=>p.exam_connect_id},:target => '_blank' %>
+                      &nbsp; &nbsp;<%= link_to "Tabulation", {:controller => "exam", :action => "tabulation",:id=>p.exam_connect_id,:unsolved_exam=>1},:target => '_blank' %>
                      <% end %>
                   <% if MultiSchool.current_school.id == 348 && p.exam_connect.result_type.to_i > 8 && p.exam_connect.result_type.to_i != 11 %>
                      &nbsp; &nbsp;<%= link_to "Transcript", {:controller => "exam", :action => "continues", :student=>p.student_id, :transscript=>1,:id=>p.exam_connect_id,:unsolved_exam=>1},:target => '_blank' %>

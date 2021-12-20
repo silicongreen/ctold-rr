@@ -49,7 +49,7 @@
           <td class="name">Roll NO.</td>
           <td class="name">Name</td>
           <% @report_data['result']['ALL'].each do |rs| %>
-            <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
+            <td class="break-text"><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
             
             <% colspan = colspan+1 %>
           <% end %>  
@@ -71,13 +71,13 @@
 
           <%  std_count = std_count+1; %>
           <% colspan = colspan+4 %>
-          <% if std_count>16 && extender ==0 %>
+          <% if std_count>15 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               </table>
               <div class="page-break-main"></div>
               <table id="pdf-table" width="100%" cellspacing="0">  
-          <% elsif std_count>20 && extender ==1 %>
+          <% elsif std_count>19 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               </table>
@@ -154,6 +154,10 @@
 }
 #page-yield
 {
-  width: 1400px !important;
+  width: 1800px !important;
+}
+.break-text
+{
+   white-space: normal !important;
 }
  </style> 

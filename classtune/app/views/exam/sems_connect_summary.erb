@@ -1,0 +1,123 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="page-yield" class="available_sections1 baf_shaheen">
+    <div class="page1"> </div>
+    <div class="section1 row" >
+        <center>
+           
+            <h3 align="center">Summary Report</h3>
+            <h3 align="center"><%= @exam_group.name %></h3>
+            
+            <table id="pdf-table" width="100%" cellspacing="0">
+              <tr class="table-header">
+                      <td class="col-pdf">Class : <%= @batch.course.course_name %></td>
+                      <% if params[:class].blank? %><td class="col-pdf">Section : <%= @batch.course.section_name %></td><% end %>
+              </tr>
+             
+            </table>
+            
+              <h3 align="center">Summary</h3>
+              
+              <table id="pdf-table" width="60%" align="center" cellspacing="0">
+                      <tr class="table-header">
+                        <td class="col-pdf right-align">Total No. of Students </td><td><%= @total_students %> </td>
+                      </tr>
+                  </tr> 
+              </table>  
+              <h3 align="center">Passed/ Failed</h3>
+              <table id="pdf-table" width="60%" align="center" cellspacing="0">
+                      <tr class="table-header">
+                        <td class="col-pdf right-align" >No. of Passed Students </td><td><%= @total_students-@failed_student %> </td>
+                      </tr>
+                      <tr class="table-header">
+                        <td class="col-pdf right-align" >No. of Failed with Partial Absentee Students </td><td><%= @failed_student %> </td>
+                      </tr>
+                      <tr class="table-header border-top">
+                        <td class="col-pdf right-align" ></td><td><%= @total_students %> </td>
+                      </tr>
+                  </tr> 
+              </table>  
+              
+              <% if @grading_levels.blank? %>
+                <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+                <% if @grading_levels.blank? %>
+                  <% @grading_levels = GradingLevel.default %>
+                <% end %>
+              <% end %>
+              <% if !@summary_result.blank? %>
+              
+                <h3 align="center">Passed Student(s)</h3>
+                <table id="pdf-table" width="60%" align="center" cellspacing="0">
+                        <% total_got = 0 %>
+                        <% @grading_levels.each do |grade| %>
+                          <% if grade.name != "U" %>
+                            <% unless @summary_result[grade.name].blank?  %>
+                              <tr class="table-header">
+                                <td class="col-pdf right-align" >No. of Student(s) got <%= grade.name %> </td><td><%= @summary_result[grade.name] %> <% total_got = total_got+@summary_result[grade.name].to_i %> </td>
+                              </tr>
+                            <% end %>
+                          <% end %>
+                        <% end %>
+                        <tr class="table-header border-top">
+                          <td class="col-pdf" ></td><td><%= total_got %> </td>
+                        </tr>
+                    </tr> 
+                </table>     
+              <% end %>
+
+              <% if !@subject_result.blank? %>
+              
+              <h3 align="center">Subject Wise Reports</h3>
+              
+              
+              <table id="pdf-table" width="60%" align="center" cellspacing="0">
+                    <tr class="table-header">
+                      <td class="col-pdf" >Subject Name</td>
+                      <% @grading_levels.each do |grade| %>
+                        <td class="col-pdf" ><%= grade.name %></td>
+                      <% end %>
+                    </tr>
+                    <% @subject_result.each do |key,value| %>
+                    <tr class="table-header">
+                      <td class="col-pdf" ><%= key.gsub '-',' ' %></td>
+                      <% @grading_levels.each do |grade| %>
+                        <% unless value[grade.name].blank? %>
+                        <td class="col-pdf" ><%= value[grade.name] %></td>
+                        <% else %>
+                        <td class="col-pdf" >0</td>
+                        <% end %>
+                      <% end %>
+
+                    </tr>  
+                    <% end %>
+                      
+                  </tr> 
+              </table>     
+              <% end %>
+        </center>
+    </div>
+</div>
+
+<style>
+    .baf_shaheen table#pdf-table tr.table-header td.name-left
+    {
+        text-align: left !important;
+    }
+</style>    

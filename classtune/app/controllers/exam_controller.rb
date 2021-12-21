@@ -14570,138 +14570,137 @@ class ExamController < ApplicationController
       @student_avg_mark = {}
       @subjects = []
       subject_code = []
-        unless @tabulation_data.blank?
-          connect_exam = 0
-          batch_loop = 0
-          @tabulation_data['report'].each do |tab|
-            if tab.kind_of?(Array) or tab.blank? or tab['students'].blank?
-              next
-            end
-            batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
-            batch_subject_id = batch_subject.map(&:id)
-            batch_loop = batch_loop+1
-            connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
-            connect_exam = connect_exam+1
-            if connect_exam_id.to_i != @connect_exam_obj.id and @class.blank?
-              next
-            end  
+      unless @tabulation_data.blank?
+        connect_exam = 0
+        batch_loop = 0
+        @tabulation_data['report'].each do |tab|
+          if tab.kind_of?(Array) or tab.blank? or tab['students'].blank?
+            next
+          end
+          batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
+          batch_subject_id = batch_subject.map(&:id)
+          batch_loop = batch_loop+1
+          connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
+          connect_exam = connect_exam+1
+          if connect_exam_id.to_i != @connect_exam_obj.id and @class.blank?
+            next
+          end  
+          
+          tab['students'].each do |std| 
+            subject_count_std = 0
+            total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
+            std_subject_id = total_std_subject.map(&:subject_id)
             
-            tab['students'].each do |std| 
-              subject_count_std = 0
-              total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
-              std_subject_id = total_std_subject.map(&:subject_id)
-              
-              std_marks_full = 0
-              std_marks_core_subject = 0
-              total_subject = 0
-              u_grade = 0
-              number_of_subject = 0
-              total_credit = 0
-              tab['subjects'].each do |sub|
+            std_marks_full = 0
+            std_marks_core_subject = 0
+            total_subject = 0
+            u_grade = 0
+            number_of_subject = 0
+            total_credit = 0
+            tab['subjects'].each do |sub|
 
-                unless subject_code.include?(sub['code'])
-                  subject_code << sub['code']
-                  @subjects << sub
+              unless subject_code.include?(sub['code'])
+                subject_code << sub['code']
+                @subjects << sub
+              end  
+            
+              has_exam = false
+              loop = 0
+              tab['exams'].each do |rs|
+                loop = loop+1  
+                if loop>2
+                  break
+                end
+                if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                  has_exam = true
+                  break
                 end  
-              
-                has_exam = false
-                loop = 0
-                tab['exams'].each do |rs|
-                  loop = loop+1  
-                  if loop>2
-                    break
-                  end
-                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
-                    has_exam = true
-                    break
-                  end  
-                end 
-                if has_exam == false
-                  next
-                end  
-                if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
-                  
-                  subject_count_std = subject_count_std+1
-                  std_subject_marks_final = 0
-                  i = 0
-                  tab['exams'].each do |rs|
-                    if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-                      i = i+1
-                      if i<3
-                        if i > 1
-                          rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f*2
-                        end  
-                        std_subject_marks_final = std_subject_marks_final+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                      else
-                        break
-                      end  
-                    end    
-                  end
-
-
-                  std_subject_marks_mid = 0
-                  i = 0
-                  tab['exams'].each do |rs|
-                    if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-                      i = i+1
-                      if i>2
-                        std_subject_marks_mid = std_subject_marks_mid+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                      end
-                    end    
-                  end
-
-                  #unless @final_term_student_list.include?(std['id'].to_i)
-                    subject_full_marks = ((std_subject_marks_final.to_f*70)/100)+((std_subject_marks_mid.to_f*30)/100)
-                  #else
-                    #subject_full_marks = std_subject_marks_final.to_f
-                  #end
-
-                  std_marks_full = std_marks_full+subject_full_marks.round()
-                  
-                  if @student_subject_marks[sub['id'].to_i].blank?
-                    @student_subject_marks[sub['id'].to_i] = {}
-                  end
-                  
-                  @student_subject_marks[sub['id'].to_i][std['id'].to_i] = subject_full_marks
-
-                  number_of_subject = number_of_subject+1
-                
-                  subject_grade = ""
-                  grade = GradingLevel.percentage_to_grade(subject_full_marks, @batch.id)
-                  if !grade.blank? and !grade.name.blank?
-                    sub['name']! ' ', '-'
-                    if @subject_result[sub['name']].blank?
-                      @subject_result[sub['name']] = {}
-                    end  
-                    if @subject_result[sub['name']][grade.name].blank?
-                      @subject_result[sub['name']][grade.name] = 0
-                    end 
-                    total_credit = total_credit+grade.credit_points.to_f
-                    @subject_result[sub['name']][grade.name] = @subject_result[sub['name']][grade.name]+1 
-                    if grade.name == "U"
-                      u_grade = u_grade+1
-                    end
-                  end   
-                end  
-              end
-              
-              #students
-              @total_students = @total_students+1
-
-              @grade_name_main = "U"
-              if u_grade == 0 && total_credit > 0
-                grade_point_avg = total_credit.to_f/number_of_subject.to_f
-                gradeObj = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
-                if !gradeObj.blank? and !gradeObj.name.blank?
-                  if @summary_result[gradeObj.name].blank?
-                    @summary_result[gradeObj.name] = 0
-                  end 
-                  @summary_result[gradeObj.name] = @summary_result[gradeObj.name]+1 
-                end  
-              else
-                @failed_student = @failed_student+1
               end 
+              if has_exam == false
+                next
+              end  
+              if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
+                
+                subject_count_std = subject_count_std+1
+                std_subject_marks_final = 0
+                i = 0
+                tab['exams'].each do |rs|
+                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                    i = i+1
+                    if i<3
+                      if i > 1
+                        rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f*2
+                      end  
+                      std_subject_marks_final = std_subject_marks_final+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    else
+                      break
+                    end  
+                  end    
+                end
+
+
+                std_subject_marks_mid = 0
+                i = 0
+                tab['exams'].each do |rs|
+                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                    i = i+1
+                    if i>2
+                      std_subject_marks_mid = std_subject_marks_mid+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    end
+                  end    
+                end
+
+                #unless @final_term_student_list.include?(std['id'].to_i)
+                  subject_full_marks = ((std_subject_marks_final.to_f*70)/100)+((std_subject_marks_mid.to_f*30)/100)
+                #else
+                  #subject_full_marks = std_subject_marks_final.to_f
+                #end
+
+                std_marks_full = std_marks_full+subject_full_marks.round()
+                
+                if @student_subject_marks[sub['id'].to_i].blank?
+                  @student_subject_marks[sub['id'].to_i] = {}
+                end
+                
+                @student_subject_marks[sub['id'].to_i][std['id'].to_i] = subject_full_marks
+
+                number_of_subject = number_of_subject+1
+              
+                subject_grade = ""
+                grade = GradingLevel.percentage_to_grade(subject_full_marks, @batch.id)
+                if !grade.blank? and !grade.name.blank?
+                  sub['name']! ' ', '-'
+                  if @subject_result[sub['name']].blank?
+                    @subject_result[sub['name']] = {}
+                  end  
+                  if @subject_result[sub['name']][grade.name].blank?
+                    @subject_result[sub['name']][grade.name] = 0
+                  end 
+                  total_credit = total_credit+grade.credit_points.to_f
+                  @subject_result[sub['name']][grade.name] = @subject_result[sub['name']][grade.name]+1 
+                  if grade.name == "U"
+                    u_grade = u_grade+1
+                  end
+                end   
+              end  
             end
+            
+            #students
+            @total_students = @total_students+1
+
+            @grade_name_main = "U"
+            if u_grade == 0 && total_credit > 0
+              grade_point_avg = total_credit.to_f/number_of_subject.to_f
+              gradeObj = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
+              if !gradeObj.blank? and !gradeObj.name.blank?
+                if @summary_result[gradeObj.name].blank?
+                  @summary_result[gradeObj.name] = 0
+                end 
+                @summary_result[gradeObj.name] = @summary_result[gradeObj.name]+1 
+              end  
+            else
+              @failed_student = @failed_student+1
+            end 
           end
         end
       end

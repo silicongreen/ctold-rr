@@ -14,7 +14,7 @@
   <% if @batch.full_name.index("Dhanmondi") %>
     <% @section_in_charge = "rowshan-islam"  %>
   <% end %>
- <% if (@batch.full_name.index("Mohammadpur") || @batch.full_name.index("Morning (January-December)")) && ( @batch.course_name == "VI" or @batch.course_name == "VII" or @batch.course_name == "VIII" or @batch.course_name == "IX"  or @batch.course_name == "X"  or @batch.course_name == "A Level" or @batch.course_name == "AS January 2019" or @batch.course_name == "AS July 2019") %>
+ <% if (@batch.full_name.index("Mohammadpur") || @batch.full_name.index("Morning (January-December)")) && ( @batch.course_name == "VI" or @batch.course_name == "VII" or @batch.course_name == "VIII" or @batch.course_name == "IX"  or @batch.course_name == "X"  or @batch.course_name == "A Level" or @batch.course_name == "AS January 2019" or @batch.course_name == "AS July 2019" or @batch.course_name == "AS July") %>
     <% @section_in_charge = "mercy-sanabam"  %>
  <% end %>
 <% @covid_main = 0 %>

@@ -97,8 +97,10 @@ c<% unless @report_data.blank?  or  @report_data['report'].blank? %>
                                 <td><b>Class Test 1 <br/>(Out of 25)</b></td>
                                 <td><b>Class Test 2 <br/>(Out of 25)</b></td>
                               <% elsif number_of_exam == 7 %>
-                                <%= report['exam_name'] %><br/>
-                                (Out of <% unless @exam_marks[report['exam_id'].to_s].blank?  %><%= @exam_marks[report['exam_id'].to_s] %><% end %>)  
+                                <td><b>
+                              <%= report['exam_name'] %><br/>
+                              (Out of <% unless @exam_marks[report['exam_id'].to_s].blank?  %><%= @exam_marks[report['exam_id'].to_s] %><% end %>)
+                              </b></td>
                               <% end %>
                           <% else %>
                             <% if total_exam > 3 &&  number_of_exam == 2 %>

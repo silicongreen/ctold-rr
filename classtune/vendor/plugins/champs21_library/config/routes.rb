@@ -19,6 +19,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :books,:collection => {:add_additional_details => [:get,:post,:put],
     :edit_additional_details => [:get,:post,:put],
     :additional_data => [:get,:post],
+    :download_books => [:get,:post],
     :edit_additional_data => [:get,:post,:put],
     :library_transactions=>[:get,:post],
     :book_call_numbers => [:get,:post],

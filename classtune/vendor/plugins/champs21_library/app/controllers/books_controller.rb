@@ -35,7 +35,7 @@ class BooksController < ApplicationController
     csv_string=FasterCSV.generate do |csv|
       cols=["#{t('call_number')}","#{t('book_number')}","#{t('title')}","Source","Price","Type","#{t('status') }"]
       csv << cols
-      book.each_with_index do |book,i|
+      books.each_with_index do |book,i|
         col=[]
         col<< "#{book.book_call_number.call_number}"
         col<< "#{book.book_number}"

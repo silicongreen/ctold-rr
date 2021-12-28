@@ -451,7 +451,6 @@ class GroupedExams extends CActiveRecord
                     
                 } 
                 
-                print_r($subject_comments_no_exam);
                 if($subject_no_exam)
                 {
                     foreach($batch_student as $student)

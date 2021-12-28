@@ -128,7 +128,9 @@
       <%= will_paginate @books %>
 
     </div>
-    <div class="submit-button">
+    <div class="submit-button" style="loat: right;
+    clear: both;
+    margin-top: 15px;">
       <%= link_to "#{t('export_as_csv')}" ,{:action=>'download_books'} %>
     </div>
   <% else %>

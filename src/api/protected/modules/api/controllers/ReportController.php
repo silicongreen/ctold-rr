@@ -261,6 +261,8 @@ class ReportController extends Controller
 //        if ($connect_exam_id && Yii::app()->user->user_secret === $user_secret &&  (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin ))
 //        {
 //
+
+
 //            $groupexam = new GroupedExams();
 //            $exam_report = $groupexam->getContinuesResultTest($batch_id,$connect_exam_id);
 //            //$attandence = new Attendances();

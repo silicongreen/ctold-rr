@@ -1,15 +1,20 @@
 <%
   present = 0
   comments = ""
+  working_days = @connect_exam_obj.total_working_days
   @main_comments = 
   if !@exam_comment.blank?
     all_comments = @exam_comment.comments
     if !all_comments.blank?
       all_comments_array = all_comments.split("|")
+      if !all_comments_array[2].nil?
+        present = all_comments_array[1].to_i
+        working_days = all_comments_array[2].to_i
+        comments = all_comments_array[0]
       if !all_comments_array[1].nil?
         present = all_comments_array[1].to_i
         comments = all_comments_array[0]
-        else
+      else
         comments = all_comments_array[0]
       end
     end
@@ -71,10 +76,10 @@
                           <td colspan="1" class="col-pdf"><b>&nbsp;</b></td>
                           <td colspan="2" class="col-pdf"><b>Attendance</b></td>
                          </tr>
-                         <% if @connect_exam_obj.total_working_days > 0 %>
+                         <% if working_days > 0 %>
                          <tr class="odd">
                                 <td class="col-pdf">Total Working day</td>
-                                <td class="col-pdf"><%= @connect_exam_obj.total_working_days %></td>
+                                <td class="col-pdf"><%= working_days %></td>
                          </tr>
                          <tr class="odd">
                                 <td class="col-pdf">Days Present</td>
@@ -82,7 +87,7 @@
                          </tr>
                          <tr class="odd">
                                 <td class="col-pdf">Days Absent</td>
-                                <td class="col-pdf"><%= @connect_exam_obj.total_working_days.to_i-present.to_i %></td>
+                                <td class="col-pdf"><%= working_days.to_i-present.to_i %></td>
                                 
                             
                          </tr>

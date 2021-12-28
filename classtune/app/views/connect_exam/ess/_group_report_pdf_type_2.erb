@@ -262,13 +262,14 @@
                 <table id="pdf-table"  width="100%" style="margin-top: 13px;" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
                         <td class="align-left" >Total No. of Working Days:</td>
-                        <td  style="padding:5px !important;width: 10%;" ><%= @report_data['total'] %></td>
+                        <td  style="padding:5px !important;width: 10%;" ><%= @connect_exam_obj.total_working_days %></td>
                         <td class="align-left" >Attendance:</td>
                         <td  style="padding:5px !important; width: 10%;"><%= @report_data['present'] %></td>
                     </tr>
 
 
                 </table>
+                <% @connect_exam_obj.name.index("First").blank? %>
                 <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:13px !important;"  cellspacing="0" >
                     <tr class="even">
                         
@@ -276,12 +277,14 @@
                           <td class="align-left">To Repeat Class:</td>
                           <td  style="padding:5px !important;" width="30%">Class <%= @batch.course.course_name %></td>
                         <% else %>
+                          
                           <td class="align-left">Promoted to/ To Repeat Class:</td>
                           <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
                         <% end %>
                     </tr>
 
                 </table>
+                <% end %>
                 
                 <%  
                   date_string = @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d%m%Y")

@@ -128,6 +128,9 @@
       <%= will_paginate @books %>
 
     </div>
+    <div class="submit-button">
+      <%= link_to "#{t('export_as_csv')}" ,{:action=>'download_books'} %>
+    </div>
   <% else %>
     <p class="flash-msg"> <%= t('no_books') %></p>
   <% end %>

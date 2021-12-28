@@ -43,6 +43,7 @@ authorization do
       :to => [
       :book_call_numbers,
       :add_call_numbers,
+      :download_books,
       :upload_book,
       :upload_call_numbers,
       :create_call_number,

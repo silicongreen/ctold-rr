@@ -29,6 +29,27 @@ class BooksController < ApplicationController
       @books = Book.paginate(:page => params[:page],:include=>:tags)
     end
   end
+
+  def download_books
+    books= Book.all(:include=>:tags)
+    csv_string=FasterCSV.generate do |csv|
+      cols=["#{t('call_number')}","#{t('book_number')}","#{t('title')}","Source","Price","Type","#{t('status') }"]
+      csv << cols
+      book.each_with_index do |book,i|
+        col=[]
+        col<< "#{book.book_call_number.call_number}"
+        col<< "#{book.book_number}"
+        col<< "#{book.title}"
+        col<< "#{book.source}"
+        col<< "#{book.price}"
+        col<< "#{book.book_type}"
+        col<< "#{book.status.downcase}"
+        csv<< col
+      end
+    end
+    filename = "#{t('library_text')}#{t('All-Books')}- #{Time.now.to_date.to_s}.csv"
+    send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+  end
   
   def book_call_numbers
     @book_call_numbers = BookCallNumber.paginate(:page => params[:page])

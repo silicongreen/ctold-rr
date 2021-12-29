@@ -255,6 +255,7 @@
                     </tr>
 
                 </table>
+                <% if @connect_exam_obj.name.index("First").blank? %>
                 <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:20px !important;"  cellspacing="0" >
                     <tr class="even">
                         <td class="align-left"  style="background-color:#e3f2fd">Promoted to/ To Repeat Class:</td>
@@ -263,6 +264,7 @@
                     </tr>
 
                 </table>
+                <% end %>
                 <%  
                   date_string = @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d%m%Y")
                   unless date_string.blank? 

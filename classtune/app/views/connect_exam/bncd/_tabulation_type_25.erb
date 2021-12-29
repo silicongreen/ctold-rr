@@ -167,10 +167,11 @@ end
             <% unless @report_data.blank? %>
               <% c = 'even' %>
               <table id="pdf-table" width="100%" cellspacing="0">
+                      
                   <tr class="table-header">
-                      <td class="col-pdf" rowspan="3">SL</td>
-                      <td class="col-pdf" rowspan="3">Roll</td>
-                      <td class="col-pdf" rowspan="3">Students Name</td>
+                      <td class="col-pdf" rowspan="2">SL</td>
+                      <td class="col-pdf" rowspan="2">Roll</td>
+                      <td class="col-pdf" rowspan="2">Students Name</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -179,18 +180,13 @@ end
                       
                         <% if has_exam == true %>
                           <% colspan = 0 %>
-                          <% @report_data['report']['exams'].each do |rs| %>
-                            <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
-                              <% colspan = colspan+1 %>
-                            <% end %>
-                          <% end %>
                           <% colspan = colspan+2 %>
                           <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
-                      <td class="col-pdf" rowspan="3">G. Total</td>
-                       <td class="col-pdf" rowspan="3">Total GP</td>
-                      <td class="col-pdf" rowspan="3">GPA</td>
+                      <td class="col-pdf" rowspan="2">G. Total</td>
+                       <td class="col-pdf" rowspan="2">Total GP</td>
+                      <td class="col-pdf" rowspan="2">GPA</td>
                      
 
                   </tr>
@@ -204,41 +200,16 @@ end
                         <% end %>
                        
                         <% if has_exam == true %>
-                          <% @report_data['report']['exams'].each do |rs| %>
-                            <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
-                             <td><%= rs['exam_name'] %></td>
-                            <% end %>
-                          <% end %>
-                          <td rowspan="2"><%= "TTL" %></td>
-                          <td rowspan="2"><%= "GP" %></td>
+                          <td ><%= "TTL" %></td>
+                          <td ><%= "GP" %></td>
                         <% end %>
                       <% end %>
                       
 
                   </tr>
-                   <tr class="table-header">
-                      
-                      <% @report_data['report']['subjects'].each do |sub| %>
-                        <% has_exam = false %>
-                        <% if @all_subject_id.include?(sub['id'].to_i) %>
-                          <% has_exam = true %>
-                        <% end %>
-                       
-                        <% if has_exam == true %>
-                          <% @report_data['report']['exams'].each do |rs| %>
-                            <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
-                             <% @report_data['report']['students'].each do |std_marks| %>
-                              <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std_marks['id']].blank? %>
-                                <td><%= rs['result'][rs['exam_id']][sub['id']][std_marks['id']]['full_mark'].to_i %></td>
-                              <% break %>
-                              <% end %>
-                             <% end %>
-                            <% end %>
-                          <% end %>
-                        <% end %>
-                      <% end %>
-
-                  </tr>
+                  
+                  
+                
 
                   <% extender = 0 %>
                   <% std_count = 0 %>
@@ -260,10 +231,11 @@ end
                          &nbsp;
                       </div>  
                       <table id="pdf-table" width="100%" cellspacing="0">
-                        <tr class="table-header">
-                      <td class="col-pdf" rowspan="3">SL</td>
-                      <td class="col-pdf" rowspan="3">Roll</td>
-                      <td class="col-pdf" rowspan="3">Students Name</td>
+                      
+                       <tr class="table-header">
+                      <td class="col-pdf" rowspan="2">SL</td>
+                      <td class="col-pdf" rowspan="2">Roll</td>
+                      <td class="col-pdf" rowspan="2">Students Name</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -272,18 +244,13 @@ end
                       
                         <% if has_exam == true %>
                           <% colspan = 0 %>
-                          <% @report_data['report']['exams'].each do |rs| %>
-                            <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
-                              <% colspan = colspan+1 %>
-                            <% end %>
-                          <% end %>
                           <% colspan = colspan+2 %>
                           <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
-                      <td class="col-pdf" rowspan="3">G. Total</td>
-                       <td class="col-pdf" rowspan="3">Total GP</td>
-                      <td class="col-pdf" rowspan="3">GPA</td>
+                      <td class="col-pdf" rowspan="2">G. Total</td>
+                       <td class="col-pdf" rowspan="2">Total GP</td>
+                      <td class="col-pdf" rowspan="2">GPA</td>
                      
 
                   </tr>
@@ -297,41 +264,15 @@ end
                         <% end %>
                        
                         <% if has_exam == true %>
-                          <% @report_data['report']['exams'].each do |rs| %>
-                            <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
-                             <td><%= rs['exam_name'] %></td>
-                            <% end %>
-                          <% end %>
-                          <td rowspan="2"><%= "TTL" %></td>
-                          <td rowspan="2"><%= "GP" %></td>
+                          <td ><%= "TTL" %></td>
+                          <td ><%= "GP" %></td>
                         <% end %>
                       <% end %>
                       
 
                   </tr>
-                   <tr class="table-header">
-                      
-                      <% @report_data['report']['subjects'].each do |sub| %>
-                        <% has_exam = false %>
-                        <% if @all_subject_id.include?(sub['id'].to_i) %>
-                          <% has_exam = true %>
-                        <% end %>
-                       
-                        <% if has_exam == true %>
-                          <% @report_data['report']['exams'].each do |rs| %>
-                            <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
-                             <% @report_data['report']['students'].each do |std_marks| %>
-                              <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std_marks['id']].blank? %>
-                                <td><%= rs['result'][rs['exam_id']][sub['id']][std_marks['id']]['full_mark'].to_i %></td>
-                              <% break %>
-                              <% end %>
-                             <% end %>
-                            <% end %>
-                          <% end %>
-                        <% end %>
-                      <% end %>
-
-                  </tr>
+                  
+                  
                     <% elsif std_count>26 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
@@ -342,9 +283,9 @@ end
                       <table id="pdf-table" width="100%" cellspacing="0">
                       
                        <tr class="table-header">
-                      <td class="col-pdf" rowspan="3">SL</td>
-                      <td class="col-pdf" rowspan="3">Roll</td>
-                      <td class="col-pdf" rowspan="3">Students Name</td>
+                      <td class="col-pdf" rowspan="2">SL</td>
+                      <td class="col-pdf" rowspan="2">Roll</td>
+                      <td class="col-pdf" rowspan="2">Students Name</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -353,18 +294,13 @@ end
                       
                         <% if has_exam == true %>
                           <% colspan = 0 %>
-                          <% @report_data['report']['exams'].each do |rs| %>
-                            <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
-                              <% colspan = colspan+1 %>
-                            <% end %>
-                          <% end %>
                           <% colspan = colspan+2 %>
                           <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
-                      <td class="col-pdf" rowspan="3">G. Total</td>
-                       <td class="col-pdf" rowspan="3">Total GP</td>
-                      <td class="col-pdf" rowspan="3">GPA</td>
+                      <td class="col-pdf" rowspan="2">G. Total</td>
+                       <td class="col-pdf" rowspan="2">Total GP</td>
+                      <td class="col-pdf" rowspan="2">GPA</td>
                      
 
                   </tr>
@@ -378,41 +314,14 @@ end
                         <% end %>
                        
                         <% if has_exam == true %>
-                          <% @report_data['report']['exams'].each do |rs| %>
-                            <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
-                             <td><%= rs['exam_name'] %></td>
-                            <% end %>
-                          <% end %>
-                          <td rowspan="2"><%= "TTL" %></td>
-                          <td rowspan="2"><%= "GP" %></td>
+                          <td ><%= "TTL" %></td>
+                          <td ><%= "GP" %></td>
                         <% end %>
                       <% end %>
                       
 
                   </tr>
-                   <tr class="table-header">
-                      
-                      <% @report_data['report']['subjects'].each do |sub| %>
-                        <% has_exam = false %>
-                        <% if @all_subject_id.include?(sub['id'].to_i) %>
-                          <% has_exam = true %>
-                        <% end %>
-                       
-                        <% if has_exam == true %>
-                          <% @report_data['report']['exams'].each do |rs| %>
-                            <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
-                             <% @report_data['report']['students'].each do |std_marks| %>
-                              <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std_marks['id']].blank? %>
-                                <td><%= rs['result'][rs['exam_id']][sub['id']][std_marks['id']]['full_mark'].to_i %></td>
-                              <% break %>
-                              <% end %>
-                             <% end %>
-                            <% end %>
-                          <% end %>
-                        <% end %>
-                      <% end %>
-
-                  </tr>
+                  
                   
                     <% end %>   
                   
@@ -476,7 +385,7 @@ end
                               <% exam_marks = 0 %>
                               <% exam_full_marks = 0 %> 
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
-                                <td><%= rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i %></td>
+                               
                                 <%
 
                                 subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i

@@ -52,6 +52,12 @@ if @total_std.blank?
               batch_subject_hash_code_main << std_sub.code	
             end	
           end
+          if @tabulation_data['batches'][batch_loop].blank?
+            next
+          end
+          if tab.kind_of?(Array) or tab.blank? or tab['students'].blank?
+            next
+          end
           batch_data = Batch.find(@tabulation_data['batches'][batch_loop])
           batch_loop = batch_loop+1
           connect_exam_id = @tabulation_data['connect_exams'][connect_exam]

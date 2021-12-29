@@ -55,6 +55,9 @@
       connect_exam = connect_exam+1
       std_group_name = batch_data.course.group
       total_grade = 0
+      if tab.kind_of?(Array) or tab.blank? or tab['students'].blank?
+        next
+      end
       tab['students'].each do |std| 
         total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
         std_subject_id = total_std_subject.map(&:subject_id)

@@ -228,8 +228,8 @@
                           <a href='javascrip:void(0)' class='themed_text subscribed-messege' >All</a>,
                           <a href='javascrip:void(0)' class='themed_text subscribed-messege' >None</a>,
                         <% else %>  
-                          <%= "#{t('select')}:"%> <%= link_to_function "#{t('all')}", "$$('input.right').each(function(checkbox) { checkbox.checked = true; });" ,:class=>"themed_text"%>,
-                          <%= link_to_function "#{t('none')}", "$$('input.right').each(function(checkbox) { checkbox.checked = false; });" ,:class=>"themed_text" %>
+                          <%= "#{t('select')}:"%> <%= link_to_function "#{t('all')}", "$$('input.std_list').each(function(checkbox) { checkbox.checked = true; });" ,:class=>"themed_text"%>,
+                          <%= link_to_function "#{t('none')}", "$$('input.std_list').each(function(checkbox) { checkbox.checked = false; });" ,:class=>"themed_text" %>
                         <% end %>  
                     </div>
                     <div id="scrollable-list">
@@ -238,7 +238,7 @@
                           <div class="listitem">
                               <div class="student_name"> <%= s.class_roll_no %>&nbsp;&nbsp;<%= s.full_name %> </div>
                               <div class="check_box"> 
-                                 <%= check_box_tag "assignment[student_ids][]", s.id,@assigned_students.include?(s.id.to_s),:class=>"right" %>
+                                 <%= check_box_tag "assignment[student_ids][]", s.id,@assigned_students.include?(s.id.to_s),:class=>"right std_list" %>
                               </div>
                           </div>
                         <% end %>

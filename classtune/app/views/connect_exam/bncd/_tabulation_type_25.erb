@@ -251,7 +251,7 @@ end
                       <td class="col-pdf" rowspan="2">G. Total</td>
                        <td class="col-pdf" rowspan="2">Total GP</td>
                       <td class="col-pdf" rowspan="2">GPA</td>
-                     
+                     <td class="col-pdf" rowspan="2"><%=  "REMARKS" %></td>
 
                   </tr>
                   
@@ -266,6 +266,7 @@ end
                         <% if has_exam == true %>
                           <td ><%= "TTL" %></td>
                           <td ><%= "GP" %></td>
+                          <td ><%= "Remarks" %></td>
                         <% end %>
                       <% end %>
                       
@@ -301,6 +302,7 @@ end
                       <td class="col-pdf" rowspan="2">G. Total</td>
                        <td class="col-pdf" rowspan="2">Total GP</td>
                       <td class="col-pdf" rowspan="2">GPA</td>
+                      <td class="col-pdf" rowspan="2">Remarks</td>   
                      
 
                   </tr>
@@ -316,6 +318,7 @@ end
                         <% if has_exam == true %>
                           <td ><%= "TTL" %></td>
                           <td ><%= "GP" %></td>
+                      <td ><%= "Remarks" %></td>
                         <% end %>
                       <% end %>
                       
@@ -325,7 +328,12 @@ end
                   
                     <% end %>   
                   
+                    <%
+                    failed_all = true
+                    absent_all = true
+                    number_of_failed = 0
                     
+                    %>
 
 
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -504,7 +512,13 @@ end
                           <td>
                               <%= sprintf( "%0.02f", grade_point_avg) %>
                           </td> 
-
+                          <td>
+                          <% if failed %>  
+                            Failed
+                          <% else %>
+                            Passed
+                          <% end %> 
+                        </td>
 
                     </tr>
                     <% end %>

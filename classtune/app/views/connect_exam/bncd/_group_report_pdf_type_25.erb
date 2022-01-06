@@ -88,7 +88,7 @@
   <% student_attendance_percent = 0 %>	
   <% student_attendance_mark = 0 %>	
   <% unless @leaves[@student.id]['percent'].nil? %>
-	student_attendance_percent =  @leaves[@student.id]['percent']
+	<% student_attendance_percent =  @leaves[@student.id]['percent'] %>
   <% end %>	
   <% if student_attendance_percent.to_f > 0 %>
 	<% if student_attendance_percent >= 0 and student_attendance_percent < 60 %>

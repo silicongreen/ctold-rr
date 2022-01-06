@@ -84,8 +84,23 @@
     else
       @report = ''
     end
-  %>
-  <%= debug @leaves.inspect %>
+  %> 
+  <% student_attendance_percent = 0 %>	
+  <% student_attendance_mark = 0 %>	
+  <% unless @leaves[@student.id]['percent'].nil? %>
+	student_attendance_percent =  @leaves[@student.id]['percent']
+  <% end %>	
+  <% if student_attendance_percent.to_f > 0 %>
+	<% if student_attendance_percent >= 0 and student_attendance_percent < 60 %>
+	<% student_attendance_mark = 0 %>	
+	<% elsif student_attendance_percent >= 60 and student_attendance_percent < 71 %>
+	<% student_attendance_mark = 3 %>	
+	<% elsif student_attendance_percent >= 71 and student_attendance_percent < 80 %>
+	<% student_attendance_mark = 4 %>	
+	<% elsif student_attendance_percent >= 80 %>
+	<% student_attendance_mark = 5 %>	
+	<% end %>
+  <% end %>
   <div id="page-yield"  class="available_sections1 baf_shaheen">
       <%= render  :partial=>"/connect_exam/bncd/header" %>
      
@@ -187,13 +202,15 @@
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
                                     <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
                                     <% exam_marks = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
-                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
                                     <% if report['exam_category'] == '3' %>
                                       <% cq = cq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>	
                                     <% elsif report['exam_category'] == '4' %>
                                       <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>	
                                     <% else %>
-                                      <% att = att+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                      <% att = att+student_attendance_mark.to_i %>
+			      	      <td class="col-pdf"><%= student_attendance_mark.to_i %></td>	
                                     <% end %>
                                   <% else %>
                                     <td class="col-pdf">-</td>

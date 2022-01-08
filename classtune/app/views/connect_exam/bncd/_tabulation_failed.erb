@@ -455,7 +455,9 @@ end
                                 if rs['exam_category'] != '3' and rs['exam_category'] != '4'
                                   exam_full_marks = 0
                                 end
+				%>
                                 <%= std['admission_no'].to_s + "  " + exam_full_marks.to_s %><br />
+			    <%
                                 #subject_failed = false
                                 if exam_full_marks > 0
                                     if exam_full_marks == 20 && exam_marks < 7

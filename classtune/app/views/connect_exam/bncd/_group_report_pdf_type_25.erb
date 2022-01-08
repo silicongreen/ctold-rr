@@ -228,7 +228,7 @@
 			      
                                   <%
                                   if exam_full_marks > 0 %>
-				  <%= subject_failed.to_s + "  " + exam_full_marks.to_s + " " + exam_marks.to_s %><br />
+				  <%= subject_failed.to_s + "  " + exam_full_marks.to_s + " " + exam_marks.to_s + "  " + report['exam_category'].to_s %><br />
 			      	<%
                                     if exam_full_marks == 20 && exam_marks < 7
                                       subject_failed = true

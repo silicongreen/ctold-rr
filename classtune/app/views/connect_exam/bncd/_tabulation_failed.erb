@@ -277,7 +277,7 @@ end
 
 			      <%
     @config = Configuration.find_by_config_key('StudentAttendanceType')
-    @batch = Batch.find(std['batch_id'])
+    @batch = Batch.find(@batch.id)
     @start_date = ("2021-09-12").to_date
     @end_date = ("2021-11-03").to_date
     @leaves=Hash.new { |h, k| h[k] = Hash.new(&h.default_proc) }

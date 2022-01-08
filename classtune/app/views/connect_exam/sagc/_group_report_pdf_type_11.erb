@@ -721,9 +721,9 @@
                               <%#  F %>
                               <% #else %>
                                 <% if !grade.blank? and !grade.name.blank? %>
-                                  <%= grade.name %>A
+                                  <%= grade.name %>
                                 <% else %>
-                                  +
+                                  -
                                 <% end %>
                               <% #end %>
                           </b>
@@ -733,7 +733,7 @@
                           <% if !@student_position_first_term_batch[@student.id.to_i].blank? %> 
                             <%= @student_position_first_term_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
                           <% else %>
-                            -
+                            
                           <% end %> 
 
                       </td>

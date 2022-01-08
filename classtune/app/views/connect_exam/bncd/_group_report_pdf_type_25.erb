@@ -293,7 +293,7 @@
                             %>
                             <td class="col-pdf"><%= main_mark %></td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
-			      <%= exam_full_marks.to_s + "  " + exam_marks.to_s  + "  " + subject_failed.to_s . "  " . grade.name.to_s + " " + grade.credit_points.to_s %><br />
+			      <%= exam_full_marks.to_s + "  " + exam_marks.to_s  + "  " + subject_failed.to_s + "  " + grade.name.to_s + " " + grade.credit_points.to_s %><br />
 			      
                             <% if !grade.blank? and !grade.name.blank? %>
                               <% if subject_failed == true %>

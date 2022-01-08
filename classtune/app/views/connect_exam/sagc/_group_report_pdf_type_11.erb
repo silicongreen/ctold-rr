@@ -700,11 +700,11 @@
                   <tr class="odd">
                       <td class="align-left no-warp"><b>Grade Point Avg</b></td>
                       <td><b>
-                              <% if @student_position_first_term_batch[@student.id.to_i].blank? %>
-                                0.00
-                              <% else %>
+                              <% #if @student_position_first_term_batch[@student.id.to_i].blank? %>
+                              <%#  0.00 %>
+                              <%# else %>
                                 <%= sprintf( "%0.02f", grade_point_avg) %>
-                              <% end %></b>
+                              <%# end %></b>
                       </td>
                       <td class="align-left no-warp" colspan="2"><b>Position in Merit List</b></td>
                       <td class="align-left no-warp" colspan="2"><b>Attendance</b></td>
@@ -718,12 +718,12 @@
                       <td >
                           <b>
                               <% #if @student_position_first_term_batch[@student.id.to_i].blank? %>
-                                F
+                              <%#  F %>
                               <% #else %>
                                 <% if !grade.blank? and !grade.name.blank? %>
-                                  <%= grade.name %>
+                                  <%= grade.name %>A
                                 <% else %>
-                                  -
+                                  +
                                 <% end %>
                               <% #end %>
                           </b>

@@ -452,7 +452,7 @@ end
                                 end
                                 exam_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
                                 exam_full_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                if report['exam_category'] != '3' and report['exam_category'] != '4'
+                                if rs['exam_category'] != '3' and rs['exam_category'] != '4'
                                   exam_full_marks = 0
                                 end
                                 

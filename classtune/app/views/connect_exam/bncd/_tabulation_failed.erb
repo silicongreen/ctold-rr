@@ -169,9 +169,9 @@ end
               <table id="pdf-table" width="100%" cellspacing="0">
                       
                   <tr class="table-header">
-                      <td class="col-pdf" rowspan="2">SL</td>
-                      <td class="col-pdf" rowspan="2">Roll</td>
-                      <td class="col-pdf" rowspan="2">Students Name</td>
+                      <td class="col-pdf">SL</td>
+                      <td class="col-pdf">Roll</td>
+                      <td class="col-pdf">Students Name</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -213,9 +213,9 @@ end
                       <table id="pdf-table" width="100%" cellspacing="0">
                       
                        <tr class="table-header">
-                      <td class="col-pdf" rowspan="2">SL</td>
-                      <td class="col-pdf" rowspan="2">Roll</td>
-                      <td class="col-pdf" rowspan="2">Students Name</td>
+                      <td class="col-pdf">SL</td>
+                      <td class="col-pdf">Roll</td>
+                      <td class="col-pdf">Students Name</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -243,9 +243,9 @@ end
                       <table id="pdf-table" width="100%" cellspacing="0">
                       
                        <tr class="table-header">
-                      <td class="col-pdf" rowspan="2">SL</td>
-                      <td class="col-pdf" rowspan="2">Roll</td>
-                      <td class="col-pdf" rowspan="2">Students Name</td>
+                      <td class="col-pdf">SL</td>
+                      <td class="col-pdf">Roll</td>
+                      <td class="col-pdf">Students Name</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -347,7 +347,8 @@ end
                                 end
                                 exam_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
                                 exam_full_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-
+                                
+                                subject_failed = false
                                 if exam_full_marks > 0
                                     if exam_full_marks == 20 && exam_marks < 7
                                       subject_failed = true

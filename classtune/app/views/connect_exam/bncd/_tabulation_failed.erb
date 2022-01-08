@@ -186,8 +186,8 @@ end
                           <td><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
-                     
-
+			<td><%=  "Total Failed" %></td>
+	
                   </tr>
                   
                   
@@ -230,7 +230,7 @@ end
                           <td><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
-
+			<td><%=  "Total Failed" %></td>
                   </tr>
                   
                   
@@ -260,7 +260,7 @@ end
                           <td><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
-                     
+                     <td><%=  "Total Failed" %></td>
 
                   </tr>
                   
@@ -390,6 +390,7 @@ end
                         <td class="name-std"><%= "-" %></td>
                         <% end %>
                         <% total_mark = 0 %>
+		    	<% total_failed = 0 %>
                         <% full_mark_all = 0 %>
                         <% grades = [] %>
                         <% grade_count = {} %>
@@ -519,6 +520,10 @@ end
                               main_mark = cq+mcq+att
 
                             %>
+			    <%  if  subject_failed
+			    		total_failed = total_failed + 1
+				end
+			    %>
                             <td>
                                 <%= subject_failed ? "Failed" : "" %>    
                             </td>
@@ -538,7 +543,7 @@ end
                         <% if full_mark_all > 0 &&  total_mark > 0 %>
                           <% percentage = (total_mark.to_f/full_mark_all.to_f)*100 %> 
                         <% end %>    
-
+			    <td style="text-align: center;"><%= total_failed %></td>	
                           
 
                     </tr>

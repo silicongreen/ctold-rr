@@ -224,12 +224,13 @@
                                     <% if report['exam_category'] == '4' %>
                                       <% mcq_total = mcq_total+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                     <% end %>
+			      	    <% if report['exam_category'] != '3' and report['exam_category'] != '4' %>
+			      	 	<% exam_full_marks = 0 %>	
+			      	    <% end %>
                                   <% end %>
 			      
                                   <%
-                                  if exam_full_marks > 0 %>
-				  <%= subject_failed.to_s + "  " + exam_full_marks.to_s + " " + exam_marks.to_s + "  " + report['exam_category'].to_s %><br />
-			      	<%
+                                  if exam_full_marks > 0 
                                     if exam_full_marks == 20 && exam_marks < 7
                                       subject_failed = true
                                       failed = true
@@ -268,8 +269,6 @@
                                     end
                                   end
 				  %>
-                                  <%= subject_failed.to_s + "  " + exam_full_marks.to_s + " " + exam_marks.to_s %><br />
-                                  <% %>
 
 
 

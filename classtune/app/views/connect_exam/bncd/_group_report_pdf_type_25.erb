@@ -225,6 +225,7 @@
                                       <% mcq_total = mcq_total+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                     <% end %>
                                   <% end %>
+			      <%= exam_full_marks.to_s + "  " + exam_marks.to_s  + "  " + subject_failed.to_s %>
                                   <%
                                   if exam_full_marks > 0
                                     if exam_full_marks == 20 && exam_marks < 7

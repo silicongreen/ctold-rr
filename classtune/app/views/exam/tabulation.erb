@@ -30,7 +30,7 @@
 <% elsif MultiSchool.current_school.id == 342  %>
     <%= render  :partial=>"/connect_exam/sjis/tabulation" %>
 <% elsif File.exists?(Rails.root.join("app", "views", "connect_exam",MultiSchool.current_school.code, "_tabulation.erb")) %>
-    <% extra = $_GET['failed'].blank? ? "" : "_failed" %>
+    <% extra = params[:failed].blank? ? "" : "_failed" %>
     <%= render  :partial=>"/connect_exam/#{MultiSchool.current_school.code}/tabulation" + extra %>
 <% else %>
   <%= render  :partial=>"/connect_exam/tabulation" %>

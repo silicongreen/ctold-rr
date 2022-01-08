@@ -181,31 +181,10 @@ end
                         <% if has_exam == true %>
                           <% colspan = 0 %>
                           <% colspan = colspan+2 %>
-                          <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
+                          <td><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
-                      <td class="col-pdf" rowspan="2">G. Total</td>
-                       <td class="col-pdf" rowspan="2">Total GP</td>
-                      <td class="col-pdf" rowspan="2">GPA</td>
-                    <td class="col-pdf" rowspan="2">Remarks</td>
                      
-
-                  </tr>
-                  
-                  <tr class="table-header">
-                      
-                      <% @report_data['report']['subjects'].each do |sub| %>
-                        <% has_exam = false %>
-                        <% if @all_subject_id.include?(sub['id'].to_i) %>
-                          <% has_exam = true %>
-                        <% end %>
-                       
-                        <% if has_exam == true %>
-                          <td ><%= "TTL" %></td>
-                          <td ><%= "GP" %></td>
-                        <% end %>
-                      <% end %>
-                      
 
                   </tr>
                   
@@ -246,32 +225,12 @@ end
                         <% if has_exam == true %>
                           <% colspan = 0 %>
                           <% colspan = colspan+2 %>
-                          <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
+                          <td><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
-                      <td class="col-pdf" rowspan="2">G. Total</td>
-                       <td class="col-pdf" rowspan="2">Total GP</td>
-                      <td class="col-pdf" rowspan="2">GPA</td>
-                     <td class="col-pdf" rowspan="2"><%=  "REMARKS" %></td>
 
                   </tr>
                   
-                  <tr class="table-header">
-                      
-                      <% @report_data['report']['subjects'].each do |sub| %>
-                        <% has_exam = false %>
-                        <% if @all_subject_id.include?(sub['id'].to_i) %>
-                          <% has_exam = true %>
-                        <% end %>
-                       
-                        <% if has_exam == true %>
-                          <td ><%= "TTL" %></td>
-                          <td ><%= "GP" %></td>
-                        <% end %>
-                      <% end %>
-                      
-
-                  </tr>
                   
                   
                     <% elsif std_count>26 && extender ==1 %>
@@ -296,33 +255,13 @@ end
                         <% if has_exam == true %>
                           <% colspan = 0 %>
                           <% colspan = colspan+2 %>
-                          <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
+                          <td><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
-                      <td class="col-pdf" rowspan="2">G. Total</td>
-                       <td class="col-pdf" rowspan="2">Total GP</td>
-                      <td class="col-pdf" rowspan="2">GPA</td>
-                      <td class="col-pdf" rowspan="2">Remarks</td>   
                      
 
                   </tr>
                   
-                  <tr class="table-header">
-                      
-                      <% @report_data['report']['subjects'].each do |sub| %>
-                        <% has_exam = false %>
-                        <% if @all_subject_id.include?(sub['id'].to_i) %>
-                          <% has_exam = true %>
-                        <% end %>
-                       
-                        <% if has_exam == true %>
-                          <td ><%= "TTL" %></td>
-                          <td ><%= "GP" %></td>
-                        <% end %>
-                      <% end %>
-                      
-
-                  </tr>
                   
                   
                     <% end %>   
@@ -472,15 +411,15 @@ end
 
                             %>
                             <td>
-                                <%= main_mark.to_i %>    
+                                <%= subject_failed ? "Failed" : "" %>    
                             </td>
                             <% total_mark = total_mark+main_mark.to_f %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <% total_grade = total_grade+grade.credit_points.to_f %>
-                              <td>
-                                <%= sprintf( "%0.01f", grade.credit_points.to_f) %>    
-                            </td>
+                              <!--td>
+                                <%#= sprintf( "%0.01f", grade.credit_points.to_f) %>    
+                            </td-->
                             <% end %>
                             <% full_mark_all = full_mark_all+main_mark.to_f  %>
                         
@@ -491,33 +430,7 @@ end
                           <% percentage = (total_mark.to_f/full_mark_all.to_f)*100 %> 
                         <% end %>    
 
-                          <td>
-                              <%= sprintf( "%0.02f", total_mark) %>    
-                          </td>
                           
-
-                          <td>
-                              <%= sprintf( "%0.02f", total_grade) %>
-                          </td>
-                          <% grade_point_avg = 0.00 %>
-                          <% if total_grade > 0 && subject_count > 0 %>
-                            <% grade_point_avg = total_grade.to_f/subject_count.to_f %>
-                            <% if grade_point_avg > 5 %>
-                              <% grade_point_avg = 5.00 %>
-                            <% end %>  
-                          <% end %> 
-                          <% grade_point_avg = (grade_point_avg.to_f*100).to_f.round() %>
-                          <% grade_point_avg = grade_point_avg.to_f/100 %>
-                          <td>
-                              <%= sprintf( "%0.02f", grade_point_avg) %>
-                          </td> 
-                          <td>
-                          <% if failed %>  
-                            Failed
-                          <% else %>
-                            Passed
-                          <% end %> 
-                        </td>
 
                     </tr>
                     <% end %>

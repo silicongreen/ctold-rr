@@ -333,39 +333,39 @@ end
                     number_of_failed = 0
                     
                     %>
-                        
+                    <% s = Student.find(std['id']) %>    
                         
                     <%
     @config = Configuration.find_by_config_key('StudentAttendanceType')
-    @batch = Batch.find(@batch.id)
+    @b = Batch.find(s.batch_id)
     @start_date = ("2021-09-12").to_date
     @end_date = ("2021-11-03").to_date
     @leaves=Hash.new { |h, k| h[k] = Hash.new(&h.default_proc) }
     @today = @local_tzone_time.to_date
-    working_days=@batch.working_days(@start_date.to_date)
+    working_days=@b.working_days(@start_date.to_date)
     unless @start_date > @local_tzone_time.to_date
       unless @config.config_value == 'Daily'
         unless params[:subject] == '0'
           @subject = Subject.find params[:subject]
-          @academic_days=@batch.subject_hours(@start_date, @end_date, params[:subject]).values.flatten.compact.count
+          @academic_days=@b.subject_hours(@start_date, @end_date, params[:subject]).values.flatten.compact.count
           @grouped = SubjectLeave.find_all_by_subject_id(@subject.id,  :conditions =>{:month_date => @start_date..@end_date}).group_by(&:student_id)
-          if @grouped[std['id']].nil?
-			  @leaves[std['id']]['leave']=0
+          if @grouped[s.id].nil?
+			  @leaves[s.id]['leave']=0
 			else
-			  @leaves[std['id']]['leave']=@grouped[std['id']].count
+			  @leaves[s.id]['leave']=@grouped[s.id].count
 			end
-			@leaves[std['id']]['total'] = (@academic_days - @leaves[std['id']]['leave'])
-			@leaves[std['id']]['percent'] = (@leaves[std['id']]['total'].to_f/@academic_days)*100 unless @academic_days == 0
+			@leaves[s.id]['total'] = (@academic_days - @leaves[s.id]['leave'])
+			@leaves[s.id]['percent'] = (@leaves[s.id]['total'].to_f/@academic_days)*100 unless @academic_days == 0
         else
-          @academic_days=@batch.subject_hours(@start_date, @end_date, 0).values.flatten.compact.count
-          @grouped = @batch.subject_leaves.find(:all,  :conditions =>{:month_date => @start_date..@end_date, :student_id => std['id']})
-          if @grouped[std['id']].nil?
-			@leaves[std['id']]['leave']=0
+          @academic_days=@b.subject_hours(@start_date, @end_date, 0).values.flatten.compact.count
+          @grouped = @b.subject_leaves.find(:all,  :conditions =>{:month_date => @start_date..@end_date, :student_id => s.id})
+          if @grouped[s.id].nil?
+			@leaves[s.id]['leave']=0
 		  else
-		    @leaves[std['id']]['leave']=@grouped[std['id']].count
+		    @leaves[s.id]['leave']=@grouped[s.id].count
           end
-		  @leaves[std['id']]['total'] = (@academic_days - @leaves[std['id']]['leave'])
-		  @leaves[std['id']]['percent'] = (@leaves[std['id']]['total'].to_f/@academic_days)*100 unless @academic_days == 0
+		  @leaves[s.id]['total'] = (@academic_days - @leaves[s.id]['leave'])
+		  @leaves[s.id]['percent'] = (@leaves[s.id]['total'].to_f/@academic_days)*100 unless @academic_days == 0
         end
       else
           @start_date_main = @start_date
@@ -380,8 +380,8 @@ end
             @academic_days = 0
             @student_leaves = []
             if @end_date >= @start_date
-              @academic_days =  @batch.find_working_days(@start_date,@end_date).select{|v| v<=@end_date}.count
-              @student_leaves = Attendance.find(:all,:conditions =>{:student_id=>std['id'],:batch_id=>@batch.id,:month_date => @start_date..@end_date})
+              @academic_days =  @b.find_working_days(@start_date,@end_date).select{|v| v<=@end_date}.count
+              @student_leaves = Attendance.find(:all,:conditions =>{:student_id=>s.id,:batch_id=>@b.id,:month_date => @start_date..@end_date})
             end
           
           on_leaves = 0;
@@ -389,8 +389,8 @@ end
           leaves_full = 0;
           unless @student_leaves.empty?
             @student_leaves.each do |r|
-              if r.student_id == std['id']
-                working_days_count=@batch.find_working_days(r.month_date.to_date,r.month_date.to_date).select{|v| v<=r.month_date.to_date}.count
+              if r.student_id == s.id
+                working_days_count=@b.find_working_days(r.month_date.to_date,r.month_date.to_date).select{|v| v<=r.month_date.to_date}.count
 
                 if working_days_count==1
                   if r.is_leave == true
@@ -406,14 +406,14 @@ end
               end
             end
           end
-          @leaves[std['id']]['late'] = leaves_other
-          @leaves[std['id']]['absent'] = leaves_full
-          @leaves[std['id']]['on_leave'] = on_leaves
-          @leaves[std['id']]['present'] = @academic_days-on_leaves-leaves_full
-          @leaves[std['id']]['total']=@academic_days-leaves_full.to_f-(0.5*leaves_other)
-          @leaves[std['id']]['percent'] = 0.0
-          @leaves[std['id']]['percent'] = (@leaves[std['id']]['total'].to_f/@academic_days)*100 unless @academic_days == 0
-        @academic_days =  @batch.find_working_days(@start_date_main,@end_date).select{|v| v<=@end_date}.count
+          @leaves[s.id]['late'] = leaves_other
+          @leaves[s.id]['absent'] = leaves_full
+          @leaves[s.id]['on_leave'] = on_leaves
+          @leaves[s.id]['present'] = @academic_days-on_leaves-leaves_full
+          @leaves[s.id]['total']=@academic_days-leaves_full.to_f-(0.5*leaves_other)
+          @leaves[s.id]['percent'] = 0.0
+          @leaves[s.id]['percent'] = (@leaves[s.id]['total'].to_f/@academic_days)*100 unless @academic_days == 0
+        @academic_days =  @b.find_working_days(@start_date_main,@end_date).select{|v| v<=@end_date}.count
       end
     else
       @report = ''
@@ -421,8 +421,8 @@ end
   %> 
   <% student_attendance_percent = 0 %>	
   <% student_attendance_mark = 0 %>	
-  <% unless @leaves[std['id']]['percent'].nil? %>
-	<% student_attendance_percent =  @leaves[std['id']]['percent'] %>
+  <% unless @leaves[s.id]['percent'].nil? %>
+	<% student_attendance_percent =  @leaves[s.id]['percent'] %>
   <% end %>	
   <% if student_attendance_percent.to_f > 0 %>
 	<% if student_attendance_percent >= 0 and student_attendance_percent < 60 %>
@@ -438,7 +438,7 @@ end
 
 
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                        <td><%= j %> <%= student_attendance_mark %> <%= student_attendance_percent %> <%= @batch.id %></td>
+                        <td><%= j %> <%= student_attendance_mark %> <%= student_attendance_percent %> <%= @b.id %></td>
                         <td class="name"><%= std['class_roll_no'] %></td>
                         <% if !std['first_name'].blank? and !std['last_name'].blank?  %>
                         <td class="name-std"><%= std['first_name']+" "+std['last_name'] %></td>

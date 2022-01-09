@@ -1,6 +1,6 @@
 
   <% total_u = 0 %>
-
+	<%= @student.batch_id %>
   <%
     @config = Configuration.find_by_config_key('StudentAttendanceType')
     @batch = Batch.find(@student.batch_id)

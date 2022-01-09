@@ -578,7 +578,7 @@ end
 
                             %>
                             <td>
-                                <%= main_mark.to_i %>    
+                                <%= subject_failed.to_s %> <%= main_mark.to_i %>    
                             </td>
                             <% total_mark = total_mark+main_mark.to_f %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

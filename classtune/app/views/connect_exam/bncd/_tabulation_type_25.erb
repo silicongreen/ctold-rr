@@ -578,15 +578,23 @@ end
 
                             %>
                             <td>
-                                <%= subject_failed.to_s %> <%= main_mark.to_i %>    
+                               <%= main_mark.to_i %>    
                             </td>
                             <% total_mark = total_mark+main_mark.to_f %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
+			      <% if subject_failed == true %>
+                                <%
+                                grade.name = "F"
+                                grade.credit_points = 0.00
+                                %>
+                              <% end %> 	
                               <% total_grade = total_grade+grade.credit_points.to_f %>
                               <td>
                                 <%= sprintf( "%0.01f", grade.credit_points.to_f) %>    
                             </td>
+			    <% else %>
+			    <td>-</td>
                             <% end %>
                             <% full_mark_all = full_mark_all+main_mark.to_f  %>
                         

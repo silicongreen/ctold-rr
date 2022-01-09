@@ -574,11 +574,11 @@ end
                                   cq = cq.round()
                                 end
                               end
-                              main_mark = cq+mcq+att
+                              main_mark = cq+mcq+student_attendance_mark
 
                             %>
                             <td>
-                                <%= att %> <%= mcq %> <%= cq %> <%= main_mark.to_i %>    
+                                <%= main_mark.to_i %>    
                             </td>
                             <% total_mark = total_mark+main_mark.to_f %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

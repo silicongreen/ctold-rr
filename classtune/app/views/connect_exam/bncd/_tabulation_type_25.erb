@@ -418,6 +418,7 @@ end
       @report = ''
     end
   %> 
+			      <%= debug @leaves.inspect %>
   <% student_attendance_percent = 0 %>	
   <% student_attendance_mark = 0 %>	
   <% unless @leaves[s.id]['percent'].nil? %>

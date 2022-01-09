@@ -418,7 +418,6 @@ end
       @report = ''
     end
   %> 
-			      <%= debug @leaves.inspect %>
   <% student_attendance_percent = 0 %>	
   <% student_attendance_mark = 0 %>	
   <% unless @leaves[s.id]['percent'].nil? %>
@@ -438,7 +437,7 @@ end
 
 
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                        <td><%= j %> <%= student_attendance_mark %> <%= student_attendance_percent %> <%= @b.id %> <%= s.id %> <%= std['id'] %></td>
+                        <td><%= j %></td>
                         <td class="name"><%= std['class_roll_no'] %></td>
                         <% if !std['first_name'].blank? and !std['last_name'].blank?  %>
                         <td class="name-std"><%= std['first_name']+" "+std['last_name'] %></td>
@@ -463,7 +462,7 @@ end
                           <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
                           
                           <% if @has_exam_student == false %>
-                            <td colspan="4"></td>
+                            <td colspan="2"></td>
                           <% else %>
                             
                             <% fourth_subject = false %>

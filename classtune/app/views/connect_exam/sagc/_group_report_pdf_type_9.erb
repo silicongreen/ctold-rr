@@ -480,12 +480,15 @@
                       </td>
                       <td class="align-left no-warp">Section</td>
                       <td class="no-warp">
-                          <% if !@student_position_first_term_batch[@student.id.to_i].blank? %> 
-                            <%= @student_position_first_term_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
-                          <% else %>
+                          <% if failed == true %>
                             -
+                          <% else %>
+                            <% if !@student_position_first_term_batch[@student.id.to_i].blank? %> 
+                              <%= @student_position_first_term_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
+                            <% else %>
+                              -
+                            <% end %> 
                           <% end %> 
-
                       </td>
                       <td class="col-pdf align-left">
                           Working Days
@@ -501,11 +504,14 @@
                       <td class="align-left no-warp">Class/Group</td>
                       <td class="no-warp">
                           <b>
-                             
-                              <% if !@student_position_first_term[@student.id.to_i].blank? %> 
-                                <%= @student_position_first_term[@student.id.to_i] %> out of <%= @total_std %>
-                              <% else %>
+                              <% if failed == true %>
                                 -
+                              <% else %>
+                                <% if !@student_position_first_term[@student.id.to_i].blank? %> 
+                                  <%= @student_position_first_term[@student.id.to_i] %> out of <%= @total_std %>
+                                <% else %>
+                                  -
+                                <% end %> 
                               <% end %> 
                           </b>  
                       </td> 

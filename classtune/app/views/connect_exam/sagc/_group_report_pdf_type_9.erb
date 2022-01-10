@@ -300,7 +300,7 @@
                               <% if fourth_subject.blank? %>
                                 <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
                               <% else %>
-                                <% new_grade_point = grade.credit_points.to_f -2 %>
+                                <% new_grade_point = grade.credit_points.to_f - 2.0 %>
                                 <% if new_grade_point > 0 %>
                                   <% total_grade = total_grade.to_f+new_grade_point.to_f %>
                                 <% end %>  

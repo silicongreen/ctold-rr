@@ -503,17 +503,15 @@
                       <td class="align-left no-warp"><b><%= sprintf( "%0.02f", grand_total_fraction)%></b></td>
                       <td class="align-left no-warp">Class/Group</td>
                       <td class="no-warp">
-                          <b>
-                              <% if failed == true %>
-                                -
-                              <% else %>
-                                <% if !@student_position_first_term[@student.id.to_i].blank? %> 
-                                  <%= @student_position_first_term[@student.id.to_i] %> out of <%= @total_std %>
-                                <% else %>
-                                  -
-                                <% end %> 
-                              <% end %> 
-                          </b>  
+                          <% if failed == true %>
+                            -
+                          <% else %>
+                            <% if !@student_position_first_term[@student.id.to_i].blank? %> 
+                              <b><%= @student_position_first_term[@student.id.to_i] %> out of <%= @total_std %></b>
+                            <% else %>
+                              -
+                            <% end %> 
+                          <% end %>
                       </td> 
                       <td class="col-pdf align-left">
                           Attendance

@@ -9234,6 +9234,7 @@ class ExamController < ApplicationController
               #full_mark = 0
               #total_subject = total_subject+1
           end 
+          end 
 
             grade_point_avg = grand_grade_point.to_f/total_subject.to_f
             grade_point_avg = grade_point_avg.round(2)

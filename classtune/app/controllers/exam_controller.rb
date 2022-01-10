@@ -8960,6 +8960,7 @@ class ExamController < ApplicationController
             u_grade = 0
             grand_total_main = 0
             grade_poin_main = 0
+            
             @student_tab = @student_all_tab.find{|val| val.id.to_i == std['id'].to_i }
             if @student_tab.blank?
               next
@@ -8983,6 +8984,7 @@ class ExamController < ApplicationController
             total_std_subject = all_total_std_subject.select{|val| val.student_id.to_i == std['id'].to_i }
             std_subject_id = total_std_subject.map(&:subject_id)
             total_subject = 0
+            total_subject_main = 0
             subject_grade_done = []
             subject_array = []
             tab['subjects'].each do |sub|

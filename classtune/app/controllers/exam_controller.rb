@@ -3489,9 +3489,9 @@ class ExamController < ApplicationController
     @class = params[:class]
     if @connect_exam_obj.result_type.to_i == 11 or @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 16
       finding_data_sagc_covid()
-    elsif @connect_exam_obj.result_type.to_i == 9 or @connect_exam_obj.result_type.to_i == 17
+    elsif @connect_exam_obj.result_type.to_i == 17
       finding_data_sagc_25()
-    elsif @connect_exam_obj.result_type.to_i == 18
+    elsif @connect_exam_obj.result_type.to_i == 9 or @connect_exam_obj.result_type.to_i == 18
       finding_data_sagc_18()
     elsif @connect_exam_obj.result_type.to_i == 19
       finding_data_19()

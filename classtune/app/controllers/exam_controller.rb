@@ -3491,9 +3491,9 @@ class ExamController < ApplicationController
       finding_data_sagc_covid()
     elsif @connect_exam_obj.result_type.to_i == 17
       finding_data_sagc_25()
-    elsif @connect_exam_obj.result_type.to_i == 9 or @connect_exam_obj.result_type.to_i == 18
+    elsif @connect_exam_obj.result_type.to_i == 18
       finding_data_sagc_18()
-    elsif @connect_exam_obj.result_type.to_i == 19
+    elsif @connect_exam_obj.result_type.to_i == 9 or @connect_exam_obj.result_type.to_i == 19
       finding_data_19()
     else
       finding_data5()

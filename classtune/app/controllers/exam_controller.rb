@@ -13280,7 +13280,7 @@ class ExamController < ApplicationController
               end
             end
             if stdd.to_s == '202871'
-              abort(@student_result[loop_std]['subjects'].inspect)
+              abort(grads.inspect)
             end
           end
         end

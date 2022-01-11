@@ -9187,7 +9187,7 @@ class ExamController < ApplicationController
               
               if @subject_highest[sub['id'].to_i].blank?
                 @subject_highest[sub['id'].to_i] = tota_mark_with_monthly
-              elsif total_mark_subject.to_f > @subject_highest[sub['id'].to_i].to_f
+              elsif tota_mark_with_monthly.to_f > @subject_highest[sub['id'].to_i].to_f
                 @subject_highest[sub['id'].to_i] = tota_mark_with_monthly.to_f
               end
               

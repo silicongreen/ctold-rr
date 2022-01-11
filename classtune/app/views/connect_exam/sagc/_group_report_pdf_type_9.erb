@@ -527,7 +527,7 @@
                       <td class="no-warp">
                           <% if failed == true %>
                             -
-                            exam_connect_merit_lists.position = 0
+                            <% exam_connect_merit_lists.position = 0 %>
                           <% else %>
                             <% if !@student_position[@student.id.to_i].blank? %> 
                               <%= @student_position[@student.id.to_i][0] %> out of <%= @total_std_batch %>
@@ -567,7 +567,7 @@
                             <% if !@student_position[@student.id.to_i].blank? %> 
                               <b><%= @student_position[@student.id.to_i][1] %> out of <%= @total_std %></b>
                               <%
-                                exam_connect_merit_lists.section_position = @student_position_first_term[@student.id.to_i][1]
+                                exam_connect_merit_lists.section_position = @student_position[@student.id.to_i][1]
                               %>  
                             <% else %>
                               -

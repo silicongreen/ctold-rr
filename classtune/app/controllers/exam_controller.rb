@@ -11310,6 +11310,7 @@ class ExamController < ApplicationController
             total_subject = 0
             subject_array = []
             grads = @student_tab.admission_no.to_s + " "
+            stdd = @student_tab.admission_no.to_s
             tab['subjects'].each do |sub|
               if subject_array.include?(sub['id'].to_i)
                 next
@@ -13278,7 +13279,9 @@ class ExamController < ApplicationController
                 @failed_partial_absent[total_failed] = @failed_partial_absent[total_failed]+1
               end
             end
-            #abort(grads.inspect)
+            if stdd.to_s == '202871'
+              abort(grads.inspect)
+            end
           end
         end
       end

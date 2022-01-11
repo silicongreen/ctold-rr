@@ -9185,6 +9185,12 @@ class ExamController < ApplicationController
                 @subject_result[main_sub_id]['total'] = @subject_result[main_sub_id]['total']+1
               end
               
+              if @subject_highest[sub['id'].to_i].blank?
+                @subject_highest[sub['id'].to_i] = tota_mark_with_monthly
+              elsif total_mark_subject.to_f > @subject_highest[sub['id'].to_i].to_f
+                @subject_highest[sub['id'].to_i] = tota_mark_with_monthly.to_f
+              end
+              
               if !grade.blank? && !grade.name.blank? && sub['grade_subject'].to_i != 1
                 if failed_subject == true
                   if @subject_result[main_sub_id]['failed'].blank?
@@ -9227,11 +9233,7 @@ class ExamController < ApplicationController
               end
             end
 
-            if @subject_highest[sub['id'].to_i].blank?
-              @subject_highest[sub['id'].to_i] = tota_mark_with_monthly
-            elsif total_mark_subject.to_f > @subject_highest[sub['id'].to_i].to_f
-              @subject_highest[sub['id'].to_i] = tota_mark_with_monthly.to_f
-            end
+            
               
               
               #if sub['grade_subject'].to_i != 1

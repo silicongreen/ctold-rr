@@ -13279,13 +13279,13 @@ class ExamController < ApplicationController
                 @failed_partial_absent[total_failed] = @failed_partial_absent[total_failed]+1
               end
             end
-            #if stdd.to_s == '202871'
-              abort(grads.inspect)
-            #end
+            if stdd.to_s == '202871'
+              abort(@student_result[loop_std]['subjects'].inspect)
+            end
           end
         end
       end
-      
+      abort("dididl")
       @student_position_first_term = {}
       @student_position_second_term = {}
       @student_position = {}

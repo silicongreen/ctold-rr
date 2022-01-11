@@ -6430,7 +6430,7 @@ class ExamController < ApplicationController
     @connect_exam_obj = ExamConnect.find_by_id(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id,:include=>["course"])
    
-    exam_connect_merit_lists = ExamConnectMeritList.find(:first, :conditions=>"connect_exam_id = #{@connect_exam_obj.id} and batch_id = #{@batch.id} and position > 0") 
+    exam_connect_merit_lists = ExamConnectMeritList.find(:first, :conditions=>"connect_exam_id = #{@connect_exam_obj.id} and batch_id = #{@batch.id}") 
     if exam_connect_merit_lists.blank?
       exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>"connect_exam_id = #{@connect_exam_obj.id} and batch_id = #{@batch.id}", :order=>"marks DESC") 
       unless exam_connect_merit_lists.blank?
@@ -6464,14 +6464,16 @@ class ExamController < ApplicationController
               pos = i
             end
             exam_connect_merit_list.update_attributes(:section_position=>pos)
-            i = i + 1
+            if pos.to_i > 0
+              i = i + 1
+            end  
           end
         end
       end
     end
     
     @student_position = [];
-    exam_connect_merit_lists = ExamConnectMeritList.find(:first, :conditions=>"connect_exam_id = #{@connect_exam_obj.id} and batch_id = #{@batch.id} and position > 0", :order => "marks DESC, position asc") 
+    exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>"connect_exam_id = #{@connect_exam_obj.id} and batch_id = #{@batch.id} and position > 0", :order => "marks DESC, position asc") 
     unless exam_connect_merit_lists.blank?
       exam_connect_merit_lists.each do |exam_connect_merit_list|
          @student_position[exam_connect_merit_list.student.id] = [];   

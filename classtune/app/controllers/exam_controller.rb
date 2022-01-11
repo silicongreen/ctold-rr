@@ -3507,7 +3507,7 @@ class ExamController < ApplicationController
       if @class.blank?
         qry = "connect_exam_id = #{@connect_exam_obj.id} and batch_id = #{@batch.id}"
       else
-        qry = "batch_id IN (#{all_batch.join(",")})"
+        qry = "batch_id IN (#{all_batch.map(&:id).join(",")})"
       end
       exam_connect_merit_lists = ExamConnectMeritList.find(:first, :conditions=>"#{qry}") 
       unless exam_connect_merit_lists.blank?

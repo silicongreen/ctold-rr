@@ -536,15 +536,15 @@
                           <% if failed == true %>
                             -
                           <% else %>
-                            <% if !@student_position_first_term_batch[@student.id.to_i].blank? %> 
-                              <%= @student_position_first_term_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
+                            <% if !@student_position[@student.id.to_i].blank? %> 
+                              <%= @student_position[@student.id.to_i]['batch'] %> out of <%= @total_std_batch %>
                               <%
-                                exam_connect_merit_lists.position = @student_position_first_term_batch[@student.id.to_i]
+                                exam_connect_merit_lists.position = @student_position[@student.id.to_i]['batch']
                               %>  
                             <% else %>
                               -
                               <%
-                                exam_connect_merit_lists.position = '-'
+                                exam_connect_merit_lists.position = -1
                               %>  
                             <% end %> 
                           <% end %> 
@@ -568,18 +568,18 @@
                           <% if failed == true %>
                             -
                             <%
-                              exam_connect_merit_lists.section_position = '-'
+                              exam_connect_merit_lists.section_position = '-1'
                             %>
                           <% else %>
-                            <% if !@student_position_first_term[@student.id.to_i].blank? %> 
-                              <b><%= @student_position_first_term[@student.id.to_i] %> out of <%= @total_std %></b>
+                            <% if !@student_position[@student.id.to_i].blank? %> 
+                              <b><%= @student_position[@student.id.to_i]['section'] %> out of <%= @total_std %></b>
                               <%
-                                exam_connect_merit_lists.section_position = @student_position_first_term[@student.id.to_i]
+                                exam_connect_merit_lists.section_position = @student_position_first_term[@student.id.to_i]['section']
                               %>  
                             <% else %>
                               -
                               <%
-                                exam_connect_merit_lists.section_position = '-'
+                                exam_connect_merit_lists.section_position = '-1'
                               %>
                             <% end %> 
                           <% end %>

@@ -13278,7 +13278,7 @@ class ExamController < ApplicationController
                 @failed_partial_absent[total_failed] = @failed_partial_absent[total_failed]+1
               end
             end
-            abort(grads.inspect)
+            #abort(grads.inspect)
           end
         end
       end

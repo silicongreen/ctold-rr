@@ -3496,7 +3496,7 @@ class ExamController < ApplicationController
     elsif @connect_exam_obj.result_type.to_i == 19
       finding_data_19()
     elsif @connect_exam_obj.result_type.to_i == 9
-      @exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>{:connect_exam_id=>@id,:batch_id=>@batch.id}, :order => 'position ASC')
+      @exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>{:connect_exam_id=>@id,:batch_id=>@batch.id}, :order => 'marks ASC, position ASC')
     else
       finding_data5()
     end

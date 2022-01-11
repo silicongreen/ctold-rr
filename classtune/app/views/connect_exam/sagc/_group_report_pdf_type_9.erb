@@ -7,8 +7,29 @@
         @student_position_first_term_batch = @student_position_second_term_batch
         end
       
+      pos = 0
+      section_pos = 0
+      
+      outof_pos = 0
+      outof_section_pos = 0
       exam_connect_merit_lists = ExamConnectMeritList.find(:first, :conditions=>{:connect_exam_id=>@connect_exam_obj.id,:student_id=>@student.id,:batch_id=>@student.batch_id})
       unless exam_connect_merit_lists.nil?
+        pos = exam_connect_merit_lists.position
+        section_pos = exam_connect_merit_lists.section_position
+        group_tmp = @batch.course.group.split(" ")
+        unless group_tmp[2].blank?
+            group_d = group_tmp[0]+" "+group_tmp[1]
+        end
+        if !@batch.course.group.blank? && !@batch.course.group.index("--").nil? 
+          group_d = ""
+        end 
+        
+        outof_pos = Student.count(:all, :conditions => "batch_id = #{@student.batch_id}")
+        group_course_ids = Course.find(:all, :conditions => "course_name = '#{@batch.course.course_name}' and `group` = '#{group_d}'").map(&:id)
+        group_batch_ids = Batch.find(:all, :conditions => "course_id IN (#{group_course_ids.join(",")})").map(&:id)
+        outof_pos = Student.count(:all, :conditions => "batch_id = #{@student.batch_id}")
+        outof_section_pos = Student.count(:all, :conditions => "batch_id IN (#{group_batch_ids.join(",")})")
+        
         exam_connect_merit_lists.destroy
       end
       
@@ -19,6 +40,9 @@
       exam_connect_merit_lists.student_roll_no = @student.class_roll_no
       exam_connect_merit_lists.student_name = @student.full_name
       exam_connect_merit_lists.batch_id = @student.batch_id
+      
+      exam_connect_merit_lists.outof_pos = outof_pos
+      exam_connect_merit_lists.outof_section_pos = outof_section_pos
 
     %> 
       <% total_u = 0 %>

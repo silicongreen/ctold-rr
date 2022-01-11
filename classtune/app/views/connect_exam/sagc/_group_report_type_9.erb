@@ -493,8 +493,12 @@
                           &nbsp;
                       </td>
                   </tr>
+                  
                   <%
-                    exam_connect_merit_lists.save
+                    if exam_connect_merit_lists.save
+                    else
+                      abort(exam_connect_merit_lists.errors.inspect)
+                    end
                   %>
 
               </table>

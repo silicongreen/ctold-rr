@@ -13310,7 +13310,6 @@ class ExamController < ApplicationController
       @section_all_position_batch_final_term = {}
       last_grade = 0.0
       last_total = 0.0
-      abort(@student_result.inspect)
       unless @student_list.blank?
         position = 0
         @sorted_students = @student_list.sort

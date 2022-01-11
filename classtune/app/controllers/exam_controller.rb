@@ -3503,10 +3503,15 @@ class ExamController < ApplicationController
       
       group_name = courseObj.group
       @group_name_upper = group_name
-      
-      exam_connect_merit_lists = ExamConnectMeritList.find(:first, :conditions=>"connect_exam_id = #{@connect_exam_obj.id} and batch_id = #{@batch.id}") 
+      qry = ""
+      if @class.blank?
+        qry = "connect_exam_id = #{@connect_exam_obj.id} and batch_id = #{@batch.id}"
+      else
+        qry = "batch_id IN (#{all_batch.join(",")})"
+      end
+      exam_connect_merit_lists = ExamConnectMeritList.find(:first, :conditions=>"#{qry}") 
       unless exam_connect_merit_lists.blank?
-        exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>"connect_exam_id = #{@connect_exam_obj.id} and batch_id = #{@batch.id}", :order=>"gpa DESC") 
+        exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>"#{qry}", :order=>"gpa DESC") 
         unless exam_connect_merit_lists.blank?
           i = 1
           exam_connect_merit_lists.each do |exam_connect_merit_list|
@@ -3538,7 +3543,7 @@ class ExamController < ApplicationController
       end
       
       
-      @exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>{:connect_exam_id=>@id,:batch_id=>@batch.id}, :order => 'gpa DESC, position ASC')
+      @exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>"#{qry}", :order => 'gpa DESC, position ASC')
     else
       finding_data5()
     end

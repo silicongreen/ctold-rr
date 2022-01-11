@@ -3521,7 +3521,7 @@ class ExamController < ApplicationController
           group_course_ids = Course.find(:all, :conditions => "course_name = '#{@batch.course.course_name}' and `group` = '#{group_tmp[0]}'").map(&:id)
           group_batch_ids = Batch.find(:all, :conditions => "course_id IN (#{group_course_ids.join(",")})").map(&:id)
 
-          exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=> "connect_exam_id = #{@connect_exam_obj.id} AND batch_id IN (#{group_batch_ids.join(",")})", :order=>"gpa DESC") 
+          exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=> "connect_exam_id = #{@connect_exam_obj.id} AND batch_id IN (#{group_batch_ids.join(",")})", :order=>"gpa1 DESC") 
           unless exam_connect_merit_lists.blank?
             i = 1
             exam_connect_merit_lists.each do |exam_connect_merit_list|

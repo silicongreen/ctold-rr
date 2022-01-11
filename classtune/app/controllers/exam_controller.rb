@@ -3495,8 +3495,8 @@ class ExamController < ApplicationController
       finding_data_sagc_18()
     elsif @connect_exam_obj.result_type.to_i == 19
       finding_data_19()
-    elsif @connect_exam_obj.result_type.to_i == 9
-      finding_data_9()  
+    #elsif @connect_exam_obj.result_type.to_i == 9
+    #  finding_data_9()  
     else
       finding_data5()
     end

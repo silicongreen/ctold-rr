@@ -565,7 +565,7 @@
                             %>
                           <% else %>
                             <% if section_pos.to_i > 0 %> 
-                              <b><%= debug section_pos.inspect %><%= section_pos %> out of <%= @total_std %></b>
+                              <b><%= section_pos %> out of <%= @total_std %></b>
                               <%
                                 exam_connect_merit_lists.section_position = section_pos
                               %>  

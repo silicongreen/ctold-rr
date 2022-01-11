@@ -13098,10 +13098,10 @@ class ExamController < ApplicationController
                     end
                   end
                 end
-                abort(grads.inspect)
               end
             end 
-    
+            
+            abort(grads.inspect)
             
             if exam_type == 3
               grade_point_avg = grand_grade_point.to_f/total_subject.to_f

@@ -3496,6 +3496,14 @@ class ExamController < ApplicationController
     elsif @connect_exam_obj.result_type.to_i == 19
       finding_data_19()
     elsif @connect_exam_obj.result_type.to_i == 9
+      batchobj = Batch.find_by_id(@batch.id) 
+      courseObj = Course.find_by_id(batchobj.course_id)
+      all_courses = Course.find_all_by_course_name(courseObj.course_name)
+      all_batch = Batch.find_all_by_course_id(all_courses.map(&:id))
+      
+      group_name = courseObj.group
+      @group_name_upper = group_name
+      
       exam_connect_merit_lists = ExamConnectMeritList.find(:first, :conditions=>"connect_exam_id = #{@connect_exam_obj.id} and batch_id = #{@batch.id}") 
       unless exam_connect_merit_lists.blank?
         exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>"connect_exam_id = #{@connect_exam_obj.id} and batch_id = #{@batch.id}", :order=>"gpa DESC") 

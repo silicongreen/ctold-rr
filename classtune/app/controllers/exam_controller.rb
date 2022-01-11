@@ -6462,11 +6462,9 @@ class ExamController < ApplicationController
             pos = 0
             if exam_connect_merit_list.gpa.to_f > 0.0
               pos = i
+              i = i + 1
             end
             exam_connect_merit_list.update_attributes(:section_position=>pos)
-            if pos.to_i > 0
-              i = i + 1
-            end  
           end
         end
       end
@@ -6476,7 +6474,7 @@ class ExamController < ApplicationController
     exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>"connect_exam_id = #{@connect_exam_obj.id} and batch_id = #{@batch.id} and position > 0", :order => "marks DESC, position asc") 
     unless exam_connect_merit_lists.blank?
       exam_connect_merit_lists.each do |exam_connect_merit_list|
-         @student_position[exam_connect_merit_list.student.id] = [];   
+         @student_position[exam_connect_merit_list.student.id] = {};   
          @student_position[exam_connect_merit_list.student.id]['batch'] = exam_connect_merit_list.position
          @student_position[exam_connect_merit_list.student.id]['section'] = exam_connect_merit_list.section_position
       end

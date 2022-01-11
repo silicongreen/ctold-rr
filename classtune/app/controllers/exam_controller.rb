@@ -6478,15 +6478,7 @@ class ExamController < ApplicationController
           exam_connect_merit_list.update_attributes(:position=>pos)
         end
         
-        group_tmp = @batch.course.group.split(" ")
-        unless group_tmp[2].blank?
-            group_tmp[0] = group_tmp[0]+" "+group_tmp[1]
-        end
-        if !@batch.course.group.blank? && !@batch.course.group.index("--").nil? 
-          group_tmp[0] = ""
-        end 
-        
-        group_course_ids = Course.find(:all, :conditions => "course_name = '#{@batch.course.course_name}' and `group` = '#{group_tmp[0]}' and is_deleted = 0").map(&:id)
+        group_course_ids = Course.find(:all, :conditions => "course_name = '#{@batch.course.course_name}' and `group` = '#{@batch.course.group}' and is_deleted = 0").map(&:id)
         group_batch_ids = Batch.find(:all, :conditions => "course_id IN (#{group_course_ids.join(",")}) and is_deleted = 0").map(&:id)
         connect_exam_ids = ExamConnect.find(:all, :conditions=> "batch_id IN (#{group_batch_ids.join(",")}) and is_deleted = 0").map(&:id)
         

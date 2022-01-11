@@ -565,7 +565,7 @@
                             %>
                           <% else %>
                             <% if !@student_position[@student.id.to_i].blank? %> 
-                              <b><%= @student_position[@student.id.to_i][1] %> out of <%= @total_std %></b>
+                              <b><%= debug @student_position[@student.id.to_i].inspect =><%= @student_position[@student.id.to_i][1] %> out of <%= @total_std %></b>
                               <%
                                 exam_connect_merit_lists.section_position = @student_position[@student.id.to_i][1]
                               %>  

@@ -13015,7 +13015,7 @@ class ExamController < ApplicationController
                       end
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = ob_round+sb_round+pr_round
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = subject_full_marks
-                      abort(grads.inspect)
+                      
                    
                       if @subject_result[main_sub_id].blank?
                         @subject_result[main_sub_id] = {}
@@ -13098,6 +13098,7 @@ class ExamController < ApplicationController
                     end
                   end
                 end
+                abort(grads.inspect)
               end
             end 
     

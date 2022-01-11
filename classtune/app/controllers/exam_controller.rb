@@ -12021,7 +12021,7 @@ class ExamController < ApplicationController
                 end  
                 subject_full_marks = main_mark_no_round.round()
                 ct_marks_main = (main_mark_no_round/100)*full_mark1
-                if sub['grade_subject'].to_i == 1
+                if sub['grade_subject'].to_i != 1
                   if @student_subject_marks[sub['id'].to_i].blank?
                     @student_subject_marks[sub['id'].to_i] = {}
                   end
@@ -12046,33 +12046,33 @@ class ExamController < ApplicationController
                   if fourth_subject.blank? && subject_failed == false
                     grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
                     if !grade.blank? and !grade.name.blank?
-                      #unless sub['subject_group_id'].to_i > 0
+                      unless sub['subject_group_id'].to_i > 0
                         grand_grade_point1 = grand_grade_point1+grade.credit_points.to_f
                         grads = grads + " up1 " + sub['name'].to_s + "  " + grade.credit_points.to_s + "  " + main_mark1.to_s + "\n"
                         if grade.credit_points.to_i == 0
                           u_grade1 = u_grade1+1
                         end
-                      #end
+                      end
                     end
                     grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
                     if !grade.blank? and !grade.name.blank?
-                      #unless sub['subject_group_id'].to_i > 0
+                      unless sub['subject_group_id'].to_i > 0
                         grand_grade_point2 = grand_grade_point2+grade.credit_points.to_f
                         grads = grads + " up2 " + sub['name'].to_s + "  " + grade.credit_points.to_s + "  " + main_mark2.to_s + "\n"
                         if grade.credit_points.to_i == 0
                           u_grade2 = u_grade2+1
                         end
-                      #end
+                      end
                     end
                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                     if !grade.blank? and !grade.name.blank?
-                      #unless sub['subject_group_id'].to_i > 0
+                      unless sub['subject_group_id'].to_i > 0
                         grand_grade_point = grand_grade_point+grade.credit_points.to_f
                         grads = grads + " up3 " + sub['name'].to_s + "  " + grade.credit_points.to_s + "  " + main_mark.to_s + "\n"
                         if grade.credit_points.to_i == 0
                           u_grade = u_grade+1
                         end
-                      #end
+                      end
                     end 
                   elsif subject_failed == false and four_subject_failed == false
                     grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
@@ -13279,13 +13279,13 @@ class ExamController < ApplicationController
                 @failed_partial_absent[total_failed] = @failed_partial_absent[total_failed]+1
               end
             end
-            if stdd.to_s == '202871'
-              abort(grads.inspect)
-            end
+            #if stdd.to_s == '202871'
+             # abort(grads.inspect)
+            #end
           end
         end
       end
-      abort("dididl")
+      #abort("dididl")
       @student_position_first_term = {}
       @student_position_second_term = {}
       @student_position = {}
@@ -13299,7 +13299,7 @@ class ExamController < ApplicationController
       @section_all_position_batch_final_term = {}
       last_grade = 0.0
       last_total = 0.0
-      
+      abort(@student_list.inspect)
       unless @student_list.blank?
         position = 0
         @sorted_students = @student_list.sort

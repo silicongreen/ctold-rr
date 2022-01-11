@@ -6430,7 +6430,10 @@ class ExamController < ApplicationController
     @connect_exam_obj = ExamConnect.find_by_id(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id,:include=>["course"])
    
-    
+    exam_connect_merit_lists = ExamConnectMeritList.find(:first, :conditions=>"connect_exam_id = #{@connect_exam_obj.id} and batch_id = #{@batch.id} and position > 0") 
+    if exam_connect_merit_lists.blank?
+      
+    end
     
     #    pdf_name = "continues_connect_exam_"+@connect_exam_obj.id.to_s+".pdf"
     #    dirname = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"continues","0"+@connect_exam_obj.id.to_s)

@@ -11309,7 +11309,7 @@ class ExamController < ApplicationController
             std_subject_id = total_std_subject.map(&:subject_id)
             total_subject = 0
             subject_array = []
-            grads = ""
+            grads = @student_tab.admission_no.to_s + " "
             tab['subjects'].each do |sub|
               if subject_array.include?(sub['id'].to_i)
                 next

@@ -11309,6 +11309,7 @@ class ExamController < ApplicationController
             std_subject_id = total_std_subject.map(&:subject_id)
             total_subject = 0
             subject_array = []
+            grads = ""
             tab['subjects'].each do |sub|
               if subject_array.include?(sub['id'].to_i)
                 next
@@ -12046,7 +12047,7 @@ class ExamController < ApplicationController
                     if !grade.blank? and !grade.name.blank?
                       unless sub['subject_group_id'].to_i > 0
                         grand_grade_point1 = grand_grade_point1+grade.credit_points.to_f
-                      
+                        grads = grads + " " + sub['name'].to_s + "  " + grade.credit_points.to_s + "  " + main_mark1.to_s + "\n"
                         if grade.credit_points.to_i == 0
                           u_grade1 = u_grade1+1
                         end
@@ -12056,7 +12057,7 @@ class ExamController < ApplicationController
                     if !grade.blank? and !grade.name.blank?
                       unless sub['subject_group_id'].to_i > 0
                         grand_grade_point2 = grand_grade_point2+grade.credit_points.to_f
-                      
+                        grads = grads + " " + sub['name'].to_s + "  " + grade.credit_points.to_s + "  " + main_mark2.to_s + "\n"
                         if grade.credit_points.to_i == 0
                           u_grade2 = u_grade2+1
                         end
@@ -12066,7 +12067,7 @@ class ExamController < ApplicationController
                     if !grade.blank? and !grade.name.blank?
                       unless sub['subject_group_id'].to_i > 0
                         grand_grade_point = grand_grade_point+grade.credit_points.to_f
-                      
+                        grads = grads + " " + sub['name'].to_s + "  " + grade.credit_points.to_s + "  " + main_mark.to_s + "\n"
                         if grade.credit_points.to_i == 0
                           u_grade = u_grade+1
                         end
@@ -12078,6 +12079,7 @@ class ExamController < ApplicationController
                       new_grade_point = grade.credit_points.to_f-2
                       if new_grade_point > 0
                         grand_grade_point1 = grand_grade_point1+new_grade_point.to_f
+                        grads = grads + " " + sub['name'].to_s + "  " + grade.credit_points.to_s + "  " + main_mark1.to_s + "\n"
                       end
                     end
                     grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
@@ -12085,6 +12087,7 @@ class ExamController < ApplicationController
                       new_grade_point = grade.credit_points.to_f-2
                       if new_grade_point > 0
                         grand_grade_point2 = grand_grade_point2+new_grade_point.to_f
+                        grads = grads + " " + sub['name'].to_s + "  " + grade.credit_points.to_s + "  " + main_mark2.to_s + "\n"
                       end
                     end
                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
@@ -12092,6 +12095,7 @@ class ExamController < ApplicationController
                       new_grade_point = grade.credit_points.to_f-2
                       if new_grade_point > 0
                         grand_grade_point = grand_grade_point+new_grade_point.to_f
+                        grads = grads + " " + sub['name'].to_s + "  " + grade.credit_points.to_s + "  " + main_mark.to_s + "\n"
                       end
                     end
                   end  
@@ -12906,6 +12910,7 @@ class ExamController < ApplicationController
                         grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
                         if !grade.blank? and !grade.name.blank?
                           grand_grade_point1 = grand_grade_point1+grade.credit_points.to_f
+                          grads = grads + " " + sub['name'].to_s + "  " + grade.credit_points.to_s + "  " + main_mark1.to_s + "\n"
                           if grade.credit_points.to_i == 0
                             u_grade1 = u_grade1+1
                           end
@@ -12913,6 +12918,7 @@ class ExamController < ApplicationController
                         grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
                         if !grade.blank? and !grade.name.blank?
                           grand_grade_point2 = grand_grade_point2+grade.credit_points.to_f
+                          grads = grads + " " + sub['name'].to_s + "  " + grade.credit_points.to_s + "  " + main_mark2.to_s + "\n"
                           if grade.credit_points.to_i == 0
                             u_grade2 = u_grade2+1
                           end
@@ -12920,6 +12926,7 @@ class ExamController < ApplicationController
                         grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                         if !grade.blank? and !grade.name.blank?
                           grand_grade_point = grand_grade_point+grade.credit_points.to_f
+                          grads = grads + " " + sub['name'].to_s + "  " + grade.credit_points.to_s + "  " + main_mark.to_s + "\n"
                           if grade.credit_points.to_i == 0
                             u_grade = u_grade+1
                           end
@@ -12930,6 +12937,7 @@ class ExamController < ApplicationController
                           new_grade_point = grade.credit_points.to_f-2
                           if new_grade_point > 0
                             grand_grade_point1 = grand_grade_point1+new_grade_point.to_f
+                            grads = grads + " " + sub['name'].to_s + "  " + grade.credit_points.to_s + "  " + main_mark1.to_s + "\n"
                           end
                         end
                         grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
@@ -12937,6 +12945,7 @@ class ExamController < ApplicationController
                           new_grade_point = grade.credit_points.to_f-2
                           if new_grade_point > 0
                             grand_grade_point2 = grand_grade_point2+new_grade_point.to_f
+                            grads = grads + " " + sub['name'].to_s + "  " + grade.credit_points.to_s + "  " + main_mark2.to_s + "\n"
                           end
                         end
                         grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
@@ -12944,6 +12953,7 @@ class ExamController < ApplicationController
                           new_grade_point = grade.credit_points.to_f-2
                           if new_grade_point > 0
                             grand_grade_point = grand_grade_point+new_grade_point.to_f
+                            grads = grads + " " + sub['name'].to_s + "  " + grade.credit_points.to_s + "  " + main_mark.to_s + "\n"
                           end
                         end
                       end  
@@ -13005,7 +13015,7 @@ class ExamController < ApplicationController
                       end
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = ob_round+sb_round+pr_round
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = subject_full_marks
-                      
+                      abort(grads.inspect)
                    
                       if @subject_result[main_sub_id].blank?
                         @subject_result[main_sub_id] = {}

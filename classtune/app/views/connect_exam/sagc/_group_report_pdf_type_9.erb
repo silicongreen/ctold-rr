@@ -534,6 +534,7 @@
                       <td class="no-warp">
                           <% if failed == true %>
                             -
+                            exam_connect_merit_lists.position = 0
                           <% else %>
                             <% if !@student_position[@student.id.to_i].blank? %> 
                               <%= @student_position[@student.id.to_i][0] %> out of <%= @total_std_batch %>

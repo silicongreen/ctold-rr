@@ -14,8 +14,8 @@
       outof_section_pos = 0
       exam_connect_merit_lists = ExamConnectMeritList.find(:first, :conditions=>{:connect_exam_id=>@connect_exam_obj.id,:student_id=>@student.id,:batch_id=>@student.batch_id})
       unless exam_connect_merit_lists.nil?
-        @student_position[@student.id][0] = exam_connect_merit_lists.position
-        @student_position[@student.id][1] = exam_connect_merit_lists.section_position
+        pos = exam_connect_merit_lists.position
+        section_pos = exam_connect_merit_lists.section_position
         
         group_course_ids = Course.find(:all, :conditions => "course_name = '#{@batch.course.course_name}' and `group` = '#{@batch.course.group}' and is_deleted = 0").map(&:id)
         group_batch_ids = Batch.find(:all, :conditions => "course_id IN (#{group_course_ids.join(",")}) and is_deleted = 0").map(&:id)
@@ -529,10 +529,10 @@
                             -
                             <% exam_connect_merit_lists.position = 0 %>
                           <% else %>
-                            <% if !@student_position[@student.id.to_i].blank? %> 
-                              <%= @student_position[@student.id.to_i][0] %> out of <%= @total_std_batch %>
+                            <% if pos.to_i > 0 %> 
+                              <%= pos %> out of <%= @total_std_batch %>
                               <%
-                                exam_connect_merit_lists.position = @student_position[@student.id.to_i][0]
+                                exam_connect_merit_lists.position = pos
                               %>  
                             <% else %>
                               -
@@ -564,10 +564,10 @@
                               exam_connect_merit_lists.section_position = 0
                             %>
                           <% else %>
-                            <% if !@student_position[@student.id.to_i].blank? %> 
-                              <b><%= debug @student_position[@student.id.to_i].inspect %><%= @student_position[@student.id.to_i][1] %> out of <%= @total_std %></b>
+                            <% if section_pos.to_i > 0 %> 
+                              <b><%= debug section_pos.inspect %><%= section_pos %> out of <%= @total_std %></b>
                               <%
-                                exam_connect_merit_lists.section_position = @student_position[@student.id.to_i][1]
+                                exam_connect_merit_lists.section_position = section_pos
                               %>  
                             <% else %>
                               -

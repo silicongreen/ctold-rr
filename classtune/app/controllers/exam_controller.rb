@@ -9083,7 +9083,7 @@ class ExamController < ApplicationController
               
               main_exam_mark = 0
               appeared = false
-              @tab['exams'].each do |rs|
+              tab['exams'].each do |rs|
                 if rs['exam_category'] != '1' and rs['exam_category'] != '2'
                   if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank?  and !rs['result'][rs['exam_id']][sub['id']]['marks_obtained'].blank?
                     if rs['result'][rs['exam_id']][sub['id']]['marks_obtained'].to_s != "AB"

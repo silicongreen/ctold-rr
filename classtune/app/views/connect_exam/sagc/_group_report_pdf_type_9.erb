@@ -7,6 +7,13 @@
         @student_position_first_term_batch = @student_position_second_term_batch
         end
 
+      exam_connect_merit_lists = ExamConnectMeritList.new 
+      exam_connect_merit_lists.student_id = @student.id
+      exam_connect_merit_lists.student_admission_no = @student.admission_no
+      exam_connect_merit_lists.student_roll_no = @student.class_roll_no
+      exam_connect_merit_lists.student_name = @student.full_name
+      exam_connect_merit_lists.batch_id = @student.batch_id
+
     %> 
       <% total_u = 0 %>
   <div id="page-yield"  class="available_sections1 baf_shaheen">
@@ -16,7 +23,7 @@
 
       <table id="pdf-table" class="tbl-lign-left" width="52%" cellspacing="0">
           <tr class="even">
-              <td class="align-right col-pdf" width="20%">Student ID1 </td>
+              <td class="align-right col-pdf" width="20%">Student ID </td>
               <td colspan="3" class="align-left"><b><%= @student.admission_no %></b></td>
           </tr>
           <tr class="odd">
@@ -336,6 +343,10 @@
                       <td class="col-pdf align-left-baf" colspan="<%= colspan %>"><b>Total Marks & Total GP</b></td>
                       <td class="col-pdf no-warp align-left-baf" colspan="3">&nbsp;&nbsp;&nbsp;<b><%= grand_total %></b></td>
                       <td class="col-pdf"><b><%= total_grade %></b></td>
+                      <%
+                        exam_connect_merit_lists.marks = grand_total
+                        exam_connect_merit_lists.gp = total_grade
+                      %>
                   </tr>    
 
                   <% unless @report_data['report']['subjects'].blank? %> 
@@ -452,8 +463,14 @@
                       <td><b>
                               <% if failed == true %>
                                 0.00
+                                <%
+                                  exam_connect_merit_lists.gpa = 0
+                                %>
                               <% else %>
                                 <%= sprintf( "%0.02f", grade_point_avg) %>
+                                <%
+                                  exam_connect_merit_lists.gpa = grade_point_avg
+                                %>
                               <% end %></b>
                       </td>
                       <td class="align-left no-warp" colspan="2"><b>Position in Merit List</b></td>
@@ -469,9 +486,15 @@
                           <b>
                               <% if failed == true %>
                                 F
+                                <%
+                                  exam_connect_merit_lists.lg = "F"
+                                %>
                               <% else %>
                                 <% if !grade.blank? and !grade.name.blank? %>
                                   <%= grade.name %>
+                                  <%
+                                    exam_connect_merit_lists.lg = grade.name
+                                  %>
                                 <% else %>
                                   -
                                 <% end %>
@@ -485,8 +508,14 @@
                           <% else %>
                             <% if !@student_position_first_term_batch[@student.id.to_i].blank? %> 
                               <%= @student_position_first_term_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
+                              <%
+                                exam_connect_merit_lists.position = @student_position_first_term_batch[@student.id.to_i]
+                              %>  
                             <% else %>
                               -
+                              <%
+                                exam_connect_merit_lists.position = '-'
+                              %>  
                             <% end %> 
                           <% end %> 
                       </td>
@@ -501,15 +530,27 @@
 
                       <td class="align-left no-warp">Total Marks With Fraction</td>
                       <td class="align-left no-warp"><b><%= sprintf( "%0.02f", grand_total_fraction)%></b></td>
+                      <%
+                        exam_connect_merit_lists.marks = grand_total_fraction
+                      %>  
                       <td class="align-left no-warp">Class/Group</td>
                       <td class="no-warp">
                           <% if failed == true %>
                             -
+                            <%
+                              exam_connect_merit_lists.section_position = '-'
+                            %>
                           <% else %>
                             <% if !@student_position_first_term[@student.id.to_i].blank? %> 
                               <b><%= @student_position_first_term[@student.id.to_i] %> out of <%= @total_std %></b>
+                              <%
+                                exam_connect_merit_lists.section_position = @student_position_first_term[@student.id.to_i]
+                              %>  
                             <% else %>
                               -
+                              <%
+                                exam_connect_merit_lists.section_position = '-'
+                              %>
                             <% end %> 
                           <% end %>
                       </td> 
@@ -520,7 +561,17 @@
                           &nbsp;
                       </td>
                   </tr>
-                  
+                  <%
+                    if exam_connect_merit_lists.save
+                  %>  
+                  aa
+                  <%
+                    else
+                  %>  
+                     vv
+                  <%  
+                  end
+                  %>
 
               </table>
               

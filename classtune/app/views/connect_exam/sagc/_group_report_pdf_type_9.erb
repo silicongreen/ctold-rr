@@ -25,7 +25,7 @@
         end 
         
         outof_pos = Student.count(:all, :conditions => "batch_id = #{@student.batch_id}")
-        group_course_ids = Course.find(:all, :conditions => "course_name = '#{@batch.course.course_name}' and `group` = '#{group_d}'").map(&:id)
+        group_course_ids = Course.find(:all, :conditions => "course_name1 = '#{@batch.course.course_name}' and `group` = '#{group_d}'").map(&:id)
         group_batch_ids = Batch.find(:all, :conditions => "course_id IN (#{group_course_ids.join(",")})").map(&:id)
         outof_pos = Student.count(:all, :conditions => "batch_id = #{@student.batch_id}")
         outof_section_pos = Student.count(:all, :conditions => "batch_id IN (#{group_batch_ids.join(",")})")

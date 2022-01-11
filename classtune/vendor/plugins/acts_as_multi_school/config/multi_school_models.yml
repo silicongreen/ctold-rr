@@ -158,6 +158,7 @@ multi_school_models:
 - StudentBatchLog
 - AttendanceVehicle
 - UploadSyllabus
+- ExamConnectMeritList
 
 general_models: 
 - PrivilegeTag

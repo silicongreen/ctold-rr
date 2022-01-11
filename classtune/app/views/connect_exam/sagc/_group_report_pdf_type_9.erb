@@ -32,6 +32,7 @@
       exam_connect_merit_lists.student_roll_no = @student.class_roll_no
       exam_connect_merit_lists.student_name = @student.full_name
       exam_connect_merit_lists.batch_id = @student.batch_id
+      exam_connect_merit_lists.subject_failed = ""
       
       exam_connect_merit_lists.outof_pos = outof_pos
       exam_connect_merit_lists.outof_section_pos = outof_section_pos
@@ -324,6 +325,12 @@
                               <% if  failed_subject == true %>
                                 <% grade.credit_points = 0.0 %>
                                 <% grade.name = "F" %>
+                              <% end %>
+                              
+                              <% if  failed_subject == true %>
+                              <%
+                              exam_connect_merit_lists.subject_failed = exam_connect_merit_lists.subject_failed + subjects['code'].to_s + " - " + tota_mark_with_monthly.to_f.round.to_s + ","
+                              %>
                               <% end %>
                         
                               <% if fourth_subject.blank? %>

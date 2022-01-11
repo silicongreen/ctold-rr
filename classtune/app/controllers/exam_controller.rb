@@ -8983,10 +8983,16 @@ class ExamController < ApplicationController
             end
             total_std_subject = all_total_std_subject.select{|val| val.student_id.to_i == std['id'].to_i }
             std_subject_id = total_std_subject.map(&:subject_id)
+            total_grade = 0 
             total_subject = 0
             total_subject_main = 0
             subject_grade_done = []
             subject_array = []
+            grand_total = 0
+            grand_total_fraction = 0
+            grade_point_avg = 0
+            failed = false
+            already_done = false
             tab['subjects'].each do |sub|
               if sub['grade_subject'].to_i == 1 
                 next

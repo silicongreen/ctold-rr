@@ -9137,99 +9137,100 @@ class ExamController < ApplicationController
                   grade_point_avg = 5.00
                 end
               end
-              
-              if appeared
-                @student_result[loop_std]['subjects'][main_sub_id]['result']['fullmark'] = full_mark_all
-                if at_mark > 0
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['att'] = at_mark
+              if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)	
+                if appeared
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['fullmark'] = full_mark_all
+                  if at_mark > 0
+                    @student_result[loop_std]['subjects'][main_sub_id]['result']['att'] = at_mark
+                  else
+                    @student_result[loop_std]['subjects'][main_sub_id]['result']['att'] = 0
+                  end
+
+                  if class_test_mark > 0
+                    @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = class_test_mark
+                  elsif class_test_ab == true
+                    @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = "AB"
+                  else
+                    @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = 0
+                  end
+
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['main_exam_mark'] = main_exam_mark
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['avg_mark'] = avg_mark
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['total'] = tota_mark_with_monthly
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = grade.name 
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['gp'] = grade.credit_points
                 else
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['fullmark'] = full_mark_all
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['att'] = 0
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['main_exam_mark'] = "AB"
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['avg_mark'] = "AB"
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['total'] = "AB"
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = "F"
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['gp'] = "0"
+                end 
+
+                @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = tota_mark_with_monthly
+
+                @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = tota_mark_with_monthly.round()
+
+                if @subject_result[main_sub_id].blank?
+                  @subject_result[main_sub_id] = {}
+                  @subject_result[main_sub_id]['id'] = main_sub_id
+                  @subject_result[main_sub_id]['name'] = sub['name']
+
                 end
-                
-                if class_test_mark > 0
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = class_test_mark
-                elsif class_test_ab == true
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = "AB"
+                if @subject_result[main_sub_id]['total'].blank?
+                  @subject_result[main_sub_id]['total'] = 1
                 else
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = 0
+                  @subject_result[main_sub_id]['total'] = @subject_result[main_sub_id]['total']+1
                 end
-                
-                @student_result[loop_std]['subjects'][main_sub_id]['result']['main_exam_mark'] = main_exam_mark
-                @student_result[loop_std]['subjects'][main_sub_id]['result']['avg_mark'] = avg_mark
-                @student_result[loop_std]['subjects'][main_sub_id]['result']['total'] = tota_mark_with_monthly
-                @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = grade.name 
-                @student_result[loop_std]['subjects'][main_sub_id]['result']['gp'] = grade.credit_points
-              else
-                @student_result[loop_std]['subjects'][main_sub_id]['result']['fullmark'] = full_mark_all
-                @student_result[loop_std]['subjects'][main_sub_id]['result']['att'] = 0
-                @student_result[loop_std]['subjects'][main_sub_id]['result']['main_exam_mark'] = "AB"
-                @student_result[loop_std]['subjects'][main_sub_id]['result']['avg_mark'] = "AB"
-                @student_result[loop_std]['subjects'][main_sub_id]['result']['total'] = "AB"
-                @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = "F"
-                @student_result[loop_std]['subjects'][main_sub_id]['result']['gp'] = "0"
-              end 
-              
-              @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = tota_mark_with_monthly
 
-              @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = tota_mark_with_monthly.round()
-              
-              if @subject_result[main_sub_id].blank?
-                @subject_result[main_sub_id] = {}
-                @subject_result[main_sub_id]['id'] = main_sub_id
-                @subject_result[main_sub_id]['name'] = sub['name']
+                if @subject_highest[sub['id'].to_i].blank?
+                  @subject_highest[sub['id'].to_i] = tota_mark_with_monthly
+                elsif tota_mark_with_monthly.to_f > @subject_highest[sub['id'].to_i].to_f
+                  @subject_highest[sub['id'].to_i] = tota_mark_with_monthly.to_f
+                end
 
-              end
-              if @subject_result[main_sub_id]['total'].blank?
-                @subject_result[main_sub_id]['total'] = 1
-              else
-                @subject_result[main_sub_id]['total'] = @subject_result[main_sub_id]['total']+1
-              end
-              
-              if @subject_highest[sub['id'].to_i].blank?
-                @subject_highest[sub['id'].to_i] = tota_mark_with_monthly
-              elsif tota_mark_with_monthly.to_f > @subject_highest[sub['id'].to_i].to_f
-                @subject_highest[sub['id'].to_i] = tota_mark_with_monthly.to_f
-              end
-              
-              if !grade.blank? && !grade.name.blank? && sub['grade_subject'].to_i != 1
-                if failed_subject == true
-                  if @subject_result[main_sub_id]['failed'].blank?
-                    @subject_result[main_sub_id]['failed'] = 1
-                  else
-                    @subject_result[main_sub_id]['failed'] = @subject_result[main_sub_id]['failed']+1
-                  end
-                  if appeared
-                    if @subject_result[main_sub_id]['appeared'].blank?
-                      @subject_result[main_sub_id]['appeared'] = 1
+                if !grade.blank? && !grade.name.blank? && sub['grade_subject'].to_i != 1
+                  if failed_subject == true
+                    if @subject_result[main_sub_id]['failed'].blank?
+                      @subject_result[main_sub_id]['failed'] = 1
                     else
-                      @subject_result[main_sub_id]['appeared'] = @subject_result[main_sub_id]['appeared']+1
+                      @subject_result[main_sub_id]['failed'] = @subject_result[main_sub_id]['failed']+1
                     end
-                  else
-                    if @subject_result[main_sub_id]['absent'].blank?
-                      @subject_result[main_sub_id]['absent'] = 1
+                    if appeared
+                      if @subject_result[main_sub_id]['appeared'].blank?
+                        @subject_result[main_sub_id]['appeared'] = 1
+                      else
+                        @subject_result[main_sub_id]['appeared'] = @subject_result[main_sub_id]['appeared']+1
+                      end
                     else
-                      @subject_result[main_sub_id]['absent'] = @subject_result[main_sub_id]['absent']+1
+                      if @subject_result[main_sub_id]['absent'].blank?
+                        @subject_result[main_sub_id]['absent'] = 1
+                      else
+                        @subject_result[main_sub_id]['absent'] = @subject_result[main_sub_id]['absent']+1
+                      end
                     end
-                  end
-                  if fourth_subject.blank?
-                    if @student_result[loop_std]['subject_failed'].blank?
-                      @student_result[loop_std]['subject_failed'] = []
-                    end
+                    if fourth_subject.blank?
+                      if @student_result[loop_std]['subject_failed'].blank?
+                        @student_result[loop_std]['subject_failed'] = []
+                      end
 
-                    @student_result[loop_std]['subject_failed'] << sub['code']+"-"+tota_mark_with_monthly.round().to_s
-                  end 
-                else
-                  if @subject_result[main_sub_id].blank?
-                    @subject_result[main_sub_id] = {}
-                    @subject_result[main_sub_id]['id'] = main_sub_id
-                    @subject_result[main_sub_id]['name'] = sub['name']
-                  end
-                  if @subject_result[main_sub_id]['passed'].blank?
-                    @subject_result[main_sub_id]['passed'] = 1
+                      @student_result[loop_std]['subject_failed'] << sub['code']+"-"+tota_mark_with_monthly.round().to_s
+                    end 
                   else
-                    @subject_result[main_sub_id]['passed'] = @subject_result[main_sub_id]['passed']+1
-                  end
-                end  
+                    if @subject_result[main_sub_id].blank?
+                      @subject_result[main_sub_id] = {}
+                      @subject_result[main_sub_id]['id'] = main_sub_id
+                      @subject_result[main_sub_id]['name'] = sub['name']
+                    end
+                    if @subject_result[main_sub_id]['passed'].blank?
+                      @subject_result[main_sub_id]['passed'] = 1
+                    else
+                      @subject_result[main_sub_id]['passed'] = @subject_result[main_sub_id]['passed']+1
+                    end
+                  end  
+                end
               end
             end
 

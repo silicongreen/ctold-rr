@@ -368,33 +368,7 @@ end
                         <td class="col-pdf no-warp center-clas"><%= exam_connect_merit_list.gpa.to_s %></td>
                         <td class="col-pdf no-warp center-clas"><%= sprintf( "%0.02f", exam_connect_merit_list.marks.to_f ) %></td>
                         <td class="col-pdf no-warp center-clas"><%= exam_connect_merit_list.lg.to_s %></td>
-                        <% if @class.blank? %>
                         <td class="col-pdf no-warp center-class"><%= exam_connect_merit_list.position.to_s %></td>
-                        <% else %>
-                          <% subject_fails = exam_connect_merit_list.subject_failed.split(",").compact %>
-                          <td class="col-pdf no-warp" colspan="2">
-                                <%
-                                iloop = 0
-                                
-                                unless subject_fails.blank?
-                                  subject_fails.each do |sub_failed|
-                                    iloop = iloop+1
-                                    if iloop > 1
-                                    %>, <%
-                                    end 
-                                  %><%= sub_failed %><%
-                                    if iloop>4
-                                       iloop = 0
-                                       %><%= "<br/>"  %><%
-                                    end  
-                                  end 
-
-                                  end  
-
-                              %>
-                            </td>
-                      
-                        <% end %>
                         <td class="col-pdf no-warp center-class"><%= exam_connect_merit_list.section_position.to_s %></td>
                     </tr>
                   <% end %>

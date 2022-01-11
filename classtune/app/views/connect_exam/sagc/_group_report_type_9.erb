@@ -496,9 +496,14 @@
                   
                   <%
                     if exam_connect_merit_lists.save
+                  %>  
+                  aa
+                  <%
                     else
-                      abort(exam_connect_merit_lists.errors.inspect)
-                    end
+                  %>  
+                      <%= debug exam_connect_merit_lists.errors.inspect %>
+                  <%  
+                  end
                   %>
 
               </table>

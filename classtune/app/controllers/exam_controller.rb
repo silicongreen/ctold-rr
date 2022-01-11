@@ -12021,7 +12021,7 @@ class ExamController < ApplicationController
                 end  
                 subject_full_marks = main_mark_no_round.round()
                 ct_marks_main = (main_mark_no_round/100)*full_mark1
-                #if sub['grade_subject'].to_i != 1
+                if sub['grade_subject'].to_i != 1
                   if @student_subject_marks[sub['id'].to_i].blank?
                     @student_subject_marks[sub['id'].to_i] = {}
                   end
@@ -12100,7 +12100,7 @@ class ExamController < ApplicationController
                       end
                     end
                   end  
-                #end
+                end
                 ob_round = 0
                 ob_not_round = 0
                 sb_round = 0

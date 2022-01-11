@@ -6430,10 +6430,44 @@ class ExamController < ApplicationController
     @connect_exam_obj = ExamConnect.find_by_id(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id,:include=>["course"])
    
-    exam_connect_merit_lists = ExamConnectMeritList.find(:first, :conditions=>{:connect_exam_id=>@connect_exam_obj.id,:batch_id=>@batch.id, :position > 0}) 
+    exam_connect_merit_lists = ExamConnectMeritList.find(:first, :conditions=>{:connect_exam_id=>@connect_exam_obj.id,:batch_id=>@batch.id}, :position > 0}) 
     if exam_connect_merit_lists.blank?
       exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>{:connect_exam_id=>@connect_exam_obj.id,:batch_id=>@batch.id}, :order=>"marks DESC") 
-      
+      unless exam_connect_merit_lists.blank?
+        i = 1
+        exam_connect_merit_lists.each do |exam_connect_merit_list|
+          pos = 0
+          if exam_connect_merit_list.gpa.to_f > 0.0
+            pos = i
+          end
+          exam_connect_merit_list.update_attributes(:position=>pos)
+          i = i + 1
+        end
+        
+        group_tmp = @batch.course.group.split(" ")
+        unless group_tmp[2].blank?
+            group_tmp[0] = group_tmp[0]+" "+group_tmp[1]
+        end
+        if !@batch.course.group.blank? && !@batch.course.group.index("--").nil? 
+          group_tmp[0] = ""
+        end 
+        
+        group_course_ids = Course.find(:all, :conditions => "course_name = '#{@batch.course.course_name}' and `group` = '#{group_tmp[0]}'").map(&:id)
+        group_batch_ids = Batch.find(:all, :conditions => "course_id IN (#{group_course_ids.join(",")})").map(&:id)
+        
+        exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=> "connect_exam_id = #{@connect_exam_obj.id} AND batch_id IN (#{group_batch_ids.join(",")})", :order=>"marks DESC") 
+        unless exam_connect_merit_lists.blank?
+          i = 1
+          exam_connect_merit_lists.each do |exam_connect_merit_list|
+            pos = 0
+            if exam_connect_merit_list.gpa.to_f > 0.0
+              pos = i
+            end
+            exam_connect_merit_list.update_attributes(:section_position=>pos)
+            i = i + 1
+          end
+        end
+      end
     end
     
     #    pdf_name = "continues_connect_exam_"+@connect_exam_obj.id.to_s+".pdf"

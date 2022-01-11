@@ -3495,8 +3495,8 @@ class ExamController < ApplicationController
       finding_data_sagc_18()
     elsif @connect_exam_obj.result_type.to_i == 19
       finding_data_19()
-    #elsif @connect_exam_obj.result_type.to_i == 9
-    #  finding_data_9()  
+    elsif @connect_exam_obj.result_type.to_i == 9
+      @exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>{:connect_exam_id=>@id,:batch_id=>@batch.id}, :order => 'position ASC')
     else
       finding_data5()
     end
@@ -3530,14 +3530,25 @@ class ExamController < ApplicationController
       end
       @student_result.sort! { |x, y| x["position"] <=> y["position"] }
     end
-    render :pdf => 'merit_list_sagc',
-      :orientation => 'Portrait', :zoom => 1.00,
-      :margin => {    :top=> 52,
-      :bottom => 30,
-      :left=> 10,
-      :right => 10},
-      :header => {:html => { :template=> 'layouts/header_sagc.html'}},
-      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+    if @connect_exam_obj.result_type.to_i == 9
+      render :pdf => 'merit_list_sagc_9',
+        :orientation => 'Portrait', :zoom => 1.00,
+        :margin => {    :top=> 52,
+        :bottom => 30,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/header_sagc.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+    else  
+      render :pdf => 'merit_list_sagc',
+        :orientation => 'Portrait', :zoom => 1.00,
+        :margin => {    :top=> 52,
+        :bottom => 30,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/header_sagc.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+    end
   end
   
   def subject_wise_fourty_percent

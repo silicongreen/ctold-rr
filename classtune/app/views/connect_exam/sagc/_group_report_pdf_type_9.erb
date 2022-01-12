@@ -625,22 +625,22 @@
                   
                   <% subject_pass_failed = "" %>  
                   <% unless subject_passed.blank? %>
-                    <% subject_passed.each do |key, val| %>
+                    <% subject_passed.each_pair do |key, val| %>
                       subject_pass_failed = subject_pass_failed + "pass-" + key + "-" + val + ","
                     <% end %>
                   <% end %>
                   <% unless subject_failed.blank? %>
-                    <% subject_failed.each do |key, val| %>
+                    <% subject_failed.each_pair do |key, val| %>
                       subject_pass_failed = subject_pass_failed + "fail-" + key + "-" + val + ","
                     <% end %>
                   <% end %>
                   <% unless subject_appeard.blank? %>
-                    <% subject_appeard.each do |key, val| %>
+                    <% subject_appeard.each_pair do |key, val| %>
                       subject_pass_failed = subject_pass_failed + "appear-" + key + "-" + val + ","
                     <% end %>
                   <% end %>
                   <% unless subject_absent.blank? %>
-                    <% subject_absent.each do |key, val| %>
+                    <% subject_absent.each_pair do |key, val| %>
                       subject_pass_failed = subject_pass_failed + "absent-" + key + "-" + val + ","
                     <% end %>
                   <% end %>

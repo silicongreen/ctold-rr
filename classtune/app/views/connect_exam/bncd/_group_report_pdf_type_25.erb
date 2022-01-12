@@ -203,7 +203,7 @@
                                     <% exam_marks = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
                                     <% if report['exam_category'] == '3' %>
                                       <% cq = cq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
-			      	      <td class="col-pdf"><%= report['exam_id'].to_s %><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>	
+			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>	
                                     <% elsif report['exam_category'] == '4' %>
                                       <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
 			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>	

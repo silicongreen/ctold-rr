@@ -66,6 +66,20 @@ end
                         <td class="col-pdf center-align"><b>Absent</b></td> 
                     </tr>
                     <% srl = 0 %>
+                    <% if @custom %>
+                      <% @subjects.each do |subject| %>
+                        <tr class="table-header">
+                          <td class="col-pdf"><%= srl %></td>  
+                          <td class="col-pdf"><%= subject.name %></td> 
+                          <td class="col-pdf center-align"><%= @exam_connect_merit_lists.length  %></td> 
+                          <td class="col-pdf center-align"><%= @subject_passed[subject.code] unless @subject_passed[subject.code].blank? %></td>
+                          <td class="col-pdf center-align"><%= @subject_failed[subject.code] unless @subject_failed[subject.code].blank? %></td>
+                          <td class="col-pdf center-align"><%= @subject_appeard[subject.code] unless @subject_appeard[subject.code].blank? %></td> 
+                          <td class="col-pdf center-align"><%= @subject_absent[subject.code] unless @subject_absent[subject.code].blank? %></td>
+                        </tr> 
+                        <% srl = srl + 1 %>
+                      <% end %>
+                    <% else %>
                     <% if !@subject_result.blank? %>
                       <%
                         sub_id_array = []
@@ -99,6 +113,7 @@ end
                           <td class="col-pdf center-align"><%= @subject_result[key]['absent'] unless @subject_result[key]['absent'].blank? %></td>
                         </tr> 
                       <% end %>
+                    <% end %>
                     <% end %>
             </table>     
               

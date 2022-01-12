@@ -166,6 +166,11 @@
                   <% grade_point_avg = 0 %>
                   <% failed = false %>
                   <% already_done = false %>
+                  <% subject_passed = {} %>
+                  <% subject_failed = {} %>
+                  <% absent = false %>
+                  <% subject_appeard = {} %>
+                  <% subject_absent = {} %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['grade_subject'].to_i == 1 %>
@@ -265,6 +270,7 @@
                             <% if class_test_mark > 0 %>
                               <td class="col-pdf"><%= class_test_mark.to_i %></td>
                             <% elsif class_test_ab == true %> 
+                              <% absent = true %> 
                               <td class="col-pdf"><%= "AB" %></td>
                             <% else %>
                               <td class="col-pdf"><%= "0" %></td>
@@ -277,6 +283,7 @@
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                     <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s == "AB" %>
+                                      <% absent = true %>
                                       <td class="col-pdf">AB</td>
                                     <% else %>
                                       <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
@@ -328,9 +335,33 @@
                               <% end %>
                               
                               <% if  failed_subject == true %>
+                              <% if subject_failed.blank? %>
+                                <% subject_failed[subjects['code']] = 1 %>
+                              <% else %>
+                                <% subject_failed[subjects['code']] = subject_failed[subjects['code']] + 1 %>
+                              <% end %>
+                              <% if absent %>
+                                <% if subject_absent.blank? %>
+                                  <% subject_absent[subjects['code']] = 1 %>
+                                <% else %>
+                                  <% subject_absent[subjects['code']] = subject_absent[subjects['code']] + 1 %>
+                                <% end %>
+                              <% else %>
+                                <% if subject_appeard.blank? %>
+                                  <% subject_appeard[subjects['code']] = 1 %>
+                                <% else %>
+                                  <% subject_appeard[subjects['code']] = subject_appeard[subjects['code']] + 1 %>
+                                <% end %>
+                              <% end %>
                               <%
                               exam_connect_merit_lists.subject_failed = exam_connect_merit_lists.subject_failed + subjects['code'].to_s + " - " + tota_mark_with_monthly.to_f.round.to_s + ","
                               %>
+                              <% else %>
+                              <% if subject_passed.blank? %>
+                                <% subject_passed[subjects['code']] = 1 %>
+                              <% else %>
+                                <% subject_passed[subjects['code']] = subject_passed[subjects['code']] + 1 %>
+                              <% end %>
                               <% end %>
                         
                               <% if fourth_subject.blank? %>
@@ -591,6 +622,29 @@
                           &nbsp;
                       </td>
                   </tr>
+                  
+                  <% subject_pass_failed = "" %>  
+                  <% unless subject_passed.blank? %>
+                    <% subject_passed.each do |key, val| %>
+                      subject_pass_failed = subject_pass_failed + "pass-" + key + "-" + val + ","
+                    <% end %>
+                  <% end %>
+                  <% unless subject_failed.blank? %>
+                    <% subject_failed.each do |key, val| %>
+                      subject_pass_failed = subject_pass_failed + "fail-" + key + "-" + val + ","
+                    <% end %>
+                  <% end %>
+                  <% unless subject_appeard.blank? %>
+                    <% subject_appeard.each do |key, val| %>
+                      subject_pass_failed = subject_pass_failed + "appear-" + key + "-" + val + ","
+                    <% end %>
+                  <% end %>
+                  <% unless subject_absent.blank? %>
+                    <% subject_absent.each do |key, val| %>
+                      subject_pass_failed = subject_pass_failed + "absent-" + key + "-" + val + ","
+                    <% end %>
+                  <% end %>
+                  exam_connect_merit_lists.subject_pass_failed = subject_pass_failed
                   <%
                     exam_connect_merit_lists.save
                   %>  

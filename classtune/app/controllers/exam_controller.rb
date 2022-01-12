@@ -3427,6 +3427,122 @@ class ExamController < ApplicationController
       finding_data_sagc_18()
     elsif @connect_exam_obj.result_type.to_i == 19
       finding_data_19()
+    elsif @connect_exam_obj.result_type.to_i == 9
+      group_course_ids = Course.find(:all, :conditions => "course_name = '#{@batch.course.course_name}' and `group` = '#{@batch.course.group}' and is_deleted = 0").map(&:id)
+      group_batch_ids = Batch.find(:all, :conditions => "course_id IN (#{group_course_ids.join(",")}) and is_deleted = 0").map(&:id)
+      
+      qry = ""
+      if @class.blank?
+        qry = "connect_exam_id = #{@connect_exam_obj.id} and batch_id = #{@batch.id}"
+      else
+        qry = "batch_id IN (#{group_batch_ids.join(",")})"
+      end
+      exam_connect_merit_lists = ExamConnectMeritList.find(:first, :conditions=>"#{qry}") 
+      unless exam_connect_merit_lists.blank?
+        exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>"#{qry}", :order=>"gpa DESC, marks DESC") 
+        unless exam_connect_merit_lists.blank?
+          i = 1
+          exam_connect_merit_lists.each do |exam_connect_merit_list|
+            pos = 0
+            if exam_connect_merit_list.gpa.to_f > 0.0
+              pos = i
+              i = i + 1
+            end
+            exam_connect_merit_list.update_attributes(:position=>pos)
+          end
+
+          group_course_ids = Course.find(:all, :conditions => "course_name = '#{@batch.course.course_name}' and `group` = '#{@batch.course.group}' and is_deleted = 0").map(&:id)
+          group_batch_ids = Batch.find(:all, :conditions => "course_id IN (#{group_course_ids.join(",")}) and is_deleted = 0").map(&:id)
+          connect_exam_ids = ExamConnect.find(:all, :conditions=> "batch_id IN (#{group_batch_ids.join(",")}) and is_deleted = 0").map(&:id)
+
+          exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=> "connect_exam_id IN (#{connect_exam_ids.join(",")}) AND batch_id IN (#{group_batch_ids.join(",")})", :order=>"gpa DESC, marks DESC") 
+          unless exam_connect_merit_lists.blank?
+            i = 1
+            exam_connect_merit_lists.each do |exam_connect_merit_list|
+              pos = 0
+              if exam_connect_merit_list.gpa.to_f > 0.0
+                pos = i
+                i = i + 1
+              end
+              exam_connect_merit_list.update_attributes(:section_position=>pos)
+            end
+          end
+        end
+      end
+      
+      
+      @exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>"#{qry}", :order => 'gpa DESC, marks DESC, position ASC')
+      @subject_code = [];
+      @subject_passed = {};
+      @subject_failed = {};
+      @subject_appeard = {};
+      @subject_absent = {};
+      i = 0
+      unless @exam_connect_merit_lists.blank?
+        @exam_connect_merit_lists.each do |exam_connect_merit_list|
+          unless exam_connect_merit_list.subject_pass_failed.blank?
+            subject_pass_failed = exam_connect_merit_list.subject_pass_failed.split(',').compact
+            unless subject_pass_failed.blank?
+              subject_pass = subject_pass_failed.split('-').compact
+              unless subject_pass.blank?
+                if subject_pass[0] == "pass"
+                  code = subject_pass[1]
+                  unless  @subject_code.includes?(code)
+                    @subject_code[i] = code
+                    i = i + 1
+                  end
+                  if @subject_passed[code].blank?
+                    @subject_passed[code] = 1
+                  else
+                    @subject_passed[code] = @subject_passed[code] + 1
+                  end
+                end
+                
+                if subject_pass[0] == "fail"
+                  code = subject_pass[1]
+                  unless  @subject_code.includes?(code)
+                    @subject_code[i] = code
+                    i = i + 1
+                  end
+                  if @subject_failed[code].blank?
+                    @subject_failed[code] = 1
+                  else
+                    @subject_failed[code] = @subject_failed[code] + 1
+                  end
+                end
+                
+                if subject_pass[0] == "appear"
+                  code = subject_pass[1]
+                  unless  @subject_code.includes?(code)
+                    @subject_code[i] = code
+                    i = i + 1
+                  end
+                  if @subject_appeard[code].blank?
+                    @subject_appeard[code] = 1
+                  else
+                    @subject_appeard[code] = @subject_appeard[code] + 1
+                  end
+                end
+                
+                if subject_pass[0] == "absent"
+                  code = subject_pass[1]
+                  unless  @subject_code.includes?(code)
+                    @subject_code[i] = code
+                    i = i + 1
+                  end
+                  if @subject_absent[code].blank?
+                    @subject_absent[code] = 1
+                  else
+                    @subject_absent[code] = @subject_appeard[code] + 1
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+      @subjects = Subject.find(:all, :conditions=> "code IN (#{subject_code.join(",")}) and is_deleted = 0")
+      
     else
       finding_data5()
     end

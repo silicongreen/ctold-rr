@@ -6478,7 +6478,7 @@ class ExamController < ApplicationController
     @batch = Batch.find(@connect_exam_obj.batch_id,:include=>["course"])
    
     exam_connect_merit_lists = ExamConnectMeritList.find(:first, :conditions=>"connect_exam_id = #{@connect_exam_obj.id} and batch_id = #{@batch.id} and position > 0") 
-    if exam_connect_merit_lists.blank?
+    unless exam_connect_merit_lists.blank?
       exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>"connect_exam_id = #{@connect_exam_obj.id} and batch_id = #{@batch.id}", :order=>"gpa DESC") 
       unless exam_connect_merit_lists.blank?
         i = 1

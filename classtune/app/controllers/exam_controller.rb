@@ -3543,7 +3543,7 @@ class ExamController < ApplicationController
             end
         end
       end
-      @subjects = Subject.find(:all, :conditions=> "code IN (#{@subject_code.map { |e| "'#{e}'" }.join(',')}) and is_deleted = 0")
+      @subjects = Subject.find(:all, :conditions=> "id IN (#{@subject_code.join(',')}) and is_deleted = 0")
       
     else
       finding_data5()

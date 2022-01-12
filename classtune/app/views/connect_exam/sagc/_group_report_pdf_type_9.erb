@@ -644,8 +644,9 @@
                       subject_pass_failed = subject_pass_failed + "absent-" + key + "-" + val + ","
                     <% end %>
                   <% end %>
-                  exam_connect_merit_lists.subject_pass_failed = subject_pass_failed
+                  
                   <%
+                    exam_connect_merit_lists.subject_pass_failed = subject_pass_failed
                     exam_connect_merit_lists.save
                   %>  
                   

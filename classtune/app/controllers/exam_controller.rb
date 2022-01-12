@@ -3543,6 +3543,7 @@ class ExamController < ApplicationController
           end
         end
       end
+      abort(@subject_passed.inspect)
       @subjects = Subject.find(:all, :conditions=> "code IN (#{@subject_code.join(",")}) and is_deleted = 0")
       
     else

@@ -3482,7 +3482,8 @@ class ExamController < ApplicationController
       i = 0
       unless @exam_connect_merit_lists.blank?
         @exam_connect_merit_lists.each do |exam_connect_merit_list|
-          subject_pass_failed = exam_connect_merit_list.subject_pass_failed.split(',')
+          subject_pass_failed = exam_connect_merit_list.subject_pass_failed.split(",")
+            abort(subject_pass_failed.inspect)
             unless subject_pass_failed.blank?
               subject_pass = subject_pass_failed.split('-')
               abort(subject_pass.inspect)

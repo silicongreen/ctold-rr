@@ -335,19 +335,19 @@
                               <% end %>
                               
                               <% if  failed_subject == true %>
-                              <% if subject_failed.blank? %>
+                              <% if subject_failed[subjects['code']].blank? %>
                                 <% subject_failed[subjects['code']] = 1 %>
                               <% else %>
                                 <% subject_failed[subjects['code']] = subject_failed[subjects['code']] + 1 %>
                               <% end %>
                               <% if absent %>
-                                <% if subject_absent.blank? %>
+                                <% if subject_absent[subjects['code']].blank? %>
                                   <% subject_absent[subjects['code']] = 1 %>
                                 <% else %>
                                   <% subject_absent[subjects['code']] = subject_absent[subjects['code']] + 1 %>
                                 <% end %>
                               <% else %>
-                                <% if subject_appeard.blank? %>
+                                <% if subject_appeard[subjects['code']].blank? %>
                                   <% subject_appeard[subjects['code']] = 1 %>
                                 <% else %>
                                   <% subject_appeard[subjects['code']] = subject_appeard[subjects['code']] + 1 %>
@@ -357,7 +357,7 @@
                               exam_connect_merit_lists.subject_failed = exam_connect_merit_lists.subject_failed + subjects['code'].to_s + " - " + tota_mark_with_monthly.to_f.round.to_s + ","
                               %>
                               <% else %>
-                              <% if subject_passed.blank? %>
+                              <% if subject_passed[subjects['code']].blank? %>
                                 <% subject_passed[subjects['code']] = 1 %>
                               <% else %>
                                 <% subject_passed[subjects['code']] = subject_passed[subjects['code']] + 1 %>

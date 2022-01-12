@@ -153,6 +153,7 @@
                   <% total_mark_of_allexam = 0 %>
                   <% full_mark_of_allexam = 0 %>
                   <% total_grade_of_allexam = 0 %>
+	          <% quiz_test = 0 %>
                   <tr class="even header-shade">
                       <td class="col-pdf no-warp  align-left-baf" rowspan="2"><b><%= "SUBJECTS" %></b></td>
                       <td class="col-pdf" colspan="2"><b>Quiz Test</b></td>
@@ -183,6 +184,7 @@
                       <% end %>
                       <% sl = sl+1 %>
                       <% subject_failed = false %>
+		      <% is_mcq = false %>
 
                       <%
                       mcq = 0
@@ -205,9 +207,12 @@
                                       <% cq = cq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
 			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>	
                                     <% elsif report['exam_category'] == '4' %>
+			      	      <% is_mcq = true %>		
                                       <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
 			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>	
                                     <% else %>
+			      	      <% is_mcq = false %>
+			      	      <% quiz_test = 0 %> 		
                                       <% att = att+student_attendance_mark.to_i %>
 			      	      <td class="col-pdf"><%= student_attendance_mark.to_i %></td>	
                                     <% end %>
@@ -229,7 +234,7 @@
                                   <% end %>
 			      
                                   <%
-                                  if exam_full_marks > 0 
+                                  if exam_full_marks > 0 && quiz_test > 0
                                     if exam_full_marks == 20 && exam_marks < 7
                                       subject_failed = true
                                       failed = true
@@ -267,6 +272,10 @@
                                       failed = true
                                     end
                                   end
+				  
+				  if is_mcq = true 
+				     quiz_test = quiz_test + 1
+				  end
 				  %>
 
 

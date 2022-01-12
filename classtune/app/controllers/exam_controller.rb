@@ -3485,7 +3485,6 @@ class ExamController < ApplicationController
           subject_pass_failed = exam_connect_merit_list.subject_pass_failed.split(',').compact
             unless subject_pass_failed.blank?
               subject_pass = subject_pass_failed.split('-').compact
-              aboert(subject_pass.inspect)
               unless subject_pass.blank?
                 if subject_pass[0] == "pass"
                   code = subject_pass[1]
@@ -3499,7 +3498,7 @@ class ExamController < ApplicationController
                     @subject_passed[code] = @subject_passed[code] + 1
                   end
                 end
-                
+                abort(@subject_passed.inspect)
                 if subject_pass[0] == "fail"
                   code = subject_pass[1]
                   unless  @subject_code.includes?(code)

@@ -3483,60 +3483,60 @@ class ExamController < ApplicationController
       unless @exam_connect_merit_lists.blank?
         @exam_connect_merit_lists.each do |exam_connect_merit_list|
           subject_pass_failed = exam_connect_merit_list.subject_pass_failed.split(",")
-            abort(subject_pass_failed.inspect)
             unless subject_pass_failed.blank?
-              subject_pass = subject_pass_failed.split('-')
-              abort(subject_pass.inspect)
-              unless subject_pass.blank?
-                if subject_pass[0] == "pass"
-                  code = subject_pass[1]
-                  unless  @subject_code.includes?(code)
-                    @subject_code[i] = code
-                    i = i + 1
+              subject_pass_failed.each do |subject_pass_failed_single|
+                subject_pass = subject_pass_failed_single.split('-')
+                unless subject_pass.blank?
+                  if subject_pass[0] == "pass"
+                    code = subject_pass[1]
+                    unless  @subject_code.includes?(code)
+                      @subject_code[i] = code
+                      i = i + 1
+                    end
+                    if @subject_passed[code].blank?
+                      @subject_passed[code] = 1
+                    else
+                      @subject_passed[code] = @subject_passed[code] + 1
+                    end
                   end
-                  if @subject_passed[code].blank?
-                    @subject_passed[code] = 1
-                  else
-                    @subject_passed[code] = @subject_passed[code] + 1
+                  
+                  if subject_pass[0] == "fail"
+                    code = subject_pass[1]
+                    unless  @subject_code.includes?(code)
+                      @subject_code[i] = code
+                      i = i + 1
+                    end
+                    if @subject_failed[code].blank?
+                      @subject_failed[code] = 1
+                    else
+                      @subject_failed[code] = @subject_failed[code] + 1
+                    end
                   end
-                end
-                abort(@subject_passed.inspect)
-                if subject_pass[0] == "fail"
-                  code = subject_pass[1]
-                  unless  @subject_code.includes?(code)
-                    @subject_code[i] = code
-                    i = i + 1
+
+                  if subject_pass[0] == "appear"
+                    code = subject_pass[1]
+                    unless  @subject_code.includes?(code)
+                      @subject_code[i] = code
+                      i = i + 1
+                    end
+                    if @subject_appeard[code].blank?
+                      @subject_appeard[code] = 1
+                    else
+                      @subject_appeard[code] = @subject_appeard[code] + 1
+                    end
                   end
-                  if @subject_failed[code].blank?
-                    @subject_failed[code] = 1
-                  else
-                    @subject_failed[code] = @subject_failed[code] + 1
-                  end
-                end
-                
-                if subject_pass[0] == "appear"
-                  code = subject_pass[1]
-                  unless  @subject_code.includes?(code)
-                    @subject_code[i] = code
-                    i = i + 1
-                  end
-                  if @subject_appeard[code].blank?
-                    @subject_appeard[code] = 1
-                  else
-                    @subject_appeard[code] = @subject_appeard[code] + 1
-                  end
-                end
-                
-                if subject_pass[0] == "absent"
-                  code = subject_pass[1]
-                  unless  @subject_code.includes?(code)
-                    @subject_code[i] = code
-                    i = i + 1
-                  end
-                  if @subject_absent[code].blank?
-                    @subject_absent[code] = 1
-                  else
-                    @subject_absent[code] = @subject_appeard[code] + 1
+
+                  if subject_pass[0] == "absent"
+                    code = subject_pass[1]
+                    unless  @subject_code.includes?(code)
+                      @subject_code[i] = code
+                      i = i + 1
+                    end
+                    if @subject_absent[code].blank?
+                      @subject_absent[code] = 1
+                    else
+                      @subject_absent[code] = @subject_appeard[code] + 1
+                    end
                   end
                 end
               end

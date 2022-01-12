@@ -3502,7 +3502,7 @@ class ExamController < ApplicationController
                   
                   if subject_pass[0] == "fail"
                     code = subject_pass[1]
-                    unless  @subject_code.includes?(code)
+                    unless  @subject_code.include?(code)
                       @subject_code[i] = code
                       i = i + 1
                     end

@@ -70,7 +70,7 @@ end
                       <% total_student_subjects = {} %>
                       <% @subjects.each do |subject| %>
                         <%
-                          total_student_subjects[subject.id.to_s] = @subject_passed[subject.id.to_s] + @subject_failed[subject.id.to_s] + @subject_appeard[subject.id.to_s] + @subject_absent[subject.id.to_s]
+                          total_student_subjects[subject.id.to_s] = @subject_passed[subject.id.to_s].to_s + @subject_failed[subject.id.to_s].to_s + @subject_appeard[subject.id.to_s].to_s + @subject_absent[subject.id.to_s].to_s
                         %>
                       <% end %>
                       <% @subjects.each do |subject| %>

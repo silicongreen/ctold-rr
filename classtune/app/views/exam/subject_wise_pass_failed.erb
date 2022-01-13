@@ -72,10 +72,10 @@ end
                           <td class="col-pdf"><%= srl %></td>  
                           <td class="col-pdf"><%= subject.name %></td> 
                           <td class="col-pdf center-align"><%= @exam_connect_merit_lists.length  %></td> 
-                          <td class="col-pdf center-align"><%= @subject_passed[subject.code] unless @subject_passed[subject.code].blank? %></td>
-                          <td class="col-pdf center-align"><%= @subject_failed[subject.code] unless @subject_failed[subject.code].blank? %></td>
-                          <td class="col-pdf center-align"><%= @subject_appeard[subject.code] unless @subject_appeard[subject.code].blank? %></td> 
-                          <td class="col-pdf center-align"><%= @subject_absent[subject.code] unless @subject_absent[subject.code].blank? %></td>
+                          <td class="col-pdf center-align"><%= @subject_passed[subject.id] unless @subject_passed[subject.id].blank? %></td>
+                          <td class="col-pdf center-align"><%= @subject_failed[subject.id] unless @subject_failed[subject.id].blank? %></td>
+                          <td class="col-pdf center-align"><%= @subject_appeard[subject.id] unless @subject_appeard[subject.id].blank? %></td> 
+                          <td class="col-pdf center-align"><%= @subject_absent[subject.id] unless @subject_absent[subject.id].blank? %></td>
                         </tr> 
                         <% srl = srl + 1 %>
                       <% end %>

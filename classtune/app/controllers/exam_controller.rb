@@ -3535,7 +3535,7 @@ class ExamController < ApplicationController
                     if @subject_absent[code].blank?
                       @subject_absent[code] = 1
                     else
-                      @subject_absent[code] = @subject_appeard[code] + 1
+                      @subject_absent[code] = @subject_absent[code] + 1
                     end
                   end
                 end

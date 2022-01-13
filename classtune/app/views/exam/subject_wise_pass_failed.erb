@@ -67,15 +67,21 @@ end
                     </tr>
                     <% srl = 0 %>
                     <% if @custom %>
+                      <% total_student_subjects = {} %>
+                      <% @subjects.each do |subject| %>
+                        <%
+                          total_student_subjects[subject.id.to_s] = @subject_passed[subject.id.to_s] + @subject_failed[subject.id.to_s] + @subject_appeard[subject.id.to_s] + @subject_absent[subject.id.to_s]
+                        %>
+                      <% end %>
                       <% @subjects.each do |subject| %>
                         <tr class="table-header">
                           <td class="col-pdf"><%= srl %></td>  
                           <td class="col-pdf"><%= subject.name %></td> 
-                          <td class="col-pdf center-align"><%= @exam_connect_merit_lists.length  %></td> 
-                          <td class="col-pdf center-align"><%= @subject_passed[subject.id.to_s] unless @subject_passed[subject.id.to_s].blank? %></td>
-                          <td class="col-pdf center-align"><%= @subject_failed[subject.id.to_s] unless @subject_failed[subject.id.to_s].blank? %></td>
-                          <td class="col-pdf center-align"><%= @subject_appeard[subject.id.to_s] unless @subject_appeard[subject.id.to_s].blank? %></td> 
-                          <td class="col-pdf center-align"><%= @subject_absent[subject.id.to_s] unless @subject_absent[subject.id.to_s].blank? %></td>
+                          <td class="col-pdf center-align"><%= total_student_subjects[subject.id.to_s]  %></td> 
+                          <td class="col-pdf center-align"><%= @subject_passed[subject.id.to_s].blank? ? 0 : @subject_passed[subject.id.to_s]  %></td>
+                          <td class="col-pdf center-align"><%= @subject_failed[subject.id.to_s].blank? ? 0 : @subject_failed[subject.id.to_s] %></td>
+                          <td class="col-pdf center-align"><%= @subject_appeard[subject.id.to_s].blank? ? 0 : @subject_appeard[subject.id.to_s] %></td> 
+                          <td class="col-pdf center-align"><%= @subject_absent[subject.id.to_s].blank? ? 0 : @subject_absent[subject.id.to_s]  %></td>
                         </tr> 
                         <% srl = srl + 1 %>
                       <% end %>

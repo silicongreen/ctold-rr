@@ -354,7 +354,7 @@
                                 <% end %>
                               <% end %>
                               <%
-                              exam_connect_merit_lists.subject_failed = exam_connect_merit_lists.subject_failed + subjects['code'].to_s + " - " + tota_mark_with_monthly.to_f.round.to_s + ","
+                              exam_connect_merit_lists.subject_failed = exam_connect_merit_lists.subject_failed + subjects['id'].to_s + " - " + tota_mark_with_monthly.to_f.round.to_s + ","
                               %>
                               <% else %>
                               <% if subject_passed[subjects['id']].blank? %>

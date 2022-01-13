@@ -72,7 +72,7 @@ end
                           <td class="col-pdf"><%= srl %></td>  
                           <td class="col-pdf"><%= subject.name %></td> 
                           <td class="col-pdf center-align"><%= @exam_connect_merit_lists.length  %></td> 
-                          <td class="col-pdf center-align"><%= debug @subject_passed.inspect %><%= @subject_passed[subject.id] unless @subject_passed[subject.id].blank? %></td>
+                          <td class="col-pdf center-align"><%= debug @subject_passed[subject.id].inspect %><%= @subject_passed[subject.id] unless @subject_passed[subject.id].blank? %></td>
                           <td class="col-pdf center-align"><%= @subject_failed[subject.id] unless @subject_failed[subject.id].blank? %></td>
                           <td class="col-pdf center-align"><%= @subject_appeard[subject.id] unless @subject_appeard[subject.id].blank? %></td> 
                           <td class="col-pdf center-align"><%= @subject_absent[subject.id] unless @subject_absent[subject.id].blank? %></td>

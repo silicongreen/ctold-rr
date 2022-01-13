@@ -68,6 +68,20 @@ end
                     <% srl = 1 %>
                     <% if @custom %>
                       <% total_student_subjects = [] %>
+                      <% unless @class.blank? %>
+                        <% @subjects.each do |subject| %>
+                          <% @subjects_all.each do |subject_all| %>
+                          <%
+                            if subject_all.name == subject.name and subject.id != subject_all.id
+                              @subject_passed[subject.id.to_s] = @subject_passed[subject.id.to_s].to_i + @subject_passed[subject_all.id.to_s].to_i
+                              @subject_failed[subject.id.to_s] = @subject_failed[subject.id.to_s].to_i + @subject_failed[subject_all.id.to_s].to_i
+                              @subject_appeard[subject.id.to_s] = @subject_appeard[subject.id.to_s].to_i + @subject_appeard[subject_all.id.to_s].to_i
+                              @subject_absent[subject.id.to_s] = @subject_absent[subject.id.to_s].to_i + @subject_absent[subject_all.id.to_s].to_i
+                            end
+                          %>
+                          <% end %>  
+                        <% end %>
+                      <% end %>
                       <% @subjects.each do |subject| %>
                         <%
                           total_student_subjects[subject.id] = @subject_passed[subject.id.to_s].to_i + @subject_failed[subject.id.to_s].to_i

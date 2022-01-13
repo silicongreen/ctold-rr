@@ -65,19 +65,19 @@ end
                         <td class="col-pdf center-align"><b>Appeared</b></td>
                         <td class="col-pdf center-align"><b>Absent</b></td> 
                     </tr>
-                    <% srl = 0 %>
+                    <% srl = 1 %>
                     <% if @custom %>
-                      <% total_student_subjects = {} %>
+                      <% total_student_subjects = [] %>
                       <% @subjects.each do |subject| %>
                         <%
-                          total_student_subjects[subject.id.to_s] = @subject_passed[subject.id.to_s].to_s + @subject_failed[subject.id.to_s].to_s + @subject_appeard[subject.id.to_s].to_s + @subject_absent[subject.id.to_s].to_s
+                          total_student_subjects[subject.id] = @subject_passed[subject.id.to_s].to_i + @subject_failed[subject.id.to_s].to_i + @subject_appeard[subject.id.to_s].to_i + @subject_absent[subject.id.to_s].to_i
                         %>
                       <% end %>
                       <% @subjects.each do |subject| %>
                         <tr class="table-header">
                           <td class="col-pdf"><%= srl %></td>  
                           <td class="col-pdf"><%= subject.name %></td> 
-                          <td class="col-pdf center-align"><%= total_student_subjects[subject.id.to_s]  %></td> 
+                          <td class="col-pdf center-align"><%= total_student_subjects[subject.id]  %></td> 
                           <td class="col-pdf center-align"><%= @subject_passed[subject.id.to_s].blank? ? 0 : @subject_passed[subject.id.to_s]  %></td>
                           <td class="col-pdf center-align"><%= @subject_failed[subject.id.to_s].blank? ? 0 : @subject_failed[subject.id.to_s] %></td>
                           <td class="col-pdf center-align"><%= @subject_appeard[subject.id.to_s].blank? ? 0 : @subject_appeard[subject.id.to_s] %></td> 

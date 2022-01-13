@@ -3543,9 +3543,9 @@ class ExamController < ApplicationController
             end
         end
       end
-      @subjects = Subject.find(:all, :conditions=> "id IN (#{@subject_code.join(',')}) and is_deleted = 0", :group => "name")
+      @subjects = Subject.find(:all, :conditions=> "id IN (#{@subject_code.join(',')}) and is_deleted = 0", :group => "name",:order=>"priority asc")
       unless @class.blank?
-        @subjects_all = Subject.find(:all, :conditions=> "id IN (#{@subject_code.join(',')}) and is_deleted = 0")
+        @subjects_all = Subject.find(:all, :conditions=> "id IN (#{@subject_code.join(',')}) and is_deleted = 0",:order=>"priority asc")
       end
       
     else

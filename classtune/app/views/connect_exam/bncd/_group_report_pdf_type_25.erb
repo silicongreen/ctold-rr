@@ -105,7 +105,7 @@
      
       <table id="pdf-table" class="tbl-lign-left" width="52%" cellspacing="0">
           <tr class="even">
-              <td class="align-right col-pdf" width="20%">Student ID</td>
+              <td class="align-right col-pdf" width="20%">Student ID 2</td>
               <td colspan="3" class="align-left"><b><%= @student.admission_no %></b></td>
           </tr>
           <tr class="odd">
@@ -229,7 +229,7 @@
 			      	 	<% exam_full_marks = 0 %>	
 			      	    <% end %>
                                   <% end %>
-			      
+			      <td>test <%= exam_full_marks %> <%= exam_marks %></td>
                                   <%
                                   if exam_full_marks > 0
                                     #if exam_full_marks == 20 && exam_marks < 7

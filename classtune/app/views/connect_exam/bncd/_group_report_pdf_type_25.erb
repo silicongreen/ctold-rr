@@ -229,7 +229,7 @@
 			      	 	<% exam_full_marks = 0 %>	
 			      	    <% end %>
                                   <% end %>
-			      <td>test <%= exam_full_marks %> <%= exam_marks %></td>
+			      
                                   <%
                                   if exam_full_marks > 0
                                     #if exam_full_marks == 20 && exam_marks < 7
@@ -271,7 +271,7 @@
                                   end
 				  %>
 
-
+				<td>test <%= exam_full_marks %> <%= exam_marks %> <%= subject_failed.to_s %> <%= failed.to_s %></td>
 
                                 <% end %>
                             <% end %>

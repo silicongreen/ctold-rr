@@ -287,9 +287,9 @@ if @total_std.blank?
                     end
                     exam_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                     exam_full_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                    if rs['exam_category'] != '3' and rs['exam_category'] != '4'
-                      exam_full_marks = 0
-                    end
+                    #if rs['exam_category'] != '3' and rs['exam_category'] != '4'
+                    #  exam_full_marks = 0
+                    #end
                   end
 
                   if exam_full_marks > 0

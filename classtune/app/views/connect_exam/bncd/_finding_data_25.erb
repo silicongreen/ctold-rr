@@ -223,7 +223,30 @@ if @total_std.blank?
             total_subject = 0
             subject_grade_done = []
             subject_array = []
+            pass_mark_cq = 0 
+		total_cq = 0   
+		pass_mark_mcq = 0 
+	      total_mcq = 0 
+		subject_pass_cq_1 = ['101', '107'] 
+	      subject_pass_cq_2 = ['acco', 'fin','mang','eco','civics','islam','logic'] 
+	      subject_pass_cq_3 = ['275', 'stat','geo','109','112','bio','h.math', 'psy'] 
             tab['subjects'].each do |sub|
+                  if subject_pass_cq_1.include?(subjects['code'].to_s.downcase)
+		            pass_mark_cq = 33
+			      pass_mark_mcq = 0
+		            total_cq = 100     
+		            total_mcq = 0 
+		      elsif subject_pass_cq_2.include?(subjects['code'].to_s.downcase) 
+		            pass_mark_cq = 23 
+			      pass_mark_mcq = 10 
+		      	total_cq = 70     
+		      	total_mcq = 30 
+		      elsif subject_pass_cq_3.include?(subjects['code'].to_s.downcase) 
+		      	pass_mark_cq = 17 
+		      	total_cq = 50   
+			      pass_mark_mcq = 8 
+		            total_mcq = 25 
+		      end 
               if subject_array.include?(sub['id'].to_i)
                 next
               end
@@ -283,9 +306,19 @@ if @total_std.blank?
                     if rs['exam_category'] == '3'
                       cq = cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       cq_total = cq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                      if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i == total_cq.to_i and rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i < pass_mark_cq.to_i
+                        failed_students << student_id
+                        u_grade = u_grade+1 
+                        subject_failed = true
+                      end  		
                     elsif rs['exam_category'] == '4'
                       mcq = mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       mcq_total = mcq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                      if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i == total_mcq.to_i and rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i < pass_mark_mcq.to_i
+                        failed_students << student_id
+                        u_grade = u_grade+1 
+                        subject_failed = true
+                      end 
                     else
                       #att = att+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       att = student_attendance_mark.to_f   
@@ -306,16 +339,16 @@ if @total_std.blank?
                     #  u_grade = u_grade+1 
                     #  subject_failed = true
                     #end
-                    if exam_full_marks == 50 && exam_marks < 17
-                        failed_students << student_id
-                      u_grade = u_grade+1 
-                      subject_failed = true
-                    end
-                    if exam_full_marks == 25 && exam_marks < 8
-                        failed_students << student_id
-                      u_grade = u_grade+1 
-                      subject_failed = true
-                    end
+                    #if exam_full_marks == 50 && exam_marks < 17
+                    #    failed_students << student_id
+                    #  u_grade = u_grade+1 
+                    #  subject_failed = true
+                    #end
+                    #if exam_full_marks == 25 && exam_marks < 8
+                    #    failed_students << student_id
+                    #  u_grade = u_grade+1 
+                    #  subject_failed = true
+                    #end
                     #if exam_full_marks == 5 && exam_marks < 2
                     #  u_grade = u_grade+1 
                     #  subject_failed = true
@@ -332,10 +365,10 @@ if @total_std.blank?
                     #  u_grade = u_grade+1 
                     #  subject_failed = true
                     #end
-                    if exam_full_marks == 100 && exam_marks < 33
-                      u_grade = u_grade+1 
-                      subject_failed = true
-                    end
+                    #if exam_full_marks == 100 && exam_marks < 33
+                    #  u_grade = u_grade+1 
+                    #  subject_failed = true
+                    #end
                   end
 
                 end

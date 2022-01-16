@@ -14,38 +14,38 @@
                 <% month_number =@exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%-m"):@exam_group.exam_date.strftime("%-m") %>
 
                 <% if month_number.to_i>6 %>
-                  <td>Academic Session </td><td colspan="4" class="font-light">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y"):@exam_group.exam_date.strftime("%Y") %>-<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y").to_i+1:@exam_group.exam_date.strftime("%Y").to_i+1 %></td>
+                  <td><font size="5">Academic Session </font></td><td colspan="4" class="font-light"><font size="5">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y"):@exam_group.exam_date.strftime("%Y") %>-<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y").to_i+1:@exam_group.exam_date.strftime("%Y").to_i+1 %></font></td>
                 <% else %>
-                  <td>Academic Session </td><td colspan="4" class="font-light">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y").to_i-1:@exam_group.exam_date.strftime("%Y").to_i-1 %>-<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y"):@exam_group.exam_date.strftime("%Y") %></td>
+                  <td><font size="5">Academic Session </font></td><td colspan="4" class="font-light"><font size="5">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y").to_i-1:@exam_group.exam_date.strftime("%Y").to_i-1 %>-<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y"):@exam_group.exam_date.strftime("%Y") %></font></td>
                 <% end %> 
             </tr>
             <tr>
-                  <td>Student's ID </td><td colspan="4"  class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @student.admission_no %></td>
+                  <td><font size="5">Student's ID </font></td><td colspan="4"  class="font-dark"><font size="5">:&nbsp;&nbsp;&nbsp;<%= @student.admission_no %></font></td>
                  
             </tr>
             <tr>
-                <td>Student's Name </td><td colspan="4" class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.full_name.upcase %></td>
+                <td><font size="5">Student's Name </font></td><td colspan="4" class="font-light"><font size="5">:&nbsp;&nbsp;&nbsp;<%= @student.full_name.upcase %></font></td>
             </tr>
             <tr>
-                <td>Date of Birth </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>"%d %b, %Y") unless @student.date_of_birth.nil? %></td>
+                <td><font size="5">Date of Birth </font></td><td class="font-light"><font size="5">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>"%d %b, %Y") unless @student.date_of_birth.nil? %></font></td>
                 <td>&nbsp;&nbsp;</td>
-                <td>Gender </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= t("#{@student.gender_as_text.downcase}") %></td>
+                <td><font size="5">Gender </font></td><td class="font-light"><font size="5">:&nbsp;&nbsp;&nbsp;<%= t("#{@student.gender_as_text.downcase}") %></font></td>
             </tr> 
              <tr>
-                <td>Enrollment Date </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.admission_date,:format=>"%d %b, %Y")%></td> 
+                <td><font size="5">Enrollment Date </font></td><td class="font-light"><font size="5">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.admission_date,:format=>"%d %b, %Y")%></font></td> 
                 <td>&nbsp;&nbsp;</td>
-                <td>Roll </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.class_roll_no %></td>
+                <td><font size="5">Roll </font></td><td class="font-light"><font size="5">:&nbsp;&nbsp;&nbsp;<%= @student.class_roll_no %></font></td>
             </tr> 
             <tr>
-                <td>Standard </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @batch.course.course_name %></td>
+                <td><font size="5">Standard </font></td><td class="font-light"><font size="5">:&nbsp;&nbsp;&nbsp;<%= @batch.course.course_name %></font></td>
                 <td>&nbsp;&nbsp;</td>
-                <td>Section </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @batch.course.section_name %></td>
+                <td><font size="5">Section </font></td><td class="font-light"><font size="5">:&nbsp;&nbsp;&nbsp;<%= @batch.course.section_name %></font></td>
 
             </tr>
             <tr>
-                <td>Name of Examination </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @exam_group.name.upcase %></td>
+                <td><font size="5">Name of Examination </font></td><td class="font-dark"><font size="5">:&nbsp;&nbsp;&nbsp;<%= @exam_group.name.upcase %></font></td>
                 <td>&nbsp;&nbsp;</td>
-                <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @exam_group.publish_date.blank? ? @exam_group.created_at.strftime("%b, %Y"):@exam_group.publish_date.strftime("%b, %Y") %></td>
+                <td><font size="5">Exam Held </font></td><td class="font-dark"><font size="5">:&nbsp;&nbsp;&nbsp;<%= @exam_group.publish_date.blank? ? @exam_group.created_at.strftime("%b, %Y"):@exam_group.publish_date.strftime("%b, %Y") %></font></td>
             </tr>
         </table>
     </div>
@@ -79,41 +79,41 @@
       <table id="pdf-table" width="100%" cellspacing="0">
         <% c = 'even'  %>
         <tr class="table-header">
-          <td class="col-pdf"><%= t('subject_code') %></td>
-          <td class="col-pdf"><%= t('title') %></td>
-          <td class="col-pdf"<%= t('marks') %></td>
-          <td class="col-pdf"><%= t('credit') %></td>
-          <td class="col-pdf"><%= t('grade') %></td>
-          <td class="col-pdf"><%= t('weighted_marks') %></td>
+          <td class="col-pdf"><font size="5"><%= t('subject_code') %></font></td>
+          <td class="col-pdf"><font size="5"><%= t('title') %></font></td>
+          <td class="col-pdf"><font size="5"><%= t('marks') %></font></td>
+          <td class="col-pdf"><font size="5"><%= t('credit') %></font></td>
+          <td class="col-pdf"><font size="5"><%= t('grade') %></font></td>
+          <td class="col-pdf"><font size="5"><%= t('weighted_marks') %></font></td>
         </tr>
         <tr class="tr-blank"></tr>
         <% exam_score.each do |es| %>
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-            <td class="col-pdf"> <%= es.exam.subject.code %></td>
-            <td class="col-pdf"> <%= es.exam.subject.name %></td>
-            <td class="col-pdf"><%= es.marks.present? ? mark=(es.marks.to_f/es.exam.maximum_marks.to_f)*100 : '-' %></td>
-            <td class="col-pdf"><%= es.exam.subject.credit_hours %></td>
+            <td class="col-pdf"><font size="5"> <%= es.exam.subject.code %></font></td>
+            <td class="col-pdf"><font size="5"> <%= es.exam.subject.name %></font></td>
+            <td class="col-pdf"><font size="5"><%= es.marks.present? ? mark=(es.marks.to_f/es.exam.maximum_marks.to_f)*100 : '-' %></font></td>
+            <td class="col-pdf"><font size="5"><%= es.exam.subject.credit_hours %></font></td>
             <% total_credits = total_credits + es.exam.subject.credit_hours.to_f %>
-            <td class="col-pdf"><%= es.grading_level.present? ? es.grading_level : "-" %></td>
+            <td class="col-pdf"><font size="5"><%= es.grading_level.present? ? es.grading_level : "-" %></font></td>
             <% weighted_mark=0 %>
             <% weighted_mark = mark.to_f * es.exam.subject.credit_hours.to_f if es.marks.present? %>
             <% total_weighted_marks = total_weighted_marks + weighted_mark %>
-            <td class="col-pdf"><%= weighted_mark %></td>
+            <td class="col-pdf"><font size="5"><%= weighted_mark %></font></td>
           </tr>
         <% end %>
         <tr class="tr-blank"></tr>
         <tr class="table-header">
-          <td class="col-pdf" colspan="3" align="right"><%= t('total') %></td>
-          <td class="col-pdf"><%= total_credits %></td>
+          <td class="col-pdf" colspan="3" align="right"><font size="5"><%= t('total') %></font></td>
+          <td class="col-pdf"><font size="5"><%= total_credits %></font></td>
           <td>-</td>
-          <td class="col-pdf"><%= total_weighted_marks %></td>
+          <td class="col-pdf"><font size="5"><%= total_weighted_marks %></font></td>
         </tr>
       </table>
       <h5><%= t('weighted_average') %> =
         <% unless total_credits==0 %>
-          <%= "%.2f" %(total_weighted_marks.to_f/total_credits.to_f) %>
+          <font size="5"><%= "%.2f" %(total_weighted_marks.to_f/total_credits.to_f) %></font>
         <% else %>
-          -
+          <font size="5">-</font>
         <% end %>
       </h5>
     <% elsif @batch.gpa_enabled? %>
@@ -149,14 +149,14 @@
       <table id="pdf-table" width="99.8%" class="table_99" cellspacing="0">
         <% c = 'even'  %>
         <tr class="table-header">  
-          <td class="col-pdf no-warp align-left"><%= "Subject" %></td>
+          <td class="col-pdf no-warp align-left"><font size="5"><%= "Subject" %></font></td>
           <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
-            <td class="col-pdf"><%= "Attainment" %></td>
+            <td class="col-pdf"><font size="5"><%= "Attainment" %></font></td>
           <% end %>
-          <td class="col-pdf"><%= "Weighted Average (Out of 100)" %></td>
-          <td class="col-pdf "><%= "GRADE" %></td> 
+          <td class="col-pdf"><font size="5"><%= "Weighted Average (Out of 100)" %></font></td>
+          <td class="col-pdf "><font size="5"><%= "GRADE" %></font></td> 
           <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" && @batch.course.course_name == "IX"%>
-          <td class="col-pdf "><%= "Attendance" %></td> 
+          <td class="col-pdf "><font size="5"><%= "Attendance" %></font></td> 
           <% end %>
         </tr>
         <tr class="tr-blank"></tr>

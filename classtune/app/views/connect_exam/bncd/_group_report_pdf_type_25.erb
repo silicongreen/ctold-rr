@@ -172,11 +172,26 @@
                   
                   <% sl = 0 %>
                   <% failed = false %>
+	          <% pass_mark_cq = 0 %>
+		  <% pass_mark_mcq = 0 %>    
+		  <% subject_pass_cq_1 = ['101', '107'] %>
+	          <% subject_pass_cq_2 = ['acco', 'fin','mang','eco','civics','islam','logic'] %>
+	          <% subject_pass_cq_3 = ['275', 'stat','geo','109','112','bio','h.math', 'psy'] %>
                   <% unless @report_data['report']['subjects'].blank? %>
                     <% @report_data['report']['subjects'].each do |subjects| %>
+		      <% if subject_pass_cq_1.include?(subjects['code'].to_s.downcase) %>
+		      	<% pass_mark_cq = 33 %>
+			<% pass_mark_mcq = 0 %>    
+		      <% elsif subject_pass_cq_2.include?(subjects['code'].to_s.downcase) %>
+		      	<% pass_mark_cq = 23 %>
+			<% pass_mark_mcq = 10 %>    
+		      <% elsif subject_pass_cq_3.include?(subjects['code'].to_s.downcase) %>
+		      	<% pass_mark_cq = 17 %>
+			<% pass_mark_mcq = 8 %> 
+		      <% end %>
                       <% total_mark = 0 %>
                       <% obtain_mark = 0 %>
-                      
+                      <%  %>
                       <% subjectdata = Subject.find(subjects['id'].to_i) %>
                       <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
                       <% if @has_exam_student == false %>
@@ -195,7 +210,7 @@
                       %>
 
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                            <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'].gsub(" 1st Paper","") %> <%= subjects['code'] %></td>
+                            <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'].gsub(" 1st Paper","") %></td>
                             <% unless @report_data['report']['exams'].blank? %>  
                                 <% @report_data['report']['exams'].each do |report| %>
                                   <% exam_marks = 0 %>
@@ -229,7 +244,7 @@
 			      	 	<% exam_full_marks = 0 %>	
 			      	    <% end %>
                                   <% end %>
-			      
+			      		<%= subjects['code'] + " " + exam_full_marks.to_s + " " + pass_mark_cq.to_s + "  " + pass_mark_mcq.to_s + " " + exam_marks.to_s %>
                                   <%
                                   if exam_full_marks > 0
                                     #if exam_full_marks == 20 && exam_marks < 7

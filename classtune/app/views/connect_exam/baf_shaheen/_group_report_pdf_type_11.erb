@@ -263,9 +263,9 @@
                        <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
                             <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                              <% if report['exam_category'] == '1' %>
+                              <% #if report['exam_category'] == '6' %>
                                 <% sub_mark = sub_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                              <% end %> 
+                              <% #end %> 
                             <% end %>
                         <% end %>
                       <% end %>   

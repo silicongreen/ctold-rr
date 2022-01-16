@@ -232,6 +232,11 @@ if @total_std.blank?
 	      subject_pass_cq_2 = ['acco', 'fin','mang','eco','civics','islam','logic'] 
 	      subject_pass_cq_3 = ['275', 'stat','geo','109','112','bio','h.math', 'psy'] 
             tab['subjects'].each do |sub|
+	    %>
+		<% if student_id == 51597 %>
+	    <%= sub['code'] %><br />
+		<% end %>
+	    <%
                   if subject_pass_cq_1.include?(sub['code'].to_s.downcase)
 		            pass_mark_cq = 33
 			      pass_mark_mcq = 0
@@ -374,7 +379,6 @@ if @total_std.blank?
 
                 end
 		%>
-<%= student_id %><Br />
 		<% if student_id == 51597 %>
 			<%= u_grade %><Br />
 		<% end %>

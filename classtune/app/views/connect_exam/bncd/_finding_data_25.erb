@@ -78,9 +78,10 @@ if @total_std.blank?
             @student_all_tab = Student.find_all_by_id(std_list)
             all_total_std_subject = StudentsSubject.find_all_by_student_id(std_list)
           end
+	  <% student_id = 0 %>
           tab['students'].each do |std| %>
               <% s = Student.find(std['id']) %>    
-              
+              <% student_id = s.id %>
               <%
                 @config = Configuration.find_by_config_key('StudentAttendanceType')
                 @b = Batch.find(s.batch_id)
@@ -194,7 +195,7 @@ if @total_std.blank?
             grand_total_main = 0
             grade_poin_main = 0
             
-            student_id = 0
+            #student_id = 0
 
             @student_tab = @student_all_tab.find{|val| val.id.to_i == std['id'].to_i }
             if @student_tab.blank?
@@ -204,7 +205,7 @@ if @total_std.blank?
               if @student_result[loop_std].blank?
                 @student_result[loop_std] = {}
               end
-              student_id = std['id']
+              #student_id = std['id']
               
               @student_result[loop_std]['id'] = std['id']
               @student_result[loop_std]['sl'] = loop_std+1

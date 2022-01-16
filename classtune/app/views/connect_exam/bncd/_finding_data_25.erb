@@ -232,11 +232,7 @@ if @total_std.blank?
 	      subject_pass_cq_2 = ['acco', 'fin','mang','eco','civics','islam','logic'] 
 	      subject_pass_cq_3 = ['275', 'stat','geo','109','112','bio','h.math', 'psy'] 
             tab['subjects'].each do |sub|
-	    %>
-		<% if student_id == 51597 %>
-	    <%= sub['code'] %><br />
-		<% end %>
-	    <%
+	    
                   if subject_pass_cq_1.include?(sub['code'].to_s.downcase)
 		            pass_mark_cq = 33
 			      pass_mark_mcq = 0
@@ -312,6 +308,11 @@ if @total_std.blank?
                     if rs['exam_category'] == '3'
                       cq = cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       cq_total = cq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+		      %>
+		<% if student_id == 51597 and sub['code'] == 'psy' %>
+	    <%= rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_s + "  " + total_cq.to_s + "  " + rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s + "  " + pass_mark_cq.to_s %><br />
+		<% end %>
+	    <%
                       if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i == total_cq.to_i and rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i < pass_mark_cq.to_i
                         failed_students << student_id
                         u_grade = u_grade+1 

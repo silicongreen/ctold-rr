@@ -5,11 +5,11 @@
       <% end %>
     <% end %>
     <%  unless @grading_levels.empty? %>
-      <p><font size="5"><b>Grade Boundaries</b></font></p>
+      <p><font size="4"><b>Grade Boundaries</b></font></p>
       <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
           <tr class="even">
-              <td style="font-size: 12px;">Marks</td>
-              <td style="font-size: 12px;">Grade</td>  
+              <td style="font-size: 12px;"><font size="4"><b>Marks</b></font></td>
+              <td style="font-size: 12px;"><font size="4"><b>Grade</b></font></td>  
           </tr> 
           <% prev_score = 0 %>
           <% @grading_levels.each_with_index do |grade,index| %>

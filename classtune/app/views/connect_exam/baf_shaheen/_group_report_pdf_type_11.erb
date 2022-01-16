@@ -3,7 +3,7 @@
     <h4 align="center"><%#= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/323/transcript.png")),:width=> '65%' %></h4>
   </div-->
   <% total_u = 0 %>
-  
+<div style="height: 20px;">&nbsp;</div>
   <div id="page-yield"  class="available_sections1 baf_shaheen">
 
       
@@ -175,7 +175,8 @@
                               ass_total_mark = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f
                               assessment_avg = (ass_total_mark.to_f/30.00)*50
                               assessment_avg = assessment_avg.round()
-                              assessment = assessment+assessment_avg
+                              #assessment = assessment+assessment_avg
+                              assessment = ass_total_mark
                             end
                             if sub_hw > 0
                               hw_avg = (sub_hw.to_f/sub_hw_full_mark.to_f)*30

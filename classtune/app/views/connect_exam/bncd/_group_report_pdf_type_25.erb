@@ -173,7 +173,9 @@
                   <% sl = 0 %>
                   <% failed = false %>
 	          <% pass_mark_cq = 0 %>
-		  <% pass_mark_mcq = 0 %>    
+		  <% total_cq = 0 %>    
+		  <% pass_mark_mcq = 0 %>
+	          <% total_mcq = 0 %>
 		  <% subject_pass_cq_1 = ['101', '107'] %>
 	          <% subject_pass_cq_2 = ['acco', 'fin','mang','eco','civics','islam','logic'] %>
 	          <% subject_pass_cq_3 = ['275', 'stat','geo','109','112','bio','h.math', 'psy'] %>
@@ -182,12 +184,18 @@
 		      <% if subject_pass_cq_1.include?(subjects['code'].to_s.downcase) %>
 		      	<% pass_mark_cq = 33 %>
 			<% pass_mark_mcq = 0 %>    
+		      	<% total_cq = 100 %>    
+		        <% total_mcq = 0 %>
 		      <% elsif subject_pass_cq_2.include?(subjects['code'].to_s.downcase) %>
 		      	<% pass_mark_cq = 23 %>
 			<% pass_mark_mcq = 10 %>    
+		      	<% total_cq = 70 %>    
+		      	<% total_mcq = 30 %>
 		      <% elsif subject_pass_cq_3.include?(subjects['code'].to_s.downcase) %>
 		      	<% pass_mark_cq = 17 %>
+		      	<% total_cq = 50 %>    
 			<% pass_mark_mcq = 8 %> 
+		        <% total_mcq = 25 %> 
 		      <% end %>
                       <% total_mark = 0 %>
                       <% obtain_mark = 0 %>
@@ -226,7 +234,7 @@
                                       	failed = true
                                       end  		
 				      %>
-			      	      <td class="col-pdf"><%= exam_full_marks = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %> <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>	
+			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>	
                                     <% elsif report['exam_category'] == '4' %>
 			      	      <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
 			      	      <%

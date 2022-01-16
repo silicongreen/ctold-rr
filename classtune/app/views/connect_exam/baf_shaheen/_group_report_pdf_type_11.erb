@@ -287,7 +287,7 @@
                     <% end %>
                     <% total_mark_life = sprintf( "%0.01f", total_mark_life) %>
                       <td class="col-pdf align-left-baf"><b>Total of Life Skills:</b></td>
-                      <td class="col-pdf border-right-none"><%= total_mark_life %></td>
+                      <td class="col-pdf border-right-none"><%= dt.join(",") %> <%= total_mark_life %></td>
                     </tr>
                     <% total_mark = total_mark+total_mark_life.to_f %>
                 <% end %>  

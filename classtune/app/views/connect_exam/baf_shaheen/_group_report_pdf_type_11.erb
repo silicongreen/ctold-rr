@@ -150,9 +150,10 @@
                                 <% end %> 
                             <% end %>
                           <% end %>
-                          
+                          <% dt = [] %>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
+                            <% dt << sub_assessment.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s + " - " + report['exam_category'] %>
                             <% if report['exam_category'] == '6' %>
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                   <% class_test << report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
@@ -193,7 +194,7 @@
                           %>
 
                           
-                            <td class="col-pdf"><%= assessment_avg %></td>
+                            <td class="col-pdf"><%= dt.join(',') %><%= assessment_avg %></td>
                             <td class="col-pdf"><%= hw_avg %></td>
                             <td class="col-pdf  border-right-none"><%= cw_avg %></td>    
 

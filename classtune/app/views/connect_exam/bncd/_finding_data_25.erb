@@ -325,10 +325,10 @@ if @total_std.blank?
                     #  u_grade = u_grade+1 
                     #  subject_failed = true
                     #end
-                    #if exam_full_marks == 100 && exam_marks < 33
-                    #  u_grade = u_grade+1 
-                    #  subject_failed = true
-                    #end
+                    if exam_full_marks == 100 && exam_marks < 33
+                      u_grade = u_grade+1 
+                      subject_failed = true
+                    end
                   end
 
                 end

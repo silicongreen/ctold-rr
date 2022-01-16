@@ -192,6 +192,8 @@ if @total_std.blank?
             u_grade = 0
             grand_total_main = 0
             grade_poin_main = 0
+            failed_students = []
+            student_id = 0
 
             @student_tab = @student_all_tab.find{|val| val.id.to_i == std['id'].to_i }
             if @student_tab.blank?
@@ -201,6 +203,8 @@ if @total_std.blank?
               if @student_result[loop_std].blank?
                 @student_result[loop_std] = {}
               end
+              student_id = std['id']
+              
               @student_result[loop_std]['id'] = std['id']
               @student_result[loop_std]['sl'] = loop_std+1
               @student_result[loop_std]['batch_id'] = batch_data.id	
@@ -401,7 +405,8 @@ if @total_std.blank?
                   grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                   if !grade.blank? && !grade.name.blank?
                     if subject_failed == true or four_subject_failed == true
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = "F"
+                        failed_students << student_id
+                        @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = "F"
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = grade.name
                     end
@@ -541,11 +546,15 @@ if @total_std.blank?
         @sorted_students = @student_list.sort
         @sorted_students.each do|s|
           #if last_grade != s[0] or last_total != s[1]
-            position = position+1
+         #   position = position+1
          # end
           last_grade = s[0]
           last_total = s[1]
-          @student_position[s[2].to_i] = position
+         # @student_position[s[2].to_i] = position
+         unless failed_students.include?(s[2])
+            position = position+1
+            @student_position_batch[s[2].to_i] = position
+          end
         end 
       end
 
@@ -556,11 +565,14 @@ if @total_std.blank?
         @sorted_students = @student_list_batch.sort
         @sorted_students.each do|s|
           #if last_grade != s[0] or last_total != s[1]
+          unless failed_students.include?(s[2])
             position = position+1
+            @student_position_batch[s[2].to_i] = position
+          end
          # end
           last_grade = s[0]
           last_total = s[1]
-          @student_position_batch[s[2].to_i] = position
+          
         end 
       end
 

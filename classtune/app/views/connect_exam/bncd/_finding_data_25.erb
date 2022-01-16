@@ -540,9 +540,9 @@ if @total_std.blank?
         position = 0
         @sorted_students = @student_list.sort
         @sorted_students.each do|s|
-          if last_grade != s[0] or last_total != s[1]
-            position = position+1
-          end
+          #if last_grade != s[0] or last_total != s[1]
+         #   position = position+1
+         # end
           last_grade = s[0]
           last_total = s[1]
           @student_position[s[2].to_i] = position
@@ -555,9 +555,9 @@ if @total_std.blank?
         position = 0
         @sorted_students = @student_list_batch.sort
         @sorted_students.each do|s|
-          if last_grade != s[0] or last_total != s[1]
-            position = position+1
-          end
+          #if last_grade != s[0] or last_total != s[1]
+          #  position = position+1
+         # end
           last_grade = s[0]
           last_total = s[1]
           @student_position_batch[s[2].to_i] = position

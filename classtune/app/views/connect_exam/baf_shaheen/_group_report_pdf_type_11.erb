@@ -153,7 +153,7 @@
                           <% dt = [] %>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
-                            <% dt << sub_assessment.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s + " - " + report['exam_category'] %>
+                            <% dt << report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s + " - " + report['exam_category'].to_s %>
                             <% if report['exam_category'] == '6' %>
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                   <% class_test << report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>

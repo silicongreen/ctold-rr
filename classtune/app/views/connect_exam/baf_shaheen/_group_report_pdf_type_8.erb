@@ -6,7 +6,7 @@
   <div id="page-yield"  class="available_sections1 baf_shaheen" style="margin-top: 10px;">
 
       
-      <div class="student_information">
+      <div class="student_information" style="width: 900px;">
       <h4><b>Student's Information</b></h4>
       
       <table class="std_info_table" width="100%" cellspacing="0">
@@ -45,7 +45,7 @@
       </table>
       <%#= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %>
       </div>
-      <div class="grade_information">
+      <div class="grade_information" style="width: 200px;">
         <%= render  :partial=>"/connect_exam/baf_shaheen/gradding_level" %>
         
       </div>

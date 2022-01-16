@@ -164,7 +164,7 @@
                             <% end %>
                             <% end %>
                           <% end %>
-                          <%#= debug class_test.inspect %>
+                          
                           <% 
                             hw_avg = 0
                             assessment_avg = 0
@@ -193,7 +193,7 @@
                           %>
 
                           
-                            <td class="col-pdf"><%= assessment_avg %></td>
+                            <td class="col-pdf"><%= class_test.join(",") %> <%= assessment_avg %></td>
                             <td class="col-pdf"><%= hw_avg %></td>
                             <td class="col-pdf  border-right-none"><%= cw_avg %></td>    
 

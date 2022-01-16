@@ -306,10 +306,12 @@ if @total_std.blank?
                     #  subject_failed = true
                     #end
                     if exam_full_marks == 50 && exam_marks < 17
+                        failed_students << student_id
                       u_grade = u_grade+1 
                       subject_failed = true
                     end
                     if exam_full_marks == 25 && exam_marks < 8
+                        failed_students << student_id
                       u_grade = u_grade+1 
                       subject_failed = true
                     end

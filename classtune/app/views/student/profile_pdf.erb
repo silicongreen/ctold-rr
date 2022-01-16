@@ -47,15 +47,11 @@
 <div id="page-yield" class="available_sections">
     <table id="pdf-table" width="100%" cellspacing="0">
             <tr>
-                <% if MultiSchool.current_school.id == 246 %>
-                <td width="70%" style="vertical-align:top;">
-                    
-                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/cbis.png")),:width=> '85%' %>
-                </td>
-                <% else %>
                 <td width="10%">
                     <% if MultiSchool.current_school.id == 352 %>
                       <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/logo-sagc.png")),:width=> '85%' %>
+                    <% elsif MultiSchool.current_school.id == 246 %>
+                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/cherry-logo-bran-new.jpg")),:width=> '85%' %>
                     <% else %>
                       <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '85%' %>
                     <% end %>
@@ -68,7 +64,6 @@
                           <font size="3">Phone: 9833306 web: www.sagc.edu.bd</font>
                         <% end %>
                 </td>
-                <% end %>
                 <td class="align-right-bottom">
                     <b>Student Profile</b><br/>
                     <small>Printing Date: <%= I18n.l(Date.today,:format=>"%d %b %Y") %></small>

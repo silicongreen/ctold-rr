@@ -174,28 +174,32 @@
           <% end %>
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
               
-             <td class="col-pdf no-warp  align-left"> <%= es.exam.subject.elective_group.name %></td>
+             <td class="col-pdf no-warp  align-left"><font size="5"><%= es.exam.subject.elective_group.name %></font></td>
              <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" %>
              <td class="col-pdf">
+                  <font size="5">
                   <% if elective_group_mark[es.exam.subject.elective_group_id] == -1 %>
                     AB
                   <% else %>   
                     <%= elective_group_mark_total[es.exam.subject.elective_group_id].round() %>
-                  <% end %>       
+                  <% end %>      
+                  </font>   
              </td>
              <% end %>
              <td class="col-pdf">
+                  <font size="5">
                   <% if elective_group_mark[es.exam.subject.elective_group_id] == -1 %>
                     AB
                   <% else %>   
                     <%= elective_group_mark[es.exam.subject.elective_group_id].round() %>
-                  <% end %>       
+                  <% end %>      
+                  </font>   
              </td>
               <%  grade = GradingLevel.percentage_to_grade(elective_group_mark[es.exam.subject.elective_group_id].round(), @batch.id) %>
               <% if !grade.blank? and !grade.name.blank? %>
-              <td class="col-pdf  "><%= grade.name %></td>
+              <td class="col-pdf  "><font size="5"><%= grade.name %></font></td>
               <% else %>
-              <td class="col-pdf  ">-</td>
+              <td class="col-pdf  "><font size="5">-</font></td>
               <% end %>
               
               <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" && @batch.course.course_name == "IX" %>
@@ -219,9 +223,9 @@
                       <% percent = (diff.to_f/total_att.to_f)*100 %>
                     <% end %>
                   <% end %>
-                  <td class="col-pdf  "><%= sprintf( "%0.02f", percent) %> %</td>
+                  <td class="col-pdf  "><font size="5"><%= sprintf( "%0.02f", percent) %> %</font></td>
                 <% else %>
-                  <td class="col-pdf  ">-</td>
+                  <td class="col-pdf  "><font size="5">-</font></td>
                 <% end %>
                 
               <% end %>  
@@ -246,26 +250,26 @@
        <% end %>   
 
       <% if @batch.course.course_name != "X" && @batch.course.course_name != "IX" && has_no_exam == true %>
-      <h4 class="h4-evaluation"><b>Personal & Social Development</b></h4>
+      <h4 class="h4-evaluation"><b><font size="5">Personal & Social Development</font></b></h4>
       <table id="pdf-table" width="99.8%" class="table_99" cellspacing="0">
         <% c = 'even'  %>
         <tr class="table-header">  
           <td class="col-pdf no-warp align-left" width="25%"></td>
-          <td class="col-pdf" width="15%"><%= "Always" %></td>
-          <td class="col-pdf" width="15%"><%= "Mostly" %></td>
-          <td class="col-pdf " width="15%"><%= "Usually" %></td> 
-          <td class="col-pdf " width="15%"><%= "Occasionally" %></td>
-          <td class="col-pdf " width="15%"><%= "Rarely" %></td>
+          <td class="col-pdf" width="15%"><font size="5"><%= "Always" %></font></td>
+          <td class="col-pdf" width="15%"><font size="5"><%= "Mostly" %></font></td>
+          <td class="col-pdf " width="15%"><font size="5"><%= "Usually" %></font></td> 
+          <td class="col-pdf " width="15%"><font size="5"><%= "Occasionally" %></font></td>
+          <td class="col-pdf " width="15%"><font size="5"><%= "Rarely" %></font></td>
         </tr>
         <% exam_score.each do |es| %>
           <% if es.exam.subject.no_exams %>
           <tr class="even">
-            <td class="col-pdf no-warp align-left" width="25%"><%= es.exam.subject.name %></td>
-            <td class="col-pdf" width="15%"><% if es.remarks.to_i == 1 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
-            <td class="col-pdf" width="15%"><% if es.remarks.to_i == 2 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
-            <td class="col-pdf " width="15%"><% if es.remarks.to_i == 3 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td> 
-            <td class="col-pdf " width="15%"><% if es.remarks.to_i == 4 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
-            <td class="col-pdf " width="15%"><% if es.remarks.to_i == 5 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
+            <td class="col-pdf no-warp align-left" width="25%"><font size="5"><%= es.exam.subject.name %></font></td>
+            <td class="col-pdf" width="15%"><font size="5"><% if es.remarks.to_i == 1 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></font></td>
+            <td class="col-pdf" width="15%"><font size="5"><% if es.remarks.to_i == 2 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></font></td>
+            <td class="col-pdf " width="15%"><font size="5"><% if es.remarks.to_i == 3 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></font></td> 
+            <td class="col-pdf " width="15%"><font size="5"><% if es.remarks.to_i == 4 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></font></td>
+            <td class="col-pdf " width="15%"><font size="5"><% if es.remarks.to_i == 5 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></font></td>
           </tr>
           <% end %>
         <% end %>
@@ -278,7 +282,7 @@
 
               <tr class="even">
                   <td class="col-pdf " width="25%">
-                      Class Teacher's Signature
+                      <font size="5">Class Teacher's Signature</font>
                   </td> 
                   <td class="col-pdf" width="75%">
                       <br/><br/><br/>
@@ -286,7 +290,7 @@
               </tr>
               <tr class="even">
                   <td class="col-pdf " width="25%">
-                      Principal's Signature
+                      <font size="5">Principal's Signature</font>
                   </td> 
                   <td class="col-pdf" width="75%">
                       <br/><br/><br/>
@@ -301,59 +305,59 @@
       <table id="pdf-table" width="100%" cellspacing="0">
         <% c = 'even'  %>
         <tr class="table-header">
-          <td class="col-pdf"><%= t('subject') %></td>
+          <td class="col-pdf"><font size="5"><%= t('subject') %></font></td>
           <% if @exam_group.exam_type == 'Marks' %>
-            <td class="col-pdf"><%= t('marks_obtained') %></td>
-            <td class="col-pdf"><%= t('max') %></td>
-            <td class="col-pdf"><%= t('percentage') %>(%)</td>
+            <td class="col-pdf"><font size="5"><%= t('marks_obtained') %></font></td>
+            <td class="col-pdf"><font size="5"><%= t('max') %></font></td>
+            <td class="col-pdf"><font size="5"><%= t('percentage') %>(%)</font></td>
           <% elsif @exam_group.exam_type == 'Grades' %>
-            <td><%= t('grades') %></td>
+            <td><font size="5"><%= t('grades') %></font></td>
           <% else %>
-            <td class="col-pdf"><%= t('marks_obtained') %></td>
-            <td class="col-pdf"><%= t('max') %></td>
-            <td class="col-pdf"><%= t('grades') %></td>
-            <td class="col-pdf"><%= t('percentage') %>(%)</td>
+            <td class="col-pdf"<font size="5">><%= t('marks_obtained') %></font></td>
+            <td class="col-pdf"><font size="5"><%= t('max') %></font></td>
+            <td class="col-pdf"><font size="5"><%= t('grades') %></font></td>
+            <td class="col-pdf"><font size="5"><%= t('percentage') %>(%)</font></td>
           <% end %>
         </tr>
         <tr class="tr-blank"></tr>
         <% exam_score.each do |es| %>
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-            <td class="col-pdf"> <%= es.exam.subject.name %></td>
+            <td class="col-pdf"><font size="5"> <%= es.exam.subject.name %></font></td>
             <% if @exam_group.exam_type == 'Marks' %>
-              <td class="col-pdf"><%= es.marks || '-' %></td>
+              <td class="col-pdf"><font size="5"><%= es.marks || '-' %></font></td>
               <% total_marks_attained = total_marks_attained+(es.marks || 0) %>
-              <td class="col-pdf"><%= es.exam.maximum_marks %></td>
+              <td class="col-pdf"><font size="5"><%= es.exam.maximum_marks %></font></td>
               <% total_max_marks = total_max_marks+es.exam.maximum_marks%>
-              <td class="col-pdf"><%= es.calculate_percentage.round(2) %></td>
+              <td class="col-pdf"><font size="5"><%= es.calculate_percentage.round(2) %></font></td>
             <% elsif @exam_group.exam_type == 'Grades' %>
-              <td class="col-pdf"><%= es.grading_level || "-" %></td>
+              <td class="col-pdf"><font size="5"><%= es.grading_level || "-" %></font></td>
             <% else %>
-              <td class="col-pdf"><%= es.marks || "-" %></td>
+              <td class="col-pdf"><font size="5"><%= es.marks || "-" %></font></td>
               <% total_marks_attained = total_marks_attained+(es.marks || 0) %>
-              <td class="col-pdf"><%= es.exam.maximum_marks %></td>
+              <td class="col-pdf"><font size="5"><%= es.exam.maximum_marks %></font></td>
               <% total_max_marks = total_max_marks+es.exam.maximum_marks%>
-              <td class="col-pdf"><%= es.grading_level || "-" %></td>
-              <td class="col-pdf"><%= es.calculate_percentage.round(2) %></td>
+              <td class="col-pdf"><font size="5"><%= es.grading_level || "-" %></font></td>
+              <td class="col-pdf"><font size="5"><%= es.calculate_percentage.round(2) %></font></td>
             <% end %>
           </tr>
         <% end %>
         <tr class="tr-blank"></tr>
         <% if @exam_group.exam_type == 'Marks' or @exam_group.exam_type == 'MarksAndGrades' %>
           <tr class="table-header">
-            <td class="col-pdf"><%= t('total_marks') %>:</td>
-            <td class="col-pdf"><%= total_marks_attained %></td><td><%= total_max_marks %></td>
+            <td class="col-pdf"><font size="5"><%= t('total_marks') %>:</font></td>
+            <td class="col-pdf"><font size="5"><%= total_marks_attained %></td><td><%= total_max_marks %></font></td>
             <%  if @exam_group.exam_type == 'MarksAndGrades' %>
-              <td>-</td>
+              <td><font size="5">-</font></td>
             <% end %>
-            <td class="col-pdf"><%= "%.2f" %(total_marks_attained*100/total_max_marks) unless total_max_marks == 0 %></td>
+            <td class="col-pdf"><font size="5"><%= "%.2f" %(total_marks_attained*100/total_max_marks) unless total_max_marks == 0 %></font></td>
           </tr>
         <% end %>
       </table>
 
       <% if @exam_group.exam_type == 'Marks' or @exam_group.exam_type == 'MarksAndGrades' %>
-        <div class="custom_header">
+        <div class="custom_header"><font size="5">
           <%= t('class_average_marks') %> : <%= "%.2f" %@exam_group.batch_average_marks('marks') unless total_max_marks == 0%> | <%= t('class_average') %> % : <%=  "%.2f" %(@exam_group.batch_average_marks('marks')*100/total_max_marks) unless total_max_marks == 0 %>
-        </div>
+        </font></div>
       <% end %>
     <% end %>
   </div>

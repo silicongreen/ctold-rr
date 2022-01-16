@@ -37,6 +37,7 @@ if @total_std.blank?
           @batch_subject_hash_code << std_sub.code
         end
       end
+      failed_students = []
       unless @tabulation_data.blank?
         connect_exam = 0
         batch_loop = 0
@@ -192,7 +193,7 @@ if @total_std.blank?
             u_grade = 0
             grand_total_main = 0
             grade_poin_main = 0
-            failed_students = []
+            
             student_id = 0
 
             @student_tab = @student_all_tab.find{|val| val.id.to_i == std['id'].to_i }

@@ -5,11 +5,11 @@
       <% end %>
     <% end %>
     <%  unless @grading_levels.empty? %>
-      <p>Grade Boundaries</p>
+      <p><font size="4"><b>Grade Boundaries</b></font></p>
       <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
           <tr class="even">
-              <td>Marks</td>
-              <td>Grade</td>  
+              <td style="font-size: 12px;"><font size="4.5"><b>Marks</b></font></td>
+              <td style="font-size: 12px;"><font size="4.5"><b>Grade</b></font></td>  
           </tr> 
           <% prev_score = 0 %>
           <% @grading_levels.each_with_index do |grade,index| %>
@@ -17,16 +17,20 @@
             <td>
                 <% if grade.max_score.nil? %> 
                   <% if grade.min_score.to_i == 0 %>
-                    <&nbsp;<%= '%i%' % prev_score %>
+                    <font size="4.5"><&nbsp;<%= '%i%' % prev_score %></font>
                   <% else %>
-                      <%= '%i%' % grade.min_score %> 
+                    <font size="4.5"><%= '%i%' % grade.min_score %></font> 
                   <% end %>
                 <% else %> 
-                  <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>
+                  <% if grade.min_score.to_i == 0 %>
+                    <font size="4.5">&nbsp;<%= '%i%' % prev_score %></font>
+                  <% else %>
+                    <font size="4.5"><%= grade.min_score.to_i.to_s + " - " + grade.max_score.to_i.to_s+" %" %></font>
+                  <% end %>
                 <% end %>
-                <%  prev_score = grade.min_score %>
+                <%  prev_score = grade.min_score.to_i %>
             </td>
-            <td><%= grade.name %></td>
+            <td><font size="4.5"><%= grade.name %></font></td>
               </tr> 
           <% end %> 
 

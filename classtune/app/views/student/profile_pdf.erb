@@ -47,6 +47,30 @@
 <div id="page-yield" class="available_sections">
     <table id="pdf-table" width="100%" cellspacing="0">
             <tr>
+                <% if MultiSchool.current_school.id == 246 %>
+                <div id="pdf-header-south2" class="general-header">
+                  <table width="100%">
+                    <tr>
+                      <td width="25%"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/cherry-logo-new.png")),:width=> '100%' %></span></td>
+                      <td>
+                          <h3 class="small-margin" align="left">CHERRY BLOSSOMS</h3>
+                          <h3 align="left">INTERNATIONAL</h3>
+                          <h3 align="left">SCHOOL & COLLEGE</h3>
+                          <h5 align="left" class="new-step-1">(PLAY GROUP-'A' LEVEL, EDEXCEL CENTRE NO. 96440, UK)</h5>
+
+                      </td>
+                    </tr>  
+                  </table>
+
+
+              </div>
+              <hr style="width: 1435px; "/>
+                <h4 align="left" style="width: 700px;margin-left: 430px;font-size: 24px;"><%= @connect_exam_obj.name+", Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h4>
+              <hr style="width: 1435px; "/>  
+
+                
+
+                <% else %>
                 <td width="10%">
                     <% if MultiSchool.current_school.id == 352 %>
                       <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/logo-sagc.png")),:width=> '85%' %>
@@ -64,6 +88,7 @@
                           <font size="3">Phone: 9833306 web: www.sagc.edu.bd</font>
                         <% end %>
                 </td>
+                <% end %>
                 <td class="align-right-bottom">
                     <b>Student Profile</b><br/>
                     <small>Printing Date: <%= I18n.l(Date.today,:format=>"%d %b %Y") %></small>
@@ -518,3 +543,34 @@ table.sign_table
 
   
 </style>   
+<style>
+#pdf-header-south2.general-header
+{
+   width: 700px !important;
+   margin-left: 400px !important;
+}
+#pdf-header-south2.general-header h3.small-margin
+{
+    margin-top: 5px  !important;
+}
+
+#pdf-header-south2.general-header h4
+{
+   font-size: 24px;
+}
+
+#pdf-header-south2.general-header h3,#pdf-header-south2.general-header h5
+{
+    margin-top: -25px  !important;
+
+}
+#pdf-header-south2.general-header h3
+{
+   font-size: 28px;
+}
+#page-yield.st_joseph_bg
+{
+   width: 1450px  !important;
+}
+
+</style>

@@ -286,10 +286,10 @@
                 </table>
                 <table id="pdf-table" width="72%" class="left-table odd-table signature_table" cellspacing="0">
                     <% if @covid_main == 0 %>
-                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                    <!--tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td class="col-pdf no-warp align-left"><b>Class Teacher</b></td>
                       <td class="col-pdf no-warp align-left width-60"><br/></td>
-                     </tr>
+                     </tr-->
                      <% end %>
                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td class="col-pdf no-warp align-left"><b>Section In-Charge</b></td>
@@ -306,10 +306,10 @@
                       <% end %>
                      <% end %>
                     <% if @covid_main == 0 %>
-                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                     <!--tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td class="col-pdf no-warp align-left"><b>Parent's Signature</b></td>
                       <td class="col-pdf no-warp align-left width-60"><br/></td>
-                     </tr>
+                     </tr-->
                     <% end %> 
                      <% if @connect_exam_obj.quarter_number == 5 %>
                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">

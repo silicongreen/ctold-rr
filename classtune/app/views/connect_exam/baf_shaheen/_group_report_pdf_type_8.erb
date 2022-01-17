@@ -322,7 +322,7 @@
                           </td> 
                           <td class="col-pdf align-center border-right-none" width="50%">
                               <% if @report_data['total'].to_i == 1 %>
-                                <%= @connect_exam_obj.total_working_days %>
+                                <%= @connect_exam_obj.total_working_days.to_i == 0 ? 'N/A' : @connect_exam_obj.total_working_days %>
                               <% else %>
                                 <%= @report_data['total'] %>
                               <% end %>

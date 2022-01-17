@@ -48,28 +48,9 @@
     <table id="pdf-table" width="100%" cellspacing="0">
             <tr>
                 <% if MultiSchool.current_school.id == 246 %>
-                <div id="pdf-header-south2" class="general-header">
-                  <table width="100%">
-                    <tr>
-                      <td width="25%"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/cherry-logo-new.png")),:width=> '100%' %></span></td>
-                      <td>
-                          <h3 class="small-margin" align="left">CHERRY BLOSSOMS</h3>
-                          <h3 align="left">INTERNATIONAL</h3>
-                          <h3 align="left">SCHOOL & COLLEGE</h3>
-                          <h5 align="left" class="new-step-1">(PLAY GROUP-'A' LEVEL, EDEXCEL CENTRE NO. 96440, UK)</h5>
-
-                      </td>
-                    </tr>  
-                  </table>
-
-
-              </div>
-              <hr style="width: 1435px; "/>
-                <h4 align="left" style="width: 700px;margin-left: 430px;font-size: 24px;"><%= @connect_exam_obj.name+", Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h4>
-              <hr style="width: 1435px; "/>  
-
-                
-
+                    <td width="70%">
+                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/cherry-logo-new.png")),:width=> '85%' %>
+                    </td>
                 <% else %>
                 <td width="10%">
                     <% if MultiSchool.current_school.id == 352 %>

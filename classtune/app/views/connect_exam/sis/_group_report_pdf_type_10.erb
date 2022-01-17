@@ -68,8 +68,8 @@
                   </tr>
                   <% if @covid_main == 0 %>
                     <tr class="even">
-                      <td class="col-pdf height-18">Marks</td>
-                      <td class="col-pdf height-18">Grade</td>
+                      <!--td class="col-pdf height-18">Marks</td-->
+                      <td class="col-pdf height-18" colspan="2">Grade</td>
                     </tr>
                   <% end %>
                  
@@ -265,7 +265,7 @@
                           if has_mark == true && total_mark.to_i > 0
                           %>
                           <% if @covid_main == 0 %>
-                          <td class="col-pdf"><b><%= total_mark %></b></td>
+                          <!--td class="col-pdf"><b><%#= total_mark %></b></td-->
                           <% end %>
                           
                           <% if !grade.blank? and !grade.name.blank? and total_mark > 0 %>
@@ -526,12 +526,12 @@
               <% end %>
               <table id="pdf-table"  width="100%" class="left-table even-table signature2" cellspacing="0" >
                   <% if @covid_main == 0 %>
-                  <tr class="even">
+                  <!--tr class="even">
                       <td class="width-20 align-left">Class Teacher</td>
                       <td class="width-30"></td>
                       <td class="width-20 align-left">Principal</td>
                       <td class="width-30"></td>
-                  </tr>    
+                  </tr-->    
                   <% end %>
                   <tr class="even">    
                       <td class="width-20 align-left">Section In-Charge</td>
@@ -541,8 +541,8 @@
                       <% end %> 
                       </td>
                       <% if @covid_main == 0 %>
-                        <td class="width-20 align-left">Parent</td>
-                        <td class="width-30"></td>
+                        <!--td class="width-20 align-left">Parent</td>
+                        <td class="width-30"></td-->
                       <% end %>
                   </tr>
                   

@@ -229,7 +229,7 @@
                                     <% if report['exam_category'] == '3' %>
                                       <% cq = cq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
 			      	      <%
-				      if report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == total_cq.to_i and report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i < pass_mark_cq.to_i
+				      if report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i > 30 and report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i < pass_mark_cq.to_i
                                       	subject_failed = true
                                       	failed = true
                                       end  		
@@ -238,7 +238,7 @@
                                     <% elsif report['exam_category'] == '4' %>
 			      	      <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
 			      	      <%
-				      if report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == total_mcq.to_i and report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i < pass_mark_mcq.to_i
+				      if report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i > 10 and report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i < pass_mark_mcq.to_i
                                       	subject_failed = true
                                       	failed = true
                                       end  		

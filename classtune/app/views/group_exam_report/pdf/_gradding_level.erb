@@ -23,7 +23,7 @@
                   <% end %>
                 <% else %> 
                   <% if grade.min_score.to_i == 0 %>
-                    <font size="4.5">&nbsp;<%= '%i%' % prev_score %></font>
+                    <font size="4.5"><&nbsp;<%= '%i%' % prev_score %></font>
                   <% else %>
                     <font size="4.5"><%= grade.min_score.to_i.to_s + " - " + grade.max_score.to_i.to_s+" %" %></font>
                   <% end %>

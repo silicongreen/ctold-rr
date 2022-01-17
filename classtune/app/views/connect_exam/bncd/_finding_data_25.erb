@@ -308,12 +308,8 @@ if @total_std.blank?
                     if rs['exam_category'] == '3'
                       cq = cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       cq_total = cq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-		      %>
-		<% if student_id == 51597 and sub['code'] == 'psy' %>
-	    <%= rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_s + "  " + total_cq.to_s + "  " + rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s + "  " + pass_mark_cq.to_s %><br />
-		<% end %>
-	    <%
-                      if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i == total_cq.to_i and rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i < pass_mark_cq.to_i
+		
+                      if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i > 20 and rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i < pass_mark_cq.to_i
                         failed_students << student_id
                         u_grade = u_grade+1 
                         subject_failed = true
@@ -321,7 +317,7 @@ if @total_std.blank?
                     elsif rs['exam_category'] == '4'
                       mcq = mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       mcq_total = mcq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                      if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i == total_mcq.to_i and rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i < pass_mark_mcq.to_i
+                      if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i > 10 and rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i < pass_mark_mcq.to_i
                         failed_students << student_id
                         u_grade = u_grade+1 
                         subject_failed = true

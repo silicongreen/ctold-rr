@@ -236,9 +236,9 @@
                           <!--td class="col-pdf"><b><%#= total_mark %></b></td-->
                           <% end %>
                           <% if !grade.blank? and !grade.name.blank? %>
-                            <td class="col-pdf" colspan="2"><b><%= grade.name %></b></td>
+                            <td class="col-pdf" colspan="2"><b>1<%= grade.name %></b></td>
                           <% else %>
-                            <td class="col-pdf" colspan="2"><b>-</b></td>
+                            <td class="col-pdf" colspan="2"><b>1-</b></td>
                           <% end %> 
                           <% else %>
                             <% if @covid_main == 0 and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>

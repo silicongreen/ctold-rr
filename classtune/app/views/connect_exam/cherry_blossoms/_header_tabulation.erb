@@ -1,0 +1,61 @@
+<% if !@connect_exam_obj.blank? && (@connect_exam_obj.result_type.to_i == 3 || @connect_exam_obj.result_type.to_i == 4 )  %>
+  <div id="pdf-header-south2" class="general-header">
+      <table width="100%">
+        <tr>
+          <td width="25%"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/cherry-logo-new.png")),:width=> '100%' %></span></td>
+          <td>
+              <h3 class="small-margin" align="left">CHERRY BLOSSOMS</h3>
+              <h3 align="left">INTERNATIONAL</h3>
+              <h3 align="left">SCHOOL & COLLEGE</h3>
+              <h5 align="left" class="new-step-1">(PLAY GROUP-'A' LEVEL, EDEXCEL CENTRE NO. 96440, UK)</h5>
+               
+          </td>
+        </tr>  
+      </table>
+      
+        
+  </div>
+  <hr style="width: 1435px; "/>
+    <h4 align="left" style="width: 700px;margin-left: 430px;font-size: 24px;"><%= @connect_exam_obj.name+", Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h4>
+  <hr style="width: 1435px; "/>  
+  
+<% else %>
+  <div id="pdf-header-south" class="landscape">
+      <center>
+          <center><h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/cherry-logo-new.png")),:width=> '8%' %></h4></center>
+          <h3 align="center">Cherry Blossoms International School &amp; College</h3>
+
+  </div>
+<% end %>
+
+<style>
+#pdf-header-south2.general-header
+{
+   width: 700px !important;
+   margin-left: 400px !important;
+}
+#pdf-header-south2.general-header h3.small-margin
+{
+    margin-top: 5px  !important;
+}
+
+#pdf-header-south2.general-header h4
+{
+   font-size: 24px;
+}
+
+#pdf-header-south2.general-header h3,#pdf-header-south2.general-header h5
+{
+    margin-top: -25px  !important;
+
+}
+#pdf-header-south2.general-header h3
+{
+   font-size: 28px;
+}
+#page-yield.st_joseph_bg
+{
+   width: 1450px  !important;
+}
+
+</style>

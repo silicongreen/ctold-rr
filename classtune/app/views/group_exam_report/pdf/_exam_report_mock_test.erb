@@ -120,20 +120,21 @@
       <% total_credit_points=0 %>
       <% total_credit_hours=0 %>
       <% elective_group_mark = {} %>
+      <% elective_max_mark = {} %>
       <% elective_group_mark_total = {} %>
       <% 
    
       exam_score.each do |es|
           if es.marks.present?
             if elective_group_mark[es.exam.subject.elective_group_id].nil?
-              elective_group_mark[es.exam.subject.elective_group_id] = (((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
+              elective_group_mark[es.exam.subject.elective_group_id] = (((es.marks.to_f*100)/es.exam.maximum_marks.to_f) #*es.exam.subject.percentage.to_f)/100
               elective_group_mark_total[es.exam.subject.elective_group_id] = es.marks.to_f
             else
               if elective_group_mark[es.exam.subject.elective_group_id] == -1
                 elective_group_mark[es.exam.subject.elective_group_id] = 0
                 elective_group_mark_total[es.exam.subject.elective_group_id] = 0
               end 
-              elective_group_mark[es.exam.subject.elective_group_id] = elective_group_mark[es.exam.subject.elective_group_id]+(((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
+              elective_group_mark[es.exam.subject.elective_group_id] = elective_group_mark[es.exam.subject.elective_group_id]+(((es.marks.to_f*100)/es.exam.maximum_marks.to_f) #*es.exam.subject.percentage.to_f)/100
               elective_group_mark_total[es.exam.subject.elective_group_id] = elective_group_mark_total[es.exam.subject.elective_group_id]+es.marks.to_f
             end
           else

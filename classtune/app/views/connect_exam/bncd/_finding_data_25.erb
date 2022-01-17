@@ -309,7 +309,7 @@ if @total_std.blank?
                       cq = cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       cq_total = cq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
 		
-                      if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i > 20 and rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i < pass_mark_cq.to_i
+                      if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i > 30 and rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i < pass_mark_cq.to_i
                         failed_students << student_id
                         u_grade = u_grade+1 
                         subject_failed = true

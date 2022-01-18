@@ -70,7 +70,8 @@
               <td class="td">
                 <div id="drop_<%= "#{week}_#{ct.id}" %>"  class="drop"onClick="update_selected_divs('<%= "#{week}_#{ct.id}" %>');">
                   <div class="tt-subject" id="subject_name_<%= @tte.id %>">
-                    <% if @tte.is_a? TimetableEntry  %>
+                    <% #if @tte.is_a? TimetableEntry  %>
+                    <% unless @tte.blank? %>
                       <div class="subject themed_text">
                         <% unless @tte.subject.nil? %>
                           <% unless @tte.subject.elective_group.nil?   %>

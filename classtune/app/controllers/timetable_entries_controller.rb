@@ -264,6 +264,7 @@ class TimetableEntriesController < ApplicationController
   def tte_from_batch_and_tt(tt)
     @tt=Timetable.find(tt)
     time_table_class_timings = TimeTableClassTiming.find_by_timetable_id_and_batch_id(@tt.id,@batch.id)
+    abort(@tt.id.to_s + "  " + @batch.id.to_s)
     @class_timing = time_table_class_timings.nil? ? Array.new : time_table_class_timings.class_timing_set.class_timings.timetable_timings
     @weekday = @tt.time_table_weekdays.find_by_batch_id(@batch.id).weekday_set.weekday_ids
     timetable_entries=TimetableEntry.find(:all,:conditions=>{:batch_id=>@batch.id,:timetable_id=>@tt.id},:include=>[:subject,:employee])

@@ -271,6 +271,7 @@ class TimetableEntriesController < ApplicationController
     timetable_entries.each do |tte|
       @timetable[tte.weekday_id][tte.class_timing_id]=tte
     end
+    abort(@timetable.inspect)
     @subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>["elective_group_id IS NULL AND is_deleted = false"])
     @ele_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>["subjects.elective_group_id IS NOT NULL AND subjects.is_deleted = false AND elective_groups.batch_id = subjects.batch_id"], :group => "elective_group_id",:include=>[:elective_group])
   end

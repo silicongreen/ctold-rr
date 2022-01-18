@@ -553,7 +553,10 @@ end
                             %>
 			    <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
 			    <% unless !grade.blank? and !grade.name.blank? %>
-			    	<% if grade.credit_points == 0.00 %>
+			    	<% if grade.name == "F" %>
+			    		<td>
+                                <%= subject_failed ? "Failed" : "" %>    <%= grade.credit_points %>
+                            </td>	
 			    		subject_failed = true
                                     	failed = true
 			    	<% end %>
@@ -562,9 +565,7 @@ end
 			    		total_failed = total_failed + 1
 				end
 			    %>
-                            <td>
-                                <%= subject_failed ? "Failed" : "" %>    <%= grade.credit_points %>
-                            </td>
+                            
                             <% total_mark = total_mark+main_mark.to_f %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>

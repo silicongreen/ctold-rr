@@ -64,10 +64,11 @@
         </tr>
         <% @weekday.sort.each do |week| %>
           <tr>
-
             <% @class_timing.each do |ct| %>
               <% @tte = @timetable[week][ct.id] %>
               <td class="td">
+                <%= ct.id.to_s + "  " %>
+                <%= debug @timetable[week][ct.id].inspect %>
                 <div id="drop_<%= "#{week}_#{ct.id}" %>"  class="drop"onClick="update_selected_divs('<%= "#{week}_#{ct.id}" %>');">
                   <div class="tt-subject" id="subject_name_<%= @tte.id %>">
                     <% #if @tte.is_a? TimetableEntry  %>

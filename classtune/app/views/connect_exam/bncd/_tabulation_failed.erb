@@ -522,10 +522,10 @@ end
                                     #  subject_failed = true
                                     #  failed = true
                                     #end
-                                    if exam_full_marks == 100 && exam_marks < 33
-                                      subject_failed = true
-                                      failed = true
-                                    end
+                                    #if exam_full_marks == 100 && exam_marks < 33
+                                    #  subject_failed = true
+                                    #  failed = true
+                                    #end
                                   end
 
                               %>
@@ -549,8 +549,15 @@ end
                                 end
                               end
                               main_mark = cq+mcq+att
-
+			      	
                             %>
+			    <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+			    <% unless !grade.blank? and !grade.name.blank? %>
+			    	<% if grade.credit_points == 0.00 %>
+			    		subject_failed = true
+                                    	failed = true
+			    	<% end %>
+			    <% end %>
 			    <%  if  subject_failed
 			    		total_failed = total_failed + 1
 				end

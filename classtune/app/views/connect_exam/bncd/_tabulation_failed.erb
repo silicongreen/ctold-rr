@@ -531,6 +531,9 @@ end
                               %>
                               <% end %>  
                             <% end %> 
+			    <% if att == 0 %>
+			    	<% att = student_attendance_mark %>
+			    <% end %>
                             <%
                               if mcq_total > 0 && mcq > 0
                                 if mcq_total == 35 or mcq_total == 40

@@ -393,6 +393,7 @@
                 end
               %>
               <% if @covid_main == 0  || @batch.course.course_name == "IX" %>
+              <% if @batch.id == 1 %>
               <table id="pdf-table"  width="30%" class="left-table even-table signature" cellspacing="0" >
                   <tr class="even">
                       <td class="align-left">Total Working Days</td>
@@ -404,6 +405,7 @@
                   </tr>
                   
               </table>
+              <% end %>
               <% end %>
               <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
               <% if @grading_levels.blank? %>

@@ -448,16 +448,16 @@
                       <%  unless @grading_levels.empty? %>
                         <% i = 0 %>
                         <% @grading_levels.each_with_index do |grade,index| %>
-                        <% #if i>=3 && i<6 %>
+                        <% if i>=3 && i<6 %>
                           <td class="align-left">
                             <% if grade.max_score.nil? %>  
-                              <%= '%i%' % grade.min_score %>
+                              2<%= '%i%' % grade.min_score %>
                             <% else %> 
-                              <%= '%i%' % grade.min_score %> - <%= '%i%' % grade.max_score %>
+                              1<%= '%i%' % grade.min_score %> - <%= '%i%' % grade.max_score %>
                             <% end %>
                           </td>
-                          <td class="align-left">ee<%= grade.name %></td>
-                        <% #end %>
+                          <td class="align-left">ss<%= grade.name %></td>
+                        <% end %>
                         <% i = i+1 %>
                         <% end %>
                       <% end %>

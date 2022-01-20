@@ -236,7 +236,7 @@
                           <!--td class="col-pdf"><b><%#= total_mark %></b></td-->
                           <% end %>
                           <% if !grade.blank? and !grade.name.blank? %>
-                            <td class="col-pdf"><b>aa<%= grade.name %></b></td>
+                            <td class="col-pdf"><b><%= grade.name %></b></td>
                           <% else %>
                             <td class="col-pdf"><b>-</b></td>
                           <% end %> 
@@ -422,7 +422,7 @@
                              <%= '%i%' % grade.min_score %> - <%= '%i%' % grade.max_score %>
                             <% end %>
                           </td>
-                          <td class="align-left">cc<%= grade.name %></td>
+                          <td class="align-left"><%= grade.name %></td>
                         <% end %>
                         <% i = i+1 %>
                         <% end %>
@@ -438,7 +438,7 @@
                               <%= '%i%' % grade.min_score %> - <%= '%i%' % grade.max_score %>
                             <% end %>
                           </td>
-                          <td class="align-left">dd<%= grade.name %></td>
+                          <td class="align-left"><%= grade.name %></td>
                         <% end %>
                         <% i = i+1 %>
                         <% end %>
@@ -448,7 +448,7 @@
                       <%  unless @grading_levels.empty? %>
                         <% i = 0 %>
                         <% @grading_levels.each_with_index do |grade,index| %>
-                        <% if i>=3 && i<6 %>
+                        <% #if i>=3 && i<6 %>
                           <td class="align-left">
                             <% if grade.max_score.nil? %>  
                               <%= '%i%' % grade.min_score %>
@@ -457,7 +457,7 @@
                             <% end %>
                           </td>
                           <td class="align-left">ee<%= grade.name %></td>
-                        <% end %>
+                        <% #end %>
                         <% i = i+1 %>
                         <% end %>
                       <% end %>

@@ -54,9 +54,9 @@
                       <% end %>
                       <% if @covid_main == 0 and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                         <% if @connect_exam_obj.quarter_number == 5 %>
-                          <td class="col-pdf height-18" colspan="2">First Term</td>
+                          <td class="col-pdf height-18">First Term</td>
                         <% else %>
-                          <td class="col-pdf height-18" colspan="2">Final Term</td>
+                          <td class="col-pdf height-18">Final Term</td>
                         <% end %>
                       <% else %>  
                         <% if @connect_exam_obj.quarter_number == 5 %>
@@ -236,9 +236,9 @@
                           <!--td class="col-pdf"><b><%#= total_mark %></b></td-->
                           <% end %>
                           <% if !grade.blank? and !grade.name.blank? %>
-                            <td class="col-pdf" colspan="2"><b>aa<%= grade.name %></b></td>
+                            <td class="col-pdf"><b>aa<%= grade.name %></b></td>
                           <% else %>
-                            <td class="col-pdf" colspan="2"><b>-</b></td>
+                            <td class="col-pdf"><b>-</b></td>
                           <% end %> 
                           <% else %>
                             <% if @covid_main == 0 and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
@@ -422,7 +422,7 @@
                              <%= '%i%' % grade.min_score %> - <%= '%i%' % grade.max_score %>
                             <% end %>
                           </td>
-                          <td class="align-left"><%= grade.name %></td>
+                          <td class="align-left">cc<%= grade.name %></td>
                         <% end %>
                         <% i = i+1 %>
                         <% end %>
@@ -438,7 +438,7 @@
                               <%= '%i%' % grade.min_score %> - <%= '%i%' % grade.max_score %>
                             <% end %>
                           </td>
-                          <td class="align-left" rowspan="2"><%= grade.name %></td>
+                          <td class="align-left">dd<%= grade.name %></td>
                         <% end %>
                         <% i = i+1 %>
                         <% end %>
@@ -456,7 +456,7 @@
                               <%= '%i%' % grade.min_score %> - <%= '%i%' % grade.max_score %>
                             <% end %>
                           </td>
-                          <td class="align-left"><%= grade.name %></td>
+                          <td class="align-left">ee<%= grade.name %></td>
                         <% end %>
                         <% i = i+1 %>
                         <% end %>

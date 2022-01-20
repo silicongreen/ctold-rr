@@ -275,7 +275,7 @@
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <td class="col-pdf no-warp  align-left"><%= report['subject_name'] %></td>
                           <% if @covid_main == 0 and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
-                            <td class="col-pdf"><b>-</b></td>
+                            <td class="col-pdf"><b>12-</b></td>
                           <% end %>
                           <td class="col-pdf"><b><%= report['subject_comment'] unless report['subject_comment'].blank? %></b></td>
                       </tr>

@@ -52,9 +52,9 @@
                      
                         
                           <% if @connect_exam_obj.quarter_number == 5 %>
-                            <td class="col-pdf height-18" colspan="2">First Term</td>
+                            <td class="col-pdf height-18">First Term</td>
                           <% else %>
-                            <td class="col-pdf height-18" colspan="2">Final Term</td>
+                            <td class="col-pdf height-18">Final Term</td>
                           <% end %>
                         <% else %> 
                           <td class="col-pdf"><%= "Subject" %></td>
@@ -307,7 +307,7 @@
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <td class="col-pdf no-warp  align-left"><%= report['subject_name'] %></td>
                           <% if @covid_main == 0 %>
-                          <td class="col-pdf"><b>-</b></td>
+                          <!--td class="col-pdf"><b>-</b></td-->
                           <% end %>
                           <% unless report['subject_comment'].blank? %>
                             <td class="col-pdf"><b><%= report['subject_comment'] %></b></td>

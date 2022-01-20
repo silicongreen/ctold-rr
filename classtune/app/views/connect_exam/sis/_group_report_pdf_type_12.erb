@@ -412,6 +412,20 @@
               <% @grading_levels = GradingLevel.default %>
               <% end %>
               <table id="pdf-table"  <% if @covid_main == 0  || @batch.course.course_name == "IX" %>width="42%" class="left-table odd-table signature"<% else %>  width="72%" class="left-table even-table signature" <% end %> cellspacing="0" >
+                  <% if @batch.course.course_name == "KG-I" %>
+                  <tr class="even">
+                    <td class="col-pdf left-td">Excellent</td>
+                    <td class="col-pdf">A</td>
+                    <td class="col-pdf left-td">Very Good</td>
+                    <td class="col-pdf">B+</td>
+                    <td class="col-pdf left-td">Good</td>
+                    <td class="col-pdf">B</td>
+                    <td class="col-pdf left-td">Satisfactory</td>
+                    <td class="col-pdf">C</td>
+                    <td class="col-pdf left-td">Needs Improvement</td>
+                    <td class="col-pdf">NI</td>
+                  </tr>
+                  <% else %>
                   <tr class="even">
                       <%  unless @grading_levels.empty? %>
                         <% i = 0 %>
@@ -470,7 +484,7 @@
                       <td class="align-left" colspan="<%= remain_td %>"></td>
                       <% end %>
                   </tr>
-                  
+                  <% end %>
               </table>
               <% if @connect_exam_obj.quarter_number == 6 %>
               <% if @covid_main == 0 %>

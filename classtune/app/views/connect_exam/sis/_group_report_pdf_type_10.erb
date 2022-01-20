@@ -48,7 +48,7 @@
                   <% c = 'even'  %>
                   <tr class="odd">
                         <% if @covid_main == 0 %>
-                          <td class="col-pdf" rowspan="2"><%= "Subject" %></td>
+                          <td class="col-pdf"><%= "Subject" %></td>
                      
                         
                           <% if @connect_exam_obj.quarter_number == 5 %>
@@ -59,7 +59,7 @@
                         <% else %> 
                           <td class="col-pdf"><%= "Subject" %></td>
                           <% if @connect_exam_obj.quarter_number == 5 %>
-                            <td class="col-pdf height-18">First Term</td>
+                            <td class="col-pdf height-18">First Term<br />(Grade)</td>
                           <% else %>
                             <td class="col-pdf height-18">Final Term</td>
                           <% end %>
@@ -67,10 +67,10 @@
                        
                   </tr>
                   <% if @covid_main == 0 %>
-                    <tr class="even">
-                      <!--td class="col-pdf height-18">Marks</td-->
+                    <!--tr class="even">
+                      <td class="col-pdf height-18">Marks</td>
                       <td class="col-pdf height-18">Grade</td>
-                    </tr>
+                    </tr-->
                   <% end %>
                  
                   <% has_quarter = false %>

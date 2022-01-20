@@ -54,7 +54,7 @@
                       <% end %>
                       <% if @covid_main == 0 and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                         <% if @connect_exam_obj.quarter_number == 5 %>
-                          <td class="col-pdf height-18">First Term</td>
+                          <td class="col-pdf height-18">First Term<br/>(Grade)</td>
                         <% else %>
                           <td class="col-pdf height-18">Final Term</td>
                         <% end %>
@@ -67,10 +67,10 @@
                       <% end %>  
                   </tr>
                   <% if @covid_main == 0 and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
-                  <tr class="even">
-                    <!--td class="col-pdf height-18">Marks</td-->
+                  <!--tr class="even">
+                    <td class="col-pdf height-18">Marks</td>
                     <td class="col-pdf height-18">Grade</td>
-                  </tr>
+                  </tr-->
                   <% end %>
                   <% has_final_exam = false %>
                   <% total_marks_obtain = 0 %>

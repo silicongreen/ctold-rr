@@ -504,9 +504,9 @@
                   <tr class="even">    
                       <td class="width-20 align-left">Section In-Charge</td>
                       <td class="width-30">
-                      <% if @covid_main == 1 %>
+                      <%# if @covid_main == 1 %>
                           <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/#{@section_in_charge}.png")), :width=>"30%" %>
-                      <% end %>     
+                      <%# end %>     
                       </td>
                       <% if @covid_main == 0 %>
                       <!--td class="width-20 align-left">Parent</td>

@@ -244,7 +244,7 @@
                           <td class="col-pdf"><b><%= total_mark %></b></td>
                           <% end %>
                           <% if !grade.blank? and !grade.name.blank? %>
-                            <td class="col-pdf"><b><%= total_mark.to_s %> <%= full_mark_all.to_s %> <%= grade.name %></b></td>
+                            <td class="col-pdf"><b><%= first_term_fullmark.to_s %> <%= final_term_fullmark.to_s %> <%= grade.name %></b></td>
                           <% else %>
                             <td class="col-pdf"><b>-</b></td>
                           <% end %> 

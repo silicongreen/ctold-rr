@@ -244,13 +244,13 @@
                           <td class="col-pdf"><b><%= total_mark %></b></td>
                           <% end %>
                           <% if !grade.blank? and !grade.name.blank? %>
-                            <% if @student.id == 19212 && subjects['id'] == 93252 %>
+                            <% if @student.id.to_s == "19212" && subjects['id'].to_s == "93252" %>
                             <td class="col-pdf"><b><%= "A+" %></b></td>
-                            <% elsif @student.id == 19993 && subjects['id'] == 93252 %>
+                            <% elsif @student.id.to_s == "19993" && subjects['id'].to_s == "93252" %>
                             <td class="col-pdf"><b><%= "A+" %></b></td>
-                            <% elsif @student.id == 56604 && subjects['id'] == 93252 %>
+                            <% elsif @student.id.to_s == "56604" && subjects['id'].to_s == "93252" %>
                             <td class="col-pdf"><b><%= "A+" %></b></td>
-                            <% elsif @student.id == 19240 && subjects['id'] == 92697 %>
+                            <% elsif @student.id.to_s == "19240" && subjects['id'].to_s == "92697" %>
                             <td class="col-pdf"><b><%= "A+" %></b></td>
                             <% else %>
                             <td class="col-pdf"><b><%= grade.name %></b></td>

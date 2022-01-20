@@ -48,7 +48,7 @@
                   <% c = 'even'  %>
                   <tr class="odd">
                       <% if @covid_main == 0 and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
-                        <td class="col-pdf" rowspan="2"><%= "Subject" %></td>
+                        <td class="col-pdf"><%= "Subject" %></td>
                       <% else %>
                         <td class="col-pdf"><%= "Subject" %></td>
                       <% end %>

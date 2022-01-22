@@ -284,6 +284,110 @@
                   <% end %>    
 
               </table>
+              
+              <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+              <% if @grading_levels.blank? %>
+              <% @grading_levels = GradingLevel.default %>
+              <% end %>
+                  <% if @batch.course.course_name == "KG-I" %>
+                  <table id="pdf-table" width="100%" class="left-table even-table signature" cellspacing="0" >
+                  <tr class="even">
+                    <td class="col-pdf">A</td>
+                    <td class="col-pdf left-td">Excellent</td>
+                    <td class="col-pdf">B+</td>
+                    <td class="col-pdf left-td">Very Good</td>
+                    <td class="col-pdf">B</td>
+                    <td class="col-pdf left-td">Good</td>
+                    <td class="col-pdf">C</td>
+                    <td class="col-pdf left-td">Satisfactory</td>
+                    <td class="col-pdf">NI</td>
+                    <td class="col-pdf left-td">Needs Improvement</td>
+                  </tr>
+                  <% else %>
+                  <table id="pdf-table"  <% if @covid_main == 0  || @batch.course.course_name == "IX" %>width="42%" class="left-table odd-table signature"<% else %>  width="72%" class="left-table even-table signature" <% end %> cellspacing="0" >
+                  <tr class="even">
+                      <%  unless @grading_levels.empty? %>
+                        <% i = 0 %>
+                        <% @grading_levels.each_with_index do |grade,index| %>
+                        <% if i<3 %>
+                          <td class="align-left">
+                            <% if grade.max_score.nil? %>  
+                              <%= '%i%' % grade.min_score %>
+                            <% else %> 
+                             <%= '%i%' % grade.min_score %> - <%= '%i%' % grade.max_score %>
+                            <% end %>
+                          </td>
+                          <td class="align-left"><%= grade.name %></td>
+                        <% end %>
+                        <% i = i+1 %>
+                        <% end %>
+                      <% end %>
+                      <%  unless @grading_levels.empty? %>
+                        <% i = 0 %>
+                        <% @grading_levels.each_with_index do |grade,index| %>
+                        <% if i>5 %>
+                          <td class="align-left" rowspan="2">
+                            <% if grade.max_score.nil? %>  
+                              <%= '%i%' % grade.min_score %>
+                            <% else %> 
+                              <%= '%i%' % grade.min_score %> - <%= '%i%' % grade.max_score %>
+                            <% end %>
+                          </td>
+                          <td class="align-left" rowspan="2"><%= grade.name %></td>
+                        <% end %>
+                        <% i = i+1 %>
+                        <% end %>
+                      <% end %>
+                  </tr>    
+                  <tr class="even">    
+                      <%  unless @grading_levels.empty? %>
+                        <% i = 0 %>
+                        <% td_count = 0 %>
+                        <% @grading_levels.each_with_index do |grade,index| %>
+                        <% if i>=3 && i<6 %>
+                          <td class="align-left">
+                            <% if grade.max_score.nil? %>  
+                              <%= '%i%' % grade.min_score %>
+                            <% else %> 
+                              <%= '%i%' % grade.min_score %> - <%= '%i%' % grade.max_score %>
+                            <% end %>
+                          </td>
+                          <td class="align-left"><%= grade.name %></td>
+                          <% td_count = td_count + 2 %>
+                        <% end %>
+                        <% i = i+1 %>
+                        <% end %>
+                      <% end %>
+                      <% if td_count < 6 %>
+                      <% remain_td = 6 - td_count %>
+                      <td class="align-left" colspan="<%= remain_td %>"></td>
+                      <% end %>
+                  </tr>
+                  </table>
+                  <% end %>
+              
+              <% if @connect_exam_obj.quarter_number == 6 %>
+              <% if @covid_main == 0 %>
+              <table id="pdf-table"  width="20%" class="left-table  odd-table signature" cellspacing="0" >
+                  <tr class="even">
+                      <td class="align-left">Total Marks Obtained</td>
+                      <td><%= marks_from_string %></td>
+                  </tr>    
+                  <tr class="even">    
+                      <td class="align-left">Position In Class</td>
+                      <td>
+                      <% if !@student_position.blank? && !@student_position[@student.id.to_i].blank? %>
+                          <%= @student_position[@student.id.to_i] %>
+                      <% end %>
+                      </td>
+                  </tr>
+                  
+              </table>
+              <% end %>
+              
+              <% end %>
+            
+            
               <table id="pdf-table"  width="66%" class="left-table odd-table height-exam" cellspacing="0" >
                   <tr class="odd">
                       <td class="col-pdf"><%= "Assessment" %></td>
@@ -407,107 +511,7 @@
               </table>
               <% end %>
               <% end %>
-              <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
-              <% if @grading_levels.blank? %>
-              <% @grading_levels = GradingLevel.default %>
-              <% end %>
-                  <% if @batch.course.course_name == "KG-I" %>
-                  <table id="pdf-table" width="100%" class="left-table even-table signature" cellspacing="0" >
-                  <tr class="even">
-                    <td class="col-pdf">A</td>
-                    <td class="col-pdf left-td">Excellent</td>
-                    <td class="col-pdf">B+</td>
-                    <td class="col-pdf left-td">Very Good</td>
-                    <td class="col-pdf">B</td>
-                    <td class="col-pdf left-td">Good</td>
-                    <td class="col-pdf">C</td>
-                    <td class="col-pdf left-td">Satisfactory</td>
-                    <td class="col-pdf">NI</td>
-                    <td class="col-pdf left-td">Needs Improvement</td>
-                  </tr>
-                  <% else %>
-                  <table id="pdf-table"  <% if @covid_main == 0  || @batch.course.course_name == "IX" %>width="42%" class="left-table odd-table signature"<% else %>  width="72%" class="left-table even-table signature" <% end %> cellspacing="0" >
-                  <tr class="even">
-                      <%  unless @grading_levels.empty? %>
-                        <% i = 0 %>
-                        <% @grading_levels.each_with_index do |grade,index| %>
-                        <% if i<3 %>
-                          <td class="align-left">
-                            <% if grade.max_score.nil? %>  
-                              <%= '%i%' % grade.min_score %>
-                            <% else %> 
-                             <%= '%i%' % grade.min_score %> - <%= '%i%' % grade.max_score %>
-                            <% end %>
-                          </td>
-                          <td class="align-left"><%= grade.name %></td>
-                        <% end %>
-                        <% i = i+1 %>
-                        <% end %>
-                      <% end %>
-                      <%  unless @grading_levels.empty? %>
-                        <% i = 0 %>
-                        <% @grading_levels.each_with_index do |grade,index| %>
-                        <% if i>5 %>
-                          <td class="align-left" rowspan="2">
-                            <% if grade.max_score.nil? %>  
-                              <%= '%i%' % grade.min_score %>
-                            <% else %> 
-                              <%= '%i%' % grade.min_score %> - <%= '%i%' % grade.max_score %>
-                            <% end %>
-                          </td>
-                          <td class="align-left" rowspan="2"><%= grade.name %></td>
-                        <% end %>
-                        <% i = i+1 %>
-                        <% end %>
-                      <% end %>
-                  </tr>    
-                  <tr class="even">    
-                      <%  unless @grading_levels.empty? %>
-                        <% i = 0 %>
-                        <% td_count = 0 %>
-                        <% @grading_levels.each_with_index do |grade,index| %>
-                        <% if i>=3 && i<6 %>
-                          <td class="align-left">
-                            <% if grade.max_score.nil? %>  
-                              <%= '%i%' % grade.min_score %>
-                            <% else %> 
-                              <%= '%i%' % grade.min_score %> - <%= '%i%' % grade.max_score %>
-                            <% end %>
-                          </td>
-                          <td class="align-left"><%= grade.name %></td>
-                          <% td_count = td_count + 2 %>
-                        <% end %>
-                        <% i = i+1 %>
-                        <% end %>
-                      <% end %>
-                      <% if td_count < 6 %>
-                      <% remain_td = 6 - td_count %>
-                      <td class="align-left" colspan="<%= remain_td %>"></td>
-                      <% end %>
-                  </tr>
-                  </table>
-                  <% end %>
               
-              <% if @connect_exam_obj.quarter_number == 6 %>
-              <% if @covid_main == 0 %>
-              <table id="pdf-table"  width="20%" class="left-table  odd-table signature" cellspacing="0" >
-                  <tr class="even">
-                      <td class="align-left">Total Marks Obtained</td>
-                      <td><%= marks_from_string %></td>
-                  </tr>    
-                  <tr class="even">    
-                      <td class="align-left">Position In Class</td>
-                      <td>
-                      <% if !@student_position.blank? && !@student_position[@student.id.to_i].blank? %>
-                          <%= @student_position[@student.id.to_i] %>
-                      <% end %>
-                      </td>
-                  </tr>
-                  
-              </table>
-              <% end %>
-              
-              <% end %>
               <table id="pdf-table"  width="100%" class="left-table even-table signature2" cellspacing="0" >
                   <% if @covid_main == 0 %>
                   <!--tr class="even">

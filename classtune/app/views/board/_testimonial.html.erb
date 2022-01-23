@@ -12,7 +12,7 @@
     <% end %>
 
     <p id="position-0"><%= @std_info.admission_no %></p>
-    <p id="position-1"><%= @std_info.full_name %></p>
+    <p id="position-1"><%= @std_guardians[0].relation + " " + @std_info.full_name %></p>
     <p id="position-2"><%= @std_guardians[0].full_name unless @std_guardians.blank? or @std_guardians[0].blank? %></p>
     <p id="position-3"><%= @std_guardians[1].full_name unless @std_guardians.blank? or @std_guardians[1].blank? %></p>
     <p id="position-4"><%= @board_exam.center %></p>

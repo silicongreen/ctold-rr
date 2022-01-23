@@ -12,9 +12,22 @@
     <% end %>
 
     <p id="position-0"><%= @std_info.admission_no %></p>
-    <p id="position-1"><%= @std_guardians[0].relation + " " + @std_info.full_name %></p>
-    <p id="position-2"><%= @std_guardians[0].full_name unless @std_guardians.blank? or @std_guardians[0].blank? %></p>
-    <p id="position-3"><%= @std_guardians[1].full_name unless @std_guardians.blank? or @std_guardians[1].blank? %></p>
+    <p id="position-1"><%= @std_info.full_name %></p>
+    <% unless @std_guardians.blank? or @std_guardians[0].blank? %>
+        <% if @std_guardians[0].relation == "Mother" %>
+        <p id="position-2"><%= @std_guardians[0].full_name unless @std_guardians.blank? or @std_guardians[0].blank? %></p>
+        <% else %>
+        <p id="position-2"><%= @std_guardians[1].full_name unless @std_guardians.blank? or @std_guardians[1].blank? %></p>
+        <% end %>
+    <% end %>
+    <% unless @std_guardians.blank? or @std_guardians[1].blank? %>
+        <% if @std_guardians[1].relation == "Father" %>
+        <p id="position-2"><%= @std_guardians[1].full_name unless @std_guardians.blank? or @std_guardians[1].blank? %></p>
+        <% else %>
+        <p id="position-2"><%= @std_guardians[0].full_name unless @std_guardians.blank? or @std_guardians[0].blank? %></p>
+        <% end %>
+    <% end %>
+    <!--p id="position-3"><%#= @std_guardians[1].full_name unless @std_guardians.blank? or @std_guardians[1].blank? %></p-->
     <p id="position-4"><%= @board_exam.center %></p>
     <p id="position-5"><%= @board_exam_student.roll %></p>
     <p id="position-6"><%=  sprintf( "%0.02f", @board_exam_student.avg_credit_points) unless @board_exam_student.avg_credit_points.blank? %></p>

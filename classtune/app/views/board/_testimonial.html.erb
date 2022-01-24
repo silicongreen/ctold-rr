@@ -14,14 +14,14 @@
     <p id="position-0"><%= @std_info.admission_no %></p>
     <p id="position-1"><%= @std_info.full_name %></p>
     <% unless @std_guardians.blank? or @std_guardians[0].blank? %>
-        <% if @std_guardians[0].relation == "Mother" %>
+        <% if @std_guardians[0].relation == "Father" %>
         <p id="position-2"><%= @std_guardians[0].full_name unless @std_guardians.blank? or @std_guardians[0].blank? %></p>
         <% else %>
         <p id="position-2"><%= @std_guardians[1].full_name unless @std_guardians.blank? or @std_guardians[1].blank? %></p>
         <% end %>
     <% end %>
     <% unless @std_guardians.blank? or @std_guardians[1].blank? %>
-        <% if @std_guardians[1].relation == "Father" %>
+        <% if @std_guardians[1].relation == "Mother" %>
         <p id="position-3"><%= @std_guardians[1].full_name unless @std_guardians.blank? or @std_guardians[1].blank? %></p>
         <% else %>
         <p id="position-3"><%= @std_guardians[0].full_name unless @std_guardians.blank? or @std_guardians[0].blank? %></p>

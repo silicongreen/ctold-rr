@@ -170,6 +170,23 @@
           <td class="col-pdf" colspan="1"><%= "Admission date" %></td>
           <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.admission_date,:format=>"%d %b %Y") unless @student.admission_date.nil? %></td>
         </tr>
+      
+        <%
+            aditional_details = StudentAdditionalDetail.find_all_by_student_id(@student.id,:include=>[:student_additional_field])
+        %>
+        <%
+        
+          unless aditional_details.blank?
+            house = aditional_details.find{|ad| ad.additional_field_id == 48}
+          end
+          %>
+        
+        <% unless house.blank? %>
+          <tr>
+            <td class="col-pdf"><%= "House" %></td>
+            <td class="col-pdf">:&nbsp;&nbsp;&nbsp;<%= house.additional_info unless house.blank? %></td>
+          </tr>
+        <% end %>
         
         <tr class="odd">
           <td class="col-pdf" colspan="4"><%= "Personal Details" %></td>
@@ -194,6 +211,8 @@
           <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= @student.nationality.nationality.nationality unless @student.nationality_id.nil? %></td>
         </tr>
         
+        
+      
         <% father = mother = Guardian.new %>
         <% unless @student.guardians.empty? %>
           <% g_loop = 0 %>
@@ -208,9 +227,7 @@
           <% end %>
         <% end %>
         <% unless father.nil? %>
-          <%
-            aditional_details = StudentAdditionalDetail.find_all_by_student_id(@student.id,:include=>[:student_additional_field])
-          %>
+          
           <tr class="odd">
             <td class="col-pdf" colspan="4"><%= "Parent's Details" %></td>
           </tr>

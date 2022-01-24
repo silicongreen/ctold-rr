@@ -1496,7 +1496,7 @@ class StudentController < ApplicationController
     new_book = Spreadsheet::Workbook.new
     sheet1 = new_book.create_worksheet :name => 'student_list'
     if MultiSchool.current_school.id == 352
-      row_first = ['SL','Student Id','Roll','Name','Father Name','Blood Group','Category','Class','Shift','Section','Session','Version','Group','Tuition Fees',"House",'GPA','Mobile']
+      row_first = ['SL','Student Id','Roll','Name',"House",'Father Name','Blood Group','Category','Class','Shift','Section','Session','Version','Group','Tuition Fees','GPA','Mobile']
     else
       row_first = ['SL','Student Id','Roll','Name','Father Name','Blood Group','Category','Class','Shift','Section','Session','Version','Group','Tuition Fees','GPA','Mobile']
     end
@@ -1611,16 +1611,6 @@ class StudentController < ApplicationController
           tmp_row << student.admission_no
           tmp_row << student.class_roll_no
           tmp_row << student.full_name
-          tmp_row << father_name
-          tmp_row << student.blood_group unless student.blood_group.nil?
-          tmp_row << std_category
-          tmp_row << student.batch.course.course_name
-          tmp_row << batch
-          tmp_row << student.batch.course.section_name
-          tmp_row << student.batch.course.session
-          tmp_row << version
-          tmp_row << student.batch.course.group
-          tmp_row << monthly_fee
           if MultiSchool.current_school.id == 352
             aditional_details = StudentAdditionalDetail.find_all_by_student_id(student.id,:include=>[:student_additional_field])
             unless aditional_details.blank?
@@ -1632,6 +1622,16 @@ class StudentController < ApplicationController
             end
             tmp_row << house_info
           end
+          tmp_row << father_name
+          tmp_row << student.blood_group unless student.blood_group.nil?
+          tmp_row << std_category
+          tmp_row << student.batch.course.course_name
+          tmp_row << batch
+          tmp_row << student.batch.course.section_name
+          tmp_row << student.batch.course.session
+          tmp_row << version
+          tmp_row << student.batch.course.group
+          tmp_row << monthly_fee
           tmp_row << student.gpa
           tmp_row << student.sms_number
           new_book.worksheet(0).insert_row(std_loop, tmp_row)

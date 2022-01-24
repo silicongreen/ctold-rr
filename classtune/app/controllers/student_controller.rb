@@ -1495,7 +1495,11 @@ class StudentController < ApplicationController
     Spreadsheet.client_encoding = 'UTF-8'
     new_book = Spreadsheet::Workbook.new
     sheet1 = new_book.create_worksheet :name => 'student_list'
-    row_first = ['SL','Student Id','Roll','Name','Father Name','Blood Group','Category','Class','Shift','Section','Session','Version','Group','Tuition Fees','GPA','Mobile']
+    if MultiSchool.current_school.id == 352
+      row_first = ['SL','Student Id','Roll','Name','Father Name','Blood Group','Category','Class','Shift','Section','Session','Version','Group','Tuition Fees',"House",'GPA','Mobile']
+    else
+      row_first = ['SL','Student Id','Roll','Name','Father Name','Blood Group','Category','Class','Shift','Section','Session','Version','Group','Tuition Fees','GPA','Mobile']
+    end
     new_book.worksheet(0).insert_row(0, row_first)
     @batch_name_pdf = batch_name = params[:batch_name]
     @version_pdf = version_name = params[:version_name]
@@ -1617,12 +1621,24 @@ class StudentController < ApplicationController
           tmp_row << version
           tmp_row << student.batch.course.group
           tmp_row << monthly_fee
+          if MultiSchool.current_school.id == 352
+            aditional_details = StudentAdditionalDetail.find_all_by_student_id(student.id,:include=>[:student_additional_field])
+            unless aditional_details.blank?
+              house = aditional_details.find{|ad| ad.additional_field_id == 48}
+            end
+            house_info = ""
+            unless house.blank?
+              house_info = house.additional_info 
+            end
+            tmp_row << house_info
+          end
           tmp_row << student.gpa
           tmp_row << student.sms_number
           new_book.worksheet(0).insert_row(std_loop, tmp_row)
           std_loop = std_loop+1
         end
       end
+      
       if MultiSchool.current_school.id == 352 and !@section_pdf.blank?
         unless @class_name_pdf.blank?
           course_data = Course.find_by_section_name_and_course_name(@section_pdf,@class_name_pdf)

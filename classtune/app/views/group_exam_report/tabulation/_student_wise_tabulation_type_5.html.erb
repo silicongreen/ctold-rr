@@ -176,7 +176,7 @@
           <% if !elective_group_mark[esubject].blank? %>
             <% convert_mark = (elective_group_mark_total[esubject] * 100) / elective_max_mark[esubject] %>
             Total&nbsp;|&nbsp;<%= convert_mark.round() %>&nbsp;|&nbsp;
-            <%  grade = GradingLevel.percentage_to_grade(elective_group_mark[esubject].round(), @batch.id) %>
+            <%  grade = GradingLevel.percentage_to_grade(convert_mark.round(), @batch.id) %>
             <% if !grade.blank? and !grade.name.blank? %>
               <%= grade.name %>
             <% else %>

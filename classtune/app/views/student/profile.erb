@@ -572,6 +572,7 @@
 
                 <% unless  @additional_details.empty? %>
                   <% @additional_details.each do |detail| %>
+                    <% if detail.additional_info != '--' %>
                     <div class="row">
                         <div class="row_label">
                             <div><%= detail.student_additional_field.name.titlecase %></div>
@@ -588,6 +589,7 @@
                         </div>
                     </div>
                     <div class="clearfix"></div>
+                    <% end %>
                   <% end %>
                 <% end %>
                   <% unless @additional_fields_count == 0 %>

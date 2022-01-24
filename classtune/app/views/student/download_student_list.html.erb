@@ -68,17 +68,22 @@
                               <%= t('roll_number') %>
                             <% end %></b></td> 
                 <td class="col-pdf aling-left no-warp"><b>Name</b></td> 
+                <% if MultiSchool.current_school.code == "sagc" %>
+                <td class="col-pdf aling-left no-warp"><b>House</b></td> 
+                <% end %>
                 <% if @section_pdf.blank? %>
                   <td class="col-pdf aling-left no-warp"><b>Section</b></td>
                 <% end %>
+                <% if MultiSchool.current_school.code == "sagc" %>
+                <td class="col-pdf no-warp"><b>B. Group</b></td> 
+                <% else %>
                 <td class="col-pdf no-warp"><b>Blood Group</b></td> 
+                <% end %>
                 <td class="col-pdf aling-left no-warp"><b>Category</b></td> 
                 <% if MultiSchool.current_school.code != "bncd" %>
                   <td class="col-pdf aling-left no-warp"><b>Tuition Fees</b></td> 
                 <% end %>
-                <% if MultiSchool.current_school.code == "sagc" %>
-                <td class="col-pdf aling-left no-warp"><b>House</b></td> 
-                <% end %>
+                
                 <td class="col-pdf aling-left no-warp"><b>Mobile</b></td>
                 <td class="col-pdf aling-left no-warp"><b>Remarks</b></td>
             </tr>
@@ -162,17 +167,23 @@
                               <%= t('roll_number') %>
                             <% end %></b></td> 
                       <td class="col-pdf aling-left no-warp"><b>Name</b></td> 
+                      <% if MultiSchool.current_school.code == "sagc" %>
+                        <td class="col-pdf aling-left no-warp"><b>House</b></td> 
+                      <% end %>
                       <% if @section_pdf.blank? %>
                         <td class="col-pdf aling-left no-warp"><b>Section</b></td>
+                      <% end %>
+                      <% if MultiSchool.current_school.code == "sagc" %>
+                      <td class="col-pdf no-warp"><b>B. Group</b></td> 
+                      <% else %>
+                      <td class="col-pdf no-warp"><b>Blood Group</b></td> 
                       <% end %>
                       <td class="col-pdf no-warp"><b>Blood Group</b></td> 
                       <td class="col-pdf aling-left no-warp"><b>Category</b></td> 
                       <% if MultiSchool.current_school.code != "bncd" %>
                         <td class="col-pdf aling-left no-warp"><b>Tuition Fees</b></td> 
                       <% end %> 
-                      <% if MultiSchool.current_school.code == "sagc" %>
-                        <td class="col-pdf aling-left no-warp"><b>House</b></td> 
-                      <% end %>
+                      
                       <td class="col-pdf aling-left no-warp"><b>Mobile</b></td>
                       <td class="col-pdf aling-left no-warp"><b>Remarks</b></td>
                   </tr>
@@ -183,15 +194,6 @@
                     <td class="col-pdf aling-left"><%= student.admission_no %></td>
                     <td class="col-pdf aling-left"><%= student.class_roll_no %></td>
                     <td class="col-pdf aling-left no-warp"><%= student.full_name %></td>
-                    <% if @section_pdf.blank? %>
-                      <td class="col-pdf aling-left no-warp"><%= student.batch.course.section_name %></td>
-                    <% end %>
-                    <td class="col-pdf"><%= student.blood_group unless student.blood_group.nil? %></td>
-                    <td class="col-pdf aling-left no-warp"><%= std_category %></td>
-                    <% if MultiSchool.current_school.code != "bncd" %>
-                      <td class="col-pdf aling-left"><%= monthly_fee %></td>
-                    <% end %>
-                    
                     <% if MultiSchool.current_school.code == "sagc" %>
                         <%
                             aditional_details = StudentAdditionalDetail.find_all_by_student_id(student.id,:include=>[:student_additional_field])
@@ -201,9 +203,33 @@
                           unless aditional_details.blank?
                             house = aditional_details.find{|ad| ad.additional_field_id == 48}
                           end
+                          house_info = ""
+                          house_short = ""
+                          unless house.blank?
+                            house_info = house.additional_info
+                            if house_info == "Rabeya Bashri"
+                                house_short = "RB"
+                            elsif house_info == "Nawab Fayjunnesa"
+                                house_short = "NF"
+                            elsif house_info == "Begum Rokeya"
+                                house_short = "BR"
+                            elsif house_info == "Shamsun Nahar Mahmud"
+                                house_short = "SNM"    
+                            end
+                          end
                           %>
-                        <td class="col-pdf aling-left"><%= house.additional_info unless house.blank? %></td> 
+                        <td class="col-pdf aling-left"><%= house_short  %></td> 
                     <% end %>
+                    <% if @section_pdf.blank? %>
+                      <td class="col-pdf aling-left no-warp"><%= student.batch.course.section_name %></td>
+                    <% end %>
+                    <td class="col-pdf"><%= student.blood_group unless student.blood_group.nil? %></td>
+                    <td class="col-pdf aling-left no-warp"><%= std_category %></td>
+                    <% if MultiSchool.current_school.code != "bncd" %>
+                      <td class="col-pdf aling-left"><%= monthly_fee %></td>
+                    <% end %>
+                    
+                    
                     <td class="col-pdf aling-left"><%= student.sms_number %></td>
                     <td class="col-pdf aling-left remarks-td"></td>
                 </tr>

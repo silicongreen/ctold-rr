@@ -194,7 +194,7 @@
                     
                     <% if MultiSchool.current_school.code == "sagc" %>
                         <%
-                            aditional_details = StudentAdditionalDetail.find_all_by_student_id(@student.id,:include=>[:student_additional_field])
+                            aditional_details = StudentAdditionalDetail.find_all_by_student_id(student.id,:include=>[:student_additional_field])
                         %>
                         <%
 

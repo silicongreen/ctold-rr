@@ -76,6 +76,9 @@
                 <% if MultiSchool.current_school.code != "bncd" %>
                   <td class="col-pdf aling-left no-warp"><b>Tuition Fees</b></td> 
                 <% end %>
+                <% if MultiSchool.current_school.code == "sagc" %>
+                <td class="col-pdf aling-left no-warp"><b>House</b></td> 
+                <% end %>
                 <td class="col-pdf aling-left no-warp"><b>Mobile</b></td>
                 <td class="col-pdf aling-left no-warp"><b>Remarks</b></td>
             </tr>
@@ -167,6 +170,9 @@
                       <% if MultiSchool.current_school.code != "bncd" %>
                         <td class="col-pdf aling-left no-warp"><b>Tuition Fees</b></td> 
                       <% end %> 
+                      <% if MultiSchool.current_school.code == "sagc" %>
+                        <td class="col-pdf aling-left no-warp"><b>House</b></td> 
+                      <% end %>
                       <td class="col-pdf aling-left no-warp"><b>Mobile</b></td>
                       <td class="col-pdf aling-left no-warp"><b>Remarks</b></td>
                   </tr>
@@ -184,6 +190,19 @@
                     <td class="col-pdf aling-left no-warp"><%= std_category %></td>
                     <% if MultiSchool.current_school.code != "bncd" %>
                       <td class="col-pdf aling-left"><%= monthly_fee %></td>
+                    <% end %>
+                    
+                    <% if MultiSchool.current_school.code == "sagc" %>
+                        <%
+                            aditional_details = StudentAdditionalDetail.find_all_by_student_id(@student.id,:include=>[:student_additional_field])
+                        %>
+                        <%
+
+                          unless aditional_details.blank?
+                            house = aditional_details.find{|ad| ad.additional_field_id == 48}
+                          end
+                          %>
+                        <td class="col-pdf aling-left"><%= house.additional_info unless house.blank? %></td> 
                     <% end %>
                     <td class="col-pdf aling-left"><%= student.sms_number %></td>
                     <td class="col-pdf aling-left remarks-td"></td>

@@ -82,17 +82,31 @@
     exam_score.sort! { |a, b|  a.exam.subject.name <=> b.exam.subject.name }
   
     elective_group_mark = {}
+    elective_max_mark = {} 
+    elective_subject_percentage = {}
+    elective_group_mark_total = {}
     exam_score.each do |es|
       if es.marks.present?
         if elective_group_mark[es.exam.subject.elective_group_id].nil?
-          elective_group_mark[es.exam.subject.elective_group_id] = (((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
+          elective_group_mark[es.exam.subject.elective_group_id] = (((es.marks.to_f*100)/es.exam.maximum_marks.to_f) *es.exam.subject.percentage.to_f)/100
+          elective_max_mark[es.exam.subject.elective_group_id] = es.exam.maximum_marks.to_f
+          elective_group_mark_total[es.exam.subject.elective_group_id] = es.marks.to_f
+          elective_subject_percentage[es.exam.subject.elective_group_id] = es.exam.subject.percentage.to_f
         else
-          elective_group_mark[es.exam.subject.elective_group_id] = elective_group_mark[es.exam.subject.elective_group_id]+(((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
+          if elective_group_mark[es.exam.subject.elective_group_id] == -1
+            elective_group_mark[es.exam.subject.elective_group_id] = 0
+            elective_group_mark_total[es.exam.subject.elective_group_id] = 0
+            elective_max_mark[es.exam.subject.elective_group_id] = 0
+          end 
+          elective_group_mark[es.exam.subject.elective_group_id] = elective_group_mark[es.exam.subject.elective_group_id]+(((es.marks.to_f*100)/es.exam.maximum_marks.to_f) *es.exam.subject.percentage.to_f)/100
+          elective_max_mark[es.exam.subject.elective_group_id] =  elective_max_mark[es.exam.subject.elective_group_id] + es.exam.maximum_marks.to_f
+          elective_group_mark_total[es.exam.subject.elective_group_id] = elective_group_mark_total[es.exam.subject.elective_group_id]+es.marks.to_f
+          elective_subject_percentage[es.exam.subject.elective_group_id] = es.exam.subject.percentage.to_f
         end
       else
-        if elective_group_mark[es.exam.subject.elective_group_id].nil?
-          elective_group_mark[es.exam.subject.elective_group_id] = 0
-        end
+         if elective_group_mark[es.exam.subject.elective_group_id].nil?
+          elective_group_mark[es.exam.subject.elective_group_id] = -1
+        end  
       end    
     end 
       
@@ -160,7 +174,8 @@
           <% end %>
           
           <% if !elective_group_mark[esubject].blank? %>
-            Total&nbsp;|&nbsp;<%= elective_group_mark[esubject].round() %>&nbsp;|&nbsp;
+            <% convert_mark = (elective_group_mark_total[esubject] * 100) / elective_max_mark[esubject] %>
+            Total&nbsp;|&nbsp;<%= convert_mark.round() %>&nbsp;|&nbsp;
             <%  grade = GradingLevel.percentage_to_grade(elective_group_mark[esubject].round(), @batch.id) %>
             <% if !grade.blank? and !grade.name.blank? %>
               <%= grade.name %>

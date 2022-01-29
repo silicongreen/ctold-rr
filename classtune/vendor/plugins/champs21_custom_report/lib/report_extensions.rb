@@ -13,7 +13,7 @@ module StudentExtensions
         :dob,:education,:occupation,
         :income,:email,:office_address_line1,
         :office_address_line2,:city,:state,
-        :office_phone1,:mobile_phone,
+        :office_phone1,:mobile_phone,:passport,
         :to=>:immediate_contact,:prefix=>"parent",:allow_nil=>true
   
       base.fields_to_search=YAML::load(File.open(File.dirname(__FILE__)+'/../config/report_fields.yml'))[:fields_to_search][:student]

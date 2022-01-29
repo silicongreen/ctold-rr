@@ -412,7 +412,7 @@
                                                     </div>
                                                 </div>
                                                 <%
-                                                    aditional_details = StudentAdditionalDetail.find_all_by_student_id(@student.id,:include=>[:student_additional_field])
+                                                    aditional_details = StudentAdditionalDetail.find_all_by_student_id(@student.former_id,:include=>[:student_additional_field])
                                                     unless aditional_details.blank?
                                                         post_office = aditional_details.find{|ad| ad.additional_field_id == 49}
                                                         police_station = aditional_details.find{|ad| ad.additional_field_id == 50}

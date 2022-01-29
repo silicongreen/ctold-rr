@@ -411,6 +411,13 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <%
+                                                    aditional_details = StudentAdditionalDetail.find_all_by_student_id(@student.id,:include=>[:student_additional_field])
+                                                    unless aditional_details.blank?
+                                                        post_office = aditional_details.find{|ad| ad.additional_field_id == 49}
+                                                        police_station = aditional_details.find{|ad| ad.additional_field_id == 50}
+                                                    end
+                                                %>
                                                 <div class="col-4">
                                                     <div class="row">
                                                         <div class="col-5 pr-0 pl-0">
@@ -418,7 +425,7 @@
                                                         </div>
                                                         <div class="col-7 pl-0 pr-0 village_b1">
                                                             <p style="margin-left: -15px;margin-top: -5px;font-style: italic;">
-                                                               
+                                                                <%= post_office.additional_info unless post_office.blank? %>
                                                             </p>
                                                         </div>
                                                     </div>
@@ -430,7 +437,7 @@
                                                         </div>
                                                         <div class="col-6 pl-0 pr-0 village_b2">
                                                             <p style="margin-left: -5px;margin-top: -5px;font-style: italic;">
-                                                                
+                                                                <%= police_station.additional_info unless police_station.blank? %>
                                                             </p>
                                                         </div>
                                                     </div>

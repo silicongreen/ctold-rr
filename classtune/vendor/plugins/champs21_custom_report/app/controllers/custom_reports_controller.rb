@@ -138,6 +138,7 @@ class CustomReportsController < ApplicationController
 
   def make_report_columns
     @model.fields_to_display.each do |col|
+      abort(@model.fields_to_display.inspect)
       if col.to_s == "passport"
         @report.report_columns.build(:method=>col,:title=>"NID/Passport Number")
       else

@@ -137,14 +137,16 @@ class CustomReportsController < ApplicationController
   private
 
   def make_report_columns
+    dt = ""
     @model.fields_to_display.each do |col|
-      abort(@model.fields_to_display.inspect)
-      if col.to_s == "passport"
+      dt = dt + col.to_s + "\n\n"
+      if col.to_s == ":parent_passport"
         @report.report_columns.build(:method=>col,:title=>"NID/Passport Number")
       else
         @report.report_columns.build(:method=>col,:title=>t(col))
       end
     end
+    abort(dt)
     @model.additional_field_methods.each do |col|
       @report.report_columns.build(:method=>col,:title=>col.to_s.titleize)
     end

@@ -116,7 +116,7 @@
   end
   
 %>
-<div id="page-yield" class="available_sections1 baf_shaheen" style="border: 1px solid #f00; width: 1600px;">
+<div id="page-yield" class="available_sections1" style="width: 1600px;">
     <div class="page1"> </div>
     <div class="section1 row" >
         <center>
@@ -150,6 +150,7 @@
                       
                       <td class="col-pdf">Roll</td>
                       <td class="col-pdf">Students Name</td>
+                      <td class="col-pdf">A/C ID</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -174,6 +175,7 @@
                       
                       <td class="col-pdf"></td>
                       <td class="col-pdf">Full Mark</td>
+                      <td class="col-pdf"></td>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -205,6 +207,7 @@
                       
                       <td class="col-pdf"></td>
                       <td class="col-pdf">Highest Mark</td>
+                      <td class="col-pdf"></td>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -248,6 +251,7 @@
                           
                           <td class="col-pdf">Roll</td>
                           <td class="col-pdf">Students Name</td>
+                          <td class="col-pdf">A/C ID</td>
                           <% @report_data['report']['subjects'].each do |sub| %>
                             <% has_exam = false %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -284,6 +288,7 @@
                           
                           <td class="col-pdf">Roll</td>
                           <td class="col-pdf">Students Name</td>
+                          <td class="col-pdf">A/C ID</td>
                           <% @report_data['report']['subjects'].each do |sub| %>
                             <% has_exam = false %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -324,6 +329,7 @@
                         <% else %>
                         <td class="name-std"><%= "-" %></td>
                         <% end %>
+                        <td class="name-std"><%= std['admission_no'] %></td>
                         <% total_mark = 0 %>
                         <% grades = [] %>
                         <% grade_count = {} %>

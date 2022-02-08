@@ -250,9 +250,9 @@
                           <% end %>   
                           <%
                           if @subject_highest[sub['id'].to_i].blank?
-                            @subject_highest[sub['id'].to_i] = total_mark.to_f
-                          elsif total_mark.to_f > @subject_highest[sub['id'].to_i].to_f
-                            @subject_highest[sub['id'].to_i] = total_mark.to_f
+                            @subject_highest[sub['id'].to_i] = subject_obtain_mark.to_f
+                          elsif subject_obtain_mark.to_f > @subject_highest[sub['id'].to_i].to_f
+                            @subject_highest[sub['id'].to_i] = subject_obtain_mark.to_f
                           end
                           %>
                         <% end %> 

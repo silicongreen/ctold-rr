@@ -6903,17 +6903,26 @@ class ExamController < ApplicationController
        
     @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
     if (MultiSchool.current_school.id == 280 && @connect_exam_obj.result_type==2) or 
-        (MultiSchool.current_school.id == 323 && @connect_exam_obj.result_type==6) or 
-        (MultiSchool.current_school.id == 362 && @connect_exam_obj.result_type==2)
+        (MultiSchool.current_school.id == 323 && @connect_exam_obj.result_type==6)
       render :pdf => 'tabulation',
         :orientation => 'Landscape', :zoom => 1.00,
-        :page_size => 'A0',
+        :page_size => 'Legal',
         :margin => {    :top=> 10,
         :bottom => 10,
         :left=> 10,
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
+    elsif (MultiSchool.current_school.id == 362 && @connect_exam_obj.result_type==2)
+        render :pdf => 'tabulation',
+          :orientation => 'Landscape', :zoom => 1.00,
+          :page_size => 'A5',
+          :margin => {    :top=> 10,
+          :bottom => 10,
+          :left=> 10,
+          :right => 10},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
     else
       render :pdf => 'tabulation',
         :orientation => 'Landscape', :zoom => 1.00,

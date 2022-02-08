@@ -116,7 +116,7 @@
   end
   
 %>
-<div id="page-yield" class="available_sections1" style="width: 1600px;">
+<div id="page-yield" class="available_sections1" style="width: 2600px; border: 1px solid #f00;">
     <div class="page1"> </div>
     <div class="section1 row" >
         <center>
@@ -289,11 +289,11 @@
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
-                          <td colspan="4"><%=  sub['code'] %></td>
+                          <td colspan="4"><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
                       <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
-                        <td colspan="4"><%=  sub['code'] %></td>
+                        <td colspan="4"><%=  sub['name'] %></td>
                       <% end %>
 
                       <td>Total</td>

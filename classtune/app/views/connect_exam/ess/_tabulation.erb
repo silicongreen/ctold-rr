@@ -269,22 +269,29 @@
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
-                          unless @subject_highest_60[sub['id'].to_i].blank?
+                          <% unless @subject_highest_60[sub['id'].to_i].blank? %>
                             <td><%= sprintf( "%0.02f", @subject_highest_60[sub['id'].to_i]) %></td>
-                          else
+                          <% else %>
                             <td>0</td>
-                          end
-                          unless @subject_highest_40[sub['id'].to_i].blank?
+                          <% end %>
+                          <% unless @subject_highest_40[sub['id'].to_i].blank? %>
                             <td><%= sprintf( "%0.02f", @subject_highest_40[sub['id'].to_i]) %></td>
-                          else
+                          <% else %>
                             <td>0</td>
-                          end
-                          unless @subject_highest[sub['id'].to_i].blank?
+                          <% end %>
+                          <% unless @subject_highest[sub['id'].to_i].blank? %>
                             <td><%= sprintf( "%0.02f", @subject_highest[sub['id'].to_i]) %></td>
-                          else
+                          <% else %>
                             <td>0</td>
-                          end
-                          <td>Grade</td>   
+                          <% end %>
+                          <td>
+                          <%  grade = GradingLevel.percentage_to_grade(@subject_highest[sub['id'], @batch.id) %>
+                          <% if !grade.blank? and !grade.name.blank? %>
+                          <%= grade.name %>  
+                          <% else %>
+                            -  
+                          <% end %>
+                          </td>   
                         <% end %>
                       <% end %>
                       <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>

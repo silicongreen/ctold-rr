@@ -361,8 +361,16 @@
                               %>
                               <% end %>
                             <% end %> 
+                            <% if subject_obtained_mark_60.to_i > 0 %>
                             <td><%= subject_obtained_mark_60.to_s %></td>
+                            <% else %>
+                            <td>-</td>
+                            <% end %>
+                            <% if subject_obtained_mark_40.to_i > 0 %>
                             <td><%= subject_obtained_mark_40.to_s %></td>
+                            <% else %>
+                            <td>-</td>
+                            <% end %>
 
 
                             <% main_mark = 0 %>
@@ -372,7 +380,9 @@
                             <% if has_exam == true %>
                               <td>
                                   <% total_mark = total_mark+subject_obtain_mark.to_f %>
-                                  <%= sprintf( "%0.02f", subject_obtain_mark) %><hr/>
+                                  <%= sprintf( "%0.02f", subject_obtain_mark) %>
+                              </td>
+                              <td>
                                   <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                   <% if !grade.blank? and !grade.name.blank? %>
                                     <%

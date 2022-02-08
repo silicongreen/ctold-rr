@@ -196,7 +196,64 @@
                       <td></td>
 
                   </tr>
+                  <% @subject_highest_60 = {} %> 
+                  <% @subject_highest_40 = {} %> 
+                  <% @subject_highest = {} %> 
+                  <% @report_data['report']['students'].each do |std| %>
+                    <% total_mark_sub = 0 %>
+                    <% @report_data['report']['subjects'].each do |sub| %>
+                          <% if @has_exam_student == false %>
+                            
+                          <% else %>
+                            <% subject_obtained_mark_60 = 0 %>
+                            <% subject_obtained_mark_40 = 0 %>
+                            <% subject_full_mark = 0 %>
+                            <% subject_obtain_mark = 0 %>
+                            <% has_exam = false %>
+                            <% if @all_subject_id.include?(sub['id'].to_i) %>
+                              <% has_exam = true %>
+                            <% end %>
 
+                            <% @report_data['report']['exams'].each do |rs| %>
+                              <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
+                               <% if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i == 40
+                                  subject_obtained_mark_40 += rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                else
+                                  subject_obtained_mark_60 += rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                end
+                            
+                                subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                              %>
+                              <% end %>
+                            <% end %> 
+                            if @subject_highest_60[sub['id'].to_i].blank?
+                              @subject_highest_60[sub['id'].to_i] = subject_obtained_mark_60.to_f
+                            elsif subject_obtained_mark_60.to_f > @subject_highest_60[sub['id'].to_i].to_f
+                              @subject_highest_60[sub['id'].to_i] = subject_obtained_mark_60.to_f
+                            end
+
+                            if @subject_highest_40[sub['id'].to_i].blank?
+                              @subject_highest_40[sub['id'].to_i] = subject_obtained_mark_40.to_f
+                            elsif subject_obtained_mark_40.to_f > @subject_highest_40[sub['id'].to_i].to_f
+                              @subject_highest_40[sub['id'].to_i] = subject_obtained_mark_40.to_f
+                            end
+                            
+                            <% main_mark = 0 %>
+                            <% if subject_obtain_mark.to_i > 0 and subject_full_mark.to_i > 0 %>
+                              <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
+                            <% end %> 
+                            <% if has_exam == true %>
+                                  <% total_mark = total_mark+subject_obtain_mark.to_f %>
+                            <% end %>
+                          <% end %>   
+                        <% end %> 
+                  <% end %>
+                  if @subject_highest[sub['id'].to_i].blank?
+                    @subject_highest[sub['id'].to_i] = total_mark.to_f
+                  elsif total_mark.to_f > @subject_highest[sub['id'].to_i].to_f
+                    @subject_highest[sub['id'].to_i] = total_mark.to_f
+                  end
                   <tr class="table-header">
                       
                       <td class="col-pdf"></td>
@@ -208,9 +265,21 @@
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
-                          <td>60</td>
-                          <td>40</td> 
-                          <td>100</td>  
+                          unless @subject_highest_60[sub['id'].to_i].blank?
+                            <td><%= sprintf( "%0.02f", subject_highest_60[sub['id'].to_i]) %></td>
+                          else
+                            <td>0</td>
+                          end
+                          unless @subject_highest_40[sub['id'].to_i].blank?
+                            <td><%= sprintf( "%0.02f", subject_highest_40[sub['id'].to_i]) %></td>
+                          else
+                            <td>0</td>
+                          end
+                          unless @subject_highest[sub['id'].to_i].blank?
+                            <td><%= sprintf( "%0.02f", subject_highest[sub['id'].to_i]) %></td>
+                          else
+                            <td>0</td>
+                          end
                           <td>Grade</td>   
                         <% end %>
                       <% end %>
@@ -415,7 +484,7 @@
                         <%= sprintf( "%0.02f", percent) %>  
                         </td> 
                         
-                        <td>he<%= @report_data['adata'][1][std['id']] %></td>
+                        <td><%= @report_data['adata'][1][std['id']] %></td>
                            
 
 

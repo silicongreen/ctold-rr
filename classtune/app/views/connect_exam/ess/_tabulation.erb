@@ -285,7 +285,7 @@
                             <td>0</td>
                           <% end %>
                           <td>
-                          <%  grade = GradingLevel.percentage_to_grade(@subject_highest[sub['id'], @batch.id) %>
+                          <%  grade = GradingLevel.percentage_to_grade(@subject_highest[sub['id'].to_i], @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>
                           <%= grade.name %>  
                           <% else %>

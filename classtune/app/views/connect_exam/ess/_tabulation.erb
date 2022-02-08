@@ -165,10 +165,9 @@
                       <% end %>
 
                       <td>Total</td>
-                      <td>Grade Count</td>
-                      <% unless @ranked_positions.blank? %>
-                        <td>Position</td>
-                      <% end %>
+                      <td>Percentage</td>
+                      <td>Atten</td>
+                      
 
                   </tr>
                    <tr class="table-header">
@@ -189,17 +188,12 @@
                         <% end %>
                       <% end %>
                       <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
-                        <td>60</td>
-                        <td>40</td> 
-                        <td>100</td>  
-                        <td>Grade</td>   
+                        <td colspan="4">Grade</td>   
                       <% end %>
 
-                      <td>Total</td>
-                      <td>Grade Count</td>
-                      <% unless @ranked_positions.blank? %>
-                        <td>Position</td>
-                      <% end %>
+                      <td></td>
+                      <td></td>
+                      <td></td>
 
                   </tr>
 
@@ -221,14 +215,11 @@
                         <% end %>
                       <% end %>
                       <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
-                        <td>60</td>
-                        <td>40</td> 
-                        <td>100</td>  
-                        <td>Grade</td>   
+                        <td colspan="4">A*</td>   
                       <% end %>
 
-                      <td>Total</td>
-                      <td>Grade Count</td>
+                      <td></td>
+                      <td></td>
                       <td></td>
 
                   </tr>
@@ -241,7 +232,7 @@
                     <% if !std.blank? and !std['first_name'].blank? %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
-                    <% if std_count>12 && extender ==0 %>
+                    <% if std_count>25 && extender ==0 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -262,17 +253,15 @@
                         <% end %>
                       <% end %>
                       <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
-                        <td colspan="4"><%=  sub['name'] %></td>
+                        <td colspan="4"><%=  sub['code'] %></td>
                       <% end %>
 
                       <td>Total</td>
-                      <td>Grade Count</td>
-                      <% unless @ranked_positions.blank? %>
-                        <td>Position</td>
-                      <% end %>
-
+                      <td>Percentage</td>
+                      <td>Atten</td>
+                      
                   </tr>
-                    <% elsif std_count>13 && extender ==1 %>
+                    <% elsif std_count>30 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -293,15 +282,13 @@
                         <% end %>
                       <% end %>
                       <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
-                        <td colspan="4"><%=  sub['name'] %></td>
+                        <td colspan="4"><%=  sub['code'] %></td>
                       <% end %>
 
                       <td>Total</td>
-                      <td>Grade Count</td>
-                      <% unless @ranked_positions.blank? %>
-                        <td>Position</td>
-                      <% end %>
-
+                      <td>Percentage</td>
+                      <td>Atten</td>
+                      
                   </tr>
                     <% end %>    
 

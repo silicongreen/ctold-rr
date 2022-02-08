@@ -343,12 +343,12 @@
                               <% end %>
                             <% end %> 
                             <% if subject_obtained_mark_60.to_i > 0 %>
-                            <td><%= subject_obtained_mark_60.to_s %></td>
+                            <td><%= sprintf( "%0.02f", subject_obtained_mark_60) %></td>
                             <% else %>
                             <td>-</td>
                             <% end %>
                             <% if subject_obtained_mark_40.to_i > 0 %>
-                            <td><%= subject_obtained_mark_40.to_s %></td>
+                            <td><%= sprintf( "%0.02f", subject_obtained_mark_40) %></td>
                             <% else %>
                             <td>-</td>
                             <% end %>
@@ -404,7 +404,7 @@
                         <% end %>       
 
                         <td>
-                            <%= sprintf( "%0.02f", total_mark) %>    
+                            <%= sprintf( "%0.02f", total_mark) %> <%= subject_full_mark.to_s %>   
                         </td>
                         <td>
                             <% i = 1 %>

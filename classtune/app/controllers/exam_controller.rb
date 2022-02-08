@@ -6916,7 +6916,7 @@ class ExamController < ApplicationController
     elsif (MultiSchool.current_school.id == 362 && @connect_exam_obj.result_type==2)
         render :pdf => 'tabulation',
           :orientation => 'Landscape', :zoom => 1.00,
-          :page_size => 'A1',
+          :page_size => 'A2',
           :margin => {    :top=> 10,
           :bottom => 10,
           :left=> 10,

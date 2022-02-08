@@ -6913,8 +6913,7 @@ class ExamController < ApplicationController
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
-    elsif (MultiSchool.current_school.id == 362 && @connect_exam_obj.result_type==2) or
-      (MultiSchool.current_school.id == 362 && @connect_exam_obj.result_type==4)
+    elsif (MultiSchool.current_school.id == 362)
         render :pdf => 'tabulation',
           :orientation => 'Landscape', :zoom => 1.00,
           :page_size => 'A2',

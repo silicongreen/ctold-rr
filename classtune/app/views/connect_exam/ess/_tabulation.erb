@@ -227,6 +227,7 @@
                               %>
                               <% end %>
                             <% end %> 
+                            <%
                             if @subject_highest_60[sub['id'].to_i].blank?
                               @subject_highest_60[sub['id'].to_i] = subject_obtained_mark_60.to_f
                             elsif subject_obtained_mark_60.to_f > @subject_highest_60[sub['id'].to_i].to_f
@@ -238,7 +239,7 @@
                             elsif subject_obtained_mark_40.to_f > @subject_highest_40[sub['id'].to_i].to_f
                               @subject_highest_40[sub['id'].to_i] = subject_obtained_mark_40.to_f
                             end
-                            
+                            %>
                             <% main_mark = 0 %>
                             <% if subject_obtain_mark.to_i > 0 and subject_full_mark.to_i > 0 %>
                               <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
@@ -249,11 +250,13 @@
                           <% end %>   
                         <% end %> 
                   <% end %>
+                  <%
                   if @subject_highest[sub['id'].to_i].blank?
                     @subject_highest[sub['id'].to_i] = total_mark.to_f
                   elsif total_mark.to_f > @subject_highest[sub['id'].to_i].to_f
                     @subject_highest[sub['id'].to_i] = total_mark.to_f
                   end
+                  %>
                   <tr class="table-header">
                       
                       <td class="col-pdf"></td>
@@ -266,17 +269,17 @@
                         <% end %>
                         <% if has_exam == true %>
                           unless @subject_highest_60[sub['id'].to_i].blank?
-                            <td>0<%= debug @subject_highest_60.inspect %><%#= sprintf( "%0.02f", @subject_highest_60[sub['id'].to_i]) %></td>
+                            <td><%= sprintf( "%0.02f", @subject_highest_60[sub['id'].to_i]) %></td>
                           else
                             <td>0</td>
                           end
                           unless @subject_highest_40[sub['id'].to_i].blank?
-                            <td><%#= sprintf( "%0.02f", @subject_highest_40[sub['id'].to_i]) %></td>
+                            <td><%= sprintf( "%0.02f", @subject_highest_40[sub['id'].to_i]) %></td>
                           else
                             <td>0</td>
                           end
                           unless @subject_highest[sub['id'].to_i].blank?
-                            <td><%#= sprintf( "%0.02f", @subject_highest[sub['id'].to_i]) %></td>
+                            <td><%= sprintf( "%0.02f", @subject_highest[sub['id'].to_i]) %></td>
                           else
                             <td>0</td>
                           end

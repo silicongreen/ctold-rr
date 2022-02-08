@@ -683,7 +683,7 @@ class MarksController < ApplicationController
             elsif school_id == 362
               data[k] = []
               data[k][0] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>#{exam_connect_batch.to_s} (All Result)</a>"
-              data[k][1] = "#{exam_connect.name.to_s}"
+              data[k][1] = "<a href='/exam/tabulation/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>"
               data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>#{exam.subject_name.to_s} (Marksheet)</a>"
               data[k][3] = "-"
               data[k][4] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}#view=FitH' target='_blank'>Results</a>"

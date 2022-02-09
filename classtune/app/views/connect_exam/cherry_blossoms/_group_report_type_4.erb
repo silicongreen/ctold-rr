@@ -64,7 +64,7 @@
                           <td class="col-pdf" colspan="2"><%= report['exam_name'].gsub(', 2021-2022','') %></td>
                           <% else %>
                             <% unless report['exam_name'].downcase.index('performance').blank? %>  
-                            <td class="col-pdf" colspan="2"><%= report['exam_name'].gsub('2021-2022','') %><br />(First Term: 2021-2022)</td>
+                            <td rowspan="2" class="col-pdf" colspan="2"><%= report['exam_name'].gsub('2021-2022','') %><br />(First Term: 2021-2022)</td>
                             <% else %>
                             <td class="col-pdf" colspan="2"><%= report['exam_name'] %></td>
                             <% end %>
@@ -100,10 +100,10 @@
                           <% if rowcreated == false %>
                           <% rowcreated = true %>
                           <td colspan="2" class="col-pdf">
-                              Full Marks1
+                              Full Marks
                           </td> 
                           <td colspan="2" class="col-pdf">
-                              Marks Obtained1
+                              Marks Obtained
                           </td>
                           <% end %>
                           <% else %>

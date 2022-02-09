@@ -93,16 +93,19 @@
                   </tr>
                   <tr class="table-header">
                       <td class="col-pdf"></td>
-                      
+                      <% rowcreated = false %>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
                           <% unless report['exam_name'].downcase.index('test').blank? %>  
+                          <% if rowcreated == false %>
+                          <% rowcreated = true %>
                           <td colspan="2" class="col-pdf">
                               Full Marks1
                           </td> 
                           <td colspan="2" class="col-pdf">
                               Marks Obtained1
                           </td>
+                          <% end %>
                           <% else %>
                           <td class="col-pdf">
                               Full Marks

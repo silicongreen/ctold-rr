@@ -60,7 +60,7 @@
                       <td class="col-pdf"><b><%= "Subject" %></b></td>
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% @report_data['report']['exams'].each do |report| %>
-                          <td class="col-pdf group_exam" colspan="2"><%= report['exam_name'] %></td>
+                          <td class="col-pdf" colspan="2"><%= report['exam_name'] %></td>
                         <% end %>
                       <% end %>
                       
@@ -69,14 +69,14 @@
                   </tr>
                   <% rowcreated = false %>
                   <tr class="table-header">
-                      <td class="col-pdf" style="border: none;"></td>   
+                      <td class="col-pdf" style="border: none; border-left: 1px solid #000;"></td>   
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% @report_data['report']['exams'].each do |report| %>
                           <% if rowcreated == false and report['exam_category'].to_i == 1 and report['exam_name'].downcase.index('performance').blank? %>
                             <% rowcreated = true %>
-                            <td colspan="4" class="col-pdf group_exam">Class Assessnent<br />(First Term: 2021-2022)</td>
+                            <td colspan="4" class="col-pdf">Class Assessnent<br />(First Term: 2021-2022)</td>
                           <% else %>  
-                            <td class="col-pdf group_exam" colspan="2" style="border: none;"></td>
+                            <td class="col-pdf" colspan="2" style="border: none;"></td>
                           <% end %>
                         <% end %>
                       <% end %>

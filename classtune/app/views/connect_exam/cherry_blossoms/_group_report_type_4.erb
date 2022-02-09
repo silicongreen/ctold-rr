@@ -60,7 +60,15 @@
                       <td class="col-pdf"><b><%= "Subject" %></b></td>
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% @report_data['report']['exams'].each do |report| %>
-                          <td class="col-pdf" colspan="2"><%= report['exam_name'] %></td>
+                          <% unless report['exam_name'].downcase.index('test').blank? %>  
+                          <td class="col-pdf" colspan="2"><%= report['exam_name'].gsub(', 2021-2022','') %></td>
+                          <% else %>
+                            <% unless report['exam_name'].downcase.index('performance').blank? %>  
+                            <td class="col-pdf" colspan="2"><%= report['exam_name'].gsub(', 2021-2022','') %><br />(First Term: 2021-2022)</td>
+                            <% else %>
+                            <td class="col-pdf" colspan="2"><%= report['exam_name'] %></td>
+                            <% end %>
+                          <% end %>
                         <% end %>
                       <% end %>
                       
@@ -88,12 +96,21 @@
                       
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
+                          <% unless report['exam_name'].downcase.index('test').blank? %>  
+                          <td colspan="2" class="col-pdf">
+                              Full Marks
+                          </td> 
+                          <td colspan="2" class="col-pdf">
+                              Marks Obtained
+                          </td>
+                          <% else %>
                           <td class="col-pdf">
                               Full Marks
                           </td> 
                           <td class="col-pdf">
                               Marks Obtained
                           </td>
+                          <% end %>
                         <% end %>
                       <% end %>
                       <td class="col-pdf"></td>

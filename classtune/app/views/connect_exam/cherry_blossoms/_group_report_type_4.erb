@@ -57,18 +57,19 @@
               <table id="pdf-table" width="99%" cellspacing="0">
                   <% c = 'even'  %>
                   <tr class="table-header">
-                      <td rowspan="2" class="col-pdf"><b><%= "Subject" %></b></td>
+                      <td class="col-pdf"><b><%= "Subject" %></b></td>
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% @report_data['report']['exams'].each do |report| %>
-                          <td rowspan="2" class="col-pdf group_exam" colspan="2"><%= report['exam_name'] %></td>
+                          <td class="col-pdf group_exam" colspan="2"><%= report['exam_name'] %></td>
                         <% end %>
                       <% end %>
                       
-                      <td rowspan="2" class="col-pdf">Total Marks</td>
-                      <td rowspan="2" class="col-pdf">Grade</td>
+                      <td class="col-pdf">Total Marks</td>
+                      <td class="col-pdf">Grade</td>
                   </tr>
                   <% rowcreated = false %>
                   <tr class="table-header">
+                      <td class="col-pdf"></td>   
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% @report_data['report']['exams'].each do |report| %>
                           <% if rowcreated == false and report['exam_category'].to_i == 1 %>
@@ -77,6 +78,8 @@
                           <% end %>
                         <% end %>
                       <% end %>
+                      <td class="col-pdf"></td>   
+                      <td class="col-pdf"></td>   
                   </tr>
                   <tr class="table-header">
                       <td class="col-pdf"></td>

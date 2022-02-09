@@ -71,7 +71,7 @@
                   <tr class="table-header">
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% @report_data['report']['exams'].each do |report| %>
-                          <% if rowcreated == false and report['exam_category'] == 1 and report['exam_name'].downcase.index("performance").nil? %>
+                          <% if rowcreated == false and report['exam_category'].to_i == 1 %>
                             <% rowcreated = true %>
                             <td colspan="2" class="col-pdf group_exam" colspan="2">Class Assessnent<br />(First Term: 2021-2022)</td>
                           <% end %>

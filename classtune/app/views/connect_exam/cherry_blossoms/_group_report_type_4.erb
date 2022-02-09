@@ -135,13 +135,13 @@
                             <% @report_data['report']['exams'].each do |report| %>
                               <% unless report['exam_name'].downcase.index('test').blank? %> 
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
-                                    <% if report['result'][report['exam_id']][subjects['id']]['full_mark'] > test_full_mark %>
+                                    <% if report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i > test_full_mark.to_i %>
                                       <%  test_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'] %>
                                       <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                     <% end %>
                                   <% end %> 
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                    <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'] > test_mark %>
+                                    <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i > test_mark.to_i %>
                                       <% test_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                       <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% end %>

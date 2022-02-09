@@ -83,7 +83,7 @@
                           <% if rowcreated == false and report['exam_category'].to_i == 1 and report['exam_name'].downcase.index('performance').blank? %>
                             <% rowcreated = true %>
                             <td colspan="4" class="col-pdf">Class Assessnent<br />(First Term: 2021-2022)</td>
-                          <% elsif report['exam_name'].downcase.index('test').blank? %>  
+                          <% elsif report['exam_category'].to_i == 3 %>  
                             <td class="col-pdf" colspan="2" style="border: none; border-right: 1px solid #000;"></td>
                           <% end %>
                         <% end %>

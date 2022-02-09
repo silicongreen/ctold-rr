@@ -16,7 +16,7 @@
         
   </div>
   <hr style="width: 1435px; "/>
-    <h4 align="left" style="width: 700px; text-align: center; font-size: 24px;"><%= @connect_exam_obj.name+" <br /> Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h4>
+    <h4 align="left" style="width: 1200px; text-align: center; font-size: 24px; border: 1px solid #ccc;"><%= @connect_exam_obj.name+" <br /> Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h4>
   <hr style="width: 1435px; "/>  
   
 <% else %>

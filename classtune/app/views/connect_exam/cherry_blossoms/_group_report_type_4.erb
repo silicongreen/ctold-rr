@@ -57,7 +57,7 @@
               <table id="pdf-table" width="99%" cellspacing="0">
                   <% c = 'even'  %>
                   <tr class="table-header">
-                      <td class="col-pdf"><b><%= "Subject" %></b></td>
+                      <td rowspan="2" class="col-pdf"><b><%= "Subject" %></b></td>
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% @report_data['report']['exams'].each do |report| %>
                           <% unless report['exam_name'].downcase.index('test').blank? %>  
@@ -77,7 +77,6 @@
                   </tr>
                   <% rowcreated = false %>
                   <tr class="table-header">
-                      <td class="col-pdf" style="border: none; border-left: 1px solid #000;"></td>   
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% @report_data['report']['exams'].each do |report| %>
                           <% if rowcreated == false and report['exam_category'].to_i == 1 and report['exam_name'].downcase.index('performance').blank? %>

@@ -64,7 +64,7 @@
                           <td class="col-pdf" colspan="2"><%= report['exam_name'].gsub(', 2021-2022','') %></td>
                           <% else %>
                             <% unless report['exam_name'].downcase.index('performance').blank? %>  
-                            <td class="col-pdf" colspan="2"><%= report['exam_name'].gsub(', 2021-2022','') %><br />(First Term: 2021-2022)</td>
+                            <td class="col-pdf" colspan="2"><%= report['exam_name'].gsub('2021-2022','') %><br />(First Term: 2021-2022)</td>
                             <% else %>
                             <td class="col-pdf" colspan="2"><%= report['exam_name'] %></td>
                             <% end %>
@@ -129,8 +129,37 @@
                           <% full_mark = 0 %>
 
                           <td class="col-pdf no-warp"><%= subjects['name'] %></td>
+                          <% test_full_mark = 0 %>
+                          <% test_mark = 0 %>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
+                              <% unless report['exam_name'].downcase.index('test').blank? %> 
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                    <% if report['result'][report['exam_id']][subjects['id']]['full_mark'] > test_full_mark %>
+                                      <%  test_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'] %>
+                                      <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                    <% end %>
+                                  <% end %> 
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                    <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'] > test_mark %>
+                                      <% test_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
+                                      <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <% end %>
+                                  <% end %>  
+                              <% end %>
+                            <% end %>
+                          <% end %>
+                          
+                          <td colspan="2" class="col-pdf no-warp">
+                            <%= test_full_mark %>
+                          </td>
+                          <td colspan="2" class="col-pdf no-warp">
+                            <%= test_mark %>
+                          </td>    
+
+                          <% unless @report_data['report']['exams'].blank? %>  
+                            <% @report_data['report']['exams'].each do |report| %>
+                              <% if report['exam_name'].downcase.index('test').blank? %> 
                               <td class="col-pdf no-warp">
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                     <%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>
@@ -147,7 +176,7 @@
                                     -
                                   <% end %>  
                               </td>
-
+                              <% end %>
                             <% end %>
                           <% end %>
 

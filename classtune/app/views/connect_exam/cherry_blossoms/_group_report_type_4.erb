@@ -60,7 +60,7 @@
                       <td class="col-pdf"><b><%= "Subject" %></b></td>
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% @report_data['report']['exams'].each do |report| %>
-                          <td class="col-pdf group_exam" colspan="2"><%= report['id'] %> <%= report['exam_category'] %> <%= report['exam_name'] %></td>
+                          <td class="col-pdf group_exam" colspan="2"><%= report['exam_id'] %> <%= report['exam_category'] %> <%= report['exam_name'] %></td>
                         <% end %>
                       <% end %>
                       

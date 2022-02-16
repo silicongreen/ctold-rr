@@ -11,6 +11,7 @@
   end
 %>
 <%= render  :partial=>"/connect_exam/cherry_blossoms/header" %>
+<p>&nbsp;</p>
   <div id="page-yield"  class="available_sections1 st_joseph_bg">
       <table id="pdf-table" class="tbl-lign-left" width="52%" cellspacing="0">
           <tr >
@@ -50,7 +51,9 @@
         <%= render  :partial=>"/connect_exam/cherry_blossoms/gradding_level" %>   
       </div>
       <div class ="current_batch" style="margin-left:0px;">
-          <div id="grouped_exam_report" style="margin-top: 0; padding-top: 0;">
+          <div id="grouped_exam_report">
+
+
               <table id="pdf-table" width="99%" cellspacing="0">
                   <% c = 'even'  %>
                   <tr class="table-header">
@@ -228,7 +231,15 @@
 
               </table>
 
-    <% 
+
+              
+              <table id="pdf-table" class="margin-top-bottom-10 font-size-20" width="99%" >
+
+                  
+
+
+              </table>
+              <% 
               if avgparcent < 60 
                 comments = "Satisfactory"
               elsif avgparcent >60 and avgparcent < 71
@@ -242,7 +253,7 @@
               end  
                 
               %>
-              <table class="float-left" width="68.2%" >
+              <table class="margin-top-bottom-10 font-size-20 float-left" width="68.2%" >
                       <tr>
                           <td width="15%">
                               <br/> 
@@ -260,7 +271,7 @@
                 <% @grading_levels = GradingLevel.default %>
               <% end %>
               <%  unless @grading_levels.empty? %>
-                <table id="pdf-table" class="no-border float-left-10" width="30%" cellspacing="0">
+                <table id="pdf-table" class="no-border margin-top-bottom-10  font-size-20 float-left-10" width="30%" cellspacing="0">
                     <tr>
                       <td colspan="2" style="text-align:center; font-size: 16px !important; font-weight:bold;">Class Attendance</td>
                     </tr>

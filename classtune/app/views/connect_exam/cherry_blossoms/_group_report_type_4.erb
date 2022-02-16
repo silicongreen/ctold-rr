@@ -133,7 +133,6 @@
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                     <% if report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i > test_full_mark.to_i %>
                                       <%  test_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'] %>
-                                      <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                     <% end %>
                                   <% end %> 
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
@@ -147,10 +146,12 @@
                           <% end %>
                           
                           <td colspan="2" class="col-pdf no-warp">
-                            <%= test_full_mark %> <%= total_mark %>
+                            <%= test_full_mark %>
+                            <% full_mark = full_mark+test_full_mark.to_i %>
                           </td>
                           <td colspan="2" class="col-pdf no-warp">
                             <%= test_mark %>
+                            <% total_mark = total_mark+test_mark.to_i %>
                           </td>    
 
                           <% unless @report_data['report']['exams'].blank? %>  
@@ -168,7 +169,6 @@
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                     <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                     <%= total_mark %>
                                   <% else %>
                                     -
                                   <% end %>  

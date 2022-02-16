@@ -11,7 +11,6 @@
   end
 %>
 <%= render  :partial=>"/connect_exam/cherry_blossoms/header" %>
-<p>&nbsp;</p>
   <div id="page-yield"  class="available_sections1 st_joseph_bg">
       <table id="pdf-table" class="tbl-lign-left" width="52%" cellspacing="0">
           <tr >
@@ -271,7 +270,7 @@
                 <% @grading_levels = GradingLevel.default %>
               <% end %>
               <%  unless @grading_levels.empty? %>
-                <table id="pdf-table" class="no-border margin-top-bottom-10  font-size-20 float-left-10" width="30%" cellspacing="0">
+                <table id="pdf-table" class="no-border margin-top-bottom-10 float-left-10" width="30%" cellspacing="0">
                     <tr>
                       <td colspan="2" style="text-align:center; font-size: 16px !important; font-weight:bold;">Class Attendance</td>
                     </tr>

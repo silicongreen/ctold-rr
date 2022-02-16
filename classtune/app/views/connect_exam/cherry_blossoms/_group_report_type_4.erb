@@ -147,7 +147,7 @@
                           <% end %>
                           
                           <td colspan="2" class="col-pdf no-warp">
-                            <%= test_full_mark %>
+                            <%= test_full_mark %> <%= total_mark %>
                           </td>
                           <td colspan="2" class="col-pdf no-warp">
                             <%= test_mark %>
@@ -168,6 +168,7 @@
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                     <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                     <%= total_mark %>
                                   <% else %>
                                     -
                                   <% end %>  

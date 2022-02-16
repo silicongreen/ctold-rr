@@ -8277,7 +8277,7 @@ class ExamController < ApplicationController
       render :pdf => template,
         
         :save_only    => for_save,
-        :orientation => 'Landscape',
+        :orientation => 'Portrait',
         :page_size => 'Legal',
         :margin => {:top=> 2,
         :bottom => 2,

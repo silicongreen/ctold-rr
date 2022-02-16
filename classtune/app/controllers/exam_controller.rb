@@ -8278,6 +8278,7 @@ class ExamController < ApplicationController
         
         :save_only    => for_save,
         :orientation => 'Landscape',
+        :page_size => 'Legal',
         :margin => {:top=> 2,
         :bottom => 2,
         :left=> 10,

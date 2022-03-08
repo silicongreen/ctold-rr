@@ -398,7 +398,6 @@
 
                             <% subject_obtained_mark_60 = 0 %>
                             <% subject_obtained_mark_40 = 0 %>
-                            <% subject_full_mark_all = 0 %>
                             <% subject_full_mark = 0 %>
                             <% subject_obtain_mark = 0 %>
                             <% has_exam = false %>
@@ -414,7 +413,6 @@
                                 else
                                   subject_obtained_mark_60 += rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                 end
-                                subject_full_mark_all = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                 %>
                                 <%
 
@@ -426,14 +424,14 @@
                               <% end %>
                             <% end %> 
                             <% if subject_obtained_mark_60.to_i > 0 %>
-                            <td><%= sprintf( "%0.02f", subject_obtained_mark_60) %> <%= subject_full_mark_all %></td>
+                            <td><%= sprintf( "%0.02f", subject_obtained_mark_60) %></td>
                             <% else %>
-                            <td>- <%= subject_full_mark_all %></td>
+                            <td>-</td>
                             <% end %>
                             <% if subject_obtained_mark_40.to_i > 0 %>
-                            <td><%= sprintf( "%0.02f", subject_obtained_mark_40) %> <%= subject_full_mark_all %></td>
+                            <td><%= sprintf( "%0.02f", subject_obtained_mark_40) %></td>
                             <% else %>
-                            <td>- <%= subject_full_mark_all %></td>
+                            <td>-</td>
                             <% end %>
 
 

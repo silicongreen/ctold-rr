@@ -408,8 +408,11 @@
                             <% @report_data['report']['exams'].each do |rs| %>
                               <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
-                               <% if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i == 40
+                               <% 
+                                if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i == 40
                                   subject_obtained_mark_40 += rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                elsif rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i == 20
+                                    subject_obtained_mark_40 += rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                 else
                                   subject_obtained_mark_60 += rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                 end

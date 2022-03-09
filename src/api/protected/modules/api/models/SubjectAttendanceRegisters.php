@@ -145,6 +145,8 @@ class SubjectAttendanceRegisters extends CActiveRecord
     
     public function getRegisterClassName($subject_id,$batch_id,$date_start=false,$date_end=false)
     {
+        ini_set("display_errors", "on");
+        error_reporting(1);
         $criteria = new CDbCriteria;
         $criteria->select = "count(t.id) as total";
         $subjectObj = new Subjects();

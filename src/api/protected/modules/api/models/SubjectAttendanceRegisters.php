@@ -148,9 +148,7 @@ class SubjectAttendanceRegisters extends CActiveRecord
         $criteria = new CDbCriteria;
         $criteria->select = "count(t.id) as total";
         $subjectObj = new Subjects();
-        echo $subject_id;
         $subjects = $subjectObj->getSubjectIdsBySubId($subject_id);
-        print_r($subjects);
         $criteria->addInCondition("t.subject_id", $subjects);
         if($date_start && $date_end)
         {
@@ -158,13 +156,6 @@ class SubjectAttendanceRegisters extends CActiveRecord
         }
         $criteria->compare('t.batch_id', $batch_id);
         $data = $this->find($criteria);
-        
-        $schema = Yii::app()->db->schema;
-        $builder = $schema->commandBuilder;
-        $command = $builder->createFindCommand($schema->getTable('subject_attendance_registers'), $criteria);
-        $results = $command->text;
-        echo $results;
-
         if($data)
         {
             return $data->total;

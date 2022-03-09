@@ -156,7 +156,13 @@ class SubjectAttendanceRegisters extends CActiveRecord
         }
         $criteria->compare('t.batch_id', $batch_id);
         $data = $this->find($criteria);
-        echo $data->createCommand()->sql;
+        
+        $schema = Yii::app()->db->schema;
+        $builder = $schema->commandBuilder;
+        $command = $builder->createFindCommand($schema->getTable('subject_attendance_registers'), $criteria);
+        $results = $command->text;
+        echo $results;
+
         if($data)
         {
             return $data->total;

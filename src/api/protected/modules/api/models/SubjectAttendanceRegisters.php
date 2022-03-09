@@ -148,6 +148,7 @@ class SubjectAttendanceRegisters extends CActiveRecord
         $criteria = new CDbCriteria;
         $criteria->select = "count(t.id) as total";
         $subjectObj = new Subjects();
+        echo $subject_id;
         $subjects = $subjectObj->getSubjectIdsBySubId($subject_id);
         print_r($subjects);
         $criteria->addInCondition("t.subject_id", $subjects);

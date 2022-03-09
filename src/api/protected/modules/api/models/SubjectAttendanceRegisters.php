@@ -156,6 +156,7 @@ class SubjectAttendanceRegisters extends CActiveRecord
         }
         $criteria->compare('t.batch_id', $batch_id);
         $data = $this->find($criteria);
+        echo $data->createCommand()->sql;
         if($data)
         {
             return $data->total;

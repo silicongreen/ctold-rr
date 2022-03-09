@@ -149,6 +149,7 @@ class SubjectAttendanceRegisters extends CActiveRecord
         $criteria->select = "count(t.id) as total";
         $subjectObj = new Subjects();
         $subjects = $subjectObj->getSubjectIdsBySubId($subject_id);
+        print_r($subjects);
         $criteria->addInCondition("t.subject_id", $subjects);
         if($date_start && $date_end)
         {

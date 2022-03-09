@@ -1806,6 +1806,7 @@ class AttendancesController < ApplicationController
         request.set_form_data({"subject_id" =>subject_id ,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
       end  
       response = http.request(request)
+      abort(response.inspect)
       @student_response = JSON::parse(response.body)
     end
     

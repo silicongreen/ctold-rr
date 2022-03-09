@@ -76,7 +76,7 @@
                               <% if report['exam_category'] != '5' %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>       
                                   <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                  <% tt_mark = tt_mark.to_s + "-" + report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s %>
+                                  <% tt_mark = tt_mark.to_s + "-" + report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s + "<<>>" + report['exam_id'].to_s %>
                                 <% end %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                   <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -125,7 +125,7 @@
 
                           <% if full_mark.to_f > 0 && main_mark > 0 %>
                              <% if @covid_main == 0 and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
-                              <td class="col-pdf"><b><%= show_marks.round() %></b></td>
+                              <td class="col-pdf"><b><%= tt_mark %></b></td>
                             <% end %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>

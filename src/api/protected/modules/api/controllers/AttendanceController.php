@@ -342,7 +342,7 @@ class AttendanceController extends Controller
             }
             $att_register = new SubjectAttendanceRegisters();
             $total_class = $att_register->getRegisterClassName($subject_id,$sub_data->batch_id,$date_start,$date_end);
-            
+            echo $total_class;
             $std_array = array();
             if($all_student)
             {
@@ -382,6 +382,7 @@ class AttendanceController extends Controller
                   
                } 
             } 
+            print_r($std_data);
             $response['data']['std_att'] = $std_data;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Data Found";

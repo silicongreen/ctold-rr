@@ -145,8 +145,6 @@ class SubjectAttendanceRegisters extends CActiveRecord
     
     public function getRegisterClassName($subject_id,$batch_id,$date_start=false,$date_end=false)
     {
-        ini_set("display_errors", "on");
-        error_reporting(1);
         $criteria = new CDbCriteria;
         $criteria->select = "count(t.id) as total";
         $subjectObj = new Subjects();
@@ -154,7 +152,7 @@ class SubjectAttendanceRegisters extends CActiveRecord
         $criteria->addInCondition("t.subject_id", $subjects);
         if($date_start && $date_end)
         {
-            $criteria->addCondition("attendance_date1>='" . $date_start . "' and attendance_date<='" . $date_end . "'");
+            $criteria->addCondition("attendance_date>='" . $date_start . "' and attendance_date<='" . $date_end . "'");
         }
         $criteria->compare('t.batch_id', $batch_id);
         $data = $this->find($criteria);

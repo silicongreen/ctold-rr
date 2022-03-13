@@ -81,7 +81,7 @@ class BoardController < ApplicationController
   end
   def testimonial_section
     @board_exam = BoardExam.find(params[:id],:include=>["board_exam_name","board_exam_group","board_session"])
-    @board_exam_students = BoardExamStudent.find_all_by_batch_id(params[:id2])
+    @board_exam_students = BoardExamStudent.find_all_by_board_exam_id_and_batch_id(params[:id], params[:id2])
     render :layout => false
   end
   def subject_result

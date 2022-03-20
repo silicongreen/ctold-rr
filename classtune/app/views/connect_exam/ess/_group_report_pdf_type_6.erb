@@ -13,11 +13,11 @@
                           <td width="74%">
                               <h4 align="center"><font size="7" color="#4CAEE3">EUROPEAN STANDARD SCHOOL(ESS)</font></h2>
                               <h4 align="center" style="margin-top:-3px;"><font size="6" color="#000"><%= @batch.name %></font></h4>
-                              <h4 align="center" style="margin-top:-3px;">
+                              <!--h4 align="center" style="margin-top:-3px;">
                                 <font size="6" color="#000">
                                   Assessment Report Card
                                 </font>
-                              </h4>
+                              </h4-->
                               <h4 align="center" style="margin-top:-3px;"><font size="6" color="#000"><%= @connect_exam_obj.name %></font></h2>
                               <% month_number = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
                               <h4 align="center" style="margin-top:-3px;">
@@ -218,16 +218,7 @@
                         
                               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"60%" %>
                       </td>
-                      <td class="col-pdf no-border" width="60%"></td>
-                  </tr>
-                  <tr class="even">
-                      
-                      <td class="col-pdf align-left" style="text-align:left !important;" width="40%">
-                          <b><pre>MD. MORSHEDUL ISLAM
-Principal
-European Standard School (ESS)</pre></b>
-                      </td>
-                      <td class="col-pdf no-border" width="60%">
+                      <td class="col-pdf no-border" width="60%" rowspan="2">
                       <% if @grading_levels.blank? %>
                       <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
                       <% if @grading_levels.blank? %>
@@ -235,45 +226,46 @@ European Standard School (ESS)</pre></b>
                       <% end %>
                     <% end %>
                     <%  unless @grading_levels.empty? %>
+                      <p><font size="4"><b>Grade Boundaries</b></font></p>
                       <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
-                          <tr class="even header-shade">
-                              <td class="small no-warp">Letter Grade</td>
-                              <td class="small no-warp">Marks</td> 
-                              <td class="small no-warp">Grade Point</td> 
+                          <tr class="even">
+                              <td style="font-size: 12px;"><font size="4.5"><b>Marks</b></font></td>
+                              <td style="font-size: 12px;"><font size="4.5"><b>Grade</b></font></td>  
                           </tr> 
                           <% prev_score = 0 %>
                           <% @grading_levels.each_with_index do |grade,index| %>
-                            <% if grade.name == "D" and (@connect_exam_obj.result_type == 13 or @connect_exam_obj.result_type == 14) %>
-                              <% next %>
-                            <% end %>
-                            <% if grade.name == "F" and (@connect_exam_obj.result_type == 13 or @connect_exam_obj.result_type == 14) %>
-                              <% grade.max_score = 39.00 %>
-                            <% end %>
-                            <% if grade.name == "F" and @connect_exam_obj.result_type == 15 %>
-                              <% grade.max_score = 44.00 %>
-                            <% end %>
-                             <tr class="even">
-                            
-                            <td class="small"><%= grade.name %></td>
-                            <td class="no-warp small">
+                             <tr class="odd">
+                            <td>
                                 <% if grade.max_score.nil? %> 
                                   <% if grade.min_score.to_i == 0 %>
-                                    <&nbsp;<%= '%i%' % prev_score %>
+                                    <font size="4.5"><&nbsp;<%= '%i%' % prev_score %></font>
                                   <% else %>
-                                      <%= '%i%' % grade.min_score %> 
+                                    <font size="4.5"><%= '%i%' % grade.min_score %></font> 
                                   <% end %>
                                 <% else %> 
-                                  <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>
+                                  <% if grade.min_score.to_i == 0 %>
+                                    <font size="4.5"><&nbsp;<%= '%i%' % prev_score %></font>
+                                  <% else %>
+                                    <font size="4.5"><%= grade.min_score.to_i.to_s + " - " + grade.max_score.to_i.to_s+" %" %></font>
+                                  <% end %>
                                 <% end %>
-                                <%  prev_score = grade.min_score %>
+                                <%  prev_score = grade.min_score.to_i %>
                             </td>
-                            <td class="small"><%= grade.credit_points %></td>
+                            <td><font size="4.5"><%= grade.name %></font></td>
                               </tr> 
                           <% end %> 
                 
                       </table>
                 
                     <% end %> 
+                      </td>
+                  </tr>
+                  <tr class="even">
+                      
+                      <td class="col-pdf align-left" style="text-align:left !important;" width="40%">
+                          <b><pre>MD. MORSHEDUL ISLAM
+Principal
+European Standard School (ESS)</pre></b>
                       </td>
 
                   </tr>

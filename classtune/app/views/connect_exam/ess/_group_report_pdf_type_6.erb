@@ -166,7 +166,12 @@
                            
                           
                           %>
-                          <td class="col-pdf" style="padding:5px !important;"><b><%= obtain_mark %>1</b></td>
+                          <% if !grade.blank? and !grade.name.blank? %>
+                            <td class="col-pdf" style="padding:5px !important;"><b><%= grade.name %></b></td>
+                          <% else %>
+                            <td class="col-pdf" style="padding:5px !important;"><b>-</b></td>
+                          <% end %> 
+                          <!--td class="col-pdf" style="padding:5px !important;"><b><%#= obtain_mark %></b></td-->
                          
                           
 

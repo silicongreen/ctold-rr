@@ -214,11 +214,11 @@
               
               <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
                   <tr class="even border-bottom-1-px">
-                       <td class="col-pdf" width="40%" style="text-align:right !important;">
+                       <td class="col-pdf" width="40%" style="text-align:left !important;">
                         
                               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"60%" %>
                       </td>
-                      <td class="col-pdf no-border" width="60%" rowspan="2">
+                      <td class="col-pdf no-border" width="60%" rowspan="2" style="text-align:right !important;">
                       <% if @grading_levels.blank? %>
                       <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
                       <% if @grading_levels.blank? %>

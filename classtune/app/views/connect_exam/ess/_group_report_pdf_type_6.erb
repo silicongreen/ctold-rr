@@ -230,13 +230,13 @@
                       <p style="padding: 0"><font size="3"><b>Grading System</b></font></p>
                       <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
                           <tr class="even" cellspacing="0" cellpadding="1">
-                              <td style="font-size: 10px;"><font size="3"><b>Marks Range</b></font></td>
-                              <td style="font-size: 10px;"><font size="3"><b>Grade</b></font></td>  
+                              <td class="small" style="font-size: 10px;"><font size="3"><b>Marks Range</b></font></td>
+                              <td class="small" style="font-size: 10px;"><font size="3"><b>Grade</b></font></td>  
                           </tr> 
                           <% prev_score = 0 %>
                           <% @grading_levels.each_with_index do |grade,index| %>
                              <tr class="odd">
-                            <td>
+                            <td class="small">
                                 <% if grade.max_score.nil? %> 
                                   <% if grade.min_score.to_i == 0 %>
                                     <font size="3"><&nbsp;<%= '%i%' % prev_score %></font>
@@ -252,7 +252,7 @@
                                 <% end %>
                                 <%  prev_score = grade.min_score.to_i %>
                             </td>
-                            <td><font size="3"><%= grade.name %></font></td>
+                            <td class="small"><font size="3"><%= grade.name %></font></td>
                               </tr> 
                           <% end %> 
                 
@@ -312,7 +312,7 @@ European Standard School (ESS)</pre></b>
             {
                 border-bottom: none !important;
             }
-            div.baf_shaheen div.grade_information table#pdf-table tr.even td.small
+  table#pdf-table tr.even td.small
   {
      font-weight: normal !important;
      padding: 2px 10px !important; 

@@ -214,7 +214,7 @@
               
               <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
                   <tr class="even border-bottom-1-px">
-                       <td class="col-pdf" width="40%" style="text-align:left !important;">
+                       <td class="col-pdf" width="40%" style="text-align:right !important;">
                         
                               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"60%" %>
                       </td>
@@ -226,10 +226,10 @@
                       <% end %>
                     <% end %>
                     <%  unless @grading_levels.empty? %>
-                      <div style="border: 1px solid #000; width: 50%; padding: 10px;">
+                      <div style="border: 1px solid #000; width: 50%; padding: 10px; ">
                       <p><font size="3"><b>Grading System</b></font></p>
                       <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
-                          <tr class="even">
+                          <tr class="even" cellspacing="0" cellpadding="1">
                               <td style="font-size: 10px;"><font size="3"><b>Marks Range</b></font></td>
                               <td style="font-size: 10px;"><font size="3"><b>Grade</b></font></td>  
                           </tr> 

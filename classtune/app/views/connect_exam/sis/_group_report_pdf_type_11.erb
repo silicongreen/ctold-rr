@@ -365,8 +365,8 @@
                     <% end %>
                   <% end %>
               </table>
-              <% no_signatures_parent = [7546,7581,7582,7470,7469,7468,7467,7466] %>
-              <% signatures_sections = [7546,7533,7532,7581,7582,7470,7469,7468,7467,7466] %>
+              <% no_signatures_parent = [7546,7581,7582,7470,7469,7468,7467,7466,7471,7472,7473,7475,7476,7476,7479,7477,7478] %>
+              <% signatures_sections = [7546,7533,7532,7581,7582,7470,7469,7468,7467,7466,7471,7472,7473,7475,7476,7476,7479,7477,7478] %>
               <% if @batch.course.course_name == "VI" or @batch.course.course_name == "VII" or @batch.course.course_name == "STD-VI" or @batch.course.course_name == "STD-VII" %>
               <% unless no_signatures_parent.include?(params[:id].to_i) %><%# @covid_main == 0 or  %>
               <table id="pdf-table" width="48%" class="left-table even-table signature" cellspacing="0">
@@ -392,7 +392,7 @@
               </table>
               <% end %>
               <% else %>
-              <% no_signatures_id = [7532,7533,7581,7582,7470,7469,7468,7467,7466] %>
+              <% no_signatures_id = [7532,7533,7581,7582,7470,7469,7468,7467,7466,7471,7472,7473,7475,7476,7476,7479,7477,7478] %>
               <table id="pdf-table" width="100%" class="left-table even-table signature" cellspacing="0">
                 <tr class="even">
                           
@@ -401,7 +401,7 @@
                     <% end %>
                     <td class="small-height"><b>Section In-Charge</b></td>
                 </tr> 
-                <% signatures_sections = [7546,7533,7532,7522,7523,7520,7521,7518,7519,7481,7579,7480,6502,7581,7582,7470,7469,7468,7467,7466] %>
+                <% signatures_sections = [7471,7472,7473,7475,7476,7476,7479,7477,7478,7546,7533,7532,7522,7523,7520,7521,7518,7519,7481,7579,7480,6502,7581,7582,7470,7469,7468,7467,7466] %>
                 <tr class="even">
                     <% unless no_signatures_id.include?(params[:id].to_i) %><%# @covid_main == 0 or  %>
                       <td></td>

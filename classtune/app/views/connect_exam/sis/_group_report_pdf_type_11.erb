@@ -366,7 +366,11 @@
                   <% end %>
               </table>
               <% if @batch.course.course_name == "VI" or @batch.course.course_name == "VII" or @batch.course.course_name == "STD-VI" or @batch.course.course_name == "STD-VII" %>
+              <% unless no_signatures_parent.include?(params[:id].to_i) %><%# @covid_main == 0 or  %>
+              <table id="pdf-table" width="100%" class="left-table even-table signature" cellspacing="0">
+              <% else %>
               <table id="pdf-table" width="48%" class="left-table even-table signature" cellspacing="0">
+              <% end %>
                 <tr class="even">
                     <td class="small-height"><b>Section In-Charge</b></td>
                 </tr> 

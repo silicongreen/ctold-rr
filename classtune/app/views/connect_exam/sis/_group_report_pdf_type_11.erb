@@ -385,15 +385,17 @@
               </table>
               <% end %>
               <% else %>
+              <% no_signatures_id = [7532,7533] %>
               <table id="pdf-table" width="100%" class="left-table even-table signature" cellspacing="0">
                 <tr class="even">
-                    <% if @covid_main == 0 %>
-                      <td class="small-height"><b>Class Teacher's Signature <%= params[:id]%></b></td>
+                          
+                    <% if @covid_main == 0 or !no_signatures_id.include?(params[:id]) %>
+                      <td class="small-height"><b>Class Teacher's Signature</b></td>
                     <% end %>
                     <td class="small-height"><b>Section In-Charge</b></td>
                 </tr> 
                 <tr class="even">
-                   <% if @covid_main == 0 %>
+                   <% if @covid_main == 0 or !no_signatures_id.include?(params[:id]) %>
                       <td></td>
                    <% end %>
                    <td><% if @covid_main == 1 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/#{@section_in_charge}.png")), :width=>"200px" %><% end %></td>

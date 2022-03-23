@@ -366,7 +366,7 @@
                   <% end %>
               </table>
               <% no_signatures_parent = [7546] %>
-              <% signatures_sections = [7546] %>
+              <% signatures_sections = [7546,7533,7532] %>
               <% if @batch.course.course_name == "VI" or @batch.course.course_name == "VII" or @batch.course.course_name == "STD-VI" or @batch.course.course_name == "STD-VII" %>
               <% unless no_signatures_parent.include?(params[:id].to_i) %><%# @covid_main == 0 or  %>
               <table id="pdf-table" width="48%" class="left-table even-table signature" cellspacing="0">

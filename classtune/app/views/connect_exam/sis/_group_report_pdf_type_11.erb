@@ -404,7 +404,7 @@
                     <% unless no_signatures_id.include?(params[:id].to_i) %><%# @covid_main == 0 or  %>
                       <td></td>
                    <% end %>
-                   <td><% if @covid_main == 1 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/#{@section_in_charge}.png")), :width=>"200px" %><% end %></td>
+                   <td><% if @covid_main == 1 %><= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/#{@section_in_charge}.png")), :width=>"200px" %><% end %></td>
                 </tr> 
               </table>
               <% end %>

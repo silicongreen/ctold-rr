@@ -389,7 +389,7 @@
               <table id="pdf-table" width="100%" class="left-table even-table signature" cellspacing="0">
                 <tr class="even">
                           
-                    <% if no_signatures_id.exclude?(params[:id].to_i) %><%# @covid_main == 0 or  %>
+                    <% unless no_signatures_id.include?(params[:id].to_i) %><%# @covid_main == 0 or  %>
                       <td class="small-height"><b>Class Teacher1's Signature <%= params[:id] %></b></td>
                     <% end %>
                     <td class="small-height"><b>Section In-Charge</b></td>

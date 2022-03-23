@@ -365,6 +365,7 @@
                     <% end %>
                   <% end %>
               </table>
+              <% no_signatures_parent = [7546] %>
               <% if @batch.course.course_name == "VI" or @batch.course.course_name == "VII" or @batch.course.course_name == "STD-VI" or @batch.course.course_name == "STD-VII" %>
               <% unless no_signatures_parent.include?(params[:id].to_i) %><%# @covid_main == 0 or  %>
               <table id="pdf-table" width="100%" class="left-table even-table signature" cellspacing="0">
@@ -378,7 +379,7 @@
                    <td><% if @covid_main == 1 %><%#= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/#{@section_in_charge}.png")), :width=>"30%" %><% end %></td>
                 </tr> 
               </table>
-              <% no_signatures_parent = [7546] %>
+              
               <% unless no_signatures_parent.include?(params[:id].to_i) %><%# @covid_main == 0 or  %>
               <table id="pdf-table" width="48%" class="left-table odd-table signature" cellspacing="0">
                 <tr class="even">

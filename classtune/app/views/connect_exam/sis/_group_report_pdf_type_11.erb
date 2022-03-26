@@ -44,8 +44,8 @@
                   <% c = 'even'  %>
                   <tr class="odd">
                       <td class="col-pdf"><b><%= "SUBJECTS" %></b></td>
-                       <% if (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
-                        <td class="col-pdf"><b>MARKS</b></td>
+                       <% if @covid_main == 0 and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
+                        <td class="col-pdf"><b>MARKS <%= @batch.course.course_name %></b></td>
                       <% end %>
                       <td class="col-pdf"><b>GRADES</b></td>
                       
@@ -124,7 +124,7 @@
                         %>
 
                           <% if full_mark.to_f > 0 && main_mark > 0 %>
-                             <% if (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
+                             <% if @covid_main == 0 and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                               <td class="col-pdf"><b><%= show_marks.round() %></b></td>
                             <% end %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
@@ -137,7 +137,7 @@
                             <% total_parcent= total_parcent+main_mark %>
                             
                           <% else  %>
-                             <% if (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
+                             <% if @covid_main == 0 and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                               <td class="col-pdf">-</td>
                             <% end %>
                             <td class="col-pdf">-</td>
@@ -171,7 +171,7 @@
                         <tr class="odd">
                         
                           <td class="col-pdf left-td"><b><%= report['subject_name'] %></b></td>
-                           <% if (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
+                           <% if @covid_main == 0 and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                             <td class="col-pdf">-</td>
                           <% end %>
                           <td class="col-pdf"><b>

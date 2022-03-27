@@ -181,7 +181,7 @@
             Total&nbsp;|&nbsp;<%#= convert_mark.round() %><%= sprintf( "%0.02f", total_marks_with_decimal) %>&nbsp;|&nbsp;
             <% else %>
             <%
-              parts = total_marks_with_decimal.to_s.split(".")
+              parts = sprintf( "%0.02f", total_marks_with_decimal).to_s.split(".")
               decimal = parts.count > 1 ? parts[1].to_s : 0
             %>
             Total&nbsp;|&nbsp;<%= convert_mark.to_i.to_s %>.<%= decimal.to_s %>&nbsp;|&nbsp;

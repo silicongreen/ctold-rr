@@ -200,7 +200,7 @@
                     AB
                   <% else %>   
                     <% convert_mark = (elective_group_mark_total[es.exam.subject.elective_group_id] * 100) / elective_max_mark[es.exam.subject.elective_group_id] %>
-                    <%= convert_mark.round() %>
+                    <%= convert_mark.ceil %>
                   <% end %>      
                   </font>   
              </td>

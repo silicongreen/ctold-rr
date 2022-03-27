@@ -149,6 +149,7 @@
       
       <% @elective_subjects.each do |esubject| %>
           <% now_total = 0 %>
+          <% total_marks_with_decimal = 0 %>
           <td class="same-height-50">
           <% exam_score.each do |es| %>
               <% if es.exam.subject.elective_group.id.to_i == esubject.to_i %>
@@ -169,13 +170,14 @@
                 <% end %>
                 
                 <% now_total = now_total+1 %>
+                <% total_marks_with_decimal = total_marks_with_decimal + sub_marks %>
                 <%= sub_name %>&nbsp;|&nbsp;<%= es.marks.present? ? mark=es.marks.to_f : '-' %>&nbsp;|&nbsp;<%= es.marks.present? ? sprintf( "%0.02f", sub_marks) : '-' %><hr/>
               <% end %>
           <% end %>
           
           <% if !elective_group_mark[esubject].blank? %>
             <% convert_mark = (elective_group_mark_total[esubject] * 100) / elective_max_mark[esubject] %>
-            Total&nbsp;|&nbsp;<%#= convert_mark.round() %><%= sprintf( "%0.02f", convert_mark) %>&nbsp;|&nbsp;
+            Total&nbsp;|&nbsp;<%#= convert_mark.round() %><%= sprintf( "%0.02f", total_marks_with_decimal) %>&nbsp;|&nbsp;
             <%  grade = GradingLevel.percentage_to_grade(convert_mark.round(), @batch.id) %>
             <% if !grade.blank? and !grade.name.blank? %>
               <%= grade.name %>

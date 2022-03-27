@@ -2078,14 +2078,24 @@ class ExamController < ApplicationController
     #    @present = @academic_days-on_leaves-leaves_full
     #    @absent = @academic_days-@present
     #    @exam_comment = ExamGroupComment.find_by_exam_group_id_and_student_id(@exam_group.id,@student.id)
-   
-    render :pdf => 'student_wise_generated_report_all',
-      :orientation => 'Portrait', :zoom => 1.00,
-      :margin => {    :top=> 10,
-      :bottom => 10,
-      :left=> 10,
-      :right => 10},
-      :footer => {:html => { :template=> 'layouts/footer_single.html'}}
+    if MultiSchool.current_school.id == 323 
+      render :pdf => 'student_wise_generated_report_all',
+        :orientation => 'Portrait', :zoom => 1.00,
+        :margin => {    :top=> 10,
+        :bottom => 10,
+        :left=> 10,
+        :right => 10},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+        #:footer => {:html => { :template=> 'layouts/footer_single.html'}}
+    else
+      render :pdf => 'student_wise_generated_report_all',
+        :orientation => 'Portrait', :zoom => 1.00,
+        :margin => {    :top=> 10,
+        :bottom => 10,
+        :left=> 10,
+        :right => 10},
+        :footer => {:html => { :template=> 'layouts/footer_single.html'}}
+    end
   end
 
   def student_wise_generated_report

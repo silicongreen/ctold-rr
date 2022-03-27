@@ -205,7 +205,7 @@
                   </font>   
              </td>
               <%# elective_group_mark[es.exam.subject.elective_group_id] %>
-              <%  grade = GradingLevel.percentage_to_grade(convert_mark.round(), @batch.id) %>
+              <%  grade = GradingLevel.percentage_to_grade(convert_mark.ceil, @batch.id) %>
               <% if !grade.blank? and !grade.name.blank? %>
               <td class="col-pdf  "><font size="5"><%= grade.name %></font></td>
               <% else %>

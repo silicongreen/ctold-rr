@@ -177,7 +177,11 @@
           
           <% if !elective_group_mark[esubject].blank? %>
             <% convert_mark = (elective_group_mark_total[esubject] * 100) / elective_max_mark[esubject] %>
-            Total&nbsp;|&nbsp;<%#= convert_mark.round() %><%= sprintf( "%0.02f", total_marks_with_decimal) %>&nbsp;|&nbsp;
+            <% if convert_mark.round() == total_marks_with_decimal.round() %>
+            <% Total&nbsp;|&nbsp;<%#= convert_mark.round() %><%= sprintf( "%0.02f", total_marks_with_decimal) %>&nbsp;|&nbsp;
+            <% else %>
+            Total&nbsp;|&nbsp;<%#= convert_mark.round() %><%= sprintf( "%0.02f", convert_mark) %>&nbsp;|&nbsp;
+            <% end %>
             <%  grade = GradingLevel.percentage_to_grade(convert_mark.round(), @batch.id) %>
             <% if !grade.blank? and !grade.name.blank? %>
               <%= grade.name %>

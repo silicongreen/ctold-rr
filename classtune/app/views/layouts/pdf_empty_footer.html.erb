@@ -19,7 +19,7 @@
 <% if MultiSchool.current_school.code != "sjs" and MultiSchool.current_school.code != "cbis" %> 
   <% if MultiSchool.current_school.code != "oisd" and MultiSchool.current_school.code != "sis" and MultiSchool.current_school.code != "sfx" and MultiSchool.current_school.code != "ess" %>
   <div class="powered-text">
-      <font size='1'>Print Date: <%= Time.now.strftime("%Y/%m/%d") %></font>
+      <font size='1'>Print Date: <%#= Time.now.strftime("%Y/%m/%d") %><%= Time.now.strftime("%d-%m-%Y") %></font>
       <p>Powered by <b>ClassTune</b></p>
   </div>
   <style>

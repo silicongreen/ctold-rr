@@ -200,12 +200,12 @@
                     AB
                   <% else %>   
                     <% convert_mark = (elective_group_mark_total[es.exam.subject.elective_group_id] * 100) / elective_max_mark[es.exam.subject.elective_group_id] %>
-                    <%= convert_mark.ceil %>
+                    <%= convert_mark.round() %>
                   <% end %>      
                   </font>   
              </td>
               <%# elective_group_mark[es.exam.subject.elective_group_id] %>
-              <%  grade = GradingLevel.percentage_to_grade(convert_mark.ceil, @batch.id) %>
+              <%  grade = GradingLevel.percentage_to_grade(convert_mark.round(), @batch.id) %>
               <% if !grade.blank? and !grade.name.blank? %>
               <td class="col-pdf  "><font size="5"><%= grade.name %></font></td>
               <% else %>

@@ -1647,7 +1647,7 @@ class StudentController < ApplicationController
         end  
         unless course_data.blank? 
           unless @batch_name_pdf.blank? 
-            @batch = Batch.find_by_course_id(course_data.id,:conditions=>["name LIKE ?",@batch_name_pdf])
+            @batch = Batch.find_by_course_id(course_data.id,:conditions=>["name LIKE ? and is_deleted = 0",@batch_name_pdf])
           else
             @batch = Batch.find_by_course_id(course_data.id)
           end

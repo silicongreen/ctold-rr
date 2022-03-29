@@ -1513,25 +1513,25 @@ class StudentController < ApplicationController
     category_name = params[:category_name]
     condition = "1 = 1"
     unless batch_name.blank?
-      condition = condition+" and batches.name like '%"+batch_name+"%'"
+      condition = condition+" and batches.name like '%"+batch_name+"%' and batches.is_deleted = 0"
     end
     unless version_name.blank?
-      condition = condition+" and batches.name like '%"+version_name+"%'"
+      condition = condition+" and batches.name like '%"+version_name+"%' and batches.is_deleted = 0"
     end
     unless class_name.blank?
-      condition = condition+" and courses.course_name = '"+class_name+"'"
+      condition = condition+" and courses.course_name = '"+class_name+"' and courses.is_deleted = 0"
     end
     unless section_name.blank?
-      condition = condition+" and courses.section_name = '"+section_name+"'"
+      condition = condition+" and courses.section_name = '"+section_name+"' and courses.is_deleted = 0"
     end
     unless session_name.blank?
-      condition = condition+" and courses.session = '"+session_name+"'"
+      condition = condition+" and courses.session = '"+session_name+"' and courses.is_deleted = 0"
     end
     unless group_name.blank?
-      condition = condition+" and courses.group = '"+group_name+"'"
+      condition = condition+" and courses.group = '"+group_name+"' and courses.is_deleted = 0"
     end
     unless category_name.blank?
-      condition = condition+" and student_categories.name = '"+category_name+"'"
+      condition = condition+" and student_categories.name = '"+category_name+"' and courses.is_deleted = 0"
     end
     
     if !@admission_date.blank? && !@admission_date_2.blank?

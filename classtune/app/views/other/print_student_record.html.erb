@@ -52,16 +52,17 @@
               <div class="col-xs-12">&nbsp;</div>
               <div class="col-xs-12 font-size-12">
                   <div class="col-xs-12 data-group" style="padding:0px;">
+                      <div class="col-xs-4" >ID&nbsp;:&nbsp;<%= std_info.admission_no %></div>
                       <div class="col-xs-4" >Name&nbsp;:&nbsp;<%= std_info.full_name %></div>
                       <div class="col-xs-4" >Class & Section&nbsp;:&nbsp;<%= std_info.batch.course.course_name %> <%= std_info.batch.course.section_name %></div>
-                      <div class="col-xs-4" >Nationality&nbsp;:&nbsp;<%= std_info.nationality.nationality.nationality unless std_info.nationality_id.nil? %></div>
-
                   </div>
                   <div class="col-xs-12 data-group">
+                      <div class="col-xs-4" >Nationality&nbsp;:&nbsp;<%= std_info.nationality.nationality.nationality unless std_info.nationality_id.nil? %></div>
                       <div class="col-xs-4" >DOB&nbsp;:&nbsp;<%= I18n.l(std_info.date_of_birth,:format=>"%d %b %Y") unless std_info.date_of_birth.nil? %></div>
+                  </div>
+                  <div class="col-xs-12 data-group">
                       <div class="col-xs-4" >Date of Admission&nbsp;:&nbsp;<%= I18n.l(std_info.admission_date,:format=>"%d %b %Y") unless std_info.admission_date.nil? %></div>
                       <div class="col-xs-4" >Religion&nbsp;:&nbsp;<%= std_info.religion.titlecase unless std_info.religion.blank? %></div>       
-
                   </div>
                   <% father_mobile = "" %>
                   <% mother_mobile = "" %>

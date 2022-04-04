@@ -175,7 +175,7 @@ class OtherController < ApplicationController
            center_row.push(startrow+5)
            
           std_nationality = std.nationality_id.nil? ? '': std.nationality.nationality.nationality
-          row_6 = ['', 'Name: '+std.full_name,'Class & Section: '+std.batch.course.course_name+' '+std.batch.course.section_name,'Nationality: '+std_nationality]
+          row_6 = ['', 'ID: '+std.admission_no, 'Name: '+std.full_name,'Class & Section: '+std.batch.course.course_name+' '+std.batch.course.section_name,'Nationality: '+std_nationality]
           new_book.worksheet(0).insert_row(startrow+7, row_6)
           border_bottom.push(startrow+7)
           

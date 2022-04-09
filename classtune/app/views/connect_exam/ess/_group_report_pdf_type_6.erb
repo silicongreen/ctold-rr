@@ -1,3 +1,7 @@
+<% @extra_text = "" %>
+<% unless params[:extra].blank? %>
+  <% @extra_text = params[:extra].uppercase %>
+<% end %>
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <div id="page-yield"  class="available_sections1 sis sis-final">
       <div class="section1 row" >
@@ -79,7 +83,7 @@
                   <% total_mark_of_allexam = 0 %>
                  
                   <tr class="even">
-                      <td colspan="3" ><b>FIRST TERM REPORT CARD</b></td>
+                      <td colspan="3" ><b><%= @extra_text %> REPORT CARD</b></td><%#= FIRST TERM %>
                   </tr>
                   <tr class="even">
                       <td class="col-pdf" rowspan="2"><b><%= "Subject" %></b></td>

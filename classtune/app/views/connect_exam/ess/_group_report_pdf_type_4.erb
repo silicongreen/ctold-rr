@@ -1,3 +1,11 @@
+<% @hide = 1 %>
+<% @extra_text = "" %>
+<% unless params[:hide].blank? %>
+  <% @hide = params[:hide] %>
+<% end %>
+<% unless params[:extra].blank? %>
+  <% @extra_text = params[:extra].uppercase %>
+<% end %>
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <div id="page-yield"  class="available_sections1 sis sis-final">
       <div class="section1 row" >
@@ -14,7 +22,7 @@
                               <h4 align="center"><font size="7" color="#4CAEE3">EUROPEAN STANDARD SCHOOL(ESS)</font></h2>
                               <h4 align="center" style="margin-top:-5px;">
                                 <font size="6" color="#000">
-                                  ONLINE PROGRESS REPORT
+                                  <%= @extra_text %> PROGRESS REPORT
                                 </font>
                               </h4>
                               <h4 align="center" style="margin-top:-5px;"><font size="6" color="#000"><%= @connect_exam_obj.name %></font></h2>
@@ -81,13 +89,17 @@
                     <% else %>
                       <td colspan="2" ><b>Class Test 1</b></td>
                     <% end %>
+                    <% if @hide == 0 %>
                     <td colspan="2" ><b>Attendance</b></td>
+                    <% end %>
                   </tr>
                   <tr class="even">
                     <td><b>Full Marks</b></td>
                     <td><b>Obtained Marks</b></td>
+                    <% if @hide == 0 %>
                     <td><b>No. of Classes</b></td>
                     <td><b>Present</b></td>
+                    <% end %>
                   </tr>
                   
                   <% total_marks = 0 %>
@@ -184,10 +196,10 @@
                             <% end %>
                           <% end %> 
                           <% present = total_att.to_i - absent_att.to_i %>
-
+                          <% if @hide == 0 %>    
                           <td class="col-pdf"><b><%= total_att_main %></b></td>
                           <td class="col-pdf"><b><%= present %></b></td>
-                          
+                          <% end %>
 
                       </tr>
                     <% end %>  

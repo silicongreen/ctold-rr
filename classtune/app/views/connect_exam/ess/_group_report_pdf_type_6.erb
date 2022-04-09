@@ -83,7 +83,7 @@
                   <% total_mark_of_allexam = 0 %>
                  
                   <tr class="even">
-                      <td colspan="3" ><b><%= @extra_text %> REPORT CARD</b></td><%#= FIRST TERM %>
+                      <td colspan="5" ><b><%= @extra_text %> REPORT CARD</b></td><%#= FIRST TERM #%>
                   </tr>
                   <tr class="even">
                       <td class="col-pdf" rowspan="2"><b><%= "Subject" %></b></td>
@@ -106,10 +106,11 @@
                         <%= report['exam_name'] %><br/>
                         (Out of <% unless @exam_marks[report['exam_id'].to_s].blank?  %><% total_mark_of_allexam = total_mark_of_allexam+@exam_marks[report['exam_id'].to_s].to_i  %><%= @exam_marks[report['exam_id'].to_s] %><% end %>)
                         </b></td>
+                        <td><b>Grade<br/>(U - A*)</b></td>
                         <% end %>
                     <% end %>
                     <!--td><b>Total<br/>25</b></td-->
-                    <td><b>Grade<br/>(U - A*)</b></td>
+                    <!--td><b>Grade<br/>(U - A*)</b></td-->
                   </tr>
                   <% total_marks = 0 %>
                   <% subject_count = 0 %>
@@ -145,12 +146,26 @@
                                   obtain_mark = obtain_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                   %>
                                     <td class="col-pdf no-warp"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
-                                <%
-                                else
-                                  %>
+                                <% else %>
                                     <td class="col-pdf no-warp">-</td>
+                                <% end %>
                                 <% 
-                                end
+                                f_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                o_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                main_mark = 0
+                                if f_mark > 0 && o_mark > 0
+                                  main_mark = (o_mark.to_f/f_mark.to_f)*100
+                                end  
+                                
+                                main_mark = main_mark.round()
+                                grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                                %>  
+                                <% if !grade.blank? and !grade.name.blank? %>
+                                  <td class="col-pdf" style="padding:5px !important;"><b><%= grade.name %></b></td>
+                                <% else %>
+                                  <td class="col-pdf" style="padding:5px !important;"><b>-</b></td>
+                                <% end %> 
+                                <%
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
                                   full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
                                 end
@@ -172,9 +187,9 @@
                           
                           %>
                           <% if !grade.blank? and !grade.name.blank? %>
-                            <td class="col-pdf" style="padding:5px !important;"><b><%= grade.name %></b></td>
+                            <!--td class="col-pdf" style="padding:5px !important;"><b><%= grade.name %></b></td-->
                           <% else %>
-                            <td class="col-pdf" style="padding:5px !important;"><b>-</b></td>
+                            <!--td class="col-pdf" style="padding:5px !important;"><b>-</b></td-->
                           <% end %> 
                           <!--td class="col-pdf" style="padding:5px !important;"><b><%#= obtain_mark %></b></td-->
                          

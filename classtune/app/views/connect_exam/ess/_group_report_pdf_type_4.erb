@@ -222,23 +222,23 @@
                       <%  if @all_subjects.include?(report['id'].to_i) %>
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                             <td class="col-pdf no-warp  align-left"><%= report['subject_name'] %></td>
+                            <% if @hide == 0 %>
                             <td class="col-pdf" colspan="4"><b><%= report['subject_comment'] unless report['subject_comment'].blank? %></b></td>
+                            <% else %>
+                            <td class="col-pdf" colspan="2"><b><%= report['subject_comment'] unless report['subject_comment'].blank? %></b></td>
+                            <% end %>
                         </tr>
                       <% end %>
                     <% end %>
                   <% end %> 
                   <tr class="even"> 
                     <td class="col-pdf no-warp  align-left">Total Marks</td>
-                    <td>
-                      <b><%= total_marks %></b>
-                    </td>
-                    <td>
-                      <b><%= sprintf( "%0.02f", total_marks_obtain) %></b>
-                    </td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
+                    <td><b><%= total_marks %></b></td>
+                    <td><b><%= sprintf( "%0.02f", total_marks_obtain) %></b></td>
+                    <% if @hide == 0 %>
+                    <td></td>
+                    <td></td>
+                    <% end %>
                   </tr>
                   <% parcentise = 0.0 %> 
                   <% if total_marks_obtain > 0 %>
@@ -265,22 +265,37 @@
                       %>
                   <tr class="even"> 
                     <td class="col-pdf no-warp  align-left">Comment on Overall Performance</td>
-                    <td colspan="4">
-                      <b><%= comments %></b>
-                    </td>
+                    <% if @hide == 0 %>
+                    <td colspan="4"><b><%= comments %></b></td>    
+                    <% else %>
+                    <td colspan="2"><b><%= comments %></b></td>
+                    <% end %>
                   </tr>
                   <tr class="even"> 
                     <td  class="col-pdf no-warp  align-left">Total No. of Working Days </td>
+                    <% if @hide == 0 %>
                     <td colspan="4"><b><%= @connect_exam_obj.total_working_days %> Days</b></td>
+                    <% else %>
+                    <td colspan="2"><b><%= @connect_exam_obj.total_working_days %> Days</b></td>
+                    <% end %>
                   </tr>
                   <tr class="even"> 
                     <td>Signature of Principal</td>
+                    <% if @hide == 0 %>
                     <td colspan="4">
                       <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"20%" %>
                       <br/>
                       <%#= Time.now.strftime("%d/%m/%Y") %>
                       10/03/2022
                     </td>
+                    <% else %>
+                    <td colspan="2">
+                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"20%" %>
+                      <br/>
+                      <%#= Time.now.strftime("%d/%m/%Y") %>
+                      10/03/2022
+                    </td>
+                    <% end %>
                   </tr>
 
               </table>

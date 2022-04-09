@@ -79,7 +79,11 @@
               <table id="pdf-table"  width="100%" class="left-table even-table exam-marks" cellspacing="0">
                   <% c = 'even'  %>
                   <tr class="even">
+                      <% if @hide == 0 %>
                       <td colspan="5" ><b>ACADEMIC PERFORMANCE</b></td>
+                      <% else %>
+                      <td colspan="3" ><b>ACADEMIC PERFORMANCE</b></td>
+                      <% end %>
                   </tr>
                   <% total_mark_of_allexam = 0 %>
                   <tr class="even">

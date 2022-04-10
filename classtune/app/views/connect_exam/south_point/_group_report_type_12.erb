@@ -78,7 +78,7 @@
                               else
                                 avg_mark_st = st_marks[0].to_f
                               end
-                              main_full_mark = full_mark = ct_full_mark.to_i+st_full_mark.to_i
+                              main_full_mark = full_mark = ct_full_mark.to_f+st_full_mark.to_f
                               obtained_mark = avg_mark_ct.to_f+avg_mark_st.to_f
                             end   
                             if @exam_type_course == 2
@@ -92,14 +92,14 @@
                               
                               if st_full_mark.to_i == 20 
                                   avg_mark_st = st_marks[0].to_f+st_marks[1].to_f
-                                  main_full_mark = main_full_mark+st_full_mark.to_i+st_full_mark.to_i
+                                  main_full_mark = main_full_mark+st_full_mark.to_f+st_full_mark.to_f
                               else 
                                   avg_mark_st = st_marks[0].to_f
                                   main_full_mark = main_full_mark+st_full_mark.to_f
                               end
                               
                               total_mark = avg_mark_ct+avg_mark_st
-                              full_mark = ct_full_mark.to_i+st_full_mark.to_f
+                              full_mark = ct_full_mark.to_f+st_full_mark.to_f
                               
                               if main_full_mark == 100
                                 full_mark = 50
@@ -121,7 +121,7 @@
 
 
                           <td class="col-pdf"><%= main_full_mark.round().to_s %></td>
-                          <td class="col-pdf"><%= obtained_mark.to_s %></td>
+                          <td class="col-pdf"><%= obtained_mark.round().to_s %></td>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>
                             <td class="col-pdf"><%= grade.name %></td>  

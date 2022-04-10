@@ -164,8 +164,8 @@
             <% @report_data['result']['ST'].each do |st| %>
               <td>
                  <% if !st['students'].blank? && !st['students'][std['id']].blank? && !st['students'][std['id']]['score'].blank? %>
-                    <%= sprintf( "%0.02f", st['students'][std['id']]['score'].to_f.round()) %>
-                    <%#= st['students'][std['id']]['score'] + ' j' %>
+                    <%#= sprintf( "%0.02f", st['students'][std['id']]['score'].to_f.round()) %>
+                    <%= st['students'][std['id']]['score'] + ' j' %>
                     <% total_mark = total_mark.to_f+st['students'][std['id']]['score'].to_f %>
                     <% st_marks << st['students'][std['id']]['score'].to_f %>
                   <% else %>
@@ -194,14 +194,14 @@
                 end
               end
             %>
-           <td class="name"><%= sprintf( "%0.02f", avg_mark.round()) %></td> 
+           <td class="name"><%= sprintf( "%0.02f", avg_mark) %></td> 
            <% end %>
 
            <% avg_mark2 = 0; %>
            <% total_mark = 0 %>
            <% @report_data['result']['CT'].each do |ct| %>
               <% if !ct['students'].blank? && !ct['students'][std['id']].blank? && !ct['students'][std['id']]['score'].blank? %>
-              <td><%= sprintf( "%0.02f", ct['students'][std['id']]['score'].to_f.round()) %><%#= ct['students'][std['id']]['score'] %></td>
+              <td><%= ct['students'][std['id']]['score'] %></td>
               <% total_mark = total_mark.to_f+ct['students'][std['id']]['score'].to_f %>
               <% ct_marks << ct['students'][std['id']]['score'].to_f %>
               <% else %>

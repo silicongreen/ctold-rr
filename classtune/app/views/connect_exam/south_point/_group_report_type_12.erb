@@ -70,7 +70,8 @@
                             st_marks.sort! {|x,y| y <=> x }
                             ct_marks.sort! {|x,y| y <=> x }
                             main_full_mark = 0
-                            
+                            <%= debug st_marks.inspect %>
+                            <%= debug ct_marks.inspect %>
                             if @exam_type_course == 1
                               avg_mark_ct = ct_marks[0].to_f
                               if st_full_mark.to_i == 10 

@@ -39,12 +39,12 @@
                                  @report_data['report']['exams'].each do |report| 
                                     if st_full_mark == 0 and report['exam_category'] == '4'
                                       if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
-                                        st_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                        st_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f
                                       end
                                     end                     
                                     if ct_full_mark == 0 and report['exam_category'] == '1'
                                       if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
-                                        ct_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                        ct_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f
                                       end
                                     end
                                     
@@ -87,7 +87,7 @@
                                   main_full_mark = main_full_mark+ct_full_mark.to_i+ct_full_mark.to_i
                               else 
                                   avg_mark_ct = ct_marks[0].to_f
-                                  main_full_mark = main_full_mark+ct_full_mark.to_i
+                                  main_full_mark = main_full_mark+ct_full_mark.to_f
                               end 
                               
                               if st_full_mark.to_i == 20 
@@ -95,11 +95,11 @@
                                   main_full_mark = main_full_mark+st_full_mark.to_i+st_full_mark.to_i
                               else 
                                   avg_mark_st = st_marks[0].to_f
-                                  main_full_mark = main_full_mark+st_full_mark.to_i
+                                  main_full_mark = main_full_mark+st_full_mark.to_f
                               end
                               
                               total_mark = avg_mark_ct+avg_mark_st
-                              full_mark = ct_full_mark.to_i+st_full_mark.to_i
+                              full_mark = ct_full_mark.to_i+st_full_mark.to_f
                               
                               if main_full_mark == 100
                                 full_mark = 50

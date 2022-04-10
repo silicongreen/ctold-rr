@@ -70,8 +70,7 @@
                             st_marks.sort! {|x,y| y <=> x }
                             ct_marks.sort! {|x,y| y <=> x }
                             main_full_mark = 0
-                            <%= debug st_marks.inspect %>
-                            <%= debug ct_marks.inspect %>
+                            
                             if @exam_type_course == 1
                               avg_mark_ct = ct_marks[0].to_f
                               if st_full_mark.to_i == 10 
@@ -116,7 +115,7 @@
                               obtained_mark = avg_mark_ct
                               main_full_mark = full_mark = ct_full_mark
                             end 
-                            main_mark = (obtained_mark.round().to_f/full_mark.to_f)*100 
+                            main_mark = (obtained_mark.to_f/full_mark.to_f)*100 
                             
                             %>
 

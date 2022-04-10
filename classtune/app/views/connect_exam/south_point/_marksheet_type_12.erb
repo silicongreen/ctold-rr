@@ -201,7 +201,7 @@
            <% total_mark = 0 %>
            <% @report_data['result']['CT'].each do |ct| %>
               <% if !ct['students'].blank? && !ct['students'][std['id']].blank? && !ct['students'][std['id']]['score'].blank? %>
-              <td><%= ct['students'][std['id']]['score'] %></td>
+              <td><%= sprintf( "%0.02f", ct['students'][std['id']]['score'].to_f.round()) %><%#= ct['students'][std['id']]['score'] %></td>
               <% total_mark = total_mark.to_f+ct['students'][std['id']]['score'].to_f %>
               <% ct_marks << ct['students'][std['id']]['score'].to_f %>
               <% else %>

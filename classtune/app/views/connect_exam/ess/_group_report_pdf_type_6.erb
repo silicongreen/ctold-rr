@@ -16,7 +16,7 @@
                           </td>
                           <td width="74%">
                               <h4 align="center"><font size="7" color="#4CAEE3">EUROPEAN STANDARD SCHOOL(ESS)</font></h2>
-                              <h4 align="center" style="margin-top:-3px;"><font size="6" color="#000"><%= @batch.course.name %></font></h4>
+                              <h4 align="center" style="margin-top:-3px;"><font size="6" color="#000"><%= @batch.name %></font></h4>
                               <!--h4 align="center" style="margin-top:-3px;">
                                 <font size="6" color="#000">
                                   Assessment Report Card
@@ -83,7 +83,11 @@
                   <% total_mark_of_allexam = 0 %>
                  
                   <tr class="even">
+                      <% if @batch.course.course_name == 'VIII' or @batch.course.course_name == 'IX' %>
+                      <td colspan="4" ><b><%= @extra_text %> REPORT CARD</b></td><%#= FIRST TERM #%>
+                      <% else %>
                       <td colspan="5" ><b><%= @extra_text %> REPORT CARD</b></td><%#= FIRST TERM #%>
+                      <% end %>
                   </tr>
                   <tr class="even">
                       <td class="col-pdf" rowspan="2"><b><%= "Subject" %></b></td>
@@ -106,7 +110,9 @@
                         <%= report['exam_name'] %><br/>
                         (Out of <% unless @exam_marks[report['exam_id'].to_s].blank?  %><% total_mark_of_allexam = total_mark_of_allexam+@exam_marks[report['exam_id'].to_s].to_i  %><%= @exam_marks[report['exam_id'].to_s] %><% end %>)
                         </b></td>
+                        <% if @batch.course.course_name == 'VIII' or @batch.course.course_name == 'IX' %>
                         <td><b>Grade<br/>(U - A*)</b></td>
+                        <% end %>
                         <% end %>
                     <% end %>
                     <!--td><b>Total<br/>25</b></td-->
@@ -160,11 +166,14 @@
                                 main_mark = main_mark.round()
                                 grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                                 %>  
+                                
+                                <% if @batch.course.course_name == 'VIII' or @batch.course.course_name == 'IX' %>
                                 <% if !grade.blank? and !grade.name.blank? %>
                                   <td class="col-pdf" style="padding:5px !important;"><b><%= grade.name %></b></td>
                                 <% else %>
                                   <td class="col-pdf" style="padding:5px !important;"><b>-</b></td>
                                 <% end %> 
+                                <% end %>
                                 <%
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
                                   full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i

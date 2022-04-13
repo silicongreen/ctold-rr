@@ -86,7 +86,7 @@
                       <% if @batch.course.course_name == 'VIII' or @batch.course.course_name == 'IX' %>
                       <td colspan="4" ><b><%= @extra_text %> REPORT CARD</b></td><%#= FIRST TERM #%>
                       <% else %>
-                      <td colspan="5" ><b><%= @extra_text %> REPORT CARD</b></td><%#= FIRST TERM #%>
+                      <td colspan="6" ><b><%= @extra_text %> REPORT CARD</b></td><%#= FIRST TERM #%>
                       <% end %>
                   </tr>
                   <tr class="even">
@@ -116,6 +116,9 @@
                         <td><b>Grade<br/>(U - A*)</b></td>
                         <% end %>
                         <% end %>
+                    <% end %>
+                    <% if @batch.course.course_name == 'VIII' or @batch.course.course_name == 'IX' %>
+                    <td><b>Total<br/>25</b></td>
                     <% end %>
                     <!--td><b>Total<br/>25</b></td-->
                     <!--td><b>Grade<br/>(U - A*)</b></td-->
@@ -204,7 +207,9 @@
                           <% else %>
                             <!--td class="col-pdf" style="padding:5px !important;"><b>-</b></td-->
                           <% end %> 
-                          <!--td class="col-pdf" style="padding:5px !important;"><b><%#= obtain_mark %></b></td-->
+                          <% if @batch.course.course_name == 'VIII' or @batch.course.course_name == 'IX' %>
+                          <td class="col-pdf" style="padding:5px !important;"><b><%#= obtain_mark %></b></td>
+                          <% end %>
                          
                           
 

@@ -289,15 +289,17 @@
                     <td colspan="4">
                       <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"20%" %>
                       <br/>
+                      <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%d/%m/%Y"):@connect_exam_obj.published_date.strftime("%d/%m/%Y") %>
                       <%#= Time.now.strftime("%d/%m/%Y") %>
-                      10/03/2022
+                      <%#= "10/03/2022" %>
                     </td>
                     <% else %>
                     <td colspan="2">
                       <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"20%" %>
                       <br/>
+                      <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%d/%m/%Y"):@connect_exam_obj.published_date.strftime("%d/%m/%Y") %>
                       <%#= Time.now.strftime("%d/%m/%Y") %>
-                      10/03/2022
+                      <%#= "10/03/2022" %>
                     </td>
                     <% end %>
                   </tr>

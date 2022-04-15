@@ -22,13 +22,7 @@
                                   Assessment Report Card
                                 </font>
                               </h4-->
-                              <h4 align="center" style="margin-top:-3px;"><font size="6" color="#000">
-                              <% if @batch.course.course_name == 'VIII' or @batch.course.course_name == 'IX' %>
-                              First Term CT 2
-                              <% else %>
-                              <%= @connect_exam_obj.name %>
-                              <% end %>
-                              </font></h2>
+                              <h4 align="center" style="margin-top:-3px;"><font size="6" color="#000"><%= @connect_exam_obj.name %></font></h4>
                               <% month_number = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
                               <h4 align="center" style="margin-top:-3px;">
                                 <font size="6" color="#000">

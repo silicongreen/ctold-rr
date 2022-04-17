@@ -144,10 +144,10 @@
 
 
                           <td class="col-pdf"><%= main_full_mark.round().to_s %></td>
-                          <% if @exam_type_course == 2 %>
-                            <td class="col-pdf"><%= main_mark_obtain.to_i %></td>
-                          <% end %>
-                          <td class="col-pdf"><%= obtained_mark.round().to_s + "  " + @exam_type_course.to_s %></td>
+                          <% #if @exam_type_course == 2 %>
+                            <!--td class="col-pdf"><%#= main_mark_obtain.to_i %></td-->
+                          <% #end %>
+                          <td class="col-pdf"><%= obtained_mark.round().to_s %></td>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>
                             <td class="col-pdf"><%= grade.name %></td>  

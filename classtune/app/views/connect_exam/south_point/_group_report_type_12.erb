@@ -98,7 +98,7 @@
                                   main_full_mark = main_full_mark+st_full_mark.to_f
                               end
                               
-                              total_mark = avg_mark_ct+avg_mark_st
+                              total_mark = avg_mark_ct.to_f+avg_mark_st.to_f
                               full_mark = ct_full_mark.to_f+st_full_mark.to_f
                               
                               if main_full_mark == 100
@@ -112,7 +112,7 @@
                           
                             if @exam_type_course == 3
                               avg_mark_ct = (ct_marks[0].to_f+ct_marks[1].to_f)/2
-                              obtained_mark = avg_mark_ct
+                              obtained_mark = avg_mark_ct.to_f + 10
                               main_full_mark = full_mark = ct_full_mark
                             end 
                             main_mark = (obtained_mark.to_f/full_mark.to_f)*100 
@@ -121,7 +121,7 @@
 
 
                           <td class="col-pdf"><%= main_full_mark.round().to_s %></td>
-                          <td class="col-pdf"><%= obtained_mark.to_s %></td>
+                          <td class="col-pdf"><%= obtained_mark.round().to_s %></td>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>
                             <td class="col-pdf"><%= grade.name %></td>  

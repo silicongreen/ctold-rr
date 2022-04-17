@@ -165,7 +165,7 @@
               <td>
                  <% if !st['students'].blank? && !st['students'][std['id']].blank? && !st['students'][std['id']]['score'].blank? %>
                     <%#= sprintf( "%0.02f", st['students'][std['id']]['score'].to_f.round()) %>
-                    <%= st['students'][std['id']]['score'] + ' j' %>
+                    <%= st['students'][std['id']]['score'] %>
                     <% total_mark = total_mark.to_f+st['students'][std['id']]['score'].to_f %>
                     <% st_marks << st['students'][std['id']]['score'].to_f %>
                   <% else %>

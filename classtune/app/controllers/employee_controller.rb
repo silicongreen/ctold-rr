@@ -241,9 +241,9 @@ class EmployeeController < ApplicationController
 
 
 
-        @assignment_register = Assignment.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
-        @classwork_register = Classwork.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
-        @lesson_plan_register = Lessonplan.count(:conditions=>["date(created_at) = ? and author_id = ?",@date_to_use.to_date,employee.user_id])
+        @assignment_register = Assignment.count(:conditions=>["date(created_at) = ? and employee_id = ? and is_deleted = 0",@date_to_use.to_date,employee.id])
+        @classwork_register = Classwork.count(:conditions=>["date(created_at) = ? and employee_id = ? and is_deleted = 0",@date_to_use.to_date,employee.id])
+        @lesson_plan_register = Lessonplan.count(:conditions=>["date(created_at) = ? and author_id = ? and is_deleted = 0",@date_to_use.to_date,employee.user_id])
         temp << @entries
         temp << @assignment_register
         temp << @classwork_register

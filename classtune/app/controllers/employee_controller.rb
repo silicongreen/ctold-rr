@@ -380,12 +380,16 @@ class EmployeeController < ApplicationController
     @employee = Employee.find(params[:id])
     @employee_subjects = @employee.subjects
     @lesson_plans = []
+    @lesson_plans_ids = []
     unless @employee_subjects.blank?
       @employee_subjects.each do |emp_sub|
         @lessonplans = Lessonplan.find(:all,:conditions => ["FIND_IN_SET(#{emp_sub.id},subject_ids) AND publish_date is not null AND is_show = 1"], :group => "id", :include=>[:author]) 
         unless @lessonplans.blank?
           @lessonplans.each do |lessonplan|
-            @lesson_plans << lessonplan
+            if !@lesson_plans_ids.include?(lessonplan.id)
+              @lesson_plans << lessonplan
+              @lesson_plans_ids << lessonplan.id
+            end
           end  
         end  
       end 

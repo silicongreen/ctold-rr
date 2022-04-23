@@ -158,7 +158,7 @@
               <td><%= "Yes" unless attendance.blank? %></td>
               <td>
                 <% @assignment_register.each do |assignment| %>
-                  <% if assignment.subject_id.to_i == sub.id.to_i and val.created_at.strftime("%a %d %y") == date.strftime("%a %d %y") %>
+                  <% if assignment.subject_id.to_i == sub.id.to_i and assignment.created_at.strftime("%a %d %y") == date.strftime("%a %d %y") %>
                     <% if !first_record %>
                     <hr style="border: 1px solid #ccc;">
                     <% end %>
@@ -176,7 +176,7 @@
                 <% first_record = true %>
                 <% count = 0 %>
                 <% @classwork_register.each do |classwork| %>
-                  <% if classwork.subject_id.to_i == sub.id.to_i and val.created_at.strftime("%a %d %y") == date.strftime("%a %d %y") %>
+                  <% if classwork.subject_id.to_i == sub.id.to_i and classwork.created_at.strftime("%a %d %y") == date.strftime("%a %d %y") %>
                     <% if !first_record %>
                     <hr style="border: 1px solid #ccc;">
                     <% end %>

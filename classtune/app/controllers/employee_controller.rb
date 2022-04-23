@@ -382,7 +382,7 @@ class EmployeeController < ApplicationController
     @lesson_plans = []
     unless @employee_subjects.blank?
       @employee_subjects.each do |emp_sub|
-        @lessonplans = Lessonplan.find(:all,:conditions => ["FIND_IN_SET(#{emp_sub.id},subject_ids) AND publish_date is not null AND is_show = 1"], :include=>[:author]) 
+        @lessonplans = Lessonplan.find(:all,:conditions => ["FIND_IN_SET(#{emp_sub.id},subject_ids) AND publish_date is not null AND is_show = 1"], :group => "id", :include=>[:author]) 
         unless @lessonplans.blank?
           @lessonplans.each do |lessonplan|
             @lesson_plans << lessonplan

@@ -62,7 +62,7 @@ class EmployeeController < ApplicationController
     @data = []
     center_align_format = Spreadsheet::Format.new :horizontal_align => :center,  :vertical_align => :middle,:left=>:thin,:right=>:thin,:top=>:thin,:bottom=>:thin
 
-    row_date = ['Report Date',date_to_use.strftime("%a %d %y")]
+    row_date = ['Report Date',@date_to_use.strftime("%a %d %y")]
     new_book.worksheet(0).insert_row(1, row_first)
 
     row_first = ['ID','Teacher Name','Department Name','Attendance','Total Class','Homework','Classwork','Lessonplan','Quiz','Class Routine']

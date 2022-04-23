@@ -113,16 +113,19 @@ class EmployeeController < ApplicationController
             @timetable_subject = Subject.active.find_by_id(te.subject_id)
             unless @timetable_subject.blank?
               if @timetable_subject.elective_group_id.present?
-                @all_sub_elective = Subject.active.find_all_by_elective_group_id(@timetable_subject.elective_group_id)    
-                unless @all_sub_elective.blank?
-                  @all_sub_elective.each do |esub|
-                    unless @employee_subjects.blank?
-                      if @employee_subjects.include?(esub) && !@subjects.include?(esub) && te.subject_id == esub.id
-                        @entries = @entries+1
-                        break
-                      end  
-                    end
-                  end
+                if @employee_subjects.include?( @timetable_subject) && !@subjects.include?( @timetable_subject)
+                  @entries = @entries+1
+                end 
+                #@all_sub_elective = Subject.active.find_all_by_elective_group_id(@timetable_subject.elective_group_id)    
+                #unless @all_sub_elective.blank?
+                #  @all_sub_elective.each do |esub|
+                #    unless @employee_subjects.blank?
+                #      if @employee_subjects.include?(esub) && !@subjects.include?(esub) && te.subject_id == esub.id
+                #        @entries = @entries+1
+                #        break
+                #      end  
+                #    end
+                #  end
                   
                 end
               else

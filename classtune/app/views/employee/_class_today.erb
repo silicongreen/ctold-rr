@@ -73,7 +73,6 @@
         <td colspan="100">No Class Today</td>
       </tr>
     <% else %>
-    <%= debug @assignment_register.length %>
       <% @subjects.each do |sub| %>
       <tr class="odd">
         <td><%= sub.batch.full_name %></td>
@@ -83,7 +82,8 @@
         <td><%= entry.class_timing.start_time.strftime("%I:%M %p") unless entry.blank? %></td>
         <% attendance = @attenadnce_register.find{|val| val.subject_id.to_i == sub.id.to_i }%>
         <td><%= "Yes" unless attendance.blank? %></td>
-        <% assignment = @assignment_register.find{|val| val.subject_id.to_i == sub.id.to_i }%>
+        <% assignment = @assignment_register.find{:all, |val| val.subject_id.to_i == sub.id.to_i }%>
+        <%= debug assignment.length %>
         <td><%= assignment.title  unless assignment.blank? %></td>
         <% classwork = @classwork_register.find{|val| val.subject_id.to_i == sub.id.to_i }%>
         <td><%= classwork.title  unless classwork.blank? %></td>

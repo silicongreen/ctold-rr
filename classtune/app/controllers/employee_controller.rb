@@ -127,7 +127,7 @@ class EmployeeController < ApplicationController
                 #    end
                 #  end
                   
-                end
+                # end
               else
                 @entries = @entries+1  
               end

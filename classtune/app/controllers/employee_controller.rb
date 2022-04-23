@@ -241,7 +241,10 @@ class EmployeeController < ApplicationController
 
 
 
-        @assignment_register = Assignment.count(:conditions=>["date(created_at1) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
+        @assignment_register = Assignment.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
+        if employee.id == 3723
+          abort(@assignment_register.inspect)
+        end
         @classwork_register = Classwork.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
         @lesson_plan_register = Lessonplan.count(:conditions=>["date(created_at) = ? and author_id = ?",@date_to_use.to_date,employee.user_id])
         temp << @entries

@@ -102,6 +102,7 @@ class EmployeeController < ApplicationController
           end
         end
 
+        @subs = []
         @entriesarray=[]
         @entriesarray += @current_timetable.timetable_entries.find(:all,:conditions=>{:weekday_id=>@weekday_id.to_i,:employee_id => employee.id},:include=>:class_timing,:order=>"class_timings.start_time")
         @entriesarray += @current_timetable.timetable_entries.find(:all,:conditions=>{:subject_id=>elective_subjects,:weekday_id=>@weekday_id.to_i},:include=>:class_timing,:order=>"class_timings.start_time")
@@ -110,26 +111,30 @@ class EmployeeController < ApplicationController
 
         unless @all_timetable_entries.blank?
           @all_timetable_entries.each do |te|
-            @timetable_subject = Subject.active.find_by_id(te.subject_id)
-            unless @timetable_subject.blank?
-              if @timetable_subject.elective_group_id.present?
-                if @employee_subjects.include?( @timetable_subject) && !@subjects.include?( @timetable_subject)
-                  @entries = @entries+1
-                end 
-                #@all_sub_elective = Subject.active.find_all_by_elective_group_id(@timetable_subject.elective_group_id)    
-                #unless @all_sub_elective.blank?
-                #  @all_sub_elective.each do |esub|
-                #    unless @employee_subjects.blank?
-                #      if @employee_subjects.include?(esub) && !@subjects.include?(esub) && te.subject_id == esub.id
-                #        @entries = @entries+1
-                #        break
-                #      end  
-                #    end
-                #  end
-                  
-                # end
-              else
-                @entries = @entries+1  
+            if  !@subs.include?( te.subject_id )
+              @timetable_subject = Subject.active.find_by_id(te.subject_id)
+              unless @timetable_subject.blank?
+                if @timetable_subject.elective_group_id.present?
+                  if @employee_subjects.include?( @timetable_subject) && !@subjects.include?( @timetable_subject)
+                    @entries = @entries+1
+                    @subs << @timetable_subject.id
+                  end 
+                  #@all_sub_elective = Subject.active.find_all_by_elective_group_id(@timetable_subject.elective_group_id)    
+                  #unless @all_sub_elective.blank?
+                  #  @all_sub_elective.each do |esub|
+                  #    unless @employee_subjects.blank?
+                  #      if @employee_subjects.include?(esub) && !@subjects.include?(esub) && te.subject_id == esub.id
+                  #        @entries = @entries+1
+                  #        break
+                  #      end  
+                  #    end
+                  #  end
+                    
+                  # end
+                else
+                  @entries = @entries+1  
+                  @subs << @timetable_subject.id
+                end
               end
             end
           end

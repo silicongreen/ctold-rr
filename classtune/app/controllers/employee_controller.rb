@@ -124,7 +124,7 @@ class EmployeeController < ApplicationController
                   
                 end
               else
-                //@entries = @entries+1  
+                #@entries = @entries+1  
               end
             end
           end
@@ -233,7 +233,7 @@ class EmployeeController < ApplicationController
                   
                 end
               else
-                //@entries = @entries+1  
+                #@entries = @entries+1  
               end
             end
           end

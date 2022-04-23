@@ -83,8 +83,18 @@
         <% attendance = @attenadnce_register.find{|val| val.subject_id.to_i == sub.id.to_i }%>
         <td><%= "Yes" unless attendance.blank? %></td>
         <% assignment = @assignment_register.find{:all, |val| val.subject_id.to_i == sub.id.to_i }%>
-        <%= debug assignment.length %>
-        <td><%= assignment.title  unless assignment.blank? %></td>
+        <td>
+          <% first_record = true %>
+          <% @assignment_register.each do |assignment| %>
+            <% if assignment.subject_id.to_i == sub.id.to_i %>
+              <% if !first_record %>
+                <hr />
+              <% end %>
+              <%= assignment.title  unless assignment.blank? %>
+              <% first_record = false %>
+            <% end %>
+          <% end %>
+        </td>
         <% classwork = @classwork_register.find{|val| val.subject_id.to_i == sub.id.to_i }%>
         <td><%= classwork.title  unless classwork.blank? %></td>
       </tr>

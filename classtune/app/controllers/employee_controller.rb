@@ -118,7 +118,7 @@ class EmployeeController < ApplicationController
                   @all_sub_elective.each do |esub|
                     unless @employee_subjects.blank?
                       if @employee_subjects.include?(esub) && !@subjects.include?(esub)
-                        @entries = @entries+1
+                       # @entries = @entries+1
                       end  
                     end
                   end
@@ -228,7 +228,7 @@ class EmployeeController < ApplicationController
                   @all_sub_elective.each do |esub|
                     unless @employee_subjects.blank?
                       if @employee_subjects.include?(esub) && !@subjects.include?(esub)
-                        @entries = @entries+1
+                       # @entries = @entries+1
                       end  
                     end
                   end

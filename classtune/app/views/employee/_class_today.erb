@@ -157,6 +157,8 @@
               <% attendance = @attenadnce_register.find{|val| val.subject_id.to_i == sub.id.to_i and val.attendance_date.strftime("%a %d %y") == date.strftime("%a %d %y")  }%>
               <td><%= "Yes" unless attendance.blank? %></td>
               <td>
+                <% first_record = true %>
+                <% count = 0 %>
                 <% @assignment_register.each do |assignment| %>
                   <% if assignment.subject_id.to_i == sub.id.to_i and assignment.created_at.strftime("%a %d %y") == date.strftime("%a %d %y") %>
                     <% if !first_record %>

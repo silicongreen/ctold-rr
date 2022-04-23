@@ -43,12 +43,13 @@ class EmployeeController < ApplicationController
     Spreadsheet.client_encoding = 'UTF-8'
     new_book = Spreadsheet::Workbook.new
     sheet1 = new_book.create_worksheet :name => 'tabulation'
-    @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
+    
     unless params['date_report'].blank?
       @date_to_use = params['date_report'].to_date
     else  
       @date_to_use = @local_tzone_time.to_date
     end
+    @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@date_to_use.to_date,@date_to_use.to_date])
     
     
     dep_ids = [2304,2375,2376,2377]
@@ -124,7 +125,7 @@ class EmployeeController < ApplicationController
                   
                 end
               else
-                #@entries = @entries+1  
+                @entries = @entries+1  
               end
             end
           end
@@ -158,12 +159,13 @@ class EmployeeController < ApplicationController
   end  
 
   def att_report_all
-    @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
+    #@current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
     unless params['date_report'].blank?
       @date_to_use = params['date_report'].to_date
     else  
       @date_to_use = @local_tzone_time.to_date
     end
+    @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@date_to_use.to_date,@date_to_use.to_date])
     
     @dep_id = 0 
     dep_ids = [2304,2375,2376,2377]
@@ -233,7 +235,7 @@ class EmployeeController < ApplicationController
                   
                 end
               else
-                #@entries = @entries+1  
+                @entries = @entries+1  
               end
             end
           end

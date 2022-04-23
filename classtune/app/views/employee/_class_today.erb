@@ -82,10 +82,9 @@
         <td><%= entry.class_timing.start_time.strftime("%I:%M %p") unless entry.blank? %></td>
         <% attendance = @attenadnce_register.find{|val| val.subject_id.to_i == sub.id.to_i }%>
         <td><%= "Yes" unless attendance.blank? %></td>
-        <% assignment = @assignment_register.find{|val| val.subject_id.to_i == sub.id.to_i }%>
         <td>
           <% first_record = true %>
-          <% count = 1 %>
+          <% count = 0 %>
           <% @assignment_register.each do |assignment| %>
             <% if assignment.subject_id.to_i == sub.id.to_i %>
               <% if !first_record %>
@@ -98,11 +97,27 @@
           <% end %>
           <% if count > 1 %>
           <hr style="border: 1px solid #ccc;">
-          <small>Total Assignment: <%= count %></small>
+          <small>Total: <%= count %></small>
           <% end %>
         </td>
-        <% classwork = @classwork_register.find{|val| val.subject_id.to_i == sub.id.to_i }%>
-        <td><%= classwork.title  unless classwork.blank? %></td>
+        <td>
+          <% first_record = true %>
+          <% count = 0 %>
+          <% @classwork_register.each do |classwork| %>
+            <% if classwork.subject_id.to_i == sub.id.to_i %>
+              <% if !first_record %>
+              <hr style="border: 1px solid #ccc;">
+              <% end %>
+              <%= classwork.title  unless classwork.blank? %>
+              <% first_record = false %>
+              <% count = count + 1 %>
+            <% end %>
+          <% end %>
+          <% if count > 1 %>
+          <hr style="border: 1px solid #ccc;">
+          <small>Total: <%= count %></small>
+          <% end %>
+        </td>
       </tr>
       <% end %>
     <% end %>
@@ -141,10 +156,42 @@
               <td><%= entry.class_timing.start_time.strftime("%I:%M %p") unless entry.blank? %></td>
               <% attendance = @attenadnce_register.find{|val| val.subject_id.to_i == sub.id.to_i and val.attendance_date.strftime("%a %d %y") == date.strftime("%a %d %y")  }%>
               <td><%= "Yes" unless attendance.blank? %></td>
-              <% assignment = @assignment_register.find{|val| val.subject_id.to_i == sub.id.to_i and val.created_at.strftime("%a %d %y") == date.strftime("%a %d %y") }%>
-              <td><%= assignment.title  unless assignment.blank? %></td>
-              <% classwork = @classwork_register.find{|val| val.subject_id.to_i == sub.id.to_i and val.created_at.strftime("%a %d %y") == date.strftime("%a %d %y") }%>
-              <td><%= classwork.title  unless classwork.blank? %></td>
+              <td>
+                <%= assignment.title  unless assignment.blank? %>
+                <% @assignment_register.each do |assignment| %>
+                  <% if assignment.subject_id.to_i == sub.id.to_i and val.created_at.strftime("%a %d %y") == date.strftime("%a %d %y") %>
+                    <% if !first_record %>
+                    <hr style="border: 1px solid #ccc;">
+                    <% end %>
+                    <%= assignment.title  unless assignment.blank? %>
+                    <% first_record = false %>
+                    <% count = count + 1 %>
+                  <% end %>
+                <% end %>
+                <% if count > 1 %>
+                <hr style="border: 1px solid #ccc;">
+                <small>Total: <%= count %></small>
+                <% end %>
+              </td>
+              <td>
+                <%= classwork.title  unless classwork.blank? %>
+                <% first_record = true %>
+                <% count = 0 %>
+                <% @classwork_register.each do |classwork| %>
+                  <% if classwork.subject_id.to_i == sub.id.to_i and val.created_at.strftime("%a %d %y") == date.strftime("%a %d %y") %>
+                    <% if !first_record %>
+                    <hr style="border: 1px solid #ccc;">
+                    <% end %>
+                    <%= classwork.title  unless classwork.blank? %>
+                    <% first_record = false %>
+                    <% count = count + 1 %>
+                  <% end %>
+                <% end %>
+                <% if count > 1 %>
+                <hr style="border: 1px solid #ccc;">
+                <small>Total: <%= count %></small>
+                <% end %>
+              </td>
             </tr>
           <% end %>
         <% end %>

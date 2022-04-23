@@ -117,8 +117,8 @@ class EmployeeController < ApplicationController
                 unless @all_sub_elective.blank?
                   @all_sub_elective.each do |esub|
                     unless @employee_subjects.blank?
-                      if @employee_subjects.include?(esub) && !@subjects.include?(esub)
-                       # @entries = @entries+1
+                      if @employee_subjects.include?(esub) && !@subjects.include?(esub) && te.subject_id == esub.id
+                        @entries = @entries+1
                       end  
                     end
                   end

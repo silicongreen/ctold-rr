@@ -62,8 +62,11 @@ class EmployeeController < ApplicationController
     @data = []
     center_align_format = Spreadsheet::Format.new :horizontal_align => :center,  :vertical_align => :middle,:left=>:thin,:right=>:thin,:top=>:thin,:bottom=>:thin
 
-    row_first = ['ID','Teacher Name','Department Name','Attendance','Total Class','Homework','Classwork','Lessonplan','Quiz','Class Routine']
+    row_date = ['Report Date',date_to_use.strftime("%a %d %y")]
     new_book.worksheet(0).insert_row(1, row_first)
+
+    row_first = ['ID','Teacher Name','Department Name','Attendance','Total Class','Homework','Classwork','Lessonplan','Quiz','Class Routine']
+    new_book.worksheet(0).insert_row(2, row_first)
     sheet1.row(2).default_format = center_align_format
     i = 1
     @all_employee.each do |employee|

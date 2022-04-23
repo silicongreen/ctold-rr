@@ -119,6 +119,7 @@ class EmployeeController < ApplicationController
                     unless @employee_subjects.blank?
                       if @employee_subjects.include?(esub) && !@subjects.include?(esub) && te.subject_id == esub.id
                         @entries = @entries+1
+                        break
                       end  
                     end
                   end

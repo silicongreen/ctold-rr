@@ -103,6 +103,7 @@
       <td>Attendance Taken</td>
       <td>Assignment</td>
       <td>Classwork</td>
+      <%= debug @assignment_register.inspect %>
     </tr> 
     <% (@date_to_use..@end_date).each do |date| %> 
       <% weekday_id = date.strftime("%w") %>
@@ -125,7 +126,7 @@
               <td><%= "Yes" unless attendance.blank? %></td>
               <% assignment = @assignment_register.find{|val| val.subject_id.to_i == sub.id.to_i and val.created_at.strftime("%a %d %y") == date.strftime("%a %d %y") }%>
               <%= debug sub.id.to_i %>
-              <%= debug @assignment_register.inspect %>
+             
               <td><%= assignment.title  unless assignment.blank? %></td>
               <% classwork = @classwork_register.find{|val| val.subject_id.to_i == sub.id.to_i and val.created_at.strftime("%a %d %y") == date.strftime("%a %d %y") }%>
               <td><%= classwork.title  unless classwork.blank? %></td>

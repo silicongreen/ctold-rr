@@ -103,7 +103,7 @@
       <td>Attendance Taken</td>
       <td>Assignment</td>
       <td>Classwork</td>
-      <%= debug @assignment_register.inspect %>
+      <%= debug @assignment_register.length %>
     </tr> 
     <% (@date_to_use..@end_date).each do |date| %> 
       <% weekday_id = date.strftime("%w") %>

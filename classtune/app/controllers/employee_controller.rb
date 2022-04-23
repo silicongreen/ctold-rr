@@ -168,13 +168,12 @@ class EmployeeController < ApplicationController
   end  
 
   def att_report_all
-    #@current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
+    @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
     unless params['date_report'].blank?
       @date_to_use = params['date_report'].to_date
     else  
       @date_to_use = @local_tzone_time.to_date
     end
-    @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@date_to_use.to_date,@date_to_use.to_date])
     
     @dep_id = 0 
     dep_ids = [2304,2375,2376,2377]
@@ -351,12 +350,16 @@ class EmployeeController < ApplicationController
     @employee = Employee.find(params[:id])
     @employee_subjects = @employee.subjects
     @lesson_plans = []
+    @lesson_plans_ids = []
     unless @employee_subjects.blank?
       @employee_subjects.each do |emp_sub|
         @lessonplans = Lessonplan.find(:all,:conditions => ["FIND_IN_SET(#{emp_sub.id},subject_ids) AND publish_date is not null AND is_show = 1"], :include=>[:author]) 
         unless @lessonplans.blank?
           @lessonplans.each do |lessonplan|
-            @lesson_plans << lessonplan
+            if !@lesson_plans_ids.include?(lessonplan.id)
+              @lesson_plans << lessonplan
+              @lesson_plans_ids << lessonplan.id
+            end
           end  
         end  
       end 

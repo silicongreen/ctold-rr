@@ -124,6 +124,8 @@
               <% attendance = @attenadnce_register.find{|val| val.subject_id.to_i == sub.id.to_i and val.attendance_date.strftime("%a %d %y") == date.strftime("%a %d %y")  }%>
               <td><%= "Yes" unless attendance.blank? %></td>
               <% assignment = @assignment_register.find{|val| val.subject_id.to_i == sub.id.to_i and val.created_at.strftime("%a %d %y") == date.strftime("%a %d %y") }%>
+              <%= debug sub.id.to_i %>
+              <%= debug assignment.inspect %>
               <td><%= assignment.title  unless assignment.blank? %></td>
               <% classwork = @classwork_register.find{|val| val.subject_id.to_i == sub.id.to_i and val.created_at.strftime("%a %d %y") == date.strftime("%a %d %y") }%>
               <td><%= classwork.title  unless classwork.blank? %></td>

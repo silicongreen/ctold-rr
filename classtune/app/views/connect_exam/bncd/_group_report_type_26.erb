@@ -1,0 +1,181 @@
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+            <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
+                  <% c = 'even'  %>
+                  <% total_mark_of_allexam = 0 %>
+                  <% full_mark_of_allexam = 0 %>
+                  <% total_grade_of_allexam = 0 %>
+                  <tr class="even header-shade">
+                      <td class="col-pdf no-warp  align-left-baf" rowspan="2"><b><%= "SUBJECTS" %></b></td>
+                      <td class="col-pdf" colspan="2"><b>Quiz Test</b></td>
+                      <td class="col-pdf" colspan="4"><b>Preparatory Test</b></td>
+                      <td class="col-pdf" rowspan="3"><b>Att.</b></td>
+                      <td class="col-pdf" rowspan="3"><b>Total(100)</b></td>
+                      <!--td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
+                      <td class="col-pdf" rowspan="2"><b>Grade Point</b></td--> 
+                  </tr>
+                  <tr class="even header-shade">
+                      <td class="col-pdf" rowspan="2"><b>CQ</b></td>
+                      <td class="col-pdf" rowspan="2"><b>MCQ</b></td>
+                      <td class="col-pdf" colspan="2"><b>1st Paper</b></td>
+                      <td class="col-pdf" colspan="2"><b>2nd Paper</b></td>
+                  </tr>
+                  <tr class="even header-shade">
+                      <td class="col-pdf"><b>CQ</b></td>
+                      <td class="col-pdf"><b>MCQ</b></td>
+                      <td class="col-pdf"><b>CQ</b></td>
+                      <td class="col-pdf"><b>MCQ</b></td>
+                  </tr>
+                  
+                  <% sl = 0 %>
+                  <% failed = false %>
+                  <% unless @report_data['report']['subjects'].blank? %>
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% total_mark = 0 %>
+                      <% obtain_mark = 0 %>
+                      
+                      <% subjectdata = Subject.find(subjects['id'].to_i) %>
+                      <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                      <% if @has_exam_student == false %>
+                         <% next %>
+                      <% end %>
+                      <% sl = sl+1 %>
+                      <% subject_failed = false %>
+
+                      <%
+                      mcq = 0
+                      mcq_total = 0
+                      cq = 0
+                      cq_total = 0
+                      att = 0
+                      %>
+
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                            <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'].gsub(" 1st Paper","") %></td>
+                            <% unless @report_data['report']['exams'].blank? %>  
+                                <% @report_data['report']['exams'].each do |report| %>
+                                  <% exam_marks = 0 %>
+                                  <% exam_full_marks = 0 %>   
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
+                                    <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                    <% exam_marks = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
+                                    <% if report['exam_category'] == '3' %>
+                                      <% cq = cq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                    <% elsif report['exam_category'] == '4' %>
+                                      <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                    <% else %>
+                                      <% att = att+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                    <% end %>
+                                  <% else %>
+                                    <td class="col-pdf">-</td>
+                                  <% end %>   
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                    <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                    <% exam_full_marks = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                    <% if report['exam_category'] == '3' %>
+                                      <% cq_total = cq_total+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                    <% end %>
+                                    <% if report['exam_category'] == '4' %>
+                                      <% mcq_total = mcq_total+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                    <% end %>
+                                  <% end %>
+                                  <%
+                                  if exam_full_marks > 0
+                                    if exam_full_marks == 20 && exam_marks < 7
+                                      subject_failed = true
+                                      failed = true
+                                    end
+                                    if exam_full_marks == 10 && exam_marks < 4
+                                      subject_failed = true
+                                      failed = true
+                                    end
+                                    if exam_full_marks == 50 && exam_marks < 17
+                                      subject_failed = true
+                                      failed = true
+                                    end
+                                    if exam_full_marks == 25 && exam_marks < 8
+                                      subject_failed = true
+                                      failed = true
+                                    end
+                                    if exam_full_marks == 5 && exam_marks < 2
+                                      subject_failed = true
+                                      failed = true
+                                    end
+                                    if exam_full_marks == 70 && exam_marks < 23
+                                      subject_failed = true
+                                      failed = true
+                                    end
+                                    if exam_full_marks == 70 && exam_marks < 23
+                                      subject_failed = true
+                                      failed = true
+                                    end
+                                    if exam_full_marks == 30 && exam_marks < 10
+                                      subject_failed = true
+                                      failed = true
+                                    end
+                                    if exam_full_marks == 100 && exam_marks < 33
+                                      subject_failed = true
+                                      failed = true
+                                    end
+                                  end
+                                  
+                                  %>
+
+
+
+                                <% end %>
+                            <% end %>
+                            <%
+                              if mcq_total > 0 && mcq > 0
+                                if mcq_total == 35 or mcq_total == 40
+                                  mcq = (mcq.to_f/mcq_total.to_f)*25
+                                  mcq = mcq.round()
+                                end
+                              end
+                              if cq_total > 0 && cq > 0
+                                if cq_total == 90
+                                  cq = (cq.to_f/cq_total.to_f)*70
+                                  cq = cq.round()
+                                end
+                                if cq_total == 130
+                                  cq = (cq.to_f/cq_total.to_f)*95
+                                  cq = cq.round()
+                                end
+                              end
+                              main_mark = cq+mcq+att
+                            %>
+                            <td class="col-pdf"><%= main_mark %></td>
+                            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <% if subject_failed == true %>
+                                <%
+                                grade.name = "F"
+                                grade.credit_points = 0.00
+                                %>
+                              <% end %>
+                              <td class="col-pdf"><%= grade.name %></td>
+                              <td class="col-pdf"><%= grade.credit_points %></td>
+                              <% total_grade_of_allexam = total_grade_of_allexam+grade.credit_points %>
+                            <% else %>
+                              <td class="col-pdf">-</td>
+                              <td class="col-pdf">-</td>
+                            <% end %>  
+                            <% total_mark_of_allexam = total_mark_of_allexam+main_mark %>
+                            <% full_mark_of_allexam = full_mark_of_allexam+100 %>
+                      </tr>
+                    <% end %>
+                  
+                  <% end %>
+              
+                  
+                  <tr class="even" >
+                    <td class="col-pdf  no-warp align-right" colspan="6"><b>GRAND TOTAL</b></td>
+                    <td class="col-pdf  no-warp"><b><%= total_mark_of_allexam %></b></td>
+                    <td class="col-pdf  no-warp"></td>
+                    <td class="col-pdf  no-warp"></td>
+                  </tr>
+                  
+              </table>
+                
+                
+<% end %>

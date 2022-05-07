@@ -379,7 +379,7 @@
                   <tr class="even">
                     <td class="col-pdf  no-warp align-left-baf">&nbsp;Section</td>
                     <td class="col-pdf  no-warp align-left-baf">&nbsp;
-                          <% if !@student_position_batch[@student.id.to_i].blank? %> 
+                          <% if !@student_position_batch.blank? and !@student_position_batch[@student.id.to_i].blank? %> 
                             <%= @student_position_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
                           <% else %>
                             -

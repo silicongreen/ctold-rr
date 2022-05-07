@@ -154,21 +154,27 @@
                   <% full_mark_of_allexam = 0 %>
                   <% total_grade_of_allexam = 0 %>
 	          <% quiz_test = 0 %>
-                  <tr class="even header-shade">
-                      <td class="col-pdf no-warp  align-left-baf" rowspan="2"><b><%= "SUBJECTS" %></b></td>
-                      <td class="col-pdf" colspan="2"><b>Quiz Test</b></td>
-                      <td class="col-pdf" colspan="2"><b>Pre-Test</b></td>
-                      <td class="col-pdf" rowspan="2"><b>Att.</b></td>
-                      <td class="col-pdf" rowspan="2"><b>Total(100)</b></td>
-                      <td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
-                      <td class="col-pdf" rowspan="2"><b>Grade Point</b></td> 
-                  </tr>
-                  <tr class="even header-shade">
-                      <td class="col-pdf"><b>CQ</b></td>
-                      <td class="col-pdf"><b>MCQ</b></td>
-                      <td class="col-pdf"><b>CQ</b></td>
-                      <td class="col-pdf"><b>MCQ</b></td>
-                  </tr>
+              <tr class="even header-shade">
+                  <td class="col-pdf no-warp  align-left-baf" rowspan="2"><b><%= "SUBJECTS" %></b></td>
+                  <td class="col-pdf" colspan="2"><b>Quiz Test</b></td>
+                  <td class="col-pdf" colspan="4"><b>Preparatory Test</b></td>
+                  <td class="col-pdf" rowspan="3"><b>Att.</b></td>
+                  <td class="col-pdf" rowspan="3"><b>Total(100)</b></td>
+                  <!--td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
+                  <td class="col-pdf" rowspan="2"><b>Grade Point</b></td--> 
+              </tr>
+              <tr class="even header-shade">
+                  <td class="col-pdf" rowspan="2"><b>CQ</b></td>
+                  <td class="col-pdf" rowspan="2"><b>MCQ</b></td>
+                  <td class="col-pdf" colspan="2"><b>1st Paper</b></td>
+                  <td class="col-pdf" colspan="2"><b>2nd Paper</b></td>
+              </tr>
+              <tr class="even header-shade">
+                  <td class="col-pdf"><b>CQ</b></td>
+                  <td class="col-pdf"><b>MCQ</b></td>
+                  <td class="col-pdf"><b>CQ</b></td>
+                  <td class="col-pdf"><b>MCQ</b></td>
+              </tr>
                   
                   <% sl = 0 %>
                   <% failed = false %>

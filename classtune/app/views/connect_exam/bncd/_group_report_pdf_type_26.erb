@@ -155,13 +155,11 @@
                   <% total_grade_of_allexam = 0 %>
 	          <% quiz_test = 0 %>
               <tr class="even header-shade">
-                  <td class="col-pdf no-warp  align-left-baf" rowspan="2"><b><%= "SUBJECTS" %></b></td>
+                  <td class="col-pdf no-warp  align-left-baf" rowspan="3"><b><%= "SUBJECTS" %></b></td>
                   <td class="col-pdf" colspan="2"><b>Quiz Test</b></td>
                   <td class="col-pdf" colspan="4"><b>Preparatory Test</b></td>
                   <td class="col-pdf" rowspan="3"><b>Att.</b></td>
                   <td class="col-pdf" rowspan="3"><b>Total(100)</b></td>
-                  <!--td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
-                  <td class="col-pdf" rowspan="2"><b>Grade Point</b></td--> 
               </tr>
               <tr class="even header-shade">
                   <td class="col-pdf" rowspan="2"><b>CQ</b></td>
@@ -348,12 +346,8 @@
                                 grade.credit_points = 0.00
                                 %>
                               <% end %>
-                              <td class="col-pdf"><%= grade.name %></td>
-                              <td class="col-pdf"><%= grade.credit_points %></td>
                               <% total_grade_of_allexam = total_grade_of_allexam+grade.credit_points %>
                             <% else %>
-                              <td class="col-pdf">-</td>
-                              <td class="col-pdf">-</td>
                             <% end %>  
                             <% total_mark_of_allexam = total_mark_of_allexam+main_mark %>
                             <% full_mark_of_allexam = full_mark_of_allexam+100 %>
@@ -399,7 +393,7 @@
               </table>
               <div class='fine'></div>
               <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
-                <tr class="even align-left-baf"><td>&nbsp;Remarks : <% if !@student_position_batch[@student.id.to_i].blank? %> Passed <% else %> Failed <% end %>  </td></tr>  
+                <tr class="even align-left-baf"><td>&nbsp;Remarks : <% if !@student_position_batch.blank? and !@student_position_batch[@student.id.to_i].blank? %> Passed <% else %> Failed <% end %>  </td></tr>  
               </table>
               <div class='fine'></div>
               <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >

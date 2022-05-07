@@ -264,6 +264,7 @@ class ApplicationController < ActionController::Base
     all_schools = type_config['numbers'].split(",")
     current_school = MultiSchool.current_school.id
     if all_schools.include?(current_school.to_s)
+      abort('type_'+current_school.to_s)
       all_types = type_config['type_'+current_school.to_s].split(",")
       il = 0
       all_types.each do |examtype|

@@ -8313,6 +8313,7 @@ class ExamController < ApplicationController
         render :pdf => template,
           :save_only    => for_save,
           :orientation => 'Landscape',
+          :grayscale => true,
           :margin => {:top=> 10,
           :bottom => 10,
           :left=> 10,

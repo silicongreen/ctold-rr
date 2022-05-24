@@ -331,9 +331,9 @@
   <% elsif total_subject == 10 %>
     <% extra_br = "<br/><br/>" %>
   <% elsif total_subject == 11 %>
-    <% extra_br = "<br/><br/><br/>" %>
+    <% extra_br = "<br/>" %>
   <% end %>
-<%= extra_br  %><%= total_subject %>
+<%= extra_br  %>
 <%= render  :partial=>"/connect_exam/st_joseph/pdf_footer" %>
 <% end %>
 <%= stylesheet_link_tag 'list_table' %>

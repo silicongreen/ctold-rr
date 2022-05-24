@@ -12,10 +12,10 @@
                           <td class="align-left" width="3%">&nbsp;</td>
                           
                           <td class="align-left" width="20%">  
-                              <%#= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/logo_grayscale.jpg")),:width=> '90%' %>  
+                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/logo_grayscale.jpg")),:width=> '90%' %>  
                           </td>
                           <td width="74%">
-                              <h4 align="center"><font size="7" color="#4CAEE3">EUROPEAN STANDARD SCHOOL(ESS)</font></h2>
+                              <h4 align="center"><font size="7">EUROPEAN STANDARD SCHOOL(ESS)</font></h2><!--  color="#4CAEE3" -->
                               <h4 align="center" style="margin-top:-3px;"><font size="6" color="#000"><%= @batch.name %></font></h4>
                               <!--h4 align="center" style="margin-top:-3px;">
                                 <font size="6" color="#000">

@@ -13,7 +13,8 @@
                           
                           <td class="align-left" width="20%">  
                               <%#= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/logo.jpg")),:width=> '90%' %>  
-                              <img src="<%= "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/logo.jpg")) %>" style="width: 90%;" />
+                              <%= "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/logo.jpg")) %>
+                              <img src="<%= "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/logo.jpg")) %>" style="filter: grayscale(100%); width: 90%;" />
                           </td>
                           <td width="74%">
                               <h4 align="center"><font size="7" color="#4CAEE3">EUROPEAN STANDARD SCHOOL(ESS)</font></h2>

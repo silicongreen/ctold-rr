@@ -328,6 +328,8 @@
                         %>
 
                           <% if full_mark.to_f > 0 %>
+                            <% total_marks_student = total_marks_student+total_mark.to_f %> 
+                            <% full_marks_total = full_marks_total+full_mark.to_f %>  
                             <!--td class="col-pdf"><%= total_mark.to_i %></td-->
                             <td class="col-pdf"><%= heighst_mark.to_i %> </td>
                             
@@ -359,7 +361,7 @@
                   <tr class="table-header">
 
                  
-                      <td class="col-pdf">Average Marks : <%= sprintf( "%0.02f",avgparcent) %> % <%= sprintf( "%0.02f",total_marks_student) %> <%= sprintf( "%0.02f",full_marks_total) %></td>
+                      <td class="col-pdf">Average Marks : <%= sprintf( "%0.02f",avgparcent) %> % </td>
                       <td class="col-pdf">Detention : <%= @student_detention_count  %> </td>
                   </tr> 
 

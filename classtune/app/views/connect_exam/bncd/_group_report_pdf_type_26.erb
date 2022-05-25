@@ -268,7 +268,7 @@
 			      	 	<% exam_full_marks = 0 %>	
 			      	    <% end %>
                                   <% end %>
-			      		<%#= subjects['code'] + " " + exam_full_marks.to_s + " " + pass_mark_cq.to_s + "  " + pass_mark_mcq.to_s + " " + exam_marks.to_s %>
+			      		<%= subjects['code'] + " " + exam_full_marks.to_s + " " + pass_mark_cq.to_s + "  " + pass_mark_mcq.to_s + " " + exam_marks.to_s %>
                                   <%
                                   #if exam_full_marks > 0
 				  #  if exam_marks.to_f < pass_mark_cq

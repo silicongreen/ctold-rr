@@ -268,7 +268,7 @@
 			      	 	<% exam_full_marks = 0 %>	
 			      	    <% end %>
                                   <% end %>
-			      		<%= subjects['name'] + " " + subjects['code'] + " " + exam_full_marks.to_s + " " + pass_mark_cq.to_s + "  " + pass_mark_mcq.to_s + " " + exam_marks.to_s %><br /><br />
+			      		<%#= subjects['name'] + " " + subjects['code'] + " " + exam_full_marks.to_s + " " + pass_mark_cq.to_s + "  " + pass_mark_mcq.to_s + " " + exam_marks.to_s %>
                                   <%
                                   #if exam_full_marks > 0
 				  #  if exam_marks.to_f < pass_mark_cq
@@ -317,23 +317,29 @@
 
                                 <% end %>
                             <% end %>
-                            <%
-                              if mcq_total > 0 && mcq > 0
-                                if mcq_total == 35 or mcq_total == 40
-                                  mcq = (mcq.to_f/mcq_total.to_f)*25
-                                  mcq = mcq.round()
-                                end
-                              end
-                              if cq_total > 0 && cq > 0
-                                if cq_total == 90
-                                  cq = (cq.to_f/cq_total.to_f)*70
-                                  cq = cq.round()
-                                end
-                                if cq_total == 130
-                                  cq = (cq.to_f/cq_total.to_f)*95
-                                  cq = cq.round()
-                                end
-                              end
+                            <%= mcq_total.to_s + "  " + cq_total.to_s %><br /><br />
+                            <% 
+                              #if mcq_total > 0 && mcq > 0
+                              #  if mcq_total == 35 or mcq_total == 40
+                              #    mcq = (mcq.to_f/mcq_total.to_f)*25
+                              #    mcq = mcq.round()
+                              #  end
+                              #end
+                              #if cq_total > 0 && cq > 0
+                              #  if cq_total == 90
+                              #    cq = (cq.to_f/cq_total.to_f)*70
+                              #    cq = cq.round()
+                              #  end
+                              #  if cq_total == 130
+                              #    cq = (cq.to_f/cq_total.to_f)*95
+                              #    cq = cq.round()
+                              #  end
+                              #end
+                              #if mcq_total > 0 && cq_total > 0
+                              #  tot = mcq_total + cq_total
+                              #  if tot == 120
+                              #end
+
                               main_mark = cq+mcq+att
                             %>
                             <td class="col-pdf"><%= main_mark %></td>

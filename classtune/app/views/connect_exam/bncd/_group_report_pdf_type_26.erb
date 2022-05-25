@@ -231,7 +231,7 @@
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
                                     <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
                                     <% exam_marks = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
-                                    <% if report['exam_category'] == '3' and need_mcq = false %>
+                                    <% if report['exam_category'] == '3' and need_mcq == false %>
                                       <% need_mcq = true %>
                                       <% cq = cq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
 			      	      <%

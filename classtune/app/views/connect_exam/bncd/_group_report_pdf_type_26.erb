@@ -231,7 +231,7 @@
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
                                     <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
                                     <% exam_marks = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
-                                    <% if report['exam_category'] == '3' %>
+                                    <% if report['exam_category'] == '3' and need_mcq = false %>
                                       <% need_mcq = true %>
                                       <% cq = cq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
 			      	      <%
@@ -242,6 +242,7 @@
 				      %>
 			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %> <%= report['exam_id'] %></td>	
                                     <% elsif report['exam_category'] == '4' and need_mcq %>
+                                    <% need_mcq = false %>
 			      	      <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
 			      	      <%
 				      if report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i > 10 and report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i < pass_mark_mcq.to_i

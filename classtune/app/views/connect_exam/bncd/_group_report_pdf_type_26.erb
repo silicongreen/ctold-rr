@@ -219,6 +219,7 @@
                       cq = 0
                       cq_total = 0
                       att = 0
+                      need_mcq = false
                       %>
 
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -231,6 +232,7 @@
                                     <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
                                     <% exam_marks = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
                                     <% if report['exam_category'] == '3' %>
+                                      <% need_mcq = true %>
                                       <% cq = cq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
 			      	      <%
 				      if report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i > 30 and report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i < pass_mark_cq.to_i
@@ -239,7 +241,7 @@
                                       end  		
 				      %>
 			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %> <%= report['exam_id'] %></td>	
-                                    <% elsif report['exam_category'] == '4' %>
+                                    <% elsif report['exam_category'] == '4' and need_mcq %>
 			      	      <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
 			      	      <%
 				      if report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i > 10 and report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i < pass_mark_mcq.to_i

@@ -193,9 +193,17 @@
                             <% else %>
                               <td class="col-pdf"><b>-</b></td>
                             <% end %>
-                            
+                            <% if full_mark.to_i < 100 %>  
+                              <% f_k = 100 %>
+                              <% full_marks_total = full_marks_total+f_k.to_f %>  
+                              <% s_mark = (total_mark.to_f / full_mark.to_f) * 100 %>
+                              <% total_marks_student = total_marks_student+s_mark.to_f %> 
+                            <% else %>  
                             <% full_marks_total = full_marks_total+full_mark.to_f %>  
                             <% total_marks_student = total_marks_student+total_mark.to_f %> 
+                            <% end %>
+
+                            
                             <% total_parcent= total_parcent+main_mark %>
                             <% total_subject = total_subject+1 %>
                           <% else  %>
@@ -328,8 +336,6 @@
                         %>
 
                           <% if full_mark.to_f > 0 %>
-                            <% total_marks_student = total_marks_student+total_mark.to_f %> 
-                            <% full_marks_total = full_marks_total+full_mark.to_f %>  
                             <!--td class="col-pdf"><%= total_mark.to_i %></td-->
                             <td class="col-pdf"><%= heighst_mark.to_i %> </td>
                             

@@ -248,7 +248,6 @@
                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
                       <% if tk > 2 and !used.include?(report['exam_id']) and report['exam_category'] == '4' %>
                         <% fnd = true %>
-                        <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
                         <% mrk = report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                         <% used << report['exam_id'] %>
                       <% end %>
@@ -256,8 +255,10 @@
                     <% end %>  
                     <% if fnd %>
                     <td class="col-pdf"><%= mrk.to_i %></td>	
+                    <% elsif tk > 2 and !fnd %>
+                    <td class="col-pdf">-</td>	
                     <% end %>
-                                    <% elsif report['exam_category'] == '4' and tk < 2 %>
+                                    <% elsif report['exam_category'] == '4' %>
                                     
 			      	      <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
 			      	      <%
@@ -267,7 +268,9 @@
                                       end  		
 				      %>	
               <% tk += 1 %>
+                    <% if tk < 2 %>
 			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= report['exam_id'] %> <%= subjects['id'] %></td>	
+                    <% end %>
                                     <% else %>
 			      	      <% att = att+student_attendance_mark.to_i %>
 			      	      <td class="col-pdf"><%= student_attendance_mark.to_i %></td>	

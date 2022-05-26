@@ -222,7 +222,6 @@
                       att = 0
                       need_mcq = false
                       used = []
-                      tk = 1
                       %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                             <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'].gsub(" 1st Paper","") %></td>
@@ -242,23 +241,7 @@
                                       end  		
 				      %>
 			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %> <%= report['exam_id'] %> <%= subjects['id'] %></td>	
-                    <% tk += 1 %>
-                    <% fnd = false %>
-                    <% mrk = false %>
-                    <% @report_data['report']['exams'].each do |report| %>
-                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
-                      <% if tk > 2 and !used.include?(report['exam_id']) and report['exam_category'] == '4' %>
-                        <% fnd = true %>
-                        <% mrk = report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
-                        <% used << report['exam_id'] %>
-                      <% end %>
-                      <% end %>
-                    <% end %>  
-                    <% if fnd %>
-                    <td class="col-pdf"><%= mrk.to_i %></td>	
-                    <% elsif tk > 2 and !fnd %>
-                    <td class="col-pdf">-</td>	
-                    <% end %>
+                    
                                     <% elsif report['exam_category'] == '4' %>
                                     
 			      	      <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
@@ -268,11 +251,10 @@
                                       	failed = true
                                       end  		
 				      %>	
-              <% tk += 1 %>
-                    <% if tk < 2 %>
+ 
 			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= report['exam_id'] %> <%= subjects['id'] %></td>	
-                    <% end %>
-                                    <% elsif tk > 2 %>
+
+                                    <% else %>
 			      	      <% att = att+student_attendance_mark.to_i %>
 			      	      <td class="col-pdf"><%= student_attendance_mark.to_i %></td>	
                                     <% end %>

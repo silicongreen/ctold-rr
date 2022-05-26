@@ -248,6 +248,7 @@
                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
                       <% if tk > 2 and !used.include?(report['exam_id']) and report['exam_category'] == '4' %>
                         <% fnd = true %>
+                        <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
                         <% mrk = report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                         <% used << report['exam_id'] %>
                       <% end %>

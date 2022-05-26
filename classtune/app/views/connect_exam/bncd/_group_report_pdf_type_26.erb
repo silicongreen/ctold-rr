@@ -240,7 +240,7 @@
                                       	failed = true
                                       end  		
 				      %>
-			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %> <%= report['exam_id'] %> <%= subjects['id'] %></td>	
+			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>	
                     
                                     <% elsif report['exam_category'] == '4' %>
                                     
@@ -252,7 +252,7 @@
                                       end  		
 				      %>	
  
-			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= report['exam_id'] %> <%= subjects['id'] %></td>	
+			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>	
 
                                     <% else %>
 			      	      <% att = att+student_attendance_mark.to_i %>

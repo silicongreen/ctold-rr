@@ -221,6 +221,7 @@
                       cq_total = 0
                       att = 0
                       need_mcq = false
+                      used = []
                       %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                             <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'].gsub(" 1st Paper","") %></td>
@@ -245,9 +246,10 @@
                     <% mrk = false %>
                     <% @report_data['report']['exams'].each do |report| %>
                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
-                      <% if tk > 2 and report['exam_category'] == '4' %>
+                      <% if tk > 2 and !used.include?(report['exam_id']) and report['exam_category'] == '4' %>
                         <% fnd = true %>
                         <% mrk = report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
+                        <% used << report['exam_id'] %>
                       <% end %>
                       <% end %>
                     <% end %>  

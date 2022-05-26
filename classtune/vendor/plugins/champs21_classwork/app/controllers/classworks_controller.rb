@@ -8,19 +8,35 @@ class ClassworksController < ApplicationController
     batch_id = params[:batch_name]
     student_class_name = params[:student_class_name]
     student_section = params[:student_section]
+    classwork_publish_date = params[:classwork_publish_date]
     @classworks = []
     unless batch_id.nil?
       batchdata = Batch.find_by_id(batch_id)
       unless batchdata.blank?
         batch_name = batchdata.name
         if student_class_name.blank?
-          @classworks =Classwork.paginate  :conditions=>"batches.name = '#{batch_name}'  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]     
+          if classwork_publish_date.blank?
+            @classworks =Classwork.paginate  :conditions=>"batches.name = '#{batch_name}'  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]     
+          else
+            @pub_date = classwork_publish_date.to_datetime.strftime("%Y-%m-%d")
+            @classworks =Classwork.paginate  :conditions=>"batches.name = '#{batch_name}' and ( (DATE(DATE_ADD(assignments.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( ( (DATE(DATE_ADD(assignments.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(assignments.created_at) = '#{@pub_date}' and content not like '%</%' ) ) and content not like '%</%' ) )  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]     
+          end
         elsif student_section.blank?
-          @classworks =Classwork.paginate  :conditions=>"batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}] 
+          if classwork_publish_date.blank?
+            @classworks =Classwork.paginate  :conditions=>"batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}] 
+          else
+            @pub_date = classwork_publish_date.to_datetime.strftime("%Y-%m-%d")
+            @classworks =Classwork.paginate  :conditions=>"batches.name = '#{batch_name}' and ( (DATE(DATE_ADD(assignments.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(assignments.created_at) = '#{@pub_date}' and content not like '%</%' ) )  and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}] 
+          end
         else
           batch = Batch.find_by_course_id_and_name(student_section, batch_name)
           unless batch.blank?
-            @classworks =Classwork.paginate  :conditions=>"batches.id = '#{batch.id}'  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
+            if classwork_publish_date.blank?
+              @classworks =Classwork.paginate  :conditions=>"batches.id = '#{batch.id}'  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
+            else
+              @pub_date = classwork_publish_date.to_datetime.strftime("%Y-%m-%d")
+              @classworks =Classwork.paginate  :conditions=>"batches.id = '#{batch.id}'  and is_published=1 and ( (DATE(DATE_ADD(assignments.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(assignments.created_at) = '#{@pub_date}' and content not like '%</%' ) )",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
+            end
           end
         end  
       end

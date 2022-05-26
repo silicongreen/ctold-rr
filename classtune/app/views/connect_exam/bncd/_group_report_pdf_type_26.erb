@@ -271,7 +271,7 @@
                     <% if tk < 2 %>
 			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= report['exam_id'] %> <%= subjects['id'] %></td>	
                     <% end %>
-                                    <% else %>
+                                    <% elsif tk > 2 %>
 			      	      <% att = att+student_attendance_mark.to_i %>
 			      	      <td class="col-pdf"><%= student_attendance_mark.to_i %></td>	
                                     <% end %>

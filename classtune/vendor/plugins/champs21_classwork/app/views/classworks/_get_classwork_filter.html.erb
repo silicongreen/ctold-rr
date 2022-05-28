@@ -2,18 +2,6 @@
 <div style="clear: both;"></div>
 
 <div class="CSSTableGenerator" style="width: 97%;margin-top: 10px;">
-  <% unless @pub_date_string.blank?  %>
-  <a style="color: green;
-  margin-bottom: 10px;
-  float: left;
-  clear: both;" href="/classworks/download_excell?batch_name=<%= @ba_id %>&student_class_name=<%= @class_id %>&student_section=<%= @std_id %>&assignment_publish_date=<%= @pub_date_string %>">Download Excell </a>
-  
-  
-  <a style="color: green;
-  margin-bottom: 10px;
-  float: left; margin-left: 15px;" target="_blank" href="/classworks/download_pdf?batch_name=<%= @ba_id %>&student_class_name=<%= @class_id %>&student_section=<%= @std_id %>&assignment_publish_date=<%= @pub_date_string %>">Download PDF</a>
-  
- <% end %> 
   <table id="listing table-design" align="center" width="100%" cellpadding="1" cellspacing="1">
     <% unless @classworks.empty? %>
     <tr class="tr-head">

@@ -7,7 +7,7 @@ class AssignmentsController < ApplicationController
   before_filter :only_publisher_admin_allowed , :only=>[:publisher,:show_publisher,:get_homework_filter_publisher,:showsubjects_publisher,:publisher_homework,:deny_homework,:subject_assignments_publisher]
   
   def get_homework_filter
-    @ba_id = batch_id = params[:batch_name]
+    @ba_id = batch_id = params[:batch_name] 
     @class_id = student_class_name = params[:student_class_name]
     @std_id = student_section = params[:student_section]
     @pub_date_string = assignment_publish_date = params[:assignment_publish_date]

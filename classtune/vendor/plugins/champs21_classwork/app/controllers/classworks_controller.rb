@@ -48,6 +48,138 @@ class ClassworksController < ApplicationController
     end
    
   end
+
+  def download_pdf
+    batch_id = params[:batch_name]
+    student_class_name = params[:student_class_name]
+    student_section = params[:student_section]
+    classwork_publish_date = params[:classwork_publish_date]
+    @classworks = []
+    unless batch_id.nil?
+      batchdata = Batch.find_by_id(batch_id)
+      unless batchdata.blank?
+        batch_name = batchdata.name
+        if student_class_name.blank?
+          if classwork_publish_date.blank?
+            @classworks =Classwork.paginate  :conditions=>"batches.name = '#{batch_name}'  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]     
+          else
+            @pub_date = classwork_publish_date.to_datetime.strftime("%Y-%m-%d")
+            @classworks =Classwork.paginate  :conditions=>"batches.name = '#{batch_name}' and ( (DATE(DATE_ADD(classworks.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( ( (DATE(DATE_ADD(classworks.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(classworks.created_at) = '#{@pub_date}' and content not like '%</%' ) ) and content not like '%</%' ) )  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]     
+          end
+        elsif student_section.blank?
+          if classwork_publish_date.blank?
+            @classworks =Classwork.paginate  :conditions=>"batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}] 
+          else
+            @pub_date = classwork_publish_date.to_datetime.strftime("%Y-%m-%d")
+            @classworks =Classwork.paginate  :conditions=>"batches.name = '#{batch_name}' and ( (DATE(DATE_ADD(classworks.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(classworks.created_at) = '#{@pub_date}' and content not like '%</%' ) )  and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}] 
+          end
+        else
+          batch = Batch.find_by_course_id_and_name(student_section, batch_name)
+          unless batch.blank?
+            if classwork_publish_date.blank?
+              @classworks =Classwork.paginate  :conditions=>"batches.id = '#{batch.id}'  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
+            else
+              @pub_date = classwork_publish_date.to_datetime.strftime("%Y-%m-%d")
+              @classworks =Classwork.paginate  :conditions=>"batches.id = '#{batch.id}'  and is_published=1 and ( (DATE(DATE_ADD(classworks.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(classworks.created_at) = '#{@pub_date}' and content not like '%</%' ) )",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
+            end
+          end
+        end  
+      end
+    else
+      @classworks =Classwork.paginate  :conditions=>"is_published=1",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
+    end    
+    
+    @report_data = []
+    if !@routine_response.blank? and @routine_response['status']['code'].to_i == 200
+      @report_data = @routine_response['data']
+    end
+    @employee_ids = []
+    @employee_ids = @assignments.map(&:employee_id).uniq unless @assignments.blank?
+    
+    render :pdf => 'download_pdf',
+        :orientation => 'Portrait', :zoom => 1.00,
+        :page_size => 'A4',
+        :margin => {    :top=> 10,
+        :bottom => 10,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
+  
+  def download_excell
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    new_book = Spreadsheet::Workbook.new
+    sheet1 = new_book.create_worksheet :name => 'homework_report'
+    row_first = ['SL','Class','Group','Subject','Title','Teacher','Assign Date']
+    new_book.worksheet(0).insert_row(0, row_first)
+    
+    batch_id = params[:batch_name]
+    student_class_name = params[:student_class_name]
+    student_section = params[:student_section]
+    classwork_publish_date = params[:classwork_publish_date]
+    @classworks = []
+    unless batch_id.nil?
+      batchdata = Batch.find_by_id(batch_id)
+      unless batchdata.blank?
+        batch_name = batchdata.name
+        if student_class_name.blank?
+          if classwork_publish_date.blank?
+            @classworks =Classwork.paginate  :conditions=>"batches.name = '#{batch_name}'  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]     
+          else
+            @pub_date = classwork_publish_date.to_datetime.strftime("%Y-%m-%d")
+            @classworks =Classwork.paginate  :conditions=>"batches.name = '#{batch_name}' and ( (DATE(DATE_ADD(classworks.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( ( (DATE(DATE_ADD(classworks.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(classworks.created_at) = '#{@pub_date}' and content not like '%</%' ) ) and content not like '%</%' ) )  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]     
+          end
+        elsif student_section.blank?
+          if classwork_publish_date.blank?
+            @classworks =Classwork.paginate  :conditions=>"batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}] 
+          else
+            @pub_date = classwork_publish_date.to_datetime.strftime("%Y-%m-%d")
+            @classworks =Classwork.paginate  :conditions=>"batches.name = '#{batch_name}' and ( (DATE(DATE_ADD(classworks.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(classworks.created_at) = '#{@pub_date}' and content not like '%</%' ) )  and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}] 
+          end
+        else
+          batch = Batch.find_by_course_id_and_name(student_section, batch_name)
+          unless batch.blank?
+            if classwork_publish_date.blank?
+              @classworks =Classwork.paginate  :conditions=>"batches.id = '#{batch.id}'  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
+            else
+              @pub_date = classwork_publish_date.to_datetime.strftime("%Y-%m-%d")
+              @classworks =Classwork.paginate  :conditions=>"batches.id = '#{batch.id}'  and is_published=1 and ( (DATE(DATE_ADD(classworks.created_at, INTERVAL 6 HOUR)) = '#{@pub_date}' and content like '%</%') OR ( DATE(classworks.created_at) = '#{@pub_date}' and content not like '%</%' ) )",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
+            end
+          end
+        end  
+      end
+    else
+      @classworks =Classwork.paginate  :conditions=>"is_published=1",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
+    end   
+    
+    iloop = 0
+    unless @classworks.blank?
+      @classworks.each_with_index do |classwork,i|
+        iloop = iloop+1
+        tmp_row = []
+        tmp_row << iloop
+        tmp_row << classwork.subject.batch.full_name
+        tmp_row << classwork.subject.batch.course.group
+        tmp_row << classwork.subject.name
+        tmp_row << classwork.title
+        unless classwork.employee.blank?
+          tmp_row << classwork.employee.full_name
+        else
+          tmp_row << ""
+        end
+        tmp_row << I18n.l(classwork.created_at,:format=>"%d-%m-%Y")
+        new_book.worksheet(0).insert_row(iloop, tmp_row)
+      end
+    end
+    spreadsheet = StringIO.new 
+    new_book.write spreadsheet 
+    send_data spreadsheet.string, :filename => "classwork_report.xls", :type =>  "application/vnd.ms-excel"
+    
+  end
+
+
   def remove_attachment
     
     @classwork = Classwork.find_by_id(params[:id])

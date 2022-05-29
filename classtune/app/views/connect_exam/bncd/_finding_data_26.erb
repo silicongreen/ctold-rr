@@ -310,7 +310,7 @@ if @total_std.blank?
                       cq_total = cq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
 		
                       if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i > 30 and rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i < pass_mark_cq.to_i
-                        failed_students << student_id
+                        #failed_students << student_id
                         u_grade = u_grade+1 
                         subject_failed = true
                       end  		
@@ -318,7 +318,7 @@ if @total_std.blank?
                       mcq = mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       mcq_total = mcq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i > 10 and rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i < pass_mark_mcq.to_i
-                        failed_students << student_id
+                        #failed_students << student_id
                         u_grade = u_grade+1 
                         subject_failed = true
                       end 
@@ -376,23 +376,32 @@ if @total_std.blank?
 
                 end
 		
-		if mcq_total > 0 && mcq > 0
-                  if mcq_total == 35 or mcq_total == 40
+		            if cq_total > 0 && cq > 0
+                  if cq_total == 120
+                    cq = (cq.to_f/cq_total.to_f)*80
+                    cq = cq.round()
+                  elsif cq_total == 130
+                    cq = (cq.to_f/cq_total.to_f)*95
+                    cq = cq.round()
+                  elsif cq_total == 100
+                    cq = (cq.to_f/cq_total.to_f)*70
+                    cq = cq.round()
+                  elsif cq_total == 80
+                    cq = (cq.to_f/cq_total.to_f)*70
+                    cq = cq.round()
+                  end
+                end
+                if mcq_total > 0 && mcq > 0
+                  if mcq_total == 40
                     mcq = (mcq.to_f/mcq_total.to_f)*25
                     mcq = mcq.round()
                   end
                 end
-                if cq_total > 0 && cq > 0
-                  if cq_total == 90
-                    cq = (cq.to_f/cq_total.to_f)*70
-                    cq = cq.round()
-                  end
-                  if cq_total == 130
-                    cq = (cq.to_f/cq_total.to_f)*95
-                    cq = cq.round()
-                  end
-                end
                 main_mark = cq+mcq+att
+
+                if main_mark < 33
+                  failed_students << student_id
+                end
 		
                 total_mark_subject = main_mark
                 main_mark = main_mark.round()
@@ -445,7 +454,7 @@ if @total_std.blank?
                   grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                   if !grade.blank? && !grade.name.blank?
                     if subject_failed == true or four_subject_failed == true
-                        failed_students << student_id
+                        #failed_students << student_id
                         @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = "F"
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = grade.name

@@ -1,9 +1,10 @@
 class ClassworksController < ApplicationController
   before_filter :login_required
   before_filter :check_permission, :only=>[:index]
-  filter_access_to :all,:except=>[:show]
+  filter_access_to :all,:except=>[:show, :download_excell]
   filter_access_to :show,:attribute_check=>true
   before_filter :default_time_zone_present_time
+
   def get_classwork_filter
     @ba_id = batch_id = params[:batch_name]
     @class_id = student_class_name = params[:student_class_name]

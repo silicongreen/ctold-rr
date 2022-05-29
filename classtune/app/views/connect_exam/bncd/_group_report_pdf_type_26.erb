@@ -312,8 +312,8 @@
                                   <% if printed_blank == false %>
                                     <td class="col-pdf">-   <%= ll %></td>
                                     <% ll += 1 %> 
-                                    <% printed_blank = false %>
                                   <% end %>    
+                                  <% printed_blank = false %>
                                   <% end %>  
                                   
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>

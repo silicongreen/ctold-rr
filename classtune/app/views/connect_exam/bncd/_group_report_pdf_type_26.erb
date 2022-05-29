@@ -265,6 +265,7 @@
                                     <% end %>
                                   <% else %>
                                     <td class="col-pdf">-</td>
+                                    <% i+= 1 %> 
                                   <% end %>  
                                   
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>

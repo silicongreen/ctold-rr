@@ -264,7 +264,11 @@
                     <td class="col-pdf">-</td>
                     <% end %>
                     <% end %>
-                    <% if ll == 4 %>
+                    
+                    <% ll += 1 %> 
+                    
+                                    <% elsif report['exam_category'] == '4' %>
+                                    <% if ll == 4 %>
                     <% fnd = false %>
                     <% cc = 0 %>
                     <% @report_data['report']['exams'].each do |report| %>
@@ -272,7 +276,7 @@
                       <% cc += 1 %>
                       <%= cc %>
                       <% if cc > 4 %>
-                      <% if report['exam_category'] == '4' %>
+                      <% if report['exam_category'] == '3' %>
                       <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= ll %></td>
                       <% used << report['exam_id'] %>
                       <% fnd = true %>
@@ -284,10 +288,6 @@
                     <td class="col-pdf">-</td>
                     <% end %>
                     <% end %>
-                    <% ll += 1 %> 
-                    
-                                    <% elsif report['exam_category'] == '4' %>
-                                    
 			      	      <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
 			      	      <%
 				      if report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i > 10 and report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i < pass_mark_mcq.to_i

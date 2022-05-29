@@ -78,6 +78,8 @@ authorization do
       :get_classwork_filter,
       :create,
       :destroy,
+      :download_excell,
+      :download_pdf,
       :published_classwork,
       :download_attachment,
       :remove_attachment,

@@ -256,6 +256,7 @@
                       <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= ll %></td>
                       <% used << report['exam_id'] %>
                       <% fnd = true %>
+                      <% break %>
                       <% end %>
                       <% end %>
                       <% end %>

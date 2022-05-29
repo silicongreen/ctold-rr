@@ -248,13 +248,13 @@
                     <% if ll == 3 %>
                     <% fnd = false %>
                     <% cc = 0 %>
-                    <% @report_data['report']['exams'].each do |report| %>
-                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
+                    <% @report_data['report']['exams'].each do |rpt| %>
+                      <% if !rpt['result'].blank? and !rpt['result'][rpt['exam_id']].blank? and !rpt['result'][rpt['exam_id']][subjects['id']].blank?  and !rpt['result'][rpt['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
                       <% cc += 1 %>
                       <% if cc > 3 %>
-                      <% if report['exam_category'] == '4' %>
-                      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
-                      <% used << report['exam_id'] %>
+                      <% if rpt['exam_category'] == '4' %>
+                      <td class="col-pdf"><%= rpt['result'][rpt['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
+                      <% used << rpt['exam_id'] %>
                       <% fnd = true %>
                       <% break %>
                       <% end %>
@@ -274,13 +274,13 @@
                                     <% if ll == 4 %>
                     <% fnd = false %>
                     <% cc = 0 %>
-                    <% @report_data['report']['exams'].each do |report| %>
-                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
+                    <% @report_data['report']['exams'].each do |rpt| %>
+                      <% if !rpt['result'].blank? and !rpt['result'][rpt['exam_id']].blank? and !rpt['result'][rpt['exam_id']][subjects['id']].blank?  and !rpt['result'][rpt['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
                       <% cc += 1 %>
                       <% if cc > 4 %>
-                      <% if report['exam_category'] == '3' %>
-                      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
-                      <% used << report['exam_id'] %>
+                      <% if rpt['exam_category'] == '3' %>
+                      <td class="col-pdf"><%= rpt['result'][rpt['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
+                      <% used << rpt['exam_id'] %>
                       <% fnd = true %>
                       <% end %>
                       <% end %>
@@ -320,7 +320,7 @@
                                     <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                     <% exam_full_marks = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                     <% if report['exam_category'] == '3' %>
-                                    <%= subjects['code'] + "  " +  report['result'][report['exam_id']][subjects['id']]['full_mark'].to_s + "<Br/><br />" %>
+                                    <%= subjects['name'] + "  " +  report['result'][report['exam_id']][subjects['id']]['full_mark'].to_s + "<Br/><br />" %>
                                       <% cq_total = cq_total+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                     <% end %>
                                     <% if report['exam_category'] == '4' %>

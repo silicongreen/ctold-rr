@@ -3,8 +3,8 @@
   <%
     @config = Configuration.find_by_config_key('StudentAttendanceType')
     @batch = Batch.find(@student.batch_id)
-    @start_date = ("2021-09-12").to_date
-    @end_date = ("2021-11-03").to_date
+    @start_date = ("2022-02-22").to_date
+    @end_date = ("2022-03-22").to_date
     @leaves=Hash.new { |h, k| h[k] = Hash.new(&h.default_proc) }
     @today = @local_tzone_time.to_date
     working_days=@batch.working_days(@start_date.to_date)

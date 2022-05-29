@@ -269,7 +269,7 @@
                                       end  		
 				      %>	
                                       <% if ! used.include?(report['exam_id']) %>
-			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= i %></td>	
+			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= ll %></td>	
                     <% ll += 1 %> 
                     <% end %>
 

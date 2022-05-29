@@ -270,6 +270,7 @@
                     <% ll += 1 %> 
                     
                                     <% elsif report['exam_category'] == '4' %>
+                                    <% printed_blank = false %>
                                     <% if ll == 4 %>
                     <% fnd = false %>
                     <% cc = 0 %>
@@ -287,6 +288,7 @@
                     <% end %>  
                     <% if ! fnd %>
                     <td class="col-pdf">-</td>
+                    <% printed_blank = true %>
                     <% end %>
                     <% end %>
 			      	      <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>

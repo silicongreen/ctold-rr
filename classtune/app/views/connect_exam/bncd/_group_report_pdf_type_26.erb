@@ -264,6 +264,26 @@
                     <td class="col-pdf">-</td>
                     <% end %>
                     <% end %>
+                    <% if ll == 4 %>
+                    <% fnd = false %>
+                    <% cc = 0 %>
+                    <% @report_data['report']['exams'].each do |report| %>
+                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
+                      <% cc += 1 %>
+                      <%= cc %>
+                      <% if cc > 4 %>
+                      <% if report['exam_category'] == '4' %>
+                      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= ll %></td>
+                      <% used << report['exam_id'] %>
+                      <% fnd = true %>
+                      <% end %>
+                      <% end %>
+                      <% end %>
+                    <% end %>  
+                    <% if ! fnd %>
+                    <td class="col-pdf">-</td>
+                    <% end %>
+                    <% end %>
                     <% ll += 1 %> 
                     
                                     <% elsif report['exam_category'] == '4' %>

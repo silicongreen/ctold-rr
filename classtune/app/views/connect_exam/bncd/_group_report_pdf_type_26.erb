@@ -222,9 +222,11 @@
                       att = 0
                       need_mcq = false
                       used = []
+                      i = 0
                       %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                            <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'].gsub(" 1st Paper","") %></td>
+                            <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'].gsub(" 1st Paper","") %> <%= i %></td>
+                            <% i+= 1 %> 
                             <% unless @report_data['report']['exams'].blank? %>  
                                 <% @report_data['report']['exams'].each do |report| %>
                                   <% exam_marks = 0 %>
@@ -240,7 +242,8 @@
                                       	failed = true
                                       end  		
 				      %>
-			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %> <%= subjects['name'] %></td>	
+			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= i %></td>	
+                    <% i+= 1 %> 
                     
                                     <% elsif report['exam_category'] == '4' %>
                                     
@@ -252,15 +255,18 @@
                                       end  		
 				      %>	
  
-			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>	
+			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= i %></td>	
+                    <% i+= 1 %> 
 
                                     <% else %>
 			      	      <% att = att+student_attendance_mark.to_i %>
-			      	      <td class="col-pdf"><%= student_attendance_mark.to_i %></td>	
+			      	      <td class="col-pdf"><%= student_attendance_mark.to_i %> <%= i %></td>	
+                    <% i+= 1 %> 
                                     <% end %>
                                   <% else %>
                                     <td class="col-pdf">-</td>
-                                  <% end %>   
+                                  <% end %>  
+                                  
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                     <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                     <% exam_full_marks = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>

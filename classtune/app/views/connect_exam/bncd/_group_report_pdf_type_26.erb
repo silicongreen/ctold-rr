@@ -222,11 +222,11 @@
                       att = 0
                       need_mcq = false
                       used = []
-                      i = 0
+                      ll = 0
                       %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                            <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'].gsub(" 1st Paper","") %> <%= i %></td>
-                            <% i+= 1 %> 
+                            <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'].gsub(" 1st Paper","") %></td>
+                            <% ll += 1 %> 
                             <% unless @report_data['report']['exams'].blank? %>  
                                 <% @report_data['report']['exams'].each do |report| %>
                                   <% exam_marks = 0 %>
@@ -242,8 +242,22 @@
                                       	failed = true
                                       end  		
 				      %>
-			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= i %></td>	
-                    <% i+= 1 %> 
+			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= ll %></td>	
+                    <% ll += 1 %> 
+                    <% if ll == 3 %>
+                    <% cc = 0 %>
+                    <% @report_data['report']['exams'].each do |report| %>
+                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
+                      <% cc += 1 %>
+                      <% if cc > 3 %>
+                      <% if report['exam_category'] == '4' %>
+                      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= i %></td>
+                      <% used << report['exam_id'] %>
+                      <% end %>
+                      <% end %>
+                      <% end %>
+                    <% end %>  
+                    <% end %>
                     
                                     <% elsif report['exam_category'] == '4' %>
                                     
@@ -254,18 +268,19 @@
                                       	failed = true
                                       end  		
 				      %>	
- 
+                                      <% if ! used.include?(report['exam_id']) %>
 			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= i %></td>	
-                    <% i+= 1 %> 
+                    <% ll += 1 %> 
+                    <% end %>
 
                                     <% else %>
 			      	      <% att = att+student_attendance_mark.to_i %>
-			      	      <td class="col-pdf"><%= student_attendance_mark.to_i %> <%= i %></td>	
-                    <% i+= 1 %> 
+			      	      <td class="col-pdf"><%= student_attendance_mark.to_i %></td>	
+                    <% ll += 1 %> 
                                     <% end %>
                                   <% else %>
                                     <td class="col-pdf">-</td>
-                                    <% i+= 1 %> 
+                                    <% ll += 1 %> 
                                   <% end %>  
                                   
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>

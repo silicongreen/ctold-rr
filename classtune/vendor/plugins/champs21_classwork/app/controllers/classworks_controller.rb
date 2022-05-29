@@ -5,9 +5,9 @@ class ClassworksController < ApplicationController
   filter_access_to :show,:attribute_check=>true
   before_filter :default_time_zone_present_time
   def get_classwork_filter
-    batch_id = params[:batch_name]
-    student_class_name = params[:student_class_name]
-    student_section = params[:student_section]
+    @ba_id = batch_id = params[:batch_name]
+    @class_id = student_class_name = params[:student_class_name]
+    @std_id = student_section = params[:student_section]
     @pub_date_string =  classwork_publish_date = params[:classwork_publish_date]
     @classworks = []
     unless batch_id.nil?

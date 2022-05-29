@@ -243,7 +243,7 @@
                                       	failed = true
                                       end  		
 				      %>
-			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= ll %></td>	
+			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>	
                     
                     <% if ll == 3 %>
                     <% fnd = false %>
@@ -253,7 +253,7 @@
                       <% cc += 1 %>
                       <% if cc > 3 %>
                       <% if report['exam_category'] == '4' %>
-                      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= ll %></td>
+                      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
                       <% used << report['exam_id'] %>
                       <% fnd = true %>
                       <% break %>
@@ -279,7 +279,7 @@
                       <% cc += 1 %>
                       <% if cc > 4 %>
                       <% if report['exam_category'] == '3' %>
-                      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= ll %></td>
+                      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
                       <% used << report['exam_id'] %>
                       <% fnd = true %>
                       <% end %>
@@ -299,7 +299,7 @@
                                       end  		
 				      %>	
                                       <% if ! used.include?(report['exam_id']) %>
-			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= ll %></td>	
+			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>	
                     <% ll += 1 %> 
                     <% end %>
 
@@ -310,7 +310,7 @@
                                     <% end %>
                                   <% else %>
                                   <% if printed_blank == false %>
-                                    <td class="col-pdf">-   <%= ll %></td>
+                                    <td class="col-pdf">-</td>
                                     <% ll += 1 %> 
                                   <% end %>    
                                   <% printed_blank = false %>

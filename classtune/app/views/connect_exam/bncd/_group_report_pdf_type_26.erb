@@ -223,6 +223,7 @@
                       need_mcq = false
                       used = []
                       ll = 0
+                      printed_blank = false
                       %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                             <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'].gsub(" 1st Paper","") %></td>
@@ -261,6 +262,7 @@
                       <% end %>
                     <% end %>  
                     <% if ! fnd %>
+                    <% printed_blank = true %>
                     <td class="col-pdf">-</td>
                     <% end %>
                     <% end %>
@@ -294,7 +296,7 @@
                                       	failed = true
                                       end  		
 				      %>	
-                                      <% if ! used.include?(report['exam_id']) && ll != 5 %>
+                                      <% if ! used.include?(report['exam_id']) %>
 			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= ll %></td>	
                     <% ll += 1 %> 
                     <% end %>
@@ -305,8 +307,11 @@
                     <% ll += 1 %> 
                                     <% end %>
                                   <% else %>
+                                  <% if printed_blank == false %>
                                     <td class="col-pdf">-   <%= ll %></td>
                                     <% ll += 1 %> 
+                                    <% printed_blank = false %>
+                                  <% end %>    
                                   <% end %>  
                                   
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>

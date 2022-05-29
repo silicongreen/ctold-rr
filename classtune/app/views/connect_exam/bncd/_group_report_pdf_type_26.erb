@@ -250,7 +250,6 @@
                     <% @report_data['report']['exams'].each do |report| %>
                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
                       <% cc += 1 %>
-                      <%= cc %>
                       <% if cc > 3 %>
                       <% if report['exam_category'] == '4' %>
                       <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= ll %></td>
@@ -275,7 +274,6 @@
                     <% @report_data['report']['exams'].each do |report| %>
                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
                       <% cc += 1 %>
-                      <%= cc %>
                       <% if cc > 4 %>
                       <% if report['exam_category'] == '3' %>
                       <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= ll %></td>
@@ -303,11 +301,11 @@
 
                                     <% else %>
 			      	      <% att = att+student_attendance_mark.to_i %>
-			      	      <td class="col-pdf"><%= student_attendance_mark.to_i %></td>	
+			      	      <td class="col-pdf"><%= student_attendance_mark.to_i %> </td>	
                     <% ll += 1 %> 
                                     <% end %>
                                   <% else %>
-                                    <td class="col-pdf">-</td>
+                                    <td class="col-pdf">-   <%= ll %></td>
                                     <% ll += 1 %> 
                                   <% end %>  
                                   

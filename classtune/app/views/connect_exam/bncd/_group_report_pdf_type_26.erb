@@ -294,7 +294,7 @@
                                       	failed = true
                                       end  		
 				      %>	
-                                      <% if ! used.include?(report['exam_id']) && ll != 6 %>
+                                      <% if ! used.include?(report['exam_id']) && ll != 5 %>
 			      	      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>  <%= ll %></td>	
                     <% ll += 1 %> 
                     <% end %>

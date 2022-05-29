@@ -320,7 +320,6 @@
                                     <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                     <% exam_full_marks = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                     <% if report['exam_category'] == '3' %>
-                                    <%= subjects['name'] + "  " +  report['result'][report['exam_id']][subjects['id']]['full_mark'].to_s + "<Br/><br />" %>
                                       <% cq_total = cq_total+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                     <% end %>
                                     <% if report['exam_category'] == '4' %>
@@ -379,7 +378,7 @@
 
                                 <% end %>
                             <% end %>
-                            <%= mcq_total.to_s + "  " + cq_total.to_s %><br /><br />
+                            <%#= mcq_total.to_s + "  " + cq_total.to_s %><br /><br />
                             <% 
                               if cq_total > 0 && cq > 0
                                 if cq_total == 120

@@ -8,7 +8,7 @@ class ClassworksController < ApplicationController
     batch_id = params[:batch_name]
     student_class_name = params[:student_class_name]
     student_section = params[:student_section]
-    classwork_publish_date = params[:classwork_publish_date]
+    @pub_date_string =  classwork_publish_date = params[:classwork_publish_date]
     @classworks = []
     unless batch_id.nil?
       batchdata = Batch.find_by_id(batch_id)
@@ -58,7 +58,7 @@ class ClassworksController < ApplicationController
     batch_id = params[:batch_name]
     student_class_name = params[:student_class_name]
     student_section = params[:student_section]
-    classwork_publish_date = params[:classwork_publish_date]
+    @pub_date_string =  classwork_publish_date = params[:classwork_publish_date]
     @classworks = []
     unless batch_id.nil?
       batchdata = Batch.find_by_id(batch_id)

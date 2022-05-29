@@ -62,7 +62,8 @@ class ClassworksController < ApplicationController
     @pub_date_string =  classwork_publish_date = params[:classwork_publish_date]
     @classworks = []
     unless batch_id.nil?
-      batchdata = Batch.find_by_id(batch_id)
+      batchdata = @batch = Batch.find_by_id(batch_id)
+      #batchdata = Batch.find_by_id(batch_id)
       unless batchdata.blank?
         batch_name = batchdata.name
         if student_class_name.blank?

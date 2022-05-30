@@ -402,7 +402,9 @@ if @total_std.blank?
                 if main_mark < 33
                   failed_students << student_id
                 end
+                %>
                 <%= main_mark %>
+                <%
                 total_mark_subject = main_mark
                 main_mark = main_mark.round()
                 grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)

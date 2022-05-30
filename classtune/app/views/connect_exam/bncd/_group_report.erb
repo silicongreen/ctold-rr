@@ -8,7 +8,7 @@
           end
         end
   %>
-  <%= "pos-5" %>
+  
   <%= render  :partial=>"/connect_exam/bncd/finding_data_5" %>
 <% end %>
   <% if @connect_exam_obj.result_type.to_i == 3 or  @connect_exam_obj.result_type.to_i == 4  %> 
@@ -21,7 +21,7 @@
           end
         end
   %>
-  <%= "pos-6" %>
+  
   <%= render  :partial=>"/connect_exam/bncd/finding_data_5" %>
 <% end %>
 <% if @connect_exam_obj.result_type.to_i == 5 or  @connect_exam_obj.result_type.to_i == 6  %> 
@@ -34,11 +34,11 @@
           end
         end
   %>
-  <%= "pos-7" %>
+  
   <%= render  :partial=>"/connect_exam/bncd/finding_data_5" %>
 <% end %>
 <% if @connect_exam_obj.result_type.to_i == 7 or  @connect_exam_obj.result_type.to_i == 8  %> 
-<%= "pos-8" %>
+
 <%= render  :partial=>"/connect_exam/student_subject" %>
   <%
         if @tabulation_data.nil?
@@ -49,11 +49,11 @@
           end
         end
   %>
-  <%= "pos-9" %>
+  
   <%= render  :partial=>"/connect_exam/bncd/finding_data_5" %>
 <% end %>
 <% if @connect_exam_obj.result_type.to_i == 13  %> 
-<%= "pos-10" %>
+
 <%= render  :partial=>"/connect_exam/student_subject" %>
   <%
         if @tabulation_data.nil?
@@ -64,7 +64,7 @@
           end
         end
   %>
-  <%= "pos-11" %>
+  
   <%= render  :partial=>"/connect_exam/bncd/finding_data_6" %>
 <% end %>
 <% if @connect_exam_obj.result_type.to_i == 21  %> 
@@ -77,7 +77,7 @@
           end
         end
   %>
-  <%= "pos-12" %>
+  
   <%= render  :partial=>"/connect_exam/bncd/finding_data_8" %>
 <% end %>
 <% if @connect_exam_obj.result_type.to_i == 23  %> 
@@ -90,7 +90,7 @@
           end
         end
   %>
-  <%= "pos-13" %>
+  
   <%= render  :partial=>"/connect_exam/bncd/finding_data_18" %>
 <% end %>
 <% if @connect_exam_obj.result_type.to_i == 24  %> 
@@ -103,7 +103,7 @@
           end
         end
   %>
-  <%= "pos-14" %>
+  
   <%= render  :partial=>"/connect_exam/bncd/finding_data_9" %>
 <% end %>
 <% if @connect_exam_obj.result_type.to_i == 14  %> 
@@ -116,11 +116,11 @@
           end
         end
   %>
-  <%= "pos-15" %>
+  
   <%= render  :partial=>"/connect_exam/bncd/finding_data_7" %>
 <% end %>
 <% if @connect_exam_obj.result_type.to_i == 22  %> 
-<%= "pos-16" %>
+
 <%= render  :partial=>"/connect_exam/student_subject" %>
   <%
         if @tabulation_data.nil?
@@ -131,11 +131,11 @@
           end
         end
   %>
-  <%= "pos-17" %>
+  
   <%= render  :partial=>"/connect_exam/bncd/finding_data_9" %>
 <% end %>
 <% if @connect_exam_obj.result_type.to_i == 15  %> 
-<%= "pos-18" %>
+
 <%= render  :partial=>"/connect_exam/student_subject" %>
   <%
         if @tabulation_data.nil?
@@ -146,7 +146,6 @@
           end
         end
   %>
-  <%= "pos-19" %>
   <%= render  :partial=>"/connect_exam/bncd/finding_data_8" %>
 <% end %>
 <% if @connect_exam_obj.result_type.to_i == 25  %> 
@@ -159,24 +158,23 @@
           end
         end
   %>
-  <%= "pos-20" %>
   <%= render  :partial=>"/connect_exam/bncd/finding_data_25" %>
 <% end %>
 <% if @connect_exam_obj.result_type.to_i == 26  %> 
   <%
-        if @tabulation_data.nil?
-          student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
-          @tabulation_data = []
-          if student_response['status']['code'].to_i == 200
-            @tabulation_data = student_response['data']
-          end
-        end
+        #if @tabulation_data.nil?
+        #  student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+        #  @tabulation_data = []
+        #  if student_response['status']['code'].to_i == 200
+        #    @tabulation_data = student_response['data']
+        #  end
+        #end
   %>
-  <%= "pos-1" %>
+  
   <%= render  :partial=>"/connect_exam/bncd/finding_data_26" %>
 <% end %>
 <% if @connect_exam_obj.result_type.to_i == 9 or  @connect_exam_obj.result_type.to_i == 10  or  @connect_exam_obj.result_type.to_i == 11  or  @connect_exam_obj.result_type.to_i == 12  %> 
-<%= "pos-2" %>
+
 <%= render  :partial=>"/connect_exam/student_subject" %>
   <%
         if @tabulation_data.nil?
@@ -187,7 +185,7 @@
           end
         end
   %>
-  <%= "pos-3" %>
+  
   <%= render  :partial=>"/connect_exam/bncd/finding_data_5" %>
   <%= stylesheet_link_tag 'list_table' %>
   <style>
@@ -313,5 +311,5 @@
 
 </style>  
 <% end %>
-<%= "pos-4" %>
+
 <%= render  :partial=>"/connect_exam/bncd/group_report_pdf_type_"+@connect_exam_obj.result_type.to_s %>   

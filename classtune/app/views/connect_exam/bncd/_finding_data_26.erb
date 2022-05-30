@@ -400,10 +400,10 @@ if @total_std.blank?
                 main_mark = cq+mcq+att
 
                 if main_mark < 33
-                  failed_students << student_id
+                  #failed_students << student_id
                 end
                 %>
-                <%= main_mark %>
+                <%#= main_mark %>
                 <%
                 total_mark_subject = main_mark
                 main_mark = main_mark.round()

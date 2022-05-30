@@ -159,6 +159,8 @@
                   <td class="col-pdf" colspan="2"><b>Quiz Test</b></td>
                   <td class="col-pdf" colspan="4"><b>Preparatory Test</b></td>
                   <td class="col-pdf" rowspan="3"><b>Att.</b></td>
+                  <td class="col-pdf" rowspan="3"><b>Total</b></td>
+                  <td class="col-pdf" rowspan="3"><b>Converted Total</b></td>
                   <td class="col-pdf" rowspan="3"><b>Total(100)</b></td>
               </tr>
               <tr class="even header-shade">
@@ -380,6 +382,7 @@
                             <% end %>
                             <%#= mcq_total.to_s + "  " + cq_total.to_s %><br /><br />
                             <% 
+                              total_main_mark = cq+mcq+att        
                               if cq_total > 0 && cq > 0
                                 if cq_total == 120
                                   cq = (cq.to_f/cq_total.to_f)*80
@@ -418,6 +421,8 @@
 
                               main_mark = cq+mcq+att
                             %>
+                            <td class="col-pdf"><%= total_main_mark %></td>
+                            <td class="col-pdf"><%= main_mark %></td>
                             <td class="col-pdf"><%= main_mark %></td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
 			     

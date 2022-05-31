@@ -591,9 +591,7 @@ if @total_std.blank?
       @section_all_position_batch = {}
       last_grade = 0.0
       last_total = 0.0
-      %>
-      <%= debug @student_list.inspect %>
-      <%
+     
       unless @student_list.blank?
         position = 0
         @sorted_students = @student_list.sort

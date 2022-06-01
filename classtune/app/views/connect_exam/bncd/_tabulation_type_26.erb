@@ -438,7 +438,7 @@ end
 
 
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                        <td><%= j %></td>
+                        <td><%= j %> <%= student_attendance_mark %></td>
                         <td class="name"><%= std['class_roll_no'] %></td>
                         <% if !std['first_name'].blank? and !std['last_name'].blank?  %>
                         <td class="name-std"><%= std['first_name']+" "+std['last_name'] %></td>
@@ -577,10 +577,10 @@ end
                                     #  subject_failed = true
                                     #  failed = true
                                     #end
-                                    if exam_full_marks == 100 && exam_marks < 33
-                                      subject_failed = true
-                                      failed = true
-                                    end
+                                    #if exam_full_marks == 100 && exam_marks < 33
+                                    #  subject_failed = true
+                                    #  failed = true
+                                    #end
                                   end
 
                               %>

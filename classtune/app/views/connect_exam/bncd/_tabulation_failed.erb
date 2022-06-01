@@ -556,6 +556,8 @@ end
                                 mcq = mcq.round()
                               end
                             end
+
+                            main_mark = cq+mcq+att
 			      	
                             %>
 			    <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

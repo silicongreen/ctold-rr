@@ -438,7 +438,7 @@ end
 
 
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                        <td><%= j %> <%= student_attendance_mark %></td>
+                        <td><%= j %></td>
                         <td class="name"><%= std['class_roll_no'] %></td>
                         <% if !std['first_name'].blank? and !std['last_name'].blank?  %>
                         <td class="name-std"><%= std['first_name']+" "+std['last_name'] %></td>
@@ -623,7 +623,7 @@ end
                             end
                             %>
                             <td>
-                               <%= main_mark.to_i %>    <%= student_attendance_mark %>
+                               <%= main_mark.to_i %>
                             </td>
                             <% total_mark = total_mark+main_mark.to_f %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

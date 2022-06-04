@@ -511,11 +511,8 @@ if @total_std.blank?
                 end
 
               end
-              
+
             end 
-            %>
-            <%= debug @subject_highest[sub['id'].to_i] %>
-            <%
 
             grade_point_avg = 0
             if grand_grade_point > 0 && total_subject > 0
@@ -551,11 +548,11 @@ if @total_std.blank?
               loop_std = loop_std+1
             end
             if u_grade == 0
-              grand_total_new = 50000-grand_total_with_fraction
+              grand_total_new = grand_total_with_fraction
               grand_grade_new = 50000-grand_grade_point
 
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
-                @student_list_batch << [grand_total_with_fraction.to_f,grand_total_new.to_f,std['id'].to_i]
+                @student_list_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if !gradeObj.blank? and !gradeObj.name.blank?
                   if @grade_count[gradeObj.name].blank?
                     @grade_count[gradeObj.name] = 1
@@ -565,7 +562,7 @@ if @total_std.blank?
                 end
               end 
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
-                @student_list << [grand_total_with_fraction.to_f,grand_total_new.to_f,std['id'].to_i]
+                @student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if @section_wise_position[batch_data.id].blank?
                   @section_wise_position[batch_data.id] = []
                 end

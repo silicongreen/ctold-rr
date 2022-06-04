@@ -511,9 +511,12 @@ if @total_std.blank?
                 end
 
               end
-              grand_total_with_fraction = total_mark_subject
+              
             end 
-            
+            %>
+            <%= debug @subject_highest[sub['id'].to_i] %>
+            <%
+
             grade_point_avg = 0
             if grand_grade_point > 0 && total_subject > 0
               grade_point_avg = grand_grade_point.to_f/total_subject.to_f

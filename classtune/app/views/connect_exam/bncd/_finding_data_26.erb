@@ -511,11 +511,11 @@ if @total_std.blank?
                 end
 
               end
-
+              %>
+              <%= total_mark_subject %>
+              <%  
             end 
-            %>
-            <%= total_mark_subject %>
-            <%
+            
             grade_point_avg = 0
             if grand_grade_point > 0 && total_subject > 0
               grade_point_avg = grand_grade_point.to_f/total_subject.to_f

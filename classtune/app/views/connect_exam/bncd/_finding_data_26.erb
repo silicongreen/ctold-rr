@@ -513,7 +513,9 @@ if @total_std.blank?
               end
 
             end 
-
+            %>
+            <%= total_mark_subject %>
+            <%
             grade_point_avg = 0
             if grand_grade_point > 0 && total_subject > 0
               grade_point_avg = grand_grade_point.to_f/total_subject.to_f
@@ -552,7 +554,7 @@ if @total_std.blank?
               grand_grade_new = 50000-grand_grade_point
 
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
-                @student_list_batch << [main_mark.to_f,grand_total_new.to_f,std['id'].to_i]
+                @student_list_batch << [total_mark_subject.to_f,grand_total_new.to_f,std['id'].to_i]
                 if !gradeObj.blank? and !gradeObj.name.blank?
                   if @grade_count[gradeObj.name].blank?
                     @grade_count[gradeObj.name] = 1
@@ -562,7 +564,7 @@ if @total_std.blank?
                 end
               end 
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
-                @student_list << [main_mark.to_f,grand_total_new.to_f,std['id'].to_i]
+                @student_list << [total_mark_subject.to_f,grand_total_new.to_f,std['id'].to_i]
                 if @section_wise_position[batch_data.id].blank?
                   @section_wise_position[batch_data.id] = []
                 end

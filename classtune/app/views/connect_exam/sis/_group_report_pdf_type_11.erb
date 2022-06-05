@@ -338,7 +338,6 @@
                       <% end %>
                       <% wordString_main = "" %>
                       <% @report_data['report']['exams'].each do |report| %>
-                        <%= debug report['result'][report['exam_id']][subjects['id']]['remarks'].inspect  %>
                         <% if report['exam_category'] == '7' %>
                            <% next %>
                          <% end %>

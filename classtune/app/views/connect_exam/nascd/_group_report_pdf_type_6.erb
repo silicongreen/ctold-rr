@@ -19,7 +19,7 @@
                   <% c = 'even'  %>
 
                   <tr class="table-header">
-                      <td colspan='8'><b><%= @connect_exam_obj.name %></b></td>
+                      <td colspan='8'><b>Subject Wise Grade Sheet<%#= @connect_exam_obj.name %></b></td>
                   </tr>
                   <tr class="table-header">
                       <td class="col-pdf no-warp"><b><%= "Subject" %></b></td>
@@ -32,7 +32,7 @@
                         <% end %>
                       <% end %> 
                       <td class="col-pdf no-warp"><b><%= "Subject Total" %></b></td>
-                      <td class="col-pdf no-warp"><b><%= "Letter Grade" %></b></td>
+                      <td class="col-pdf no-warp" colspan="2"><b><%= "Letter Grade" %></b></td>
                       <td class="col-pdf no-warp"><b><%= "GPA" %></b></td>
                   </tr>
                   <% total_mark = 0 %>
@@ -132,7 +132,7 @@
                             end
                         %>
                           <% if !grade.blank? and !grade.name.blank? %>
-                            <td class="col-pdf"><%= grade.name %></td>
+                            <td class="col-pdf" colspan="2"><%= grade.name %></td>
                             <td class="col-pdf"><%= grade.credit_points.to_f %></td>
                             <%
                             if grade.credit_points.to_i == 0
@@ -155,7 +155,7 @@
                       <% grade_point_avg = 5.00 %>
                     <% end %>
                   <% end %>
-                  <tr class="table-header">
+                  <!--tr class="table-header">
                       <td><b>GPA Without Optional Subject</b></td>   
                       <td colspan="<%= colspan_exam+2 %>"></td>
                       <% if failed == true %>
@@ -163,10 +163,10 @@
                       <% else %>
                         <td><b><%= grade_point_avg %></b></td>
                       <% end %>
-                  </tr>
+                  </tr-->
 
                   <tr class="even">
-                      <td colspan="<%= colspan_exam+4 %>">Optional Subject</td>
+                      <td colspan="<%= colspan_exam+4 + 1 %>">Optional Subject</td>
                   </tr>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
@@ -251,7 +251,7 @@
                             end
                         %>
                           <% if !grade.blank? and !grade.name.blank? %>
-                            <td class="col-pdf"><%= grade.name %></td>
+                            <td class="col-pdf" colspan="2"><%= grade.name %></td>
                             <td class="col-pdf"><%= grade.credit_points.to_f %></td>
                             <% if grade.credit_points.to_f > 2 %>
                               <% new_grade_point = grade.credit_points.to_f-2.00 %>
@@ -274,10 +274,11 @@
                   <% end %>
                   <% grade = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id) %>
                   <tr class="table-header">
-                      <td><b>Total Marks, Grade and GPA</b></td>   
+                      <td><b>Total Marks<!--, Grade and GPA--></b></td>   
                       <td><b><%= full_mark %></b></td>
-                      <td colspan="<%= colspan_exam-1 %>"></td>
+                      <td colspan="<%= colspan_exam-1 %>">Score</td>
                       <td><b><%= total_mark %></b></td>
+                      <td><b><%= "Grade" %></b></td>
                       <td><b>
                               <% if !grade.blank? and !grade.name.blank? %>
                                 <% if failed == true %>

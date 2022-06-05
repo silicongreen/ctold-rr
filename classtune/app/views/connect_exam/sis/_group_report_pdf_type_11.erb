@@ -338,9 +338,9 @@
                       <% end %>
                       <% wordString_main = "" %>
                       <% @report_data['report']['exams'].each do |report| %>
-                        <% if report['exam_category'] == '7' %>
-                           <% next %>
-                         <% end %>
+                        <% #if report['exam_category'] == '7' %>
+                           <% #next %>
+                         <% #end %>
                          <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                           <% wordString_main = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                           <% break %>
@@ -353,9 +353,20 @@
                         <% subject_groups.each do |group_name| %>
                             <% if !wordString.blank? and !wordString[iloop].blank? %>
                             <tr class="odd">
-                                
                                <td class="col-pdf align-left"><%= group_name.name %></td>
-                               <td class="col-pdf"><%=  wordString[iloop] %>1</td>
+                               <%
+                                  gmarks = {
+                                    'a+' => "Excellent",
+                                    'a' => "Very Good",
+                                    'b+' => "Good",
+                                    'b+' => "Fair",
+                                    'c' => "Satisfactory",
+                                    'ni' => "Needs Improvement",
+                                    'r' => "Regular",
+                                    'ir' => "Irregular",
+                                  }
+                               %>
+                               <td class="col-pdf"><%=  gmarks[wordString[iloop].downcase] %></td>
                            </tr>
                            <% else %>
                            <tr class="even">

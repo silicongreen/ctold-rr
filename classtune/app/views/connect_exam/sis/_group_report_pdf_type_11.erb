@@ -329,7 +329,7 @@
                   <td colspan="2"></td>
                 </tr>
                 <tr class="even">
-                    <td colspan="2"><b>GENERAL PERFORMANCE1</b></td>
+                    <td colspan="2"><b>GENERAL PERFORMANCE</b></td>
                 </tr>
                 <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
@@ -337,8 +337,8 @@
                         <% next %>
                       <% end %>
                       <% wordString_main = "" %>
-                  
                       <% @report_data['report']['exams'].each do |report| %>
+                        <%= report['result'][report['exam_id']][subjects['id']]['remarks']  %>
                         <% if report['exam_category'] == '7' %>
                            <% next %>
                          <% end %>
@@ -348,7 +348,7 @@
                          <% end %>
                       <% end %> 
                       <% wordString = wordString_main.split("|") %>
-                        <%= wordString %>
+                        
                         <% subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
                         <% iloop = 0 %>
                         <% subject_groups.each do |group_name| %>

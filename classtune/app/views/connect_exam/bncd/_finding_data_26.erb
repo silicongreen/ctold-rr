@@ -592,7 +592,7 @@ if @total_std.blank?
       last_grade = 0.0
       last_total = 0.0
       %>
-      <%= debug  @student_list.sort.inspect %>
+      <%= debug  @student_list.sort.reverse.inspect %>
       <%
       unless @student_list.blank?
         position = 0

@@ -348,7 +348,7 @@
                          <% end %>
                       <% end %> 
                       <% wordString = wordString_main.split("|") %>
-                      
+                        <%= wordString %>
                         <% subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
                         <% iloop = 0 %>
                         <% subject_groups.each do |group_name| %>

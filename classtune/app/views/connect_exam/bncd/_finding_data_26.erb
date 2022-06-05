@@ -605,6 +605,11 @@ if @total_std.blank?
           last_total = s[1]
          # @student_position[s[2].to_i] = position
          unless failed_students.include?(s[2].to_i)
+            if s[2].to_i == 51435
+              %>
+              <%= s[0] %>
+              <%
+            end  
             position = position+1
             @student_position[s[2].to_i] = position
           end

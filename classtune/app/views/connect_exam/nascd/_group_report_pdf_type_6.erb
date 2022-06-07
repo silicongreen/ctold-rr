@@ -126,7 +126,7 @@
                           <% if @batch.course.course_name.upcase == "XII" %>
                           <% if pos.even? %>
                           <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= mark_subject %></td>
-                          <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= last_full_mark %></td>
+                          <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= subjects['code'] %></td>
                           <% mark_subject = 0 %> 
                           <% else %> 
                           <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>

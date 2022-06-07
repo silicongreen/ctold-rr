@@ -418,11 +418,11 @@
                         <td class="col-pdf " width="26%">
                           Class Teacher
                         </td>
-                        <td class="col-pdf no-border" width="6%">
+                        <td class="col-pdf" width="6%">
 
                         </td>
                         <td class="col-pdf " width="26%">
-                        &nbsp;
+                        
                         </td>
                         <td class="col-pdf no-border" width="6%">
 
@@ -465,6 +465,9 @@
     <% end %>
     <%  unless @grading_levels.empty? %>
       <table id="pdf-table" class="grade_info_table" width="50%" cellspacing="0">
+          <tr class="even header-shade">
+              <td class="small no-warp" colspan="3">Grading Levels</td>
+          </tr>                   
           <tr class="even header-shade">
               <td class="small no-warp">Letter Grade</td>
               <td class="small no-warp">Marks</td> 

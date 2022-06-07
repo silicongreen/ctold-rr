@@ -385,8 +385,11 @@
                       <td class="col-pdf no-border" width="6%">
 
                       </td>
-                      <td class="col-pdf no-border" width="26%">
-                      </td> 
+                      <% if @batch.course.course_name.upcase == "XII" %>   
+                      <td class="col-pdf no-border" width="26%"></td> 
+                      <% else %>
+                      <td class="col-pdf" width="26%"></td> 
+                      <% end%>
                       <td class="col-pdf no-border" width="6%">
 
                       </td>

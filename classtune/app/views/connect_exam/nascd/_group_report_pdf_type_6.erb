@@ -124,7 +124,8 @@
                           <% obtain_mark = obtain_mark.round() %>
                           <% mark_subject = mark_subject + obtain_mark %>
                           <% if @batch.course.course_name.upcase == "XII" %>
-                          <%= "here" %>
+                          <%= "here " + pos.to_s %>
+                          <%= "here " + pos.even?.to_s %>
                           <% if pos.even? %>
                           <td class="col-pdf" rowspan="2"><%= mark_subject %></td>
                           <td class="col-pdf" rowspan="2"><%= "" %></td>

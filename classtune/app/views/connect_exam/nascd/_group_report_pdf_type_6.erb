@@ -325,7 +325,25 @@
                       <td class="col-pdf no-border" width="5%"></td>
                   </tr>
                   <tr class="even">
+                      <% if @batch.course.course_name.upcase == "X" %>      
+                        <td class="col-pdf no-border" width="5%"></td>
+                        <td class="col-pdf " width="26%">
+                          Class Teacher
+                        </td>
+                        <td class="col-pdf no-border" width="6%">
 
+                        </td>
+                        <td class="col-pdf " width="26%">
+                        Exam Coordinator
+                        </td>
+                        <td class="col-pdf no-border" width="6%">
+
+                        </td>
+                        <td class="col-pdf" width="26%">
+                            Principal
+                        </td> 
+                        <td class="col-pdf no-border" width="5%"></td>
+                      <% else %>
                       <td class="col-pdf no-border" width="5%"></td>
                       <td class="col-pdf " width="26%">
                           Parent's Sign
@@ -343,7 +361,7 @@
                           Exam Controller
                       </td> 
                       <td class="col-pdf no-border" width="5%"></td>
-
+                      <% end %>       
                   </tr>
 
               </table>

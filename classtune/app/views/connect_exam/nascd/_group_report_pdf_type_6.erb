@@ -70,6 +70,8 @@
                       <% end %>
                       <% total_subject = total_subject+1 %>
                       <% subject_failed = false %>
+                      <% pos = 1 %> 
+                      <% mark_subject = 0 %> 
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>
                           <% max_mark = 0 %>
@@ -84,8 +86,6 @@
                           <% end %>
                           <% exam_loop = 0 %> 
                           <% unless @report_data['report']['exams'].blank? %>
-                            <% pos = 1 %> 
-                            <% mark_subject = 0 %> 
                             <% @report_data['report']['exams'].each do |report| %>
 
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>

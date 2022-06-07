@@ -125,11 +125,11 @@
                           <% mark_subject = mark_subject + obtain_mark %>
                           <% if @batch.course.course_name.upcase == "XII" %>
                           <% if pos.even? %>
-                          <td class="col-pdf"><%= mark_subject %></td>
-                          <td class="col-pdf"><%= "" %></td>
+                          <td class="col-pdf" style="border-top: 1px solid #fff;"><%= mark_subject %></td>
+                          <td class="col-pdf" style="border-top: 1px solid #fff;"><%= "" %></td>
                           <% mark_subject = 0 %> 
                           <% else %> 
-                          <td class="col-pdf" style="border-bottom: 1px solid #f00;"></td>
+                          <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>
                           <td class="col-pdf"></td>
                           <% end %>
                           <% else %>

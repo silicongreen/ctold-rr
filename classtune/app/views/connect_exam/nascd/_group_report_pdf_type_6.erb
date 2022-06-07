@@ -464,7 +464,7 @@
       <% end %>
     <% end %>
     <%  unless @grading_levels.empty? %>
-      <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
+      <table id="pdf-table" class="grade_info_table" width="50%" cellspacing="0">
           <tr class="even header-shade">
               <td class="small no-warp">Letter Grade</td>
               <td class="small no-warp">Marks</td> 
@@ -505,6 +505,11 @@
         <% end %>
         <%= stylesheet_link_tag 'list_table' %>
         <style>
+        div.baf_shaheen div.grade_information table#pdf-table tr.even td.small
+            {
+              font-weight: normal !important;
+              padding: 2px 10px !important; 
+            }
             table.evaluation tr.border-bottom-1-px td.no-border
             {
                 border-bottom: none !important;

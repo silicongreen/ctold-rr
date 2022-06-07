@@ -31,9 +31,19 @@
                           <% colspan_exam = colspan_exam+1%>
                         <% end %>
                       <% end %> 
+                      <% if @batch.course.course_name.upcase == "XII" %>
+                      <td class="col-pdf no-warp"><b><%= "Subject Total <br />(P1 + P2)" %></b></td>
+                      <td class="col-pdf no-warp"><b><%= "Percentage(%)" %></b></td>
+                      <% else %>
                       <td class="col-pdf no-warp"><b><%= "Subject Total" %></b></td>
+                      <% end %>
                       <td class="col-pdf no-warp" colspan="2"><b><%= "Letter Grade" %></b></td>
+                      <% if @batch.course.course_name.upcase == "XII" %>
+                      <td class="col-pdf no-warp"><b><%= "Grade Point" %></b></td>
+                      <% else %>
                       <td class="col-pdf no-warp"><b><%= "GPA" %></b></td>
+                      <% end %>
+
                   </tr>
                   <% total_mark = 0 %>
                   <% full_mark = 0 %>
@@ -110,7 +120,7 @@
                             <% end %>
                           <% end %>
                           <% obtain_mark = obtain_mark.round() %>
-                          <td class="col-pdf"><%= obtain_mark %></td>
+                          <td class="col-pdf"><%= obtain_mark %> - 1</td>
 
 
                           <%

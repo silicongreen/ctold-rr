@@ -53,6 +53,8 @@
                   <% last_full_mark = 0 %> 
                   <% last_mark = 0 %>
                   <% failed = false %>
+                  <% pos = 1 %> 
+                  <% mark_subject = 0 %> 
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% subjectdata = Subject.find(subjects['id'].to_i) %>
@@ -70,8 +72,6 @@
                       <% end %>
                       <% total_subject = total_subject+1 %>
                       <% subject_failed = false %>
-                      <% pos = 1 %> 
-                      <% mark_subject = 0 %> 
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>
                           <% max_mark = 0 %>

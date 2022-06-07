@@ -126,7 +126,16 @@
                           <% if @batch.course.course_name.upcase == "XII" %>
                           <% if pos.even? %>
                           <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= mark_subject %></td>
-                          <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= subjects['code'] %></td>
+                          <%
+                              mark_to_calculate = 90
+                              if (!subjects['code'].downcase.index("ban").nil?)
+                                mark_to_calculate = 105
+                              elsif (!subjects['code'].downcase.index("eng").nil?)
+                                  mark_to_calculate = 105
+                              end
+                              percentage = (mark_subject / mark_to_calculate) * 100
+                          %>
+                          <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= '"%.2f"' % percentage %>%</td>
                           <% mark_subject = 0 %> 
                           <% else %> 
                           <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>

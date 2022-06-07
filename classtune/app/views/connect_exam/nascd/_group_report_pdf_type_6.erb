@@ -456,7 +456,7 @@
 
               <br/>
               <br/>
-
+              <% if @batch.course.course_name.upcase == "XII" %>  
               <% if @grading_levels.blank? %>
       <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
       <% if @grading_levels.blank? %>
@@ -489,6 +489,7 @@
             </td>
             <td class="small"><%= grade.credit_points %></td>
               </tr> 
+          <% end %> 
           <% end %> 
 
       </table>

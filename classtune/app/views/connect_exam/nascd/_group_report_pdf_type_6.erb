@@ -84,6 +84,8 @@
                           <% end %>
                           <% exam_loop = 0 %> 
                           <% unless @report_data['report']['exams'].blank? %>
+                            <% pos = 1 %> 
+                            <% mark_subject = 0 %> 
                             <% @report_data['report']['exams'].each do |report| %>
 
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
@@ -120,7 +122,18 @@
                             <% end %>
                           <% end %>
                           <% obtain_mark = obtain_mark.round() %>
-                          <td class="col-pdf"><%= obtain_mark %> - 1</td>
+                          <% mark_subject = mark_subject + obtain_mark %>
+                          <% if @batch.course.course_name.upcase == "XII" %>
+                          <% if pos % 2 == 0 %>
+                          <td class="col-pdf" rowspan="2"><%= mark_subject %></td>
+                          <td class="col-pdf" rowspan="2"><%= "" %></td>
+                          <% mark_subject = 0 %> 
+                          <% pos = 1 %>
+                          <% end %>
+                          <% pos = pos + 1 %>
+                          <% else %>
+                          <td class="col-pdf"><%= obtain_mark %></td>
+                          <% end %>
 
 
                           <%

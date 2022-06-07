@@ -198,8 +198,10 @@
                   </tr-->
 
                   <tr class="even">
-                      <td colspan="<%= colspan_exam+4 + 1 %>">Optional Subject</td>
+                      <td colspan="<%= colspan_exam+4 + 2 %>">Optional Subject</td>
                   </tr>
+                  <% pos = 1 %> 
+                  <% mark_subject = 0 %> 
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% subjectdata = Subject.find(subjects['id'].to_i) %>
@@ -262,7 +264,30 @@
                             <% end %>
                           <% end %>
                           <% obtain_mark = obtain_mark.round() %>
+                          <% mark_subject = mark_subject + obtain_mark %>
+                          <% if @batch.course.course_name.upcase == "XII" %>
+                          <% if pos.even? %>
+                          <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= mark_subject %></td>
+                          <%
+                              mark_to_calculate = 90
+                              if (!subjects['code'].downcase.index("ban").nil?)
+                                mark_to_calculate = 105
+                              elsif (!subjects['code'].downcase.index("eng").nil?)
+                                  mark_to_calculate = 105
+                              end
+                              percentage = (mark_subject.to_f / mark_to_calculate.to_f) * 100
+                          %>
+                          <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= "%.2f" % percentage %>%</td>
+                          <% mark_subject = 0 %> 
+                          <% else %> 
+                          <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>
+                          <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>
+                          <% end %>
+                          <% else %>
                           <td class="col-pdf"><%= obtain_mark %></td>
+                          <% end %>
+                          <% pos = pos + 1 %>
+                          <!--td class="col-pdf"><%#= obtain_mark %></td-->
 
 
                           <%

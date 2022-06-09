@@ -218,7 +218,7 @@
                       <% end %>
                       <% if !@std_subject_hash_type.blank? %>
                         <% if !@std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||4") %>
-                          <% #next %>
+                          <% next %>
                         <% end %>
                       <% end %>
                       <% exam_loop = 0 %>

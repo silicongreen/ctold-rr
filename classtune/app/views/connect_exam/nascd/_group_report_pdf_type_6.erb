@@ -211,14 +211,14 @@
                       <% subjectdata = Subject.find(subjects['id'].to_i) %>
                       <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
                       <% if @has_exam_student == false %>
-                        <% #next %>
+                        <% next %>
                       <% end %>
                       <% if subjects['no_exams_sjws'].to_i == 1  %>
-                        <% next %>
+                        <% #next %>
                       <% end %>
                       <% if !@std_subject_hash_type.blank? %>
                         <% if !@std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||4") %>
-                          <% next %>
+                          <% #next %>
                         <% end %>
                       <% end %>
                       <% exam_loop = 0 %>

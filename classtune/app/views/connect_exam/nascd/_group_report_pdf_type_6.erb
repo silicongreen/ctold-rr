@@ -214,7 +214,7 @@
                         <% next %>
                       <% end %>
                       <% if subjects['no_exams_sjws'].to_i == 1  %>
-                        <% #next %>
+                        <% next %>
                       <% end %>
                       <% if !@std_subject_hash_type.blank? %>
                         <% if !@std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||4") %>

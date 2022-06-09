@@ -399,23 +399,23 @@
                   </tr>
                   <tr class="even">
                       <% if @batch.course.course_name.upcase == "X" %>      
-                        <td class="col-pdf no-border" width="5%"></td>
+                        <td class="col-pdf no-border" width="5%" style="padding-top: 100px;"></td>
                         <td class="col-pdf " width="26%">
                           Class Teacher
                         </td>
-                        <td class="col-pdf no-border" width="6%">
+                        <td class="col-pdf no-border" width="6%" style="padding-top: 100px;">
 
                         </td>
-                        <td class="col-pdf " width="26%">
+                        <td class="col-pdf " width="26%" style="padding-top: 100px;">
                         Exam Coordinator
                         </td>
-                        <td class="col-pdf no-border" width="6%">
+                        <td class="col-pdf no-border" width="6%" style="padding-top: 100px;">
 
                         </td>
-                        <td class="col-pdf" width="26%">
+                        <td class="col-pdf" width="26%" style="padding-top: 100px;">
                             Principal
                         </td> 
-                        <td class="col-pdf no-border" width="5%"></td>
+                        <td class="col-pdf no-border" width="5%" style="padding-top: 100px;"></td>
                       <% elsif @batch.course.course_name.upcase == "XII" %>   
                       <td class="col-pdf no-border" width="5%"></td>
                         <td class="col-pdf " width="26%">
@@ -502,7 +502,7 @@
 
     <% end %> 
 
-              <p class="text-align-center"><b>Date of result publish : <%= @connect_exam_obj.published_date.blank?  ? "" : I18n.l(@connect_exam_obj.published_date,:format=>"%d %B %Y") %></b></p>
+              <!--p class="text-align-center"><b>Date of result publish : <%#= @connect_exam_obj.published_date.blank?  ? "" : I18n.l(@connect_exam_obj.published_date,:format=>"%d %B %Y") %></b></p-->
 
 
 

@@ -377,6 +377,13 @@
               <br/>
               <br/>
               <br/>
+              <% if @batch.course.course_name.upcase == "X" %>   
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <% end %>
               <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
                   <tr class="even border-bottom-1-px">
                       <td class="col-pdf no-border" width="5%"></td>
@@ -397,9 +404,8 @@
                       </td>
                       <td class="col-pdf no-border" width="5%"></td>
                   </tr>
+                  <tr class="even">
                       <% if @batch.course.course_name.upcase == "X" %>      
-                      <tr class="even"><td colspan="7" height="100px"></td></tr>
-                      <tr class="even">
                         <td class="col-pdf no-border" width="5%"></td>
                         <td class="col-pdf " width="26%">
                           Class Teacher
@@ -417,9 +423,7 @@
                             Principal
                         </td> 
                         <td class="col-pdf no-border" width="5%"></td>
-                        </tr>
                       <% elsif @batch.course.course_name.upcase == "XII" %>   
-                      <tr class="even">
                       <td class="col-pdf no-border" width="5%"></td>
                         <td class="col-pdf " width="26%">
                           Class Teacher
@@ -437,9 +441,7 @@
                         Exam Coordinator
                         </td> 
                         <td class="col-pdf no-border" width="5%"></td>
-                        </tr>
                       <% else %>
-                      <tr class="even">
                       <td class="col-pdf no-border" width="5%"></td>
                       <td class="col-pdf " width="26%">
                           Parent's Sign
@@ -457,9 +459,8 @@
                           Exam Controller
                       </td> 
                       <td class="col-pdf no-border" width="5%"></td>
-                      </tr>
                       <% end %>       
-                 
+                  </tr>
 
               </table>
 

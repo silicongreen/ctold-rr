@@ -22,7 +22,7 @@
     std_subject.each do |std_sub|
       if std_sub.student_id == 48812
         %>
-          <%= std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s+"|||"+std_sub.elective_type.to_s %>
+          <%#= std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s+"|||"+std_sub.elective_type.to_s %>
         <%
       end
       @std_subject_hash_type << std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s+"|||"+std_sub.elective_type.to_s

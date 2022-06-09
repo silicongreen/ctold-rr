@@ -397,26 +397,29 @@
                       </td>
                       <td class="col-pdf no-border" width="5%"></td>
                   </tr>
-                  <tr class="even">
                       <% if @batch.course.course_name.upcase == "X" %>      
-                        <td class="col-pdf no-border" width="5%" style="padding-top: 100px;"></td>
+                      <tr class="even"><td colspan="7" height="100px"></td></tr>
+                      <tr class="even">
+                        <td class="col-pdf no-border" width="5%"></td>
                         <td class="col-pdf " width="26%">
                           Class Teacher
                         </td>
-                        <td class="col-pdf no-border" width="6%" style="padding-top: 100px;">
+                        <td class="col-pdf no-border" width="6%">
 
                         </td>
-                        <td class="col-pdf " width="26%" style="padding-top: 100px;">
+                        <td class="col-pdf " width="26%">
                         Exam Coordinator
                         </td>
-                        <td class="col-pdf no-border" width="6%" style="padding-top: 100px;">
+                        <td class="col-pdf no-border" width="6%">
 
                         </td>
-                        <td class="col-pdf" width="26%" style="padding-top: 100px;">
+                        <td class="col-pdf" width="26%">
                             Principal
                         </td> 
-                        <td class="col-pdf no-border" width="5%" style="padding-top: 100px;"></td>
+                        <td class="col-pdf no-border" width="5%"></td>
+                        </tr>
                       <% elsif @batch.course.course_name.upcase == "XII" %>   
+                      <tr class="even">
                       <td class="col-pdf no-border" width="5%"></td>
                         <td class="col-pdf " width="26%">
                           Class Teacher
@@ -434,7 +437,9 @@
                         Exam Coordinator
                         </td> 
                         <td class="col-pdf no-border" width="5%"></td>
+                        </tr>
                       <% else %>
+                      <tr class="even">
                       <td class="col-pdf no-border" width="5%"></td>
                       <td class="col-pdf " width="26%">
                           Parent's Sign
@@ -452,8 +457,9 @@
                           Exam Controller
                       </td> 
                       <td class="col-pdf no-border" width="5%"></td>
+                      </tr>
                       <% end %>       
-                  </tr>
+                 
 
               </table>
 

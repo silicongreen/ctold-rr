@@ -496,6 +496,9 @@
                         end    
                       end  
                       if rs['quarter'] == '3'
+                        %>
+                        <%= full_ob1.to_s + "  " %>
+                        <%
                         sub_codes = ['Phys','Chem','Bio','H.Math'] 
                         mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if full_ob1.to_i == 15

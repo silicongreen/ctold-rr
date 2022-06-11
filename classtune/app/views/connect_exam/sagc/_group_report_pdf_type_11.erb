@@ -248,7 +248,6 @@
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                   <% exam_full_mark_single = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                   <% exam_mark_single = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                  <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% if report['exam_category'] == '3' %>
                                     <%
                                     mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
@@ -261,6 +260,7 @@
                                     end
                                     %>
                                     <% total_sb = total_sb+mark.to_f %>
+                                    <%  main_exam_mark = main_exam_mark+mark.to_f %>
                                   <% end %>
                                   <% if report['exam_category'] == '4' %>
                                     <%
@@ -275,9 +275,11 @@
                                     mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_ob.to_f) * converted_mark
                                     %>
                                     <% total_ob = total_ob+mark.to_f %>
+                                    <%  main_exam_mark = main_exam_mark+mark.to_f %>
                                   <% end %>
                                   <% if report['exam_category'] == '5' %>
                                     <% total_pr = total_pr+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <%  main_exam_mark = main_exam_mark+mark.to_f %>
                                   <% end %>
                                   <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s == "AB" %>
                                     <td class="col-pdf">AB</td>

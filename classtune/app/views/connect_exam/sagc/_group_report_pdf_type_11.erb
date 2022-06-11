@@ -266,11 +266,11 @@
                                     <%
                                     mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                     if full_ob.to_i == 15
-                                    converted_mark = 30
-                                    if sub_codes.include?(subjects['code'])
-                                      converted_mark = 25
-                                    else
-                                      converted_mark = 30
+                                      if sub_codes.include?(subjects['code'])
+                                        converted_mark = 25
+                                      else
+                                        converted_mark = 30
+                                      end
                                     end
                                     mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_ob.to_f) * converted_mark
                                     %>
@@ -295,7 +295,6 @@
                                         end
                                       elsif report['exam_category'] == '4'
                                         if full_ob.to_i == 15
-                                          converted_mark = 30
                                           if sub_codes.include?(subjects['code'])
                                             converted_mark = 25
                                           else

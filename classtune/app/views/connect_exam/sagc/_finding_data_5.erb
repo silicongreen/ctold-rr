@@ -660,7 +660,7 @@
                   end    
                 end
                 <% if std['id'].to_i == 25420 %>
-                <%= std['id'].to_s + " - " + total_ob1.to_s +  " ---- " + total_sb1.to_s + "  --------- " + total_pr1.to_s + " -----------  " + monthly_mark_multiply.to_s + "  <Br />" %>
+                <%= std['id'].to_s + " - " + total_ob1.to_s +  " ---- " + total_sb1.to_s + "  --------- " + total_pr1.to_s + " -----------  " + "  <Br />" %>
                 <% end %>
                 if @connect_exam_obj.result_type == 8 && sub['grade_subject'].to_i != 1
                   if monthly_full_mark1 == 20 

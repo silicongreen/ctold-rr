@@ -496,9 +496,6 @@
                         end    
                       end  
                       if rs['quarter'] == '3'
-                        %>
-                        <%= full_ob1.to_s + " ddd " %>
-                        <%
                         sub_codes = ['Phys','Chem','Bio','H.Math'] 
                         mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if full_ob1.to_i == 15
@@ -508,7 +505,7 @@
                             converted_mark = 30
                           end
                         end
-                        #mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f / full_ob1.to_f) * converted_mark
+                        mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f / full_ob1.to_f) * converted_mark
                         total_ob1 = total_ob1+mark.to_f
                         if @connect_exam_obj.result_type == 11
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"

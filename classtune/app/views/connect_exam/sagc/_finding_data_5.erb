@@ -840,9 +840,7 @@
                 if sub['name'].upcase == "ICT" and @connect_exam_obj.result_type == 9
                   term_mark_multiplier = 1.00
                 end
-                %>
-                <%= std['admission_no'].to_s + " - " + total_ob1.to_s + " " + total_sb1.to_s + "  " + total_pr1.to_s + "  <Br />" %>
-                <%
+                
                 
                 total_mark2 = total_ob2+total_sb2+total_pr2
                 total_mark2_80 = total_mark2.to_f
@@ -874,7 +872,9 @@
                   full_mark2 = 50
                   monthly_mark_multiply2 = 10
                 end 
-                
+                %>
+                <%= std['id'].to_s + " - " + total_ob1.to_s +  " ---- " + total_sb1.to_s + "  --------- " + total_pr1.to_s + " -----------  " + monthly_mark_multiply.to_s + "  <Br />" %>
+                <%
                 if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
                   monthly_mark_multiply = monthly_mark_multiply/2
                   monthly_mark_multiply2 = monthly_mark_multiply2/2

@@ -180,9 +180,10 @@
                           <% end %>
                           <% total_subject_main = total_subject_main+1 %>
                           <td class="col-pdf"><%= total_subject_main %></td>
+                          <% bang_code = ['Bang-1','Bang-2'] %>
+                          <% eng_code = ['Eng-1','Eng-2'] %>
                           
-                          
-                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name']  %> <%= subjects['code']  %><%= fourth_subject %><%= third_subject %></td>
+                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name']  %><%= fourth_subject %><%= third_subject %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
@@ -488,7 +489,7 @@
                                      <% total_grade = total_grade.to_f+new_grade_point.to_f %>
                                     <% end %>  
                                   <% end %>
-                                  <td class="col-pdf" rowspan="2"><%= grade.name %></td>
+                                  <td class="col-pdf" rowspan="2"><%= grade.name %> a</td>
                                   <td class="col-pdf" rowspan="2"><%= grade.credit_points %></td>
                                 <% else %>
                                   <td class="col-pdf" rowspan="2">-</td>

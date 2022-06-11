@@ -499,9 +499,6 @@
                         converted_mark = 30
                         sub_codes = ['Phys','Chem','Bio','H.Math'] 
                         mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                        %>
-                        <%= rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s + " - " + std['id'].to_s + "  " + '<br />' %>
-                        <%
                         if full_ob1.to_i == 15
                           if sub_codes.include?(sub['code'])
                             converted_mark = 25
@@ -844,7 +841,7 @@
                   term_mark_multiplier = 1.00
                 end
                 %>
-                <%#= std['admission_no'].to_s + " - " + total_ob2.to_s + " " + total_sb2.to_s + "  " + total_pr2.to_s + "  <Br />" %>
+                <%= std['admission_no'].to_s + " - " + total_ob1.to_s + " " + total_sb1.to_s + "  " + total_pr1.to_s + "  <Br />" %>
                 <%
                 
                 total_mark2 = total_ob2+total_sb2+total_pr2

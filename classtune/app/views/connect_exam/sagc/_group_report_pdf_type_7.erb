@@ -195,7 +195,7 @@
                              <td class="col-pdf">100 <%= full_sb.to_s + "  " + full_ob.to_s + "  " + full_pr.to_s  %></td>
                             <% else %> 
                               <% divider = 4 %>
-                              <td class="col-pdf">50</td>
+                              <td class="col-pdf">50  <%= full_sb.to_s + "  " + full_ob.to_s + "  " + full_pr.to_s  %></td>
                             <% end %>
                             <% class_test_mark = 0 %>
                             <% unless @report_data['report']['exams'].blank? %>  

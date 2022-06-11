@@ -1,7 +1,7 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-<%= debug @subject_highest_1st_term.inspect %>
-<%= debug @subject_highest_2nd_term.inspect %>
-<%= debug @subject_highest.inspect %>
+<%#= debug @subject_highest_1st_term.inspect %>
+<%#= debug @subject_highest_2nd_term.inspect %>
+<%#= debug @subject_highest.inspect %>
 <%
   if @student_position_first_term.blank? && @subject_highest_1st_term.blank?
     @subject_highest_1st_term = @subject_highest_2nd_term

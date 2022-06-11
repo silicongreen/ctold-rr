@@ -873,7 +873,9 @@
                   monthly_mark_multiply2 = 10
                 end 
                 %>
+                <% if std['id'].to_i == 25420 %>
                 <%= std['id'].to_s + " - " + total_ob1.to_s +  " ---- " + total_sb1.to_s + "  --------- " + total_pr1.to_s + " -----------  " + monthly_mark_multiply.to_s + "  <Br />" %>
+                <% end %>
                 <%
                 if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
                   monthly_mark_multiply = monthly_mark_multiply/2

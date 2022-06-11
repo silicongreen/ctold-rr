@@ -137,6 +137,8 @@
                   <% subjects_done  = [] %>
                   <% mark_bangla = 0 %>
                   <% mark_english = 0 %>
+                  <% mark_bangla_full = 0 %>
+                  <% mark_english_full = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['grade_subject'].to_i == 1 %>
@@ -499,6 +501,7 @@
                             <% else %>
                               <% if bang_code.include?(subjects['code']) %>
                                   <% mark_bangla  = mark_bangla  + main_mark.to_f %>
+                                  <% mark_bangla_full  = mark_bangla_full  + full_mark_all.to_f %>
                               <% end %>
                               <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                               <% if !grade.blank? and !grade.name.blank? %>
@@ -519,8 +522,22 @@
                                    <% total_grade = total_grade.to_f+new_grade_point.to_f %>
                                   <% end %>  
                                 <% end %>
-                                <td class="col-pdf"><%= grade.name %> <%= mark_bangla %></td>
-                                <td class="col-pdf"><%= grade.credit_points %></td>
+                                <% if subjects['code'] == "Bang-1" %>
+                                  <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>
+                                  <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>
+                                <% elsif subjects['code'] == "Bang-2" %>
+                                  <td class="col-pdf" style="border-top: 1px solid #fff; margin-top: -15px;"></td>
+                                  <td class="col-pdf" style="border-top: 1px solid #fff; margin-top: -15px;"></td>
+                                <% elsif subjects['code'] == "Eng-1" %>
+                                  <td class="col-pdf"><%= grade.name %></td>
+                                  <td class="col-pdf"><%= grade.credit_points %></td>
+                                <% elsif subjects['code'] == "Eng-2" %>
+                                  <td class="col-pdf"><%= grade.name %></td>
+                                  <td class="col-pdf"><%= grade.credit_points %></td>
+                                <% else %>
+                                  <td class="col-pdf"><%= grade.name %></td>
+                                  <td class="col-pdf"><%= grade.credit_points %></td>
+                                <% end %>
                               <% else %>
                                 <td class="col-pdf">-</td>
                                 <td class="col-pdf">-</td>

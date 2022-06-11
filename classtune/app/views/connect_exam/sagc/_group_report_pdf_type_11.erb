@@ -283,7 +283,7 @@
                                         converted_mark = 30
                                       end
                                     end
-                                    mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_ob.to_f) * converted_mark
+                                    mark = (mark.to_f / full_ob.to_f) * converted_mark
                                     %>
                                     <% total_ob = total_ob+mark.to_f %>
                                     <%  main_exam_mark = main_exam_mark+mark.to_f %>

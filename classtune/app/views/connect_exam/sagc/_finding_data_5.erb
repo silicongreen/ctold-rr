@@ -769,7 +769,7 @@
                   end
                   
                   if full_sb1 > 0 && full_sb2 > 0 && sub['subject_group_id'].to_i == 0 && @connect_exam_obj.result_type != 1  && @connect_exam_obj.result_type != 2 && @connect_exam_obj.result_type != 12 && @connect_exam_obj.result_type != 3 && @connect_exam_obj.result_type != 4  && sub['grade_subject'].to_i != 1
-                    mark = (total_sb1+total_sb2)
+                    mark = (total_sb1+total_sb2)/2
                     if ( full_sb1 != 25 || mark.round() != 11) && ( (full_sb1 != 50 || mark.round() != 22 ) || (@connect_exam_obj.result_type != 8 || full_sb1 != 50 || mark.round() != 23) ) && ( full_sb1 != 25 || mark.round() != 8 || @connect_exam_obj.result_type != 9)
                       grade_mark = (mark.round().to_f/full_sb1.to_f)*100
                       grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
@@ -833,7 +833,7 @@
                   term_mark_multiplier = 0.90
                 end
                 
-                if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6 or sub['grade_subject'].to_i == 1
+                if @connect_exam_obj.result_type == 5 or  @connect_exam_obj.result_type == 11 or @connect_exam_obj.result_type == 6 or sub['grade_subject'].to_i == 1
                   term_mark_multiplier = 1.00
                 end
                 

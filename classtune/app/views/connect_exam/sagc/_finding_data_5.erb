@@ -102,9 +102,7 @@
           if tab.kind_of?(Array) or tab.blank? or tab['students'].blank?
             next
           end
-          %>
-          <%= "hehe" %>
-          <%
+          
           std_list = []
           tab['students'].each do |std| 
             std_list << std['id'].to_i
@@ -263,6 +261,9 @@
                         full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       end
                     elsif rs['exam_category'] == '3' 
+                      %>
+          <%= "hehe" %>
+          <%
                       if rs['quarter'] == '1'
                         full_sb1 = full_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f

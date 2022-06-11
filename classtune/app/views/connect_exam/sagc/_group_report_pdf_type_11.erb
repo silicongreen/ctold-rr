@@ -185,6 +185,8 @@
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                 <% if subjects['code'] == "Eng-1" %>
                                   <%= report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                  <% else %>
+                                  <%= report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                 <% end %>
                                 <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                 <% if report['exam_category'] == '3' %>

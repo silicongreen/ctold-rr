@@ -135,7 +135,8 @@
                   <% failed = false %>
                   <% already_done = false %>
                   <% subjects_done  = [] %>
-                  
+                  <% mark_bangla = 0 %>
+                  <% mark_english = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['grade_subject'].to_i == 1 %>
@@ -181,7 +182,7 @@
                           <td class="col-pdf"><%= total_subject_main %></td>
                           
                           
-                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name']  %><%= fourth_subject %><%= third_subject %></td>
+                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name']  %> <%= subjects['code']  %><%= fourth_subject %><%= third_subject %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>

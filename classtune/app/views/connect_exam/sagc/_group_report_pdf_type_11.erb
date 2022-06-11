@@ -502,6 +502,9 @@
                               <% if bang_code.include?(subjects['code']) %>
                                   <% mark_bangla  = mark_bangla  + main_mark.to_f %>
                                   <% mark_bangla_full  = mark_bangla_full  + full_mark_all.to_f %>
+                              <% elsif eng_code.include?(subjects['code']) %>
+                                  <% mark_english  = mark_english  + main_mark.to_f %>
+                                  <% mark_english_full  = mark_english_full  + full_mark_all.to_f %>
                               <% end %>
                               <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                               <% if !grade.blank? and !grade.name.blank? %>
@@ -543,11 +546,25 @@
                                   <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.name %></td>
                                   <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.credit_points %></td>
                                 <% elsif subjects['code'] == "Eng-1" %>
-                                  <td class="col-pdf"><%= grade.name %></td>
-                                  <td class="col-pdf"><%= grade.credit_points %></td>
+                                  <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>
+                                  <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>
                                 <% elsif subjects['code'] == "Eng-2" %>
-                                  <td class="col-pdf"><%= grade.name %></td>
-                                  <td class="col-pdf"><%= grade.credit_points %></td>
+                                  <%
+                                    main_mark2 = (mark_english.to_f.round/mark_english_full.to_f)*100
+                                  %>
+                                  <%  grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id) %>
+                                  <% if !grade.blank? and !grade.name.blank? %>
+                                    <% if grade.credit_points.to_i == 0 && fourth_subject.blank? %>
+                                      <% failed = true %>
+                                      <% failed_subject = true %>
+                                    <% end %>
+                                    <% if  failed_subject == true %>
+                                      <% grade.credit_points = 0.0 %>
+                                      <% grade.name = "F" %>
+                                    <% end %>
+                                  <% end %>
+                                  <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.name %></td>
+                                  <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.credit_points %></td>
                                 <% else %>
                                   <td class="col-pdf"><%= grade.name %></td>
                                   <td class="col-pdf"><%= grade.credit_points %></td>

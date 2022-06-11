@@ -83,9 +83,7 @@
         
         
         @tabulation_data['report'].each do |tab|
-          %>
-          <%= "hehe" %>
-          <%
+          
           batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
           batch_subject_id = batch_subject.map(&:id)
           batch_subject_hash_code_main = []	
@@ -104,7 +102,9 @@
           if tab.kind_of?(Array) or tab.blank? or tab['students'].blank?
             next
           end
-        
+          %>
+          <%= "hehe" %>
+          <%
           std_list = []
           tab['students'].each do |std| 
             std_list << std['id'].to_i

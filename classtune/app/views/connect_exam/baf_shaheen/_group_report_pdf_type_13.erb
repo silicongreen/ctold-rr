@@ -127,7 +127,7 @@
                             <% end %>
                           <% end %>
                           
-                          <td class="col-pdf no-warp"><%= sprintf( "%0.02f", total_mark)%></td>
+                          <td class="col-pdf no-warp"><%= sprintf( "%0.02f", total_mark)%> <%= "e" %></td>
                               
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>

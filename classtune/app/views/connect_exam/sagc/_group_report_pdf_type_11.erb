@@ -283,7 +283,11 @@
                                         converted_mark = 30
                                       end
                                     end
-                                    mark = (mark.to_f / full_ob.to_f) * converted_mark
+                                    if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].nil?
+                                      mark = 0
+                                    else
+                                      mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_ob.to_f) * converted_mark
+                                    end
                                     %>
                                     <% total_ob = total_ob+mark.to_f %>
                                     <%  main_exam_mark = main_exam_mark+mark.to_f %>

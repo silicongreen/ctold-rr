@@ -179,16 +179,26 @@
                           <td class="col-pdf"><%= total_subject_main %></td>
                           
                           
-                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %><%= fourth_subject %><%= third_subject %></td>
+                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] + "  " + subjects['code'] %><%= fourth_subject %><%= third_subject %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                 <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                 <% if report['exam_category'] == '3' %>
-                                  <% full_sb = full_sb+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                  <% mrk = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                  <% if report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == 40 %>
+                                    <% mrk = 70 %>
+                                  <% elsif report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == 30 %>
+                                    <% mrk = 50 %>  
+                                  <% end %>
+                                  <% full_sb = full_ob+mrk.to_i %>
                                 <% end %>
                                 <% if report['exam_category'] == '4' %>
-                                  <% full_ob = full_ob+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                  <% mrk = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                  <% if report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == 15 %>
+                                    <% mrk = 30 %>
+                                  <% end %>
+                                  <% full_ob = full_ob+mrk.to_i %>
                                 <% end %>
                                 <% if report['exam_category'] == '5' %>
                                   <% full_pr = full_pr+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -241,7 +251,31 @@
                                   <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s == "AB" %>
                                     <td class="col-pdf">AB</td>
                                   <% else %>
-                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                    <td class="col-pdf">
+                                      <%
+                                      mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                      if report['exam_category'] == '3'
+                                        if full_sb.to_i == 40
+                                          converted_mark = 70
+                                          mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_sb.to_f) * converted_mark
+                                        elsif full_sb.to_i == 30
+                                            converted_mark = 50
+                                            mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_sb.to_f) * converted_mark
+                                        end
+                                      elsif report['exam_category'] == '4'
+                                        if full_ob.to_i == 15
+                                          converted_mark = 30
+                                          mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_ob.to_f) * converted_mark
+                                        end
+                                      elsif report['exam_category'] == '5'
+                                        if full_pr.to_i == 25
+                                          converted_mark = 25
+                                          mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_pr.to_f) * converted_mark
+                                        end
+                                      end
+                                      %>
+                                      <%= mark.round.to_i %>
+                                    </td>
                                   <% end %>
                                     
                                   <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
@@ -504,7 +538,7 @@
                                <% full_mark_all = 75 %>
                                <td class="col-pdf">75</td>
                               <% else %>  
-                                <td class="col-pdf">50 <%= "-" + full_sb.to_s + "  " + full_ob.to_s + "  " + full_pr.to_s + "  "  %></td>
+                                <td class="col-pdf">50</td>
                               <% end %>
                             
 
@@ -614,7 +648,7 @@
                              <% full_mark_all = 75 %>
                              <td class="col-pdf">75</td>
                             <% else %>  
-                              <td class="col-pdf">50 <%= "--" + full_sb.to_s + "  " + full_ob.to_s + "  " + full_pr.to_s + "  "  %></td>
+                              <td class="col-pdf">50</td>
                             <% end %> 
                             <% main_exam_mark = 0 %>
                             <% unless @report_data['report']['exams'].blank? %>  

@@ -189,13 +189,13 @@
                           %>
                           <% divider = 3 %>
                           <% if full_mark.to_f > 0 %>
-                            <% full_mark_all = 50 <%= full_sb.to_s + "  " + full_ob.to_s + "  " + full_pr.to_s + "  "  %> %>
+                            <% full_mark_all = 50  %>
                             <% if full_mark.to_f >= 100 %>
                              <% full_mark_all = 100 %>
                              <td class="col-pdf">100</td>
                             <% else %> 
                               <% divider = 4 %>
-                              <td class="col-pdf">50</td>
+                              <td class="col-pdf">50 <%= full_sb.to_s + "  " + full_ob.to_s + "  " + full_pr.to_s + "  "  %></td>
                             <% end %>
                             <% class_test_mark = 0 %>
                             <% unless @report_data['report']['exams'].blank? %>  

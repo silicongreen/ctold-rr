@@ -497,7 +497,9 @@
                                 <% end %>
                                <% end %>
                             <% else %>
-                            
+                              <% if bang_code.include?(subjects['code']) %>
+                                  <% mark_bangla  = mark_bangla  + main_mark.to_f %>
+                              <% end %>
                               <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                               <% if !grade.blank? and !grade.name.blank? %>
                                 <% if grade.credit_points.to_i == 0 && fourth_subject.blank? %>
@@ -517,7 +519,7 @@
                                    <% total_grade = total_grade.to_f+new_grade_point.to_f %>
                                   <% end %>  
                                 <% end %>
-                                <td class="col-pdf"><%= grade.name %> s</td>
+                                <td class="col-pdf"><%= grade.name %> <%= mark_bangla %></td>
                                 <td class="col-pdf"><%= grade.credit_points %></td>
                               <% else %>
                                 <td class="col-pdf">-</td>

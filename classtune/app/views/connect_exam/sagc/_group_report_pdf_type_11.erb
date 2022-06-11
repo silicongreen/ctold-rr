@@ -215,7 +215,7 @@
                              <% full_mark_all = 75 %>
                              <td class="col-pdf">75</td>
                             <% else %>  
-                              <td class="col-pdf">50</td>
+                              <td class="col-pdf">50 <%= full_sb.to_s + "  " + full_ob.to_s + "  " + full_pr.to_s + "  "  %></td>
                             <% end %>
                             
                                   
@@ -504,7 +504,7 @@
                                <% full_mark_all = 75 %>
                                <td class="col-pdf">75</td>
                               <% else %>  
-                                <td class="col-pdf">50</td>
+                                <td class="col-pdf">50 <%= "-" + full_sb.to_s + "  " + full_ob.to_s + "  " + full_pr.to_s + "  "  %></td>
                               <% end %>
                             
 
@@ -614,7 +614,7 @@
                              <% full_mark_all = 75 %>
                              <td class="col-pdf">75</td>
                             <% else %>  
-                              <td class="col-pdf">50</td>
+                              <td class="col-pdf">50 <%= "--" + full_sb.to_s + "  " + full_ob.to_s + "  " + full_pr.to_s + "  "  %></td>
                             <% end %> 
                             <% main_exam_mark = 0 %>
                             <% unless @report_data['report']['exams'].blank? %>  

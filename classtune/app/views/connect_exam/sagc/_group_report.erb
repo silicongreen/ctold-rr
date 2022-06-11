@@ -176,7 +176,7 @@
     if student_response['status']['code'].to_i == 200
       @tabulation_data = student_response['data']
     end
-    end
+    end 
 %>
   <% if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 16 %>
     <%= render  :partial=>"/connect_exam/sagc/finding_data_6" %>
@@ -186,6 +186,8 @@
     <%= render  :partial=>"/connect_exam/sagc/finding_data_18" %>
   <% elsif @connect_exam_obj.result_type.to_i == 19 %> 
     <%= render  :partial=>"/connect_exam/sagc/finding_data_19" %>
+  <% elsif @connect_exam_obj.result_type.to_i == 11 %> 
+    <%= render  :partial=>"/connect_exam/sagc/finding_data_7" %>
   <% else %>
     <%= render  :partial=>"/connect_exam/sagc/finding_data_5" %>
   <% end %>

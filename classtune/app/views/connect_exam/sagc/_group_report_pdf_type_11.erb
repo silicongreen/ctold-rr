@@ -186,7 +186,7 @@
                                 <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                 <% if report['exam_category'] == '3' %>
                                   <% mrk = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
-                                  <% full_sb = full_ob+mrk.to_i %>
+                                  <% full_sb = full_sb+mrk.to_i %>
                                 <% end %>
                                 <% if report['exam_category'] == '4' %>
                                   <% mrk = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>

@@ -833,14 +833,16 @@
                   term_mark_multiplier = 0.90
                 end
                 
-                if @connect_exam_obj.result_type == 5 or  @connect_exam_obj.result_type == 11 or @connect_exam_obj.result_type == 6 or sub['grade_subject'].to_i == 1
+                if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6 or sub['grade_subject'].to_i == 1
                   term_mark_multiplier = 1.00
                 end
                 
                 if sub['name'].upcase == "ICT" and @connect_exam_obj.result_type == 9
                   term_mark_multiplier = 1.00
                 end
-                
+                %>
+                <%= term_mark_multiplier.to_s + "  <Br />" %>
+                <%
                 
                 total_mark2 = total_ob2+total_sb2+total_pr2
                 total_mark2_80 = total_mark2.to_f

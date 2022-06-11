@@ -109,8 +109,6 @@
                           <% class_test.sort! {|x,y| y <=> x } %> 
                           <% total_mark = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f %>
 
-                          <td class="col-pdf no-warp"><%= sprintf( "%0.02f", total_mark)%> <%= "d" %></td>
-
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
                               <% if report['exam_category'] == '1' or report['exam_category'] == '3' or report['quarter'] != '6'  %>

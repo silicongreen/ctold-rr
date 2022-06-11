@@ -283,7 +283,7 @@
                                         converted_mark = 30
                                       end
                                     end
-                                    if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].nil?
+                                    if full_ob.nil?
                                       mark = 0
                                     else
                                       mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_ob.to_f) * converted_mark

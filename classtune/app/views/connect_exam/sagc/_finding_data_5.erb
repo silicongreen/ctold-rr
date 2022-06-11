@@ -225,7 +225,7 @@
                 appeared_ob = false
                 appeared_pr = false
                 
-                
+                m_sb1 = 0
                 full_sb1 = 0
                 full_sb2 = 0
                 total_sb1 = 0
@@ -233,6 +233,8 @@
                 
                 total_sb1_main = 0
                 total_sb2_main = 0
+
+                m_ob1 = 0
                 full_ob1 = 0
                 full_ob2 = 0
                 total_ob1 = 0
@@ -267,6 +269,7 @@
                       end  
                       if rs['quarter'] == '3'
                         tot_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        m_sb1 = m_sb1+tot_mark.to_f
                         if tot_mark.to_i == 40
                           tot_mark = 70
                         elsif tot_mark.to_i == 30
@@ -288,6 +291,7 @@
                       end  
                       if rs['quarter'] == '3'
                         tot_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        m_ob1 = m_ob1+tot_mark.to_f
                         sub_codes = ['Phys','Chem','Bio','H.Math']
                         if tot_mark.to_i == 15
                           if sub_codes.include?(sub['code'])
@@ -393,15 +397,15 @@
 
                       if rs['quarter'] == '3'
                         mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                        if full_sb1.to_i == 40
+                        if m_sb1.to_i == 40
                           converted_mark = 70
-                          mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f / full_sb1.to_f) * converted_mark
-                        elsif full_sb1.to_i == 30
+                          mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f / m_sb1.to_f) * converted_mark
+                        elsif m_sb1.to_i == 30
                             converted_mark = 50
-                            mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f / full_sb1.to_f) * converted_mark
-                        elsif full_sb1.to_i == 50
+                            mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f / m_sb1.to_f) * converted_mark
+                        elsif m_sb1.to_i == 50
                             converted_mark = 100
-                            mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f / full_sb1.to_f) * converted_mark
+                            mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f / m_sb1.to_f) * converted_mark
                         end
                         total_sb1 = total_sb1+mark.to_f
                         if @connect_exam_obj.result_type == 11
@@ -418,11 +422,7 @@
                           
                         end  
                       end  
-                      %>
-                <% if std['id'].to_i == 25420 %>
-                <%= std['id'].to_s + " - " + total_ob1.to_s +  " ---- " + total_sb1.to_s + "  --------- " + total_pr1.to_s + " -----------  " + "  <Br />" %>
-                <% end %>
-                <%
+                   
                       if rs['quarter'] == '2'
                         total_sb2 = total_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if @connect_exam_obj.result_type != 11
@@ -503,14 +503,14 @@
                         converted_mark = 30
                         sub_codes = ['Phys','Chem','Bio','H.Math'] 
                         mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                        if full_ob1.to_i == 15
+                        if m_ob1.to_i == 15
                           if sub_codes.include?(sub['code'])
                             converted_mark = 25
                           else
                             converted_mark = 30
                           end
                         end
-                        mark = (mark.to_f / full_ob1.to_f) * converted_mark
+                        mark = (mark.to_f / m_ob1.to_f) * converted_mark
                         total_ob1 = total_ob1+mark.to_f
                         if @connect_exam_obj.result_type == 11
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"

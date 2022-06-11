@@ -138,7 +138,7 @@
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %> 
                                     
                                     <% marks_obtain = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                    <%= sprintf( "%0.02f", marks_obtain)%> <%= "s" %>
+                                    <%= sprintf( "%0.02f", marks_obtain)%>
                                     <% total_mark = total_mark.to_f+marks_obtain.to_f %>
                                   <% else %>
                                     -

@@ -591,7 +591,7 @@
                       <% end %>  
                   <% end %>  
                   <tr class="even">
-                      <% colspan = colspan+4 %>
+                      <% colspan = colspan+3 %>
                       <td class="col-pdf align-left-baf" colspan="<%= colspan %>"><b>Total Marks & Total GP</b></td>
                       <td class="col-pdf no-warp align-left-baf" colspan="3">&nbsp;&nbsp;&nbsp;<b><%= grand_total %></b></td>
                       <td class="col-pdf"><b><%= total_grade %></b></td>
@@ -668,9 +668,9 @@
                               <% end %>
                             <% end %>
                             <% end %>
-                            <td class="col-pdf no-warp">
-                               <%= main_exam_mark.to_f.round.to_i %>
-                            </td>   
+                            <!--td class="col-pdf no-warp">
+                               <%#= main_exam_mark.to_f.round.to_i %>
+                            </td-->   
                             <% avg_mark = main_exam_mark.to_f*1 %>
                                   
                             <td class="col-pdf no-warp">

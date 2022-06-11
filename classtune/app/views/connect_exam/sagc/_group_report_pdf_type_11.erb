@@ -186,18 +186,10 @@
                                 <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                 <% if report['exam_category'] == '3' %>
                                   <% mrk = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
-                                  <% if report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == 40 %>
-                                    <% mrk = 70 %>
-                                  <% elsif report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == 30 %>
-                                    <% mrk = 50 %>  
-                                  <% end %>
                                   <% full_sb = full_ob+mrk.to_i %>
                                 <% end %>
                                 <% if report['exam_category'] == '4' %>
                                   <% mrk = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
-                                  <% if report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == 15 %>
-                                    <% mrk = 30 %>
-                                  <% end %>
                                   <% full_ob = full_ob+mrk.to_i %>
                                 <% end %>
                                 <% if report['exam_category'] == '5' %>
@@ -215,7 +207,20 @@
                             end
                           
                           %>
+                          <% full_sb_mark = 0 %>
+                          <% if full_sb.to_i == 40 %>
+                            <% full_sb_mark = 70 %>
+                          <% elsif full_sb.to_i == 30 %>
+                            <% full_sb_mark = 50 %>  
+                          <% end %>
 
+                          <% full_ob_mark = 0 %>
+                          <% if full_ob.to_i == 15 %>
+                            <% full_ob_mark = 30 %>
+                          <% end %>
+
+                          <% full_mark = full_sb_mark.to_i + full_ob_mark.to_i + full_pr.to_i  %>
+                            
                           <% if full_mark.to_f > 0 %>
                             <% full_mark_all = 50 %>
                             <% if full_mark.to_f >= 100 %>
@@ -225,7 +230,7 @@
                              <% full_mark_all = 75 %>
                              <td class="col-pdf">75</td>
                             <% else %>  
-                              <td class="col-pdf">50 <%= full_sb.to_s + "  " + full_ob.to_s + "  " + full_pr.to_s + "  "  %></td>
+                              <td class="col-pdf">50 <%= full_sb_mark.to_s + "  " + full_ob_mark.to_s + "  " + full_pr.to_s + "  "  %></td>
                             <% end %>
                             
                                   
@@ -274,7 +279,7 @@
                                         end
                                       end
                                       %>
-                                      <%= mark.round.to_i %>
+                                      <%= mark.round.to_s + "  " +  %>
                                     </td>
                                   <% end %>
                                     

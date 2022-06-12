@@ -862,7 +862,7 @@
                       <td >
                           <b>
                               <% if @student_position_first_term_batch[@student.id.to_i].blank? %>
-                              <%=  F %>
+                              <%=  "F" %>
                               <% else %>
                                 <% if !grade.blank? and !grade.name.blank? %>
                                   <%= grade.name %>

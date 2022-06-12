@@ -6395,6 +6395,7 @@ class ExamController < ApplicationController
     elsif @connect_exam_obj.result_type.to_i == 19
       finding_data_19()
     else
+      abort('hehe')
       finding_data5()
     end
     

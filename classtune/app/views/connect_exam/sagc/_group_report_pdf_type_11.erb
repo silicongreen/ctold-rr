@@ -275,6 +275,7 @@
                                   <% end %>
                                   <% if report['exam_category'] == '4' %>
                                     <%
+                                    converted_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                     mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                     if full_ob.to_i == 15
                                       if sub_codes.include?(subjects['code'])

@@ -3617,9 +3617,9 @@ class ExamController < ApplicationController
         @tabulation_data = student_response['data']
       end
     end
-    # @connect_exam_obj.result_type.to_i == 11 or 
+    #
     @class = params[:class]
-    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 16
+    if  @connect_exam_obj.result_type.to_i == 11 or @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 16
       finding_data_sagc_covid()
     elsif @connect_exam_obj.result_type.to_i == 17
       finding_data_sagc_25()

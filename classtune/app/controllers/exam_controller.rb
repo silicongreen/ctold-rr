@@ -6474,7 +6474,7 @@ class ExamController < ApplicationController
     new_book.worksheet(0).insert_row(1, row_first)
     
     std_loop = 2
-    abort(@student_result.inspect) 
+    #abort(@student_result.inspect) 
     @student_result.each do |std_result|
       tmp_row = []
       tmp_row << std_result['sl']

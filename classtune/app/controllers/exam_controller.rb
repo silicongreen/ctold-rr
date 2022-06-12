@@ -3681,7 +3681,7 @@ class ExamController < ApplicationController
     @std_resutl = []
    
     iloop = 0
-    abort(@student_position_first_term_batch.inspect)
+    
     if !@student_position.blank? and !@student_position_batch.blank?
       @student_position_first_term = @student_position
     elsif !@student_position_second_term.blank?  and !@student_position_second_term_batch.blank?
@@ -13625,6 +13625,7 @@ class ExamController < ApplicationController
       @section_all_position_batch_final_term = {}
       last_grade = 0.0
       last_total = 0.0
+      abort(@student_list.inspect)
       unless @student_list.blank?
         position = 0
         @sorted_students = @student_list.sort

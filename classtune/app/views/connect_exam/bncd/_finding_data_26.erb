@@ -550,7 +550,7 @@ if @total_std.blank?
             if u_grade == 0
               grand_total_new = grand_total_with_fraction
               grand_grade_new = 50000-grand_grade_point
-
+ 
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_batch << [grand_total_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if !gradeObj.blank? and !gradeObj.name.blank?

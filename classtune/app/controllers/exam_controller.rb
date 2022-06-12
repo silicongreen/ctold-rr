@@ -6395,7 +6395,6 @@ class ExamController < ApplicationController
     elsif @connect_exam_obj.result_type.to_i == 19
       finding_data_19()
     else
-      abort('hehe')
       finding_data5()
     end
     
@@ -11650,6 +11649,19 @@ class ExamController < ApplicationController
                         full_sb1 = full_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       end  
+                      if rs['quarter'] == '3'
+                        tot_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        m_sb1 = m_sb1+tot_mark.to_f
+                        if tot_mark.to_i == 40
+                          tot_mark = 70
+                        elsif tot_mark.to_i == 30
+                          tot_mark = 50 
+                        elsif tot_mark.to_i == 50
+                          tot_mark = 100   
+                        end
+                        full_sb1 = full_sb1+tot_mark.to_f
+                        full_mark1 = full_mark1+tot_mark.to_f
+                      end  
                       if rs['quarter'] == '2'
                         full_sb2 = full_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
@@ -11659,12 +11671,26 @@ class ExamController < ApplicationController
                         full_ob1 = full_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       end  
+                      if rs['quarter'] == '3'
+                        tot_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        m_ob1 = m_ob1+tot_mark.to_f
+                        sub_codes = ['Phys','Chem','Bio','H.Math']
+                        if tot_mark.to_i == 15
+                          if sub_codes.include?(sub['code'])
+                            tot_mark = 25
+                          else
+                            tot_mark = 30
+                          end
+                        end
+                        full_ob1 = full_ob1+tot_mark.to_f
+                        full_mark1 = full_mark1+tot_mark.to_f
+                      end  
                       if rs['quarter'] == '2'
                         full_ob2 = full_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       end
                     elsif rs['exam_category'] == '5' 
-                      if rs['quarter'] == '1'
+                      if rs['quarter'] == '1' or rs['quarter'] == '3'
                         full_pr1 = full_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       end  
@@ -11750,6 +11776,35 @@ class ExamController < ApplicationController
                           
                         end  
                       end  
+
+                      if rs['quarter'] == '3'
+                        mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        if m_sb1.to_i == 40
+                          converted_mark = 70
+                          mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f / m_sb1.to_f) * converted_mark
+                        elsif m_sb1.to_i == 30
+                            converted_mark = 50
+                            mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f / m_sb1.to_f) * converted_mark
+                        elsif m_sb1.to_i == 50
+                            converted_mark = 100
+                            mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f / m_sb1.to_f) * converted_mark
+                        end
+                        total_sb1 = total_sb1+mark.to_f
+                        if @connect_exam_obj.result_type == 11
+                          if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"
+                            if sub['subject_group_id'].to_i == 0 && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8)
+                              if fourth_subject.blank?
+                                u_grade1 = u_grade1+1
+                                subject_failed = true
+                              else
+                                four_subject_failed = true
+                              end  
+                            end
+                          end
+                          
+                        end  
+                      end  
+                   
                       if rs['quarter'] == '2'
                         total_sb2 = total_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if @connect_exam_obj.result_type != 11
@@ -11826,6 +11881,32 @@ class ExamController < ApplicationController
                           end
                         end    
                       end  
+                      if rs['quarter'] == '3'
+                        converted_mark = 30
+                        sub_codes = ['Phys','Chem','Bio','H.Math'] 
+                        mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        if m_ob1.to_i == 15
+                          if sub_codes.include?(sub['code'])
+                            converted_mark = 25
+                          else
+                            converted_mark = 30
+                          end
+                        end
+                        mark = (mark.to_f / m_ob1.to_f) * converted_mark
+                        total_ob1 = total_ob1+mark.to_f
+                        if @connect_exam_obj.result_type == 11
+                          if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"
+                            if sub['subject_group_id'].to_i == 0 && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8)
+                              if fourth_subject.blank?
+                                u_grade1 = u_grade1+1
+                                subject_failed = true
+                              else
+                                four_subject_failed = true
+                              end  
+                            end
+                          end
+                        end    
+                      end  
                       if rs['quarter'] == '2'
                         total_ob2 = total_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if @connect_exam_obj.result_type != 11
@@ -11853,37 +11934,37 @@ class ExamController < ApplicationController
                          
                         end    
                       end
-                      if @connect_exam_obj.result_type != 11
-                        if rs['quarter'] == '1'
-                          if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"  && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
-                            unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
-                              if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
-                                if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)  
-                                  four_subject_failed = true
-                                end  
+                       if @connect_exam_obj.result_type != 11
+                          if rs['quarter'] == '1'
+                            if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"  && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
+                              unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
+                                if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
+                                  if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)  
+                                    four_subject_failed = true
+                                  end  
+                                end
                               end
-                            end
-                          end 
-                        end  
-                        if rs['quarter'] == '2'
-                          if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"  && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
-                            unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
-                              if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
-                                if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9) 
-                                  four_subject_failed = true
-                                end  
-                              end 
-                            end
-                          end 
-                        end
-                      end
+                            end 
+                          end  
+                          if rs['quarter'] == '2'
+                            if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"  && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
+                              unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
+                                if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
+                                  if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9) 
+                                    four_subject_failed = true
+                                  end  
+                                end 
+                              end
+                            end 
+                          end
+                       end
                     elsif rs['exam_category'] == '5' 
                       if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s != "AB"
                         appeared = true
                         full_absent = false
                         appeared_pr = true
                       end
-                      if rs['quarter'] == '1'
+                      if rs['quarter'] == '1' or rs['quarter'] == '3'
                         total_pr1 = total_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if @connect_exam_obj.result_type != 11
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)

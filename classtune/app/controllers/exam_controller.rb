@@ -3681,7 +3681,7 @@ class ExamController < ApplicationController
     @std_resutl = []
    
     iloop = 0
-    abort(@student_position_batch.inspect)
+    abort(@student_result.inspect)
     if !@student_position.blank? and !@student_position_batch.blank?
       @student_position_first_term = @student_position
     elsif !@student_position_second_term.blank?  and !@student_position_second_term_batch.blank?

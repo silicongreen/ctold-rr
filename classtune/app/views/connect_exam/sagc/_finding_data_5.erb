@@ -1071,7 +1071,7 @@
                     end  
                   end
                   %>
-                  <%= loop_std.to_s + "  -  " + full_ob1.to_s + "  " + "  " + total_ob1.to_s + "  " + total_ob2.to_s + full_ob2.to_s + "  " + appeared_ob.to_s + " <br />"  %>
+                  <%= @student_result[loop_std]['sid'].to_s + "  - " + full_ob1.to_s + "  " + "  " + total_ob1.to_s + "  " + total_ob2.to_s + full_ob2.to_s + "  " + appeared_ob.to_s + " <br />"  %>
                   <%
                   if full_ob1 > 0 || full_ob2 > 0
                     if appeared_ob

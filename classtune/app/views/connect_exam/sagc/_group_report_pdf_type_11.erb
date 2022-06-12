@@ -92,6 +92,7 @@
                         <b>Full Marks</b>
                       </td>
                       <% colspan = 0 %>
+                      <% has_sb = true %>
                       <% @report_data['report']['exams'].each do |report| %>
                         
                         <% if report['exam_category'] == '3' %>

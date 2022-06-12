@@ -221,6 +221,8 @@
                             <% full_sb_mark = 50 %> 
                           <% elsif full_sb.to_i == 50 %>
                             <% full_sb_mark = 100 %>   
+                          <% else %>  
+                            <% full_sb_mark = full_sb %>   
                           <% end %>
 
                           <% full_ob_mark = 0 %>
@@ -230,6 +232,8 @@
                             <% else %>
                               <% full_ob_mark = 30 %>
                             <% end %>
+                          <% else %>  
+                            <% full_ob_mark = full_ob %>
                           <% end %>
 
                           <% full_mark = full_sb_mark.to_i + full_ob_mark.to_i + full_pr.to_i  %>
@@ -258,6 +262,7 @@
                                   <% exam_mark_single = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% if report['exam_category'] == '3' %>
                                     <%
+                                    converted_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                     mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                     if full_sb.to_i == 40
                                       converted_mark = 70

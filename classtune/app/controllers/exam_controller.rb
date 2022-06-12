@@ -3627,7 +3627,7 @@ class ExamController < ApplicationController
       finding_data_sagc_18()
     elsif @connect_exam_obj.result_type.to_i == 19
       finding_data_19()
-    elsif @connect_exam_obj.result_type.to_i == 9 or @connect_exam_obj.result_type.to_i == 11
+    elsif @connect_exam_obj.result_type.to_i == 9
       group_course_ids = Course.find(:all, :conditions => "course_name = '#{@batch.course.course_name}' and `group` = '#{@batch.course.group}' and is_deleted = 0").map(&:id)
       group_batch_ids = Batch.find(:all, :conditions => "course_id IN (#{group_course_ids.join(",")}) and is_deleted = 0").map(&:id)
       
@@ -3681,7 +3681,7 @@ class ExamController < ApplicationController
     @std_resutl = []
    
     iloop = 0
-    
+    abort(@student_position_batch.inspect)
     if !@student_position.blank? and !@student_position_batch.blank?
       @student_position_first_term = @student_position
     elsif !@student_position_second_term.blank?  and !@student_position_second_term_batch.blank?

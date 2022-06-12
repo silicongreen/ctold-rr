@@ -11609,7 +11609,7 @@ class ExamController < ApplicationController
                 appeared_ob = false
                 appeared_pr = false
                 
-                
+                m_sb1 = 0
                 full_sb1 = 0
                 full_sb2 = 0
                 total_sb1 = 0
@@ -11617,6 +11617,8 @@ class ExamController < ApplicationController
                 
                 total_sb1_main = 0
                 total_sb2_main = 0
+
+                m_ob1 = 0
                 full_ob1 = 0
                 full_ob2 = 0
                 total_ob1 = 0

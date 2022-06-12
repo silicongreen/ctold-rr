@@ -301,7 +301,7 @@
                                   <% end %>
                                   <% if report['exam_category'] == '5' %>
                                     <% total_pr = total_pr+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                    <%  main_exam_mark = main_exam_mark+mark.to_f %>
+                                    <%  main_exam_mark = main_exam_mark+total_pr.to_f %>
                                   <% end %>
                                   <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s == "AB" %>
                                     <td class="col-pdf">AB</td>

@@ -13533,11 +13533,11 @@ class ExamController < ApplicationController
                 
               end 
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
-                @student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                @student_list << [grand_total_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if @section_wise_position_final_exam[batch_data.id].blank?
                   @section_wise_position_final_exam[batch_data.id] = []
                 end
-                @section_wise_position_final_exam[batch_data.id] << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                @section_wise_position_final_exam[batch_data.id] << [grand_total_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
             end  
         
@@ -13563,15 +13563,15 @@ class ExamController < ApplicationController
                 if @section_wise_position[batch_data.id].blank?
                   @section_wise_position[batch_data.id] = []
                 end
-                @section_wise_position[batch_data.id] << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                @section_wise_position[batch_data.id] << [grand_total_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
             end  
         
             if u_grade2 == 0 && exam_type == 2
-              grand_total_new = 50000-grand_total2_with_fraction
+              grand_total_new = grand_total2_with_fraction
               grand_grade_new = 50000-grand_grade_point2
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
-                @student_list_second_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                @student_list_second_term_batch << [grand_total_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if exam_type == 2
                   if !gradeObj.blank? and !gradeObj.name.blank?
                     if @grade_count[gradeObj.name].blank?
@@ -13583,11 +13583,11 @@ class ExamController < ApplicationController
                 end
               end
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
-                @student_list_second_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                @student_list_second_term << [grand_total_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if @section_wise_position_2nd_term[batch_data.id].blank?
                   @section_wise_position_2nd_term[batch_data.id] = []
                 end
-                @section_wise_position_2nd_term[batch_data.id] << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                @section_wise_position_2nd_term[batch_data.id] << [grand_total_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
             end  
             
@@ -13663,7 +13663,7 @@ class ExamController < ApplicationController
         @section_wise_position.each do|key,value|
           position = 0
          
-          @sorted_students = @section_wise_position[key].sort
+          @sorted_students = @section_wise_position[key].sort.reverse
           @sorted_students.each do|s|
             
             if last_grade != s[0] or last_total != s[1]
@@ -13687,7 +13687,7 @@ class ExamController < ApplicationController
         @section_wise_position_final_exam.each do|key,value|
           position = 0
          
-          @sorted_students = @section_wise_position_final_exam[key].sort
+          @sorted_students = @section_wise_position_final_exam[key].sort.reverse
           @sorted_students.each do|s|
             
             if last_grade != s[0] or last_total != s[1]
@@ -13711,7 +13711,7 @@ class ExamController < ApplicationController
         @section_wise_position_2nd_term.each do|key,value|
           position = 0
          
-          @sorted_students = @section_wise_position_2nd_term[key].sort
+          @sorted_students = @section_wise_position_2nd_term[key].sort.reverse
           @sorted_students.each do|s|
             
             if last_grade != s[0] or last_total != s[1]

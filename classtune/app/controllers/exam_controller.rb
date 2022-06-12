@@ -13730,10 +13730,10 @@ class ExamController < ApplicationController
      
       last_grade = 0.0
       last_total = 0.0
-      abort(@student_list_first_term.inspect)
+      
       unless @student_list_first_term.blank?
         position = 0
-        @sorted_students = @student_list_first_term.sort
+        @sorted_students = @student_list_first_term.sort.reverse
         @sorted_students.each do|s|
           if last_grade != s[0] or last_total != s[1]
             position = position+1
@@ -13769,7 +13769,7 @@ class ExamController < ApplicationController
       last_total = 0.0
       unless @student_list_first_term_batch.blank?
         position = 0
-        @sorted_students = @student_list_first_term_batch.sort
+        @sorted_students = @student_list_first_term_batch.sort.reverse
         @sorted_students.each do|s|
           if last_grade != s[0] or last_total != s[1]
             position = position+1

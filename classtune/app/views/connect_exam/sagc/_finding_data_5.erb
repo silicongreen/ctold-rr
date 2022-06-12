@@ -1998,7 +1998,7 @@
                           if fourth_subject.blank?
                             if @student_result[loop_std]['subject_failed'].blank?
                               @student_result[loop_std]['subject_failed'] = []
-                            end
+                            end 
                             total_mark_main = total_mark1+total_mark2
                             @student_result[loop_std]['subject_failed'] << sub2['code']+"-"+total_mark_main.round().to_s
                           end 

@@ -323,7 +323,7 @@
                                   <% else %>
                                     <td class="col-pdf">
                                       <%
-                                      mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                      mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round
                                       if report['exam_category'] == '3'
                                         if full_sb.to_i == 40
                                           converted_mark = 70
@@ -424,7 +424,7 @@
                                   <% @report_data['report']['exams'].each do |report| %>   
                                     <% if report['exam_category'] != '1' %>
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].blank? %>                                   
-                                        <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
+                                        <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f.round %>
                                         <% if report['exam_category'] == '3' %>
                                           <% total_sb = total_sb+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% end %>
@@ -528,7 +528,7 @@
 
 
                             <%
-                                    total_pass = true
+                                    total_pass = false
                                     converted_sb = full_sb
                                     if full_sb.to_i == 40
                                       converted_sb = 70

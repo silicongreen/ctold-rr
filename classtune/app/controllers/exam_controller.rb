@@ -12078,7 +12078,7 @@ class ExamController < ApplicationController
                   end
                 end
                 
-                total_pass = true
+                total_pass = false
                 if @connect_exam_obj.result_type == 11
                   subject_failed = false
                   four_subject_failed = false

@@ -11554,6 +11554,12 @@ class ExamController < ApplicationController
             subject_array = []
             grads = @student_tab.admission_no.to_s + " "
             stdd = @student_tab.admission_no.to_s
+            mark_bangla = 0
+            mark_english = 0
+            mark_bangla_full = 0
+            mark_english_full = 0
+            ang_code = ['Bang-1','Bang-2']
+            eng_code = ['Eng-1','Eng-2']
             tab['subjects'].each do |sub|
               if subject_array.include?(sub['id'].to_i)
                 next
@@ -11631,6 +11637,7 @@ class ExamController < ApplicationController
                 main_mark = 0
                 subject_failed = false
                 four_subject_failed = false
+
                 tab['exams'].each do |rs|
                   if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? 
                     if rs['exam_category'] == '1'
@@ -12067,46 +12074,57 @@ class ExamController < ApplicationController
                 end
                 
                 if @connect_exam_obj.result_type == 11
-                  abort(full_ob1.to_s + "  " + full_sb1.to_s + "  " + full_pr1.to_s)
-                  if monthly_full_mark1 == 20 
-                    if monthly_total_mark1 < 9
-                      if fourth_subject.blank?
-                        u_grade1 = u_grade1+1
-                        subject_failed = true
-                      else
-                        four_subject_failed = true
-                      end    
-                    end
-                  else
-                    if monthly_total_mark1 < 13
-                      if fourth_subject.blank?
-                        u_grade1 = u_grade1+1
-                        subject_failed = true
-                      else
-                        four_subject_failed = true
-                      end    
-                    end
-                  end 
-                  
-                  if monthly_full_mark2 == 20 
-                    if monthly_total_mark2 < 9
-                      if fourth_subject.blank?
-                        u_grade2 = u_grade2+1
-                        subject_failed = true
-                      else
-                        four_subject_failed = true
-                      end    
-                    end
-                  else
-                    if monthly_total_mark2 < 13
-                      if fourth_subject.blank?
-                        u_grade2 = u_grade2+1
-                        subject_failed = true
-                      else
-                        four_subject_failed = true
-                      end    
+                  subject_failed = false
+                  four_subject_failed = false
+                  con_full_mark = full_ob1.to_i + full_sb1.to_i + full_pr1.to_i
+                  con_mrk = total_ob1.to_i + total_sb1.to_i + total_pr1.to_i
+                  if bang_code.include?(sub['code'])
+                    mark_bangla  = mark_bangla  + con_mrk.to_f
+                    mark_bangla_full  = mark_bangla_full  + con_full_mark.to_f
+                  elsif eng_code.include?(sub['code'])
+                    mark_english  = mark_bangla  + con_mrk.to_f
+                    mark_english_full  = mark_bangla_full  + con_full_mark.to_f
+                  end
+                  not_include_code = ['Bang-1','Eng-1']
+                  if !not_include_code.include?(sub['code'])
+                    if sub['code'] == "Bang-2"
+                      if mark_bangla_full.to_i == 200
+                        if mark_bangla < 90
+                          if fourth_subject.blank?
+                            u_grade1 = u_grade1+1
+                            subject_failed = true
+                          else
+                            four_subject_failed = true
+                          end    
+                        end
+                      end
+                    elsif sub['code'] == "Eng-2"
+                      if mark_english_full.to_i == 200
+                        if mark_english < 90
+                          if fourth_subject.blank?
+                            u_grade1 = u_grade1+1
+                            subject_failed = true
+                          else
+                            four_subject_failed = true
+                          end    
+                        end
+                      end
+                    else
+                      if con_full_mark.to_i == 100
+                        if con_mrk < 45
+                          if fourth_subject.blank?
+                            u_grade1 = u_grade1+1
+                            subject_failed = true
+                          else
+                            four_subject_failed = true
+                          end    
+                        end
+                      end
                     end
                   end
+
+
+                  
                 end
 
                 if full_mark1 > 0 && monthly_full_mark1 != 0

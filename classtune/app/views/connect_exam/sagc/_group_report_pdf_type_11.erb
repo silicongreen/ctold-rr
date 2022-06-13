@@ -529,13 +529,32 @@
 
                             <%
                                     total_pass = true
+                                    converted_sb = full_sb
+                                    if full_sb.to_i == 40
+                                      converted_sb = 70
+                                    elsif full_sb.to_i == 30
+                                      converted_sb = 50
+                                    elsif full_sb.to_i == 50
+                                      converted_sb = 100
+                                    end
+
+                                    converted_ob = full_ob
+                                    if full_ob.to_i == 15
+                                      if sub_codes.include?(subjects['code'])
+                                          converted_ob = 25
+                                      else
+                                          converted_ob = 30
+                                      end
+                                    end
+
+                                    converted_pr = full_pr
                                     %>
-                                    <%= full_ob.to_s + "  "  + full_sb.to_s + "  "  + full_pr.to_s + "<Br/ >" %>
+                                    <%#= converted_ob.to_s + "  "  + converted_sb.to_s + "  "  + converted_pr.to_s + "<Br/ >" %>
                                     <%
                                     failed_subject = false
                                     failed = false
                                     if total_pass
-                                      con_full_mark = full_ob.to_i + full_sb.to_i + full_pr.to_i
+                                      con_full_mark = converted_ob.to_i + converted_sb.to_i + converted_pr.to_i
                                       con_mrk = total_ob.to_i + total_sb.to_i + total_pr.to_i
                                       if bang_code_pass_failed.include?(subjects['code'])
                                         mark_bangla_pass_failed  = mark_bangla_pass_failed  + con_mrk.to_f
@@ -571,7 +590,7 @@
                                       end
                                     else
                                       pass_s = true
-                                      con_full_mark = full_ob.to_i + full_sb.to_i + full_pr.to_i
+                                      con_full_mark = converted_ob.to_i + converted_sb.to_i + converted_pr.to_i
                                       con_mrk = total_ob.to_i + total_sb.to_i + total_pr.to_i
                                       if bang_code_pass_failed.include?(subjects['code'])
                                         mark_bangla_pass_failed_ob  = mark_bangla_pass_failed_ob  + total_ob.to_i
@@ -603,30 +622,30 @@
                                             failed = true 
                                           end
                                         else
-                                          if full_ob.to_i == 30
-                                            if total_ob1 < 13
+                                          if converted_ob.to_i == 30
+                                            if total_ob < 13
                                               pass_s = false
                                             end
-                                          elsif full_ob.to_i == 25
-                                            if total_ob1 < 11
+                                          elsif converted_ob.to_i == 25
+                                            if total_ob < 11
                                               pass_s = false
                                             end
                                           end
                                           if pass_s
-                                            if full_sb.to_i == 70
-                                              if total_sb1 < 32
+                                            if converted_sb.to_i == 70
+                                              if total_sb < 32
                                                 pass_s = false
                                               end
-                                            elsif full_sb.to_i == 50
-                                                if total_sb1 < 23
+                                            elsif converted_sb.to_i == 50
+                                                if total_sb < 23
                                                   pass_s = false
                                                 end
                                             end
                                           end
                                           if pass_s
-                                            if full_pr1 > 0
-                                              if full_pr.to_i == 25
-                                                if total_sb1 < 11
+                                            if converted_pr > 0
+                                              if converted_pr.to_i == 25
+                                                if total_pr < 11
                                                   pass_s = false
                                                 end
                                               end

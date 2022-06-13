@@ -12194,7 +12194,7 @@ class ExamController < ApplicationController
                         if pass_s
                           if full_pr1 > 0
                             if full_pr1.to_i == 25
-                              if total_sb1 < 11
+                              if total_pr1 < 11
                                 pass_s = false
                               end
                             end

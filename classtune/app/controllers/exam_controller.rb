@@ -11792,20 +11792,7 @@ class ExamController < ApplicationController
                             converted_mark = 100
                             mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f / m_sb1.to_f) * converted_mark
                         end
-                        total_sb1 = total_sb1+mark.to_f
-                        if @connect_exam_obj.result_type == 11
-                          if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"
-                            if sub['subject_group_id'].to_i == 0 && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8)
-                              if fourth_subject.blank?
-                                u_grade1 = u_grade1+1
-                                subject_failed = true
-                              else
-                                four_subject_failed = true
-                              end  
-                            end
-                          end
-                          
-                        end  
+                        total_sb1 = total_sb1+mark.to_f  
                       end  
                    
                       if rs['quarter'] == '2'
@@ -11897,18 +11884,6 @@ class ExamController < ApplicationController
                         end
                         mark = (mark.to_f / m_ob1.to_f) * converted_mark
                         total_ob1 = total_ob1+mark.to_f
-                        if @connect_exam_obj.result_type == 11
-                          if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"
-                            if sub['subject_group_id'].to_i == 0 && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8)
-                              if fourth_subject.blank?
-                                u_grade1 = u_grade1+1
-                                subject_failed = true
-                              else
-                                four_subject_failed = true
-                              end  
-                            end
-                          end
-                        end    
                       end  
                       if rs['quarter'] == '2'
                         total_ob2 = total_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
@@ -12089,9 +12064,51 @@ class ExamController < ApplicationController
                       end    
                     end
                   end
-                 
+                end
+                
+                if @connect_exam_obj.result_type == 11
+                  abort(monthly_full_mark1.inspect)
+                  if monthly_full_mark1 == 20 
+                    if monthly_total_mark1 < 9
+                      if fourth_subject.blank?
+                        u_grade1 = u_grade1+1
+                        subject_failed = true
+                      else
+                        four_subject_failed = true
+                      end    
+                    end
+                  else
+                    if monthly_total_mark1 < 13
+                      if fourth_subject.blank?
+                        u_grade1 = u_grade1+1
+                        subject_failed = true
+                      else
+                        four_subject_failed = true
+                      end    
+                    end
+                  end 
                   
-                end  
+                  if monthly_full_mark2 == 20 
+                    if monthly_total_mark2 < 9
+                      if fourth_subject.blank?
+                        u_grade2 = u_grade2+1
+                        subject_failed = true
+                      else
+                        four_subject_failed = true
+                      end    
+                    end
+                  else
+                    if monthly_total_mark2 < 13
+                      if fourth_subject.blank?
+                        u_grade2 = u_grade2+1
+                        subject_failed = true
+                      else
+                        four_subject_failed = true
+                      end    
+                    end
+                  end
+                end
+
                 if full_mark1 > 0 && monthly_full_mark1 != 0
                   full_mark1 = full_mark1+20
                 end

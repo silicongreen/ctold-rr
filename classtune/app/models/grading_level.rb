@@ -85,10 +85,10 @@ class GradingLevel < ActiveRecord::Base
     end 
 
     def for_batch(batch_id)
-      gradding_level = Rails.cache.fetch("grading_level_batch_#{batch_id}"){
+      #gradding_level = Rails.cache.fetch("grading_level_batch_#{batch_id}"){
           batch_grades = GradingLevel.find_all_by_batch_id(batch_id, :conditions=> 'is_deleted = false', :order => 'min_score desc')
           batch_grades
-        }
+       # }
       gradding_level
     end
     

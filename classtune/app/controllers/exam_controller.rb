@@ -11558,6 +11558,11 @@ class ExamController < ApplicationController
             mark_english = 0
             mark_bangla_full = 0
             mark_english_full = 0
+
+            mark_bangla_ob = 0
+            mark_bangla_sb = 0
+            mark_english_ob = 0
+            mark_english_sb = 0
             bang_code = ['Bang-1','Bang-2']
             eng_code = ['Eng-1','Eng-2']
             tab['subjects'].each do |sub|
@@ -12073,23 +12078,79 @@ class ExamController < ApplicationController
                   end
                 end
                 
+                total_pass = true
                 if @connect_exam_obj.result_type == 11
                   subject_failed = false
                   four_subject_failed = false
-                  con_full_mark = full_ob1.to_i + full_sb1.to_i + full_pr1.to_i
-                  con_mrk = total_ob1.to_i + total_sb1.to_i + total_pr1.to_i
-                  if bang_code.include?(sub['code'])
-                    mark_bangla  = mark_bangla  + con_mrk.to_f
-                    mark_bangla_full  = mark_bangla_full  + con_full_mark.to_f
-                  elsif eng_code.include?(sub['code'])
-                    mark_english  = mark_bangla  + con_mrk.to_f
-                    mark_english_full  = mark_bangla_full  + con_full_mark.to_f
-                  end
-                  not_include_code = ['Bang-1','Eng-1']
-                  if !not_include_code.include?(sub['code'])
-                    if sub['code'] == "Bang-2"
-                      if mark_bangla_full.to_i == 200
-                        if mark_bangla < 90
+                  if total_pass
+                    con_full_mark = full_ob1.to_i + full_sb1.to_i + full_pr1.to_i
+                    con_mrk = total_ob1.to_i + total_sb1.to_i + total_pr1.to_i
+                    if bang_code.include?(sub['code'])
+                      mark_bangla  = mark_bangla  + con_mrk.to_f
+                      mark_bangla_full  = mark_bangla_full  + con_full_mark.to_f
+                    elsif eng_code.include?(sub['code'])
+                      mark_english  = mark_english  + con_mrk.to_f
+                      mark_english_full  = mark_english_full  + con_full_mark.to_f
+                    end
+                    not_include_code = ['Bang-1','Eng-1']
+                    if !not_include_code.include?(sub['code'])
+                      if sub['code'] == "Bang-2"
+                        if mark_bangla_full.to_i == 200
+                          if mark_bangla < 90
+                            if fourth_subject.blank?
+                              u_grade1 = u_grade1+1
+                              subject_failed = true
+                            else
+                              four_subject_failed = true
+                            end    
+                          end
+                        end
+                      elsif sub['code'] == "Eng-2"
+                        if mark_english_full.to_i == 200
+                          if mark_english < 90
+                            if fourth_subject.blank?
+                              u_grade1 = u_grade1+1
+                              subject_failed = true
+                            else
+                              four_subject_failed = true
+                            end    
+                          end
+                        end
+                      else
+                        if con_full_mark.to_i == 100
+                          if con_mrk < 45
+                            if fourth_subject.blank?
+                              u_grade1 = u_grade1+1
+                              subject_failed = true
+                            else
+                              four_subject_failed = true
+                            end    
+                          end
+                        end
+                      end
+                    end
+                  else
+                    pass_s = true
+                    con_full_mark = full_ob1.to_i + full_sb1.to_i + full_pr1.to_i
+                    con_mrk = total_ob1.to_i + total_sb1.to_i + total_pr1.to_i
+                    if bang_code.include?(sub['code'])
+                      mark_bangla_ob  = mark_bangla_ob  + total_ob1.to_i
+                      mark_bangla_sb  = mark_bangla_sb + total_sb1.to_i
+                    elsif eng_code.include?(sub['code'])
+                      mark_english_sb  = mark_english_sb  + total_sb1.to_f
+                    end
+                    not_include_code = ['Bang-1','Eng-1']
+                    if !not_include_code.include?(sub['code'])
+                      if sub['code'] == "Bang-2"
+                        if mark_bangla_ob < 27
+                          pass_s = false
+                        end
+                        if pass_s
+                          if mark_bangla_sb < 63
+                            pass_s = false
+                          end
+                        end
+                        if pass_s == false
                           if fourth_subject.blank?
                             u_grade1 = u_grade1+1
                             subject_failed = true
@@ -12097,10 +12158,11 @@ class ExamController < ApplicationController
                             four_subject_failed = true
                           end    
                         end
-                      end
-                    elsif sub['code'] == "Eng-2"
-                      if mark_english_full.to_i == 200
-                        if mark_english < 90
+                      elsif sub['code'] == "Eng-2"
+                        if mark_english_sb < 90
+                          pass_s = false
+                        end
+                        if pass_s == false
                           if fourth_subject.blank?
                             u_grade1 = u_grade1+1
                             subject_failed = true
@@ -12108,10 +12170,37 @@ class ExamController < ApplicationController
                             four_subject_failed = true
                           end    
                         end
-                      end
-                    else
-                      if con_full_mark.to_i == 100
-                        if con_mrk < 45
+                      else
+                        if full_ob1.to_i == 30
+                          if total_ob1 < 13
+                            pass_s = false
+                          end
+                        elsif full_ob1.to_i == 25
+                          if total_ob1 < 11
+                            pass_s = false
+                          end
+                        end
+                        if pass_s
+                          if full_sb1.to_i == 70
+                            if total_sb1 < 32
+                              pass_s = false
+                            end
+                          elsif full_sb1.to_i == 50
+                              if total_sb1 < 23
+                                pass_s = false
+                              end
+                          end
+                        end
+                        if pass_s
+                          if full_pr1 > 0
+                            if full_pr1.to_i == 25
+                              if total_sb1 < 11
+                                pass_s = false
+                              end
+                            end
+                          end
+                        end
+                        if pass_s == false
                           if fourth_subject.blank?
                             u_grade1 = u_grade1+1
                             subject_failed = true

@@ -593,22 +593,20 @@
                                       con_full_mark = converted_ob.to_i + converted_sb.to_i + converted_pr.to_i
                                       con_mrk = total_ob.to_i + total_sb.to_i + total_pr.to_i
                                       if bang_code_pass_failed.include?(subjects['code'])
-                                        mark_bangla_pass_failed_ob  = mark_bangla_pass_failed_ob  + total_ob.to_i
-                                        mark_bangla_pass_failed_sb  = mark_bangla_pass_failed_sb + total_sb.to_i
-                                      elsif eng_code.include?(subjects['code'])
+                                        mark_bangla_pass_failed_ob  = mark_bangla_pass_failed_ob  + total_ob.to_f
+                                        mark_bangla_pass_failed_sb  = mark_bangla_pass_failed_sb + total_sb.to_f
+                                      elsif eng_code_pass_failed.include?(subjects['code'])
                                         mark_english_pass_failed_sb  = mark_english_pass_failed_sb  + total_sb.to_f
                                       end
-                                      %>
-                                      <%= total_ob.to_s + "  " + total_sb.to_s + "  " + mark_bangla_pass_failed_ob.to_s + "  "  + mark_bangla_pass_failed_sb.to_s + "   " + mark_english_pass_failed_sb.to_s + "<br />" %>
-                                      <%
+                                      
                                       not_include_code = ['Bang-1','Eng-1']
                                       if !not_include_code.include?(subjects['code'])
                                         if subjects['code'] == "Bang-2"
-                                          if mark_bangla_pass_failed_ob < 27
+                                          if mark_bangla_pass_failed_ob < 13
                                             pass_s = false
                                           end
                                           if pass_s
-                                            if mark_bangla_pass_failed_sb < 63
+                                            if mark_bangla_pass_failed_sb < 32
                                               pass_s = false
                                             end
                                           end
@@ -617,7 +615,7 @@
                                             failed = true 
                                           end
                                         elsif subjects['code'] == "Eng-2"
-                                          if mark_english_pass_failed_sb < 90
+                                          if mark_english_pass_failed_sb < 45
                                             pass_s = false
                                           end
                                           if pass_s == false && fourth_subject.blank?

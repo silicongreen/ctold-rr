@@ -521,17 +521,17 @@
                             
                                   
                                   <% if fourth_subject.blank? %>
-                                  <% if bang_code.include?(subjects['code']) %>
-                                    <% if subjects['code'] == 'Bang-2' %>
-                                    <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
+                                    <% if bang_code.include?(subjects['code']) %>
+                                      <% if subjects['code'] == 'Bang-2' %>
+                                      <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
+                                      <% end %>
+                                    <% elsif eng_code.include?(subjects['code']) %>
+                                      <% if subjects['code'] == 'Eng-2' %>
+                                      <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
+                                      <% end %>
+                                    <% else %>
+                                      <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
                                     <% end %>
-                                  <% elsif eng_code.include?(subjects['code']) %>
-                                    <% if subjects['code'] == 'Eng-2' %>
-                                    <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
-                                    <% end %>
-                                  <% else %>
-                                    <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
-                                  <% end %>
                                     
                                   <% else %>
                                     <% new_grade_point = grade.credit_points.to_f-2 %>
@@ -706,7 +706,17 @@
                               <% end %>
                               
                                 <% if fourth_subject.blank? %>
+                                  <% if bang_code.include?(subjects['code']) %>
+                                    <% if subjects['code'] == 'Bang-2' %>
                                     <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
+                                    <% end %>
+                                  <% elsif eng_code.include?(subjects['code']) %>
+                                    <% if subjects['code'] == 'Eng-2' %>
+                                    <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
+                                    <% end %>
+                                  <% else %>
+                                    <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
+                                  <% end %>
                                 <% else %>
                                   <% new_grade_point = grade.credit_points.to_f-2 %>
                                   <% if new_grade_point > 0 %>

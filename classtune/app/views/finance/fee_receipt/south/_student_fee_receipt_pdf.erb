@@ -316,7 +316,8 @@
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         <% date_two = @date.due_date.to_date %>
                         
-                        <td colspan="2" class="col-8"><b>Payable amount with fine of 1000 Tk( if paid after <b><%= date_two.to_date.strftime("%d-%m-%Y").to_s %></b> ) and permission of the Principal is needed</td>
+                        <!--td colspan="2" class="col-8"><b>Payable amount with fine of 1000 Tk( if paid after <b><%#= date_two.to_date.strftime("%d-%m-%Y").to_s %></b> ) and permission of the Principal is needed</td-->
+                        <td colspan="2" class="col-8"><b>Payable amount with fine of Taka 1000 ( if paid after <b><%#= date_two.to_date.strftime("%d-%m-%Y").to_s %></b> ) and permission of the Principal is needed</td>
                         <%
                           balance3 = balance+1000
                         %>

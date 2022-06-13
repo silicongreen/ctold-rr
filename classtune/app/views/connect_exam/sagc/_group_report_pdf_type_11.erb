@@ -599,7 +599,7 @@
                                         mark_english_pass_failed_sb  = mark_english_pass_failed_sb  + total_sb.to_f
                                       end
                                       %>
-                                      <%= mark_bangla_pass_failed_ob.to_s + "   " + mark_english_pass_failed_sb.to_s + "<br />" %>
+                                      <%= total_ob.to_s + "  " + total_sb.to_s + "  " + mark_bangla_pass_failed_ob.to_s + "  "  + mark_bangla_pass_failed_sb.to_s + "   " + mark_english_pass_failed_sb.to_s + "<br />" %>
                                       <%
                                       not_include_code = ['Bang-1','Eng-1']
                                       if !not_include_code.include?(subjects['code'])

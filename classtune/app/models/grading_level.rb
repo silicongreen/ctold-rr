@@ -86,10 +86,10 @@ class GradingLevel < ActiveRecord::Base
 
     def for_batch(batch_id)
       #gradding_level = Rails.cache.fetch("grading_level_batch_#{batch_id}"){
-          batch_grades = GradingLevel.find_all_by_batch_id(batch_id, :conditions=> 'is_deleted = false', :order => 'min_score desc')
-          batch_grades
+      batch_grades = GradingLevel.find_all_by_batch_id(batch_id, :conditions=> 'is_deleted = false', :order => 'min_score desc')
+      batch_grades
        # }
-      gradding_level
+      #gradding_level
     end
     
     def percentage_to_grade(percent_score, batch_id)

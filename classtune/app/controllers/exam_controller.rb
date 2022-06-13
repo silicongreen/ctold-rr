@@ -12067,7 +12067,7 @@ class ExamController < ApplicationController
                 end
                 
                 if @connect_exam_obj.result_type == 11
-                  abort(monthly_full_mark1.inspect)
+                  abort(total_ob1.to_s + "  " + total_sb1.to_s + "  " + total_pr1.to_s)
                   if monthly_full_mark1 == 20 
                     if monthly_total_mark1 < 9
                       if fourth_subject.blank?

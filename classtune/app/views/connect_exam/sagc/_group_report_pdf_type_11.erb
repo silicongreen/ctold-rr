@@ -529,54 +529,40 @@
 
                             <%
                                     total_pass = true
-                                    %>
-                                      <%= total_ob.to_s + "  " + total_sb.to_s + "  " + total_pr.to_s + "<Br/ >" %>
-                                    <%
-                                    subject_failed = false
-                                    four_subject_failed = false
+                                    
+                                    failed_subject = false
+                                    failed = false
                                     if total_pass
                                       con_full_mark = full_ob.to_i + full_sb.to_i + full_pr.to_i
                                       con_mrk = total_ob.to_i + total_sb.to_i + total_pr.to_i
-                                      if bang_code.include?(subjects['code'])
-                                        mark_bangla  = mark_bangla  + con_mrk.to_f
-                                        mark_bangla_full  = mark_bangla_full  + con_full_mark.to_f
-                                      elsif eng_code.include?(subjects['code'])
-                                        mark_english  = mark_english  + con_mrk.to_f
-                                        mark_english_full  = mark_english_full  + con_full_mark.to_f
+                                      if bang_code_pass_failed.include?(subjects['code'])
+                                        mark_bangla_pass_failed  = mark_bangla_pass_failed  + con_mrk.to_f
+                                        mark_bangla_pass_failed_full  = mark_bangla_pass_failed_full  + con_full_mark.to_f
+                                      elsif eng_code_pass_failed.include?(subjects['code'])
+                                        mark_english_pass_failed  = mark_english  + con_mrk.to_f
+                                        mark_english_pass_failed_full  = mark_english_pass_failed_full  + con_full_mark.to_f
                                       end
                                       not_include_code = ['Bang-1','Eng-1']
                                       if !not_include_code.include?(subjects['code'])
                                         if subjects['code'] == "Bang-2"
-                                          if mark_bangla_full.to_i == 200
-                                            if mark_bangla < 90
-                                              if fourth_subject.blank?
-                                                u_grade1 = u_grade1+1
-                                                subject_failed = true
-                                              else
-                                                four_subject_failed = true
-                                              end    
+                                          if mark_bangla_pass_failed_full.to_i == 200
+                                            if mark_bangla_pass_failed < 90 && fourth_subject.blank?
+                                              failed_subject = true
+                                              failed = true
                                             end
                                           end
                                         elsif subjects['code'] == "Eng-2"
-                                          if mark_english_full.to_i == 200
-                                            if mark_english < 90
-                                              if fourth_subject.blank?
-                                                u_grade1 = u_grade1+1
-                                                subject_failed = true
-                                              else
-                                                four_subject_failed = true
-                                              end    
+                                          if mark_english_pass_failed_full.to_i == 200
+                                            if mark_english_pass_failed < 90 && fourth_subject.blank?
+                                              failed_subject = true
+                                              failed = true   
                                             end
                                           end
                                         else
                                           if con_full_mark.to_i == 100
-                                            if con_mrk < 45
-                                              if fourth_subject.blank?
-                                                u_grade1 = u_grade1+1
-                                                subject_failed = true
-                                              else
-                                                four_subject_failed = true
-                                              end    
+                                            if con_mrk < 45 && fourth_subject.blank?
+                                              failed_subject = true
+                                              failed = true 
                                             end
                                           end
                                         end
@@ -585,42 +571,34 @@
                                       pass_s = true
                                       con_full_mark = full_ob.to_i + full_sb.to_i + full_pr.to_i
                                       con_mrk = total_ob.to_i + total_sb.to_i + total_pr.to_i
-                                      if bang_code.include?(subjects['code'])
-                                        mark_bangla_ob  = mark_bangla_ob  + total_ob.to_i
-                                        mark_bangla_sb  = mark_bangla_sb + total_sb.to_i
+                                      if bang_code_pass_failed.include?(subjects['code'])
+                                        mark_bangla_pass_failed_ob  = mark_bangla_pass_failed_ob  + total_ob.to_i
+                                        mark_bangla_pass_failed_sb  = mark_bangla_pass_failed_sb + total_sb.to_i
                                       elsif eng_code.include?(subjects['code'])
-                                        mark_english_sb  = mark_english_sb  + total_sb1.to_f
+                                        mark_english_pass_failed_sb  = mark_english_pass_failed_sb  + total_sb.to_f
                                       end
                                       not_include_code = ['Bang-1','Eng-1']
                                       if !not_include_code.include?(subjects['code'])
                                         if subjects['code'] == "Bang-2"
-                                          if mark_bangla_ob < 27
+                                          if mark_bangla_pass_failed_ob < 27
                                             pass_s = false
                                           end
                                           if pass_s
-                                            if mark_bangla_sb < 63
+                                            if mark_bangla_pass_failed_sb < 63
                                               pass_s = false
                                             end
                                           end
-                                          if pass_s == false
-                                            if fourth_subject.blank?
-                                              u_grade1 = u_grade1+1
-                                              subject_failed = true
-                                            else
-                                              four_subject_failed = true
-                                            end    
+                                          if pass_s == false && fourth_subject.blank?
+                                            failed_subject = true
+                                            failed = true 
                                           end
                                         elsif subjects['code'] == "Eng-2"
-                                          if mark_english_sb < 90
+                                          if mark_english_pass_failed_sb < 90
                                             pass_s = false
                                           end
-                                          if pass_s == false
-                                            if fourth_subject.blank?
-                                              u_grade1 = u_grade1+1
-                                              subject_failed = true
-                                            else
-                                              four_subject_failed = true
-                                            end    
+                                          if pass_s == false && fourth_subject.blank?
+                                            failed_subject = true
+                                            failed = true 
                                           end
                                         else
                                           if full_ob.to_i == 30
@@ -652,13 +630,9 @@
                                               end
                                             end
                                           end
-                                          if pass_s == false
-                                            if fourth_subject.blank?
-                                              u_grade1 = u_grade1+1
-                                              subject_failed = true
-                                            else
-                                              four_subject_failed = true
-                                            end    
+                                          if pass_s == false && fourth_subject.blank?
+                                            failed_subject = true
+                                            failed = true 
                                           end
                                         end
                                       end

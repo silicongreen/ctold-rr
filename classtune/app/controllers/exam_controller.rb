@@ -11558,7 +11558,7 @@ class ExamController < ApplicationController
             mark_english = 0
             mark_bangla_full = 0
             mark_english_full = 0
-            ang_code = ['Bang-1','Bang-2']
+            bang_code = ['Bang-1','Bang-2']
             eng_code = ['Eng-1','Eng-2']
             tab['subjects'].each do |sub|
               if subject_array.include?(sub['id'].to_i)

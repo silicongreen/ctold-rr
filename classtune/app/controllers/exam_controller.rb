@@ -12139,14 +12139,14 @@ class ExamController < ApplicationController
                     elsif eng_code.include?(sub['code'])
                       mark_english_sb  = mark_english_sb  + total_sb1.to_f
                     end
-                    not_include_code = ['Bang-1','Eng-1']
+                    not_include_code = ['Bang-11','Eng-11']
                     if !not_include_code.include?(sub['code'])
                       if sub['code'] == "Bang-2"
-                        if mark_bangla_ob < 27
+                        if mark_bangla_ob < 13
                           pass_s = false
                         end
                         if pass_s
-                          if mark_bangla_sb < 63
+                          if mark_bangla_sb < 32
                             pass_s = false
                           end
                         end
@@ -12159,7 +12159,7 @@ class ExamController < ApplicationController
                           end    
                         end
                       elsif sub['code'] == "Eng-2"
-                        if mark_english_sb < 90
+                        if mark_english_sb < 45
                           pass_s = false
                         end
                         if pass_s == false

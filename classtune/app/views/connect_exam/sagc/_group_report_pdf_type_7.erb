@@ -177,7 +177,7 @@
                           <td class="col-pdf"><%= total_subject_main %></td>
                           
                           
-                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %> <%= subjects['code'] %><%= fourth_subject %><%= third_subject %></td>
+                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %><%= fourth_subject %><%= third_subject %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
@@ -719,7 +719,7 @@
                           <%# total_subject = total_subject+1 %>
                           <% subject_count = subject_count+1 %>
                           <td class="col-pdf"><%= subject_count %></td>
-                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %></td>
+                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %> <%= subjects['code'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
                              

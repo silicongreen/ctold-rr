@@ -303,7 +303,7 @@
                       if rs['quarter'] == '3'
                         tot_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         m_ob1 = m_ob1+tot_mark.to_f
-                        sub_codes = ['Phys','Chem','Bio','H.Math']
+                        sub_codes = ['Phys','Chem','Bio','H.Math','H.Sci']
                         if tot_mark.to_i == 15
                           if sub_codes.include?(sub['code'])
                             tot_mark = 25
@@ -499,7 +499,7 @@
                       end  
                       if rs['quarter'] == '3'
                         converted_mark = 30
-                        sub_codes = ['Phys','Chem','Bio','H.Math'] 
+                        sub_codes = ['Phys','Chem','Bio','H.Math','H.Sci'] 
                         mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if m_ob1.to_i == 15
                           if sub_codes.include?(sub['code'])

@@ -473,19 +473,19 @@
               <% if !params[:show_one].blank? %>
                 <h3 align="center">This Fees Receipt is to be used for Enrolment in next class<% unless @promoted_to.blank? %> (<%= @promoted_to %>) <% end %>
                   <% if @date.id == 3107 and @date_no_1_batch.include?(@batch.id) %>
-                    of next session (<%= @date.due_date.to_date.strftime("%Y").to_s %>-<%= @date.due_date.to_date.strftime("%Y").to_i+1 %>) Last date of enrolment is <%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %>.</h3>
+                    of next session (<%= @date.due_date.to_date.strftime("%Y").to_s %>-<%= @date.due_date.to_date.strftime("%Y").to_i+1 %>). Last date of enrolment is <%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %>.</h3>
                   <% elsif (@date.id == 3107 or @date.id == 3108 or @date.id == 3110 or @date.id == 3112) and @date_no_2_batch.include?(@batch.id) %>
-                    of next session (<%= @date.due_date.to_date.strftime("%Y").to_s %>-<%= @date.due_date.to_date.strftime("%Y").to_i+1 %>) Last date of enrolment is 6 July 2021.</h3>
+                    of next session (<%= @date.due_date.to_date.strftime("%Y").to_s %>-<%= @date.due_date.to_date.strftime("%Y").to_i+1 %>. Last date of enrolment is 6 July 2021.</h3>
                   <% else %>    
-                    of next session (<%= @date.due_date.to_date.strftime("%Y").to_s %>-<%= @date.due_date.to_date.strftime("%Y").to_i+1 %>) Last date of enrolment is <%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %>.</h3>
+                    of next session (<%= @date.due_date.to_date.strftime("%Y").to_s %>-<%= @date.due_date.to_date.strftime("%Y").to_i+1 %>). Last date of enrolment is <%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %>.</h3>
                   <% end %> 
                 
               <% end %>
               <% if !params[:show_one].blank? && !@promoted_to.blank? && @promoted_to == "Grade 9" %>
-                <h3 align="center">N.B. Laboratory fees will be taken after subject selection within one month of regular classes.</h3>
+                <h3 align="center">N.B.: Laboratory fees will be taken after subject selection within one month of regular classes.</h3>
               <% end %>
               <% if !params[:report].blank? %>
-                <h3 align="center">N.B. Roll No. in the new class will be set as per merit list of the final result
+                <h3 align="center">N.B.: Roll No. in the new class will be set as per merit list of the final result
                 <% if !params[:show_enrollment].blank? %>
                   &nbsp;if enrolment procedure is completed by <%= @date.due_date.to_date.strftime("%d %B %Y") %>
                 <% end %>

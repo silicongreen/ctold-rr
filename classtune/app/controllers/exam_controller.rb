@@ -11427,6 +11427,7 @@ class ExamController < ApplicationController
       all_courses = Course.find_all_by_course_name(courseObj.course_name)
       all_batch = Batch.find_all_by_course_id(all_courses.map(&:id))
       all_batch_ids = all_batch.map(&:id)
+      abort(all_batch_ids.inspect)
       std_subject = StudentsSubject.find_all_by_batch_id(all_batch.map(&:id),:include=>[:subject])
       @std_subject_hash_type = []
       @std_subject_hash_code = []

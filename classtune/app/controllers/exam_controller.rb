@@ -11485,9 +11485,9 @@ class ExamController < ApplicationController
             end	
           end
           batch_data = Batch.find(@tabulation_data['batches'][batch_loop])
-          if !all_batch_ids.include?(batch_data.id)
-            next
-          end
+          #if !all_batch_ids.include?(batch_data.id)
+          #  next
+          #end
           batch_loop = batch_loop+1
           connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
           exam_type = 1

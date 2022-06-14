@@ -9,8 +9,9 @@
     @student_position_first_term_batch = @student_position_second_term_batch
   end
 
+  courseObj = Course.find_by_id(@batch.course_id)
   convert = true
-  if @batch.name == "Ten"
+  if courseObj.name == "Ten"
     convert = false
   end 
 

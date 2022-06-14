@@ -106,8 +106,8 @@
                       <% if has_pr == true %>
                             <td rowspan="1"><b>PR</b></td>
                       <% end %>
-                      <td rowspan="1"><b>Total</b></td>
-                      <td rowspan="1"><b>Avg</b></td>
+                      <!--td rowspan="1"><b>Total</b></td>
+                      <td rowspan="1"><b>Avg</b></td-->
                   </tr>
 
                   <% total_grade = 0 %>
@@ -210,7 +210,7 @@
                             <% class_test_mark_before = class_test_mark %>
                             <% class_test_mark = (class_test_mark.to_f/divider.to_f) %>
                             <% class_test_mark = class_test_mark.round() %>
-                            <td class="col-pdf no-warp"><%= class_test_mark %></td>
+                            <!--td class="col-pdf no-warp"><%#= class_test_mark %></td-->
                                   
                             
                             <% main_exam_mark = 0 %>
@@ -267,9 +267,9 @@
                             </td-->   
                             <% avg_mark = main_exam_mark.to_f*0.9 %>
                                   
-                            <td class="col-pdf no-warp">
-                               <%= sprintf( "%0.02f", avg_mark)%>
-                            </td>
+                            <!--td class="col-pdf no-warp">
+                               <%#= sprintf( "%0.02f", avg_mark)%>
+                            </td-->
                             <% tota_mark_with_monthly = avg_mark+class_test_mark %>
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>

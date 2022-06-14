@@ -6532,6 +6532,7 @@ class ExamController < ApplicationController
         tmp_row << ""
         tmp_row << ""
       end
+      batchobj = Batch.find_by_id(@batch.id) 
       unless std_result['subjects'].blank?
         @all_subject_connect_exam.each do |value|
           key = value.code.to_s
@@ -6543,7 +6544,11 @@ class ExamController < ApplicationController
               tmp_row << std_result['subjects'][key]['result']['ob'].to_s
               tmp_row << std_result['subjects'][key]['result']['sb'].to_s
               tmp_row << std_result['subjects'][key]['result']['pr'].to_s
-              tmp_row << std_result['subjects'][key]['result']['rt'].to_s
+              if batchobj.name == "Ten"
+                tmp_row << std_result['subjects'][key]['result']['ct'].to_s
+              else
+                tmp_row << std_result['subjects'][key]['result']['rt'].to_s
+              end
               tmp_row << std_result['subjects'][key]['result']['ct'].to_s
               tmp_row << std_result['subjects'][key]['result']['lg'].to_s       
             else

@@ -6387,7 +6387,7 @@ class ExamController < ApplicationController
         @tabulation_data = student_response['data']
       end
     end
-    if @connect_exam_obj.result_type.to_i == 7 or @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 16
+    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 16
       finding_data_sagc_covid()
     elsif @connect_exam_obj.result_type.to_i == 17
       finding_data_sagc_25()
@@ -12360,11 +12360,11 @@ class ExamController < ApplicationController
                 if @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4
                   term_mark_multiplier = 0.80
                 end
-                if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
+                if @connect_exam_obj.result_type == 8
                   term_mark_multiplier = 0.90
                 end
                 
-                if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 11 or @connect_exam_obj.result_type == 6 or sub['grade_subject'].to_i == 1
+                if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 11 or @connect_exam_obj.result_type == 6 or sub['grade_subject'].to_i == 1
                   term_mark_multiplier = 1.00
                 end
                 
@@ -12404,7 +12404,7 @@ class ExamController < ApplicationController
                   monthly_mark_multiply2 = 10
                 end 
                 
-                if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
+                if @connect_exam_obj.result_type == 8
                   monthly_mark_multiply = monthly_mark_multiply/2
                   monthly_mark_multiply2 = monthly_mark_multiply2/2
                 end
@@ -13246,7 +13246,7 @@ class ExamController < ApplicationController
                     if @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4
                       term_mark_multiplier = 0.80
                     end
-                    if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
+                    if @connect_exam_obj.result_type == 8
                       term_mark_multiplier = 0.90
                     end
                     
@@ -13285,7 +13285,7 @@ class ExamController < ApplicationController
                       full_mark2 = 50
                       monthly_mark_multiply2 = 10
                     end 
-                    if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
+                    if @connect_exam_obj.result_type == 8
                       monthly_mark_multiply = monthly_mark_multiply/2
                       monthly_mark_multiply2 = monthly_mark_multiply2/2
                     end

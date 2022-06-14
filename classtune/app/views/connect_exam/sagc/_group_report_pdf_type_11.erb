@@ -576,8 +576,8 @@
                                     failed_subject = false
                                     failed = false
                                     if total_pass
-                                      con_full_mark = converted_ob.to_i + converted_sb.to_i + converted_pr.to_i
-                                      con_mrk = total_ob.to_i + total_sb.to_i + total_pr.to_i
+                                      con_full_mark = converted_ob.round.to_i + converted_sb.round.to_i + converted_pr.round.to_i
+                                      con_mrk = total_ob.round.to_i + total_sb.round.to_i + total_pr.round.to_i
                                       if bang_code_pass_failed.include?(subjects['code'])
                                         mark_bangla_pass_failed  = mark_bangla_pass_failed  + con_mrk.to_f
                                         mark_bangla_pass_failed_full  = mark_bangla_pass_failed_full  + con_full_mark.to_f
@@ -588,21 +588,21 @@
                                       not_include_code = ['Bang-1','Eng-1']
                                       if !not_include_code.include?(subjects['code'])
                                         if subjects['code'] == "Bang-2"
-                                          if mark_bangla_pass_failed_full.to_i == 200
+                                          if mark_bangla_pass_failed_full.round.to_i == 200
                                             if mark_bangla_pass_failed < 90 && fourth_subject.blank?
                                               failed_subject = true
                                               failed = true
                                             end
                                           end
                                         elsif subjects['code'] == "Eng-2"
-                                          if mark_english_pass_failed_full.to_i == 200
+                                          if mark_english_pass_failed_full.round.to_i == 200
                                             if mark_english_pass_failed < 90 && fourth_subject.blank?
                                               failed_subject = true
                                               failed = true   
                                             end
                                           end
                                         else
-                                          if con_full_mark.to_i == 100
+                                          if con_full_mark.round.to_i == 100
                                             if con_mrk < 45 && fourth_subject.blank?
                                               failed_subject = true
                                               failed = true 
@@ -612,8 +612,8 @@
                                       end
                                     else
                                       pass_s = true
-                                      con_full_mark = converted_ob.to_i + converted_sb.to_i + converted_pr.to_i
-                                      con_mrk = total_ob.to_i + total_sb.to_i + total_pr.to_i
+                                      con_full_mark = converted_ob.round.to_i + converted_sb.round.to_i + converted_pr.round.to_i
+                                      con_mrk = total_ob.round.to_i + total_sb.round.to_i + total_pr.round.to_i
                                       if bang_code_pass_failed.include?(subjects['code'])
                                         mark_bangla_pass_failed_ob  = mark_bangla_pass_failed_ob  + total_ob.to_f
                                         mark_bangla_pass_failed_sb  = mark_bangla_pass_failed_sb + total_sb.to_f
@@ -626,11 +626,11 @@
                                       not_include_code = ['Bang-11','Eng-11']
                                       if !not_include_code.include?(subjects['code'])
                                         if subjects['code'] == "Bang-2"
-                                          if mark_bangla_pass_failed_ob < 13
+                                          if mark_bangla_pass_failed_ob.round.to_i < 13
                                             pass_s = false
                                           end
                                           if pass_s
-                                            if mark_bangla_pass_failed_sb < 32
+                                            if mark_bangla_pass_failed_sb.round.to_i < 32
                                               pass_s = false
                                             end
                                           end
@@ -639,7 +639,7 @@
                                             failed = true 
                                           end
                                         elsif subjects['code'] == "Eng-2"
-                                          if mark_english_pass_failed_sb < 45
+                                          if mark_english_pass_failed_sb.round.to_i < 45
                                             pass_s = false
                                           end
                                           if pass_s == false && fourth_subject.blank?
@@ -647,30 +647,30 @@
                                             failed = true 
                                           end
                                         else
-                                          if converted_ob.to_i == 30
-                                            if total_ob < 13
+                                          if converted_ob.round.to_i == 30
+                                            if total_ob.round.to_i < 13
                                               pass_s = false
                                             end
-                                          elsif converted_ob.to_i == 25
-                                            if total_ob < 11
+                                          elsif converted_ob.round.to_i == 25
+                                            if total_ob.round.to_i < 11
                                               pass_s = false
                                             end
                                           end
                                           if pass_s
-                                            if converted_sb.to_i == 70
-                                              if total_sb < 32
+                                            if converted_sb.round.to_i == 70
+                                              if total_sb.round.to_i < 32
                                                 pass_s = false
                                               end
-                                            elsif converted_sb.to_i == 50
-                                                if total_sb < 23
+                                            elsif converted_sb.round.to_i == 50
+                                                if total_sb.round.to_i < 23
                                                   pass_s = false
                                                 end
                                             end
                                           end
                                           if pass_s
                                             if converted_pr > 0
-                                              if converted_pr.to_i == 25
-                                                if total_pr < 11
+                                              if converted_pr.round.to_i == 25
+                                                if total_pr.round.to_i < 11
                                                   pass_s = false
                                                 end
                                               end

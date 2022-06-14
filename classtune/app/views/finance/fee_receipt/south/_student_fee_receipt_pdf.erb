@@ -487,7 +487,7 @@
               <% if !params[:report].blank? %>
                 <h3 align="center">N.B. Roll No. in the new class will be set as per merit list of the final result
                 <% if !params[:show_enrollment].blank? %>
-                  &nbsp;if enrolment procedure is completed by 23 June 2022
+                  &nbsp;if enrolment procedure is completed by <%= @date.due_date.to_date.strftime("%d %B %Y") %>
                 <% end %>
                 <% if !params[:enrolment].blank? %>
                     <% if @date.id == 3107 and @date_no_1_batch.include?(@batch.id) %>

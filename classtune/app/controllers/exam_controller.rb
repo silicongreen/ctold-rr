@@ -11426,8 +11426,8 @@ class ExamController < ApplicationController
       courseObj = Course.find_by_id(batchobj.course_id)
       all_courses = Course.find_all_by_course_name(courseObj.course_name)
       all_batch = Batch.find_all_by_course_id_and_name(all_courses.map(&:id), batchobj.name)
-      #all_batch_ids = all_batch.map(&:id)
-  
+      all_batch_ids = all_batch.map(&:id)
+      abort(all_batch_ids.inspect)
       std_subject = StudentsSubject.find_all_by_batch_id(all_batch.map(&:id),:include=>[:subject])
       @std_subject_hash_type = []
       @std_subject_hash_code = []
@@ -11485,7 +11485,9 @@ class ExamController < ApplicationController
             end	
           end
           batch_data = Batch.find(@tabulation_data['batches'][batch_loop])
-          
+          if !all_batch_ids.include?(batch_data.id)
+            next
+          end
           batch_loop = batch_loop+1
           connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
           exam_type = 1

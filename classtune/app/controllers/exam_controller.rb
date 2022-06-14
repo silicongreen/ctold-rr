@@ -11625,6 +11625,8 @@ class ExamController < ApplicationController
                 full_sb1 = 0
                 full_sb2 = 0
                 total_sb1 = 0
+                total_sb_convert_1 = 0
+                total_sb_no_convert_1 = 0
                 total_sb2 = 0
                 
                 total_sb1_main = 0
@@ -11634,10 +11636,12 @@ class ExamController < ApplicationController
                 full_ob1 = 0
                 full_ob2 = 0
                 total_ob1 = 0
+                total_ob_no_convert_1 = 0
                 total_ob2 = 0
                 full_pr1 = 0
                 full_pr2 = 0
                 total_pr1 = 0
+                total_pr_no_convert_1 = 0
                 total_pr2 = 0
                 main_mark = 0
                 subject_failed = false
@@ -11794,6 +11798,7 @@ class ExamController < ApplicationController
 
                       if rs['quarter'] == '3'
                         mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        total_sb_no_convert_1 = total_sb_no_convert_1+mark.to_f  
                         if m_sb1.to_i == 40
                           converted_mark = 70
                           mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f / m_sb1.to_f) * converted_mark
@@ -11887,6 +11892,7 @@ class ExamController < ApplicationController
                         converted_mark = 30
                         sub_codes = ['Phys','Chem','Bio','H.Math','H.Sci'] 
                         mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        total_ob_no_convert_1 = total_ob_no_convert_1+mark.to_f  
                         if m_ob1.to_i == 15
                           if sub_codes.include?(sub['code'])
                             converted_mark = 25
@@ -11956,6 +11962,7 @@ class ExamController < ApplicationController
                       end
                       if rs['quarter'] == '1' or rs['quarter'] == '3'
                         total_pr1 = total_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        total_pr_no_convert_1 = total_pr_no_convert_1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if @connect_exam_obj.result_type != 11
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                             unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
@@ -12583,10 +12590,10 @@ class ExamController < ApplicationController
                   if full_ob1 > 0 || full_ob2 > 0
                     if appeared_ob
                       
-                      ob_not_round = ob_round = total_ob1+total_ob2
+                      ob_not_round = ob_round = total_ob_no_convert_1+total_ob2
                       ob_round = ob_round.round()
                       if full_ob1 > 0 && full_ob2 > 0
-                        ob_not_round = ob_round = (total_ob1+total_ob2)/2
+                        ob_not_round = ob_round = (total_ob_no_convert_1+total_ob2)/2
                         ob_round = ob_round.round()
                       end
                       if @connect_exam_obj.result_type < 5
@@ -12601,10 +12608,10 @@ class ExamController < ApplicationController
                   end
                   if full_sb1 > 0 || full_sb2 > 0
                     if appeared_sb
-                      sb_not_round = sb_round = total_sb1_main+total_sb2_main
+                      sb_not_round = sb_round = total_sb_no_convert_1+total_sb2_main
                       sb_round = sb_round.round()
                       if full_sb1 > 0 && full_sb2 > 0
-                        sb_not_round = sb_round = (total_sb1_main+total_sb2_main)/2
+                        sb_not_round = sb_round = (total_sb_no_convert_1+total_sb2_main)/2
                         sb_round = sb_round.round()
                       end
                       if @connect_exam_obj.result_type < 5
@@ -12618,10 +12625,10 @@ class ExamController < ApplicationController
                     end  
                   end
                   if full_pr1 > 0 || full_pr2 > 0
-                    pr_not_round = pr_round = total_pr1+total_pr2
+                    pr_not_round = pr_round = total_pr_no_convert_1+total_pr2
                     pr_round = pr_round.round()
                     if full_sb1 > 0 && full_sb2 > 0
-                      pr_not_round = pr_round = (total_pr1+total_pr2)/2
+                      pr_not_round = pr_round = (total_pr_no_convert_1+total_pr2)/2
                       pr_round = pr_round.round()
                     end
                     if appeared_pr

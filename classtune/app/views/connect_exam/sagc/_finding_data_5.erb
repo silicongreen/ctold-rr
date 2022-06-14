@@ -33,6 +33,9 @@
       loop_std = 0
       batchobj = Batch.find_by_id(@batch.id) 
       courseObj = Course.find_by_id(batchobj.course_id)
+      %>
+      <%= courseObj.course_name %>
+      <%
       all_courses = Course.find_all_by_course_name(courseObj.course_name)
       all_batch = Batch.find_all_by_course_id(all_courses.map(&:id))
       std_subject = StudentsSubject.find_all_by_batch_id(all_batch.map(&:id),:include=>[:subject])

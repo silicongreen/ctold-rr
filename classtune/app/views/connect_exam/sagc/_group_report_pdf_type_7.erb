@@ -88,7 +88,7 @@
                           <% colspan = colspan+1 %>
                         <% end %>  
                       <% end %>
-                      <% colspan = colspan+2 %>
+                      <%# colspan = colspan+2 %>
                       <td class="col-pdf" colspan="<%= colspan %>" rowspan="1"><b>Examination</b></td>
                       <td class="col-pdf" rowspan="2"><b>Total Marks</b></td>
                       <td class="col-pdf" rowspan="2"><b>Highest Marks</b></td>
@@ -210,7 +210,7 @@
                             <% class_test_mark_before = class_test_mark %>
                             <% class_test_mark = (class_test_mark.to_f/divider.to_f) %>
                             <% class_test_mark = class_test_mark.round() %>
-                            <!--td class="col-pdf no-warp"><%#= class_test_mark %></td-->
+                            <!--td class="col-pdf no-warp"><%= class_test_mark %></td-->
                                   
                             
                             <% main_exam_mark = 0 %>

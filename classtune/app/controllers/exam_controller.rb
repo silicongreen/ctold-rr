@@ -11485,9 +11485,6 @@ class ExamController < ApplicationController
             end	
           end
           batch_data = Batch.find(@tabulation_data['batches'][batch_loop])
-          #if !all_batch_ids.include?(batch_data.id)
-          #  next
-          #end
           batch_loop = batch_loop+1
           connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
           exam_type = 1
@@ -11495,6 +11492,10 @@ class ExamController < ApplicationController
           std_group_name = batch_data.course.group
         
           if tab.kind_of?(Array) or tab.blank? or tab['students'].blank?
+            next
+          end
+
+          if !all_batch_ids.include?(batch_data.id)
             next
           end
         

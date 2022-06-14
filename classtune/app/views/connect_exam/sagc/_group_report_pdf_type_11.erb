@@ -243,7 +243,6 @@
                             end
                           
                           %>
-                          <% if convert %>
                           <% sub_codes = ['Phys','Chem','Bio','H.Math','H.Sci'] %>
                           <% full_sb_mark = 0 %>
                           <% if full_sb.to_i == 40 %>
@@ -265,10 +264,6 @@
                             <% end %>
                           <% else %>  
                             <% full_ob_mark = full_ob %>
-                          <% end %>
-                          <% else %>
-                            <% full_sb_mark = full_sb %> 
-                            <% full_ob_mark = full_ob %>  
                           <% end %>
 
                           <% full_mark = full_sb_mark.to_i + full_ob_mark.to_i + full_pr.to_i  %>
@@ -298,18 +293,15 @@
                                   <% if report['exam_category'] == '3' %>
                                     <%
                                     converted_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                    mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                    if convert
-                                      if full_sb.to_i == 40
-                                        converted_mark = 70
+                                    if full_sb.to_i == 40
+                                      converted_mark = 70
+                                      mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_sb.to_f) * converted_mark
+                                    elsif full_sb.to_i == 30
+                                        converted_mark = 50
                                         mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_sb.to_f) * converted_mark
-                                      elsif full_sb.to_i == 30
-                                          converted_mark = 50
-                                          mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_sb.to_f) * converted_mark
-                                      elsif full_sb.to_i == 50
-                                          converted_mark = 100
-                                          mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_sb.to_f) * converted_mark
-                                      end
+                                    elsif full_sb.to_i == 50
+                                        converted_mark = 100
+                                        mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_sb.to_f) * converted_mark
                                     end
                                     %>
                                     <% total_sb = total_sb+mark.to_f %>
@@ -318,14 +310,11 @@
                                   <% if report['exam_category'] == '4' %>
                                     <%
                                     converted_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                    mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                    if convert
-                                      if full_ob.to_i == 15
-                                        if sub_codes.include?(subjects['code'])
-                                          converted_mark = 25
-                                        else
-                                          converted_mark = 30
-                                        end
+                                    if full_ob.to_i == 15
+                                      if sub_codes.include?(subjects['code'])
+                                        converted_mark = 25
+                                      else
+                                        converted_mark = 30
                                       end
                                     end
                                     if full_ob.nil?
@@ -348,7 +337,6 @@
                                       <%
                                       mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round
                                       converted_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round
-                                      if convert
                                         if report['exam_category'] == '3'
                                           if full_sb.to_i == 40
                                             converted_mark = 70
@@ -360,19 +348,15 @@
                                               converted_mark = 100
                                               mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_sb.to_f) * converted_mark
                                           end
-                                        end
                                       elsif report['exam_category'] == '4'
                                         converted_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                        mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f 
-                                        if convert
-                                          if full_ob.to_i == 15
-                                            if sub_codes.include?(subjects['code'])
-                                              converted_mark = 25
-                                            else
-                                              converted_mark = 30
-                                            end
-                                            mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_ob.to_f) * converted_mark
+                                        if full_ob.to_i == 15
+                                          if sub_codes.include?(subjects['code'])
+                                            converted_mark = 25
+                                          else
+                                            converted_mark = 30
                                           end
+                                          mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_ob.to_f) * converted_mark
                                         end
                                       elsif report['exam_category'] == '5'
                                         if full_pr.to_i == 25
@@ -571,24 +555,21 @@
                             <%
                                     total_pass = false
                                     converted_sb = full_sb
-                                    if convert
-                                      if full_sb.to_i == 40
-                                        converted_sb = 70
-                                      elsif full_sb.to_i == 30
-                                        converted_sb = 50
-                                      elsif full_sb.to_i == 50
-                                        converted_sb = 100
-                                      end
+                                    
+                                    if full_sb.to_i == 40
+                                      converted_sb = 70
+                                    elsif full_sb.to_i == 30
+                                      converted_sb = 50
+                                    elsif full_sb.to_i == 50
+                                      converted_sb = 100
                                     end
 
                                     converted_ob = full_ob
-                                    if convert
-                                      if full_ob.to_i == 15
-                                        if sub_codes.include?(subjects['code'])
-                                            converted_ob = 25
-                                        else
-                                            converted_ob = 30
-                                        end
+                                    if full_ob.to_i == 15
+                                      if sub_codes.include?(subjects['code'])
+                                          converted_ob = 25
+                                      else
+                                          converted_ob = 30
                                       end
                                     end
 

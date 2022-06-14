@@ -11,7 +11,7 @@
 
   courseObj = Course.find_by_id(@batch.course_id)
   convert = true
-  if courseObj.name == "Ten"
+  if courseObj.course_name == "Ten"
     convert = false
   end 
 

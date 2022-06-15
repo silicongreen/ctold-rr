@@ -1132,7 +1132,7 @@
                         if grade.credit_points.to_i == 0
                           u_grade1 = u_grade1+1
                         end
-                      end
+                      end 
                     end
                     grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
                     if !grade.blank? and !grade.name.blank?
@@ -2289,7 +2289,11 @@
             end  
         
             
-            
+            %>
+            <% if std['sid'] == '109719' %>
+              <%= 'jeej' %>
+            <% end %>
+            <%
             if u_grade1 == 0
               grand_total_new = grand_total1_with_fraction
               grand_grade_new = 50000-grand_grade_point1

@@ -1694,6 +1694,11 @@
                     
                      
                     
+                    %>
+                    <% if std['id'] == '26536' %>
+                      <%= 'sss' + " " + u_grade1.to_s  %>
+                    <% end %>
+                    <%
                     
                     
                     
@@ -1960,11 +1965,6 @@
                     end 
                     
                     
-                    %>
-                    <% if std['id'] == '26536' %>
-                      <%= 'sss' + " " + u_grade1.to_s  %>
-                    <% end %>
-                    <%
                     
                     if main_mark1 > 0
                       main_mark1 = main_mark1/2.00

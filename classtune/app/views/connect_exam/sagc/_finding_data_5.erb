@@ -2033,6 +2033,12 @@
                         end
                       end  
                     end
+                    %>
+                    <% if std['id'] == '26536' %>
+                      <%= 'jeej' + " " + u_grade1.to_s  %>
+                    <% end %>
+                    <%
+                    
                     if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['at'] = at_total_mark1+at_total_mark2
                       

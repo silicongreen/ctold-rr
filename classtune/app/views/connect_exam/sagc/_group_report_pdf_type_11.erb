@@ -728,7 +728,7 @@
                                   <% end %>  
                                 <% end %>
                                 <% if subjects['code'] == "Bang-1" %>
-                                  <td class="col-pdf" style="border-bottom: 1px solid #fff;border-right: 1px solid #000;"></td>
+                                  <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>
                                   <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>
                                 <% elsif subjects['code'] == "Bang-2" %>
                                   <%
@@ -745,8 +745,8 @@
                                       <% grade.name = "F" %>
                                     <% end %>
                                   <% end %>
-                                  <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.name %></td>
-                                  <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.credit_points %></td>
+                                  <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px; left: -5px;"><%= grade.name %></td>
+                                  <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px; left: -5px;"><%= grade.credit_points %></td>
                                 <% elsif subjects['code'] == "Eng-1" %>
                                   <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>
                                   <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>

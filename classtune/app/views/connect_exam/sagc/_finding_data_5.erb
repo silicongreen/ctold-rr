@@ -1423,7 +1423,11 @@
                     full_pr22 = 0
                     total_pr12 = 0
                     total_pr22 = 0
-                    
+                    %>
+                    <% if std['id'] == '26536' %>
+                      <%= 'sss' + " " + u_grade1.to_s  %>
+                    <% end %>
+                    <%
                     subject_failed = false
                     tab['exams'].each do |rs|
                       if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub2['id']].blank? and !rs['result'][rs['exam_id']][sub2['id']][std['id']].blank? 
@@ -1693,13 +1697,6 @@
                     end
                     
                      
-                    
-                    %>
-                    <% if std['id'] == '26536' %>
-                      <%= 'sss' + " " + u_grade1.to_s  %>
-                    <% end %>
-                    <%
-                    
                     
                     
                     if exam_type == 3

@@ -1423,11 +1423,7 @@
                     full_pr22 = 0
                     total_pr12 = 0
                     total_pr22 = 0
-                    %>
-                    <% if std['id'] == '26536' %>
-                      <%= 'sss' + " " + u_grade1.to_s  %>
-                    <% end %>
-                    <%
+                   
                     subject_failed = false
                     tab['exams'].each do |rs|
                       if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub2['id']].blank? and !rs['result'][rs['exam_id']][sub2['id']][std['id']].blank? 
@@ -2204,6 +2200,11 @@
                   
               end
             end
+            %>
+            <% if std['id'] == '26536' %>
+              <%= 'sssss' + " " + u_grade1.to_s + " " +  grand_total1_with_fraction.to_s + "  " +  grand_grade_point1.to_s %>
+            <% end %>
+            <%
             grand_total_with_fraction = sprintf( "%0.02f", grand_total_with_fraction)
             grand_total_with_fraction = grand_total_with_fraction.to_f
             grand_total1_with_fraction = sprintf( "%0.02f", grand_total1_with_fraction)

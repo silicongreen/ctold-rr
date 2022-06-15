@@ -590,14 +590,14 @@
                           end
                         else
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"
-                            if sub['subject_group_id'].to_i == 0 && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8)
-                              if fourth_subject.blank?
-                                u_grade1 = u_grade1+1
-                                subject_failed = true
-                              else
-                                four_subject_failed = true
-                              end  
-                            end
+                            #if sub['subject_group_id'].to_i == 0 && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8)
+                            #  if fourth_subject.blank?
+                            #    u_grade1 = u_grade1+1
+                            #    subject_failed = true
+                            #  else
+                            #    four_subject_failed = true
+                            #  end  
+                            #end
                           end
                         end    
                       end  

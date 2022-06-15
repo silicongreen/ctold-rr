@@ -2175,7 +2175,12 @@
                 end
               end
             end 
-    
+            %>
+            <%= std['sid'].to_s + "  " %>
+            <% if std['sid'] == '109719' %>
+              <%= 'jeej' %>
+            <% end %>
+            <%
             
             if exam_type == 3
               grade_point_avg = grand_grade_point.to_f/total_subject.to_f
@@ -2261,12 +2266,7 @@
               loop_std = loop_std+1
             end
             
-            %>
-            <%= std['sid'].to_s + "  " %>
-            <% if std['sid'] == '109719' %>
-              <%= 'jeej' %>
-            <% end %>
-            <%
+            
           
             if u_grade == 0
               grand_total_new = 50000-grand_total_with_fraction

@@ -2261,6 +2261,12 @@
               loop_std = loop_std+1
             end
             
+            %>
+            <%= std['sid'].to_s + "  " %>
+            <% if std['sid'] == '109719' %>
+              <%= 'jeej' %>
+            <% end %>
+            <%
           
             if u_grade == 0
               grand_total_new = 50000-grand_total_with_fraction
@@ -2289,12 +2295,7 @@
             end  
         
             
-            %>
-            <%= std['sid'].to_s + "  " %>
-            <% if std['sid'] == '109719' %>
-              <%= 'jeej' %>
-            <% end %>
-            <%
+            
             if u_grade1 == 0
               grand_total_new = grand_total1_with_fraction
               grand_grade_new = 50000-grand_grade_point1

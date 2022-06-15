@@ -804,23 +804,21 @@
                             pass_s = false
                           end
                         end
-                        if pass_s
-                          if full_sb1.round.to_i == 70
-                            if total_sb1.round.to_i < 32
+                        
+                        if full_sb1.round.to_i == 70
+                          if total_sb1.round.to_i < 32
+                            pass_s = false
+                          end
+                        elsif full_sb1.round.to_i == 50
+                            if total_sb1.round.to_i < 23
                               pass_s = false
                             end
-                          elsif full_sb1.round.to_i == 50
-                              if total_sb1.round.to_i < 23
-                                pass_s = false
-                              end
-                          end
                         end
-                        if pass_s
-                          if full_pr1 > 0
-                            if full_pr1.round.to_i == 25
-                              if total_pr1.round.to_i < 11
-                                pass_s = false
-                              end
+                      
+                        if full_pr1 > 0
+                          if full_pr1.round.to_i == 25
+                            if total_pr1.round.to_i < 11
+                              pass_s = false
                             end
                           end
                         end

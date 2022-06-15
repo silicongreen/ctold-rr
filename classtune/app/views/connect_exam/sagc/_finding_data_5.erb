@@ -754,6 +754,9 @@
                       end
                     end
                   else
+                    %>
+                    <%= sub['code'] + "  " + full_ob1.round.to_s + "  "  + full_sb1.round.to_s + "  "  + full_pr1.round.to_s + "<br />" %>
+                    <%
                     pass_s = true
                     con_full_mark = full_ob1.round.to_i + full_sb1.round.to_i + full_pr1.round.to_i
                     con_mrk = total_ob1.round.to_i + total_sb1.round.to_i + total_pr1.round.to_i

@@ -12100,10 +12100,11 @@ class ExamController < ApplicationController
                   end
                 end
                 
-                total_pass = false
+                u_grade1 = 0
                 if @connect_exam_obj.result_type == 11
                   subject_failed = false
                   four_subject_failed = false
+                  u_grade1 = 0
                   if total_pass
                     con_full_mark = full_ob1.to_i + full_sb1.to_i + full_pr1.to_i
                     con_mrk = total_ob1.to_i + total_sb1.to_i + total_pr1.to_i

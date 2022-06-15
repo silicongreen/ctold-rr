@@ -755,8 +755,13 @@
                     end
                   else
                     %>
-                    <%#= sub['code'] + "  " + full_ob1.round.to_s + "  "  + full_sb1.round.to_s + "  "  + full_pr1.round.to_s + "<br />" %>
+                    <%= sub['code'] + "  " + full_ob1.round.to_s + "  "  + full_sb1.round.to_s + "  "  + full_pr1.round.to_s + "  " + u_grade1.to_s + "<br />" %>
                     <%
+                    %>
+                <% if std['id'] == '26536' %>
+                  <%= 'ccccc' + "  " + sub['code'] + " " + u_grade1.to_s + " " +  grand_total1_with_fraction.to_s + "  " +  grand_grade_point1.to_s + " <Br />" %>
+                <% end %>
+                <%
                     pass_s = true
                     con_full_mark = full_ob1.round.to_i + full_sb1.round.to_i + full_pr1.round.to_i
                     con_mrk = total_ob1.round.to_i + total_sb1.round.to_i + total_pr1.round.to_i
@@ -843,11 +848,7 @@
                   
                 end
 
-                %>
-                <% if std['id'] == '26536' %>
-                  <%= 'ccccc' + "  " + sub['code'] + " " + u_grade1.to_s + " " +  grand_total1_with_fraction.to_s + "  " +  grand_grade_point1.to_s + " <Br />" %>
-                <% end %>
-                <%
+                
 
                 if full_mark1 > 0 && monthly_full_mark1 != 0
                   full_mark1 = full_mark1+20

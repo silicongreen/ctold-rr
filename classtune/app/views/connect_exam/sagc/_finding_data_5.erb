@@ -803,20 +803,40 @@
                       else
                         if full_ob1.round.to_i == 30
                           if total_ob1.round.to_i < 13
+                            %>
+                            <% if std['id'] == '26585' %>
+                            <%= sub['code'] + "  " + full_ob1.round.to_s + "  " + total_ob1.round.to_s + "  "  + full_sb1.round.to_s + "  " + total_sb1.round.to_s + "  "  + full_pr1.round.to_s + "  " + total_pr1.round.to_s + "  " + u_grade1.to_s + "<br />" %>
+                            <% end %>
+                            <%
                             pass_s = false
                           end
                         elsif full_ob1.round.to_i == 25
                           if total_ob1.round.to_i < 11
+                            %>
+                            <% if std['id'] == '26585' %>
+                            <%= sub['code'] + "  " + full_ob1.round.to_s + "  " + total_ob1.round.to_s + "  "  + full_sb1.round.to_s + "  " + total_sb1.round.to_s + "  "  + full_pr1.round.to_s + "  " + total_pr1.round.to_s + "  " + u_grade1.to_s + "<br />" %>
+                            <% end %>
+                            <%
                             pass_s = false
                           end
                         end
                         
                         if full_sb1.round.to_i == 70
                           if total_sb1.round.to_i < 32
+                            %>
+                            <% if std['id'] == '26585' %>
+                            <%= sub['code'] + "  " + full_ob1.round.to_s + "  " + total_ob1.round.to_s + "  "  + full_sb1.round.to_s + "  " + total_sb1.round.to_s + "  "  + full_pr1.round.to_s + "  " + total_pr1.round.to_s + "  " + u_grade1.to_s + "<br />" %>
+                            <% end %>
+                            <%
                             pass_s = false
                           end
                         elsif full_sb1.round.to_i == 50
                             if total_sb1.round.to_i < 23
+                              %>
+                            <% if std['id'] == '26585' %>
+                            <%= sub['code'] + "  " + full_ob1.round.to_s + "  " + total_ob1.round.to_s + "  "  + full_sb1.round.to_s + "  " + total_sb1.round.to_s + "  "  + full_pr1.round.to_s + "  " + total_pr1.round.to_s + "  " + u_grade1.to_s + "<br />" %>
+                            <% end %>
+                            <%
                               pass_s = false
                             end
                         end
@@ -824,6 +844,11 @@
                         if full_pr1 > 0
                           if full_pr1.round.to_i == 25
                             if total_pr1.round.to_i < 11
+                              %>
+                            <% if std['id'] == '26585' %>
+                            <%= sub['code'] + "  " + full_ob1.round.to_s + "  " + total_ob1.round.to_s + "  "  + full_sb1.round.to_s + "  " + total_sb1.round.to_s + "  "  + full_pr1.round.to_s + "  " + total_pr1.round.to_s + "  " + u_grade1.to_s + "<br />" %>
+                            <% end %>
+                            <%
                               pass_s = false
                             end
                           end

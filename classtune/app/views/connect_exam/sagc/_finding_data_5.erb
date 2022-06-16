@@ -1203,9 +1203,7 @@
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = "AB"
                     end  
                   end
-                  %>
-                  <%#= loop_std.to_s + "  - " + full_ob1.to_s + "  " + "  " + total_ob1.to_s + "  " + total_ob2.to_s + full_ob2.to_s + "  " + appeared_ob.to_s + " <br />"  %>
-                  <%
+                  
                   if full_ob1 > 0 || full_ob2 > 0
                     if appeared_ob
                       
@@ -1330,12 +1328,7 @@
                     end  
                   end
                 end
-                %>
-                <% if sub['code'] == 'Bang-2' %>
-                <%= sub['code'].to_s + " High: " + @subject_highest_1st_term[sub['code'].to_s].to_s + " Total: " + total_mark1.to_s + " <br /><Br />" %>
-                <%= total_mark1 %>
-                <% end %>
-                <%
+                
                 if total_mark1.to_i != 0
                   if @subject_highest_1st_term[sub['code'].to_s].blank?
                     @subject_highest_1st_term[sub['code'].to_s] = total_mark1

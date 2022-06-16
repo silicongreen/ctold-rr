@@ -9297,8 +9297,8 @@ class ExamController < ApplicationController
               end  
               
               highest_mark = 0
-              if !@subject_highest_1st_term.blank? and !@subject_highest_1st_term[sub['id'].to_i].blank?
-                highest_mark = @subject_highest_1st_term[sub['id'].to_i].to_f
+              if !@subject_highest_1st_term.blank? and !@subject_highest_1st_term[sub['code'].to_s].blank?
+                highest_mark = @subject_highest_1st_term[sub['code'].to_s].to_f
               end
               
               if full_mark.to_f > 0
@@ -12727,10 +12727,10 @@ class ExamController < ApplicationController
                     end  
                   end
                 end
-                if @subject_highest_1st_term[sub['id'].to_i].blank?
-                  @subject_highest_1st_term[sub['id'].to_i] = total_mark1
-                elsif total_mark1.to_f > @subject_highest_1st_term[sub['id'].to_i].to_f
-                  @subject_highest_1st_term[sub['id'].to_i] = total_mark1.to_f
+                if @subject_highest_1st_term[sub['code'].to_s].blank?
+                  @subject_highest_1st_term[sub['code'].to_s] = total_mark1
+                elsif total_mark1.to_f > @subject_highest_1st_term[sub['code'].to_s].to_f
+                  @subject_highest_1st_term[sub['code'].to_s] = total_mark1.to_f
                 end
                 if @subject_highest_2nd_term[sub['id'].to_i].blank?
                   @subject_highest_2nd_term[sub['id'].to_i] = total_mark2
@@ -13555,10 +13555,10 @@ class ExamController < ApplicationController
                         end  
                       end
                     end
-                    if @subject_highest_1st_term[sub2['id'].to_i].blank?
-                      @subject_highest_1st_term[sub2['id'].to_i] = total_mark1
-                    elsif total_mark1.to_f > @subject_highest_1st_term[sub2['id'].to_i].to_f
-                      @subject_highest_1st_term[sub2['id'].to_i] = total_mark1.to_f
+                    if @subject_highest_1st_term[sub2['code'].to_s].blank?
+                      @subject_highest_1st_term[sub2['code'].to_s] = total_mark1
+                    elsif total_mark1.to_f > @subject_highest_1st_term[sub2['code'].to_s].to_f
+                      @subject_highest_1st_term[sub2['code'].to_s] = total_mark1.to_f
                     end
                     if @subject_highest_2nd_term[sub2['id'].to_i].blank?
                       @subject_highest_2nd_term[sub2['id'].to_i] = total_mark2

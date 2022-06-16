@@ -80,12 +80,12 @@
                             <% if l == 1 %> 
                                 <td class="col-pdf">Total Working day</td>
                                 <td class="col-pdf"><%= (stdnt_ids.include?(@student.id)) ? "0" : @report_data['total_first_term'] %></td>
-                                <td class="col-pdf"><%= (stdnt_ids.include?(@student.id)) ? "0" : @report_data['total'] %></td>
+                                <td class="col-pdf"><%=  @report_data['total'] %></td>
 
                             <% elsif l == 2 %> 
                                 <td class="col-pdf">Days Present</td>
                                 <% unless @report_data['total_new_std_first_term'].blank?  %>
-                                  <td class="col-pdf"><%= @report_data['total_new_std_first_term'].to_i-@report_data['absent_first_term'].to_i %></td>
+                                  <td class="col-pdf"><%= (stdnt_ids.include?(@student.id)) ? "0" : @report_data['total_new_std_first_term'].to_i-@report_data['absent_first_term'].to_i %></td>
                                 <% else %>
                                   <td class="col-pdf"><%= @report_data['present_first_term'] %></td>
                                 <% end %>

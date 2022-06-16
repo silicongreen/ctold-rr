@@ -1335,6 +1335,9 @@
                     end  
                   end
                 end
+                %>
+                <%= sub['code'].to_s + "  " + @subject_highest_1st_term[sub['id'].to_i].to_s + "  " + total_mark1.to_s + " <br /><Br />" %>
+                <%
                 if @subject_highest_1st_term[sub['id'].to_i].blank?
                   @subject_highest_1st_term[sub['id'].to_i] = total_mark1
                 elsif total_mark1.to_f > @subject_highest_1st_term[sub['id'].to_i].to_f

@@ -803,40 +803,20 @@
                       else
                         if full_ob1.round.to_i == 30
                           if total_ob1.round.to_i < 13
-                            %>
-                            <% if std['id'] == '26585' %>
-                            <%= "here1-" + sub['code'] + "  " + full_ob1.round.to_s + "  " + total_ob1.round.to_s + "  "  + full_sb1.round.to_s + "  " + total_sb1.round.to_s + "  "  + full_pr1.round.to_s + "  " + total_pr1.round.to_s + "  " + u_grade1.to_s + "<br />" %>
-                            <% end %>
-                            <%
                             pass_s = false
                           end
                         elsif full_ob1.round.to_i == 25
                           if total_ob1.round.to_i < 11
-                            %>
-                            <% if std['id'] == '26585' %>
-                            <%= "here2-" + sub['code'] + "  " + full_ob1.round.to_s + "  " + total_ob1.round.to_s + "  "  + full_sb1.round.to_s + "  " + total_sb1.round.to_s + "  "  + full_pr1.round.to_s + "  " + total_pr1.round.to_s + "  " + u_grade1.to_s + "<br />" %>
-                            <% end %>
-                            <%
                             pass_s = false
                           end
                         end
                         
                         if full_sb1.round.to_i == 70
                           if total_sb1.round.to_i < 32
-                            %>
-                            <% if std['id'] == '26585' %>
-                            <%= "here3-" + sub['code'] + "  " + full_ob1.round.to_s + "  " + total_ob1.round.to_s + "  "  + full_sb1.round.to_s + "  " + total_sb1.round.to_s + "  "  + full_pr1.round.to_s + "  " + total_pr1.round.to_s + "  " + u_grade1.to_s + "<br />" %>
-                            <% end %>
-                            <%
                             pass_s = false
                           end
                         elsif full_sb1.round.to_i == 50
                             if total_sb1.round.to_i < 23
-                              %>
-                              <% if std['id'] == '26585' %>
-                              <%= "here4-" + sub['code'] + "  " + full_ob1.round.to_s + "  " + total_ob1.round.to_s + "  "  + full_sb1.round.to_s + "  " + total_sb1.round.to_s + "  "  + full_pr1.round.to_s + "  " + total_pr1.round.to_s + "  " + u_grade1.to_s + "<br />" %>
-                              <% end %>
-                              <%
                               pass_s = false
                             end
                         end
@@ -844,11 +824,6 @@
                         if full_pr1 > 0
                           if full_pr1.round.to_i == 25
                             if total_pr1.round.to_i < 11
-                              %>
-                            <% if std['id'] == '26585' %>
-                            <%= "here5-" + sub['code'] + "  " + full_ob1.round.to_s + "  " + total_ob1.round.to_s + "  "  + full_sb1.round.to_s + "  " + total_sb1.round.to_s + "  "  + full_pr1.round.to_s + "  " + total_pr1.round.to_s + "  " + u_grade1.to_s + "<br />" %>
-                            <% end %>
-                            <%
                               pass_s = false
                             end
                           end
@@ -869,12 +844,6 @@
                   
                 end
 
-                %>
-                <% if std['id'] == '26585' %>
-                  <%= sub['code'] + "  " + full_ob1.round.to_s + "  " + total_ob1.round.to_s + "  "  + full_sb1.round.to_s + "  " + total_sb1.round.to_s + "  "  + full_pr1.round.to_s + "  " + total_pr1.round.to_s + "  " + u_grade1.to_s + "<br />" %>
-                  <%= '--------' + "  " + sub['code'] + " " + u_grade1.to_s + " " +  grand_total1_with_fraction.to_s + "  " +  grand_grade_point1.to_s + " <Br />" %>
-                <% end %>
-                <%
 
                 if full_mark1 > 0 && monthly_full_mark1 != 0
                   full_mark1 = full_mark1+20
@@ -2321,12 +2290,6 @@
               end
             end  
         
-            %>
-            <% if std['id'] == '26536' %>
-              <%= 'jeej' + " " + u_grade1.to_s + " " +  grand_total1_with_fraction.to_s + "  " +  grand_grade_point1.to_s %>
-            <% end %>
-            <%
-            
             if u_grade1 == 0
               grand_total_new = grand_total1_with_fraction
               grand_grade_new = 50000-grand_grade_point1

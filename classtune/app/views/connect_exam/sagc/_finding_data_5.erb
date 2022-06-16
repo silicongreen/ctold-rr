@@ -1338,6 +1338,7 @@
                 %>
                 <% if sub['code'] == 'Bang-1' %>
                 <%= sub['code'].to_s + " High: " + @subject_highest_1st_term[sub['id'].to_i].to_s + " Total: " + total_mark1.to_s + " <br /><Br />" %>
+                <%= total_mark1 %>
                 <% end %>
                 <%
                 if @subject_highest_1st_term[sub['id'].to_i].blank?
@@ -2161,11 +2162,7 @@
                         end  
                       end
                     end
-                    %>
-                <% if sub2['code'] == 'Bang-1' %>
-                <%= "2nd" + sub2['code'].to_s + " High: " + @subject_highest_1st_term[sub2['id'].to_i].to_s + " Total: " + total_mark1.to_s + " <br /><Br />" %>
-                <% end %>
-                <%
+                   
                     if @subject_highest_1st_term[sub2['id'].to_i].blank?
                       @subject_highest_1st_term[sub2['id'].to_i] = total_mark1
                     elsif total_mark1.to_f > @subject_highest_1st_term[sub2['id'].to_i].to_f

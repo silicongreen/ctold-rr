@@ -1336,7 +1336,9 @@
                   end
                 end
                 %>
+                <% if sub['code'] == 'Bang-1' %>
                 <%= sub['code'].to_s + " High: " + @subject_highest_1st_term[sub['id'].to_i].to_s + " Total: " + total_mark1.to_s + " <br /><Br />" %>
+                <% end %>
                 <%
                 if @subject_highest_1st_term[sub['id'].to_i].blank?
                   @subject_highest_1st_term[sub['id'].to_i] = total_mark1

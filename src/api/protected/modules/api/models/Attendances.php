@@ -845,7 +845,7 @@ class Attendances extends CActiveRecord {
         $total_number_of_days = $this->getNumberOfdays($month_start,$end_date);
         
       
-        
+         
         $criteria = new CDbCriteria;
         $criteria->select="t.student_id,t.forenoon,t.afternoon,t.reason,t.is_leave,t.month_date";
         $criteria->addCondition("month_date >= '" . $month_start . "'");

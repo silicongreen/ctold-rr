@@ -34,7 +34,7 @@
                          <tr class="even">
 
                           <td class="col-pdf">
-                            <% if grade.max_score.nil? %>  
+                            <% if grade.max_score.nil? %>   
                               <%= '%i%' % grade.min_score %>
                             <% else %>  
                               <% min_score = grade.min_score.to_f  %>
@@ -76,12 +76,13 @@
                                 <td class="col-pdf"></td>
                             <% end %>
                           <% else %>  
-                            <% if l == 1 %>
+                            <% stdnt_ids = [63428] %>
+                            <% if l == 1 %> 
                                 <td class="col-pdf">Total Working day</td>
-                                <td class="col-pdf"><%= @report_data['total_first_term'] %></td>
+                                <td class="col-pdf"><%= (stdnt_ids.include?(@student.id)) ? "0" : @report_data['total_first_term'] %></td>
                                 <td class="col-pdf"><%= @report_data['total'] %></td>
 
-                            <% elsif l == 2 %>
+                            <% elsif l == 2 %> 
                                 <td class="col-pdf">Days Present</td>
                                 <% unless @report_data['total_new_std_first_term'].blank?  %>
                                   <td class="col-pdf"><%= @report_data['total_new_std_first_term'].to_i-@report_data['absent_first_term'].to_i %></td>

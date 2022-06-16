@@ -335,7 +335,7 @@ class ReportController extends Controller
             } 
             
 
-            $groupexam = new GroupedExams();
+            $groupexam = new GroupedExams(); 
             $exam_report = $groupexam->getContinuesResult($batch_id,$connect_exam_id,$previous_exam,$is_unsolved);
             $attandence = new Attendances();
             $adata = $attandence->getTotalPrsent($batch_id, $connect_exam_id,$exam_report['students']);

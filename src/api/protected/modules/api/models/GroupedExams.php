@@ -13,7 +13,7 @@
  * @property integer $school_id
  */
 class GroupedExams extends CActiveRecord
-{
+{ 
 	/**
 	 * @return string the associated database table name
 	 */

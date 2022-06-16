@@ -700,12 +700,7 @@
                  
                   
                 end 
-                %>
-                <% if std['id'] == '26585' %>
-                  <%= sub['code'] + "  " + full_ob1.round.to_s + "  "  + full_sb1.round.to_s + "  "  + full_pr1.round.to_s + "  " + u_grade1.to_s + "<br />" %>
-                  <%= '--------' + "  " + sub['code'] + " " + u_grade1.to_s + " " +  grand_total1_with_fraction.to_s + "  " +  grand_grade_point1.to_s + " <Br />" %>
-                <% end %>
-                <%
+                
                 total_pass = false
                 if @connect_exam_obj.result_type == 11
                   subject_failed = false
@@ -971,7 +966,7 @@
                 if @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4
                   term_mark_multiplier = 0.80
                 end
-                if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
+                if @connect_exam_obj.result_type == 8
                   term_mark_multiplier = 0.90
                 end
                 

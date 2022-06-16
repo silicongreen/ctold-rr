@@ -76,11 +76,11 @@
                                 <td class="col-pdf"></td>
                             <% end %>
                           <% else %>  
-                            <% stdnt_ids = [63428] %>
+                            <% stdnt_ids = [63428,60011,60539,63491] %>
                             <% if l == 1 %> 
                                 <td class="col-pdf">Total Working day</td>
                                 <td class="col-pdf"><%= (stdnt_ids.include?(@student.id)) ? "0" : @report_data['total_first_term'] %></td>
-                                <td class="col-pdf"><%= @report_data['total'] %></td>
+                                <td class="col-pdf"><%= (stdnt_ids.include?(@student.id)) ? "0" : @report_data['total'] %></td>
 
                             <% elsif l == 2 %> 
                                 <td class="col-pdf">Days Present</td>

@@ -625,7 +625,7 @@
                                     <% grade.credit_points = 0.0 %>
                                     <% grade.name = "F" %>
                                   <% end %>
-                                    <%= "hehe" %>
+                                    
                                   
                                   <% if fourth_subject.blank? %>
                                     <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
@@ -653,8 +653,8 @@
                                       <% grade.name = "F" %>
                                     <% end %>
                                   <% end %>
-                                  <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px; left: -5px;"><%= grade.name %></td>
-                                  <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px; left: -5px;"><%= grade.credit_points %></td>
+                                  <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px; left: -5px;"><%= grade.name %> 1</td>
+                                  <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px; left: -5px;"><%= grade.credit_points %> 1</td>
                                 <% elsif subjects['code'] == "Eng-1" %>
                                   <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>
                                   <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>
@@ -673,11 +673,11 @@
                                       <% grade.name = "F" %>
                                     <% end %>
                                   <% end %>
-                                  <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.name %></td>
-                                  <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.credit_points %></td>
+                                  <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.name %> 2</td>
+                                  <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.credit_points %> 2</td>
                                 <% else %>
-                                  <td class="col-pdf"><%= grade.name %></td>
-                                  <td class="col-pdf"><%= grade.credit_points %></td>
+                                  <td class="col-pdf"><%= grade.name %> 3</td>
+                                  <td class="col-pdf"><%= grade.credit_points %> 3</td>
                                 <% end %>
                                 <% else %>
                                   <td class="col-pdf" rowspan="2">-</td>

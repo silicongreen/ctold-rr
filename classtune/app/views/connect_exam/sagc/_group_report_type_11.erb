@@ -70,6 +70,25 @@
                   <% failed = false %>
                   <% already_done = false %>
                   <% subjects_done  = [] %>
+
+                  <% mark_bangla = 0 %>
+                  <% mark_english = 0 %>
+                  <% mark_bangla_full = 0 %>
+                  <% mark_english_full = 0 %>
+
+                  <%
+                    mark_bangla_pass_failed = 0
+                    mark_english_pass_failed = 0
+                    mark_bangla_pass_failed_full = 0
+                    mark_english_pass_failed_full = 0
+        
+                    mark_bangla_pass_failed_ob = 0
+                    mark_bangla_pass_failed_sb = 0
+                    mark_english_pass_failed_ob = 0
+                    mark_english_pass_failed_sb = 0
+                    bang_code_pass_failed = ['Bang-1','Bang-2']
+                    eng_code_pass_failed = ['Eng-1','Eng-2']
+                  %>
                   
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
@@ -94,6 +113,8 @@
                           %>
                       <% end %>
                       <% subjects_done << subjects['id'].to_i %>
+                      <% bang_code = ['Bang-1','Bang-2'] %>
+                      <% eng_code = ['Eng-1','Eng-2'] %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>

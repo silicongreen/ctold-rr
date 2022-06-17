@@ -238,8 +238,8 @@
 
                           <% 
                             highest_mark = 0
-                            if !@subject_highest_1st_term.blank? and !@subject_highest_1st_term[subjects['id'].to_i].blank?
-                              highest_mark = @subject_highest_1st_term[subjects['id'].to_i].to_f
+                            if !@subject_highest_1st_term.blank? and !@subject_highest_1st_term[subjects['code'].to_s].blank?
+                              highest_mark = @subject_highest_1st_term[subjects['code'].to_s].to_f
                             end
                           
                           %>
@@ -824,8 +824,8 @@
 
                             <% 
                               highest_mark = 0
-                              if !@subject_highest_1st_term.blank? and !@subject_highest_1st_term[subjects2['id'].to_i].blank?
-                                highest_mark = @subject_highest_1st_term[subjects2['id'].to_i].to_f
+                              if !@subject_highest_1st_term.blank? and !@subject_highest_1st_term[subjects2['code'].to_s].blank?
+                                highest_mark = @subject_highest_1st_term[subjects2['code'].to_s].to_f
                               end
 
                             %>
@@ -934,8 +934,8 @@
 
                           <% 
                           highest_mark = 0
-                          if !@subject_highest_1st_term.blank? and !@subject_highest_1st_term[subjects['id'].to_i].blank?
-                            highest_mark = @subject_highest_1st_term[subjects['id'].to_i].to_f
+                          if !@subject_highest_1st_term.blank? and !@subject_highest_1st_term[subjects['code'].to_s].blank?
+                            highest_mark = @subject_highest_1st_term[subjects['code'].to_s].to_f
                             end
 
                         %>

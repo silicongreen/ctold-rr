@@ -122,6 +122,8 @@
                             third_subject = "";
                             fourth_subject = "";
                           %>
+                          <% bang_code = ['Bang-1','Bang-2'] %>
+                          <% eng_code = ['Eng-1','Eng-2'] %>
                           <% if !@std_subject_hash_type.blank? %>
                             <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||4") %>
                               <% fourth_subject = "(4th)" %>
@@ -623,7 +625,7 @@
                                     <% grade.credit_points = 0.0 %>
                                     <% grade.name = "F" %>
                                   <% end %>
-                            
+                                    <%= "hehe" %>
                                   
                                   <% if fourth_subject.blank? %>
                                     <% total_grade = total_grade.to_f+grade.credit_points.to_f %>

@@ -13758,6 +13758,7 @@ class ExamController < ApplicationController
           end
         end
       end
+      abort(student_list_first_term.inspect)
       #abort("dididl")
       @student_position_first_term = {}
       @student_position_second_term = {}
@@ -13877,7 +13878,7 @@ class ExamController < ApplicationController
      
       last_grade = 0.0
       last_total = 0.0
-      abort(student_list_first_term.inspect)
+      
       unless @student_list_first_term.blank?
         position = 0
         @sorted_students = @student_list_first_term.sort.reverse

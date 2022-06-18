@@ -13809,8 +13809,13 @@ class ExamController < ApplicationController
       last_grade = 0.0
       last_total = 0.0
       
-      
-      
+      ks = []
+      unless @section_wise_position.blank?
+        @section_wise_position.each do|key,value|
+          ks << key
+        end
+      end
+      abort(ks.inspect)
       unless @section_wise_position.blank?
         @section_wise_position.each do|key,value|
           position = 0
@@ -13820,7 +13825,7 @@ class ExamController < ApplicationController
           end
           
           @sorted_students = @section_wise_position[key].sort.reverse
-          abort(key.inspect)
+          
           @sorted_students.each do|s|
             
             if last_grade != s[0] or last_total != s[1]

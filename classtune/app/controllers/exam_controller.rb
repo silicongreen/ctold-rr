@@ -13810,11 +13810,11 @@ class ExamController < ApplicationController
       last_total = 0.0
       
       
-      
+      s = ""
       unless @section_wise_position.blank?
         @section_wise_position.each do|key,value|
           position = 0
-         
+         abort(key.inspect)
           @sorted_students = @section_wise_position[key].sort
           abort(@sorted_students.inspect)
           @sorted_students.each do|s|

@@ -13576,7 +13576,8 @@ class ExamController < ApplicationController
             end 
             
             
-            
+            grade_point_avg1 = grand_grade_point1.to_f/total_subject.to_f
+            grade_point_avg2 = grand_grade_point2.to_f/total_subject.to_f
             if exam_type == 3
               grade_point_avg = grand_grade_point.to_f/total_subject.to_f
               grade_point_avg = grade_point_avg.round(2)
@@ -13615,7 +13616,8 @@ class ExamController < ApplicationController
               if full_absent
                 @absent_in_all_subject = @absent_in_all_subject+1
               end
-              
+              grade_point_avg1 = grand_grade_point1.to_f/total_subject.to_f
+              grade_point_avg2 = grand_grade_point2.to_f/total_subject.to_f
               if exam_type == 3
                 
                 grade_point_avg = grand_grade_point.to_f/total_subject.to_f
@@ -13692,7 +13694,8 @@ class ExamController < ApplicationController
             
             if u_grade1 == 0 && exam_type == 1
               grand_total_new = grand_total1_with_fraction
-              grand_grade_new = grand_grade_point1 + 1000
+              #grand_grade_new = grand_grade_point1 + 1000
+              grand_grade_new = grade_point_avg1 + 1000
               if connect_exam_id.to_i == @connect_exam_obj.id || (std_group_name == group_name && !@class.blank?)
                 @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if exam_type == 1
@@ -13716,7 +13719,8 @@ class ExamController < ApplicationController
         
             if u_grade2 == 0 && exam_type == 2
               grand_total_new = grand_total2_with_fraction
-              grand_grade_new = grand_grade_point2 + 1000
+              #grand_grade_new = grand_grade_point2 + 1000
+              grand_grade_new = grade_point_avg1 + 1000
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_second_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if exam_type == 2

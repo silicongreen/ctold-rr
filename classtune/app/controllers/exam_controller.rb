@@ -13818,8 +13818,8 @@ class ExamController < ApplicationController
           @sorted_students = @section_wise_position.sort do |a, b|
             [b[0],b[1]] <=> [a[0], a[1]]
           end
-          abort(@sorted_students.inspect)
-          #@sorted_students = @section_wise_position[key].sort.reverse
+          
+          @sorted_students = @section_wise_position[key].sort.reverse
           @sorted_students.each do|s|
             
             if last_grade != s[0] or last_total != s[1]

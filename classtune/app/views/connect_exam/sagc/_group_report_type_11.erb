@@ -1057,3 +1057,10 @@
                   </tr>
               </table>
 <% end %>
+<script>
+    $(document).ready(function(){
+            $('.bang1_g').html($('.bang2_g').html());
+            $('.bang1_g').attr('rowspan',"2");
+            $('.bang2_g').remove();
+    });
+</script>

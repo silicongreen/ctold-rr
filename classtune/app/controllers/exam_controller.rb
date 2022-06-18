@@ -13713,7 +13713,7 @@ class ExamController < ApplicationController
                 if @section_wise_position[batch_data.id].blank?
                   @section_wise_position[batch_data.id] = []
                 end
-                @section_wise_position[batch_data.id] << [grand_total_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                @section_wise_position[batch_data.id] << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
             end  
         
@@ -13809,22 +13809,16 @@ class ExamController < ApplicationController
       last_grade = 0.0
       last_total = 0.0
       
-      ks = []
-      unless @section_wise_position.blank?
-        @section_wise_position.each do|key,value|
-          ks << key
-        end
-      end
-      abort(ks.inspect)
-      unless @section_wise_position.blank?
-        @section_wise_position.each do|key,value|
+     
+      unless @student_list_first_term.blank?
+        #@student_list_first_term.each do|key,value|
           position = 0
          
-          @sorted_students = @section_wise_position.sort do |a, b|
+          @sorted_students = @student_list_first_term.sort do |a, b|
             [b[0],b[1]] <=> [a[0], a[1]]
           end
-          
-          @sorted_students = @section_wise_position[key].sort.reverse
+          abort(@sorted_students.inspect)
+          @sorted_students = @student_list_first_term.sort.reverse
           
           @sorted_students.each do|s|
             
@@ -13838,7 +13832,7 @@ class ExamController < ApplicationController
             end
             @section_all_position_batch[key][s[2].to_i] = position
           end 
-        end
+        #end
       end
       
       

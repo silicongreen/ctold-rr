@@ -13815,11 +13815,7 @@ class ExamController < ApplicationController
         @section_wise_position.each do|key,value|
           position = 0
          
-          @sorted_students = @section_wise_position.sort do |a, b|
-            [b[0],b[1]] <=> [a[0], a[1]]
-          end
-          
-          @sorted_students = @section_wise_position[key].sort.reverse
+          @sorted_students = @section_wise_position[key].sort
           abort(@sorted_students.inspect)
           @sorted_students.each do|s|
             

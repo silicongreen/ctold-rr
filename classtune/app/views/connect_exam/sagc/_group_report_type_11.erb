@@ -661,8 +661,8 @@
                                   <% end %>  
                                 <% end %>
                                 <% if subjects['code'] == "Bang-1" %>
-                                  <td class="col-pdf bang1"  style="border-bottom: 1px solid #fff;"></td>
-                                  <td class="col-pdf bang1" style="border-bottom: 1px solid #fff;"></td>
+                                  <td class="col-pdf bang1_g"  style="border-bottom: 1px solid #fff;"></td>
+                                  <td class="col-pdf bang1_gc" style="border-bottom: 1px solid #fff;"></td>
                                 <% elsif subjects['code'] == "Bang-2" %>
                                   <%
                                     main_mark2 = (mark_bangla.to_f.round/mark_bangla_full.to_f)*100
@@ -678,11 +678,11 @@
                                       <% grade.name = "F" %>
                                     <% end %>
                                   <% end %>
-                                  <td class="col-pdf bang2" style="border-top: 1px solid #fff; position: relative; top: -20px; left: -5px;"><%= grade.name %></td>
-                                  <td class="col-pdf bang2" style="border-top: 1px solid #fff; position: relative; top: -20px; left: -5px;"><%= grade.credit_points %></td>
+                                  <td class="col-pdf bang2_g" style="border-top: 1px solid #fff; position: relative; top: -20px; left: -5px;"><%= grade.name %></td>
+                                  <td class="col-pdf bang2_gc" style="border-top: 1px solid #fff; position: relative; top: -20px; left: -5px;"><%= grade.credit_points %></td>
                                 <% elsif subjects['code'] == "Eng-1" %>
-                                  <td class="col-pdf eng1" style="border-bottom: 1px solid #fff;"></td>
-                                  <td class="col-pdf eng1" style="border-bottom: 1px solid #fff;"></td>
+                                  <td class="col-pdf eng1_g" style="border-bottom: 1px solid #fff;"></td>
+                                  <td class="col-pdf eng1_gc" style="border-bottom: 1px solid #fff;"></td>
                                 <% elsif subjects['code'] == "Eng-2" %>
                                   <%
                                     main_mark2 = (mark_english.to_f.round/mark_english_full.to_f)*100
@@ -698,8 +698,8 @@
                                       <% grade.name = "F" %>
                                     <% end %>
                                   <% end %>
-                                  <td class="col-pdf eng2" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.name %></td>
-                                  <td class="col-pdf eng2" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.credit_points %></td>
+                                  <td class="col-pdf eng2_g" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.name %></td>
+                                  <td class="col-pdf eng2_gc" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.credit_points %></td>
                                 <% else %>
                                   <td class="col-pdf"><%= grade.name %></td>
                                   <td class="col-pdf"><%= grade.credit_points %></td>

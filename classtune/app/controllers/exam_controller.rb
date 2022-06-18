@@ -13693,9 +13693,9 @@ class ExamController < ApplicationController
             
             
             if u_grade1 == 0 && exam_type == 1
-              grand_total_new = 50000-grand_total1_with_fraction
+              grand_total_new = grand_total1_with_fraction
               #grand_grade_new = grand_grade_point1 + 1000
-              grand_grade_new = 50000-grade_point_avg1.round(2) 
+              grand_grade_new = grade_point_avg1.round(2) + 100
               if connect_exam_id.to_i == @connect_exam_obj.id || (std_group_name == group_name && !@class.blank?)
                 @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if exam_type == 1
@@ -13718,9 +13718,9 @@ class ExamController < ApplicationController
             end  
         
             if u_grade2 == 0 && exam_type == 2
-              grand_total_new = 50000-grand_total2_with_fraction
+              grand_total_new = grand_total2_with_fraction
               #grand_grade_new = grand_grade_point2 + 1000
-              grand_grade_new = 50000-grade_point_avg1.round(2)
+              grand_grade_new = grade_point_avg1.round(2) + 100
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_second_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if exam_type == 2
@@ -13777,7 +13777,7 @@ class ExamController < ApplicationController
       @section_all_position_batch_final_term = {}
       last_grade = 0.0
       last_total = 0.0
-
+      
       unless @student_list.blank?
         position = 0
         @sorted_students = @student_list.sort
@@ -13810,13 +13810,17 @@ class ExamController < ApplicationController
       last_total = 0.0
       
       
-      s = ""
+      
       unless @section_wise_position.blank?
         @section_wise_position.each do|key,value|
           position = 0
-         abort(key.inspect)
-          @sorted_students = @section_wise_position[key].sort
-          abort(@sorted_students.inspect)
+         
+          @sorted_students = @section_wise_position.sort do |a, b|
+            [b[0],b[1]] <=> [a[0], a[1]]
+          end
+          
+          @sorted_students = @section_wise_position[key].sort.reverse
+          abort(key.inspect)
           @sorted_students.each do|s|
             
             if last_grade != s[0] or last_total != s[1]

@@ -13820,6 +13820,7 @@ class ExamController < ApplicationController
           end
           
           @sorted_students = @section_wise_position[key].sort.reverse
+          abort(@sorted_students.inspect)
           @sorted_students.each do|s|
             
             if last_grade != s[0] or last_total != s[1]

@@ -13692,9 +13692,9 @@ class ExamController < ApplicationController
             
             if u_grade1 == 0 && exam_type == 1
               grand_total_new = grand_total1_with_fraction
-              grand_grade_new = 50000-grand_grade_point1
+              grand_grade_new = grand_grade_point1 + 1000
               if connect_exam_id.to_i == @connect_exam_obj.id || (std_group_name == group_name && !@class.blank?)
-                @student_list_first_term_batch << [grand_total_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if exam_type == 1
                   if !gradeObj.blank? and !gradeObj.name.blank?
                     if @grade_count[gradeObj.name].blank?
@@ -13706,7 +13706,7 @@ class ExamController < ApplicationController
                 end
               end 
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
-                @student_list_first_term << [grand_total_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                @student_list_first_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if @section_wise_position[batch_data.id].blank?
                   @section_wise_position[batch_data.id] = []
                 end
@@ -13716,9 +13716,9 @@ class ExamController < ApplicationController
         
             if u_grade2 == 0 && exam_type == 2
               grand_total_new = grand_total2_with_fraction
-              grand_grade_new = 50000-grand_grade_point2
+              grand_grade_new = grand_grade_point2 + 1000
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
-                @student_list_second_term_batch << [grand_total_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                @student_list_second_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if exam_type == 2
                   if !gradeObj.blank? and !gradeObj.name.blank?
                     if @grade_count[gradeObj.name].blank?
@@ -13730,11 +13730,11 @@ class ExamController < ApplicationController
                 end
               end
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
-                @student_list_second_term << [grand_total_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                @student_list_second_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if @section_wise_position_2nd_term[batch_data.id].blank?
                   @section_wise_position_2nd_term[batch_data.id] = []
                 end
-                @section_wise_position_2nd_term[batch_data.id] << [grand_total_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                @section_wise_position_2nd_term[batch_data.id] << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
             end  
             

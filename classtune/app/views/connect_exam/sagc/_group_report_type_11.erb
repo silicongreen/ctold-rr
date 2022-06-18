@@ -1058,9 +1058,10 @@
               </table>
 <% end %>
 <script>
-    $(document).ready(function(){
-            $('.bang1_g').html($('.bang2_g').html());
-            $('.bang1_g').attr('rowspan',"2");
-            $('.bang2_g').remove();
+    var s = jQuery.noConflict();            
+    s(document).ready(function(){
+            s('.bang1_g').html(s('.bang2_g').html());
+            s('.bang1_g').attr('rowspan',"2");
+            s('.bang2_g').remove();
     });
 </script>

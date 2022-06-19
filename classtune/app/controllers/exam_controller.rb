@@ -12536,7 +12536,6 @@ class ExamController < ApplicationController
                         #grand_grade_point1 = grand_grade_point1+grade.credit_points.to_f
                         if bang_code.include?(sub['code'])
                           if sub['code'] == 'Bang-2'
-                            abort(mark_bangla.to_s + "  " + mark_bangla_full.to_s)
                             grand_grade_point1 = grand_grade_point1.to_f+grade.credit_points.to_f
                           end
                         elsif eng_code.include?(sub['code'])

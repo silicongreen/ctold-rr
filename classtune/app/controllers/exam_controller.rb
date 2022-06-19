@@ -12542,7 +12542,7 @@ class ExamController < ApplicationController
                             m_b  = m_b  + total_ob1+total_sb1+total_pr1
                           elsif sub['code'] == 'Bang-2'
                             m_b  = m_b  + total_ob1+total_sb1+total_pr1
-                          abort(mark_bangla.to_s + "  ")
+                          #abort(mark_bangla.to_s + "  ")
                             main_mark2 = (mark_bangla.to_f.round/200.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
                             grand_grade_point1 = grand_grade_point1.to_f+grade.credit_points.to_f

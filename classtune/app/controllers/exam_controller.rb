@@ -13756,6 +13756,8 @@ class ExamController < ApplicationController
                 grand_grade_n = grand_grade_n.to_f - grade.credit_points.to_f
 
                 m_bng = m_bng_1.to_f + m_bng_2.to_f
+                abort(m_bng.to_s + "  " + m_bng_1.to_s + "  " + m_bng_2.to_s)
+                m_bng = (m_bng.to_f.round/200.to_f)*100
                 grade = GradingLevel.percentage_to_grade(m_bng, @batch.id)
                 grand_grade_n = grand_grade_n.to_f + grade.credit_points.to_f
 

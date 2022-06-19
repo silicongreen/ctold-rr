@@ -11671,6 +11671,9 @@ class ExamController < ApplicationController
                 subject_failed = false
                 four_subject_failed = false
 
+                m_b = 0
+                m_e = 0
+
                 tab['exams'].each do |rs|
                   if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? 
                     if rs['exam_category'] == '1'
@@ -12536,10 +12539,10 @@ class ExamController < ApplicationController
                         #grand_grade_point1 = grand_grade_point1+grade.credit_points.to_f
                         if bang_code.include?(sub['code'])
                           if sub['code'] == 'Bang-1'
-                            mark_bangla  = mark_bangla  + total_ob1+total_sb1+total_pr1
+                            m_b  = m_b  + total_ob1+total_sb1+total_pr1
                           elsif sub['code'] == 'Bang-2'
-                            mark_bangla  = mark_bangla  + total_ob1+total_sb1+total_pr1
-                          #abort(mark_bangla.to_s + "  " + mark_bangla_full.to_s)
+                            m_b  = m_b  + total_ob1+total_sb1+total_pr1
+                          abort(mark_bangla.to_s + "  ")
                             main_mark2 = (mark_bangla.to_f.round/200.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
                             grand_grade_point1 = grand_grade_point1.to_f+grade.credit_points.to_f
@@ -12570,7 +12573,7 @@ class ExamController < ApplicationController
 
                         if bang_code.include?(sub['code'])
                           if sub['code'] == 'Bang-1'
-                            mark_bangla  = mark_bangla  + main_mark1.to_f
+                            m_b  = mark_bangla  + main_mark1.to_f
                           elsif sub['code'] == 'Bang-2'
                             mark_bangla  = mark_bangla  + main_mark1.to_f
                             #abort(mark_bangla.to_s + "  " + mark_bangla_full.to_s)

@@ -13756,6 +13756,7 @@ class ExamController < ApplicationController
                   
               end
             end
+            abort(@student_result[loop_std].inspect)
             grand_total_with_fraction = sprintf( "%0.02f", grand_total_with_fraction)
             grand_total_with_fraction = grand_total_with_fraction.to_f
             grand_total1_with_fraction = sprintf( "%0.02f", grand_total1_with_fraction)
@@ -13779,7 +13780,7 @@ class ExamController < ApplicationController
                 if grade_point_avg > 5
                   grade_point_avg = 5.00
                 end
-                #abort(@student_result[loop_std].inspect)
+                
                 @student_result[loop_std]['gpa'] = grand_grade_point
                 @student_result[loop_std]['grand_total'] = grand_total
                 @student_result[loop_std]['grand_total_with_fraction'] = grand_total_with_fraction

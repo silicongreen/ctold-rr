@@ -13788,28 +13788,7 @@ class ExamController < ApplicationController
                 
               end
               if exam_type == 1
-                grand_grade_n = grand_grade_point1
-                m_bng_1 = @student_result[loop_std]['subjects']['Bang-1']['result']['ct'].to_f
-                m_bng_2 = @student_result[loop_std]['subjects']['Bang-2']['result']['ct'].to_f
                 
-                grade = GradingLevel.percentage_to_grade(m_bng_2, @batch.id)
-                grand_grade_n = grand_grade_n.to_f - grade.credit_points.to_f
-
-                m_bng = m_bng_1.to_f + m_bng_2.to_f
-                grade = GradingLevel.percentage_to_grade(m_bng, @batch.id)
-                grand_grade_n = grand_grade_n.to_f + grade.credit_points.to_f
-
-
-                m_eng_1 = @student_result[loop_std]['subjects']['Eng-1']['result']['ct'].to_f
-                m_eng_2 = @student_result[loop_std]['subjects']['Eng-2']['result']['ct'].to_f
-                grade = GradingLevel.percentage_to_grade(m_eng_2, @batch.id)
-                grand_grade_n = grand_grade_n.to_f - grade.credit_points.to_f
-
-                m_eng = m_eng_1.to_f + m_eng_2.to_f
-                grade = GradingLevel.percentage_to_grade(m_eng, @batch.id)
-                grand_grade_n = grand_grade_n.to_f + grade.credit_points.to_f
-                
-                grand_grade_point1 = grand_grade_n
                 #abort(@student_result[loop_std].inspect)
                 grade_point_avg = grand_grade_point1.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)

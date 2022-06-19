@@ -13788,6 +13788,11 @@ class ExamController < ApplicationController
                 
               end
               if exam_type == 1
+                grand_grade_n = grand_grade_point1
+                abort(@student_result[loop_std]['subjects']['Bang-1']['ct'].to_s)
+                @student_result[loop_std]['subjects'].each do |ssubb|
+
+                end
                 #abort(@student_result[loop_std].inspect)
                 grade_point_avg = grand_grade_point1.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)

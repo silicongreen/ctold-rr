@@ -112,6 +112,7 @@
                       <td rowspan="1"><b>Avg</b></td-->
                   </tr>
 
+                  <% tot_grade = 0 %>
                   <% total_grade = 0 %>
                   <% total_subject = 0 %>
                   <% total_subject_main = 0 %>
@@ -529,6 +530,7 @@
                                       <% grade.name = "F" %>
                                     <% end %>
                                   <% end %>
+                                  <% tot_grade = tot_grade.to_f + grade.credit_points.to_f %>
                                   <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.name %></td>
                                   <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.credit_points %></td>
                                 <% elsif subjects['code'] == "Eng-1" %>
@@ -551,9 +553,11 @@
                                       <% grade.name = "F" %>
                                     <% end %>
                                   <% end %>
+                                  <% tot_grade = tot_grade.to_f + grade.credit_points.to_f %>
                                   <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.name %></td>
                                   <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.credit_points %></td>
                                 <% else %>
+                                  <% tot_grade = tot_grade.to_f + grade.credit_points.to_f %>
                                   <td class="col-pdf"><%= grade.name %></td>
                                   <td class="col-pdf"><%= grade.credit_points %></td>
                                 <% end %>
@@ -696,7 +700,7 @@
                       <% colspan = colspan+3 %>
                       <td class="col-pdf align-left-baf" colspan="<%= colspan %>"><b>Total Marks & Total GP</b></td>
                       <td class="col-pdf no-warp align-left-baf" colspan="3">&nbsp;&nbsp;&nbsp;<b><%= grand_total %></b></td>
-                      <td class="col-pdf"><b><%= total_grade %></b></td>
+                      <td class="col-pdf"><b><%= tot_grade %><%#= total_grade %></b></td>
                   </tr>    
                     
                   <tr class="page-break-grade">

@@ -12734,7 +12734,23 @@ class ExamController < ApplicationController
                   end
                   if !grade.blank? && !grade.name.blank? && sub['grade_subject'].to_i != 1
                     if (grade.credit_points.to_i == 0 and sub['subject_group_id'].to_i == 0) or (subject_failed == true and @connect_exam_obj.result_type != 1  and @connect_exam_obj.result_type != 2)
-                      abort('yoyal ' + grade.credit_points.to_s + "   " + sub['subject_group_id'].to_s + ob_round.to_s + sb_round.to_s + "  " + pr_round.to_s + "  " + full_ob1.to_s + "  " + full_sb1.to_s + "  " + full_pr1.to_s + "  " + subject_failed.to_s)
+                      fai = false
+                      if full_sb1.to_i == 70 && sb_round.to_i < 32
+                        fai = true
+                      end
+                      if full_sb1.to_i == 50 && sb_round.to_i < 23
+                        fai = true
+                      end
+                      if full_ob1.to_i == 30 && ob_round.to_i < 13
+                        fai = true
+                      end
+                      if full_ob1.to_i == 25 && ob_round.to_i < 11
+                        fai = true
+                      end
+                      if full_pr1.to_i == 25 && pr_round.to_i < 11
+                        fai = true
+                      end
+                      #abort('yoyal ' + grade.credit_points.to_s + "   " + sub['subject_group_id'].to_s + ob_round.to_s + sb_round.to_s + "  " + pr_round.to_s + "  " + full_ob1.to_s + "  " + full_sb1.to_s + "  " + full_pr1.to_s + "  " + subject_failed.to_s)
                       if @subject_result[main_sub_id]['failed'].blank?
                         @subject_result[main_sub_id]['failed'] = 1
                       else

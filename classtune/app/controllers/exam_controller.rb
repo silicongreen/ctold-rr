@@ -11543,6 +11543,8 @@ class ExamController < ApplicationController
             u_grade2 = 0
             grand_total_main = 0
             grade_poin_main = 0
+            main_mark_bangla = 0
+            main_mark_english = 0
             @student_tab = @student_all_tab.find{|val| val.id.to_i == std['id'].to_i }
             if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
               if @student_result[loop_std].blank?
@@ -12534,6 +12536,7 @@ class ExamController < ApplicationController
                         #grand_grade_point1 = grand_grade_point1+grade.credit_points.to_f
                         if bang_code.include?(sub['code'])
                           if sub['code'] == 'Bang-2'
+                            abort(mark_bangla.to_s + "  " + mark_bangla_full.to_s)
                             grand_grade_point1 = grand_grade_point1.to_f+grade.credit_points.to_f
                           end
                         elsif eng_code.include?(sub['code'])

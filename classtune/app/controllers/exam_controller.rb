@@ -14001,7 +14001,6 @@ class ExamController < ApplicationController
           end 
         end
       end
-      abort(@section_all_position_batch.inspect)
       
       last_grade = 0.0
       last_total = 0.0

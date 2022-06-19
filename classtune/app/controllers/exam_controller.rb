@@ -12734,30 +12734,38 @@ class ExamController < ApplicationController
                   end
                   if !grade.blank? && !grade.name.blank? && sub['grade_subject'].to_i != 1
                     if (grade.credit_points.to_i == 0 and sub['subject_group_id'].to_i == 0) or (subject_failed == true and @connect_exam_obj.result_type != 1  and @connect_exam_obj.result_type != 2)
-                      fai = false
-                      if full_sb1.to_i == 70 && sb_round.to_i < 32
-                        fai = true
-                      end
-                      if full_sb1.to_i == 50 && sb_round.to_i < 23
-                        fai = true
-                      end
-                      if full_ob1.to_i == 30 && ob_round.to_i < 13
-                        fai = true
-                      end
-                      if full_ob1.to_i == 25 && ob_round.to_i < 11
-                        fai = true
-                      end
-                      if full_pr1.to_i == 25 && pr_round.to_i < 11
-                        fai = true
-                      end
-                      if @connect_exam_obj.id == 8013 && sub['code'] == 'Bang-1'
-                        abort('yoyal ' + grade.credit_points.to_s + "   " + sub['subject_group_id'].to_s + ob_round.to_s + sb_round.to_s + "  " + pr_round.to_s + "  " + full_ob1.to_s + "  " + full_sb1.to_s + "  " + full_pr1.to_s + "  " + subject_failed.to_s)
-                      end
-                      #abort('yoyal ' + grade.credit_points.to_s + "   " + sub['subject_group_id'].to_s + ob_round.to_s + sb_round.to_s + "  " + pr_round.to_s + "  " + full_ob1.to_s + "  " + full_sb1.to_s + "  " + full_pr1.to_s + "  " + subject_failed.to_s)
-                      if @subject_result[main_sub_id]['failed'].blank?
-                        @subject_result[main_sub_id]['failed'] = 1
+                      connect_ids = [8013,8012,7959,8009,8010,8011,7954,7955,7956,7957,7958,8026,8027,8028]
+                      if connect_ids.include?( @connect_exam_obj.id)
+                        fai = false
+                        if full_sb1.to_i == 70 && sb_round.to_i < 32
+                          fai = true
+                        end
+                        if full_sb1.to_i == 50 && sb_round.to_i < 23
+                          fai = true
+                        end
+                        if full_ob1.to_i == 30 && ob_round.to_i < 13
+                          fai = true
+                        end
+                        if full_ob1.to_i == 25 && ob_round.to_i < 11
+                          fai = true
+                        end
+                        if full_pr1.to_i == 25 && pr_round.to_i < 11
+                          fai = true
+                        end
+                        #abort('yoyal ' + grade.credit_points.to_s + "   " + sub['subject_group_id'].to_s + ob_round.to_s + sb_round.to_s + "  " + pr_round.to_s + "  " + full_ob1.to_s + "  " + full_sb1.to_s + "  " + full_pr1.to_s + "  " + subject_failed.to_s)
+                        if fai
+                          if @subject_result[main_sub_id]['failed'].blank?
+                            @subject_result[main_sub_id]['failed'] = 1
+                          else
+                            @subject_result[main_sub_id]['failed'] = @subject_result[main_sub_id]['failed']+1
+                          end
+                        end
                       else
-                        @subject_result[main_sub_id]['failed'] = @subject_result[main_sub_id]['failed']+1
+                        if @subject_result[main_sub_id]['failed'].blank?
+                          @subject_result[main_sub_id]['failed'] = 1
+                        else
+                          @subject_result[main_sub_id]['failed'] = @subject_result[main_sub_id]['failed']+1
+                        end
                       end
                       if appeared
                         if @subject_result[main_sub_id]['appeared'].blank?

@@ -12537,14 +12537,20 @@ class ExamController < ApplicationController
                         if bang_code.include?(sub['code'])
                           if sub['code'] == 'Bang-1'
                             mark_bangla  = mark_bangla  + main_mark1.to_f
-                            mark_bangla_full  = mark_bangla_full  + total_mark1.to_f
                           elsif sub['code'] == 'Bang-2'
                             mark_bangla  = mark_bangla  + main_mark1.to_f
-                            mark_bangla_full  = mark_bangla_full  + total_mark1.to_f
+                            #abort(mark_bangla.to_s + "  " + mark_bangla_full.to_s)
+                            main_mark2 = (mark_bangla.to_f.round/200.to_f)*100
+                            grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
                             grand_grade_point1 = grand_grade_point1.to_f+grade.credit_points.to_f
                           end
                         elsif eng_code.include?(sub['code'])
-                          if sub['code'] == 'Eng-2'
+                          if sub['code'] == 'Eng-1'
+                            mark_english = mark_english + main_mark1.to_f
+                          elsif sub['code'] == 'Eng-2'
+                            mark_english = mark_english + main_mark1.to_f
+                            main_mark2 = (mark_english.to_f.round/200.to_f)*100
+                            grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
                             grand_grade_point1 = grand_grade_point1.to_f+grade.credit_points.to_f
                           end
                         else
@@ -12563,11 +12569,22 @@ class ExamController < ApplicationController
                         grads = grads + " up2 " + sub['name'].to_s + "  " + grade.credit_points.to_s + "  " + main_mark2.to_s + "\n"
 
                         if bang_code.include?(sub['code'])
-                          if sub['code'] == 'Bang-2'
+                          if sub['code'] == 'Bang-1'
+                            mark_bangla  = mark_bangla  + main_mark1.to_f
+                          elsif sub['code'] == 'Bang-2'
+                            mark_bangla  = mark_bangla  + main_mark1.to_f
+                            #abort(mark_bangla.to_s + "  " + mark_bangla_full.to_s)
+                            main_mark2 = (mark_bangla.to_f.round/200.to_f)*100
+                            grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
                             grand_grade_point2 = grand_grade_point2.to_f+grade.credit_points.to_f
                           end
                         elsif eng_code.include?(sub['code'])
-                          if sub['code'] == 'Eng-2'
+                          if sub['code'] == 'Eng-1'
+                            mark_english = mark_english + main_mark1.to_f
+                          elsif sub['code'] == 'Eng-2'
+                            mark_english = mark_english + main_mark1.to_f
+                            main_mark2 = (mark_english.to_f.round/200.to_f)*100
+                            grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
                             grand_grade_point2 = grand_grade_point2.to_f+grade.credit_points.to_f
                           end
                         else
@@ -12584,11 +12601,22 @@ class ExamController < ApplicationController
                       unless sub['subject_group_id'].to_i > 0
                         #grand_grade_point = grand_grade_point+grade.credit_points.to_f
                         if bang_code.include?(sub['code'])
-                          if sub['code'] == 'Bang-2'
+                          if sub['code'] == 'Bang-1'
+                            mark_bangla  = mark_bangla  + main_mark1.to_f
+                          elsif sub['code'] == 'Bang-2'
+                            mark_bangla  = mark_bangla  + main_mark1.to_f
+                            #abort(mark_bangla.to_s + "  " + mark_bangla_full.to_s)
+                            main_mark2 = (mark_bangla.to_f.round/200.to_f)*100
+                            grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
                             grand_grade_point = grand_grade_point.to_f+grade.credit_points.to_f
                           end
                         elsif eng_code.include?(sub['code'])
-                          if sub['code'] == 'Eng-2'
+                          if sub['code'] == 'Eng-1'
+                            mark_english = mark_english + main_mark1.to_f
+                          elsif sub['code'] == 'Eng-2'
+                            mark_english = mark_english + main_mark1.to_f
+                            main_mark2 = (mark_english.to_f.round/200.to_f)*100
+                            grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
                             grand_grade_point = grand_grade_point.to_f+grade.credit_points.to_f
                           end
                         else

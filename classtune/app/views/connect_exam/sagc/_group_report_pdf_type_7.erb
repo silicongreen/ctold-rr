@@ -514,7 +514,7 @@
                                   <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>
                                 <% elsif subjects['code'] == "Bang-2" %>
                                   <%
-                                    main_mark2 = (mark_bangla.to_f.round/mark_bangla_full.to_f)*100
+                                    main_mark2 = (mark_bangla.to_f.round/mark_bangla_full.to_f)*200
                                   %>
                                   <%  grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id) %>
                                   <% if !grade.blank? and !grade.name.blank? %>
@@ -534,7 +534,7 @@
                                   <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>
                                 <% elsif subjects['code'] == "Eng-2" %>
                                   <%
-                                    main_mark2 = (mark_english.to_f.round/mark_english_full.to_f)*100
+                                    main_mark2 = (mark_english.to_f.round/mark_english_full.to_f)*200
                                   %>
                                   <%  grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id) %>
                                   <% if !grade.blank? and !grade.name.blank? %>

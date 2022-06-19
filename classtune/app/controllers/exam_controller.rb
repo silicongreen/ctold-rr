@@ -12750,6 +12750,9 @@ class ExamController < ApplicationController
                       if full_pr1.to_i == 25 && pr_round.to_i < 11
                         fai = true
                       end
+                      if @connect_exam_obj.id == 8013 && sub['code'] == 'Bang-1'
+                        abort('yoyal ' + grade.credit_points.to_s + "   " + sub['subject_group_id'].to_s + ob_round.to_s + sb_round.to_s + "  " + pr_round.to_s + "  " + full_ob1.to_s + "  " + full_sb1.to_s + "  " + full_pr1.to_s + "  " + subject_failed.to_s)
+                      end
                       #abort('yoyal ' + grade.credit_points.to_s + "   " + sub['subject_group_id'].to_s + ob_round.to_s + sb_round.to_s + "  " + pr_round.to_s + "  " + full_ob1.to_s + "  " + full_sb1.to_s + "  " + full_pr1.to_s + "  " + subject_failed.to_s)
                       if @subject_result[main_sub_id]['failed'].blank?
                         @subject_result[main_sub_id]['failed'] = 1

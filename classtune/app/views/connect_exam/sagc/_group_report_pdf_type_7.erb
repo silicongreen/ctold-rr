@@ -530,7 +530,11 @@
                                       <% grade.name = "F" %>
                                     <% end %>
                                   <% end %>
-                                  <% tot_grade = tot_grade.to_f + grade.credit_points.to_f %>
+                                  <% if fourth_subject.blank? %>
+                                    <% tot_grade = tot_grade.to_f + grade.credit_points.to_f %>
+                                  <% else %>
+                                    <% tot_grade = tot_grade.to_f + grade.credit_points.to_f - 2 %>
+                                  <% end %>
                                   <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.name %></td>
                                   <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.credit_points %></td>
                                 <% elsif subjects['code'] == "Eng-1" %>
@@ -553,11 +557,19 @@
                                       <% grade.name = "F" %>
                                     <% end %>
                                   <% end %>
-                                  <% tot_grade = tot_grade.to_f + grade.credit_points.to_f %>
+                                  <% if fourth_subject.blank? %>
+                                    <% tot_grade = tot_grade.to_f + grade.credit_points.to_f %>
+                                  <% else %>
+                                    <% tot_grade = tot_grade.to_f + grade.credit_points.to_f - 2 %>
+                                  <% end %>
                                   <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.name %></td>
                                   <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.credit_points %></td>
                                 <% else %>
+                                <% if fourth_subject.blank? %>
                                   <% tot_grade = tot_grade.to_f + grade.credit_points.to_f %>
+                                <% else %>
+                                  <% tot_grade = tot_grade.to_f + grade.credit_points.to_f - 2 %>
+                                <% end %>
                                   <td class="col-pdf"><%= grade.name %></td>
                                   <td class="col-pdf"><%= grade.credit_points %></td>
                                 <% end %>

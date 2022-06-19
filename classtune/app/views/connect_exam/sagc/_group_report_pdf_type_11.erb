@@ -738,7 +738,7 @@
                                   <% if !grade.blank? and !grade.name.blank? %>
                                     <% if grade.credit_points.to_i == 0 && fourth_subject.blank? %>
                                       <% failed = true %>
-                                      <% failed_subject = true %>
+                                      <% failed_subject = true %> 
                                     <% end %>
                                     <% if  failed_subject == true %>
                                       <% grade.credit_points = 0.0 %>

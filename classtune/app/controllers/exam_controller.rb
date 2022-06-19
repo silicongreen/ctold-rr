@@ -13783,12 +13783,12 @@ class ExamController < ApplicationController
             
             if u_grade1 == 0 && exam_type == 1
               grand_total_new = grand_total1_with_fraction
-              #grand_grade_new = grand_grade_point1 + 1000
-              avg_g = grade_point_avg1.round(2)
-              if avg_g.to_f > 5
-                avg_g = 5
-              end
-              grand_grade_new = avg_g + 100
+              grand_grade_new = grand_grade_point1 + 1000
+              #avg_g = grade_point_avg1.round(2)
+              #if avg_g.to_f > 5
+              #  avg_g = 5
+              #end
+              #grand_grade_new = avg_g + 100
               if connect_exam_id.to_i == @connect_exam_obj.id || (std_group_name == group_name && !@class.blank?)
                 @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if exam_type == 1
@@ -13812,12 +13812,12 @@ class ExamController < ApplicationController
         
             if u_grade2 == 0 && exam_type == 2
               grand_total_new = grand_total2_with_fraction
-              #grand_grade_new = grand_grade_point2 + 1000
-              avg_g = grade_point_avg1.round(2)
-              if avg_g.to_f > 5
-                avg_g = 5
-              end
-              grand_grade_new = avg_g + 100
+              grand_grade_new = grand_grade_point2 + 1000
+              #avg_g = grade_point_avg1.round(2)
+              #if avg_g.to_f > 5
+              #  avg_g = 5
+              #end
+              #grand_grade_new = avg_g + 100
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_second_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if exam_type == 2

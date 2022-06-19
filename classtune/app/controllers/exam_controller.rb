@@ -11612,12 +11612,12 @@ class ExamController < ApplicationController
               end 
               if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
                 if fourth_subject == false && sub['subject_group_id'].to_i == 0 &&  sub['grade_subject'].to_i == 0
-                  if bang_code.include?(subjects['code'])
-                    if subjects['code'] == 'Bang-2'
+                  if bang_code.include?(sub['code'])
+                    if sub['code'] == 'Bang-2'
                       total_subject = total_subject+1
                     end
-                  elsif eng_code.include?(subjects['code'])
-                    if subjects['code'] == 'Eng-2'
+                  elsif eng_code.include?(sub['code'])
+                    if sub['code'] == 'Eng-2'
                       total_subject = total_subject+1
                     end
                   else
@@ -12532,12 +12532,12 @@ class ExamController < ApplicationController
                     if !grade.blank? and !grade.name.blank?
                       unless sub['subject_group_id'].to_i > 0
                         #grand_grade_point1 = grand_grade_point1+grade.credit_points.to_f
-                        if bang_code.include?(subjects['code'])
-                          if subjects['code'] == 'Bang-2'
+                        if bang_code.include?(sub['code'])
+                          if sub['code'] == 'Bang-2'
                             grand_grade_point1 = grand_grade_point1.to_f+grade.credit_points.to_f
                           end
-                        elsif eng_code.include?(subjects['code'])
-                          if subjects['code'] == 'Eng-2'
+                        elsif eng_code.include?(sub['code'])
+                          if sub['code'] == 'Eng-2'
                             grand_grade_point1 = grand_grade_point1.to_f+grade.credit_points.to_f
                           end
                         else
@@ -12555,12 +12555,12 @@ class ExamController < ApplicationController
                         #grand_grade_point2 = grand_grade_point2+grade.credit_points.to_f
                         grads = grads + " up2 " + sub['name'].to_s + "  " + grade.credit_points.to_s + "  " + main_mark2.to_s + "\n"
 
-                        if bang_code.include?(subjects['code'])
-                          if subjects['code'] == 'Bang-2'
+                        if bang_code.include?(sub['code'])
+                          if sub['code'] == 'Bang-2'
                             grand_grade_point2 = grand_grade_point2.to_f+grade.credit_points.to_f
                           end
-                        elsif eng_code.include?(subjects['code'])
-                          if subjects['code'] == 'Eng-2'
+                        elsif eng_code.include?(sub['code'])
+                          if sub['code'] == 'Eng-2'
                             grand_grade_point2 = grand_grade_point2.to_f+grade.credit_points.to_f
                           end
                         else
@@ -12576,12 +12576,12 @@ class ExamController < ApplicationController
                     if !grade.blank? and !grade.name.blank?
                       unless sub['subject_group_id'].to_i > 0
                         #grand_grade_point = grand_grade_point+grade.credit_points.to_f
-                        if bang_code.include?(subjects['code'])
-                          if subjects['code'] == 'Bang-2'
+                        if bang_code.include?(sub['code'])
+                          if sub['code'] == 'Bang-2'
                             grand_grade_point = grand_grade_point.to_f+grade.credit_points.to_f
                           end
-                        elsif eng_code.include?(subjects['code'])
-                          if subjects['code'] == 'Eng-2'
+                        elsif eng_code.include?(sub['code'])
+                          if sub['code'] == 'Eng-2'
                             grand_grade_point = grand_grade_point.to_f+grade.credit_points.to_f
                           end
                         else
@@ -12818,12 +12818,12 @@ class ExamController < ApplicationController
                     end  
                   end 
                   if fourth_subject == false
-                    if bang_code.include?(subjects['code'])
-                      if subjects['code'] == 'Bang-2'
+                    if bang_code.include?(sub['code'])
+                      if sub['code'] == 'Bang-2'
                         total_subject = total_subject+1
                       end
-                    elsif eng_code.include?(subjects['code'])
-                      if subjects['code'] == 'Eng-2'
+                    elsif eng_code.include?(sub['code'])
+                      if sub['code'] == 'Eng-2'
                         total_subject = total_subject+1
                       end
                     else
@@ -13440,12 +13440,12 @@ class ExamController < ApplicationController
                         grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
                         if !grade.blank? and !grade.name.blank?
                           #grand_grade_point1 = grand_grade_point1+grade.credit_points.to_f
-                          if bang_code.include?(subjects['code'])
-                            if subjects['code'] == 'Bang-2'
+                          if bang_code.include?(sub['code'])
+                            if sub['code'] == 'Bang-2'
                               grand_grade_point1 = grand_grade_point1.to_f+grade.credit_points.to_f
                             end
-                          elsif eng_code.include?(subjects['code'])
-                            if subjects['code'] == 'Eng-2'
+                          elsif eng_code.include?(sub['code'])
+                            if sub['code'] == 'Eng-2'
                               grand_grade_point1 = grand_grade_point1.to_f+grade.credit_points.to_f
                             end
                           else
@@ -13459,12 +13459,12 @@ class ExamController < ApplicationController
                         grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
                         if !grade.blank? and !grade.name.blank?
                           #grand_grade_point2 = grand_grade_point2+grade.credit_points.to_f
-                          if bang_code.include?(subjects['code'])
-                            if subjects['code'] == 'Bang-2'
+                          if bang_code.include?(sub['code'])
+                            if sub['code'] == 'Bang-2'
                               grand_grade_point2 = grand_grade_point2.to_f+grade.credit_points.to_f
                             end
-                          elsif eng_code.include?(subjects['code'])
-                            if subjects['code'] == 'Eng-2'
+                          elsif eng_code.include?(sub['code'])
+                            if sub['code'] == 'Eng-2'
                               grand_grade_point2 = grand_grade_point2.to_f+grade.credit_points.to_f
                             end
                           else
@@ -13478,12 +13478,12 @@ class ExamController < ApplicationController
                         grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                         if !grade.blank? and !grade.name.blank?
                           #grand_grade_point = grand_grade_point+grade.credit_points.to_f
-                          if bang_code.include?(subjects['code'])
-                            if subjects['code'] == 'Bang-2'
+                          if bang_code.include?(sub['code'])
+                            if sub['code'] == 'Bang-2'
                               grand_grade_point = grand_grade_point.to_f+grade.credit_points.to_f
                             end
-                          elsif eng_code.include?(subjects['code'])
-                            if subjects['code'] == 'Eng-2'
+                          elsif eng_code.include?(sub['code'])
+                            if sub['code'] == 'Eng-2'
                               grand_grade_point = grand_grade_point.to_f+grade.credit_points.to_f
                             end
                           else

@@ -13789,7 +13789,7 @@ class ExamController < ApplicationController
               end
               if exam_type == 1
                 grand_grade_n = grand_grade_point1
-                abort(@student_result[loop_std]['subjects']['Bang-1']['ct'].to_s)
+                abort(@student_result[loop_std]['subjects']['Bang-1'].inspect)
                 @student_result[loop_std]['subjects'].each do |ssubb|
 
                 end

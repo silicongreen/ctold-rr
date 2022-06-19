@@ -11543,8 +11543,6 @@ class ExamController < ApplicationController
             u_grade2 = 0
             grand_total_main = 0
             grade_poin_main = 0
-            main_mark_bangla = 0
-            main_mark_english = 0
             @student_tab = @student_all_tab.find{|val| val.id.to_i == std['id'].to_i }
             if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
               if @student_result[loop_std].blank?
@@ -11670,9 +11668,6 @@ class ExamController < ApplicationController
                 main_mark = 0
                 subject_failed = false
                 four_subject_failed = false
-
-                m_b = 0
-                m_e = 0
 
                 tab['exams'].each do |rs|
                   if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? 
@@ -12524,13 +12519,13 @@ class ExamController < ApplicationController
                   grand_total2_with_fraction = grand_total2_with_fraction+total_mark2_no_round
                   grand_total_with_fraction = grand_total_with_fraction+main_mark_no_round
                   
-                  #if full_mark1 == 50 && main_mark1 == 44 && (@connect_exam_obj.result_type == 12 || @connect_exam_obj.result_type == 6 || @connect_exam_obj.result_type == 5 )
-                  #  main_mark1 = 45
-                  #  main_mark = 45
-                  #end
-                  #if full_mark2 == 50 && main_mark2 == 44 && (@connect_exam_obj.result_type == 12 || @connect_exam_obj.result_type == 6 || @connect_exam_obj.result_type == 5 )
-                  #  main_mark2 = 45
-                  #end
+                  if full_mark1 == 50 && main_mark1 == 44 && (@connect_exam_obj.result_type == 12 || @connect_exam_obj.result_type == 6 || @connect_exam_obj.result_type == 5 )
+                    main_mark1 = 45
+                    main_mark = 45
+                  end
+                  if full_mark2 == 50 && main_mark2 == 44 && (@connect_exam_obj.result_type == 12 || @connect_exam_obj.result_type == 6 || @connect_exam_obj.result_type == 5 )
+                    main_mark2 = 45
+                  end
                 
                   if fourth_subject.blank? && subject_failed == false
                     grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
@@ -12538,22 +12533,11 @@ class ExamController < ApplicationController
                       unless sub['subject_group_id'].to_i > 0
                         #grand_grade_point1 = grand_grade_point1+grade.credit_points.to_f
                         if bang_code.include?(sub['code'])
-                          if sub['code'] == 'Bang-1'
-                            m_b  = m_b  + total_ob1+total_sb1+total_pr1
-                          elsif sub['code'] == 'Bang-2'
-                            m_b  = m_b  + total_ob1+total_sb1+total_pr1
-                          #abort(mark_bangla.to_s + "  ")
-                            main_mark2 = (mark_bangla.to_f.round/200.to_f)*100
-                            grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
+                          if sub['code'] == 'Bang-2'
                             grand_grade_point1 = grand_grade_point1.to_f+grade.credit_points.to_f
                           end
                         elsif eng_code.include?(sub['code'])
-                          if sub['code'] == 'Eng-1'
-                            mark_english = mark_english + main_mark1.to_f
-                          elsif sub['code'] == 'Eng-2'
-                            mark_english = mark_english + main_mark1.to_f
-                            main_mark2 = (mark_english.to_f.round/200.to_f)*100
-                            grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
+                          if sub['code'] == 'Eng-2'
                             grand_grade_point1 = grand_grade_point1.to_f+grade.credit_points.to_f
                           end
                         else
@@ -12572,22 +12556,11 @@ class ExamController < ApplicationController
                         grads = grads + " up2 " + sub['name'].to_s + "  " + grade.credit_points.to_s + "  " + main_mark2.to_s + "\n"
 
                         if bang_code.include?(sub['code'])
-                          if sub['code'] == 'Bang-1'
-                            m_b  = mark_bangla  + main_mark1.to_f
-                          elsif sub['code'] == 'Bang-2'
-                            mark_bangla  = mark_bangla  + main_mark1.to_f
-                            #abort(mark_bangla.to_s + "  " + mark_bangla_full.to_s)
-                            main_mark2 = (mark_bangla.to_f.round/200.to_f)*100
-                            grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
+                          if sub['code'] == 'Bang-2'
                             grand_grade_point2 = grand_grade_point2.to_f+grade.credit_points.to_f
                           end
                         elsif eng_code.include?(sub['code'])
-                          if sub['code'] == 'Eng-1'
-                            mark_english = mark_english + main_mark1.to_f
-                          elsif sub['code'] == 'Eng-2'
-                            mark_english = mark_english + main_mark1.to_f
-                            main_mark2 = (mark_english.to_f.round/200.to_f)*100
-                            grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
+                          if sub['code'] == 'Eng-2'
                             grand_grade_point2 = grand_grade_point2.to_f+grade.credit_points.to_f
                           end
                         else
@@ -12604,22 +12577,11 @@ class ExamController < ApplicationController
                       unless sub['subject_group_id'].to_i > 0
                         #grand_grade_point = grand_grade_point+grade.credit_points.to_f
                         if bang_code.include?(sub['code'])
-                          if sub['code'] == 'Bang-1'
-                            mark_bangla  = mark_bangla  + main_mark1.to_f
-                          elsif sub['code'] == 'Bang-2'
-                            mark_bangla  = mark_bangla  + main_mark1.to_f
-                            #abort(mark_bangla.to_s + "  " + mark_bangla_full.to_s)
-                            main_mark2 = (mark_bangla.to_f.round/200.to_f)*100
-                            grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
+                          if sub['code'] == 'Bang-2'
                             grand_grade_point = grand_grade_point.to_f+grade.credit_points.to_f
                           end
                         elsif eng_code.include?(sub['code'])
-                          if sub['code'] == 'Eng-1'
-                            mark_english = mark_english + main_mark1.to_f
-                          elsif sub['code'] == 'Eng-2'
-                            mark_english = mark_english + main_mark1.to_f
-                            main_mark2 = (mark_english.to_f.round/200.to_f)*100
-                            grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
+                          if sub['code'] == 'Eng-2'
                             grand_grade_point = grand_grade_point.to_f+grade.credit_points.to_f
                           end
                         else
@@ -13779,7 +13741,6 @@ class ExamController < ApplicationController
                 if grade_point_avg > 5
                   grade_point_avg = 5.00
                 end
-                
                 @student_result[loop_std]['gpa'] = grand_grade_point
                 @student_result[loop_std]['grand_total'] = grand_total
                 @student_result[loop_std]['grand_total_with_fraction'] = grand_total_with_fraction

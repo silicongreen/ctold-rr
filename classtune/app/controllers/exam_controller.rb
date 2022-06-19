@@ -14067,7 +14067,7 @@ class ExamController < ApplicationController
         end 
       end
       
-      abort(@student_position_first_term.inspect)
+    
       
       
     
@@ -14103,7 +14103,7 @@ class ExamController < ApplicationController
         end 
       end
      
-    
+      abort(@student_position_first_term_batch.inspect)
       last_grade = 0.0
       last_total = 0.0
       unless @student_list_second_term_batch.blank?

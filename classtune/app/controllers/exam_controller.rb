@@ -12733,6 +12733,7 @@ class ExamController < ApplicationController
                     end
                   end
                   if !grade.blank? && !grade.name.blank? && sub['grade_subject'].to_i != 1
+                    abort('yoyal')
                     if (grade.credit_points.to_i == 0 and sub['subject_group_id'].to_i == 0) or (subject_failed == true and @connect_exam_obj.result_type != 1  and @connect_exam_obj.result_type != 2)
                       if @subject_result[main_sub_id]['failed'].blank?
                         @subject_result[main_sub_id]['failed'] = 1
@@ -13603,7 +13604,7 @@ class ExamController < ApplicationController
                         end
                       end
                       if !grade.blank? && !grade.name.blank? && sub2['grade_subject'].to_i != 1
-                        
+                        abort('yoyal1')
                         if grade.credit_points.to_i == 0 or subject_failed == true
                           if @subject_result[main_sub_id]['failed'].blank?
                             @subject_result[main_sub_id]['failed'] = 1

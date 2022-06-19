@@ -12521,13 +12521,13 @@ class ExamController < ApplicationController
                   grand_total2_with_fraction = grand_total2_with_fraction+total_mark2_no_round
                   grand_total_with_fraction = grand_total_with_fraction+main_mark_no_round
                   
-                  if full_mark1 == 50 && main_mark1 == 44 && (@connect_exam_obj.result_type == 12 || @connect_exam_obj.result_type == 6 || @connect_exam_obj.result_type == 5 )
-                    main_mark1 = 45
-                    main_mark = 45
-                  end
-                  if full_mark2 == 50 && main_mark2 == 44 && (@connect_exam_obj.result_type == 12 || @connect_exam_obj.result_type == 6 || @connect_exam_obj.result_type == 5 )
-                    main_mark2 = 45
-                  end
+                  #if full_mark1 == 50 && main_mark1 == 44 && (@connect_exam_obj.result_type == 12 || @connect_exam_obj.result_type == 6 || @connect_exam_obj.result_type == 5 )
+                  #  main_mark1 = 45
+                  #  main_mark = 45
+                  #end
+                  #if full_mark2 == 50 && main_mark2 == 44 && (@connect_exam_obj.result_type == 12 || @connect_exam_obj.result_type == 6 || @connect_exam_obj.result_type == 5 )
+                  #  main_mark2 = 45
+                  #end
                 
                   if fourth_subject.blank? && subject_failed == false
                     grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
@@ -12536,10 +12536,10 @@ class ExamController < ApplicationController
                         #grand_grade_point1 = grand_grade_point1+grade.credit_points.to_f
                         if bang_code.include?(sub['code'])
                           if sub['code'] == 'Bang-1'
-                            mark_bangla  = mark_bangla  + main_mark1.to_f
+                            mark_bangla  = mark_bangla  + total_mark1.to_f
                           elsif sub['code'] == 'Bang-2'
-                            mark_bangla  = mark_bangla  + main_mark1.to_f
-                            #abort(mark_bangla.to_s + "  " + mark_bangla_full.to_s)
+                            mark_bangla  = mark_bangla  + total_mark1.to_f
+                            abort(mark_bangla.to_s + "  ")
                             main_mark2 = (mark_bangla.to_f.round/200.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
                             grand_grade_point1 = grand_grade_point1.to_f+grade.credit_points.to_f

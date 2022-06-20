@@ -6,8 +6,13 @@
           @grading_levels = GradingLevel.default
         end
       end
+      @no_class = false
+      if @class.blank?
+        @no_class = true
+      end
       @class = 1
       @total_std_batch = 0
+      @my_student = 0
       @total_std = 0
       @student_list_first_term = []
       @student_list_second_term = []
@@ -2299,7 +2304,9 @@
             grand_total2_with_fraction = grand_total2_with_fraction.to_f
             if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
               @total_std_batch = @total_std_batch+1
-              
+              if @no_class
+                @my_student = @my_student + 1
+              end
               
               
               if full_absent

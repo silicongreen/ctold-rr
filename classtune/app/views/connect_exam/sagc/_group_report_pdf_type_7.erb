@@ -874,7 +874,7 @@
                       <td class="no-warp">
                          <% #if !@student_position_first_term_batch[@student.id.to_i].blank? %> 
                          <% if !@section_all_position_batch.blank? && !@section_all_position_batch[@batch.id.to_i].blank? && !@section_all_position_batch[@batch.id.to_i][@student.id.to_i].blank? %>
-                           <%= @section_all_position_batch[@batch.id.to_i][@student.id.to_i] %> out of <%= @section_all_position_batch[@batch.id.to_i].length %>
+                           <%= @section_all_position_batch[@batch.id.to_i][@student.id.to_i] %> out of <%= @my_student %>
                          <% else %>
                           -
                          <% end %> 

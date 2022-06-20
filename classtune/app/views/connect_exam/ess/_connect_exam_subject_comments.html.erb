@@ -136,7 +136,7 @@
                     <% @students.each do |student| %>
                       <tr class="tr-<%= cycle('odd', 'even') %>">
                           <td class="col-2 zui-sticky-col" style="width: 18%;" ><%= student.class_roll_no %> </td>
-                          <td class="col-2 zui-sticky-col2"  style="padding: 13px 10px"><%= student.full_name %>fuu </td>
+                          <td class="col-2 zui-sticky-col2"  style="padding: 13px 10px"><%= student.full_name %> </td>
                           <%
                             exam_comment = ""
                             @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@exam_connect.id,:subject_id => @exam_subject.id, :student_id => student.id} )
@@ -149,6 +149,7 @@
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
                           <% unless @exams.blank? %>
+                            <td>no bl</td>
                             <% @exams.each do |exam| %>
                               <% @exam_score = exam.score_for(student) %>
 

@@ -13855,7 +13855,7 @@ class ExamController < ApplicationController
         
             
             
-            if exam_type == 1
+            if u_grade1 == 0 && exam_type == 1
               grand_total_new = grand_total1_with_fraction
               grand_grade_new = grand_grade_point1 + 1000
               #avg_g = grade_point_avg1.round(2)
@@ -14101,7 +14101,7 @@ class ExamController < ApplicationController
           @student_position_first_term_batch[s[2].to_i] = position
         end 
       end
-     
+      abort(student_position_first_term_batch.inspect)
       
       last_grade = 0.0
       last_total = 0.0

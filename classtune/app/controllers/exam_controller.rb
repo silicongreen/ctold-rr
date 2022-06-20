@@ -961,13 +961,14 @@ class ExamController < ApplicationController
     end
     
     if @exam_subject.no_exams.blank?
+      abort('jeje')
       @group_exam = GroupedExam.find_all_by_connect_exam_id_and_show_in_connect(@exam_connect.id,1, :order=>"priority ASC")
       unless @group_exam.blank?
         @group_exam.each do |group_exam|
           exam_group = ExamGroup.active.find(group_exam.exam_group_id)
           unless exam_group.blank?
             exam = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,@exam_subject.id)
-            abort(exam.inspect)
+            
             unless exam.blank?
               @exams << exam
             end

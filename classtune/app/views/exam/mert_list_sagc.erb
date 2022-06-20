@@ -214,7 +214,7 @@ end
                             
                           <% if !@section_all_position_batch.blank? && !@section_all_position_batch[std_result['batch_id'].to_i].blank? && !@section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i].blank? %>
 
-                            <td class="col-pdf no-warp center-class"><%= @section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i] %></td>
+                            <td class="col-pdf no-warp center-class"><%= std_result['id']%> <%= @section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i] %></td>
 
                           <% else %>
                             <td class="col-pdf no-warp" colspan="2">

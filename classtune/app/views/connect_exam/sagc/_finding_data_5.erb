@@ -2559,7 +2559,7 @@
         @section_wise_position.each do|key,value|
           position = 0
          
-          @sorted_students = @section_wise_position[key].sort
+          @sorted_students = @section_wise_position[key].sort.reverse
           @sorted_students.each do|s|
             
             if last_grade != s[0] or last_total != s[1]

@@ -63,28 +63,53 @@ end
             </table>
             
               <h3 align="center">Summary</h3>
-              <% if !@total_std_batch.blank? %>
-              <table id="pdf-table" width="60%" align="center" cellspacing="0">
+              <% if @Class.blank? %>
+                <% if !@my_student.blank? %>
+                  <table id="pdf-table" width="60%" align="center" cellspacing="0">
+                      <tr class="table-header">
+                        <td class="col-pdf right-align">Total No. of Students </td><td><%= @my_student %> </td>
+                      </tr>
+                  </table>     
+                <% end %>
+              <% else %>
+                <% if !@total_std_batch.blank? %>
+                  <table id="pdf-table" width="60%" align="center" cellspacing="0">
                       <tr class="table-header">
                         <td class="col-pdf right-align">Total No. of Students </td><td><%= @total_std_batch %> </td>
                       </tr>
-                  </tr> 
-              </table>     
+                  </table>     
+                <% end %>
               <% end %>
+
               <h3 align="center">Passed/ Failed</h3>
-              <% if !@student_list_first_term_batch.blank? %>
-              <table id="pdf-table" width="60%" align="center" cellspacing="0">
-                      <tr class="table-header">
-                        <td class="col-pdf right-align" >No. of Passed Students </td><td><%= @student_list_first_term_batch.count %> </td>
-                      </tr>
-                      <tr class="table-header">
-                        <td class="col-pdf right-align" >No. of Failed with Partial Absentee Students </td><td><%= @total_std_batch-@student_list_first_term_batch.count %> </td>
-                      </tr>
-                      <tr class="table-header border-top">
-                        <td class="col-pdf right-align" ></td><td><%= @total_std_batch %> </td>
-                      </tr>
-                  </tr> 
-              </table>     
+              <% if @Class.blank? %>
+                <% if !@section_all_position_batch.blank? %>
+                  <table id="pdf-table" width="60%" align="center" cellspacing="0">
+                          <tr class="table-header">
+                            <td class="col-pdf right-align" >No. of Passed Students </td><td><%= @section_all_position_batch[@batch.id.to_i].count %> </td>
+                          </tr>
+                          <tr class="table-header">
+                            <td class="col-pdf right-align" >No. of Failed with Partial Absentee Students </td><td><%= @my_student-@section_all_position_batch[@batch.id.to_i].count.count %> </td>
+                          </tr>
+                          <tr class="table-header border-top">
+                            <td class="col-pdf right-align" ></td><td><%= @my_student %> </td>
+                          </tr>
+                  </table>     
+                <% end %>
+              <% else %>
+                <% if !@student_list_first_term_batch.blank? %>
+                  <table id="pdf-table" width="60%" align="center" cellspacing="0">
+                          <tr class="table-header">
+                            <td class="col-pdf right-align" >No. of Passed Students </td><td><%= @student_list_first_term_batch.count %> </td>
+                          </tr>
+                          <tr class="table-header">
+                            <td class="col-pdf right-align" >No. of Failed with Partial Absentee Students </td><td><%= @total_std_batch-@student_list_first_term_batch.count %> </td>
+                          </tr>
+                          <tr class="table-header border-top">
+                            <td class="col-pdf right-align" ></td><td><%= @total_std_batch %> </td>
+                          </tr>
+                  </table>     
+                <% end %> 
               <% end %> 
               
               <% if @grading_levels.blank? %>

@@ -11570,7 +11570,7 @@ class ExamController < ApplicationController
             if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
               @total_std = @total_std+1
             end
-            if @no_class and connect_exam_id.to_i == @connect_exam_obj.id and @batch.id == batch_data.id	
+            if connect_exam_id.to_i == @connect_exam_obj.id and @batch.id == batch_data.id	
               @my_student = @my_student + 1
             end
             total_std_subject = all_total_std_subject.select{|val| val.student_id.to_i == std['id'].to_i }

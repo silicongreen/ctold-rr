@@ -11403,8 +11403,14 @@ class ExamController < ApplicationController
           @grading_levels = GradingLevel.default
         end
       end
+      @no_class = false
+      if @class.blank?
+        @no_class = true
+      end
+      @class = 1
       @total_std_batch = 0
       @total_std = 0
+      @my_student = 0
       @student_list_first_term = []
       @student_list_second_term = []
       @student_list = []
@@ -11560,6 +11566,9 @@ class ExamController < ApplicationController
             end
             if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
               @total_std = @total_std+1
+            end
+            if @no_class and connect_exam_id.to_i == @connect_exam_obj.id and @batch.id == batch_data.id	
+              @my_student = @my_student + 1
             end
             total_std_subject = all_total_std_subject.select{|val| val.student_id.to_i == std['id'].to_i }
             std_subject_id = total_std_subject.map(&:subject_id)
@@ -14140,7 +14149,7 @@ class ExamController < ApplicationController
         end 
       end
     end
-    
+    @class = nil
     
   end 
   

@@ -183,7 +183,7 @@ end
                         <% if @class.blank? %>
                           <% if !@current_student_position.blank? && !@current_student_position[std_result['id'].to_i].blank? %>
 
-                            <td class="col-pdf no-warp center-class"><%= @current_student_position[std_result['id'].to_i] %></td>
+                            <td class="col-pdf no-warp center-class">223 <%= @current_student_position[std_result['id'].to_i] %></td>
 
                           <% else %>
                             <td class="col-pdf no-warp" colspan="2">
@@ -208,7 +208,7 @@ end
                             </td>
                           <% end %> 
                           <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
-                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
+                            <td class="col-pdf no-warp center-class">112 <%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
                           <% end %>
                         <% else %>
                             

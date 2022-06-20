@@ -11410,6 +11410,7 @@ class ExamController < ApplicationController
       @student_list = []
       @student_list_batch = []
       @student_list_first_term_batch = []
+      @current_student_list = []
       @student_list_second_term_batch = []
       @student_subject_marks = {}
       @subject_highest = {}
@@ -13854,7 +13855,7 @@ class ExamController < ApplicationController
             end  
         
             
-            
+            @bila = false
             if u_grade1 == 0 && exam_type == 1
               grand_total_new = grand_total1_with_fraction
               grand_grade_new = grand_grade_point1 + 1000
@@ -13863,7 +13864,11 @@ class ExamController < ApplicationController
               #  avg_g = 5
               #end
               #grand_grade_new = avg_g + 100
-              if connect_exam_id.to_i == @connect_exam_obj.id || (std_group_name == group_name && !@class.blank?)
+              if connect_exam_id.to_i == @connect_exam_obj.id
+                @current_student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+              end 
+
+              if connect_exam_id.to_i == @connect_exam_obj.id || (std_group_name == group_name)
                 @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if exam_type == 1
                   if !gradeObj.blank? and !gradeObj.name.blank?
@@ -13940,6 +13945,7 @@ class ExamController < ApplicationController
       @student_position = {}
    
       @student_position_first_term_batch = {}
+      @current_student_position = {}
       @student_position_second_term_batch = {}
       @student_position_batch = {}
       
@@ -14101,7 +14107,24 @@ class ExamController < ApplicationController
           @student_position_first_term_batch[s[2].to_i] = position
         end 
       end
-      abort(@student_position_first_term_batch.inspect)
+
+
+    
+      last_grade = 0.0
+      last_total = 0.0
+      unless @current_student_list.blank?
+        position = 0
+        @sorted_students = @current_student_list.sort.reverse
+        @sorted_students.each do|s|
+          if last_grade != s[0] or last_total != s[1]
+            position = position+1
+          end
+          last_grade = s[0]
+          last_total = s[1]
+          @current_student_position[s[2].to_i] = position
+        end 
+      end
+      
       
       last_grade = 0.0
       last_total = 0.0

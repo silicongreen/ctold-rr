@@ -846,7 +846,8 @@
                           <% if @student_position_first_term_batch[@student.id.to_i].blank? %> 
                             0.00
                           <% else %>
-                            <%= sprintf( "%0.02f", grade_point_avg) %>
+                            <%#= sprintf( "%0.02f", grade_point_avg) %>
+                            <%= grade_point_avg.to_f.round(2) %>
                           <% end %></b>
                       </td>
                       <td class="align-left no-warp" colspan="2"><b>Position in Merit List</b></td>

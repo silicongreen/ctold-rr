@@ -3593,6 +3593,7 @@ class ExamController < ApplicationController
     elsif @connect_exam_obj.result_type.to_i == 19
       finding_data_19()
     else
+      @dont_class = true
       finding_data5()
     end
     render :pdf => 'summary_report',
@@ -11407,7 +11408,11 @@ class ExamController < ApplicationController
       if @class.blank?
         @no_class = true
       end
-      @class = 1
+      if @dont_class.blank?
+        @class = 1
+      else @dont_class
+        @no_class = false
+      end
       @total_std_batch = 0
       @total_std = 0
       @my_student = 0

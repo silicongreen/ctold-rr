@@ -703,7 +703,7 @@
                   <% end %>
                       
                   <% if total_grade > 0 && total_subject > 0 %>
-                      <% grade_point_avg = total_grade.to_f/total_subject.to_f %>
+                      <% grade_point_avg = tot_grade.to_f/total_subject.to_f %>
                       <% if grade_point_avg > 5 %>
                         <% grade_point_avg = 5.00 %>
                       <% end %>  
@@ -712,7 +712,7 @@
                       <% colspan = colspan+3 %>
                       <td class="col-pdf align-left-baf" colspan="<%= colspan %>"><b>Total Marks & Total GP</b></td>
                       <td class="col-pdf no-warp align-left-baf" colspan="3">&nbsp;&nbsp;&nbsp;<b><%= grand_total %></b></td>
-                      <td class="col-pdf"><b><%= tot_grade %><%#= total_grade %> <%= grade_point_avg %></b></td>
+                      <td class="col-pdf"><b><%= tot_grade %><%#= total_grade %></b></td>
                   </tr>    
                     
                   <tr class="page-break-grade">

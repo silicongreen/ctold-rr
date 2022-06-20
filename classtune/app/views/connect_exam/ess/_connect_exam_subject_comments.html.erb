@@ -153,6 +153,7 @@
                               <% @exam_score = exam.score_for(student) %>
 
                               <% if has_subject_group(@exam_subject.id) && @exam_subject.no_exams_sjws.to_i == 1  %>
+                              alalfhal
                                 <% unless @exam_score.blank? or @exam_score.remarks.blank?  %>
                                   <% exam_score_split = @exam_score.remarks.split("|") %>
                                 <% end %>
@@ -229,7 +230,6 @@
                                     </table>
                                 </td>
                               <% else %>
-                                                              herr
                                 <% if !@exam_score.marks.blank? %>
                                   <% total_mark = total_mark.to_f+@exam_score.marks.to_f %>
                                   <% score_now = @exam_score.marks  %>

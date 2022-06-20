@@ -14107,7 +14107,6 @@ class ExamController < ApplicationController
           @student_position_first_term_batch[s[2].to_i] = position
         end 
       end
-      
 
     
       last_grade = 0.0

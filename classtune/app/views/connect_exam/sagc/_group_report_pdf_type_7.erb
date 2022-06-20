@@ -712,7 +712,7 @@
                       <% colspan = colspan+3 %>
                       <td class="col-pdf align-left-baf" colspan="<%= colspan %>"><b>Total Marks & Total GP</b></td>
                       <td class="col-pdf no-warp align-left-baf" colspan="3">&nbsp;&nbsp;&nbsp;<b><%= grand_total %></b></td>
-                      <td class="col-pdf"><b><%= tot_grade %><%#= total_grade %> </b></td>
+                      <td class="col-pdf"><b><%= tot_grade %><%#= total_grade %> <%= grade_point_avg %></b></td>
                   </tr>    
                     
                   <tr class="page-break-grade">
@@ -837,8 +837,8 @@
                 
              
                 
-              <%# grade_point_avg = (grade_point_avg.to_f*100).to_f.round() %>
-              <%# grade_point_avg = grade_point_avg.to_f/100 %>
+              <% grade_point_avg = (grade_point_avg.to_f*100).to_f.round() %>
+              <% grade_point_avg = grade_point_avg.to_f/100 %>
               <table id="pdf-table" class="tbl-lign-left top-margin-20 letter-grade" width="100%" cellspacing="0">
                 <tr class="odd">
                       <td class="align-left no-warp" width="50%"><b>Grade Point Avg</b></td>
@@ -846,8 +846,7 @@
                           <% if @student_position_first_term_batch[@student.id.to_i].blank? %> 
                             0.00
                           <% else %>
-                            <%#= sprintf( "%0.02f", grade_point_avg) %>
-                            <%= grade_point_avg.to_f.round(2) %>
+                            <%= sprintf( "%0.02f", grade_point_avg) %>
                           <% end %></b>
                       </td>
                       <td class="align-left no-warp" colspan="2"><b>Position in Merit List</b></td>

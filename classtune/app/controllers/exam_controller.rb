@@ -14149,7 +14149,9 @@ class ExamController < ApplicationController
         end 
       end
     end
-    @class = nil
+    if @no_class == true
+      @class = nil
+    end
     
   end 
   

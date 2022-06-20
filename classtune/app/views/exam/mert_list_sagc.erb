@@ -208,13 +208,13 @@ end
                             </td>
                           <% end %> 
                           <% if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank? %>
-                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term[std_result['id'].to_i] %></td>
+                            <td class="col-pdf no-warp center-class">lo1 <%= @student_position_first_term[std_result['id'].to_i] %></td>
                           <% end %>
                         <% else %>
                             
                           <% if !@section_all_position_batch.blank? && !@section_all_position_batch[std_result['batch_id'].to_i].blank? && !@section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i].blank? %>
 
-                            <td class="col-pdf no-warp center-class"><%= @section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i] %></td>
+                            <td class="col-pdf no-warp center-class">lo <%= @section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i] %></td>
 
                           <% else %>
                             <td class="col-pdf no-warp" colspan="2">

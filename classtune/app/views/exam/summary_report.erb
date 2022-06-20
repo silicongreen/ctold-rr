@@ -89,7 +89,7 @@ end
                             <td class="col-pdf right-align" >No. of Passed Students </td><td><%= @section_all_position_batch[@batch.id.to_i].count %> </td>
                           </tr>
                           <tr class="table-header">
-                            <td class="col-pdf right-align" >No. of Failed with Partial Absentee Students </td><td><%= @my_student-@section_all_position_batch[@batch.id.to_i].count.count %> </td>
+                            <td class="col-pdf right-align" >No. of Failed with Partial Absentee Students </td><td><%= @my_student-@section_all_position_batch[@batch.id.to_i].count %> </td>
                           </tr>
                           <tr class="table-header border-top">
                             <td class="col-pdf right-align" ></td><td><%= @my_student %> </td>

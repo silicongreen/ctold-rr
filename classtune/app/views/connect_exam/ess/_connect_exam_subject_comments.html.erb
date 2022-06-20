@@ -149,7 +149,6 @@
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
                           <% unless @exams.blank? %>
-                            <td>no bl</td>
                             <% @exams.each do |exam| %>
                               <% @exam_score = exam.score_for(student) %>
 

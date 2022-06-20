@@ -967,6 +967,7 @@ class ExamController < ApplicationController
           exam_group = ExamGroup.active.find(group_exam.exam_group_id)
           unless exam_group.blank?
             exam = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,@exam_subject.id)
+            abort(exam.inspect)
             unless exam.blank?
               @exams << exam
             end

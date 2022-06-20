@@ -11405,13 +11405,11 @@ class ExamController < ApplicationController
         end
       end
       @no_class = false
-      if @class.blank?
-        @no_class = true
-      end
       if @dont_class.blank?
-        @class = 1
-      else @dont_class
-        @no_class = false
+        if @class.blank?
+          @class = 1
+          @no_class = true
+        end
       end
       @total_std_batch = 0
       @total_std = 0

@@ -44,7 +44,7 @@ elsif !@student_position_second_term.blank?  and !@student_position_second_term_
 end  
 
 %>
-<%= @batch.id %>
+
 <div id="page-yield" class="available_sections1 baf_shaheen">
     <div class="page1"> </div>
     <div class="section1 row" >
@@ -101,6 +101,9 @@ end
                   <% srl = 0 %>
                     <% onebreak = 0 %>
                   <% @student_result.each do |std_result| %>
+                    <% if @class.blank? and std_result['batch_id'].to_i == @batch.id.to_i %>
+                      <% next %>
+                    <% end %>
                     <%  std_count = std_count+1 %>
                     <%  srl = srl+1 %>
                     <% if std_count>24 %>

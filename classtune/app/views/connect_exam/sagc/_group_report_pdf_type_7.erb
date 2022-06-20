@@ -886,8 +886,8 @@
                       <td class="align-left no-warp" width="15%">Class/Group</td>
                       <td class="no-warp">
                           <b>
-                         <% if !@section_all_position_batch.blank? && !@section_all_position_batch[@batch.id].blank? && !@section_all_position_batch[@batch.id][@student.id.to_i].blank? %>
-                          <%= @section_all_position_batch[@batch.id][@student.id.to_i] %> out of <%= @total_std %>
+                         <% if !@student_position_first_term[@student.id.to_i].blank? %> 
+                          <%= @student_position_first_term[@student.id.to_i] %> out of <%= @total_std %>
                          <% else %>
                           -
                          <% end %> 

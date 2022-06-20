@@ -13875,7 +13875,7 @@ class ExamController < ApplicationController
                   end
                 end
               end 
-              if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
+              if std_group_name == group_name #or connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_first_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if @section_wise_position[batch_data.id].blank?
                   @section_wise_position[batch_data.id] = []

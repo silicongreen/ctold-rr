@@ -242,7 +242,7 @@ end
                           <% end %> 
                           
                           <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
-                            <td class="col-pdf no-warp center-class">lo1 <%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
+                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
                           <% end %>
                             
                           

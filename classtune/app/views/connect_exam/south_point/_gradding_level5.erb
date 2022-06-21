@@ -54,6 +54,10 @@
                                 all_comments_array = all_comments.split("|")
                               end
                             end
+                            working_days_half = 0
+                            working_days_final = 0
+                            days_present_half = 0
+                            days_present_final = 0
                           %>
                           <% if @report_data['total_first_term'].nil? %>
                             <% if l == 1 %>

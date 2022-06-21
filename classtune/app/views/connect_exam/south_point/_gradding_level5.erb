@@ -59,6 +59,7 @@
                             days_present_half = 0
                             days_present_final = 0
                           %>
+                          <%= debug all_comments_array.inspect %>
                           <% if @report_data['total_first_term'].nil? %>
                             <% if l == 1 %>
                                 <td class="col-pdf">Total Working day</td>

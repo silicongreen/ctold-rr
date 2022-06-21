@@ -46,24 +46,44 @@
                           </td>
                           <td class="col-pdf"><%= grade.name %></td>
                           <td class="col-pdf"><%= grade.description %></td>
+                          <%
+                            all_comments_array = []
+                            if !@exam_comment.blank?
+                              all_comments = @exam_comment.comments
+                              if !all_comments.blank?
+                                all_comments_array = all_comments.split("|")
+                              end
+                            end
+                          %>
                           <% if @report_data['total_first_term'].nil? %>
                             <% if l == 1 %>
                                 <td class="col-pdf">Total Working day</td>
+                                <% if all_comments_array[2].blank? %>
                                 <td class="col-pdf"><%= @report_data['total'] %></td>
-
+                                <% else %>
+                                <td class="col-pdf"><%= all_comments_array[2] %></td>
+                                <% end %>
                             <% elsif l == 2 %>
                                 <td class="col-pdf">Days Present</td>
-                                <% unless @report_data['total_new_std'].blank?  %>
-                                  <td class="col-pdf"><%= @report_data['total_new_std'].to_i-@report_data['absent'].to_i %></td>
+                                <% if !all_comments_array[4].blank? %>
+                                  <td class="col-pdf"><%= all_comments_array[4] %></td>
                                 <% else %>
-                                  <td class="col-pdf"><%= @report_data['present'] %></td>
+                                  <% unless @report_data['total_new_std'].blank?  %>
+                                    <td class="col-pdf"><%= @report_data['total_new_std'].to_i-@report_data['absent'].to_i %></td>
+                                  <% else %>
+                                    <td class="col-pdf"><%= @report_data['present'] %></td>
+                                  <% end %>
                                 <% end %>
                             <% elsif l == 3 %>
                                 <td class="col-pdf">Days Absent</td>
-                                <% unless @report_data['absent'].nil?  %>
-                                  <td class="col-pdf"><%= @report_data['absent'] %></td>
+                                <% if !all_comments_array[6].blank? %>
+                                  <td class="col-pdf"><%= all_comments_array[6] %></td>
                                 <% else %>
-                                  <td class="col-pdf"><%= @report_data['total']-@report_data['present'] %></td>
+                                  <% unless @report_data['absent'].nil?  %>
+                                    <td class="col-pdf"><%= @report_data['absent'] %></td>
+                                  <% else %>
+                                    <td class="col-pdf"><%= @report_data['total']-@report_data['present'] %></td>
+                                  <% end %>
                                 <% end %>
                             <% else %>
                                 <td class="col-pdf"></td>
@@ -72,32 +92,59 @@
                           <% else %>  
                             <% if l == 1 %>
                                 <td class="col-pdf">Total Working day</td>
+                                <% if all_comments_array[1].blank? %>
                                 <td class="col-pdf"><%= @report_data['total_first_term'] %></td>
+                                <% else %>
+                                <td class="col-pdf"><%= all_comments_array[1] %></td>
+                                <% end %>
+
+                                <% if all_comments_array[2].blank? %>
                                 <td class="col-pdf"><%= @report_data['total'] %></td>
+                                <% else %>
+                                <td class="col-pdf"><%= all_comments_array[2] %></td>
+                                <% end %>
 
                             <% elsif l == 2 %>
                                 <td class="col-pdf">Days Present</td>
-                                <% unless @report_data['total_new_std_first_term'].blank?  %>
-                                  <td class="col-pdf"><%= @report_data['total_new_std_first_term'].to_i-@report_data['absent_first_term'].to_i %></td>
+                                <% if !all_comments_array[3].blank? %>
+                                  <td class="col-pdf"><%= all_comments_array[3] %></td>
                                 <% else %>
-                                  <td class="col-pdf"><%= @report_data['present_first_term'] %></td>
+                                  <% unless @report_data['total_new_std_first_term'].blank?  %>
+                                    <td class="col-pdf"><%= @report_data['total_new_std_first_term'].to_i-@report_data['absent_first_term'].to_i %></td>
+                                  <% else %>
+                                    <td class="col-pdf"><%= @report_data['present_first_term'] %></td>
+                                  <% end %>
                                 <% end %>
-                                <% unless @report_data['total_new_std'].blank?  %>
-                                  <td class="col-pdf"><%= @report_data['total_new_std'].to_i-@report_data['absent'].to_i %></td>
+
+                                <% if !all_comments_array[4].blank? %>
+                                  <td class="col-pdf"><%= all_comments_array[4] %></td>
                                 <% else %>
-                                  <td class="col-pdf"><%= @report_data['present'] %></td>
+                                  <% unless @report_data['total_new_std'].blank?  %>
+                                    <td class="col-pdf"><%= @report_data['total_new_std'].to_i-@report_data['absent'].to_i %></td>
+                                  <% else %>
+                                    <td class="col-pdf"><%= @report_data['present'] %></td>
+                                  <% end %>
                                 <% end %>
                             <% elsif l == 3 %>
                                 <td class="col-pdf">Days Absent</td>
-                                <% unless @report_data['absent_first_term'].nil?  %>
-                                  <td class="col-pdf"><%= @report_data['absent_first_term'] %></td>
+                                <% if !all_comments_array[5].blank? %>
+                                  <td class="col-pdf"><%= all_comments_array[5] %></td>
                                 <% else %>
-                                  <td class="col-pdf"><%= @report_data['total_first_term']-@report_data['present_first_term'] %></td>
+                                  <% unless @report_data['absent_first_term'].nil?  %>
+                                    <td class="col-pdf"><%= @report_data['absent_first_term'] %></td>
+                                  <% else %>
+                                    <td class="col-pdf"><%= @report_data['total_first_term']-@report_data['present_first_term'] %></td>
+                                  <% end %>
                                 <% end %>
-                                <% unless @report_data['absent'].nil?  %>
-                                  <td class="col-pdf"><%= @report_data['absent'] %></td>
+
+                                <% if !all_comments_array[6].blank? %>
+                                  <td class="col-pdf"><%= all_comments_array[6] %></td>
                                 <% else %>
-                                  <td class="col-pdf"><%= @report_data['total']-@report_data['present'] %></td>
+                                  <% unless @report_data['absent'].nil?  %>
+                                    <td class="col-pdf"><%= @report_data['absent'] %></td>
+                                  <% else %>
+                                    <td class="col-pdf"><%= @report_data['total']-@report_data['present'] %></td>
+                                  <% end %>
                                 <% end %>
                             <% else %>
                                 <td class="col-pdf"></td>

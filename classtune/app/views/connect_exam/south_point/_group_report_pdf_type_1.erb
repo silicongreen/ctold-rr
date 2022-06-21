@@ -542,9 +542,16 @@
                               <tr class="table-header">
                                   <td class="col-pdf comment_section_final comment_section_final_new td-align-left" valign="top">
                                       <% if !@exam_comment.blank? %>
-
-                                        <%= @exam_comment.comments %>
-
+                                        <%
+                                            all_comments_array = []
+                                            all_comments = @exam_comment.comments
+                                            if !all_comments.blank?
+                                              all_comments_array = all_comments.split("|")
+                                            end
+                                        %>
+                                        <% if !all_comments_array[0].blank? %>
+                                        <%= all_comments_array[0] %>
+                                        <% end %>    
                                       <% else %> 
 
 
@@ -569,7 +576,7 @@
                           </table>
                       </td>
                   </tr>
-              </table>
+              </table> 
 
               <%= render  :partial=>"/connect_exam/south_point/gradding_level5" %>
               

@@ -445,6 +445,9 @@
                   ag_cw = sprintf( "%0.01f", ag_cw)
                 end
               end
+              %>
+                  <%= total_mark.to_s + "  " + ag_assessment.to_s + "  " + ag_hw.to_s + "  " + ag_cw.to_s %>
+                <%
               total_mark = total_mark+ag_assessment.to_f+ag_hw.to_f+ag_cw.to_f
             
               unless @report_data['report']['subjects'].blank? 
@@ -477,9 +480,7 @@
                     total_mark_life = sprintf( "%0.01f", total_mark_life)
                     total_mark = total_mark+total_mark_life.to_f
                 end
-                %>
-                  <%= total_mark %>
-                <%
+                
                
                 total_mark = sprintf( "%0.01f", total_mark)
                 total_mark_mid_term = total_mark

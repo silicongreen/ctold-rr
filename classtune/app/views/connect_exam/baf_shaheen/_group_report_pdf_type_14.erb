@@ -135,7 +135,7 @@
                             <% if report['quarter'] != '6'  %>
                               <% next %>
                             <% end %>
-                            <% if report['exam_category'] == '6' %> 
+                            <% if report['exam_category'] == '1' %> 
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                   <% class_test << report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% sub_assessment = sub_assessment.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>

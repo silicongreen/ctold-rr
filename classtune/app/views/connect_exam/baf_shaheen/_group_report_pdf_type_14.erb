@@ -446,9 +446,7 @@
                   ag_cw = sprintf( "%0.01f", ag_cw)
                 end
               end
-              %>
-                  <%= total_mark.to_s + "  " + ag_assessment.to_s + "  " + ag_hw.to_s + "  " + ag_cw.to_s %>
-                <%
+              
               total_mark = total_mark+ag_assessment.to_f+ag_hw.to_f+ag_cw.to_f
             
               unless @report_data['report']['subjects'].blank? 
@@ -469,9 +467,9 @@
                               next
                             end
                             if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
-                              if report['exam_category'] == '6'
+                              #if report['exam_category'] == '6'
                                 sub_mark = sub_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                              end 
+                              #end 
                             end
                         end
                       end   

@@ -133,7 +133,7 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
 
                           <% first_term_mark = 0 %>
                           <% first_term_ab = false %>
-                          <% first_term_full_mark = 0 %>
+                          <% first_term_full_mark = 0 %> 
                           <% first_term_avg_mark = 0 %>
 
                           <% final_term_mark = 0 %>
@@ -599,7 +599,7 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
                               <tr class="table-header">
                                   <td class="col-pdf comment_section_final comment_section_final_new td-align-left" valign="top">
                                       <% if !@exam_comment.blank? %>
-                                        <% split_comments = @exam_comment.comments.split("[]") %>
+                                        <% split_comments = @exam_comment.comments.split("|") %>
                                         <%= split_comments[0] %>
 
                                       <% else %> 

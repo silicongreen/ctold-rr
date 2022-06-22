@@ -230,7 +230,7 @@
                       <% end %>
                       <% if start == true%>
                         <tr class="even">
-                            <td class="col-pdf border-left-none  no-warp align-left-baf"><%= subjects['name'] %></td> 
+                            <td class="col-pdf border-left-none  no-warp align-left-baf"><%= subjects['name'] %> 1</td> 
                         <% start = false %>
                         <% finish = false %>
                       <% else %>
@@ -427,9 +427,7 @@
                   end  
                 end  
               end
-              %>
-                  <%= total_mark.to_s + "  " + ag_assessment.to_s + "  " + ag_hw.to_s + "  " + ag_cw.to_s %>
-                <%
+              
               ag_hw = 0
               ag_assessment = 0
               ag_cw = 0

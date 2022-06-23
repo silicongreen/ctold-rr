@@ -577,9 +577,10 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
                               <tr class="table-header">
                                   <td class="col-pdf comment_section_final comment_section_final_new td-align-left" valign="top">
                                       <% if !@exam_comment.blank? %>
-
-                                        <%= @exam_comment.comments %>
-
+                                        <% split_comments = @exam_comment.comments.split("|") %>
+                                        <% unless split_comments[0].blank? %>
+                                        <%= split_comments[0] %>
+                                        <% end %>
                                       <% else %> 
 
 

@@ -4430,7 +4430,11 @@ class StudentController < ApplicationController
     else
       @class_test = []
       if @class_test_report_data['status']['code'].to_i == 200
-        @class_test = @class_test_report_data['data']['class_test_report']
+        if MultiSchool.current_school.id == 323
+
+        else
+          @class_test = @class_test_report_data['data']['class_test_report']
+        end
       end
     end
   end

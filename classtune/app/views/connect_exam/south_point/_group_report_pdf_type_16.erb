@@ -40,7 +40,7 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
                   <%  
                   @report_data['report']['exams'].each do |report|
                    if report['quarter'] == '5'
-                     first_term_exam_name = report['exam_name']
+                     #first_term_exam_name = report['exam_name']
                    end
                    if report['quarter'] == '6'
                      final_term_exam_name = report['exam_name']
@@ -49,7 +49,7 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
                   %>
                   <% c = 'even'  %>
                   <tr class="table-header">
-                      <td class="col-pdf no-warp" colspan="8" ><%= first_term_exam_name %> <%= main_title %></td>
+                      <td class="col-pdf no-warp" colspan="7" ><%= first_term_exam_name %> <%= main_title %></td>
                       <td class="col-pdf no-warp" colspan="7" ><%= final_term_exam_name %> <%= main_title %></td>
                       <td class="col-pdf no-warp" colspan="3" >Combined Result</td>
                   </tr>    

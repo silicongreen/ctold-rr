@@ -125,7 +125,7 @@
               @student_subject_marks[sub['id'].to_i] = {}
             end
           
-            if @student_subject_mark_test[std['id'].to_i].blank?
+            if @student_subject_mark_test[std['id'].to_i].blank? 
               @student_subject_mark_test[std['id'].to_i] = {}
             end
           
@@ -233,10 +233,10 @@
             @sections = ["Primrose","Snowdrop","Magnolia","Carnation"]
           end
           if @promoted_to == "VII"
-            @sections = ["Parrot","Swift","Bluebird"]
+            @sections = ["Parrot","Swift","Bluebird",'Canary']
           end
           if @promoted_to == "VIII"
-            @sections = ["Kingfisher","Nightingale"]
+            @sections = ["Kingfisher","Nightingale",'Starling']
           end
           if @promoted_to == "IX"
             @sections = ["Robin","Seagull"]

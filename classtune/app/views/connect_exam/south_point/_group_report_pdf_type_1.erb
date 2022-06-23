@@ -1,4 +1,15 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
+<% 
+student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","Grade 6","Grade 7","Grade 8","Grade 9","Grade 10","Grade 11","Grade 12"]
+ 
+@promoted_to = ""
+  if student_classes.include?(@batch.course.course_name)
+    array_index = student_classes.index @batch.course.course_name
+    if array_index < student_classes.count
+      @promoted_to = student_classes[array_index+1]
+    end
+  end
+%>  
 <%= render  :partial=>"/connect_exam/south_point/header" %>
 <div id="page-yield"  class="available_sections1 st_joseph_bg">
       <p class="top_margin">&nbsp;</p>

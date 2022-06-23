@@ -24,7 +24,7 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
           </thead>    
       </table>
 
-
+      <% u_count = 0 %> 
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
 
@@ -443,6 +443,9 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
                           <%  main_mark = main_mark.round() %>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>
+                            <% if grade.name == "U" %>
+                              <% u_count = u_count+1 %>
+                            <% end %>
                             <td class="col-pdf"><b><%= grade.name %></b></td>
                           <% else %>
                             <td class="col-pdf"><b>-</b></td>
@@ -579,7 +582,11 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
                         <table id="pdf-table" class="font-size-20" width="100%" >
                             <tr class="table-header">
                                 <td class="col-pdf promoted_section_final"  valign="top">
-                                     Promoted To&nbsp:&nbsp;<%= @promoted_to %>
+                                <% if u_count < 3 && @promoted_to %>
+                                    Promoted To&nbsp;:&nbsp;<%= @promoted_to %>
+                                  <% elsif @promoted_to %>
+                                    Not Promoted.
+                                  <% end %>
                                 </td>                      
                             </tr>
                         </table>

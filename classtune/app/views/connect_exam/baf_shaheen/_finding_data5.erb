@@ -88,7 +88,7 @@
                 if rs['quarter'] != '6'
                   next
                 end
-                if rs['exam_category'] == '6'
+                if rs['exam_category'] == '1'
                   if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
                     class_test << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                     sub_assessment = sub_assessment.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
@@ -169,9 +169,9 @@
                       next
                     end
                     if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-                      if rs['exam_category'] == '6'
+                      #if rs['exam_category'] == '6'
                         sub_mark = sub_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                      end 
+                      #end 
                     end
                 end
               end   
@@ -242,7 +242,7 @@
                 if rs['quarter'] == '6' 
                   next
                 end
-                if rs['exam_category'] == '6'
+                if rs['exam_category'] == '1'
                   if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
                     class_test << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                     sub_assessment = sub_assessment.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
@@ -320,9 +320,9 @@
                       next
                     end
                     if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-                      if rs['exam_category'] == '6'
+                      #if rs['exam_category'] == '6'
                         sub_mark = sub_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                      end 
+                      #end 
                     end
                 end
               end   
@@ -415,8 +415,8 @@
           if @promoted_to == "V"
             @sections = ["Bluebell","Lavender","Zinia","Rosemary"]
           end
+          @sections = ["Primrose","Snowdrop","Magnolia"]
           if @promoted_to == "VI"
-            @sections = ["Primrose","Snowdrop","Magnolia"]
           end
           if @promoted_to == "VII"
             @sections = ["Parrot","Swift"]

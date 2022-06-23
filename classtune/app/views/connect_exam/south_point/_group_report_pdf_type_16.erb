@@ -31,10 +31,14 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
                    
               <table id="pdf-table" width="99%" cellspacing="0">
                   <% u_count = 0 %>
+                  <% colspan_1 = 8 %>
+                  <% colspan_2 = 7 %>
                   <% first_term_exam_name = "Half Yearly" %>
                   <% final_term_exam_name = "Final Term" %>
                   <% main_title = "Examination" %>
                   <% if @batch.course.course_name == "Grade 1" or @batch.course.course_name == "Grade 2" %>
+                  <% colspan_1 = 7 %>
+                  <% colspan_2 = 8 %>
                   <% #main_title = "Assessment" %>
                   <% end %>
                   <%  
@@ -49,8 +53,8 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
                   %>
                   <% c = 'even'  %>
                   <tr class="table-header">
-                      <td class="col-pdf no-warp" colspan="7" ><%= first_term_exam_name %> <%= main_title %></td>
-                      <td class="col-pdf no-warp" colspan="7" ><%= final_term_exam_name %> <%= main_title %></td>
+                      <td class="col-pdf no-warp" colspan="<%= colspan_1 %>" ><%= first_term_exam_name %> <%= main_title %></td>
+                      <td class="col-pdf no-warp" colspan="<%= colspan_2 %>" ><%= final_term_exam_name %> <%= main_title %></td>
                       <td class="col-pdf no-warp" colspan="3" >Combined Result</td>
                   </tr>    
                   <tr class="table-header">

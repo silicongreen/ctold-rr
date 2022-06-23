@@ -35,12 +35,12 @@ student_classes = ["Playgroup","Nursery","KG I","KG II","Grade 1","Grade 2","Gra
                   <% final_term_exam_name = "Final Term" %>
                   <% main_title = "Examination" %>
                   <% if @batch.course.course_name == "Grade 1" or @batch.course.course_name == "Grade 2" %>
-                  <% main_title = "Assessment" %>
+                  <% #main_title = "Assessment" %>
                   <% end %>
                   <%  
                   @report_data['report']['exams'].each do |report|
                    if report['quarter'] == '5'
-                     first_term_exam_name = report['exam_name']
+                     #first_term_exam_name = report['exam_name']
                    end
                    if report['quarter'] == '6'
                      final_term_exam_name = report['exam_name']

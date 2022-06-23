@@ -565,15 +565,20 @@
                   </tr>   
                   <tr>
                       <td> 
-                          <table id="pdf-table" class="font-size-20" width="100%" >
-                              <tr class="table-header">
-                                  <td class="col-pdf promoted_section_final"  valign="top">
-
-                                      Promoted To&nbsp:&nbsp;
-
-                                  </td>                      
-                              </tr>
-                          </table>
+                        <table id="pdf-table" class="font-size-20" width="100%" >
+                            <tr class="table-header">
+                                <td class="col-pdf promoted_section_final"  valign="top">
+                                    <% if @connect_exam_obj.id == 5903 && @student.class_roll_no == "21"  %>
+                                      Promoted to: Grade 3( on consideration)
+                                    <% elsif u_count < 3 && @promoted_to %>
+                                      Promoted To&nbsp:&nbsp;<%= @promoted_to %>
+                                    <% elsif @promoted_to %>
+                                    Not Promoted.
+                                    <% end %>
+                                    
+                                </td>                      
+                            </tr>
+                        </table>
                       </td>
                   </tr>
               </table> 

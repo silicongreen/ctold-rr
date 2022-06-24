@@ -466,10 +466,10 @@
               @student_position[prev_student] = @student_position[prev_student].to_s+position_rank[p_rank_loop].to_s
             end
             p_rank_loop = p_rank_loop+1
-            @student_position[s[3].to_i] = position.to_s+position_rank[p_rank_loop].to_s+"-"+new_mark.to_s     
+            @student_position[s[3].to_i] = position.to_s+position_rank[p_rank_loop].to_s    
           else
             position = position+1
-            @student_position[s[3].to_i] = position.to_s+"-"+new_mark.to_s
+            @student_position[s[3].to_i] = position.to_s
             prev_student = s[3].to_i
             p_rank_loop = 0
           end

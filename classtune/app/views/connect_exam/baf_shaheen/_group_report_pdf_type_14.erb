@@ -549,7 +549,7 @@
                   </tr>
               <table>
               
-              <h4 class="h4-evaluation"><b>Evaluation</b></h4>    
+              <h4 class="h4-evaluation"><b>Evaluation <%= @current_user.parent? %></b></h4>    
               <table id="pdf-table" class="evaluation" width="99.8%" >
                   <tr class="odd">
                       <% if !@student_position[@student.id.to_i].blank? %>

@@ -20,11 +20,11 @@
     <%= render  :partial=>"/connect_exam/baf_shaheen/finding_data" %>
   <% end %>
 <% end %>
-<% if @current_user.student? or if @current_user.parent? %>
+<% #if @current_user.student? or if @current_user.parent? %>
 <%= render  :partial=>"/connect_exam/baf_shaheen/group_report_type_"+@connect_exam_obj.result_type.to_s %>
-<% else %>
-<%= render  :partial=>"/connect_exam/baf_shaheen/group_report_pdf_type_"+@connect_exam_obj.result_type.to_s %>
-<% end %>
+<% #else %>
+<%#= render  :partial=>"/connect_exam/baf_shaheen/group_report_pdf_type_"+@connect_exam_obj.result_type.to_s %>
+<%# end %>
 
 
 <style>

@@ -1,7 +1,7 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-  <div id="pdf-header-south" class="sfx-header">
-    <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/323/transcript.png")),:width=> '65%' %></h4>
-  </div> 
+  <!--div id="pdf-header-south" class="sfx-header">
+    <h4 align="center"><%#= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/323/transcript.png")),:width=> '65%' %></h4>
+  </div--> 
   <% total_u = 0 %>
   <div id="page-yield"  class="available_sections1 baf_shaheen">
 
@@ -603,9 +603,9 @@
 
   </div>
   <p>&nbsp;</p>
-  <div id="pdf-header-south2" class="sfx-header">
+  <!--div id="pdf-header-south2" class="sfx-header">
     <h4 align="center">This is a computer generated Report Card and does not require any signature.</h4>
-  </div>
+  </div-->
 
 <% end %>
 <%= stylesheet_link_tag 'list_table' %>

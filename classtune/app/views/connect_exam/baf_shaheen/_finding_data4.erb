@@ -187,8 +187,8 @@
         
         #@batch.course.course_name!="VIII" and @batch.course.course_name!="IX" and @batch.course.course_name!="X" and
         if subject_count_std>0 and (u_grade==0 or (u_grade<2))           
-          
-          std_marks_full_new = std_marks_full.to_f/subject_count_std.to_f
+          #/subject_count_std.to_f
+          std_marks_full_new = std_marks_full.to_f 
           std_marks_full_new = 5000.00-std_marks_full_new.to_f
           std_marks_core_subject = 5000-std_marks_core_subject.round()
           subject_count_std = 5000-subject_count_std

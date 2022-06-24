@@ -375,7 +375,10 @@
                         
                         if report['exam_category'] == '7'
                           sub_hw = sub_hw.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                          end
+                        end
+                        if report['exam_category'] == '6'
+                          sub_hw = sub_hw.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                        end
                         if report['exam_category'] == '8'
                           sub_cw = sub_cw.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                         end
@@ -384,7 +387,10 @@
                         
                         if report['exam_category'] == '7'
                           sub_hw_full_mark = sub_hw_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
-                          end
+                        end
+                        if report['exam_category'] == '6'
+                            sub_hw_full_mark = sub_hw_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                        end
                         if report['exam_category'] == '8'
                           sub_cw_full_mark = sub_cw_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
                         end

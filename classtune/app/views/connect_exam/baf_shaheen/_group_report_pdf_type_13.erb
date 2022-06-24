@@ -188,7 +188,7 @@
                           unless @report_data['report']['exams'].blank?   
                             @report_data['report']['exams'].each do |report| 
                              if report['exam_category'] != '3' or report['quarter'] == '6'  
-                               next 
+                               next  
                              end 
                              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? 
                                obt_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f 

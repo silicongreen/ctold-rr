@@ -395,7 +395,7 @@
                           <% if @has_exam_student == false %>
                             <td>&nbsp;<hr/>&nbsp;</td>
                           <% else %>
-
+                            <% subject_obtained_mark_60_s = "" %>
                             <% subject_obtained_mark_60 = 0 %>
                             <% subject_obtained_mark_40 = 0 %>
                             <% subject_full_mark = 0 %>
@@ -416,6 +416,7 @@
                                 else
                                   subject_obtained_mark_60 += rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                 end
+                                subject_obtained_mark_60_s = subject_obtained_mark_60_s + " "  + rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_s
                                 %>
                                 <%
 

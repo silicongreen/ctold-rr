@@ -620,6 +620,9 @@
     <h4 align="center">This is a computer generated Report Card and does not require any signature.</h4>
   </div-->
 <% end %>
+<div class="powered-text">
+    <font size='1'>Print Date: <%#= Time.now.strftime("%Y/%m/%d") %><%= Time.now.strftime("%d-%m-%Y") %></font>
+</div>
 <%= stylesheet_link_tag 'list_table' %>
  
  <style>

@@ -10,7 +10,7 @@
                   <% if @batch.course.course_name.upcase.index("PLAYGROUP").nil? and @batch.course.course_name.upcase.index("NURSERY").nil? and @batch.course.course_name.upcase.index("PG").nil? and  @batch.course.course_name.upcase.index("KG").nil? %>
                     <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/summer.jpg")),:width=> '40%' %>
                   <% else %>
-                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/tiny_tots_new_logo.png")),:width=> '40%' %>
+                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/tiny_tots_logo.png")),:width=> '30%' %>
                   <% end %>
                 <% else %>
                     &nbsp;

@@ -9,7 +9,7 @@
                   <% if @batch.course.course_name.upcase.index("PLAYGROUP").nil? and @batch.course.course_name.upcase.index("NURSERY").nil? and @batch.course.course_name.upcase.index("PG").nil? and  @batch.course.course_name.upcase.index("KG").nil? %>
                     <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/summer.jpg")),:width=> '40%' %>
                   <% else %>
-                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/tiny_tots_logo.png")),:width=> '35%' %>
+                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/tiny_tots_logo.png")),:width=> '30%' %>
                   <% end %>
                 <% else %>
                     &nbsp;
@@ -292,15 +292,15 @@
                      </tr-->
                      <% end %>
                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td class="col-pdf no-warp align-left"><b>Section In-Charge</b></td>
+                      <td class="col-pdf no-warp align-left"><b>Principal</b></td>
                       <td class="col-pdf no-warp align-left width-60">
-                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/#{@section_in_charge}.png")), :width=>"30%" %>
+                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/principal_new.png")), :width=>"40%" %>
                       </td>
                      </tr>
                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td class="col-pdf no-warp align-left"><b>Principal</b></td>
+                      <td class="col-pdf no-warp align-left"><b>Section In-Charge</b></td>
                       <td class="col-pdf no-warp align-left width-60">
-                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/principal_new.png")), :width=>"50%" %>
+                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/#{@section_in_charge}.png")), :width=>"30%" %>
                       </td>
                      </tr>
                      <% if @covid_main == 0 %>

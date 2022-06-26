@@ -412,11 +412,10 @@
                                 if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i == 40
                                   subject_obtained_mark_40 += rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                 elsif rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i == 20
-                                    subject_obtained_mark_40 += rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    subject_obtained_mark_60 += rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                 else
                                   subject_obtained_mark_60 += rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                 end
-                                subject_obtained_mark_60_s = subject_obtained_mark_60_s + " "  + rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_s
                                 %>
                                 <%
 
@@ -428,7 +427,7 @@
                               <% end %>
                             <% end %> 
                             <% if subject_obtained_mark_60.to_i > 0 %>
-                            <td><%= sprintf( "%0.02f", subject_obtained_mark_60) %> <%= subject_obtained_mark_60_s %></td>
+                            <td><%= sprintf( "%0.02f", subject_obtained_mark_60) %></td>
                             <% else %>
                             <td>-</td>
                             <% end %>

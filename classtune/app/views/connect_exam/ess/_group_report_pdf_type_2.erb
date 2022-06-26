@@ -284,10 +284,32 @@
                             on_trial_pass['V'] = 494
                             on_trial_pass['VI'] = 742
                             on_trial_pass['VII'] = 742
+
+                            failed_marked = {}
+                            failed_marked['III'] = 200
+                            failed_marked['IV'] = 300
+                            failed_marked['V'] = 400
+                            failed_marked['VI'] = 650
+                            failed_marked['VII'] = 650
                           %>
-                          <% #if @batch.course.course_name.upcase.index("PLAYGROUP").nil? and @batch.course.course_name.upcase.index("NURSERY").nil? and @batch.course.course_name.upcase.index("PG").nil? and  @batch.course.course_name.upcase.index("KG").nil? %>
                           <td class="align-left">Promoted to/ To Repeat Class:</td>
-                          <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %> <%= @batch.course.course_name.upcase %> <%= on_trial_pass[@batch.course.course_name.upcase] %></td>
+                          <% unless failed_marked[@batch.course.course_name.upcase].blank? %>
+                            <% if total_marks.to_f < failed_marked[@batch.course.course_name.upcase].to_f %>
+                              <td  style="padding:5px !important;" width="30%">Class <%= @batch.course.course_name %></td>
+                            <% else %>
+                              <% if on_trial_pass[@batch.course.course_name.upcase].blank? %>
+                                <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
+                              <% else %>
+                                <% if total_marks.to_f > failed_marked[@batch.course.course_name.upcase].to_f and total_marks.to_f <= on_trial_pass[@batch.course.course_name.upcase].to_f %>
+                                <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %> (On Trial)</td>
+                                <% else %>
+                                <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
+                                <% end %>
+                              <% end %>
+                            <% end %>
+                          <% else %>
+                          <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
+                          <% end %>
                         <% end %>
                     </tr>
 

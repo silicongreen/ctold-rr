@@ -277,9 +277,17 @@
                           <td class="align-left">To Repeat Class:</td>
                           <td  style="padding:5px !important;" width="30%">Class <%= @batch.course.course_name %></td>
                         <% else %>
-                          
+                          <%
+                            on_trial_pass = {}
+                            on_trial_pass['III'] = 296
+                            on_trial_pass['IV'] = 395
+                            on_trial_pass['V'] = 494
+                            on_trial_pass['VI'] = 742
+                            on_trial_pass['VII'] = 742
+                          %>
+                          <% #if @batch.course.course_name.upcase.index("PLAYGROUP").nil? and @batch.course.course_name.upcase.index("NURSERY").nil? and @batch.course.course_name.upcase.index("PG").nil? and  @batch.course.course_name.upcase.index("KG").nil? %>
                           <td class="align-left">Promoted to/ To Repeat Class:</td>
-                          <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
+                          <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %> <%= @batch.course.course_name.upcase %> <%= on_trial_pass[@batch.course.course_name.upcase] %></td>
                         <% end %>
                     </tr>
 

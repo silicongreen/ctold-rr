@@ -123,6 +123,7 @@
                   <% 
                     group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
                     @all_subjects = []
+                    @process_subjects = []
                     group_exams.each do |group_exam|
                       allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
                       allexams.each do |exam|
@@ -132,12 +133,17 @@
                       end
                     end 
                   %>
-                  <%= debug @all_subjects.inspect %>
                   <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
                     <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
                       <%  if @all_subjects.include?(report['id'].to_i) %>
+                        <%
+                        if @process_subjects.include?(report['id'])
+                          next
+                        end
+                        %>
+                        <% @process_subjects << report['id'] %>
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>" style="background-color:#e3f2fd">
-                            <td class="col-pdf no-warp  align-left"  style="padding:10px !important;"><%= report['subject_name'] %> <%= report['id'] %></td>
+                            <td class="col-pdf no-warp  align-left"  style="padding:10px !important;"><%= report['subject_name'] %></td>
                             <td class="col-pdf"  style="padding:10px !important;"><b><%= report['subject_comment'] unless report['subject_comment'].blank? %></b></td>
                         </tr>
                       <% end %>

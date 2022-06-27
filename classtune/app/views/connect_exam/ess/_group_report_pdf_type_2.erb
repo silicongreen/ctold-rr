@@ -79,11 +79,11 @@
                     <td  rowspan="2"><b>Grade</b></td>
                   </tr>
                   <tr class="even">
-                      <td class="col-pdf"><b>Online Cumulative Assessment(60)</b></td>
+                      <td class="col-pdf"><b>Cumulative Assessment(60)</b></td>
                       <% unless @connect_exam_obj.name.index("Final").blank? %>
-                        <td class="col-pdf"><b>Online Final Term Examination(40)</b></td>
+                        <td class="col-pdf"><b>Final Term Examination(40)</b></td>
                       <% else %>
-                        <td class="col-pdf"><b>Online First Term Examination(40)</b></td>
+                        <td class="col-pdf"><b>First Term Examination(40)</b></td>
                       <% end %>
                       <td class="col-pdf"><b>100</b></td>
                   </tr>
@@ -279,6 +279,8 @@
                         <% else %>
                           <%
                             on_trial_pass = {}
+                            on_trial_pass['I'] = 269
+                            on_trial_pass['II'] = 269
                             on_trial_pass['III'] = 296
                             on_trial_pass['IV'] = 395
                             on_trial_pass['V'] = 494
@@ -286,29 +288,35 @@
                             on_trial_pass['VII'] = 742
 
                             failed_marked = {}
+                            failed_marked['I'] = 0
+                            failed_marked['II'] = 0
                             failed_marked['III'] = 0
                             failed_marked['IV'] = 0
                             failed_marked['V'] = 0
                             failed_marked['VI'] = 0
                             failed_marked['VII'] = 0
                           %>
-                          <td class="align-left">Promoted to/ To Repeat Class:</td>
                           <% unless failed_marked[@batch.course.course_name.upcase].blank? %>
                             <% if total_marks.to_f < failed_marked[@batch.course.course_name.upcase].to_f %>
+                            <td class="align-left">To Repeat Class:</td>
                               <td  style="padding:5px !important;" width="30%">Class <%= @batch.course.course_name %></td>
                             <% else %>
                               <% if on_trial_pass[@batch.course.course_name.upcase].blank? %>
+                                <td class="align-left">Promoted to:</td>
                                 <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
                               <% else %>
                                 <% if total_marks.to_f > failed_marked[@batch.course.course_name.upcase].to_f and total_marks.to_f < on_trial_pass[@batch.course.course_name.upcase].to_f %>
+                                <td class="align-left">Promoted to:</td>
                                 <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %> (On Trial)</td>
                                 <% else %>
+                                <td class="align-left">Promoted to:</td>
                                 <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
                                 <% end %>
                               <% end %>
                             <% end %>
                           <% else %>
-                          <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
+                            <td class="align-left">Promoted to:</td>
+                            <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
                           <% end %>
                         <% end %>
                     </tr>

@@ -265,8 +265,49 @@
                 <% if @connect_exam_obj.name.index("First").blank? %>
                 <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:20px !important;"  cellspacing="0" >
                     <tr class="even">
-                        <td class="align-left"  style="background-color:#e3f2fd">Promoted to/ To Repeat Class:</td>
-                        <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
+                        <%
+                          on_trial_pass = {}
+                          on_trial_pass['I'] = 269
+                          on_trial_pass['II'] = 269
+                          on_trial_pass['III'] = 296
+                          on_trial_pass['IV'] = 395
+                          on_trial_pass['V'] = 494
+                          on_trial_pass['VI'] = 742
+                          on_trial_pass['VII'] = 742
+
+                          failed_marked = {}
+                          failed_marked['I'] = 0
+                          failed_marked['II'] = 0
+                          failed_marked['III'] = 0
+                          failed_marked['IV'] = 0
+                          failed_marked['V'] = 0
+                          failed_marked['VI'] = 0
+                          failed_marked['VII'] = 0
+                        %>
+                        <% unless failed_marked[@batch.course.course_name.upcase].blank? %>
+                          <% if total_marks.to_f < failed_marked[@batch.course.course_name.upcase].to_f %>
+                          <td class="align-left">To Repeat Class:</td>
+                            <td  style="padding:5px !important;" width="30%">Class <%= @batch.course.course_name %></td>
+                          <% else %>
+                            <% if on_trial_pass[@batch.course.course_name.upcase].blank? %>
+                              <td class="align-left">Promoted to:</td>
+                              <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
+                            <% else %>
+                              <% if total_marks.to_f > failed_marked[@batch.course.course_name.upcase].to_f and total_marks.to_f < on_trial_pass[@batch.course.course_name.upcase].to_f %>
+                              <td class="align-left">Promoted to:</td>
+                              <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %> (On Trial)</td>
+                              <% else %>
+                              <td class="align-left">Promoted to:</td>
+                              <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
+                              <% end %>
+                            <% end %>
+                          <% end %>
+                        <% else %>
+                          <td class="align-left">Promoted to:</td>
+                          <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
+                        <% end %>
+                        <!--td class="align-left"  style="background-color:#e3f2fd">Promoted to/ To Repeat Class:</td>
+                        <td  style="padding:5px !important;" width="30%"><%#= @connect_exam_obj.promoted_to %></td-->
                         
                     </tr>
 

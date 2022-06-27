@@ -6479,8 +6479,11 @@ class ExamController < ApplicationController
     new_book.worksheet(0).insert_row(1, row_first)
     
     std_loop = 2
-    abort(@student_result.inspect) 
+    #abort(@student_result.inspect) 
     @student_result.each do |std_result|
+      if std_result['batch_id'].to_i != @batch.id.to_i
+        next
+      end
       tmp_row = []
       tmp_row << std_result['sl']
       tmp_row << std_result['sid'].to_s
@@ -6536,13 +6539,14 @@ class ExamController < ApplicationController
         tmp_row << ""
         tmp_row << ""
       end
+      rt = 0
       courseObj = Course.find_by_id(@batch.course_id)
       unless std_result['subjects'].blank?
         @all_subject_connect_exam.each do |value|
           key = value.code.to_s
           unless @subject_result[key].blank?
             unless std_result['subjects'][key].blank?
-              
+              rt = std_result['subjects'][key]['result']['at'].to_f + std_result['subjects'][key]['result']['cw'].to_f + std_result['subjects'][key]['result']['ob'].to_f + std_result['subjects'][key]['result']['sb'].to_f + std_result['subjects'][key]['result']['pr'].to_f
               tmp_row << std_result['subjects'][key]['result']['at'].to_s
               tmp_row << std_result['subjects'][key]['result']['cw'].to_s
               tmp_row << std_result['subjects'][key]['result']['ob'].to_s
@@ -6551,7 +6555,7 @@ class ExamController < ApplicationController
               if courseObj.course_name == "Ten"
                 tmp_row << std_result['subjects'][key]['result']['ct'].to_s
               else
-                tmp_row << std_result['subjects'][key]['result']['rt'].to_s
+                tmp_row << rt.to_s
               end
               tmp_row << std_result['subjects'][key]['result']['ct'].to_s
               tmp_row << std_result['subjects'][key]['result']['lg'].to_s       

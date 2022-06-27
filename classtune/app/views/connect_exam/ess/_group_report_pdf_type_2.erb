@@ -300,7 +300,7 @@
                               <% if on_trial_pass[@batch.course.course_name.upcase].blank? %>
                                 <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>
                               <% else %>
-                                <% if total_marks.to_f > failed_marked[@batch.course.course_name.upcase].to_f and total_marks.to_f <= on_trial_pass[@batch.course.course_name.upcase].to_f %>
+                                <% if total_marks.to_f > failed_marked[@batch.course.course_name.upcase].to_f and total_marks.to_f < on_trial_pass[@batch.course.course_name.upcase].to_f %>
                                 <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %> (On Trial)</td>
                                 <% else %>
                                 <td  style="padding:5px !important;" width="30%"><%= @connect_exam_obj.promoted_to %></td>

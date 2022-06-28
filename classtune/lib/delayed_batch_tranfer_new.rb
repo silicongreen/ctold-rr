@@ -160,6 +160,7 @@ class DelayedBatchTranferNew
     examgroup = GroupExamStudent.new
     examgroup.batch_id = batch.id
     examgroup.student_id = s.id
+    examgroup.class_roll_no = s.class_roll_no
     examgroup.exam_group_id = eg.id
     examgroup.batch_student_id = batch_student_id
     examgroup.year = eg.exam_date
@@ -172,6 +173,7 @@ class DelayedBatchTranferNew
     examconnect = ExamConnectStudent.new
     examconnect.batch_id = batch.id
     examconnect.student_id = s.id
+    examconnect.class_roll_no = s.class_roll_no
     examconnect.exam_connect_id = ec.id
     examconnect.batch_student_id = batch_student_id
     examconnect.year = ec.published_date

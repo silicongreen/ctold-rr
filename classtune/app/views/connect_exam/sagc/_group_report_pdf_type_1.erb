@@ -176,6 +176,7 @@
 
                           <% if full_mark.to_f > 0 %>
                             <td class="col-pdf"><%= full_mark.to_i %></td>
+                            <td class="col-pdf"><%= total_mark.to_i %></td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <% total_grade = total_grade.to_f+grade.credit_points.to_f %>

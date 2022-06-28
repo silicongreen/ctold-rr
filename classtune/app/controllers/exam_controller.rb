@@ -6479,13 +6479,16 @@ class ExamController < ApplicationController
     new_book.worksheet(0).insert_row(1, row_first)
     
     std_loop = 2
+    sl = 1
     #abort(@student_result.inspect) 
     @student_result.each do |std_result|
       if std_result['batch_id'].to_i != @batch.id.to_i
         next
       end
       tmp_row = []
-      tmp_row << std_result['sl']
+      tmp_row << sl 
+      #std_result['sl']
+      sl = sl + 1
       tmp_row << std_result['sid'].to_s
       tmp_row << std_result['roll'].to_s
       tmp_row << std_result['name'].to_s

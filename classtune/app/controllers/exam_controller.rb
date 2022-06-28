@@ -6446,7 +6446,10 @@ class ExamController < ApplicationController
       new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)
       starting_row = starting_row+8
     end
-    row_first << "4th Subject Name"
+    classes = ["NURSERY",'KG',"ONE",'TWO','THREE','FOUR','FIVE','SIX','SEVEN','EIGHT']
+    unless classes.include?(@batch.course.course_name.upcase)
+      row_first << "4th Subject Name"
+    end
     new_book.worksheet(0).insert_row(0, row_first)
     
     new_book.worksheet(0).merge_cells(0,0,1,0)
@@ -6577,10 +6580,12 @@ class ExamController < ApplicationController
       end
       subject_std = std_subject.find{|val| val.student_id.to_i == std_result['id'].to_i and subject_map.include?(val.subject_id.to_i) }
       
-      unless subject_std.blank?
-        tmp_row << subject_std.subject.name
-      else
-        tmp_row << "-"
+      unless classes.include?(@batch.course.course_name.upcase)
+        unless subject_std.blank?
+          tmp_row << subject_std.subject.name
+        else
+          tmp_row << "-"
+        end  
       end  
       
       new_book.worksheet(0).insert_row(std_loop, tmp_row)

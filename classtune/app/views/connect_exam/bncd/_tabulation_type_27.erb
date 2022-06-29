@@ -212,7 +212,7 @@ end
                         <% if has_exam == true %>
                           <% @report_data['report']['exams'].each do |rs| %>
                             <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
-                             <td><%= rs['exam_name'] %></td>
+                             <td><%= rs['exam_name'].slice(0,3) %></td>
                             <% end %>
                           <% end %>
                           <td rowspan="2"><%= "TTL" %></td>
@@ -307,7 +307,7 @@ end
                         <% if has_exam == true %>
                           <% @report_data['report']['exams'].each do |rs| %>
                             <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
-                             <td><%= rs['exam_name'] %></td>
+                             <td><%= rs['exam_name'].slice(0,3) %></td>
                             <% end %>
                           <% end %>
                           <td rowspan="2"><%= "TTL" %></td>
@@ -390,7 +390,7 @@ end
                         <% if has_exam == true %>
                           <% @report_data['report']['exams'].each do |rs| %>
                             <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
-                             <td><%= rs['exam_name'] %></td>
+                             <td><%= rs['exam_name'].slice(0,3) %></td>
                             <% end %>
                           <% end %>
                           <td rowspan="2"><%= "TTL" %></td>

@@ -112,6 +112,8 @@ end
                                    
                                     <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
                                     
+                                  <% else %>
+                                        <td class="col-pdf"> - </td>
                                   <% end %>   
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                     <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -189,6 +191,8 @@ end
                                    
                                     <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
                                     
+                                  <% else %>
+                                        <td class="col-pdf"> - </td>
                                   <% end %>   
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                     <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>

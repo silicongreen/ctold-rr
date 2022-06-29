@@ -174,7 +174,7 @@
                           
                           %>
                           <% divider = 3 %>
-                          <% full_mark = 100 %>
+                          <% full_mark = full_sb+full_ob+full_pr %>
                           <% if full_mark.to_f > 0 %>
                             
                             <% main_exam_mark = 0 %>
@@ -226,11 +226,13 @@
                             
 
                             <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
+                            <% tota_mark_with_monthly = (tota_mark_with_monthly.to_f/full_mark.to_f)*100 %>
+                            
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
                             </td>
                             <%
-                              main_mark = tota_mark_with_monthly
+                              main_mark = tota_mark_with_monthly.round()
                             %>
                             
                             <td class="col-pdf no-warp">

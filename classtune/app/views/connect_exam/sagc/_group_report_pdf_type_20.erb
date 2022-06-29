@@ -118,8 +118,8 @@
 
                           <% 
                             highest_mark = 0
-                            if !@subject_highest.blank? and !@subject_highest[subjects2['id'].to_i].blank?
-                              highest_mark = @subject_highest[subjects2['id'].to_i].to_f
+                            if !@subject_highest.blank? and !@subject_highest[subjects['id'].to_i].blank?
+                              highest_mark = @subject_highest[subjects['id'].to_i].to_f
                             end
 
                           %>
@@ -261,8 +261,8 @@
 
                           <% 
                             highest_mark = 0
-                            if !@subject_highest.blank? and !@subject_highest[subjects2['id'].to_i].blank?
-                              highest_mark = @subject_highest[subjects2['id'].to_i].to_f
+                            if !@subject_highest.blank? and !@subject_highest[subjects['id'].to_i].blank?
+                              highest_mark = @subject_highest[subjects['id'].to_i].to_f
                             end
 
                           %>

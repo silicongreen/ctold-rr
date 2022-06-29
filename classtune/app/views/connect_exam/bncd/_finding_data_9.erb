@@ -76,6 +76,9 @@
         end 
         
         tab['subjects'].each do |sub|
+          if sub['grade_subject'].to_i == 1
+            next
+          end  
           
           if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
               next

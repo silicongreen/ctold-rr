@@ -86,6 +86,9 @@ end
                   <% sl = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %>
                     <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% if subjects['grade_subject'].to_i == 1 %>
+                        <% next %>
+                      <% end %>
                       <% total_mark = 0 %>
                       <% obtain_mark = 0 %>
                       
@@ -153,6 +156,61 @@ end
                       <td class="col-pdf  no-warp">F</td>
                     <% end %>
                   </tr>
+
+                  <tr class="page-break-grade">
+                     <td colspan="100"></td>
+                  </tr> 
+
+                  <% unless @report_data['report']['subjects'].blank? %>
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% if subjects['grade_subject'].to_i != 1 %>
+                        <% next %>
+                      <% end %>
+                      <% total_mark = 0 %>
+                      <% obtain_mark = 0 %>
+                      
+                      <% subjectdata = Subject.find(subjects['id'].to_i) %>
+                      <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                      <% if @has_exam_student == false %>
+                         <% next %>
+                      <% end %>
+                      <% sl = sl+1 %>
+                        
+                      <% total_subject = total_subject+1 %>       
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                            <td class="col-pdf  no-warp"><%= sl %></td>
+                            <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>
+                            <% loop_value = 0 %>
+                            <% unless @report_data['report']['exams'].blank? %>  
+                                <% @report_data['report']['exams'].each do |report| %> 
+                                  <% loop_value = loop_value+1 %> 
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
+                                    <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                   
+                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
+                                    
+                                  <% end %>   
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                    <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                  <% end %>
+                                <% end %>
+                            <% end %>
+                            <%
+                              main_mark = (obtain_mark.to_f/total_mark.to_f)*100
+                            %>
+                            <td class="col-pdf"><%= obtain_mark.to_i %></td>
+                            <td class="col-pdf"><%= main_mark.round().to_i %></td>
+                            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <td class="col-pdf"><%= grade.name %></td>
+                            <% else %>
+                              <td class="col-pdf">-</td>
+                            <% end %>  
+                      </tr>
+                     
+                    <% end %>
+                  
+                  <% end %>
                   
               </table>
               <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">

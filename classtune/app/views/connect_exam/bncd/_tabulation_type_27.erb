@@ -475,7 +475,11 @@ end
                             <% @report_data['report']['exams'].each do |rs| %>
                               <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
-                                <td><%= rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i %></td>
+                                <td>
+                                <% if sub['grade_subject'].to_i != 1 %>
+                                  <%= rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i %>
+                                <% end %>
+                                </td>
                                 <%
 
                                 subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
@@ -490,7 +494,9 @@ end
                               subject_obtain_mark = subject_obtain_mark.round()
                             %>
                             <td>
-                                <%= subject_obtain_mark.to_i %>    
+                            <% if sub['grade_subject'].to_i != 1 %>
+                                <%= subject_obtain_mark.to_i %>   
+                            <% end %>     
                             </td>
                             <% if sub['grade_subject'].to_i != 1 %>
                               <% total_mark = total_mark+subject_obtain_mark.to_f %>

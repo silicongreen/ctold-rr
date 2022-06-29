@@ -189,7 +189,7 @@ if @total_std.blank?
                 
                 total_mark_subject = total_ob+total_sb+total_pr
                 if sub['subject_group_id'].to_i == 0
-                  if has_ob && full_ob > 0
+                  if full_ob > 0
                     if total_ob > 0
                         grand_total_with_fraction = grand_total_with_fraction+total_ob.to_f
                         percent = (total_ob.to_f/full_ob.to_f)*100
@@ -212,7 +212,7 @@ if @total_std.blank?
                     end
                     
                   end
-                  if has_sb && full_sb > 0
+                  if full_sb > 0
                     if total_sb > 0
                         grand_total_with_fraction = grand_total_with_fraction+total_sb.to_f
                         percent = (total_sb.to_f/full_sb.to_f)*100
@@ -235,7 +235,7 @@ if @total_std.blank?
                     end
                     
                   end
-                  if has_pr && full_pr > 0
+                  if full_pr > 0
                     if total_pr > 0
                         grand_total_with_fraction = grand_total_with_fraction+total_pr.to_f
                         percent = (total_pr.to_f/full_pr.to_f)*100

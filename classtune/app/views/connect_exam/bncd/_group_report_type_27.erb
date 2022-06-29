@@ -1,5 +1,5 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-            <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
+                    <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
                   <% full_mark_of_allexam = 0 %>
@@ -132,11 +132,9 @@
                                   <% loop_value = loop_value+1 %> 
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>  
                                     <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
-                                   
-                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>
                                     
                                   <% else %>
-                                        <td class="col-pdf"> - </td>
+                                        
                                   <% end %>   
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                     <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -146,8 +144,7 @@
                             <%
                               main_mark = (obtain_mark.to_f/total_mark.to_f)*100
                             %>
-                            <td class="col-pdf"><%= obtain_mark.to_i %></td>
-                            <td class="col-pdf"><%= main_mark.round().to_i %></td>
+                            <td class="col-pdf"  colspan="<%= colspan+1 %>"></td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><%= grade.name %></td>

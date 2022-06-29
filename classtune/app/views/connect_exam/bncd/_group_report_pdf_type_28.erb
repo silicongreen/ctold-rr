@@ -293,9 +293,9 @@
                                 <%
                                 if has_ob && full_ob2 > 0
                                   if total_ob2 > 0
-                                      grand_total_fraction = grand_total_fraction+total_ob2.to_f
                                       total_ob2 = total_ob2.round()
                                       total_ob =  total_ob+total_ob2
+                                      grand_total_fraction = grand_total_fraction+total_ob.to_f
                                       full_ob = full_ob2*2
                                       percent = (total_ob.to_f/full_ob.to_f)*100
                                       percent = percent.round()
@@ -315,9 +315,10 @@
                                 end
                                 if has_sb && full_sb2 > 0
                                   if total_sb2 > 0
-                                      grand_total_fraction = grand_total_fraction+total_sb2.to_f
+                                      
                                       total_sb2 = total_sb2.round()
                                       total_sb =  total_sb+total_sb2
+                                      grand_total_fraction = grand_total_fraction+total_sb.to_f
                                       full_sb = full_sb2*2 
                                       percent = (total_sb.to_f/full_sb.to_f)*100
                                       percent = percent.round()
@@ -336,10 +337,10 @@
                                   
                                 end
                                 if has_pr && full_pr2 > 0
-                                  if total_pr2 > 0
-                                      grand_total_fraction = grand_total_fraction+total_pr2.to_f
+                                  if total_pr2 > 0     
                                       total_pr2 = total_pr2.round()
                                       total_pr =  total_pr+total_pr2
+                                      grand_total_fraction = grand_total_fraction+total_pr.to_f
                                       full_pr = full_pr2*2 
                                       percent = (total_pr.to_f/full_pr.to_f)*100
                                       percent = percent.round()

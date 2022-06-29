@@ -230,16 +230,10 @@
                   if rs['exam_category'] == '7'
                     sub_hw = sub_hw.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                   end
-                  if rs['exam_category'] == '6'
-                    sub_hw = sub_hw.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                  end
                   if rs['exam_category'] == '8'
                     sub_cw = sub_cw.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                   end
                   if rs['exam_category'] == '7'
-                    sub_hw_full_mark = sub_hw_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                  end
-                  if rs['exam_category'] == '6'
                     sub_hw_full_mark = sub_hw_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                   end
                   if rs['exam_category'] == '8'

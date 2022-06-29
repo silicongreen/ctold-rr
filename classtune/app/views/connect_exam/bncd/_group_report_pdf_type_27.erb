@@ -70,7 +70,7 @@ end
                       <% unless @report_data['report']['exams'].blank? %>
                         <% @report_data['report']['exams'].each do |report| %>
                           <% colspan = colspan+1 %>
-                          <td class="col-pdf"><%= report['exam_name'] %></td>
+                          <td class="col-pdf" rowspan="2"><%= report['exam_name'] %></td>
                         <% end %>
                       <% end %> 
                       <td class="col-pdf" rowspan="2"><b>Total</b></td>
@@ -79,11 +79,7 @@ end
                   </tr>
 
                   <tr class="even header-shade">
-                      <% unless @report_data['report']['exams'].blank? %>
-                        <% @report_data['report']['exams'].each do |report| %>
-                          <td class="col-pdf"><%= @exam_marks[report['exam_id'].to_s] %></td>
-                        <% end %>
-                      <% end %>   
+                       
                       <td class="col-pdf">100</td> 
                   </tr> 
                   

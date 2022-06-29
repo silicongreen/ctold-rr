@@ -498,7 +498,9 @@ end
                             <% main_mark = subject_obtain_mark.to_f %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
-                              <% total_grade = total_grade+grade.credit_points.to_f %>
+                              <% if sub['grade_subject'].to_i != 1 %>
+                                <% total_grade = total_grade+grade.credit_points.to_f %>
+                              <% end %>
                               <td>
                                 <%= sprintf( "%0.01f", grade.credit_points.to_f) %>    
                             </td>

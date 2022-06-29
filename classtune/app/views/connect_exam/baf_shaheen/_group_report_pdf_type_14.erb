@@ -219,6 +219,8 @@
 
               </table>
 
+              <% unless params[:show_mid].blank? %>
+
               <table id="pdf-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
                  
@@ -383,6 +385,8 @@
                   </tr>    
 
               </table>
+
+              <% end %>
 
               <table width="100%" class="life-skills" cellspacing="0">
                   <tr><td><b>Life Skills ( Out of 10 )</b></td></tr>

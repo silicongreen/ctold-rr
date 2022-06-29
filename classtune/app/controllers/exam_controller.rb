@@ -3432,7 +3432,7 @@ class ExamController < ApplicationController
     end
     @class = params[:class]
     @custom = false
-    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 16 or @connect_exam_obj.result_type.to_i == 21
+    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 16 or @connect_exam_obj.result_type.to_i == 20
       finding_data_sagc_covid()
     elsif @connect_exam_obj.result_type.to_i == 17
       finding_data_sagc_25()
@@ -11108,7 +11108,7 @@ class ExamController < ApplicationController
                 grand_total = grand_total+main_mark
                 grand_total_with_fraction = grand_total_with_fraction+main_mark
                 grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                if @connect_exam_obj.result_type.to_i == 16 or @connect_exam_obj.result_type.to_i == 21
+                if @connect_exam_obj.result_type.to_i == 16 or @connect_exam_obj.result_type.to_i == 20
                   if grade.credit_points.to_i == 0 and sub['subject_group_id'].to_i == 0
                     if fourth_subject.blank?
                         u_grade = u_grade+1

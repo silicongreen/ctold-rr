@@ -469,7 +469,9 @@ end
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
-                            <% subject_count = subject_count+1 %>
+                            <% if sub['grade_subject'].to_i != 1 %>
+                             <% subject_count = subject_count+1 %>
+                            <% end %>
                             <% @report_data['report']['exams'].each do |rs| %>
                               <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
@@ -490,8 +492,9 @@ end
                             <td>
                                 <%= subject_obtain_mark.to_i %>    
                             </td>
-
-                            <% total_mark = total_mark+subject_obtain_mark.to_f %>
+                            <% if sub['grade_subject'].to_i != 1 %>
+                              <% total_mark = total_mark+subject_obtain_mark.to_f %>
+                            <% end %>
                             <% main_mark = subject_obtain_mark.to_f %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
@@ -500,7 +503,9 @@ end
                                 <%= sprintf( "%0.01f", grade.credit_points.to_f) %>    
                             </td>
                             <% end %>
+                            <% if sub['grade_subject'].to_i != 1 %>
                             <% full_mark_all = full_mark_all+subject_full_mark.to_f  %>
+                            <% end %>
                         
                           <% end %>   
                         <% end %> 

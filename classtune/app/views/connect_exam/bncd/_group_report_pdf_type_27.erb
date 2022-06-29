@@ -145,7 +145,7 @@ end
               
                   <% colspan = colspan+2 %>
                   <tr class="even" >
-                    <td class="col-pdf  no-warp align-right" colspan="<%= colspan %>"><b>GRAND TOTAL</b></td>
+                    <td class="col-pdf  no-warp align-right" colspan="<%= colspan+1 %>"><b>GRAND TOTAL</b></td>
                     <td class="col-pdf  no-warp"><b><%= total_mark_of_allexam %></b></td>
                     <% if !@student_position_batch[@student.id.to_i].blank? %>
                       <td class="col-pdf  no-warp"><%= grade.name %></td>

@@ -540,7 +540,7 @@
                   
               </table>
               <table id="pdf-table"  width="100%" class="left-table even-table signature" cellspacing="0" >
-                  <% if @connect_exam_obj.quarter_number == 5 %>
+                  <% if @connect_exam_obj.quarter_number == 5 && @connect_exam_obj.id != 8046 && @connect_exam_obj.id != 8047 %>
                   <tr class="even">
                       <td class="width-30 align-left">The next term begins on</td>
                       <td><%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %></td>

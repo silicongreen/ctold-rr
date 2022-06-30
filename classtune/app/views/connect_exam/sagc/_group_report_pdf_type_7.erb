@@ -49,6 +49,7 @@
         has_sb = false
         has_ob = false
         has_pr = false
+        has_ct = false
 
       %>
       <div class="grade_information">
@@ -74,7 +75,7 @@
                       <% @report_data['report']['exams'].each do |report| %>
                         <% if report['exam_category'] == '1' %>
                           <td rowspan="2"><b><%= report['exam_name'] %></b></td>
-                        
+                          <% has_ct = true %>
                         <% else %>
                           <% if report['exam_category'] == '3' %>
                             <% has_sb = true %>
@@ -210,7 +211,9 @@
                             <% class_test_mark_before = class_test_mark %>
                             <% class_test_mark = (class_test_mark.to_f/divider.to_f) %>
                             <% class_test_mark = class_test_mark.round() %>
-                            <td class="col-pdf no-warp"><%= class_test_mark %></td>
+                            <% if has_ct %>
+                              <td class="col-pdf no-warp"><%= class_test_mark %></td>
+                            <% end %>
                                   
                             
                             <% main_exam_mark = 0 %>
@@ -264,8 +267,12 @@
                             <% end %>
                             <td class="col-pdf no-warp">
                                <%= main_exam_mark.to_f.round.to_i %>
-                            </td>   
-                            <% avg_mark = main_exam_mark.to_f*0.9 %>
+                            </td>  
+                            <% if has_ct %> 
+                              <% avg_mark = main_exam_mark.to_f*0.9 %>
+                            <% else %>
+                              <% avg_mark = main_exam_mark.to_f*1 %>
+                            <% end %>  
                                   
                             <td class="col-pdf no-warp">
                                <%= sprintf( "%0.02f", avg_mark)%>
@@ -401,8 +408,11 @@
                                     end    
                                 
                                   %>
-                                <% end %>  
-                                <% avg_mark = main_exam_mark.to_f*0.9 %>
+                                <% end %> 
+                                <% avg_mark = main_exam_mark.to_f %> 
+                                <% if has_ct %> 
+                                  <% avg_mark = main_exam_mark.to_f*0.9 %>
+                                <% end %>
                                 <% tota_mark_with_monthly = avg_mark+class_test_mark  %>
                                 <%
                                   main_mark2 = (tota_mark_with_monthly.to_f.round/full_mark_all.to_f)*100
@@ -531,7 +541,9 @@
                               <% end %>
                               <% class_test_mark = (class_test_mark.to_f/divider.to_f) %>
                               <% class_test_mark = class_test_mark.round() %>
+                              <% if has_ct %>   
                               <td class="col-pdf no-warp"><%= class_test_mark %></td>
+                              <% end %>
 
                               <% main_exam_mark = 0 %>
                               <% unless @report_data['report']['exams'].blank? %>  
@@ -548,8 +560,13 @@
                               <% end %>
                               <td class="col-pdf no-warp">
                                  <%= main_exam_mark.to_f.round.to_i %>
-                              </td>   
-                              <% avg_mark = main_exam_mark.to_f*0.9 %>
+                              </td> 
+                              <%
+                                avg_mark = main_exam_mark.to_f
+                              %>
+                              <% if has_ct %>   
+                                <% avg_mark = main_exam_mark.to_f*0.9 %>
+                              <% end %>
 
                               <td class="col-pdf no-warp">
                                  <%= sprintf( "%0.02f", avg_mark)%>
@@ -591,7 +608,11 @@
                       <% end %>  
                   <% end %>  
                   <tr class="even">
-                      <% colspan = colspan+4 %>
+                      <% if has_ct %>   
+                        <% colspan = colspan+4 %>
+                      <% else %>
+                        <% colspan = colspan+3 %>
+                      <% end %>
                       <td class="col-pdf align-left-baf" colspan="<%= colspan %>"><b>Total Marks & Total GP</b></td>
                       <td class="col-pdf no-warp align-left-baf" colspan="3">&nbsp;&nbsp;&nbsp;<b><%= grand_total %></b></td>
                       <td class="col-pdf"><b><%= total_grade %></b></td>
@@ -653,7 +674,9 @@
                             <% end %>
                             <% class_test_mark = (class_test_mark.to_f/divider.to_f) %>
                             <% class_test_mark = class_test_mark.round() %>
-                            <td class="col-pdf no-warp"><%= class_test_mark %></td>
+                            <% if has_ct %> 
+                              <td class="col-pdf no-warp"><%= class_test_mark %></td>
+                            <% end %>
                                   
                             <% main_exam_mark = 0 %>
                             <% unless @report_data['report']['exams'].blank? %>  
@@ -671,7 +694,8 @@
                             <td class="col-pdf no-warp">
                                <%= main_exam_mark.to_f.round.to_i %>
                             </td>   
-                            <% avg_mark = main_exam_mark.to_f*1 %>
+                            
+                            <% avg_mark = main_exam_mark.to_f %>
                                   
                             <td class="col-pdf no-warp">
                                <%= sprintf( "%0.02f", avg_mark)%>

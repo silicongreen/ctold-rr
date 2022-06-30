@@ -12160,7 +12160,11 @@ class ExamController < ApplicationController
                   term_mark_multiplier = 0.80
                 end
                 if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
-                  term_mark_multiplier = 0.90
+                  if monthly_full_mark1 > 0 or monthly_full_mark2 > 0
+                    term_mark_multiplier = 0.90
+                  else
+                    term_mark_multiplier = 1
+                  end
                 end
                 
                 if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6 or sub['grade_subject'].to_i == 1

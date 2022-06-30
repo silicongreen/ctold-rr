@@ -1,7 +1,5 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-<%#= debug @subject_highest_1st_term.inspect %>
-<%#= debug @subject_highest_2nd_term.inspect %>
-<%#= debug @subject_highest.inspect %>
+ 
 <%
   if @student_position_first_term.blank? && @subject_highest_1st_term.blank?
     @subject_highest_1st_term = @subject_highest_2nd_term
@@ -9,11 +7,8 @@
     @student_position_first_term_batch = @student_position_second_term_batch
   end
 
-  courseObj = Course.find_by_id(@batch.course_id)
-  convert = true
-  if courseObj.course_name == "Ten"
-    convert = false
-  end 
+
+
 
 %> 
  <% total_u = 0 %>
@@ -95,7 +90,6 @@
                         <b>Full Marks</b>
                       </td>
                       <% colspan = 0 %>
-                      <% has_sb = true %>
                       <% @report_data['report']['exams'].each do |report| %>
                         
                         <% if report['exam_category'] == '3' %>
@@ -139,25 +133,7 @@
                   <% failed = false %>
                   <% already_done = false %>
                   <% subjects_done  = [] %>
-                  <% mark_bangla = 0 %>
-                  <% mark_english = 0 %>
-                  <% mark_bangla_full = 0 %>
-                  <% mark_english_full = 0 %>
-
-                  <%
-                    mark_bangla_pass_failed = 0
-                    mark_english_pass_failed = 0
-                    mark_bangla_pass_failed_full = 0
-                    mark_english_pass_failed_full = 0
-        
-                    mark_bangla_pass_failed_ob = 0
-                    mark_bangla_pass_failed_sb = 0
-                    mark_english_pass_failed_ob = 0
-                    mark_english_pass_failed_sb = 0
-                    bang_code_pass_failed = ['Bang-1','Bang-2']
-                    eng_code_pass_failed = ['Eng-1','Eng-2']
-                  %>
-
+                  
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['grade_subject'].to_i == 1 %>
@@ -188,8 +164,6 @@
                             third_subject = "";
                             fourth_subject = "";
                           %>
-                          <% bang_code = ['Bang-1','Bang-2'] %>
-                          <% eng_code = ['Eng-1','Eng-2'] %>
                           <% if !@std_subject_hash_type.blank? %>
                             <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||4") %>
                               <% fourth_subject = "(4th)" %>
@@ -199,34 +173,22 @@
                             <% end %>
                           <% end %>
                           <% if fourth_subject.blank? %>
-                            <% if bang_code.include?(subjects['code']) %>
-                              <% if subjects['code'] == 'Bang-2' %>
-                                <% total_subject = total_subject+1 %>
-                              <% end %>
-                            <% elsif eng_code.include?(subjects['code']) %>
-                              <% if subjects['code'] == 'Eng-2' %>
-                                <% total_subject = total_subject+1 %>
-                              <% end %>
-                            <% else %>
-                              <% total_subject = total_subject+1 %>
-                            <% end %>
+                            <% total_subject = total_subject+1 %>
                           <% end %>
                           <% total_subject_main = total_subject_main+1 %>
                           <td class="col-pdf"><%= total_subject_main %></td>
                           
                           
-                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name']  %><%= fourth_subject %><%= third_subject %></td>
+                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %><%= fourth_subject %><%= third_subject %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                 <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                 <% if report['exam_category'] == '3' %>
-                                  <% mrk = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
-                                  <% full_sb = full_sb+mrk.to_i %>
+                                  <% full_sb = full_sb+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                 <% end %>
                                 <% if report['exam_category'] == '4' %>
-                                  <% mrk = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
-                                  <% full_ob = full_ob+mrk.to_i %>
+                                  <% full_ob = full_ob+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                 <% end %>
                                 <% if report['exam_category'] == '5' %>
                                   <% full_pr = full_pr+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -234,40 +196,16 @@
                               <% end %> 
                             <% end %>
                           <% end %>
-                        
+
 
                           <% 
                             highest_mark = 0
-                            if !@subject_highest_1st_term.blank? and !@subject_highest_1st_term[subjects['code'].to_s].blank?
-                              highest_mark = @subject_highest_1st_term[subjects['code'].to_s].to_f
+                            if !@subject_highest_1st_term.blank? and !@subject_highest_1st_term[subjects['id'].to_i].blank?
+                              highest_mark = @subject_highest_1st_term[subjects['id'].to_i].to_f
                             end
                           
                           %>
-                          <% sub_codes = ['Phys','Chem','Bio','H.Math','H.Sci'] %>
-                          <% full_sb_mark = 0 %>
-                          <% if full_sb.to_i == 40 %>
-                            <% full_sb_mark = 70 %>
-                          <% elsif full_sb.to_i == 30 %>
-                            <% full_sb_mark = 50 %> 
-                          <% elsif full_sb.to_i == 50 %>
-                            <% full_sb_mark = 100 %>   
-                          <% else %>  
-                            <% full_sb_mark = full_sb %>   
-                          <% end %>
 
-                          <% full_ob_mark = 0 %>
-                          <% if full_ob.to_i == 15 %>
-                            <% if sub_codes.include?(subjects['code']) %>
-                              <% full_ob_mark = 25 %>
-                            <% else %>
-                              <% full_ob_mark = 30 %>
-                            <% end %>
-                          <% else %>  
-                            <% full_ob_mark = full_ob %>
-                          <% end %>
-
-                          <% full_mark = full_sb_mark.to_i + full_ob_mark.to_i + full_pr.to_i  %>
-                            
                           <% if full_mark.to_f > 0 %>
                             <% full_mark_all = 50 %>
                             <% if full_mark.to_f >= 100 %>
@@ -290,91 +228,29 @@
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                   <% exam_full_mark_single = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                   <% exam_mark_single = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                  <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% if report['exam_category'] == '3' %>
-                                    <%
-                                    converted_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                    if full_sb.to_i == 40
-                                      converted_mark = 70
-                                      mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_sb.to_f) * converted_mark
-                                    elsif full_sb.to_i == 30
-                                        converted_mark = 50
-                                        mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_sb.to_f) * converted_mark
-                                    elsif full_sb.to_i == 50
-                                        converted_mark = 100
-                                        mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_sb.to_f) * converted_mark
-                                    end
-                                    %>
-                                    <% total_sb = total_sb+mark.to_f %>
-                                    <%  main_exam_mark = main_exam_mark+mark.to_f %>
+                                    <% total_sb = total_sb+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% end %>
                                   <% if report['exam_category'] == '4' %>
-                                    <%
-                                    converted_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                    if full_ob.to_i == 15
-                                      if sub_codes.include?(subjects['code'])
-                                        converted_mark = 25
-                                      else
-                                        converted_mark = 30
-                                      end
-                                    end
-                                    if full_ob.nil?
-                                      mark = 0
-                                    else
-                                      mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_ob.to_f) * converted_mark
-                                    end
-                                    %>
-                                    <% total_ob = total_ob+mark.to_f %>
-                                    <%  main_exam_mark = main_exam_mark+mark.to_f %>
+                                    <% total_ob = total_ob+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% end %>
                                   <% if report['exam_category'] == '5' %>
                                     <% total_pr = total_pr+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                    <%  main_exam_mark = main_exam_mark+total_pr.to_f %>
                                   <% end %>
                                   <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s == "AB" %>
                                     <td class="col-pdf">AB</td>
                                   <% else %>
-                                    <td class="col-pdf">
-                                      <%
-                                      mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round
-                                      converted_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round
-                                        if report['exam_category'] == '3'
-                                          if full_sb.to_i == 40
-                                            converted_mark = 70
-                                            mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_sb.to_f) * converted_mark
-                                          elsif full_sb.to_i == 30
-                                              converted_mark = 50
-                                              mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_sb.to_f) * converted_mark
-                                          elsif full_sb.to_i == 50
-                                              converted_mark = 100
-                                              mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_sb.to_f) * converted_mark
-                                          end
-                                      elsif report['exam_category'] == '4'
-                                        converted_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                        if full_ob.to_i == 15
-                                          if sub_codes.include?(subjects['code'])
-                                            converted_mark = 25
-                                          else
-                                            converted_mark = 30
-                                          end
-                                          mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_ob.to_f) * converted_mark
-                                        end
-                                      elsif report['exam_category'] == '5'
-                                        if full_pr.to_i == 25
-                                          converted_mark = 25
-                                          mark = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / full_pr.to_f) * converted_mark
-                                        end
-                                      end
-                                      %>
-                                      <%= mark.round.to_s  %>
-                                    </td>
+                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
                                   <% end %>
                                     
-                                  <%# if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
-                                      <%# if exam_full_mark_single != 25 || exam_mark_single.to_i != 8 %>
-                                        <%# failed = true %>
-                                        <%# failed_subject = true %>
-                                      <%# end %>
-                                  <%# end %>
+                                  <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
+                                      <% if exam_full_mark_single != 25 || exam_mark_single.to_i != 8 %>
+                                        <% failed = true %>
+                                        <% failed_subject = true %>
+                                      <% end %>
+                                  <% end %>
+                                    
                                     
                                 <% else %>
                                   <td class="col-pdf">-</td>
@@ -438,7 +314,7 @@
                                   <% @report_data['report']['exams'].each do |report| %>   
                                     <% if report['exam_category'] != '1' %>
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].blank? %>                                   
-                                        <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f.round %>
+                                        <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% if report['exam_category'] == '3' %>
                                           <% total_sb = total_sb+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% end %>
@@ -504,7 +380,6 @@
                                 
                                   %>
                                 <% end %>
-
                                 <% avg_mark = main_exam_mark.to_f %>
                                 <% tota_mark_with_monthly = avg_mark %>
                                 <%
@@ -524,18 +399,7 @@
                             
                                   
                                   <% if fourth_subject.blank? %>
-                                    <% if bang_code.include?(subjects['code']) %>
-                                      <% if subjects['code'] == 'Bang-2' %>
-                                      <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
-                                      <% end %>
-                                    <% elsif eng_code.include?(subjects['code']) %>
-                                      <% if subjects['code'] == 'Eng-2' %>
-                                      <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
-                                      <% end %>
-                                    <% else %>
-                                      <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
-                                    <% end %>
-                                    
+                                    <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
                                   <% else %>
                                     <% new_grade_point = grade.credit_points.to_f-2 %>
                                     <% if new_grade_point > 0 %>
@@ -550,154 +414,7 @@
                                 <% end %>
                                <% end %>
                             <% else %>
-
-
-                            <%
-                                    total_pass = false
-                                    converted_sb = full_sb
-                                    
-                                    if full_sb.to_i == 40
-                                      converted_sb = 70
-                                    elsif full_sb.to_i == 30
-                                      converted_sb = 50
-                                    elsif full_sb.to_i == 50
-                                      converted_sb = 100
-                                    end
-
-                                    converted_ob = full_ob
-                                    if full_ob.to_i == 15
-                                      if sub_codes.include?(subjects['code'])
-                                          converted_ob = 25
-                                      else
-                                          converted_ob = 30
-                                      end
-                                    end
-
-                                    converted_pr = full_pr
-                                    %>
-                                    <%#= converted_ob.to_s + "  "  + converted_sb.to_s + "  "  + converted_pr.to_s + "<Br/ >" %>
-                                    <%
-                                    failed_subject = false
-                                    failed = false
-                                    if total_pass
-                                      con_full_mark = converted_ob.round.to_i + converted_sb.round.to_i + converted_pr.round.to_i
-                                      con_mrk = total_ob.round.to_i + total_sb.round.to_i + total_pr.round.to_i
-                                      if bang_code_pass_failed.include?(subjects['code'])
-                                        mark_bangla_pass_failed  = mark_bangla_pass_failed  + con_mrk.to_f
-                                        mark_bangla_pass_failed_full  = mark_bangla_pass_failed_full  + con_full_mark.to_f
-                                      elsif eng_code_pass_failed.include?(subjects['code'])
-                                        mark_english_pass_failed  = mark_english  + con_mrk.to_f
-                                        mark_english_pass_failed_full  = mark_english_pass_failed_full  + con_full_mark.to_f
-                                      end
-                                      not_include_code = ['Bang-1','Eng-1']
-                                      if !not_include_code.include?(subjects['code'])
-                                        if subjects['code'] == "Bang-2"
-                                          if mark_bangla_pass_failed_full.round.to_i == 200
-                                            if mark_bangla_pass_failed < 90 && fourth_subject.blank?
-                                              failed_subject = true
-                                              failed = true
-                                            end
-                                          end
-                                        elsif subjects['code'] == "Eng-2"
-                                          if mark_english_pass_failed_full.round.to_i == 200
-                                            if mark_english_pass_failed < 90 && fourth_subject.blank?
-                                              failed_subject = true
-                                              failed = true   
-                                            end
-                                          end
-                                        else
-                                          if con_full_mark.round.to_i == 100
-                                            if con_mrk < 45 && fourth_subject.blank?
-                                              failed_subject = true
-                                              failed = true 
-                                            end
-                                          end
-                                        end
-                                      end
-                                    else
-                                      pass_s = true
-                                      con_full_mark = converted_ob.round.to_i + converted_sb.round.to_i + converted_pr.round.to_i
-                                      con_mrk = total_ob.round.to_i + total_sb.round.to_i + total_pr.round.to_i
-                                      if bang_code_pass_failed.include?(subjects['code'])
-                                        mark_bangla_pass_failed_ob  = mark_bangla_pass_failed_ob  + total_ob.to_f
-                                        mark_bangla_pass_failed_sb  = mark_bangla_pass_failed_sb + total_sb.to_f
-                                      elsif eng_code_pass_failed.include?(subjects['code'])
-                                        mark_english_pass_failed_sb  = mark_english_pass_failed_sb  + total_sb.to_f
-                                      end
-                                      %>
-                                      <%#= total_ob.to_s + "  " + total_sb.to_s + "  " + mark_bangla_pass_failed_ob.to_s + "  "  + mark_bangla_pass_failed_sb.to_s + "   " + mark_english_pass_failed_sb.to_s + "<br />" %>
-                                      <%
-                                      not_include_code = ['Bang-11','Eng-11']
-                                      if !not_include_code.include?(subjects['code'])
-                                        if subjects['code'] == "Bang-2"
-                                          if mark_bangla_pass_failed_ob.round.to_i < 13
-                                            pass_s = false
-                                          end
-                                          if pass_s
-                                            if mark_bangla_pass_failed_sb.round.to_i < 32
-                                              pass_s = false
-                                            end
-                                          end
-                                          if pass_s == false && fourth_subject.blank?
-                                            failed_subject = true
-                                            failed = true 
-                                          end
-                                        elsif subjects['code'] == "Eng-2"
-                                          if mark_english_pass_failed_sb.round.to_i < 45
-                                            pass_s = false
-                                          end
-                                          if pass_s == false && fourth_subject.blank?
-                                            failed_subject = true
-                                            failed = true 
-                                          end
-                                        else
-                                          if converted_ob.round.to_i == 30
-                                            if total_ob.round.to_i < 13
-                                              pass_s = false
-                                            end
-                                          elsif converted_ob.round.to_i == 25
-                                            if total_ob.round.to_i < 11
-                                              pass_s = false
-                                            end
-                                          end
-                                          if pass_s
-                                            if converted_sb.round.to_i == 70
-                                              if total_sb.round.to_i < 32
-                                                pass_s = false
-                                              end
-                                            elsif converted_sb.round.to_i == 50
-                                                if total_sb.round.to_i < 23
-                                                  pass_s = false
-                                                end
-                                            end
-                                          end
-                                          if pass_s
-                                            if converted_pr > 0
-                                              if converted_pr.round.to_i == 25
-                                                if total_pr.round.to_i < 11
-                                                  pass_s = false
-                                                end
-                                              end
-                                            end
-                                          end
-                                          if pass_s == false && fourth_subject.blank?
-                                            failed_subject = true
-                                            failed = true 
-                                          end
-                                        end
-                                      end
-                                    end
-                                  
-                                  %>
-
-
-                              <% if bang_code.include?(subjects['code']) %>
-                                  <% mark_bangla  = mark_bangla  + main_mark.to_f %>
-                                  <% mark_bangla_full  = mark_bangla_full  + full_mark_all.to_f %>
-                              <% elsif eng_code.include?(subjects['code']) %>
-                                  <% mark_english  = mark_english  + main_mark.to_f %>
-                                  <% mark_english_full  = mark_english_full  + full_mark_all.to_f %>
-                              <% end %>
+                            
                               <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                               <% if !grade.blank? and !grade.name.blank? %>
                                 <% if grade.credit_points.to_i == 0 && fourth_subject.blank? %>
@@ -710,67 +427,15 @@
                               <% end %>
                               
                                 <% if fourth_subject.blank? %>
-                                  <% if bang_code.include?(subjects['code']) %>
-                                    <% if subjects['code'] == 'Bang-2' %>
                                     <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
-                                    <% end %>
-                                  <% elsif eng_code.include?(subjects['code']) %>
-                                    <% if subjects['code'] == 'Eng-2' %>
-                                    <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
-                                    <% end %>
-                                  <% else %>
-                                    <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
-                                  <% end %>
                                 <% else %>
                                   <% new_grade_point = grade.credit_points.to_f-2 %>
                                   <% if new_grade_point > 0 %>
                                    <% total_grade = total_grade.to_f+new_grade_point.to_f %>
                                   <% end %>  
                                 <% end %>
-                                <% if subjects['code'] == "Bang-1" %>
-                                  <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>
-                                  <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>
-                                <% elsif subjects['code'] == "Bang-2" %>
-                                  <%
-                                    main_mark2 = (mark_bangla.to_f.round/mark_bangla_full.to_f)*100
-                                  %>
-                                  <%  grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id) %>
-                                  <% if !grade.blank? and !grade.name.blank? %>
-                                    <% if grade.credit_points.to_i == 0 && fourth_subject.blank? %>
-                                      <% failed = true %>
-                                      <% failed_subject = true %> 
-                                    <% end %>
-                                    <% if  failed_subject == true %>
-                                      <% grade.credit_points = 0.0 %>
-                                      <% grade.name = "F" %>
-                                    <% end %>
-                                  <% end %>
-                                  <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px; left: -5px;"><%= grade.name %></td>
-                                  <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px; left: -5px;"><%= grade.credit_points %></td>
-                                <% elsif subjects['code'] == "Eng-1" %>
-                                  <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>
-                                  <td class="col-pdf" style="border-bottom: 1px solid #fff;"></td>
-                                <% elsif subjects['code'] == "Eng-2" %>
-                                  <%
-                                    main_mark2 = (mark_english.to_f.round/mark_english_full.to_f)*100
-                                  %>
-                                  <%  grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id) %>
-                                  <% if !grade.blank? and !grade.name.blank? %>
-                                    <% if grade.credit_points.to_i == 0 && fourth_subject.blank? %>
-                                      <% failed = true %>
-                                      <% failed_subject = true %>
-                                    <% end %>
-                                    <% if  failed_subject == true %>
-                                      <% grade.credit_points = 0.0 %>
-                                      <% grade.name = "F" %>
-                                    <% end %>
-                                  <% end %>
-                                  <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.name %></td>
-                                  <td class="col-pdf" style="border-top: 1px solid #fff; position: relative; top: -20px;"><%= grade.credit_points %></td>
-                                <% else %>
-                                  <td class="col-pdf"><%= grade.name %></td>
-                                  <td class="col-pdf"><%= grade.credit_points %></td>
-                                <% end %>
+                                <td class="col-pdf"><%= grade.name %></td>
+                                <td class="col-pdf"><%= grade.credit_points %></td>
                               <% else %>
                                 <td class="col-pdf">-</td>
                                 <td class="col-pdf">-</td>
@@ -824,8 +489,8 @@
 
                             <% 
                               highest_mark = 0
-                              if !@subject_highest_1st_term.blank? and !@subject_highest_1st_term[subjects2['code'].to_s].blank?
-                                highest_mark = @subject_highest_1st_term[subjects2['code'].to_s].to_f
+                              if !@subject_highest_1st_term.blank? and !@subject_highest_1st_term[subjects2['id'].to_i].blank?
+                                highest_mark = @subject_highest_1st_term[subjects2['id'].to_i].to_f
                               end
 
                             %>
@@ -839,7 +504,7 @@
                                <% full_mark_all = 75 %>
                                <td class="col-pdf">75</td>
                               <% else %>  
-                                <td class="col-pdf">50 <%= subjects2['id'].to_s %></td>
+                                <td class="col-pdf">50</td>
                               <% end %>
                             
 
@@ -892,7 +557,7 @@
                       <% end %>
                     <% end %>  
                   <% end %>
-                      <%#= "my Subject " + total_subject.to_s + "  " + total_grade.to_s  %>
+                      
                   <% if total_grade > 0 && total_subject > 0 %>
                       <% grade_point_avg = total_grade.to_f/total_subject.to_f %>
                       <% if grade_point_avg > 5 %>
@@ -934,8 +599,8 @@
 
                           <% 
                           highest_mark = 0
-                          if !@subject_highest_1st_term.blank? and !@subject_highest_1st_term[subjects['code'].to_s].blank?
-                            highest_mark = @subject_highest_1st_term[subjects['code'].to_s].to_f
+                          if !@subject_highest_1st_term.blank? and !@subject_highest_1st_term[subjects['id'].to_i].blank?
+                            highest_mark = @subject_highest_1st_term[subjects['id'].to_i].to_f
                             end
 
                         %>
@@ -1036,7 +701,7 @@
                       <td class="align-left no-warp"><b>Grade Point Avg</b></td>
                       <td><b>
                               <% if @student_position_first_term_batch[@student.id.to_i].blank? %>
-                              <%=  0.00 %>
+                                0.00
                               <% else %>
                                 <%= sprintf( "%0.02f", grade_point_avg) %>
                               <% end %></b>
@@ -1053,7 +718,7 @@
                       <td >
                           <b>
                               <% if @student_position_first_term_batch[@student.id.to_i].blank? %>
-                              <%=  "F" %>
+                                F
                               <% else %>
                                 <% if !grade.blank? and !grade.name.blank? %>
                                   <%= grade.name %>
@@ -1068,7 +733,7 @@
                           <% if !@student_position_first_term_batch[@student.id.to_i].blank? %> 
                             <%= @student_position_first_term_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
                           <% else %>
-                            
+                            -
                           <% end %> 
 
                       </td>
@@ -1172,5 +837,3 @@
   </div>
 
 <% end %>
- 
-     

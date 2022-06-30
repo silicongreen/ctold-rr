@@ -6,9 +6,7 @@
           @grading_levels = GradingLevel.default
         end
       end
-     
       @total_std_batch = 0
-      @my_student = 0
       @total_std = 0
       @student_list_first_term = []
       @student_list_second_term = []
@@ -35,10 +33,8 @@
       loop_std = 0
       batchobj = Batch.find_by_id(@batch.id) 
       courseObj = Course.find_by_id(batchobj.course_id)
-      
       all_courses = Course.find_all_by_course_name(courseObj.course_name)
-      all_batch = Batch.find_all_by_course_id_and_name(all_courses.map(&:id), batchobj.name)
-      all_batch_ids = all_batch.map(&:id)
+      all_batch = Batch.find_all_by_course_id(all_courses.map(&:id))
       std_subject = StudentsSubject.find_all_by_batch_id(all_batch.map(&:id),:include=>[:subject])
       @std_subject_hash_type = []
       @std_subject_hash_code = []
@@ -87,7 +83,6 @@
         
         
         @tabulation_data['report'].each do |tab|
-          
           batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
           batch_subject_id = batch_subject.map(&:id)
           batch_subject_hash_code_main = []	
@@ -97,21 +92,16 @@
             end	
           end
           batch_data = Batch.find(@tabulation_data['batches'][batch_loop])
-          
           batch_loop = batch_loop+1
           connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
           exam_type = 1
           connect_exam = connect_exam+1
           std_group_name = batch_data.course.group
-          
+        
           if tab.kind_of?(Array) or tab.blank? or tab['students'].blank?
             next
           end
-
-          if !all_batch_ids.include?(batch_data.id)
-            next
-          end
-          
+        
           std_list = []
           tab['students'].each do |std| 
             std_list << std['id'].to_i
@@ -174,24 +164,10 @@
             if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
               @total_std = @total_std+1
             end
-            if connect_exam_id.to_i == @connect_exam_obj.id and @batch.id == batch_data.id	
-              @my_student = @my_student + 1
-            end
             total_std_subject = all_total_std_subject.select{|val| val.student_id.to_i == std['id'].to_i }
             std_subject_id = total_std_subject.map(&:subject_id)
             total_subject = 0
             subject_array = []
-            mark_bangla = 0
-            mark_english = 0
-            mark_bangla_full = 0
-            mark_english_full = 0
-
-            mark_bangla_ob = 0
-            mark_bangla_sb = 0
-            mark_english_ob = 0
-            mark_english_sb = 0
-            bang_code = ['Bang-1','Bang-2']
-            eng_code = ['Eng-1','Eng-2']
             tab['subjects'].each do |sub|
               if subject_array.include?(sub['id'].to_i)
                 next
@@ -227,17 +203,7 @@
               end 
               if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
                 if fourth_subject == false && sub['subject_group_id'].to_i == 0 &&  sub['grade_subject'].to_i == 0
-                  if bang_code.include?(sub['code'])
-                    if sub['code'] == 'Bang-2'
-                      total_subject = total_subject+1
-                    end
-                  elsif eng_code.include?(sub['code'])
-                    if sub['code'] == 'Eng-2'
-                      total_subject = total_subject+1
-                    end
-                  else
-                    total_subject = total_subject+1
-                  end
+                  total_subject = total_subject+1
                 end
                 total_mark1 = 0
                 full_mark1 = 0
@@ -258,7 +224,7 @@
                 appeared_ob = false
                 appeared_pr = false
                 
-                m_sb1 = 0
+                
                 full_sb1 = 0
                 full_sb2 = 0
                 total_sb1 = 0
@@ -266,8 +232,6 @@
                 
                 total_sb1_main = 0
                 total_sb2_main = 0
-
-                m_ob1 = 0
                 full_ob1 = 0
                 full_ob2 = 0
                 total_ob1 = 0
@@ -300,19 +264,6 @@
                         full_sb1 = full_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       end  
-                      if rs['quarter'] == '3'
-                        tot_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                        m_sb1 = m_sb1+tot_mark.to_f
-                        if tot_mark.to_i == 40
-                          tot_mark = 70
-                        elsif tot_mark.to_i == 30
-                          tot_mark = 50 
-                        elsif tot_mark.to_i == 50
-                          tot_mark = 100   
-                        end
-                        full_sb1 = full_sb1+tot_mark.to_f
-                        full_mark1 = full_mark1+tot_mark.to_f
-                      end  
                       if rs['quarter'] == '2'
                         full_sb2 = full_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
@@ -322,26 +273,12 @@
                         full_ob1 = full_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       end  
-                      if rs['quarter'] == '3'
-                        tot_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                        m_ob1 = m_ob1+tot_mark.to_f
-                        sub_codes = ['Phys','Chem','Bio','H.Math','H.Sci']
-                        if tot_mark.to_i == 15
-                          if sub_codes.include?(sub['code'])
-                            tot_mark = 25
-                          else
-                            tot_mark = 30
-                          end
-                        end
-                        full_ob1 = full_ob1+tot_mark.to_f
-                        full_mark1 = full_mark1+tot_mark.to_f
-                      end  
                       if rs['quarter'] == '2'
                         full_ob2 = full_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       end
                     elsif rs['exam_category'] == '5' 
-                      if rs['quarter'] == '1' or rs['quarter'] == '3'
+                      if rs['quarter'] == '1'
                         full_pr1 = full_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       end  
@@ -386,16 +323,14 @@
                         total_sb1 = total_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if @connect_exam_obj.result_type != 11
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
-                            unless sub['subject_group_id'].to_i > 0 
-                              unless @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
-                                if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
-                                  if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)  
-                                    if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 50 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 22)
-                                      u_grade1 = u_grade1+1
-                                      subject_failed = true
-                                    end 
-                                  end  
-                                end
+                            unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
+                              if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
+                                if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)  
+                                  if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 50 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 22)
+                                    u_grade1 = u_grade1+1
+                                    subject_failed = true
+                                  end 
+                                end  
                               end
                             end
                           end 
@@ -429,22 +364,6 @@
                           
                         end  
                       end  
-
-                      if rs['quarter'] == '3'
-                        mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                        if m_sb1.to_i == 40
-                          converted_mark = 70
-                          mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f / m_sb1.to_f) * converted_mark
-                        elsif m_sb1.to_i == 30
-                            converted_mark = 50
-                            mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f / m_sb1.to_f) * converted_mark
-                        elsif m_sb1.to_i == 50
-                            converted_mark = 100
-                            mark = (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f / m_sb1.to_f) * converted_mark
-                        end
-                        total_sb1 = total_sb1+mark.to_f  
-                      end  
-                   
                       if rs['quarter'] == '2'
                         total_sb2 = total_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if @connect_exam_obj.result_type != 11
@@ -521,20 +440,6 @@
                           end
                         end    
                       end  
-                      if rs['quarter'] == '3'
-                        converted_mark = 30
-                        sub_codes = ['Phys','Chem','Bio','H.Math','H.Sci'] 
-                        mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                        if m_ob1.to_i == 15
-                          if sub_codes.include?(sub['code'])
-                            converted_mark = 25
-                          else
-                            converted_mark = 30
-                          end
-                        end
-                        mark = (mark.to_f / m_ob1.to_f) * converted_mark
-                        total_ob1 = total_ob1+mark.to_f
-                      end  
                       if rs['quarter'] == '2'
                         total_ob2 = total_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if @connect_exam_obj.result_type != 11
@@ -592,7 +497,7 @@
                         full_absent = false
                         appeared_pr = true
                       end
-                      if rs['quarter'] == '1' or rs['quarter'] == '3'
+                      if rs['quarter'] == '1'
                         total_pr1 = total_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if @connect_exam_obj.result_type != 11
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
@@ -607,14 +512,14 @@
                           end
                         else
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"
-                            #if sub['subject_group_id'].to_i == 0 && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8)
-                            #  if fourth_subject.blank?
-                            #    u_grade1 = u_grade1+1
-                            #    subject_failed = true
-                            #  else
-                            #    four_subject_failed = true
-                            #  end  
-                            #end
+                            if sub['subject_group_id'].to_i == 0 && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8)
+                              if fourth_subject.blank?
+                                u_grade1 = u_grade1+1
+                                subject_failed = true
+                              else
+                                four_subject_failed = true
+                              end  
+                            end
                           end
                         end    
                       end  
@@ -673,7 +578,7 @@
                     end
                   end    
                 end
-                  
+                
                 if @connect_exam_obj.result_type == 8 && sub['grade_subject'].to_i != 1
                   if monthly_full_mark1 == 20 
                     if monthly_total_mark1 < 9
@@ -716,150 +621,7 @@
                   end
                  
                   
-                end 
-                
-                total_pass = false
-                if @connect_exam_obj.result_type == 11
-                  subject_failed = false
-                  four_subject_failed = false
-                  #u_grade1 = 0
-                  if total_pass
-                    con_full_mark = full_ob1.round.to_i + full_sb1.round.to_i + full_pr1.round.to_i
-                    con_mrk = total_ob1.round.to_i + total_sb1.round.to_i + total_pr1.round.to_i
-                    if bang_code.include?(sub['code'])
-                      mark_bangla  = mark_bangla  + con_mrk.to_f
-                      mark_bangla_full  = mark_bangla_full  + con_full_mark.to_f
-                    elsif eng_code.include?(sub['code'])
-                      mark_english  = mark_english  + con_mrk.to_f
-                      mark_english_full  = mark_english_full  + con_full_mark.to_f
-                    end
-                    not_include_code = ['Bang-1','Eng-1']
-                    if !not_include_code.include?(sub['code'])
-                      if sub['code'] == "Bang-2"
-                        if mark_bangla_full.round.to_i == 200
-                          if mark_bangla.round.to_i < 90
-                            if fourth_subject.blank?
-                              u_grade1 = u_grade1+1
-                              subject_failed = true
-                            else
-                              four_subject_failed = true
-                            end    
-                          end
-                        end
-                      elsif sub['code'] == "Eng-2"
-                        if mark_english_full.round.to_i == 200
-                          if mark_english.round.to_i < 90
-                            if fourth_subject.blank?
-                              u_grade1 = u_grade1+1
-                              subject_failed = true
-                            else
-                              four_subject_failed = true
-                            end    
-                          end
-                        end
-                      else
-                        if con_full_mark.round.to_i == 100
-                          if con_mrk.round.to_i < 45
-                            if fourth_subject.blank?
-                              u_grade1 = u_grade1+1
-                              subject_failed = true
-                            else
-                              four_subject_failed = true
-                            end    
-                          end
-                        end
-                      end
-                    end
-                  else
-                  
-                    pass_s = true
-                    con_full_mark = full_ob1.round.to_i + full_sb1.round.to_i + full_pr1.round.to_i
-                    con_mrk = total_ob1.round.to_i + total_sb1.round.to_i + total_pr1.round.to_i
-                    if bang_code.include?(sub['code'])
-                      mark_bangla_ob  = mark_bangla_ob  + total_ob1.round.to_i
-                      mark_bangla_sb  = mark_bangla_sb + total_sb1.round.to_i
-                    elsif eng_code.include?(sub['code'])
-                      mark_english_sb  = mark_english_sb  + total_sb1.to_f
-                    end
-                    not_include_code = ['Bang-11','Eng-11']
-                    if !not_include_code.include?(sub['code'])
-                      if sub['code'] == "Bang-2"
-                        if mark_bangla_ob < 13
-                          pass_s = false
-                        end
-                        if pass_s
-                          if mark_bangla_sb < 32
-                            pass_s = false
-                          end
-                        end
-                        if pass_s == false
-                          if fourth_subject.blank?
-                            u_grade1 = u_grade1+1
-                            subject_failed = true
-                          else
-                            four_subject_failed = true
-                          end    
-                        end
-                      elsif sub['code'] == "Eng-2"
-                        if mark_english_sb < 45
-                          pass_s = false
-                        end
-                        if pass_s == false
-                          if fourth_subject.blank?
-                            u_grade1 = u_grade1+1
-                            subject_failed = true
-                          else
-                            four_subject_failed = true
-                          end    
-                        end
-                      else
-                        if full_ob1.round.to_i == 30
-                          if total_ob1.round.to_i < 13
-                            pass_s = false
-                          end
-                        elsif full_ob1.round.to_i == 25
-                          if total_ob1.round.to_i < 11
-                            pass_s = false
-                          end
-                        end
-                        
-                        if full_sb1.round.to_i == 70
-                          if total_sb1.round.to_i < 32
-                            pass_s = false
-                          end
-                        elsif full_sb1.round.to_i == 50
-                            if total_sb1.round.to_i < 23
-                              pass_s = false
-                            end
-                        end
-                      
-                        if full_pr1 > 0
-                          if full_pr1.round.to_i == 25
-                            if total_pr1.round.to_i < 11
-                              pass_s = false
-                            end
-                          end
-                        end
-                        if pass_s == false
-                          if fourth_subject.blank?
-                            u_grade1 = u_grade1+1
-                            subject_failed = true
-                          else
-                            four_subject_failed = true
-                          end    
-                        end
-                      end
-                    end
-                  end
-
-
-                  
-                end
-                if  @student_tab.admission_no.to_s == '110196'
-                  u_grade1 = 0
-                  subject_failed = false
-                end
-
+                end  
                 if full_mark1 > 0 && monthly_full_mark1 != 0
                   full_mark1 = full_mark1+20
                 end
@@ -986,11 +748,11 @@
                 if @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4
                   term_mark_multiplier = 0.80
                 end
-                if @connect_exam_obj.result_type == 8
+                if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
                   term_mark_multiplier = 0.90
                 end
                 
-                if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 11 or @connect_exam_obj.result_type == 6 or sub['grade_subject'].to_i == 1
+                if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6 or sub['grade_subject'].to_i == 1
                   term_mark_multiplier = 1.00
                 end
                 
@@ -1143,39 +905,17 @@
                     grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
                     if !grade.blank? and !grade.name.blank?
                       unless sub['subject_group_id'].to_i > 0
-                        #grand_grade_point1 = grand_grade_point1+c
-                        if bang_code.include?(sub['code'])
-                          if sub['code'] == 'Bang-2'
-                            grand_grade_point1 = grand_grade_point1.to_f+grade.credit_points.to_f
-                          end
-                        elsif eng_code.include?(sub['code'])
-                          if sub['code'] == 'Eng-2'
-                            grand_grade_point1 = grand_grade_point1.to_f+grade.credit_points.to_f
-                          end
-                        else
-                          grand_grade_point1 = grand_grade_point1.to_f+grade.credit_points.to_f
-                        end
+                        grand_grade_point1 = grand_grade_point1+grade.credit_points.to_f
                       
                         if grade.credit_points.to_i == 0
                           u_grade1 = u_grade1+1
                         end
-                      end 
+                      end
                     end
                     grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
                     if !grade.blank? and !grade.name.blank?
                       unless sub['subject_group_id'].to_i > 0
-                        #grand_grade_point2 = grand_grade_point2+grade.credit_points.to_f
-                        if bang_code.include?(sub['code'])
-                          if sub['code'] == 'Bang-2'
-                            grand_grade_point2 = grand_grade_point2.to_f+grade.credit_points.to_f
-                          end
-                        elsif eng_code.include?(sub['code'])
-                          if sub['code'] == 'Eng-2'
-                            grand_grade_point2 = grand_grade_point2.to_f+grade.credit_points.to_f
-                          end
-                        else
-                          grand_grade_point2 = grand_grade_point2.to_f+grade.credit_points.to_f
-                        end
+                        grand_grade_point2 = grand_grade_point2+grade.credit_points.to_f
                       
                         if grade.credit_points.to_i == 0
                           u_grade2 = u_grade2+1
@@ -1185,18 +925,7 @@
                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                     if !grade.blank? and !grade.name.blank?
                       unless sub['subject_group_id'].to_i > 0
-                        #grand_grade_point = grand_grade_point+grade.credit_points.to_f
-                        if bang_code.include?(sub['code'])
-                          if sub['code'] == 'Bang-2'
-                            grand_grade_point = grand_grade_point.to_f+grade.credit_points.to_f
-                          end
-                        elsif eng_code.include?(sub['code'])
-                          if sub['code'] == 'Eng-2'
-                            grand_grade_point = grand_grade_point.to_f+grade.credit_points.to_f
-                          end
-                        else
-                          grand_grade_point = grand_grade_point.to_f+grade.credit_points.to_f
-                        end
+                        grand_grade_point = grand_grade_point+grade.credit_points.to_f
                       
                         if grade.credit_points.to_i == 0
                           u_grade = u_grade+1
@@ -1256,7 +985,6 @@
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = "AB"
                     end  
                   end
-                  
                   if full_ob1 > 0 || full_ob2 > 0
                     if appeared_ob
                       
@@ -1381,13 +1109,10 @@
                     end  
                   end
                 end
-                
-                if total_mark1.to_i != 0
-                  if @subject_highest_1st_term[sub['code'].to_s].blank?
-                    @subject_highest_1st_term[sub['code'].to_s] = total_mark1
-                  elsif total_mark1.to_f > @subject_highest_1st_term[sub['code'].to_s].to_f
-                    @subject_highest_1st_term[sub['code'].to_s] = total_mark1.to_f
-                  end
+                if @subject_highest_1st_term[sub['id'].to_i].blank?
+                  @subject_highest_1st_term[sub['id'].to_i] = total_mark1
+                elsif total_mark1.to_f > @subject_highest_1st_term[sub['id'].to_i].to_f
+                  @subject_highest_1st_term[sub['id'].to_i] = total_mark1.to_f
                 end
                 if @subject_highest_2nd_term[sub['id'].to_i].blank?
                   @subject_highest_2nd_term[sub['id'].to_i] = total_mark2
@@ -1429,17 +1154,7 @@
                     end  
                   end 
                   if fourth_subject == false
-                    if bang_code.include?(sub['code'])
-                      if sub['code'] == 'Bang-2'
-                        total_subject = total_subject+1
-                      end
-                    elsif eng_code.include?(sub['code'])
-                      if sub['code'] == 'Eng-2'
-                        total_subject = total_subject+1
-                      end
-                    else
-                      total_subject = total_subject+1
-                    end
+                    total_subject = total_subject+1
                   end
                   has_exam = false
                   tab['exams'].each do |rs|
@@ -1483,7 +1198,7 @@
                     full_pr22 = 0
                     total_pr12 = 0
                     total_pr22 = 0
-                   
+                    
                     subject_failed = false
                     tab['exams'].each do |rs|
                       if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub2['id']].blank? and !rs['result'][rs['exam_id']][sub2['id']][std['id']].blank? 
@@ -1755,6 +1470,8 @@
                      
                     
                     
+                    
+                    
                     if exam_type == 3
                   
                       if @connect_exam_obj.result_type == 8 && sub['grade_subject'].to_i != 1
@@ -2019,6 +1736,7 @@
                     
                     
                     
+                    
                     if main_mark1 > 0
                       main_mark1 = main_mark1/2.00
                       main_mark1 = main_mark1.round()
@@ -2047,55 +1765,21 @@
                       if fourth_subject.blank?
                         grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
                         if !grade.blank? and !grade.name.blank?
-                          #grand_grade_point1 = grand_grade_point1+grade.credit_points.to_f
-
-                          if bang_code.include?(sub['code'])
-                            if sub['code'] == 'Bang-2'
-                              grand_grade_point1 = grand_grade_point1.to_f+grade.credit_points.to_f
-                            end
-                          elsif eng_code.include?(sub['code'])
-                            if sub['code'] == 'Eng-2'
-                              grand_grade_point1 = grand_grade_point1.to_f+grade.credit_points.to_f
-                            end
-                          else
-                            grand_grade_point1 = grand_grade_point1.to_f+grade.credit_points.to_f
-                          end
+                          grand_grade_point1 = grand_grade_point1+grade.credit_points.to_f
                           if grade.credit_points.to_i == 0
                             u_grade1 = u_grade1+1
                           end
                         end
                         grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
                         if !grade.blank? and !grade.name.blank?
-                          #grand_grade_point2 = grand_grade_point2+grade.credit_points.to_f
-                          if bang_code.include?(sub['code'])
-                            if sub['code'] == 'Bang-2'
-                              grand_grade_point2 = grand_grade_point2.to_f+grade.credit_points.to_f
-                            end
-                          elsif eng_code.include?(sub['code'])
-                            if sub['code'] == 'Eng-2'
-                              grand_grade_point2 = grand_grade_point2.to_f+grade.credit_points.to_f
-                            end
-                          else
-                            grand_grade_point2 = grand_grade_point2.to_f+grade.credit_points.to_f
-                          end
+                          grand_grade_point2 = grand_grade_point2+grade.credit_points.to_f
                           if grade.credit_points.to_i == 0
                             u_grade2 = u_grade2+1
                           end
                         end
                         grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                         if !grade.blank? and !grade.name.blank?
-                          #grand_grade_point = grand_grade_point+grade.credit_points.to_f
-                          if bang_code.include?(sub['code'])
-                            if sub['code'] == 'Bang-2'
-                              grand_grade_point = grand_grade_point.to_f+grade.credit_points.to_f
-                            end
-                          elsif eng_code.include?(sub['code'])
-                            if sub['code'] == 'Eng-2'
-                              grand_grade_point = grand_grade_point.to_f+grade.credit_points.to_f
-                            end
-                          else
-                            grand_grade_point = grand_grade_point.to_f+grade.credit_points.to_f
-                          end
+                          grand_grade_point = grand_grade_point+grade.credit_points.to_f
                           if grade.credit_points.to_i == 0
                             u_grade = u_grade+1
                           end
@@ -2124,8 +1808,6 @@
                         end
                       end  
                     end
-                   
-                    
                     if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['at'] = at_total_mark1+at_total_mark2
                       
@@ -2231,10 +1913,10 @@
                           if fourth_subject.blank?
                             if @student_result[loop_std]['subject_failed'].blank?
                               @student_result[loop_std]['subject_failed'] = []
-                            end 
+                            end
                             total_mark_main = total_mark1+total_mark2
                             @student_result[loop_std]['subject_failed'] << sub2['code']+"-"+total_mark_main.round().to_s
-                          end  
+                          end 
                         else
                           if @subject_result[main_sub_id].blank?
                             @subject_result[main_sub_id] = {}
@@ -2249,11 +1931,10 @@
                         end  
                       end
                     end
-                   
-                    if @subject_highest_1st_term[sub2['code'].to_s].blank?
-                      @subject_highest_1st_term[sub2['code'].to_s] = total_mark1
-                    elsif total_mark1.to_f > @subject_highest_1st_term[sub2['code'].to_s].to_f
-                      @subject_highest_1st_term[sub2['code'].to_s] = total_mark1.to_f
+                    if @subject_highest_1st_term[sub2['id'].to_i].blank?
+                      @subject_highest_1st_term[sub2['id'].to_i] = total_mark1
+                    elsif total_mark1.to_f > @subject_highest_1st_term[sub2['id'].to_i].to_f
+                      @subject_highest_1st_term[sub2['id'].to_i] = total_mark1.to_f
                     end
                     if @subject_highest_2nd_term[sub2['id'].to_i].blank?
                       @subject_highest_2nd_term[sub2['id'].to_i] = total_mark2
@@ -2269,9 +1950,8 @@
                 end
               end
             end 
+    
             
-            grade_point_avg1 = grand_grade_point1.to_f/total_subject.to_f
-            grade_point_avg2 = grand_grade_point2.to_f/total_subject.to_f
             if exam_type == 3
               grade_point_avg = grand_grade_point.to_f/total_subject.to_f
               grade_point_avg = grade_point_avg.round(2)
@@ -2296,7 +1976,6 @@
                   
               end
             end
-           
             grand_total_with_fraction = sprintf( "%0.02f", grand_total_with_fraction)
             grand_total_with_fraction = grand_total_with_fraction.to_f
             grand_total1_with_fraction = sprintf( "%0.02f", grand_total1_with_fraction)
@@ -2306,12 +1985,12 @@
             if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
               @total_std_batch = @total_std_batch+1
               
+              
+              
               if full_absent
                 @absent_in_all_subject = @absent_in_all_subject+1
               end
               
-              grade_point_avg1 = grand_grade_point1.to_f/total_subject.to_f
-              grade_point_avg2 = grand_grade_point2.to_f/total_subject.to_f
               if exam_type == 3
                 
                 grade_point_avg = grand_grade_point.to_f/total_subject.to_f
@@ -2326,38 +2005,11 @@
                 
               end
               if exam_type == 1
-                grand_grade_n = grand_grade_point1
-                unless @student_result[loop_std]['subjects']['Bang-1'].blank?
-                  m_bng_1 = @student_result[loop_std]['subjects']['Bang-1']['result']['ct'].to_f
-                  m_bng_2 = @student_result[loop_std]['subjects']['Bang-2']['result']['ct'].to_f
-                  
-                  grade = GradingLevel.percentage_to_grade(m_bng_2, @batch.id)
-                  grand_grade_n = grand_grade_n.to_f - grade.credit_points.to_f
-
-                  m_bng = m_bng_1.to_f + m_bng_2.to_f
-                  
-                  m_bng = (m_bng.to_f.round/200.to_f)*100
-                  grade = GradingLevel.percentage_to_grade(m_bng, @batch.id)
-                  grand_grade_n = grand_grade_n.to_f + grade.credit_points.to_f
-
-
-                  m_eng_1 = @student_result[loop_std]['subjects']['Eng-1']['result']['ct'].to_f
-                  m_eng_2 = @student_result[loop_std]['subjects']['Eng-2']['result']['ct'].to_f
-                  grade = GradingLevel.percentage_to_grade(m_eng_2, @batch.id)
-                  grand_grade_n = grand_grade_n.to_f - grade.credit_points.to_f
-
-                  m_eng = m_eng_1.to_f + m_eng_2.to_f
-                  m_eng = (m_eng.to_f.round/200.to_f)*100
-                  grade = GradingLevel.percentage_to_grade(m_eng, @batch.id)
-                  grand_grade_n = grand_grade_n.to_f + grade.credit_points.to_f
-                end
                 
-                grand_grade_point1 = grand_grade_n
-
                 grade_point_avg = grand_grade_point1.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
-                  grade_point_avg = 5.00 
+                  grade_point_avg = 5.00
                 end
                 @student_result[loop_std]['gpa'] = grand_grade_point1
                 @student_result[loop_std]['grand_total'] = grand_total1
@@ -2365,28 +2017,6 @@
                 
               end
               if exam_type == 2
-                grand_grade_n = grand_grade_point1
-                m_bng_1 = @student_result[loop_std]['subjects']['Bang-1']['result']['ct'].to_f
-                m_bng_2 = @student_result[loop_std]['subjects']['Bang-2']['result']['ct'].to_f
-                
-                grade = GradingLevel.percentage_to_grade(m_bng_2, @batch.id)
-                grand_grade_n = grand_grade_n.to_f - grade.credit_points.to_f
-
-                m_bng = m_bng_1.to_f + m_bng_2.to_f
-                grade = GradingLevel.percentage_to_grade(m_bng, @batch.id)
-                grand_grade_n = grand_grade_n.to_f + grade.credit_points.to_f
-
-
-                m_eng_1 = @student_result[loop_std]['subjects']['Eng-1']['result']['ct'].to_f
-                m_eng_2 = @student_result[loop_std]['subjects']['Eng-2']['result']['ct'].to_f
-                grade = GradingLevel.percentage_to_grade(m_eng_2, @batch.id)
-                grand_grade_n = grand_grade_n.to_f - grade.credit_points.to_f
-
-                m_eng = m_eng_1.to_f + m_eng_2.to_f
-                grade = GradingLevel.percentage_to_grade(m_eng, @batch.id)
-                grand_grade_n = grand_grade_n.to_f + grade.credit_points.to_f
-                
-                grand_grade_point2 = grand_grade_n
                 
                 grade_point_avg = grand_grade_point2.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
@@ -2406,16 +2036,11 @@
               loop_std = loop_std+1
             end
             
-            
           
             if u_grade == 0
-              grand_total_new = grand_total_with_fraction
-              grand_grade_new = grand_grade_point + 1000
-              #avg_g = grade_point_avg1.round(2)
-              #if avg_g.to_f > 5
-              #  avg_g = 5
-              #end
-              #grand_grade_new = avg_g + 100
+              grand_total_new = 50000-grand_total_with_fraction
+              grand_grade_new = 50000-grand_grade_point
+              
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if exam_type == 3
@@ -2438,14 +2063,11 @@
               end
             end  
         
+            
+            
             if u_grade1 == 0
-              grand_total_new = grand_total1_with_fraction
-              grand_grade_new = grand_grade_point1 + 1000
-              #avg_g = grade_point_avg1.round(2)
-              #if avg_g.to_f > 5
-              #  avg_g = 5
-              #end
-              #grand_grade_new = avg_g + 100
+              grand_total_new = 55500-grand_total1_with_fraction
+              grand_grade_new = 50000-grand_grade_point1
               if connect_exam_id.to_i == @connect_exam_obj.id || (std_group_name == group_name && !@class.blank?)
                 @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if exam_type == 1
@@ -2468,13 +2090,8 @@
             end  
         
             if u_grade2 == 0
-              grand_total_new = grand_total2_with_fraction
-              #grand_grade_new = grand_grade_point2
-              avg_g = grade_point_avg2.round(2)
-              if avg_g.to_f > 5
-                avg_g = 5
-              end
-              grand_grade_new = avg_g + 100
+              grand_total_new = 50000-grand_total2_with_fraction
+              grand_grade_new = 50000-grand_grade_point2
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_second_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if exam_type == 2
@@ -2565,7 +2182,7 @@
         @section_wise_position.each do|key,value|
           position = 0
          
-          @sorted_students = @section_wise_position[key].sort.reverse
+          @sorted_students = @section_wise_position[key].sort
           @sorted_students.each do|s|
             
             if last_grade != s[0] or last_total != s[1]
@@ -2634,7 +2251,7 @@
       last_total = 0.0
       unless @student_list_first_term.blank?
         position = 0
-        @sorted_students = @student_list_first_term.sort.reverse
+        @sorted_students = @student_list_first_term.sort
         @sorted_students.each do|s|
           if last_grade != s[0] or last_total != s[1]
             position = position+1
@@ -2670,7 +2287,7 @@
       last_total = 0.0
       unless @student_list_first_term_batch.blank?
         position = 0
-        @sorted_students = @student_list_first_term_batch.sort.reverse
+        @sorted_students = @student_list_first_term_batch.sort
         @sorted_students.each do|s|
           if last_grade != s[0] or last_total != s[1]
             position = position+1

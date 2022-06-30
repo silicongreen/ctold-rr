@@ -359,9 +359,6 @@
                         if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 5 && !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? &&  (@connect_exam_obj.result_type == 5 ||  @connect_exam_obj.result_type == 6) && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 13
                           u_grade1 = u_grade1+1
                           subject_failed = true
-                          if @student_tab.admission_no == "14582"
-                            abort("cat_1_"+sub['id']);
-                          end
                         end
                       end  
                       if rs['quarter'] == '2'
@@ -369,9 +366,6 @@
                         if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 5 && !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? &&  (@connect_exam_obj.result_type == 5 ||  @connect_exam_obj.result_type == 6) && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 13
                           u_grade2 = u_grade2+1
                           subject_failed = true
-                          if @student_tab.admission_no == "14582"
-                            abort("cat_1_t-2"+sub['id']);
-                          end
                         end
                       end
                       
@@ -399,9 +393,6 @@
                                     if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 50 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 22)
                                       u_grade1 = u_grade1+1
                                       subject_failed = true
-                                      if @student_tab.admission_no == "14582"
-                                        abort("cat_3_"+sub['id']);
-                                      end
                                     end 
                                   end  
                                 end
@@ -411,9 +402,6 @@
                           if fourth_subject.blank? && sub['grade_subject'].to_i != 1 && sub['subject_group_id'].to_i == 0 && rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i == 70 && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i == 31 && @connect_exam_obj.result_type == 11 && rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 5
                             u_grade1 = u_grade1+1
                             subject_failed = true
-                            if @student_tab.admission_no == "14582"
-                              abort("cat_3_n_"+sub['id']);
-                            end
                           end
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                             unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
@@ -467,9 +455,6 @@
                                   if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 50 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 22)
                                     u_grade2 = u_grade2+1
                                     subject_failed = true
-                                    if @student_tab.admission_no == "14582"
-                              abort("cat_3_n_q_2"+sub['id']);
-                            end
                                   end
                                 end  
                               end
@@ -478,9 +463,6 @@
                           if fourth_subject.blank? && sub['grade_subject'].to_i != 1 && sub['subject_group_id'].to_i == 0 && rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i == 70 && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i == 31 && @connect_exam_obj.result_type == 11
                             u_grade1 = u_grade1+1
                             subject_failed = true
-                             if @student_tab.admission_no == "14582"
-                              abort("cat_3_n_q_2__"+sub['id']);
-                            end
                           end
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                             unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
@@ -500,9 +482,6 @@
                               if fourth_subject.blank?
                                 u_grade1 = u_grade1+1
                                 subject_failed = true
-                                if @student_tab.admission_no == "14582"
-                              abort("cat_3_n_q_2____"+sub['id']);
-                            end
                               else
                                 four_subject_failed = true
                               end  
@@ -525,9 +504,6 @@
                                 if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)  
                                   u_grade1 = u_grade1+1
                                   subject_failed = true
-                                  if @student_tab.admission_no == "14582"
-                              abort("cat_3_n_q_2______"+sub['id']);
-                            end
                                 end  
                               end
                             end
@@ -538,9 +514,6 @@
                               if fourth_subject.blank?
                                 u_grade1 = u_grade1+1
                                 subject_failed = true
-                                 if @student_tab.admission_no == "14582"
-                              abort("cat_3_n_q____2______"+sub['id']);
-                            end
                               else
                                 four_subject_failed = true
                               end  
@@ -571,9 +544,6 @@
                                 if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)
                                   u_grade2 = u_grade2+1
                                   subject_failed = true
-                                  if @student_tab.admission_no == "14582"
-                              abort("cat_3_n_q______2______"+sub['id']);
-                            end
                                 end
                               end 
                             end
@@ -584,9 +554,6 @@
                               if fourth_subject.blank?
                                 u_grade1 = u_grade1+1
                                 subject_failed = true
-                                 if @student_tab.admission_no == "14582"
-                              abort("cat___3_n_q______2______"+sub['id']);
-                            end
                               else
                                 four_subject_failed = true
                               end  
@@ -634,9 +601,6 @@
                                 if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)  
                                   u_grade1 = u_grade1+1
                                   subject_failed = true
-                                   if @student_tab.admission_no == "14582"
-                              abort("cat_____3_n_q______2______"+sub['id']);
-                            end
                                 end
                               end
                             end
@@ -663,9 +627,6 @@
                                 if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)  
                                   u_grade2 = u_grade2+1
                                   subject_failed = true
-                                    if @student_tab.admission_no == "14582"
-                              abort("cat_______3_n_q______2______"+sub['id']);
-                            end
                                 end
                               end
                             end
@@ -676,9 +637,6 @@
                               if fourth_subject.blank?
                                 u_grade1 = u_grade1+1
                                 subject_failed = true
-                                  if @student_tab.admission_no == "14582"
-                              abort("cat________3_n_q______2______"+sub['id']);
-                            end
                               else
                                 four_subject_failed = true
                               end  

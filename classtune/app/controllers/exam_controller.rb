@@ -3586,7 +3586,7 @@ class ExamController < ApplicationController
       end
     end
     @class = params[:class]
-    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 16
+    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 16 or @connect_exam_obj.result_type.to_i == 20
       finding_data_sagc_covid()
     elsif @connect_exam_obj.result_type.to_i == 17
       finding_data_sagc_25()
@@ -3594,6 +3594,8 @@ class ExamController < ApplicationController
       finding_data_sagc_18()
     elsif @connect_exam_obj.result_type.to_i == 19
       finding_data_19()
+    elsif @connect_exam_obj.result_type.to_i == 27
+      finding_data_27()
     else
       finding_data5()
     end
@@ -3622,7 +3624,7 @@ class ExamController < ApplicationController
     end
     # @connect_exam_obj.result_type.to_i == 11 or 
     @class = params[:class]
-    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 16
+    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 16 or @connect_exam_obj.result_type.to_i == 20
       finding_data_sagc_covid()
     elsif @connect_exam_obj.result_type.to_i == 17
       finding_data_sagc_25()
@@ -3630,6 +3632,8 @@ class ExamController < ApplicationController
       finding_data_sagc_18()
     elsif @connect_exam_obj.result_type.to_i == 19
       finding_data_19()
+    elsif @connect_exam_obj.result_type.to_i == 20
+      finding_data_27()
     elsif @connect_exam_obj.result_type.to_i == 9
       group_course_ids = Course.find(:all, :conditions => "course_name = '#{@batch.course.course_name}' and `group` = '#{@batch.course.group}' and is_deleted = 0").map(&:id)
       group_batch_ids = Batch.find(:all, :conditions => "course_id IN (#{group_course_ids.join(",")}) and is_deleted = 0").map(&:id)
@@ -3743,7 +3747,7 @@ class ExamController < ApplicationController
       end
     end
     @class = params[:class]
-    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 16
+    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 16 or @connect_exam_obj.result_type.to_i == 20
       finding_data_sagc_covid()
     elsif @connect_exam_obj.result_type.to_i == 17
       finding_data_sagc_25()
@@ -6390,7 +6394,7 @@ class ExamController < ApplicationController
         @tabulation_data = student_response['data']
       end
     end
-    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 16
+    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 16 or @connect_exam_obj.result_type.to_i == 20
       finding_data_sagc_covid()
     elsif @connect_exam_obj.result_type.to_i == 17
       finding_data_sagc_25()
@@ -15839,6 +15843,10 @@ class ExamController < ApplicationController
       end
     end
   end 
+
+  def finding_data_27
+
+  end  
   
   def sems_finding_data
     if @student_position.blank?

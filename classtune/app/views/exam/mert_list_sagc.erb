@@ -44,7 +44,6 @@ elsif !@student_position_second_term.blank?  and !@student_position_second_term_
 end  
 
 %>
-
 <div id="page-yield" class="available_sections1 baf_shaheen">
     <div class="page1"> </div>
     <div class="section1 row" >
@@ -101,20 +100,17 @@ end
                   <% srl = 0 %>
                     <% onebreak = 0 %>
                   <% @student_result.each do |std_result| %>
-                    <% if @class.blank? and std_result['batch_id'].to_i != @batch.id.to_i %>
-                      <% next %>
-                    <% end %>
                     <%  std_count = std_count+1 %>
                     <%  srl = srl+1 %>
                     <% if std_count>24 %>
                       <% std_count = 1 %>
                       <tr class="page-break-merit-list">
-                          <td colspan="11">&nbsp;</td>
+                          <td colspan="100">&nbsp;</td>
                       </tr>
                       <% onebreak = 1 %>
                       <% if @class.blank? %>
                         <tr class="table-header">
-                            <td class="col-pdf no-warp" rowspan="2">Srl</td>
+                            <td class="col-pdf no-warp" rowspan="2" >Srl</td>
                             <td class="col-pdf no-warp" rowspan="2">StudentId</td>
                             <td class="col-pdf no-warp" rowspan="2">Roll</td>
                             <td class="col-pdf no-warp" rowspan="2">Student Name</td>
@@ -185,9 +181,9 @@ end
                         <% end %> 
 
                         <% if @class.blank? %>
-                          <% if !@section_all_position_batch.blank? && !@section_all_position_batch[std_result['batch_id'].to_i].blank? && !@section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i].blank? %>
+                          <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
 
-                            <td class="col-pdf no-warp center-class"><%= @section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i] %></td>
+                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
 
                           <% else %>
                             <td class="col-pdf no-warp" colspan="2">
@@ -211,8 +207,8 @@ end
                               %>
                             </td>
                           <% end %> 
-                          <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
-                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
+                          <% if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank? %>
+                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term[std_result['id'].to_i] %></td>
                           <% end %>
                         <% else %>
                             
@@ -257,126 +253,7 @@ end
 
                   <% end %>
 
-              </table>  
-            <% else %>
-              <table id="pdf-table" width="100%" cellspacing="0">
-                  <% if @class.blank? %>
-                    <tr class="table-header">
-                        <td class="col-pdf no-warp" rowspan="2">Srl</td>
-                        <td class="col-pdf no-warp" rowspan="2">StudentId</td>
-                        <td class="col-pdf no-warp" rowspan="2">Roll</td>
-                        <td class="col-pdf no-warp" rowspan="2">Student Name</td>
-                        <td class="col-pdf no-warp" rowspan="2">Academic Information</td>
-                        
-                        <td class="col-pdf no-warp" rowspan="2">GP</td>
-                        <td class="col-pdf no-warp" rowspan="2">GPA</td>
-                        <td class="col-pdf no-warp" rowspan="2">Marks</td>
-                        <td class="col-pdf no-warp" rowspan="2">LG</td>
-
-                        <td class="col-pdf no-warp center-class colspan-1" colspan="2">Position</td>
-
-                    </tr> 
-
-                    <tr class="table-header">
-                        <td class="col-pdf no-warp center-class colspan-1" colspan="1">Section</td>
-                        <td class="col-pdf no-warp center-class colspan-1" colspan="1">Class/Group</td>
-                    </tr>
-                  <% else %>
-
-                    <tr class="table-header">
-                        <td class="col-pdf no-warp" rowspan="2" >Srl</td>
-                        <td class="col-pdf no-warp" rowspan="2">StudentId</td>
-                        <td class="col-pdf no-warp" rowspan="2">Roll</td>
-                        <td class="col-pdf no-warp" rowspan="2">Student Name</td>
-                        <td class="col-pdf no-warp" rowspan="2">Academic Information</td>
-                        <td class="col-pdf no-warp" rowspan="2">GP</td>
-                        <td class="col-pdf no-warp" rowspan="2">GPA</td>
-                        <td class="col-pdf no-warp" rowspan="2">Marks</td>
-                        <td class="col-pdf no-warp" rowspan="2">LG</td>
-                        <td class="col-pdf no-warp center-class colspan-1" colspan="2">Position</td>
-                    </tr>
-                    <tr class="table-header">
-                        <td class="col-pdf no-warp center-class colspan-1" colspan="1">Section</td>
-                        <td class="col-pdf no-warp center-class colspan-1" colspan="1">Class/Group
-                        <% unless @group_name_upper.blank? %>
-                            &nbsp;(<%= @group_name_upper %>)
-                        <% end %>    
-                        </td>
-                    </tr>
-                  <% end %>
-
-                  <% std_count = 0 %>
-                  <% srl = 0 %>
-                    <% onebreak = 0 %>
-                  <% @exam_connect_merit_lists.each do |exam_connect_merit_list| %>
-                    <%  std_count = std_count+1 %>
-                    <%  srl = srl+1 %>
-                    <% if std_count>24 %>
-                      <% std_count = 1 %>
-                      <tr class="page-break-merit-list">
-                          <td colspan="11">&nbsp;</td>
-                      </tr>
-                      <% onebreak = 1 %>
-                      <% if @class.blank? %>
-                        <tr class="table-header">
-                            <td class="col-pdf no-warp" rowspan="2" >Srl</td>
-                            <td class="col-pdf no-warp" rowspan="2">StudentId</td>
-                            <td class="col-pdf no-warp" rowspan="2">Roll</td>
-                            <td class="col-pdf no-warp" rowspan="2">Student Name</td>
-                            <td class="col-pdf no-warp" rowspan="2">Academic Information</td>
-                            <td class="col-pdf no-warp" rowspan="2">GP</td>
-                            <td class="col-pdf no-warp" rowspan="2">GPA</td>
-                            <td class="col-pdf no-warp" rowspan="2">Marks</td>
-                            <td class="col-pdf no-warp" rowspan="2">LG</td>
-
-                            <td class="col-pdf no-warp center-class colspan-1" colspan="2">Position</td>
-
-                        </tr> 
-
-                        <tr class="table-header">
-                            <td class="col-pdf no-warp center-class colspan-1" colspan="1">Section</td>
-                            <td class="col-pdf no-warp center-class colspan-1" colspan="1">Class/Group</td>
-                        </tr>
-                      <% else %>
-
-                        <tr class="table-header">
-                            <td class="col-pdf no-warp" rowspan="2" >Srl</td>
-                            <td class="col-pdf no-warp" rowspan="2">StudentId</td>
-                            <td class="col-pdf no-warp" rowspan="2">Roll</td>
-                            <td class="col-pdf no-warp" rowspan="2">Student Name</td>
-                            <td class="col-pdf no-warp" rowspan="2">Academic Information</td>
-                            <td class="col-pdf no-warp" rowspan="2">GP</td>
-                            <td class="col-pdf no-warp" rowspan="2">GPA</td>
-                            <td class="col-pdf no-warp" rowspan="2">Marks</td>
-                            <td class="col-pdf no-warp" rowspan="2">LG</td>
-                            <td class="col-pdf no-warp center-class colspan-1" colspan="2">Position</td>
-                        </tr>
-                        <tr class="table-header">
-                            <td class="col-pdf no-warp center-class colspan-1" colspan="1">Section</td>
-                            <td class="col-pdf no-warp center-class colspan-1" colspan="1">Class/Group
-                            <% unless @group_name_upper.blank? %>
-                              &nbsp;(<%= @group_name_upper %>)
-                            <% end %>
-                            </td>
-                        </tr>
-                      <% end %>
-                    <% end %>    
-
-                    <tr class="table-header">
-                        <td class="col-pdf no-warp center-clas"><%= srl %></td>
-                        <td class="col-pdf no-warp center-clas"><%= exam_connect_merit_list.student.admission_no.to_s %></td> 
-                        <td class="col-pdf no-warp"><%= exam_connect_merit_list.student.class_roll_no.to_s %></td> 
-                        <td class="col-pdf no-warp"><%= exam_connect_merit_list.student.full_name.to_s %></td>
-                        <td class="col-pdf no-warp"><%= exam_connect_merit_list.batch.full_name.to_s %></td>
-                        <td class="col-pdf no-warp center-clas"><%= exam_connect_merit_list.gp.to_s %></td>
-                        <td class="col-pdf no-warp center-clas"><%= exam_connect_merit_list.gpa.to_s %></td>
-                        <td class="col-pdf no-warp center-clas"><%= sprintf( "%0.02f", exam_connect_merit_list.marks.to_f ) %></td>
-                        <td class="col-pdf no-warp center-clas"><%= exam_connect_merit_list.lg.to_s %></td>
-                        <td class="col-pdf no-warp center-class"><%= exam_connect_merit_list.position.to_s %></td>
-                        <td class="col-pdf no-warp center-class"><%= exam_connect_merit_list.section_position.to_s %></td>
-                    </tr>
-                  <% end %>
-              </table>  
+              </table>     
             <% end %>
         </center>
     </div>

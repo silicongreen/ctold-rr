@@ -469,7 +469,7 @@ end
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
-                            <% if sub['grade_subject'].to_i != 1 %>
+                            <% if sub['grade_subject'].to_i != 1 && fourth_subject.blank? %>
                              <% subject_count = subject_count+1 %>
                             <% end %>
                             <% @report_data['report']['exams'].each do |rs| %>

@@ -34,10 +34,10 @@
                   </tr>
                   <tr class="even header-shade">
                       <% if has_ob == true %>
-                            <td rowspan="1"><b>OB</b></td>
+                            <td rowspan="1"><b>CQ</b></td>
                       <% end %> 
                       <% if has_sb == true %>
-                            <td rowspan="1"><b>SB</b></td>
+                            <td rowspan="1"><b>MCQ</b></td>
                       <% end %> 
                       <% if has_pr == true %>
                             <td rowspan="1"><b>PR</b></td>
@@ -119,7 +119,7 @@
                           
                           %>
                           <% divider = 3 %>
-                          <% full_mark = 100 %>
+                          <% full_mark = full_sb+full_ob+full_pr %>
                           <% if full_mark.to_f > 0 %>
                             
                             <% main_exam_mark = 0 %>
@@ -142,13 +142,7 @@
                             <% end %>
                             <% end %>
                             <% total_all = total_ob+total_sb+total_pr %>
-                            <% if has_ob %>
-                              <% if full_sb > 0 %>
-                                <td class="col-pdf no-warp"> <%= total_ob %></td>
-                              <% else %>
-                                <td class="col-pdf no-warp">-</td>
-                              <% end %>
-                            <% end %>
+                            
                             <% if has_sb %>
                               <% if full_sb > 0 %>
                                 <td class="col-pdf no-warp"><%= total_sb %></td>
@@ -156,6 +150,13 @@
                                 <td class="col-pdf no-warp">-</td>
                               <% end %>
                               
+                            <% end %>
+                            <% if has_ob %>
+                              <% if full_sb > 0 %>
+                                <td class="col-pdf no-warp"> <%= total_ob %></td>
+                              <% else %>
+                                <td class="col-pdf no-warp">-</td>
+                              <% end %>
                             <% end %>
                             <% if has_pr %>
                               <% if full_pr > 0 %>
@@ -171,16 +172,15 @@
                             
 
                             <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
+                            <% tota_mark_with_monthly = (tota_mark_with_monthly.to_f/full_mark.to_f)*100 %>
+                            <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
+                            
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
                             </td>
                             <%
-                              main_mark = tota_mark_with_monthly
+                              main_mark = tota_mark_with_monthly.round()
                             %>
-                            
-                            <td class="col-pdf no-warp">
-                               <%= highest_mark.to_f.round.to_i %>
-                            </td>
                             <% if subjects['subject_group_id'].to_i > 0 %>
                             <%
                               total_sb2 = 0
@@ -238,9 +238,9 @@
                                 <%
                                 if has_ob && full_ob2 > 0
                                   if total_ob2 > 0
-                                      grand_total_fraction = grand_total_fraction+total_ob2.to_f
                                       total_ob2 = total_ob2.round()
                                       total_ob =  total_ob+total_ob2
+                                      grand_total_fraction = grand_total_fraction+total_ob.to_f
                                       full_ob = full_ob2*2
                                       percent = (total_ob.to_f/full_ob.to_f)*100
                                       percent = percent.round()
@@ -260,9 +260,10 @@
                                 end
                                 if has_sb && full_sb2 > 0
                                   if total_sb2 > 0
-                                      grand_total_fraction = grand_total_fraction+total_sb2.to_f
+                                      
                                       total_sb2 = total_sb2.round()
                                       total_sb =  total_sb+total_sb2
+                                      grand_total_fraction = grand_total_fraction+total_sb.to_f
                                       full_sb = full_sb2*2 
                                       percent = (total_sb.to_f/full_sb.to_f)*100
                                       percent = percent.round()
@@ -281,10 +282,10 @@
                                   
                                 end
                                 if has_pr && full_pr2 > 0
-                                  if total_pr2 > 0
-                                      grand_total_fraction = grand_total_fraction+total_pr2.to_f
+                                  if total_pr2 > 0     
                                       total_pr2 = total_pr2.round()
                                       total_pr =  total_pr+total_pr2
+                                      grand_total_fraction = grand_total_fraction+total_pr.to_f
                                       full_pr = full_pr2*2 
                                       percent = (total_pr.to_f/full_pr.to_f)*100
                                       percent = percent.round()
@@ -307,7 +308,7 @@
                                   main_mark = (tota_mark_with_monthly.round().to_f/200.00)*100.00
                                 %>
                                 <%  %>
-                                <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
+                                
                                 <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                 <% if !grade.blank? and !grade.name.blank? %>
                             
@@ -394,6 +395,8 @@
                                   end
                                 end
                                 %> 
+                                <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
+                                
                             
                               <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                               <% if !grade.blank? and !grade.name.blank? %>
@@ -501,13 +504,7 @@
                                 <% end %>
                               <% end %>
                               <% total_all = total_ob+total_sb+total_pr %>
-                              <% if has_ob %>
-                                <% if full_sb > 0 %>
-                                  <td class="col-pdf no-warp"> <%= total_ob %></td>
-                                <% else %>
-                                  <td class="col-pdf no-warp">-</td>
-                                <% end %>
-                              <% end %>
+                              
                               <% if has_sb %>
                                 <% if full_sb > 0 %>
                                   <td class="col-pdf no-warp"><%= total_sb %></td>
@@ -515,6 +512,13 @@
                                   <td class="col-pdf no-warp">-</td>
                                 <% end %>
                                 
+                              <% end %>
+                              <% if has_ob %>
+                                <% if full_sb > 0 %>
+                                  <td class="col-pdf no-warp"> <%= total_ob %></td>
+                                <% else %>
+                                  <td class="col-pdf no-warp">-</td>
+                                <% end %>
                               <% end %>
                               <% if has_pr %>
                                 <% if full_pr > 0 %>
@@ -527,6 +531,7 @@
                               
                               <td class="col-pdf no-warp"><%= total_all %></td>   
                               <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
+                              <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
                               <td class="col-pdf no-warp">
                                   <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
                               </td>
@@ -534,9 +539,7 @@
                                 main_mark = tota_mark_with_monthly
                               %>
                               
-                              <td class="col-pdf no-warp">
-                                <%= highest_mark.to_f.round.to_i %>
-                              </td>
+                             
                             <% else  %>
                               <td class="col-pdf" colspan="100">-</td>
                             <% end %>      
@@ -555,9 +558,9 @@
                       <% end %>  
                   <% end %>  
                   <tr class="even">
-                      <% colspan = colspan+3 %>
+                      <% colspan = colspan+2 %>
                       <td class="col-pdf align-left-baf" colspan="<%= colspan %>"><b>Total Marks & Total GP</b></td>
-                      <td class="col-pdf no-warp align-left-baf" colspan="3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><%= grand_total %></b></td>
+                      <td class="col-pdf no-warp align-left-baf" colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><%= grand_total %></b></td>
                       <td class="col-pdf"><b><%= total_grade %></b></td>
                   </tr> 
 

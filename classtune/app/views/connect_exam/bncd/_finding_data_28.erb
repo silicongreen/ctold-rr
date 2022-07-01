@@ -188,6 +188,8 @@ if @total_std.blank?
 
                 
                 total_mark_subject = total_ob+total_sb+total_pr
+                full_mark = full_pr+full_sb+full_ob
+                total_mark_subject = (total_mark_subject.to_f/full_mark.to_f)*100
                 if fourth_subject.blank? 
                       grand_total_with_fraction = grand_total_with_fraction+total_mark_subject.to_f.round
                 else
@@ -271,6 +273,7 @@ if @total_std.blank?
                     if subject_array.include?(sub2['id'].to_i) or sub['subject_group_id'].to_i != sub2['subject_group_id'].to_i
                       next
                     end
+                    subject_array << sub2['id'].to_i
                     fourth_subject = false
                     if !@std_subject_hash_type.blank?
                       if @std_subject_hash_type.include?(std['id'].to_s+"|||"+sub2['id'].to_s+"|||4")
@@ -308,6 +311,7 @@ if @total_std.blank?
                       end
                     end
                     total_mark_subject = total_ob2+total_sb2+total_pr2
+
                     grand_total_with_fraction = grand_total_with_fraction+total_mark_subject.to_f.round
                     if full_ob2 > 0
                       if total_ob2 > 0
@@ -615,7 +619,7 @@ if @total_std.blank?
           end
           last_grade = s[0]
           last_total = s[1]
-          @student_position_batch[s[2].to_i] = position.to_s+"_"+last_total.to_s
+          @student_position_batch[s[2].to_i] = position.to_s+"_"+last_total.to_s+"_"+last_grade.to_s
         end 
       end
 

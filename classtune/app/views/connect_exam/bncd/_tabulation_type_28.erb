@@ -215,7 +215,7 @@ end
                              <td><%= rs['exam_name'].slice(0,2) %></td>
                             <% end %>
                           <% end %>
-                          <td rowspan="2"><%= "TTL" %></td>
+                          <td rowspan="2"><%= "TL" %></td>
                           <td rowspan="2"><%= "GP" %></td>
                         <% end %>
                       <% end %>
@@ -310,7 +310,7 @@ end
                              <td><%= rs['exam_name'].slice(0,2) %></td>
                             <% end %>
                           <% end %>
-                          <td rowspan="2"><%= "TTL" %></td>
+                          <td rowspan="2"><%= "TL" %></td>
                           <td rowspan="2"><%= "GP" %></td>
                         <% end %>
                       <% end %>
@@ -393,7 +393,7 @@ end
                              <td><%= rs['exam_name'].slice(0,2) %></td>
                             <% end %>
                           <% end %>
-                          <td rowspan="2"><%= "TTL" %></td>
+                          <td rowspan="2"><%= "TL" %></td>
                           <td rowspan="2"><%= "GP" %></td>
                         <% end %>
                       <% end %>
@@ -493,13 +493,30 @@ end
                                 <%= subject_obtain_mark.to_i %>    
                             </td>
                             <% if sub['grade_subject'].to_i != 1 %>
+                              <% if fourth_subject.blank? %>
                               <% total_mark = total_mark+subject_obtain_mark.to_f %>
+                              <% else %>
+                                <% 
+                                  new_mark = tota_mark_with_monthly.to_f.round.to_i-40
+                                  if new_mark > 0
+                                    total_mark = total_mark+new_mark
+                                  end
+                                  
+                                  %>
+                               end   
                             <% end %>
                             <% main_mark = subject_obtain_mark.to_f %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <% if sub['grade_subject'].to_i != 1 %>
-                                <% total_grade = total_grade+grade.credit_points.to_f %>
+                                <% if fourth_subject.blank? %>
+                                  <% total_grade = total_grade+grade.credit_points.to_f %>
+                                <% else %>
+                                  <% new_grade_point = grade.credit_points.to_f-2 %>
+                                  <% if new_grade_point > 0 %>
+                                    <% total_grade = total_grade.to_f+new_grade_point.to_f %>
+                                  <% end %>
+                                <% end %>  
                               <% end %>
                               <td>
                                 <%= sprintf( "%0.01f", grade.credit_points.to_f) %>    

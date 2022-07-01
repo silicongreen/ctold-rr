@@ -227,6 +227,7 @@
 
                             <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
                             <% tota_mark_with_monthly = (tota_mark_with_monthly.to_f/full_mark.to_f)*100 %>
+                            <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
                             
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
@@ -365,7 +366,7 @@
                                   main_mark = (tota_mark_with_monthly.round().to_f/200.00)*100.00
                                 %>
                                 <%  %>
-                                <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
+                                
                                 <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                 <% if !grade.blank? and !grade.name.blank? %>
                             
@@ -453,7 +454,7 @@
                                 end
                                 %> 
                                 <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
-                                <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
+                                
                             
                               <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                               <% if !grade.blank? and !grade.name.blank? %>
@@ -587,6 +588,7 @@
                               
                               <td class="col-pdf no-warp"><%= total_all %></td>   
                               <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
+                              <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
                               <td class="col-pdf no-warp">
                                   <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
                               </td>

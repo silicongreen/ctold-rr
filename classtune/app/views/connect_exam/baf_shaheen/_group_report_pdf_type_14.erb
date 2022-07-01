@@ -1,8 +1,12 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
+  <% if params[:no_logo].blank? %>
   <div id="pdf-header-south" class="sfx-header">
     <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/323/transcript.png")),:width=> '65%' %></h4>
   </div>
-  <div id="pdf-header-south" class="sfx-header" style="width: 100%; height: 300px;"></div>
+  <% end %>
+  <% unless params[:no_logo].blank? %>
+    <div id="pdf-header-south" class="sfx-header" style="width: 100%; height: 300px;"></div>
+  <% end %>
   <% total_u = 0 %>
   <div id="page-yield"  class="available_sections1 baf_shaheen">
 

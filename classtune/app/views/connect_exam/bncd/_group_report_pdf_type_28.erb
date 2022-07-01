@@ -89,10 +89,10 @@
                   </tr>
                   <tr class="even header-shade">
                       <% if has_ob == true %>
-                            <td rowspan="1"><b>OB</b></td>
+                            <td rowspan="1"><b>CQ</b></td>
                       <% end %> 
                       <% if has_sb == true %>
-                            <td rowspan="1"><b>SB</b></td>
+                            <td rowspan="1"><b>MCQ</b></td>
                       <% end %> 
                       <% if has_pr == true %>
                             <td rowspan="1"><b>PR</b></td>
@@ -197,13 +197,7 @@
                             <% end %>
                             <% end %>
                             <% total_all = total_ob+total_sb+total_pr %>
-                            <% if has_ob %>
-                              <% if full_sb > 0 %>
-                                <td class="col-pdf no-warp"> <%= total_ob %></td>
-                              <% else %>
-                                <td class="col-pdf no-warp">-</td>
-                              <% end %>
-                            <% end %>
+                            
                             <% if has_sb %>
                               <% if full_sb > 0 %>
                                 <td class="col-pdf no-warp"><%= total_sb %></td>
@@ -211,6 +205,13 @@
                                 <td class="col-pdf no-warp">-</td>
                               <% end %>
                               
+                            <% end %>
+                            <% if has_ob %>
+                              <% if full_sb > 0 %>
+                                <td class="col-pdf no-warp"> <%= total_ob %></td>
+                              <% else %>
+                                <td class="col-pdf no-warp">-</td>
+                              <% end %>
                             <% end %>
                             <% if has_pr %>
                               <% if full_pr > 0 %>
@@ -235,10 +236,6 @@
                             <%
                               main_mark = tota_mark_with_monthly.round()
                             %>
-                            
-                            <td class="col-pdf no-warp">
-                               <%= highest_mark.to_f.round.to_i %>
-                            </td>
                             <% if subjects['subject_group_id'].to_i > 0 %>
                             <%
                               total_sb2 = 0
@@ -562,13 +559,7 @@
                                 <% end %>
                               <% end %>
                               <% total_all = total_ob+total_sb+total_pr %>
-                              <% if has_ob %>
-                                <% if full_sb > 0 %>
-                                  <td class="col-pdf no-warp"> <%= total_ob %></td>
-                                <% else %>
-                                  <td class="col-pdf no-warp">-</td>
-                                <% end %>
-                              <% end %>
+                              
                               <% if has_sb %>
                                 <% if full_sb > 0 %>
                                   <td class="col-pdf no-warp"><%= total_sb %></td>
@@ -576,6 +567,13 @@
                                   <td class="col-pdf no-warp">-</td>
                                 <% end %>
                                 
+                              <% end %>
+                              <% if has_ob %>
+                                <% if full_sb > 0 %>
+                                  <td class="col-pdf no-warp"> <%= total_ob %></td>
+                                <% else %>
+                                  <td class="col-pdf no-warp">-</td>
+                                <% end %>
                               <% end %>
                               <% if has_pr %>
                                 <% if full_pr > 0 %>
@@ -596,9 +594,7 @@
                                 main_mark = tota_mark_with_monthly
                               %>
                               
-                              <td class="col-pdf no-warp">
-                                <%= highest_mark.to_f.round.to_i %>
-                              </td>
+                             
                             <% else  %>
                               <td class="col-pdf" colspan="100">-</td>
                             <% end %>      
@@ -619,7 +615,7 @@
                   <tr class="even">
                       <% colspan = colspan+2 %>
                       <td class="col-pdf align-left-baf" colspan="<%= colspan %>"><b>Total Marks & Total GP</b></td>
-                      <td class="col-pdf no-warp align-left-baf" colspan="3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><%= grand_total %></b></td>
+                      <td class="col-pdf no-warp align-left-baf" colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><%= grand_total %></b></td>
                       <td class="col-pdf"><b><%= total_grade %></b></td>
                   </tr> 
 

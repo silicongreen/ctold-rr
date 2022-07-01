@@ -497,7 +497,7 @@ end
                               <% total_mark = total_mark+subject_obtain_mark.to_f %>
                               <% else %>
                                 <% 
-                                  new_mark = tota_mark_with_monthly.to_f.round.to_i-40
+                                  new_mark = subject_obtain_mark.to_f.round.to_i-40
                                   if new_mark > 0
                                     total_mark = total_mark+new_mark
                                   end

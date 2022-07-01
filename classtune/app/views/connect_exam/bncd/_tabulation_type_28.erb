@@ -446,7 +446,16 @@ end
                         <% total_grade = 0 %>
                         <% failed = false %>
                         <% subject_count = 0 %>
+                        <% double_subject_start = false %>
+                        <% count_grade = false %>
+                        <% two_sub_mark = 0 %>
                         <% @report_data['report']['subjects'].each do |sub| %>
+                          <% if double_subject_start == true %>
+                            <% count_grade = true %>
+                          <% end %>
+                          <% if double_subject_start == false && sub['subject_group_id'].to_i > 0 %>
+                              <% double_subject_start = true %>
+                          <% end %>
                           
                           <% subjectdata = Subject.find(sub['id'].to_i) %>
                           <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
@@ -469,7 +478,7 @@ end
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
-                            <% if sub['grade_subject'].to_i != 1 && fourth_subject.blank? %>
+                            <% if sub['grade_subject'].to_i != 1 && fourth_subject.blank? && (double_subject_start == false || count_grade == true)  %>
                              <% subject_count = subject_count+1 %>
                             <% end %>
                             <% @report_data['report']['exams'].each do |rs| %>
@@ -486,12 +495,17 @@ end
                               <% end %>  
                             <% end %> 
                             <%
+                              if double_subject_start == true
+                                two_sub_mark = two_sub_mark+subject_obtain_mark
+                              end
                               subject_obtain_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100
                               subject_obtain_mark = subject_obtain_mark.round()
+                              
                             %>
                             <td>
                                 <%= subject_obtain_mark.to_i %>    
                             </td>
+                            
                             <% if sub['grade_subject'].to_i != 1 %>
                               <% if fourth_subject.blank? %>
                               <% total_mark = total_mark+subject_obtain_mark.to_f %>
@@ -506,21 +520,38 @@ end
                                <% end %>   
                             <% end %>
                             <% main_mark = subject_obtain_mark.to_f %>
+                            <% if count_grade == true %>
+                              <%
+                                 main_mark = 0
+                                 if two_sub_mark > 0
+                                    main_mark = (two_sub_mark.to_f/200)*100
+                                 end   
+                              %>
+                            <% end %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
-                              <% if sub['grade_subject'].to_i != 1 %>
-                                <% if fourth_subject.blank? %>
-                                  <% total_grade = total_grade+grade.credit_points.to_f %>
-                                <% else %>
-                                  <% new_grade_point = grade.credit_points.to_f-2 %>
-                                  <% if new_grade_point > 0 %>
-                                    <% total_grade = total_grade.to_f+new_grade_point.to_f %>
-                                  <% end %>
-                                <% end %>  
+                              <% if double_subject_start == false || count_grade == true %>
+                                <% if sub['grade_subject'].to_i != 1 %>
+                                  <% if fourth_subject.blank? %>
+                                    <% total_grade = total_grade+grade.credit_points.to_f %>
+                                  <% else %>
+                                    <% new_grade_point = grade.credit_points.to_f-2 %>
+                                    <% if new_grade_point > 0 %>
+                                      <% total_grade = total_grade.to_f+new_grade_point.to_f %>
+                                    <% end %>
+                                  <% end %>  
+                                <% end %>
                               <% end %>
+
                               <td>
-                                <%= sprintf( "%0.01f", grade.credit_points.to_f) %>    
-                            </td>
+                                <% if double_subject_start == false || count_grade == true %>
+                                  <%= sprintf( "%0.01f", grade.credit_points.to_f) %> 
+                                  <%
+                                    double_subject_start == false
+                                    count_grade == false 
+                                  %>
+                                <% end %>     
+                              </td>
                             <% end %>
                             <% if sub['grade_subject'].to_i != 1 %>
                             <% full_mark_all = full_mark_all+subject_full_mark.to_f  %>

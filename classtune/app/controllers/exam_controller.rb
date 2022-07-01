@@ -11052,6 +11052,9 @@ class ExamController < ApplicationController
             subject_grade_done = []
             subject_array = []
             tab['subjects'].each do |sub|
+              if sub['grade_subject'].to_i == 1
+                next
+              end
               if subject_array.include?(sub['id'].to_i)
                 next
               end

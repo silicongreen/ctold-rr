@@ -227,7 +227,17 @@
 
                             <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
                             <% tota_mark_with_monthly = (tota_mark_with_monthly.to_f/full_mark.to_f)*100 %>
-                            <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
+                            <% if fourth_subject.blank? %>
+                              <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
+                            <% else %>
+                                <% 
+                                new_mark = tota_mark_with_monthly.to_f.round.to_i-40
+                                if new_mark > 0
+                                  grand_total = grand_total+new_mark
+                                end
+                                
+                                %>
+                            <% end %>
                             
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
@@ -585,7 +595,17 @@
                               
                               <td class="col-pdf no-warp"><%= total_all %></td>   
                               <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
+                              <% if fourth_subject.blank? %>
                               <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
+                            <% else %>
+                                <% 
+                                new_mark = tota_mark_with_monthly.to_f.round.to_i-40
+                                if new_mark > 0
+                                  grand_total = grand_total+new_mark
+                                end
+                                
+                                %>
+                            <% end %>
                               <td class="col-pdf no-warp">
                                   <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
                               </td>

@@ -382,9 +382,9 @@ if @total_std.blank?
                       end
                     end
                     
-                    total_mark_subject_main = total_ob+total_sb+total_pr
+                    total_mark_subject2 = total_ob+total_sb+total_pr
                     total_mark_subject = total_ob2+total_sb2+total_pr2
-                    grand_total_with_fraction = grand_total_with_fraction+total_mark_subject_main.to_f.round
+                    grand_total_with_fraction = grand_total_with_fraction+total_mark_subject.to_f.round
                     
                     full_mark_subject2 = full_ob+full_sb+full_pr
                     grand_total = grand_total+total_mark_subject2
@@ -601,7 +601,7 @@ if @total_std.blank?
           end
           last_grade = s[0]
           last_total = s[1]
-          @student_position[s[2].to_i] = position
+          @student_position[s[2].to_i] = position.to_s+""+last_grade.to_s
         end 
       end
 

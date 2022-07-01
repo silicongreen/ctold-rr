@@ -308,6 +308,7 @@ if @total_std.blank?
                       end
                     end
                     total_mark_subject = total_ob2+total_sb2+total_pr2
+                    grand_total_with_fraction = grand_total_with_fraction+total_mark_subject.to_f.round
                     if full_ob2 > 0
                       if total_ob2 > 0
                           total_ob2 = total_ob2.round()
@@ -382,12 +383,8 @@ if @total_std.blank?
                         end
                       end
                     end
-                    
-                    total_mark_subject = total_ob2+total_sb2+total_pr2 
-                    grand_total_with_fraction = grand_total_with_fraction+total_mark_subject.to_f.round
 
                     total_mark_subject2 = total_ob+total_sb+total_pr 
-                    
                     full_mark_subject2 = full_ob+full_sb+full_pr
                     grand_total = grand_total+total_mark_subject2
                     main_mark = (total_mark_subject2.to_f/full_mark_subject2.to_f)*100

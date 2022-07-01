@@ -452,6 +452,8 @@
                                   end
                                 end
                                 %> 
+                                <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
+                                <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
                             
                               <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                               <% if !grade.blank? and !grade.name.blank? %>

@@ -206,7 +206,7 @@
                               
                             <% end %>
                             <% if has_ob %>
-                              <% if full_sb > 0 %>
+                              <% if full_ob > 0 %>
                                 <td class="col-pdf no-warp"> <%= total_ob %></td>
                               <% else %>
                                 <td class="col-pdf no-warp">-</td>
@@ -578,7 +578,7 @@
                                 
                               <% end %>
                               <% if has_ob %>
-                                <% if full_sb > 0 %>
+                                <% if full_ob > 0 %>
                                   <td class="col-pdf no-warp"> <%= total_ob %></td>
                                 <% else %>
                                   <td class="col-pdf no-warp">-</td>
@@ -674,32 +674,43 @@
               <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
 
                   <tr class="even border-bottom-1-px">
-                      <td class="col-pdf " width="33%">
-                          <br/><br/><br/>
+                      <td class="col-pdf " width="25%">
+                          &nbsp;
                       </td> 
-                      <td class="col-pdf" width="33%">
-                          <br/><br/><br/>
+                      <td class="col-pdf " width="25%">
+                          <% unless @assigned_employee.blank? %>
+                            <% @assigned_employee.each do |emp| %>
+                                <% emp_full_name = emp.first_name.to_s+" "+emp.last_name.to_s  %>
+                                <b><%= emp.first_name %>&nbsp;<%= emp.last_name %></b>
+                              <% break %>
+                            <% end %>
+                          <% end %>   
+                      </td> 
+                      <td class="col-pdf" width="25%">
+                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/bncd/assistant-headmaster2.png")), :width=>"60%" %>
                       </td>
-                      <td class="col-pdf" width="33%">
-                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/bncd/principal-sig.png")), :width=>"50%" %>
+                      <td class="col-pdf" width="25%">
+                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/bncd/principal-sig.png")), :width=>"60%" %>
                       </td> 
                     
                   </tr>
                   <tr class="even">
-
-                      <td class="col-pdf" width="33%">
-                          Class Teacher's Sign & Date
+                      <td class="col-pdf " width="25%">
+                          Guardian's Sign
                       </td>
-                      <td class="col-pdf " width="33%">
-                          Guardian's Sign & Date
+                      <td class="col-pdf" width="25%">
+                          Class Teacher's Sign
                       </td>
-                      <td class="col-pdf " width="33%">
-                          Principal's Sign & Date
+                      <td class="col-pdf " width="25%">
+                          Asst. Headmaster's Sign
+                      </td>
+                      <td class="col-pdf " width="25%">
+                          Principal's Sign
                       </td> 
 
                   </tr>
 
-              </table> 
+              </table>  
               
           </div>
       </div>

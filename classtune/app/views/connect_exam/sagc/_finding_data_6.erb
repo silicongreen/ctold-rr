@@ -86,7 +86,7 @@ if @total_std.blank?
             @student_tab = @student_all_tab.find{|val| val.id.to_i == std['id'].to_i }
             if @student_tab.blank?
               next
-            end
+            end  
             if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
               if @student_result[loop_std].blank?
                 @student_result[loop_std] = {}
@@ -109,9 +109,7 @@ if @total_std.blank?
             subject_grade_done = []
             subject_array = []
             tab['subjects'].each do |sub|
-              if sub['grade_subject'].to_i == 1
-                next
-              end
+             
               if subject_array.include?(sub['id'].to_i)
                 next
               end
@@ -145,8 +143,10 @@ if @total_std.blank?
                 next
               end
               if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
-                if fourth_subject == false && sub['subject_group_id'].to_i == 0 &&  sub['grade_subject'].to_i == 0 and !subject_grade_done.include?(sub['id'].to_i)
-                  total_subject = total_subject+1
+                if fourth_subject == false &&  sub['grade_subject'].to_i == 0 and !subject_grade_done.include?(sub['id'].to_i)
+                 unless subject_grade_done.include?(sub['id'].to_i)
+                    total_subject = total_subject+1
+                 end
                 end
                 subject_failed = false
                 appeared = false
@@ -170,11 +170,14 @@ if @total_std.blank?
                 
                 main_mark = (total_mark_subject.to_f/full_mark_subject.to_f)*100
                 main_mark = main_mark.round()
-                grand_total = grand_total+main_mark
-                grand_total_with_fraction = grand_total_with_fraction+main_mark
+                real_main_mark = main_mark
+                if sub['grade_subject'].to_i != 1
+                  grand_total = grand_total+main_mark
+                  grand_total_with_fraction = grand_total_with_fraction+main_mark
+                end
                 grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                if @connect_exam_obj.result_type.to_i == 16 || @connect_exam_obj.result_type.to_i == 20
-                  if grade.credit_points.to_i == 0 and sub['subject_group_id'].to_i == 0
+                if @connect_exam_obj.result_type.to_i == 16 or @connect_exam_obj.result_type.to_i == 20
+                  if grade.credit_points.to_i == 0 and sub['subject_group_id'].to_i == 0 and sub['grade_subject'].to_i != 1
                     if fourth_subject.blank?
                         u_grade = u_grade+1
                         subject_failed = true
@@ -183,7 +186,7 @@ if @total_std.blank?
                     end
                   end
                 else
-                  if !grade.blank? and !grade.name.blank? and ( grade.credit_points.to_i == 0 or total_mark_subject < 20 or (@connect_exam_obj.result_type.to_i == 14 and main_mark < 40)  or (@connect_exam_obj.result_type.to_i == 15 and main_mark < 45) ) and sub['subject_group_id'].to_i == 0
+                  if !grade.blank? and !grade.name.blank? and ( grade.credit_points.to_i == 0 or total_mark_subject < 20 or (@connect_exam_obj.result_type.to_i == 14 and main_mark < 40)  or (@connect_exam_obj.result_type.to_i == 15 and main_mark < 45) ) and sub['subject_group_id'].to_i == 0 and sub['grade_subject'].to_i != 1
                     if fourth_subject.blank?
                       u_grade = u_grade+1
                       subject_failed = true
@@ -195,7 +198,7 @@ if @total_std.blank?
 
                 if sub['subject_group_id'].to_i > 0
                   tab['subjects'].each do |sub2|
-                    if subject_array.include?(sub2['id'].to_i) or sub['subject_group_id'].to_i != sub2['subject_group_id'].to_i
+                    if sub['subject_group_id'].to_i != sub2['subject_group_id'].to_i or sub2['code'] == main_sub_id
                       next
                     end
                     fourth_subject = false
@@ -219,7 +222,7 @@ if @total_std.blank?
                     main_mark = (total_mark_subject2.to_f/full_mark_subject2.to_f)*100
                     main_mark = main_mark.round()
                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                    if !grade.blank? and !grade.name.blank? and (grade.credit_points.to_i == 0 or (@connect_exam_obj.result_type.to_i == 14 and main_mark < 40)) and sub['subject_group_id'].to_i > 0
+                    if !grade.blank? and !grade.name.blank? and (grade.credit_points.to_i == 0 or (@connect_exam_obj.result_type.to_i == 14 and main_mark < 40)) and sub['subject_group_id'].to_i > 0 and sub['grade_subject'].to_i != 1
                       if fourth_subject.blank?
                         u_grade = u_grade+1
                         subject_failed = true
@@ -234,16 +237,16 @@ if @total_std.blank?
                 if @student_subject_marks[sub['id'].to_i].blank?
                   @student_subject_marks[sub['id'].to_i] = {}
                 end
-                @student_subject_marks[sub['id'].to_i][std['id'].to_i] = total_mark_subject
+                @student_subject_marks[sub['id'].to_i][std['id'].to_i] = real_main_mark
                 
 
                 unless subject_grade_done.include?(sub['id'].to_i)
-                  if fourth_subject.blank? && subject_failed == false
+                  if fourth_subject.blank? && subject_failed == false and sub['grade_subject'].to_i != 1
                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                     if !grade.blank? and !grade.name.blank?
                       grand_grade_point = grand_grade_point+grade.credit_points.to_f
                     end
-                  elsif subject_failed == false and four_subject_failed == false
+                  elsif subject_failed == false and four_subject_failed == false and sub['grade_subject'].to_i != 1
                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                     if !grade.blank? and !grade.name.blank?
                       new_grade_point = grade.credit_points.to_f-2
@@ -262,13 +265,12 @@ if @total_std.blank?
                   else
                     @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = "AB"
                   end     
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = total_monthly_mark
-                  
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = total_monthly_mark    
 
 
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = total_mark_subject
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = real_main_mark
 
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = total_mark_subject.round()
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = real_main_mark.round()
 
 
                   if @subject_result[main_sub_id].blank?
@@ -283,8 +285,8 @@ if @total_std.blank?
                     @subject_result[main_sub_id]['total'] = @subject_result[main_sub_id]['total']+1
                   end
 
-                  if main_mark >= 40
-                    @student_result[loop_std]['subjects'][main_sub_id]['result']['parcent'] = main_mark
+                  if real_main_mark >= 40
+                    @student_result[loop_std]['subjects'][main_sub_id]['result']['parcent'] = real_main_mark
                   end
 
                   grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
@@ -347,13 +349,10 @@ if @total_std.blank?
 
             end 
 
-            grade_point_avg = 0
-            if grand_grade_point > 0 && total_subject > 0
-              grade_point_avg = grand_grade_point.to_f/total_subject.to_f
-              grade_point_avg = grade_point_avg.round(2)
-              if grade_point_avg > 5
-                grade_point_avg = 5.00     
-              end
+            grade_point_avg = grand_grade_point.to_f/total_subject.to_f
+            grade_point_avg = grade_point_avg.round(2)
+            if grade_point_avg > 5
+              grade_point_avg = 5.00     
             end
             grand_total_with_fraction = sprintf( "%0.02f", grand_total_with_fraction)
             grand_total_with_fraction = grand_total_with_fraction.to_f
@@ -362,13 +361,10 @@ if @total_std.blank?
               if full_absent
                 @absent_in_all_subject = @absent_in_all_subject+1
               end
-              grade_point_avg = 0
-              if grand_grade_point > 0 && total_subject > 0
-                grade_point_avg = grand_grade_point.to_f/total_subject.to_f
-                grade_point_avg = grade_point_avg.round(2)
-                if grade_point_avg > 5
-                  grade_point_avg = 5.00
-                end
+              grade_point_avg = grand_grade_point.to_f/total_subject.to_f
+              grade_point_avg = grade_point_avg.round(2)
+              if grade_point_avg > 5
+                grade_point_avg = 5.00
               end
               @student_result[loop_std]['gpa'] = grand_grade_point
               @student_result[loop_std]['grand_total'] = grand_total

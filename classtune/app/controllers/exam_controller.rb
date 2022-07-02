@@ -11114,11 +11114,13 @@ class ExamController < ApplicationController
                 main_mark = (total_mark_subject.to_f/full_mark_subject.to_f)*100
                 main_mark = main_mark.round()
                 real_main_mark = main_mark
-                grand_total = grand_total+main_mark
-                grand_total_with_fraction = grand_total_with_fraction+main_mark
+                if  and sub['grade_subject'].to_i != 1
+                  grand_total = grand_total+main_mark
+                  grand_total_with_fraction = grand_total_with_fraction+main_mark
+                end
                 grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                 if @connect_exam_obj.result_type.to_i == 16 or @connect_exam_obj.result_type.to_i == 20
-                  if grade.credit_points.to_i == 0 and sub['subject_group_id'].to_i == 0
+                  if grade.credit_points.to_i == 0 and sub['subject_group_id'].to_i == 0 and sub['grade_subject'].to_i != 1
                     if fourth_subject.blank?
                         u_grade = u_grade+1
                         subject_failed = true
@@ -11127,7 +11129,7 @@ class ExamController < ApplicationController
                     end
                   end
                 else
-                  if !grade.blank? and !grade.name.blank? and ( grade.credit_points.to_i == 0 or total_mark_subject < 20 or (@connect_exam_obj.result_type.to_i == 14 and main_mark < 40)  or (@connect_exam_obj.result_type.to_i == 15 and main_mark < 45) ) and sub['subject_group_id'].to_i == 0
+                  if !grade.blank? and !grade.name.blank? and ( grade.credit_points.to_i == 0 or total_mark_subject < 20 or (@connect_exam_obj.result_type.to_i == 14 and main_mark < 40)  or (@connect_exam_obj.result_type.to_i == 15 and main_mark < 45) ) and sub['subject_group_id'].to_i == 0 and sub['grade_subject'].to_i != 1
                     if fourth_subject.blank?
                       u_grade = u_grade+1
                       subject_failed = true

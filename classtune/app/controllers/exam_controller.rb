@@ -11052,9 +11052,7 @@ class ExamController < ApplicationController
             subject_grade_done = []
             subject_array = []
             tab['subjects'].each do |sub|
-              if sub['grade_subject'].to_i == 1
-                next
-              end
+             
               if subject_array.include?(sub['id'].to_i)
                 next
               end
@@ -11165,7 +11163,7 @@ class ExamController < ApplicationController
                     main_mark = (total_mark_subject2.to_f/full_mark_subject2.to_f)*100
                     main_mark = main_mark.round()
                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                    if !grade.blank? and !grade.name.blank? and (grade.credit_points.to_i == 0 or (@connect_exam_obj.result_type.to_i == 14 and main_mark < 40)) and sub['subject_group_id'].to_i > 0
+                    if !grade.blank? and !grade.name.blank? and (grade.credit_points.to_i == 0 or (@connect_exam_obj.result_type.to_i == 14 and main_mark < 40)) and sub['subject_group_id'].to_i > 0 and sub['grade_subject'].to_i != 1
                       if fourth_subject.blank?
                         u_grade = u_grade+1
                         subject_failed = true
@@ -11184,12 +11182,12 @@ class ExamController < ApplicationController
                 
 
                 unless subject_grade_done.include?(sub['id'].to_i)
-                  if fourth_subject.blank? && subject_failed == false
+                  if fourth_subject.blank? && subject_failed == false and sub['grade_subject'].to_i != 1
                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                     if !grade.blank? and !grade.name.blank?
                       grand_grade_point = grand_grade_point+grade.credit_points.to_f
                     end
-                  elsif subject_failed == false and four_subject_failed == false
+                  elsif subject_failed == false and four_subject_failed == false and sub['grade_subject'].to_i != 1
                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                     if !grade.blank? and !grade.name.blank?
                       new_grade_point = grade.credit_points.to_f-2

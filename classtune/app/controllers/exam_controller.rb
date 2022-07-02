@@ -11114,7 +11114,7 @@ class ExamController < ApplicationController
                 main_mark = (total_mark_subject.to_f/full_mark_subject.to_f)*100
                 main_mark = main_mark.round()
                 real_main_mark = main_mark
-                if  and sub['grade_subject'].to_i != 1
+                if sub['grade_subject'].to_i != 1
                   grand_total = grand_total+main_mark
                   grand_total_with_fraction = grand_total_with_fraction+main_mark
                 end

@@ -11098,12 +11098,16 @@ class ExamController < ApplicationController
                 four_subject_failed = false
                 total_mark_subject = 0
                 full_mark_subject = 0
+                total_monthly_mark = 0
                 tab['exams'].each do |rs|
                   if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
                     full_mark_subject = full_mark_subject+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                     if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s != "AB"
                       appeared = true
                       full_absent = false
+                    end
+                    if rs['exam_category'] == '1'
+                      total_monthly_mark = total_monthly_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                     end
                     total_mark_subject = total_mark_subject+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                   end
@@ -11200,10 +11204,11 @@ class ExamController < ApplicationController
                 if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
 
                   if appeared
-                    @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = real_main_mark
+                    @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = total_mark_subject - total_monthly_mark
                   else
                     @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = "AB"
                   end     
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = total_monthly_mark    
 
 
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = real_main_mark

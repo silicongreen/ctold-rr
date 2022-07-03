@@ -267,12 +267,24 @@
                             <% end %>
                             <td class="col-pdf no-warp">
                                <%= main_exam_mark.to_f.round.to_i %>
-                            </td>  
-                            <% if has_ct %> 
-                              <% avg_mark = main_exam_mark.to_f*0.9 %>
-                            <% else %>
-                              <% avg_mark = main_exam_mark.to_f*1 %>
-                            <% end %>  
+                            </td> 
+                             <% avg_mark = main_exam_mark.to_f*1 %> 
+                            <% if has_ct %>
+                              <% if @batch.course.course_name.uppercase == "NINE" %>
+                                  <% class_test_mark_convert = class_test_full_mark.to_f/divider.to_f  %>
+                                  <% sb_mark_convert = full_mark_all - full_ob - full_sb - class_test_mark_convert %>
+                                  <%
+                                  sb_avg_marks = 0
+                                  if full_sb > 0 && total_sb > 0
+                                    sb_avg_marks = (total_sb.to_f/full_sb.to_f)*sb_mark_convert
+                                  end 
+                                  avg_mark = sb_avg_marks.to_f+total_ob+total_pr
+                                  %>
+                              <% else %>
+                                <% avg_mark = main_exam_mark.to_f*0.9 %>
+                              <% end %>
+                            <% end %>
+                           ]  
                                   
                             <td class="col-pdf no-warp">
                                <%= sprintf( "%0.02f", avg_mark)%>
@@ -410,8 +422,20 @@
                                   %>
                                 <% end %> 
                                 <% avg_mark = main_exam_mark.to_f %> 
-                                <% if has_ct %> 
-                                  <% avg_mark = main_exam_mark.to_f*0.9 %>
+                                <% if has_ct %>
+                                  <% if @batch.course.course_name.uppercase == "NINE" %>
+                                      <% class_test_mark_convert = class_test_full_mark.to_f/divider.to_f  %>
+                                      <% sb_mark_convert = full_mark_all - full_ob - full_sb - class_test_mark_convert %>
+                                      <%
+                                      sb_avg_marks = 0
+                                      if full_sb > 0 && total_sb > 0
+                                        sb_avg_marks = (total_sb.to_f/full_sb.to_f)*sb_mark_convert
+                                      end 
+                                      avg_mark = sb_avg_marks.to_f+total_ob+total_pr
+                                      %>
+                                  <% else %>
+                                    <% avg_mark = main_exam_mark.to_f*0.9 %>
+                                  <% end %>
                                 <% end %>
                                 <% tota_mark_with_monthly = avg_mark+class_test_mark  %>
                                 <%
@@ -553,12 +577,30 @@
                               <% end %>
 
                               <% main_exam_mark = 0 %>
+                              <%
+                              total_sb = 0
+                              full_sb = 0
+                              full_ob = 0
+                              full_pr = 0
+                              %>
                               <% unless @report_data['report']['exams'].blank? %>  
                               <% @report_data['report']['exams'].each do |report| %>   
                                 <% if report['exam_category'] != '1' %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].blank? %>                                   
                                     <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                     <td class="col-pdf"><%= report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                    <% if report['exam_category'] == '3' %>
+                                      <% total_sb = total_sb+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
+                                    <% end %>
+                                    <% if report['exam_category'] == '3' %>
+                                      <% full_sb = full_sb+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
+                                    <% end %>
+                                    <% if report['exam_category'] == '4' %>
+                                      <% full_ob = full_ob+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
+                                    <% end %>
+                                    <% if report['exam_category'] == '5' %>
+                                      <% full_pr = full_pr+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
+                                    <% end %>
                                   <% else %>
                                     <td class="col-pdf">-</td>
                                   <% end %>
@@ -571,8 +613,20 @@
                               <%
                                 avg_mark = main_exam_mark.to_f
                               %>
-                              <% if has_ct %>   
-                                <% avg_mark = main_exam_mark.to_f*0.9 %>
+                              <% if has_ct %>
+                                <% if @batch.course.course_name.uppercase == "NINE" %>
+                                    <% class_test_mark_convert = class_test_full_mark.to_f/divider.to_f  %>
+                                    <% sb_mark_convert = full_mark_all - full_ob - full_sb - class_test_mark_convert %>
+                                    <%
+                                    sb_avg_marks = 0
+                                    if full_sb > 0 && total_sb > 0
+                                      sb_avg_marks = (total_sb.to_f/full_sb.to_f)*sb_mark_convert
+                                    end 
+                                    avg_mark = sb_avg_marks.to_f+total_ob+total_pr
+                                    %>
+                                <% else %>
+                                  <% avg_mark = main_exam_mark.to_f*0.9 %>
+                                <% end %>
                               <% end %>
 
                               <td class="col-pdf no-warp">

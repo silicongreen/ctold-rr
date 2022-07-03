@@ -199,6 +199,7 @@
                               <td class="col-pdf">50</td>
                             <% end %>
                             <% class_test_mark = 0 %>
+                            <% class_test_full_mark = 0%>
                             <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
                               <% if report['exam_category'] == '1' %>
@@ -341,6 +342,7 @@
                                 <% end %>
                                 
                                 <% class_test_mark = 0 %>
+                                <% class_test_full_mark = 0 %>
                                 <% unless @report_data['report']['exams'].blank? %>  
                                 <% @report_data['report']['exams'].each do |report| %>   
                                   <% if report['exam_category'] == '1' %>

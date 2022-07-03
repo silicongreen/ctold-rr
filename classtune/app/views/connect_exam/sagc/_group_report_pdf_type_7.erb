@@ -6,6 +6,7 @@
     @student_position_first_term = @student_position_second_term
     @student_position_first_term_batch = @student_position_second_term_batch
   end
+  
 
 
 %> 
@@ -236,29 +237,31 @@
                                     <% total_pr = total_pr+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% end %>
                                   <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
-                                  <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
-                                    <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
-                                      <% failed = true %>
-                                      <% failed_subject = true %>
+                                  <% if  @part_by_pass_fail %>
+                                    <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
+                                      <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
+                                        <% failed = true %>
+                                        <% failed_subject = true %>
+                                      <% end %>
                                     <% end %>
-                                  <% end %>
-                                  <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && !fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
-                                    <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
-                                      <% failed_subject = true %>
+                                    <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && !fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
+                                      <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
+                                        <% failed_subject = true %>
+                                      <% end %>
                                     <% end %>
-                                  <% end %>
-                                    
-                                   <% if fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
-                                    <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i == 31 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == 70 %>
-                                      <% failed = true %>
-                                      <% failed_subject = true %>
+                                      
+                                    <% if fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
+                                      <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i == 31 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == 70 %>
+                                        <% failed = true %>
+                                        <% failed_subject = true %>
+                                      <% end %>
                                     <% end %>
-                                  <% end %>
-                                    
+                                      
                                     <% if !fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
-                                    <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i == 31 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == 70 %>
-                
-                                      <% failed_subject = true %>
+                                      <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i == 31 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == 70 %>
+                  
+                                        <% failed_subject = true %>
+                                      <% end %>
                                     <% end %>
                                   <% end %>
                                 <% else %>
@@ -386,6 +389,7 @@
                                   <% end %>
                                   
                                 <% end %>
+                                <% if  @part_by_pass_fail %>
                                 <% if full_sb > 0 %>
                                   <%
                                     
@@ -437,6 +441,7 @@
                                 
                                   %>
                                 <% end %> 
+                                <% end %>
                                 <% avg_mark = main_exam_mark.to_f %> 
                                 <% if has_ct %>
                                   <% if @batch.course.course_name.upcase == "NINE" %>

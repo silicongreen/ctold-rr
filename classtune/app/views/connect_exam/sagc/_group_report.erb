@@ -1,3 +1,12 @@
+<%
+  @part_by_pass_fail = true
+  if @connect_exam_obj.result_type.to_i == 7
+    if @batch.course.course_name.upcase == "EIGHT" or @batch.course.course_name.upcase == "SIX" or @batch.course.course_name.upcase == "SEVEN"
+        @part_by_pass_fail = false
+    end
+  end
+%>
+
 <% if @connect_exam_obj.result_type.to_i == 2 or @connect_exam_obj.result_type.to_i == 4 or @connect_exam_obj.result_type.to_i == 6 or @connect_exam_obj.result_type.to_i == 8 or @connect_exam_obj.result_type.to_i == 10  %> 
   <%
   if @tabulation_data.nil?

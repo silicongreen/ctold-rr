@@ -11422,6 +11422,12 @@ class ExamController < ApplicationController
   
   
   def finding_data5
+    @part_by_pass_fail = true
+    if @connect_exam_obj.result_type.to_i == 7
+      if @batch.course.course_name.upcase == "EIGHT" or @batch.course.course_name.upcase == "SIX" or @batch.course.course_name.upcase == "SEVEN"
+          @part_by_pass_fail = false
+      end
+    end
     if @total_std.blank?
       if @grading_levels.blank?
         @grading_levels = GradingLevel.for_batch(@batch.id)
@@ -11714,14 +11720,14 @@ class ExamController < ApplicationController
                       if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s != "AB"
                         appeared_ct = true
                       end
-                      if rs['quarter'] == '1'
+                      if rs['quarter'] == '1' && @part_by_pass_fail
                         monthly_total_mark1 = monthly_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 5 && !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? &&  (@connect_exam_obj.result_type == 5 ||  @connect_exam_obj.result_type == 6) && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 13
                           u_grade1 = u_grade1+1
                           subject_failed = true
                         end
                       end  
-                      if rs['quarter'] == '2'
+                      if rs['quarter'] == '2'  && @part_by_pass_fail
                         monthly_total_mark2 = monthly_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 5 && !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? &&  (@connect_exam_obj.result_type == 5 ||  @connect_exam_obj.result_type == 6) && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 13
                           u_grade2 = u_grade2+1
@@ -11742,7 +11748,7 @@ class ExamController < ApplicationController
                         full_absent = false
                         appeared_sb = true
                       end
-                      if rs['quarter'] == '1'
+                      if rs['quarter'] == '1' && @part_by_pass_fail
                         total_sb1 = total_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if @connect_exam_obj.result_type != 11
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
@@ -11787,7 +11793,7 @@ class ExamController < ApplicationController
                           
                         end  
                       end  
-                      if rs['quarter'] == '2'
+                      if rs['quarter'] == '2' && @part_by_pass_fail
                         total_sb2 = total_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if @connect_exam_obj.result_type != 11
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
@@ -11837,7 +11843,7 @@ class ExamController < ApplicationController
                         full_absent = false
                         appeared_ob = true
                       end
-                      if rs['quarter'] == '1'
+                      if rs['quarter'] == '1' && @part_by_pass_fail
                         total_ob1 = total_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if @connect_exam_obj.result_type != 11
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
@@ -11863,7 +11869,7 @@ class ExamController < ApplicationController
                           end
                         end    
                       end  
-                      if rs['quarter'] == '2'
+                      if rs['quarter'] == '2' && @part_by_pass_fail
                         total_ob2 = total_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if @connect_exam_obj.result_type != 11
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
@@ -11891,7 +11897,7 @@ class ExamController < ApplicationController
                         end    
                       end
                        if @connect_exam_obj.result_type != 11
-                          if rs['quarter'] == '1'
+                          if rs['quarter'] == '1' && @part_by_pass_fail
                             if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"  && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                               unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
                                 if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
@@ -11902,7 +11908,7 @@ class ExamController < ApplicationController
                               end
                             end 
                           end  
-                          if rs['quarter'] == '2'
+                          if rs['quarter'] == '2' && @part_by_pass_fail
                             if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"  && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                               unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
                                 if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
@@ -11920,7 +11926,7 @@ class ExamController < ApplicationController
                         full_absent = false
                         appeared_pr = true
                       end
-                      if rs['quarter'] == '1'
+                      if rs['quarter'] == '1' && @part_by_pass_fail
                         total_pr1 = total_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if @connect_exam_obj.result_type != 11
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
@@ -11946,7 +11952,7 @@ class ExamController < ApplicationController
                           end
                         end    
                       end  
-                      if rs['quarter'] == '2'
+                      if rs['quarter'] == '2' && @part_by_pass_fail
                         total_pr2 = total_pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if @connect_exam_obj.result_type != 11
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
@@ -11973,7 +11979,7 @@ class ExamController < ApplicationController
                         end
                       end
                       
-                      if @connect_exam_obj.result_type != 11
+                      if @connect_exam_obj.result_type != 11 && @part_by_pass_fail
                         if rs['quarter'] == '1'
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"  && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                             unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
@@ -12230,10 +12236,16 @@ class ExamController < ApplicationController
                   if monthly_total_mark1 > 0
                     monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*monthly_mark_multiply
                     monthly_total_mark1 = monthly_total_mark1.round()
+                    if @connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE"
+                      monthly_full_mark1 = monthly_mark_multiply
+                    end
                   end 
                   if monthly_total_mark2 > 0
                     monthly_total_mark2 = (monthly_total_mark2/monthly_full_mark2)*monthly_mark_multiply2
                     monthly_total_mark2 = monthly_total_mark2.round()
+                    if @connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE"
+                      monthly_total_mark2 = monthly_mark_multiply2
+                    end
                   end
                 end
                 
@@ -12246,7 +12258,7 @@ class ExamController < ApplicationController
                 total_sb1_main = total_sb1
                 total_sb2_main = total_sb2
                 
-                if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6
+                if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6 or (@connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE")
                   full_mark_sb1_converted = full_mark1-full_pr1-full_ob1-monthly_full_mark1
                   full_mark_sb2_converted = full_mark2-full_pr2-full_ob2-monthly_full_mark2
                   if total_sb1 > 0
@@ -12697,13 +12709,13 @@ class ExamController < ApplicationController
                             appeared = true
                             full_absent = false
                           end
-                          if rs['quarter'] == '1'
+                          if rs['quarter'] == '1' && @part_by_pass_fail
                             total_sb1 = total_sb1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             total_sb12 = total_sb12+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_sb1.to_f/full_sb1.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
-                              if @connect_exam_obj.result_type != 11
+                              if @connect_exam_obj.result_type != 11 
                                 if (grade.credit_points.to_i == 0 and fourth_subject.blank?) or (total_sb1 < 64 and full_sb1 == 140 and fourth_subject.blank?) or (total_sb1 < 90 and full_sb1 == 200 and fourth_subject.blank?)
                                   u_grade1 = u_grade1+1
                                   subject_failed = true
@@ -12716,7 +12728,7 @@ class ExamController < ApplicationController
                               end  
                             end 
                           end  
-                          if rs['quarter'] == '2'
+                          if rs['quarter'] == '2' && @part_by_pass_fail
                             total_sb2 = total_sb2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             total_sb22 = total_sb22+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_sb2.to_f/full_sb2.to_f)*100
@@ -12742,7 +12754,7 @@ class ExamController < ApplicationController
                             appeared = true
                             full_absent = false
                           end
-                          if rs['quarter'] == '1'
+                          if rs['quarter'] == '1' && @part_by_pass_fail
                             total_ob1 = total_ob1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             total_ob12 = total_ob12+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_ob1.to_f/full_ob1.to_f)*100
@@ -12765,7 +12777,7 @@ class ExamController < ApplicationController
                               end  
                             end 
                           end  
-                          if rs['quarter'] == '2'
+                          if rs['quarter'] == '2' && @part_by_pass_fail
                             total_ob2 = total_ob2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             total_ob22 = total_ob22+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_ob2.to_f/full_ob2.to_f)*100
@@ -12794,7 +12806,7 @@ class ExamController < ApplicationController
                             appeared = true
                             full_absent = false
                           end
-                          if rs['quarter'] == '1'
+                          if rs['quarter'] == '1' && @part_by_pass_fail
                             total_pr1 = total_pr1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             total_pr12 = total_pr12+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_pr1.to_f/full_pr1.to_f)*100
@@ -12815,7 +12827,7 @@ class ExamController < ApplicationController
                               end  
                             end  
                           end  
-                          if rs['quarter'] == '2'
+                          if rs['quarter'] == '2' && @part_by_pass_fail
                             total_pr2 = total_pr2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             total_pr22 = total_pr22+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_pr2.to_f/full_pr2.to_f)*100
@@ -13109,16 +13121,22 @@ class ExamController < ApplicationController
                       if monthly_total_mark1 > 0
                         monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*monthly_mark_multiply
                         monthly_total_mark1 = monthly_total_mark1.round()
+                        if @connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE"
+                          monthly_full_mark1 = monthly_mark_multiply
+                        end
                       end 
                       if monthly_total_mark2 > 0
                         monthly_total_mark2 = (monthly_total_mark2/monthly_full_mark2)*monthly_mark_multiply2
                         monthly_total_mark2 = monthly_total_mark2.round()
+                        if @connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE"
+                         monthly_full_mark2 = monthly_mark_multiply2
+                        end 
                       end
                     end
                     
                     total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
                     total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
-                    if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6
+                    if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6  or (@connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE")
                       full_mark_sb1_converted = full_mark1-full_pr1-full_ob1-monthly_full_mark1
                       full_mark_sb2_converted = full_mark2-full_pr2-full_ob2-monthly_full_mark2
                       if total_sb1 > 0

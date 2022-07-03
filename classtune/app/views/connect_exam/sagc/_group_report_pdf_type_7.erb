@@ -205,6 +205,9 @@
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                   <%  class_test_mark = class_test_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                 <% end %>
+                                <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                    <% class_test_full_mark = class_test_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f %>
+                                  <% end %>
                               <% end %>
                             <% end %>
                             <% end %>
@@ -344,6 +347,9 @@
                                     <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].blank? %>                                   
                                       <%  class_test_mark = class_test_mark+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                     <% end %>
+                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                    <% class_test_full_mark = class_test_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f %>
+                                  <% end %>
                                   <% end %>
                                 <% end %>
                                 <% end %>

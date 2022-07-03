@@ -477,12 +477,7 @@ unless @ranked_student.blank?
                           <% end %>       
 
                           <td>
-                               <% if @connect_exam_obj.quarter_number == 6 %>
-                                <% if total_marks_obtain > 0 %>
-                                  <% total_marks_obtain = (total_marks_obtain.to_f/2.00) %>
-                                  <% total_marks_obtain = total_marks_obtain.round() %>
-                                <% end %>
-                              <% end %>
+                             
                               <% if total_marks_obtain > 0 %>
                                 <%= sprintf( "%0.02f", total_marks_obtain) %>    
                               <% else %>

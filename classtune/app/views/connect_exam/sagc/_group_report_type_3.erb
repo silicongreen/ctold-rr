@@ -250,7 +250,7 @@
                               <% if report['exam_category'] == '1' %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                   <%  class_test_mark = class_test_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                  <% class_test_mark = class_test_mark*0.5 %>  
+                                   
                                   <td class="col-pdf"><%= class_test_mark %></td>
                                 <% else %>
                                   <td class="col-pdf">-</td>

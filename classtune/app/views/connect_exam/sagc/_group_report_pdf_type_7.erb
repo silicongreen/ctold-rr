@@ -7,12 +7,7 @@
     @student_position_first_term_batch = @student_position_second_term_batch
   end
 
-  class_nine_changes = false
-  if has_ct
-    if @batch.course.course_name.upcase == "NINE"
-      class_nine_changes = true
-    end
-  end
+  
   
 
 
@@ -105,6 +100,14 @@
                       <td class="col-pdf" rowspan="2"><b>Grade Point</b></td>
                       
                   </tr>
+                  <%
+                  class_nine_changes = false
+  if has_ct
+    if @batch.course.course_name.upcase == "NINE"
+      class_nine_changes = true
+    end
+  end
+                  %>
                   <tr class="even header-shade">
                       <% if has_ob == true %>
                             <td rowspan="1"><b>OB</b></td>

@@ -92,7 +92,11 @@
                           <% colspan = colspan+1 %>
                         <% end %>  
                       <% end %>
-                      <% colspan = colspan+2 %>
+                      <% if class_nine_changes == false %>
+                        <% colspan = colspan+2 %>
+                      <% else %>
+                        <% colspan = colspan+1 %>
+                      <% end %>
                       <td class="col-pdf" colspan="<%= colspan %>" rowspan="1"><b>Examination</b></td>
                       <td class="col-pdf" rowspan="2"><b>Total Marks</b></td>
                       <td class="col-pdf" rowspan="2"><b>Highest Marks</b></td>
@@ -763,12 +767,8 @@
                       <% end %>  
                   <% end %>  
                   <tr class="even">
-                      <% if has_ct %>   
-                        <% if class_nine_changes == false %>
+                      <% if has_ct %>  
                         <% colspan = colspan+4 %>
-                        <% else %>
-                          <% colspan = colspan+3 %>
-                        <% end %>
                       <% else %>
                         <% colspan = colspan+3 %>
                       <% end %>

@@ -46,7 +46,19 @@
                           <% colspan = colspan+1 %>
                         <% end %>  
                       <% end %>
-                      <% colspan = colspan+2 %>
+                       <%
+                  class_nine_changes = false
+  if has_ct
+    if @batch.course.course_name.upcase == "NINE"
+      class_nine_changes = true
+    end
+  end
+                  %>
+                      <% if class_nine_changes == false %>
+                        <% colspan = colspan+2 %>
+                      <% else %>
+                        <% colspan = colspan+1 %>
+                      <% end %>
                       <td class="col-pdf" colspan="<%= colspan %>" rowspan="1"><b>Examination</b></td>
                       <td class="col-pdf" rowspan="2"><b>Total Marks</b></td>
                       <td class="col-pdf" rowspan="2"><b>Highest Marks</b></td>
@@ -54,18 +66,24 @@
                       <td class="col-pdf" rowspan="2"><b>Grade Point</b></td>
                       
                   </tr>
+                 
                   <tr class="even header-shade">
                       <% if has_ob == true %>
                             <td rowspan="1"><b>OB</b></td>
                       <% end %> 
                       <% if has_sb == true %>
                             <td rowspan="1"><b>SB</b></td>
+                            <% if class_nine_changes %>
+                              <td rowspan="1"><b>Avg</b></td>
+                            <% end %>
                       <% end %> 
                       <% if has_pr == true %>
                             <td rowspan="1"><b>PR</b></td>
                       <% end %>
-                      <td rowspan="1"><b>Total</b></td>
-                      <td rowspan="1"><b>Avg</b></td>
+                      <% if class_nine_changes == false %>
+                        <td rowspan="1"><b>Total</b></td>
+                        <td rowspan="1"><b>Avg</b></td>
+                      <% end %>
                   </tr>
 
                   <% total_grade = 0 %>
@@ -196,6 +214,20 @@
                                     <% total_pr = total_pr+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% end %>
                                   <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                  <% if class_nine_changes && report['exam_category'] == '3' %>
+                                      <% sb_avg_marks = 0 %>
+                                      <% class_test_mark_convert = class_test_full_mark.to_f/divider.to_f  %>
+                                        <% sb_mark_convert = full_mark_all - full_ob - full_pr - class_test_mark_convert %>
+                                        <%
+                                        sb_avg_marks = 0
+                                        if full_sb > 0 && total_sb > 0
+                                          sb_avg_marks = (total_sb.to_f/full_sb.to_f)*sb_mark_convert
+                                        end
+                                        %>
+                                        <td class="col-pdf no-warp">
+                                            <%= sprintf( "%0.02f", sb_avg_marks)%>
+                                          </td>
+                                  <% end %>
                                   <% if  @part_by_pass_fail %>
                                     <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
                                       <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
@@ -231,9 +263,11 @@
                               <% end %>
                             <% end %>
                             <% end %>
+                            <% if class_nine_changes == false %>
                             <td class="col-pdf no-warp">
                                <%= main_exam_mark.to_f.round.to_i %>
                             </td> 
+                            <%  end %>
                              <% avg_mark = main_exam_mark.to_f*1 %> 
                             <% if has_ct %>
                               <% if @batch.course.course_name.upcase == "NINE" %>
@@ -251,14 +285,16 @@
                               <% end %>
                             <% end %>
                            
-                                  
+                            <% if class_nine_changes == false %>     
                             <td class="col-pdf no-warp">
                                <%= sprintf( "%0.02f", avg_mark)%>
                             </td>
+                            <% end %>
                             <% tota_mark_with_monthly = avg_mark+class_test_mark %>
-                            <td class="col-pdf no-warp">
-                                <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
-                            </td>
+                            
+                              <td class="col-pdf no-warp">
+                                  <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
+                              </td>
                             <%
                               main_mark = (tota_mark_with_monthly.to_f.round/full_mark_all.to_f)*100
                             %>
@@ -278,6 +314,15 @@
                                 <% end %>
                                 <% total_mark = 0 %>
                                 <% full_mark = 0 %>
+                                <%
+                                  total_sb = 0
+                                  total_ob = 0
+                                  total_pr = 0
+                              
+                                  full_sb = 0
+                                  full_ob = 0
+                                  full_pr = 0
+                                %> 
                                 <% unless @report_data['report']['exams'].blank? %>  
                                   <% @report_data['report']['exams'].each do |report| %>   
                                     <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['full_mark'].blank? %>
@@ -324,6 +369,9 @@
                                   <% end %>
                                   <% end %>
                                 <% end %>
+                                <% end %>
+                                <% if class_test_full_mark.to_i == 30 && full_mark_all == 50 %>
+                                    <% divider = 6 %>
                                 <% end %>
                                 <% class_test_mark = (class_test_mark.to_f/divider.to_f) %>
                                 <% class_test_mark = class_test_mark.round() %>
@@ -566,27 +614,6 @@
                               full_pr = 0
                               %>
                               <% unless @report_data['report']['exams'].blank? %>  
-                              <% @report_data['report']['exams'].each do |report| %>   
-                                <% if report['exam_category'] != '1' %>
-                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].blank? %>                                   
-                                    <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
-                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f.round.to_i %></td>
-                                    <% if report['exam_category'] == '3' %>
-                                      <% total_sb = total_sb+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
-                                    <% end %>
-                                    <% if report['exam_category'] == '4' %>
-                                      <% total_ob = total_ob+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
-                                    <% end %>
-                                    <% if report['exam_category'] == '5' %>
-                                      <% total_pr = total_pr+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
-                                    <% end %>
-                                  <% else %>
-                                    <td class="col-pdf">-</td>
-                                  <% end %>
-                                <% end %>
-                              <% end %>
-                              <% end %>
-                              <% unless @report_data['report']['exams'].blank? %>  
                                 <% @report_data['report']['exams'].each do |report| %>   
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['full_mark'].blank? %>
                                     <% full_mark = full_mark+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
@@ -602,9 +629,48 @@
                                   <% end %> 
                                 <% end %>
                               <% end %>
-                              <td class="col-pdf no-warp">
-                                 <%= main_exam_mark.to_f.round.to_i %>
-                              </td> 
+                              <% unless @report_data['report']['exams'].blank? %>  
+                              <% @report_data['report']['exams'].each do |report| %>   
+                                <% if report['exam_category'] != '1' %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].blank? %>                                   
+                                    <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
+                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f.round.to_i %></td>
+
+                                    <% if report['exam_category'] == '3' %>
+                                      <% total_sb = total_sb+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
+                                    <% end %>
+                                    <% if report['exam_category'] == '4' %>
+                                      <% total_ob = total_ob+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
+                                    <% end %>
+                                    <% if report['exam_category'] == '5' %>
+                                      <% total_pr = total_pr+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
+                                    <% end %>
+                                    <% if class_nine_changes && report['exam_category'] == '3' %>
+                                      <% sb_avg_marks = 0 %>
+                                      <% class_test_mark_convert = class_test_full_mark.to_f/divider.to_f  %>
+                                        <% sb_mark_convert = full_mark_all - full_ob - full_pr - class_test_mark_convert %>
+                                        <%
+                                        sb_avg_marks = 0
+                                        if full_sb > 0 && total_sb > 0
+                                          sb_avg_marks = (total_sb.to_f/full_sb.to_f)*sb_mark_convert
+                                        end
+                                        %>
+                                        <td class="col-pdf no-warp">
+                                            <%= sprintf( "%0.02f", sb_avg_marks)%>
+                                          </td>
+                                    <% end %>
+                                  <% else %>
+                                    <td class="col-pdf">-</td>
+                                  <% end %>
+                                <% end %>
+                              <% end %>
+                              <% end %>
+                              
+                               <% if class_nine_changes == false %>
+                                <td class="col-pdf no-warp">
+                                  <%= main_exam_mark.to_f.round.to_i %>
+                                </td> 
+                              <% end %>
                               <%
                                 avg_mark = main_exam_mark.to_f
                               %>
@@ -626,9 +692,11 @@
                                 <% end %>
                               <% end %>
 
+                              <% if class_nine_changes == false %>     
                               <td class="col-pdf no-warp">
-                                 <%= sprintf( "%0.02f", avg_mark)%>
+                                <%= sprintf( "%0.02f", avg_mark)%>
                               </td>
+                              <% end %>
                               <% tota_mark_with_monthly = avg_mark+class_test_mark %>
                               <td class="col-pdf no-warp">
                                   <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
@@ -666,7 +734,7 @@
                       <% end %>  
                   <% end %>  
                   <tr class="even">
-                      <% if has_ct %>   
+                      <% if has_ct %>  
                         <% colspan = colspan+4 %>
                       <% else %>
                         <% colspan = colspan+3 %>
@@ -743,21 +811,26 @@
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                   <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                  <% if class_nine_changes && report['exam_category'] == '3' %>
+                                        <td class="col-pdf">-</td>
+                                  <% end %>
                                 <% else %>
                                   <td class="col-pdf">-</td>
                                 <% end %>
                               <% end %>
                             <% end %>
                             <% end %>
-                            <td class="col-pdf no-warp">
-                               <%= main_exam_mark.to_f.round.to_i %>
-                            </td>   
-                            
+                            <% if class_nine_changes == false %>
+                              <td class="col-pdf no-warp">
+                                <%= main_exam_mark.to_f.round.to_i %>
+                              </td>   
+                            <% end %>
                             <% avg_mark = main_exam_mark.to_f %>
-                                  
+                            <% if class_nine_changes == false %>       
                             <td class="col-pdf no-warp">
                                <%= sprintf( "%0.02f", avg_mark)%>
                             </td>
+                            <% end %>
                             <% tota_mark_with_monthly = avg_mark+class_test_mark %>
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
@@ -786,5 +859,5 @@
                   <% end %>
                    
 
-              </table> 
+              </table>
 <% end %>

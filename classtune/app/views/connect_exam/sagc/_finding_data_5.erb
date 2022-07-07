@@ -1736,8 +1736,8 @@
                     total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
                     total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
                     if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6  or (@connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE")
-                      full_mark_sb1_converted = full_mark1-full_pr1-full_ob1-monthly_full_mark1
-                      full_mark_sb2_converted = full_mark2-full_pr2-full_ob2-monthly_full_mark2
+                      full_mark_sb1_converted = full_mark1-full_pr12-full_ob12-monthly_full_mark1
+                      full_mark_sb2_converted = full_mark2-full_pr22-full_ob22-monthly_full_mark2
                       if total_sb12 > 0
                         total_sb12 = (total_sb12.to_f/full_sb12.to_f)*full_mark_sb1_converted.to_f
                       end
@@ -1746,6 +1746,9 @@
                       end
                       total_mark1 = total_ob12+total_sb12+total_pr12+monthly_total_mark1
                       total_mark2 = total_ob22+total_sb22+total_pr22+monthly_total_mark2
+                      if @student_tab.admission_no == "15252" && sub2['name'] == "Bangla 2nd Paper"
+                          abort(total_mark1.to_s+"_"+total_sb12.to_s+"_"+full_mark1.to_s+"_"+monthly_full_mark1.to_s+"_"+full_pr12.to_s+"_"+full_ob12.to_s)
+                      end
                     end
                     
                     total_mark2_no_round = total_mark2

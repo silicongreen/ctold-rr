@@ -1746,6 +1746,10 @@
                       end
                       total_mark1 = total_ob1+total_sb1+total_pr1+monthly_total_mark1
                       total_mark2 = total_ob2+total_sb2+total_pr2+monthly_total_mark2
+
+                      if @student_tab.admission_no == "15252" && sub2['name'] == "English 2nd Paper"
+                        abort(total_mark1.to_s+"_"+total_sb1.to_s+"_"+monthly_total_mark1.to_s)
+                      end
                       
 
                     end
@@ -1992,9 +1996,7 @@
                     elsif subject_full_marks.to_f > @subject_highest[sub2['id'].to_i].to_f
                       @subject_highest[sub2['id'].to_i] = subject_full_marks.to_f
                     end
-                    if @student_tab.admission_no == "15252" && sub2['name'] == "English 2nd Paper"
-                      abort(total_mark1.to_s+"_"+@subject_highest_1st_term[sub2['id'].to_i].to_s)
-                    end
+                    
 
                   end
                 end

@@ -1746,6 +1746,12 @@
                       end
                       total_mark1 = total_ob1+total_sb1+total_pr1+monthly_total_mark1
                       total_mark2 = total_ob2+total_sb2+total_pr2+monthly_total_mark2
+                      if @student_tab.admission_no == "15252" && sub2['name'] == "English 2nd Paper"
+
+                      abort(sub2['id'].to_s+"_"+total_ob1+"_"+total_sb1+"_"+monthly_total_mark1+"_"+total_pr1+"_"+full_mark_sb1_converted)
+
+                      end
+
                     end
                     
                     total_mark2_no_round = total_mark2

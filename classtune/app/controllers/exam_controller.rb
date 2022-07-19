@@ -3689,9 +3689,9 @@ class ExamController < ApplicationController
    
     iloop = 0
     
-    if !@student_position.blank? and !@student_position_batch.blank?
+    if !@student_position.blank? and !@student_position_batch.blank? and @student_position_first_term.blank?
       @student_position_first_term = @student_position
-    elsif !@student_position_second_term.blank?  and !@student_position_second_term_batch.blank?
+    elsif !@student_position_second_term.blank?  and !@student_position_second_term_batch.blank? and @student_position_first_term.blank?
       @student_position_first_term = @student_position_second_term
     end      
     
@@ -13733,7 +13733,7 @@ class ExamController < ApplicationController
           end
           last_grade = s[0]
           last_total = s[1]
-          @student_position_first_term[s[2].to_i] = position.to_s+"_"+last_grade.to_s+"_"+last_total.to_s
+          @student_position_first_term[s[2].to_i] = position
         end 
       end
       

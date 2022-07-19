@@ -13733,7 +13733,7 @@ class ExamController < ApplicationController
           end
           last_grade = s[0]
           last_total = s[1]
-          @student_position_first_term[s[2].to_i] = position
+          @student_position_first_term[s[2].to_i] = position.to_s+"_"+last_grade.to_s+"_"+last_total.to_s
         end 
       end
       

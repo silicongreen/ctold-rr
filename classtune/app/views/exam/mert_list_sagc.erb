@@ -31,6 +31,18 @@ unless @group_name_upper.blank?
 end
 
 
+if !@student_position.blank? and !@student_position_batch.blank? and @student_position_first_term_batch.blank?
+  @student_position_first_term_batch = @student_position_batch
+  @student_position_first_term = @student_position
+  if @connect_exam_obj.result_type < 13
+    @section_all_position_batch = @section_all_position_batch_final_term
+  end
+elsif !@student_position_second_term.blank?  and !@student_position_second_term_batch.blank? and @student_position_first_term_batch.blank?
+  @student_position_first_term_batch = @student_position_second_term_batch
+  @student_position_first_term = @student_position_second_term
+  @section_all_position_batch = @section_all_position_batch_2nd_term
+end  
+
 %>
 <div id="page-yield" class="available_sections1 baf_shaheen">
     <div class="page1"> </div>

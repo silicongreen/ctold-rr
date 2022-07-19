@@ -13644,7 +13644,7 @@ class ExamController < ApplicationController
           end
           last_grade = s[0]
           last_total = s[1]
-          @student_position_batch[s[2].to_i] = position.to_s+"_"+last_total.to_s+"_"+last_grade.to_s
+          @student_position_batch[s[2].to_i] = position
         end 
       end
     

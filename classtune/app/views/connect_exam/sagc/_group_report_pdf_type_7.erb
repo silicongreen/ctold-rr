@@ -140,11 +140,16 @@
                   <% grade_point_avg = 0 %>
                   <% failed = false %>
                   <% already_done = false %>
+                  <% subject_done = []%>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['grade_subject'].to_i == 1 %>
                         <% next %>
                       <% end %>
+                      <% if subject_done.include?(subjects['id'].to_i) %>
+                        <% next %>
+                      <% end %>
+                      <% subject_done << subjects['id'].to_i %>
                       <% failed_subject = false %>
                       <%
                         total_sb = 0
@@ -358,6 +363,7 @@
                                 <% if subjects2['subject_group_id'].to_i != subjects['subject_group_id'].to_i || subjects2['id'].to_i == subjects['id'].to_i  %>
                                   <% next %>
                                 <% end %>
+                                <% subject_done << subjects2['id'].to_i %>
                                 <% total_mark = 0 %>
                                 <% full_mark = 0 %>
                                 <%

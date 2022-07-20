@@ -418,13 +418,15 @@ class Subjects extends CActiveRecord
         $student_subject = $stsub->getStudentSubject($batch_id,$student_id);
         $subject_array = array();
         $subject_elective = array();
+        $subject_found = [];
         $i = 0;
         if($data_subject)
         {
             foreach($data_subject as $value)
             {
-                if($subjects_ids===false || in_array($value->id, $subjects_ids) )
+                if(($subjects_ids===false || in_array($value->id, $subjects_ids)) && !in_array($value->id, $subject_found))
                 {
+                    $subject_found[] = $value->id;
                     $subject_array[$i]['name'] = $value->name;
                     $subject_array[$i]['priority'] = $value->priority;
                     $subject_array[$i]['code'] = $value->code;
@@ -447,8 +449,9 @@ class Subjects extends CActiveRecord
         {
             foreach($student_subject as $value)
             {
-                if($subjects_ids===false || in_array($value->id, $subjects_ids) )
+                if(($subjects_ids===false || in_array($value->id, $subjects_ids)) && !in_array($value->id, $subject_found))
                 {
+                    $subject_found[] = $value->id;
                     $subject_elective[] = $value->id;
                     $subject_array[$i]['name'] = $value->name;
                     $subject_array[$i]['priority'] = $value->priority;

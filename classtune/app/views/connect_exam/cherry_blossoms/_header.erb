@@ -16,7 +16,7 @@
         
   </div>
   <hr style="width: 1435px; "/>
-    <h4 align="left" style="width: 1450px; text-align: center; font-size: 22px;"><%= @connect_exam_obj.name+" <br /> Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h4>
+    <h4 align="left" style="width: 1450px; text-align: center; font-size: 24px;"><%= @connect_exam_obj.name+" <br /> Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h4>
   <hr style="width: 1435px; "/>  
   
 <% else %>
@@ -36,7 +36,7 @@
 }
 #pdf-header-south2.general-header h3.small-margin
 {
-    margin-top: 10px  !important;
+    margin-top: 5px  !important;
 }
 
 #pdf-header-south2.general-header h4
@@ -51,7 +51,7 @@
 }
 #pdf-header-south2.general-header h3
 {
-   font-size: 25px;
+   font-size: 28px;
 }
 #page-yield.st_joseph_bg
 {

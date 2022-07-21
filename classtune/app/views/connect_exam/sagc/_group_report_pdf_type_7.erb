@@ -160,12 +160,7 @@
                         full_ob = 0
                         full_pr = 0
                       %> 
-                      <% if already_done %>
-                          <%
-                            already_done = false
-                            next
-                          %>
-                      <% end %>
+                    
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
@@ -363,7 +358,7 @@
                                 <% if subjects2['subject_group_id'].to_i != subjects['subject_group_id'].to_i || subjects2['id'].to_i == subjects['id'].to_i  %>
                                   <% next %>
                                 <% end %>
-                                <% subject_done << subjects2['id'].to_i %>
+                                
                                 <% total_mark = 0 %>
                                 <% full_mark = 0 %>
                                 <%
@@ -592,7 +587,8 @@
                           <% if subjects2['subject_group_id'].to_i != subjects['subject_group_id'].to_i || subjects2['id'].to_i == subjects['id'].to_i  %>
                             <% next %>
                           <% end %>
-                          <% already_done = true %>
+                          <% subject_done << subjects2['id'].to_i %>
+                          
                           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                             <% total_mark = 0 %>
                             <% full_mark = 0 %>

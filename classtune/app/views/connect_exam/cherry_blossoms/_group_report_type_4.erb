@@ -79,7 +79,7 @@
                         <% @report_data['report']['exams'].each do |report| %>
                           <% if rowcreated == false and report['exam_category'].to_i == 1 and report['exam_name'].downcase.index('performance').blank? %>
                             <% rowcreated = true %>
-                            <td colspan="4" class="col-pdf">Class Assessnent<br />(First Term: 2021-2022)</td>
+                            <td colspan="4" class="col-pdf">Class Assessment<br />(First Term: 2021-2022)</td>
                           <% end %>
                         <% end %>
                       <% end %>  

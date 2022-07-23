@@ -62,7 +62,13 @@
                           <td class="col-pdf" colspan="2"><%= report['exam_name'].gsub(', 2021-2022','') %></td>
                           <% else %>
                             <% unless report['exam_name'].downcase.index('performance').blank? %>  
-                            <td rowspan="2" class="col-pdf" colspan="2"><%= report['exam_name'].gsub('2021-2022','') %><br />(First Term: 2021-2022)</td>
+                            <td rowspan="2" class="col-pdf" colspan="2"><%= report['exam_name'].gsub('2021-2022','') %><br />
+                            <% if @connect_exam_obj.name.index("Final").blank? %>
+                            (First Term: 2021-2022)
+                            <% else %>
+                            (Final Term: 2021-2022)
+                            <% end %>
+                            </td>
                             <% else %>
                             <td rowspan="2" class="col-pdf" colspan="2"><%= report['exam_name'] %></td>
                             <% end %>
@@ -79,7 +85,11 @@
                         <% @report_data['report']['exams'].each do |report| %>
                           <% if rowcreated == false and report['exam_category'].to_i == 1 and report['exam_name'].downcase.index('performance').blank? %>
                             <% rowcreated = true %>
-                            <td colspan="4" class="col-pdf">Class Assessment<br />(First Term: 2021-2022)</td>
+                            <% if @connect_exam_obj.name.index("Final").blank? %>
+                              <td colspan="4" class="col-pdf">Class Assessment<br />(First Term: 2021-2022)</td>
+                            <% else %>
+                              <td colspan="4" class="col-pdf">Class Assessment<br />(Final Term: 2021-2022)</td>
+                            <% end %>
                           <% end %>
                         <% end %>
                       <% end %>  

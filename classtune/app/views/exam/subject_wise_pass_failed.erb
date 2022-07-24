@@ -117,7 +117,7 @@ end
                           <% next %>
                         <% end %>
                         <% key2 = val.id.to_s %>
-                        <% srl = srl+1 %> 
+                        
                         <% total_passed = 0 %>
                         <% total_passed = @subject_result[key]['total'] unless @subject_result[key]['total'].blank? %>
                         <% unless @subject_result[key]['failed'].blank? %>
@@ -132,6 +132,7 @@ end
                           <td class="col-pdf center-align"><%= @subject_result[key]['appeared'] unless @subject_result[key]['appeared'].blank? %></td> 
                           <td class="col-pdf center-align"><%= @subject_result[key]['absent'] unless @subject_result[key]['absent'].blank? %></td>
                         </tr> 
+                        <% srl = srl+1 %> 
                       <% end %>
                     <% end %>
                     <% end %>

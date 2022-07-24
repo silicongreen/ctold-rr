@@ -807,6 +807,10 @@
                   full_mark2 = 50
                   monthly_mark_multiply2 = 10
                 end 
+
+                if sub['grade_subject'].to_i == 1 and @connect_exam_obj.result_type == 3
+                  monthly_mark_multiply = 20
+                end
                 
                 if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
                   monthly_mark_multiply = monthly_mark_multiply/2

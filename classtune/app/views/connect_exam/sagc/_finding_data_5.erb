@@ -807,8 +807,8 @@
                   full_mark2 = 50
                   monthly_mark_multiply2 = 10
                 end 
-
-                if sub['grade_subject'].to_i == 1 and @connect_exam_obj.result_type == 3 and monthly_full_mark1 == 20
+                total_mark_grade_check = total_ob1+total_sb1+total_pr1
+                if sub['grade_subject'].to_i == 1 and @connect_exam_obj.result_type == 3 and monthly_full_mark1 == 20 and total_mark_grade_check == 30 and full_mark1 == 50
                   monthly_mark_multiply = 20
                 end
                 

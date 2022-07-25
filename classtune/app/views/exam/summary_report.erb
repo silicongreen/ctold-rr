@@ -77,9 +77,10 @@ end
                   <% @grading_levels = GradingLevel.default %>
                 <% end %>
               <% end %>
+              <% total_passed = 0 %>
               <% if !@grade_count.blank? %>
                 <% @grading_levels.each do |grade| %>
-                        <% total_passed = 0 %>
+                        
                         <% if grade.name != "F" %>
                           <% unless @grade_count[grade.name].blank?  %>
                             <% total_passed = total_passed+1 %>

@@ -83,7 +83,7 @@ end
                         
                         <% if grade.name != "F" %>
                           <% unless @grade_count[grade.name].blank?  %>
-                            <% total_passed = total_passed+1 %>
+                            <% total_passed = total_passed+@grade_count[grade.name].to_i %>
                           <% end %>
                         <% end %>
                 <% end %>

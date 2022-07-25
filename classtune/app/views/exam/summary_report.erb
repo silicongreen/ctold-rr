@@ -71,14 +71,25 @@ end
                   </tr> 
               </table>     
               <% end %>
+              <% @grading_levels.each do |grade| %>
+                      <% total_passed = 0 %>
+                      <% if grade.name != "F" %>
+                        <% unless @grade_count[grade.name].blank?  %>
+                          <% total_passed = total_passed+1 %>
+                          <tr class="table-header">
+                            <td class="col-pdf right-align" >No. of Student(s) got <%= grade.name %> </td><td><%= @grade_count[grade.name] %> <% total_got = total_got+@grade_count[grade.name].to_i %> </td>
+                          </tr>
+                        <% end %>
+                      <% end %>
+              <% end %>
               <h3 align="center">Passed/ Failed</h3>
               <% if !@student_list_first_term_batch.blank? %>
               <table id="pdf-table" width="60%" align="center" cellspacing="0">
                       <tr class="table-header">
-                        <td class="col-pdf right-align" >No. of Passed Students </td><td><%= @student_list_first_term_batch.count %> </td>
+                        <td class="col-pdf right-align" >No. of Passed Students </td><td><%= total_passed %> </td>
                       </tr>
                       <tr class="table-header">
-                        <td class="col-pdf right-align" >No. of Failed with Partial Absentee Students </td><td><%= @total_std_batch-@student_list_first_term_batch.count %> </td>
+                        <td class="col-pdf right-align" >No. of Failed with Partial Absentee Students </td><td><%= @total_std_batch-total_passed %> </td>
                       </tr>
                       <tr class="table-header border-top">
                         <td class="col-pdf right-align" ></td><td><%= @total_std_batch %> </td>

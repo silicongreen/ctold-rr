@@ -71,16 +71,21 @@ end
                   </tr> 
               </table>     
               <% end %>
-              <% @grading_levels.each do |grade| %>
-                      <% total_passed = 0 %>
-                      <% if grade.name != "F" %>
-                        <% unless @grade_count[grade.name].blank?  %>
-                          <% total_passed = total_passed+1 %>
-                          <tr class="table-header">
-                            <td class="col-pdf right-align" >No. of Student(s) got <%= grade.name %> </td><td><%= @grade_count[grade.name] %> <% total_got = total_got+@grade_count[grade.name].to_i %> </td>
-                          </tr>
+              <% if @grading_levels.blank? %>
+                <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+                <% if @grading_levels.blank? %>
+                  <% @grading_levels = GradingLevel.default %>
+                <% end %>
+              <% end %>
+              <% if !@grade_count.blank? %>
+                <% @grading_levels.each do |grade| %>
+                        <% total_passed = 0 %>
+                        <% if grade.name != "F" %>
+                          <% unless @grade_count[grade.name].blank?  %>
+                            <% total_passed = total_passed+1 %>
+                          <% end %>
                         <% end %>
-                      <% end %>
+                <% end %>
               <% end %>
               <h3 align="center">Passed/ Failed</h3>
               <% if !@student_list_first_term_batch.blank? %>
@@ -98,12 +103,7 @@ end
               </table>     
               <% end %>
               
-              <% if @grading_levels.blank? %>
-                <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
-                <% if @grading_levels.blank? %>
-                  <% @grading_levels = GradingLevel.default %>
-                <% end %>
-              <% end %>
+              
               <% if !@grade_count.blank? %>
               
               <h3 align="center">Passed Student(s)</h3>

@@ -389,7 +389,7 @@
                                       sb_main = (converted_sb_main.round.to_f/converted_sb_full_main.to_f)*100
                                       grade = GradingLevel.percentage_to_grade(sb_main, @batch.id)
                                       if !grade.blank? and !grade.name.blank?
-                                        if grade.credit_points.to_i == 0 || (converted_sb_main.round < 34 && converted_sb_main == 100)
+                                        if grade.credit_points.to_i == 0 || (converted_sb_main.round < 34 && converted_sb_full_main == 100)
                                             failed_subject = true
                                         end
                                       end   

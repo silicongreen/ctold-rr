@@ -273,7 +273,11 @@
                                    
                                     
                                 <% else %>
-                                  <td class="col-pdf">-</td>
+                                  <% if report['exam_category'] == '5' %>
+                                    <td class="col-pdf">-</td>
+                                  <% else %>
+                                    <td class="col-pdf">-</td>
+                                  <% end %>
                                 <% end %>
                               <% end %>
                             <% end %>
@@ -622,7 +626,11 @@
                                     
                                       
                                   <% else %>
+                                    <% if report['exam_category'] == '5' %>
                                     <td class="col-pdf">-</td>
+                                  <% else %>
+                                    <td class="col-pdf">-</td>
+                                  <% end %>
                                   <% end %>
                                 <% end %>
                               <% end %>

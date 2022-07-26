@@ -265,7 +265,6 @@ if @total_std.blank?
                       total_sb2_before = total_sb2
                       if total_sb2 > 0
                         total_sb2 = (total_sb2.to_f/full_sb2.to_f)*converted_sb_full2
-                        grand_total_with_fraction = grand_total_with_fraction+total_sb.to_f
                         total_sb2 = total_sb2.round()
                       end  
                       t_sb_before= total_sb
@@ -288,7 +287,6 @@ if @total_std.blank?
                       converted_ob_full2 = 100-converted_sb_full2-full_pr2
                       if total_ob2 > 0
                         total_ob2 = (total_ob2.to_f/full_ob2.to_f)*converted_ob_full2
-                        grand_total_with_fraction = grand_total_with_fraction+total_ob2.to_f
                         total_ob2 = total_ob2.round()
                         
                       end
@@ -311,7 +309,6 @@ if @total_std.blank?
                     
                     if full_pr2 > 0
                       if total_pr2 > 0 || total_pr > 0
-                          grand_total_with_fraction = grand_total_with_fraction+total_pr2.to_f
                           total_pr2 = total_pr2.round()
                           total_pr =  total_pr+total_pr2
                           

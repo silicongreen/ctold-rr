@@ -107,9 +107,9 @@ class IntelligenceController < ApplicationController
       batch_name = batches_data.name
       course_id = params[:course_id]
       if batch_name.length == 0
-       batches = Batch.find_by_course_id(course_id)
+        @batch_data = Batch.find_by_course_id(course_id)
       else
-        batches = Batch.find_by_course_id_and_name(course_id, batch_name)
+        @batch_data = Batch.find_by_course_id_and_name(course_id, batch_name)
       end 
       
       params[:batch_id] = 0
@@ -413,9 +413,9 @@ class IntelligenceController < ApplicationController
       batch_name = batches_data.name
       course_id = params[:course_id]
       if batch_name.length == 0
-       batches = Batch.find_by_course_id(course_id)
+        @batch_data = Batch.find_by_course_id(course_id)
       else
-        batches = Batch.find_by_course_id_and_name(course_id, batch_name)
+        @batch_data = Batch.find_by_course_id_and_name(course_id, batch_name)
       end 
       
       params[:batch_id] = 0
@@ -985,9 +985,9 @@ class IntelligenceController < ApplicationController
       batch_name = batches_data.name
       course_id = params[:course_id]
       if batch_name.length == 0
-       batches = Batch.find_by_course_id(course_id)
+        @batch_data = Batch.find_by_course_id(course_id)
       else
-        batches = Batch.find_by_course_id_and_name(course_id, batch_name)
+        @batch_data = Batch.find_by_course_id_and_name(course_id, batch_name)
       end 
       
       params[:batch_id] = 0
@@ -1198,9 +1198,9 @@ class IntelligenceController < ApplicationController
       batch_name = batches_data.name
       course_id = params[:course_id]
       if batch_name.length == 0
-       batches = Batch.find_by_course_id(course_id)
+        @batch_data = Batch.find_by_course_id(course_id)
       else
-        batches = Batch.find_by_course_id_and_name(course_id, batch_name)
+        @batch_data = Batch.find_by_course_id_and_name(course_id, batch_name)
       end 
       
       params[:batch_id] = 0
@@ -1450,9 +1450,9 @@ class IntelligenceController < ApplicationController
       batch_name = batches_data.name
       course_id = params[:course_id]
       if batch_name.length == 0
-       batches = Batch.find_by_course_id(course_id)
+        @batch_data = Batch.find_by_course_id(course_id)
       else
-        batches = Batch.find_by_course_id_and_name(course_id, batch_name)
+        @batch_data = Batch.find_by_course_id_and_name(course_id, batch_name)
       end 
       
       params[:batch_id] = 0

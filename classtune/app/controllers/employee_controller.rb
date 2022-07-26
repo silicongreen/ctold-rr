@@ -2200,9 +2200,9 @@ ORDER BY emp.first_name ASC"
         end
 
         if batch_name.length == 0
-            batches = Batch.find_by_course_id(course_id)  
+          @batch_data = Batch.find_by_course_id(course_id)  
         else
-            batches = Batch.find_by_course_id_and_name(course_id, batch_name)
+          @batch_data = Batch.find_by_course_id_and_name(course_id, batch_name)
         end 
         
         params[:batch_id] = 0

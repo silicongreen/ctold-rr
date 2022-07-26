@@ -341,9 +341,6 @@ if @total_std.blank?
                   
                     
                     total_mark_subject2 = total_ob+total_sb+total_pr
-                    if(@student_tab.admission_no == "211849")
-                      abort(total_mark_subject2.to_s)
-                    end
                     grand_total = grand_total+total_mark_subject2
                     main_mark = (total_mark_subject2.to_f/200.00)*100
                     main_mark = main_mark.round()

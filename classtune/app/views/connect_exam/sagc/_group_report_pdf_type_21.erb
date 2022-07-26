@@ -791,7 +791,7 @@
                   <tr class="odd">
                       <td class="align-left no-warp"><b>Grade Point Avg</b></td>
                       <td><b>
-                              <% if @student_position_first_term_batch[@student.id.to_i].blank? %>
+                              <% if @student_position_batch[@student.id.to_i].blank? %>
                                 0.00
                               <% else %>
                                 <%= sprintf( "%0.02f", grade_point_avg) %>
@@ -808,7 +808,7 @@
                       <td class="align-left no-warp">Letter Grade</td>
                       <td >
                           <b>
-                              <% if @student_position_first_term_batch[@student.id.to_i].blank? %>
+                              <% if @student_position_batch[@student.id.to_i].blank? %>
                                 F
                               <% else %>
                                 <% if !grade.blank? and !grade.name.blank? %>
@@ -821,8 +821,8 @@
                       </td>
                       <td class="align-left no-warp">Section</td>
                       <td class="no-warp">
-                          <% if !@student_position_first_term_batch[@student.id.to_i].blank? %> 
-                            <%= @student_position_first_term_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
+                          <% if !@student_position_batch[@student.id.to_i].blank? %> 
+                            <%= @student_position_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
                           <% else %>
                             -
                           <% end %> 
@@ -843,8 +843,8 @@
                       <td class="no-warp">
                           <b>
                              
-                              <% if !@student_position_first_term[@student.id.to_i].blank? %> 
-                                <%= @student_position_first_term[@student.id.to_i] %> out of <%= @total_std %>
+                              <% if !@student_position[@student.id.to_i].blank? %> 
+                                <%= @student_position[@student.id.to_i] %> out of <%= @total_std %>
                               <% else %>
                                 -
                               <% end %> 
@@ -866,7 +866,7 @@
                       <td>
 
                           <b>Remarks : </b> 
-                            <% if @student_position_first_term_batch[@student.id.to_i].blank? %>
+                            <% if @student_position_batch[@student.id.to_i].blank? %>
                               Failed
                            <% else %>
                             <% if !grade.blank? and !grade.name.blank? %>

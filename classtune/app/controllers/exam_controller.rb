@@ -8880,11 +8880,12 @@ class ExamController < ApplicationController
                       if full_sb2.to_i == 50
                         converted_sb_full2 = 100
                       end
+                      total_sb2_before = total_sb2
                       if total_sb2 > 0
                         total_sb2 = (total_sb2.to_f/full_sb2.to_f)*converted_sb_full2
-                        grand_total_with_fraction = grand_total_with_fraction+total_sb.to_f
-                        total_sb2 = total_sb.round()
+                        total_sb2 = total_sb2.round()
                       end  
+                      t_sb_before= total_sb
                       converted_main_full_sb = converted_sb_full2+converted_sb_full
                       total_sb =  total_sb+total_sb2
                       sb_main = (total_sb.round.to_f/converted_main_full_sb.to_f)*100
@@ -8892,7 +8893,6 @@ class ExamController < ApplicationController
                       if !grade.blank? and !grade.name.blank?
                         if grade.credit_points.to_i == 0 || (total_sb.round < 34 && converted_main_full_sb == 100)
                             if fourth_subject.blank?
-                             
                               u_grade = u_grade+1 
                               subject_failed = true
                             else
@@ -8905,7 +8905,6 @@ class ExamController < ApplicationController
                       converted_ob_full2 = 100-converted_sb_full2-full_pr2
                       if total_ob2 > 0
                         total_ob2 = (total_ob2.to_f/full_ob2.to_f)*converted_ob_full2
-                        grand_total_with_fraction = grand_total_with_fraction+total_ob2.to_f
                         total_ob2 = total_ob2.round()
                         
                       end
@@ -8917,7 +8916,6 @@ class ExamController < ApplicationController
 
                       if (total_ob.round < 16 && converted_ob_full_main == 50) || (total_ob.round < 10 && converted_ob_full_main == 30) || (total_ob.round < 20 && converted_ob_full_main == 60)
                           if fourth_subject.blank?
-                            
                             u_grade = u_grade+1 
                             subject_failed = true
                           else
@@ -8929,13 +8927,11 @@ class ExamController < ApplicationController
                     
                     if full_pr2 > 0
                       if total_pr2 > 0 || total_pr > 0
-                          grand_total_with_fraction = grand_total_with_fraction+total_pr2.to_f
                           total_pr2 = total_pr2.round()
                           total_pr =  total_pr+total_pr2
                           
                           if total_pr < 16
                             if fourth_subject.blank?
-                              
                               u_grade = u_grade+1 
                               subject_failed = true
                             else
@@ -8957,11 +8953,13 @@ class ExamController < ApplicationController
                     grand_total = grand_total+total_mark_subject2
                     main_mark = (total_mark_subject2.to_f/200.00)*100
                     main_mark = main_mark.round()
+
                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                  
                     if !grade.blank? and !grade.name.blank?
                       if fourth_subject.blank? && subject_failed == false
                         grand_grade_point = grand_grade_point+grade.credit_points.to_f
-                      elsif subject_failed == false and four_subject_failed == false
+                      elsif four_subject_failed == false && !fourth_subject.blank?
                         new_grade_point = grade.credit_points.to_f-2
                         if new_grade_point > 0
                           grand_grade_point = grand_grade_point+new_grade_point.to_f

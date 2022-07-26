@@ -362,7 +362,6 @@
                                         <% end %>
                                         <% if report['exam_category'] == '4' %>
                                           <% total_ob = total_ob+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
-                                          <% total_ob = total_ob+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     
                                           <% converted_ob_full2 = 100-converted_sb_full2-full_pr %>
                                         

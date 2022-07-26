@@ -168,6 +168,7 @@
                           %>
                       <% end %>
                       <% subjects_done << subjects['id'].to_i %>
+                      <% double_subject_marks = 0 %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
@@ -284,6 +285,7 @@
                             <% end %>
                             <% end %>  
                             <% avg_mark = total_pr+converted_ob+converted_sb %>
+                            <% double_subject_marks = avg_mark.to_f.round.to_i %>
                                   
                             
                             <% tota_mark_with_monthly = avg_mark %>
@@ -315,6 +317,7 @@
                                 full_ob = 0
                                 total_sb = 0
                                 total_ob = 0
+                                total_pr2 = 0;
 
                                 converted_sb2 = 0
                                 converted_ob2 = 0
@@ -370,7 +373,11 @@
                                           <% end %>
                                         <% end %>
                                         <% if report['exam_category'] == '5' %>
-                                          <% total_pr = total_pr+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
+                                          <% 
+                                          total_pr = total_pr+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f
+                                          total_pr2 =  report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f
+                                          %>
+                                          
                                         <% end %>
                                       <% end %>
                                     <% end %>
@@ -379,6 +386,8 @@
                                 <%
                                 converted_sb_main = 0
                                 converted_ob_main = 0
+                                marks_second = total_pr2+converted_ob2+converted_sb2
+                                double_subject_marks = double_subject_marks+marks_second.round
                                 %>
                                 <% if full_sb > 0 %>
                                   <%
@@ -430,7 +439,7 @@
                                 
                                 <% tota_mark_with_monthly = avg_mark %>
                                 <%
-                                  main_mark = (tota_mark_with_monthly.round.to_f/200)*100
+                                  main_mark = (double_subject_marks.round.to_f/200)*100
                                 %>
                                 <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                 <% if !grade.blank? and !grade.name.blank? %>
@@ -452,7 +461,7 @@
                                      <% total_grade = total_grade.to_f+new_grade_point.to_f %>
                                     <% end %>  
                                   <% end %>
-                                  <td class="col-pdf" rowspan="2"><%= grade.name %><%= converted_sb_main %>\<%= converted_ob_main %>\<%= total_pr %></td>
+                                  <td class="col-pdf" rowspan="2"><%= grade.name %><%= double_subject_marks %></td>
                                   <td class="col-pdf" rowspan="2"><%= grade.credit_points %></td>
                                 <% else %>
                                   <td class="col-pdf" rowspan="2">-</td>

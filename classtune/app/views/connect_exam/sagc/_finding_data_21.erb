@@ -318,11 +318,12 @@ if @total_std.blank?
                           grand_total_with_fraction = grand_total_with_fraction+total_pr2.to_f
                           total_pr2 = total_pr2.round()
                           total_pr =  total_pr+total_pr2
-                          if(@student_tab.admission_no == "211849")
-                              abort(total_pr.round.to_s)
-                          end
+                          
                           if total_pr < 16
                             if fourth_subject.blank?
+                              if(@student_tab.admission_no == "211849")
+                                  abort(total_pr.round.to_s)
+                              end
                               u_grade = u_grade+1 
                               subject_failed = true
                             else

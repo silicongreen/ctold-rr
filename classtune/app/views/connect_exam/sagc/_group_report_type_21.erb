@@ -22,14 +22,16 @@
                         
                         <% if report['exam_category'] == '3' %>
                           <% has_sb = true %>
+                          <% colspan = colspan+2 %>
                         <% end %>
                         <% if report['exam_category'] == '4' %>
                           <% has_ob = true %>
+                          <% colspan = colspan+2 %>
                         <% end %>
                         <% if report['exam_category'] == '5' %>
                           <% has_pr = true %>
+                          <% colspan = colspan+1 %>
                         <% end %>
-                        <% colspan = colspan+1 %>
                          
                       <% end %>
                   

@@ -274,7 +274,9 @@ if @total_std.blank?
                       if !grade.blank? and !grade.name.blank?
                         if grade.credit_points.to_i == 0 || (total_sb.round < 34 && converted_main_full_sb == 100)
                             if fourth_subject.blank?
-                             
+                             if(@student_tab.admission_no == "202404")
+                                abort(total_sb.round.to_s+"_"+converted_main_full_sb.round.to_s)
+                             end
                               u_grade = u_grade+1 
                               subject_failed = true
                             else
@@ -299,7 +301,9 @@ if @total_std.blank?
 
                       if (total_ob.round < 16 && converted_ob_full_main == 50) || (total_ob.round < 10 && converted_ob_full_main == 30) || (total_ob.round < 20 && converted_ob_full_main == 60)
                           if fourth_subject.blank?
-                            
+                            if(@student_tab.admission_no == "202404")
+                              abort(total_ob.round.to_s+"_"+converted_ob_full_main.round.to_s)
+                            end
                             u_grade = u_grade+1 
                             subject_failed = true
                           else
@@ -317,7 +321,9 @@ if @total_std.blank?
                           
                           if total_pr < 16
                             if fourth_subject.blank?
-                              
+                              if(@student_tab.admission_no == "202404")
+                                  abort(total_pr.round.to_s)
+                              end
                               u_grade = u_grade+1 
                               subject_failed = true
                             else

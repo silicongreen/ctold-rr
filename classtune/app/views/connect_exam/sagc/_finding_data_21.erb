@@ -262,6 +262,7 @@ if @total_std.blank?
                       if full_sb2.to_i == 50
                         converted_sb_full2 = 100
                       end
+                      t_sb_before = total_sb2
                       if total_sb2 > 0
                         total_sb2 = (total_sb2.to_f/full_sb2.to_f)*converted_sb_full2
                         grand_total_with_fraction = grand_total_with_fraction+total_sb.to_f
@@ -276,7 +277,7 @@ if @total_std.blank?
                         if grade.credit_points.to_i == 0 || (total_sb.round < 34 && converted_main_full_sb == 100)
                             if fourth_subject.blank?
                              if(@student_tab.admission_no == "202404")
-                                abort(total_sb.round.to_s+"_"+t_sb_prev.to_s+"_"+total_sb2.to_s+"_"+converted_main_full_sb.round.to_s)
+                                abort(t_sb_before.round.to_s+"_"+converted_sb_full2.to_s+"_"+converted_sb_full.to_s+"_"+converted_main_full_sb.round.to_s)
                              end
                               u_grade = u_grade+1 
                               subject_failed = true

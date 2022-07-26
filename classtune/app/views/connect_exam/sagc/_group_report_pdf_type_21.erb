@@ -387,6 +387,7 @@
                                 converted_sb_main = 0
                                 converted_ob_main = 0
                                 marks_second = total_pr2+converted_ob2+converted_sb2
+                                prev_double_subject_marks = double_subject_marks
                                 double_subject_marks = double_subject_marks+marks_second.round
                                 %>
                                 <% if full_sb > 0 %>
@@ -461,7 +462,7 @@
                                      <% total_grade = total_grade.to_f+new_grade_point.to_f %>
                                     <% end %>  
                                   <% end %>
-                                  <td class="col-pdf" rowspan="2"><%= grade.name %><%= double_subject_marks %></td>
+                                  <td class="col-pdf" rowspan="2"><%= grade.name %><%= double_subject_marks %><%= prev_double_subject_marks.round %></td>
                                   <td class="col-pdf" rowspan="2"><%= grade.credit_points %></td>
                                 <% else %>
                                   <td class="col-pdf" rowspan="2">-</td>

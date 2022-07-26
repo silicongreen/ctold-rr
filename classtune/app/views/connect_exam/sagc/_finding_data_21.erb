@@ -274,6 +274,9 @@ if @total_std.blank?
                       if !grade.blank? and !grade.name.blank?
                         if grade.credit_points.to_i == 0 || (total_sb.round < 34 && converted_main_full_sb == 100)
                             if fourth_subject.blank?
+                             if(@student_tab.admission_no == "211849")
+                                abort(total_sb.round.to_s+"_"+converted_main_full_sb.round.to_s)
+                             end
                               u_grade = u_grade+1 
                               subject_failed = true
                             else
@@ -295,8 +298,12 @@ if @total_std.blank?
                       end
                       converted_ob_full_main = converted_ob_full2+converted_ob_full
                       total_ob = total_ob2+total_ob
+
                       if (total_ob.round < 16 && converted_ob_full_main == 50) || (total_ob.round < 10 && converted_ob_full_main == 30) || (total_ob.round < 20 && converted_ob_full_main == 60)
                           if fourth_subject.blank?
+                            if(@student_tab.admission_no == "211849")
+                              abort(total_ob.round.to_s+"_"+converted_ob_full_main.round.to_s)
+                            end
                             u_grade = u_grade+1 
                             subject_failed = true
                           else
@@ -311,6 +318,9 @@ if @total_std.blank?
                           grand_total_with_fraction = grand_total_with_fraction+total_pr2.to_f
                           total_pr2 = total_pr2.round()
                           total_pr =  total_pr+total_pr2
+                          if(@student_tab.admission_no == "211849")
+                              abort(total_pr.round.to_s)
+                          end
                           if total_pr < 16
                             if fourth_subject.blank?
                               u_grade = u_grade+1 
@@ -331,6 +341,9 @@ if @total_std.blank?
                   
                     
                     total_mark_subject2 = total_ob+total_sb+total_pr
+                    if(@student_tab.admission_no == "211849")
+                      abort(total_mark_subject2.to_s)
+                    end
                     grand_total = grand_total+total_mark_subject2
                     main_mark = (total_mark_subject2.to_f/200.00)*100
                     main_mark = main_mark.round()

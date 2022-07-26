@@ -427,6 +427,7 @@
                                   %>
                                 <% end %>
                                 <% avg_mark = converted_sb_main+converted_ob_main+total_pr %>
+                                
                                 <% tota_mark_with_monthly = avg_mark %>
                                 <%
                                   main_mark = (tota_mark_with_monthly.round.to_f/200)*100
@@ -451,7 +452,7 @@
                                      <% total_grade = total_grade.to_f+new_grade_point.to_f %>
                                     <% end %>  
                                   <% end %>
-                                  <td class="col-pdf" rowspan="2"><%= grade.name %><%= tota_mark_with_monthly.to_i %>/td>
+                                  <td class="col-pdf" rowspan="2"><%= grade.name %><%= converted_sb_main %>\<%= converted_ob_main %>\<%= total_pr %></td>
                                   <td class="col-pdf" rowspan="2"><%= grade.credit_points %></td>
                                 <% else %>
                                   <td class="col-pdf" rowspan="2">-</td>

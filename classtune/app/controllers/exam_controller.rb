@@ -8874,10 +8874,10 @@ class ExamController < ApplicationController
                     converted_sb_full2 = 50
                     converted_ob_full2 = 25
                     if full_sb2 > 0
-                      if full_sb.to_i == 40
+                      if full_sb2.to_i == 40
                         converted_sb_full2 = 70
                       end
-                      if full_sb.to_i == 50
+                      if full_sb2.to_i == 50
                         converted_sb_full2 = 100
                       end
                       if total_sb2 > 0
@@ -8892,6 +8892,7 @@ class ExamController < ApplicationController
                       if !grade.blank? and !grade.name.blank?
                         if grade.credit_points.to_i == 0 || (total_sb.round < 34 && converted_main_full_sb == 100)
                             if fourth_subject.blank?
+                             
                               u_grade = u_grade+1 
                               subject_failed = true
                             else
@@ -8913,8 +8914,10 @@ class ExamController < ApplicationController
                       end
                       converted_ob_full_main = converted_ob_full2+converted_ob_full
                       total_ob = total_ob2+total_ob
+
                       if (total_ob.round < 16 && converted_ob_full_main == 50) || (total_ob.round < 10 && converted_ob_full_main == 30) || (total_ob.round < 20 && converted_ob_full_main == 60)
                           if fourth_subject.blank?
+                            
                             u_grade = u_grade+1 
                             subject_failed = true
                           else
@@ -8925,12 +8928,14 @@ class ExamController < ApplicationController
                     
                     
                     if full_pr2 > 0
-                      if total_pr2 > 0
+                      if total_pr2 > 0 || total_pr > 0
                           grand_total_with_fraction = grand_total_with_fraction+total_pr2.to_f
                           total_pr2 = total_pr2.round()
                           total_pr =  total_pr+total_pr2
+                          
                           if total_pr < 16
                             if fourth_subject.blank?
+                              
                               u_grade = u_grade+1 
                               subject_failed = true
                             else

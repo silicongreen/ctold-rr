@@ -33,17 +33,17 @@
           <table class="std_info2">
                
                 <tr>
-                    <td colspan="1" style="font-size: 16px;"><%= "#{t('name')}" %></td> <td colspan="22">:&nbsp; <%=  "#{@student.full_name}" %></td>
+                    <td colspan="1" style="font-size: 18px;"><%= "#{t('name')}" %></td> <td colspan="22" style="font-size: 18px;">:&nbsp; <%=  "#{@student.full_name}" %></td>
                 </tr>
                 <tr>
-                    <td colspan="1"><%= "Shift" %></td> <td colspan="7">:&nbsp; <%=  "#{@student.batch.name}" %></td>
-                    <td colspan="10"></td>
-                    <td colspan="1" class="td-align-right"><%= "Year" %></td> <td colspan="4">:&nbsp; <%=  Time.now.strftime("%Y").to_i %>-<%=  Time.now.strftime("%Y").to_i + 1 %></td>
+                    <td colspan="1" style="font-size: 18px;"><%= "Shift" %></td> <td colspan="7" style="font-size: 18px;">:&nbsp; <%=  "#{@student.batch.name}" %></td>
+                    <td colspan="10" style="font-size: 18px;"></td>
+                    <td colspan="1" style="font-size: 18px;" class="td-align-right"><%= "Year" %></td> <td colspan="4" style="font-size: 18px;">:&nbsp; <%=  Time.now.strftime("%Y").to_i %>-<%=  Time.now.strftime("%Y").to_i + 1 %></td>
                 </tr>
-                    <td colspan="1"><%= "Class" %></td> <td colspan="7">:&nbsp; <%=  "#{@student.batch.course.course_name}" %></td>
-                    <td colspan="1" class="td-align-right"><%= "Section" %></td> <td colspan="7">:&nbsp; <%=  "#{@student.batch.course.section_name}" %></td>
-                    <td colspan="2"></td>
-                    <td colspan="1" class="td-align-right"><%= "Roll" %></td> <td colspan="4">:&nbsp; <%=  "#{@student.class_roll_no}" %></td>
+                    <td colspan="1" style="font-size: 18px;"><%= "Class" %></td> <td colspan="7" style="font-size: 18px;">:&nbsp; <%=  "#{@student.batch.course.course_name}" %></td>
+                    <td colspan="1" style="font-size: 18px;" class="td-align-right"><%= "Section" %></td> <td colspan="7" style="font-size: 18px;">:&nbsp; <%=  "#{@student.batch.course.section_name}" %></td>
+                    <td colspan="2" style="font-size: 18px;"></td>
+                    <td colspan="1" style="font-size: 18px;" class="td-align-right"><%= "Roll" %></td> <td colspan="4" style="font-size: 18px;">:&nbsp; <%=  "#{@student.class_roll_no}" %></td>
                 </tr> 
                  
           </table>

@@ -429,7 +429,7 @@
                                 <% avg_mark = converted_sb_main+converted_ob_main+total_pr %>
                                 <% tota_mark_with_monthly = avg_mark %>
                                 <%
-                                  main_mark = (tota_mark_with_monthly.to_f.round/200)*100
+                                  main_mark = (tota_mark_with_monthly.round.to_f/200)*100
                                 %>
                                 <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                 <% if !grade.blank? and !grade.name.blank? %>

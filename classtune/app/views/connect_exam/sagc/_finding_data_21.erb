@@ -337,11 +337,11 @@ if @total_std.blank?
                     main_mark = main_mark.round()
 
                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                    abort(main_mark.to_s+@student_tab.admission_no.to_s);
+                  
                     if !grade.blank? and !grade.name.blank?
                       if fourth_subject.blank? && subject_failed == false
                         grand_grade_point = grand_grade_point+grade.credit_points.to_f
-                      elsif subject_failed == false and four_subject_failed == false
+                      elsif four_subject_failed == false && !fourth_subject.blank?
                         new_grade_point = grade.credit_points.to_f-2
                         if new_grade_point > 0
                           grand_grade_point = grand_grade_point+new_grade_point.to_f

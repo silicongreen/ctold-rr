@@ -335,6 +335,9 @@ if @total_std.blank?
                     grand_total = grand_total+total_mark_subject2
                     main_mark = (total_mark_subject2.to_f/200.00)*100
                     main_mark = main_mark.round()
+                    if student_tab.admission_no == 202204
+                      abort(total_mark_subject2.to_f)
+                    end
                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                     if !grade.blank? and !grade.name.blank?
                       if fourth_subject.blank? && subject_failed == false

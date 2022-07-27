@@ -312,6 +312,18 @@
                                     <b><%= sprintf( "%0.02f", total_gpa) %></b>
                                 </td>
                             </tr>
+                            <tr class="table-header">
+                                <td colspan="7">
+
+                                </td>
+                                <td>GPA</td>
+
+                                <% if main_failed_grade %>
+                                  <td>0.00</td>
+                                <% else %>
+                                  <td><%= sprintf( "%0.02f", gpa_fraction) %></td>
+                                <% end %>
+                            </tr>
                             
                             <tr class="table-header">
                                 <td colspan="7">

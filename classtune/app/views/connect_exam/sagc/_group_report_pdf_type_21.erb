@@ -397,7 +397,7 @@
                                     
                                     if total_sb > 0
                                       converted_sb_full_main = converted_sb_full2+converted_sb_full
-                                      converted_sb_main = converted_sb2+converted_sb
+                                      converted_sb_main = converted_sb2.round+converted_sb.round
                                       sb_main = (converted_sb_main.round.to_f/converted_sb_full_main.to_f)*100
                                       grade = GradingLevel.percentage_to_grade(sb_main, @batch.id)
                                       if !grade.blank? and !grade.name.blank?

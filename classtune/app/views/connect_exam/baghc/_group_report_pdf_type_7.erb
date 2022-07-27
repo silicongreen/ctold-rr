@@ -487,8 +487,10 @@
     .sis-final .table-header td{
         padding: 7px !important;
     }
-     .sis-final .table-header.theader2:first-child td{
+    <% if @report_data['report']['students'].first %>
+     .sis-final .table-header.theader2 td{
         padding: 7px 7px 30px 7px   !important;
      }
+     <% end %>
     
     </style>

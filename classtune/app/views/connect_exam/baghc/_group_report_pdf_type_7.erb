@@ -314,14 +314,16 @@
                             </tr>
                             
                             <tr class="table-header">
-                                <td colspan="10" style="text-align:right">
-                                    <% if main_failed_grade %>
-                                      <b>GPA 0.00</font></b>
-                                    <% else %>
-                                      <b>GPA <%= sprintf( "%0.02f", gpa_fraction) %></b>
-                                    <% end %>
-                                    
+                                <td colspan="6">
+
                                 </td>
+                                <td><b>GPA</b></td>
+
+                                <% if main_failed_grade %>
+                                  <td><b>0.00</b></td>
+                                <% else %>
+                                  <td><b><%= sprintf( "%0.02f", gpa_fraction) %></b></td>
+                                <% end %>
                             </tr>
 
                     </table>

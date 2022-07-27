@@ -291,18 +291,7 @@
                             <% if total_gpa > 0 && i > 0 %>
                               <% gpa_fraction = total_gpa.to_f/i.to_f %>
                             <% end %>
-                            <tr class="table-header">
-                                <td colspan="7">
-
-                                </td>
-                                <td>GPA</td>
-
-                                <% if main_failed_grade %>
-                                  <td>0.00</td>
-                                <% else %>
-                                  <td><%= sprintf( "%0.02f", gpa_fraction) %></td>
-                                <% end %>
-                            </tr>
+                            
                             <tr class="table-header">
                                 <td colspan="2" style="text-align:center">
                                     <b>Total</b>
@@ -327,15 +316,15 @@
                             
                             
                             <tr class="table-header">
-                                <td colspan="7">
-
+                                <td colspan="7"  style="text-align:center">
+                                  &nbsp;
                                 </td>
-                                <td>GPA</td>
+                                <td>GPA <br/></td>
 
                                 <% if main_failed_grade %>
-                                  <td>0.00</td>
+                                  <td>0.00 <br/></td>
                                 <% else %>
-                                  <td><%= sprintf( "%0.02f", gpa_fraction) %></td>
+                                  <td><%= sprintf( "%0.02f", gpa_fraction) %> <br/></td>
                                 <% end %>
                             </tr>
 

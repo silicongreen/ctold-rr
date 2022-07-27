@@ -8,6 +8,8 @@ if @tabulation_data.nil?
   %>
   <% if @connect_exam_obj.result_type.to_i == 4 or @connect_exam_obj.result_type.to_i == 5 or @connect_exam_obj.result_type.to_i == 6 %> 
     <%= render  :partial=>"/connect_exam/baghc/finding_data2" %>
+  <% elsif @connect_exam_obj.result_type.to_i == 8 %>
+    <%= render  :partial=>"/connect_exam/baghc/finding_data_8" %>
   <% else %>
     <%= render  :partial=>"/connect_exam/baghc/finding_data" %>
   <% end %>

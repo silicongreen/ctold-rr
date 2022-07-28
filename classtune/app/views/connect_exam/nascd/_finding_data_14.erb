@@ -65,25 +65,26 @@
           if has_exam == false
             next
           end 
+          total_mark1 = 0
+          total_mark2 = 0
+          total_mark3 = 0
+          total_mark4 = 0
 
           if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
-            total_mark1 = 0
-            total_mark2 = 0
-            total_mark3 = 0
-            total_mark4 = 0
+            
             tab['exams'].each do |rs|
               if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?   
-                if rs['quarter'] == 1
+                if rs['quarter'] == '1'
                   total_mark1 = total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                 end 
-                if rs['quarter'] == 2
-                  total_mark2 = total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                if rs['quarter'] == '2'
+                  total_mark2 = total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                 end 
-                if rs['quarter'] == 3
-                  total_mark3 = total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                if rs['quarter'] == '3'
+                  total_mark3 = total_mark3+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                 end 
-                if rs['quarter'] == 4
-                  total_mark4 = total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                if rs['quarter'] == '4'
+                  total_mark4 = total_mark4+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                 end  
                 
               end    

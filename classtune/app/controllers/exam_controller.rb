@@ -8338,8 +8338,8 @@ class ExamController < ApplicationController
         :orientation => 'Portrait',
         :margin => {    :top=> 0,
         :bottom => 0,
-        :left=> 0,
-        :right => 0},
+        :left=> 5,
+        :right => 5},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
       else  

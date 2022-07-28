@@ -166,11 +166,11 @@
                           <% end %> 
                           <%
                           highest_mark1 = 0
-                          if !@subject_highest1.blank? and !@subject_highest1[subjects['id'].to_i].blank?
+                          if !@subject_highest1.blank? && !@subject_highest1[subjects['id'].to_i].blank?
                             highest_mark1 = @subject_highest1[subjects['id'].to_i].to_f
                           end
                           highest_mark2 = 0
-                          if !@subject_highest2.blank? and !@subject_highest2[subjects['id'].to_i].blank?
+                          if !@subject_highest2.blank? && !@subject_highest2[subjects['id'].to_i].blank?
                             highest_mark2 = @subject_highest2[subjects['id'].to_i].to_f
                           end
                           %>
@@ -230,7 +230,7 @@
                   </tr>
 
               </table>
-
+              <p>&nbsp;</p>
               <table id="pdf-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
               
@@ -369,11 +369,11 @@
                           <% end %> 
                           <%
                           highest_mark1 = 0
-                          if !@subject_highest3.blank? and !@subject_highest3[subjects['id'].to_i].blank?
+                          if !@subject_highest3.blank? && !@subject_highest3[subjects['id'].to_i].blank?
                             highest_mark1 = @subject_highest3[subjects['id'].to_i].to_f
                           end
                           highest_mark2 = 0
-                          if !@subject_highest4.blank? and !@subject_highest4[subjects['id'].to_i].blank?
+                          if !@subject_highest4.blank? && !@subject_highest4[subjects['id'].to_i].blank?
                             highest_mark2 = @subject_highest4[subjects['id'].to_i].to_f
                           end
                           %>
@@ -434,36 +434,61 @@
 
               </table>
               <table id="pdf-table"  width="100%" class="left-table break-table odd-table height-exam ev-table" cellspacing="0" >
-                <tr class="even">
+                <tr>
+                  <td>Total Working Days</td><td>&nbsp;&nbsp;&nbsp;</td>
+                  <td>Total Present Days</td><td>&nbsp;&nbsp;&nbsp;</td>
+                  <td>Total Absent Days</td><td>&nbsp;&nbsp;&nbsp;</td>
+              </table>
+              <table id="pdf-table"  width="100%" class="left-table break-table odd-table height-exam ev-table" cellspacing="0" >
+                  <% if @grading_levels.blank? %>
+                    <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+                    <% if @grading_levels.blank? %>
+                      <% @grading_levels = GradingLevel.default %>
+                    <% end %>
+                  <% end %>
+                  <tr class="table-header">
+                      <td colspan="2" width="30%"><b>Gradding</b></td>
                       <td class='align-left-baf padding-0-text-left' rowspan="8">
                           <ul>
-                              <li><i>We issue this report card to let you know our evaluation regarding the progress of your child.</i></li>
-                              <li><i>At school, we consider each student as an individual who will develop intellectually, physically and
-socially to his or her abilities and opportunities.</i></li> 
-                              <li><i>Parents are always welcome to make an appointment to discuss about the progress of their children.</i></li>  
+                              <li><p>We issue this report card to let you know our evaluation regarding the progress of your child.</p></li>
+                              <li><p>At school, we consider each student as an individual who will develop intellectually, physically and
+socially to his or her abilities and opportunities.</p></li> 
+                              <li><p>Parents are always welcome to make an appointment to discuss about the progress of their children.</p></li>  
                           </ul>
                       </td>
                   </tr>
-              </table>  
-
-              <p>&nbsp;</p>
-              <p>Final Result: </p>  
+                  <tr class="table-header">
+                      <td>Range</td>
+                      <td>Letter</td>  
+                  </tr>
+                  <% prev_score = 0 %>
+                  <% @grading_levels.each_with_index do |grade,index| %>
+                    <tr class="table-header">
+                        <td class="no-warp">
+                            <% if grade.max_score.nil? %> 
+                              <% if grade.min_score.to_i == 0 %>
+                                <&nbsp;<%= '%i%' % prev_score %>
+                              <% else %>
+                                <%= '%i%' % grade.min_score %> 
+                              <% end %>
+                            <% else %> 
+                              <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>
+                            <% end %>
+                            <%  prev_score = grade.min_score %>
+                        </td>
+                        <td><%= grade.name %></td>
+                    </tr> 
+                  <% end %>  
+              </table>
               
-              <table id="pdf-table"  width="100%" class="left-table sign-table border-none break-table odd-table height-exam ev-table" cellspacing="0" >
-                  <tr class="even border-none">
-                    <td width='50%' class="border-none">&nbsp;</td>
-                    <td class='border-left-none border-none'><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/sign_principal.jpeg")), :width=>"20%" %>
-                    </td>    
+              <table id="pdf-table"  width="100%" class="left-table break-table odd-table height-exam ev-table" cellspacing="0" >
+                  <tr class="even">
+                      <td width='70%'><br/><br/></td>
+                      <td width='30%'><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/sign_principal.jpeg")), :width=>"20%" %></td>  
                   </tr>
-                  
-                  <tr class="even border-none">
-                    <td width='50%' class="border-none"><hr/></td>
-                    <td class='border-left-none border-none'><hr/></td>
-                  </tr>
-                  
-                  <tr class="even border-none">
-                    <td width='50%' class="border-none">Signature of the Class Teacher</td>
-                    <td class='border-left-none border-none'>Signature of the Principal</td>    
+                  <tr class="even">
+                      <td>Comment & Signature of the Class Teacher</td>
+                      <td>Signature of the Principal</td>
                   </tr>
               </table>
           </div>

@@ -230,8 +230,8 @@
                   </tr>
 
               </table>
-              <p>&nbsp;</p>
-              <table id="pdf-table" width="99.8%" cellspacing="0">
+
+              <table id="pdf-table" class="ev-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
               
                     <tr class="table-header">
@@ -435,9 +435,9 @@
               </table>
               <table id="pdf-table"  width="100%" class="left-table break-table odd-table ev-table" cellspacing="0" >
                 <tr  class="table-header">
-                  <td>Total Working Days</td><td>&nbsp;&nbsp;&nbsp;</td>
-                  <td>Total Present Days</td><td>&nbsp;&nbsp;&nbsp;</td>
-                  <td>Total Absent Days</td><td>&nbsp;&nbsp;&nbsp;</td>
+                  <td>Total Working Days</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                  <td>Total Present Days</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                  <td>Total Absent Days</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
               </table>
               <table id="pdf-table"  width="100%" class="left-table break-table odd-table ev-table" cellspacing="0" >
                   <% if @grading_levels.blank? %>
@@ -449,17 +449,17 @@
                   <tr class="table-header">
                       <td colspan="2" width="30%"><b>Gradding</b></td>
                       <td class='align-left-baf padding-0-text-left' rowspan="8">
-                          <ul>
-                              <li><p>We issue this report card to let you know our evaluation regarding the progress of your child.</p></li>
-                              <li><p>At school, we consider each student as an individual who will develop intellectually, physically and
-socially to his or her abilities and opportunities.</p></li> 
-                              <li><p>Parents are always welcome to make an appointment to discuss about the progress of their children.</p></li>  
-                          </ul>
+                          <p>We issue this report card to let you know our evaluation regarding the progress of your child.</p>
+                          <p>At school, we consider each student as an individual who will develop intellectually, physically and
+socially to his or her abilities and opportunities.</p>
+                          <p>Parents are always welcome to make an appointment to discuss about the progress of their children.</p>
+                          
                       </td>
                   </tr>
                   <tr class="table-header">
-                      <td>Range</td>
+                      <td>Marks</td>
                       <td>Letter</td>  
+                      <td>Grade Point</td>  
                   </tr>
                   <% prev_score = 0 %>
                   <% @grading_levels.each_with_index do |grade,index| %>
@@ -477,6 +477,7 @@ socially to his or her abilities and opportunities.</p></li>
                             <%  prev_score = grade.min_score %>
                         </td>
                         <td><%= grade.name %></td>
+                        <td><%= grade.credit_points %></td>
                     </tr> 
                   <% end %>  
               </table>
@@ -486,7 +487,7 @@ socially to his or her abilities and opportunities.</p></li>
                       <td width='70%'><br/><br/></td>
                       <td width='30%'><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/sign_principal.jpeg")), :width=>"20%" %></td>  
                   </tr>
-                  <tr class="even">
+                  <tr class="table-header">
                       <td>Comment & Signature of the Class Teacher</td>
                       <td>Signature of the Principal</td>
                   </tr>
@@ -664,7 +665,7 @@ socially to his or her abilities and opportunities.</p></li>
     table#pdf-table tr.even td, table#pdf-table tr.table-header td, table#pdf-table tr.odd td
     {
         padding: 2px !important;
-        font-size: 15px !important;
+        font-size: 17px !important;
     }
 
 

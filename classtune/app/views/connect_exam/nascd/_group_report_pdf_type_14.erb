@@ -231,7 +231,7 @@
 
               </table>
 
-              <table id="pdf-table" class="ev-table" width="99.8%" cellspacing="0">
+              <table id="pdf-table" class="ev-table break-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
               
                     <tr class="table-header">
@@ -433,7 +433,7 @@
                   </tr>
 
               </table>
-              <table id="pdf-table"  width="100%" class="left-table break-table odd-table ev-table" cellspacing="0" >
+              <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >
                 <tr  class="table-header">
                   <td>Total Working Days</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                   <td>Total Present Days</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -446,9 +446,9 @@
                       <% @grading_levels = GradingLevel.default %>
                     <% end %>
                   <% end %>
-                  <tr class="table-header">
-                      <td colspan="2" width="30%"><b>Gradding</b></td>
-                      <td class='align-left-baf padding-0-text-left' rowspan="8">
+                  <tr class="even">
+                      <td colspan="3" width="30%"><b>Gradding</b></td>
+                      <td class='no-warp align-left-baf padding-0-text-left' rowspan="8">
                           <p>We issue this report card to let you know our evaluation regarding the progress of your child.</p>
                           <p>At school, we consider each student as an individual who will develop intellectually, physically and
 socially to his or her abilities and opportunities.</p>

@@ -8332,8 +8332,18 @@ class ExamController < ApplicationController
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
       end
     elsif MultiSchool.current_school.code == "nascd"
-      render :pdf => template,
-          
+      if @connect_exam_obj.result_type == 14
+        render :pdf => template, 
+        :save_only    => for_save,
+        :orientation => 'Portrait',
+        :margin => {    :top=> 0,
+        :bottom => 0,
+        :left=> 0,
+        :right => 0},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      else  
+      render :pdf => template, 
         :save_only    => for_save,
         :orientation => 'Portrait',
         :margin => {    :top=> 10,
@@ -8342,6 +8352,7 @@ class ExamController < ApplicationController
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      end   
     elsif MultiSchool.current_school.id == 355
       
       if @connect_exam_obj.result_type == 1

@@ -205,7 +205,6 @@
                                         if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
                                           if grade.credit_points.to_i == 0
                                             failed_grade = true
-                                            mark_failed = grade_mark.to_f
                                           end  
                                         end
                                       else
@@ -239,7 +238,7 @@
                                 %>
                                 <td>
                                   <% if cq_total > 0 %>
-                                    <%= cq %> | <%= mark_failed %><font class="soft">[<%= cq_total.to_i %>]</font>
+                                    <%= cq %><font class="soft">[<%= cq_total.to_i %>]</font>
                                   <% else %>
                                     -
                                   <% end %>    

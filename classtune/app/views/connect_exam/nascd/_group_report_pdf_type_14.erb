@@ -174,7 +174,7 @@
                             highest_mark2 = @subject_highest2[subjects['id'].to_i].to_f
                           end
                           %>
-                          
+                         
                          <td><% if full_mark1 > 0 %><%= cq1 %><% end %></td>
                          <td><% if full_mark1 > 0 %><%= mcq1 %><% end %></td>
                          <td></td>
@@ -193,7 +193,7 @@
 
                          <td><% if full_mark2 > 0 %><%= cq2 %><% end %></td>
                          <td><% if full_mark2 > 0 %><%= mcq2 %><% end %></td>
-                         <td></td>
+                         <td><% if full_mark2 > 0 %><%= prac2 %><% end %></td>
                          <td><% if full_mark2 > 0 %><%= t2 %><% end %></td>
                          <td><% if full_mark2 > 0 %><%= highest_mark2 %><% end %></td>
                          <%
@@ -222,7 +222,7 @@
                     <td><% if has_quarter1 %><%= total_grade1 %><% end %></td>
                     <td class="col-pdf"><% if has_quarter2 %><%= cq2_total %><% end %></td>
                     <td class="col-pdf"><% if has_quarter2 %><%= mcq2_total %><% end %></td>
-                    <td class="col-pdf"></td>
+                    <td class="col-pdf"><% if has_quarter2 %><%= prac2_total %><% end %><</td>
                     <td class="col-pdf"><% if has_quarter2 %><%= total2 %><% end %></td>
                     <td></td>
                     <td></td>
@@ -396,7 +396,7 @@
 
                          <td><% if full_mark2 > 0 %><%= cq2 %><% end %></td>
                          <td><% if full_mark2 > 0 %><%= mcq2 %><% end %></td>
-                         <td></td>
+                         <td><% if full_mark2 > 0 %><%= prac2 %><% end %></td>
                          <td><% if full_mark2 > 0 %><%= t2 %><% end %></td>
                          <td><% if full_mark2 > 0 %><%= highest_mark2 %><% end %></td>
                          <%
@@ -425,7 +425,7 @@
                     <td><% if has_quarter1 %><%= total_grade1 %><% end %></td>
                     <td class="col-pdf"><% if has_quarter2 %><%= cq2_total %><% end %></td>
                     <td class="col-pdf"><% if has_quarter2 %><%= mcq2_total %><% end %></td>
-                    <td class="col-pdf"></td>
+                    <td class="col-pdf"><% if has_quarter2 %><%= prac2_total %><% end %></td>
                     <td class="col-pdf"><% if has_quarter2 %><%= total2 %><% end %></td>
                     <td></td>
                     <td></td>

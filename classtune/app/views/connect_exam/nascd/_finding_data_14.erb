@@ -100,7 +100,7 @@
             if @subject_highest2[sub['id'].to_i].blank?
               @subject_highest2[sub['id'].to_i] = total_mark2
             elsif total_mark2.to_f > @subject_highest2[sub['id'].to_i].to_f
-               @subject_highest2[sub['id'].to_i] = total_mark1.to_f
+               @subject_highest2[sub['id'].to_i] = total_mark2.to_f
             end
 
             if @subject_highest3[sub['id'].to_i].blank?

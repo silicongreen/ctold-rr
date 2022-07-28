@@ -1,0 +1,216 @@
+
+<% if @total_std.blank? %>
+  <% if @grading_levels.blank? %>
+  <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+  <% if @grading_levels.blank? %>
+    <% @grading_levels = GradingLevel.default %>
+  <% end %>
+  <% end %>
+  <%
+
+  @total_std = 0
+  @student_list = []
+  @subject_highest1 = {}
+  @subject_highest2 = {}
+  @subject_highest3 = {}
+  @subject_highest4 = {}
+  batchobj = Batch.find_by_id(@batch.id) 
+  courseObj = Course.find_by_id(batchobj.course_id)
+  all_courses = Course.find_all_by_course_name(courseObj.course_name)
+  all_batch = Batch.find_all_by_course_id(all_courses.map(&:id))
+  std_subject = StudentsSubject.find_all_by_batch_id(all_batch.map(&:id),:include=>[:subject])
+  @std_subject_hash_type = []
+  @std_subject_hash_code = []
+  unless std_subject.blank?
+    std_subject.each do |std_sub|
+      if std_sub.student_id == 48812
+        %>
+          <%#= std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s+"|||"+std_sub.elective_type.to_s %>
+        <%
+      end
+      @std_subject_hash_type << std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s+"|||"+std_sub.elective_type.to_s
+      @std_subject_hash_code << std_sub.student_id.to_s+"|||"+std_sub.subject.code
+    end
+  end
+  unless @tabulation_data.blank?
+    connect_exam = 0
+    batch_loop = 0
+    @tabulation_data['report'].each do |tab|
+      batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
+      batch_subject_id = batch_subject.map(&:id)
+      batch_loop = batch_loop+1
+      connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
+      connect_exam = connect_exam+1
+      grand_total = 0
+      grand_grade_point = 0
+      u_grade = 0
+      tab['students'].each do |std| 
+        @total_std = @total_std+1
+        total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
+        std_subject_id = total_std_subject.map(&:subject_id)
+        total_subject = 0
+        tab['subjects'].each do |sub|
+          
+          if sub['grade_subject'].to_i == 1
+            next
+          end  
+          
+          has_exam = false
+          tab['exams'].each do |rs|
+            if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+              has_exam = true
+              break
+            end  
+          end 
+          if has_exam == false
+            next
+          end 
+         
+
+          if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
+            
+          cw = 0
+          ct = 0
+          cq = 0
+          mcq = 0
+          prac = 0
+          full_mark_cw = 0
+          full_mark_ct = 0
+          full_mark_cq = 0
+          full_mark_mcq = 0
+          full_mark_prac = 0
+
+          subject_total_mark = 0
+            tab['exams'].each do |rs|
+              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?   
+                if rs['quarter'] == '5'
+                  if rs['exam_category'] == '3'
+                    cq = cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    full_mark_cq = full_mark_cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                  end
+                  if rs['exam_category'] == '4'
+                    mcq = mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    full_mark_mcq = full_mark_mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                  end
+                  if rs['exam_category'] == '5'
+                    prac = prac+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    full_mark_prac = full_mark_prac+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                  end
+                  if rs['exam_category'] == '1'
+                    ct = ct+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    full_mark_ct = full_mark_ct+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                  end
+                  if rs['exam_category'] == '2'
+                    cw = cw+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    full_mark_cw = full_mark_cw+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                  end
+                  
+                end   
+                
+              end    
+            end
+
+            cw_converted = 0
+            if cw > 0
+              cw_converted = (cw.to_f/full_mark_cw.to_f)*5
+            end
+            total_term = cq+mcq+prac
+            full_mark_term = full_mark_prac+full_mark_mcq+full_mark_cq
+            full_mark_all = 100
+            converted_term = 0
+            if full_mark_term == 100
+              if total_term > 0
+                converted_term = (total_term.to_f/full_mark_term.to_f)*75
+              else
+                full_mark_all = 50
+                converted_term = (total_term.to_f/full_mark_term.to_f)*35
+              end
+
+            end
+            subject_total_mark = converted_term+cw_converted+ct
+            
+            
+            if @subject_highest1[sub['id'].to_i].blank?
+              @subject_highest1[sub['id'].to_i] = subject_total_mark
+            elsif subject_total_mark.to_f > @subject_highest1[sub['id'].to_i].to_f
+               @subject_highest1[sub['id'].to_i] = subject_total_mark.to_f
+            end
+
+            cw = 0
+          ct = 0
+          cq = 0
+          mcq = 0
+          prac = 0
+          full_mark_cw = 0
+          full_mark_ct = 0
+          full_mark_cq = 0
+          full_mark_mcq = 0
+          full_mark_prac = 0
+
+          subject_total_mark = 0
+            tab['exams'].each do |rs|
+              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?   
+                if rs['quarter'] == '6'
+                  if rs['exam_category'] == '3'
+                    cq = cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    full_mark_cq = full_mark_cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                  end
+                  if rs['exam_category'] == '4'
+                    mcq = mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    full_mark_mcq = full_mark_mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                  end
+                  if rs['exam_category'] == '5'
+                    prac = prac+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    full_mark_prac = full_mark_prac+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                  end
+                  if rs['exam_category'] == '1'
+                    ct = ct+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    full_mark_ct = full_mark_ct+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                  end
+                  if rs['exam_category'] == '2'
+                    cw = cw+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    full_mark_cw = full_mark_cw+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                  end
+                  
+                end   
+                
+              end    
+            end
+
+            cw_converted = 0
+            if cw > 0
+              cw_converted = (cw.to_f/full_mark_cw.to_f)*5
+            end
+            total_term = cq+mcq+prac
+            full_mark_term = full_mark_prac+full_mark_mcq+full_mark_cq
+            full_mark_all = 100
+            converted_term = 0
+            if full_mark_term == 100
+              if total_term > 0
+                converted_term = (total_term.to_f/full_mark_term.to_f)*75
+              else
+                full_mark_all = 50
+                converted_term = (total_term.to_f/full_mark_term.to_f)*35
+              end
+
+            end
+            subject_total_mark = converted_term+cw_converted+ct
+
+            if @subject_highest2[sub['id'].to_i].blank?
+              @subject_highest2[sub['id'].to_i] = subject_total_mark
+            elsif subject_total_mark.to_f > @subject_highest2[sub['id'].to_i].to_f
+               @subject_highest2[sub['id'].to_i] = subject_total_mark.to_f
+            end
+
+
+          end  
+        end
+
+      end
+    end
+   end
+  end
+    
+   
+
+%> 

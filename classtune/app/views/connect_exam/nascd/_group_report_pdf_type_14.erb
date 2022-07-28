@@ -433,13 +433,13 @@
                   </tr>
 
               </table>
-              <table id="pdf-table"  width="100%" class="left-table break-table odd-table height-exam ev-table" cellspacing="0" >
-                <tr>
+              <table id="pdf-table"  width="100%" class="left-table break-table odd-table ev-table" cellspacing="0" >
+                <tr  class="table-header">
                   <td>Total Working Days</td><td>&nbsp;&nbsp;&nbsp;</td>
                   <td>Total Present Days</td><td>&nbsp;&nbsp;&nbsp;</td>
                   <td>Total Absent Days</td><td>&nbsp;&nbsp;&nbsp;</td>
               </table>
-              <table id="pdf-table"  width="100%" class="left-table break-table odd-table height-exam ev-table" cellspacing="0" >
+              <table id="pdf-table"  width="100%" class="left-table break-table odd-table ev-table" cellspacing="0" >
                   <% if @grading_levels.blank? %>
                     <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
                     <% if @grading_levels.blank? %>

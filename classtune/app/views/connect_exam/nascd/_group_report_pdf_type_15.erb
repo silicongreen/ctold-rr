@@ -160,11 +160,11 @@
                             conv_mcw = conv_mcw.round()
                          end
                          %>
-                         <td><% if has_quarter > 0 %><%= conv_mcw.to_i %><% end %></td>
-                         <td><% if has_quarter > 0 %><%= ct.to_i %><% end %></td>
-                         <td><% if has_quarter > 0 %><%= cq.to_i %><% end %></td>
-                         <td><% if has_quarter > 0 %><%= mcq.to_i %><% end %></td>
-                         <td><% if has_quarter > 0 %><%= prac.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= conv_mcw.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= ct.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= cq.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= mcq.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= prac.to_i %><% end %></td>
                          <%
                           full_mark_all = 100
                           total = cq+mcq+prac
@@ -190,10 +190,10 @@
                           end
                           grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                         %>
-                         <td><% if has_quarter > 0 %><%= total.to_i %><% end %></td>
-                         <td><% if has_quarter > 0 %><%= total_converted.to_i %><% end %></td>
-                         <td><% if has_quarter > 0 %><%= total_mark_subject.to_i %><% end %></td>
-                         <td><% if has_quarter > 0 %><%= highest_mark1.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= total.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= total_converted.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= total_mark_subject.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= highest_mark1.to_i %><% end %></td>
                          <td><% if !grade.blank? and !grade.name.blank? %><%= grade.name %><% end %></td>
                          <td><% if !grade.blank? and !grade.name.blank? %><%= grade.credit_points %><% total_grade = total_grade+grade.credit_points %><% end %></td>
 
@@ -339,11 +339,11 @@
                             conv_mcw = conv_mcw.round()
                          end
                          %>
-                         <td><% if has_quarter > 0 %><%= conv_mcw.to_i %><% end %></td>
-                         <td><% if has_quarter > 0 %><%= ct.to_i %><% end %></td>
-                         <td><% if has_quarter > 0 %><%= cq.to_i %><% end %></td>
-                         <td><% if has_quarter > 0 %><%= mcq.to_i %><% end %></td>
-                         <td><% if has_quarter > 0 %><%= prac.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= conv_mcw.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= ct.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= cq.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= mcq.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= prac.to_i %><% end %></td>
                          <%
                           full_mark_all = 100
                           total = cq+mcq+prac
@@ -369,10 +369,10 @@
                           end
                           grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                         %>
-                         <td><% if has_quarter > 0 %><%= total.to_i %><% end %></td>
-                         <td><% if has_quarter > 0 %><%= total_converted.to_i %><% end %></td>
-                         <td><% if has_quarter > 0 %><%= total_mark_subject.to_i %><% end %></td>
-                         <td><% if has_quarter > 0 %><%= highest_mark1.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= total.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= total_converted.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= total_mark_subject.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= highest_mark1.to_i %><% end %></td>
                          <td><% if !grade.blank? and !grade.name.blank? %><%= grade.name %><% end %></td>
                          <td><% if !grade.blank? and !grade.name.blank? %><%= grade.credit_points %><% total_grade = total_grade+grade.credit_points %><% end %></td>
 

@@ -311,6 +311,7 @@
                                 <%
                                 full_ob_previous = full_ob
                                 total_ob_previous = total_ob
+                                total_sb_previous = total_sb
                                 converted_sb_full2 = 50
                                 converted_ob_full2 = 25
                                 full_sb = 0
@@ -395,7 +396,7 @@
                                 <% if full_sb > 0 %>
                                   <%
                                     
-                                    if total_sb > 0
+                                    if total_sb > 0 || total_sb_previous > 0
                                       converted_sb_full_main = converted_sb_full2+converted_sb_full
                                       converted_sb_main = converted_sb2.round+converted_sb.round
                                       sb_main = (converted_sb_main.round.to_f/converted_sb_full_main.to_f)*100
@@ -414,7 +415,7 @@
                                 <% if full_ob_previous > 0 %>
                                   <%
 
-                                    if total_ob_previous > 0
+                                    if total_ob_previous > 0 || total_ob > 0
                                       converted_ob_full_main = converted_ob_full2+converted_ob_full
                                       converted_ob_main = converted_ob2+converted_ob
                                       if (converted_ob_main.round < 16 && converted_ob_full_main == 50) || (converted_ob_main.round < 10 && converted_ob_full_main == 30) || (converted_ob_main.round < 20 && converted_ob_full_main == 60)

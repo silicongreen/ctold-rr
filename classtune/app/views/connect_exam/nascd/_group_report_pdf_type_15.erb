@@ -194,8 +194,8 @@
                          <td><% if has_quarter %><%= total_converted.to_i %><% end %></td>
                          <td><% if has_quarter %><%= total_mark_subject.to_i %><% end %></td>
                          <td><% if has_quarter %><%= highest_mark1.to_i %><% end %></td>
-                         <td><% if !grade.blank? and !grade.name.blank? %><%= grade.name %><% end %></td>
-                         <td><% if !grade.blank? and !grade.name.blank? %><%= grade.credit_points %><% total_grade = total_grade+grade.credit_points %><% end %></td>
+                         <td><% if has_quarter && !grade.blank? && !grade.name.blank? %><%= grade.name %><% end %></td>
+                         <td><% if has_quarter && !grade.blank? && !grade.name.blank? %><%= grade.credit_points %><% total_grade = total_grade+grade.credit_points %><% end %></td>
 
            
                           
@@ -373,8 +373,8 @@
                          <td><% if has_quarter %><%= total_converted.to_i %><% end %></td>
                          <td><% if has_quarter %><%= total_mark_subject.to_i %><% end %></td>
                          <td><% if has_quarter %><%= highest_mark1.to_i %><% end %></td>
-                         <td><% if !grade.blank? and !grade.name.blank? %><%= grade.name %><% end %></td>
-                         <td><% if !grade.blank? and !grade.name.blank? %><%= grade.credit_points %><% total_grade = total_grade+grade.credit_points %><% end %></td>
+                         <td><% if has_quarter && !grade.blank? && !grade.name.blank? %><%= grade.name %><% end %></td>
+                         <td><% if has_quarter && !grade.blank? && !grade.name.blank? %><%= grade.credit_points %><% total_grade = total_grade+grade.credit_points %><% end %></td>
 
            
                           

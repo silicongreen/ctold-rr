@@ -69,6 +69,7 @@
                     grand_total = 0
                     total_grade = 0
                     has_quarter = false
+                    grade_subject_mark_first = {}
                     %>
                     <% gtotal = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
@@ -81,10 +82,22 @@
                       <% if subjects['no_exams_sjws'].to_i == 1  %>
                         <% next %>
                       <% end %>
-                     
-                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                          
-                          <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>
+                      <%
+                          third_subject = ""
+                          fourth_subject = ""
+                      %>
+                      <% if !@std_subject_hash_type.blank? %>
+                        <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||4") %>
+                          <% fourth_subject = "(4th)" %>
+                        <% end %>
+                        <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||3") %>
+                          <% third_subject = "(3rd)" %>
+                        <% end %>
+                      <% end %>
+                      <% if subjects['grade_subject'].to_i != 1  %>
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                          <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %><%= fourth_subject %></td>
+                      <% end %>    
                           <%
                             cw = 0
                             ct = 0
@@ -149,10 +162,11 @@
                             highest_mark1 = @subject_highest1[subjects['id'].to_i].to_f
                           end
                           %>
-                         
+                         <% if subjects['grade_subject'].to_i != 1  %>
                          <td><% if full_mark_cq > 0 %><%= full_mark_cq.to_i %><% end %></td>
                          <td><% if full_mark_mcq > 0 %><%= full_mark_mcq.to_i %><% end %></td>
                          <td><% if full_mark_prac > 0 %><%= full_mark_prac.to_i %><% end %></td>
+                         <% end %>
                          <%
                          full_mark_all = 100
                          total = cq+mcq+prac
@@ -163,11 +177,13 @@
                             conv_mcw = conv_mcw.round()
                          end
                          %>
+                         <% if subjects['grade_subject'].to_i != 1  %>
                          <td><% if has_quarter %><%= conv_mcw.to_i %><% end %></td>
                          <td><% if has_quarter %><%= ct.to_i %><% end %></td>
                          <td><% if has_quarter %><%= cq.to_i %><% end %></td>
                          <td><% if has_quarter %><%= mcq.to_i %><% end %></td>
                          <td><% if has_quarter %><%= prac.to_i %><% end %></td>
+                         <% end %>
                          <%
                           
                           total_converted = total
@@ -183,24 +199,49 @@
                           end
                           
                           total_mark_subject = total_converted+conv_mcw+ct
-                          grand_total = grand_total+total_mark_subject
+                          if subjects['grade_subject'].to_i != 1
+                            if fourth_subject.blank?
+                              grand_total = grand_total+total_mark_subject
+                            else
+                              if total_mark_subject > 40
+                                new_mark_to_add = total_mark_subject-40
+                                grand_total = grand_total+new_mark_to_add
+                              end
+                            end
+                          end
                           main_mark = 0
                           if full_term > 0 && total_mark_subject > 0
                             main_mark = (total_mark_subject.to_f/full_mark_all.to_f)*100
                             main_mark = main_mark.round()
                           end
+                          if  subjects['grade_subject'].to_i != 1
+                            grade_subject_mark_first[subjects['id'].to_i] = main_mark
+                          end 
                           grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                         %>
+                        <% if subjects['grade_subject'].to_i != 1  %>
                          <td><% if has_quarter %><%= total.to_i %><% end %></td>
                          <td><% if has_quarter %><%= total_converted.to_i %><% end %></td>
                          <td><% if has_quarter %><%= total_mark_subject.to_i %><% end %></td>
                          <td><% if has_quarter %><%= highest_mark1.to_i %><% end %></td>
                          <td><% if has_quarter && !grade.blank? && !grade.name.blank? %><%= grade.name %><% end %></td>
-                         <td><% if has_quarter && !grade.blank? && !grade.name.blank? %><%= grade.credit_points %><% total_grade = total_grade+grade.credit_points %><% end %></td>
+                         <td><% if has_quarter && !grade.blank? && !grade.name.blank? %><%= grade.credit_points %>
+
+                         <% 
+                         if fourth_subject.blank?
+                          total_grade = total_grade+grade.credit_points
+                         elsif grade.credit_points > 2
+                            new_grade = grade.credit_points - 2
+                            total_grade = total_grade+new_grade
+                         end
+                         %>
+                         
+                         <% end %></td>
 
            
                           
                       </tr>
+                      <% end %>
                       
                     <% end %>
                   <% end %>
@@ -249,6 +290,7 @@
                     grand_total = 0
                     total_grade = 0
                     has_quarter = false
+                    grade_subject_mark_second = {}
                     %>
                     <% gtotal = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
@@ -261,10 +303,23 @@
                       <% if subjects['no_exams_sjws'].to_i == 1  %>
                         <% next %>
                       <% end %>
-                     
+                      <%
+                          third_subject = ""
+                          fourth_subject = ""
+                      %>
+                      <% if !@std_subject_hash_type.blank? %>
+                        <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||4") %>
+                          <% fourth_subject = "(4th)" %>
+                        <% end %>
+                        <% if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||3") %>
+                          <% third_subject = "(3rd)" %>
+                        <% end %>
+                      <% end %>
+                     <% if subjects['grade_subject'].to_i != 1  %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           
-                          <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>
+                          <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %><%= fourth_subject %></td>
+                     <% end %>     
                           <%
                             cw = 0
                             ct = 0
@@ -329,10 +384,11 @@
                             highest_mark1 = @subject_highest2[subjects['id'].to_i].to_f
                           end
                           %>
-                         
+                         <% if subjects['grade_subject'].to_i != 1  %>
                          <td><% if full_mark_cq > 0 %><%= full_mark_cq.to_i %><% end %></td>
                          <td><% if full_mark_mcq > 0 %><%= full_mark_mcq.to_i %><% end %></td>
                          <td><% if full_mark_prac > 0 %><%= full_mark_prac.to_i %><% end %></td>
+                         <% end %>
                          <%
                          conv_mcw = 0
                          if cw > 0 && full_mark_cw > 0
@@ -340,11 +396,13 @@
                             conv_mcw = conv_mcw.round()
                          end
                          %>
+                         <% if subjects['grade_subject'].to_i != 1  %>
                          <td><% if has_quarter %><%= conv_mcw.to_i %><% end %></td>
                          <td><% if has_quarter %><%= ct.to_i %><% end %></td>
                          <td><% if has_quarter %><%= cq.to_i %><% end %></td>
                          <td><% if has_quarter %><%= mcq.to_i %><% end %></td>
                          <td><% if has_quarter %><%= prac.to_i %><% end %></td>
+                         <% end %>
                          <%
                           full_mark_all = 100
                           total = cq+mcq+prac
@@ -362,24 +420,48 @@
                           end
                           
                           total_mark_subject = total_converted+conv_mcw+ct
-                          grand_total = grand_total+total_mark_subject
+                          if subjects['grade_subject'].to_i != 1
+                            grand_total = grand_total+total_mark_subject
+                          end 
                           main_mark = 0
                           if full_term > 0 && total_mark_subject > 0
                             main_mark = (total_mark_subject.to_f/full_mark_all.to_f)*100
                             main_mark = main_mark.round()
                           end
+                          if subjects['grade_subject'].to_i != 1
+                            if fourth_subject.blank?
+                              grand_total = grand_total+total_mark_subject
+                            else
+                              if total_mark_subject > 40
+                                new_mark_to_add = total_mark_subject-40
+                                grand_total = grand_total+new_mark_to_add
+                              end
+                            end
+                          end
                           grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                         %>
+                        <% if subjects['grade_subject'].to_i != 1  %>
                          <td><% if has_quarter %><%= total.to_i %><% end %></td>
                          <td><% if has_quarter %><%= total_converted.to_i %><% end %></td>
                          <td><% if has_quarter %><%= total_mark_subject.to_i %><% end %></td>
                          <td><% if has_quarter %><%= highest_mark1.to_i %><% end %></td>
                          <td><% if has_quarter && !grade.blank? && !grade.name.blank? %><%= grade.name %><% end %></td>
-                         <td><% if has_quarter && !grade.blank? && !grade.name.blank? %><%= grade.credit_points %><% total_grade = total_grade+grade.credit_points %><% end %></td>
+                         <td><% if has_quarter && !grade.blank? && !grade.name.blank? %>
+                         <%= grade.credit_points %>
+                         <% 
+                         if fourth_subject.blank?
+                          total_grade = total_grade+grade.credit_points
+                         elsif grade.credit_points > 2
+                            new_grade = grade.credit_points - 2
+                            total_grade = total_grade+new_grade
+                         end
+                         %>
+                         <% end %></td>
 
            
                           
                       </tr>
+                      <% end %>
                       
                     <% end %>
                   <% end %>
@@ -399,26 +481,49 @@
                     <td>Half Yearly</td>
                     <td>Annual</td>
                   </tr>
-                  <tr class="even">
-                    <td class="no-warp align-left-baf">Physical Education</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="even">
-                    <td class="no-warp align-left-baf">WLOE</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="even">
-                    <td class="no-warp align-left-baf">Arts & Crafts</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="even">
-                    <td class="no-warp align-left-baf">Agriculture / H Science</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                      <% @report_data['report']['subjects'].each do |subjects| %>
+                        <% if subjects['grade_subject'].to_i != 1  %>
+                          <% next %>
+                        <% end %>
+                      <tr class="even">
+                        <td class="no-warp align-left-baf"><%= subjects['name'] %></td>
+                        <td>
+                        <% if !grade_subject_mark_first.blank? && !grade_subject_mark_first[subjects['id'].to_i].blank? %>
+                          <%
+                          marks = grade_subject_mark_first[subjects['id'].to_i]
+                          %>
+                          <% if marks >= 80 %>
+                          Excellent
+                          <% elsif marks >= 60 %>
+                          Very Good
+                          <% elsif marks >= 50 %>
+                          Good
+                          <% else %>
+                          Need Improvement
+                          <% end %>
+                        <% end %>
+                        </td>
+                        <td>
+                        <% if !grade_subject_mark_second.blank? && !grade_subject_mark_second[subjects['id'].to_i].blank? %>
+                          <%
+                          marks = grade_subject_mark_second[subjects['id'].to_i]
+                          %>
+                          <% if marks >= 80 %>
+                          Excellent
+                          <% elsif marks >= 60 %>
+                          Very Good
+                          <% elsif marks >= 50 %>
+                          Good
+                          <% else %>
+                          Need Improvement
+                          <% end %>
+                        <% end %>
+                        </td>
+                      </tr>
+                      <% end %>
+                  <% end %>
+                  
               </table>
               <table id="pdf-table"  width="22%" class="left-table" cellspacing="0" >
                   <tr class="table-header">

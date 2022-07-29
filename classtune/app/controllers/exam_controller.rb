@@ -8332,7 +8332,7 @@ class ExamController < ApplicationController
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
       end
     elsif MultiSchool.current_school.code == "nascd"
-      if @connect_exam_obj.result_type == 14 or @connect_exam_obj.result_type == 15
+      if @connect_exam_obj.result_type == 14 or @connect_exam_obj.result_type == 15  or @connect_exam_obj.result_type == 16
         render :pdf => template, 
         :save_only    => for_save,
         :orientation => 'Portrait',

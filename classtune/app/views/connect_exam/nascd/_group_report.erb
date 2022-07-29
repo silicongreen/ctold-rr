@@ -53,7 +53,7 @@ if @tabulation_data.nil?
     @tabulation_data = student_response['data']
   end
   %>
-  <% if @connect_exam_obj.result_type.to_i == 14 %>
+  <% if @connect_exam_obj.result_type.to_i == 14 || @connect_exam_obj.result_type.to_i == 16 %>
     <%= render  :partial=>"/connect_exam/nascd/finding_data_14" %>
   <% elsif @connect_exam_obj.result_type.to_i == 15 %>
     <%= render  :partial=>"/connect_exam/nascd/finding_data_15" %>

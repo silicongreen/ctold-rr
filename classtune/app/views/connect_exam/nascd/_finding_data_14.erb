@@ -14,6 +14,8 @@
   @subject_highest2 = {}
   @subject_highest3 = {}
   @subject_highest4 = {}
+  @subject_highest5 = {}
+  @subject_highest6 = {}
   batchobj = Batch.find_by_id(@batch.id) 
   courseObj = Course.find_by_id(batchobj.course_id)
   all_courses = Course.find_all_by_course_name(courseObj.course_name)
@@ -69,6 +71,8 @@
           total_mark2 = 0
           total_mark3 = 0
           total_mark4 = 0
+          total_mark5 = 0
+          total_mark6 = 0
 
           if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
             
@@ -85,7 +89,13 @@
                 end 
                 if rs['quarter'] == '4'
                   total_mark4 = total_mark4+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                end  
+                end 
+                if rs['quarter'] == '5'
+                  total_mark5 = total_mark5+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                end
+                if rs['quarter'] == '6'
+                  total_mark6 = total_mark6+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                end 
                 
               end    
             end
@@ -113,6 +123,18 @@
               @subject_highest4[sub['id'].to_i] = total_mark4
             elsif total_mark4.to_f > @subject_highest4[sub['id'].to_i].to_f
                @subject_highest4[sub['id'].to_i] = total_mark4.to_f
+            end
+
+            if @subject_highest5[sub['id'].to_i].blank?
+              @subject_highest5[sub['id'].to_i] = total_mark5
+            elsif total_mark5.to_f > @subject_highest5[sub['id'].to_i].to_f
+               @subject_highest5[sub['id'].to_i] = total_mark5.to_f
+            end
+
+            if @subject_highest6[sub['id'].to_i].blank?
+              @subject_highest6[sub['id'].to_i] = total_mark6
+            elsif total_mark6.to_f > @subject_highest6[sub['id'].to_i].to_f
+               @subject_highest6[sub['id'].to_i] = total_mark6.to_f
             end
 
           end  

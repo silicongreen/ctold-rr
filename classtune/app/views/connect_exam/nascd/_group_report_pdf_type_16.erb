@@ -175,7 +175,7 @@
                          <%
                             main_mark = 0
                             if full_mark2 > 0 && total2 > 0
-                              main_mark = (total1.to_f/full_mark2.to_f)*100
+                              main_mark = (total2.to_f/full_mark2.to_f)*100
                               main_mark = main_mark.round()
                               
                             end
@@ -188,11 +188,10 @@
                          <td><% if full_mark3 > 0 %><%= total3 %><% end %></td>
                          <td><% if full_mark3 > 0 %><%= highest_mark3 %><% end %></td>
                          <%
-                            main_mark = 0 && total3 > 0
-                            if full_mark3 > 0
-                              main_mark = (total1.to_f/full_mark3.to_f)*100
+                            main_mark = 0
+                            if full_mark3 > 0 && total3 > 0
+                              main_mark = (total3.to_f/full_mark3.to_f)*100
                               main_mark = main_mark.round()
-                              
                             end
                             grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                           %>
@@ -364,7 +363,7 @@
                          <%
                             main_mark = 0
                             if full_mark2 > 0 && total2 > 0
-                              main_mark = (total1.to_f/full_mark2.to_f)*100
+                              main_mark = (total2.to_f/full_mark2.to_f)*100
                               main_mark = main_mark.round()
                               
                             end
@@ -377,9 +376,9 @@
                          <td><% if full_mark3 > 0 %><%= total3 %><% end %></td>
                          <td><% if full_mark3 > 0 %><%= highest_mark3 %><% end %></td>
                          <%
-                            main_mark = 0 && total3 > 0
-                            if full_mark3 > 0
-                              main_mark = (total1.to_f/full_mark3.to_f)*100
+                            main_mark = 0
+                            if full_mark3 > 0 && total3 > 0
+                              main_mark = (total3.to_f/full_mark3.to_f)*100
                               main_mark = main_mark.round()
                               
                             end

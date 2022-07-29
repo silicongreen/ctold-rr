@@ -182,7 +182,7 @@
                             grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                           %>
                          <td><% if full_mark2 > 0 && !grade.blank? and !grade.name.blank? %><%= grade.name %><% end %></td>
-                         <td><% if full_mark2 > 0 && !grade.blank? and !grade.name.blank? %><%= grade.credit_points %><% grand_point1 = grand_point1+grade.credit_points %><% end %></td>
+                         <td><% if full_mark2 > 0 && !grade.blank? and !grade.name.blank? %><%= grade.credit_points %><% grand_point2 = grand_point2+grade.credit_points %><% end %></td>
 
 
                          <td><% if full_mark3 > 0 %><%= total3 %><% end %></td>
@@ -196,7 +196,7 @@
                             grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                           %>
                          <td><% if full_mark3 > 0 && !grade.blank? and !grade.name.blank? %><%= grade.name %><% end %></td>
-                         <td><% if full_mark3 > 0 && !grade.blank? and !grade.name.blank? %><%= grade.credit_points %><% grand_point1 = grand_point1+grade.credit_points %><% end %></td>
+                         <td><% if full_mark3 > 0 && !grade.blank? and !grade.name.blank? %><%= grade.credit_points %><% grand_point3 = grand_point3+grade.credit_points %><% end %></td>
                          
                           
                       </tr>
@@ -370,7 +370,7 @@
                             grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                           %>
                          <td><% if full_mark2 > 0 && !grade.blank? and !grade.name.blank? %><%= grade.name %><% end %></td>
-                         <td><% if full_mark2 > 0 && !grade.blank? and !grade.name.blank? %><%= grade.credit_points %><% grand_point1 = grand_point1+grade.credit_points %><% end %></td>
+                         <td><% if full_mark2 > 0 && !grade.blank? and !grade.name.blank? %><%= grade.credit_points %><% grand_point2 = grand_point2+grade.credit_points %><% end %></td>
 
 
                          <td><% if full_mark3 > 0 %><%= total3 %><% end %></td>
@@ -385,7 +385,7 @@
                             grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                           %>
                          <td><% if full_mark3 > 0 && !grade.blank? and !grade.name.blank? %><%= grade.name %><% end %></td>
-                         <td><% if full_mark3 > 0 && !grade.blank? and !grade.name.blank? %><%= grade.credit_points %><% grand_point1 = grand_point1+grade.credit_points %><% end %></td>
+                         <td><% if full_mark3 > 0 && !grade.blank? and !grade.name.blank? %><%= grade.credit_points %><% grand_point3 = grand_point3+grade.credit_points %><% end %></td>
                          
                           
                       </tr>
@@ -643,8 +643,8 @@ socially to his or her abilities and opportunities.</i></li>
     }
     table#pdf-table tr.even td, table#pdf-table tr.table-header td, table#pdf-table tr.odd td
     {
-        padding: 2px !important;
-        font-size: 17px !important;
+        padding: 5px !important;
+        font-size: 18px !important;
     }
 
 

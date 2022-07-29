@@ -121,12 +121,15 @@
             if full_mark_term == 100
               if total_term > 0
                 converted_term = (total_term.to_f/full_mark_term.to_f)*75
-              else
+              end 
+            else 
+              if total_term > 0
                 full_mark_all = 50
                 converted_term = (total_term.to_f/full_mark_term.to_f)*35
               end
+            end  
 
-            end
+            
             subject_total_mark = converted_term+cw_converted+ct
             
             
@@ -188,11 +191,12 @@
             if full_mark_term == 100
               if total_term > 0
                 converted_term = (total_term.to_f/full_mark_term.to_f)*75
-              else
+              end 
+            else 
+              if total_term > 0
                 full_mark_all = 50
                 converted_term = (total_term.to_f/full_mark_term.to_f)*35
               end
-
             end
             subject_total_mark = converted_term+cw_converted+ct
 

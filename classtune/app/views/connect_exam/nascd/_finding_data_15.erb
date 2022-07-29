@@ -109,30 +109,28 @@
                 
               end    
             end
-
-            cw_converted = 0
-            if cw > 0
-              cw_converted = (cw.to_f/full_mark_cw.to_f)*5
-              cw_converted = cw_converted.round
-            end
-            total_term = cq+mcq+prac
             full_mark_term = full_mark_prac+full_mark_mcq+full_mark_cq
+            cw_converted = cw
+            if cw > 0 && (full_mark_term == 100 or full_mark_term == 50) && full_mark_ct<=20
+              cw_converted = (cw.to_f/full_mark_cw.to_f)*5
+            end
+            cw_converted = cw_converted.round
+            total_term = cq+mcq+prac
+            
             full_mark_all = 100
-            converted_term = 0
+            converted_term = total_term
             if full_mark_term == 100
               if total_term > 0
                 converted_term = (total_term.to_f/full_mark_term.to_f)*75
                 converted_term = converted_term.round
               end 
-            else 
+            elsif full_mark_term == 50 && full_mark_ct<=20
               if total_term > 0
                 full_mark_all = 50
                 converted_term = (total_term.to_f/full_mark_term.to_f)*35
                 converted_term = converted_term.round
               end
             end  
-
-            
             subject_total_mark = converted_term+cw_converted+ct
             
             
@@ -183,27 +181,28 @@
               end    
             end
 
-            cw_converted = 0
-            if cw > 0
-              cw_converted = (cw.to_f/full_mark_cw.to_f)*5
-              cw_converted = cw_converted.round
-            end
-            total_term = cq+mcq+prac
             full_mark_term = full_mark_prac+full_mark_mcq+full_mark_cq
+            cw_converted = cw
+            if cw > 0 && (full_mark_term == 100 or full_mark_term == 50) && full_mark_ct<=20
+              cw_converted = (cw.to_f/full_mark_cw.to_f)*5
+            end
+            cw_converted = cw_converted.round
+            total_term = cq+mcq+prac
+            
             full_mark_all = 100
-            converted_term = 0
+            converted_term = total_term
             if full_mark_term == 100
               if total_term > 0
                 converted_term = (total_term.to_f/full_mark_term.to_f)*75
                 converted_term = converted_term.round
               end 
-            else 
+            elsif full_mark_term == 50 && full_mark_ct<=20
               if total_term > 0
                 full_mark_all = 50
                 converted_term = (total_term.to_f/full_mark_term.to_f)*35
                 converted_term = converted_term.round
               end
-            end
+            end  
             subject_total_mark = converted_term+cw_converted+ct
 
             if @subject_highest2[sub['id'].to_i].blank?

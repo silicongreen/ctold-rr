@@ -214,7 +214,7 @@
                             main_mark = (total_mark_subject.to_f/full_mark_all.to_f)*100
                             main_mark = main_mark.round()
                           end
-                          if  subjects['grade_subject'].to_i == 1
+                          if  subjects['grade_subject'].to_i == 1 && has_quarter
                             grade_subject_mark_first[subjects['id'].to_i] = main_mark
                           end 
                           grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
@@ -435,7 +435,7 @@
                             main_mark = (total_mark_subject.to_f/full_mark_all.to_f)*100
                             main_mark = main_mark.round()
                           end
-                          if  subjects['grade_subject'].to_i == 1
+                          if  subjects['grade_subject'].to_i == 1 && has_quarter
                             grade_subject_mark_second[subjects['id'].to_i] = main_mark
                           end 
                           

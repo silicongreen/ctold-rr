@@ -37,21 +37,47 @@
               
               <table id="pdf-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
-                    <tr class="table-header">
-                      <td colspan="5"><b><%= "ASSESSMENT" %></b></td>
-                    </tr>
               
                     <tr class="table-header">
-                      <td class="col-pdf no-warp"><b><%= "Subject" %></b></td>
-                      <td>Quarterly</td> 
-                      <td>Half Yearly</td>
-                      <td>Quarterly</td> 
-                      <td>Annual</td>
+                      <td class="col-pdf no-warp" rowspan="3"><b><%= "Subject" %></b></td>
+                      <td colspan="6"> Half Yearly Exam</td> 
+                      <td colspan="6">Annual Exam</td>
+                    </tr> 
+                   
+                    <tr>
+                    
+                    <tr class="table-header">
+                        <td>Converted<br/>MCW</td>
+                        <td>Class Test</td>
+                        <td>Term Exam</td>
+                        <td rowspan="2">Total</td>
+                        <td rowspan="2">Letter Grade</td>
+                        <td rowspan="2">Grade Point</td>
+                        <td>Converted<br/>MCW</td>
+                        <td>Class Test</td>
+                        <td>Term Exam</td>
+                        <td rowspan="2">Total</td>
+                        <td rowspan="2">Letter Grade</td>
+                        <td rowspan="2">Grade Point</td>
                     </tr>
-                   <%
-                   has_first_term = false
-                   has_final_term = false
-                   %>
+                    <tr>
+                      <td>5</td>
+                      <td>20</td>
+                      <td>75</td>
+                      <td>5</td>
+                      <td>20</td>
+                      <td>75</td>
+                    </tr>
+                    <%
+                    grand_total1 = 0
+                    total_grade1 = 0
+                    grand_total2 = 0
+                    total_grade2 = 0
+                    has_first_term = false
+                    has_final_term = false
+                    grade_subject_mark_first = {}
+                    grade_subject_mark_second = {}
+                    %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% subjectdata = Subject.find(subjects['id'].to_i) %>
@@ -63,9 +89,10 @@
                         <% next %>
                       <% end %>
                       
-                      
+                      <% if subjects['grade_subject'].to_i != 1  %>
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                          <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>   
+                          <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>
+                      <% end %>    
                           <%
                             cw = 0
                             ct = 0
@@ -137,8 +164,7 @@
 
                                 <% end %>
                             <% end %>
-                          <% end %> 
-                         
+                          <% end %>
                          <%
                          quarter_mark = 0
                          if has_first_term
@@ -169,37 +195,28 @@
                               term_mark_main.round
                             end
 
+                            total = term+cw+ct
+                            grade = GradingLevel.percentage_to_grade(total, @batch.id)
+                            if subjects['grade_subject'].to_i == 1
+                              grade_subject_mark_first[subjects['id'].to_i] = total*2
+                            else
+                              grand_total1 = grand_total1+total
+                            end
+
                          end
                          %>
-                        
-                         <td><% if has_first_term %>
-                         
-                         <% if quarter_main_mark >= 80 %>
-                          Excellent
-                          <% elsif quarter_main_mark >= 60 %>
-                          Very Good
-                          <% elsif quarter_main_mark >= 50 %>
-                          Good
-                          <% else %>
-                          Need Improvement
-                          <% end %>
-                         
+                         <% if subjects['grade_subject'].to_i != 1  %>
+                         <td><% if has_first_term %><%= cw.to_i %><% end %></td>
+                         <td><% if has_first_term %><%= ct.to_i %><% end %></td>
+                         <td><% if has_first_term %><%= term.to_i %><% end %></td>
+                         <td><% if has_first_term %><%= total.to_i %><% end %></td>
+                         <td><% if has_first_term && !grade.blank? && !grade.name.blank? %><%= grade.name %><% end %></td>
+                         <td><% if has_first_term && !grade.blank? && !grade.name.blank? %><%= grade.credit_points %>
+                         <%
+                          total_grade1 = total_grade1+grade.credit_points
+                         %>
+                         <% end %></td>
                          <% end %>
-                         </td>
-                         <td><% if has_first_term %>
-                         
-                          <% if term_mark_main >= 80 %>
-                          Excellent
-                          <% elsif term_mark_main >= 60 %>
-                          Very Good
-                          <% elsif term_mark_main >= 50 %>
-                          Good
-                          <% else %>
-                          Need Improvement
-                          <% end %>
-                         
-                         <% end %>
-                         </td>
 
                          <%
                          quarter_mark = 0
@@ -231,62 +248,133 @@
                               term_mark_main.round
                             end
 
+                            total = term+cw+ct
+                            
+                            grade = GradingLevel.percentage_to_grade(total, @batch.id)
+                            if subjects['grade_subject'].to_i == 1
+                              grade_subject_mark_second[subjects['id'].to_i] = total*2
+                            else
+                              grand_total2 = grand_total2+total
+                            end
+
                          end
                          %>
-                        
-                         <td><% if has_final_term %>
-                         
-                         <% if quarter_main_mark >= 80 %>
-                          Excellent
-                          <% elsif quarter_main_mark >= 60 %>
-                          Very Good
-                          <% elsif quarter_main_mark >= 50 %>
-                          Good
-                          <% else %>
-                          Need Improvement
-                          <% end %>
-                         
+                         <% if subjects['grade_subject'].to_i != 1  %>
+                         <td><% if has_final_term %><%= cw_final.to_i %><% end %></td>
+                         <td><% if has_final_term %><%= ct_final.to_i %><% end %></td>
+                         <td><% if has_final_term %><%= term_final.to_i %><% end %></td>
+                         <td><% if has_final_term %><%= total.to_i %><% end %></td>
+                         <td><% if has_final_term && !grade.blank? && !grade.name.blank? %><%= grade.name %><% end %></td>
+                         <td><% if has_final_term && !grade.blank? && !grade.name.blank? %><%= grade.credit_points %>
+                         <%
+                          total_grade2 = total_grade2+grade.credit_points
+                         %>
+                         <% end %></td>
                          <% end %>
-                         </td>
-                         <td><% if has_final_term %>
-                         
-                          <% if term_mark_main >= 80 %>
-                          Excellent
-                          <% elsif term_mark_main >= 60 %>
-                          Very Good
-                          <% elsif term_mark_main >= 50 %>
-                          Good
-                          <% else %>
-                          Need Improvement
-                          <% end %>
-                         
-                         <% end %>
-                         </td>
                          
 
            
                           
                       </tr>
+                      <% end %>
                       
                     <% end %>
                   <% end %>
+                  <tr class="table-header">
+                    <td colspan="4">Grand Total Marks & GPA</td>
+                    <td class="col-pdf"><% if has_first_term %><%= grand_total1 %><% end %></td>
+                    <td class="col-pdf"></td>
+                    <td class="col-pdf"><% if has_quarter %><%= total_grade1 %><% end %></td>
+                    <td colspan="3">Grand Total Marks & GPA</td>
+                    <td class="col-pdf"><% if has_final_term %><%= grand_total2 %><% end %></td>
+                    <td class="col-pdf"></td>
+                    <td class="col-pdf"><% if has_final_term %><%= total_grade2 %><% end %></td>
+                  </tr>
 
               </table>
 
               
-              
-              <table id="pdf-table"  width="63%" class="left-table break-table ev-table" cellspacing="0" >
+              <table id="pdf-table"  width="32%" class="left-table break-table ev-table" cellspacing="0" >
+                <tr>
+                  <td>
+                    <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >
+                        <tr class="table-header">
+                          <td>Subject</td>
+                          <td>Half Yearly</td>
+                          <td>Annual</td>
+                        </tr>
+                        <% unless @report_data['report']['subjects'].blank? %> 
+                            <% @report_data['report']['subjects'].each do |subjects| %>
+                              <% if subjects['grade_subject'].to_i != 1  %>
+                                <% next %>
+                              <% end %>
+                            <tr class="even">
+                              <td class="no-warp align-left-baf"><%= subjects['name'] %></td>
+                              <td>
+                              <% if !grade_subject_mark_first.blank? && !grade_subject_mark_first[subjects['id'].to_i].blank? %>
+                                <%
+                                marks = grade_subject_mark_first[subjects['id'].to_i]
+                                %>
+                                <% if marks >= 80 %>
+                                Excellent
+                                <% elsif marks >= 60 %>
+                                Very Good
+                                <% elsif marks >= 50 %>
+                                Good
+                                <% else %>
+                                Need Improvement
+                                <% end %>
+                              <% end %>
+                              </td>
+                              <td>
+                              <% if !grade_subject_mark_second.blank? && !grade_subject_mark_second[subjects['id'].to_i].blank? %>
+                                <%
+                                marks = grade_subject_mark_second[subjects['id'].to_i]
+                                %>
+                                <% if marks >= 80 %>
+                                Excellent
+                                <% elsif marks >= 60 %>
+                                Very Good
+                                <% elsif marks >= 50 %>
+                                Good
+                                <% else %>
+                                Need Improvement
+                                <% end %>
+                              <% end %>
+                              </td>
+                            </tr>
+                            <% end %>
+                        <% end %>
+                        
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >
+                        <tr class="table-header">
+                          <td>Total Working Days</td>
+                          <td>Total Present Days</td>
+                          <td>Total Absent Days</td>
+                        </tr>
+                        <tr>
+                          <td><br/></td>
+                          <td><br/></td>
+                          <td><br/></td>
+                        </tr>
+                        
+                    </table>
+                  </td>
+                </tr>
+              </table>      
+              <table id="pdf-table"  width="32%" class="left-table" cellspacing="0" >
                   <tr class="table-header">
                     <td>Focus Point</td>
-                    <td>Quarterly</td>
-                    <td>Half Yearly</td>
-                    <td>Quarterly</td>
-                    <td>Annual</td>
+                    <td>Quarterly<br/>(H Yearly)</td>
+                    <td>Quarterly<br/>(Annual)</td>
                   </tr>
                   <tr class="even">
                     <td class="no-warp align-left-baf">Cooperation</td>
-                    <td></td>
-                    <td></td>
                     <td></td>
                     <td></td>
                   </tr>
@@ -294,13 +382,9 @@
                     <td class="no-warp align-left-baf">Discipline</td>
                     <td></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
                   </tr>
                   <tr class="even">
                     <td class="no-warp align-left-baf">Punctuality</td>
-                    <td></td>
-                    <td></td>
                     <td></td>
                     <td></td>
                   </tr>
@@ -308,11 +392,14 @@
                     <td class="no-warp align-left-baf">Attentiveness</td>
                     <td></td>
                     <td></td>
+                  </tr>
+                  <tr class="even">
+                    <td class="no-warp align-left-baf">Homework</td>
                     <td></td>
                     <td></td>
                   </tr>
               </table>
-              <table id="pdf-table"  width="35%" class="left-table" cellspacing="0" >
+              <table id="pdf-table"  width="32%" class="left-table" cellspacing="0" >
                   <tr class="table-header">
                     <td colspan="2">Assessment Criteria</td>
                   </tr>
@@ -337,29 +424,54 @@
                  
 
 
-              <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >
-                <tr  class="table-header">
-                  <td>Total Working Days</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                  <td>Total Present Days</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                  <td>Total Absent Days</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-              </table>
-
-            <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >
-              <tr class="even">
+              <table id="pdf-table"  width="100%" class="left-table break-table odd-table ev-table" cellspacing="0" >
+                  <% if @grading_levels.blank? %>
+                    <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+                    <% if @grading_levels.blank? %>
+                      <% @grading_levels = GradingLevel.default %>
+                    <% end %>
+                  <% end %>
+                  <tr class="even">
+                      <td colspan="3" width="40%"><b>Gradding</b></td>
                       <td class='align-left-baf padding-0-text-left' rowspan="8">
                           <ul>
                               <li><i>We issue this report card to let you know our evaluation regarding the progress of your child.</i></li>
                               <li><i>At school, we consider each student as an individual who will develop intellectually, physically and
-socially to his or her abilities and opportunities.</i></li>  
+socially to his or her abilities and opportunities.</i></li> 
+                              <li><i>Parents are always welcome to make an appointment to discuss about the progress of their children.</i></li>  
                           </ul>
                           
                       </td>
                   </tr>
-              </table>    
+                  <tr class="table-header">
+                      <td>Marks</td>
+                      <td>Letter</td>  
+                      <td>Grade Point</td>  
+                  </tr>
+                  <% prev_score = 0 %>
+                  <% @grading_levels.each_with_index do |grade,index| %>
+                    <tr class="table-header">
+                        <td class="no-warp">
+                            <% if grade.max_score.nil? %> 
+                              <% if grade.min_score.to_i == 0 %>
+                                <&nbsp;<%= '%i%' % prev_score %>
+                              <% else %>
+                                <%= '%i%' % grade.min_score %> 
+                              <% end %>
+                            <% else %> 
+                              <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>
+                            <% end %>
+                            <%  prev_score = grade.min_score %>
+                        </td>
+                        <td><%= grade.name %></td>
+                        <td><%= grade.credit_points %></td>
+                    </tr> 
+                  <% end %>  
+              </table>   
               
-              <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >
+              <table id="pdf-table"  width="100%" class="left-table break-table odd-table height-exam ev-table" cellspacing="0" >
                   <tr class="even">
-                      <td width='70%'><br/></td>
+                      <td width='70%'><br/><br/><br/></td>
                       <td width='30%'><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/sign_principal.jpeg")), :width=>"20%" %></td>  
                   </tr>
                   <tr class="table-header">
@@ -539,8 +651,8 @@ socially to his or her abilities and opportunities.</i></li>
     }
     table#pdf-table tr.even td, table#pdf-table tr.table-header td, table#pdf-table tr.odd td
     {
-        padding: 10px !important;
-        font-size: 20px !important;
+        padding: 5px !important;
+        font-size: 18px !important;
     }
     .sjis-new .left-table
     {

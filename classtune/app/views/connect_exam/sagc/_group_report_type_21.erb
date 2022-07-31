@@ -217,13 +217,14 @@
                                   
                             
                             <% tota_mark_with_monthly = avg_mark %>
+                            <% grand_total_fraction = grand_total_fraction+tota_mark_with_monthly.to_f %>
+                            <% tota_mark_with_monthly = total_pr.round.to_f+converted_ob.round.to_f+converted_sb.round.to_f %>
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
                             </td>
                             <%
                               main_mark = (tota_mark_with_monthly.to_f.round/full_mark_all.to_f)*100
                             %>
-                            <% grand_total_fraction = grand_total_fraction+tota_mark_with_monthly.to_f %>
                             <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
                             <td class="col-pdf no-warp">
                                <%= highest_mark.to_f.round.to_i %>
@@ -367,7 +368,7 @@
                                 
                                   %>
                                 <% end %>
-                                <% avg_mark = converted_sb_main+converted_ob_main+total_pr %>
+                                <% avg_mark = converted_sb_main.round+converted_ob_main.round+total_pr %>
                                 
                                 <% tota_mark_with_monthly = avg_mark %>
                                 <%
@@ -581,13 +582,15 @@
                               <% avg_mark = total_pr+converted_ob+converted_sb %>
 
                               <% tota_mark_with_monthly = avg_mark %>
+                              <% grand_total_fraction = grand_total_fraction+tota_mark_with_monthly.to_f %>
+                              <% tota_mark_with_monthly = total_pr.round.to_f+converted_ob.round.to_f+converted_sb.round.to_f %>
                               <td class="col-pdf no-warp">
                                   <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
                               </td>
                               <%
                                 main_mark = (tota_mark_with_monthly.to_f.round/full_mark_all.to_f)*100
                               %>
-                              <% grand_total_fraction = grand_total_fraction+tota_mark_with_monthly.to_f %>
+                              
                               <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
                               <td class="col-pdf no-warp">
                                  <%= highest_mark.to_f.round.to_i %>

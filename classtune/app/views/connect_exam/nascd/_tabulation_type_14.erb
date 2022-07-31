@@ -259,6 +259,11 @@
                               total_mark2 = 0
                               total_mark3 = 0
                               total_mark4 = 0
+
+                              full_mark1 = 0
+                              full_mark2 = 0
+                              full_mark3 = 0
+                              full_mark4 = 0
                             %>
 
                             <% subject_full_mark = 0 %>
@@ -276,15 +281,19 @@
 
                                 if rs['quarter'] == '1'
                                   total_mark1 = total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                 end 
                                 if rs['quarter'] == '2'
                                   total_mark2 = total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                 end 
                                 if rs['quarter'] == '3'
                                   total_mark3 = total_mark3+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  full_mark3 = full_mark3+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                 end 
                                 if rs['quarter'] == '4'
                                   total_mark4 = total_mark4+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  full_mark4 = full_mark4+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                 end 
 
 
@@ -292,16 +301,39 @@
                               <% end %>
                             <% end %> 
 
-                            <% main_mark1 = total_mark1 %>
-                            <% main_mark2 = total_mark2 %>
-                            <% main_mark3 = total_mark3 %>
-                            <% main_mark4 = total_mark4 %>
+                            <% main_mark1 = 0 %>
+                            <% main_mark2 = 0 %>
+                            <% main_mark3 = 0 %>
+                            <% main_mark4 = 0 %>
+                            <%
+                            if full_mark1 > 0 && total_mark1 > 0
+                              main_mark1 = (total_mark1.to_f/full_mark1.to_f)*100
+                              main_mark1 = main_mark1.round
+                            end
+                            
+                            if full_mark2 > 0 && total_mark2 > 0
+                              main_mark2 = (total_mark2.to_f/full_mark2.to_f)*100
+                              main_mark2 = main_mark2.round
+                            end  
+
+                            if full_mark3 > 0 && total_mark3 > 0
+                              main_mark3 = (total_mark3.to_f/full_mark3.to_f)*100
+                              main_mark3 = main_mark3.round
+                            end  
+
+                            if full_mark4 > 0 && total_mark4 > 0
+                              main_mark4 = (total_mark4.to_f/full_mark4.to_f)*100
+                              main_mark4 = main_mark4.round
+                            end  
+                            
+                            %>
                             <% if has_exam == true %>
                               <td>
                                   <% total_mark_1 = total_mark_1+total_mark1.to_f %>
                                   <% total_mark_2= total_mark_2+total_mark2.to_f %>
                                   <%  grade1 = GradingLevel.percentage_to_grade(main_mark1, @batch.id) %>
                                   <%  grade2 = GradingLevel.percentage_to_grade(main_mark2, @batch.id) %>
+                                  <% if full_mark1  > 0 %>
                                   pt:<%= total_mark1 %>&nbsp;|&nbsp;
                                   <% if !grade1.blank? and !grade1.name.blank? %>
                                     
@@ -309,7 +341,11 @@
                                   <% else %>
                                     -  
                                   <% end %>
+                                  <% else %>
+                                  -
+                                  <% end %>
                                   <hr/>
+                                  <% if full_mark2  > 0 %>
                                   p:<%= total_mark2 %>
                                   &nbsp;|&nbsp;
                                   <% if !grade2.blank? and !grade2.name.blank? %>
@@ -317,6 +353,9 @@
                                     <%= grade2.name %>  
                                   <% else %>
                                     -  
+                                  <% end %>
+                                  <% else %>
+                                  -
                                   <% end %>
                               </td> 
                             <% end %>

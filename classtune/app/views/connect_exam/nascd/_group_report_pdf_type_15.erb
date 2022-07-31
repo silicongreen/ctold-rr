@@ -610,9 +610,9 @@
 
               <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >
                 <tr  class="table-header">
-                  <td>Total Working Days</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                  <td>Total Present Days</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                  <td>Total Absent Days</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                  <td>Total Working Days</td><td><%= @report_data['total'] %></td>
+                  <td>Total Present Days</td><td><%= @report_data['present'] %></td>
+                  <td>Total Absent Days</td><td><%= @report_data['total']-@report_data['present'] %></td>
               </table>
 
             <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >

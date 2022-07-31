@@ -418,7 +418,7 @@
 
                                     if total_ob_previous > 0 || total_ob > 0
                                       converted_ob_full_main = converted_ob_full2+converted_ob_full
-                                      converted_ob_main = converted_ob2+converted_ob
+                                      converted_ob_main = converted_ob2.round+converted_ob.round
                                       if (converted_ob_main.round < 16 && converted_ob_full_main == 50) || (converted_ob_main.round < 10 && converted_ob_full_main == 30) || (converted_ob_main.round < 20 && converted_ob_full_main == 60)
                                          failed_subject = true
                                       end   

@@ -192,7 +192,7 @@
                             total = term.round.to_i+cw.round.to_i+ct.round.to_i
                             grade = GradingLevel.percentage_to_grade(total, @batch.id)
                             if subjects['grade_subject'].to_i == 1
-                              grade_subject_mark_first[subjects['id'].to_i] = total*2
+                              grade_subject_mark_first[subjects['id'].to_i] = total.round.to_i*2
                             else
                               grand_total1 = grand_total1+total.round.to_i
                             end
@@ -204,10 +204,7 @@
                          <td><% if has_first_term %><%= ct.round.to_i %><% end %></td>
                          <td><% if has_first_term %><%= term.round.to_i %><% end %></td>
                          <td><% if has_first_term %><%= total.round.to_i %><% end %></td>
-                         <%
-                          total_grade1 = total_grade1+grade.credit_points
-                         %>
-                         <% end %></td>
+                        
                          <% end %>
 
                          <%
@@ -244,9 +241,9 @@
                             
                             grade = GradingLevel.percentage_to_grade(total, @batch.id)
                             if subjects['grade_subject'].to_i == 1
-                              grade_subject_mark_second[subjects['id'].to_i] = total*2
+                              grade_subject_mark_second[subjects['id'].to_i] = total.round.to_i*2
                             else
-                              grand_total2 = grand_total2+total.round
+                              grand_total2 = grand_total2+total.round.to_i
                             end
 
                          end
@@ -256,11 +253,8 @@
                          <td><% if has_final_term %><%= ct_final.round.to_i %><% end %></td>
                          <td><% if has_final_term %><%= term_final.round.to_i %><% end %></td>
                          <td><% if has_final_term %><%= total.round.to_i %><% end %></td>
-                         <%
-                          total_grade2 = total_grade2+grade.credit_points
-                         %>
-                         <% end %></td>
-                        <% end %>
+                        
+                          
                       </tr>
                       <% end %>
                       

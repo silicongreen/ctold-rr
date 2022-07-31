@@ -199,10 +199,6 @@
                           <% end %>
 
                           <td>Total</td>
-                          <td>Grade Count</td>
-                          <% unless @ranked_positions.blank? %>
-                              <td>Position</td>
-                          <% end %>
 
                       </tr>
                     <% elsif std_count>13 && extender ==1 %>
@@ -229,10 +225,6 @@
                           <% end %>
 
                           <td>Total</td>
-                          <td>Grade Count</td>
-                          <% unless @ranked_positions.blank? %>
-                              <td>Position</td>
-                           <% end %>
 
                       </tr>
                     <% end %>    
@@ -311,7 +303,6 @@
                                   <%  grade1 = GradingLevel.percentage_to_grade(main_mark1, @batch.id) %>
                                   <%  grade2 = GradingLevel.percentage_to_grade(main_mark2, @batch.id) %>
                                   pt:<%= total_mark1 %>&nbsp;|&nbsp;
-                                  &nbsp;|&nbsp;
                                   <% if !grade1.blank? and !grade1.name.blank? %>
                                     
                                     <%= grade1.name %>  

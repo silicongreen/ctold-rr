@@ -8852,7 +8852,9 @@ class ExamController < ApplicationController
                         fourth_subject = true
                       end  
                     end
-                    total_subject = total_subject+1
+                    if fourth_subject == false
+                      total_subject = total_subject+1
+                    end
                     subject_grade_done << sub2['id'].to_i
                     full_mark_subject2 = 0
                     total_mark_subject2 = 0

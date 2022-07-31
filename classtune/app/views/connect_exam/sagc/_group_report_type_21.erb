@@ -5,7 +5,7 @@
                 has_pr = false
 
               %>
-               <table id="pdf-table" class="top-left-center" width="80%" cellspacing="0">
+              <table id="pdf-table" class="top-left-center" width="80%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
                  
@@ -346,7 +346,7 @@
 
                                     if total_ob_previous > 0 || total_ob > 0
                                       converted_ob_full_main = converted_ob_full2+converted_ob_full
-                                      converted_ob_main = converted_ob2+converted_ob
+                                      converted_ob_main = converted_ob2.round+converted_ob.round
                                       if (converted_ob_main.round < 16 && converted_ob_full_main == 50) || (converted_ob_main.round < 10 && converted_ob_full_main == 30) || (converted_ob_main.round < 20 && converted_ob_full_main == 60)
                                          failed_subject = true
                                       end   
@@ -372,7 +372,7 @@
                                 
                                 <% tota_mark_with_monthly = avg_mark %>
                                 <%
-                                  main_mark = (double_subject_marks.round.to_f/200)*100
+                                  main_mark = (tota_mark_with_monthly.round.to_f/200)*100
                                 %>
                                 <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                 <% if !grade.blank? and !grade.name.blank? %>

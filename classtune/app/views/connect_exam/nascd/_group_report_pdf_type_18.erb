@@ -18,15 +18,9 @@
                   <% end %>
                 <% end %>        
               </td>
-              <td width="10%">Cell No</td>
+              <td width="10%">Shift</td>
               <td width="30%" colspan="3">
-              <% unless @assigned_employee.blank? %>
-                  <% @assigned_employee.each do |emp| %>
-                      <% emp_full_name = emp.first_name.to_s+" "+emp.last_name.to_s  %>
-                      <b><%= emp.mobile_phone %></b>
-                    <% break %>
-                  <% end %>
-                <% end %>    
+                <%= @batch.name %>   
               </td>
           </tr>
       </table>

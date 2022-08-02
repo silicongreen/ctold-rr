@@ -547,17 +547,19 @@
                           <td class="col-pdf align-left"><%= group_name.name %></td>
                           <% total_exam = 0 %>
                           <% @report_data['report']['exams'].each do |report| %>
-                            <% wordString_main = "" %>
-                            <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
-                              <% wordString_main = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
+                            <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? %>
+                              <% wordString_main = "" %>
+                              <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
+                                <% wordString_main = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
+                              <% end %>
+                              <% wordString = wordString_main.split("|") %>
+                              <% if !wordString.blank? and !wordString[iloop].blank? %>
+                                <td class="col-pdf"><%=  wordString[iloop] %></td>
+                              <% else %>
+                                  <td class="col-pdf"></td>
+                              <% end %>
+                              <% total_exam = total_exam+1 %>
                             <% end %>
-                            <% wordString = wordString_main.split("|") %>
-                            <% if !wordString.blank? and !wordString[iloop].blank? %>
-                               <td class="col-pdf"><%=  wordString[iloop] %></td>
-                           <% else %>
-                               <td class="col-pdf"></td>
-                           <% end %>
-                           <% total_exam = total_exam+1 %>
                           <% end %> 
                           <% iloop = iloop+1 %>
                           <% if total_exam == 1 %>

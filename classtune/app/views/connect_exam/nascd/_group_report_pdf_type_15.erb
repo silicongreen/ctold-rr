@@ -545,6 +545,7 @@
                         <% end %>
                         <% subject_groups = get_subject_group(subjects['id'].to_i) %>
                         <% iloop = 0 %>
+                        <tr><td>&nbsp;</td></tr>
                         <% subject_groups.each do |group_name| %>
                           <tr>
                           <td class="col-pdf align-left"><%= group_name.name %></td>

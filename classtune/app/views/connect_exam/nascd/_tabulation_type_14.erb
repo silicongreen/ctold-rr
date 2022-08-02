@@ -148,22 +148,33 @@
               <table id="pdf-table" width="100%" cellspacing="0">
                   <tr class="table-header">
                       
-                      <td class="col-pdf">Roll</td>
-                      <td class="col-pdf">Students Name</td>
+                      <td class="col-pdf" rowspan="2">Roll</td>
+                      <td class="col-pdf" rowspan="2">Students Name</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
-                          <td><%=  sub['code'] %><hr/>Grade</td>
+                          <td ><%=  sub['code'] %></td>
                         <% end %>
                       <% end %>
-                      <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
-                        <td><%=  sub['code'] %></td>
+
+                      <td colspan="2">Total</td>
+
+                  </tr>
+                  <tr class="table-header">
+                      <% @report_data['report']['subjects'].each do |sub| %>
+                        <% has_exam = false %>
+                        <% if @all_subject_id.include?(sub['id'].to_i) %>
+                          <% has_exam = true %>
+                        <% end %>
+                        <% if has_exam == true %>
+                          <td>Preparatory</td><td>Pretest</td>
+                        <% end %>
                       <% end %>
 
-                      <td>Total</td>
+                      <td>Preparatory</td><td>Pretest</td>
 
                   </tr>
 
@@ -182,23 +193,34 @@
                           <td colspan="100">&nbsp;</td>
                       </tr>  
                       <tr class="table-header">
-                          
-                          <td class="col-pdf">Roll</td>
-                          <td class="col-pdf">Students Name</td>
+                      
+                        <td class="col-pdf" rowspan="2">Roll</td>
+                        <td class="col-pdf" rowspan="2">Students Name</td>
+                        <% @report_data['report']['subjects'].each do |sub| %>
+                          <% has_exam = false %>
+                          <% if @all_subject_id.include?(sub['id'].to_i) %>
+                            <% has_exam = true %>
+                          <% end %>
+                          <% if has_exam == true %>
+                            <td ><%=  sub['code'] %></td>
+                          <% end %>
+                        <% end %>
+
+                        <td colspan="2">Total</td>
+
+                      </tr>
+                      <tr class="table-header">
                           <% @report_data['report']['subjects'].each do |sub| %>
                             <% has_exam = false %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
                             <% if has_exam == true %>
-                              <td><%=  sub['code'] %><hr/>Grade</td>
+                              <td>Preparatory</td><td>Pretest</td>
                             <% end %>
                           <% end %>
-                          <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
-                            <td><%=  sub['code'] %></td>
-                          <% end %>
 
-                          <td>Total</td>
+                          <td>Preparatory</td><td>Pretest</td>
 
                       </tr>
                     <% elsif std_count>13 && extender ==1 %>
@@ -207,26 +229,36 @@
                       <tr class="page-break">
                           <td colspan="100">&nbsp;</td>
                       </tr> 
-                      <tr class="table-header">
-                          
-                          <td class="col-pdf">Roll</td>
-                          <td class="col-pdf">Students Name</td>
-                          <% @report_data['report']['subjects'].each do |sub| %>
-                            <% has_exam = false %>
-                            <% if @all_subject_id.include?(sub['id'].to_i) %>
-                              <% has_exam = true %>
+                       <tr class="table-header">
+                            <td class="col-pdf" rowspan="2">Roll</td>
+                            <td class="col-pdf" rowspan="2">Students Name</td>
+                            <% @report_data['report']['subjects'].each do |sub| %>
+                              <% has_exam = false %>
+                              <% if @all_subject_id.include?(sub['id'].to_i) %>
+                                <% has_exam = true %>
+                              <% end %>
+                              <% if has_exam == true %>
+                                <td ><%=  sub['code'] %></td>
+                              <% end %>
                             <% end %>
-                            <% if has_exam == true %>
-                              <td><%=  sub['code'] %><hr/>Grade</td>
+
+                            <td colspan="2">Total</td>
+
+                        </tr>
+                        <tr class="table-header">
+                            <% @report_data['report']['subjects'].each do |sub| %>
+                              <% has_exam = false %>
+                              <% if @all_subject_id.include?(sub['id'].to_i) %>
+                                <% has_exam = true %>
+                              <% end %>
+                              <% if has_exam == true %>
+                                <td>Preparatory</td><td>Pretest</td>
+                              <% end %>
                             <% end %>
-                          <% end %> 
-                          <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
-                            <td><%=  sub['code'] %></td>
-                          <% end %>
 
-                          <td>Total</td>
+                            <td>Preparatory</td><td>Pretest</td>
 
-                      </tr>
+                        </tr>
                     <% end %>    
 
 
@@ -242,6 +274,9 @@
                         <td class="name-std"><%= "-" %></td>
                         <% end %>
                         
+
+                        
+
                         <% total_mark_1 = 0 %>
                         <% total_mark_2 = 0 %>
                         <% total_mark_3 = 0 %>
@@ -265,6 +300,11 @@
                               full_mark3 = 0
                               full_mark4 = 0
                             %>
+                            <% cq1 = 0 %>
+                            <% mcq1 = 0 %>
+                            <% cq2 = 0 %>
+                            <% mcq2 = 0 %>
+                            <% pr2 = 0 %>
 
                             <% subject_full_mark = 0 %>
                             <% subject_obtain_mark = 0 %>
@@ -280,10 +320,25 @@
                                 <%
 
                                 if rs['quarter'] == '1'
+                                  if rs['exam_category'] == '3'
+                                    cq1 = cq1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  end
+                                  if rs['exam_category'] == '4'
+                                    mcq1 = mcq1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  end
                                   total_mark1 = total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                   full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                 end 
                                 if rs['quarter'] == '2'
+                                  if rs['exam_category'] == '3'
+                                    cq2 = cq2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  end
+                                  if rs['exam_category'] == '4'
+                                    mcq2 = cq2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  end
+                                  if rs['exam_category'] == '5'
+                                    pr2 = pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  end
                                   total_mark2 = total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                   full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                 end 
@@ -329,43 +384,39 @@
                             %>
                             <% if has_exam == true %>
                               <td>
+                                  <%= cq1 %>
+                                  <hr/>
+                                  <%= mcq1 %>
+                                  <hr/>
+                                  -
+                                  <hr/>
+                                  <%= total_mark1 %>
+
+                               </td> 
+                               <td>
+                                  <%= cq2 %>
+                                  <hr/>
+                                  <%= mcq2 %>
+                                  <hr/>
+                                  <%= pr2 %>
+                                  <hr/>
+                                  <%= total_mark2 %>
+
+                               </td>   
                                   <% total_mark_1 = total_mark_1+total_mark1.to_f %>
                                   <% total_mark_2= total_mark_2+total_mark2.to_f %>
                                   <%  grade1 = GradingLevel.percentage_to_grade(main_mark1, @batch.id) %>
                                   <%  grade2 = GradingLevel.percentage_to_grade(main_mark2, @batch.id) %>
-                                  <% if full_mark1  > 0 %>
-                                  pt:<%= total_mark1 %>&nbsp;|&nbsp;
-                                  <% if !grade1.blank? and !grade1.name.blank? %>
-                                    
-                                    <%= grade1.name %>  
-                                  <% else %>
-                                    -  
-                                  <% end %>
-                                  <% else %>
-                                  -
-                                  <% end %>
-                                  <hr/>
-                                  <% if full_mark2  > 0 %>
-                                  p:<%= total_mark2 %>
-                                  &nbsp;|&nbsp;
-                                  <% if !grade2.blank? and !grade2.name.blank? %>
-                                    
-                                    <%= grade2.name %>  
-                                  <% else %>
-                                    -  
-                                  <% end %>
-                                  <% else %>
-                                  -
-                                  <% end %>
-                              </td> 
                             <% end %>
                           <% end %>   
                         <% end %> 
                               
 
                         <td>
-                            pt: <%= total_mark_1 %> <hr/> 
-                            p: <%= total_mark_2 %>
+                          <%= total_mark_1 %>
+                        </td>
+                        <td>  
+                           <%= total_mark_2 %>
                         </td>
                         
 

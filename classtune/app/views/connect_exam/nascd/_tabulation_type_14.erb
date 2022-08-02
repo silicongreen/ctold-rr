@@ -170,11 +170,11 @@
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
-                          <td>Preparatory</td><td>Pretest</td>
+                          <td>Prep</td><td>Pret</td>
                         <% end %>
                       <% end %>
 
-                      <td>Preparatory</td><td>Pretest</td>
+                      <td>Prep</td><td>Pret</td>
 
                   </tr>
 
@@ -186,7 +186,7 @@
                     <% if !std.blank? and !std['first_name'].blank? %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
-                    <% if std_count>12 && extender ==0 %>
+                    <% if std_count>6 && extender ==0 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -216,14 +216,14 @@
                               <% has_exam = true %>
                             <% end %>
                             <% if has_exam == true %>
-                              <td>Preparatory</td><td>Pretest</td>
+                              <td>Prep</td><td>Pret</td>
                             <% end %>
                           <% end %>
 
-                          <td>Preparatory</td><td>Pretest</td>
+                          <td>Prep</td><td>Pret</td>
 
                       </tr>
-                    <% elsif std_count>13 && extender ==1 %>
+                    <% elsif std_count>6 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -252,11 +252,11 @@
                                 <% has_exam = true %>
                               <% end %>
                               <% if has_exam == true %>
-                                <td>Preparatory</td><td>Pretest</td>
+                                <td>Prep</td><td>Pret</td>
                               <% end %>
                             <% end %>
 
-                            <td>Preparatory</td><td>Pretest</td>
+                            <td>Prep</td><td>Pret</td>
 
                         </tr>
                     <% end %>    

@@ -48,8 +48,6 @@
                       <td colspan="5" rowspan="2">Term Exam<br/>(35%* / 75%)</td> 
                       <td rowspan="3">Total<br/>Marks</td>
                       <td rowspan="3">Highest<br/>Marks</td>
-                      <td rowspan="3">Letter<br/>Grade</td>
-                      <td rowspan="3">Grade<br/>Point</td>
                     </tr>
                     <tr>
                     
@@ -224,19 +222,6 @@
                          <td><% if has_quarter %><%= total_converted.to_i %><% end %></td>
                          <td><% if has_quarter %><%= total_mark_subject.to_i %><% end %></td>
                          <td><% if has_quarter %><%= highest_mark1.to_i %><% end %></td>
-                         <td><% if has_quarter && !grade.blank? && !grade.name.blank? %><%= grade.name %><% end %></td>
-                         <td><% if has_quarter && !grade.blank? && !grade.name.blank? %><%= grade.credit_points %>
-
-                         <% 
-                         if fourth_subject.blank?
-                          total_grade = total_grade+grade.credit_points
-                         elsif grade.credit_points > 2
-                            new_grade = grade.credit_points - 2
-                            total_grade = total_grade+new_grade
-                         end
-                         %>
-                         
-                         <% end %></td>
 
            
                           
@@ -246,12 +231,10 @@
                     <% end %>
                   <% end %>
                   <tr class="table-header">
-                    <td colspan="4">Grand Total Marks & GPA</td>
+                    <td colspan="4">Grand Total Marks</td>
                     <td class="col-pdf"  colspan="7"></td>
                     <td class="col-pdf"><% if has_quarter %><%= grand_total %><% end %></td>
                     <td class="col-pdf"></td>
-                    <td class="col-pdf"></td>
-                    <td class="col-pdf"><% if has_quarter %><%= total_grade %><% end %></td>
                   </tr>
 
               </table>

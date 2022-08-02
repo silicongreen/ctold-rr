@@ -128,7 +128,15 @@
       <% unless @report_data.blank? %>
       <% c = 'even' %>
       <table id="pdf-table" width="100%" cellspacing="0">
-                  <tr class="table-header">
+                 
+
+                  <% extender = 0 %>
+                  <% std_count = 0 %>
+                  <% j = 0 %>
+
+                  <% @report_data['report']['students'].each do |std| %>
+                    <% if !std.blank? and !std['first_name'].blank? %>
+                    <tr class="table-header">
                       
                       <td class="col-pdf" rowspan="2">Roll</td>
                       <td class="col-pdf" rowspan="2">Students Name</td>
@@ -159,89 +167,7 @@
                       <td>Prep</td><td>Pret</td>
 
                   </tr>
-
-                  <% extender = 0 %>
-                  <% std_count = 0 %>
-                  <% j = 0 %>
-
-                  <% @report_data['report']['students'].each do |std| %>
-                    <% if !std.blank? and !std['first_name'].blank? %>
-                    <% j = j+1 %>
-                    <%  std_count = std_count+1; %>
-                    <% if std_count>6 && extender ==0 %>
-                      <% std_count = 0 %>
-                      <% extender = 1 %>
-                      <tr class="page-break">
-                          <td colspan="100">&nbsp;</td>
-                      </tr>  
-                      <tr class="table-header">
-                      
-                        <td class="col-pdf" rowspan="2">Roll</td>
-                        <td class="col-pdf" rowspan="2">Students Name</td>
-                        <% @report_data['report']['subjects'].each do |sub| %>
-                          <% has_exam = false %>
-                          <% if @all_subject_id.include?(sub['id'].to_i) %>
-                            <% has_exam = true %>
-                          <% end %>
-                          <% if has_exam == true %>
-                            <td  colspan="2"><%=  sub['code'] %></td>
-                          <% end %>
-                        <% end %>
-
-                        <td colspan="2">Total</td>
-
-                      </tr>
-                      <tr class="table-header">
-                          <% @report_data['report']['subjects'].each do |sub| %>
-                            <% has_exam = false %>
-                            <% if @all_subject_id.include?(sub['id'].to_i) %>
-                              <% has_exam = true %>
-                            <% end %>
-                            <% if has_exam == true %>
-                              <td>Prep</td><td>Pret</td>
-                            <% end %>
-                          <% end %>
-
-                          <td>Prep</td><td>Pret</td>
-
-                      </tr>
-                    <% elsif std_count>6 && extender ==1 %>
-                      <% std_count = 0 %>
-                      <% extender = 1 %>
-                      <tr class="page-break">
-                          <td colspan="100">&nbsp;</td>
-                      </tr> 
-                       <tr class="table-header">
-                            <td class="col-pdf" rowspan="2">Roll</td>
-                            <td class="col-pdf" rowspan="2">Students Name</td>
-                            <% @report_data['report']['subjects'].each do |sub| %>
-                              <% has_exam = false %>
-                              <% if @all_subject_id.include?(sub['id'].to_i) %>
-                                <% has_exam = true %>
-                              <% end %>
-                              <% if has_exam == true %>
-                                <td  colspan="2"><%=  sub['code'] %></td>
-                              <% end %>
-                            <% end %>
-
-                            <td colspan="2">Total</td>
-
-                        </tr>
-                        <tr class="table-header">
-                            <% @report_data['report']['subjects'].each do |sub| %>
-                              <% has_exam = false %>
-                              <% if @all_subject_id.include?(sub['id'].to_i) %>
-                                <% has_exam = true %>
-                              <% end %>
-                              <% if has_exam == true %>
-                                <td>Prep</td><td>Pret</td>
-                              <% end %>
-                            <% end %>
-
-                            <td>Prep</td><td>Pret</td>
-
-                        </tr>
-                    <% end %>    
+                        
 
 
                       

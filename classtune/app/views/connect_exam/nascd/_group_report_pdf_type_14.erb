@@ -40,8 +40,8 @@
               
                     <tr class="table-header">
                       <td class="col-pdf no-warp" rowspan="3"><b><%= "Subject" %></b></td>
-                      <td colspan="7">Preparatory Test</td> 
-                      <td colspan="7">Pretest</td>
+                      <td colspan="5">Preparatory Test</td> 
+                      <td colspan="5">Pretest</td>
                     </tr> 
                 
                     <tr class="table-header">
@@ -50,15 +50,11 @@
                         <td>Prac.</td>
                         <td>Total</td>
                         <td rowspan="2">Highest<br/>Marks</td>
-                        <td rowspan="2">Letter<br/>Grade</td>
-                        <td rowspan="2">Grade<br/>Point</td>
                         <td>CQ</td>
                         <td>MCQ</td>
                         <td>Prac.</td>
                         <td>Total</td>
                         <td rowspan="2">Highest<br/>Marks</td>
-                        <td rowspan="2">Letter<br/>Grade</td>
-                        <td rowspan="2">Grade<br/>Point</td>
                     </tr> 
                     <tr class="table-header">
                       <td>30</td> 
@@ -188,8 +184,7 @@
                               grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                             end
                           %>
-                         <td><% if !grade.blank? and !grade.name.blank? %><%= grade.name %><% end %></td>
-                         <td><% if !grade.blank? and !grade.name.blank? %><%= grade.credit_points %><% total_grade1 = total_grade1+grade.credit_points %><% end %></td>
+                         
 
                          <td><% if full_mark2 > 0 %><%= cq2 %><% end %></td>
                          <td><% if full_mark2 > 0 %><%= mcq2 %><% end %></td>
@@ -204,8 +199,7 @@
                               grade2 = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                             end
                           %>
-                          <td><% if !grade2.blank? and !grade2.name.blank? %><%= grade2.name %><% end %></td>
-                          <td><% if !grade2.blank? and !grade2.name.blank? %><%= grade2.credit_points %><% total_grade2 = total_grade2+grade2.credit_points %><% end %></td>
+                          
                           
                       </tr>
                       
@@ -218,15 +212,11 @@
                     <td class="col-pdf"></td>
                     <td class="col-pdf"><% if has_quarter1 %><%= total1 %><% end %></td>
                     <td></td>
-                    <td></td>
-                    <td><% if has_quarter1 %><%= total_grade1 %><% end %></td>
                     <td class="col-pdf"><% if has_quarter2 %><%= cq2_total %><% end %></td>
                     <td class="col-pdf"><% if has_quarter2 %><%= mcq2_total %><% end %></td>
                     <td class="col-pdf"><% if has_quarter2 %><%= prac2_total %><% end %></td>
                     <td class="col-pdf"><% if has_quarter2 %><%= total2 %><% end %></td>
                     <td></td>
-                    <td></td>
-                    <td><% if has_quarter2 %><%= total_grade2 %><% end %></td>
                   </tr>
 
               </table>
@@ -447,8 +437,7 @@
                     <% end %>
                   <% end %>
                   <tr class="even">
-                      <td colspan="3" width="40%"><b>Gradding</b></td>
-                      <td class='align-left-baf padding-0-text-left' rowspan="8">
+                      <td class='align-left-baf padding-0-text-left'>
                           <ul>
                               <li><i>For absent examinees, Half Yearly marks have been mapped from their CT.</i></li>
                               <li><i>We issue this report card to let you know our evaluation regarding the progress of your child.</i></li>
@@ -459,30 +448,7 @@ socially to his or her abilities and opportunities.</i></li>
                           
                       </td>
                   </tr>
-                  <tr class="table-header">
-                      <td>Marks</td>
-                      <td>Letter</td>  
-                      <td>Grade Point</td>  
-                  </tr>
-                  <% prev_score = 0 %>
-                  <% @grading_levels.each_with_index do |grade,index| %>
-                    <tr class="table-header">
-                        <td class="no-warp">
-                            <% if grade.max_score.nil? %> 
-                              <% if grade.min_score.to_i == 0 %>
-                                <&nbsp;<%= '%i%' % prev_score %>
-                              <% else %>
-                                <%= '%i%' % grade.min_score %> 
-                              <% end %>
-                            <% else %> 
-                              <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>
-                            <% end %>
-                            <%  prev_score = grade.min_score %>
-                        </td>
-                        <td><%= grade.name %></td>
-                        <td><%= grade.credit_points %></td>
-                    </tr> 
-                  <% end %>  
+                    
               </table>
               
               <table id="pdf-table"  width="100%" class="left-table break-table odd-table height-exam ev-table" cellspacing="0" >

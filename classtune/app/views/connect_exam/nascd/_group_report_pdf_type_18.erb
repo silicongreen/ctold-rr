@@ -342,39 +342,55 @@
                     </table>
                   </td>
                 </tr>
-              </table>      
-              <table id="pdf-table"  width="32%" class="left-table" cellspacing="0" >
+              </table> 
+
+              <table id="pdf-table"  width=32%" class="left-table" cellspacing="0" >
                   <tr class="table-header">
                     <td>Focus Point</td>
                     <td>Quarterly<br/>(H Yearly)</td>
                     <td>Quarterly<br/>(Annual)</td>
                   </tr>
-                  <tr class="even">
-                    <td class="no-warp align-left-baf">Cooperation</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="even">
-                    <td class="no-warp align-left-baf">Discipline</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="even">
-                    <td class="no-warp align-left-baf">Punctuality</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="even">
-                    <td class="no-warp align-left-baf">Attentiveness</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="even">
-                    <td class="no-warp align-left-baf">Homework</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
+                  
+                    <% unless @report_data['report']['subjects'].blank? %> 
+                      <% @report_data['report']['subjects'].each do |subjects| %>
+                      
+                       
+                        <% if subjects['no_exams_sjws'].to_i == 0  %>
+                          <% next %>
+                        <% end %>
+                        <% subject_groups = get_subject_group(subjects['id'].to_i) %>
+                        <% iloop = 0 %>
+                        <% subject_groups.each do |group_name| %>
+                          <tr class="table-header">
+                          <td class="col-pdf align-left"><%= group_name.name %></td>
+                          <% total_exam = 0 %>
+                          <% @report_data['report']['exams'].each do |report| %>
+                            <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? %>
+                              <% wordString_main = "" %>
+                              <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
+                                <% wordString_main = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
+                              <% end %>
+                              <% wordString = wordString_main.split("|") %>
+                              <% if !wordString.blank? and !wordString[iloop].blank? %>
+                                <td class="col-pdf"><%=  wordString[iloop] %></td>
+                              <% else %>
+                                  <td class="col-pdf"></td>
+                              <% end %>
+                              <% total_exam = total_exam+1 %>
+                            <% end %>
+                          <% end %> 
+                          <% iloop = iloop+1 %>
+                          <% if total_exam == 1 %>
+                            <td></td>
+                          <% end %>  
+                          </tr> 
+                        <% end %>  
+                      <% end %>  
+                    <% end %>  
+                 
               </table>
+
+              
               <table id="pdf-table"  width="32%" class="left-table" cellspacing="0" >
                   <tr class="table-header">
                     <td colspan="2">Assessment Criteria</td>

@@ -262,15 +262,13 @@
                     <tr class="table-header">
                       <td class="col-pdf no-warp" rowspan="4"><b><%= "Subject" %></b></td>
                       <td colspan="3" rowspan="3">Term Exam Marks</td> 
-                      <td colspan="11">Annual Exam</td>
+                      <td colspan="9">Annual Exam</td>
                     </tr> 
                     <tr class="table-header">
                       <td colspan="2" rowspan="2">Quarterly<br/>(15%* / 25%)</td> 
                       <td colspan="5" rowspan="2">Term Exam<br/>(35%* / 75%)</td> 
                       <td rowspan="3">Total<br/>Marks</td>
                       <td rowspan="3">Highest<br/>Marks</td>
-                      <td rowspan="3">Letter<br/>Grade</td>
-                      <td rowspan="3">Grade<br/>Point</td>
                     </tr>
                     <tr>
                     
@@ -446,18 +444,7 @@
                          <td><% if has_quarter %><%= total_converted.to_i %><% end %></td>
                          <td><% if has_quarter %><%= total_mark_subject.to_i %><% end %></td>
                          <td><% if has_quarter %><%= highest_mark1.to_i %><% end %></td>
-                         <td><% if has_quarter && !grade.blank? && !grade.name.blank? %><%= grade.name %><% end %></td>
-                         <td><% if has_quarter && !grade.blank? && !grade.name.blank? %>
-                         <%= grade.credit_points %>
-                         <% 
-                         if fourth_subject.blank?
-                          total_grade = total_grade+grade.credit_points
-                         elsif grade.credit_points > 2
-                            new_grade = grade.credit_points - 2
-                            total_grade = total_grade+new_grade
-                         end
-                         %>
-                         <% end %></td>
+                        
 
            
                           
@@ -471,12 +458,10 @@
                     <td class="col-pdf"  colspan="7"></td>
                     <td class="col-pdf"><% if has_quarter %><%= grand_total %><% end %></td>
                     <td class="col-pdf"></td>
-                    <td class="col-pdf"></td>
-                    <td class="col-pdf"><% if has_quarter %><%= total_grade %><% end %></td>
                   </tr>
 
               </table>
-              <table id="pdf-table"  width="25%" class="left-table break-table ev-table" cellspacing="0" >
+              <table id="pdf-table"  width="32%" class="left-table break-table ev-table" cellspacing="0" >
                   <tr class="table-header">
                     <td>Subject</td>
                     <td>Half Yearly</td>
@@ -526,7 +511,7 @@
                   <% end %>
                   
               </table>
-              <table id="pdf-table"  width="22%" class="left-table" cellspacing="0" >
+              <table id="pdf-table"  width=32%" class="left-table" cellspacing="0" >
                   <tr class="table-header">
                     <td>Focus Point</td>
                     <td>Quarterly<br/>(H Yearly)</td>
@@ -571,7 +556,7 @@
                     <% end %>  
                  
               </table>
-              <table id="pdf-table"  width="25%" class="left-table" cellspacing="0" >
+              <table id="pdf-table"  width="32%" class="left-table" cellspacing="0" >
                   <tr class="table-header">
                     <td colspan="2">Assessment Criteria</td>
                   </tr>
@@ -593,32 +578,7 @@
                   </tr>
                 </table>
 
-                <table id="pdf-table"  width="22%" class="left-table" cellspacing="0" >
-                  <tr class="table-header">
-                      <td>Marks</td>
-                      <td>Letter</td>  
-                      <td>Grade Point</td>  
-                  </tr>
-                  <% prev_score = 0 %>
-                  <% @grading_levels.each_with_index do |grade,index| %>
-                    <tr class="table-header">
-                        <td class="no-warp">
-                            <% if grade.max_score.nil? %> 
-                              <% if grade.min_score.to_i == 0 %>
-                                <&nbsp;<%= '%i%' % prev_score %>
-                              <% else %>
-                                <%= '%i%' % grade.min_score %> 
-                              <% end %>
-                            <% else %> 
-                              <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>
-                            <% end %>
-                            <%  prev_score = grade.min_score %>
-                        </td>
-                        <td><%= grade.name %></td>
-                        <td><%= grade.credit_points %></td>
-                    </tr> 
-                  <% end %>
-                </table>  
+                
 
 
               <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >

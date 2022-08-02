@@ -232,10 +232,10 @@
                                                     <% end %>
                                                     <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
                                                         <option value="0" >Select</option>
-                                                        <option value="1" <% if exam_group_remarks.to_i == 1 %> selected="selected" <% end %> >Excellent (Ex)</option>
-                                                        <option value="2" <% if exam_group_remarks.to_i == 2 %> selected="selected" <% end %> >Very Good (VG)</option>
-                                                        <option value="3" <% if exam_group_remarks.to_i == 3 %> selected="selected" <% end %>  >Good (G)</option>
-                                                        <option value="4" <% if exam_group_remarks.to_i == 4 %> selected="selected" <% end %>  >Need Improvement (NI)</option>
+                                                        <option value="Excellent" <% if exam_group_remarks == "Excellent" %> selected="selected" <% end %> >Excellent (Ex)</option>
+                                                        <option value="Very Good" <% if exam_group_remarks == "Very Good" %> selected="selected" <% end %> >Very Good (VG)</option>
+                                                        <option value="Good" <% if exam_group_remarks == "Good" %> selected="selected" <% end %>  >Good (G)</option>
+                                                        <option value="Need Improvement" <% if exam_group_remarks == "Need Improvement" %> selected="selected" <% end %>  >Need Improvement (NI)</option>
                                                     </select>
                                                     <div class="date2" ><span class="themed_text"><%=  student.full_name %><div> <%= exam.exam_group.name.to_s %></div><div> <%= group_name.name.to_s %></div></span></div>
 

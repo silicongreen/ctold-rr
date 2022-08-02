@@ -535,16 +535,15 @@
                   
                     <% unless @report_data['report']['subjects'].blank? %> 
                       <% @report_data['report']['subjects'].each do |subjects| %>
-                      <tr><td>&nbsp;</td><td><%= subjects['name']%></td></tr>
+                      
                        
                         <% if subjects['no_exams_sjws'].to_i == 0  %>
                           <% next %>
                         <% end %>
                         <% subject_groups = get_subject_group(subjects['id'].to_i) %>
                         <% iloop = 0 %>
-                        <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
                         <% subject_groups.each do |group_name| %>
-                          <tr>
+                          <tr class="table-header">
                           <td class="col-pdf align-left"><%= group_name.name %></td>
                           <% total_exam = 0 %>
                           <% @report_data['report']['exams'].each do |report| %>

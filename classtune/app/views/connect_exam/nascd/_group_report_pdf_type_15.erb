@@ -543,7 +543,7 @@
                         <% if subjects['no_exams_sjws'].to_i == 0  %>
                           <% next %>
                         <% end %>
-                        <% subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
+                        <% subject_groups = get_subject_group(subjects['id'].to_i) %>
                         <% iloop = 0 %>
                         <% subject_groups.each do |group_name| %>
                           <tr>
@@ -569,28 +569,8 @@
                           </tr> 
                         <% end %>  
                       <% end %>  
-                    <% end %>    
-                  </tr>
-                  <tr class="even">
-                    <td class="no-warp align-left-baf">Discipline</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="even">
-                    <td class="no-warp align-left-baf">Punctuality</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="even">
-                    <td class="no-warp align-left-baf">Attentiveness</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="even">
-                    <td class="no-warp align-left-baf">Homework</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
+                    <% end %>  
+                 
               </table>
               <table id="pdf-table"  width="25%" class="left-table" cellspacing="0" >
                   <tr class="table-header">

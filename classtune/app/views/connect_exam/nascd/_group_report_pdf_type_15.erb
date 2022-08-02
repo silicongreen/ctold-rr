@@ -535,17 +535,13 @@
                   
                     <% unless @report_data['report']['subjects'].blank? %> 
                       <% @report_data['report']['subjects'].each do |subjects| %>
-                        <% subjectdata = Subject.find(subjects['id'].to_i) %>
-                        <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
-                        <% if @has_exam_student == false %>
-                          <% next %>
-                        <% end %>
+                       
                         <% if subjects['no_exams_sjws'].to_i == 0  %>
                           <% next %>
                         <% end %>
                         <% subject_groups = get_subject_group(subjects['id'].to_i) %>
                         <% iloop = 0 %>
-                        <tr><td>&nbsp;</td></tr>
+                        <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
                         <% subject_groups.each do |group_name| %>
                           <tr>
                           <td class="col-pdf align-left"><%= group_name.name %></td>

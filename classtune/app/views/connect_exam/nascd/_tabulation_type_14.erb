@@ -156,7 +156,7 @@
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
-                          <td ><%=  sub['code'] %></td>
+                          <td  colspan="2"><%=  sub['code'] %></td>
                         <% end %>
                       <% end %>
 
@@ -202,7 +202,7 @@
                             <% has_exam = true %>
                           <% end %>
                           <% if has_exam == true %>
-                            <td ><%=  sub['code'] %></td>
+                            <td  colspan="2"><%=  sub['code'] %></td>
                           <% end %>
                         <% end %>
 
@@ -238,7 +238,7 @@
                                 <% has_exam = true %>
                               <% end %>
                               <% if has_exam == true %>
-                                <td ><%=  sub['code'] %></td>
+                                <td  colspan="2"><%=  sub['code'] %></td>
                               <% end %>
                             <% end %>
 
@@ -300,11 +300,19 @@
                               full_mark3 = 0
                               full_mark4 = 0
                             %>
-                            <% cq1 = 0 %>
-                            <% mcq1 = 0 %>
-                            <% cq2 = 0 %>
-                            <% mcq2 = 0 %>
-                            <% pr2 = 0 %>
+                            <% 
+                            cq1 = 0
+                            mcq1 = 0
+                            cq2 = 0
+                            mcq2 = 0
+                            pr2 = 0 
+                            cq1_fullmark = 0
+                            mcq1_fullmark = 0
+                            cq2_fullmark = 0
+                            mcq2_fullmark = 0
+                            pr2_fullmark = 0 
+                            
+                            %>
 
                             <% subject_full_mark = 0 %>
                             <% subject_obtain_mark = 0 %>
@@ -322,9 +330,11 @@
                                 if rs['quarter'] == '1'
                                   if rs['exam_category'] == '3'
                                     cq1 = cq1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    cq1_fullmark = cq1_fullmark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                   end
                                   if rs['exam_category'] == '4'
                                     mcq1 = mcq1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    mcq1_fullmark = mcq1_fullmark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                   end
                                   total_mark1 = total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                   full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
@@ -332,12 +342,15 @@
                                 if rs['quarter'] == '2'
                                   if rs['exam_category'] == '3'
                                     cq2 = cq2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    cq2_fullmark = cq2_fullmark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                   end
                                   if rs['exam_category'] == '4'
                                     mcq2 = cq2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    mcq2_fullmark = mcq2_fullmark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                   end
                                   if rs['exam_category'] == '5'
                                     pr2 = pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    pr2_fullmark = pr2_fullmark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                   end
                                   total_mark2 = total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                   full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
@@ -384,9 +397,18 @@
                             %>
                             <% if has_exam == true %>
                               <td>
-                                  <%= cq1 %>
+                                  <% if cq1_fullmark > 0 %>
+                                    <%= cq1 %>
+                                  <% else %>
+                                    -
+                                  <% end %>
                                   <hr/>
-                                  <%= mcq1 %>
+                               
+                                  <% if mcq1_fullmark > 0 %>
+                                    <%= mcq1 %>
+                                  <% else %>
+                                    -
+                                  <% end %>
                                   <hr/>
                                   -
                                   <hr/>
@@ -394,11 +416,24 @@
 
                                </td> 
                                <td>
-                                  <%= cq2 %>
+                                  <% if cq2_fullmark > 0 %>
+                                    <%= cq2 %>
+                                  <% else %>
+                                    -
+                                  <% end %>
                                   <hr/>
-                                  <%= mcq2 %>
+                               
+                                  <% if mcq2_fullmark > 0 %>
+                                    <%= mcq2 %>
+                                  <% else %>
+                                    -
+                                  <% end %>
                                   <hr/>
-                                  <%= pr2 %>
+                                  <% if pr2_fullmark > 0 %>
+                                    <%= pr2 %>
+                                  <% else %>
+                                    -
+                                  <% end %>
                                   <hr/>
                                   <%= total_mark2 %>
 

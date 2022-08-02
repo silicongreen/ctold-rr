@@ -535,6 +535,7 @@
                   
                     <% unless @report_data['report']['subjects'].blank? %> 
                       <% @report_data['report']['subjects'].each do |subjects| %>
+                      <tr><td>&nbsp;</td><td><%= subjects['name']%></td></tr>
                        
                         <% if subjects['no_exams_sjws'].to_i == 0  %>
                           <% next %>

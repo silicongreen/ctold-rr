@@ -377,6 +377,8 @@ class MarksController < ApplicationController
                 data[k][1] = @template.link_to(exam_connect.name+"(Comment Entry)", '/exam/' + 'comment_tabulation/' +exam_connect.id.to_s+'?blank_page=1', :target => "_blank")
               elsif MultiSchool.current_school.id != 340 and (@current_user.admin? or (!@batches2.blank? and @batches2.include?(exam_connect.batch_id)))
                 data[k][1] = @template.link_to(exam_connect.name+"(Comment Entry)", '/exam/' + 'comment_tabulation/' +exam_connect.id.to_s+'?blank_page=1', :target => "_blank")
+              elsif MultiSchool.current_school.id != 361 and exam_connect.result_type.to_i > 13 and (@current_user.admin? or (!@batches2.blank? and @batches2.include?(exam_connect.batch_id)))
+                data[k][1] = @template.link_to(exam_connect.name+"(Comment Entry)", '/exam/' + 'comment_tabulation/' +exam_connect.id.to_s+'?blank_page=1', :target => "_blank")
               else
                 data[k][1] = @template.link_to("<b>"+exam_connect.name+"(Marks Entry)</b>", '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject_id.to_s, :target => "_blank")
               end  

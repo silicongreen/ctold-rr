@@ -56,11 +56,21 @@ end
             term = term.toLowerCase();
             
             
-            var choices = ['<%= name %>\'s performance is good. If s/he pays more attention to her studies s/he can do much better. Wish him/her all the best.', 
-              'Do hard work. Try more & more.', 'Congratulations. Keep it up. Best wishes for you.', 'S/he needs to pay more & more attention in his/her study.',
-              'Try hard to make a good result.', 'Study regularly. Best of luck.', 'If s/he tries s/he can do much better in the exam.', 
-              'Extra care is needed to improve her overall performance.', 'Good! A little bit effort is needed to improve overall performance.',
-              '<%= name %> is capable of doing better. She is advised to be more active & hard working in studies.'];
+            var choices = ['<%= name %>\'s performance is good. If s/he pays more attention to her studies she can do much better .Wish him/her all the best.',
+            '<%= name %> has done well. But s/he needs to take care of Drawing & Conversation.',
+            'Congratulations! Keep it up.',
+            'Congratulations! Wish you all the best.',
+            'Congratulations. Extra care is needed on all subject.',
+            'Congratulations. Keep it up. Best wishes for you.',
+            'Do hard work. Try more & more.',
+            'Excellent! Keep up the spirit.',
+            'Work hard Try more and more.',
+            '<%= name %> needs to work hard and pay more attention to his studies to improve his performance.',
+            'Good A little bit effort is needed to improve overall performance.',
+            'Good but try to get 80% number in all subjects.',
+            'Good but you need to improve our handwriting.',
+            'Him/her performance is satisfactory. You have to obtain 80% marks in all subjects.',
+            '<%= name %>  is capable of doing better. Him/her is advised to be more active and hard working in studies.'];
             var suggestions = [];
             for (i=0;i<choices.length;i++)
                 if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);

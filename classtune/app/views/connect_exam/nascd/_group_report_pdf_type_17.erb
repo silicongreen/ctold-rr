@@ -37,9 +37,7 @@
               
                     <tr class="table-header">
                       <td class="col-pdf no-warp"><b><%= "Subject" %></b></td>
-                      <td>Quarterly</td> 
-                      <td>Half Yearly</td>
-                      <td>Quarterly</td> 
+                      <td>Half Yearly</td> 
                       <td>Annual</td>
                     </tr>
                    <%
@@ -140,8 +138,8 @@
                               if ct > 0
                                 ct = (ct.to_f/full_mark_ct.to_f)*10
                                 ct = ct.round
+                                full_mark_ct = 10
                               end
-                              full_mark_ct = 10
                             end 
                             if cw > 0 
                               cw = (cw.to_f/full_mark_cw.to_f)*5
@@ -163,30 +161,25 @@
                               term_mark_main.round
                             end
 
+                            full_mark = full_mark_quarter+full_mark_term
+                            total_mark = quarter_mark+term
+
+                            main_mark = 0
+                            if total_mark > 0
+                              main_mark = (total_mark.to_f/full_mark.to_f)*100
+                              main_mark.round
+                            end
+
                          end
                          %>
                         
                          <td><% if has_first_term %>
-                         
-                         <% if quarter_main_mark >= 80 %>
+                         <%= main_mark %>
+                         <% if main_mark >= 80 %>
                           Excellent
-                          <% elsif quarter_main_mark >= 60 %>
+                          <% elsif main_mark >= 60 %>
                           Very Good
-                          <% elsif quarter_main_mark >= 50 %>
-                          Good
-                          <% else %>
-                          Need Improvement
-                          <% end %>
-                         
-                         <% end %>
-                         </td>
-                         <td><% if has_first_term %>
-                         
-                          <% if term_mark_main >= 80 %>
-                          Excellent
-                          <% elsif term_mark_main >= 60 %>
-                          Very Good
-                          <% elsif term_mark_main >= 50 %>
+                          <% elsif main_mark >= 50 %>
                           Good
                           <% else %>
                           Need Improvement
@@ -202,8 +195,8 @@
                               if ct_final > 0
                                 ct_final = (ct_final.to_f/full_mark_ct_final.to_f)*10
                                 ct_final = ct_final.round
+                                full_mark_ct = 10
                               end
-                              full_mark_ct = 10
                             end 
                             if cw_final > 0 
                               cw_final = (cw_final.to_f/full_mark_cw_final.to_f)*5
@@ -225,30 +218,25 @@
                               term_mark_main.round
                             end
 
+                            full_mark = full_mark_quarter+full_mark_term
+                            total_mark = quarter_mark+term
+
+                            main_mark = 0
+                            if total_mark > 0
+                              main_mark = (total_mark.to_f/full_mark.to_f)*100
+                              main_mark.round
+                            end
+
                          end
                          %>
                         
                          <td><% if has_final_term %>
                          
-                         <% if quarter_main_mark >= 80 %>
+                         <% if main_mark >= 80 %>
                           Excellent
-                          <% elsif quarter_main_mark >= 60 %>
+                          <% elsif main_mark >= 60 %>
                           Very Good
-                          <% elsif quarter_main_mark >= 50 %>
-                          Good
-                          <% else %>
-                          Need Improvement
-                          <% end %>
-                         
-                         <% end %>
-                         </td>
-                         <td><% if has_final_term %>
-                         
-                          <% if term_mark_main >= 80 %>
-                          Excellent
-                          <% elsif term_mark_main >= 60 %>
-                          Very Good
-                          <% elsif term_mark_main >= 50 %>
+                          <% elsif main_mark >= 50 %>
                           Good
                           <% else %>
                           Need Improvement
@@ -267,12 +255,10 @@
 
               </table>
 
-              <table id="pdf-table"  width=63%" class="left-table break-table ev-table" cellspacing="0" >
+              <table id="pdf-table"  width=58%" class="left-table break-table ev-table" cellspacing="0" >
                   <tr class="table-header">
                     <td>Focus Point</td>
-                    <td>Quarterly</td>
                     <td>Half Yearly</td>
-                    <td>Quarterly</td>
                     <td>Annual</td>
                   </tr>
                   
@@ -316,7 +302,7 @@
               </table>
               
               
-              <table id="pdf-table"  width="35%" class="left-table" cellspacing="0" >
+              <table id="pdf-table"  width="40%" class="left-table" cellspacing="0" >
                   <tr class="table-header">
                     <td colspan="2">Assessment Criteria</td>
                   </tr>

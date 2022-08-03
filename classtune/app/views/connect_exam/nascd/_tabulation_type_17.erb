@@ -362,7 +362,7 @@
                                 cw = (cw.to_f/full_mark_cw.to_f)*5
                                 cw = cw.round
                               end
-
+                              ct = ct.round
                               full_mark_quarter = full_mark_ct
                               if full_mark_cw > 0
                                 full_mark_quarter = full_mark_ct+5
@@ -373,7 +373,7 @@
                                 quarter_main_mark = (quarter_mark.to_f/full_mark_quarter.to_f)*100
                                 quarter_main_mark = quarter_main_mark.round
                               end
-                              ct = ct.round
+                              
 
                               term_mark_main = 0
 
@@ -383,7 +383,7 @@
                               end
 
                               full_mark = full_mark_quarter+full_mark_term
-                              total_mark = quarter_mark+term
+                              total_mark = quarter_mark+term.round()
 
                               main_mark = 0
                               if total_mark > 0
@@ -410,7 +410,7 @@
 
                                </td> 
                                <td>
-                                    <%= term %>
+                                    <%= term.round() %>
                                   <hr/>
                                     <%= total_mark %>
 

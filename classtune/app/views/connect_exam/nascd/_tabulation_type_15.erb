@@ -364,7 +364,7 @@
                             
                             <%
                             full_mark_all = 100
-                            total = cq+mcq+prac
+                            total = cq.round()+mcq.round()+prac.round()
                             full_term = full_mark_cq+full_mark_mcq+full_mark_prac
                             conv_mcw = cw
                             if cw > 0 && full_mark_cw > 0 && (full_term.to_i == 100 or full_term.to_i == 50) && full_mark_ct <= 20
@@ -382,7 +382,7 @@
                                 full_mark_all = 50
                               end
                             end
-                            total_mark_subject = total_converted+conv_mcw+ct
+                            total_mark_subject = total_converted.round()+conv_mcw.round()+ct.round()
                             
                             
                             %>
@@ -395,7 +395,7 @@
                                   <hr/>
                                
                                   <% if full_mark_ct > 0 %>
-                                    <%= ct %>
+                                    <%= ct %>|<%= full_mark_ct%>
                                   <% else %>
                                     -
                                   <% end %>
@@ -429,13 +429,13 @@
                                     <%= total_mark_subject.round() %>
 
                                </td>   
-                               <% total_mark_1 = total_mark_1+total_mark_subject.to_f %>
+                               <% total_mark_1 = total_mark_1+total_mark_subject.round().to_f %>
                           <% end %>   
                         <% end %> 
                               
 
                         <td>
-                          <%= total_mark_1 %>
+                          <%= total_mark_1.round().to_i %>
                         </td>
                         
 

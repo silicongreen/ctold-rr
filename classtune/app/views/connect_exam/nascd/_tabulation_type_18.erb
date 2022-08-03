@@ -1,0 +1,511 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<% 
+  @all_subject_id = []
+  @has_exam_score = []
+  @all_group_exams = GroupedExam.find(
+     :all,
+     :conditions => [
+       "connect_exam_id = ?",
+       @connect_exam_obj.id
+     ]
+   )
+  unless @all_group_exams.blank?
+   @all_exam_group_id = @all_group_exams.map(&:exam_group_id).uniq
+
+
+   @all_exams = Exam.find(
+      :all,
+      :conditions => ["exam_group_id IN (?)", @all_exam_group_id]
+    )
+
+
+    unless @all_exams.blank?
+     @all_subject_id = @all_exams.map(&:subject_id).uniq
+     @all_exam_id = @all_exams.map(&:id).uniq
+     @exam_score_all = ExamScore.find(
+        :all,
+        :conditions => ["exam_id IN (?)", @all_exam_id],
+        :include => [:exam]
+      )
+      unless @exam_score_all.blank?
+        @exam_score_all.each do |score|
+            if !score.marks.blank? and score.marks.to_i!=0 and !@has_exam_score.include?(score.exam_id)
+              exammain = score.exam
+              unless exammain.blank?
+                @has_exam_score << exammain.exam_group_id.to_s+"_"+exammain.subject_id.to_s
+              end
+            end
+        end
+      end
+    end
+   end
+
+
+  @grouped_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id)
+  @exam_group_ids = @grouped_exams.map(&:exam_group_id)
+  @ranked_student = ExamScore.all(:select =>["SUM(exam_scores.marks) as total_score,exam_scores.student_id"],:conditions=>["exams.exam_group_id IN (?)",@exam_group_ids,],:joins=>[:exam,:student,:grading_level],:group =>"exam_scores.student_id",:order=>"total_score DESC")
+  @ranked_positions = {}
+  unless @ranked_student.blank?
+    p = 0
+    last_total_score = 0
+    @ranked_student.each do |ras|
+      ranked_std = true
+      @report_data['report']['subjects'].each do |sub|
+        if ranked_std == false
+          break
+        end
+        subject_full_mark = 0
+        subject_obtain_mark = 0
+        subjectdata = Subject.find(sub['id'].to_i)
+        check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(ras.student_id,sub['id'].to_i)
+        if @all_subject_id.include?(sub['id'].to_i) and (!check_std_subject.blank? or subjectdata.elective_group_id.blank?)
+          @report_data['report']['exams'].each do |rs|
+            %>
+            <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
+            <%
+            if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s].blank? and @check_exam_score==true
+                subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['full_mark'].to_i
+                subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['marks_obtained'].to_f
+                if rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['full_mark'].to_i > 0
+                  main_mark_sub = (rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['full_mark'].to_f)*100
+                  grade = GradingLevel.percentage_to_grade(main_mark_sub, @batch.id)
+                  if !grade.blank? and !grade.name.blank?
+                    if grade.name == "F"
+                      ranked_std = false
+                    end
+                  end
+                end
+            end
+             
+          end
+          if subject_full_mark>0
+            main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100
+            grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+            if !grade.blank? and !grade.name.blank? and grade.name == "F"
+              ranked_std = false
+              break
+            end
+          end
+        end
+      end
+      if ranked_std == true
+        if ras.total_score != last_total_score
+          p = p+1
+          last_total_score = ras.total_score
+        end
+        @ranked_positions[ras.student_id.to_i] = p
+      end
+    end
+  end
+@ranked_positions = []
+  
+%>
+<div id="page-yield" class="available_sections1">
+    <div class="page1"> </div>
+    <div class="section1 row" >
+        <center>
+            <div id="pdf-header-south" class="general-header">
+                <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '4%' %></h4>
+                <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
+            </div>
+            <h4 align="center">Tabulation Sheet, <%= @connect_exam_obj.name %></h4>
+            <table width="100%" >
+                <thead>
+                    <tr>
+                        <td><b>Year: <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %> </b></td>
+                        <td align="right"><b>Class : 
+                                <% if @batch.name == "General" %>
+                                  <%= @batch.course.full_name %>
+                                <% else %>
+                                  <%= @batch.name %> ,<%= @batch.course.full_name %>
+                                <% end %></b>
+                        </td>
+                    </tr>
+                </thead>    
+            </table>
+            <% 
+             
+            %>
+            <% unless @report_data.blank? %>
+              <% c = 'even' %>
+              <table id="pdf-table" width="100%" cellspacing="0">
+                  <tr class="table-header">
+                      
+                      <td class="col-pdf" rowspan="2">Roll</td>
+                      <td class="col-pdf" rowspan="2">Students Name</td>
+                      <% @report_data['report']['subjects'].each do |sub| %>
+                        <% if sub['no_exams_sjws'].to_i == 1  %>
+                            <% next %>
+                          <% end %>
+                        <% has_exam = false %>
+                        <% if @all_subject_id.include?(sub['id'].to_i) %>
+                          <% has_exam = true %>
+                        <% end %>
+                        <% if has_exam == true %>
+                          <td  colspan="2"><%=  sub['code'] %></td>
+                        <% end %>
+                      <% end %>
+
+                      <td colspan="2" rowspan="2">Total</td>
+
+                  </tr>
+                  <tr class="table-header">
+                      <% @report_data['report']['subjects'].each do |sub| %>
+                        <% if sub['no_exams_sjws'].to_i == 1  %>
+                            <% next %>
+                          <% end %>
+                        <% has_exam = false %>
+                        <% if @all_subject_id.include?(sub['id'].to_i) %>
+                          <% has_exam = true %>
+                        <% end %>
+                        <% if has_exam == true %>
+                          <td>Con. CW<hr/>CT</td><td>Term<hr/>TTL</td>
+                        <% end %>
+                      <% end %>
+
+                  </tr>
+
+                  <% extender = 0 %>
+                  <% std_count = 0 %>
+                  <% j = 0 %>
+
+                  <% @report_data['report']['students'].each do |std| %>
+                    <% if !std.blank? and !std['first_name'].blank? %>
+                    <% j = j+1 %>
+                    <%  std_count = std_count+1; %>
+                    <% if std_count>10 && extender ==0 %>
+                      <% std_count = 0 %>
+                      <% extender = 1 %>
+                      <tr class="page-break">
+                          <td colspan="100">&nbsp;</td>
+                      </tr>  
+                      <tr class="table-header">
+                      
+                        <td class="col-pdf" rowspan="2">Roll</td>
+                        <td class="col-pdf" rowspan="2">Students Name</td>
+                        <% @report_data['report']['subjects'].each do |sub| %>
+                          <% if sub['no_exams_sjws'].to_i == 1  %>
+                            <% next %>
+                          <% end %>
+                          <% has_exam = false %>
+                          <% if @all_subject_id.include?(sub['id'].to_i) %>
+                            <% has_exam = true %>
+                          <% end %>
+                          <% if has_exam == true %>
+                            <td  colspan="2"><%=  sub['code'] %></td>
+                          <% end %>
+                        <% end %>
+
+                        <td colspan="2" rowspan="2">Total</td>
+
+                      </tr>
+                      <tr class="table-header">
+                          <% @report_data['report']['subjects'].each do |sub| %>
+                            <% if sub['no_exams_sjws'].to_i == 1  %>
+                            <% next %>
+                          <% end %>
+                            <% has_exam = false %>
+                            <% if @all_subject_id.include?(sub['id'].to_i) %>
+                              <% has_exam = true %>
+                            <% end %>
+                            <% if has_exam == true %>
+                              <td>Con. CW<hr/>CT</td><td>Term<hr/>TTL</td>
+                            <% end %>
+                          <% end %>
+
+                      </tr>
+                    <% elsif std_count>10 && extender ==1 %>
+                      <% std_count = 0 %>
+                      <% extender = 1 %>
+                      <tr class="page-break85">
+                          <td colspan="100">&nbsp;</td>
+                      </tr> 
+                       <tr class="table-header">
+                            <td class="col-pdf" rowspan="2">Roll</td>
+                            <td class="col-pdf" rowspan="2">Students Name</td>
+                            <% @report_data['report']['subjects'].each do |sub| %>
+                              <% if sub['no_exams_sjws'].to_i == 1  %>
+                                <% next %>
+                              <% end %>
+                              <% has_exam = false %>
+                              <% if @all_subject_id.include?(sub['id'].to_i) %>
+                                <% has_exam = true %>
+                              <% end %>
+                              <% if has_exam == true %>
+                                <td  colspan="2"><%=  sub['code'] %></td>
+                              <% end %>
+                            <% end %>
+
+                            <td colspan="2" rowspan="2">Total</td>
+
+                        </tr>
+                        <tr class="table-header">
+                            <% @report_data['report']['subjects'].each do |sub| %>
+                              <% if sub['no_exams_sjws'].to_i == 1  %>
+                                <% next %>
+                              <% end %>
+                              <% has_exam = false %>
+                              <% if @all_subject_id.include?(sub['id'].to_i) %>
+                                <% has_exam = true %>
+                              <% end %>
+                              <% if has_exam == true %>
+                                <td>Con. CW<hr/>CT</td><td>Term<hr/>TTL</td>
+                              <% end %>
+                            <% end %>
+
+                        </tr>
+                    <% end %>    
+
+
+                      
+                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        
+                        <td class="name"><%= std['class_roll_no'] %></td>
+                        <% if !std['first_name'].blank? and !std['last_name'].blank?  %>
+                        <td class="name-std"><%= std['first_name']+" "+std['last_name'] %></td>
+                        <% elsif !std['first_name'].blank? %>
+                        <td class="name-std"><%= std['first_name'] %></td>
+                        <% else %>
+                        <td class="name-std"><%= "-" %></td>
+                        <% end %>
+                        
+
+                        
+
+                        <% total_mark_1 = 0 %>
+                        <% grades = [] %>
+                        <% grade_count = {} %>
+                        <% @report_data['report']['subjects'].each do |sub| %>
+                          <% if sub['no_exams_sjws'].to_i == 1  %>
+                            <% next %>
+                          <% end %>
+                          <% subjectdata = Subject.find(sub['id'].to_i) %>
+                          <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                          <% if @has_exam_student == false %>
+                            <td>-</td><td>-</td>
+                          <% else %>
+                            <%
+                              total_mark_subject = 0
+                              full_mark1 = 0
+                            %>
+                            <% 
+                            cw = 0
+                            ct = 0
+                            term = 0
+                            full_mark_cw = 0
+                            full_mark_ct = 0
+                            full_mark_term = 0
+                            
+                            %>
+
+                            <% subject_full_mark = 0 %>
+                            <% subject_obtain_mark = 0 %>
+                            <% has_exam = false %>
+                            <% if @all_subject_id.include?(sub['id'].to_i) %>
+                              <% has_exam = true %>
+                            <% end %>
+
+                            <% @report_data['report']['exams'].each do |rs| %>
+                              <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
+                              <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
+
+                                <%
+
+                                if rs['quarter'] == '5'
+                                  if rs['exam_category'] == '3' || rs['exam_category'] == '4' || rs['exam_category'] == '5'
+                                    term = term+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    full_mark_term = full_mark_term+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                  end
+                                  if rs['exam_category'] == '1'
+                                    ct = ct+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    full_mark_ct = full_mark_ct+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                  end
+                                  if rs['exam_category'] == '2'
+                                    cw = cw+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    full_mark_cw = full_mark_cw+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                  end
+                                end 
+                                
+
+
+                              %>
+                              <% end %>
+                            <% end %> 
+
+                            
+                            <%
+                              if full_mark_term == 35
+                                if ct > 0
+                                  ct = (ct.to_f/full_mark_ct.to_f)*10
+                                  ct = ct.round
+                                  full_mark_ct = 10
+                                end
+                              end 
+                              if cw > 0 
+                                cw = (cw.to_f/full_mark_cw.to_f)*5
+                                cw = cw.round
+                              end
+                              ct = ct.round
+                              full_mark_quarter = full_mark_ct
+                              if full_mark_cw > 0
+                                full_mark_quarter = full_mark_ct+5
+                              end 
+                              quarter_mark = cw+ct
+                              quarter_main_mark = 0
+                              if quarter_mark > 0
+                                quarter_main_mark = (quarter_mark.to_f/full_mark_quarter.to_f)*100
+                                quarter_main_mark = quarter_main_mark.round
+                              end
+                              
+
+                              term_mark_main = 0
+
+                              if term > 0
+                                term_mark_main = (term.to_f/full_mark_term.to_f)*100
+                                term_mark_main.round
+                              end
+
+                              full_mark = full_mark_quarter+full_mark_term
+                              total_mark = quarter_mark+term.round()
+
+                              main_mark = 0
+                              if total_mark > 0
+                                total_mark = total_mark.round()
+                                main_mark = (total_mark.to_f/full_mark.to_f)*100
+                                main_mark = main_mark.round()
+                              end
+                            
+                            
+                            %>
+                              <td>
+                                  <% if full_mark_cw > 0 %>
+                                    <%= cw %>
+                                  <% else %>
+                                    -
+                                  <% end %>
+                                  <hr/>
+                               
+                                  <% if full_mark_ct > 0 %>
+                                    <%= ct %>
+                                  <% else %>
+                                    -
+                                  <% end %>
+
+                               </td> 
+                               <td>
+                                    <%= term.round() %>
+                                  <hr/>
+                                    <%= total_mark %>
+
+                               </td> 
+                               <% if sub['grade_subject'].to_i != 1 %>  
+                                  <% total_mark_1 = total_mark_1+total_mark.round().to_f %>
+                               <% end %>
+                          <% end %>   
+                        <% end %> 
+                              
+
+                        <td>
+                          <%= total_mark_1.round().to_i %>
+                        </td>
+                        
+
+
+                    </tr>
+                   
+                    <% end %>
+                  <% end %>
+              </table>
+            <% end %>
+            <% if @batch.course.course_name == "XII" or @batch.course.course_name == "XI" %>
+            <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
+
+              <tr class="even border-bottom-1-px">
+                  <td class="col-pdf " width="27%">
+                      <br/><br/><br/><br/>
+                  </td>
+                  <td class="col-pdf no-border" width="10%"></td>
+                  <td class="col-pdf" width="26%">
+                      <br/><br/><br/><br/>
+                  </td> 
+                  <td class="col-pdf no-border" width="10%"></td>
+                  <td class="col-pdf" width="27%">
+                      <br/><br/><br/><br/>
+                  </td> 
+              </tr>
+              <tr class="even">
+
+                  <td class="col-pdf " width="27%">
+                      Class Teacher
+                  </td>
+                  <td class="col-pdf no-border" width="10%"></td>
+                  <td class="col-pdf" width="26%">
+                      Exam Controller
+                  </td> 
+                  <td class="col-pdf no-border" width="10%"></td>
+                  <td class="col-pdf" width="27%">
+                      Principal (nascd)
+                  </td> 
+
+              </tr>
+
+          </table>
+          <% end %>  
+        </center>
+    </div>
+
+
+</div>
+
+<style>
+    table.sign_table
+    {
+        border:none !important;
+    }
+    table.sign_table tr.even td.col-pdf
+    {
+        border:none !important;
+        text-align: center !important;
+    }
+    table.sign_table tr.border-bottom-1-px td.col-pdf
+    {
+        border-bottom:1px dashed black !important;
+    }
+    table.sign_table
+    {
+        border-collapse: separate !important;
+        border-spacing: 18px !important;
+
+    }
+    table.evaluation tr.border-bottom-1-px td.no-border
+    {
+      border-bottom: none !important;
+    }
+    .sign_table 
+    {
+       margin-top:10px;
+    }
+    tr.table-header td{
+      padding-left: 2px !important;
+      padding-right: 2px !important;
+    }
+
+}
+</style> 

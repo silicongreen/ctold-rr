@@ -167,7 +167,7 @@
                               cw = (cw.to_f/full_mark_cw.to_f)*5
                               cw = cw.round
                             end
-
+                            ct = ct.round
                             full_mark_quarter = full_mark_ct+5
                             quarter_mark = cw+ct
                             quarter_main_mark = 0
@@ -179,7 +179,7 @@
                             term_mark_main = 0
 
                             if term > 0
-                              term_mark_main = (term.to_f/full_mark_term.to_f)*100
+                              term_mark_main = (term.round.to_f/full_mark_term.to_f)*100
                               term_mark_main.round
                             end
 

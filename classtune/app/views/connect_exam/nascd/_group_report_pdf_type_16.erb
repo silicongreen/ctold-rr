@@ -264,15 +264,15 @@
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                   <% if report['quarter'] == '4' %>
                                         <% total1 = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
-                                        <% grand_total1 = grand_total1+total1 %>
+                                        <% grand_total1 = grand_total1+total1.round().to_i %>
                                   <% end %>
                                   <% if report['quarter'] == '5' %>
                                         <% total2 = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
-                                        <% grand_total2 = grand_total2+total2 %>
+                                        <% grand_total2 = grand_total2+total2.round().to_i %>
                                   <% end %>
                                   <% if report['quarter'] == '6' %>
                                         <% total3 = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
-                                        <% grand_total3 = grand_total3+total3 %>
+                                        <% grand_total3 = grand_total3+total3.round().to_i %>
                                   <% end %>
                                   
                                 <% end %>
@@ -313,7 +313,7 @@
                           
                           %>
                          
-                         <td><% if full_mark1 > 0 %><%= total1 %><% end %></td>
+                         <td><% if full_mark1 > 0 %><%= total1.round().to_i %><% end %></td>
                          <td><% if full_mark1 > 0 %><%= highest_mark1 %><% end %></td>
                          <%
                             main_mark = 0
@@ -326,7 +326,7 @@
                           %>
 
 
-                         <td><% if full_mark2 > 0 %><%= total2 %><% end %></td>
+                         <td><% if full_mark2 > 0 %><%= total2.round().to_i %><% end %></td>
                          <td><% if full_mark2 > 0 %><%= highest_mark2 %><% end %></td>
                          <%
                             main_mark = 0
@@ -339,7 +339,7 @@
                           %>
 
 
-                         <td><% if full_mark3 > 0 %><%= total3 %><% end %></td>
+                         <td><% if full_mark3 > 0 %><%= total3.round().to_i %><% end %></td>
                          <td><% if full_mark3 > 0 %><%= highest_mark3 %><% end %></td>
                          <%
                             main_mark = 0

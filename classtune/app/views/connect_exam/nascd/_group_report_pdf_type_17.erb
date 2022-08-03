@@ -169,6 +169,7 @@
 
                             main_mark = 0
                             if total_mark > 0
+                              total_mark = total_mark.round()
                               main_mark = (total_mark.to_f/full_mark.to_f)*100
                               main_mark = main_mark.round()
                             end
@@ -177,7 +178,6 @@
                          %>
                         
                          <td><% if has_first_term %>
-                         <%= main_mark %>|
                          <% if main_mark >= 80 %>
                           Excellent
                           <% elsif main_mark >= 60 %>
@@ -229,6 +229,7 @@
 
                             main_mark = 0
                             if total_mark > 0
+                              total_mark = total_mark.round()
                               main_mark = (total_mark.to_f/full_mark.to_f)*100
                               main_mark = main_mark.round
                             end

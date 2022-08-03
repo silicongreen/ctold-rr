@@ -170,7 +170,7 @@
                          end
                          %>
                          <% if subjects['grade_subject'].to_i != 1  %>
-                         <td><% if has_quarter %><%= conv_mcw.round().to_i %>|<%= full_term%>|<%= full_mark_ct%>|<%= cw %>|<%= full_mark_cw %><% end %></td>
+                         <td><% if has_quarter %><%= conv_mcw.round().to_i %><% end %></td>
                          <td><% if has_quarter %><%= ct.round().to_i %><% end %></td>
                          <td><% if has_quarter && full_mark_cq > 0 %><%= cq.round().to_i %><% end %></td>
                          <td><% if has_quarter && full_mark_mcq > 0 %><%= mcq.round().to_i %><% end %></td>

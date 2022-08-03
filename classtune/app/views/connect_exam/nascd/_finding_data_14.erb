@@ -102,39 +102,39 @@
             
             
             if @subject_highest1[sub['id'].to_i].blank?
-              @subject_highest1[sub['id'].to_i] = total_mark1
+              @subject_highest1[sub['id'].to_i] = total_mark1.round().to_i
             elsif total_mark1.to_f > @subject_highest1[sub['id'].to_i].to_f
-               @subject_highest1[sub['id'].to_i] = total_mark1.to_f
+               @subject_highest1[sub['id'].to_i] = total_mark1.round().to_i
             end
 
             if @subject_highest2[sub['id'].to_i].blank?
-              @subject_highest2[sub['id'].to_i] = total_mark2
+              @subject_highest2[sub['id'].to_i] = total_mark2.round().to_i
             elsif total_mark2.to_f > @subject_highest2[sub['id'].to_i].to_f
-               @subject_highest2[sub['id'].to_i] = total_mark2.to_f
+               @subject_highest2[sub['id'].to_i] = total_mark2.round().to_i
             end
 
             if @subject_highest3[sub['id'].to_i].blank?
-              @subject_highest3[sub['id'].to_i] = total_mark3
+              @subject_highest3[sub['id'].to_i] = total_mark3.round().to_i
             elsif total_mark3.to_f > @subject_highest3[sub['id'].to_i].to_f
-               @subject_highest3[sub['id'].to_i] = subject_highest3.to_f
+               @subject_highest3[sub['id'].to_i] = total_mark3.round().to_i
             end
 
             if @subject_highest4[sub['id'].to_i].blank?
-              @subject_highest4[sub['id'].to_i] = total_mark4
+              @subject_highest4[sub['id'].to_i] = total_mark4.round().to_i
             elsif total_mark4.to_f > @subject_highest4[sub['id'].to_i].to_f
-               @subject_highest4[sub['id'].to_i] = total_mark4.to_f
+               @subject_highest4[sub['id'].to_i] = total_mark4.round().to_i
             end
 
             if @subject_highest5[sub['id'].to_i].blank?
-              @subject_highest5[sub['id'].to_i] = total_mark5
+              @subject_highest5[sub['id'].to_i] = total_mark5.round().to_i
             elsif total_mark5.to_f > @subject_highest5[sub['id'].to_i].to_f
-               @subject_highest5[sub['id'].to_i] = total_mark5.to_f
+               @subject_highest5[sub['id'].to_i] = total_mark5.round().to_i
             end
 
             if @subject_highest6[sub['id'].to_i].blank?
-              @subject_highest6[sub['id'].to_i] = total_mark6
+              @subject_highest6[sub['id'].to_i] = total_mark6.round().to_i
             elsif total_mark6.to_f > @subject_highest6[sub['id'].to_i].to_f
-               @subject_highest6[sub['id'].to_i] = total_mark6.to_f
+               @subject_highest6[sub['id'].to_i] = total_mark6.round().to_i
             end
 
           end  

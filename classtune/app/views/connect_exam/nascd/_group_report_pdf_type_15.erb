@@ -193,11 +193,11 @@
                           total_mark_subject = total_converted+conv_mcw+ct
                           if subjects['grade_subject'].to_i != 1
                             if fourth_subject.blank?
-                              grand_total = grand_total+total_mark_subject
+                              grand_total = grand_total+total_mark_subject.round()
                             else
-                              if total_mark_subject > 40
-                                new_mark_to_add = total_mark_subject-40
-                                grand_total = grand_total+new_mark_to_add
+                              if total_mark_subject.round() > 40
+                                new_mark_to_add = total_mark_subject.round() -40
+                                grand_total = grand_total+new_mark_to_add.round()
                               end
                             end
                           end
@@ -227,7 +227,7 @@
                   <tr class="table-header">
                     <td colspan="4">Grand Total Marks</td>
                     <td class="col-pdf"  colspan="7"></td>
-                    <td class="col-pdf"><% if has_quarter %><%= grand_total %><% end %></td>
+                    <td class="col-pdf"><% if has_quarter %><%= grand_total.round().to_i %><% end %></td>
                     <td class="col-pdf"></td>
                   </tr>
 
@@ -397,11 +397,11 @@
                           total_mark_subject = total_converted+conv_mcw+ct
                           if subjects['grade_subject'].to_i != 1
                             if fourth_subject.blank?
-                              grand_total = grand_total+total_mark_subject
+                              grand_total = grand_total+total_mark_subject.round()
                             else
-                              if total_mark_subject > 40
-                                new_mark_to_add = total_mark_subject-40
-                                grand_total = grand_total+new_mark_to_add
+                              if total_mark_subject.round() > 40
+                                new_mark_to_add = total_mark_subject.round()-40
+                                grand_total = grand_total+new_mark_to_add.round()
                               end
                             end
                           end 
@@ -433,7 +433,7 @@
                   <tr class="table-header">
                     <td colspan="4">Grand Total Marks</td>
                     <td class="col-pdf"  colspan="7"></td>
-                    <td class="col-pdf"><% if has_quarter %><%= grand_total %><% end %></td>
+                    <td class="col-pdf"><% if has_quarter %><%= grand_total.round().to_i %><% end %></td>
                     <td class="col-pdf"></td>
                   </tr>
 
@@ -491,8 +491,8 @@
               <table id="pdf-table"  width=35%" class="left-table" cellspacing="0" >
                   <tr class="table-header">
                     <td>Focus Point</td>
-                    <td>Quarterly<br/>(H Yearly)</td>
-                    <td>Quarterly<br/>(Annual)</td>
+                    <td>Half Yearly</td>
+                    <td>Annual</td>
                   </tr>
                   
                     <% unless @report_data['report']['subjects'].blank? %> 

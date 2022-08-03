@@ -151,6 +151,9 @@
                       <td class="col-pdf" rowspan="2">Roll</td>
                       <td class="col-pdf" rowspan="2">Students Name</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
+                        <% if sub['no_exams_sjws'].to_i == 1  %>
+                            <% next %>
+                          <% end %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
                           <% has_exam = true %>
@@ -165,6 +168,9 @@
                   </tr>
                   <tr class="table-header">
                       <% @report_data['report']['subjects'].each do |sub| %>
+                        <% if sub['no_exams_sjws'].to_i == 1  %>
+                            <% next %>
+                          <% end %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
                           <% has_exam = true %>
@@ -195,6 +201,9 @@
                         <td class="col-pdf" rowspan="2">Roll</td>
                         <td class="col-pdf" rowspan="2">Students Name</td>
                         <% @report_data['report']['subjects'].each do |sub| %>
+                          <% if sub['no_exams_sjws'].to_i == 1  %>
+                            <% next %>
+                          <% end %>
                           <% has_exam = false %>
                           <% if @all_subject_id.include?(sub['id'].to_i) %>
                             <% has_exam = true %>
@@ -209,6 +218,9 @@
                       </tr>
                       <tr class="table-header">
                           <% @report_data['report']['subjects'].each do |sub| %>
+                            <% if sub['no_exams_sjws'].to_i == 1  %>
+                            <% next %>
+                          <% end %>
                             <% has_exam = false %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
@@ -229,6 +241,9 @@
                             <td class="col-pdf" rowspan="2">Roll</td>
                             <td class="col-pdf" rowspan="2">Students Name</td>
                             <% @report_data['report']['subjects'].each do |sub| %>
+                              <% if sub['no_exams_sjws'].to_i == 1  %>
+                                <% next %>
+                              <% end %>
                               <% has_exam = false %>
                               <% if @all_subject_id.include?(sub['id'].to_i) %>
                                 <% has_exam = true %>
@@ -243,6 +258,9 @@
                         </tr>
                         <tr class="table-header">
                             <% @report_data['report']['subjects'].each do |sub| %>
+                              <% if sub['no_exams_sjws'].to_i == 1  %>
+                                <% next %>
+                              <% end %>
                               <% has_exam = false %>
                               <% if @all_subject_id.include?(sub['id'].to_i) %>
                                 <% has_exam = true %>
@@ -275,6 +293,9 @@
                         <% grades = [] %>
                         <% grade_count = {} %>
                         <% @report_data['report']['subjects'].each do |sub| %>
+                          <% if sub['no_exams_sjws'].to_i == 1  %>
+                            <% next %>
+                          <% end %>
                           <% subjectdata = Subject.find(sub['id'].to_i) %>
                           <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
                           <% if @has_exam_student == false %>

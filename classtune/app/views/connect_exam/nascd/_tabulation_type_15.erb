@@ -331,7 +331,7 @@
                             fourth_subject = false
                             
                              if !@std_subject_hash_type.blank? 
-                               if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||4") 
+                               if @std_subject_hash_type.include?(@student.id.to_s+"|||"+sub['id'].to_s+"|||4") 
                                  fourth_subject = true 
                                end 
                              end 

@@ -17,6 +17,17 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <% 
+  if @std_subject_hash_type.nil?
+    std_subject = StudentsSubject.find_all_by_batch_id(@batch.id)
+    @std_subject_hash_type = []
+    unless std_subject.blank?
+      std_subject.each do |std_sub|
+        @std_subject_hash_type << std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s+"|||"+std_sub.elective_type.to_s
+      end
+    end
+  end
+%>
+<% 
   @all_subject_id = []
   @has_exam_score = []
   @all_group_exams = GroupedExam.find(
@@ -316,6 +327,14 @@
                             full_mark_cq = 0
                             full_mark_mcq = 0
                             full_mark_prac = 0
+                          
+                            fourth_subject = false
+                            
+                             if !@std_subject_hash_type.blank? 
+                               if @std_subject_hash_type.include?(@student.id.to_s+"|||"+subjects['id'].to_s+"|||4") 
+                                 fourth_subject = true 
+                               end 
+                             end 
                             
                             %>
 
@@ -328,30 +347,30 @@
 
                             <% @report_data['report']['exams'].each do |rs| %>
                               <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
-                              <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
+                              <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? %>
 
                                 <%
 
                                 if rs['quarter'] == '5'
                                   if rs['exam_category'] == '3'
                                     cq = cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                    full_mark_cq = full_mark_cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                    full_mark_cq = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                   end
                                   if rs['exam_category'] == '4'
                                     mcq = mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                    full_mark_mcq = full_mark_mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                    full_mark_mcq = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                   end
                                   if rs['exam_category'] == '5'
                                     prac = prac+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                    full_mark_prac = full_mark_prac+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                    full_mark_prac = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                   end
                                   if rs['exam_category'] == '1'
                                     ct = ct+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                    full_mark_ct = full_mark_ct+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                    full_mark_ct = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                   end
                                   if rs['exam_category'] == '2'
                                     cw = cw+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                    full_mark_cw = full_mark_cw+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                    full_mark_cw = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                   end
                                 end 
                                 
@@ -430,7 +449,17 @@
 
                                </td> 
                                <% if sub['grade_subject'].to_i != 1 %>  
-                                  <% total_mark_1 = total_mark_1+total_mark_subject.round().to_f %>
+                                  <% if fourth_subject %>
+                                  <%
+                                    if total_mark_subject.round() > 40
+                                      new_mark_to_add = total_mark_subject.round() -40
+                                      total_mark_1 = total_mark_1+new_mark_to_add.round()
+                                    end
+                                  %>
+
+                                  <% else %>
+                                    <% total_mark_1 = total_mark_1+total_mark_subject.round().to_f %>
+                                  <% end %>
                                <% end %>
                           <% end %>   
                         <% end %> 

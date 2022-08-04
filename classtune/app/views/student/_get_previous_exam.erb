@@ -42,7 +42,7 @@
       </tr>
       <% else %>
     
-        <%  prevexam = PreviousExam.find_by_connect_exam_id(p.exam_connect_id,:conditions=>["(is_finished = 1  and(data_type = 1 or data_type=2))"]) %>
+        <%  prevexam = PreviousExam.find_by_connect_exam_id(p.exam_connect_id,:conditions=>["(is_finished = 1  and data_type = 1)"]) %>
         
         <% unless prevexam.blank? %>
           <% connect_exam = ExamConnect.find_by_id(p.exam_connect_id) %>

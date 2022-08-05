@@ -188,6 +188,9 @@
                               total_converted = total_converted.round
                               full_mark_all = 50
                             end
+                            if full_term.to_i == 30 or full_term.to_i == 40
+                              full_mark_all = 50
+                            end
                           end
                           
                           total_mark_subject = total_converted+conv_mcw.round()+ct.round()
@@ -390,6 +393,9 @@
                             else
                               total_converted = (total.to_f/full_term.to_f)*35
                               total_converted = total_converted.round
+                              full_mark_all = 50
+                            end
+                            if full_term.to_i == 30 or full_term.to_i == 40
                               full_mark_all = 50
                             end
                           end

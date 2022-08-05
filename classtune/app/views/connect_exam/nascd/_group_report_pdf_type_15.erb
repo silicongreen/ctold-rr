@@ -188,7 +188,7 @@
                               total_converted = total_converted.round
                               full_mark_all = 50
                             end
-                            if full_term.to_i == 30 or full_term.to_i == 40
+                            if full_term.to_i == 30 or full_term.to_i == 20
                               full_mark_all = 50
                             end
                           end
@@ -422,7 +422,7 @@
                           
                           grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                         %>
-                          <td><%= full_mark_all %></td>
+                          
                         <% if subjects['grade_subject'].to_i != 1  %>
                          <td><% if has_quarter %><%= total.to_i %><% end %></td>
                          <td><% if has_quarter %><%= total_converted.to_i %><% end %></td>

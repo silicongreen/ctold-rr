@@ -153,7 +153,7 @@ class EmployeeController < ApplicationController
         temp << @entries
         temp << @assignment_register
         temp << @classwork_register
-        temp << @lesson_plan_register+" ("+@date_to_use.strftime("%B")+")"
+        temp << @lesson_plan_register.to_s+" ("+@date_to_use.strftime("%B")+")"
         temp << 0
         temp << "Yes"
       else
@@ -264,7 +264,7 @@ class EmployeeController < ApplicationController
         temp << @entries
         temp << @assignment_register
         temp << @classwork_register
-        temp << @lesson_plan_register+" ("+@date_to_use.strftime("%B")+")"
+        temp << @lesson_plan_register.to_s+" ("+@date_to_use.strftime("%B")+")"
       else
         temp << ""
         temp << ""

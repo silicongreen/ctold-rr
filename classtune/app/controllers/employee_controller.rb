@@ -69,6 +69,8 @@ class EmployeeController < ApplicationController
     new_book.worksheet(0).insert_row(2, row_first)
     sheet1.row(2).default_format = center_align_format
     i = 1
+    @start_date_lesson_plan = @date_to_use.beginning_of_month
+    @end_date_lesson_plan = @date_to_use.end_of_month
     @all_employee.each do |employee|
       i = i+1
       temp = []
@@ -147,11 +149,11 @@ class EmployeeController < ApplicationController
 
         @assignment_register = Assignment.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
         @classwork_register = Classwork.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
-        @lesson_plan_register = Lessonplan.count(:conditions=>["date(created_at) = ? and author_id = ?",@date_to_use.to_date,employee.user_id])
+        @lesson_plan_register = Lessonplan.count(:conditions=>["date(created_at) >= ? date(created_at) <= ? and  and author_id = ?",@start_date_lesson_plan.to_date,@end_date_lesson_plan.to_date,employee.user_id])
         temp << @entries
         temp << @assignment_register
         temp << @classwork_register
-        temp << @lesson_plan_register
+        temp << @lesson_plan_register+" ("+@date_to_use.strftime("%B")+")"
         temp << 0
         temp << "Yes"
       else
@@ -205,6 +207,8 @@ class EmployeeController < ApplicationController
         end  
       end  
       @weekday_id = @date_to_use.strftime("%w")
+      @start_date_lesson_plan = @date_to_use.beginning_of_month
+      @end_date_lesson_plan = @date_to_use.end_of_month
       @subjects = []
       unless @current_timetable.blank?
         @employee_subjects = employee.subjects
@@ -256,11 +260,11 @@ class EmployeeController < ApplicationController
 
         @assignment_register = Assignment.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
         @classwork_register = Classwork.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
-        @lesson_plan_register = Lessonplan.count(:conditions=>["date(created_at) = ? and author_id = ?",@date_to_use.to_date,employee.user_id])
+        @lesson_plan_register = Lessonplan.count(:conditions=>["date(created_at) >= ? date(created_at) <= ? and  and author_id = ?",@start_date_lesson_plan.to_date,@end_date_lesson_plan.to_date,employee.user_id])
         temp << @entries
         temp << @assignment_register
         temp << @classwork_register
-        temp << @lesson_plan_register
+        temp << @lesson_plan_register+" ("+@date_to_use.strftime("%B")+")"
       else
         temp << ""
         temp << ""

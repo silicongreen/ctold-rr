@@ -149,7 +149,7 @@ class EmployeeController < ApplicationController
 
         @assignment_register = Assignment.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
         @classwork_register = Classwork.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
-        @lesson_plan_register = Lessonplan.count(:conditions=>["date(created_at) >= ? and date(created_at) <= ? and author_id = ?",@start_date_lesson_plan.to_date,@end_date_lesson_plan.to_date,employee.user_id])
+        @lesson_plan_register = Lessonplan.count(:conditions=>["publish_date >= ? and publish_date <= ? and author_id = ?",@start_date_lesson_plan.to_date,@end_date_lesson_plan.to_date,employee.user_id])
         temp << @entries
         temp << @assignment_register
         temp << @classwork_register
@@ -260,7 +260,7 @@ class EmployeeController < ApplicationController
 
         @assignment_register = Assignment.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
         @classwork_register = Classwork.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
-        @lesson_plan_register = Lessonplan.count(:conditions=>["date(created_at) >= ? and date(created_at) <= ? and author_id = ?",@start_date_lesson_plan.to_date,@end_date_lesson_plan.to_date,employee.user_id])
+        @lesson_plan_register = Lessonplan.count(:conditions=>["publish_date >= ? and created_at <= ? and author_id = ?",@start_date_lesson_plan.to_date,@end_date_lesson_plan.to_date,employee.user_id])
         temp << @entries
         temp << @assignment_register
         temp << @classwork_register

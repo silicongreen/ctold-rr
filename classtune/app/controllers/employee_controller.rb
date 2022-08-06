@@ -68,7 +68,7 @@ class EmployeeController < ApplicationController
     row_first = ['ID','Teacher Name','Department Name','Attendance','Total Class','Homework','Classwork','Lessonplan','Quiz','Class Routine']
     new_book.worksheet(0).insert_row(2, row_first)
     sheet1.row(2).default_format = center_align_format
-    i = 1
+    i = 2
     @start_date_lesson_plan = @date_to_use.beginning_of_month
     @end_date_lesson_plan = @date_to_use.end_of_month
     @all_employee.each do |employee|

@@ -7122,6 +7122,296 @@ class ExamController < ApplicationController
     send_data spreadsheet.string, :filename => @batch.full_name + "-" + @connect_exam_obj.name + ".xls", :type =>  "application/vnd.ms-excel"
   end
 
+  def tabulation_failed_excell
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    new_book = Spreadsheet::Workbook.new
+    sheet1 = new_book.create_worksheet :name => 'tabulation'
+    center_align_format = Spreadsheet::Format.new :horizontal_align => :center,  :vertical_align => :middle
+    @id = params[:id]
+    @connect_exam_obj = ExamConnect.find(@id)
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    @assigned_employee=@batch.all_class_teacher
+    @report_data = Rails.cache.fetch("tabulation_#{@id}_#{@batch.id}"){
+      get_tabulation(@id,@batch.id)
+      report_data = []
+      if @student_response['status']['code'].to_i == 200
+        report_data = @student_response['data']
+      end
+      report_data
+    }
+    @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id) 
+    @student_exam_comment = {}
+    @exam_comment.each do |cmt|
+      @student_exam_comment[cmt.student_id.to_s] = cmt.comments
+    end    
+    @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
+    row_first = ["Sl","Roll","Student Name"]
+    starting_row = 3
+    @all_subject_id = []
+    @all_group_exams = GroupedExam.find(
+      :all,
+      :conditions => [
+        "connect_exam_id = ?",
+        @connect_exam_obj.id
+      ]
+    )
+    unless @all_group_exams.blank?
+      @all_exam_group_id = @all_group_exams.map(&:exam_group_id).uniq
+      @all_exams = Exam.find(
+          :all,
+          :conditions => ["exam_group_id IN (?)", @all_exam_group_id]
+      )
+      unless @all_exams.blank?
+        @all_subject_id = @all_exams.map(&:subject_id).uniq
+      end
+    end
+    @report_data['report']['subjects'].each do |sub|
+      has_exam = false 
+      if @all_subject_id.include?(sub['id'].to_i)
+        has_exam = true
+      end 
+      if has_exam == true 
+        row_first << sub['name']
+      end
+    end  
+    row_first << "Total"
+    
+    new_book.worksheet(0).insert_row(0, row_first)
+    
+    std_done = []
+    start_index = 1
+    @report_data['report']['students'].each do |std|
+      if std_done.include?(std['id'])
+        next
+      end
+      std_done << std['id']
+      if std.blank? || std['first_name'].blank?  
+        next
+      end 
+      row_first = []
+      start_index = start_index+1
+      s = Student.find(std['id'])
+      @config = Configuration.find_by_config_key('StudentAttendanceType')
+      @b = Batch.find(s.batch_id)
+      @start_date = @connect_exam_obj.attandence_start_date.to_date
+      @end_date = @connect_exam_obj.attandence_end_date.to_date
+      @leaves=Hash.new { |h, k| h[k] = Hash.new(&h.default_proc) }
+      @today = @local_tzone_time.to_date
+      working_days=@b.working_days(@start_date.to_date)
+      unless @start_date > @local_tzone_time.to_date
+        unless @config.config_value == 'Daily'
+          unless params[:subject] == '0'
+            @subject = Subject.find params[:subject]
+            @academic_days=@b.subject_hours(@start_date, @end_date, params[:subject]).values.flatten.compact.count
+            @grouped = SubjectLeave.find_all_by_subject_id(@subject.id,  :conditions =>{:month_date => @start_date..@end_date}).group_by(&:student_id)
+            if @grouped[s.id].nil?
+          @leaves[s.id]['leave']=0
+        else
+          @leaves[s.id]['leave']=@grouped[s.id].count
+        end
+        @leaves[s.id]['total'] = (@academic_days - @leaves[s.id]['leave'])
+        @leaves[s.id]['percent'] = (@leaves[s.id]['total'].to_f/@academic_days)*100 unless @academic_days == 0
+          else
+            @academic_days=@b.subject_hours(@start_date, @end_date, 0).values.flatten.compact.count
+            @grouped = @b.subject_leaves.find(:all,  :conditions =>{:month_date => @start_date..@end_date, :student_id => s.id})
+            if @grouped[s.id].nil?
+        @leaves[s.id]['leave']=0
+        else
+          @leaves[s.id]['leave']=@grouped[s.id].count
+            end
+        @leaves[s.id]['total'] = (@academic_days - @leaves[s.id]['leave'])
+        @leaves[s.id]['percent'] = (@leaves[s.id]['total'].to_f/@academic_days)*100 unless @academic_days == 0
+          end
+        else
+            @start_date_main = @start_date
+            
+              @start_date = @start_date_main
+              unless std['admission_date'].blank?
+                if std['admission_date'].to_date > @start_date
+                  @start_date = std['admission_date'].to_date
+                end
+              end
+
+              @academic_days = 0
+              @student_leaves = []
+              if @end_date >= @start_date
+                @academic_days =  @b.find_working_days(@start_date,@end_date).select{|v| v<=@end_date}.count
+                @student_leaves = Attendance.find(:all,:conditions =>{:student_id=>s.id,:batch_id=>@b.id,:month_date => @start_date..@end_date})
+              end
+            
+            on_leaves = 0;
+            leaves_other = 0;
+            leaves_full = 0;
+            unless @student_leaves.empty?
+              @student_leaves.each do |r|
+                if r.student_id == s.id
+                  working_days_count=@b.find_working_days(r.month_date.to_date,r.month_date.to_date).select{|v| v<=r.month_date.to_date}.count
+
+                  if working_days_count==1
+                    if r.is_leave == true
+                      on_leaves = on_leaves+1;
+                    elsif r.forenoon==true && r.afternoon==false
+                      leaves_other = leaves_other+1;
+                    elsif r.forenoon==false && r.afternoon==true  
+                      leaves_other = leaves_other+1;
+                    else
+                      leaves_full = leaves_full+1;
+                    end 
+                  end
+                end
+              end
+            end
+            @leaves[s.id]['late'] = leaves_other
+            @leaves[s.id]['absent'] = leaves_full
+            @leaves[s.id]['on_leave'] = on_leaves
+            @leaves[s.id]['present'] = @academic_days-on_leaves-leaves_full
+            @leaves[s.id]['total']=@academic_days-leaves_full.to_f-(0.5*leaves_other)
+            @leaves[s.id]['percent'] = 0.0
+            @leaves[s.id]['percent'] = (@leaves[s.id]['total'].to_f/@academic_days)*100 unless @academic_days == 0
+          @academic_days =  @b.find_working_days(@start_date_main,@end_date).select{|v| v<=@end_date}.count
+        end
+      else
+        @report = ''
+      end 
+      total_failed = 0
+      student_attendance_percent = 0 	
+      student_attendance_mark = 0 	
+      unless @leaves[s.id]['percent'].nil? 
+        student_attendance_percent =  @leaves[s.id]['percent'] 
+      end 	
+      if student_attendance_percent.to_f > 0 
+        if student_attendance_percent >= 0 and student_attendance_percent < 60 
+          student_attendance_mark = 0 	
+        elsif student_attendance_percent >= 60 and student_attendance_percent < 71 
+          student_attendance_mark = 3 	
+        elsif student_attendance_percent >= 71 and student_attendance_percent < 80 
+          student_attendance_mark = 4 	
+        elsif student_attendance_percent >= 80 
+          student_attendance_mark = 5 	
+        end 
+      end 
+
+      row_first << start_index-1
+      row_first << std['class_roll_no']
+      row_first << std['first_name']+" "+std['last_name']
+      total_mark = 0 
+      full_mark_all = 0 
+      grades = [] 
+      grade_count = {} 
+      total_grade = 0 
+      failed = false 
+      subject_count = 0 
+      pass_mark_cq = 0 
+      total_cq = 0     
+      pass_mark_mcq = 0 
+      total_mcq = 0 
+      @report_data['report']['subjects'].each do |sub|
+        subjectdata = Subject.find(sub['id'].to_i)
+        student_id = std['id'].to_s
+        subject_id = sub['id'].to_s
+        elective_group_id = subjectdata.elective_group_id.to_i
+        if @std_subject_hash.nil?
+          std_subject = StudentsSubject.find_all_by_batch_id(@batch.id)
+          @std_subject_hash = []
+          unless std_subject.blank?
+            std_subject.each do |std_sub|
+              @std_subject_hash << std_sub.student_id.to_s+"_"+std_sub.subject_id.to_s
+            end
+          end
+        end
+        @has_exam_student = true
+        check_std_subject = false
+        if @std_subject_hash.include?(student_id+"_"+subject_id)
+          check_std_subject = true
+        end
+      
+        if check_std_subject == false and elective_group_id != 0
+          @has_exam_student = false 
+        end 
+        if @has_exam_student == false
+          row_first << ""
+          next
+        end  
+        subject_failed = false
+        mcq = 0
+        mcq_total = 0
+        cq = 0
+        cq_total = 0
+        att = 0
+
+        exam_marks = 0 
+        exam_full_marks = 0 
+        @report_data['report']['exams'].each do |rs| 
+          if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? 
+            if rs['exam_category'] == '3'
+              cq = cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
+              cq_total = cq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+            elsif rs['exam_category'] == '4'
+              mcq = mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
+              mcq_total = mcq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+            else
+              #att = att+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
+              att = att+student_attendance_mark.to_i
+            end
+            exam_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
+            exam_full_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+          end 
+        end 
+        if mcq_total > 0 && mcq > 0
+          if mcq_total == 35 or mcq_total == 40
+            mcq = (mcq.to_f/mcq_total.to_f)*25
+            mcq = mcq.round()
+          end
+        end
+        if cq_total > 0 && cq > 0
+          if cq_total == 90
+            cq = (cq.to_f/cq_total.to_f)*70
+            cq = cq.round()
+          end
+          if cq_total == 130
+            cq = (cq.to_f/cq_total.to_f)*95
+            cq = cq.round()
+          end
+        end
+        main_mark = cq+mcq+student_attendance_mark
+        row_first << main_mark.to_i
+        total_mark = total_mark+main_mark.to_f
+        grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+        if !grade.blank? and !grade.name.blank?
+          if grade.credit_points.to_i == 0
+            subject_failed = true
+            failed = true
+            total_failed = total_failed+1
+            row_first << "Failed"
+          end
+          total_grade = total_grade+grade.credit_points.to_f
+        end 
+        full_mark_all = full_mark_all+main_mark.to_f
+        
+      end 
+      percentage = 0
+      if full_mark_all > 0 &&  total_mark > 0 
+        percentage = (total_mark.to_f/full_mark_all.to_f)*100  
+      end  
+      
+      grade_point_avg = 0.00 
+      if total_grade > 0 && subject_count > 0 
+        grade_point_avg = total_grade.to_f/subject_count.to_f 
+        if grade_point_avg > 5 
+          grade_point_avg = 5.00 
+        end   
+      end  
+      grade_point_avg = (grade_point_avg.to_f*100).to_f.round() 
+      grade_point_avg = grade_point_avg.to_f/100 
+      row_first << total_failed
+      new_book.worksheet(0).insert_row(start_index, row_first) 
+    end  
+    spreadsheet = StringIO.new 
+    new_book.write spreadsheet 
+    send_data spreadsheet.string, :filename => @batch.full_name + "-" + @connect_exam_obj.name + ".xls", :type =>  "application/vnd.ms-excel"
+  end
+
   
 
   def tabulation_bncd_excell
@@ -7440,7 +7730,11 @@ class ExamController < ApplicationController
       row_first << sprintf( "%0.02f", total_mark) 
       row_first << sprintf( "%0.02f", total_grade)
       row_first << sprintf( "%0.02f", grade_point_avg)
-      row_first << failed ? "Failed" : "Passed"
+      if failed
+        row_first << "Failed"
+      else
+        row_first << "Passed"
+      end  
       new_book.worksheet(0).insert_row(start_index, row_first) 
     end  
     spreadsheet = StringIO.new 

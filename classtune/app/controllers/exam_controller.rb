@@ -6869,6 +6869,564 @@ class ExamController < ApplicationController
       :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
       :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
+
+  def tabulation_excell
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    new_book = Spreadsheet::Workbook.new
+    sheet1 = new_book.create_worksheet :name => 'tabulation'
+    
+    
+    center_align_format = Spreadsheet::Format.new :horizontal_align => :center,  :vertical_align => :middle
+    @id = params[:id]
+    @connect_exam_obj = ExamConnect.active.find(@id)
+    @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
+  
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    
+    std_subject = StudentsSubject.find_all_by_batch_id_and_elective_type(@batch.id,4,:include=>[:subject])
+    
+    if @tabulation_data.nil?
+      student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+      @tabulation_data = []
+      if student_response['status']['code'].to_i == 200
+        @tabulation_data = student_response['data']
+      end
+    end
+    if @connect_exam_obj.result_type.to_i == 13 or @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 or @connect_exam_obj.result_type.to_i == 16 or @connect_exam_obj.result_type.to_i == 20
+      finding_data_sagc_covid()
+    elsif @connect_exam_obj.result_type.to_i == 17
+      finding_data_sagc_25()
+    elsif @connect_exam_obj.result_type.to_i == 18
+      finding_data_sagc_18()
+    elsif @connect_exam_obj.result_type.to_i == 21
+      finding_data_sagc_21()
+    elsif @connect_exam_obj.result_type.to_i == 19
+      finding_data_19()
+    else
+      finding_data5()
+    end
+    
+    if !@student_position.blank?
+      @student_position_first_term = @student_position
+      @subject_highest_1st_term = @subject_highest
+      @student_position_first_term = @student_position
+      @student_position_first_term_batch = @student_position_batch
+    elsif !@student_position_second_term.blank?
+      @subject_highest_1st_term = @subject_highest_2nd_term
+      @student_position_first_term = @student_position_second_term
+      @student_position_first_term_batch = @student_position_second_term_batch
+    end 
+    
+ 
+    
+    row_first = ['Srl','S. ID','Roll','Student Name','Total','GPA & GP','LG','M.C','M.S','WD','PD']
+    starting_row = 11
+    sub_id_array = []
+    @subject_result.each do |key,sub_res|
+      unless sub_id_array.include?(key)
+        sub_id_array << key
+      end
+    end
+    @all_subject_connect_exam = Subject.find_all_by_code(sub_id_array,:conditions=>["batch_id = ?",@batch.id],:order=>"priority asc")
+    subject_map = @all_subject_connect_exam.map(&:id)
+    @all_subject_connect_exam.each do |value|       
+      key = value.code.to_s
+      if @subject_result[key].blank?
+        next
+      end
+      end_row = starting_row+7
+      (starting_row..end_row).each do |i|
+        sheet1.row(i).default_format = center_align_format
+      end
+      row_first << @subject_result[key]['name']
+      row_first << ""
+      row_first << ""
+      row_first << ""
+      row_first << ""
+      row_first << ""
+      row_first << ""
+      row_first << ""
+      new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)
+      starting_row = starting_row+8
+    end
+    classes = ["NURSERY",'KG',"ONE",'TWO','THREE','FOUR','FIVE','SIX','SEVEN','EIGHT']
+    unless classes.include?(@batch.course.course_name.upcase)
+      row_first << "4th Subject Name"
+    end
+    new_book.worksheet(0).insert_row(0, row_first)
+    
+    new_book.worksheet(0).merge_cells(0,0,1,0)
+    new_book.worksheet(0).merge_cells(0,1,1,1)
+    new_book.worksheet(0).merge_cells(0,2,1,2)
+    new_book.worksheet(0).merge_cells(0,3,1,3)
+    new_book.worksheet(0).merge_cells(0,4,1,4)
+    new_book.worksheet(0).merge_cells(0,5,1,5)
+    new_book.worksheet(0).merge_cells(0,6,1,6)
+    new_book.worksheet(0).merge_cells(0,7,1,7)
+    new_book.worksheet(0).merge_cells(0,8,1,8)
+    new_book.worksheet(0).merge_cells(0,9,1,9)
+    new_book.worksheet(0).merge_cells(0,10,1,10)
+    
+    row_first = ['','','','','','','','','','','']
+    @all_subject_connect_exam.each do |sub_result|
+      key = sub_result.code.to_s
+      unless @subject_result[key].blank?
+        row_first << "AT"
+        row_first << "CW"
+        row_first << "OB"
+        row_first << "SB"
+        row_first << "PR"
+        row_first << "+RT"
+        row_first << "+CT"
+        row_first << "LG"
+      end
+    end
+    row_first << ""
+    new_book.worksheet(0).insert_row(1, row_first)
+    
+    std_loop = 2
+    sl = 1
+    #abort(@student_result.inspect) 
+    @student_result.each do |std_result|
+      if std_result['batch_id'].to_i != @batch.id.to_i
+        next
+      end
+      tmp_row = []
+      tmp_row << sl 
+      #std_result['sl']
+      sl = sl + 1
+      tmp_row << std_result['sid'].to_s
+      tmp_row << std_result['roll'].to_s
+      tmp_row << std_result['name'].to_s
+      tmp_row << std_result['grand_total_with_fraction'].to_f.round().to_s
+      tmp_row << std_result['gp'].to_s+"("+std_result['gpa'].to_s+")"
+      if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank?
+        tmp_row << std_result['lg']
+      else
+        tmp_row << "F"
+      end 
+      exam_comment = {}
+      unless @exam_comment_all.blank? 
+        @exam_comment_all.each do |ec|
+          if ec.student_id.to_i == std_result['id'].to_i
+            exam_comment = ec
+            break
+          end
+        end
+      end
+      
+      
+      if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank?
+        tmp_row <<  @student_position_first_term[std_result['id'].to_i]
+      else
+        tmp_row << ""
+      end 
+      
+      
+      if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank?
+        tmp_row << @student_position_first_term_batch[std_result['id'].to_i]
+      else
+        tmp_row << ""
+      end
+      
+      unless exam_comment.blank?
+        total_att = ""
+        absent = ""
+        if !exam_comment.blank?
+          all_comments = exam_comment.comments
+          if !all_comments.blank?
+            all_comments_array = all_comments.split("|")
+            total_att = all_comments_array[0]
+            if !all_comments_array[1].nil?
+              absent = all_comments_array[1]
+            end
+          end
+        end
+        tmp_row << total_att
+        tmp_row << absent
+      else
+        tmp_row << ""
+        tmp_row << ""
+      end
+      rt = 0
+      courseObj = Course.find_by_id(@batch.course_id)
+      unless std_result['subjects'].blank?
+        @all_subject_connect_exam.each do |value|
+          key = value.code.to_s
+          unless @subject_result[key].blank?
+            unless std_result['subjects'][key].blank?
+              rt = std_result['subjects'][key]['result']['at'].to_f + std_result['subjects'][key]['result']['cw'].to_f + std_result['subjects'][key]['result']['ob'].to_f + std_result['subjects'][key]['result']['sb'].to_f + std_result['subjects'][key]['result']['pr'].to_f
+              tmp_row << std_result['subjects'][key]['result']['at'].to_s
+              tmp_row << std_result['subjects'][key]['result']['cw'].to_s
+              tmp_row << std_result['subjects'][key]['result']['ob'].to_s
+              tmp_row << std_result['subjects'][key]['result']['sb'].to_s
+              tmp_row << std_result['subjects'][key]['result']['pr'].to_s
+              if courseObj.course_name == "Ten"
+                tmp_row << std_result['subjects'][key]['result']['ct'].to_s
+              else
+                tmp_row << rt.to_s
+              end
+              tmp_row << std_result['subjects'][key]['result']['ct'].to_s
+              tmp_row << std_result['subjects'][key]['result']['lg'].to_s       
+            else
+              tmp_row << "-"
+              tmp_row << "-"
+              tmp_row << "-"
+              tmp_row << "-"
+              tmp_row << "-"
+              tmp_row << "-"
+              tmp_row << "-"
+              tmp_row << "-"
+            end 
+          end 
+        end
+      end
+      subject_std = std_subject.find{|val| val.student_id.to_i == std_result['id'].to_i and subject_map.include?(val.subject_id.to_i) }
+      
+      unless classes.include?(@batch.course.course_name.upcase)
+        unless subject_std.blank?
+          tmp_row << subject_std.subject.name
+        else
+          tmp_row << "-"
+        end  
+      end  
+      
+      new_book.worksheet(0).insert_row(std_loop, tmp_row)
+      
+      
+      std_loop = std_loop+1
+      
+    end
+    batch_split = @batch.name.split(" ")
+    
+    group_name = ""
+    unless @batch.course.group.blank?
+      group_split = @batch.course.group.split(" ")
+      unless group_split[2].blank?
+        group_split[0] = group_split[0]+" "+group_split[1]
+      end
+      group_name = group_split[0]
+    end
+    shift = ""
+    version= ""
+    unless batch_split[1].blank?
+      version = batch_split[1]
+    end
+    sheet1.add_header("SHAHEED BIR UTTAM LT. ANWAR GIRLS' COLLEGE (Tabulation Sheet : "+@connect_exam_obj.name.to_s+")
+ Program :"+@batch.course.course_name.to_s+" || Group :"+group_name.to_s+" || Section :"+@batch.course.section_name.to_s+" || Shift :"+batch_split[0]+" || Session :"+@batch.course.session.to_s+" || Version :"+version+"
+      ")
+    sheet1.add_footer("TIPS :: M.C = Merit in Class  ||  M.S = Merit in Section  ||  +RT = Raw Total  ||  +CT = Converted Total")
+    spreadsheet = StringIO.new 
+    new_book.write spreadsheet 
+    send_data spreadsheet.string, :filename => @batch.full_name + "-" + @connect_exam_obj.name + ".xls", :type =>  "application/vnd.ms-excel"
+  end
+
+  def tabulation_bncd_excell
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    new_book = Spreadsheet::Workbook.new
+    sheet1 = new_book.create_worksheet :name => 'tabulation'
+    center_align_format = Spreadsheet::Format.new :horizontal_align => :center,  :vertical_align => :middle
+    @id = params[:id]
+    @connect_exam_obj = ExamConnect.find(@id)
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    @assigned_employee=@batch.all_class_teacher
+    @report_data = Rails.cache.fetch("tabulation_#{@id}_#{@batch.id}"){
+      get_tabulation(@id,@batch.id)
+      report_data = []
+      if @student_response['status']['code'].to_i == 200
+        report_data = @student_response['data']
+      end
+      report_data
+    }
+    @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id) 
+    @student_exam_comment = {}
+    @exam_comment.each do |cmt|
+      @student_exam_comment[cmt.student_id.to_s] = cmt.comments
+    end    
+    @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
+    row_first = ["Sl","Roll","Student Name"]
+    starting_row = 3
+    @report_data['report']['subjects'].each do |sub|
+      has_exam = false 
+      if @all_subject_id.include?(sub['id'].to_i)
+        has_exam = true
+      end 
+      if has_exam == true 
+        row_first << sub['name']
+        row_first << ""
+        end_row = starting_row+1
+        new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)
+        starting_row = starting_row+2
+      end
+    end  
+    row_first << "G. Total"
+    row_first << "Total GP"
+    row_first << "GPA"
+    row_first << "Remarks"
+    
+    new_book.worksheet(0).insert_row(0, row_first)
+    row_first = ["","",""]
+    @report_data['report']['subjects'].each do |sub|
+      has_exam = false 
+      if @all_subject_id.include?(sub['id'].to_i)
+        has_exam = true
+      end 
+      if has_exam == true 
+        row_first << "TTL"
+        row_first << "GP"
+      end
+    end 
+    row_first << ""
+    row_first << ""
+    row_first << ""
+    row_first << ""
+    new_book.worksheet(0).insert_row(1, row_first)
+
+    new_book.worksheet(0).merge_cells(0,0,1,0)
+    new_book.worksheet(0).merge_cells(0,1,1,1)
+    new_book.worksheet(0).merge_cells(0,2,1,2)
+    new_book.worksheet(0).merge_cells(0,starting_row,1,starting_row)
+    new_book.worksheet(0).merge_cells(0,starting_row+1,1,starting_row+1)
+    new_book.worksheet(0).merge_cells(0,starting_row+2,1,starting_row+2)
+    new_book.worksheet(0).merge_cells(0,starting_row+3,1,starting_row+3)
+    
+    std_done = []
+    row_first = []
+    start_index = 1
+    @report_data['report']['students'].each do |std|
+      if std_done.include?(std['id'])
+        next
+      end
+      std_done << std['id']
+      if std.blank? || std['first_name'].blank?  
+        next
+      end 
+      start_index = start_index+1
+      s = Student.find(std['id'])
+      @config = Configuration.find_by_config_key('StudentAttendanceType')
+      @b = Batch.find(s.batch_id)
+      @start_date = @connect_exam_obj.attandence_start_date.to_date
+      @end_date = @connect_exam_obj.attandence_end_date.to_date
+      @leaves=Hash.new { |h, k| h[k] = Hash.new(&h.default_proc) }
+      @today = @local_tzone_time.to_date
+      working_days=@b.working_days(@start_date.to_date)
+      unless @start_date > @local_tzone_time.to_date
+        unless @config.config_value == 'Daily'
+          unless params[:subject] == '0'
+            @subject = Subject.find params[:subject]
+            @academic_days=@b.subject_hours(@start_date, @end_date, params[:subject]).values.flatten.compact.count
+            @grouped = SubjectLeave.find_all_by_subject_id(@subject.id,  :conditions =>{:month_date => @start_date..@end_date}).group_by(&:student_id)
+            if @grouped[s.id].nil?
+          @leaves[s.id]['leave']=0
+        else
+          @leaves[s.id]['leave']=@grouped[s.id].count
+        end
+        @leaves[s.id]['total'] = (@academic_days - @leaves[s.id]['leave'])
+        @leaves[s.id]['percent'] = (@leaves[s.id]['total'].to_f/@academic_days)*100 unless @academic_days == 0
+          else
+            @academic_days=@b.subject_hours(@start_date, @end_date, 0).values.flatten.compact.count
+            @grouped = @b.subject_leaves.find(:all,  :conditions =>{:month_date => @start_date..@end_date, :student_id => s.id})
+            if @grouped[s.id].nil?
+        @leaves[s.id]['leave']=0
+        else
+          @leaves[s.id]['leave']=@grouped[s.id].count
+            end
+        @leaves[s.id]['total'] = (@academic_days - @leaves[s.id]['leave'])
+        @leaves[s.id]['percent'] = (@leaves[s.id]['total'].to_f/@academic_days)*100 unless @academic_days == 0
+          end
+        else
+            @start_date_main = @start_date
+            
+              @start_date = @start_date_main
+              unless std['admission_date'].blank?
+                if std['admission_date'].to_date > @start_date
+                  @start_date = std['admission_date'].to_date
+                end
+              end
+
+              @academic_days = 0
+              @student_leaves = []
+              if @end_date >= @start_date
+                @academic_days =  @b.find_working_days(@start_date,@end_date).select{|v| v<=@end_date}.count
+                @student_leaves = Attendance.find(:all,:conditions =>{:student_id=>s.id,:batch_id=>@b.id,:month_date => @start_date..@end_date})
+              end
+            
+            on_leaves = 0;
+            leaves_other = 0;
+            leaves_full = 0;
+            unless @student_leaves.empty?
+              @student_leaves.each do |r|
+                if r.student_id == s.id
+                  working_days_count=@b.find_working_days(r.month_date.to_date,r.month_date.to_date).select{|v| v<=r.month_date.to_date}.count
+
+                  if working_days_count==1
+                    if r.is_leave == true
+                      on_leaves = on_leaves+1;
+                    elsif r.forenoon==true && r.afternoon==false
+                      leaves_other = leaves_other+1;
+                    elsif r.forenoon==false && r.afternoon==true  
+                      leaves_other = leaves_other+1;
+                    else
+                      leaves_full = leaves_full+1;
+                    end 
+                  end
+                end
+              end
+            end
+            @leaves[s.id]['late'] = leaves_other
+            @leaves[s.id]['absent'] = leaves_full
+            @leaves[s.id]['on_leave'] = on_leaves
+            @leaves[s.id]['present'] = @academic_days-on_leaves-leaves_full
+            @leaves[s.id]['total']=@academic_days-leaves_full.to_f-(0.5*leaves_other)
+            @leaves[s.id]['percent'] = 0.0
+            @leaves[s.id]['percent'] = (@leaves[s.id]['total'].to_f/@academic_days)*100 unless @academic_days == 0
+          @academic_days =  @b.find_working_days(@start_date_main,@end_date).select{|v| v<=@end_date}.count
+        end
+      else
+        @report = ''
+      end 
+
+      student_attendance_percent = 0 	
+      student_attendance_mark = 0 	
+      unless @leaves[s.id]['percent'].nil? 
+        student_attendance_percent =  @leaves[s.id]['percent'] 
+      end 	
+      if student_attendance_percent.to_f > 0 
+        if student_attendance_percent >= 0 and student_attendance_percent < 60 
+          student_attendance_mark = 0 	
+        elsif student_attendance_percent >= 60 and student_attendance_percent < 71 
+          student_attendance_mark = 3 	
+        elsif student_attendance_percent >= 71 and student_attendance_percent < 80 
+          student_attendance_mark = 4 	
+        elsif student_attendance_percent >= 80 
+          student_attendance_mark = 5 	
+        end 
+      end 
+
+      row_first << start_index-1
+      row_first << std['class_roll_no']
+      row_first << std['first_name']+" "+std['last_name']
+      total_mark = 0 
+      full_mark_all = 0 
+      grades = [] 
+      grade_count = {} 
+      total_grade = 0 
+      failed = false 
+      subject_count = 0 
+      pass_mark_cq = 0 
+      total_cq = 0     
+      pass_mark_mcq = 0 
+      total_mcq = 0 
+      @report_data['report']['subjects'].each do |sub|
+        subjectdata = Subject.find(sub['id'].to_i)
+        student_id = std['id'].to_s
+        subject_id = sub['id'].to_s
+        elective_group_id = subjectdata.elective_group_id.to_i
+        if @std_subject_hash.nil?
+          std_subject = StudentsSubject.find_all_by_batch_id(@batch.id)
+          @std_subject_hash = []
+          unless std_subject.blank?
+            std_subject.each do |std_sub|
+              @std_subject_hash << std_sub.student_id.to_s+"_"+std_sub.subject_id.to_s
+            end
+          end
+        end
+        @has_exam_student = true
+        check_std_subject = false
+        if @std_subject_hash.include?(student_id+"_"+subject_id)
+          check_std_subject = true
+        end
+      
+        if check_std_subject == false and elective_group_id != 0
+          @has_exam_student = false 
+        end 
+        if @has_exam_student == false
+          row_first << ""
+          row_first << ""
+          next
+        end  
+        subject_failed = false
+        mcq = 0
+        mcq_total = 0
+        cq = 0
+        cq_total = 0
+        att = 0
+
+        exam_marks = 0 
+        exam_full_marks = 0 
+        @report_data['report']['exams'].each do |rs| 
+          if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? 
+            if rs['exam_category'] == '3'
+              cq = cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
+              cq_total = cq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+            elsif rs['exam_category'] == '4'
+              mcq = mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
+              mcq_total = mcq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+            else
+              #att = att+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
+              att = att+student_attendance_mark.to_i
+            end
+            exam_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
+            exam_full_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+          end 
+        end 
+        if mcq_total > 0 && mcq > 0
+          if mcq_total == 35 or mcq_total == 40
+            mcq = (mcq.to_f/mcq_total.to_f)*25
+            mcq = mcq.round()
+          end
+        end
+        if cq_total > 0 && cq > 0
+          if cq_total == 90
+            cq = (cq.to_f/cq_total.to_f)*70
+            cq = cq.round()
+          end
+          if cq_total == 130
+            cq = (cq.to_f/cq_total.to_f)*95
+            cq = cq.round()
+          end
+        end
+        main_mark = cq+mcq+student_attendance_mark
+        row_first << main_mark.to_i
+        total_mark = total_mark+main_mark.to_f
+        grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+        if !grade.blank? and !grade.name.blank?
+          if grade.credit_points.to_i == 0
+            subject_failed = true
+            failed = true
+          end
+          total_grade = total_grade+grade.credit_points.to_f
+          row_first << sprintf( "%0.01f", grade.credit_points.to_f)
+        end 
+        full_mark_all = full_mark_all+main_mark.to_f
+        percentage = 0
+        if full_mark_all > 0 &&  total_mark > 0 
+          percentage = (total_mark.to_f/full_mark_all.to_f)*100  
+        end  
+        row_first << sprintf( "%0.02f", total_mark) 
+        row_first << sprintf( "%0.02f", total_grade)
+        grade_point_avg = 0.00 
+        if total_grade > 0 && subject_count > 0 
+          grade_point_avg = total_grade.to_f/subject_count.to_f 
+          if grade_point_avg > 5 
+            grade_point_avg = 5.00 
+          end   
+        end  
+        grade_point_avg = (grade_point_avg.to_f*100).to_f.round() 
+        grade_point_avg = grade_point_avg.to_f/100 
+        row_first << sprintf( "%0.02f", grade_point_avg)
+        row_first << failed ? "Failed" : "Passed"
+        new_book.worksheet(0).insert_row(start_index, row_first)
+      end  
+    end  
+    spreadsheet = StringIO.new 
+    new_book.write spreadsheet 
+    send_data spreadsheet.string, :filename => @batch.full_name + "-" + @connect_exam_obj.name + ".xls", :type =>  "application/vnd.ms-excel"
+
+
+  end  
   
   def tabulation
     @id = params[:id]

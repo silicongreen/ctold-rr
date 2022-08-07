@@ -7375,7 +7375,6 @@ class ExamController < ApplicationController
           end
         end
         main_mark = cq+mcq+student_attendance_mark
-        row_first << main_mark.to_i
         total_mark = total_mark+main_mark.to_f
         grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
         if !grade.blank? and !grade.name.blank?
@@ -7384,7 +7383,9 @@ class ExamController < ApplicationController
             failed = true
             total_failed = total_failed+1
             row_first << "Failed"
-          end
+          else
+            row_first << ""
+          end  
           total_grade = total_grade+grade.credit_points.to_f
         end 
         full_mark_all = full_mark_all+main_mark.to_f
@@ -7409,7 +7410,7 @@ class ExamController < ApplicationController
     end  
     spreadsheet = StringIO.new 
     new_book.write spreadsheet 
-    send_data spreadsheet.string, :filename => @batch.full_name + "-" + @connect_exam_obj.name + ".xls", :type =>  "application/vnd.ms-excel"
+    send_data spreadsheet.string, :filename => "Failed_list_"+@batch.full_name + "-" + @connect_exam_obj.name + ".xls", :type =>  "application/vnd.ms-excel"
   end
 
   
@@ -7739,7 +7740,7 @@ class ExamController < ApplicationController
     end  
     spreadsheet = StringIO.new 
     new_book.write spreadsheet 
-    send_data spreadsheet.string, :filename => @batch.full_name + "-" + @connect_exam_obj.name + ".xls", :type =>  "application/vnd.ms-excel"
+    send_data spreadsheet.string, :filename => "Tabulation_"+@batch.full_name + "-" + @connect_exam_obj.name + ".xls", :type =>  "application/vnd.ms-excel"
   end  
   
   def tabulation

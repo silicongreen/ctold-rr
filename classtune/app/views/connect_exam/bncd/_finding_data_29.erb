@@ -322,14 +322,14 @@ if @total_std.blank?
                 total_mark_subject = main_mark
                 main_mark = main_mark.round()
                 grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                if sub['name'] == "Chemistry"
+                  abort(main_mark.to_s+"_"+cq.to_s+"_"+mcq.to_s+"_"+att.to_s)
+                end
                 if !grade.blank? and !grade.name.blank?
                   if grade.credit_points.to_i == 0
                     if fourth_subject.blank?
                       subject_failed = true
                       u_grade = u_grade+1 
-                    else
-                      four_subject_failed = true
-                    end
                   end
 
                   if fourth_subject.blank? && subject_failed == false

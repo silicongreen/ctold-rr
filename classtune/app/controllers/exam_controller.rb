@@ -7211,7 +7211,6 @@ class ExamController < ApplicationController
     new_book.worksheet(0).merge_cells(0,starting_row+3,1,starting_row+3)
     
     std_done = []
-    row_first = []
     start_index = 1
     @report_data['report']['students'].each do |std|
       if std_done.include?(std['id'])
@@ -7221,6 +7220,7 @@ class ExamController < ApplicationController
       if std.blank? || std['first_name'].blank?  
         next
       end 
+      row_first = []
       start_index = start_index+1
       s = Student.find(std['id'])
       @config = Configuration.find_by_config_key('StudentAttendanceType')
@@ -7442,8 +7442,6 @@ class ExamController < ApplicationController
     spreadsheet = StringIO.new 
     new_book.write spreadsheet 
     send_data spreadsheet.string, :filename => @batch.full_name + "-" + @connect_exam_obj.name + ".xls", :type =>  "application/vnd.ms-excel"
-
-
   end  
   
   def tabulation

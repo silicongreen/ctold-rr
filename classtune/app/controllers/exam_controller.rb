@@ -7148,6 +7148,24 @@ class ExamController < ApplicationController
     @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
     row_first = ["Sl","Roll","Student Name"]
     starting_row = 3
+    @all_subject_id = []
+    @all_group_exams = GroupedExam.find(
+      :all,
+      :conditions => [
+        "connect_exam_id = ?",
+        @connect_exam_obj.id
+      ]
+    )
+    unless @all_group_exams.blank?
+    @all_exam_group_id = @all_group_exams.map(&:exam_group_id).uniq
+    @all_exams = Exam.find(
+        :all,
+        :conditions => ["exam_group_id IN (?)", @all_exam_group_id]
+      )
+      unless @all_exams.blank?
+      @all_subject_id = @all_exams.map(&:subject_id).uniq
+      end
+    end
     @report_data['report']['subjects'].each do |sub|
       has_exam = false 
       if @all_subject_id.include?(sub['id'].to_i)

@@ -399,7 +399,7 @@ socially to his or her abilities and opportunities.</i></li>
               <table id="pdf-table"  width="100%" class="left-table break-table odd-table height-exam ev-table" cellspacing="0" >
                   <tr class="even">
                       <td width='60%'><% if !@exam_comment.blank?%><%= @exam_comment.comments %><% end %></td>
-                      <td width='40%'><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/sign_principal.jpeg")), :width=>"20%" %></td>  
+                      <td width='40%'><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/sign_principal.jpeg")), :width=>"30%" %></td>  
                   </tr>
                   <tr class="table-header">
                       <td>Comment & Signature of the Class Teacher</td>
@@ -578,8 +578,8 @@ socially to his or her abilities and opportunities.</i></li>
     }
     table#pdf-table tr.even td, table#pdf-table tr.table-header td, table#pdf-table tr.odd td
     {
-        padding: 5px !important;
-        font-size: 18px !important;
+        padding: 7px !important;
+        font-size: 20px !important;
     }
 
 

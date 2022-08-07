@@ -7122,6 +7122,8 @@ class ExamController < ApplicationController
     send_data spreadsheet.string, :filename => @batch.full_name + "-" + @connect_exam_obj.name + ".xls", :type =>  "application/vnd.ms-excel"
   end
 
+  
+
   def tabulation_bncd_excell
     require 'spreadsheet'
     Spreadsheet.client_encoding = 'UTF-8'
@@ -7419,24 +7421,26 @@ class ExamController < ApplicationController
           row_first << sprintf( "%0.01f", grade.credit_points.to_f)
         end 
         full_mark_all = full_mark_all+main_mark.to_f
-        percentage = 0
-        if full_mark_all > 0 &&  total_mark > 0 
-          percentage = (total_mark.to_f/full_mark_all.to_f)*100  
-        end  
-        row_first << sprintf( "%0.02f", total_mark) 
-        row_first << sprintf( "%0.02f", total_grade)
-        grade_point_avg = 0.00 
-        if total_grade > 0 && subject_count > 0 
-          grade_point_avg = total_grade.to_f/subject_count.to_f 
-          if grade_point_avg > 5 
-            grade_point_avg = 5.00 
-          end   
-        end  
-        grade_point_avg = (grade_point_avg.to_f*100).to_f.round() 
-        grade_point_avg = grade_point_avg.to_f/100 
-        row_first << sprintf( "%0.02f", grade_point_avg)
-        row_first << failed ? "Failed" : "Passed"
+        
       end 
+      percentage = 0
+      if full_mark_all > 0 &&  total_mark > 0 
+        percentage = (total_mark.to_f/full_mark_all.to_f)*100  
+      end  
+      
+      grade_point_avg = 0.00 
+      if total_grade > 0 && subject_count > 0 
+        grade_point_avg = total_grade.to_f/subject_count.to_f 
+        if grade_point_avg > 5 
+          grade_point_avg = 5.00 
+        end   
+      end  
+      grade_point_avg = (grade_point_avg.to_f*100).to_f.round() 
+      grade_point_avg = grade_point_avg.to_f/100 
+      row_first << sprintf( "%0.02f", total_mark) 
+      row_first << sprintf( "%0.02f", total_grade)
+      row_first << sprintf( "%0.02f", grade_point_avg)
+      row_first << failed ? "Failed" : "Passed"
       new_book.worksheet(0).insert_row(start_index, row_first) 
     end  
     spreadsheet = StringIO.new 

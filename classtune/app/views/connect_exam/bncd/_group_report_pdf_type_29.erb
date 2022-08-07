@@ -176,7 +176,6 @@
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% total_mark = 0 %>
                       <% obtain_mark = 0 %>
-                      <%  %>
                       <% subjectdata = Subject.find(subjects['id'].to_i) %>
                       <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
                       <% if @has_exam_student == false %>
@@ -249,8 +248,6 @@
                               main_mark = cq+mcq+att
 
 
-                            %>
-                           
                             %>
                             <td class="col-pdf"><%= main_mark %></td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

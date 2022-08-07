@@ -330,6 +330,9 @@ if @total_std.blank?
                     if fourth_subject.blank?
                       subject_failed = true
                       u_grade = u_grade+1 
+                    else
+                      four_subject_failed = true
+                    end
                   end
 
                   if fourth_subject.blank? && subject_failed == false

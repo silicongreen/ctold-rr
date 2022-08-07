@@ -17,6 +17,8 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
+
+
 <% 
   if @std_subject_hash_type.nil?
     std_subject = StudentsSubject.find_all_by_batch_id(@batch.id)
@@ -169,9 +171,9 @@ end
               <table id="pdf-table" width="100%" cellspacing="0">
                       
                   <tr class="table-header">
-                      <td class="col-pdf" rowspan="2">SL</td>
-                      <td class="col-pdf" rowspan="2">Roll</td>
-                      <td class="col-pdf" rowspan="2">Students Name</td>
+                      <td class="col-pdf">SL</td>
+                      <td class="col-pdf">Roll</td>
+                      <td class="col-pdf">Students Name</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -181,32 +183,11 @@ end
                         <% if has_exam == true %>
                           <% colspan = 0 %>
                           <% colspan = colspan+2 %>
-                          <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
+                          <td><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
-                      <td class="col-pdf" rowspan="2">G. Total</td>
-                       <td class="col-pdf" rowspan="2">Total GP</td>
-                      <td class="col-pdf" rowspan="2">GPA</td>
-                    <td class="col-pdf" rowspan="2">Remarks</td>
-                     
-
-                  </tr>
-                  
-                  <tr class="table-header">
-                      
-                      <% @report_data['report']['subjects'].each do |sub| %>
-                        <% has_exam = false %>
-                        <% if @all_subject_id.include?(sub['id'].to_i) %>
-                          <% has_exam = true %>
-                        <% end %>
-                       
-                        <% if has_exam == true %>
-                          <td ><%= "TTL" %></td>
-                          <td ><%= "GP" %></td>
-                        <% end %>
-                      <% end %>
-                      
-
+			<td><%=  "Total Failed" %></td>
+	
                   </tr>
                   
                   
@@ -234,9 +215,9 @@ end
                       <table id="pdf-table" width="100%" cellspacing="0">
                       
                        <tr class="table-header">
-                      <td class="col-pdf" rowspan="2">SL</td>
-                      <td class="col-pdf" rowspan="2">Roll</td>
-                      <td class="col-pdf" rowspan="2">Students Name</td>
+                      <td class="col-pdf">SL</td>
+                      <td class="col-pdf">Roll</td>
+                      <td class="col-pdf">Students Name</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -246,32 +227,12 @@ end
                         <% if has_exam == true %>
                           <% colspan = 0 %>
                           <% colspan = colspan+2 %>
-                          <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
+                          <td><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
-                      <td class="col-pdf" rowspan="2">G. Total</td>
-                       <td class="col-pdf" rowspan="2">Total GP</td>
-                      <td class="col-pdf" rowspan="2">GPA</td>
-                     <td class="col-pdf" rowspan="2"><%=  "REMARKS" %></td>
-
+			<td><%=  "Total Failed" %></td>
                   </tr>
                   
-                  <tr class="table-header">
-                      
-                      <% @report_data['report']['subjects'].each do |sub| %>
-                        <% has_exam = false %>
-                        <% if @all_subject_id.include?(sub['id'].to_i) %>
-                          <% has_exam = true %>
-                        <% end %>
-                       
-                        <% if has_exam == true %>
-                          <td ><%= "TTL" %></td>
-                          <td ><%= "GP" %></td>
-                        <% end %>
-                      <% end %>
-                      
-
-                  </tr>
                   
                   
                     <% elsif std_count>26 && extender ==1 %>
@@ -284,9 +245,9 @@ end
                       <table id="pdf-table" width="100%" cellspacing="0">
                       
                        <tr class="table-header">
-                      <td class="col-pdf" rowspan="2">SL</td>
-                      <td class="col-pdf" rowspan="2">Roll</td>
-                      <td class="col-pdf" rowspan="2">Students Name</td>
+                      <td class="col-pdf">SL</td>
+                      <td class="col-pdf">Roll</td>
+                      <td class="col-pdf">Students Name</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -296,33 +257,13 @@ end
                         <% if has_exam == true %>
                           <% colspan = 0 %>
                           <% colspan = colspan+2 %>
-                          <td colspan="<%= colspan %>"><%=  sub['name'] %></td>
+                          <td><%=  sub['name'] %></td>
                         <% end %>
                       <% end %>
-                      <td class="col-pdf" rowspan="2">G. Total</td>
-                       <td class="col-pdf" rowspan="2">Total GP</td>
-                      <td class="col-pdf" rowspan="2">GPA</td>
-                      <td class="col-pdf" rowspan="2">Remarks</td>   
-                     
+                     <td><%=  "Total Failed" %></td>
 
                   </tr>
                   
-                  <tr class="table-header">
-                      
-                      <% @report_data['report']['subjects'].each do |sub| %>
-                        <% has_exam = false %>
-                        <% if @all_subject_id.include?(sub['id'].to_i) %>
-                          <% has_exam = true %>
-                        <% end %>
-                       
-                        <% if has_exam == true %>
-                          <td ><%= "TTL" %></td>
-                          <td ><%= "GP" %></td>
-                        <% end %>
-                      <% end %>
-                      
-
-                  </tr>
                   
                   
                     <% end %>   
@@ -333,108 +274,111 @@ end
                     number_of_failed = 0
                     
                     %>
-                    <% s = Student.find(std['id']) %>    
+
                     <%
-    @config = Configuration.find_by_config_key('StudentAttendanceType')
-    @b = Batch.find(s.batch_id)
-    @start_date = @connect_exam_obj.attandence_start_date.to_date
-    @end_date = @connect_exam_obj.attandence_end_date.to_date
-    @leaves=Hash.new { |h, k| h[k] = Hash.new(&h.default_proc) }
-    @today = @local_tzone_time.to_date
-    working_days=@b.working_days(@start_date.to_date)
-    unless @start_date > @local_tzone_time.to_date
-      unless @config.config_value == 'Daily'
-        unless params[:subject] == '0'
-          @subject = Subject.find params[:subject]
-          @academic_days=@b.subject_hours(@start_date, @end_date, params[:subject]).values.flatten.compact.count
-          @grouped = SubjectLeave.find_all_by_subject_id(@subject.id,  :conditions =>{:month_date => @start_date..@end_date}).group_by(&:student_id)
-          if @grouped[s.id].nil?
-			  @leaves[s.id]['leave']=0
-			else
-			  @leaves[s.id]['leave']=@grouped[s.id].count
-			end
-			@leaves[s.id]['total'] = (@academic_days - @leaves[s.id]['leave'])
-			@leaves[s.id]['percent'] = (@leaves[s.id]['total'].to_f/@academic_days)*100 unless @academic_days == 0
-        else
-          @academic_days=@b.subject_hours(@start_date, @end_date, 0).values.flatten.compact.count
-          @grouped = @b.subject_leaves.find(:all,  :conditions =>{:month_date => @start_date..@end_date, :student_id => s.id})
-          if @grouped[s.id].nil?
-			@leaves[s.id]['leave']=0
-		  else
-		    @leaves[s.id]['leave']=@grouped[s.id].count
-          end
-		  @leaves[s.id]['total'] = (@academic_days - @leaves[s.id]['leave'])
-		  @leaves[s.id]['percent'] = (@leaves[s.id]['total'].to_f/@academic_days)*100 unless @academic_days == 0
-        end
-      else
-          @start_date_main = @start_date
-          
-            @start_date = @start_date_main
-            unless std['admission_date'].blank?
-              if std['admission_date'].to_date > @start_date
-                @start_date = std['admission_date'].to_date
-              end
-            end
-
-            @academic_days = 0
-            @student_leaves = []
-            if @end_date >= @start_date
-              @academic_days =  @b.find_working_days(@start_date,@end_date).select{|v| v<=@end_date}.count
-              @student_leaves = Attendance.find(:all,:conditions =>{:student_id=>s.id,:batch_id=>@b.id,:month_date => @start_date..@end_date})
-            end
-          
-          on_leaves = 0;
-          leaves_other = 0;
-          leaves_full = 0;
-          unless @student_leaves.empty?
-            @student_leaves.each do |r|
-              if r.student_id == s.id
-                working_days_count=@b.find_working_days(r.month_date.to_date,r.month_date.to_date).select{|v| v<=r.month_date.to_date}.count
-
-                if working_days_count==1
-                  if r.is_leave == true
-                    on_leaves = on_leaves+1;
-                  elsif r.forenoon==true && r.afternoon==false
-                    leaves_other = leaves_other+1;
-                  elsif r.forenoon==false && r.afternoon==true  
-                    leaves_other = leaves_other+1;
-                  else
-                    leaves_full = leaves_full+1;
-                  end 
-                end
-              end
-            end
-          end
-          @leaves[s.id]['late'] = leaves_other
-          @leaves[s.id]['absent'] = leaves_full
-          @leaves[s.id]['on_leave'] = on_leaves
-          @leaves[s.id]['present'] = @academic_days-on_leaves-leaves_full
-          @leaves[s.id]['total']=@academic_days-leaves_full.to_f-(0.5*leaves_other)
-          @leaves[s.id]['percent'] = 0.0
-          @leaves[s.id]['percent'] = (@leaves[s.id]['total'].to_f/@academic_days)*100 unless @academic_days == 0
-        @academic_days =  @b.find_working_days(@start_date_main,@end_date).select{|v| v<=@end_date}.count
-      end
-    else
-      @report = ''
-    end
-  %> 
-  <% student_attendance_percent = 0 %>	
-  <% student_attendance_mark = 0 %>	
-  <% unless @leaves[s.id]['percent'].nil? %>
-	<% student_attendance_percent =  @leaves[s.id]['percent'] %>
-  <% end %>	
-  <% if student_attendance_percent.to_f > 0 %>
-	<% if student_attendance_percent >= 0 and student_attendance_percent < 60 %>
-	<% student_attendance_mark = 0 %>	
-	<% elsif student_attendance_percent >= 60 and student_attendance_percent < 71 %>
-	<% student_attendance_mark = 3 %>	
-	<% elsif student_attendance_percent >= 71 and student_attendance_percent < 80 %>
-	<% student_attendance_mark = 4 %>	
-	<% elsif student_attendance_percent >= 80 %>
-	<% student_attendance_mark = 5 %>	
-	<% end %>
+                    @student = Student.find(std['id'])
+                    @config = Configuration.find_by_config_key('StudentAttendanceType')
+                    @batch = Batch.find(@student.batch_id)
+                    @start_date = ("2022-02-22").to_date
+                    @end_date = ("2022-03-22").to_date
+                    @leaves=Hash.new { |h, k| h[k] = Hash.new(&h.default_proc) }
+                    @today = @local_tzone_time.to_date
+                    working_days=@batch.working_days(@start_date.to_date)
+                    unless @start_date > @local_tzone_time.to_date
+                      unless @config.config_value == 'Daily'
+                        unless params[:subject] == '0'
+                          @subject = Subject.find params[:subject]
+                          @academic_days=@batch.subject_hours(@start_date, @end_date, params[:subject]).values.flatten.compact.count
+                          @grouped = SubjectLeave.find_all_by_subject_id(@subject.id,  :conditions =>{:month_date => @start_date..@end_date}).group_by(&:student_id)
+                          if @grouped[@student.id].nil?
+                        @leaves[@student.id]['leave']=0
+                      else
+                        @leaves[@student.id]['leave']=@grouped[@student.id].count
+                      end
+                      @leaves[@student.id]['total'] = (@academic_days - @leaves[@student.id]['leave'])
+                      @leaves[@student.id]['percent'] = (@leaves[@student.id]['total'].to_f/@academic_days)*100 unless @academic_days == 0
+                        else
+                          @academic_days=@batch.subject_hours(@start_date, @end_date, 0).values.flatten.compact.count
+                          @grouped = @batch.subject_leaves.find(:all,  :conditions =>{:month_date => @start_date..@end_date, :student_id => @student.id})
+                          if @grouped[@student.id].nil?
+                      @leaves[@student.id]['leave']=0
+                      else
+                        @leaves[@student.id]['leave']=@grouped[@student.id].count
+                          end
+                      @leaves[@student.id]['total'] = (@academic_days - @leaves[@student.id]['leave'])
+                      @leaves[@student.id]['percent'] = (@leaves[@student.id]['total'].to_f/@academic_days)*100 unless @academic_days == 0
+                        end
+                      else
+                          @start_date_main = @start_date
+                          
+                            @start_date = @start_date_main
+                            unless @student.admission_date.blank?
+                              if @student.admission_date.to_date > @start_date
+                                @start_date = @student.admission_date.to_date
+                              end
+                            end
+                
+                            @academic_days = 0
+                            @student_leaves = []
+                            if @end_date >= @start_date
+                              @academic_days =  @batch.find_working_days(@start_date,@end_date).select{|v| v<=@end_date}.count
+                              @student_leaves = Attendance.find(:all,:conditions =>{:student_id=>@student.id,:batch_id=>@batch.id,:month_date => @start_date..@end_date})
+                            end
+                          
+                          on_leaves = 0;
+                          leaves_other = 0;
+                          leaves_full = 0;
+                          unless @student_leaves.empty?
+                            @student_leaves.each do |r|
+                              if r.student_id == @student.id
+                                working_days_count=@batch.find_working_days(r.month_date.to_date,r.month_date.to_date).select{|v| v<=r.month_date.to_date}.count
+                
+                                if working_days_count==1
+                                  if r.is_leave == true
+                                    on_leaves = on_leaves+1;
+                                  elsif r.forenoon==true && r.afternoon==false
+                                    leaves_other = leaves_other+1;
+                                  elsif r.forenoon==false && r.afternoon==true  
+                                    leaves_other = leaves_other+1;
+                                  else
+                                    leaves_full = leaves_full+1;
+                                  end 
+                                end
+                              end
+                            end
+                          end
+                          @leaves[@student.id]['late'] = leaves_other
+                          @leaves[@student.id]['absent'] = leaves_full
+                          @leaves[@student.id]['on_leave'] = on_leaves
+                          @leaves[@student.id]['present'] = @academic_days-on_leaves-leaves_full
+                          @leaves[@student.id]['total']=@academic_days-leaves_full.to_f-(0.5*leaves_other)
+                          @leaves[@student.id]['percent'] = 0.0
+                          @leaves[@student.id]['percent'] = (@leaves[@student.id]['total'].to_f/@academic_days)*100 unless @academic_days == 0
+                        @academic_days =  @batch.find_working_days(@start_date_main,@end_date).select{|v| v<=@end_date}.count
+                      end
+                    else
+                      @report = ''
+                    end
+                  %> 
+                  <% student_attendance_percent = 0 %>	
+                  <% student_attendance_mark = 0 %>	
+                  <% unless @leaves[@student.id]['percent'].nil? %>
+                  <% student_attendance_percent =  @leaves[@student.id]['percent'] %>
+                  <% end %>	
+                  <% if student_attendance_percent.to_f > 0 %>
+                  <% if student_attendance_percent >= 0 and student_attendance_percent < 60 %>
+                  <% student_attendance_mark = 0 %>	
+                  <% elsif student_attendance_percent >= 60 and student_attendance_percent < 71 %>
+                  <% student_attendance_mark = 3 %>	
+                  <% elsif student_attendance_percent >= 71 and student_attendance_percent < 80 %>
+                  <% student_attendance_mark = 4 %>	
+                  <% elsif student_attendance_percent >= 80 %>
+                  <% student_attendance_mark = 5 %>	
+                  <% end %>
   <% end %>
-
+			      
+			      
+			      
 
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         <td><%= j %></td>
@@ -447,6 +391,7 @@ end
                         <td class="name-std"><%= "-" %></td>
                         <% end %>
                         <% total_mark = 0 %>
+		    	<% total_failed = 0 %>
                         <% full_mark_all = 0 %>
                         <% grades = [] %>
                         <% grade_count = {} %>
@@ -454,18 +399,38 @@ end
                         <% failed = false %>
                         <% subject_count = 0 %>
                         <% pass_mark_cq = 0 %>
-                        <% total_cq = 0 %>    
-                        <% pass_mark_mcq = 0 %>
-                        <% total_mcq = 0 %>
-	
+			<% total_cq = 0 %>    
+			<% pass_mark_mcq = 0 %>
+			<% total_mcq = 0 %>
+			<% subject_pass_cq_1 = ['101', '107'] %>
+			<% subject_pass_cq_2 = ['acco', 'fin','mang','eco','civics','islam','logic'] %>
+			<% subject_pass_cq_3 = ['275', 'stat','geo','109','112','bio','h.math', 'psy'] %>
+			
 
                         <% @report_data['report']['subjects'].each do |sub| %>
-                         
+			    
+			  <% if subject_pass_cq_1.include?(sub['code'].to_s.downcase) %>
+				<% pass_mark_cq = 33 %>
+				<% pass_mark_mcq = 0 %>    
+				<% total_cq = 100 %>    
+				<% total_mcq = 0 %>
+		      	  <% elsif subject_pass_cq_2.include?(sub['code'].to_s.downcase) %>
+				<% pass_mark_cq = 23 %>
+				<% pass_mark_mcq = 10 %>    
+				<% total_cq = 70 %>    
+				<% total_mcq = 30 %>
+		      	  <% elsif subject_pass_cq_3.include?(sub['code'].to_s.downcase) %>
+				<% pass_mark_cq = 17 %>
+				<% total_cq = 50 %>    
+				<% pass_mark_mcq = 8 %> 
+				<% total_mcq = 25 %> 
+		      	  <% end %>  
+                          
                           <% subjectdata = Subject.find(sub['id'].to_i) %>
                           <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
                           
                           <% if @has_exam_student == false %>
-                            <td colspan="2"></td>
+                            <td colspan="1"></td>
                           <% else %>
                             
                             <% fourth_subject = false %>
@@ -495,7 +460,7 @@ end
                               <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
                               <% exam_marks = 0 %>
                               <% exam_full_marks = 0 %> 
-                              <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? %>
+                              <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
                                
                                 <%
 
@@ -503,66 +468,131 @@ end
                                 subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                 if rs['exam_category'] == '3'
                                   cq = cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
+				  if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i > 30 and rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i < pass_mark_cq.to_i
+					#subject_failed = true
+					#failed = true
+			          end  	
                                   cq_total = cq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                 elsif rs['exam_category'] == '4'
                                   mcq = mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
+				  if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i > 10 and rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i < pass_mark_mcq.to_i
+                                      	#subject_failed = true
+                                      	#failed = true
+                                   end  
                                   mcq_total = mcq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                 else
-                                  #att = att+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
                                   att = att+student_attendance_mark.to_i
                                 end
                                 exam_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
                                 exam_full_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                
+                                if rs['exam_category'] != '3' and rs['exam_category'] != '4'
+                                  exam_full_marks = 0
+                                end
+				
+                                #subject_failed = false
+                                if exam_full_marks > 0
+                                    #if exam_full_marks == 20 && exam_marks < 7
+                                    # subject_failed = true
+                                    #  failed = true
+                                    #end
+                                    #if exam_full_marks == 10 && exam_marks < 4
+                                    #  subject_failed = true
+                                    #  failed = true
+                                    #end
+                                    #if exam_full_marks == 50 && exam_marks < 17
+                                    #  subject_failed = true
+                                    # failed = true
+                                    #end
+                                    #if exam_full_marks == 25 && exam_marks < 8
+                                    #  subject_failed = true
+                                    #  failed = true
+                                    #end
+                                    #if exam_full_marks == 5 && exam_marks < 2
+                                    #  subject_failed = true
+                                    #  failed = true
+                                    #end
+                                    #if exam_full_marks == 70 && exam_marks < 23
+                                    #  subject_failed = true
+                                    #  failed = true
+                                    #end
+                                    #if exam_full_marks == 70 && exam_marks < 23
+                                    #  subject_failed = true
+                                    #  failed = true
+                                    #end
+                                    #if exam_full_marks == 30 && exam_marks < 10
+                                    #  subject_failed = true
+                                    #  failed = true
+                                    #end
+                                    #if exam_full_marks == 100 && exam_marks < 33
+                                    #  subject_failed = true
+                                    #  failed = true
+                                    #end
+                                  end
 
                               %>
                               <% end %>  
                             <% end %> 
-			    
+			    <% if att == 0 %>
+			    	<% att = student_attendance_mark %>
+			    <% end %>
                             <%
-                              if mcq_total > 0 && mcq > 0
-                                if mcq_total == 35 or mcq_total == 40
-                                  mcq = (mcq.to_f/mcq_total.to_f)*25
-                                  mcq = mcq.round()
-                                end
+                            if cq_total > 0 && cq > 0
+                              if cq_total == 120
+                                cq = (cq.to_f/cq_total.to_f)*80
+                                cq = cq.round()
+                              elsif cq_total == 130
+                                cq = (cq.to_f/cq_total.to_f)*95
+                                cq = cq.round()
+                              elsif cq_total == 100
+                                cq = (cq.to_f/cq_total.to_f)*70
+                                cq = cq.round()
+                              elsif cq_total == 80
+                                cq = (cq.to_f/cq_total.to_f)*70
+                                cq = cq.round()
                               end
-                              if cq_total > 0 && cq > 0
-                                if cq_total == 90
-                                  cq = (cq.to_f/cq_total.to_f)*70
-                                  cq = cq.round()
-                                end
-                                if cq_total == 130
-                                  cq = (cq.to_f/cq_total.to_f)*95
-                                  cq = cq.round()
-                                end
+                            end
+                            if mcq_total > 0 && mcq > 0
+                              if mcq_total == 40
+                                mcq = (mcq.to_f/mcq_total.to_f)*25
+                                mcq = mcq.round()
                               end
-                              main_mark = cq+mcq+student_attendance_mark
+                            end
 
+                            main_mark = cq+mcq+att
+			      	
                             %>
-                            <td>
-                               <%= main_mark.to_i %>    
-                            </td>
+			    <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+			    <% unless grade.blank?  %>
+			    	<% if grade.name == "F" %>
+			    	<%	#subject_failed = true
+                 #                   	failed = true
+				%>
+			    	<% end %>
+			    <% end %>
+
+          <%
+          if main_mark < 33
+            subject_failed = true
+            failed = true
+          end
+          %>
+			    
+			    <td>
+                                <%= subject_failed ? "Failed" : "" %>
+                            </td>	
+			    
+			    <%  if  subject_failed
+			    		total_failed = total_failed + 1
+				end
+			    %>
+                            
                             <% total_mark = total_mark+main_mark.to_f %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
-                              <%
-                              if grade.credit_points.to_i == 0
-                                  subject_failed = true
-                                  failed = true
-                              end
-                              %>
-			                          <% if subject_failed == true %>
-                                <%
-                                grade.name = "F"
-                                grade.credit_points = 0.00
-                                %>
-                              <% end %> 	
                               <% total_grade = total_grade+grade.credit_points.to_f %>
-                              <td>
-                                <%= sprintf( "%0.01f", grade.credit_points.to_f) %>    
-                            </td>
-			    <% else %>
-			    <td>-</td>
+                              <!--td>
+                                <%#= sprintf( "%0.01f", grade.credit_points.to_f) %>    
+                            </td-->
                             <% end %>
                             <% full_mark_all = full_mark_all+main_mark.to_f  %>
                         
@@ -572,34 +602,8 @@ end
                         <% if full_mark_all > 0 &&  total_mark > 0 %>
                           <% percentage = (total_mark.to_f/full_mark_all.to_f)*100 %> 
                         <% end %>    
-
-                          <td>
-                              <%= sprintf( "%0.02f", total_mark) %>    
-                          </td>
+			    <td style="text-align: center;"><%= total_failed %></td>	
                           
-
-                          <td>
-                              <%= sprintf( "%0.02f", total_grade) %>
-                          </td>
-                          <% grade_point_avg = 0.00 %>
-                          <% if total_grade > 0 && subject_count > 0 %>
-                            <% grade_point_avg = total_grade.to_f/subject_count.to_f %>
-                            <% if grade_point_avg > 5 %>
-                              <% grade_point_avg = 5.00 %>
-                            <% end %>  
-                          <% end %> 
-                          <% grade_point_avg = (grade_point_avg.to_f*100).to_f.round() %>
-                          <% grade_point_avg = grade_point_avg.to_f/100 %>
-                          <td>
-                              <%= sprintf( "%0.02f", grade_point_avg) %>
-                          </td> 
-                          <td>
-                          <% if failed %>  
-                            Failed
-                          <% else %>
-                            Passed
-                          <% end %> 
-                        </td>
 
                     </tr>
                     <% end %>

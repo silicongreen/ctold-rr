@@ -7157,13 +7157,13 @@ class ExamController < ApplicationController
       ]
     )
     unless @all_group_exams.blank?
-    @all_exam_group_id = @all_group_exams.map(&:exam_group_id).uniq
-    @all_exams = Exam.find(
-        :all,
-        :conditions => ["exam_group_id IN (?)", @all_exam_group_id]
+      @all_exam_group_id = @all_group_exams.map(&:exam_group_id).uniq
+      @all_exams = Exam.find(
+          :all,
+          :conditions => ["exam_group_id IN (?)", @all_exam_group_id]
       )
       unless @all_exams.blank?
-      @all_subject_id = @all_exams.map(&:subject_id).uniq
+        @all_subject_id = @all_exams.map(&:subject_id).uniq
       end
     end
     @report_data['report']['subjects'].each do |sub|
@@ -7436,8 +7436,8 @@ class ExamController < ApplicationController
         grade_point_avg = grade_point_avg.to_f/100 
         row_first << sprintf( "%0.02f", grade_point_avg)
         row_first << failed ? "Failed" : "Passed"
-        new_book.worksheet(0).insert_row(start_index, row_first)
-      end  
+      end 
+      new_book.worksheet(0).insert_row(start_index, row_first) 
     end  
     spreadsheet = StringIO.new 
     new_book.write spreadsheet 

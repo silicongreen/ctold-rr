@@ -117,8 +117,7 @@ class Lessonplan extends CActiveRecord
                            
                       }
                       
-                      $emp_lessonplan_data[$i]['lessonplan_given'] = $lessonplan->
-                      ($value->user_id,$start_date,$date);
+                      $emp_lessonplan_data[$i]['lessonplan_given'] = $lessonplan->getLessonplanTotalTeacherDate($value->user_id,$start_date,$date);
                      
                       
                       if($time_range=="day")

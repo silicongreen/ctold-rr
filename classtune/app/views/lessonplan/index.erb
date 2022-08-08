@@ -160,7 +160,7 @@
                     <div class="subcontent-header themed_text">
                         <%=  link_to link_value, :controller => 'lessonplan', :action => 'view', :id => r.id%>
                     </div>                           
-                    <div class="subcontent-info"><%= if r.lessonplan_category_id !=0 then r.lessonplan_category.name else "-" end %> </div>              
+                    <div class="subcontent-info"><%= if r.lessonplan_category_id.to_i !=0 then r.lessonplan_category.name else "-" end %> </div>              
                     <div class="subcontent-info">
                         Post on &nbsp;<%= r.publish_date %>(<%= time_ago_in_words(r.created_at) %>)<br />
                         <%= if r.is_show.to_i == 1 then "Active" else "Inactive" end %>

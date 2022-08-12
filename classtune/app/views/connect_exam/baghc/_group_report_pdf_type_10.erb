@@ -188,7 +188,7 @@
                                         <% end %>
                                   <% end %>
                                    <% if report['exam_category'] == '3' %>
-                                   <%= debug report['name'].inspect %>
+                                   <%= debug report['exam_name'].inspect %>
                                         <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                           <% full_100 = full_100+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                           <% full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>

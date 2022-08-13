@@ -156,16 +156,26 @@ unless @ranked_student.blank?
 
                       <td class="col-pdf">Roll</td>
                       <td class="col-pdf">Students Name</td>
+                      <% if @connect_exam_obj.result_type.to_i == 10 %> 
+                      <td class="col-pdf">Exams<hr/>CQ/SQ<hr/>MCQ<hr/>Prac<hr/>MTT</td>
+                      <% else %>
                       <td class="col-pdf">Exams<hr/>CQ/SQ<hr/>MCQ<hr/>MTT/Prac</td>
+                      <% end %>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% cq = 0 %>
                         <% mtt = 0 %>
                         <% mcq = 0 %>
+                        <% prac = 0 %>
                         <% @report_data['report']['exams'].each do |rs| %>
                           <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
                             <% if rs['exam_category'] == '2' %>
                               <% mcq = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                             <% elsif rs['exam_category'] == '3' %>
+                              <% if @connect_exam_obj.result_type.to_i == 10 %> 
+                                <% if report['exam_name'].index('Pra').blank? %>
+                                <% prac = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
+                                <% end %>
+                              <% end %>
                               <% mtt = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                             <% else %>
                               <% cq = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
@@ -186,7 +196,11 @@ unless @ranked_student.blank?
                             end
                         
                           %>
+                          <% if @connect_exam_obj.result_type.to_i == 10 %> 
+                          <td><%=  sub['code'] %><hr/><%= cq unless cq.blank? %><hr/><%= mcq unless mcq.blank? %><hr/><%= prac unless prac.blank? %><hr/><%= mtt unless mtt.blank? %></td>  
+                          <% else %>
                           <td><%=  sub['code'] %><hr/><%= cq unless cq.blank? %><hr/><%= mcq unless mcq.blank? %><hr/><%= mtt unless mtt.blank? %></td>
+                          <% end %>
                         <% end %>
                       <% end %>
                       <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>

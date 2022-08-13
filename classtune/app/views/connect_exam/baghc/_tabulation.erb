@@ -254,9 +254,15 @@ unless @ranked_student.blank?
                       <% if std_count>g_cnt && extender ==0 %>
                         <% std_count = 1 %>
                         <% extender = 1 %>
+                        <% if @connect_exam_obj.result_type.to_i == 10 %> 
+                        <tr>
+                            <td colspan="100" style="height: 100px;">&nbsp;</td>
+                        </tr> 
+                        <% else %>
                         <tr class="page-break120">
                             <td colspan="100">&nbsp;</td>
-                        </tr>  
+                        </tr> 
+                        <% end %>
                         <tr class="table-header">
 
                             <td class="col-pdf">Roll</td>
@@ -311,9 +317,15 @@ unless @ranked_student.blank?
                       <% elsif std_count>g_cnt_1 && extender ==1 %>
                         <% std_count = 1 %>
                         <% extender = 1 %>
-                        <tr class="page-break120">
+                        <% if @connect_exam_obj.result_type.to_i == 10 %> 
+                        <tr>
+                            <td colspan="100" style="height: 100px;">&nbsp;</td>
+                        </tr> 
+                        <% else %>
+                        <tr class="page-break">
                             <td colspan="100">&nbsp;</td>
                         </tr> 
+                        <% end %>
                         <tr class="table-header">
 
                             <td class="col-pdf">Roll</td>

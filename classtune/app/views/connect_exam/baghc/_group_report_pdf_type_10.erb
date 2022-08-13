@@ -270,9 +270,6 @@
                                   if prac_total.to_i == 25 and prac.to_i < 9
                                     failed = true
                                   end
-                                  %>
-                                  <%= failed %> <%= coverted_100 %>
-                                  <%
                                   #unless pass_mark[prac_total].blank?
                                   #  if prac.to_i <  pass_mark[prac_total].to_i
                                   #    failed = true
@@ -283,6 +280,9 @@
                                   if failed
                                     failed_grade = true
                                   else
+                                    %>
+                                    <%= failed %> <%= coverted_100 %>
+                                    <%
                                     grade = GradingLevel.percentage_to_grade(coverted_100, @batch.id)
                                     if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
                                       gp_point = grade.credit_points

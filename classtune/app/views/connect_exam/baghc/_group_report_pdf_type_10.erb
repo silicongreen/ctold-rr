@@ -238,8 +238,10 @@
                                     coverted_75 = (total_mc_cq_prac.to_f/full_mc_cq_prac.to_f)*75
                                   end   
                                 
-                                  total_mark = coverted_75+mtt_total
-                                  total_full_mark = total_full_mark+full_100
+                                  total_100 = coverted_75+mtt
+                                  full_100 = total_mc_cq_prac+mtt_total
+                                  total_mark = coverted_75+mtt
+                                  total_full_mark = total_mc_cq_prac+mtt_total
                                   coverted_100 = 0
                                   if total_100 > 0
                                     coverted_100 = (total_100.to_f/full_100.to_f)*100
@@ -281,7 +283,7 @@
                                 </td>
                                 <td>
                                   <% if coverted_75 > 0 %>
-                                    <%= coverted_75 %> <%= total_full_mark %> <%= total_mark %>
+                                    <%= coverted_75 %>
                                   <% else %>
                                     -
                                   <% end %>    

@@ -497,23 +497,23 @@ unless @ranked_student.blank?
                                   #########################################################
                                   pass_mark = {70 => 24, 100 => 33, 50 => 17, 30 => 10, 25 => 9}
                                   failed = false
-                                  mtt_total = mtt_total + 1
-                                  unless pass_mark[cq_total.to_i].blank?
-                                    if cq.to_i <  pass_mark[cq_total.to_i].to_i
+                                  full_mark_mtt = full_mark_mtt + 1
+                                  unless pass_mark[full_mark_cq.to_i].blank?
+                                    if cq_obtain_mark.to_i <  pass_mark[full_mark_cq.to_i].to_i
                                       failed_grade = true
                                     end
                                   end
-                                  unless pass_mark[mcq_total.to_i].blank?
-                                    if mcq.to_i <  pass_mark[mcq_total.to_i].to_i
+                                  unless pass_mark[full_mark_mcq.to_i].blank?
+                                    if mcq_obtain_mark.to_i <  pass_mark[full_mark_mcq.to_i].to_i
                                       failed_grade = true
                                     end
                                   end
-                                  unless pass_mark[prac_total].blank?
-                                    if prac.to_i <  pass_mark[prac_total].to_i
+                                  unless pass_mark[full_mark_prac].blank?
+                                    if prac_obtain_mark.to_i <  pass_mark[full_mark_prac].to_i
                                       failed_grade = true
                                     end
                                   end
-                                  mtt_total = mtt_total - 1
+                                  full_mark_mtt = full_mark_mtt - 1
                               else  
                                 if full_mark_cq > 0
                                   if grade_mark_cq > 0

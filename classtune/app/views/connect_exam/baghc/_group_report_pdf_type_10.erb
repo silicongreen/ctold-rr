@@ -281,7 +281,7 @@
                                     failed_grade = true
                                   else
                                     %>
-                                    <%= failed %> <%= coverted_100 %>
+                                    <%= subjects['name'] %> <%= failed %> <%= coverted_100 %>
                                     <%
                                     grade = GradingLevel.percentage_to_grade(coverted_100, @batch.id)
                                     if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?

@@ -712,10 +712,14 @@ unless @ranked_student.blank?
                       </tr>
                     <% end %>
                   <% end %>
-                      <% if std_count>3 %>
-                        <tr class="page-break-low">
-                            <td colspan="100">&nbsp;</td>
-                        </tr>
+                      <% if @connect_exam_obj.result_type.to_i == 10 %> 
+                          <pagebreak></pagebreak>
+                      <% else %>
+                        <% if std_count>4 %>
+                          <tr class="page-break-low">
+                              <td colspan="100">&nbsp;</td>
+                          </tr>
+                        <% end %>
                       <% end %>
                       <tr class="table-header">
                           <td colspan="2" rowspan="8">Subjective Report</td>

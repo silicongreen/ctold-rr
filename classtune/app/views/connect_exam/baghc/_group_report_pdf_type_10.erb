@@ -188,15 +188,22 @@
                                         <% end %>
                                   <% end %>
                                    <% if report['exam_category'] == '3' %>
-                                   <%= debug report['exam_name'].index('Pra').inspect %>
                                         <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                           <% full_100 = full_100+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                           <% full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                          <% if report['exam_name'].index('Pra').blank? %>
                                           <% mtt_total = mtt_total+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                          <% else %>
+                                          <% prac_total = prac_total+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                          <% end %>
                                         <% end %> 
                                         <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                             <% total_100 = total_100+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
+                                            <% if report['exam_name'].index('Pra').blank? %>
                                             <% mtt = mtt+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
+                                            <% else %>
+                                            <% prac = prac+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
+                                            <% end %>
                                             <% grade_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
                                         <% end %>
                                   <% end %>
@@ -249,6 +256,13 @@
                                 <td>
                                   <% if mcq_total > 0 %>
                                     <%= mcq %> <font class="soft">[<%= mcq_total.to_i %>]</font>
+                                  <% else %>
+                                    -
+                                  <% end %>    
+                                </td>
+                                <td>
+                                  <% if prac_total > 0 %>
+                                    <%= prac %> <font class="soft">[<%= prac_total.to_i %>]</font>
                                   <% else %>
                                     -
                                   <% end %>    

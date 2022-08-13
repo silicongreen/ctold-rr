@@ -215,19 +215,19 @@
                                         <% end %>
                                   <% end %>
                                   <%
-                                    if full_mark > 0
-                                      if grade_mark > 0
-                                        point_mark = (grade_mark.to_f/full_mark.to_f)*100
-                                        grade = GradingLevel.percentage_to_grade(point_mark, @batch.id)
-                                        if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
-                                          if grade.credit_points.to_i == 0
-                                            failed_grade = true
-                                          end  
-                                        end
-                                      else
-                                        failed_grade = true
-                                      end  
-                                    end 
+                                    #if full_mark > 0
+                                    #  if grade_mark > 0
+                                    #    point_mark = (grade_mark.to_f/full_mark.to_f)*100
+                                    #   grade = GradingLevel.percentage_to_grade(point_mark, @batch.id)
+                                    #    if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
+                                    #      if grade.credit_points.to_i == 0
+                                    #        failed_grade = true
+                                    #      end  
+                                    #    end
+                                    #  else
+                                    #    failed_grade = true
+                                    #  end  
+                                    #end 
                                 
                                   %>
                                   
@@ -284,9 +284,6 @@
                                     if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
                                       gp_point = grade.credit_points
                                       lg = grade.name
-                                      %>
-                                      <%= subjects['name'] %> <%= failed %> <%= coverted_100 %> <%= gp_point %> <%= lg %>
-                                      <%
                                     end
                                     if failed_grade == false
                                       total_gpa = total_gpa+gp_point

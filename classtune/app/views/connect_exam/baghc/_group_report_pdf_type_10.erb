@@ -254,6 +254,7 @@
                                   #########################################################
                                   pass_mark = {70 => 24, 100 => 33, 50 => 17, 30 => 10, 25 => 9}
                                   failed = false
+                                  mtt_total = mtt_total + 1
                                   unless pass_mark[cq_total].blank?
                                     if cq.to_i <  pass_mark[cq_total].to_i
                                       failed = true
@@ -269,6 +270,7 @@
                                       failed = true
                                     end
                                   end
+                                  mtt_total = mtt_total - 1
                                   gp_point =0
                                   lg = "-"
                                   if failed

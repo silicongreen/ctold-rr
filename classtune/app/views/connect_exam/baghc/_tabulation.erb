@@ -465,16 +465,16 @@ unless @ranked_student.blank?
                                       mcq_obtain_mark = mcq_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
                                     end
                                     if rs['exam_category'] == '3'
-                                      <% if rs['exam_name'].index('Pra').blank? %>
-                                      has_mtt = true
-                                      grade_mark_mtt = grade_mark_mtt+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
-                                      full_mark_mtt = full_mark_mtt+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                      mtt_obtain_mark = mtt_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
-                                      <% else %>
-                                      grade_mark_prac = grade_mark_prac+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
-                                      full_mark_prac = full_mark_prac+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                      prac_obtain_mark = prac_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
-                                      <% end %>
+                                      if rs['exam_name'].index('Pra').blank?
+                                        has_mtt = true
+                                        grade_mark_mtt = grade_mark_mtt+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+                                        full_mark_mtt = full_mark_mtt+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                        mtt_obtain_mark = mtt_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+                                      else
+                                        grade_mark_prac = grade_mark_prac+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+                                        full_mark_prac = full_mark_prac+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                        prac_obtain_mark = prac_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+                                      end
                                     end
 
 

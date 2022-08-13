@@ -280,13 +280,13 @@
                                   if failed
                                     failed_grade = true
                                   else
-                                    %>
-                                    <%= subjects['name'] %> <%= failed %> <%= coverted_100 %>
-                                    <%
                                     grade = GradingLevel.percentage_to_grade(coverted_100, @batch.id)
                                     if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
                                       gp_point = grade.credit_points
                                       lg = grade.name
+                                      %>
+                                      <%= subjects['name'] %> <%= failed %> <%= coverted_100 %> <%= gp_point %> <%= lg %>
+                                      <%
                                     end
                                     if failed_grade == false
                                       total_gpa = total_gpa+gp_point

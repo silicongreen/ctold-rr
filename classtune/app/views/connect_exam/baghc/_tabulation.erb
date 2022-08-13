@@ -172,7 +172,7 @@ unless @ranked_student.blank?
                               <% mcq = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                             <% elsif rs['exam_category'] == '3' %>
                               <% if @connect_exam_obj.result_type.to_i == 10 %> 
-                                <% if report['exam_name'].index('Pra').blank? %>
+                                <% if rs['exam_name'].index('Pra').blank? %>
                                 <% prac = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                                 <% end %>
                               <% end %>

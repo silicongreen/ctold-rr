@@ -265,12 +265,15 @@
                                       failed = true
                                     end
                                   end
+                                  %>
+                                  <%= failed %>
+                                  <%
                                   unless pass_mark[prac_total].blank?
                                     if prac.to_i <  pass_mark[prac_total].to_i
                                       failed = true
                                     end
                                   end
-                                  mtt_total = mtt_total - 1
+                                  #mtt_total = mtt_total - 1
                                   gp_point =0
                                   lg = "-"
                                   if failed

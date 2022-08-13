@@ -124,11 +124,12 @@
                               <td rowspan="2">CQ/SQ</td> 
                               <td rowspan="2">MCQ</td>
                               <td rowspan="2">Prac</td>
+                              <td rowspan="2">Total(75%)</td>
                               <td rowspan="2">Midterm</td>
                               <td colspan="4">Result</td>  
                           </tr>
                           <tr class="table-header"> 
-                              <td>Total(%)</td> 
+                              <td>Total(100)</td> 
                               <td>Obtained Highest Marks(%)</td>
                               <td>Letter Grade</td>
                               <td>Grade Point</td>
@@ -145,7 +146,9 @@
                           <% i = 0 %>   
                           <% @report_data['report']['subjects'].each do |subjects| %>
                             <% total_100 = 0 %>
+                            <% total_mc_cq_prac = 0 %>
                             <% full_100 = 0 %>
+                            <% full_mc_cq_prac = 0 %>
                             <% cq = 0 %>
                             <% mcq = 0 %>
                             <% prac = 0 %>
@@ -169,6 +172,7 @@
                                   <% if report['exam_category'] == '1' or report['exam_category'] == '2' %>
                                         <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                           <% full_100 = full_100+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                          <% full_mc_cq_prac = full_mc_cq_prac+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                           <% full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                           <% if report['exam_category'] == '1' %>
                                             <% cq_total = cq_total+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -178,6 +182,7 @@
                                         <% end %> 
                                         <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                             <% total_100 = total_100+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
+                                            <% total_mc_cq_prac = total_mc_cq_prac+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
                                             <% grade_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
                                             <% if report['exam_category'] == '1' %>
                                               <% cq = cq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
@@ -194,6 +199,7 @@
                                           <% if report['exam_name'].index('Pra').blank? %>
                                           <% mtt_total = mtt_total+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                           <% else %>
+                                          <% full_mc_cq_prac = full_mc_cq_prac+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                           <% prac_total = prac_total+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                           <% end %>
                                         <% end %> 
@@ -202,6 +208,7 @@
                                             <% if report['exam_name'].index('Pra').blank? %>
                                             <% mtt = mtt+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
                                             <% else %>
+                                            <% total_mc_cq_prac = total_mc_cq_prac+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
                                             <% prac = prac+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
                                             <% end %>
                                             <% grade_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
@@ -226,6 +233,11 @@
                                   
                                 <% end %>
                                 <%
+                                  coverted_75 = 0
+                                  if total_mc_cq_prac > 0
+                                    coverted_75 = (total_mc_cq_prac.to_f/full_mc_cq_prac.to_f)*75
+                                  end   
+                                
                                   total_mark = total_mark+total_100
                                   total_full_mark = total_full_mark+full_100
                                   coverted_100 = 0
@@ -263,6 +275,13 @@
                                 <td>
                                   <% if prac_total > 0 %>
                                     <%= prac %> <font class="soft">[<%= prac_total.to_i %>]</font>
+                                  <% else %>
+                                    -
+                                  <% end %>    
+                                </td>
+                                <td>
+                                  <% if coverted_75 > 0 %>
+                                    <%= coverted_75 %>
                                   <% else %>
                                     -
                                   <% end %>    

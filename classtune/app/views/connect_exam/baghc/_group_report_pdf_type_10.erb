@@ -254,13 +254,13 @@
                                   #########################################################
                                   pass_mark = {70 => 24, 100 => 33, 50 => 17, 30 => 10}
                                   failed = false
-                                  unless pass_mark[cq_total].blank?
-                                    if cq.to_i <  pass_mark[cq_total].to_i
+                                  unless pass_mark[cq_total.to_i].blank?
+                                    if cq.to_i <  pass_mark[cq_total.to_i].to_i
                                       failed = true
                                     end
                                   end
-                                  unless pass_mark[mcq_total].blank?
-                                    if mcq.to_i <  pass_mark[mcq_total].to_i
+                                  unless pass_mark[mcq_total.to_i].blank?
+                                    if mcq.to_i <  pass_mark[mcq_total.to_i].to_i
                                       failed = true
                                     end
                                   end

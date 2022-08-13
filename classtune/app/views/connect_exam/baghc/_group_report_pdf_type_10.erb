@@ -252,7 +252,7 @@
                                   #########################################################
                                   ## Failed On Individual Subjects (Temporary Solution)
                                   #########################################################
-                                  pass_mark = {70 => 24, 100 => 33, 50 => 17, 30 => 10, 25 => 9}
+                                  pass_mark = {70 => 24, 100 => 33, 50 => 17, 30 => 10}
                                   failed = false
                                   mtt_total = mtt_total + 1
                                   unless pass_mark[cq_total].blank?
@@ -265,15 +265,21 @@
                                       failed = true
                                     end
                                   end
+                                  if mcq_total.to_i == 25 and mcq.to_i < 9
+                                    failed = true
+                                  end
+                                  if prac_total.to_i == 25 and prac.to_i < 9
+                                    failed = true
+                                  end
                                   %>
                                   <%= failed %>
                                   <%
-                                  unless pass_mark[prac_total].blank?
-                                    if prac.to_i <  pass_mark[prac_total].to_i
-                                      failed = true
-                                    end
-                                  end
-                                  #mtt_total = mtt_total - 1
+                                  #unless pass_mark[prac_total].blank?
+                                  #  if prac.to_i <  pass_mark[prac_total].to_i
+                                  #    failed = true
+                                  #  end
+                                  #end
+                                  mtt_total = mtt_total - 1
                                   gp_point =0
                                   lg = "-"
                                   if failed

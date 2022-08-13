@@ -249,16 +249,44 @@
                                  
                                   coverted_100 = coverted_100.round()
                                   total_mark_result = total_mark_result+coverted_100
+                                  #########################################################
+                                  ## Failed On Individual Subjects (Temporary Solution)
+                                  #########################################################
+                                  pass_mark = {70 => 24, 100 => 33, 50 => 17, 30 => 10, 25 => 9}
+                                  failed = false
+                                  unless pass_mark[cq_total].blank?
+                                    if cq.to_i <  pass_mark[cq_total].to_i
+                                      failed = true
+                                    end
+                                  end
+                                  unless pass_mark[mcq_total].blank?
+                                    if mcq.to_i <  pass_mark[mcq_total].to_i
+                                      failed = true
+                                    end
+                                  end
+                                  unless pass_mark[prac_total].blank?
+                                    if prac.to_i <  pass_mark[prac_total].to_i
+                                      failed = true
+                                    end
+                                  end
                                   gp_point =0
                                   lg = "-"
-                                  grade = GradingLevel.percentage_to_grade(coverted_100, @batch.id)
-                                  if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
-                                    gp_point = grade.credit_points
-                                    lg = grade.name
+                                  if failed
+                                    failed_grade = true
+                                  else
+                                    grade = GradingLevel.percentage_to_grade(coverted_100, @batch.id)
+                                    if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
+                                      gp_point = grade.credit_points
+                                      lg = grade.name
+                                    end
+                                    if failed_grade == false
+                                      total_gpa = total_gpa+gp_point
+                                    end  
                                   end
-                                  if failed_grade == false
-                                    total_gpa = total_gpa+gp_point
-                                  end
+                                  #########################################################
+                                  ## Failed On Individual Subjects (Temporary Solution)
+                                  #########################################################
+
                                 %>
                                 <td>
                                   <% if cq_total > 0 %>

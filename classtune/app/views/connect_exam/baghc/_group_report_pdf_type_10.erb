@@ -124,12 +124,12 @@
                               <td rowspan="2">CQ/SQ</td> 
                               <td rowspan="2">MCQ</td>
                               <td rowspan="2">Prac</td>
-                              <td rowspan="2">Total(75%)</td>
+                              <td rowspan="2">Total (75%)</td>
                               <td rowspan="2">Midterm</td>
                               <td colspan="4">Result</td>  
                           </tr>
                           <tr class="table-header"> 
-                              <td>Total(100)</td> 
+                              <td>Total (100)</td> 
                               <td>Obtained Highest Marks(%)</td>
                               <td>Letter Grade</td>
                               <td>Grade Point</td>
@@ -238,7 +238,7 @@
                                     coverted_75 = (total_mc_cq_prac.to_f/full_mc_cq_prac.to_f)*75
                                   end   
                                 
-                                  total_mark = total_mark+total_100
+                                  total_mark = coverted_75+mtt_total
                                   total_full_mark = total_full_mark+full_100
                                   coverted_100 = 0
                                   if total_100 > 0
@@ -281,7 +281,7 @@
                                 </td>
                                 <td>
                                   <% if coverted_75 > 0 %>
-                                    <%= coverted_75 %>
+                                    <%= coverted_75 %> <%= total_full_mark %>
                                   <% else %>
                                     -
                                   <% end %>    

@@ -1495,7 +1495,7 @@ class StudentController < ApplicationController
     Spreadsheet.client_encoding = 'UTF-8'
     new_book = Spreadsheet::Workbook.new
     sheet1 = new_book.create_worksheet :name => 'student_list'
-    if MultiSchool.current_school.id == 352
+    if MultiSchool.current_school.id == 352 or MultiSchool.current_school.id == 323
       row_first = ['SL','Student Id','Roll','Name',"House",'Father Name','Blood Group','Category','Class','Shift','Section','Session','Version','Group','Tuition Fees','GPA','Mobile']
     else
       row_first = ['SL','Student Id','Roll','Name','Father Name','Blood Group','Category','Class','Shift','Section','Session','Version','Group','Tuition Fees','GPA','Mobile']
@@ -1615,6 +1615,17 @@ class StudentController < ApplicationController
             aditional_details = StudentAdditionalDetail.find_all_by_student_id(student.id,:include=>[:student_additional_field])
             unless aditional_details.blank?
               house = aditional_details.find{|ad| ad.additional_field_id == 48}
+            end
+            house_info = ""
+            unless house.blank?
+              house_info = house.additional_info 
+            end
+            tmp_row << house_info
+          end
+          if MultiSchool.current_school.id == 323
+            aditional_details = StudentAdditionalDetail.find_all_by_student_id(student.id,:include=>[:student_additional_field])
+            unless aditional_details.blank?
+              house = aditional_details.find{|ad| ad.additional_field_id == 14}
             end
             house_info = ""
             unless house.blank?

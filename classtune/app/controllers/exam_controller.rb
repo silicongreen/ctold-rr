@@ -7699,6 +7699,7 @@ class ExamController < ApplicationController
           if rs['exam_category'] == '3' || rs['exam_category'] == '4'
             row_first << ""
           end  
+          
         end  
         if mcq_total > 0 && mcq > 0
           if mcq_total == 35 or mcq_total == 40

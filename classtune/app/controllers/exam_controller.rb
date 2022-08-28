@@ -13196,7 +13196,7 @@ class ExamController < ApplicationController
                               unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
                                 if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
                                   if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)  
-                                    if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 50 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 22  || @connect_exam_obj.result_type == 7 )
+                                    if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 50 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 22 || @connect_exam_obj.result_type == 7 )
                                       u_grade1 = u_grade1+1
                                       subject_failed = true
                                     end 
@@ -13676,6 +13676,10 @@ class ExamController < ApplicationController
                   full_mark2 = 50
                   monthly_mark_multiply2 = 10
                 end 
+                total_mark_grade_check = total_ob1+total_sb1+total_pr1
+                if sub['grade_subject'].to_i == 1 and @connect_exam_obj.result_type == 3 and monthly_full_mark1 == 20
+                  monthly_mark_multiply = 20
+                end
                 
                 if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
                   monthly_mark_multiply = monthly_mark_multiply/2
@@ -13684,7 +13688,7 @@ class ExamController < ApplicationController
                 monthly_total_main_mark1 = monthly_total_mark1
                 monthly_total_main_mark2 = monthly_total_mark2
                 
-                if @connect_exam_obj.result_type != 5 and @connect_exam_obj.result_type != 6 and @connect_exam_obj.result_type != 1  and @connect_exam_obj.result_type != 2 and @connect_exam_obj.result_type != 2
+                if @connect_exam_obj.result_type != 5 and @connect_exam_obj.result_type != 6 and @connect_exam_obj.result_type != 1  and @connect_exam_obj.result_type != 2
                   if monthly_total_mark1 > 0
                     monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*monthly_mark_multiply
                     monthly_total_mark1 = monthly_total_mark1.round()
@@ -14541,7 +14545,11 @@ class ExamController < ApplicationController
                       term_mark_multiplier = 0.80
                     end
                     if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
-                      term_mark_multiplier = 0.90
+                      if monthly_full_mark1 > 0 or monthly_full_mark2 > 0
+                        term_mark_multiplier = 0.90
+                      else
+                        term_mark_multiplier = 1
+                      end
                     end
                     
                     if sub['grade_subject'].to_i == 1

@@ -36,7 +36,7 @@ class DelayedUpdateClassPay
   end
 
   def perform
-    api_endpoint = "https://pay.classtune.com/"
+    api_endpoint = "https://www.classpay.com.bd/"
     school_array = ['bncd','ess','sis','nascd']
     
     if !@new_record.blank?

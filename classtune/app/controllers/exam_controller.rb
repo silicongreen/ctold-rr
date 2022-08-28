@@ -7474,7 +7474,7 @@ class ExamController < ApplicationController
         row_first << ""
         end_row = starting_row+6
         new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)
-        starting_row = starting_row+2
+        starting_row = starting_row+7
       end
     end  
     row_first << "G. Total"

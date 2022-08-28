@@ -7670,6 +7670,7 @@ class ExamController < ApplicationController
           row_first << ""
           row_first << ""
           row_first << ""
+          row_first << ""
           next
         end  
         subject_failed = false

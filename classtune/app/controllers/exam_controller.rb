@@ -7695,7 +7695,11 @@ class ExamController < ApplicationController
             exam_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
             exam_full_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
           end 
-        end 
+        else
+          if rs['exam_category'] == '3' || rs['exam_category'] == '4'
+            row_first << ""
+          end  
+        end  
         if mcq_total > 0 && mcq > 0
           if mcq_total == 35 or mcq_total == 40
             mcq = (mcq.to_f/mcq_total.to_f)*25

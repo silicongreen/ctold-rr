@@ -7666,6 +7666,10 @@ class ExamController < ApplicationController
         if @has_exam_student == false
           row_first << ""
           row_first << ""
+          row_first << ""
+          row_first << ""
+          row_first << ""
+          row_first << ""
           next
         end  
         subject_failed = false

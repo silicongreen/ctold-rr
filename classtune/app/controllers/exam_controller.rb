@@ -7467,7 +7467,12 @@ class ExamController < ApplicationController
       if has_exam == true 
         row_first << sub['name']
         row_first << ""
-        end_row = starting_row+1
+        row_first << ""
+        row_first << ""
+        row_first << ""
+        row_first << ""
+        row_first << ""
+        end_row = starting_row+6
         new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)
         starting_row = starting_row+2
       end
@@ -7484,7 +7489,12 @@ class ExamController < ApplicationController
       if @all_subject_id.include?(sub['id'].to_i)
         has_exam = true
       end 
-      if has_exam == true 
+      if has_exam == true
+        row_first << "Quiz CQ"
+        row_first << "Quiz MCQ"
+        row_first << "Mid Term CQ"
+        row_first << "Mid Term MCQ"
+        row_first << "Att." 
         row_first << "TTL"
         row_first << "GP"
       end
@@ -7672,9 +7682,12 @@ class ExamController < ApplicationController
             if rs['exam_category'] == '3'
               cq = cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
               cq_total = cq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+              row_first << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
+              
             elsif rs['exam_category'] == '4'
               mcq = mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
               mcq_total = mcq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+              row_first << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
             else
               #att = att+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
               att = att+student_attendance_mark.to_i
@@ -7699,6 +7712,7 @@ class ExamController < ApplicationController
             cq = cq.round()
           end
         end
+        row_first << student_attendance_mark
         main_mark = cq+mcq+student_attendance_mark
         row_first << main_mark.to_i
         total_mark = total_mark+main_mark.to_f

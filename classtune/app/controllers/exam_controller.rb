@@ -6380,15 +6380,10 @@ class ExamController < ApplicationController
       finding_data5()
     end
     
-    if !@student_position.blank? && @student_position_first_term.blank?
-      @student_position_first_term = @student_position
+    if student_list_first_term.blank?
       @subject_highest_1st_term = @subject_highest
       @student_position_first_term = @student_position
       @student_position_first_term_batch = @student_position_batch
-    elsif !@student_position_second_term.blank? && @student_position_first_term.blank?
-      @subject_highest_1st_term = @subject_highest_2nd_term
-      @student_position_first_term = @student_position_second_term
-      @student_position_first_term_batch = @student_position_second_term_batch
     end 
     
  
@@ -6474,7 +6469,7 @@ class ExamController < ApplicationController
       tmp_row << std_result['name'].to_s
       tmp_row << std_result['grand_total_with_fraction'].to_f.round().to_s
       tmp_row << std_result['gp'].to_s+"("+std_result['gpa'].to_s+")"
-      if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank?
+      if !@student_position_first_term_batch[std_result['id'].to_i].blank?
         tmp_row << std_result['lg']
       else
         tmp_row << "F"
@@ -6490,14 +6485,14 @@ class ExamController < ApplicationController
       end
       
       
-      if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank?
+      if !@student_position_first_term[std_result['id'].to_i].blank?
         tmp_row <<  @student_position_first_term[std_result['id'].to_i]
       else
         tmp_row << ""
       end 
       
       
-      if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank?
+      if !@student_position_first_term_batch[std_result['id'].to_i].blank?
         tmp_row << @student_position_first_term_batch[std_result['id'].to_i]
       else
         tmp_row << ""

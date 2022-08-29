@@ -235,6 +235,20 @@
           <td colspan="<%= colspan %>">&nbsp;</td>
         </tr>
         <% end %>
+        <% if @report_data['result']['students'].size < 12 %>
+          <tr class="page-last-element">
+          <td colspan="<%= colspan %>">&nbsp;</td>
+          </tr>
+          <tr class="page-last-element">
+            <td colspan="<%= colspan %>">&nbsp;</td>
+          </tr>
+          <tr class="page-last-element">
+            <td colspan="<%= colspan %>">&nbsp;</td>
+          </tr>
+          <tr class="page-last-element">
+            <td colspan="<%= colspan %>">&nbsp;</td>
+          </tr>
+        <% end %>
       </table>
       <% end %>
   </div>

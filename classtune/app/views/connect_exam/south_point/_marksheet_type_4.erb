@@ -108,22 +108,17 @@
         <% @report_data['result']['students'].each do |std| %>
           <%  std_count = std_count+1; %>
           
-          <% if std_count>11 && extender ==0 %>
-              <% std_count = 0 %>
-              <% extender = 1 %>
-              <tr class="page-break">
-                  <td colspan="<%= colspan %>">&nbsp;</td>
-              </tr>    
-          <% elsif std_count>20 && extender ==1 %>
-              <% std_count = 0 %>
-              <% extender = 1 %>
-              <tr class="page-break">
-                  <td colspan="<%= colspan %>">&nbsp;</td>
-              </tr> 
-          <% end %>
+          
           
           <% if @subject.no_exams == true %>
-           
+           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+            <td class="name"><%= std['class_roll_no'] %></td>
+            <td class="no-warp"><%= std['name'] %></td> 
+            <td class="col-pdf" colspan="<%= stcount+ctcount+1 %>">-</td>
+            <% @comment_std = ExamConnectSubjectComment.find_by_student_id_and_exam_connect_id_and_subject_id(std['id'].to_i,@connect_exam_obj.id,@subject.id) %>
+            
+            <td class="col-pdf"><%= @comment_std.comments unless @comment_std.blank? %></td>
+           </tr> 
           <% else %>
         
           <% st_marks = [] %>

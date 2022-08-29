@@ -59,7 +59,7 @@
           
           <% j = j+1 %>
           <%  std_count = std_count+1; %>
-          <% if std_count>12 && extender ==0 %>
+          <% if std_count>9 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break5">
@@ -85,7 +85,7 @@
                 <%#*<td>Remark</td>%>
 
               </tr>
-          <% elsif std_count>14 && extender ==1 %>
+          <% elsif std_count>10 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break6">
@@ -114,10 +114,10 @@
         
           
           
-          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+          <tr class="odd">
             <td class="col-pdf"><%= j %></td>
             <td class="name"><%= std['class_roll_no'] %></td>
-            <td class="name-std"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
+            <td class="name-std left-row"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
             <% total_mark = 0 %>
             <% grades = [] %>
             <% grade_count = {} %>

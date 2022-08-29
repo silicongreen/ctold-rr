@@ -23,23 +23,6 @@
       <h3 align="center">Mark Sheet</h3>
       <div class="hor_line"></div>
       <h4 align="center">For Subject Teacher</h4>
-      
-      <div id ="main_info">
-          <table width="100%">
-              <tr>
-                 <% if !@employee.nil? %> 
-                  <td align='left'><h4>Teacher's Name : <%=  @employee.full_name %></h4></td>
-                  <td align='center'><h4>Subject : <%= @subject.name %></h4></td>
-                 <% else %>
-                  <td align='left'><h4>Subject : <%= @subject.name %></h4></td>
-                 <% end %> 
-                  
-                  <td align='center'><h4>Class : <%= @batch.name=="General" ? "&nbsp;":@batch.name+" " %><%= @batch.course.course_name %></h4></td>
-                  <td align='right'><h4>Section : <%= @batch.course.section_name %></h4></td>
-              </tr>    
-          </table>    
-       
-      </div>
       <% unless @report_data.blank?  or  @report_data['result'].blank? %>
       <% c = 'even' %>
       <% stcount = 0 %>

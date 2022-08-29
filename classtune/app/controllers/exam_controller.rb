@@ -6380,12 +6380,12 @@ class ExamController < ApplicationController
       finding_data5()
     end
     
-    if !@student_position.blank?
+    if !@student_position.blank? && @student_position_first_term.blank?
       @student_position_first_term = @student_position
       @subject_highest_1st_term = @subject_highest
       @student_position_first_term = @student_position
       @student_position_first_term_batch = @student_position_batch
-    elsif !@student_position_second_term.blank?
+    elsif !@student_position_second_term.blank? && @student_position_first_term.blank?
       @subject_highest_1st_term = @subject_highest_2nd_term
       @student_position_first_term = @student_position_second_term
       @student_position_first_term_batch = @student_position_second_term_batch

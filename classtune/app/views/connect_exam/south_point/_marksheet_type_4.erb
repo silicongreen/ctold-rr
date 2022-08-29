@@ -110,13 +110,13 @@
         <% @report_data['result']['students'].each do |std| %>
           <%  std_count = std_count+1; %>
           
-          <% if std_count>9 && extender ==0 %>
+          <% if std_count>11 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
                   <td colspan="<%= colspan %>">&nbsp;</td>
               </tr>    
-          <% elsif std_count>16 && extender ==1 %>
+          <% elsif std_count>20 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
@@ -220,6 +220,9 @@
         <tr class="page-last-element">
           <td colspan="<%= colspan %>">&nbsp;</td>
         </tr>
+        <tr class="page-last-element">
+          <td colspan="<%= colspan %>">&nbsp;</td>
+        </tr>
       </table>
       <% end %>
     </center>
@@ -227,19 +230,3 @@
   
   
 </div>
-
-<style>
-#page-yield #pdf-table .odd td
-{
-   font-size: 21px !important;
-}
-#page-yield #pdf-table .even td
-{
-   font-size: 21px !important;
-}
-#page-yield #pdf-table .table-header td
-{
-   font-size: 21px !important;
-}
-
-</style>

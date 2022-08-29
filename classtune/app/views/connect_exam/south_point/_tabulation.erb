@@ -23,3 +23,14 @@
 <%= render  :partial=>"/connect_exam/south_point/finding_data2" %>
 <% end %>
 <%= render  :partial=>"/connect_exam/south_point/tabulation_type_"+@connect_exam_obj.result_type.to_s %>
+
+<style>
+#page-yield #pdf-table .table-header td
+{
+   font-size: 20px !important;
+}
+#page-yield #pdf-table .even .left-row
+{
+   text-align: left !important;
+}
+</style>

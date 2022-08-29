@@ -114,10 +114,10 @@
         
           
           
-          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+          <tr class="even">
             <td class="col-pdf"><%= j %></td>
             <td class="name"><%= std['class_roll_no'] %></td>
-            <td class="name-std"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
+            <td class="name-std left-row"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
             <% total_mark = 0 %>
             <% grades = [] %>
             <% grade_count = {} %>

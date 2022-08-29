@@ -65,7 +65,7 @@ class EmployeeController < ApplicationController
     row_date = ['Report Date',@date_to_use.strftime("%d-%m-%Y")]
     new_book.worksheet(0).insert_row(1, row_date)
 
-    row_first = ['ID','Teacher Name','Department Name','Attendance','Total Class','Homework','Classwork','Lessonplan','Quiz','Class Routine']
+    row_first = ['ID','Teacher Name','Department Name','Attendance','Class/Section','Total Class','Homework','Classwork','Lessonplan','Quiz','Class Routine']
     new_book.worksheet(0).insert_row(2, row_first)
     sheet1.row(2).default_format = center_align_format
     i = 2
@@ -80,13 +80,16 @@ class EmployeeController < ApplicationController
       class_teachers = BatchTutor.find_by_employee_id_and_class_teacher(employee.id,true)
       if class_teachers.blank?
         temp << "N/A"
+        temp << ""
       else
         att_register = AttendanceRegister.find_by_attendance_date_and_batch_id(@date_to_use,class_teachers.batch_id)
         if att_register.blank? 
           temp << "No"
         else
           temp << "Yes"
-        end  
+        end 
+        tmp_batch = Batch.find(class_teachers.batch_id)
+        temp <<  tmp_batch.full_name
       end  
       @weekday_id = @date_to_use.strftime("%w")
       @subjects = []
@@ -147,8 +150,8 @@ class EmployeeController < ApplicationController
 
 
 
-        @assignment_register = Assignment.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
-        @classwork_register = Classwork.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
+        @assignment_register = Assignment.count(:conditions=>["((date(DATE_ADD(created_at,INTERVAL 6 HOUR)) = ? and  content like '%</%' ) or ( date(created_at) = ? and  content not like '%</%' )) and employee_id = ?",@date_to_use.to_date,@date_to_use.to_date,@employee.id])
+        @assignment_register = Classwork.count(:conditions=>["((date(DATE_ADD(created_at,INTERVAL 6 HOUR)) = ? and  content like '%</%' ) or ( date(created_at) = ? and  content not like '%</%' )) and employee_id = ?",@date_to_use.to_date,@date_to_use.to_date,@employee.id])
         @lesson_plan_register = Lessonplan.count(:conditions=>["publish_date >= ? and publish_date <= ? and author_id = ?",@start_date_lesson_plan.to_date,@end_date_lesson_plan.to_date,employee.user_id])
         temp << @entries
         temp << @assignment_register
@@ -198,13 +201,16 @@ class EmployeeController < ApplicationController
       class_teachers = BatchTutor.find_by_employee_id_and_class_teacher(employee.id,true)
       if class_teachers.blank?
         temp << "N/A"
+        temp << ""
       else
         att_register = AttendanceRegister.find_by_attendance_date_and_batch_id(@date_to_use,class_teachers.batch_id)
         if att_register.blank? 
           temp << "No"
         else
           temp << "Yes"
-        end  
+        end 
+        tmp_batch = Batch.find(class_teachers.batch_id)
+        temp <<  tmp_batch.full_name
       end  
       @weekday_id = @date_to_use.strftime("%w")
       @start_date_lesson_plan = @date_to_use.beginning_of_month
@@ -256,10 +262,8 @@ class EmployeeController < ApplicationController
           end
         end
 
-
-
-        @assignment_register = Assignment.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
-        @classwork_register = Classwork.count(:conditions=>["date(created_at) = ? and employee_id = ?",@date_to_use.to_date,employee.id])
+        @assignment_register = Assignment.count(:conditions=>["((date(DATE_ADD(created_at,INTERVAL 6 HOUR)) = ? and  content like '%</%' ) or ( date(created_at) = ? and  content not like '%</%' )) and employee_id = ?",@date_to_use.to_date,@date_to_use.to_date,@employee.id])
+        @assignment_register = Classwork.count(:conditions=>["((date(DATE_ADD(created_at,INTERVAL 6 HOUR)) = ? and  content like '%</%' ) or ( date(created_at) = ? and  content not like '%</%' )) and employee_id = ?",@date_to_use.to_date,@date_to_use.to_date,@employee.id])
         @lesson_plan_register = Lessonplan.count(:conditions=>["publish_date >= ? and created_at <= ? and author_id = ?",@start_date_lesson_plan.to_date,@end_date_lesson_plan.to_date,employee.user_id])
         temp << @entries
         temp << @assignment_register

@@ -150,8 +150,8 @@ class EmployeeController < ApplicationController
 
 
 
-        @assignment_register = Assignment.count(:conditions=>["((date(DATE_ADD(created_at,INTERVAL 6 HOUR)) = ? and  content like '%</%' ) or ( date(created_at) = ? and  content not like '%</%' )) and employee_id = ?",@date_to_use.to_date,@date_to_use.to_date,@employee.id])
-        @assignment_register = Classwork.count(:conditions=>["((date(DATE_ADD(created_at,INTERVAL 6 HOUR)) = ? and  content like '%</%' ) or ( date(created_at) = ? and  content not like '%</%' )) and employee_id = ?",@date_to_use.to_date,@date_to_use.to_date,@employee.id])
+        @assignment_register = Assignment.count(:conditions=>["((date(DATE_ADD(created_at,INTERVAL 6 HOUR)) = ? and  content like '%</%' ) or ( date(created_at) = ? and  content not like '%</%' )) and employee_id = ?",@date_to_use.to_date,@date_to_use.to_date,employee.id])
+        @classwork_register = Classwork.count(:conditions=>["((date(DATE_ADD(created_at,INTERVAL 6 HOUR)) = ? and  content like '%</%' ) or ( date(created_at) = ? and  content not like '%</%' )) and employee_id = ?",@date_to_use.to_date,@date_to_use.to_date,employee.id])
         @lesson_plan_register = Lessonplan.count(:conditions=>["publish_date >= ? and publish_date <= ? and author_id = ?",@start_date_lesson_plan.to_date,@end_date_lesson_plan.to_date,employee.user_id])
         temp << @entries
         temp << @assignment_register
@@ -262,8 +262,8 @@ class EmployeeController < ApplicationController
           end
         end
 
-        @assignment_register = Assignment.count(:conditions=>["((date(DATE_ADD(created_at,INTERVAL 6 HOUR)) = ? and  content like '%</%' ) or ( date(created_at) = ? and  content not like '%</%' )) and employee_id = ?",@date_to_use.to_date,@date_to_use.to_date,@employee.id])
-        @assignment_register = Classwork.count(:conditions=>["((date(DATE_ADD(created_at,INTERVAL 6 HOUR)) = ? and  content like '%</%' ) or ( date(created_at) = ? and  content not like '%</%' )) and employee_id = ?",@date_to_use.to_date,@date_to_use.to_date,@employee.id])
+        @assignment_register = Assignment.count(:conditions=>["((date(DATE_ADD(created_at,INTERVAL 6 HOUR)) = ? and  content like '%</%' ) or ( date(created_at) = ? and  content not like '%</%' )) and employee_id = ?",@date_to_use.to_date,@date_to_use.to_date,employee.id])
+        @classwork_register = Classwork.count(:conditions=>["((date(DATE_ADD(created_at,INTERVAL 6 HOUR)) = ? and  content like '%</%' ) or ( date(created_at) = ? and  content not like '%</%' )) and employee_id = ?",@date_to_use.to_date,@date_to_use.to_date,employee.id])
         @lesson_plan_register = Lessonplan.count(:conditions=>["publish_date >= ? and created_at <= ? and author_id = ?",@start_date_lesson_plan.to_date,@end_date_lesson_plan.to_date,employee.user_id])
         temp << @entries
         temp << @assignment_register
@@ -319,9 +319,14 @@ class EmployeeController < ApplicationController
       @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:employee_id => @employee.id},:include=>:class_timing,:order=>"class_timings.start_time")
       @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:subject_id=>elective_subjects},:include=>:class_timing,:order=>"class_timings.start_time")
       @attenadnce_register = SubjectAttendanceRegister.find(:all,:conditions=>["attendance_date >= ? and attendance_date <= ?",@date_to_use.to_date,@end_date.to_date])
-      @assignment_register = Assignment.find(:all,:conditions=>["date(created_at) >= ? and date(created_at) <= ?",@date_to_use.to_date,@end_date.to_date])
+      @assignment_register = Assignment.find(:all,:select=>"created_at,title,subject_id",:conditions=>["(( date(created_at) >= ? and date(created_at) <= ? and  content not like '%</%' )) and employee_id = ?",@date_to_use.to_date,@end_date.to_date])
+      @assignment_register += Assignment.find(:all,:select=>"DATE_ADD(created_at,INTERVAL 6 HOUR) as created_at, title, subject_id",:conditions=>["((date(DATE_ADD(created_at,INTERVAL 6 HOUR)) >= ? and date(DATE_ADD(created_at,INTERVAL 6 HOUR)) <= ? and  content like '%</%' ) )",@date_to_use.to_date,@end_date.to_date])
+      
+      # @assignment_register = Assignment.find(:all,:conditions=>["date(created_at) >= ? and date(created_at) <= ?",@date_to_use.to_date,@end_date.to_date])
       @events = Event.find(:all,:conditions=>["is_holiday = ? and is_common = ?",true,true])
-      @classwork_register = Classwork.find(:all,:conditions=>["date(created_at) >= ? and date(created_at) <= ?",@date_to_use.to_date,@end_date.to_date])
+      @classwork_register = Classwork.find(:all,:select=>"created_at,title,subject_id",:conditions=>["(( date(created_at) >= ? and date(created_at) <= ? and  content not like '%</%' )) and employee_id = ?",@date_to_use.to_date,@end_date.to_date])
+      @classwork_register += Classwork.find(:all,:select=>"DATE_ADD(created_at,INTERVAL 6 HOUR) as created_at, title, subject_id",:conditions=>["((date(DATE_ADD(created_at,INTERVAL 6 HOUR)) >= ? and date(DATE_ADD(created_at,INTERVAL 6 HOUR)) <= ? and  content like '%</%' ) )",@date_to_use.to_date,@end_date.to_date])
+      # @classwork_register = Classwork.find(:all,:conditions=>["date(created_at) >= ? and date(created_at) <= ?",@date_to_use.to_date,@end_date.to_date])
         
       unless @entries.blank?
         @entries.each do |te|

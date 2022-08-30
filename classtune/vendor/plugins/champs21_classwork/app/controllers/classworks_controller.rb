@@ -179,7 +179,7 @@ class ClassworksController < ApplicationController
         iloop = iloop+1
         tmp_row = []
         tmp_row << iloop
-        tmp_row << classwork.subject.batch.full_name
+        tmp_row << classwork.subject.batch.course.course_name+" "+classwork.subject.batch.course.section_name
         tmp_row << classwork.subject.batch.course.group
         tmp_row << classwork.subject.name
         tmp_row << classwork.title

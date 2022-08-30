@@ -234,7 +234,7 @@ class AssignmentsController < ApplicationController
         iloop = iloop+1
         tmp_row = []
         tmp_row << iloop
-        tmp_row << assignment.subject.batch.full_name
+        tmp_row << assignment.subject.batch.course.course_name+" "+assignment.subject.batch.course.section_name
         tmp_row << assignment.subject.batch.course.group
         if assignment.assignment_type == 1
           tmp_row << "Homework"

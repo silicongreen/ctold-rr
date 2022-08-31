@@ -139,7 +139,11 @@
                       <% if card.photo.file? %>
                       <% profile_image = card.photo.url %>
                         <% unless profile_image.index("RackMultipart").nil? %>	
-                           <% profile_image.gsub! '?', '.?' %>	
+                           <% unless @profile_image.index("?").nil?  %>
+                              <% @profile_image.gsub! '?', '.?' %>
+                            <% else %>
+                              <% @profile_image = @profile_image+"." %>
+                            <% end %>	
                         <% end %>
                       <% else %>
                         <% profile_image = default_image %>

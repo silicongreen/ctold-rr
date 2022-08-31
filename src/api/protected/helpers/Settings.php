@@ -794,6 +794,17 @@ class Settings {
         $sd = new SchoolDomains();
         $domains = $sd->getSchoolDomainBySchoolId($obj->school_id);
         if ($domains) {
+            if(strpos($obj->photo_file_name,"RackMultipart") !== false)
+            {
+                if(strpos($obj->photo_file_name,"?") !== false)
+                {
+                    $obj->photo_file_name = str_replace("?",".?",$obj->photo_file_name);
+                }
+                else
+                {
+                    $obj->photo_file_name  = $obj->photo_file_name.".";
+                }
+            }
             $image_url = "https://" . $domains->domain . "/uploads/000/000/" . self::numberFormat($obj->school_id) . "/" . $type . "/photos/" . $obj->id . "/original/" . $obj->photo_file_name;
 //            list($width, $height, $type, $attr) = getimagesize($image_url);
 //            if(isset($width) && $width)

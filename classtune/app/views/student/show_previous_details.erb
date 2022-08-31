@@ -39,6 +39,7 @@
     <div id="profile_picture_display">
       <% if @student.photo.file? %>
         <% unless @student.photo.url.index("RackMultipart").nil? %>	
+            
             <% @student.photo.url.gsub! '?', '.?' %>	
          <% end %>
         <%= image_tag @student.photo.url, :width=>"125" %>

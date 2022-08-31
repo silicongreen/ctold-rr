@@ -1773,7 +1773,15 @@ class StudentController < ApplicationController
         @profile_image = student.photo.url 
         unless @profile_image.index("RackMultipart").nil? 	
           if student.photo.exists? 
-            @profile_image.gsub! '?', '.?' 
+            unless @profile_image.index("?").nil? 
+              unless @profile_image.index("?").nil? 
+     @profile_image.gsub! '?', '.?' 
+else
+     @profile_image = @profile_image+"."
+end 
+            else
+              @profile_image = @profile_image+"."
+            end 
           else 
             @profile_image = "master_student/profile/default_student.png" 
           end 

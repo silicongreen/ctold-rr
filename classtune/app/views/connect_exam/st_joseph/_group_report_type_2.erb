@@ -114,7 +114,7 @@
                           <% count_obj = 0 %>
                           <% count_prac = 0 %>
 
-                          <td class="col-pdf no-warp"><%= subjects['name'] %></td>
+                          <td class="col-pdf no-warp  left-align"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
                               <% marks_obtain_single_exam = 0 %>

@@ -1774,11 +1774,7 @@ class StudentController < ApplicationController
         unless @profile_image.index("RackMultipart").nil? 	
           if student.photo.exists? 
             unless @profile_image.index("?").nil? 
-              unless @profile_image.index("?").nil? 
-     @profile_image.gsub! '?', '.?' 
-else
-     @profile_image = @profile_image+"."
-end 
+              @profile_image.gsub! '?', '.?' 
             else
               @profile_image = @profile_image+"."
             end 

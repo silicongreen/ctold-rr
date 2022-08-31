@@ -250,7 +250,7 @@
           </tr>
         <% end %>
          
-        <% id @report_data['result']['ST'].blank?  %>
+        <% if @report_data['result']['ST'].blank?  %>
           <tr class="page-last-element">
             <td colspan="<%= colspan %>">&nbsp;</td>
           </tr>

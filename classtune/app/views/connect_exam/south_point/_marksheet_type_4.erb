@@ -249,18 +249,8 @@
             <td colspan="<%= colspan %>">&nbsp;</td>
           </tr>
         <% end %>
-        <% if @report_data['result']['students'].size < 10 %>
-         <tr class="page-last-element">
-            <td colspan="<%= colspan %>">&nbsp;</td>
-          </tr>
-          <tr class="page-last-element">
-            <td colspan="<%= colspan %>">&nbsp;</td>
-          </tr>
-          <tr class="page-last-element">
-            <td colspan="<%= colspan %>">&nbsp;</td>
-          </tr>
-        <% end %> 
-        <% if @report_data['result']['students'].size < 8 %>
+         
+        <% id @report_data['result']['ST'].blank?  %>
           <tr class="page-last-element">
             <td colspan="<%= colspan %>">&nbsp;</td>
           </tr>
@@ -270,7 +260,25 @@
           <tr class="page-last-element">
             <td colspan="<%= colspan %>">&nbsp;</td>
           </tr>
-        <% end %>   
+          <tr class="page-last-element">
+            <td colspan="<%= colspan %>">&nbsp;</td>
+          </tr>
+          <tr class="page-last-element">
+            <td colspan="<%= colspan %>">&nbsp;</td>
+          </tr>
+          <tr class="page-last-element">
+            <td colspan="<%= colspan %>">&nbsp;</td>
+          </tr>
+          <tr class="page-last-element">
+            <td colspan="<%= colspan %>">&nbsp;</td>
+          </tr>
+          <tr class="page-last-element">
+            <td colspan="<%= colspan %>">&nbsp;</td>
+          </tr>
+          <tr class="page-last-element">
+            <td colspan="<%= colspan %>">&nbsp;</td>
+          </tr>
+        <% end %>  
       </table>
       <% end %>
   </div>

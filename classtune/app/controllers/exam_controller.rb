@@ -7531,23 +7531,12 @@ class ExamController < ApplicationController
     #    champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
     #    api_from = champs21_config['real_from']
   
-      
-    if  MultiSchool.current_school.id == 312
-      get_tabulation(@id,@batch.id)
-      @report_data = []
-      if @student_response['status']['code'].to_i == 200
-        @report_data = @student_response['data']
-      end 
-    else
-      @report_data = Rails.cache.fetch("tabulation_#{@id}_#{@batch.id}"){
-        get_tabulation(@id,@batch.id)
-        report_data = []
-        if @student_response['status']['code'].to_i == 200
-          report_data = @student_response['data']
-        end
-        report_data
-      }
-    end
+    get_tabulation(@id,@batch.id)
+    @report_data = []
+    if @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end 
+   
     @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id) 
     @student_exam_comment = {}
     @exam_comment.each do |cmt|

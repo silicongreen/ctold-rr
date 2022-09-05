@@ -434,7 +434,10 @@
                   <% end %>
               </table>
             <% end %>
-            <% if @batch.course.course_name == "XII" or @batch.course.course_name == "XI" %>
+            <% if ((std_count == 10 && extender == 0) || (std_count == 12 && extender == 1)) %>
+                <div style="display:block; clear:both; page-break-after:always;">&nbsp;</div>
+            <% end %> 
+            
             <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
 
               <tr class="even border-bottom-1-px">
@@ -467,7 +470,6 @@
               </tr>
 
           </table>
-          <% end %>  
         </center>
     </div>
 

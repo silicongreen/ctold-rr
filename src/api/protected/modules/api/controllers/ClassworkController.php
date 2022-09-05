@@ -765,6 +765,10 @@ class ClassworkController extends Controller
                         foreach ($students as $value)
                         {
                             $studentsobj = $stdobj->findByPk($value);
+                            if(!isset($$studentsobj->user_id))
+                            {
+                                continue;
+                            }
                             $reminderrecipients[] = $studentsobj->user_id;
                             $batch_ids[$studentsobj->user_id] = $studentsobj->batch_id;
                             $student_ids[$studentsobj->user_id] = $studentsobj->id;

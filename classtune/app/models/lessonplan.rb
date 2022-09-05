@@ -29,7 +29,7 @@ class Lessonplan < ActiveRecord::Base
   after_save :update_redactor
   attr_accessor :redactor_to_update, :redactor_to_delete
 
-  validates_presence_of :title, :content
+  validates_presence_of :title, :content, :publish_date
   
    has_attached_file :attachment ,
     :url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp"

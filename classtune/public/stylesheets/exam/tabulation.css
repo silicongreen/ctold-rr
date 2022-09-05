@@ -90,7 +90,12 @@ table#pdf-table{
 #pdf-header-south{
     width:1000px;
 }
-
+.page-break25 td{
+    height: 25px;
+    border: 1px solid #fff;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
 .page-break4 td{
     height: 30px;
     border: 1px solid #fff;

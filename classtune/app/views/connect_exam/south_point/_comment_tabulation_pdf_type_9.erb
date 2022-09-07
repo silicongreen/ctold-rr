@@ -42,7 +42,6 @@
           <% end %> 
           
           <td>Total</td>
-          <td>Position Section</td>
           <td>Grade Count</td>
           <%#*<td>Remark</td>%>
         
@@ -78,7 +77,7 @@
                 <%#*<td>Remark</td>%>
 
               </tr>
-          <% elsif std_count>5 && extender ==1 %>
+          <% elsif std_count>6 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break9">
@@ -258,13 +257,6 @@
                       <% i = i+1 %>
                   <% end %>
               </td> 
-              <% unless @student_position.blank? %>
-                           <% unless @student_position[std['id'].to_i].blank? %>
-                              <td><%= @student_position[std['id'].to_i] %></td>
-                           <% else %>
-                              <td>-</td>
-                           <% end %>
-                        <% end %>
               <%# @exam_comment.each do |exm_cmt| %>
               <%# if exm_cmt.student_id.to_i == std['id'].to_i %>
                 <%#*<td>%>

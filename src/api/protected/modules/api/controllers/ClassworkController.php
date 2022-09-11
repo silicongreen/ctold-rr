@@ -765,7 +765,7 @@ class ClassworkController extends Controller
                         foreach ($students as $value)
                         {
                             $studentsobj = $stdobj->findByPk($value);
-                            if(!isset($$studentsobj->user_id))
+                            if(!isset($studentsobj->user_id))
                             {
                                 continue;
                             }

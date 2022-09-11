@@ -137,6 +137,24 @@ table#pdf-table{
     border-top: 1px solid #000000;
     border-bottom: 1px solid #000000;
 }
+.page-break30 td{
+    height: 45px;
+    border: 1px solid #fff;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
+.page-break35 td{
+    height: 35px;
+    border: 1px solid #fff;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
+.page-break40 td{
+    height: 40px;
+    border: 1px solid #fff;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
 .page-break45 td{
     height: 45px;
     border: 1px solid #fff;

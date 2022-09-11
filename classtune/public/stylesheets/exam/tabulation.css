@@ -8,6 +8,11 @@
     overflow: hidden;
 }
 
+#page-yield.legal_tabulation
+{
+    width:1800px; 
+}
+
 .section2
 {
     margin-top:120px;

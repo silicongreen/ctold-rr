@@ -262,7 +262,7 @@
                     end
                     
                     
-                    if subject_obtain_mark > 0
+                    if subject_obtain_mark.to_i > 0 && subject_full_mark.to_i > 0
                       main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100
                       grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                       if !grade.blank? and !grade.name.blank?

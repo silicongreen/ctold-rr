@@ -213,8 +213,8 @@ class AttendancesController < ApplicationController
       row_start = 5
       row_first = []
       @students.each do |student|
-        row_first << std.class_roll_no
-        row_first << std.full_name
+        row_first << student.class_roll_no
+        row_first << student.full_name
         @subject_att_register.each do |register|
           row_first << register.total_register
           total_absent = 0

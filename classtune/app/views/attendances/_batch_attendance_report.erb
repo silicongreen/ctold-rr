@@ -88,7 +88,8 @@
       </table>
       <div class="user_button" style="margin:10px 0px;">
           <%= link_to "#{t('pdf_report')}", {:controller => "attendances", :action => "get_subject_batch_report_pdf", :batch_id=>@batch_id, :date_form=>@date_form, :date_to=>@date_to},:target => '_blank' %>
-  &nbsp; &nbsp;
+      </div>
+      <div class="user_button" style="margin:10px 0px;">
            <%= link_to "Date Wise Excell Report", {:controller => "attendances", :action => "get_subject_batch_report_excel", :batch_id=>@batch_id, :date_form=>@date_form, :date_to=>@date_to},:target => '_blank' %>
       </div>
   </div>

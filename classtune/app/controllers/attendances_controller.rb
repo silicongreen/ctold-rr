@@ -201,7 +201,7 @@ class AttendancesController < ApplicationController
         start_row = start_row+3
       end 
       new_book.worksheet(0).insert_row(3, row_first)
-      row_first['','']
+      row_first = ['','']
       @subject_att.each do |val|
         row_first << 'Total' 
         row_first << 'Present'

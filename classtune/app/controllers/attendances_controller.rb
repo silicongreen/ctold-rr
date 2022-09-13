@@ -132,6 +132,108 @@ class AttendancesController < ApplicationController
   #    end
   #  end
 
+  def get_subject_batch_report_excel
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    new_book = Spreadsheet::Workbook.new
+    sheet1 = new_book.create_worksheet :name => 'subject_attendance'
+    if params[:batch_id].present?
+      @batch_id = params[:batch_id]
+      @batch = Batch.find(@batch_id)
+      @date_to = @local_tzone_time.to_date.strftime("%Y-%m-%d")
+      @date_form = @local_tzone_time.to_date.strftime("%Y-%m-%d")
+      if !params[:date_to].blank?
+        @date_to = params[:date_to].to_date.strftime("%Y-%m-%d")
+      end
+      if !params[:date_form].blank?
+        @date_form = params[:date_form].to_date.strftime("%Y-%m-%d")
+      end
+      @subject_batch = Subject.find_all_by_batch_id(params[:batch_id])
+      @students = Student.find_all_by_batch_id(params[:batch_id])
+      std_subject = StudentsSubject.find_all_by_batch_id(params[:batch_id])
+      @std_subject_hash = []
+      unless std_subject.blank?
+        std_subject.each do |std_sub|
+          @std_subject_hash << std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s
+        end
+      end
+      @subject_att_register = SubjectAttendanceRegister.all(:select=>"count(id) as total_register",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ?",params[:batch_id],@date_form,@date_to],:group=>"attendance_date")
+      
+      @subject_att = SubjectAttendance.all(:select=>"count(id) as total_absent,student_id",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ? and is_late = 0",params[:batch_id],@date_form,@date_to],:group=>"attendance_date,student_id")
+      row_first = [MultiSchool.current_school.name]
+      start_row = 1
+      @subject_att.each do |val|
+        row_first << ""  
+        row_first << ""
+        row_first << ""
+        start_row = start_row+3
+      end  
+      new_book.worksheet(0).insert_row(0, row_first)
+      new_book.worksheet(0).merge_cells(0,0,start_row,0)
+      row_first = ["Subject Wish Attendance Report"]
+      start_row = 1
+      @subject_att.each do |val|
+        row_first << "" 
+        row_first << ""
+        row_first << "" 
+        start_row = start_row+3
+      end  
+      new_book.worksheet(0).insert_row(1, row_first)
+      new_book.worksheet(0).merge_cells(0,1,start_row,1)
+      row_first = [@date_form.to_s+"-"+@date_to.to_s]
+      start_row = 1
+      @subject_att.each do |val|
+        row_first << ""  
+        row_first << ""
+        row_first << ""
+        start_row = start_row+3
+      end  
+      new_book.worksheet(0).insert_row(2, row_first)
+      new_book.worksheet(0).merge_cells(0,2,start_row,2)
+
+      row_first['Roll','Name']
+      start_row = 2
+      @subject_att.each do |val|
+        row_first << val.attendance_date  
+        row_first << ""
+        row_first << ""
+        new_book.worksheet(0).merge_cells(start_row,3,start_row+3,3)
+        start_row = start_row+3
+      end 
+      new_book.worksheet(0).insert_row(3, row_first)
+      row_first['','']
+      @subject_att.each do |val|
+        row_first << 'Total' 
+        row_first << 'Present'
+        row_first << 'Absent'
+      end 
+      new_book.worksheet(0).merge_cells(0,3,0,4)
+      new_book.worksheet(0).merge_cells(1,3,1,4)
+      new_book.worksheet(0).insert_row(4, row_first)
+      row_start = 5
+      row_first = []
+      @students.each do |student|
+        row_first << std.class_roll_no
+        row_first << std.full_name
+        @subject_att_register.each do |register|
+          row_first << register.total_register
+          total_absent = 0
+          absent = @subject_att.find{|val| val.student_id.to_i == student.id.to_i }
+          unless absent.blank?
+            total_absent = absent.total_absent
+          end  
+          total_present = register.total_register-total_absent
+          row_first << total_present
+          row_first << total_absent
+        end
+      end 
+
+      spreadsheet = StringIO.new 
+      new_book.write spreadsheet 
+      send_data spreadsheet.string, :filename => @batch.full_name"_subject_attendance.xls", :type =>  "application/vnd.ms-excel"
+
+    end   
+  end
   def get_subject_batch_report_pdf
     if params[:batch_id].present?
       @batch_id = params[:batch_id]

@@ -2107,6 +2107,7 @@ authorization do
       :subjects2,
       :subjects3,
       :get_subject_batch_report_pdf,
+      :get_subject_batch_report_excel,
       :subject_report,
       :show_report_student,
       :graph_code,
@@ -3979,6 +3980,7 @@ authorization do
       :subjects2,
       :subjects3,
       :get_subject_batch_report_pdf,
+      :get_subject_batch_report_excel,
       :subject_report,:graph_code,:show_report,:student_report,:show_student,:class_report]
     has_permission_on :student_attendance, :to => [:index] do
       if_attribute :has_assigned_subjects? => is {true}

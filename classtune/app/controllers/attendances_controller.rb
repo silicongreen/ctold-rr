@@ -169,7 +169,7 @@ class AttendancesController < ApplicationController
         start_row = start_row+3
       end  
       new_book.worksheet(0).insert_row(0, row_first)
-      new_book.worksheet(0).merge_cells(0,0,0,merge_cells)
+      new_book.worksheet(0).merge_cells(0,0,0,start_row)
       row_first = ["Subject Wish Attendance Report"]
       start_row = 1
       @subject_att_register.each do |val|

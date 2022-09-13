@@ -157,9 +157,9 @@ class AttendancesController < ApplicationController
           @std_subject_hash << std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s
         end
       end
-      @subject_att_register = SubjectAttendanceRegister.all(:select=>"count(id) as total_register",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ?",params[:batch_id],@date_form,@date_to],:group=>"attendance_date")
+      @subject_att_register = SubjectAttendanceRegister.all(:select=>"count(id) as total_register,attendance_date",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ?",params[:batch_id],@date_form,@date_to],:group=>"attendance_date")
       
-      @subject_att = SubjectAttendance.all(:select=>"count(id) as total_absent,student_id",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ? and is_late = 0",params[:batch_id],@date_form,@date_to],:group=>["attendance_date,student_id"])
+      @subject_att = SubjectAttendance.all(:select=>"count(id) as total_absent,student_id,attendance_date",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ? and is_late = 0",params[:batch_id],@date_form,@date_to],:group=>["attendance_date,student_id"])
       row_first = [MultiSchool.current_school.name]
       start_row = 1
       @subject_att.each do |val|
@@ -218,7 +218,7 @@ class AttendancesController < ApplicationController
         @subject_att_register.each do |register|
           row_first << register.total_register
           total_absent = 0
-          absent = @subject_att.find{|val| val.student_id.to_i == student.id.to_i }
+          absent = @subject_att.find{|val| val.student_id.to_i == student.id.to_i && val.attendance_date == register.attendance_date }
           unless absent.blank?
             total_absent = absent.total_absent
           end  

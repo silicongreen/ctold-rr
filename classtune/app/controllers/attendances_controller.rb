@@ -137,6 +137,9 @@ class AttendancesController < ApplicationController
     Spreadsheet.client_encoding = 'UTF-8'
     new_book = Spreadsheet::Workbook.new
     sheet1 = new_book.create_worksheet :name => 'subject_attendance'
+    center_align_format = Spreadsheet::Format.new :horizontal_align => :center,  :vertical_align => :middle,:left=>:thin,:right=>:thin,:top=>:thin,:bottom=>:thin
+    
+    center_align_format_90 = Spreadsheet::Format.new :horizontal_align => :center,:rotation=> 90,  :vertical_align => :middle,:left=>:thin,:right=>:thin,:top=>:thin,:bottom=>:thin
     if params[:batch_id].present?
       @batch_id = params[:batch_id]
       @batch = Batch.find(@batch_id)
@@ -210,9 +213,14 @@ class AttendancesController < ApplicationController
       new_book.worksheet(0).merge_cells(3,0,4,0)
       new_book.worksheet(0).merge_cells(3,1,4,1)
       new_book.worksheet(0).insert_row(4, row_first)
+      sheet1.row(0).default_format = center_align_format
+    sheet1.row(1).default_format = center_align_format
+    sheet1.row(2).default_format = center_align_format
+    sheet1.row(3).default_format = center_align_format
+    sheet1.row(4).default_format = center_align_format
       row_start = 5
-      row_first = []
       @students.each do |student|
+        row_first = []
         row_first << student.class_roll_no
         row_first << student.full_name
         @subject_att_register.each do |register|
@@ -226,8 +234,10 @@ class AttendancesController < ApplicationController
           row_first << total_present
           row_first << total_absent
         end
-        new_book.worksheet(0).insert_row(row_start)
+        new_book.worksheet(0).insert_row(row_start, row_first)
+        sheet1.row(row_start).default_format = center_align_format
         row_start = row_start+1
+        
       end 
     end  
     spreadsheet = StringIO.new 

@@ -169,7 +169,7 @@ class AttendancesController < ApplicationController
         start_row = start_row+3
       end  
       new_book.worksheet(0).insert_row(0, row_first)
-      new_book.worksheet(0).merge_cells(0,0,start_row,0)
+      new_book.worksheet(0).merge_cells(0,0,0,merge_cells)
       row_first = ["Subject Wish Attendance Report"]
       start_row = 1
       @subject_att_register.each do |val|
@@ -179,7 +179,7 @@ class AttendancesController < ApplicationController
         start_row = start_row+3
       end  
       new_book.worksheet(0).insert_row(1, row_first)
-      new_book.worksheet(0).merge_cells(0,1,start_row,1)
+      new_book.worksheet(0).merge_cells(1,0,1,start_row)
       row_first = [@date_form.to_s+"-"+@date_to.to_s]
       start_row = 1
       @subject_att_register.each do |val|
@@ -189,7 +189,7 @@ class AttendancesController < ApplicationController
         start_row = start_row+3
       end  
       new_book.worksheet(0).insert_row(2, row_first)
-      new_book.worksheet(0).merge_cells(0,2,start_row,2)
+      new_book.worksheet(0).merge_cells(2,0,2,start_row)
 
       row_first = ['Roll','Name']
       start_row = 2
@@ -197,7 +197,7 @@ class AttendancesController < ApplicationController
         row_first << val.attendance_date.to_s  
         row_first << ""
         row_first << ""
-        new_book.worksheet(0).merge_cells(start_row,3,start_row+3,3)
+        new_book.worksheet(0).merge_cells(3,start_row,3,start_row+3)
         start_row = start_row+3
       end 
       new_book.worksheet(0).insert_row(3, row_first)
@@ -207,8 +207,8 @@ class AttendancesController < ApplicationController
         row_first << 'Present'
         row_first << 'Absent'
       end 
-      new_book.worksheet(0).merge_cells(0,3,0,4)
-      new_book.worksheet(0).merge_cells(1,3,1,4)
+      new_book.worksheet(0).merge_cells(3,0,4,0)
+      new_book.worksheet(0).merge_cells(3,1,4,1)
       new_book.worksheet(0).insert_row(4, row_first)
       row_start = 5
       row_first = []

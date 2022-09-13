@@ -162,7 +162,7 @@ class AttendancesController < ApplicationController
       @subject_att = SubjectAttendance.all(:select=>"count(id) as total_absent,student_id,attendance_date",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ? and is_late = 0",params[:batch_id],@date_form,@date_to],:group=>["attendance_date,student_id"])
       row_first = [MultiSchool.current_school.name]
       start_row = 1
-      @subject_att.each do |val|
+      @subject_att_register.each do |val|
         row_first << ""  
         row_first << ""
         row_first << ""
@@ -172,7 +172,7 @@ class AttendancesController < ApplicationController
       new_book.worksheet(0).merge_cells(0,0,start_row,0)
       row_first = ["Subject Wish Attendance Report"]
       start_row = 1
-      @subject_att.each do |val|
+      @subject_att_register.each do |val|
         row_first << "" 
         row_first << ""
         row_first << "" 
@@ -182,7 +182,7 @@ class AttendancesController < ApplicationController
       new_book.worksheet(0).merge_cells(0,1,start_row,1)
       row_first = [@date_form.to_s+"-"+@date_to.to_s]
       start_row = 1
-      @subject_att.each do |val|
+      @subject_att_register.each do |val|
         row_first << ""  
         row_first << ""
         row_first << ""
@@ -193,7 +193,7 @@ class AttendancesController < ApplicationController
 
       row_first = ['Roll','Name']
       start_row = 2
-      @subject_att.each do |val|
+      @subject_att_register.each do |val|
         row_first << val.attendance_date.to_s  
         row_first << ""
         row_first << ""
@@ -202,7 +202,7 @@ class AttendancesController < ApplicationController
       end 
       new_book.worksheet(0).insert_row(3, row_first)
       row_first = ['','']
-      @subject_att.each do |val|
+      @subject_att_register.each do |val|
         row_first << 'Total' 
         row_first << 'Present'
         row_first << 'Absent'

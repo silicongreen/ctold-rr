@@ -191,7 +191,7 @@ class AttendancesController < ApplicationController
       new_book.worksheet(0).insert_row(2, row_first)
       new_book.worksheet(0).merge_cells(0,2,start_row,2)
 
-      row_first['Roll','Name']
+      row_first = ['Roll','Name']
       start_row = 2
       @subject_att.each do |val|
         row_first << val.attendance_date.to_s  

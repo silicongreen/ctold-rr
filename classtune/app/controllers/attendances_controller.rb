@@ -169,7 +169,7 @@ class AttendancesController < ApplicationController
         row_first << ""  
         row_first << ""
         row_first << ""
-        start_row = start_row+2
+        start_row = start_row+3
       end  
       new_book.worksheet(0).insert_row(0, row_first)
       new_book.worksheet(0).merge_cells(0,0,0,start_row)
@@ -179,7 +179,7 @@ class AttendancesController < ApplicationController
         row_first << "" 
         row_first << ""
         row_first << "" 
-        start_row = start_row+2
+        start_row = start_row+3
       end  
       new_book.worksheet(0).insert_row(1, row_first)
       new_book.worksheet(0).merge_cells(1,0,1,start_row)
@@ -189,7 +189,7 @@ class AttendancesController < ApplicationController
         row_first << ""  
         row_first << ""
         row_first << ""
-        start_row = start_row+2
+        start_row = start_row+3
       end  
       new_book.worksheet(0).insert_row(2, row_first)
       new_book.worksheet(0).merge_cells(2,0,2,start_row)

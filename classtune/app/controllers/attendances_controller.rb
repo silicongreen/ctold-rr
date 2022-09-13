@@ -232,7 +232,7 @@ class AttendancesController < ApplicationController
 
       spreadsheet = StringIO.new 
       new_book.write spreadsheet 
-      send_data spreadsheet.string, :filename => @batch.full_name"_subject_attendance.xls", :type =>  "application/vnd.ms-excel"
+      send_data spreadsheet.string, :filename => @batch.full_name+"_subject_attendance.xls", :type =>  "application/vnd.ms-excel"
 
     end   
   end

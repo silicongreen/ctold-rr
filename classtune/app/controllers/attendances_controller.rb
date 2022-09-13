@@ -222,7 +222,7 @@ class AttendancesController < ApplicationController
           unless absent.blank?
             total_absent = absent.total_absent
           end  
-          total_present = register.total_register-total_absent
+          total_present = register.total_register.to_i-total_absent.to_i
           row_first << total_present
           row_first << total_absent
         end

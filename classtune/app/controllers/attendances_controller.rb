@@ -226,7 +226,7 @@ class AttendancesController < ApplicationController
           row_first << total_present
           row_first << total_absent
         end
-        new_book.worksheet(0).insert_row(row_start, row_first)
+        new_book.worksheet(0).insert_row(row_start)
         row_start = row_start+1
       end 
     end  

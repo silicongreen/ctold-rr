@@ -229,12 +229,10 @@ class AttendancesController < ApplicationController
         new_book.worksheet(0).insert_row(row_start, row_first)
         row_start = row_start+1
       end 
-
-      spreadsheet = StringIO.new 
-      new_book.write spreadsheet 
-      send_data spreadsheet.string, :filename => @batch.full_name+"_subject_attendance.xls", :type =>  "application/vnd.ms-excel"
-
-    end   
+    end  
+    spreadsheet = StringIO.new 
+    new_book.write spreadsheet 
+    send_data spreadsheet.string, :filename => @batch.full_name+"_subject_attendance.xls", :type =>  "application/vnd.ms-excel" 
   end
   def get_subject_batch_report_pdf
     if params[:batch_id].present?

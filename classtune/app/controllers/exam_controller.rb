@@ -3604,51 +3604,51 @@ class ExamController < ApplicationController
       finding_data_19()
     elsif @connect_exam_obj.result_type.to_i == 20
       finding_data_27()
-    elsif @connect_exam_obj.result_type.to_i == 9
-      group_course_ids = Course.find(:all, :conditions => "course_name = '#{@batch.course.course_name}' and `group` = '#{@batch.course.group}' and is_deleted = 0").map(&:id)
-      group_batch_ids = Batch.find(:all, :conditions => "course_id IN (#{group_course_ids.join(",")}) and is_deleted = 0").map(&:id)
+    # elsif @connect_exam_obj.result_type.to_i == 9
+    #   group_course_ids = Course.find(:all, :conditions => "course_name = '#{@batch.course.course_name}' and `group` = '#{@batch.course.group}' and is_deleted = 0").map(&:id)
+    #   group_batch_ids = Batch.find(:all, :conditions => "course_id IN (#{group_course_ids.join(",")}) and is_deleted = 0").map(&:id)
       
-      qry = ""
-      if @class.blank?
-        qry = "connect_exam_id = #{@connect_exam_obj.id} and batch_id = #{@batch.id}"
-      else
-        qry = "batch_id IN (#{group_batch_ids.join(",")})"
-      end
-      exam_connect_merit_lists = ExamConnectMeritList.find(:first, :conditions=>"#{qry}") 
-      unless exam_connect_merit_lists.blank?
-        exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>"#{qry}", :order=>"gpa DESC, marks DESC") 
-        unless exam_connect_merit_lists.blank?
-          i = 1
-          exam_connect_merit_lists.each do |exam_connect_merit_list|
-            pos = 0
-            if exam_connect_merit_list.gpa.to_f > 0.0
-              pos = i
-              i = i + 1
-            end
-            exam_connect_merit_list.update_attributes(:position=>pos)
-          end
+    #   qry = ""
+    #   if @class.blank?
+    #     qry = "connect_exam_id = #{@connect_exam_obj.id} and batch_id = #{@batch.id}"
+    #   else
+    #     qry = "batch_id IN (#{group_batch_ids.join(",")})"
+    #   end
+    #   exam_connect_merit_lists = ExamConnectMeritList.find(:first, :conditions=>"#{qry}") 
+    #   unless exam_connect_merit_lists.blank?
+    #     exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>"#{qry}", :order=>"gpa DESC, marks DESC") 
+    #     unless exam_connect_merit_lists.blank?
+    #       i = 1
+    #       exam_connect_merit_lists.each do |exam_connect_merit_list|
+    #         pos = 0
+    #         if exam_connect_merit_list.gpa.to_f > 0.0
+    #           pos = i
+    #           i = i + 1
+    #         end
+    #         exam_connect_merit_list.update_attributes(:position=>pos)
+    #       end
 
-          group_course_ids = Course.find(:all, :conditions => "course_name = '#{@batch.course.course_name}' and `group` = '#{@batch.course.group}' and is_deleted = 0").map(&:id)
-          group_batch_ids = Batch.find(:all, :conditions => "course_id IN (#{group_course_ids.join(",")}) and is_deleted = 0").map(&:id)
-          connect_exam_ids = ExamConnect.find(:all, :conditions=> "batch_id IN (#{group_batch_ids.join(",")}) and is_deleted = 0").map(&:id)
+    #       group_course_ids = Course.find(:all, :conditions => "course_name = '#{@batch.course.course_name}' and `group` = '#{@batch.course.group}' and is_deleted = 0").map(&:id)
+    #       group_batch_ids = Batch.find(:all, :conditions => "course_id IN (#{group_course_ids.join(",")}) and is_deleted = 0").map(&:id)
+    #       connect_exam_ids = ExamConnect.find(:all, :conditions=> "batch_id IN (#{group_batch_ids.join(",")}) and is_deleted = 0").map(&:id)
 
-          exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=> "connect_exam_id IN (#{connect_exam_ids.join(",")}) AND batch_id IN (#{group_batch_ids.join(",")})", :order=>"gpa DESC, marks DESC") 
-          unless exam_connect_merit_lists.blank?
-            i = 1
-            exam_connect_merit_lists.each do |exam_connect_merit_list|
-              pos = 0
-              if exam_connect_merit_list.gpa.to_f > 0.0
-                pos = i
-                i = i + 1
-              end
-              exam_connect_merit_list.update_attributes(:section_position=>pos)
-            end
-          end
-        end
-      end
+    #       exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=> "connect_exam_id IN (#{connect_exam_ids.join(",")}) AND batch_id IN (#{group_batch_ids.join(",")})", :order=>"gpa DESC, marks DESC") 
+    #       unless exam_connect_merit_lists.blank?
+    #         i = 1
+    #         exam_connect_merit_lists.each do |exam_connect_merit_list|
+    #           pos = 0
+    #           if exam_connect_merit_list.gpa.to_f > 0.0
+    #             pos = i
+    #             i = i + 1
+    #           end
+    #           exam_connect_merit_list.update_attributes(:section_position=>pos)
+    #         end
+    #       end
+    #     end
+    #   end
       
       
-      @exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>"#{qry}", :order => 'gpa DESC, marks DESC, position ASC')
+    #   @exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>"#{qry}", :order => 'gpa DESC, marks DESC, position ASC')
     else
       finding_data5()
     end
@@ -3682,16 +3682,16 @@ class ExamController < ApplicationController
       end
       @student_result.sort! { |x, y| x["position"] <=> y["position"] }
     end
-    if @connect_exam_obj.result_type.to_i == 9
-      render :pdf => 'merit_list_sagc_9',
-        :orientation => 'Portrait', :zoom => 1.00,
-        :margin => {    :top=> 52,
-        :bottom => 30,
-        :left=> 10,
-        :right => 10},
-        :header => {:html => { :template=> 'layouts/header_sagc.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-    else  
+    # if @connect_exam_obj.result_type.to_i == 9
+    #   render :pdf => 'merit_list_sagc_9',
+    #     :orientation => 'Portrait', :zoom => 1.00,
+    #     :margin => {    :top=> 52,
+    #     :bottom => 30,
+    #     :left=> 10,
+    #     :right => 10},
+    #     :header => {:html => { :template=> 'layouts/header_sagc.html'}},
+    #     :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+    # else  
       render :pdf => 'merit_list_sagc',
         :orientation => 'Portrait', :zoom => 1.00,
         :margin => {    :top=> 52,
@@ -3700,7 +3700,7 @@ class ExamController < ApplicationController
         :right => 10},
         :header => {:html => { :template=> 'layouts/header_sagc.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-    end
+    # end
   end
   
   def subject_wise_fourty_percent

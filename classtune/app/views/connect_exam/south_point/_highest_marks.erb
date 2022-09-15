@@ -250,17 +250,21 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
         st_marks1.sort! {|x,y| y <=> x }
         ct_marks1.sort! {|x,y| y <=> x }
 
-        if ct_full_mark1.to_i == 20 
-          avg_mark_ct1 = (ct_marks1[0].to_f+ct_marks1[1].to_f)/2
+        if ct_full_mark1.to_i == 30
+          avg_mark_ct1 = (ct_marks1[0].to_f+ct_marks1[1].to_f+ct_marks1[2].to_f)/3
+        else  
+          if ct_full_mark1.to_i == 20 
+            avg_mark_ct1 = (ct_marks1[0].to_f+ct_marks1[1].to_f)/2
           else 
-          avg_mark_ct1 = ct_marks1[0].to_f
+            avg_mark_ct1 = ct_marks1[0].to_f
           end 
 
-        if st_full_mark1.to_i == 10 
-          avg_mark_st1 = (st_marks1[0].to_f+st_marks1[1].to_f+st_marks1[2].to_f)/3
+          if st_full_mark1.to_i == 10 
+            avg_mark_st1 = (st_marks1[0].to_f+st_marks1[1].to_f+st_marks1[2].to_f)/3
           else st_full_mark1.to_i == 5  
-          avg_mark_st1 = (st_marks1[0].to_f+st_marks1[1].to_f)/2
+            avg_mark_st1 = (st_marks1[0].to_f+st_marks1[1].to_f)/2
           end
+        end
 
         obtained_mark1 = avg_mark_ct1.to_f+avg_mark_st1.to_f
         full_mark1 = ct_full_mark1.to_i+st_full_mark1.to_i
@@ -271,17 +275,21 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
         st_marks2.sort! {|x,y| y <=> x }
         ct_marks2.sort! {|x,y| y <=> x }
 
-        if ct_full_mark2.to_i == 20 
-          avg_mark_ct2 = (ct_marks2[0].to_f+ct_marks2[1].to_f)/2
+        if ct_full_mark2.to_i == 30
+          avg_mark_ct2 = (ct_marks2[0].to_f+ct_marks2[1].to_f+ct_marks2[2].to_f)/3
+        else
+          if ct_full_mark2.to_i == 20 
+            avg_mark_ct2 = (ct_marks2[0].to_f+ct_marks2[1].to_f)/2
           else 
-          avg_mark_ct2 = ct_marks2[0].to_f
+            avg_mark_ct2 = ct_marks2[0].to_f
           end 
 
-        if st_full_mark2.to_i == 10 
-          avg_mark_st2 = (st_marks2[0].to_f+st_marks2[1].to_f+st_marks2[2].to_f)/3
+          if st_full_mark2.to_i == 10 
+            avg_mark_st2 = (st_marks2[0].to_f+st_marks2[1].to_f+st_marks2[2].to_f)/3
           else st_full_mark2.to_i == 5  
-          avg_mark_st2 = (st_marks2[0].to_f+st_marks2[1].to_f)/2
+            avg_mark_st2 = (st_marks2[0].to_f+st_marks2[1].to_f)/2
           end
+        end
         obtained_mark2 = avg_mark_ct2.to_f+avg_mark_st2.to_f
         full_mark2 = ct_full_mark2.to_i+st_full_mark2.to_i
         main_mark2 = (obtained_mark2.to_f/full_mark2.to_f)*100
@@ -290,17 +298,21 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
         st_marks3.sort! {|x,y| y <=> x }
         ct_marks3.sort! {|x,y| y <=> x }
 
-        if ct_full_mark3.to_i == 20 
-          avg_mark_ct3 = (ct_marks3[0].to_f+ct_marks3[1].to_f)/2
+        if ct_full_mark3.to_i == 30
+          avg_mark_ct3 = (ct_marks3[0].to_f+ct_marks3[1].to_f+ct_marks3[2].to_f)/3
+        else
+          if ct_full_mark3.to_i == 20 
+            avg_mark_ct3 = (ct_marks3[0].to_f+ct_marks3[1].to_f)/2
           else 
-          avg_mark_ct3 = ct_marks3[0].to_f
+            avg_mark_ct3 = ct_marks3[0].to_f
           end 
 
-        if st_full_mark3.to_i == 10 
-          avg_mark_st3 = (st_marks3[0].to_f+st_marks3[1].to_f+st_marks3[2].to_f)/3
+          if st_full_mark3.to_i == 10 
+            avg_mark_st3 = (st_marks3[0].to_f+st_marks3[1].to_f+st_marks3[2].to_f)/3
           else st_full_mark3.to_i == 5  
-          avg_mark_st3 = (st_marks3[0].to_f+st_marks3[1].to_f)/2
+            avg_mark_st3 = (st_marks3[0].to_f+st_marks3[1].to_f)/2
           end
+        end  
 
         obtained_mark3 = avg_mark_ct3.to_f+avg_mark_st3.to_f
         full_mark3 = ct_full_mark3.to_i+st_full_mark3.to_i
@@ -309,18 +321,21 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
         #Calculation 4th Quarter Mark
         st_marks4.sort! {|x,y| y <=> x }
         ct_marks4.sort! {|x,y| y <=> x }
-
-        if ct_full_mark4.to_i == 20 
-          avg_mark_ct4 = (ct_marks4[0].to_f+ct_marks4[1].to_f)/2
+        if ct_full_mark4.to_i == 30
+          avg_mark_ct4 = (ct_marks4[0].to_f+ct_marks4[1].to_f+ct_marks4[2].to_f)/3
+        else
+          if ct_full_mark4.to_i == 20 
+            avg_mark_ct4 = (ct_marks4[0].to_f+ct_marks4[1].to_f)/2
           else 
-          avg_mark_ct4 = ct_marks4[0].to_f
+            avg_mark_ct4 = ct_marks4[0].to_f
           end 
 
-        if st_full_mark4.to_i == 10 
-          avg_mark_st4 = (st_marks4[0].to_f+st_marks4[1].to_f+st_marks4[2].to_f)/3
+          if st_full_mark4.to_i == 10 
+            avg_mark_st4 = (st_marks4[0].to_f+st_marks4[1].to_f+st_marks4[2].to_f)/3
           else st_full_mark4.to_i == 5  
-          avg_mark_st4 = (st_marks4[0].to_f+st_marks4[1].to_f)/2
+            avg_mark_st4 = (st_marks4[0].to_f+st_marks4[1].to_f)/2
           end
+        end  
         mock_test_mark = 0
         if mock_test_total > 0
           mock_test_mark = (mock_test_total.to_f/mock_test_full_mark.to_f)*100

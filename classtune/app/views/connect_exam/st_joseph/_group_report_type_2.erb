@@ -568,7 +568,7 @@
                             <td class="col-pdf"><%= heighst_mark.to_i %> </td>
                             
                             <% grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
-                            <% if sub_failed == true || pr_failed == true %>
+                            <% if ob_failed == true || pr_failed == true %>
                               <td class="col-pdf"><b><%= "U" %></b></td>
                             <% elsif !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><b><%= grade.name %></b></td>

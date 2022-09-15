@@ -571,7 +571,7 @@
                             <% if ob_failed == true || sub_failed == true || pr_failed == true %>
                               <td class="col-pdf"><b><%= "U" %><%= sub_failed.blank? ? "1" : "0" %><%= ob_failed.blank? ? "1" : "0" %><%= pr_failed.blank? ? "1": "0" %></b></td>
                             <% elsif !grade.blank? and !grade.name.blank? %>
-                              <td class="col-pdf"><b><%= grade.name %></b></td>
+                              <td class="col-pdf"><b><%= grade.name %>1</b></td>
                             <% else %>
                               <td class="col-pdf"><b>-</b></td>
                             <% end %>

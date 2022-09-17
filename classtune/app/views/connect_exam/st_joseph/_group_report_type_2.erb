@@ -597,8 +597,8 @@
                           all_comments_array = all_comments.split("|")
                           @exam_comment.comments = all_comments_array[0]
                           if !all_comments_array[1].nil?
-                            @report_data['total'] = @connect_exam_obj.total_working_days
-                            @report_data['present'] = all_comments_array[1]
+                            @report_data['total'] = @connect_exam_obj.total_working_days.to_i
+                            @report_data['present'] = all_comments_array[1].to_i
                           end
                         end
                       end

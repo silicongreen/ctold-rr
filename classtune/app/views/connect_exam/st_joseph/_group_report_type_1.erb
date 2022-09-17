@@ -213,18 +213,43 @@
 
               </table>
 
+              <% 
+                      total_att = ""
+                      absent = ""
+                      if !@exam_comment.blank?
+                        all_comments = @exam_comment.comments
+                        if !all_comments.blank?
+                          all_comments_array = all_comments.split("|")
+                          @exam_comment.comments = all_comments_array[0]
+                          if !all_comments_array[1].nil?
+                            @report_data['total'] = @connect_exam_obj.total_working_days.to_i
+                            @report_data['present'] = all_comments_array[1].to_i
+                            if !all_comments_array[2].nil?
+                              @report_data['total'] = all_comments_array[2].to_i
+                            end
+                          end
+                        end
+                      end
+              %>   
+
 
                <% avgparcent = (total_marks_student.to_f/full_marks_total.to_f)*100 %>
-              <table id="pdf-table" class="margin-top-bottom-10 font-size-20" width="100%" >
+               <table id="pdf-table" class="margin-top-bottom-10 font-size-20" width="100%" >
 
                   <tr class="table-header">
+                      <% if @report_data['total'].to_i > 5 %>
+                      <td class="col-pdf">Working Days : <%= @report_data['total'] %></td>
 
+                      <td class="col-pdf">Days Present : <%= @report_data['present'] %> </td>
+                      <td class="col-pdf">Days Absent : <%= @report_data['total']-@report_data['present'] %> </td>
+                      <% end %>
                       <td class="col-pdf">Average Marks : <%= sprintf( "%0.02f",avgparcent) %> % </td>
                       <td class="col-pdf">Detention : <%= @student_detention_count  %> </td>
                   </tr> 
 
 
               </table>
+              
               <table id="pdf-table" class="margin-top-bottom-10 font-size-20 float-left" width="38%" >
                       <tr class="table-header">
                           <td class="col-pdf t-left">

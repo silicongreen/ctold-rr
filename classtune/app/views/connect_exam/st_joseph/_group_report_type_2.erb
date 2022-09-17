@@ -588,6 +588,22 @@
 
               </table>
 
+              <% 
+                      total_att = ""
+                      absent = ""
+                      if !@exam_comment.blank?
+                        all_comments = @exam_comment.comments
+                        if !all_comments.blank?
+                          all_comments_array = all_comments.split("|")
+                          @exam_comment.comments = all_comments_array[0]
+                          if !all_comments_array[1].nil?
+                            @report_data['total'] = @connect_exam_obj.total_working_days
+                            @report_data['present'] = all_comments_array[1]
+                          end
+                        end
+                      end
+              %>        
+
 
               <% avgparcent = (total_marks_student.to_f/full_marks_total.to_f)*100 %>
             

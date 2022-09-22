@@ -42,9 +42,7 @@
                        end  
                   
                     %>
-                      <% if subjects['no_exams_sjws'].to_i == 1 or has_mark == 0 %>
-                        <% next %>
-                      <% end %>
+                      
                         <% subject_count = subject_count+1 %>
                         
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>" >

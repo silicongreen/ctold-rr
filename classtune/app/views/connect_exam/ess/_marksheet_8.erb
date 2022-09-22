@@ -93,14 +93,14 @@ end
                 <% total_exam_continues = total_exam_continues+1 %>
                 <%
                 unless rs['maximum_marks'].blank?
-                    total_mark_continues = total_mark_continues+rs['maximum_marks'].to_i
+                    total_mark_continues = total_mark_continues+report['maximum_marks'].to_i
                 end
                 %>
 
               <% end %>
               <%
                 unless rs['maximum_marks'].blank?
-                    total_mark = total_mark+rs['maximum_marks'].to_i
+                    total_mark = total_mark+report['maximum_marks'].to_i
                 end
                 %>
             <% end %>

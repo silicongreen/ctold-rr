@@ -116,8 +116,8 @@ end
            <% end %> 
           <% end %>  
           
-          <td rowspan="2">Total<br/> (Out of <%= total_mark%>)<</td>
-          <td rowspan="2">TOTAL marks will be converted to 25</td>
+          <td rowspan="2">Total<br/> (Out of <%= total_mark%>)</td>
+          <td rowspan="2">TOTAL marks <br/>will be converted to <br/> 25</td>
         
         </tr>
         <tr class="table-header">
@@ -162,7 +162,6 @@ end
             <% sl = sl+1 %>
             <td class="name"><%= sl %></td>
             <td class="name-std"><%= std['name'] %></td>
-            <td></td>
             <% @report_data['result']['ALL'].each do |rs| %>
               <td>
               <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>

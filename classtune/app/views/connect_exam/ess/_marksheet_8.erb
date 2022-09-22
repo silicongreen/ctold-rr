@@ -182,8 +182,8 @@ end
            <td class="name"><%= sprintf( "%0.02f", total_mark) %></td>
            <%
            main_mark = 0
-          if full_mark > 0 && obtain_mark > 0
-            main_mark = (obtain_mark.to_f/full_mark.to_f)*25
+          if full_mark > 0 && total_mark > 0
+            main_mark = (total_mark.to_f/full_mark.to_f)*25
           end  
            %>
           <td class="col-2"><b><%= main_mark.round %></b></td>

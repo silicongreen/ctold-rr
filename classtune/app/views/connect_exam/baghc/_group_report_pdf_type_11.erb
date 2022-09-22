@@ -155,7 +155,7 @@
                             <% i = i+1 %> 
                             <tr class="table-header">
                                 <td class='subjects'><%= i %></td>
-                                <td class='left'><%= subjects['name'] %></td>
+                                <td class='left no-warp'><%= subjects['name'] %></td>
                                 <% failed_grade = false %>
                                 <% @report_data['report']['exams'].each do |report| %>
                                   <%
@@ -202,7 +202,7 @@
                                   end
                                 %>
                                 
-                                <td>
+                                <td class="no-warp">
                                   <%= total_100.to_i %> [<%= full_100.to_i %>] 
                                 </td>
                                 <%

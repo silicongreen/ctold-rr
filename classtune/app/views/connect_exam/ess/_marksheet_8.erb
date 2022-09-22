@@ -109,7 +109,7 @@ end
         <tr class="table-header">
           <td rowspan="2">SL</td>  
           <td class="name" rowspan="2">Name Of Student</td>
-          <td class="name">Continuous Assessment (Out of <%= total_mark_continues%>)</td>
+          <td class="name" colspan="<%= total_exam_continues %>">Continuous Assessment (Out of <%= total_mark_continues%>)</td>
           <% @report_data['result']['ALL'].each do |rs| %>
            <% if rs['exam_category'] != '1' %>
             <td style="white-space: normal !important;"  rowspan="2"><%=  rs['name'] %><br/>(Out of <%= rs['maximum_marks'].to_i %>)</td>

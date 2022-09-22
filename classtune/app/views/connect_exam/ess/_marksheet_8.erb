@@ -92,14 +92,14 @@ end
               <% if report['exam_category'] == '1' %>
                 <% total_exam_continues = total_exam_continues+1 %>
                 <%
-                unless rs['maximum_marks'].blank?
+                unless report['maximum_marks'].blank?
                     total_mark_continues = total_mark_continues+report['maximum_marks'].to_i
                 end
                 %>
 
               <% end %>
               <%
-                unless rs['maximum_marks'].blank?
+                unless report['maximum_marks'].blank?
                     total_mark = total_mark+report['maximum_marks'].to_i
                 end
                 %>

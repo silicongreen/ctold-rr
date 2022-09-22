@@ -49,7 +49,7 @@
                             <% i = i+1 %> 
                             <tr class="table-header">
                                 <td class='subjects'><%= i %></td>
-                                <td class='left'><%= subjects['name'] %></td>
+                                <td class='left no-warp'><%= subjects['name'] %></td>
                                 <% failed_grade = false %>
                                 <% @report_data['report']['exams'].each do |report| %>
                                   <%
@@ -96,7 +96,7 @@
                                   end
                                 %>
                                 
-                                <td>
+                                <td class="no-warp">
                                   <%= total_100.to_i %> [<%= full_100.to_i %>] 
                                 </td>
                                 <%
@@ -122,12 +122,13 @@
                                 <% if gp_point.to_i == 0 %>
                                   <% main_failed_grade = true %>
                                 <% end %>
+                                 <td>
+                                   <%= lg %> 
+                                </td>
                                 <td>
                                    <%= gp_point %> 
                                 </td>
-                                <td>
-                                   <%= lg %> 
-                                </td>
+                               
                                 <% end %>
                                 
                               
@@ -144,20 +145,17 @@
                                 <td colspan="7" style="text-align:center">
                                     <b>Total</b>
                                 </td>
-                                <td colspan="<%= colspan %>" style="text-align:center">
+                                <td style="text-align:center" class="no-warp">
                                     <b><%= total_mark.to_i %></b> [<%= total_full_mark.to_i %>]
                                 </td>
                                 <td style="text-align:center">
-                                    <b><%= total_mark_result.to_i %></b>
+                                    
                                 </td>
                                 <td style="text-align:center">
-                                    &nbsp;
+                                    Total GP
                                 </td>
                                 <td style="text-align:center">
                                     <b><%= sprintf( "%0.02f", total_gpa) %></b>
-                                </td>
-                                <td style="text-align:center">
-                                    &nbsp;
                                 </td>
                             </tr>
                             

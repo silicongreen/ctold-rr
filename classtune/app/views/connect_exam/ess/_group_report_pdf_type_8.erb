@@ -94,7 +94,7 @@
               <table id="pdf-table"  width="100%" class="left-table even-table exam-marks" cellspacing="0">
                   <% c = 'even'  %>
                   <tr class="even">
-                      <td colspan="<%= total_exam+2%>" ><b>ACADEMIC PERFORMANCE</b></td>
+                      <td colspan="<%= total_exam+3%>" ><b>ACADEMIC PERFORMANCE</b></td>
                   </tr>
                   <tr class="even">
                       <td class="col-pdf" rowspan="2"><b><%= "Subject" %></b></td>
@@ -105,8 +105,8 @@
                               (Out of <% unless @exam_marks[report['exam_id'].to_s].blank?  %><%= @exam_marks[report['exam_id'].to_s] %><% end %>)</b></td>
                         <% end %>
                       <% end %>
-                      <td class="col-pdf" rowspan="2"><b>Total Marks (Out of <%= total_mark%>)</b></td>
-                      <td class="col-pdf" rowspan="2"><b>Marks  (Out of 25)</b></td>
+                      <td class="col-pdf" rowspan="2"><b>Total Marks<br/>(Out of <%= total_mark%>)</b></td>
+                      <td class="col-pdf" rowspan="2"><b>Marks<br/>(Out of 25)</b></td>
                   </tr>
                   <% total_mark_of_allexam = 0 %>
                   <tr class="even">
@@ -181,7 +181,7 @@
                   <% end %>   
                       
 
-              </table>
+              </table>  
               <p>&nbsp;</p> 
               <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
                   <tr class="even border-bottom-1-px">

@@ -188,6 +188,7 @@
                                       <% converted_ob = (total_ob.to_f/full_ob.to_f)*converted_ob_full %>
                                     <% end %>
                                     <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s == "AB" %>
+                                      <% failed_subject = true %>
                                       <td class="col-pdf">AB</td>
                                       <td class="col-pdf">-</td>
                                     <% else %>

@@ -9427,6 +9427,12 @@ class ExamController < ApplicationController
                     if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s != "AB"
                       appeared = true
                       full_absent = false
+                      if fourth_subject.blank?
+                        u_grade = u_grade+1 
+                        subject_failed = true
+                      else
+                        four_subject_failed = true
+                      end
                     end
                     if rs['exam_category'] == '3'
                       total_sb = total_sb+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
@@ -9504,6 +9510,12 @@ class ExamController < ApplicationController
                         if rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_s != "AB"
                           appeared = true
                           full_absent = false
+                          if fourth_subject.blank?
+                              u_grade = u_grade+1 
+                              subject_failed = true
+                            else
+                              four_subject_failed = true
+                            end
                         end
                         if rs['exam_category'] == '3'
                           total_sb2 = total_sb2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f

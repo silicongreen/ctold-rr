@@ -88,6 +88,14 @@
                                   lg = "-"
                                   grade = GradingLevel.percentage_to_grade(coverted_100, @batch.id)
                                   if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
+                                    if total_100.to_i == 8 && grade.credit_points.to_i == 0
+                                      grade.credit_points = 1.0
+                                      grade.name = "D"
+                                    end
+                                    if total_100.to_i == 5
+                                      grade.credit_points = 0.0
+                                      grade.name = "F"
+                                    end
                                     gp_point = grade.credit_points
                                     lg = grade.name
                                   end

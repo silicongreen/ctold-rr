@@ -139,9 +139,6 @@ unless @ranked_student.blank?
                     </tr>
                 </thead>    
             </table>
-            <% 
-
-          %>
             <% unless @report_data.blank? %>
               <% c = 'even' %>
               <% subject_grades = {} %>
@@ -153,56 +150,49 @@ unless @ranked_student.blank?
               %>
               <table id="pdf-table" width="100%" cellspacing="0">
                   <tr class="table-header">
-
-                              <td class="col-pdf">Roll</td>
-                              <td class="col-pdf">Students Name</td>
-                              <td class="col-pdf">Exams<hr/>LA<hr/>CT<hr/>AT<hr/>DI<hr/>WR</td>
-                              <% end %>
-                              <% @report_data['report']['subjects'].each do |sub| %>
-                                <% ca = 0 %>
-                                <% wr = 0 %>
-                                
-                                <% has_exam = false %>
-                                <% if @all_subject_id.include?(sub['id'].to_i) %>
-                                  <% has_exam = true %>
-                                <% end %>
-                                <% if has_exam == true %>
-                                  <%
-                                    unless @grading_levels.empty?
-                                      @grading_levels.each_with_index do |grade,index|
-                                        subject_grades[sub['id'].to_i] = {}
-                                        subject_grades[sub['id'].to_i][grade.id.to_i] = 0
-                                      end
-                                    end
-                                
-                                  %>
-                                  
-                                <td><%=  sub['code'] %>
-                                <% @report_data['report']['exams'].each do |rs| %>
-                                  <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
-                                      <hr/><%= rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
-                                  <% end %>
-                                <% end %>  
-                                </td>
-                                <% end %>
-                              <% end %>
-                              <td>GPA</td>
-                              <td>"F" Grade Count</td>
-
-
-                          </tr>
+                      <td class="col-pdf">Roll</td>
+                      <td class="col-pdf">Students Name</td>
+                      <td class="col-pdf">Exams<hr/>LA<hr/>CT<hr/>AT<hr/>DI<hr/>WR</td>
+                      <% end %>
+                      <% @report_data['report']['subjects'].each do |sub| %>
+                        <% ca = 0 %>
+                        <% wr = 0 %>
+                        
+                        <% has_exam = false %>
+                        <% if @all_subject_id.include?(sub['id'].to_i) %>
+                          <% has_exam = true %>
+                        <% end %>
+                        <% if has_exam == true %>
+                          <%
+                            unless @grading_levels.empty?
+                              @grading_levels.each_with_index do |grade,index|
+                                subject_grades[sub['id'].to_i] = {}
+                                subject_grades[sub['id'].to_i][grade.id.to_i] = 0
+                              end
+                            end
+                        
+                          %>
+                          
+                        <td><%=  sub['code'] %>
+                        <% @report_data['report']['exams'].each do |rs| %>
+                          <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
+                              <hr/><%= rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
+                          <% end %>
+                        <% end %>  
+                        </td>
+                        <% end %>
+                      <% end %>
+                      <td>GPA</td>
+                      <td>"F" Grade Count</td>
+                  </tr>
                   <%
-                     g_cnt = 4
-                     g_cnt_1 = 5
-                  %>      
-                  
-                  <% extender = 0 %>
-                  <% std_count = 0 %>
-                  <% j = 0 %>
-                  
-                  <% subject_total_marks = {} %>
-                  <% passed_student = 0 %>
-                  <%
+                  g_cnt = 4
+                  g_cnt_1 = 5
+                  extender = 0
+                  std_count = 0
+                  j = 0
+                  subject_total_marks = {}
+                  passed_student = 0 
                   f_grade = []
                   f_grade[0] = 0
                   f_grade[1] = 0
@@ -218,8 +208,8 @@ unless @ranked_student.blank?
                   f_grade[11] = 0
                   f_grade[12] = 0
                   f_grade[13] = 0
+                  total_student_numbers = 0
                   %>
-                  <% total_student_numbers = 0 %>
                   <% @report_data['report']['students'].each do |std| %>
                     <% if !std.blank? and !std['first_name'].blank? %>
                       <% j = j+1 %>
@@ -234,43 +224,43 @@ unless @ranked_student.blank?
                         </tr> 
                         <tr class="table-header">
 
-                              <td class="col-pdf">Roll</td>
-                              <td class="col-pdf">Students Name</td>
-                              <td class="col-pdf">Exams<hr/>LA<hr/>CT<hr/>AT<hr/>DI<hr/>WR</td>
+                            <td class="col-pdf">Roll</td>
+                            <td class="col-pdf">Students Name</td>
+                            <td class="col-pdf">Exams<hr/>LA<hr/>CT<hr/>AT<hr/>DI<hr/>WR</td>
+                            <% end %>
+                            <% @report_data['report']['subjects'].each do |sub| %>
+                              <% ca = 0 %>
+                              <% wr = 0 %>
+                              
+                              <% has_exam = false %>
+                              <% if @all_subject_id.include?(sub['id'].to_i) %>
+                                <% has_exam = true %>
                               <% end %>
-                              <% @report_data['report']['subjects'].each do |sub| %>
-                                <% ca = 0 %>
-                                <% wr = 0 %>
-                                
-                                <% has_exam = false %>
-                                <% if @all_subject_id.include?(sub['id'].to_i) %>
-                                  <% has_exam = true %>
-                                <% end %>
-                                <% if has_exam == true %>
-                                  <%
-                                    unless @grading_levels.empty?
-                                      @grading_levels.each_with_index do |grade,index|
-                                        subject_grades[sub['id'].to_i] = {}
-                                        subject_grades[sub['id'].to_i][grade.id.to_i] = 0
-                                      end
+                              <% if has_exam == true %>
+                                <%
+                                  unless @grading_levels.empty?
+                                    @grading_levels.each_with_index do |grade,index|
+                                      subject_grades[sub['id'].to_i] = {}
+                                      subject_grades[sub['id'].to_i][grade.id.to_i] = 0
                                     end
+                                  end
+                              
+                                %>
                                 
-                                  %>
-                                  
-                                <td><%=  sub['code'] %>
-                                <% @report_data['report']['exams'].each do |rs| %>
-                                  <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
-                                      <hr/><%= rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
-                                  <% end %>
-                                <% end %>  
-                                </td>
+                              <td><%=  sub['code'] %>
+                              <% @report_data['report']['exams'].each do |rs| %>
+                                <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
+                                    <hr/><%= rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                                 <% end %>
+                              <% end %>  
+                              </td>
                               <% end %>
-                              <td>GPA</td>
-                              <td>"F" Grade Count</td>
+                            <% end %>
+                            <td>GPA</td>
+                            <td>"F" Grade Count</td>
 
 
-                          </tr>
+                        </tr>
                       <% elsif std_count>g_cnt_1 && extender ==1 %>
                         <% std_count = 1 %>
                         <% extender = 1 %>
@@ -280,43 +270,41 @@ unless @ranked_student.blank?
                         </tr>
                         <tr class="table-header">
 
-                              <td class="col-pdf">Roll</td>
-                              <td class="col-pdf">Students Name</td>
-                              <td class="col-pdf">Exams<hr/>LA<hr/>CT<hr/>AT<hr/>DI<hr/>WR</td>
+                          <td class="col-pdf">Roll</td>
+                          <td class="col-pdf">Students Name</td>
+                          <td class="col-pdf">Exams<hr/>LA<hr/>CT<hr/>AT<hr/>DI<hr/>WR</td>
+                          <% end %>
+                          <% @report_data['report']['subjects'].each do |sub| %>
+                            <% ca = 0 %>
+                            <% wr = 0 %>
+                            
+                            <% has_exam = false %>
+                            <% if @all_subject_id.include?(sub['id'].to_i) %>
+                              <% has_exam = true %>
+                            <% end %>
+                            <% if has_exam == true %>
+                              <%
+                                unless @grading_levels.empty?
+                                  @grading_levels.each_with_index do |grade,index|
+                                    subject_grades[sub['id'].to_i] = {}
+                                    subject_grades[sub['id'].to_i][grade.id.to_i] = 0
+                                  end
+                                end
+                            
+                              %>
+                              
+                            <td><%=  sub['code'] %>
+                            <% @report_data['report']['exams'].each do |rs| %>
+                              <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
+                                  <hr/><%= rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                               <% end %>
-                              <% @report_data['report']['subjects'].each do |sub| %>
-                                <% ca = 0 %>
-                                <% wr = 0 %>
-                                
-                                <% has_exam = false %>
-                                <% if @all_subject_id.include?(sub['id'].to_i) %>
-                                  <% has_exam = true %>
-                                <% end %>
-                                <% if has_exam == true %>
-                                  <%
-                                    unless @grading_levels.empty?
-                                      @grading_levels.each_with_index do |grade,index|
-                                        subject_grades[sub['id'].to_i] = {}
-                                        subject_grades[sub['id'].to_i][grade.id.to_i] = 0
-                                      end
-                                    end
-                                
-                                  %>
-                                  
-                                <td><%=  sub['code'] %>
-                                <% @report_data['report']['exams'].each do |rs| %>
-                                  <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
-                                      <hr/><%= rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
-                                  <% end %>
-                                <% end %>  
-                                </td>
-                                <% end %>
-                              <% end %>
-                              <td>GPA</td>
-                              <td>"F" Grade Count</td>
-
-
-                          </tr>
+                            <% end %>  
+                            </td>
+                            <% end %>
+                          <% end %>
+                          <td>GPA</td>
+                          <td>"F" Grade Count</td>
+                      </tr>
                       <% end %>    
 
 
@@ -429,26 +417,7 @@ unless @ranked_student.blank?
                               <% end %>
                             <% end %>   
                           <% end %> 
-                          <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
-                            <td>
-                                <% if !sub['subject_comment'][std['id']].nil? && !sub['subject_comment'][std['id']].blank? %>
-                                  <%
-                                  if !sub['subject_comment'][std['id']].blank?
-                                    if grades.include?(sub['subject_comment'][std['id']].to_s)
-                                      grade_count[sub['subject_comment'][std['id']]] = grade_count[sub['subject_comment'][std['id']]]+1
-                                      else
-                                      grades << sub['subject_comment'][std['id']].to_s
-                                      grade_count[sub['subject_comment'][std['id']].to_s] = 1
-                                    end 
-                                    end 
-                                %>
-                                  <%=  sub['subject_comment'][std['id']] %>
-                                <% else %>
-                                  &nbsp;
-                                <% end %> 
-                            </td>     
-
-                          <% end %>       
+                                
                           <%
                           gpa_fraction = 0.0
                           if total_grade > 0 && subject_count > 0 && f_grade_count == 0
@@ -469,9 +438,7 @@ unless @ranked_student.blank?
                           </td> 
                       </tr>
                     <% end %>
-                  <% end %>
-                  <% end %>
-                     
+                  <% end %>                     
                       <% if std_count>4 %>
                         <tr class="page-break-low">
                             <td colspan="100">&nbsp;</td>

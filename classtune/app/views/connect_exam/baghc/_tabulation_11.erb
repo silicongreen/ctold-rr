@@ -180,7 +180,6 @@ unless @ranked_student.blank?
                           <% end %>
                         <% end %>  
                         </td>
-                        <% end %>
                       <% end %>
                       <td>GPA</td>
                       <td>"F" Grade Count</td>
@@ -254,7 +253,6 @@ unless @ranked_student.blank?
                                 <% end %>
                               <% end %>  
                               </td>
-                              <% end %>
                             <% end %>
                             <td>GPA</td>
                             <td>"F" Grade Count</td>
@@ -300,7 +298,6 @@ unless @ranked_student.blank?
                               <% end %>
                             <% end %>  
                             </td>
-                            <% end %>
                           <% end %>
                           <td>GPA</td>
                           <td>"F" Grade Count</td>
@@ -371,11 +368,7 @@ unless @ranked_student.blank?
                                     <% @report_data['report']['exams'].each do |rs| %>
                                       <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
                                       <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
-                                      <%
-                                        subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                        subject_obtain_mark  = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                      %>
-                                      <%= rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
+                                        <%= rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
                                       <% end %>
                                     <% end %>
                                     <% total_mark = total_mark+subject_obtain_mark.to_f %>
@@ -393,7 +386,15 @@ unless @ranked_student.blank?
                                       if failed_grade == true
                                         grade.credit_points = 0.0
                                         grade.name = "F"
-                                      end  
+                                      end 
+                                      if subject_obtain_mark.to_i == 8 && grade.credit_points.to_i == 0
+                                        grade.credit_points = 1.0
+                                        grade.name = "D"
+                                      end
+                                      if subject_obtain_mark.to_i == 5
+                                        grade.credit_points = 0.0
+                                        grade.name = "F"
+                                      end 
                                       if grade.credit_points.to_i == 0
                                         f_grade_count = f_grade_count+1
                                       end 
@@ -432,7 +433,7 @@ unless @ranked_student.blank?
                           <td>
                               F[<%= f_grade_count %>]
                               <% if f_grade[f_grade_count].blank? %>
-                              <% f_grade[f_grade_count] = 0 %>
+                                <% f_grade[f_grade_count] = 0 %>
                               <% end %>
                               <%  f_grade[f_grade_count] = f_grade[f_grade_count]+1 %>
                           </td> 

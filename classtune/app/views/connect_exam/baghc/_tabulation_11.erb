@@ -316,7 +316,7 @@ unless @ranked_student.blank?
                           <% else %>
                             <td class="name-std"><%= "-" %></td>
                           <% end %>
-                          <td>Exams<hr/>LA<hr/>CT<hr/>AT<hr/>DI<hr/>WR<hr/>Total(25%)<hr/>GP</td>
+                          <td>LA<hr/>CT<hr/>AT<hr/>DI<hr/>WR<hr/>Total(25%)<hr/>GP</td>
                           <% total_mark = 0 %>
                           <% grades = [] %>
                           <% grade_count = {} %>
@@ -545,7 +545,8 @@ unless @ranked_student.blank?
         border-bottom: 1px solid #000000;
     }
     tr.table-header td, tr.even td,tr.odd td{
-        padding: 2px 5px !important;
+        padding: 1px 5px !important;
+        font-size: 13px !important;
     }   
     .table-header td table.no-border tr td
     {

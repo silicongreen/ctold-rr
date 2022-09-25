@@ -153,7 +153,6 @@ unless @ranked_student.blank?
                       <td class="col-pdf">Roll</td>
                       <td class="col-pdf">Students Name</td>
                       <td class="col-pdf">Exams<hr/>LA<hr/>CT<hr/>AT<hr/>DI<hr/>WR</td>
-                      <% end %>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% ca = 0 %>
                         <% wr = 0 %>
@@ -227,7 +226,6 @@ unless @ranked_student.blank?
                             <td class="col-pdf">Roll</td>
                             <td class="col-pdf">Students Name</td>
                             <td class="col-pdf">Exams<hr/>LA<hr/>CT<hr/>AT<hr/>DI<hr/>WR</td>
-                            <% end %>
                             <% @report_data['report']['subjects'].each do |sub| %>
                               <% ca = 0 %>
                               <% wr = 0 %>
@@ -273,7 +271,6 @@ unless @ranked_student.blank?
                           <td class="col-pdf">Roll</td>
                           <td class="col-pdf">Students Name</td>
                           <td class="col-pdf">Exams<hr/>LA<hr/>CT<hr/>AT<hr/>DI<hr/>WR</td>
-                          <% end %>
                           <% @report_data['report']['subjects'].each do |sub| %>
                             <% ca = 0 %>
                             <% wr = 0 %>
@@ -440,8 +437,85 @@ unless @ranked_student.blank?
                               <%  f_grade[f_grade_count] = f_grade[f_grade_count]+1 %>
                           </td> 
                       </tr>
-                    <% end %>                   
-                     
+                    <% end %>
+                  <% end %>                     
+                      <% if std_count>4 %>
+                        <tr class="page-break-low">
+                            <td colspan="100">&nbsp;</td>
+                        </tr>
+                      <% end %>
+                      <tr class="table-header">
+                          <td colspan="2" rowspan="8">Subjective Report</td>
+                          <td>Average Marks(%)</td>
+                          
+                          <% @report_data['report']['subjects'].each do |sub| %>
+                            <% has_exam = false %>
+                            <% if @all_subject_id.include?(sub['id'].to_i) %>
+                              <% has_exam = true %>
+                            <% end %>
+                            <% if has_exam %>
+                              <% avg_mark = 0 %>
+                              <% unless subject_total_marks[sub['id'].to_i].blank? %>
+                                <% avg_mark = subject_total_marks[sub['id'].to_i].to_f/total_student_numbers.to_f %>
+                              <% end %>
+                              <td><%= sprintf( "%0.02f", avg_mark) %></td>
+                                  
+                            <% end %>
+                          <% end %>
+                              
+                          <td colspan="2">Summary</td>
+                      </tr>  
+                      <% 
+                      first = true
+                      unless @grading_levels.empty?
+                              @grading_levels.each_with_index do |grade,index|
+                      %>
+                      <tr class="table-header">
+                       <td><%= grade.name %></td>  
+                        <% @report_data['report']['subjects'].each do |sub| %>
+                          <td><%= subject_grades[sub['id'].to_i][grade.id.to_i] %></td>
+                        <% end %> 
+                        <% if first == true %>
+                          <td colspan="2" rowspan="7" >
+                              <table class="no-border">
+                                  <tr><td>F[0] = <%= f_grade[0] %></td><td>F[7] = <%= f_grade[7] %></td></tr>
+                                  <tr><td>F[1] = <%= f_grade[1] %></td><td>F[8] = <%= f_grade[8] %></td></tr>
+                                  <tr><td>F[2] = <%= f_grade[2] %></td><td>F[9] = <%= f_grade[9] %></td></tr>
+                                  <tr><td>F[3] = <%= f_grade[3] %></td><td>F[10] = <%= f_grade[10] %></td></tr>
+                                  <tr><td>F[4] = <%= f_grade[4] %></td><td>F[11] = <%= f_grade[11] %></td></tr>
+                                  <tr><td>F[5] = <%= f_grade[5] %></td><td>F[12] = <%= f_grade[12] %></td></tr>
+                                  <tr><td>F[6] = <%= f_grade[6] %></td><td>F[12+] = <%= f_grade[13] %></td></tr>
+                              </table>
+                          </td> 
+                          <% first = false %>
+                        <% end %>  
+                      </tr>    
+                      <%
+                      end
+                     end
+                    %>
+                    <% colspan = @report_data['report']['subjects'].count %>
+                    <% colspan = colspan+3 %>
+                    <tr class="table-header">
+                       
+                        <td colspan="<%= colspan %>" class="no-border-td" ></td> 
+                        <td colspan="2" class="align-right">Total Student = <%= total_student_numbers %></td>
+                    </tr>
+                    <tr class="table-header">
+                       
+                        <td colspan="<%= colspan %>" class="no-border-td" ></td> 
+                        <td colspan="2" class="align-right">Failed = <%= total_student_numbers-passed_student %></td>
+                    </tr>
+                    <tr class="table-header">
+                       
+                        <td colspan="<%= colspan %>" class="no-border-td" ></td> 
+                        
+                        <% pass = 100  %>
+                        <% if total_student_numbers > 0 && passed_student < total_student_numbers  %>
+                          <% pass = (passed_student.to_f/total_student_numbers.to_f)*100  %>
+                        <% end %>
+                        <td colspan="2" class="align-right">Pass = <%= sprintf( "%0.02f", pass) %>%</td>
+                    </tr>
                       
               </table>
             <% end %>

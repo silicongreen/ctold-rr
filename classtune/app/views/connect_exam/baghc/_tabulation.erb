@@ -17,7 +17,7 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <% if @connect_exam_obj.result_type.to_i >= 11 %>
-<%= render  :partial=>"/connect_exam/bncd/tabulation_"+@connect_exam_obj.result_type.to_s %>
+<%= render  :partial=>"/connect_exam/baghc/tabulation_"+@connect_exam_obj.result_type.to_s %>
 <% else %>
 <% 
 @all_subject_id = []

@@ -112,7 +112,13 @@
                               <td rowspan="2">SL</td>
                               <td rowspan="2">Subjects</td>
                               <td colspan="4">Cotinuous Assesment</td>
-                              <td rowspan="2">written test</td>
+                              <% exam_number = 0 %>
+                              <% @report_data['report']['exams'].each do |report| %>
+                                <% if exam_number == 4 %>
+                                  <td rowspan="2"><%= report['exam_name'] %></td>
+                                <% end %> 
+                                <% exam_number = exam_number+1%>
+                              <% end %>   
                               <td rowspan="2">Total</td>
                               <td colspan="3">Result</td>
                           </tr>

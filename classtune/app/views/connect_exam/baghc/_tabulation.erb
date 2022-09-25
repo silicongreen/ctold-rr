@@ -16,6 +16,9 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
+<% if @connect_exam_obj.result_type.to_i >= 11 %>
+<%= render  :partial=>"/connect_exam/bncd/tabulation_"+@connect_exam_obj.result_type.to_s %>
+<% else %>
 <% 
 @all_subject_id = []
 @has_exam_score = []
@@ -846,3 +849,4 @@ unless @ranked_student.blank?
        text-align: right !important;
     }
 </style>
+<% end %>

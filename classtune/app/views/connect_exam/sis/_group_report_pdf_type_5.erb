@@ -5,7 +5,7 @@
           <center>
             <div id="pdf-header-south" class="general-header">
                 <h4 align="center" class="height-50">
-                <% unless @covid_main.blank? %>
+                <% if @covid_main == 1 %>
                   <% if @batch.course.course_name.upcase.index("PLAYGROUP").nil? and @batch.course.course_name.upcase.index("NURSERY").nil? and @batch.course.course_name.upcase.index("PG").nil? and  @batch.course.course_name.upcase.index("KG").nil? %>
                     <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/summer.jpg")),:width=> '40%' %>
                   <% else %>

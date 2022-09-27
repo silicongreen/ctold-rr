@@ -158,6 +158,7 @@
               <% @grading_levels = GradingLevel.default %>
               <% end %>
               <% total_comments_grade = 3 %>
+              <% if @batch.course.course_name.upcase != "X" %>
               <table id="pdf-table"  width="47.9%" class="left-table odd-table comments-table" cellspacing="0" >
                 <tr class="even">
                     <td colspan="2"><b>GENERAL PERFORMANCE</b></td>
@@ -274,6 +275,7 @@
                
                 
               </table>
+              <% end %>
               <% total_subject = total_subject+1 %>
               <% 
                 padding = (1100-(total_subject.to_i*25))/(total_subject.to_f*2) 
@@ -283,6 +285,7 @@
                 padding_comments = padding_comments.round
               %>
               <% if @covid_main == 0 %>
+                <% if @batch.course.course_name.upcase != "X" && @batch.course.course_name.upcase != "IX" %>
                 <table id="pdf-table" width="48%" class="left-table even-table signature" cellspacing="0">
                   <tr class="even">
                       <td class="small-height"><b>Signature of Class Teacher</b></td>
@@ -299,6 +302,7 @@
                      <td></td>
                   </tr> 
                 </table>
+                <% end %>
               <% end %>
               <table id="pdf-table" width="48%" class="left-table even-table signature" cellspacing="0">
                   <tr class="even">

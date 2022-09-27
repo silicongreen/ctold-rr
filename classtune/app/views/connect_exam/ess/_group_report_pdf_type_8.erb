@@ -218,15 +218,7 @@
               </table>  
               <p>&nbsp;</p> 
               <% if @batch.course.course_name.upcase == "IV" || @batch.course.course_name.upcase == "V" || @batch.course.course_name.upcase == "VI" %>
-              <table id="pdf-table" width="99.8%" >
-                  <tr class="even"> 
-                    <td class="col-pdf no-warp  align-left">
-                    Comment on Overall Performance : <% if !@exam_comment.blank? %>
-                      <b><%= @exam_comment.comments %></b>
-                    <% end %></td>
-                  </tr>
-
-              </table>
+              
               <table id="pdf-table" width="99.8%" >
                   <tr class="even"> 
                     <td class="col-pdf no-warp  align-left">

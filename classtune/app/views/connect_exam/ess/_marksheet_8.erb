@@ -140,20 +140,7 @@ end
                 
 
           <%  std_count = std_count+1; %>
-          <% colspan = colspan+4 %>
-          <% if std_count>13 && extender ==0 %>
-              <% std_count = 0 %>
-              <% extender = 1 %>
-              <tr class="page-break">
-                  <td colspan="<%= colspan %>">&nbsp;</td>
-              </tr>    
-          <% elsif std_count>18 && extender ==1 %>
-              <% std_count = 0 %>
-              <% extender = 1 %>
-              <tr class="page-break">
-                  <td colspan="<%= colspan %>">&nbsp;</td>
-              </tr> 
-          <% end %>    
+          <% colspan = colspan+4 %>   
         
         
           <% total_mark = 0 %>
@@ -198,3 +185,11 @@ end
   
   
 </div>
+<style>
+#page-yield #pdf-table tr.table-header td, #page-yield #pdf-table tr.odd td, #page-yield #pdf-table tr.even td
+{
+    font-size: 22px !important;
+    padding: 8px 3px !important;
+}
+
+</style>

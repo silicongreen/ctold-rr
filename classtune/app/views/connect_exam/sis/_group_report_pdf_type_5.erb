@@ -158,8 +158,9 @@
               <% @grading_levels = GradingLevel.default %>
               <% end %>
               <% total_comments_grade = 3 %>
-              <% if @batch.course.course_name.upcase != "X" %>
+              
               <table id="pdf-table"  width="47.9%" class="left-table odd-table comments-table" cellspacing="0" >
+                <% if @batch.course.course_name.upcase != "X" %>
                 <tr class="even">
                     <td colspan="2"><b>GENERAL PERFORMANCE</b></td>
                 </tr>
@@ -232,6 +233,11 @@
                   </tr>
                   <% total_comments_grade = total_comments_grade+5 %>
                   
+                  
+                  
+                  <tr class="page-break-grade">
+                    <td colspan="2"></td>
+                  </tr>
                   <% if @grading_levels.blank? %>
                     <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
                     <% if @grading_levels.blank? %>
@@ -239,9 +245,8 @@
                     <% end %>
                   <% end %>
                   <%  unless @grading_levels.empty? %>
-                  <tr class="page-break-grade">
-                    <td colspan="2"></td>
-                  </tr>
+                  <% end %>
+
                   <tr class="even">
                     <td colspan="2"><b>GRADING LEVEL</b></td>
                   </tr>
@@ -275,7 +280,7 @@
                
                 
               </table>
-              <% end %>
+              
               <% total_subject = total_subject+1 %>
               <% 
                 padding = (1100-(total_subject.to_i*25))/(total_subject.to_f*2) 

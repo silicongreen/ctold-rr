@@ -19,14 +19,14 @@
               exam_connect_merit_lists.student_name = @student.full_name
               exam_connect_merit_lists.batch_id = @student.batch_id
             %>
-             <table id="pdf-table" class="top-left-center" width="80%" cellspacing="0">
+              <table id="pdf-table" class="top-left-center" width="80%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
                   <% extra_subject = 0 %>
 
                   <tr class="even header-shade">
                       <td class="col-pdf" rowspan="2">
-                          <b>Sl1.</b>
+                          <b>Sl.</b>
                       </td>
                       <td class="col-pdf no-warp  align-left-baf" rowspan="2"><b><%= "Subjects" %></b></td>
                       <td class="col-pdf" rowspan="2">
@@ -80,12 +80,18 @@
                   <% grade_point_avg = 0 %>
                   <% failed = false %>
                   <% already_done = false %>
+                  <% subject_passed = {} %>
+                  <% subject_failed = {} %>
+                  <% absent = false %>
+                  <% subject_appeard = {} %>
+                  <% subject_absent = {} %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['grade_subject'].to_i == 1 %>
                         <% next %>
                       <% end %>
                       <% failed_subject = false %>
+                      <% fourth_subject_failed = false %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
@@ -179,6 +185,7 @@
                             <% if class_test_mark > 0 %>
                               <td class="col-pdf"><%= class_test_mark.to_i %></td>
                             <% elsif class_test_ab == true %> 
+                              <% absent = true %> 
                               <td class="col-pdf"><%= "AB" %></td>
                             <% else %>
                               <td class="col-pdf"><%= "0" %></td>
@@ -191,6 +198,7 @@
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                     <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s == "AB" %>
+                                      <% absent = true %>
                                       <td class="col-pdf">AB</td>
                                     <% else %>
                                       <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
@@ -198,6 +206,9 @@
                                     <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && fourth_subject.blank? && (report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25 or report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 8) %>
                                       <% failed = true %>
                                       <% failed_subject = true %>
+                                    <% end %>
+                                    <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && !fourth_subject.blank? && (report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25 or report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 8) %>
+                                      <% fourth_subject_failed = true %>
                                     <% end %>
                                   <% else %>
                                     <td class="col-pdf">-</td>
@@ -236,14 +247,48 @@
                                 <% failed = true %>
                                 <% failed_subject = true %>
                               <% end %>
-                              <% if  failed_subject == true %>
+                              <% if grade.credit_points.to_i == 0 && !fourth_subject.blank? %>
+                                <% fourth_subject_failed = true %>
+                              <% end %>
+                              <% if  failed_subject == true || fourth_subject_failed == true %>
                                 <% grade.credit_points = 0.0 %>
                                 <% grade.name = "F" %>
                               <% end %>
+                              
+                              <% if  failed_subject == true %>
+                              <% if subject_failed[subjects['id']].blank? %>
+                                <% subject_failed[subjects['id']] = 1 %>
+                              <% else %>
+                                <% subject_failed[subjects['id']] = subject_failed[subjects['id']] + 1 %>
+                              <% end %>
+                              <% if absent %>
+                                <% if subject_absent[subjects['id']].blank? %>
+                                  <% subject_absent[subjects['id']] = 1 %>
+                                <% else %>
+                                  <% subject_absent[subjects['id']] = subject_absent[subjects['id']] + 1 %>
+                                <% end %>
+                              <% else %>
+                                <% if subject_appeard[subjects['id']].blank? %>
+                                  <% subject_appeard[subjects['id']] = 1 %>
+                                <% else %>
+                                  <% subject_appeard[subjects['id']] = subject_appeard[subjects['id']] + 1 %>
+                                <% end %>
+                              <% end %>
+                              <%
+                              exam_connect_merit_lists.subject_failed = exam_connect_merit_lists.subject_failed + subjects['id'].to_s + " - " + tota_mark_with_monthly.to_f.round.to_s + ","
+                              %>
+                              <% else %>
+                              <% if subject_passed[subjects['id']].blank? %>
+                                <% subject_passed[subjects['id']] = 1 %>
+                              <% else %>
+                                <% subject_passed[subjects['id']] = subject_passed[subjects['id']] + 1 %>
+                              <% end %>
+                              <% end %>
+                        
                               <% if fourth_subject.blank? %>
                                 <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
                               <% else %>
-                                <% new_grade_point = grade.credit_points.to_f-2 %>
+                                <% new_grade_point = grade.credit_points.to_f - 2.0 %>
                                 <% if new_grade_point > 0 %>
                                   <% total_grade = total_grade.to_f+new_grade_point.to_f %>
                                 <% end %>  
@@ -387,144 +432,5 @@
                   <% end %>
 
 
-              </table>
-
-
-
-              <% grade_point_avg = (grade_point_avg.to_f*100).to_f.round() %>
-              <% grade_point_avg = grade_point_avg.to_f/100 %>
-              <table id="pdf-table" class="evaluation table_99 top-left-center" width="99.8%" cellspacing="0">
-                  <tr class="odd">
-                      <td class="align-left no-warp"><b>Grade Point Avg</b></td>
-                      <td><b>
-                              <% if failed == true %>
-                                0.00
-                                <%
-                                  exam_connect_merit_lists.gpa = 0
-                                %>
-                              <% else %>
-                                <%= sprintf( "%0.02f", grade_point_avg) %>
-                                <%
-                                  exam_connect_merit_lists.gpa = grade_point_avg
-                                %>
-                              <% end %></b>
-                      </td>
-                      <td class="align-left no-warp" colspan="2"><b>Position in Merit List</b></td>
-                      <td class="align-left no-warp" colspan="2"><b>Attendance</b></td>
-                  </tr> 
-                  <tr class="odd">
-                      <%
-
-                      grade = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
-                    %>
-                      <td class="align-left no-warp">Letter Grade</td>
-                      <td >
-                          <b>
-                              <% if failed == true %>
-                                F
-                                <%
-                                  exam_connect_merit_lists.lg = "F"
-                                %>
-                              <% else %>
-                                <% if !grade.blank? and !grade.name.blank? %>
-                                  <%= grade.name %>
-                                  <%
-                                    exam_connect_merit_lists.lg = grade.name
-                                  %>
-                                <% else %>
-                                  -
-                                  <%
-                                    exam_connect_merit_lists.lg = '-'
-                                  %>
-                                <% end %>
-                              <% end %>
-                          </b>
-                      </td>
-                      <td class="align-left no-warp">Section</td>
-                      <td class="no-warp">
-                          <% if !@student_position_first_term_batch[@student.id.to_i].blank? %> 
-                            <%
-                              exam_connect_merit_lists.position = @student_position_first_term_batch[@student.id.to_i]
-                            %>  
-                            <%= @student_position_first_term_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
-                          <% else %>
-                            -
-                            <%
-                              exam_connect_merit_lists.position = '-'
-                            %>  
-                          <% end %> 
-
-                      </td>
-                      <td class="col-pdf align-left">
-                          Working Days
-                      </td> 
-                      <td class="col-pdf align-center">
-                          &nbsp;
-                      </td>
-                  </tr>
-                  <tr class="odd">
-
-                      <td class="align-left no-warp">Total Marks With Fraction</td>
-                      <td class="align-left no-warp"><b><%= sprintf( "%0.02f", grand_total_fraction)%></b></td>
-                      <%
-                        exam_connect_merit_lists.marks = grand_total_fraction
-                      %>  
-                      <td class="align-left no-warp">Class/Group</td>
-                      <td class="no-warp">
-                          <b>
-                             
-                              <% if !@student_position_first_term[@student.id.to_i].blank? %> 
-                                <%
-                                  exam_connect_merit_lists.position = @student_position_first_term[@student.id.to_i]
-                                %>  
-                                <%= @student_position_first_term[@student.id.to_i] %> out of <%= @total_std %>
-                              <% else %>
-                                -
-                                <%
-                                  exam_connect_merit_lists.position = '-'
-                                %>  
-                              <% end %> 
-                          </b>  
-                      </td> 
-                      <td class="col-pdf align-left">
-                          Attendance
-                      </td> 
-                      <td class="col-pdf align-center" >
-                          &nbsp;
-                      </td>
-                  </tr>
-                  
-                  <%
-                    if exam_connect_merit_lists.save
-                  %>  
-                  aa
-                  <%
-                    else
-                  %>  
-                      <%= debug exam_connect_merit_lists.errors.inspect %>
-                  <%  
-                  end
-                  %>
-
-              </table>
-              
-              <table id="pdf-table" class="evaluation table_99 top-left-center"  width="99.8%" >
-                  <tr class="even remarks-tr">
-                      <td>
-
-                          <b>Remarks : </b> <% if !@exam_comment.blank? %><%= @exam_comment.comments %><% else %>
-                            <% if failed == true %>
-                              Failed
-                            <% else %>
-                              <% if !grade.blank? and !grade.name.blank? %>
-                                <%= grade.description %>
-                              <% else %>
-
-                              <% end %>
-                            <% end %>
-                          <% end %>
-
-                      </td>
-                  </tr>
               </table>   
 <% end %>

@@ -177,6 +177,7 @@
                         <% next %>
                       <% end %>
                       <% failed_subject = false %>
+                      <% fourth_subject_failed = false %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
@@ -292,6 +293,9 @@
                                       <% failed = true %>
                                       <% failed_subject = true %>
                                     <% end %>
+                                    <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && !fourth_subject.blank? && (report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25 or report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 8) %>
+                                      <% fourth_subject_failed = true %>
+                                    <% end %>
                                   <% else %>
                                     <td class="col-pdf">-</td>
                                   <% end %>
@@ -329,7 +333,10 @@
                                 <% failed = true %>
                                 <% failed_subject = true %>
                               <% end %>
-                              <% if  failed_subject == true %>
+                              <% if grade.credit_points.to_i == 0 && !fourth_subject.blank? %>
+                                <% fourth_subject_failed = true %>
+                              <% end %>
+                              <% if  failed_subject == true || fourth_subject_failed == true %>
                                 <% grade.credit_points = 0.0 %>
                                 <% grade.name = "F" %>
                               <% end %>

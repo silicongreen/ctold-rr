@@ -11,12 +11,16 @@
                               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/logo.jpg")),:width=> '100%' %>  
                           </td>
                           <td width="74%">
-                              <h4 align="center"><font size="7" color="#4CAEE3">EUROPEAN STANDARD SCHOOL(ESS)</font></h2>
-                              <h4 align="center" style="margin-top:-6px;"><font size="5" color="#000"><%= @batch.name %></font></h2>
-                              <h4 align="center" style="margin-top:-6px;"><font size="5" color="#000"><%= @connect_exam_obj.name %></font></h2>
+                              <h4 align="center"><font size="7" color="#4CAEE3">EUROPEAN STANDARD SCHOOL(ESS)</font></h4>
+                              <% if @batch.course.course_name == "IV" || @batch.course.course_name == "V" || @batch.course.course_name == "VI"%>
+                                <h4 align="center" style="margin-top:-6px;"><font size="5" color="#000"><%= @batch.name %></font></h4>
+                              <% end %>
                               <% month_number = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
                               <h4 align="center" style="margin-top:-6px;">
                                 <font size="5" color="#000">
+                                  <% if @batch.course.course_name == "IV" || @batch.course.course_name == "V" || @batch.course.course_name == "VI"%>
+                                  First Term,
+                                  <% end %>
                                   <% if month_number.to_i>6 %>
                                     Session : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %>
                                   <% else %>
@@ -24,6 +28,8 @@
                                   <% end %>
                                 </font>
                               </h4>
+                              <h4 align="center" style="margin-top:-6px;"><font size="5" color="#000"><%= @connect_exam_obj.name %></font></h4>
+                              
                               <h4 align="center" style="margin-top:-6px;">
                                 <font size="5" color="#000">
                                   Class : <%= @batch.course.course_name %>
@@ -119,6 +125,7 @@
                   </tr>
                   <% total_marks = 0 %>
                   <% subject_count = 0 %>
+                  <% total_full_marks = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                     <%
@@ -165,6 +172,8 @@
                           if full_mark > 0 && obtain_mark > 0
                             main_mark = (obtain_mark.to_f/full_mark.to_f)*25
                           end  
+                          total_marks = total_marks+main_mark
+                          total_full_marks = total_full_marks+25
                           
                            
                           
@@ -176,11 +185,102 @@
 
                       </tr>
                     <% end %>  
-                  <% end %>   
+                  <% end %> 
+                  <%
+                    
+                    group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
+                    @all_subjects = []
+                    group_exams.each do |group_exam|
+                      allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
+                      allexams.each do |exam|
+                        if !@all_subjects.include?(exam.subject.id)
+                            @all_subjects << exam.subject.id
+                        end
+                      end
+                    end 
+                  %>
+                  <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                    <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
+                      <%  if @all_subjects.include?(report['id'].to_i) %>
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                            <td class="col-pdf no-warp  align-left"><%= report['subject_name'] %></td>
+                            <td class="col-pdf" colspan="<%= total_exam+2 %>"><b><%= report['subject_comment'] unless report['subject_comment'].blank? %></b></td>
+                        </tr>
+                      <% end %>
+                    <% end %>
+                  <% end %>  
+                  <% parcentise = 0.0 %> 
+                  <% if total_marks > 0 %>
+                      <% parcentise = (total_marks.to_f/total_full_marks.to_f)*100 %>
+                  <% end %>
                       
 
               </table>  
               <p>&nbsp;</p> 
+              <% if @batch.course.course_name.upcase == "IV" || @batch.course.course_name.upcase == "V" || @batch.course.course_name.upcase == "VI" %>
+              <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
+                  <tr class="even"> 
+                    <td class="col-pdf no-warp  align-left">Comment on Overall Performance</td>
+                    <td colspan="2">
+                    <% if !@exam_comment.blank? %>
+                      <b><%= @exam_comment.comments %></b>
+                    <% end %>
+                    
+                    </td>
+                  </tr>
+
+              </table>
+              <p>&nbsp;</p>
+              <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
+                  <tr class="even"> 
+                    <td class="col-pdf no-warp  align-left">
+                    Total No. of Working Days<br/>
+                    (<%= @connect_exam_obj.attandence_start_date.to_date.strftime("%d/%m/%Y")%> - <%= @connect_exam_obj.attandence_end_date.to_date.strftime("%d/%m/%Y")%>) : <%= @connect_exam_obj.total_working_days %>
+                    </td>
+                    <td colspan="2">
+                    Attendance : <%= @report_data['present'] %>
+                    </td>
+                  </tr>
+                  <tr class="even"> 
+                      <td colspan="2"><br/><br/></td>
+                  </tr>
+
+              </table> 
+              <p>&nbsp;</p>
+              <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
+                <tr align="center">
+                  <td align="center">
+                  Date of Issue : <%= Time.now.strftime("%d/%m/%Y") %>
+                  </td> 
+                </tr>
+                <tr>
+                  <td>  
+                    <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
+                          <tr class="even border-bottom-1-px">
+                              <td class="col-pdf" width="40%" style="text-align:left !important;">
+                                
+                                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"60%" %>
+                              </td>
+                              <td class="col-pdf no-border" width="60%"></td>
+                          </tr>
+                          <tr class="even">
+                              
+                              <td class="col-pdf align-left" style="text-align:left !important;" width="40%">
+                                  <b><pre>MD. MORSHEDUL ISLAM
+        Principal
+        European Standard School (ESS)</pre></b>
+                              </td>
+                              <td class="col-pdf no-border" width="60%"></td>
+
+                          </tr>
+
+                    </table>
+                  </td>
+                </tr>
+             </table> 
+
+
+              <% else %>
               <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
                   <tr class="even border-bottom-1-px">
                        <td class="col-pdf" width="40%" style="text-align:left !important;">
@@ -201,6 +301,7 @@ European Standard School (ESS)</pre></b>
                   </tr>
 
               </table>
+              <% end %>
 
 
           </div>

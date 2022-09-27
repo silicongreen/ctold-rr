@@ -238,14 +238,16 @@
                   <tr class="page-break-grade">
                     <td colspan="2"></td>
                   </tr>
+                  <% end %>
                   <% if @grading_levels.blank? %>
                     <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
                     <% if @grading_levels.blank? %>
                       <% @grading_levels = GradingLevel.default %>
                     <% end %>
                   <% end %>
+                  
                   <%  unless @grading_levels.empty? %>
-                  <% end %>
+                  
 
                   <tr class="even">
                     <td colspan="2"><b>GRADING LEVEL</b></td>

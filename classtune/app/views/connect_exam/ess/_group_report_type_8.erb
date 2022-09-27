@@ -39,7 +39,10 @@
                                   has_mark = has_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                 end
                             end
-                       end  
+                       end 
+                       if has_mark == 0
+                        next
+                       end 
                   
                     %>
                       

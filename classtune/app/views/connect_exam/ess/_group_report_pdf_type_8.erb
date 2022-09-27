@@ -12,13 +12,13 @@
                           </td>
                           <td width="74%">
                               <h4 align="center"><font size="7" color="#4CAEE3">EUROPEAN STANDARD SCHOOL(ESS)</font></h4>
-                              <% if @batch.course.course_name == "IV" || @batch.course.course_name == "V" || @batch.course.course_name == "VI"%>
+                              <% if @batch.course.course_name == "IV" || @batch.course.course_name == "V" || @batch.course.course_name == "VI"  || @batch.course.course_name.upcase == "VII" %>
                                 <h4 align="center" style="margin-top:-6px;"><font size="5" color="#000"><%= @batch.name %></font></h4>
                               <% end %>
                               <% month_number = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
                               <h4 align="center" style="margin-top:-6px;">
                                 <font size="5" color="#000">
-                                  <% if @batch.course.course_name == "IV" || @batch.course.course_name == "V" || @batch.course.course_name == "VI"%>
+                                  <% if @batch.course.course_name == "IV" || @batch.course.course_name == "V" || @batch.course.course_name == "VI" || @batch.course.course_name.upcase == "VII"%>
                                   First Term,
                                   <% end %>
                                   <% if month_number.to_i>6 %>
@@ -217,7 +217,7 @@
 
               </table>  
               <p>&nbsp;</p> 
-              <% if @batch.course.course_name.upcase == "IV" || @batch.course.course_name.upcase == "V" || @batch.course.course_name.upcase == "VI" %>
+              <% if @batch.course.course_name.upcase == "IV" || @batch.course.course_name.upcase == "V" || @batch.course.course_name.upcase == "VI"  || @batch.course.course_name.upcase == "VII" %>
               
               <table id="pdf-table" width="99.8%" >
                   <tr class="even"> 

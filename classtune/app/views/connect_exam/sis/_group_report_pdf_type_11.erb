@@ -7,7 +7,7 @@
                 <h4 align="center" class="height-50">
                 <% unless @covid_main.blank? %>
                   <% signatures_sections = [7896,7897,7898,7924,7925,7910,7908,7911,7912,7913,7926,7927,7928] %>
-                  <% if signatures_sections.include?(params[:id].to_i) %>
+                  <% if !@batch.course.course_name.upcase.index("NURSERY").nil? || @batch.course.course_name.upcase.index("KG").nil? %>
                   <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/tiny_tots_logo.png")),:width=> '40%' %>
                   <% else %>
                   <% if @batch.course.course_name.upcase.index("PLAYGROUP").nil? and @batch.course.course_name.upcase.index("NURSERY").nil? and @batch.course.course_name.upcase.index("PG").nil? and  @batch.course.course_name.upcase.index("KG").nil? %>

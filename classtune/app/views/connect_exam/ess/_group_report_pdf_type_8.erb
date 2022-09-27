@@ -158,8 +158,12 @@
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   obtain_mark = obtain_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                 %>
-                                    <td class="col-pdf no-warp"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
-                                <%
+                                    <% if report['exam_category'] != '1' && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f != 20.00 %>
+                                      <td class="col-pdf no-warp"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>(<%= report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f %>)</td>
+                                    <% else %>
+                                      <td class="col-pdf no-warp"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
+                                    <% end %>  
+                                <%  
                                 end    
                                
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
@@ -172,7 +176,9 @@
                           <% 
                           
                           main_mark = 0
+
                           if full_mark > 0 && obtain_mark > 0
+
                             main_mark = (obtain_mark.to_f/full_mark.to_f)*25
                           end  
                           total_marks = total_marks+main_mark
@@ -181,7 +187,11 @@
                            
                           
                           %>
-                          <td class="col-pdf" style="padding:5px !important;"><b><%=  obtain_mark %></b></td>
+                          <% if full_mark == 50 %>
+                            <td class="col-pdf" style="padding:5px !important;"><b><%=  obtain_mark %></b></td>
+                          <% else %>
+                            <td class="col-pdf" style="padding:5px !important;"><b><%=  obtain_mark %>(<%= full_mark %>)</b></td>
+                          <% end %>  
                           <td class="col-pdf" style="padding:5px !important;"><b><%= sprintf( "%0.02f", main_mark) %></b></td>
                          
                           

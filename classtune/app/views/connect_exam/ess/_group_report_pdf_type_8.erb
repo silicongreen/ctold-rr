@@ -160,7 +160,7 @@
                                 end    
                                
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
-                                  full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                  full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f
                                 end
                             end 
                           end 
@@ -238,7 +238,7 @@
               <table id="pdf-table"  width="99.8%" >
                 <tr align="center">
                   <td class="col-pdf align-left" style="text-align:left !important;">
-                  <b>Date of Issue : <%= Time.now.strftime("%d/%m/%Y") %></b>
+                  <b>Date of Issue : <%= @connect_exam_obj.published_date.strftime("%d/%m/%Y") %></b>
                   </td>
                   <td align="right">  
                     <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="30%" >

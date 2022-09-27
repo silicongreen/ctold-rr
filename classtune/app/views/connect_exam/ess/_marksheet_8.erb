@@ -183,7 +183,7 @@ end
            <%
            main_mark = 0
           if full_mark > 0 && total_mark > 0
-            main_mark = (total_mark.to_f/full_mark.to_f)*25
+            main_mark = total_mark.to_f/2
           end  
            %>
           <td class="col-2"><b><%= sprintf( "%0.02f", main_mark) %></b></td>

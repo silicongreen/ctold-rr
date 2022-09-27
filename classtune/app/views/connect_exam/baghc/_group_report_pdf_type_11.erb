@@ -301,20 +301,7 @@
                             <td><p style="text-align:left;">Remarks: </p></td>
                         </tr>
                     </table>
-                    <% 
-                      total_att = ""
-                      absent = ""
-                      if !@exam_comment.blank?
-                        all_comments = @exam_comment.comments
-                        if !all_comments.blank?
-                          all_comments_array = all_comments.split("|")
-                          @report_data['total'] = all_comments_array[0]
-                          if !all_comments_array[1].nil?
-                            @report_data['present'] = all_comments_array[1]
-                          end
-                        end
-                      end
-                    %>
+                   
                     <% if @connect_exam_obj.attandence_start_date != @connect_exam_obj.attandence_end_date %>
                     <table id="pdf-table" class="margin-top-10"  width="99.8%">
                         <tr class="table-header">

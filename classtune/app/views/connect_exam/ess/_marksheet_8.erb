@@ -93,14 +93,14 @@ end
                 <% total_exam_continues = total_exam_continues+1 %>
                 <%
                 unless report['maximum_marks'].blank?
-                    total_mark_continues = total_mark_continues+report['maximum_marks'].to_i
+                    total_mark_continues = total_mark_continues+report['maximum_marks'].to_f
                 end
                 %>
 
               <% end %>
               <%
                 unless report['maximum_marks'].blank?
-                    total_mark = total_mark+report['maximum_marks'].to_i
+                    total_mark = total_mark+report['maximum_marks'].to_f
                 end
                 %>
             <% end %>
@@ -112,7 +112,7 @@ end
           <td class="name" colspan="<%= total_exam_continues %>">Continuous Assessment (Out of <%= total_mark_continues%>)</td>
           <% @report_data['result']['ALL'].each do |rs| %>
            <% if rs['exam_category'] != '1' %>
-            <td style="white-space: normal !important;"  rowspan="2"><%=  rs['name'] %><br/>(Out of <%= rs['maximum_marks'].to_i %>)</td>
+            <td style="white-space: normal !important;"  rowspan="2"><%=  rs['name'] %><br/>(Out of <%= rs['maximum_marks'].to_f %>)</td>
            <% end %> 
           <% end %>  
           
@@ -123,7 +123,7 @@ end
         <tr class="table-header">
           <% @report_data['result']['ALL'].each do |rs| %>
            <% if rs['exam_category'] == '1' %>
-            <td style="white-space: normal !important;"><%=  rs['name'] %><br/>(Out of <%= rs['maximum_marks'].to_i %>)</td>
+            <td style="white-space: normal !important;"><%=  rs['name'] %><br/>(Out of <%= rs['maximum_marks'].to_f %>)</td>
            <% end %> 
           <% end %> 
         </tr>
@@ -172,7 +172,7 @@ end
                   -
               <% end %>
               <% if !rs['maximum_marks'].blank? %>    
-                <% full_mark = full_mark+rs['maximum_marks'].to_i %> 
+                <% full_mark = full_mark+rs['maximum_marks'].to_f %> 
               <% end %>    
               </td>
               

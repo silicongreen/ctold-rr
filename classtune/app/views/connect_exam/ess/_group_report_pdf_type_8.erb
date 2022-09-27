@@ -159,7 +159,7 @@
                                   obtain_mark = obtain_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                 %>
                                     <% if report['exam_category'] != '1' && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f != 20.00 %>
-                                      <td class="col-pdf no-warp"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>(<%= report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f %>)</td>
+                                      <td class="col-pdf no-warp"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
                                     <% else %>
                                       <td class="col-pdf no-warp"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
                                     <% end %>  
@@ -178,8 +178,7 @@
                           main_mark = 0
 
                           if full_mark > 0 && obtain_mark > 0
-
-                            main_mark = (obtain_mark.to_f/full_mark.to_f)*25
+                            main_mark = obtain_mark.to_f/2
                           end  
                           total_marks = total_marks+main_mark
                           total_full_marks = total_full_marks+25
@@ -190,7 +189,7 @@
                           <% if full_mark == 50 %>
                             <td class="col-pdf" style="padding:5px !important;"><b><%=  obtain_mark %></b></td>
                           <% else %>
-                            <td class="col-pdf" style="padding:5px !important;"><b><%=  obtain_mark %>(<%= full_mark %>)</b></td>
+                            <td class="col-pdf" style="padding:5px !important;"><b><%=  obtain_mark %></b></td>
                           <% end %>  
                           <td class="col-pdf" style="padding:5px !important;"><b><%= sprintf( "%0.02f", main_mark) %></b></td>
                          

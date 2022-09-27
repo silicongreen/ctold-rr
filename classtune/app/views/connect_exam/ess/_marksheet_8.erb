@@ -131,6 +131,7 @@ end
         <% extender = 0 %>
         <% std_count = 0 %>
         <% unless @report_data['result']['al_students'].blank? %>
+        <% sl = 0 %>
         <% @report_data['result']['al_students'].each do |std| %>
           <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>@subject.id.to_s,:elective_group_id=>@subject.elective_group_id.to_i} %>
           <% if @has_exam_student == false %>
@@ -157,7 +158,7 @@ end
         
           <% total_mark = 0 %>
           <% full_mark = 0 %>
-          <% sl = 0 %>
+          
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
             <% sl = sl+1 %>
             <td class="name"><%= sl %></td>
@@ -185,7 +186,7 @@ end
             main_mark = (total_mark.to_f/full_mark.to_f)*25
           end  
            %>
-          <td class="col-2"><b><%= main_mark.round %></b></td>
+          <td class="col-2"><b><%= sprintf( "%0.02f", main_mark) %></b></td>
          
         </tr>
         <% end %>

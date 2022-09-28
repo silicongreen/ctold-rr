@@ -218,7 +218,7 @@
                       <%  if @all_subjects.include?(report['id'].to_i) %>
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                             <td class="col-pdf no-warp  align-left"><%= report['subject_name'] %></td>
-                            <td class="col-pdf" colspan="<%= total_exam+2 %>"><b><% if !report['subject_comment'].blank? && report['subject_comment'] == "A*" %>&nbsp;<% end %><%= report['subject_comment'] unless report['subject_comment'].blank? %></b></td>
+                            <td class="col-pdf" colspan="<%= total_exam+2 %>"><b><% if !report['subject_comment'].blank? && (report['subject_comment'] == "A*" || report['subject_comment'] == "A+") %>&nbsp;<% end %><%= report['subject_comment'] unless report['subject_comment'].blank? %></b></td>
                         </tr>
                       <% end %>
                     <% end %>

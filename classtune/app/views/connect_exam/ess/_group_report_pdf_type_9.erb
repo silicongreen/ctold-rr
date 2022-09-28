@@ -160,7 +160,7 @@
                           %>
                           <% if !grade.blank? and !grade.name.blank? %>
                             
-                            <td class="col-pdf"><b><% if grade.name == "A*" %>&nbsp;&nbsp;<% end %><%= grade.name %></b></td>
+                            <td class="col-pdf"><b><% if grade.name == "A*" %>&nbsp;<% end %><%= grade.name %></b></td>
                           <% else %>
                             <td class="col-pdf"><b>-</b></td>
                           <% end %>
@@ -188,7 +188,7 @@
                       <%  if @all_subjects.include?(report['id'].to_i) %>
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                             <td class="col-pdf no-warp  align-left"><%= report['subject_name'] %></td>
-                            <td class="col-pdf"><b><% if !report['subject_comment'].blank? && report['subject_comment'] == "A*" %>&nbsp;&nbsp;<% end %><%= report['subject_comment'] unless report['subject_comment'].blank? %></b></td>
+                            <td class="col-pdf"><b><% if !report['subject_comment'].blank? && report['subject_comment'] == "A*" %>&nbsp;<% end %><%= report['subject_comment'] unless report['subject_comment'].blank? %></b></td>
                         </tr>
                       <% end %>
                     <% end %>

@@ -268,37 +268,16 @@
               
                 </table>
                 <% signatures_sections = [7579,6502,7578,7577,7567,7566,7580] %>
-                <% if signatures_sections.include?(params[:id].to_i) %>
-                <table id="pdf-table" width="72%" class="left-table odd-table signature_table" cellspacing="0">
-                    <% if @covid_main == 0 %>
-                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td class="col-pdf no-warp align-center"><b>Section In-Charge</b></td>
-                     </tr>
-                    <% end %> 
-                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td class="col-pdf no-warp align-center width-60">
-                        <% if signatures_sections.include?(params[:id].to_i) %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/#{@section_in_charge}.png")), :width=>"30%" %><% end %>
+                <table id="pdf-table" width="48%" class="left-table even-table signature" cellspacing="0">
+                  <tr class="even">
+                      <td class="small-height"><b>Principal</b></td>
+                  </tr> 
+                  <tr class="even">
+                      <td>
+                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/#{@section_in_charge}.png")), :width=>"30%" %>
                       </td>
-                     </tr>
-                     
-                </table>
-                <% else %>
-                <table id="pdf-table" width="72%" class="left-table odd-table signature_table" cellspacing="0">
-                    <% if @covid_main == 0 %>
-                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td class="col-pdf no-warp align-left"><b>Class Teacher</b></td>
-                      <td class="col-pdf no-warp align-left width-60"><br/></td>
-                     </tr>
-                    <% end %> 
-                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td class="col-pdf no-warp align-left"><b>Section In-Charge</b></td>
-                      <td class="col-pdf no-warp align-left width-60">
-                        <% if signatures_sections.include?(params[:id].to_i) %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/#{@section_in_charge}.png")), :width=>"30%" %><% end %>
-                      </td>
-                     </tr>
-                     
-                </table>
-                <% end %>                      
+                  </tr> 
+                </table>                      
               
 
           </div>

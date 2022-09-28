@@ -51,7 +51,7 @@ class AttendanceController extends Controller
                 }
                 
                 $subject = new Subjects();
-                $all_subject = $subject->getSubject($batch_id, $student_id);
+                $all_subject = $subject->getSubject($batch_id, $student_id,false);
                 $response['data']['subject'] = $all_subject;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Data Found";

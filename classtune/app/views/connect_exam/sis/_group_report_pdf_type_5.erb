@@ -5,7 +5,7 @@
           <center>
             <div id="pdf-header-south" class="general-header">
                 <h4 align="center" class="height-50">
-                <% if @covid_main == 1 %>
+                <% unless @covid_main.blank? %>
                   <% if @batch.course.course_name.upcase.index("PLAYGROUP").nil? and @batch.course.course_name.upcase.index("NURSERY").nil? and @batch.course.course_name.upcase.index("PG").nil? and  @batch.course.course_name.upcase.index("KG").nil? %>
                     <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/summer.jpg")),:width=> '40%' %>
                   <% else %>
@@ -292,7 +292,7 @@
                 padding_comments = padding_comments.round
               %>
               <% if @covid_main == 0 %>
-                <% if @batch.course.course_name.upcase != "X" && @batch.course.course_name.upcase != "IX" %>
+                <% if @batch.course.course_name.upcase != "X" && @batch.course.course_name.upcase != "IX" && @batch.course.course_name.upcase != "VIII"  %>
                 <table id="pdf-table" width="48%" class="left-table even-table signature" cellspacing="0">
                   <tr class="even">
                       <td class="small-height"><b>Signature of Class Teacher</b></td>
@@ -311,9 +311,14 @@
                 </table>
                 <% end %>
               <% end %>
+              
               <table id="pdf-table" width="48%" class="left-table even-table signature" cellspacing="0">
                   <tr class="even">
-                      <td class="small-height"><b>Section In-Charge</b></td>
+                      <% if @batch.course.course_name.upcase != "VIII" %>
+                        <td class="small-height"><b>Section In-Charge</b></td>
+                      <% else %>
+                        <td class="small-height"><b>Principal</b></td>
+                       <% end %> 
                   </tr> 
                   <tr class="even">
                       <td>

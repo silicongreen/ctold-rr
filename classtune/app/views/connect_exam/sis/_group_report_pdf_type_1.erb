@@ -124,9 +124,7 @@
                                     <td class="col-pdf no-warp align-left"><%= group_name.name %></td>
                                     <% unless @report_data['report']['exams'].blank? %>
                                     <% @report_data['report']['exams'].each do |report| %>
-                                       <% if report['exam_category'] == '7' %>
-                                            <% next %>
-                                        <% end %>
+                                       
                                        <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                                           <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                                           <% wordString_split = wordString.split("|") %>

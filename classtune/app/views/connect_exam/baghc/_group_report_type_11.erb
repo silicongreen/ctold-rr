@@ -68,8 +68,8 @@
                                           <% full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                         <% end %> 
                                         <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                            <% total_100 = total_100+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
-                                            <% grade_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>  
+                                            <% total_100 = total_100+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                            <% grade_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>  
                                             <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>[<%= report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>]
                                         <% end %>
                                       </td>

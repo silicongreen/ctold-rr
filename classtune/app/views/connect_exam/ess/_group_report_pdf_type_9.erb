@@ -159,7 +159,8 @@
                           
                           %>
                           <% if !grade.blank? and !grade.name.blank? %>
-                            <td class="col-pdf"><b><%= grade.name %></b></td>
+                            
+                            <td class="col-pdf"><b><% if grade.name == "A*" %>&nbsp;<% end %><%= grade.name %></b></td>
                           <% else %>
                             <td class="col-pdf"><b>-</b></td>
                           <% end %>
@@ -231,7 +232,7 @@
               <table id="pdf-table"  width="99.8%" >
                 <tr align="center">
                   <td class="col-pdf align-left" style="text-align:left !important;">
-                  <b>Date of Issue : <%= Time.now.strftime("%d/%m/%Y") %></b>
+                  <b>Date of Issue : <%= @connect_exam_obj.published_date.strftime("%d/%m/%Y") %></b>
                   </td>
                   <td align="right">  
                     <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="30%" >
@@ -267,8 +268,8 @@ European Standard School (ESS)</pre></b>
 <style>
 .sis-final #grouped_exam_report table.exam-marks tr.odd td, .sis-final #grouped_exam_report table.exam-marks tr.even td
 {
-   padding: 4px 4px !important;
-   font-size: 23px !important;
+   padding: 5px 4px !important;
+   font-size: 24px !important;
 }
 .landscape table tr.odd td, .landscape table tr.even td
 {

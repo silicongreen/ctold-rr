@@ -121,7 +121,8 @@
                                     <% end %>
                                 <% else %>
                                     <tr class="odd">
-                                    <td class="col-pdf no-warp align-left"><%= group_name.name %>-</td>
+                                    <td class="col-pdf no-warp align-left"><%= group_name.name %></td>
+                                    <% unless @report_data['report']['exams'].blank? %>
                                     <% @report_data['report']['exams'].each do |report| %>
                                        <% if report['exam_category'] == '7' %>
                                             <% next %>
@@ -138,6 +139,9 @@
                                        <% else %>
                                            <td class="col-pdf no-warp"></td> 
                                        <% end %>     
+                                    <% end %>
+                                    <% else %>
+                                        <td class="col-pdf no-warp"></td> 
                                     <% end %>
                                     </tr>          
                                     <% iloop+=1 %> 

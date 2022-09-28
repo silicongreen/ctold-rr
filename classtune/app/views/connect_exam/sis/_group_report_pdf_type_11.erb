@@ -176,7 +176,7 @@
                         <tr class="odd">
                         
                           <td class="col-pdf left-td"><b><%= report['subject_name'] %></b></td>
-                           <% if @covid_main == 0 %>
+                           <% if @covid_main == 0 and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                             <td class="col-pdf">-</td>
                           <% end %>
                           <td class="col-pdf"><b>

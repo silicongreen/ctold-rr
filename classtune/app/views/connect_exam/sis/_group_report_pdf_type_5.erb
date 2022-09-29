@@ -5,15 +5,11 @@
           <center>
             <div id="pdf-header-south" class="general-header">
                 <h4 align="center" class="height-50">
-                <%if @batch.course.course_name.upcase.index("X").nil? %>
                   <% if @batch.course.course_name.upcase.index("PLAYGROUP").nil? and @batch.course.course_name.upcase.index("NURSERY").nil? and @batch.course.course_name.upcase.index("PG").nil? and  @batch.course.course_name.upcase.index("KG").nil? %>
                     <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/summer.jpg")),:width=> '40%' %>
                   <% else %>
                     <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/tinytots.png")),:width=> '40%' %>
-                  <% end %>
-                <% else %>
-                    &nbsp;
-                <% end %>    
+                  <% end %> 
                 </h4> 
                 <h2 align="center"><%= @connect_exam_obj.name %></h2>
             </div>

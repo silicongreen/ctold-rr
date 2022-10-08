@@ -158,6 +158,9 @@
                       <td class="col-pdf no-warp  align-left-baf" rowspan="2"><b><%= "SUBJECTS" %></b></td>
                       <td class="col-pdf" colspan="2"><b>Quiz Test</b></td>
                       <td class="col-pdf" colspan="2"><b>Mid Term</b></td>
+                      <% if @report_data['report']['exams'].count > 5 %>
+                        <td class="col-pdf" rowspan="2"><b>PRAC</b></td>
+                      <% end %>
                       <td class="col-pdf" rowspan="2"><b>Att.</b></td>
                       <td class="col-pdf" rowspan="2"><b>Total(100)</b></td>
                       <td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>

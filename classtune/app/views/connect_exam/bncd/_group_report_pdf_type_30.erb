@@ -290,7 +290,11 @@
               
                   
                   <tr class="even" >
-                    <td class="col-pdf  no-warp align-right" colspan="6"><b>GRAND TOTAL</b></td>
+                    <% if @report_data['report']['exams'].count > 5 %>
+                      <td class="col-pdf  no-warp align-right" colspan="7"><b>GRAND TOTAL</b></td>
+                    <% else %>  
+                      <td class="col-pdf  no-warp align-right" colspan="6"><b>GRAND TOTAL</b></td>
+                    <% end %>
                     <td class="col-pdf  no-warp"><b><%= total_mark_of_allexam %></b></td>
                     <td class="col-pdf  no-warp"></td>
                     <td class="col-pdf  no-warp"></td>

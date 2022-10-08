@@ -1,5 +1,7 @@
 <% if @connect_exam_obj.result_type.to_i == 29  %> 
   <%= render  :partial=>"/connect_exam/bncd/tabulation_failed_29" %>
+<% elsif @connect_exam_obj.result_type.to_i == 30  %> 
+  <%= render  :partial=>"/connect_exam/bncd/tabulation_failed_30" %>
 <% else  %>  
   <%= render  :partial=>"/connect_exam/bncd/tabulation_failed_general" %>
 <% end %>

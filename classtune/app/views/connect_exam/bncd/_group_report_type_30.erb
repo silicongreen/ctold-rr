@@ -100,7 +100,7 @@
 	<% end %>
   <% end %>
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-            <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
+           <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
                   <% full_mark_of_allexam = 0 %>
@@ -109,7 +109,7 @@
                   <tr class="even header-shade">
                       <td class="col-pdf no-warp  align-left-baf" rowspan="2"><b><%= "SUBJECTS" %></b></td>
                       <td class="col-pdf" colspan="2"><b>Quiz Test</b></td>
-                      <td class="col-pdf" colspan="2"><b>Pre-Test</b></td>
+                      <td class="col-pdf" colspan="2"><b>Mid Term</b></td>
                       <td class="col-pdf" rowspan="2"><b>Att.</b></td>
                       <td class="col-pdf" rowspan="2"><b>Total(100)</b></td>
                       <td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
@@ -128,7 +128,6 @@
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% total_mark = 0 %>
                       <% obtain_mark = 0 %>
-                      <%  %>
                       <% subjectdata = Subject.find(subjects['id'].to_i) %>
                       <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
                       <% if @has_exam_student == false %>
@@ -185,6 +184,9 @@
                                 if mcq_total == 35 or mcq_total == 40
                                   mcq = (mcq.to_f/mcq_total.to_f)*25
                                   mcq = mcq.round()
+                                  if mcq < 8
+                                    subject_failed = true
+                                  end 
                                 end
                                 
                               end
@@ -192,11 +194,20 @@
                                 if cq_total == 90 or cq_total == 95
                                   cq = (cq.to_f/cq_total.to_f)*70
                                   cq = cq.round()
+                                  if cq < 23
+                                    subject_failed = true
+                                  end
                                 end
                                 if cq_total == 130
                                   cq = (cq.to_f/cq_total.to_f)*95
                                   cq = cq.round()
+                                  if cq < 31
+                                    subject_failed = true
+                                  end 
                                 end
+                              end
+                              if att < 2
+                                subject_failed = true
                               end
                               main_mark = cq+mcq+att
 
@@ -206,6 +217,12 @@
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
 			     
                             <% if !grade.blank? and !grade.name.blank? %>
+                              <% if subject_failed == true %>
+                                <%
+                                  grade.name = "F"
+                                  grade.credit_points = 0.00
+                                %>
+                              <% end %>
                               <td class="col-pdf"><%= grade.name %></td>
                               <td class="col-pdf"><%= grade.credit_points %></td>
                               <% total_grade_of_allexam = total_grade_of_allexam+grade.credit_points %>

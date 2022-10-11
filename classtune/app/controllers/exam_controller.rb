@@ -7621,8 +7621,6 @@ class ExamController < ApplicationController
             end   
           end
         end
-          
-        end
         if cq_total > 0
           if cq > 0
             if cq_total == 80 or cq_total == 60
@@ -8693,8 +8691,6 @@ class ExamController < ApplicationController
               mcq = mcq.round()
             end   
           end
-        end
-          
         end
         if cq_total > 0
           if cq > 0

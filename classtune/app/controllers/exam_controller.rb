@@ -8686,16 +8686,6 @@ class ExamController < ApplicationController
             end  
           end
         end 
-        if mcq_total > 0 && mcq > 0
-          if mcq_total == 35 or mcq_total == 40
-            mcq = (mcq.to_f/mcq_total.to_f)*25
-            mcq = mcq.round()
-            if mcq < 8
-              subject_failed = true
-              failed = true
-            end 
-          end
-        end
         if mcq_total > 0
           if mcq > 0 
             if mcq_total == 40

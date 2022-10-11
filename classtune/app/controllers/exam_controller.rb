@@ -7605,9 +7605,6 @@ class ExamController < ApplicationController
             elsif rs['exam_category'] == '4'
               mcq = mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
               mcq_total = mcq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-            else
-              #att = att+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
-              att = att+student_attendance_mark.to_i
             end
             exam_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
             exam_full_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i

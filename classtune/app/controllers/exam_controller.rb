@@ -7618,17 +7618,9 @@ class ExamController < ApplicationController
             if mcq_total == 40
               mcq = (mcq.to_f/mcq_total.to_f)*30
               mcq = mcq.round()
-              if mcq < 10
-                subject_failed = true
-              end 
-            else
-              if mcq < 5
-                subject_failed = true
-              end 
-            end
-          else
-              subject_failed = true
+            end   
           end
+        end
           
         end
         if cq_total > 0
@@ -7636,19 +7628,12 @@ class ExamController < ApplicationController
             if cq_total == 80 or cq_total == 60
               cq = (cq.to_f/cq_total.to_f)*70
               cq = cq.round()
-              if cq < 23
-                subject_failed = true
-              end
             end
             if cq_total == 90
               cq = (cq.to_f/cq_total.to_f)*85
               cq = cq.round()
-              if cq < 28
-                subject_failed = true
-              end 
             end
-          else
-            subject_failed = true
+          
           end
         end
         main_mark = cq+mcq
@@ -8716,20 +8701,9 @@ class ExamController < ApplicationController
             if mcq_total == 40
               mcq = (mcq.to_f/mcq_total.to_f)*30
               mcq = mcq.round()
-              if mcq < 10
-                subject_failed = true
-                failed = true
-              end 
-            else
-              if mcq < 5
-                subject_failed = true
-                failed = true
-              end 
-            end
-          else
-              subject_failed = true
-              failed = true
+            end   
           end
+        end
           
         end
         if cq_total > 0
@@ -8737,24 +8711,14 @@ class ExamController < ApplicationController
             if cq_total == 80 or cq_total == 60
               cq = (cq.to_f/cq_total.to_f)*70
               cq = cq.round()
-              if cq < 23
-                subject_failed = true
-                failed = true
-              end
             end
             if cq_total == 90
               cq = (cq.to_f/cq_total.to_f)*85
               cq = cq.round()
-              if cq < 28
-                subject_failed = true
-                failed = true
-              end 
             end
-          else
-            subject_failed = true
-            failed = true
+          
           end
-        end 
+        end
        
         main_mark = cq+mcq
         row_first << main_mark.to_i

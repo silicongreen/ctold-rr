@@ -230,22 +230,12 @@ if @total_std.blank?
                 
                 if !grade.blank? and !grade.name.blank?
                   if grade.credit_points.to_i == 0
-                    if fourth_subject.blank?
                       subject_failed = true
                       u_grade = u_grade+1 
-                    else
-                      four_subject_failed = true
-                    end
                   end
-
-                  if fourth_subject.blank? && subject_failed == false
+                  if subject_failed == false
                     grand_grade_point = grand_grade_point+grade.credit_points.to_f
-                  elsif subject_failed == false and four_subject_failed == false
-                    new_grade_point = grade.credit_points.to_f-2
-                    if new_grade_point > 0
-                      grand_grade_point = grand_grade_point+new_grade_point.to_f
-                    end
-                  end
+                  end  
                 end
 
                 if @student_subject_marks[sub['id'].to_i].blank?

@@ -244,6 +244,7 @@
                                       
                                     <% end %>
                                     <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s == "AB" %>
+                                      <% failed_subject = true %>
                                       <td class="col-pdf">AB</td>
                                       <td class="col-pdf">-</td>
                                     <% else %>
@@ -269,6 +270,9 @@
                                     <% end %>
                                   <% end %>
                                   <% if report['exam_category'] == '5' %>
+                                    <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s == "AB" %>
+                                        <% failed_subject = true %>
+                                    <% end %>
                                     <% total_pr = total_pr+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
                                   <% end %>
@@ -612,6 +616,7 @@
                                         
                                       <% end %>
                                       <% if report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_s == "AB" %>
+                                        <% failed_subject = true %>
                                         <td class="col-pdf">AB</td>
                                         <td class="col-pdf">-</td>
                                       <% else %>
@@ -628,6 +633,7 @@
                                         <% converted_ob = (total_ob.to_f/full_ob.to_f)*converted_ob_full %>
                                       <% end %>
                                       <% if report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_s == "AB" %>
+                                        <% failed_subject = true %>
                                         <td class="col-pdf">AB</td>
                                         <td class="col-pdf">-</td>
                                       <% else %>
@@ -636,6 +642,9 @@
                                       <% end %>
                                     <% end %>
                                     <% if report['exam_category'] == '5' %>
+                                      <% if report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_s == "AB" %>
+                                          <% failed_subject = true %>
+                                      <% end %>
                                       <% total_pr = total_pr+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                       <td class="col-pdf"><%= report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f.round.to_i %></td>
                                     <% end %>
@@ -744,6 +753,7 @@
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                   <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s == "AB" %>
+
                                     <td class="col-pdf">AB</td>
                                   <% else %>
                                     <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>

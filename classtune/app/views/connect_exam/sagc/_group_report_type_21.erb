@@ -286,6 +286,9 @@
                                   <% @report_data['report']['exams'].each do |report| %>   
                                     <% if report['exam_category'] != '1' %>
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].blank? %>                                   
+                                        <% if report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_s == "AB" %>
+                                            <% failed_subject = true %>
+                                        <% end %>
                                         <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% if report['exam_category'] == '3' %>
                                           <% total_sb = total_sb+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>

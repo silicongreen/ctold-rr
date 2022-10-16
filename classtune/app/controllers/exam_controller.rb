@@ -10787,7 +10787,7 @@ class ExamController < ApplicationController
                       sb_main = (total_sb.round.to_f/converted_main_full_sb.to_f)*100
                       grade = GradingLevel.percentage_to_grade(sb_main, @batch.id)
                       if !grade.blank? and !grade.name.blank?
-                        if grade.credit_points.to_i == 0 || (total_sb.round < 34 && converted_main_full_sb == 100)
+                        if grade.credit_points.to_i == 0 || (total_sb.round < 33 && converted_main_full_sb == 100)
                             if fourth_subject.blank?
                               u_grade = u_grade+1 
                               subject_failed = true
@@ -10810,7 +10810,7 @@ class ExamController < ApplicationController
                       converted_ob_full_main = converted_ob_full2+converted_ob_full
                       total_ob = total_ob2+total_ob
 
-                      if (total_ob.round < 16 && converted_ob_full_main == 50) || (total_ob.round < 10 && converted_ob_full_main == 30) || (total_ob.round < 20 && converted_ob_full_main == 60)
+                      if (total_ob.round < 17 && converted_ob_full_main == 50) || (total_ob.round < 10 && converted_ob_full_main == 30) || (total_ob.round < 20 && converted_ob_full_main == 60)
                           if fourth_subject.blank?
                             u_grade = u_grade+1 
                             subject_failed = true

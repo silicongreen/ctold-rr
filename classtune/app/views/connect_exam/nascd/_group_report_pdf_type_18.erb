@@ -30,6 +30,7 @@
                       <td class="col-pdf no-warp" rowspan="3"><b><%= "Subject" %></b></td>
                       <td colspan="4"> Half Yearly Exam</td> 
                       <td colspan="4">Annual Exam</td>
+                      <td rowspan="3">Combined Marks/td>
                     </tr> 
                     
                     <tr class="table-header">
@@ -89,6 +90,7 @@
                             full_mark_cw_final = 0
                             full_mark_ct_final = 0
                             full_mark_term_final = 0
+                            combined_total = 0
                           %>
                           
                           <% unless @report_data['report']['exams'].blank? %>
@@ -192,6 +194,7 @@
                          <td><% if has_first_term %><%= ct.round.to_i %><% end %></td>
                          <td><% if has_first_term %><%= term.round.to_i %><% end %></td>
                          <td><% if has_first_term %><%= total.round.to_i %><% end %></td>
+                         <% combined_total = combined_total+total.round.to_i %>
                         
                          <% end %>
 
@@ -237,10 +240,12 @@
                          end
                          %>
                          <% if subjects['grade_subject'].to_i != 1  %>
+                         <% combined_total = combined_total+total.round.to_i %>
                          <td><% if has_final_term %><%= cw_final.round.to_i %><% end %></td>
                          <td><% if has_final_term %><%= ct_final.round.to_i %><% end %></td>
                          <td><% if has_final_term %><%= term_final.round.to_i %><% end %></td>
                          <td><% if has_final_term %><%= total.round.to_i %><% end %></td>
+                         <td><% if has_final_term %><%= combined_total.round.to_i %><% end %></td>
                         
                           
                       </tr>
@@ -253,6 +258,7 @@
                     <td class="col-pdf"><% if has_first_term %><%= grand_total1 %><% end %></td>
                     <td colspan="3">Grand Total Marks</td>
                     <td class="col-pdf"><% if has_final_term %><%= grand_total2 %><% end %></td>
+                    <td class="col-pdf"><% if has_final_term || has_first_term %><%= grand_total2+grand_total1 %><% end %></td>
                   </tr>
 
               </table>

@@ -19,6 +19,23 @@
 
               <table id="pdf-table" width="100%" cellspacing="0">
                   <% c = 'even'  %>
+                  <tr>
+                      <td style="border: 0px solid #fff;"></td>
+                      <% total_exam = 0 %>
+                      <% unless @report_data['report']['exams'].blank? %>  
+                        <% @report_data['report']['exams'].each do |report| %>
+                          <td style="border: 0px solid #fff; text-align:center;">
+                              <% total_exam = total_exam+1 %>
+                          </td> 
+                        <% end %>
+                      <% end %>
+                      <% if total_exam > 1 %>
+                        <td style="border: 0px solid #fff; text-align:center;" colspan="2">Aggregate</td>
+                      <% else %>
+                        <td style="border: 0px solid #fff; text-align:center;">Aggregate</td>
+                      <% end %>
+                      <td style="border: 0px solid #fff;"></td>
+                  </tr>
                   <tr class="table-header">
                       <td class="col-pdf"><%= "Subject" %></b></td>
                       <% total_exam = 0 %>

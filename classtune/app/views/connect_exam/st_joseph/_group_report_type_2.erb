@@ -39,22 +39,21 @@
 
               <table id="pdf-table" width="100%" cellspacing="0">
                   <% c = 'even'  %>
-                  <tr class="table-header">
+                  <tr>
                       <td style="border: 0px solid #fff;"></td>
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% @top_exam_group.each do |top_exam| %>
                           <% if has_practical == true %>
-                            <td  style="border: 0px solid #fff;" colspan="3"><%= top_exam %></td>
+                            <td  style="border: 0px solid #fff;" colspan="3"></td>
                           <% else %>
-                            <td  style="border: 0px solid #fff;" colspan="2"><%= top_exam %></td>
+                            <td  style="border: 0px solid #fff;" colspan="2"></td>
                           <% end %>
                         <% end %>
                       <% end %>
                       
 
-                      <td class="col-pdf">Total Marks</td>
-                      <td class="col-pdf">Highest Marks</td>
-                      <td class="col-pdf">Grade</td>
+                      <td style="border: 0px solid #fff; text-align:center;" colspan="2">Aggregate</td>
+                      <td style="border: 0px solid #fff;"></td>
                   </tr>
                   <tr class="table-header">
                       <td class="col-pdf"><b><%= "Subject" %></b></td>

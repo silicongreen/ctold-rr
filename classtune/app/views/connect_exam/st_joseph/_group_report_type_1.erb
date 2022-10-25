@@ -71,7 +71,7 @@
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
 
-                          <td class="col-pdf no-warp left-align"><%= subjects['name'] %></td>
+                          <td class="col-pdf no-warp left-align" style="text-align: left;"><%= subjects['name'] %>123</td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
                               <td class="col-pdf no-warp">
@@ -154,7 +154,7 @@
                       
                   <% if has_grade_subject == true %>
                     <tr class="page-break-grade">
-                        <td colspan="100"></td>
+                        <td colspan="5"></td>
                     </tr>
                   <% end %>
                     

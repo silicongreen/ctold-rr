@@ -19,10 +19,11 @@
               <table id="pdf-table" width="100%" cellspacing="0" style="border-top: 0px solid #fff;">
                   <% c = 'even'  %>
                   <tr style="border-top: 0px solid #fff;">
-                      <td style="border: 0px solid #fff;" colspan="2"></td>
+                      <td style="border: 0px solid #fff;"></td>
                       <% total_exam = 0 %>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
+                          <td style="border: 0px solid #fff;"></td>
                           <td style="border: 0px solid #fff; text-align:center;">
                               <% total_exam = total_exam+1 %>
                           </td> 
@@ -37,10 +38,10 @@
                   </tr>
                   <tr class="table-header">
                       <td class="col-pdf"><%= "Subject" %></b></td>
-                      <td class="col-pdf"><%= "Total" %></b></td>
                       <% total_exam = 0 %>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
+                          <td class="col-pdf"><%= "Total" %></b></td>
                           <td class="col-pdf">
                               <%= report['exam_name'] %>
                               <% total_exam = total_exam+1 %>
@@ -288,7 +289,7 @@
                           </td>                      
                       </tr>
                       <tr class="table-header">
-                          <td class="col-pdf" style="min-height: 80px;">
+                          <td class="col-pdf" style="height: 100px;">
                               <% if !@exam_comment.blank? %>
                                 <%= @exam_comment.comments %>
                               <% else %>     

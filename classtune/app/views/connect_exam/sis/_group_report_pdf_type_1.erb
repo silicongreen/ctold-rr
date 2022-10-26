@@ -88,7 +88,7 @@
                                 <% subject_subgroup = get_subject_sub_group(group_name.id,@connect_exam_obj.quarter_number) %>
                                 <% unless subject_subgroup.blank? %>
                                    <tr class="odd">
-                                    <td class="col-pdf no-warp align-left"  colspan="2"><b style="font-size: 28px !important;"><%= group_name.name %></b></td>
+                                    <td class="col-pdf no-warp align-left"  colspan="2"><b style="font-size: 27px !important;"><%= group_name.name %></b></td>
                                    </tr>
                                     <% subject_subgroup.each do |sub_group_name| %>
                                       <% mloop+=1 %>
@@ -102,7 +102,7 @@
                                           <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                                           <% wordString_split = wordString.split("|") %>
                                           <% unless wordString_split[iloop.to_i].blank? %>
-                                              <td class="col-pdf no-warp"><b style="font-size: 28px !important;"><%= wordString_split[iloop.to_i].to_s %></b></td>
+                                              <td class="col-pdf no-warp"><b style="font-size: 27px !important;"><%= wordString_split[iloop.to_i].to_s %></b></td>
                                               
                                           <% else %>
                                             <td class="col-pdf no-warp align-left"></td>
@@ -111,7 +111,7 @@
                                           <% break %>
                                         <% else %>
                                             <tr class="even">
-                                              <td class="col-pdf no-warp align-left" style="font-size: 28px !important;"><%= sub_group_name %></td>
+                                              <td class="col-pdf no-warp align-left" style="font-size: 27px !important;"><%= sub_group_name %></td>
                                              <td class="col-pdf no-warp align-left"></td> 
                                             </tr>
                                             <% break %>
@@ -121,7 +121,7 @@
                                     <% end %>
                                 <% else %>
                                     <tr class="odd">
-                                    <td class="col-pdf no-warp align-left" style="font-size: 28px !important;"><%= group_name.name %></td>
+                                    <td class="col-pdf no-warp align-left" style="font-size: 27px !important;"><%= group_name.name %></td>
                                     <% unless @report_data['report']['exams'].blank? %>
                                     <% @report_data['report']['exams'].each do |report| %>
                                        
@@ -129,7 +129,7 @@
                                           <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                                           <% wordString_split = wordString.split("|") %>
                                           <% unless wordString_split[iloop.to_i].blank? %>
-                                              <td class="col-pdf no-warp"><b style="font-size: 28px !important;"><%= wordString_split[iloop.to_i].to_s %></b></td>
+                                              <td class="col-pdf no-warp"><b style="font-size: 27px !important;"><%= wordString_split[iloop.to_i].to_s %></b></td>
                                               
                                           <% else %>
                                             <td class="col-pdf no-warp"></td>
@@ -165,7 +165,7 @@
                   <% end %>
                   <tr class="even">
                           
-                          <td class="col-pdf no-warp align-left" style="font-size: 28px !important;" width="50%"><b>Principal</b></td>
+                          <td class="col-pdf no-warp align-left" style="font-size: 27px !important;" width="50%"><b>Principal</b></td>
                           <td class="col-pdf no-warp align-left" width="50%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/anjum.png")), :width=>"50%" %></td>    
                   </tr>  
               </table>

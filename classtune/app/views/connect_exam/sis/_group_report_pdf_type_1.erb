@@ -88,7 +88,7 @@
                                 <% subject_subgroup = get_subject_sub_group(group_name.id,@connect_exam_obj.quarter_number) %>
                                 <% unless subject_subgroup.blank? %>
                                    <tr class="odd">
-                                    <td class="col-pdf no-warp align-left" colspan="2"><b style="font-size: 20px;"><%= group_name.name %>1</b></td>
+                                    <td class="col-pdf no-warp align-left"   colspan="2"><b><%= group_name.name %>1</b></td>
                                    </tr>
                                     <% subject_subgroup.each do |sub_group_name| %>
                                       <% mloop+=1 %>
@@ -182,12 +182,12 @@
 <style>
 .sis table tr.odd td, .sis table tr.even td
 {
-    font-size: 25px !important;
+    font-size: 28px !important;
     padding: 12px !important;
 }
 .sis table tr.odd table.std_info_table tr td
 {
-    font-size: 25px !important;
+    font-size: 28px !important;
 }
 <% if !mloop.blank? && mloop<24 %>
 .page-break-grade td{
@@ -206,12 +206,12 @@
 }
 .sis table tr.odd td, .sis table tr.even td
 {
-    font-size: 23px !important;
+    font-size: 26px !important;
     padding: 6px 15px !important;
 }
 .sis table tr.odd table.std_info_table tr td
 {
-    font-size: 23px !important;
+    font-size: 26px !important;
 }
 <% end %>
 <% if !mloop.blank? && mloop>=28 && mloop<35 %>
@@ -223,12 +223,12 @@
 }
 .sis table tr.odd td, .sis table tr.even td
 {
-    font-size: 21px !important;
+    font-size: 25px !important;
     padding: 4px 15px !important;
 }
 .sis table tr.odd table.std_info_table tr td
 {
-    font-size: 21px !important;
+    font-size: 25px !important;
 }
 <% end %>
 <% if !mloop.blank? && mloop>=35 %>
@@ -240,12 +240,12 @@
 }
 .sis table tr.odd td, .sis table tr.even td
 {
-    font-size: 20px !important;
+    font-size: 25px !important;
     padding: 4px 15px !important;
 }
 .sis table tr.odd table.std_info_table tr td
 {
-    font-size: 20px !important;
+    font-size: 25px !important;
 }
 <% end %>
 </style>    

@@ -53,7 +53,6 @@
                       <td class="col-pdf">Grade</td>
                   </tr>
 
-                  <% displayed_mark = false %>
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>
                   <% full_marks_total = 0 %>
@@ -66,6 +65,7 @@
                         <% next %>
                       <% end %>
                       <tr  class="table-header">
+                          <% displayed_mark = false %>
                           <% weightage_mark = 0 %>
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
@@ -85,7 +85,6 @@
                               </td>
                               <% else %>
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
-                                <%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>
                                 <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                               <% else %>
 

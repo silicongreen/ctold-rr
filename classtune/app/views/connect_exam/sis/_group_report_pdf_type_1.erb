@@ -88,7 +88,7 @@
                                 <% subject_subgroup = get_subject_sub_group(group_name.id,@connect_exam_obj.quarter_number) %>
                                 <% unless subject_subgroup.blank? %>
                                    <tr class="odd">
-                                    <td class="col-pdf no-warp align-left"   colspan="2"><b><%= group_name.name %>1</b></td>
+                                    <td class="col-pdf no-warp align-left"  colspan="2"><b><%= group_name.name %></b></td>
                                    </tr>
                                     <% subject_subgroup.each do |sub_group_name| %>
                                       <% mloop+=1 %>
@@ -121,7 +121,7 @@
                                     <% end %>
                                 <% else %>
                                     <tr class="odd">
-                                    <td class="col-pdf no-warp align-left"><%= group_name.name %></td>
+                                    <td class="col-pdf no-warp align-left"><%= group_name.name %>12</td>
                                     <% unless @report_data['report']['exams'].blank? %>
                                     <% @report_data['report']['exams'].each do |report| %>
                                        
@@ -165,7 +165,7 @@
                   <% end %>
                   <tr class="even">
                           
-                          <td class="col-pdf no-warp align-left" width="50%"><b>Principal1</b></td>
+                          <td class="col-pdf no-warp align-left" width="50%"><b>Principal</b></td>
                           <td class="col-pdf no-warp align-left" width="50%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/anjum.png")), :width=>"50%" %></td>    
                   </tr>  
               </table>
@@ -245,7 +245,7 @@
 }
 .sis table tr.odd table.std_info_table tr td
 {
-    font-size: 25px !important;
+    font-size: 20px !important;
 }
 <% end %>
 </style>    

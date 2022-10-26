@@ -16,7 +16,7 @@
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
 
-              <table id="pdf-table" width="100%" cellspacing="0">
+              <table id="pdf-table" width="100%" cellspacing="0" style="border: 1px solid #000;">
                   <% c = 'even'  %>
                   <tr>
                       <% total_exam = 0 %>
@@ -26,13 +26,13 @@
                         <% end %>
                       <% end %>
                       <% cols = total_exam + 2 %>
-                      <td colspan="<%= cols %>"></td>
+                      <td colspan="<%= cols %>" style="border: 1px solid #000;"></td>
                       <% if total_exam > 1 %>
-                        <td style="text-align:center; font-weight: bold; color: #000; font-size: 20px;" colspan="2">Aggregate</td>
+                        <td style="text-align:center; font-weight: bold; color: #000; font-size: 20px;border: 1px solid #000;" colspan="2">Aggregate</td>
                       <% else %>
-                        <td style="text-align:center; font-weight: bold; color: #000; font-size: 20px;">Aggregate</td>
+                        <td style="text-align:center; font-weight: bold; color: #000; font-size: 20px;border: 1px solid #000;">Aggregate</td>
                       <% end %>
-                      <td></td>
+                      <td style="border: 1px solid #000;"></td>
                   </tr>
                   <tr class="table-header">
                       <td class="col-pdf"><%= "Subject" %></b></td>
@@ -172,6 +172,7 @@
                         <% next %>
                       <% end %>
                       <tr  class="table-header">
+                          <% displayed_mark = false %>
                           <% weightage_mark = 0 %>
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
@@ -179,14 +180,23 @@
                           <td class="col-pdf no-warp left-align"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
-                              <td class="col-pdf no-warp">
+                              <% if !displayed_mark %>
+                                <% displayed_mark = true %>
+                                <td class="col-pdf no-warp">
+                                <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                  <%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>
+                                  <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                <% else %>
+
+                                <% end %>    
+                                </td>
+                              <% else %>
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
-                                <%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>
                                 <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                               <% else %>
 
                               <% end %>    
-                              </td>
+                              <% end %> 
                               <td class="col-pdf no-warp">
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>

@@ -37,23 +37,23 @@
               
               <% end %>
 
-              <table id="pdf-table" width="100%" cellspacing="0">
+              <table id="pdf-table" width="100%" cellspacing="0" style="border: 1px solid #000;">
                   <% c = 'even'  %>
                   <tr>
-                      <td></td>
+                      <td style="border: 1px solid #000;"></td>
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% @top_exam_group.each do |top_exam| %>
                           <% if has_practical == true %>
-                            <td colspan="3"></td>
+                            <td colspan="3" style="border: 1px solid #000;"></td>
                           <% else %>
-                            <td colspan="2"></td>
+                            <td colspan="2" style="border: 1px solid #000;"></td>
                           <% end %>
                         <% end %>
                       <% end %>
                       
 
-                      <td style="text-align:center; font-weight: bold; color: #000; font-size: 20px;" colspan="2">Aggregate</td>
-                      <td></td>
+                      <td style="text-align:center; font-weight: bold; color: #000; font-size: 20px;border: 1px solid #000;" colspan="2">Aggregate</td>
+                      <td style="border: 1px solid #000;"></td>
                   </tr>
                   <tr class="table-header">
                       <td class="col-pdf"><b><%= "Subject" %></b></td>

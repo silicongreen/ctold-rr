@@ -16,32 +16,30 @@
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
 
-              <table id="pdf-table" width="100%" cellspacing="0" style="border-top: 0px solid #fff;">
+              <table id="pdf-table" width="100%" cellspacing="0">
                   <% c = 'even'  %>
-                  <tr style="border-top: 0px solid #fff;">
-                      <td style="border: 0px solid #fff;"></td>
+                  <tr>
                       <% total_exam = 0 %>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
-                          <td style="border: 0px solid #fff;"></td>
-                          <td style="border: 0px solid #fff; text-align:center;">
                               <% total_exam = total_exam+1 %>
-                          </td> 
                         <% end %>
                       <% end %>
+                      <% cols = total_exam + 2 %>
+                      <td colspan="<%= cols %>"></td>
                       <% if total_exam > 1 %>
-                        <td style="border: 0px solid #fff; text-align:center;" colspan="2">Aggregate</td>
+                        <td style="text-align:center; font-weight: bold; color: #000; font-size: 20px;" colspan="2">Aggregate</td>
                       <% else %>
-                        <td style="border: 0px solid #fff; text-align:center;">Aggregate</td>
+                        <td style="text-align:center; font-weight: bold; color: #000; font-size: 20px;">Aggregate</td>
                       <% end %>
-                      <td style="border: 0px solid #fff;"></td>
+                      <td></td>
                   </tr>
                   <tr class="table-header">
                       <td class="col-pdf"><%= "Subject" %></b></td>
+                      <td class="col-pdf"><%= "Mark" %></b></td>
                       <% total_exam = 0 %>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
-                          <td class="col-pdf"><%= "Total" %></b></td>
                           <td class="col-pdf">
                               <%= report['exam_name'] %>
                               <% total_exam = total_exam+1 %>
@@ -55,6 +53,7 @@
                       <td class="col-pdf">Grade</td>
                   </tr>
 
+                  <% displayed_mark = false %>
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>
                   <% full_marks_total = 0 %>
@@ -74,7 +73,9 @@
                           <td class="col-pdf no-warp left-align" style="text-align: left;"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
+                              <% if !displayed_mark %>
                               <td class="col-pdf no-warp">
+                                  <% displayed_mark = true %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                     <%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>
                                     <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -82,6 +83,14 @@
 
                                   <% end %>  
                               </td>
+                              <% else %>
+                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                <%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>
+                                <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                              <% else %>
+
+                              <% end %>  
+                              <% end %>
                               <td class="col-pdf no-warp">
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>

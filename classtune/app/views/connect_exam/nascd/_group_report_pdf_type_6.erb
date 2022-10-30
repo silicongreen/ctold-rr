@@ -342,14 +342,12 @@
                       <td><b><%= total_mark_subject %></b></td>
                       <td><% total_percentage = total_percentage_subject / 6 %><%= "%.2f" % total_percentage %>%</td>
                       <td colspan="2"></td>
-                      <td></td>
                       <% else %>
                       <td><b>Total Marks<!--, Grade and GPA--></b></td>   
                       <td><b><%= full_mark %></b></td>
                       <td colspan="<%= colspan_exam-1 %>">Score</td>
                       <td><b><%= total_mark %></b></td>
                       <td><b><%= "Grade" %></b></td>
-                      <td><b>
                               <% if !grade.blank? and !grade.name.blank? %>
                                 <% if failed == true %>
                                     F

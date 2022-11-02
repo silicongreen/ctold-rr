@@ -101,12 +101,13 @@
                             full_mark_cq = 0
                             full_mark_mcq = 0
                             full_mark_prac = 0
+                            qur = ""
                           %>
                           
                           <% unless @report_data['report']['exams'].blank? %>
                             <% @report_data['report']['exams'].each do |report| %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                  
+                                  <% qur = report['quarter'] %>
                                   <% if report['quarter'] == '5' %>
                                       <% if report['exam_category'] == '3' %>
                                         <% cq = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
@@ -155,7 +156,7 @@
                           end
                           %>
                          <% if subjects['grade_subject'].to_i != 1  %>
-                         <td><% if full_mark_cq > 0 %><%= full_mark_cq.to_i %><% end %> <%= report['quarter'] %></td>
+                         <td><% if full_mark_cq > 0 %><%= full_mark_cq.to_i %><% end %> <%= qur %></td>
                          <td><% if full_mark_mcq > 0 %><%= full_mark_mcq.to_i %><% end %></td>
                          <td><% if full_mark_prac > 0 %><%= full_mark_prac.to_i %><% end %></td>
                          <% end %>

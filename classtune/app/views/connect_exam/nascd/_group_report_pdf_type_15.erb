@@ -611,7 +611,7 @@ socially to his or her abilities and opportunities.</i></li>
                           <% end %>
                         <% end %>
                       </td>      
-                      <td rowspan="3" width='60%'></td>
+                      <td rowspan="3" width='20%'></td>
                       <td width='40%' rowspan="3"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/sign_principal.jpeg")), :width=>"20%" %></td> 
                   </tr>
                   <tr class="table-header">
@@ -622,7 +622,7 @@ socially to his or her abilities and opportunities.</i></li>
                       <td>Signature of the Principal</td>
                   </tr>
                   <tr class="table-header">
-                      <td><% if !@exam_comment.blank?%><%= @exam_comment.comments %><% end %></td>
+                      <td rowspan="2" colspan="2"><% if !@exam_comment.blank?%><%= @exam_comment.comments %><% end %></td>
                   </tr>
                   <tr class="table-header">
                       <td>Signature</td>

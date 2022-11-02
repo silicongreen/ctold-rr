@@ -155,9 +155,9 @@
                           end
                           %>
                          <% if subjects['grade_subject'].to_i != 1  %>
-                         <td><% if full_mark_cq > 0 %><%= full_mark_cq.to_i %><% end %> 1</td>
-                         <td><% if full_mark_mcq > 0 %><%= full_mark_mcq.to_i %><% end %> 2</td>
-                         <td><% if full_mark_prac > 0 %><%= full_mark_prac.to_i %><% end %> 3</td>
+                         <td><% if full_mark_cq > 0 %><%= full_mark_cq.to_i %><% end %> <%= report['quarter'] %></td>
+                         <td><% if full_mark_mcq > 0 %><%= full_mark_mcq.to_i %><% end %></td>
+                         <td><% if full_mark_prac > 0 %><%= full_mark_prac.to_i %><% end %></td>
                          <% end %>
                          <%
                          full_mark_all = 100
@@ -170,11 +170,11 @@
                          end
                          %>
                          <% if subjects['grade_subject'].to_i != 1  %>
-                         <td><% if has_quarter %><%= conv_mcw.round().to_i %><% end %> 4</td>
-                         <td><% if has_quarter %><%= ct.round().to_i %><% end %> 5</td>
-                         <td><% if has_quarter && full_mark_cq > 0 %><%= cq.round().to_i %><% end %> 6</td>
-                         <td><% if has_quarter && full_mark_mcq > 0 %><%= mcq.round().to_i %><% end %> 7</td>
-                         <td><% if has_quarter && full_mark_prac > 0 %><%= prac.round().to_i %><% end %> 8</td>
+                         <td><% if has_quarter %><%= conv_mcw.round().to_i %><% end %></td>
+                         <td><% if has_quarter %><%= ct.round().to_i %><% end %></td>
+                         <td><% if has_quarter && full_mark_cq > 0 %><%= cq.round().to_i %><% end %></td>
+                         <td><% if has_quarter && full_mark_mcq > 0 %><%= mcq.round().to_i %><% end %></td>
+                         <td><% if has_quarter && full_mark_prac > 0 %><%= prac.round().to_i %><% end %></td>
                          <% end %>
                          <%
                           

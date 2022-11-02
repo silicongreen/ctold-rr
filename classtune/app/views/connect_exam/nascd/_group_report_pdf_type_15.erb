@@ -1,5 +1,6 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <%= render  :partial=>"/connect_exam/nascd/header_new" %>
+  <% exam_grand_total = 0 %>
   <div id="page-yield"  class="available_sections1 sjis-new sfx">
       <table id="pdf-table" class="margin-top-bottom-20" width="99.8%" cellspacing="0">
           <tr class="table-header">
@@ -228,9 +229,12 @@
                     <% end %>
                   <% end %>
                   <tr class="table-header">
-                    <td colspan="4">Grand Total Marks</td>
+                    <td colspan="4">Grand Total Marks (Half Yearly Exam)</td>
                     <td class="col-pdf"  colspan="7"></td>
                     <td class="col-pdf"><% if has_quarter %><%= grand_total.round().to_i %><% end %></td>
+                    <% if has_quarter %>
+                    <% exam_grand_total = exam_grand_total + grand_total.round().to_i %>
+                    <% end %>
                     <td class="col-pdf"></td>
                   </tr>
 
@@ -438,9 +442,19 @@
                     <% end %>
                   <% end %>
                   <tr class="table-header">
-                    <td colspan="4">Grand Total Marks</td>
+                    <td colspan="4">Grand Total Marks (Annual Exam)</td>
                     <td class="col-pdf"  colspan="7"></td>
                     <td class="col-pdf"><% if has_quarter %><%= grand_total.round().to_i %><% end %></td>
+                    <% if has_quarter %>
+                    <% exam_grand_total = exam_grand_total + grand_total.round().to_i %>
+                    <% end %>
+                    <td class="col-pdf"></td>
+                  </tr>
+
+                  <tr class="table-header">
+                    <td colspan="4">Grand Total Marks</td>
+                    <td class="col-pdf"  colspan="7"></td>
+                    <td class="col-pdf"><%= exam_grand_total.round().to_i %></td>
                     <td class="col-pdf"></td>
                   </tr>
 

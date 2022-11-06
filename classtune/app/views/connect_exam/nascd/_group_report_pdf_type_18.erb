@@ -254,7 +254,9 @@
                             <% end %>
                             <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
                             <td class="col-pdf"><%= grade.name %></td>
+                            <td class="col-pdf"><%= grade.credit_points %></td>
                           <% else %>
+                            <td class="col-pdf">-</td>
                             <td class="col-pdf">-</td>
                           <% end %>   
                          <td><% if has_final_term %><%= combined_total.round.to_i %><% end %></td>

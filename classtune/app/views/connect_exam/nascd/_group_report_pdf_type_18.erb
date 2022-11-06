@@ -247,20 +247,21 @@
                          <td><% if has_final_term %><%= ct_final.round.to_i %><% end %></td>
                          <td><% if has_final_term %><%= term_final.round.to_i %><% end %></td>
                          <td><% if has_final_term %><%= total.round.to_i %><% end %></td>
-                         <%  grade = GradingLevel.percentage_to_grade(combined_total.round.to_i, @batch.id) %>
-                            <% if !grade.blank? and !grade.name.blank? %>
-                              <% if grade.credit_points.to_i == 0 %>
-                                <% failed = true %>
-                              <% end %>
-                              <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
-                              <td class="col-pdf"><%= grade.name %></td>
-                            <% else %>
-                              <td class="col-pdf">-</td>
+                          <%  grade = GradingLevel.percentage_to_grade(combined_total.round.to_i, @batch.id) %>
+                          <% if !grade.blank? and !grade.name.blank? %>
+                            <% if grade.credit_points.to_i == 0 %>
+                              <% failed = true %>
                             <% end %>
-                          <% else  %>
+                            <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
+                            <td class="col-pdf"><%= grade.name %></td>
+                          <% else %>
                             <td class="col-pdf">-</td>
-                            <td class="col-pdf">-</td>
-                          <% end %>      
+                          <% end %>
+                        <% else  %>
+                          <td class="col-pdf">-</td>
+                          <td class="col-pdf">-</td>
+                        <% end %>      
+                        <% end %>   
                          <td><% if has_final_term %><%= combined_total.round.to_i %><% end %></td>
                         
                           

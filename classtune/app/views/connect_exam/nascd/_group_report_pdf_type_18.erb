@@ -30,6 +30,8 @@
                       <td class="col-pdf no-warp" rowspan="3"><b><%= "Subject" %></b></td>
                       <td colspan="4"> Half Yearly Exam</td> 
                       <td colspan="4">Annual Exam</td>
+                      <td rowspan="3">Letter Grade</td>
+                      <td rowspan="3">Greade Point</td>
                       <td rowspan="3">Combined Marks</td>
                     </tr> 
                     
@@ -245,6 +247,20 @@
                          <td><% if has_final_term %><%= ct_final.round.to_i %><% end %></td>
                          <td><% if has_final_term %><%= term_final.round.to_i %><% end %></td>
                          <td><% if has_final_term %><%= total.round.to_i %><% end %></td>
+                         <%  grade = GradingLevel.percentage_to_grade(combined_total.round.to_i, @batch.id) %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <% if grade.credit_points.to_i == 0 %>
+                                <% failed = true %>
+                              <% end %>
+                              <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
+                              <td class="col-pdf"><%= grade.name %></td>
+                            <% else %>
+                              <td class="col-pdf">-</td>
+                            <% end %>
+                          <% else  %>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
+                          <% end %>      
                          <td><% if has_final_term %><%= combined_total.round.to_i %><% end %></td>
                         
                           
@@ -415,11 +431,11 @@
                   <tr class="even">
                       <td class='align-left-baf padding-0-text-left' rowspan="8">
                           <ul>
-                              <li><i>For absent examinees, Half Yearly marks have been mapped from their CT.</i></li>
+                              <!--li><i>For absent examinees, Half Yearly marks have been mapped from their CT.</i></li-->
                               <li><i>We issue this report card to let you know our evaluation regarding the progress of your child.</i></li>
                               <li><i>At school, we consider each student as an individual who will develop intellectually, physically and
 socially to his or her abilities and opportunities.</i></li> 
-                              <li><i>Parents are always welcome to make an appointment to discuss about the progress of their children.</i></li>  
+                              <!--li><i>Parents are always welcome to make an appointment to discuss about the progress of their children.</i></li-->  
                           </ul>
                           
                       </td>

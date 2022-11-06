@@ -196,6 +196,11 @@
                          <td><% if has_first_term %><%= ct.round.to_i %><% end %></td>
                          <td><% if has_first_term %><%= term.round.to_i %><% end %></td>
                          <td><% if has_first_term %><%= total.round.to_i %><% end %></td>
+                         <%
+                            if total.blank?
+                              total = 0
+                            end
+                         %>
                          <% combined_total = combined_total+total.round.to_i %>
                         
                          <% end %>

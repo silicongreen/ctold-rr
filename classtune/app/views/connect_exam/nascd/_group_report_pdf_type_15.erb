@@ -243,6 +243,8 @@
                     <tr class="table-header">
                       <td colspan="2" rowspan="2">Quarterly<br/>(15%* / 25%)</td> 
                       <td colspan="5" rowspan="2">Term Exam<br/>(35%* / 75%)</td> 
+                      <td rowspan="2">Letter<br/>Grade</td>
+                      <td rowspan="2">Grade<br/>Point</td>
                       <td rowspan="3">Total<br/>Marks</td>
                       <td rowspan="3">Highest<br/>Marks</td>
                     </tr>
@@ -422,7 +424,16 @@
                         <% if subjects['grade_subject'].to_i != 1  %>
                          <td><% if has_quarter %><%= total.to_i %><% end %></td>
                          <td><% if has_quarter %><%= total_converted.to_i %><% end %></td>
-                         <td><% if has_quarter %><%= total_mark_subject.to_i %><% end %></td>
+                         <%
+                          main_mark = 0
+                          if total_mark_subject > 0
+                            main_mark = total_mark_subject.round()
+                            grade2 = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                          end
+                        %>
+                          <td><% if !grade2.blank? and !grade2.name.blank? %><%= grade2.name %><% end %></td>
+                          <td><% if !grade2.blank? and !grade2.name.blank? %><%= grade2.credit_points %><% total_grade2 = total_grade2+grade2.credit_points %><% end %></td>
+                          <td><% if has_quarter %><%= total_mark_subject.to_i %><% end %></td>
                          <td><% if has_quarter %><%= highest_mark1.to_i %><% end %></td>
                         
 

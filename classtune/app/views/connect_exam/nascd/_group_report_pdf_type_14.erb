@@ -449,7 +449,7 @@ socially to his or her abilities and opportunities.</i></li>
               </table-->
               <table id="pdf-table"  width="100%" class="left-table break-table odd-table height-exam ev-table" cellspacing="0" >
                   <tr class="even">
-                      <td width="20%">Class Teacher</td>
+                      <td width="20%" style="text-align: left; vertical-align: top;">Class Teacher</td>
                       <td width="20%">
                         <% unless @assigned_employee.blank? %>
                           <% @assigned_employee.each do |emp| %>
@@ -459,15 +459,11 @@ socially to his or her abilities and opportunities.</i></li>
                           <% end %>
                         <% end %>
                       </td>      
-                      <td rowspan="3" width='20%'></td>
-                      <td width='40%' rowspan="3"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/sign_principal.jpeg")), :width=>"20%" %></td> 
+                      <td rowspan="2" width='20%'></td>
+                      <td width='40%' rowspan="2"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/sign_principal.jpeg")), :width=>"20%" %></td> 
                   </tr>
                   <tr class="table-header">
-                      <td width="20%">Comment</td>      
-                      <td></td>
-                  </tr>
-                  <tr class="table-header">
-                      <td rowspan="2" colspan="2"><% if !@exam_comment.blank?%><%= @exam_comment.comments %><% end %></td>
+                      <td width="20%" colspan="2" rowspan="2" style="text-align: left; vertical-align: top;">Comment: <% if !@exam_comment.blank?%><%= @exam_comment.comments %><% end %></td>      
                   </tr>
                   <tr class="table-header">
                       <td>Signature</td>

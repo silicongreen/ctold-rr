@@ -159,9 +159,9 @@
                                   
                                 %>
                                     <% if report['exam_category'] != '1' && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f != 20.00 %>
-                                      <td class="col-pdf no-warp"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>/100</td>
-                                    <% else %>
                                       <td class="col-pdf no-warp"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
+                                    <% else %>
+                                      <td class="col-pdf no-warp"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>/<%= report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f %></td>
                                     <% end %>  
                                 <%  
                                 end    

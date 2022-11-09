@@ -214,7 +214,7 @@
                             end 
                             quarter_mark = cw_final+ct_final
                             quarter_main_mark = 0
-                            if quarter_mark > 0
+                            if quarter_mark > 0 and full_mark_quarter > 0
                               quarter_main_mark = (quarter_mark.to_f/full_mark_quarter.to_f)*100
                               quarter_main_mark = quarter_main_mark.round
                             end

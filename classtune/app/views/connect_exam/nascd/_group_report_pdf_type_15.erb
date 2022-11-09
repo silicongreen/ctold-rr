@@ -238,7 +238,7 @@
                     <tr class="table-header">
                       <td class="col-pdf no-warp" rowspan="4"><b><%= "Subject" %></b></td>
                       <td colspan="3" rowspan="3">Term Exam Marks</td> 
-                      <td colspan="9">Annual Exam</td>
+                      <td colspan="11">Annual Exam</td>
                     </tr> 
                     <tr class="table-header">
                       <td colspan="2" rowspan="2">Quarterly<br/>(15%* / 25%)</td> 
@@ -432,7 +432,7 @@
                           end
                         %>
                           <td><% if !grade2.blank? and !grade2.name.blank? %><%= grade2.name %><% end %></td>
-                          <td><% if !grade2.blank? and !grade2.name.blank? %><%= grade2.credit_points %><% total_grade2 = total_grade2+grade2.credit_points %><% end %></td>
+                          <td><% if !grade2.blank? and !grade2.name.blank? %><%= grade2.credit_points %><% end %></td>
                           <td><% if has_quarter %><%= total_mark_subject.to_i %><% end %></td>
                          <td><% if has_quarter %><%= highest_mark1.to_i %><% end %></td>
                         

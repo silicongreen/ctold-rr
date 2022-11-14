@@ -214,7 +214,19 @@
           <td class="col-pdf" colspan="1"><%= "Nationality" %></td>
           <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= @student.nationality.nationality.nationality unless @student.nationality_id.nil? %></td>
         </tr>
+        <%
         
+          unless aditional_details.blank?
+            birth_certificate = aditional_details.find{|ad| ad.additional_field_id == 44}
+          end
+          %>
+        
+        <% unless birth_certificate.blank? %>
+          <tr>
+            <td class="col-pdf"><%= "Birth Certificate No" %></td>
+            <td class="col-pdf">:&nbsp;&nbsp;&nbsp;<%= birth_certificate.additional_info unless birth_certificate.blank? %></td>
+          </tr>
+        <% end %>
         
       
         <% father = mother = Guardian.new %>

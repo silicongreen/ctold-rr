@@ -156,11 +156,11 @@
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
-                          <td  colspan="2"><%=  sub['code'] %></td>
+                          <td  colspan="1"><%=  sub['code'] %></td>
                         <% end %>
                       <% end %>
 
-                      <td colspan="2">Total</td>
+                      <td colspan="1">Total</td>
 
                   </tr>
                   <tr class="table-header">
@@ -170,11 +170,11 @@
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
-                          <td>CQ/MCQ</td><td></td><!-- Pret -->
+                          <td>CQ/MCQ</td><td style="display: none;"></td><!-- Pret -->
                         <% end %>
                       <% end %>
 
-                      <td>CQ/MCQ</td><td></td><!-- Pret -->
+                      <td>CQ/MCQ</td><td style="display: none;"></td><!-- Pret -->
 
                   </tr>
 
@@ -202,11 +202,11 @@
                             <% has_exam = true %>
                           <% end %>
                           <% if has_exam == true %>
-                            <td  colspan="2"><%=  sub['code'] %></td>
+                            <td  colspan="1"><%=  sub['code'] %></td>
                           <% end %>
                         <% end %>
 
-                        <td colspan="2">Total</td>
+                        <td colspan="1">Total</td>
 
                       </tr>
                       <tr class="table-header">
@@ -216,11 +216,11 @@
                               <% has_exam = true %>
                             <% end %>
                             <% if has_exam == true %>
-                              <td>CQ/MCQ</td><td></td><!-- Pret -->
+                              <td>CQ/MCQ</td><td style="display: none;"></td><!-- Pret -->
                             <% end %>
                           <% end %>
 
-                          <td>CQ/MCQ</td><td></td><!-- Pret -->
+                          <td>CQ/MCQ</td><td style="display: none;"></td><!-- Pret -->
 
                       </tr>
                     <% elsif std_count>6 && extender ==1 %>
@@ -238,11 +238,11 @@
                                 <% has_exam = true %>
                               <% end %>
                               <% if has_exam == true %>
-                                <td  colspan="2"><%=  sub['code'] %></td>
+                                <td  colspan="1"><%=  sub['code'] %></td>
                               <% end %>
                             <% end %>
 
-                            <td colspan="2">Total</td>
+                            <td colspan="1">Total</td>
 
                         </tr>
                         <tr class="table-header">
@@ -252,11 +252,11 @@
                                 <% has_exam = true %>
                               <% end %>
                               <% if has_exam == true %>
-                                <td>CQ/MCQ</td><td></td><!-- Pret -->
+                                <td>CQ/MCQ</td><td style="display: none;"></td><!-- Pret -->
                               <% end %>
                             <% end %>
 
-                            <td>CQ/MCQ</td><td></td><!-- Pret -->
+                            <td>CQ/MCQ</td><td style="display: none;"></td><!-- Pret -->
 
                         </tr>
                     <% end %>    
@@ -424,7 +424,7 @@
                                   <%= total_mark1 %>
 
                                </td> 
-                               <td>
+                               <td style="display: none;">
                                   <% if cq2_fullmark > 0 %>
                                     <%= cq2 %>
                                   <% else %>

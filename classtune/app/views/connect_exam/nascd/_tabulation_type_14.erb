@@ -303,11 +303,13 @@
                             <% 
                             cq1 = 0
                             mcq1 = 0
+                            pr1 = 0
                             cq2 = 0
                             mcq2 = 0
                             pr2 = 0 
                             cq1_fullmark = 0
                             mcq1_fullmark = 0
+                            pr1_fullmark = 0 
                             cq2_fullmark = 0
                             mcq2_fullmark = 0
                             pr2_fullmark = 0 
@@ -336,8 +338,8 @@
                                     mcq1_fullmark = mcq1_fullmark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                   end
                                   if rs['exam_category'] == '5'
-                                    pr2 = pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                    pr2_fullmark = pr2_fullmark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                    pr1 = pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    pr1_fullmark = pr1_fullmark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                   end
                                   total_mark1 = total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                   full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
@@ -413,7 +415,11 @@
                                     -
                                   <% end %>
                                   <hr/>
-                                  -
+                                  <% if pr1_fullmark > 0 %>
+                                    <%= pr1 %>
+                                  <% else %>
+                                    -
+                                  <% end %>
                                   <hr/>
                                   <%= total_mark1 %>
 

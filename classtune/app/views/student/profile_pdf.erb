@@ -307,6 +307,38 @@
             <td class="col-pdf" colspan="1"><%= "Contact No" %></td>
             <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= mother.office_phone1 unless mother.nil? %></td>
           </tr>
+          <% if MultiSchool.current_school.id == 361 %>
+          <tr>
+            <td class="col-pdf" colspan="1"><%= "Mobile Phone no." %></td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= father.mobile_phone %></td>
+            <td class="col-pdf" colspan="1"><%= "Mobile Phone no" %></td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= mother.mobile_phone unless mother.nil? %></td>
+          </tr>
+          <tr>
+            <td class="col-pdf" colspan="1"><%= "Occupation" %></td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= father.occupation %></td>
+            <td class="col-pdf" colspan="1"><%= "Occupation" %></td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= mother.occupation unless mother.nil? %></td>
+          </tr>
+          <tr>
+            <td class="col-pdf" colspan="1"><%= "Organization" %></td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= father.organization %></td>
+            <td class="col-pdf" colspan="1"><%= "Organization" %></td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= mother.organization unless mother.nil? %></td>
+          </tr>
+          <tr>
+            <td class="col-pdf" colspan="1"><%= "Designation" %></td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= father.designation %></td>
+            <td class="col-pdf" colspan="1"><%= "Designation" %></td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= mother.designation unless mother.nil? %></td>
+          </tr>
+          <tr>
+            <td class="col-pdf" colspan="1"><%= "NID/Passport Number" %></td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= father.passport %></td>
+            <td class="col-pdf" colspan="1"><%= "NID/Passport Number" %></td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= mother.passport unless mother.nil? %></td>
+          </tr>
+          <% end %>
           
         <% end %>
         <% @guardian = Guardian.find_by_id(@student.immediate_contact_id) unless @student.immediate_contact_id.blank? %>

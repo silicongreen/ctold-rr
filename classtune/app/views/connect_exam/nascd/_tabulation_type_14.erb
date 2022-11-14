@@ -335,6 +335,10 @@
                                     mcq1 = mcq1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                     mcq1_fullmark = mcq1_fullmark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                   end
+                                  if rs['exam_category'] == '5'
+                                    pr2 = pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    pr2_fullmark = pr2_fullmark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                  end
                                   total_mark1 = total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                   full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                 end 

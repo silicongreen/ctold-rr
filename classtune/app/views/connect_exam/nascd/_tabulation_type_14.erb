@@ -497,7 +497,7 @@
                             <% avg_mark = total_mark_1.to_f/total_subject.to_f %>
                             <% c_grade = GradingLevel.percentage_to_grade(avg_mark, @batch.id) %>
                         <% end %>  
-                        <td><% if !c_grade.blank? and !c_grade.name.blank? %><%= c_grade.name %> <%= c_grade.credit_points %><% end %></td>
+                        <td><% if !c_grade.blank? and !c_grade.name.blank? %><%= c_grade.name %><% end %></td>
                         <td><%= sprintf( "%0.02f", grade_point_avg) %></td>
                         <td style="display: none;">  
                            <%= total_mark_2 %>

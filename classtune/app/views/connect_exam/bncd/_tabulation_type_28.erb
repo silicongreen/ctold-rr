@@ -191,11 +191,11 @@ end
                       <td class="col-pdf" rowspan="3">G. Total</td>
                        <td class="col-pdf" rowspan="3">Total GP</td>
                       <td class="col-pdf" rowspan="3">GPA</td>
-                      <td class="col-pdf" rowspan="3">Position in Section</td>
+                      <td class="col-pdf" rowspan="3">Pos.<Br>in Sec</td>
                       <% if class_type == 3 %>
-                          <td class="col-pdf" rowspan="3">Position in Group</td>
+                          <td class="col-pdf" rowspan="3">Pos.<Br>in Grp</td>
                       <% else %>
-                          <td class="col-pdf" rowspan="3">Position in Class</td>
+                          <td class="col-pdf" rowspan="3">Pos.<Br>in Cls</td>
                       <% end %>
                      
 
@@ -567,7 +567,7 @@ end
 
                           <td>
                               <%#= sprintf( "%0.02f", total_mark) %>    
-                              <%= total_mark %>    
+                              <%= total_mark.to_i %>    
                           </td>
                           
 

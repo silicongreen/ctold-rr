@@ -161,8 +161,8 @@
                         <% end %>
                       <% end %>
                       <td style="display: none;">Letter<br/>Grade</td>
-                      <td>Grade<br/>Point</td>  
                       <td colspan="1">Total</td>
+                      <td>Grade<br/>Point</td>  
 
                   </tr>
                   <tr class="table-header">
@@ -209,8 +209,8 @@
                           <% end %>
                         <% end %>
                         <td style="display: none;">Letter<br/>Grade</td>
-                        <td>Grade<br/>Point</td>  
                         <td colspan="1">Total</td>
+                        <td>Grade<br/>Point</td>  
 
                       </tr>
                       <tr class="table-header">
@@ -247,8 +247,8 @@
                               <% end %>
                             <% end %>
                             <td style="display: none;">Letter<br/>Grade</td>
-                            <td>Grade<br/>Point</td>  
                             <td colspan="1">Total</td>
+                            <td>Grade<br/>Point</td>  
 
                         </tr>
                         <tr class="table-header">
@@ -285,7 +285,7 @@
 
                         
                         <% total_grade = 0 %>
-
+                        <% total_subject = 0 %>      
                         <% total_mark_1 = 0 %>
                         <% total_mark_2 = 0 %>
                         <% total_mark_3 = 0 %>
@@ -322,7 +322,7 @@
                             cq2_fullmark = 0
                             mcq2_fullmark = 0
                             pr2_fullmark = 0 
-                            total_subject = 0
+                            
                             %>
 
                             <% subject_full_mark = 0 %>
@@ -475,15 +475,22 @@
                                   <%= total_mark2 %>
 
                                </td>   
-                                  
+                               total_subject = total_subject + 1   
                             <% end %>
                           <% end %>   
                         <% end %> 
                         <td style="display: none;"></td>
-                        <td><%= total_grade %></td>    
                         <td>
                           <%= total_mark_1 %>
                         </td>
+                        <% grade_point_avg = 0 %>
+                        <% if total_grade > 0 && total_subject > 0 %>
+                            <% grade_point_avg = total_grade.to_f/total_subject.to_f %>
+                            <% if grade_point_avg > 5 %>
+                              <% grade_point_avg = 5.00 %>
+                            <% end %>  
+                        <% end %>  
+                        <td><%= grade_point_avg %></td>
                         <td style="display: none;">  
                            <%= total_mark_2 %>
                         </td>

@@ -388,6 +388,9 @@
                             <% main_mark3 = 0 %>
                             <% main_mark4 = 0 %>
                             <%
+                            if full_mark1 == 75
+                              full_mark1 = 100
+                            end
                             if full_mark1 > 0 && total_mark1 > 0
                               main_mark1 = (total_mark1.to_f/full_mark1.to_f)*100
                               main_mark1 = main_mark1.round
@@ -441,7 +444,7 @@
                                     -
                                   <% end %>
                                   <hr/>
-                                  <%= total_mark1 %> <%= main_mark1 %> <%= main_mark2 %> <%= full_mark1 %>
+                                  <%= total_mark1 %>
                                   <hr/>
                                   <%= current_grader %>
                                </td> 

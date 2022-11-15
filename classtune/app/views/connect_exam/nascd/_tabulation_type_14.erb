@@ -148,8 +148,9 @@
               <table id="pdf-table" width="100%" cellspacing="0">
                   <tr class="table-header">
                       
-                      <td class="col-pdf" rowspan="2">Roll</td>
-                      <td class="col-pdf" rowspan="2">Students Name</td>
+                      <td class="col-pdf">Roll</td>
+                      <td class="col-pdf">Students Name</td>
+                      <td class="col-pdf">Type</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -170,11 +171,11 @@
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
-                          <td>CQ/MCQ</td><td style="display: none;"></td><!-- Pret -->
+                          <!--td>CQ/MCQ</td><td style="display: none;"></td--><!-- Pret -->
                         <% end %>
                       <% end %>
 
-                      <td>CQ/MCQ</td><td style="display: none;"></td><!-- Pret -->
+                      <!--td>CQ/MCQ</td><td style="display: none;"></td--><!-- Pret -->
 
                   </tr>
 
@@ -194,8 +195,9 @@
                       </tr>  
                       <tr class="table-header">
                       
-                        <td class="col-pdf" rowspan="2">Roll</td>
-                        <td class="col-pdf" rowspan="2">Students Name</td>
+                        <td class="col-pdf">Roll</td>
+                        <td class="col-pdf">Students Name</td>
+                        <td class="col-pdf">Type</td>
                         <% @report_data['report']['subjects'].each do |sub| %>
                           <% has_exam = false %>
                           <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -216,11 +218,11 @@
                               <% has_exam = true %>
                             <% end %>
                             <% if has_exam == true %>
-                              <td>CQ/MCQ</td><td style="display: none;"></td><!-- Pret -->
+                              <!--td>CQ/MCQ</td><td style="display: none;"></td--><!-- Pret -->
                             <% end %>
                           <% end %>
 
-                          <td>CQ/MCQ</td><td style="display: none;"></td><!-- Pret -->
+                          <!--td>CQ/MCQ</td><td style="display: none;"></td--><!-- Pret -->
 
                       </tr>
                     <% elsif std_count>6 && extender ==1 %>
@@ -230,8 +232,9 @@
                           <td colspan="100">&nbsp;</td>
                       </tr> 
                        <tr class="table-header">
-                            <td class="col-pdf" rowspan="2">Roll</td>
-                            <td class="col-pdf" rowspan="2">Students Name</td>
+                            <td class="col-pdf">Roll</td>
+                            <td class="col-pdf">Students Name</td>
+                            <td class="col-pdf">Type</td>
                             <% @report_data['report']['subjects'].each do |sub| %>
                               <% has_exam = false %>
                               <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -252,11 +255,11 @@
                                 <% has_exam = true %>
                               <% end %>
                               <% if has_exam == true %>
-                                <td>CQ/MCQ</td><td style="display: none;"></td><!-- Pret -->
+                                <!--td>CQ/MCQ</td><td style="display: none;"></td--><!-- Pret -->
                               <% end %>
                             <% end %>
 
-                            <td>CQ/MCQ</td><td style="display: none;"></td><!-- Pret -->
+                            <!--td>CQ/MCQ</td><td style="display: none;"></td--><!-- Pret -->
 
                         </tr>
                     <% end %>    
@@ -273,7 +276,10 @@
                         <% else %>
                         <td class="name-std"><%= "-" %></td>
                         <% end %>
-                        
+                        <td>CQ</td>
+                        <td>MCQ</td>
+                        <td>Prac</td>
+                        <td>Total</td>
 
                         
 

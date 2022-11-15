@@ -289,7 +289,7 @@
                           CQ<hr/>MCQ<hr/>Prac<hr/>Total<hr/>Grade Point<hr/>Letter Grade
                         </td>
 
-                        
+                        <% failed_count = 0 %>
                         <% total_grade = 0 %>
                         <% total_subject = 0 %>      
                         <% total_mark_1 = 0 %>
@@ -328,7 +328,7 @@
                             cq2_fullmark = 0
                             mcq2_fullmark = 0
                             pr2_fullmark = 0 
-                            
+                            failed = false 
                             %>
 
                             <% subject_full_mark = 0 %>
@@ -434,14 +434,30 @@
                             <% if has_exam == true %>
                               <td>
                                   <% if cq1_fullmark > 0 %>
+                                    <% cq1_passmark = (cq1_fullmark / 2).to_i %>
+                                    <% if cq1 < cq1_passmark %>
+                                    <% failed = true %>
+                                    <% end %>
+                                    <% if failed %>
+                                    <span style="text-decoration: underline;"><%= cq1 %></span>
+                                    <% else %>
                                     <%= cq1 %>
+                                    <% end %>
                                   <% else %>
                                     -
                                   <% end %>
                                   <hr/>
                                
                                   <% if mcq1_fullmark > 0 %>
-                                    <%= mcq1 %>
+                                  <% mcq1_fullmark = (mcq1_fullmark / 2).to_i %>
+                                  <% if mcq1 < mcq1_fullmark %>
+                                  <% failed = true %>
+                                  <% end %>
+                                  <% if failed %>
+                                  <span style="text-decoration: underline;"><%= mcq1 %></span>
+                                  <% else %>
+                                  <%= mcq1 %>
+                                  <% end %>
                                   <% else %>
                                     -
                                   <% end %>
@@ -454,9 +470,15 @@
                                   <hr/>
                                   <%= total_mark1 %>
                                   <hr/>
+                                  <% if failed %>
+                                  <%= 'F' %>
+                                  <hr/>
+                                  <%= '0.0' %>
+                                  <% else %>
                                   <%= current_grader %>
                                   <hr/>
                                   <%= g_point %>
+                                  <% end %>
                                </td> 
                                <td style="display: none;">
                                   <% if cq2_fullmark > 0 %>

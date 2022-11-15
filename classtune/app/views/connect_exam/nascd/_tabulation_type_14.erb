@@ -409,6 +409,15 @@
                             end  
                             
                             %>
+                            <% total_mark_1 = total_mark_1+total_mark1.to_f %>
+                            <% total_mark_2= total_mark_2+total_mark2.to_f %>
+                            <% if full_mark1 > 0 %>
+                            <%  grade1 = GradingLevel.percentage_to_grade(main_mark1, @batch.id) %>
+                            <% end %>
+                            <% if !grade1.blank? and !grade1.name.blank? %>
+                            <% total_grade = total_grade + grade1.credit_points %>
+                            <% end %>
+                            <%  grade2 = GradingLevel.percentage_to_grade(main_mark2, @batch.id) %>
                             <% if has_exam == true %>
                               <td>
                                   <% if cq1_fullmark > 0 %>
@@ -431,7 +440,8 @@
                                   <% end %>
                                   <hr/>
                                   <%= total_mark1 %>
-
+                                  <hr/>
+                                  <%= total_grade %>
                                </td> 
                                <td style="display: none;">
                                   <% if cq2_fullmark > 0 %>
@@ -456,15 +466,7 @@
                                   <%= total_mark2 %>
 
                                </td>   
-                                  <% total_mark_1 = total_mark_1+total_mark1.to_f %>
-                                  <% total_mark_2= total_mark_2+total_mark2.to_f %>
-                                  <% if full_mark1 > 0 %>
-                                  <%  grade1 = GradingLevel.percentage_to_grade(main_mark1, @batch.id) %>
-                                  <% end %>
-                                  <% if !grade1.blank? and !grade1.name.blank? %>
-                                  <% total_grade = total_grade + grade1.credit_points %>
-                                  <% end %>
-                                  <%  grade2 = GradingLevel.percentage_to_grade(main_mark2, @batch.id) %>
+                                  
                             <% end %>
                           <% end %>   
                         <% end %> 

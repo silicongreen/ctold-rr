@@ -163,6 +163,7 @@
                       <td style="display: none;">Letter<br/>Grade</td>
                       <td colspan="1">Total</td>
                       <td>GPA</td>  
+                      <td>Letter <br />Grader</td>  
 
                   </tr>
                   <tr class="table-header">
@@ -188,7 +189,7 @@
                     <% if !std.blank? and !std['first_name'].blank? %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
-                    <% if std_count>5 && extender ==0 %>
+                    <% if std_count>4 && extender ==0 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break120">
@@ -211,6 +212,7 @@
                         <td style="display: none;">Letter<br/>Grade</td>
                         <td colspan="1">Total</td>
                         <td>GPA</td>
+                        <td>Letter <br />Grader</td>
 
                       </tr>
                       <tr class="table-header">
@@ -227,7 +229,7 @@
                           <!--td>CQ/MCQ</td><td style="display: none;"></td--><!-- Pret -->
 
                       </tr>
-                    <% elsif std_count>6 && extender ==1 %>
+                    <% elsif std_count>4 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break25">
@@ -249,6 +251,7 @@
                             <td style="display: none;">Letter<br/>Grade</td>
                             <td colspan="1">Total</td>
                             <td>GPA</td>
+                            <td>Letter <br />Grader</td>
 
                         </tr>
                         <tr class="table-header">
@@ -490,6 +493,11 @@
                               <% grade_point_avg = 5.00 %>
                             <% end %>  
                         <% end %>  
+                        <% if total_mark_1 > 0 && total_subject > 0 %>
+                            <% avg_mark = total_mark_1.to_f/total_subject.to_f %>
+                            <% c_grade = GradingLevel.percentage_to_grade(avg_mark, @batch.id) %>
+                        <% end %>  
+                        <td><% if !c_grade.blank? and !c_grade.name.blank? %><%= c_grade.name %> <%= c_grade.credit_points %><% end %></td>
                         <td><%= sprintf( "%0.02f", grade_point_avg) %></td>
                         <td style="display: none;">  
                            <%= total_mark_2 %>

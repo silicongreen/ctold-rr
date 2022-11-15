@@ -414,8 +414,10 @@
                             <% if full_mark1 > 0 %>
                             <%  grade1 = GradingLevel.percentage_to_grade(main_mark1, @batch.id) %>
                             <% end %>
+                            <% current_grader = 0 %>
                             <% if !grade1.blank? and !grade1.name.blank? %>
                             <% total_grade = total_grade + grade1.credit_points %>
+                            <% current_grader = grade1.credit_points %>
                             <% end %>
                             <%  grade2 = GradingLevel.percentage_to_grade(main_mark2, @batch.id) %>
                             <% if has_exam == true %>
@@ -441,7 +443,7 @@
                                   <hr/>
                                   <%= total_mark1 %>
                                   <hr/>
-                                  <%= total_grade %>
+                                  <%= current_grader %>
                                </td> 
                                <td style="display: none;">
                                   <% if cq2_fullmark > 0 %>

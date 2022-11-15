@@ -158,7 +158,6 @@
                         <% end %>
                         <% if has_exam == true %>
                           <td  colspan="1"><%=  sub['code'] %></td>
-                          <td  colspan="1">Letter <br/>Grade</td>
                         <% end %>
                       <% end %>
                       <td style="display: none;">Letter<br/>Grade</td>
@@ -207,7 +206,6 @@
                           <% end %>
                           <% if has_exam == true %>
                             <td  colspan="1"><%=  sub['code'] %></td>
-                            <td  colspan="1">Letter <br/>Grade</td>
                           <% end %>
                         <% end %>
                         <td style="display: none;">Letter<br/>Grade</td>
@@ -246,7 +244,6 @@
                               <% end %>
                               <% if has_exam == true %>
                                 <td  colspan="1"><%=  sub['code'] %></td>
-                                <td  colspan="1">Letter <br/>Grade</td>
                               <% end %>
                             <% end %>
                             <td style="display: none;">Letter<br/>Grade</td>
@@ -450,15 +447,6 @@
                                   <% end %>
                                   <hr/>
                                   <%= total_mark1 %>
-                               </td> 
-                               <td>
-                                   -
-                                  <hr/>
-                                   -
-                                  <hr/>
-                                   -
-                                  <hr/>
-                                  <%= current_grader %> <%= g_point %>
                                </td> 
                                <td style="display: none;">
                                   <% if cq2_fullmark > 0 %>

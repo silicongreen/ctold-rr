@@ -160,7 +160,7 @@
                           <td  colspan="1"><%=  sub['code'] %></td>
                         <% end %>
                       <% end %>
-                      <td>Letter<br/>Grade</td>
+                      <td style="display: none;">Letter<br/>Grade</td>
                       <td>Grade<br/>Point</td>  
                       <td colspan="1">Total</td>
 
@@ -208,7 +208,7 @@
                             <td  colspan="1"><%=  sub['code'] %></td>
                           <% end %>
                         <% end %>
-                        <td>Letter<br/>Grade</td>
+                        <td style="display: none;">Letter<br/>Grade</td>
                         <td>Grade<br/>Point</td>  
                         <td colspan="1">Total</td>
 
@@ -246,7 +246,7 @@
                                 <td  colspan="1"><%=  sub['code'] %></td>
                               <% end %>
                             <% end %>
-                            <td>Letter<br/>Grade</td>
+                            <td style="display: none;">Letter<br/>Grade</td>
                             <td>Grade<br/>Point</td>  
                             <td colspan="1">Total</td>
 
@@ -321,7 +321,8 @@
                             cq2_fullmark = 0
                             mcq2_fullmark = 0
                             pr2_fullmark = 0 
-                            
+                            total_grade = 0
+                            total_subject = 0
                             %>
 
                             <% subject_full_mark = 0 %>
@@ -458,15 +459,15 @@
                                   <% total_mark_1 = total_mark_1+total_mark1.to_f %>
                                   <% total_mark_2= total_mark_2+total_mark2.to_f %>
                                   <%  grade1 = GradingLevel.percentage_to_grade(main_mark1, @batch.id) %>
+                                  <% if !grade1.blank? and !grade1.name.blank? %>
+                                  <% total_grade = total_grade + grade1.credit_points %>
+                                  <% end %>
                                   <%  grade2 = GradingLevel.percentage_to_grade(main_mark2, @batch.id) %>
                             <% end %>
                           <% end %>   
                         <% end %> 
-                        <%
-                        grade = GradingLevel.percentage_to_grade(total_mark_1, @batch.id)
-                        %>      
-                        <td><% if !grade.blank? and !grade.name.blank? %><%= grade.name %><% end %></td>
-                        <td><% if !grade.blank? and !grade.name.blank? %><%= grade.credit_points %><% end %></td>    
+                        <td style="display: none;"></td>
+                        <td><%= total_grade %><% end %></td>    
                         <td>
                           <%= total_mark_1 %>
                         </td>

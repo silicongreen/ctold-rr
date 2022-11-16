@@ -19,7 +19,7 @@
                   <% c = 'even'  %>
 
                   <tr class="table-header">
-                      <td colspan='8'><b>Subject Wise Grade Sheet<%#= @connect_exam_obj.name %></b></td>
+                      <td colspan='9'><b>Subject Wise Grade Sheet<%#= @connect_exam_obj.name %></b></td>
                   </tr>
                   <tr class="table-header">
                       <td class="col-pdf no-warp"><b><%= "Subject" %></b></td>
@@ -349,7 +349,7 @@
                       <td><b>Total Marks<!--, Grade and GPA--></b></td>   
                       <td><b><%= full_mark %></b></td>
                       <td colspan="<%= colspan_exam-1 %>">Score</td>
-                      <td><b><%= total_mark %></b></td>
+                      <td><b><%= total_mark %></b>
                       <td><b><%= "Grade" %></b></td>
                               <% if !grade.blank? and !grade.name.blank? %>
                                 <% if failed == true %>

@@ -163,10 +163,8 @@
                                     <% else %>
                                       <% if report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 15 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 5 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 20 %>
                                       <td class="col-pdf no-warp"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %> / <%= report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f %></td>
-                                      <% elsif report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == 10 %>
-                                      <td class="col-pdf no-warp"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %> / <%= report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f %></td>
                                       <% else %>
-                                      <td class="col-pdf no-warp"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f / <%= report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f %></td>
+                                      <td class="col-pdf no-warp"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %> / <%= report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f %></td>
                                       <% end %>    
                                     <% end %>  
                                 <%  

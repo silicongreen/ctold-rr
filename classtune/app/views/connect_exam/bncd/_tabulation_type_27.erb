@@ -517,7 +517,10 @@ end
                             <% end %> 
                             <%
                               subject_obtain_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100
-                              subject_obtain_mark = subject_obtain_mark.round()
+                              subject_obtain_mark = subject_obtain_mark.to_i
+                              if subject_obtain_mark.to_i > 0
+                                subject_obtain_mark = subject_obtain_mark.round()
+                              end
                             %>
                             <td>
                                 <%= subject_obtain_mark.to_i %>    

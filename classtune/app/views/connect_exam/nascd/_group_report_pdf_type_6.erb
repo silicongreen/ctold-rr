@@ -19,7 +19,7 @@
                   <% c = 'even'  %>
 
                   <tr class="table-header">
-                      <td colspan='9'><b>Subject Wise Grade Sheet<%#= @connect_exam_obj.name %></b></td>
+                      <td colspan='10'><b>Subject Wise Grade Sheet<%#= @connect_exam_obj.name %></b></td>
                   </tr>
                   <tr class="table-header">
                       <td class="col-pdf no-warp"><b><%= "Subject" %></b></td>
@@ -83,6 +83,7 @@
                           <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>
                           <% max_mark = 0 %>
                           <% obtain_mark = 0 %>
+                          <% full_m = 0 %>
                           <% unless @report_data['report']['exams'].blank? %>
                             <% @report_data['report']['exams'].each do |report| %>
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
@@ -124,6 +125,7 @@
                                 <% end %>   
                                 <td class="col-pdf <%= failed_class%>"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %></td>
                                 <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                <% full_m = full_m+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f %>
                                  
                               <% else %>
                                 <td class="col-pdf">-</td>
@@ -154,7 +156,7 @@
                           <% end %>
                           <% else %>
                           <% if @batch.course.course_name.upcase == "XI" %>
-                          <td class="col-pdf"><%= "100" %></td>
+                          <td class="col-pdf"><%= full_m %></td>
                           <% end %>
                           <td class="col-pdf"><%= obtain_mark %></td>
                           <% end %>
@@ -360,7 +362,7 @@
                       <td><b><%= full_mark %></b></td>
                       <td colspan="<%= colspan_exam-1 %>">Score</td>
                       <td><b><%= total_mark %></b>
-                      <td colspan="2"><b><%= "Grade" %></b>
+                      <td colspan="3"><b><%= "Grade" %></b>
                               <% if !grade.blank? and !grade.name.blank? %>
                                 <% if failed == true %>
                                     F

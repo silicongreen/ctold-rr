@@ -35,7 +35,12 @@
                       <td class="col-pdf no-warp" style="display: none;"><b><%= "Subject Total <br />(P1 + P2)" %></b></td>
                       <td class="col-pdf no-warp" style="display: none;"><b><%= "Percentage(%)" %></b></td>
                       <% else %>
+                      <% if @batch.course.course_name.upcase == "XI" %>
+                      <td class="col-pdf no-warp"><b><%= "Total Marks" %></b></td>
+                      <td class="col-pdf no-warp"><b><%= "Obtained Mark" %></b></td>
+                      <% else %>
                       <td class="col-pdf no-warp"><b><%= "Subject Total" %></b></td>
+                      <% end %>
                       <% end %>
                       <td class="col-pdf no-warp" colspan="2"><b><%= "Letter Grade" %></b></td>
                       <% if @batch.course.course_name.upcase == "XII" %>
@@ -117,6 +122,9 @@
                                     end
                                     %>
                                 <% end %>   
+                                <% if @batch.course.course_name.upcase == "XI" %>
+                                <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %></td>
+                                <% end %>
                                 <td class="col-pdf <%= failed_class%>"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %></td>
                                 <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                  
@@ -254,11 +262,13 @@
                                     end
                                     main_mark = main_mark.round()
                                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                                    if !grade.blank? and !grade.name.blank? 
-                                          if grade.credit_points.to_i == 0
-                                            subject_failed = true
-                                            failed_class = "underscore" 
-                                          end
+                                    if @batch.course.course_name.upcase != "XI"
+                                      if !grade.blank? and !grade.name.blank? 
+                                            if grade.credit_points.to_i == 0
+                                              subject_failed = true
+                                              failed_class = "underscore" 
+                                            end
+                                      end
                                     end
                                     %>
                                 <% end %>   

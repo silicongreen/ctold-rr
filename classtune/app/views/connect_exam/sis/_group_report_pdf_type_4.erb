@@ -338,7 +338,7 @@
               <% if (@batch.course.course_name == "VI" or @batch.course.course_name == "VII" or @batch.course.course_name == "STD-VI" or @batch.course.course_name == "STD-VII") and @covid_main == 0 %>
               <table id="pdf-table" width="48%" class="left-table even-table signature" cellspacing="0">
                 <tr class="even">
-                    <td class="small-height"><b>Signature of Class Teacher</b></td>
+                    <td class="small-height"><b>Signature of Principal</b></td>
                 </tr> 
                 <tr class="even">
                    <td></td>
@@ -356,7 +356,7 @@
               <table id="pdf-table" width="100%" class="left-table even-table signature" cellspacing="0">
                 <tr class="even">
                     <% if @covid_main == 0 %>
-                    <td class="small-height"><b>Class Teacher's Signature</b></td>
+                    <td class="small-height"><b>Principal's Signature</b></td>
                     <% end %>
                     <td class="small-height"><b>Section In-Charge</b></td>
                     <% if @covid_main == 0 %>
@@ -365,7 +365,7 @@
                 </tr> 
                 <tr class="even">
                    <% if @covid_main == 0 %>
-                   <td></td>
+                   <td><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/sign.png")), :width=>"50%" %></td>
                    <% end %>
                    <td>
                    <% if @covid_main == 1 %>

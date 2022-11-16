@@ -517,9 +517,10 @@ end
                             <% end %> 
                             <%
                               subject_obtain_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100
-                              unless subject_obtain_mark.to_f.nan?
-                                subject_obtain_mark = subject_obtain_mark.round()
+                              if subject_obtain_mark.to_f.nan?
+                                subject_obtain_mark = 0  
                               end
+                              subject_obtain_mark = subject_obtain_mark.round()
                             %>
                             <td>
                                 <% unless subject_obtain_mark.to_f.nan? %>

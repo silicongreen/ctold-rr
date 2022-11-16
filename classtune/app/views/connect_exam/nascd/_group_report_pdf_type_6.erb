@@ -122,9 +122,6 @@
                                     end
                                     %>
                                 <% end %>   
-                                <% if @batch.course.course_name.upcase == "XI" %>
-                                <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %></td>
-                                <% end %>
                                 <td class="col-pdf <%= failed_class%>"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %></td>
                                 <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                  
@@ -156,6 +153,9 @@
                           <td class="col-pdf" style="border-bottom: 1px solid #fff;display: none;"></td>
                           <% end %>
                           <% else %>
+                          <% if @batch.course.course_name.upcase == "XI" %>
+                          <td class="col-pdf"><%= "100" %></td>
+                          <% end %>
                           <td class="col-pdf"><%= obtain_mark %></td>
                           <% end %>
                           <% pos = pos + 1 %>  

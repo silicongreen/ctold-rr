@@ -156,7 +156,7 @@
                           <% end %>
                           <% else %>
                           <% if @batch.course.course_name.upcase == "XI" %>
-                          <td class="col-pdf"><%= full_m %></td>
+                          <td class="col-pdf"><%= full_m.to_i %></td>
                           <% end %>
                           <td class="col-pdf"><%= obtain_mark %></td>
                           <% end %>
@@ -214,7 +214,7 @@
                   </tr-->
 
                   <tr class="even">
-                      <td colspan="<%= colspan_exam+4 + 1 %>">Optional Subject</td>
+                      <td colspan="<%= colspan_exam+4 + 2 %>">Optional Subject</td>
                   </tr>
                   <% pos = 1 %> 
                   <% mark_subject = 0 %> 

@@ -523,9 +523,7 @@ end
                               subject_obtain_mark = subject_obtain_mark.round()
                             %>
                             <td>
-                                <% unless subject_obtain_mark.to_f.nan? %>
                                 <%= subject_obtain_mark.to_i %>    
-                                <% end %>
                             </td>
                             <% if sub['grade_subject'].to_i != 1 %>
                               <% total_mark = total_mark+subject_obtain_mark.to_f %>

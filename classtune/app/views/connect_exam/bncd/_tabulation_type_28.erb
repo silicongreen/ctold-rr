@@ -191,7 +191,7 @@ end
                       <td class="col-pdf" rowspan="3">G. Tot</td>
                        <td class="col-pdf" rowspan="3">Tot GP</td>
                       <td class="col-pdf" rowspan="3">GPA</td>
-                      <td class="col-pdf" rowspan="3">Remarks</td>
+                      <td class="col-pdf" rowspan="3">Rem.</td>
                       <td class="col-pdf" rowspan="3" style="display: none;">Pos.<Br>in Sec</td>
                       <% if class_type == 3 %>
                           <td class="col-pdf" rowspan="3" style="display: none;">Pos.<Br>in Grp</td>
@@ -291,7 +291,7 @@ end
                       <td class="col-pdf" rowspan="3">G. Total</td>
                        <td class="col-pdf" rowspan="3">Total GP</td>
                       <td class="col-pdf" rowspan="3">GPA</td>
-                      <td class="col-pdf" rowspan="3">Remarks</td>
+                      <td class="col-pdf" rowspan="3">Rem.</td>
                       <td class="col-pdf" rowspan="3" style="display: none;">Position in Section</td>
                       <td class="col-pdf" rowspan="3" style="display: none;">Position in Class</td>
                      
@@ -375,7 +375,7 @@ end
                       <td class="col-pdf" rowspan="3">G. Total</td>
                        <td class="col-pdf" rowspan="3">Total GP</td>
                       <td class="col-pdf" rowspan="3">GPA</td>
-                      <td class="col-pdf" rowspan="3">Remarks</td>
+                      <td class="col-pdf" rowspan="3">Rem.</td>
                       <td class="col-pdf" rowspan="3" style="display: none;">Position in Section</td>
                       <td class="col-pdf" rowspan="3" style="display: none;">Position in Class</td>
                      
@@ -591,9 +591,9 @@ end
                           </td> 
                           <td>
                             <% if !@student_position_batch[std['id'].to_i].blank? %> 
-                              Passed
+                              Pass
                             <% else %>
-                              Failed
+                              Fail
                             <% end %>
                           </td> 
                           <td style="display: none;">

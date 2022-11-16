@@ -108,9 +108,9 @@
                                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                                     if !grade.blank? and !grade.name.blank? 
                                           if grade.credit_points.to_i == 0
-                                            subject_failed = true
-                                            failed = true
-                                            failed_class = "underscore" 
+                                            #subject_failed = true
+                                            #failed = true
+                                            #failed_class = "underscore" 
                                           end
                                     end
                                     %>

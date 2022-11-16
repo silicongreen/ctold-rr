@@ -506,7 +506,7 @@ end
                               
                             %>
                             <td>
-                                <%= subject_obtain_mark.to_i %>    
+                                <%= subject_obtain_mark.to_i %> A   
                             </td>
                             
                             <% if sub['grade_subject'].to_i != 1 %>
@@ -575,7 +575,7 @@ end
                           
 
                           <td>
-                              <%= sprintf( "%0.02f", total_grade) %> A
+                              <%= sprintf( "%0.02f", total_grade) %>
                           </td>
                           <% grade_point_avg = 0.00 %>
                           <% if total_grade > 0 && subject_count > 0 %>

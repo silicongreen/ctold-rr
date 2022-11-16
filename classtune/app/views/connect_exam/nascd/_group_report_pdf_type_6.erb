@@ -350,7 +350,7 @@
                       <td><b><%= full_mark %></b></td>
                       <td colspan="<%= colspan_exam-1 %>">Score</td>
                       <td><b><%= total_mark %></b>
-                      <td><b><%= "Grade" %></b></td>
+                      <td colspan="2"><b><%= "Grade" %></b>
                               <% if !grade.blank? and !grade.name.blank? %>
                                 <% if failed == true %>
                                     F

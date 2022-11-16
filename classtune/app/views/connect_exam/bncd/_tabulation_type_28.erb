@@ -506,7 +506,7 @@ end
                               
                             %>
                             <td>
-                                <%= subject_obtain_mark.to_i %> A   
+                                <%= subject_obtain_mark.to_i %>   
                             </td>
                             
                             <% if sub['grade_subject'].to_i != 1 %>
@@ -546,9 +546,9 @@ end
                                 <% end %>
                               <% end %>
 
-                              <td>
+                              <td><%= sprintf( "%0.01f", grade.credit_points.to_f) %> 
                                 <% if double_subject_start == false || count_grade == true %>
-                                  <%= sprintf( "%0.01f", grade.credit_points.to_f) %> 
+                                  
                                   <%
                                     double_subject_start = false
                                     count_grade = false 

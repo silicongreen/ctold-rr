@@ -7,7 +7,7 @@
                   </tr>
                   <tr class="even">
                       <td class="col-pdf" rowspan="2"><b><%= "Subject" %></b></td>
-                      <td colspan="<%= total_exam_continues %>"><b>Continuous Assessment (Out of <%= total_mark_continues%>)</b></td>
+                      <td colspan=""><b>Continuous Assessment (Out of <%= total_mark_continues%>)</b></td>
                       <% @report_data['report']['exams'].each do |report| %>
                         <% if report['exam_category'] != '1' %>
                             <td class="col-pdf" rowspan="2"><b><%= report['exam_name'] %><br/>

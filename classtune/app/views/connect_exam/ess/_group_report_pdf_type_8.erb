@@ -150,12 +150,12 @@
                                 end
                             end
                        end  
-                       #if has_mark == 0
-                       # next
-                       #end
-                       if has_na
+                       if has_mark == 0
                         next
                        end
+                       #if has_na
+                       # next
+                       #end
                   
                     %>
                      
@@ -243,6 +243,13 @@
                       <%  if @all_subjects.include?(report['id'].to_i) %>
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                             <td class="col-pdf no-warp  align-left"><%= report['subject_name'] %></td>
+                            <%
+                            if !report['subject_comment'].blank?
+                              if report['subject_comment'] == "A+"
+                                report['subject_comment'] = "A*"
+                              end
+                            end
+                            %>
                             <td class="col-pdf" colspan="<%= total_exam+2 %>"><b><% if !report['subject_comment'].blank? && (report['subject_comment'] == "A*" || report['subject_comment'] == "A+") %>&nbsp;<% end %><%= report['subject_comment'] unless report['subject_comment'].blank? %></b></td>
                         </tr>
                       <% end %>

@@ -129,10 +129,23 @@
                     <% @report_data['report']['subjects'].each do |subjects| %>
                     <%
                       has_mark = 0
+                      has_na = false
                        unless @report_data['report']['exams'].blank?   
                             @report_data['report']['exams'].each do |report| 
                              
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
+                                  if report['result'][report['exam_id']][subjects['id']]['marks_obtained'] == 'N/A' 
+                                    has_na = true
+                                  end
+                                  if report['result'][report['exam_id']][subjects['id']]['marks_obtained'] == 'n/a' 
+                                    has_na = true
+                                  end
+                                  if report['result'][report['exam_id']][subjects['id']]['marks_obtained'] == 'NA' 
+                                    has_na = true
+                                  end
+                                  if report['result'][report['exam_id']][subjects['id']]['marks_obtained'] == 'na' 
+                                    has_na = true
+                                  end
                                   has_mark = has_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                 end
                             end
@@ -140,6 +153,9 @@
                        #if has_mark == 0
                        # next
                        #end
+                       if has_na
+                        next
+                       end
                   
                     %>
                      

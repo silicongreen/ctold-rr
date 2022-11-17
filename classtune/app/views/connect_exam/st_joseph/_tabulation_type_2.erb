@@ -63,6 +63,9 @@
               @subjective_marks = {}
               @objective_marks = {}
               @practical_marks = {}
+              @subjective_total_marks = {}
+              @objective_total_marks = {}
+              @practical_total_marks = {}
               
               
 
@@ -80,21 +83,33 @@
                     if @subjective_marks[exam.subject_id.to_i].nil?
                         @subjective_marks[exam.subject_id.to_i] = 0
                     end
-                    @subjective_marks[exam.subject_id.to_i] += exam.maximum_marks.to_i
+                    if @subjective_total_marks[exam.subject_id.to_i].nil?
+                        @subjective_total_marks[exam.subject_id.to_i] = 0
+                    end
+                    @subjective_total_marks[exam.subject_id.to_i] += exam.maximum_marks.to_i
+                    @subjective_marks[exam.subject_id.to_i] = exam.maximum_marks.to_i
                   end 
                   
                   unless exam.exam_group.name.downcase.index('obj').nil?
                     if @objective_marks[exam.subject_id.to_i].nil?
                         @objective_marks[exam.subject_id.to_i] = 0
                     end
+                    if @objective_total_marks[exam.subject_id.to_i].nil?
+                        @objective_total_marks[exam.subject_id.to_i] = 0
+                    end
                     @objective_marks[exam.subject_id.to_i] = exam.maximum_marks.to_i
+                    @objective_total_marks[exam.subject_id.to_i] += exam.maximum_marks.to_i
                   end
                   
                   unless exam.exam_group.name.downcase.index('prac').nil?
                     if @practical_marks[exam.subject_id.to_i].nil?
                         @practical_marks[exam.subject_id.to_i] = 0
                     end
+                    if @practical_total_marks[exam.subject_id.to_i].nil?
+                        @practical_total_marks[exam.subject_id.to_i] = 0
+                    end
                     @practical_marks[exam.subject_id.to_i] = exam.maximum_marks.to_i
+                    @practical_total_marks[exam.subject_id.to_i] += exam.maximum_marks.to_i
                   end
                   
                 end  
@@ -330,7 +345,7 @@
                                    Sub
                                    <% unless @subjective_marks[sub['id'].to_i].nil? %>
                                       <hr/>
-                                      <%= @subjective_marks[sub['id'].to_i] %>
+                                      <%= @subjective_total_marks[sub['id'].to_i] %>
                                       <hr/>
                                       <% if @subjective_marks[sub['id'].to_i].to_i == 100 %>
                                         <% pass_mark = 45*@top_exam_group_count %>
@@ -356,7 +371,7 @@
                                 Obj
                                 <% unless @objective_marks[sub['id'].to_i].nil? %>
                                     <hr/>
-                                    <%= @objective_marks[sub['id'].to_i] %>
+                                    <%= @objective_total_marks[sub['id'].to_i] %>
                                     <hr/>
                                     <% if @objective_marks[sub['id'].to_i].to_i == 30 %>
                                       <% pass_mark = 14*@top_exam_group_count %>
@@ -376,7 +391,7 @@
                                 Prac
                                 <% unless @practical_marks[sub['id'].to_i].nil? %>
                                     <hr/>
-                                    <%= @practical_marks[sub['id'].to_i] %>
+                                    <%= @practical_total_marks[sub['id'].to_i] %>
                                     <hr/>
                                     <% pass_mark = 11*@top_exam_group_count %>
                                     <%= "P-"+pass_mark.to_s  %>
@@ -417,7 +432,7 @@
                                    Sub
                                    <% unless @subjective_marks[sub['id'].to_i].nil? %>
                                       <hr/>
-                                      <%= @subjective_marks[sub['id'].to_i] %>
+                                      <%= @subjective_total_marks[sub['id'].to_i] %>
                                       <hr/>
                                       <% if @subjective_marks[sub['id'].to_i].to_i == 100 %>
                                         <% pass_mark = 45*@top_exam_group_count %>
@@ -443,7 +458,7 @@
                                 Obj
                                 <% unless @objective_marks[sub['id'].to_i].nil? %>
                                     <hr/>
-                                    <%= @objective_marks[sub['id'].to_i] %>
+                                    <%= @objective_total_marks[sub['id'].to_i] %>
                                     <hr/>
                                     <% if @objective_marks[sub['id'].to_i].to_i == 30 %>
                                       <% pass_mark = 14*@top_exam_group_count %>
@@ -463,7 +478,7 @@
                                 Prac
                                 <% unless @practical_marks[sub['id'].to_i].nil? %>
                                     <hr/>
-                                    <%= @practical_marks[sub['id'].to_i] %>
+                                    <%= @practical_total_marks[sub['id'].to_i] %>
                                     <hr/>
                                     <% pass_mark = 11*@top_exam_group_count %>
                                     <%= "P-"+pass_mark.to_s  %>
@@ -523,7 +538,7 @@
                                    Sub
                                    <% unless @subjective_marks[sub['id'].to_i].nil? %>
                                       <hr/>
-                                      <%= @subjective_marks[sub['id'].to_i] %>
+                                      <%= @subjective_total_marks[sub['id'].to_i] %>
                                       <hr/>
                                       <% if @subjective_marks[sub['id'].to_i].to_i == 100 %>
                                         <% pass_mark = 45*@top_exam_group_count %>
@@ -549,7 +564,7 @@
                                 Obj
                                 <% unless @objective_marks[sub['id'].to_i].nil? %>
                                     <hr/>
-                                    <%= @objective_marks[sub['id'].to_i] %>
+                                    <%= @objective_total_marks[sub['id'].to_i] %>
                                     <hr/>
                                     <% if @objective_marks[sub['id'].to_i].to_i == 30 %>
                                       <% pass_mark = 14*@top_exam_group_count %>
@@ -569,7 +584,7 @@
                                 Prac
                                 <% unless @practical_marks[sub['id'].to_i].nil? %>
                                     <hr/>
-                                    <%= @practical_marks[sub['id'].to_i] %>
+                                    <%= @practical_total_marks[sub['id'].to_i] %>
                                     <hr/>
                                     <% pass_mark = 11*@top_exam_group_count %>
                                     <%= "P-"+pass_mark.to_s  %>
@@ -610,7 +625,7 @@
                                    Sub
                                    <% unless @subjective_marks[sub['id'].to_i].nil? %>
                                       <hr/>
-                                      <%= @subjective_marks[sub['id'].to_i] %>
+                                      <%= @subjective_total_marks[sub['id'].to_i] %>
                                       <hr/>
                                       <% if @subjective_marks[sub['id'].to_i].to_i == 100 %>
                                         <% pass_mark = 45*@top_exam_group_count %>
@@ -636,7 +651,7 @@
                                 Obj
                                 <% unless @objective_marks[sub['id'].to_i].nil? %>
                                     <hr/>
-                                    <%= @objective_marks[sub['id'].to_i] %>
+                                    <%= @objective_total_marks[sub['id'].to_i] %>
                                     <hr/>
                                     <% if @objective_marks[sub['id'].to_i].to_i == 30 %>
                                       <% pass_mark = 14*@top_exam_group_count %>
@@ -656,7 +671,7 @@
                                 Prac
                                 <% unless @practical_marks[sub['id'].to_i].nil? %>
                                     <hr/>
-                                    <%= @practical_marks[sub['id'].to_i] %>
+                                    <%= @practical_total_marks[sub['id'].to_i] %>
                                     <hr/>
                                     <% pass_mark = 11*@top_exam_group_count %>
                                     <%= "P-"+pass_mark.to_s  %>
@@ -708,7 +723,7 @@
                                    Sub
                                    <% unless @subjective_marks[sub['id'].to_i].nil? %>
                                       <hr/>
-                                      <%= @subjective_marks[sub['id'].to_i] %>
+                                      <%= @subjective_total_marks[sub['id'].to_i] %>
                                       <hr/>
                                       <% if @subjective_marks[sub['id'].to_i].to_i == 100 %>
                                         <% pass_mark = 45*@top_exam_group_count %>
@@ -734,7 +749,7 @@
                                 Obj
                                 <% unless @objective_marks[sub['id'].to_i].nil? %>
                                     <hr/>
-                                    <%= @objective_marks[sub['id'].to_i] %>
+                                    <%= @objective_total_marks[sub['id'].to_i] %>
                                     <hr/>
                                     <% if @objective_marks[sub['id'].to_i].to_i == 30 %>
                                       <% pass_mark = 14*@top_exam_group_count %>
@@ -754,7 +769,7 @@
                                 Prac
                                 <% unless @practical_marks[sub['id'].to_i].nil? %>
                                     <hr/>
-                                    <%= @practical_marks[sub['id'].to_i] %>
+                                    <%= @practical_total_marks[sub['id'].to_i] %>
                                     <hr/>
                                     <% pass_mark = 11*@top_exam_group_count %>
                                     <%= "P-"+pass_mark.to_s  %>
@@ -795,7 +810,7 @@
                                    Sub
                                    <% unless @subjective_marks[sub['id'].to_i].nil? %>
                                       <hr/>
-                                      <%= @subjective_marks[sub['id'].to_i] %>
+                                      <%= @subjective_total_marks[sub['id'].to_i] %>
                                       <hr/>
                                       <% if @subjective_marks[sub['id'].to_i].to_i == 100 %>
                                         <% pass_mark = 45*@top_exam_group_count %>
@@ -821,7 +836,7 @@
                                 Obj
                                 <% unless @objective_marks[sub['id'].to_i].nil? %>
                                     <hr/>
-                                    <%= @objective_marks[sub['id'].to_i] %>
+                                    <%= @objective_total_marks[sub['id'].to_i] %>
                                     <hr/>
                                     <% if @objective_marks[sub['id'].to_i].to_i == 30 %>
                                       <% pass_mark = 14*@top_exam_group_count %>
@@ -841,7 +856,7 @@
                                 Prac
                                 <% unless @practical_marks[sub['id'].to_i].nil? %>
                                     <hr/>
-                                    <%= @practical_marks[sub['id'].to_i] %>
+                                    <%= @practical_total_marks[sub['id'].to_i] %>
                                     <hr/>
                                     <% pass_mark = 11*@top_exam_group_count %>
                                     <%= "P-"+pass_mark.to_s  %>

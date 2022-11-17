@@ -80,7 +80,7 @@
                     if @subjective_marks[exam.subject_id.to_i].nil?
                         @subjective_marks[exam.subject_id.to_i] = 0
                     end
-                    @subjective_marks[exam.subject_id.to_i] = exam.maximum_marks.to_i
+                    @subjective_marks[exam.subject_id.to_i] += exam.maximum_marks.to_i
                   end 
                   
                   unless exam.exam_group.name.downcase.index('obj').nil?

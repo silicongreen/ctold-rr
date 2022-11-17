@@ -66,6 +66,7 @@
                     
                       <% colspan = 0 %>
                       <% @report_data['report']['exams'].each do |report| %>
+                        <%= report['exam_category'] + ' catr ' %>
                           <% if report['exam_category'] == '1' %>
                             <% has_mid = true %>
                             <% colspan = colspan+1 %> 

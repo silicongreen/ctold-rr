@@ -62,7 +62,7 @@
                       <td class="col-pdf" rowspan="2">
                           <b>Sl.</b>
                       </td>
-                      <td class="col-pdf no-warp  align-left-baf" rowspan="2"><b><%= "Subjects" %></b></td>
+                      <td class="col-pdf no-warp  align-left-baf" rowspan="2"><b><%= "Subjects" %> <%= @batch.course.course_name %></b></td>
                     
                       <% colspan = 0 %>
                       <% @report_data['report']['exams'].each do |report| %>

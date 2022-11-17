@@ -46,7 +46,7 @@
         has_sb = false
         has_ob = false
         has_pr = false
-
+        has_mid = false        
       %>
       <div class="grade_information">
           <%= render  :partial=>"/connect_exam/bncd/gradding_level" %>
@@ -66,6 +66,10 @@
                     
                       <% colspan = 0 %>
                       <% @report_data['report']['exams'].each do |report| %>
+                          <% if report['exam_category'] == '1' %>
+                            <% has_mid = true %>
+                            <% colspan = colspan+1 %> 
+                          <% end %>
                           <% if report['exam_category'] == '3' %>
                             <% has_sb = true %>
                             <% colspan = colspan+1 %> 
@@ -80,6 +84,9 @@
                           <% end %>
                       <% end %>
                       <% colspan = colspan+1 %> 
+                      <% if has_mid == true %>
+                            <td class="col-pdf" rowspan="2"><b>Mid</b></td>
+                      <% end %> 
                       <td class="col-pdf" colspan="<%= colspan %>" rowspan="1"><b>Examination</b></td>
                       <td class="col-pdf" rowspan="2"><b>Total Marks (100%)</b></td>
                       <td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
@@ -87,7 +94,7 @@
                       
                   </tr>
                   <tr class="even header-shade">
-                      <% if has_ob == true %>
+                       <% if has_ob == true %>
                             <td rowspan="1"><b>CQ</b></td>
                       <% end %> 
                       <% if has_sb == true %>

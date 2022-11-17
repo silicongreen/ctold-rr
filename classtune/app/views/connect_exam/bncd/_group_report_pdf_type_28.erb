@@ -69,7 +69,6 @@
                       <% @report_data['report']['exams'].each do |report| %>
                           <% if report['exam_category'] == '3' && report['quarter'] == '1' %>
                             <% has_mid = true %>
-                            <% colspan = colspan+1 %> 
                           <% end %>
                           <% if report['exam_category'] == '3' && report['quarter'] == '3' %>
                             <% has_sb = true %>

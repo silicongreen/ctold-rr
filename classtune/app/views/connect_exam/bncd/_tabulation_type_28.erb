@@ -168,9 +168,9 @@ end
               <% c = 'even' %>
               <table id="pdf-table" width="100%" cellspacing="0">
                   <tr class="table-header">
-                      <td class="col-pdf" rowspan="3">SL</td>
-                      <td class="col-pdf" rowspan="3">Roll</td>
-                      <td class="col-pdf" rowspan="3">Students Name</td>
+                      <td class="col-pdf" style="width: 3%;" rowspan="3">SL</td>
+                      <td class="col-pdf" style="width: 3%;" rowspan="3">Roll</td>
+                      <td class="col-pdf" style="width: 6%;" rowspan="3">Students Name</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>

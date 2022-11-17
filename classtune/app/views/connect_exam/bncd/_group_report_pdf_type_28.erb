@@ -47,6 +47,7 @@
         has_ob = false
         has_pr = false
         has_mid = false        
+        divider = 0
       %>
       <div class="grade_information">
           <%= render  :partial=>"/connect_exam/bncd/gradding_level" %>
@@ -72,14 +73,17 @@
                           <% end %>
                           <% if report['exam_category'] == '3' && report['quarter'] == '3' %>
                             <% has_sb = true %>
+                            <% divider = divider + 1 %>
                             <% colspan = colspan+1 %> 
                           <% end %>
                           <% if report['exam_category'] == '4' %>
                             <% has_ob = true %>
+                            <% divider = divider + 1 %>
                             <% colspan = colspan+1 %> 
                           <% end %>
                           <% if report['exam_category'] == '5' %>
                             <% has_pr = true %>
+                            <% divider = divider + 1 %>
                             <% colspan = colspan+1 %> 
                           <% end %>
                       <% end %>
@@ -87,7 +91,7 @@
                       <% if @batch.course.course_name == "IX" && has_mid %>
                             <td class="col-pdf" rowspan="2"><b>Mid</b></td>
                       <% end %> 
-                      <td class="col-pdf" colspan="<%= colspan %>" rowspan="1"><b>Examination</b></td>
+                      <td class="col-pdf" colspan="<%= colspan - 1 %>" rowspan="1"><b>Examination</b></td>
                       <td class="col-pdf" rowspan="2"><b>Total Marks (100%)</b></td>
                       <td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
                       <td class="col-pdf" rowspan="2"><b>Grade Point</b></td>
@@ -212,9 +216,11 @@
                             <% end %>
                             <% total_all = total_ob+total_sb+total_pr %>
                             
+                            <% added_mark = 0 %>
                             <% if @batch.course.course_name == "IX" && has_mid %>
                               <% if full_sb > 0 %>
                                 <td class="col-pdf no-warp"><%= total_mid %></td>
+                                <% added_mark = total_mid / divider %>
                               <% else %>  
                                 <td class="col-pdf no-warp">-</td>
                               <% end %> 
@@ -222,7 +228,7 @@
 
                             <% if has_sb %>
                               <% if full_sb > 0 %>
-                                <td class="col-pdf no-warp"><%= total_sb %></td>
+                                <td class="col-pdf no-warp"><%= total_sb + added_mark %></td>
                               <% else %>
                                 <td class="col-pdf no-warp">-</td>
                               <% end %>
@@ -230,14 +236,14 @@
                             <% end %>
                             <% if has_ob %>
                               <% if full_ob > 0 %>
-                                <td class="col-pdf no-warp"> <%= total_ob %></td>
+                                <td class="col-pdf no-warp"> <%= total_ob + added_mark %></td>
                               <% else %>
                                 <td class="col-pdf no-warp">-</td>
                               <% end %>
                             <% end %>
                             <% if has_pr %>
                               <% if full_pr > 0 %>
-                                <td class="col-pdf no-warp"><%= total_pr %></td>
+                                <td class="col-pdf no-warp"><%= total_pr + added_mark %></td>
                                 
                               <% else %>
                                 <td class="col-pdf no-warp">-</td>

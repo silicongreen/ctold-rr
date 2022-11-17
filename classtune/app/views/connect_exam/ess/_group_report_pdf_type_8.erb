@@ -215,8 +215,8 @@
                             <td class="col-pdf" style="padding:5px !important;"><b><%=  obtain_mark %></b></td>
                             <td class="col-pdf" style="padding:5px !important;"><b><%= sprintf( "%0.02f", main_mark) %></b></td>
                           <% else %>
-                            <td class="col-pdf" style="padding:5px !important;"><b><%=  obtain_mark %>/<%= full_mark.to_f %></b></td>
-                            <td class="col-pdf" style="padding:5px !important;"><b><%= sprintf( "%0.02f", main_mark) %>/12.5</b></td>
+                            <td class="col-pdf" style="padding:5px !important;"><b><%=  obtain_mark %>/<%= printf( "%0.02f", full_mark.to_f) %></b></td>
+                            <td class="col-pdf" style="padding:5px !important;"><b><%= sprintf( "%0.02f", main_mark) %>/12.50</b></td>
                           <% end %>  
                           
                          

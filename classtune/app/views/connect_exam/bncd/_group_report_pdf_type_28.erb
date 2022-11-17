@@ -46,8 +46,7 @@
         has_sb = false
         has_ob = false
         has_pr = false
-        has_mid = false        
-        divid = 0
+        has_mid = false     
       %>
       <div class="grade_information">
           <%= render  :partial=>"/connect_exam/bncd/gradding_level" %>
@@ -72,17 +71,14 @@
                           <% end %>
                           <% if report['exam_category'] == '3' && report['quarter'] == '3' %>
                             <% has_sb = true %>
-                            <% divid = divid + 1 %>
                             <% colspan = colspan+1 %> 
                           <% end %>
                           <% if report['exam_category'] == '4' %>
                             <% has_ob = true %>
-                            <% divid = divid + 1 %>
-                            <% colspan = colspan+1 %> 
+                             <% colspan = colspan+1 %> 
                           <% end %>
                           <% if report['exam_category'] == '5' %>
                             <% has_pr = true %>
-                            <% divid = divid + 1 %>
                             <% colspan = colspan+1 %> 
                           <% end %>
                       <% end %>
@@ -124,6 +120,7 @@
                       <% end %>
                       <% failed_subject = false %>
                       <%
+                        divid = 0
                         total_mid = 0
                         total_sb = 0
                         total_ob = 0
@@ -199,15 +196,18 @@
                                   <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% if report['exam_category'] == '3' && report['quarter'] == '3' %>
                                     <% total_sb = total_sb+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <% divid = divid + 1 %>
                                   <% end %>
                                   <% if report['exam_category'] == '3' && report['quarter'] == '1' %>
                                     <% total_mid = total_mid+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% end %>
                                   <% if report['exam_category'] == '4' %>
                                     <% total_ob = total_ob+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <% divid = divid + 1 %>
                                   <% end %>
                                   <% if report['exam_category'] == '5' %>
                                     <% total_pr = total_pr+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <% divid = divid + 1 %>
                                   <% end %>
                                 <% end %>
                               <% end %>

@@ -47,7 +47,7 @@
         has_ob = false
         has_pr = false
         has_mid = false        
-        divider = 0
+        divid = 0
       %>
       <div class="grade_information">
           <%= render  :partial=>"/connect_exam/bncd/gradding_level" %>
@@ -72,17 +72,17 @@
                           <% end %>
                           <% if report['exam_category'] == '3' && report['quarter'] == '3' %>
                             <% has_sb = true %>
-                            <% divider = divider + 1 %>
+                            <% divid = divid + 1 %>
                             <% colspan = colspan+1 %> 
                           <% end %>
                           <% if report['exam_category'] == '4' %>
                             <% has_ob = true %>
-                            <% divider = divider + 1 %>
+                            <% divid = divid + 1 %>
                             <% colspan = colspan+1 %> 
                           <% end %>
                           <% if report['exam_category'] == '5' %>
                             <% has_pr = true %>
-                            <% divider = divider + 1 %>
+                            <% divid = divid + 1 %>
                             <% colspan = colspan+1 %> 
                           <% end %>
                       <% end %>
@@ -219,7 +219,8 @@
                             <% if @batch.course.course_name == "IX" && has_mid %>
                               <% if full_sb > 0 %>
                                 <td class="col-pdf no-warp"><%= total_mid %></td>
-                                <% added_mark = total_mid / divider %>
+                                <% added_mark = total_mid / divid %>
+                                <% added_mark = added_mark.to_i %>
                               <% else %>  
                                 <td class="col-pdf no-warp">-</td>
                               <% end %> 

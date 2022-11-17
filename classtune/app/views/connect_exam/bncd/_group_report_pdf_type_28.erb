@@ -67,10 +67,6 @@
                       <% colspan = 0 %>
                       <% @report_data['report']['exams'].each do |report| %>
                         <%= report['exam_category'] + ' catr ' %>
-                          <% if report['exam_category'] == '1' %>
-                            <% has_mid = true %>
-                            <% colspan = colspan+1 %> 
-                          <% end %>
                           <% if report['exam_category'] == '3' %>
                             <% has_sb = true %>
                             <% colspan = colspan+1 %> 
@@ -85,7 +81,7 @@
                           <% end %>
                       <% end %>
                       <% colspan = colspan+1 %> 
-                      <% if has_mid == true %>
+                      <% if @batch.course.course_name == "XI" %>
                             <td class="col-pdf" rowspan="2"><b>Mid</b></td>
                       <% end %> 
                       <td class="col-pdf" colspan="<%= colspan %>" rowspan="1"><b>Examination</b></td>

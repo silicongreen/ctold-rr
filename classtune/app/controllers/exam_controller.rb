@@ -8079,6 +8079,9 @@ class ExamController < ApplicationController
         row_first << ""
         row_first << ""
         row_first << ""
+        if @report_data['report']['exams'].count > 5
+          row_first << ""
+        end
         row_first << ""
         row_first << ""
         row_first << ""

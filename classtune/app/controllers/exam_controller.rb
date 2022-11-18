@@ -8306,26 +8306,29 @@ class ExamController < ApplicationController
         exam_full_marks = 0 
         @report_data['report']['exams'].each do |rs| 
           if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? 
-            abort(rs['result'][rs['exam_id']][sub['id']][std['id']].inspect)
-            if rs['exam_category'] == '3'
-              cq = cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
-              cq_total = cq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-              row_first << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
-              
-            elsif rs['exam_category'] == '4'
-              mcq = mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
-              mcq_total = mcq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-              row_first << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
+            if !rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].blank? 
+              if rs['exam_category'] == '3'
+                cq = cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
+                cq_total = cq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                row_first << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
+                
+              elsif rs['exam_category'] == '4'
+                mcq = mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
+                mcq_total = mcq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                row_first << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
+              else
+                #att = att+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
+                att = att+student_attendance_mark.to_i
+              end
+              exam_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
+              exam_full_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
             else
-              #att = att+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
-              att = att+student_attendance_mark.to_i
+              if rs['exam_category'] == '3' || rs['exam_category'] == '4'
+                row_first << ""
+              end  
             end
-            exam_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
-            exam_full_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
           else
-            if rs['exam_category'] == '3' || rs['exam_category'] == '4'
-              row_first << ""
-            end  
+            row_first << ""
           end
         end 
         if mcq_total > 0 && mcq > 0

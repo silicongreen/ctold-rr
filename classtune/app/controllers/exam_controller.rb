@@ -8355,12 +8355,12 @@ class ExamController < ApplicationController
             end 
           end
         end
-        if student_attendance_mark < 2
+        if att < 2
           subject_failed = true
           failed = true
         end
-        row_first << student_attendance_mark
-        main_mark = cq+mcq+student_attendance_mark
+        row_first << att
+        main_mark = cq+mcq+att
         row_first << main_mark.to_i
         total_mark = total_mark+main_mark.to_f
         grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)

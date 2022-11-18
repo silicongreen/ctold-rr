@@ -8306,6 +8306,7 @@ class ExamController < ApplicationController
         exam_full_marks = 0 
         @report_data['report']['exams'].each do |rs| 
           if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? 
+            abort(rs['result'][rs['exam_id']][sub['id']][std['id']].inspect)
             if rs['exam_category'] == '3'
               cq = cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
               cq_total = cq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i

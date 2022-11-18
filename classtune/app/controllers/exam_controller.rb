@@ -8104,6 +8104,9 @@ class ExamController < ApplicationController
         row_first << "Quiz MCQ"
         row_first << "Mid Term CQ"
         row_first << "Mid Term MCQ"
+        if @report_data['report']['exams'].count > 5
+          row_first << "Prac" 
+        end
         row_first << "Att." 
         row_first << "TTL"
         row_first << "GP"

@@ -285,7 +285,7 @@
                           <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>
                           <%
                             cq1 = 0
-                            cq1_fullmark = 0
+                            cq1_fullmark1 = 0
                             mcq1 = 0
                             prac1 = 0
                             cq2 = 0
@@ -303,7 +303,7 @@
                                   <% if report['quarter'] == '3' %>
                                       <% if report['exam_category'] == '3' %>
                                         <% cq1 = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
-                                        <% cq1_fullmark1 = cq1_fullmark1 + report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f%>
+                                        <% cq1_fullmark1 = cq1_fullmark1 + report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i%>
                                         <% cq1_total = cq1_total+cq1 %>
                                         <% total1 = total1+cq1 %>
                                         <% t1 = t1+cq1 %>

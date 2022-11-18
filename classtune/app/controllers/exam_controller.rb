@@ -8082,9 +8082,15 @@ class ExamController < ApplicationController
         row_first << ""
         row_first << ""
         row_first << ""
-        end_row = starting_row+6
-        new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)
-        starting_row = starting_row+7
+        if @report_data['report']['exams'].count > 5
+          end_row = starting_row+7
+          new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)
+          starting_row = starting_row+8
+        else
+          end_row = starting_row+6
+          new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)
+          starting_row = starting_row+7
+        end
       end
     end  
     row_first << "G. Total"

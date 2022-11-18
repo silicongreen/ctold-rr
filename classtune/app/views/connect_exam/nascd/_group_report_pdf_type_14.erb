@@ -366,11 +366,11 @@
                           end
                           %>
                           
-                         <td><% if full_mark1 > 0 %><%= cq1 %><% end %></td>
-                         <td><% if full_mark1 > 0 && prac1.to_i > 0 %><%= prac1 %><% end %></td>
-                         <td><% if full_mark1 > 0 %><%= cq1.to_i + prac1.to_i %><% end %></td>
-                         <td><% if full_mark1 > 0 %><%= mcq1 %><% end %></td>
-                         <td><% if full_mark1 > 0 %><%= t1 %><% end %></td>
+                         <td><% if full_mark1 > 0 %><%= cq1 %> <%= full_mark1 %><% end %></td>
+                         <td><% if full_mark1 > 0 && prac1.to_i > 0 %><%= prac1 %> <%= full_mark1 %><% end %></td>
+                         <td><% if full_mark1 > 0 %><%= cq1.to_i + prac1.to_i %> <%= full_mark1 %><% end %></td>
+                         <td><% if full_mark1 > 0 %><%= mcq1 %> <%= full_mark1 %><% end %></td>
+                         <td><% if full_mark1 > 0 %><%= t1 %> <%= full_mark1 %><% end %></td>
                          <td><% if full_mark1 > 0 %><%= highest_mark1 %><% end %></td>
                          <%
                             main_mark = 0

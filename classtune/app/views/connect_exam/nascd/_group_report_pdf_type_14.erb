@@ -287,10 +287,15 @@
                             cq1 = 0
                             cq1_fullmark1 = 0
                             mcq1 = 0
+                            mcq1_fullmark1 = 0
                             prac1 = 0
+                            prac1_fullmark1 = 0
                             cq2 = 0
+                            cq2_fullmark1 = 0
                             mcq2 = 0
+                            mcq2_fullmark1 = 0
                             prac2 = 0
+                            prac2_fullmark1 = 0
                             t1 = 0
                             t2 = 0
                             full_mark1 = 0
@@ -310,6 +315,7 @@
                                       <% end %>
                                       <% if report['exam_category'] == '4' %>
                                         <% mcq1 = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
+                                        <% mcq1_fullmark1 = mcq1_fullmark1 + report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i%>
                                         <% mcq1_total = mcq1_total+mcq1 %>
                                         <% total1 = total1+mcq1 %>
                                         <% t1 = t1+mcq1 %>
@@ -317,6 +323,7 @@
                                       <% end %>
                                       <% if report['exam_category'] == '5' %>
                                         <% prac1 = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
+                                        <% prac1_fullmark1 = prac1_fullmark1 + report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i%>
                                         <% prac1_total = prac1_total+prac2 %>
                                         <% total1 = total1+prac1 %>
                                         <% t1 = t1+prac1 %>
@@ -325,18 +332,21 @@
                                   <% if report['quarter'] == '4' %>
                                       <% if report['exam_category'] == '3' %>
                                         <% cq2 = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
+                                        <% cq2_fullmark1 = cq2_fullmark1 + report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i%>
                                         <% cq2_total = cq2_total+cq2 %>
                                         <% total2 = total2+cq2 %>
                                         <% t2 = t2+cq2 %>
                                       <% end %>
                                       <% if report['exam_category'] == '4' %>
                                         <% mcq2 = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
+                                        <% mcq2_fullmark1 = mcq2_fullmark1 + report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i%>
                                         <% mcq2_total = mcq2_total+mcq2 %>
                                         <% total2 = total2+mcq2 %>
                                         <% t2 = t2+mcq2 %>
                                       <% end %>
                                       <% if report['exam_category'] == '5' %>
                                         <% prac2 = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
+                                        <% prac2_fullmark1 = prac2_fullmark1 + report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i%>
                                         <% prac2_total = prac2_total+prac2 %>
                                         <% total2 = total2+prac2 %>
                                         <% t2 = t2+prac2 %>
@@ -367,11 +377,31 @@
                             highest_mark2 = @subject_highest4[subjects['id'].to_i].to_f
                           end
                           %>
+
+                          <%
+                            failed_sub = false
+                            style_cq = ""
+                            style_mcq = ""
+                            if cq1_fullmark1 > 0 and full_mark1 > 0
+                              cq1_pass_mark = cq1_fullmark1 / 2
+                              if cq1_pass_mark > cq1
+                                failed_sub = true
+                                style_cq = "text-decoration: underline;"
+                              end
+                            end
+                            if mcq1_fullmark1 > 0 and full_mark1 > 0
+                              mcq1_pass_mark = mcq1_fullmark1 / 2
+                              if mcq1_pass_mark > mcq1
+                                failed_sub = true
+                                style_mcq = "text-decoration: underline;"
+                              end
+                            end
+                          %>
                           
-                         <td><% if full_mark1 > 0 %><%= cq1 %> <%= cq1_fullmark1 %><% end %></td>
+                         <td style="<%= style_cq %>"><% if full_mark1 > 0 %><%= cq1 %><% end %></td>
                          <td><% if full_mark1 > 0 && prac1.to_i > 0 %><%= prac1 %><% end %></td>
                          <td><% if full_mark1 > 0 %><%= cq1.to_i + prac1.to_i %><% end %></td>
-                         <td><% if full_mark1 > 0 %><%= mcq1 %><% end %></td>
+                         <td style="<%= style_cq %>"><% if full_mark1 > 0 %><%= mcq1 %><% end %></td>
                          <td><% if full_mark1 > 0 %><%= t1 %><% end %></td>
                          <td><% if full_mark1 > 0 %><%= highest_mark1 %><% end %></td>
                          <%
@@ -379,7 +409,11 @@
                             if full_mark1 > 0
                               main_mark = (t1.to_f/full_mark1.to_f)*100
                               main_mark = main_mark.round()
-                              grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                              if failed_sub
+                                grade = GradingLevel.percentage_to_grade(0, @batch.id)
+                              else
+                                grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                              end
                             end
                           %>
                          <td><% if !grade.blank? and !grade.name.blank? %><%= grade.name %><% end %></td>

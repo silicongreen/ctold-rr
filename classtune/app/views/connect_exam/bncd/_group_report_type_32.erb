@@ -83,23 +83,7 @@
       @report = ''
     end
   %> 
-  <% student_attendance_percent = 0 %>	
-  <% student_attendance_mark = 0 %>	
-  <% unless @leaves[@student.id]['percent'].nil? %>
-	<% student_attendance_percent =  @leaves[@student.id]['percent'] %>
-  <% end %>	
-  <% if student_attendance_percent.to_f > 0 %>
-	<% if student_attendance_percent >= 0 and student_attendance_percent < 60 %>
-	<% student_attendance_mark = 0 %>	
-	<% elsif student_attendance_percent >= 60 and student_attendance_percent < 71 %>
-	<% student_attendance_mark = 3 %>	
-	<% elsif student_attendance_percent >= 71 and student_attendance_percent < 80 %>
-	<% student_attendance_mark = 4 %>	
-	<% elsif student_attendance_percent >= 80 %>
-	<% student_attendance_mark = 5 %>	
-	<% end %>
-  <% end %>
-<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+  <% unless @report_data.blank?  or  @report_data['report'].blank? %>
            <table id="pdf-table" class="top-left-center" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
@@ -109,10 +93,7 @@
                   <tr class="even header-shade">
                       <td class="col-pdf no-warp  align-left-baf" rowspan="2"><b><%= "SUBJECTS" %></b></td>
                       <td class="col-pdf" colspan="2"><b>Final Exam</b></td>
-                      <td class="col-pdf" rowspan="2"><b>Att.</b></td>
-                      <% if @report_data['report']['exams'].count > 5 %>
-                        <td class="col-pdf" rowspan="2"><b>PRAC</b></td>
-                      <% end %>
+                      <td class="col-pdf" rowspan="2"><b>PRAC</b></td>
                       <td class="col-pdf" rowspan="2"><b>Total(100)</b></td>
                       <td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
                       <td class="col-pdf" rowspan="2"><b>Grade Point</b></td> 
@@ -138,8 +119,6 @@
 		                  <% is_mcq = false %>
 
                       <%
-                      cq_fnd = false
-                      mcq_fnd = false
                       mcq = 0
                       mcq_total = 0
                       cq = 0
@@ -157,34 +136,14 @@
                                     <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
                                     <% exam_marks = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
                                     <% if report['exam_category'] == '3' %>
-                                      <% if cq_fnd %>
                                         <% cq = cq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
 			      	                          <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>	
-                                      <% else %>
-                                        <% cq_fnd = true %>
-                                      <% end %>  
                                     <% elsif report['exam_category'] == '4' %>
-                                        <% if mcq_fnd %>
                                           <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
                                           <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>	
-                                        <% else %>
-                                        <% mcq_fnd = true %>
-                                        <% end %>
-                                    <% else %>
-                                        <% att = att+student_attendance_mark.to_i %>
-                                        <td class="col-pdf"><%= student_attendance_mark.to_i %></td>	
-                                    <% end %>
-                                  <% else %>
-                                    <% if report['exam_category'] == '3' or report['exam_category'] == '4' %>
-                                      <% if cq_fnd and report['exam_category'] == '3' %>
-                                      <td class="col-pdf">-</td>
-                                      <% elsif mcq_fnd and report['exam_category'] == '4' %>
-                                      <td class="col-pdf">-</td>
                                       <% end %>
-                                    <% else %>
-                                    <% att = att+student_attendance_mark.to_i %>
-                                    <td class="col-pdf"><%= student_attendance_mark.to_i %></td>	
-                                    <% end %>
+                                  <% else %>
+                                  <td class="col-pdf">-</td>
                                   <% end %>   
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                     <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -203,9 +162,9 @@
                                 if mcq_total == 35 or mcq_total == 40
                                   mcq = (mcq.to_f/mcq_total.to_f)*25
                                   mcq = mcq.round()
-                                  if mcq < 8
-                                    subject_failed = true
-                                  end 
+                                  #if mcq < 8
+                                  #  subject_failed = true
+                                  #end 
                                 end
                                 
                               end
@@ -213,23 +172,22 @@
                                 if cq_total == 90 or cq_total == 95
                                   cq = (cq.to_f/cq_total.to_f)*70
                                   cq = cq.round()
-                                  if cq < 23
-                                    subject_failed = true
-                                  end
+                                  #if cq < 23
+                                  #  subject_failed = true
+                                  #end
                                 end
                                 if cq_total == 130
                                   cq = (cq.to_f/cq_total.to_f)*95
                                   cq = cq.round()
-                                  if cq < 31
-                                    subject_failed = true
-                                  end 
+                                  #if cq < 31
+                                  #  subject_failed = true
+                                  #end 
                                 end
                               end
-                              if att < 2
+                              main_mark = cq+mcq
+                              if main_mark < 33
                                 subject_failed = true
                               end
-                              main_mark = cq+mcq+att
-
 
                             %>
                             <td class="col-pdf"><%= main_mark %></td>

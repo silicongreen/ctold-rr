@@ -224,7 +224,11 @@
                                     <% end %>
                                   <% else %>
                                     <% if report['exam_category'] == '3' or report['exam_category'] == '4' %>
-                                    <td class="col-pdf">-</td>
+                                      <% if cq_fnd and report['exam_category'] == '3' %>
+                                      <td class="col-pdf">-</td>
+                                      <% elsif mcq_fnd and report['exam_category'] == '4' %>
+                                      <td class="col-pdf">-</td>
+                                      <% end %>
                                     <% else %>
                                     <% att = att+student_attendance_mark.to_i %>
                                     <td class="col-pdf"><%= student_attendance_mark.to_i %></td>	

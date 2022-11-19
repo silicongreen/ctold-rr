@@ -8324,6 +8324,8 @@ class ExamController < ApplicationController
           else
             if rs['exam_category'] == '3' || rs['exam_category'] == '4'
               row_first << ""
+            else
+              att = att+student_attendance_mark.to_i
             end  
           end
         end 

@@ -142,9 +142,7 @@
                   <tr class="even header-shade">
                       <td class="col-pdf no-warp  align-left-baf" rowspan="2"><b><%= "SUBJECTS" %></b></td>
                       <td class="col-pdf" colspan="2"><b>Final Exam</b></td>
-                      <% if @report_data['report']['exams'].count > 5 %>
-                        <td class="col-pdf" rowspan="2"><b>PRAC</b></td>
-                      <% end %>
+                      <td class="col-pdf" rowspan="2"><b>PRAC</b></td>
                       <td class="col-pdf" rowspan="2"><b>Total(100)</b></td>
                       <td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
                       <td class="col-pdf" rowspan="2"><b>Grade Point</b></td> 
@@ -237,8 +235,11 @@
                               if att < 2
                                 subject_failed = true
                               end
+                              subject_failed = false
                               main_mark = cq+mcq+att
-
+                              if main_mark < 33
+                                subject_failed = true
+                              end
 
                             %>
                             <td class="col-pdf"><%= main_mark %> <%= cq_total %> <%= mcq_total %> <%= mcq_total %></td>
@@ -267,11 +268,7 @@
               
                   
                   <tr class="even" >
-                    <% if @report_data['report']['exams'].count > 5 %>
-                      <td class="col-pdf  no-warp align-right" colspan="7"><b>GRAND TOTAL</b></td>
-                    <% else %>  
-                      <td class="col-pdf  no-warp align-right" colspan="6"><b>GRAND TOTAL</b></td>
-                    <% end %>
+                    <td class="col-pdf  no-warp align-right" colspan="4"><b>GRAND TOTAL</b></td>
                     <td class="col-pdf  no-warp"><b><%= total_mark_of_allexam %></b></td>
                     <td class="col-pdf  no-warp"></td>
                     <td class="col-pdf  no-warp"></td>

@@ -213,7 +213,7 @@
 			      	                          <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>	
                                     <% else %>
                                         <% att = att+student_attendance_mark.to_i %>
-                                        <td class="col-pdf"><%= student_attendance_mark.to_i %></td>	
+                                        <td class="col-pdf"><%= student_attendance_mark.to_i %> <%= report['exam_category'] %> <%= student_attendance_percent %></td>	
                                     <% end %>
                                   <% else %>
                                     <td class="col-pdf">-</td>

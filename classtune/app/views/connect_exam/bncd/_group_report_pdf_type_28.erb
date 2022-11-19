@@ -328,8 +328,9 @@
                                   <% end %>
                                   
                                 <% end %>
+                                <td><%= total_ob %> <%= total_ob2 %><%= full_ob2 %> <%= total_sb2 %></td>
                                 <%
-                                if has_ob && full_ob2 > 0
+                                if has_ob && full_ob2 > 0 
                                   if total_ob2 > 0
                                       total_ob2 = total_ob2.round()
                                       total_ob =  total_ob+total_ob2

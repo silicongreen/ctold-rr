@@ -524,36 +524,39 @@ end
                                 if mcq_total == 35 or mcq_total == 40
                                   mcq = (mcq.to_f/mcq_total.to_f)*25
                                   mcq = mcq.round()
-                                  if mcq < 8
-                                    subject_failed = true
-                                    failed = true
-                                  end 
+                                  #if mcq < 8
+                                  #  subject_failed = true
+                                  #  failed = true
+                                  #end 
                                 end
                               end
                               if cq_total > 0 && cq > 0
                                 if cq_total == 90 or cq_total == 95
                                   cq = (cq.to_f/cq_total.to_f)*70
                                   cq = cq.round()
-                                  if cq < 23
-                                    subject_failed = true
-                                    failed = true
-                                  end 
+                                  #if cq < 23
+                                  #  subject_failed = true
+                                  #  failed = true
+                                  #end 
                                 end
                                 if cq_total == 130
                                   cq = (cq.to_f/cq_total.to_f)*95
                                   cq = cq.round()
-                                  if cq < 31
-                                    subject_failed = true
-                                    failed = true
-                                  end 
+                                  #if cq < 31
+                                  #  subject_failed = true
+                                  #  failed = true
+                                  #end 
                                 end
                               end
-                              if student_attendance_mark < 2
+                              #if student_attendance_mark < 2
+                              #  subject_failed = true
+                              #  failed = true
+                              #end
+                              main_mark = cq+mcq+student_attendance_mark
+                              if main_mark < 33
                                 subject_failed = true
                                 failed = true
                               end
-                              main_mark = cq+mcq+student_attendance_mark
-
                             %>
                             <td>
                                <%= main_mark.to_i %>    

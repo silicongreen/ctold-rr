@@ -521,7 +521,7 @@ if @total_std.blank?
               end
             end   
           end  
-          abort(total_failed.to_s + "  " + u_grade.to_s + "  " + std['admission_no'].to_s + "  " + std['id'].to_s)   
+          abort(u_grade.to_s + "  " + std['admission_no'].to_s + "  " + std['id'].to_s)   
         end  
       end
       @student_position = {}

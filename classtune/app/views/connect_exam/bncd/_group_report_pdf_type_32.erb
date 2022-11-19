@@ -160,7 +160,6 @@
                       <% if @report_data['report']['exams'].count > 5 %>
                         <td class="col-pdf" rowspan="2"><b>PRAC</b></td>
                       <% end %>
-                      <td class="col-pdf" rowspan="2"><b>Att.</b></td>
                       <td class="col-pdf" rowspan="2"><b>Total(100)</b></td>
                       <td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
                       <td class="col-pdf" rowspan="2"><b>Grade Point</b></td> 
@@ -186,8 +185,6 @@
 		                  <% is_mcq = false %>
 
                       <%
-                      cq_fnd = false
-                      mcq_fnd = false
                       mcq = 0
                       mcq_total = 0
                       cq = 0
@@ -205,34 +202,13 @@
                                     <% obtain_mark = obtain_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
                                     <% exam_marks = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
                                     <% if report['exam_category'] == '3' %>
-                                      <% if cq_fnd %>
                                         <% cq = cq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+			      	                      <% elsif report['exam_category'] == '4' %>
+                                        <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
 			      	                          <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>	
-                                      <% else %>
-                                        <% cq_fnd = true %>
-                                      <% end %>
-                                    <% elsif report['exam_category'] == '4' %>
-                                        <% if mcq_fnd %>
-			      	                          <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
-			      	                          <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %></td>	
-                                        <% else %>
-                                          <% mcq_fnd = true %>
-                                        <% end %>
-                                    <% else %>
-                                        <% att = att+student_attendance_mark.to_i %>
-                                        <td class="col-pdf"><%= student_attendance_mark.to_i %></td>	
                                     <% end %>
                                   <% else %>
-                                    <% if report['exam_category'] == '3' or report['exam_category'] == '4' %>
-                                      <% if cq_fnd and report['exam_category'] == '3' %>
                                       <td class="col-pdf">-</td>
-                                      <% elsif mcq_fnd and report['exam_category'] == '4' %>
-                                      <td class="col-pdf">-</td>
-                                      <% end %>
-                                    <% else %>
-                                    <% att = att+student_attendance_mark.to_i %>
-                                    <td class="col-pdf"><%= student_attendance_mark.to_i %></td>	
-                                    <% end %>
                                   <% end %>   
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                     <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>

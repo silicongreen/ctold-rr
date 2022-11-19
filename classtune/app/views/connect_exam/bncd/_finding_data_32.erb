@@ -512,7 +512,7 @@ if @total_std.blank?
                 @failed_appeared_absent[total_failed_appaered] = @failed_appeared_absent[total_failed_appaered]+1
               end
             end
-            abort(total_failed.to_s)
+            abort(total_failed.to_s + "  " + u_grade.to_s)
             if total_failed > 0
               if @failed_partial_absent[total_failed].blank?
                 @failed_partial_absent[total_failed] = 1

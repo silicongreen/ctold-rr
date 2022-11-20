@@ -442,15 +442,6 @@ end
                         <% else %>
                         <td class="name-std"><%= "-" %></td>
                         <% end %>
-                        <% has_cq = false %>
-                        <% has_mcq = false %>
-                        <% has_pr = false %>
-                        <% cq = 0 %>
-                        <% cq_total = 0 %>
-                        <% mcq = 0 %>
-                        <% mcq_total = 0 %>
-                        <% pr = 0 %>
-                        <% pr_total = 0 %>
                         <% total_mark = 0 %>
                         <% full_mark_all = 0 %>
                         <% grades = [] %>
@@ -462,6 +453,15 @@ end
                         <% count_grade = false %>
                         <% two_sub_mark = 0 %>
                         <% @report_data['report']['subjects'].each do |sub| %>
+                          <% has_cq = false %>
+                          <% has_mcq = false %>
+                          <% has_pr = false %>
+                          <% cq = 0 %>
+                          <% cq_total = 0 %>
+                          <% mcq = 0 %>
+                          <% mcq_total = 0 %>
+                          <% pr = 0 %>
+                          <% pr_total = 0 %>
                           <% if double_subject_start == true %>
                             <% count_grade = true %>
                           <% end %>

@@ -497,15 +497,15 @@ end
                               <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
                                 <%
-                                  if report['exam_category'] == '3'
+                                  if rs['exam_category'] == '3'
                                     has_cq = true
                                     cq = cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
                                     cq_total = cq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                  elsif report['exam_category'] == '4'
+                                  elsif rs['exam_category'] == '4'
                                       has_mcq = true
                                       mcq = mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
                                       mcq_total = mcq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                  elsif report['exam_category'] == '5'
+                                  elsif rs['exam_category'] == '5'
                                       has_pr = true
                                       pr = pr+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
                                       pr_total = pr_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i

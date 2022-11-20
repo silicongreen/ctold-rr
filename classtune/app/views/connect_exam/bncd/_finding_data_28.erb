@@ -205,20 +205,20 @@ if @total_std.blank?
                         percent = (total_ob.to_f/full_ob.to_f)*100
                         percent = percent.round()
                         if percent < 33
-                          if fourth_subject.blank?
+                          #if fourth_subject.blank?
                               u_grade = u_grade+1 
                               subject_failed = true
-                            else
-                              four_subject_failed = true
-                            end
+                         #   else
+                         #    four_subject_failed = true
+                         #   end
                         end
                     else
-                      if fourth_subject.blank?
+                      #if fourth_subject.blank?
                               u_grade = u_grade+1 
                               subject_failed = true
-                            else
-                              four_subject_failed = true
-                            end
+                       #     else
+                       #       four_subject_failed = true
+                        #    end
                     end
                     
                   end
@@ -227,20 +227,20 @@ if @total_std.blank?
                         percent = (total_sb.to_f/full_sb.to_f)*100
                         percent = percent.round()
                         if percent < 33
-                          if fourth_subject.blank?
+                          #if fourth_subject.blank?
                               u_grade = u_grade+1 
                               subject_failed = true
-                            else
-                              four_subject_failed = true
-                            end
+                          #  else
+                          #    four_subject_failed = true
+                          #  end
                         end
                     else
-                      if fourth_subject.blank?
+                     # if fourth_subject.blank?
                               u_grade = u_grade+1 
                               subject_failed = true
-                            else
-                              four_subject_failed = true
-                            end
+                      #      else
+                     #         four_subject_failed = true
+                     #       end
                     end
                     
                   end
@@ -249,20 +249,20 @@ if @total_std.blank?
                         percent = (total_pr.to_f/full_pr.to_f)*100
                         percent = percent.round()
                         if percent < 33
-                          if fourth_subject.blank?
+                         # if fourth_subject.blank?
                               u_grade = u_grade+1 
                               subject_failed = true
-                            else
-                              four_subject_failed = true
-                            end
+                         #   else
+                         #     four_subject_failed = true
+                         #   end
                         end
                     else
-                      if fourth_subject.blank?
+                      #if fourth_subject.blank?
                               u_grade = u_grade+1 
                               subject_failed = true
-                            else
-                              four_subject_failed = true
-                            end
+                      #      else
+                      #        four_subject_failed = true
+                      #      end
                     end
                   end
 

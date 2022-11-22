@@ -8091,8 +8091,10 @@ class ExamController < ApplicationController
       end 
       if has_exam == true 
         row_first << sub['name']
-        row_first << ""
-        row_first << ""
+        if @result_type.to_i != 32
+          row_first << ""
+          row_first << ""
+        end
         row_first << ""
         if @report_data['report']['exams'].count > 5
           row_first << ""
@@ -8105,9 +8107,15 @@ class ExamController < ApplicationController
           new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)
           starting_row = starting_row+8
         else
-          end_row = starting_row+6
-          new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)
-          starting_row = starting_row+7
+          if @result_type.to_i != 32
+            end_row = starting_row+6
+            new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)
+            starting_row = starting_row+7
+          else
+            end_row = starting_row+4
+            new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)
+            starting_row = starting_row+5
+          end
         end
       end
     end  
@@ -8124,8 +8132,10 @@ class ExamController < ApplicationController
         has_exam = true
       end 
       if has_exam == true
-        row_first << "Quiz CQ"
-        row_first << "Quiz MCQ"
+        if @result_type.to_i != 32
+          row_first << "Quiz CQ"
+          row_first << "Quiz MCQ"
+        end
         row_first << "Mid Term CQ"
         row_first << "Mid Term MCQ"
         if @report_data['report']['exams'].count > 5
@@ -8304,8 +8314,10 @@ class ExamController < ApplicationController
           @has_exam_student = false 
         end 
         if @has_exam_student == false
-          row_first << ""
-          row_first << ""
+          if @result_type.to_i != 32
+            row_first << ""
+            row_first << ""
+          end
           row_first << ""
           row_first << ""
           row_first << ""

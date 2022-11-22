@@ -300,7 +300,8 @@ if @total_std.blank?
                     exam_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                     exam_full_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                   end
-
+                else
+                  att = student_attendance_mark.to_f
                 end
                 
 		            if mcq_total > 0 && mcq > 0
@@ -343,9 +344,9 @@ if @total_std.blank?
                     #end 
                   end
                 end
-                if std['id'].to_i == 62366 and sub['id'].to_i == 106963
-                  abort(mcq_total.to_s + "  " + mcq.to_s + "  " + cq_total.to_s + "  " + cq.to_s + "  " + att.to_s)
-                end
+                #if std['id'].to_i == 62366 and sub['id'].to_i == 106963
+                #  abort(mcq_total.to_s + "  " + mcq.to_s + "  " + cq_total.to_s + "  " + cq.to_s + "  " + att.to_s)
+                #end
                 main_mark = cq+mcq+att
                 if main_mark < 33
                   

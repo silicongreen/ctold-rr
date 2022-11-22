@@ -506,7 +506,8 @@ if @total_std.blank?
             end
             if u_grade == 0
               grand_total_new = 50000-grand_total_with_fraction
-              grand_grade_new = 50000-grand_grade_point
+              #grand_grade_new = 50000-grand_grade_point
+              grand_grade_new = 50000-total_mark_student
 
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
@@ -552,7 +553,7 @@ if @total_std.blank?
       unless @student_list.blank?
         position = 0
         @sorted_students = @student_list.sort
-        #abort(@sorted_students.inspect)
+        abort(@sorted_students.inspect)
         @sorted_students.each do|s|
           #if last_grade != s[0] or last_total != s[1]
          #   position = position+1

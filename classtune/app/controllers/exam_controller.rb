@@ -8048,6 +8048,7 @@ class ExamController < ApplicationController
     @exam_comment.each do |cmt|
       @student_exam_comment[cmt.student_id.to_s] = cmt.comments
     end    
+    abort(exam_comment.inspect)
     @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
     row_first = ["Sl","Roll","Student Name"]
     starting_row = 3
@@ -8236,15 +8237,21 @@ class ExamController < ApplicationController
       unless @leaves[s.id]['percent'].nil? 
         student_attendance_percent =  @leaves[s.id]['percent'] 
       end 	
-      if student_attendance_percent.to_f > 0 
-        if student_attendance_percent >= 0 and student_attendance_percent < 60 
-          student_attendance_mark = 0 	
-        elsif student_attendance_percent >= 60 and student_attendance_percent < 71 
-          student_attendance_mark = 3 	
-        elsif student_attendance_percent >= 71 and student_attendance_percent < 80 
-          student_attendance_mark = 4 	
-        elsif student_attendance_percent >= 80 
-          student_attendance_mark = 5 	
+      has_student_attendance = true
+      if student_attendance_percent.blank?
+        has_student_attendance = false
+      end
+      unless student_attendance_percent.blank?
+        if student_attendance_percent.to_f > 0 
+          if student_attendance_percent >= 0 and student_attendance_percent < 60 
+            student_attendance_mark = 0 	
+          elsif student_attendance_percent >= 60 and student_attendance_percent < 71 
+            student_attendance_mark = 3 	
+          elsif student_attendance_percent >= 71 and student_attendance_percent < 80 
+            student_attendance_mark = 4 	
+          elsif student_attendance_percent >= 80 
+            student_attendance_mark = 5 	
+          end 
         end 
       end 
 
@@ -8316,8 +8323,10 @@ class ExamController < ApplicationController
               mcq_total = mcq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
               row_first << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
             else
+              if has_student_attendance
               #att = att+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
-              att = att+student_attendance_mark.to_i
+                att = att+student_attendance_mark.to_i
+              end
             end
             exam_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
             exam_full_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i

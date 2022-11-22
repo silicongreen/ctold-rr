@@ -8117,9 +8117,9 @@ class ExamController < ApplicationController
             starting_row = starting_row+7
           else
             if @result_type.to_i == 32  && @report_data['report']['exams'].count == 3
-              end_row = starting_row+6
+              end_row = starting_row+5
               new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)
-              starting_row = starting_row+7
+              starting_row = starting_row+6
             else
               end_row = starting_row+4
               new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)

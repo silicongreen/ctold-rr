@@ -8140,6 +8140,10 @@ class ExamController < ApplicationController
         row_first << "Mid Term MCQ"
         if @report_data['report']['exams'].count > 5
           row_first << "Prac" 
+        else 
+          if @result_type.to_i == 32  && @report_data['report']['exams'].count > 2
+            row_first << "Prac" 
+          end
         end
         if @result_type.to_i != 32
           row_first << "Att." 

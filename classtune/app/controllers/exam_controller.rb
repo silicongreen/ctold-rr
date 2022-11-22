@@ -8098,6 +8098,10 @@ class ExamController < ApplicationController
         row_first << ""
         if @report_data['report']['exams'].count > 5
           row_first << ""
+        else
+          if @result_type.to_i == 32  && @report_data['report']['exams'].count > 3
+            row_first << ""
+          end  
         end
         row_first << ""
         row_first << ""
@@ -8112,9 +8116,15 @@ class ExamController < ApplicationController
             new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)
             starting_row = starting_row+7
           else
-            end_row = starting_row+4
-            new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)
-            starting_row = starting_row+5
+            if @result_type.to_i == 32  && @report_data['report']['exams'].count > 3
+              end_row = starting_row+5
+              new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)
+              starting_row = starting_row+6
+            else
+              end_row = starting_row+4
+              new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)
+              starting_row = starting_row+5
+            end
           end
         end
       end
@@ -8141,7 +8151,7 @@ class ExamController < ApplicationController
         if @report_data['report']['exams'].count > 5
           row_first << "Prac" 
         else 
-          if @result_type.to_i == 32  && @report_data['report']['exams'].count > 2
+          if @result_type.to_i == 32  && @report_data['report']['exams'].count > 3
             row_first << "Prac" 
           end
         end

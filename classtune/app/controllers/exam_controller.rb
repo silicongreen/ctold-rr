@@ -8146,7 +8146,7 @@ class ExamController < ApplicationController
           row_first << "Quiz CQ"
           row_first << "Quiz MCQ"
         end
-        row_first << "Mid Term CQ"
+        row_first << "Mid Term CQ " + @report_data['report']['exams'].count.to_s
         row_first << "Mid Term MCQ"
         if @report_data['report']['exams'].count > 5
           row_first << "Prac" 

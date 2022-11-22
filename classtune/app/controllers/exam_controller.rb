@@ -8043,6 +8043,7 @@ class ExamController < ApplicationController
       end
       report_data
     }
+    @result_type = @connect_exam_obj.result_type
     @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id) 
     @student_exam_comment = {}
     @exam_comment.each do |cmt|
@@ -8117,7 +8118,9 @@ class ExamController < ApplicationController
         if @report_data['report']['exams'].count > 5
           row_first << "Prac" 
         end
-        row_first << "Att." 
+        if @result_type.to_i != 32
+          row_first << "Att." 
+        end
         row_first << "TTL"
         row_first << "GP"
       end
@@ -8234,14 +8237,10 @@ class ExamController < ApplicationController
 
       student_attendance_percent = 0 	
       student_attendance_mark = 0 	
-      unless @leaves[s.id]['percent'].nil? 
-        student_attendance_percent =  @leaves[s.id]['percent'] 
-      end 	
-      has_student_attendance = true
-      if student_attendance_percent.blank?
-        has_student_attendance = false
-      end
-      unless student_attendance_percent.blank?
+      if @result_type.to_i != 32
+        unless @leaves[s.id]['percent'].nil? 
+          student_attendance_percent =  @leaves[s.id]['percent'] 
+        end 	
         if student_attendance_percent.to_f > 0 
           if student_attendance_percent >= 0 and student_attendance_percent < 60 
             student_attendance_mark = 0 	
@@ -8254,7 +8253,6 @@ class ExamController < ApplicationController
           end 
         end 
       end 
-
       row_first << start_index-1
       row_first << std['class_roll_no']
       row_first << std['first_name']+" "+std['last_name']
@@ -8323,7 +8321,7 @@ class ExamController < ApplicationController
               mcq_total = mcq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
               row_first << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
             else
-              if has_student_attendance
+              if @result_type.to_i != 32
               #att = att+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
                 att = att+student_attendance_mark.to_i
               end
@@ -8334,7 +8332,9 @@ class ExamController < ApplicationController
             if rs['exam_category'] == '3' || rs['exam_category'] == '4'
               row_first << ""
             else
-              att = att+student_attendance_mark.to_i
+              if @result_type.to_i != 32
+                att = att+student_attendance_mark.to_i
+              end
             end  
           end
         end 
@@ -8342,36 +8342,46 @@ class ExamController < ApplicationController
           if mcq_total == 35 or mcq_total == 40
             mcq = (mcq.to_f/mcq_total.to_f)*25
             mcq = mcq.round()
-            if mcq < 8
-              subject_failed = true
-              failed = true
-            end 
+            #if mcq < 8
+            #  subject_failed = true
+            #  failed = true
+            #end 
           end
         end
         if cq_total > 0 && cq > 0
           if cq_total == 90 or cq_total == 95
             cq = (cq.to_f/cq_total.to_f)*70
             cq = cq.round()
-            if cq < 23
-              subject_failed = true
-              failed = true
-            end 
+            #if cq < 23
+            #  subject_failed = true
+            #  failed = true
+            #end 
           end
           if cq_total == 130
             cq = (cq.to_f/cq_total.to_f)*95
             cq = cq.round()
-            if cq < 31
-              subject_failed = true
-              failed = true
-            end 
+            #if cq < 31
+            #  subject_failed = true
+            #  failed = true
+            #end 
           end
         end
-        if att < 2
+        #if att < 2
+        #  subject_failed = true
+        #  failed = true
+        #end
+        if @result_type.to_i != 32
+          row_first << att
+        end
+        if @result_type.to_i != 32
+          main_mark = cq+mcq+att
+        else
+          main_mark = cq+mcq
+        end
+        if main_mark < 33
           subject_failed = true
           failed = true
         end
-        row_first << att
-        main_mark = cq+mcq+att
         row_first << main_mark.to_i
         total_mark = total_mark+main_mark.to_f
         grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)

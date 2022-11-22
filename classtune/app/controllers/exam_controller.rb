@@ -8314,10 +8314,8 @@ class ExamController < ApplicationController
           @has_exam_student = false 
         end 
         if @has_exam_student == false
-          if @result_type.to_i != 32
-            row_first << ""
-            row_first << ""
-          end
+          row_first << ""
+          row_first << ""
           row_first << ""
           row_first << ""
           row_first << ""

@@ -8049,7 +8049,7 @@ class ExamController < ApplicationController
     @exam_comment.each do |cmt|
       @student_exam_comment[cmt.student_id.to_s] = cmt.comments
     end    
-    abort(@connect_exam_obj.inspect)
+    #abort(@connect_exam_obj.inspect)
     @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
     row_first = ["Sl","Roll","Student Name"]
     starting_row = 3

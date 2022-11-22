@@ -299,9 +299,10 @@ if @total_std.blank?
                     end
                     exam_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                     exam_full_marks = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                  else
+                    att = student_attendance_mark.to_f
                   end
-                else
-                  att = student_attendance_mark.to_f
+                
                 end
                 
 		            if mcq_total > 0 && mcq > 0

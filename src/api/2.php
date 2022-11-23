@@ -26,7 +26,7 @@ if ($result = mysqli_query($conn_source, "SELECT * FROM `exam_connects` WHERE `n
         
             while ($row = mysqli_fetch_row($res)) {
                 $student_id = $row[0];
-                res = mysqli_query($con, "insert into exam_connect_comments (exam_connect_id,student_id,employee_id,comments,school_id) values(" . $connect_id . ", " . $student_id . ", '5191','93', '352')");
+                $stt = mysqli_query($conn_source, "insert into exam_connect_comments (exam_connect_id,student_id,employee_id,comments,school_id) values(" . $connect_id . ", " . $student_id . ", '5191','93', '352')");
              }
              exit;
             // Free result set

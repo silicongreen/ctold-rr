@@ -21,9 +21,19 @@ if ($result = mysqli_query($conn_source, "SELECT * FROM `exam_connects` WHERE `n
     while ($row = mysqli_fetch_row($result)) {
         $connect_id = $row[0];
         $batch_id = $row[2];
-        print("connect_id: ".$row[0]."\n");
-        print("Age: ".$row[1]."\n");
+        if ($res = mysqli_query($conn_source, "SELECT * FROM `students` WHERE `batch_id` = " . $batch_id . " AND `is_deleted` = 0 AND `school_id` = 352 ORDER BY `new_id` ASC  ")) {
+            echo "Returned rows are: " . mysqli_num_rows($res);
+        
+            while ($row = mysqli_fetch_row($result)) {
+                $student_id = $row[0];
+                echo $student_id . "<br>";
+             }
+             exit;
+            // Free result set
+            mysqli_free_result($res);
+        }   
      }
+
     // Free result set
     mysqli_free_result($result);
   }

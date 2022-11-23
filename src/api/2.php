@@ -17,7 +17,6 @@ if ($conn_source->connect_error)
 if ($result = mysqli_query($conn_source, "SELECT * FROM `exam_connect_comments`  where exam_connect_id IN (SELECT id FROM `exam_connects` WHERE `name` LIKE '2nd Term Exam' AND `school_id` = 352 and published_date LIKE '2022%' ORDER BY `id` DESC )")) {
     while ($row = mysqli_fetch_row($result)) {
         $stt = mysqli_query($conn_source, "UPDATE exam_connect_comments SET comments = '93|' where id = " . $row[0]);           
-        exit;
      }
 
     // Free result set

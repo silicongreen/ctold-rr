@@ -24,9 +24,9 @@ if ($result = mysqli_query($conn_source, "SELECT * FROM `exam_connects` WHERE `n
         if ($res = mysqli_query($conn_source, "SELECT * FROM `students` WHERE `batch_id` = " . $batch_id . " AND `is_deleted` = 0 AND `school_id` = 352 ORDER BY `new_id` ASC  ")) {
             echo "Returned rows are: " . mysqli_num_rows($res);
         
-            while ($row = mysqli_fetch_row($result)) {
+            while ($row = mysqli_fetch_row($res)) {
                 $student_id = $row[0];
-                echo $student_id . "<br>";
+                res = mysqli_query($con, "insert into exam_connect_comments (exam_connect_id,student_id,employee_id,comments,school_id) values(" . $connect_id . ", " . $student_id . ", '5191','93', '352')");
              }
              exit;
             // Free result set

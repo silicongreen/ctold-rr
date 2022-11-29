@@ -2,4 +2,4 @@ champs21:
  api_url: "http://apimaster.classtune.com/"  
  username: "nbs-ST0001"
  password: "123456"
- notification_url: "http://apimaster.classtune.com/api/notice/pushnotification"
+ notification_url: "http://apimaster.classtune.com/index.php/api/notice/pushnotification"

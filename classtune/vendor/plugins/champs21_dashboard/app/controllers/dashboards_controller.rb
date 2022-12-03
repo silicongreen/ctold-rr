@@ -4,7 +4,6 @@ class DashboardsController < ApplicationController
   filter_access_to :all
 
   def index
-      abort('hehe')
       unless MultiSchool.current_school.is_test_school == 2
         require "yaml"
         require "time"

@@ -383,11 +383,11 @@ class AttendanceReportsController < ApplicationController
     @execute_report = true
     #if (@start_date<@batch.start_date.to_date.beginning_of_month || @start_date>@batch.end_date.to_date || @start_date>=@today.next_month.beginning_of_month)
     if @execute_report == false
-      abort("hehe")
       render :update do |page|
         page.replace_html 'report', :text => t('no_reports')
       end
     else
+      abort("hehe")
       @leaves=Hash.new { |h, k| h[k] = Hash.new(&h.default_proc) }
       working_days=@batch.working_days(@date.to_date)
       unless @start_date > @local_tzone_time.to_date

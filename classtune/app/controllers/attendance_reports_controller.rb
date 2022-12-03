@@ -380,7 +380,9 @@ class AttendanceReportsController < ApplicationController
     @start_date = @date.to_date
     
     @today = @local_tzone_time.to_date
-    if (@start_date<@batch.start_date.to_date.beginning_of_month || @start_date>@batch.end_date.to_date || @start_date>=@today.next_month.beginning_of_month)
+    @execute_report = true
+    #if (@start_date<@batch.start_date.to_date.beginning_of_month || @start_date>@batch.end_date.to_date || @start_date>=@today.next_month.beginning_of_month)
+    if @execute_report == false
       render :update do |page|
         page.replace_html 'report', :text => t('no_reports')
       end

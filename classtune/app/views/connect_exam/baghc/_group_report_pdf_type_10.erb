@@ -289,6 +289,7 @@
                                   if @connect_exam_obj.batch.course_name == 'XI'
                                     mtt = (mtt.to_f/mtt_total.to_f)*25
                                     mtt_total = 25
+                                    mtt = mtt.to_i
                                   end
                                   #########################################################
                                   ## Failed On Individual Subjects (Temporary Solution)

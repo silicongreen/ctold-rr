@@ -573,16 +573,10 @@
                             -
                             <% exam_connect_merit_lists.position = 0 %>
                           <% else %>
-                            <% if pos.to_i > 0 %> 
-                              <%= pos %> out of <%= @total_std_batch %>
-                              <%
-                                exam_connect_merit_lists.position = pos
-                              %>  
+                            <% if !@student_position_first_term_batch[@student.id.to_i].blank? %> 
+                              <%= @student_position_first_term_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
                             <% else %>
                               -
-                              <%
-                                exam_connect_merit_lists.position = 0
-                              %>  
                             <% end %> 
                           <% end %> 
                       </td>

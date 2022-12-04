@@ -648,6 +648,12 @@ unless @ranked_student.blank?
                                     <%= sprintf( "%0.02f", coverted_75) %>
                                     <hr/>
                                     <% end %>
+                                    <%
+                                      if @connect_exam_obj.batch.course_name == 'XI'
+                                        mtt_obtain_mark = (mtt_obtain_mark.to_f/full_mark_mtt.to_f)*25
+                                        mtt_obtain_mark = mtt_obtain_mark.round()
+                                      end
+                                    %>
                                     <%= sprintf( "%0.02f", mtt_obtain_mark) %>
                                     <hr/>
                                     <%

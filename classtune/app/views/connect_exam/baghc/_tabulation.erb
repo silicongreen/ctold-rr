@@ -649,7 +649,7 @@ unless @ranked_student.blank?
                                     <hr/>
                                     <% end %>
                                     <%
-                                      if @connect_exam_obj.batch.course_name == 'XI'
+                                      if @connect_exam_obj.batch.course_name == 'XI' and full_mark_mtt > 0
                                         mtt_obtain_mark = (mtt_obtain_mark.to_f/full_mark_mtt.to_f)*25
                                         mtt_obtain_mark = mtt_obtain_mark.round()
                                       end

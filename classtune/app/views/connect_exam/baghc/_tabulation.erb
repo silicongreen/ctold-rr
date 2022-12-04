@@ -203,11 +203,11 @@ unless @ranked_student.blank?
                           %>
                           <% if @connect_exam_obj.result_type.to_i == 10 %> 
                           <%
-                            if @connect_exam_obj.batch.course_name == 'XI'
-                              mtt = (mtt.to_f/mtt_total.to_f)*25
-                              mtt_total = 25
-                              mtt = mtt.round()
-                            end
+                            #if @connect_exam_obj.batch.course_name == 'XI'
+                            #  mtt = (mtt.to_f/mtt_total.to_f)*25
+                            #  mtt_total = 25
+                            #  mtt = mtt.round()
+                            #end
                           %>
                           <td><%=  sub['code'] %><hr/><%= cq unless cq.blank? %><hr/><%= mcq unless mcq.blank? %><hr/><%= prac unless prac.blank? %><hr/><%= mtt unless mtt.blank? %></td>  
                           <% else %>

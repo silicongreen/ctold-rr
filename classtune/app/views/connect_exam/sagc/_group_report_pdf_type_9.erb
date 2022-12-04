@@ -21,7 +21,6 @@
         group_batch_ids = Batch.find(:all, :conditions => "course_id IN (#{group_course_ids.join(",")}) and is_deleted = 0").map(&:id)
         outof_pos = Student.count(:all, :conditions => "batch_id = #{@student.batch_id}")
         outof_section_pos = Student.count(:all, :conditions => "batch_id IN (#{group_batch_ids.join(",")}) and is_deleted = 0")
-        abort(group_batch_ids.inspect)
         exam_connect_merit_lists.destroy
       end
       

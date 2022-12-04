@@ -15,13 +15,13 @@
       exam_connect_merit_lists = ExamConnectMeritList.find(:first, :conditions=>{:connect_exam_id=>@connect_exam_obj.id,:student_id=>@student.id,:batch_id=>@student.batch_id})
       unless exam_connect_merit_lists.nil?
         pos = exam_connect_merit_lists.position
-        section_pos = exam_connect_merit_lists.section_position
+        section_pos = exam_connect_merit_lists.section_position 
         
         group_course_ids = Course.find(:all, :conditions => "course_name = '#{@batch.course.course_name}' and `group` = '#{@batch.course.group}' and is_deleted = 0").map(&:id)
         group_batch_ids = Batch.find(:all, :conditions => "course_id IN (#{group_course_ids.join(",")}) and is_deleted = 0").map(&:id)
         outof_pos = Student.count(:all, :conditions => "batch_id = #{@student.batch_id}")
         outof_section_pos = Student.count(:all, :conditions => "batch_id IN (#{group_batch_ids.join(",")}) and is_deleted = 0")
-        
+        abort(group_batch_ids.inspect)
         exam_connect_merit_lists.destroy
       end
       

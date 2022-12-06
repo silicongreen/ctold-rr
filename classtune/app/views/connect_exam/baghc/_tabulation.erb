@@ -266,14 +266,13 @@ unless @ranked_student.blank?
                         <% extender = 1 %>
                         <% if @connect_exam_obj.result_type.to_i == 10 %> 
                         <tr>
-                            <td colspan="100">&nbsp;</td>
+                            <td colspan="100" style="height: 200px;">&nbsp;</td>
                         </tr> 
                         <% else %>
                         <tr class="page-break120">
                             <td colspan="100">&nbsp;</td>
                         </tr> 
                         <% end %>
-                        <div style="display:block; clear:both; page-break-after:always;"></div>
                         <tr class="table-header">
 
                             <td class="col-pdf">Roll</td>
@@ -335,15 +334,19 @@ unless @ranked_student.blank?
                         <% extender = 1 %>
                         <% if @connect_exam_obj.result_type.to_i == 10 %> 
                         <tr>
-                            <td colspan="100">&nbsp;</td>
+                            <td colspan="100" style="height: 120px;">&nbsp;</td>
                         </tr> 
                         <% else %>
                         <tr class="page-break">
                             <td colspan="100">&nbsp;</td>
                         </tr> 
                         <% end %>
+<<<<<<< HEAD
+                        <tr class="table-header">
+=======
                         <div style="display:block; clear:both; page-break-after:always;"></div>
                         <tr class="table-header">
+>>>>>>> 9fd73045b9e349249fbfaf2060ec4f7c617a7ca0
 
                             <td class="col-pdf">Roll</td>
                             <td class="col-pdf">Students Name</td>

@@ -92,7 +92,7 @@
           
               
           
-          <tr>
+          <tr class="<%= cycle(c,(["odd","odd"]-[c]).first) %>">
           
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>

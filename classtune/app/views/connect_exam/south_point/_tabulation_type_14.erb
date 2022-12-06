@@ -43,7 +43,7 @@
           <% end %> 
           
           <td>Total</td>
-          <td>Grade Count</td>
+          <td>Grade<Br /> Count</td>
           <% unless @student_position.blank? %>
               <td>Position</td>
            <% end %>
@@ -79,7 +79,7 @@
                 <% end %> 
 
                 <td>Total</td>
-                <td>Grade Count</td>
+                <td>Grade <br />Count</td>
                 <% unless @student_position.blank? %>
                   <td>Position</td>
                 <% end %>
@@ -468,7 +468,7 @@
                   <% grades.each do |grade| %>
                       <%= grade.to_s+"-"+grade_count[grade].to_s %>
                       <% if i!=total_grade_std %>
-                      ,
+                      <br>
                       <% end %>
                       <% i = i+1 %>
                   <% end %>

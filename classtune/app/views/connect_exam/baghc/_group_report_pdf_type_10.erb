@@ -255,19 +255,25 @@
                                   pass_mark = {70 => 23, 100 => 33, 50 => 17, 30 => 10, 25 => 8}
                                   failed = false
                                   mtt_total = mtt_total + 1
+                                  failed_1 = 0
+                                  failed_2 = 0
+                                  failed_3 = 0
                                   unless pass_mark[cq_total.to_i].blank?
                                     if cq.to_i <  pass_mark[cq_total.to_i].to_i
                                       failed = true
+                                      failed_1 = 1
                                     end
                                   end
                                   unless pass_mark[mcq_total.to_i].blank?
                                     if mcq.to_i <  pass_mark[mcq_total.to_i].to_i
                                       failed = true
+                                      failed_2 = 1
                                     end
                                   end
                                   unless pass_mark[prac_total].blank?
                                     if prac.to_i <  pass_mark[prac_total].to_i
                                       failed = true
+                                      failed_1 = 3
                                     end
                                   end
                                   mtt_total = mtt_total - 1
@@ -298,7 +304,7 @@
                                 %>
                                 <td>
                                   <% if cq_total > 0 %>
-                                    <%= cq %> <font class="soft">[<%= cq_total.to_i %>]</font>
+                                    <%= cq %> <%= failed_3 %> <%= failed_1 %> <%= failed_2 %> <font class="soft">[<%= cq_total.to_i %>]</font>
                                   <% else %>
                                     -
                                   <% end %>    

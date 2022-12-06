@@ -743,12 +743,12 @@ unless @ranked_student.blank?
                     <% end %>
                   <% end %>
                       <% if @connect_exam_obj.result_type.to_i == 10 %> 
-                      <% if std_count>1 %>
-                      <tr style="height: 340px;">
-                          <td colspan="100">&nbsp;</td>
-                      </tr>
-                      <% elsif std_count>2 %>
+                      <% if std_count>2 %>
                         <tr class="page-break-low">
+                            <td colspan="100">&nbsp;</td>
+                        </tr>
+                      <% elsif std_count>1 %>
+                        <tr style="height: 340px;">
                             <td colspan="100">&nbsp;</td>
                         </tr>
                       <% else %>    

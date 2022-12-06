@@ -58,7 +58,7 @@
         <% @report_data['report']['students'].each do |std| %>
           <% j = j+1 %>
           <%  std_count = std_count+1; %>
-          <% if std_count>5 %>
+          <% if std_count>4 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               </table>
@@ -92,7 +92,7 @@
           
               
           
-          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+          <tr>
           
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>

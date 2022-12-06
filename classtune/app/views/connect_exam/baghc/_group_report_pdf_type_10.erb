@@ -252,11 +252,11 @@
                                   #########################################################
                                   ## Failed On Individual Subjects (Temporary Solution)
                                   #########################################################
-                                  if @connect_exam_obj.batch.course_name == 'XI'
+                                  #if @connect_exam_obj.batch.course_name == 'XI'
                                     pass_mark = {70 => 23, 100 => 33, 50 => 17, 30 => 10, 25 => 8}
-                                  else
-                                    pass_mark = {70 => 24, 100 => 33, 50 => 17, 30 => 10, 25 => 9}
-                                  end
+                                  #else
+                                  #  pass_mark = {70 => 24, 100 => 33, 50 => 17, 30 => 10, 25 => 9}
+                                  #end
                                   failed = false
                                   mtt_total = mtt_total + 1
                                   unless pass_mark[cq_total.to_i].blank?

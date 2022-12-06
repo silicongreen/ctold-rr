@@ -760,7 +760,7 @@ unless @ranked_student.blank?
                         <% end %>
                       <% end %>
                       <tr class="table-header">
-                          <td colspan="2" rowspan="8">Subjective Report</td>
+                          <td colspan="2" rowspan="8">Subjective Report <%= std_count %></td>
                           <td>Average Marks(%)</td>
                           
                           <% @report_data['report']['subjects'].each do |sub| %>

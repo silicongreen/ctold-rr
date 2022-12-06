@@ -176,7 +176,7 @@
 
                           <% if full_mark.to_f > 0 %>
                             <td class="col-pdf"><%= full_mark.to_i %></td>
-                            <td class="col-pdf"><%= total_mark.to_i %></td>
+                            <!--td class="col-pdf"><%#= total_mark.to_i %></td-->
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
@@ -233,7 +233,7 @@
                        </b></td>
                 </tr>       
                 <tr class="odd">  
-                    <td class="col-pdf align-left" colspan="2" width="50%"><b>Attendance</b></td>
+                    <td class="col-pdf align-left" colspan="1" width="50%"><b>Attendance</b></td>
                 </tr>
                 <tr class="odd">
                     <td class="col-pdf align-left" width="25%">
@@ -286,7 +286,8 @@
                           <br/><br/><br/>
                       </td>
                       <td class="col-pdf" width="25%">
-                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/"+batch_split[0].downcase+".png")), :width=>"70%" %>
+                          <%#= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/"+batch_split[0].downcase+".png")), :width=>"70%" %>
+                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/vc-signature-2022.jpg")), :width=>"70%" %>
                       </td> 
                       <td class="col-pdf " width="25%">
                           <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/principal-sir-signature-2019.jpg")), :width=>"70%" %>

@@ -7,7 +7,7 @@
     @student_position_first_term_batch = @student_position_second_term_batch
   end
 %>
- <% total_u = 0 %>
+ <% total_u = 0 %> 
   <div id="page-yield"  class="available_sections1 baf_shaheen">
       <%= render  :partial=>"/connect_exam/sagc/header" %>
       <h2 align="center" class="font-24"><%= @connect_exam_obj.name %> - <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></h2>

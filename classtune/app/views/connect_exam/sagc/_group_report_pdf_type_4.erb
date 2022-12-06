@@ -302,7 +302,7 @@
                             <% full_mark_subjective1 = full_mark_subjective1.to_f*0.8 %>
                             <% class_test_converted_mark1 = full_mark_all-full_mark_subjective1 %>
                             <% if class_test_mark1 > 0 && class_test_mark_full_mark1 > 0 %>
-                              <% #class_test_mark1 = (class_test_mark1.to_f/class_test_mark_full_mark1.to_f)*class_test_converted_mark1 %>
+                              <%# class_test_mark1 = (class_test_mark1.to_f/class_test_mark_full_mark1.to_f)*class_test_converted_mark1 %>
                               <% class_test_mark1 = class_test_mark1.round() %>
                             <% else %>  
                               <% class_test_mark1 = 0 %>
@@ -335,8 +335,8 @@
                             </td>   
                             <!--td class="col-pdf no-warp">
                                <%##= sprintf( "%0.02f", avg_mark)%>
-                               <% avg_mark = main_exam_mark.to_f %>
                             </td-->
+                            <% avg_mark = main_exam_mark.to_f %>
                             <% tota_mark_with_monthly1 = avg_mark+class_test_mark1 %>
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly1.to_f.round.to_i %></b>

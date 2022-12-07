@@ -6806,7 +6806,11 @@ class ExamController < ApplicationController
           unless @subject_result[key].blank?
             unless std_result['subjects'][key].blank?
               #abort(std_result['subjects'][key]['result'].inspect)
-              rt = std_result['subjects'][key]['result']['at'].to_f + std_result['subjects'][key]['result']['cw'].to_f + std_result['subjects'][key]['result']['ob'].to_f + std_result['subjects'][key]['result']['sb'].to_f + std_result['subjects'][key]['result']['pr'].to_f
+              if @connect_exam_obj.result_type.to_i == 3
+                rt = std_result['subjects'][key]['result']['at'].to_f + std_result['subjects'][key]['result']['cw'].to_f + std_result['subjects'][key]['result']['ob'].to_f + (std_result['subjects'][key]['result']['sb'].to_f * 0.8).to_f + std_result['subjects'][key]['result']['pr'].to_f
+              else
+                rt = std_result['subjects'][key]['result']['at'].to_f + std_result['subjects'][key]['result']['cw'].to_f + std_result['subjects'][key]['result']['ob'].to_f + std_result['subjects'][key]['result']['sb'].to_f + std_result['subjects'][key]['result']['pr'].to_f
+              end
               tmp_row << std_result['subjects'][key]['result']['at'].to_s
               tmp_row << std_result['subjects'][key]['result']['cw'].to_s
               tmp_row << std_result['subjects'][key]['result']['ob'].to_s

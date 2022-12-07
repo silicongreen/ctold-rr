@@ -162,7 +162,10 @@
                             <td><b>PR</b></td>
                       <% end %> 
                       <td rowspan="1"><b>Total</b></td>
-                      <!--td rowspan="1"><b>Avg</b></td-->
+                      <% if @batch.course.course_name == "One" or @batch.course.course_name == "Two" %>
+                      <% else %>
+                      <td rowspan="1"><b>Avg</b></td>
+                      <% end %>
                       <% if has_ob == true %>
                             <td><b>OB</b></td>
                       <% end %> 
@@ -174,7 +177,10 @@
                       <% end %> 
                          
                       <td rowspan="1"><b>Total</b></td>
-                      <!--td rowspan="1"><b>Avg</b></td-->
+                      <% if @batch.course.course_name == "One" or @batch.course.course_name == "Two" %>
+                      <% else %>
+                      <td rowspan="1"><b>Avg</b></td>
+                      <% end %>
                   </tr>
 
                   <% total_grade = 0 %>
@@ -333,9 +339,12 @@
                             <td class="col-pdf no-warp">
                                <%= main_exam_mark1.to_f.round.to_i %>
                             </td>   
-                            <!--td class="col-pdf no-warp">
-                               <%##= sprintf( "%0.02f", avg_mark)%>
-                            </td-->
+                            <% if @batch.course.course_name == "One" or @batch.course.course_name == "Two" %>
+                            <% else %>
+                            <td class="col-pdf no-warp">
+                               <%= sprintf( "%0.02f", avg_mark)%>
+                            </td>
+                            <% end %>
                             <% avg_mark = main_exam_mark1.to_f %>
                             <% tota_mark_with_monthly1 = avg_mark+class_test_mark1 %>
                             <td class="col-pdf no-warp">
@@ -442,9 +451,12 @@
                             <td class="col-pdf no-warp">
                                <%= main_exam_mark2.to_f.round.to_i %>
                             </td>   
-                            <!--td class="col-pdf no-warp">
-                               <%##= sprintf( "%0.02f", avg_mark)%>
-                            </td-->
+                            <% if @batch.course.course_name == "One" or @batch.course.course_name == "Two" %>
+                            <% else %>
+                            <td class="col-pdf no-warp">
+                               <%= sprintf( "%0.02f", avg_mark)%>
+                            </td>
+                            <% end %>
                             <% avg_mark = main_exam_mark2.to_f %>
                             <% tota_mark_with_monthly2 = avg_mark+class_test_mark2 %>
                             <td class="col-pdf no-warp">
@@ -714,9 +726,12 @@
                             <td class="col-pdf no-warp">
                                <%= main_exam_mark1.to_f.round.to_i %>
                             </td>   
-                            <!--td class="col-pdf no-warp">
-                               <%#= sprintf( "%0.02f", avg_mark)%>
-                            </td-->
+                            <% if @batch.course.course_name == "One" or @batch.course.course_name == "Two" %>
+                            <% else %>
+                            <td class="col-pdf no-warp">
+                               <%= sprintf( "%0.02f", avg_mark)%>
+                            </td>
+                            <% end %>
                             <% avg_mark = main_exam_mark1.to_f %>
                             <% tota_mark_with_monthly1 = avg_mark+class_test_mark1 %>
                             <td class="col-pdf no-warp">
@@ -817,9 +832,12 @@
                             <td class="col-pdf no-warp">
                                <%= main_exam_mark2.to_f.round.to_i %>
                             </td>   
-                            <!--td class="col-pdf no-warp">
-                               <%#= sprintf( "%0.02f", avg_mark)%>
-                            </td-->
+                            <% if @batch.course.course_name == "One" or @batch.course.course_name == "Two" %>
+                            <% else %>
+                            <td class="col-pdf no-warp">
+                               <%= sprintf( "%0.02f", avg_mark)%>
+                            </td>
+                            <% end %>
                             <% avg_mark = main_exam_mark2.to_f %>
                             <% tota_mark_with_monthly2 = avg_mark+class_test_mark2 %>
                             <td class="col-pdf no-warp">

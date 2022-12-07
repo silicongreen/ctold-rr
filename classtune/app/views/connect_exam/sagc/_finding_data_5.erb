@@ -921,6 +921,7 @@
                   grand_total2 = grand_total2+total_mark2
                   grand_total = grand_total+main_mark_no_round
                   grand_total1_with_fraction = grand_total1_with_fraction+total_mark1_no_round
+                  grand_total1_with_fraction_marks << total_mark1_no_round
                   #if std['id'] == 38984
                   #  abort(main_mark_no_round.to_s)
                   #end
@@ -2131,9 +2132,9 @@
             end  
         
             
-            if std['id'].to_s == "38984"
-              abort(grand_total1_with_fraction_marks.inspect)
-            end
+            #if std['id'].to_s == "38984"
+            #  abort(grand_total1_with_fraction_marks.inspect)
+            #end
             if u_grade1 == 0
               grand_total_new = 55500-grand_total1_with_fraction
               grand_grade_new = 50000-grand_grade_point1

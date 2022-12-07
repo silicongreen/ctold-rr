@@ -87,9 +87,6 @@ end
       @student_result.each do |std_result|
         batch_i = std_result["batch_id"]
         std_id = std_result["id"].to_i
-        if std_id == 31917
-          abort(batch_i.inspect)
-        end
         if @std_batch_data[batch_i].blank?
           @std_batch_data[batch_i] = 0
         end
@@ -103,7 +100,7 @@ end
         @std_batch_results[batch_i][std_id] = @std_batch_data[batch_i]
       end
     end
-    abort(@std_batch_results.compact.inspect)
+    abort(@std_batch_results[14473][31917].inspect)
   %>
   <%
   unless @group_name_upper.blank?

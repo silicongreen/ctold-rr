@@ -1141,7 +1141,7 @@
                       <td class="align-left no-warp" width="15%">Section</td>
                       <td class="no-warp">
                          <% if !@student_position_batch[@student.id.to_i].blank? %> 
-                          <%= @student_position_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
+                          <%= @student_position_batch[@student.id.to_i] %> 1 out of <%= @total_std_batch %>
                          <% else %>
                           -
                          <% end %> 
@@ -1154,7 +1154,7 @@
                       <td class="align-left no-warp" width="15%">Class/Group</td>
                       <td class="no-warp">
                          <% if !@student_position[@student.id.to_i].blank? %> 
-                          <%= @student_position[@student.id.to_i] %> out of <%= @total_std %>
+                          <%= @student_position[@student.id.to_i] %> 2 out of <%= @total_std %>
                          <% else %>
                           -
                          <% end %> 

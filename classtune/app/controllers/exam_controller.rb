@@ -6820,7 +6820,7 @@ class ExamController < ApplicationController
               if courseObj.course_name == "Ten"
                 tmp_row << std_result['subjects'][key]['result']['ct'].to_s
               else
-                tmp_row << rt.to_s
+                tmp_row << rt.to_s + "  " + key.to_s
               end
               if @connect_exam_obj.result_type.to_i == 3
                 tmp_row << rt.round().to_s

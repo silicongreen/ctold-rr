@@ -105,7 +105,7 @@ end
             @std_batch_last_data[batch_i]['last_total'] = 0
             @std_batch_last_data[batch_i]['last_gp'] = 0
           end
-          if @std_batch_last_data[batch_i]['last_total'] > grand_total_with_fraction or @std_batch_last_data[batch_i]['last_gp'] > gp
+          if @std_batch_last_data[batch_i]['last_total'].to_f != grand_total_with_fraction.to_f or @std_batch_last_data[batch_i]['last_gp'].to_f != gp.to_f
             @std_batch_data[batch_i] = @std_batch_data[batch_i] + 1
             @std_batch_last_data[batch_i]['last_total'] = grand_total_with_fraction
             @std_batch_last_data[batch_i]['last_gp'] = gp
@@ -317,8 +317,8 @@ end
                             <td class="col-pdf no-warp center-class"><%= @student_position_first_term[std_result['id'].to_i] %></td>
                           <% end %>
                         <% else %>
-                            
-                          <% if !@section_all_position_batch.blank? && !@section_all_position_batch[std_result['batch_id'].to_i].blank? && !@section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i].blank? %>
+                          <% if @connect_exam_obj.result_type.to_i == 4 %>  
+                          <% if !@section_all_position_batch.blank? && !@section_all_position_batch[std_result['batch_id'].to_i].blank? && !@section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i].blank? && !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
 
                             <td class="col-pdf no-warp center-class"><%= @section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i] %></td>
 
@@ -335,8 +335,8 @@ end
                                     end 
                                   %><%= sub_failed %><%
                                     if iloop>4
-                                       iloop = 0
-                                       %><%= "<br/>"  %><%
+                                      iloop = 0
+                                      %><%= "<br/>"  %><%
                                     end  
                                   end 
 
@@ -345,6 +345,36 @@ end
                               %>
                             </td>
 
+                          <% end %>
+                          <% else %>
+                            <% if !@section_all_position_batch.blank? && !@section_all_position_batch[std_result['batch_id'].to_i].blank? && !@section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i].blank? %>
+
+                              <td class="col-pdf no-warp center-class"><%= @section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i] %></td>
+
+                            <% else %>
+                              <td class="col-pdf no-warp" colspan="2">
+                                  <%
+                                  iloop = 0
+                                  
+                                  unless std_result['subject_failed'].blank?
+                                    std_result['subject_failed'].each do |sub_failed|
+                                      iloop = iloop+1
+                                      if iloop > 1
+                                      %>, <%
+                                      end 
+                                    %><%= sub_failed %><%
+                                      if iloop>4
+                                        iloop = 0
+                                        %><%= "<br/>"  %><%
+                                      end  
+                                    end 
+
+                                    end  
+
+                                %>
+                              </td>
+
+                            <% end %>
                           <% end %> 
                           
                           <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>

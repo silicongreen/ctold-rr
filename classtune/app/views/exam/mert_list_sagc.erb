@@ -61,6 +61,7 @@ end
   @std_resutl = []
   @std_batch_data = []
   @std_batch_results = []
+  @std_batch_last_data = []
    
     iloop = 0
     
@@ -84,15 +85,31 @@ end
         iloop = iloop+1
       end
       @student_result.sort! { |x, y| x["position"] <=> y["position"] }
+
+      last_total = 0
+      last_gp = 0
       @student_result.each do |std_result|
-        abort(std_result.inspect)
-        if std_result['gpa'].to_s != '0.0'
+
+        if std_result['gp'].to_s != '0.0'
+          grand_total_with_fraction = std_result["grand_total_with_fraction"]
+          gp = std_result["gp"]
           batch_i = std_result["batch_id"]
           std_id = std_result["id"].to_i
           if @std_batch_data[batch_i].blank?
             @std_batch_data[batch_i] = 0
           end
-          @std_batch_data[batch_i] = @std_batch_data[batch_i] + 1
+          if @std_batch_last_data[batch_i].blank?
+            @std_batch_last_data[batch_i] = {}
+          end
+          if @std_batch_last_data[batch_i].blank?
+            @std_batch_last_data[batch_i]['last_total'] = 0
+            @std_batch_last_data[batch_i]['last_gp'] = 0
+          end
+          if @std_batch_last_data[batch_i]['last_total'] > grand_total_with_fraction or @std_batch_last_data[batch_i]['last_gp'] > gp
+            @std_batch_data[batch_i] = @std_batch_data[batch_i] + 1
+            @std_batch_last_data[batch_i]['last_total'] = grand_total_with_fraction
+            @std_batch_last_data[batch_i]['last_gp'] = gp
+          end
           if @std_batch_results[batch_i].blank?
             @std_batch_results[batch_i] = []
           end

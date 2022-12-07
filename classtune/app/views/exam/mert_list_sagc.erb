@@ -44,6 +44,7 @@ elsif !@student_position_second_term.blank?  and !@student_position_second_term_
 end  
 
 %>
+<%= @connect_exam_obj.result_type.to_s  %>
 <% if @connect_exam_obj.result_type.to_i == 4 %> 
   <%
   if @tabulation_data.nil?

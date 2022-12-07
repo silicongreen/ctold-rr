@@ -59,6 +59,8 @@ end
   @student_position_first_term_batch = @student_position
   abort(@student_result[0].inspect)
   @std_resutl = []
+  @std_batch_data = []
+  @std_batch_results = []
    
     iloop = 0
     
@@ -70,9 +72,7 @@ end
     
     if !@student_result.blank?
       @student_result.each do |std_result|
-        
         position = 500000
-       
         if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank?
           position = @student_position_first_term_batch[std_result['id'].to_i]
         else
@@ -84,7 +84,22 @@ end
         iloop = iloop+1
       end
       @student_result.sort! { |x, y| x["position"] <=> y["position"] }
+      @student_result.each do |std_result|
+        batch_i = std_result["batch_id"]
+        std_id = std_result["std_id"]
+        if @std_batch_data[batch_i].blank?
+          @std_batch_data[batch_i] = 0
+        end
+        @std_batch_data[batch_i] = @std_batch_data[batch_i] + 1
+        if @std_batch_results[batch_i].blank?
+          @std_batch_results[batch_i] = []
+        end
+        if @std_batch_results[batch_i][std_id].blank?
+          @std_batch_results[batch_i][std_id] = @std_batch_data[batch_i]
+        end
+      end
     end
+    abort(@std_batch_results.inspect)
   %>
   <%
   unless @group_name_upper.blank?

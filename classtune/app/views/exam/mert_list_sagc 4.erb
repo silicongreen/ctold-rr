@@ -17,6 +17,7 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <%
+abort('ehhee')
 unless @group_name_upper.blank?
   group_split = @group_name_upper.split(" ")
   unless group_split[2].blank?
@@ -29,7 +30,7 @@ unless @group_name_upper.blank?
        
   @group_name_upper = group_split[0]
 end
-abort('ehhee')
+
 
 if !@student_position.blank? and !@student_position_batch.blank? and @student_position_first_term_batch.blank?
   @student_position_first_term_batch = @student_position_batch

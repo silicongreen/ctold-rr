@@ -45,7 +45,7 @@ end
 
 %>
 <% @student_result = [] %>
-<% @total_std = 0 %>
+<% @total_std = nil %>
 <% if @connect_exam_obj.result_type.to_i == 4 %> 
   <%
   if @tabulation_data.nil?

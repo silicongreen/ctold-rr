@@ -59,8 +59,8 @@ end
   @student_position_first_term_batch = @student_position
 
   @std_resutl = []
-  @std_batch_data = {}
-  @std_batch_results = {}
+  @std_batch_data = []
+  @std_batch_results = []
    
     iloop = 0
     
@@ -85,7 +85,7 @@ end
       end
       @student_result.sort! { |x, y| x["position"] <=> y["position"] }
       @student_result.each do |std_result|
-        batch_i = std_result["batch_id"].to_s
+        batch_i = std_result["batch_id"]
         std_id = std_result["id"].to_i
         if @std_batch_data[batch_i].blank?
           @std_batch_data[batch_i] = 0

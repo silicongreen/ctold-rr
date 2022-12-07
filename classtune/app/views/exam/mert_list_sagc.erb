@@ -61,7 +61,7 @@ end
     iloop = 0
     
     if !@student_position.blank? and !@student_position_batch.blank? and @student_position_first_term.blank?
-      @student_position_first_term = @student_position
+      @student_position_first_term = @student_position_batch
     elsif !@student_position_second_term.blank?  and !@student_position_second_term_batch.blank? and @student_position_first_term.blank?
       @student_position_first_term = @student_position_second_term
     end      

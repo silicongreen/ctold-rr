@@ -6811,6 +6811,7 @@ class ExamController < ApplicationController
               else
                 rt = std_result['subjects'][key]['result']['at'].to_f + std_result['subjects'][key]['result']['cw'].to_f + std_result['subjects'][key]['result']['ob'].to_f + std_result['subjects'][key]['result']['sb'].to_f + std_result['subjects'][key]['result']['pr'].to_f
               end
+              
               tmp_row << std_result['subjects'][key]['result']['at'].to_s
               tmp_row << std_result['subjects'][key]['result']['cw'].to_s
               tmp_row << std_result['subjects'][key]['result']['ob'].to_s
@@ -6829,6 +6830,16 @@ class ExamController < ApplicationController
                 else
                   tmp_row << "F" 
                 end
+              elsif @connect_exam_obj.result_type.to_i == 1
+                  full_marks = 50
+                  rt = (rt.to_f / full_mark) * 100
+                  tmp_row << rt.round().to_s
+                  grade = GradingLevel.percentage_to_grade(rt, @batch.id)
+                  if !grade.blank? && !grade.name.blank?
+                    tmp_row << grade.name.to_s 
+                  else
+                    tmp_row << "F" 
+                  end
               else
                 tmp_row << std_result['subjects'][key]['result']['ct'].to_s
                 tmp_row << std_result['subjects'][key]['result']['lg'].to_s 

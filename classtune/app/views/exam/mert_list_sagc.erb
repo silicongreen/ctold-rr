@@ -86,7 +86,6 @@ end
       end
       @student_result.sort! { |x, y| x["position"] <=> y["position"] }
     end
-  end
 <% elsif @connect_exam_obj.result_type.to_i == 4 and !@class.blank? %> 
 <% @student_result = [] %>
 <% @total_std = nil %>

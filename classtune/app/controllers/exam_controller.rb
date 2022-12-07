@@ -6832,7 +6832,7 @@ class ExamController < ApplicationController
                 end
               elsif @connect_exam_obj.result_type.to_i == 1
                   full_marks = 50
-                  rt = (rt.to_f / full_mark) * 100
+                  rt = (rt.to_f / full_marks) * 100
                   tmp_row << rt.round().to_s
                   grade = GradingLevel.percentage_to_grade(rt, @batch.id)
                   if !grade.blank? && !grade.name.blank?

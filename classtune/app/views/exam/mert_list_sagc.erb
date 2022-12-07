@@ -85,6 +85,7 @@ end
       end
       @student_result.sort! { |x, y| x["position"] <=> y["position"] }
       @student_result.each do |std_result|
+        abort(std_result.inspect)
         if std_result['gpa'].to_s != '0.0'
           batch_i = std_result["batch_id"]
           std_id = std_result["id"].to_i

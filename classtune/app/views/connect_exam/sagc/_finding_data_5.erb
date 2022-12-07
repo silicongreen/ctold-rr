@@ -128,6 +128,7 @@
             
             grand_total = 0
             grand_total_with_fraction = 0
+            grand_total1_with_fraction_marks = []
            
             grand_grade_point = 0
             grand_total1 = 0
@@ -920,9 +921,9 @@
                   grand_total2 = grand_total2+total_mark2
                   grand_total = grand_total+main_mark_no_round
                   grand_total1_with_fraction = grand_total1_with_fraction+total_mark1_no_round
-                  if std['id'] == 38984
-                    abort(main_mark_no_round.to_s)
-                  end
+                  #if std['id'] == 38984
+                  #  abort(main_mark_no_round.to_s)
+                  #end
                   grand_total2_with_fraction = grand_total2_with_fraction+total_mark2_no_round
                   grand_total_with_fraction = grand_total_with_fraction+main_mark_no_round
                   
@@ -1820,6 +1821,9 @@
                       grand_total2 = grand_total2+total_mark2
                       grand_total = grand_total+subject_full_marks
                       grand_total1_with_fraction = grand_total1_with_fraction+total_mark1_no_round
+                      
+                      grand_total1_with_fraction_marks << total_mark1_no_round
+                      
                       grand_total2_with_fraction = grand_total2_with_fraction+total_mark2_no_round
                       grand_total_with_fraction = grand_total_with_fraction+main_mark_no_round
                       
@@ -2129,6 +2133,9 @@
             
             
             if u_grade1 == 0
+              if std['id'] == 38984
+                abort(grand_total1_with_fraction_marks.inspect)
+              end
               grand_total_new = 55500-grand_total1_with_fraction
               grand_grade_new = 50000-grand_grade_point1
               if connect_exam_id.to_i == @connect_exam_obj.id || (std_group_name == group_name && !@class.blank?)

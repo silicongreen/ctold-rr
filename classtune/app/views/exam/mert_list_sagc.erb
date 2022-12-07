@@ -255,7 +255,7 @@ end
                             
                           <% if !@section_all_position_batch.blank? && !@section_all_position_batch[std_result['batch_id'].to_i].blank? && !@section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i].blank? %>
 
-                            <td class="col-pdf no-warp center-class"><%= @section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i] %></td>
+                            <td class="col-pdf no-warp center-class"><%= @section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i] %> 2</td>
 
                           <% else %>
                             <td class="col-pdf no-warp" colspan="2">
@@ -283,7 +283,7 @@ end
                           <% end %> 
                           
                           <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
-                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
+                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %> 3</td>
                           <% end %>
                             
                           

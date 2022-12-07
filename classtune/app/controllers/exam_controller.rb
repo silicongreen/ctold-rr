@@ -3577,7 +3577,7 @@ class ExamController < ApplicationController
       :footer => {:html => { :template=> 'layouts/pdf_footer_sagc.html'}}
   end
   
-  def mert_list_sagc
+  def mert_list_sagc 
     @id = params[:id]
     @connect_exam_obj = ExamConnect.active.find(@id)
   
@@ -6823,7 +6823,7 @@ class ExamController < ApplicationController
                 tmp_row << rt.to_s
               end
               if @connect_exam_obj.result_type.to_i == 3
-                tmp_row << rt.round().to_s
+                tmp_row << rt.round().to_s 
                 m_rt = rt
                 if key.to_s == "Dwing" or key.to_s == "Draw"
                   full_marks = 50

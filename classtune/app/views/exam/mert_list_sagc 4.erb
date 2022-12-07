@@ -44,6 +44,47 @@ elsif !@student_position_second_term.blank?  and !@student_position_second_term_
 end  
 
 %>
+<% @student_result = [] %>
+<% @total_std = nil %>
+<% if @connect_exam_obj.result_type.to_i == 4 %> 
+  <%
+  if @tabulation_data.nil?
+    student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+    @tabulation_data = []
+    if student_response['status']['code'].to_i == 200
+      @tabulation_data = student_response['data'] 
+    end
+  end
+  render  :partial=>"/connect_exam/sagc/finding_data_5"
+  @std_resutl = []
+   
+    iloop = 0
+    
+    if !@student_position.blank? and !@student_position_batch.blank? and @student_position_first_term.blank?
+      @student_position_first_term = @student_position
+    elsif !@student_position_second_term.blank?  and !@student_position_second_term_batch.blank? and @student_position_first_term.blank?
+      @student_position_first_term = @student_position_second_term
+    end      
+    
+    if !@student_result.blank?
+      @student_result.each do |std_result|
+        
+        position = 500000
+       
+        if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank?
+          position = @student_position_first_term[std_result['id'].to_i]
+        else
+          unless std_result['subject_failed'].blank?
+            position = position+(std_result['subject_failed'].count*1000000)-(std_result['gpa'].to_f*500)-std_result['grand_total_with_fraction'].to_f
+          end
+        end  
+        @student_result[iloop]['position'] = position
+        iloop = iloop+1
+      end
+      @student_result.sort! { |x, y| x["position"] <=> y["position"] }
+    end
+  %>
+<% end %>
 <div id="page-yield" class="available_sections1 baf_shaheen">
     <div class="page1"> </div>
     <div class="section1 row" >
@@ -155,7 +196,7 @@ end
 
                     <tr class="table-header">
                         <td class="col-pdf no-warp"><%= srl %></td>
-                        <td class="col-pdf no-warp"><%= std_result['sid'].to_s %></td> 
+                        <td class="col-pdf no-warp"><%= std_result['sid'].to_s %> <%= std_result['id'].to_s %></td> 
                         <td class="col-pdf no-warp"><%= std_result['roll'].to_s %></td> 
                         <td class="col-pdf no-warp"><%= std_result['name'].to_s %></td>
                         <td class="col-pdf no-warp"><%= std_result['batch_data'].to_s %></td>
@@ -213,7 +254,6 @@ end
                         <% else %>
                             
                           <% if !@section_all_position_batch.blank? && !@section_all_position_batch[std_result['batch_id'].to_i].blank? && !@section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i].blank? %>
-
                             <td class="col-pdf no-warp center-class"><%= @section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i] %></td>
 
                           <% else %>
@@ -240,8 +280,7 @@ end
                             </td>
 
                           <% end %> 
-                          
-                          <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
+                           <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
                             <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
                           <% end %>
                             

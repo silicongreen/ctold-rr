@@ -3692,6 +3692,16 @@ class ExamController < ApplicationController
     #     :header => {:html => { :template=> 'layouts/header_sagc.html'}},
     #     :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
     # else  
+    if @connect_exam_obj.result_type.to_i == 4
+      render :pdf => 'merit_list_sagc_4',
+        :orientation => 'Portrait', :zoom => 1.00,
+        :margin => {    :top=> 52,
+        :bottom => 30,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/header_sagc.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+    else
       render :pdf => 'merit_list_sagc',
         :orientation => 'Portrait', :zoom => 1.00,
         :margin => {    :top=> 52,
@@ -3700,7 +3710,7 @@ class ExamController < ApplicationController
         :right => 10},
         :header => {:html => { :template=> 'layouts/header_sagc.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-    # end
+    end
   end
   
   def subject_wise_fourty_percent

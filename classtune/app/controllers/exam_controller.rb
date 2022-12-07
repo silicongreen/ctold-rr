@@ -6823,7 +6823,7 @@ class ExamController < ApplicationController
                 tmp_row << rt.to_s
               end
               if @connect_exam_obj.result_type.to_i == 3
-                tmp_row << rt.round().to_s
+                tmp_row << rt.round().to_s + "  " + key.to_s
                 m_rt = rt
                 if key.to_s == "Dwing"
                   full_marks = 50

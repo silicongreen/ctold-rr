@@ -3692,7 +3692,6 @@ class ExamController < ApplicationController
     #     :header => {:html => { :template=> 'layouts/header_sagc.html'}},
     #     :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
     # else  
-    abort(@connect_exam_obj.result_type.inspect)
     if @connect_exam_obj.result_type.to_i == 4
       render :pdf => 'merit_list_sagc_4',
         :orientation => 'Portrait', :zoom => 1.00,

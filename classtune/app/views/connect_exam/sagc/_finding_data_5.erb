@@ -785,6 +785,9 @@
                 end  
                 
                 total_mark1 = total_ob1+total_sb1+total_pr1
+                if std['id'].to_s == "39081"
+                  abort(total_mark1.to_s + "  " + total_sb1.to_s + "  " + monthly_total_mark1.to_s + "  " + at_total_mark1.to_s)
+              end
                 total_mark1_80 = total_mark1.to_f
                 if full_mark1 > 100 or term_mark_multiplier == 0.80 or term_mark_multiplier == 0.90
                   total_mark1_80 = total_mark1.to_f*term_mark_multiplier
@@ -879,9 +882,7 @@
                 else
                   main_mark1 = 0
                 end 
-                if std['id'].to_s == "39081"
-                  abort(main_mark1.to_s + "  " + total_sb1.to_s + "  " + monthly_total_mark1.to_s + "  " + at_total_mark1.to_s)
-              end
+                
                 subject_mark = 0
                 if exam_type == 3
                   if @connect_exam_obj.result_type == 8

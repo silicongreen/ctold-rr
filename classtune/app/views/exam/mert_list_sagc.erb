@@ -84,9 +84,8 @@ end
         iloop = iloop+1
       end
       @student_result.sort! { |x, y| x["position"] <=> y["position"] }
-      abort(@student_result.inspect)
       @student_result.each do |std_result|
-        if std_result['position'] != 0
+        if std_result['lg'] != 'F'
           batch_i = std_result["batch_id"]
           std_id = std_result["id"].to_i
           if @std_batch_data[batch_i].blank?

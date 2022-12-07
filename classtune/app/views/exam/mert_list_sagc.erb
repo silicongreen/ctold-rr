@@ -44,7 +44,7 @@ elsif !@student_position_second_term.blank?  and !@student_position_second_term_
 end  
 
 %>
-<% if @connect_exam_obj.result_type.to_i == 4 and !@class.blank? %> 
+<% if @connect_exam_obj.result_type.to_i == 4 and @class.blank? %> 
 <% @student_result = [] %>
 <% @total_std = nil %>
   <%
@@ -60,11 +60,7 @@ end
    
     iloop = 0
     
-    if !@student_position.blank? and !@student_position_batch.blank? and @student_position_first_term.blank?
-      @student_position_first_term = @student_position
-    elsif !@student_position_second_term.blank?  and !@student_position_second_term_batch.blank? and @student_position_first_term.blank?
-      @student_position_first_term = @student_position_second_term
-    end      
+    @student_position_first_term = @student_position   
     
     if !@student_result.blank?
       @student_result.each do |std_result|
@@ -356,7 +352,7 @@ end
                             </td>
                           <% end %> 
                           <% if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank? %>
-                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term[std_result['id'].to_i] %> 112</td>
+                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term[std_result['id'].to_i] %></td>
                           <% end %>
                         <% else %>
                           <% if @connect_exam_obj.result_type.to_i == 4 %>  

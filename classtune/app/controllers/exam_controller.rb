@@ -6803,6 +6803,7 @@ class ExamController < ApplicationController
       unless std_result['subjects'].blank?
         @all_subject_connect_exam.each do |value|
           key = value.code.to_s
+          abort(@subject_result[key].inspect)
           unless @subject_result[key].blank?
             unless std_result['subjects'][key].blank?
               rt = std_result['subjects'][key]['result']['at'].to_f + std_result['subjects'][key]['result']['cw'].to_f + std_result['subjects'][key]['result']['ob'].to_f + std_result['subjects'][key]['result']['sb'].to_f + std_result['subjects'][key]['result']['pr'].to_f

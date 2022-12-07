@@ -44,9 +44,9 @@ elsif !@student_position_second_term.blank?  and !@student_position_second_term_
 end  
 
 %>
+<% if @connect_exam_obj.result_type.to_i == 4 and !@class.blank? %> 
 <% @student_result = [] %>
 <% @total_std = nil %>
-<% if @connect_exam_obj.result_type.to_i == 4 and !@class.blank? %> 
   <%
   if @tabulation_data.nil?
     student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)

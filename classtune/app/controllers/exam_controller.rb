@@ -15039,7 +15039,7 @@ class ExamController < ApplicationController
                     if (subject_failed == true or four_subject_failed == true) and @connect_exam_obj.result_type != 1  and @connect_exam_obj.result_type != 2
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = "F8 " + subject_failed.to_s + " " + four_subject_failed.to_s
                     else
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = grade.name
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = grade.name + "H!"
                     end
                   end
                   if !grade.blank? && !grade.name.blank? && sub['grade_subject'].to_i != 1

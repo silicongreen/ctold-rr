@@ -623,10 +623,10 @@ unless @ranked_student.blank?
                               end
                               if @connect_exam_obj.result_type == 13
                                 if full_mark_cq > 0
-                                  new_cq_total = 25
+                                  new_cq_total = full_mark_cq.to_i/2
                                   new_cq = (cq_obtain_mark.to_f / full_mark_cq.to_f) * new_cq_total.to_f
-                                  cq_obtain_mark = new_cq.to_i
-                                  full_mark_cq = new_cq_total.to_i
+                                  cq_obtain_mark = new_cq.round()
+                                  full_mark_cq = new_cq_total.round()
                                 end  
                               end  
                               coverted_75 = 0

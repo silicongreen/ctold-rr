@@ -76,7 +76,7 @@
                       <td class="col-pdf" colspan="<%= colspan-1 %>">
                           <b>1st Term Exam - <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></b>
                       </td>
-                      <td class="col-pdf" colspan="<%= colspan %>"><b>2nd Term Exam - <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></b></td>
+                      <td class="col-pdf" colspan="<%= colspan-1 %>"><b>2nd Term Exam - <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></b></td>
                       <td class="col-pdf" colspan="<%= colspan-2 %>"><b>Aggregated Result</b></td>
                       <% else %>
                       <td class="col-pdf" colspan="<%= colspan %>">

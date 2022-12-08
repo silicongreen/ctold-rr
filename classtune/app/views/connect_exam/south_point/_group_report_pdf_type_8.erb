@@ -229,15 +229,15 @@
                               full_mark2 = ct_full_mark2.to_i+st_full_mark2.to_i
                               obtained_mark2 = avg_mark_ct2.to_f+avg_mark_st2.to_f
                               
-                              if full_mark2 == 100
-                                obtained_mark2 = obtained_mark2/2
-                                obtained_mark2 = obtained_mark2.round()
-                                full_mark2 = 50
-                              else
-                                obtained_mark2 = (obtained_mark2/35)*25
-                                obtained_mark2 = obtained_mark2.round()
-                                full_mark2 = 25
-                              end
+                              #if full_mark2 == 100
+                              ##  obtained_mark2 = obtained_mark2/2
+                              #  obtained_mark2 = obtained_mark2.round()
+                              #  full_mark2 = 50
+                              #else
+                              #  obtained_mark2 = (obtained_mark2/35)*25
+                              #  obtained_mark2 = obtained_mark2.round()
+                              #  full_mark2 = 25
+                              #end
                               
                               #Calculation First Term (40/20) Mark
                               full_mark = full_mark1+full_mark2

@@ -513,15 +513,18 @@
                             sb_marks = 0
                             ob_marks = 0
                             pr_marks = 0
-                            
+                            term_multipler = 0.8
+                            if @batch.course.course_name == "One" or @batch.course.course_name == "Two"
+                              term_multipler = 1
+                            end
                             if sb>0
-                              sb_marks = (sb*0.8)/2.00
+                              sb_marks = (sb*term_multipler)/2.00
                             end
                             if ob>0
-                              ob_marks = (ob*0.8)/2.00
+                              ob_marks = (ob*term_multipler)/2.00
                             end
                             if pr>0
-                              pr_marks = (pr*0.8)/2.00
+                              pr_marks = (pr*term_multipler)/2.00
                             end
                             total_marks_ag = sb_marks+ob_marks+pr_marks+monthly_marks
                             grand_total_fraction = grand_total_fraction+total_marks_ag

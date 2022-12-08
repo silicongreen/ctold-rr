@@ -118,6 +118,11 @@
                                   if failed_grade == false
                                     total_gpa = total_gpa+gp_point
                                   end
+
+                                  new_cq_total = 25
+                                  new_cq = (cq.to_f / cq_total.to_f) * new_cq_total.to_f
+                                  cq = new_cq.to_i
+                                  cq_total = new_cq_total.to_i
                                 %>
                                 <td>
                                   <% if cq_total > 0 %>

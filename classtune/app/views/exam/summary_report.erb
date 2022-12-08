@@ -15,7 +15,126 @@
 #"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
-#under the License. -%>
+#under the License. -%> 
+<% if @connect_exam_obj.result_type.to_i == 4 and @class.blank? %> 
+<% @student_result = [] %>
+<% @total_std = nil %>
+  <%
+  if @tabulation_data.nil?
+    student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+    @tabulation_data = []
+    if student_response['status']['code'].to_i == 200
+      @tabulation_data = student_response['data'] 
+    end
+  end
+  render  :partial=>"/connect_exam/sagc/finding_data_5"
+  @student_position_first_term = @student_position
+  @student_position_first_term_batch = @student_position_batch
+  @std_resutl = []
+   
+    iloop = 0
+    
+     
+    
+    if !@student_result.blank?
+      @student_result.each do |std_result|
+        
+        position = 500000
+       
+        if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank?
+          position = @student_position_first_term[std_result['id'].to_i]
+        else
+          unless std_result['subject_failed'].blank?
+            position = position+(std_result['subject_failed'].count*1000000)-(std_result['gpa'].to_f*500)-std_result['grand_total_with_fraction'].to_f
+          end
+        end  
+        @student_result[iloop]['position'] = position
+        iloop = iloop+1
+      end
+      @student_result.sort! { |x, y| x["position"] <=> y["position"] }
+    end
+  %>
+%>
+<% end %>
+<% if @connect_exam_obj.result_type.to_i == 4 and !@class.blank? %> 
+<% @student_result = [] %>
+<% @total_std = nil %>
+  <%
+  if @tabulation_data.nil?
+    student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+    @tabulation_data = []
+    if student_response['status']['code'].to_i == 200
+      @tabulation_data = student_response['data'] 
+    end
+  end
+  render  :partial=>"/connect_exam/sagc/finding_data_5"
+  @student_position_first_term_batch = @student_position
+
+  @std_resutl = []
+  @std_batch_data = []
+  @std_batch_results = []
+  @std_batch_last_data = []
+   
+    iloop = 0
+    
+    if !@student_position.blank? and !@student_position_batch.blank? and @student_position_first_term.blank?
+      @student_position_first_term = @student_position
+    elsif !@student_position_second_term.blank?  and !@student_position_second_term_batch.blank? and @student_position_first_term.blank?
+      @student_position_first_term = @student_position_second_term
+    end      
+    
+    if !@student_result.blank?
+      @student_result.each do |std_result|
+        position = 500000
+        if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank?
+          position = @student_position_first_term_batch[std_result['id'].to_i]
+        else
+          unless std_result['subject_failed'].blank?
+            position = position+(std_result['subject_failed'].count*1000000)-(std_result['gpa'].to_f*500)-std_result['grand_total_with_fraction'].to_f
+          end
+        end  
+        @student_result[iloop]['position'] = position
+        iloop = iloop+1
+      end
+      @student_result.sort! { |x, y| x["position"] <=> y["position"] }
+
+      last_total = 0
+      last_gp = 0
+      @student_result.each do |std_result|
+
+        if std_result['gp'].to_s != '0.0'
+          grand_total_with_fraction = std_result["grand_total_with_fraction"]
+          gp = std_result["gp"]
+          batch_i = std_result["batch_id"]
+          std_id = std_result["id"].to_i
+          if @std_batch_data[batch_i].blank?
+            @std_batch_data[batch_i] = 0
+          end
+          if @std_batch_last_data[batch_i].blank?
+            @std_batch_last_data[batch_i] = {}
+          end
+          if @std_batch_last_data[batch_i].blank?
+            @std_batch_last_data[batch_i]['last_total'] = 0
+            @std_batch_last_data[batch_i]['last_gp'] = 0
+          end
+          if @std_batch_last_data[batch_i]['last_total'].to_f != grand_total_with_fraction.to_f or @std_batch_last_data[batch_i]['last_gp'].to_f != gp.to_f
+            @std_batch_data[batch_i] = @std_batch_data[batch_i] + 1
+            @std_batch_last_data[batch_i]['last_total'] = grand_total_with_fraction
+            @std_batch_last_data[batch_i]['last_gp'] = gp
+          end
+          if @std_batch_results[batch_i].blank?
+            @std_batch_results[batch_i] = []
+          end
+          if @std_batch_results[batch_i][std_id].blank?
+            @std_batch_results[batch_i][std_id] = 0
+          end
+          @std_batch_results[batch_i][std_id] = @std_batch_data[batch_i]
+        end
+      end
+    end
+    @section_all_position_batch = @std_batch_results
+  %>
+<% end %>
 <%
 if !@student_position.blank?
   @student_position_first_term_batch = @student_position_batch

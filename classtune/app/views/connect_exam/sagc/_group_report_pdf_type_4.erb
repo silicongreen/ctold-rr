@@ -610,7 +610,7 @@
                           <% full_mark = 0 %>
                           <% total_subject_new = total_subject_new+1 %>
                           <td class="col-pdf"><%= total_subject %></td>
-                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %> PL</td>
+                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
                               <% if report['quarter'] == '2' %>
@@ -691,8 +691,8 @@
                             <% end %>
                             <% end %>
                               
-                            <% avg_mark = main_exam_mark1.to_f*0.8 %>
-                            <% full_mark_subjective1 = full_mark_subjective1.to_f*0.8 %>
+                            <% avg_mark = main_exam_mark1.to_f*1 %>
+                            <% full_mark_subjective1 = full_mark_subjective1.to_f*1 %>
                             <% class_test_converted_mark1 = full_mark_all-full_mark_subjective1 %>
                             <% if class_test_mark1 > 0 && class_test_mark_full_mark1 > 0 %>
                               <%# class_test_mark1 = (class_test_mark1.to_f/class_test_mark_full_mark1.to_f)*class_test_converted_mark1 %>
@@ -797,8 +797,8 @@
                             <% end %>
                             <% end %>
                               
-                            <% avg_mark = main_exam_mark2.to_f*0.8 %>
-                            <% full_mark_subjective2 = full_mark_subjective2.to_f*0.8 %>
+                            <% avg_mark = main_exam_mark2.to_f*1 %>
+                            <% full_mark_subjective2 = full_mark_subjective2.to_f*1 %>
                             <% class_test_converted_mark1 = full_mark_all-full_mark_subjective2 %>
                             <% if class_test_mark2 > 0 && class_test_mark_full_mark2 > 0 %>
                               <%# class_test_mark2 = (class_test_mark2.to_f/class_test_mark_full_mark2.to_f)*class_test_converted_mark1 %>
@@ -869,13 +869,13 @@
                             pr_marks = 0
                             
                             if sb>0
-                              sb_marks = (sb*0.8)/2.00
+                              sb_marks = (sb*1)/2.00
                             end
                             if ob>0
-                              ob_marks = (ob*0.8)/2.00
+                              ob_marks = (ob*1)/2.00
                             end
                             if pr>0
-                              pr_marks = (pr*0.8)/2.00
+                              pr_marks = (pr*1)/2.00
                             end
                             total_marks_ag = sb_marks+ob_marks+pr_marks+monthly_marks
                             total_marks_ag = total_marks_ag.round()

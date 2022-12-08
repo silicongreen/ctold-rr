@@ -96,7 +96,11 @@
                         <% end %>  
                       <% end %>
                       <% colspan = colspan+2 %>
+                      <% if @batch.course.course_name == "One" or @batch.course.course_name == "Two" %>
+                      <td class="col-pdf" colspan="<%= colspan.to_i-1 %>" rowspan="1"><b>Examination</b></td>
+                      <% else %>
                       <td class="col-pdf" colspan="<%= colspan.to_i %>" rowspan="1"><b>Examination</b></td>
+                      <% end %>
                       <td class="col-pdf" rowspan="2"><b>Total</b></td>
                       <td class="col-pdf" rowspan="2"><b>Highest Marks</b></td>
                       <td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
@@ -111,7 +115,11 @@
                         <% end %>  
                       <% end %>
                       <% colspan = colspan+2 %>
+                      <% if @batch.course.course_name == "One" or @batch.course.course_name == "Two" %>
+                      <td class="col-pdf" colspan="<%= colspan.to_i-1 %>" rowspan="1"><b>Examination</b></td>
+                      <% else %>
                       <td class="col-pdf" colspan="<%= colspan.to_i %>" rowspan="1"><b>Examination</b></td>
+                      <% end %>
                       <td class="col-pdf" rowspan="2"><b>Total</b></td>
                       <td class="col-pdf" rowspan="2"><b>Highest Marks</b></td>
                       <td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>

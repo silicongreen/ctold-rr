@@ -128,6 +128,7 @@
             
             grand_total = 0
             grand_total_with_fraction = 0
+            grand_total_with_fraction_marks = []
             grand_total1_with_fraction_marks = []
            
             grand_grade_point = 0
@@ -931,6 +932,7 @@
                   #end
                   grand_total2_with_fraction = grand_total2_with_fraction+total_mark2_no_round
                   grand_total_with_fraction = grand_total_with_fraction+main_mark_no_round
+                  grand_total_with_fraction_marks << main_mark_no_round
                   
                   if full_mark1 == 50 && main_mark1 == 44 && (@connect_exam_obj.result_type == 12 || @connect_exam_obj.result_type == 6 || @connect_exam_obj.result_type == 5 )
                     main_mark1 = 45
@@ -1836,6 +1838,7 @@
                       
                       grand_total2_with_fraction = grand_total2_with_fraction+total_mark2_no_round
                       grand_total_with_fraction = grand_total_with_fraction+main_mark_no_round
+                      grand_total_with_fraction_marks << main_mark_no_round
                       
                       if fourth_subject.blank?
                         grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
@@ -2142,7 +2145,7 @@
         
             
             if std['id'].to_s == "39040"
-              abort(grand_total_with_fraction.inspect)
+              abort(grand_total_with_fraction_marks.inspect)
             end
             if u_grade1 == 0
               grand_total_new = 55500-grand_total1_with_fraction

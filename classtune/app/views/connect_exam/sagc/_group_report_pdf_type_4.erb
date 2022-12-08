@@ -424,11 +424,11 @@
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                   <%  main_exam_mark2 = main_exam_mark2+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% if report['exam_category'] == '3'  %>
-                                    <% sb = sb+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <% sb = sb+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
                                   <% elsif report['exam_category'] == '4' %>
-                                    <% ob = ob+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <% ob = ob+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
                                   <% elsif report['exam_category'] == '5' %>
-                                    <% pr = pr+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <% pr = pr+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
                                   <% end %>
                                 <% end %>
                               <% end %>

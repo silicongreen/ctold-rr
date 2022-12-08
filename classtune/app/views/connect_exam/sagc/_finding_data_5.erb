@@ -1754,7 +1754,7 @@
                       end 
                       if monthly_total_mark2 > 0
                         monthly_total_mark2 = (monthly_total_mark2/monthly_full_mark2)*monthly_mark_multiply2
-                        monthly_total_mark2 = monthly_total_mark2.round()
+                        monthly_total_mark2 = monthly_total_mark2
                         if @connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE"
                          monthly_full_mark2 = monthly_mark_multiply2
                         end 

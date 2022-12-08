@@ -8,7 +8,7 @@
 #you may not use this file except in compliance with the License.
 #You may obtain a copy of the License at
 #
-#  http://www.apache.org/licenses/LICENSE-2.0
+#  http://www.apache.org/licenses/LICENSE-2.0 
 #
 #Unless required by applicable law or agreed to in writing,
 #software distributed under the License is distributed on an
@@ -278,38 +278,61 @@
                             main_mark1 = (obtained_mark1.round().to_f/full_mark1.to_f)*100
 
                             #Calculation 2nd Quarter Mark
-                            st_marks2.sort! {|x,y| y <=> x }
-                            ct_marks2.sort! {|x,y| y <=> x }
+                            #st_marks2.sort! {|x,y| y <=> x }
+                            #ct_marks2.sort! {|x,y| y <=> x }
 
-                            if ct_full_mark2.to_i == 20 
-                              avg_mark_ct2 = ct_marks2[0].to_f+ct_marks2[1].to_f+ct_marks2[2].to_f
-                              ct_full_mark2 = ct_full_mark2*3
+                            #if ct_full_mark2.to_i == 20 
+                            #  avg_mark_ct2 = ct_marks2[0].to_f+ct_marks2[1].to_f+ct_marks2[2].to_f
+                            #  ct_full_mark2 = ct_full_mark2*3
+                            #  else 
+                            #  avg_mark_ct2 = ct_marks2[0].to_f+ct_marks2[1].to_f
+                            #  ct_full_mark2 = ct_full_mark2*2
+                            #  end 
+
+                            #if st_full_mark2.to_i == 10 
+                            #  avg_mark_st2 = st_marks2[0].to_f+st_marks2[1].to_f+st_marks2[2].to_f+st_marks2[3].to_f
+                            #  st_full_mark2 = st_full_mark2*4
+                            #else st_full_mark2.to_i == 5  
+                            #  avg_mark_st2 = st_marks2[0].to_f+st_marks2[1].to_f+st_marks2[2].to_f
+                            #  st_full_mark2 = st_full_mark2*3
+                            #end
+
+                            #obtained_mark2 = avg_mark_ct2.to_f+avg_mark_st2.to_f
+                            #full_mark2 = ct_full_mark2.to_i+st_full_mark2.to_i
+
+                            #if full_mark2 == 100
+                            #  obtained_mark2 = obtained_mark2/2
+                            #  obtained_mark2 = obtained_mark2.round()
+                            #  full_mark2 = 50
+                            #else
+                            #  obtained_mark2 = (obtained_mark2/35)*25
+                            #  obtained_mark2 = obtained_mark2.round()
+                            #  full_mark2 = 25
+                            #end
+                            #main_mark2 = (obtained_mark2.round().to_f/full_mark2.to_f)*100
+                            st_marks2.sort! {|x,y| y <=> x }
+                            ct_marks2.sort! {|x,y| y <=> x } 
+ 
+                            if ct_full_mark2.to_i == 30
+                              avg_mark_ct2 = (ct_marks2[0].to_f+ct_marks2[1].to_f+ct_marks2[2].to_f)/3
+                            else  
+                              if ct_full_mark2.to_i == 20 
+                                  avg_mark_ct2 = (ct_marks2[0].to_f+ct_marks2[1].to_f)/2
                               else 
-                              avg_mark_ct2 = ct_marks2[0].to_f+ct_marks2[1].to_f
-                              ct_full_mark2 = ct_full_mark2*2
+                                  avg_mark_ct2 = ct_marks2[0].to_f
                               end 
 
-                            if st_full_mark2.to_i == 10 
-                              avg_mark_st2 = st_marks2[0].to_f+st_marks2[1].to_f+st_marks2[2].to_f+st_marks2[3].to_f
-                              st_full_mark2 = st_full_mark2*4
-                            else st_full_mark2.to_i == 5  
-                              avg_mark_st2 = st_marks2[0].to_f+st_marks2[1].to_f+st_marks2[2].to_f
-                              st_full_mark2 = st_full_mark2*3
+                              if st_full_mark2.to_i == 10 
+                                  avg_mark_st2 = (st_marks2[0].to_f+st_marks2[1].to_f+st_marks2[2].to_f)/3
+                              else st_full_mark2.to_i == 5  
+                                  avg_mark_st2 = (st_marks2[0].to_f+st_marks2[1].to_f)/2
+                              end
                             end
 
-                            obtained_mark2 = avg_mark_ct2.to_f+avg_mark_st2.to_f
                             full_mark2 = ct_full_mark2.to_i+st_full_mark2.to_i
+                            obtained_mark2 = avg_mark_ct2.to_f+avg_mark_st2.to_f
 
-                            if full_mark2 == 100
-                              obtained_mark2 = obtained_mark2/2
-                              obtained_mark2 = obtained_mark2.round()
-                              full_mark2 = 50
-                            else
-                              obtained_mark2 = (obtained_mark2/35)*25
-                              obtained_mark2 = obtained_mark2.round()
-                              full_mark2 = 25
-                            end
-                            main_mark2 = (obtained_mark2.round().to_f/full_mark2.to_f)*100
+                            main_mark2 = (obtained_mark2.round()/full_mark2.to_f)*100 
 
                             #Calculation First Term (40/20) Mark
                             full_mark = full_mark1+full_mark2

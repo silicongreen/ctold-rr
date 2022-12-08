@@ -1247,7 +1247,8 @@
                               <br/><br/><br/><%= extra_br %>
                           </td>
                           <td class="col-pdf " width="25%" style="vertical-align: bottom;">
-                              <% if batch_split[0].downcase == "morning" && batch_split[1].downcase == "english" %>
+                              <%# && batch_split[1].downcase == "english" %>
+                              <% if batch_split[0].downcase == "morning" %>
                               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/vc-signature-2022.jpg")), :width=>"60%" %>
                               <% else %>
                               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/"+batch_split[0].downcase+".png")), :width=>"60%" %>

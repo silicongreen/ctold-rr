@@ -934,10 +934,7 @@
                   #end
                   grand_total2_with_fraction = grand_total2_with_fraction+total_mark2_no_round
                   grand_total_with_fraction = grand_total_with_fraction+main_mark_no_round
-                  grand_total_with_fraction_marks << total_mark2
-                  grand_total_with_fraction_marks << total_mark1
-                  grand_total_with_fraction_marks << monthly_total_main_mark1
-                  grand_total_with_fraction_marks << monthly_total_main_mark2
+                  
                   
                   
                   
@@ -2152,7 +2149,7 @@
         
             
             if std['id'].to_s == "39040"
-              abort(grand_total_with_fraction_marks.inspect)
+              #abort(grand_total_with_fraction_marks.inspect)
             end
             if u_grade1 == 0
               grand_total_new = 55500-grand_total1_with_fraction

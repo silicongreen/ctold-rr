@@ -35,7 +35,6 @@
       batchobj = Batch.find_by_id(@batch.id) 
       courseObj = Course.find_by_id(batchobj.course_id)
       all_courses = Course.find_all_by_course_name(courseObj.course_name)
-      abort(all_courses.map(&:id).inspect)
       all_batch = Batch.find_all_by_course_id(all_courses.map(&:id))
       std_subject = StudentsSubject.find_all_by_batch_id(all_batch.map(&:id),:include=>[:subject])
       @std_subject_hash_type = []

@@ -353,7 +353,9 @@
                                <%= sprintf( "%0.02f", avg_mark)%>
                             </td>
                             <% end %>
-                            <%# avg_mark = main_exam_mark1.to_f %>
+                            <% if @batch.course.course_name == "One" or @batch.course.course_name == "Two" %>
+                            <% avg_mark = main_exam_mark1.to_f %>
+                            <% end %>
                             <% tota_mark_with_monthly1 = avg_mark+class_test_mark1 %>
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly1.to_f.round.to_i %></b>
@@ -464,6 +466,9 @@
                             <td class="col-pdf no-warp">
                                <%= sprintf( "%0.02f", avg_mark)%>
                             </td>
+                            <% end %>
+                            <% if @batch.course.course_name == "One" or @batch.course.course_name == "Two" %>
+                            <% avg_mark = main_exam_mark2.to_f %>
                             <% end %>
                             <%# avg_mark = main_exam_mark2.to_f %>
                             <% tota_mark_with_monthly2 = avg_mark+class_test_mark2 %>
@@ -752,6 +757,9 @@
                                <%= sprintf( "%0.02f", avg_mark)%>
                             </td>
                             <% end %>
+                            <% if @batch.course.course_name == "One" or @batch.course.course_name == "Two" %>
+                            <% avg_mark = main_exam_mark1.to_f %>
+                            <% end %>
                             <%# avg_mark = main_exam_mark1.to_f %>
                             <% tota_mark_with_monthly1 = avg_mark+class_test_mark1 %>
                             <td class="col-pdf no-warp">
@@ -857,6 +865,9 @@
                             <td class="col-pdf no-warp">
                                <%= sprintf( "%0.02f", avg_mark)%>
                             </td>
+                            <% end %>
+                            <% if @batch.course.course_name == "One" or @batch.course.course_name == "Two" %>
+                            <% avg_mark = main_exam_mark2.to_f %>
                             <% end %>
                             <%# avg_mark = main_exam_mark2.to_f %>
                             <% tota_mark_with_monthly2 = avg_mark+class_test_mark2 %>

@@ -357,7 +357,7 @@
                               main_mark = (tota_mark_with_monthly1.to_f.round/full_mark_all.to_f)*100
                             %>
                             <% grand_total_fraction1 = grand_total_fraction1+tota_mark_with_monthly1.to_f %>
-                            <% grand_total1 = grand_total1+tota_mark_with_monthly1.to_f.round.to_i %>
+                            <% grand_total1 = grand_total1+tota_mark_with_monthly1.to_f %>
                            
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
@@ -469,7 +469,7 @@
                               main_mark = (tota_mark_with_monthly2.to_f.round/full_mark_all.to_f)*100
                             %>
                             <% grand_total_fraction2 = grand_total_fraction2+tota_mark_with_monthly2.to_f %>
-                            <% grand_total2 = grand_total2+tota_mark_with_monthly2.to_f.round.to_i %>
+                            <% grand_total2 = grand_total2+tota_mark_with_monthly2.to_f %>
                            
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
@@ -569,11 +569,11 @@
                       <% end %>
                       <td class="col-pdf align-left-baf" colspan="3"><b>Total Marks & Total GP</b></td>
                       <td class="col-pdf" colspan="<%= colspan %>"></td>
-                      <td class="col-pdf no-warp" ><b><%= grand_total1 %></b></td>
+                      <td class="col-pdf no-warp" ><b><%= grand_total1.round().to_i %></b></td>
                       <td class="col-pdf" colspan="2"></td>
                       <td class="col-pdf"><b><%= total_grade1 %></b></td>
                       <td class="col-pdf" colspan="<%= colspan %>"></td>
-                      <td class="col-pdf no-warp" ><b><%= grand_total2 %></b></td>
+                      <td class="col-pdf no-warp" ><b><%= grand_total2.round().to_i %></b></td>
                       <td class="col-pdf" colspan="2"></td>
                       <td class="col-pdf"><b><%= total_grade2 %></b></td>
                       <td class="col-pdf" colspan="<%= colspan-2 %>"></td>

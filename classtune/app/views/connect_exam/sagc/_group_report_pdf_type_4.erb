@@ -583,12 +583,16 @@
                       <td class="col-pdf" colspan="<%= colspan %>"></td>
                       <td class="col-pdf no-warp" ><b><%= grand_total1 %></b></td>
                       <% if @batch.course.course_name == "One" or @batch.course.course_name == "Two" %>
-                      <td class="col-pdf" colspan="1"></td>      
+                      <td class="col-pdf" colspan="2"></td>      
                       <% else %>
                       <td class="col-pdf" colspan="2"></td>
                       <% end %>
                       <td class="col-pdf"><b><%= total_grade1 %></b></td>
+                      <% if @batch.course.course_name == "One" or @batch.course.course_name == "Two" %>
                       <td class="col-pdf" colspan="<%= colspan %>"></td>
+                      <% else %>
+                      <td class="col-pdf" colspan="<%= colspan-1 %>"></td>
+                      <% end %>
                       <td class="col-pdf no-warp" ><b><%= grand_total2 %></b></td>
                       <td class="col-pdf" colspan="2"></td>
                       <td class="col-pdf"><b><%= total_grade2 %></b></td>

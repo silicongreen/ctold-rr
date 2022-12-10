@@ -17,7 +17,7 @@
               <td class="align-right col-pdf" width="20%">Class/Program </td><td colspan="3" class="align-left"><b><%= @batch.course.course_name %></b></td>
           </tr>
            
-          <tr class="even">
+          <tr class="even"> 
               <td class="align-right col-pdf" width="20%">Section </td><td class="align-left"><%= @batch.course.section_name %></td>
               <% batch_split = @batch.name.split(" ") %>
               <td class="align-right col-pdf" width="20%" >Shift </td><td class="align-left"><%= batch_split[0] %></td>   
@@ -748,7 +748,12 @@
                               <br/><br/><br/><%= extra_br %>
                           </td>
                           <td class="col-pdf " width="25%" style="vertical-align: bottom;">
+                              <%##= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/"+batch_split[0].downcase+".png")), :width=>"60%" %>
+                              <% if batch_split[0].downcase == "morning" %>
+                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/vc-signature-2022.jpg")), :width=>"60%" %>
+                              <% else %>
                               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/"+batch_split[0].downcase+".png")), :width=>"60%" %>
+                              <% end %>
                           </td> 
                           <td class="col-pdf " width="25%" style="vertical-align: bottom;">
                               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/principal-sir-signature-2019.jpg")), :width=>"40%" %>

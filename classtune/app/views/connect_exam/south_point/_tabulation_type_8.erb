@@ -289,6 +289,7 @@
                                 iloop2 = iloop2+1
                               end  
                               avg_mark_ct2 = all_marks_ct2.to_f/iloop2.to_f
+                              abort(avg_mark_ct2.inspect)
                             else  
                               if ct_full_mark2.to_i == 20 
                                   avg_mark_ct2 = ct_marks2[0].to_f+ct_marks2[1].to_f+ct_marks2[2].to_f

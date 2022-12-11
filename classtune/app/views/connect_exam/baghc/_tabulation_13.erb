@@ -169,9 +169,9 @@ unless @ranked_student.blank?
                         <% @report_data['report']['exams'].each do |rs| %>
                           <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
                             <% if rs['exam_category'] == '1' %>
-                            <% cq = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
+                            <% cq = cq+rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                             <% elsif rs['exam_category'] == '3' %>
-                              <% mtt = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
+                              <% mtt = mtt+rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                             <% end %>
                           <% end %>
                         <% end %>

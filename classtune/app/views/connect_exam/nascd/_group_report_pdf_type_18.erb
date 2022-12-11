@@ -452,7 +452,7 @@
                               <% end %>
                               <% wordString = wordString_main.split("|") %>
                               <% if !wordString.blank? and !wordString[iloop].blank? %>
-                                <td class="col-pdf"><%=  wordString[iloop] %></td>
+                                <td class="col-pdf"><%=  wordString[iloop].strip %></td>
                               <% else %>
                                   <td class="col-pdf"></td>
                               <% end %>

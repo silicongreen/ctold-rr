@@ -483,15 +483,8 @@
                   <% total_grade_std = grades1.count  %>
                   <% grades1.each do |grade| %>
                       <%= grade.to_s+"-"+grade_count1[grade].to_s %>
-                      <% if @batch.course.course_name == "Grade 9" %>
+                      <% if @batch.course.course_name == "Grade 9" || @batch.course.course_name == "Grade 8" %>
                       <% if i > 2 %>
-                      <% break %>
-                      <% end %>
-                      <% if i!=total_grade_std %>
-                      ,
-                      <% end %>
-                      <% elsif @batch.course.course_name == "Grade 8" %>
-                      <% if i > 3 %>
                       <% break %>
                       <% end %>
                       <% if i!=total_grade_std %>
@@ -510,15 +503,8 @@
                   <% total_grade_std = grades2.count  %>
                   <% grades2.each do |grade| %>
                       <%= grade.to_s+"-"+grade_count2[grade].to_s %>
-                      <% if @batch.course.course_name == "Grade 9" %>
+                      <% if @batch.course.course_name == "Grade 9" || @batch.course.course_name == "Grade 8" %>
                       <% if i > 2 %>
-                      <% break %>
-                      <% end %>
-                      <% if i!=total_grade_std %>
-                      ,
-                      <% end %>
-                      <% elsif @batch.course.course_name == "Grade 8" %>
-                      <% if i > 3 %>
                       <% break %>
                       <% end %>
                       <% if i!=total_grade_std %>
@@ -536,15 +522,8 @@
                   <% total_grade_std = grades3.count  %>
                   <% grades3.each do |grade| %>
                       <%= grade.to_s+"-"+grade_count3[grade].to_s %>
-                      <% if @batch.course.course_name == "Grade 9" %>
+                      <% if @batch.course.course_name == "Grade 9" || @batch.course.course_name == "Grade 8" %>
                       <% if i > 2 %>
-                      <% break %>
-                      <% end %>
-                      <% if i!=total_grade_std %>
-                      ,
-                      <% end %>
-                      <% elsif @batch.course.course_name == "Grade 8" %>
-                      <% if i > 3 %>
                       <% break %>
                       <% end %>
                       <% if i!=total_grade_std %>
@@ -562,20 +541,13 @@
                   <% total_grade_std = grades.count  %>
                   <% grades.each do |grade| %>
                       <%= grade.to_s+"-"+grade_count[grade].to_s %>
-                      <% if @batch.course.course_name == "Grade 9" %>
+                      <% if @batch.course.course_name == "Grade 9" || @batch.course.course_name == "Grade 8" %>
                         <% if i > 2 %>
                         <% break %>
                         <% end %>
                         <% if i!=total_grade_std %>
                         ,
                         <% end %>
-                      <% elsif @batch.course.course_name == "Grade 8" %>
-                      <% if i > 3 %>
-                      <% break %>
-                      <% end %>
-                      <% if i!=total_grade_std %>
-                      ,
-                      <% end %>
                       <% else %>
                         <% if i!=total_grade_std %>
                         ,

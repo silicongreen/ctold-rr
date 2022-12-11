@@ -553,7 +553,7 @@ unless @ranked_student.blank?
                                     %>
                                     <%#= sprintf( "%0.02f", main_mark) %>
                                     <!--hr/-->
-                                    <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                                    <%  grade = GradingLevel.percentage_to_grade(coverted_100, @batch.id) %>
                                     <% if !grade.blank? and !grade.name.blank? %>
                                       <%
                                       if failed_grade == true

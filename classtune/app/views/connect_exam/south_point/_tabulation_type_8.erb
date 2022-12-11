@@ -311,9 +311,14 @@
                             end
                             main_mark2 = (obtained_mark2.round().to_f/full_mark2.to_f)*100
                             
-                            #main_mark = (obtained_mark.round().to_f/full_mark.to_f)*100
-                            main_mark = main_mark1.round() + main_mark2.round()
-                            obtained_mark = main_mark
+                            #Calculation First Term (40/20) Mark
+                            full_mark = full_mark1+full_mark2
+                            obtained_mark = obtained_mark1.round()+obtained_mark2.round()
+                            
+
+
+
+                            main_mark = (obtained_mark.round().to_f/full_mark.to_f)*100
 
 
                             grade_name1 = "-"

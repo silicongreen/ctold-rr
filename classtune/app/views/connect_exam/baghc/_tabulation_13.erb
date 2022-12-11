@@ -168,17 +168,10 @@ unless @ranked_student.blank?
                         <% prac = 0 %>
                         <% @report_data['report']['exams'].each do |rs| %>
                           <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
-                            <% if rs['exam_category'] == '2' %>
-                              <% mcq = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
+                            <% if rs['exam_category'] == '1' %>
+                            <% cq = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                             <% elsif rs['exam_category'] == '3' %>
-                              <% if @connect_exam_obj.result_type.to_i == 12 %> 
-                                <% unless rs['exam_name'].index('Pra').blank? %>
-                                <% prac = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
-                                <% end %>
-                              <% end %>
                               <% mtt = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
-                            <% else %>
-                              <% cq = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                             <% end %>
                           <% end %>
                         <% end %>

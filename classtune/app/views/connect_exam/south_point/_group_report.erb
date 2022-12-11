@@ -96,14 +96,18 @@
   <%
     i = 0  
     all_split = []  
+    presents = []
     all_comments.each do |com|
       if i < 10
         all_split << com
+      else
+        presents << com
       end
       i = i+1
     end
+    split_comments[0] = all_split
   %>
-  <% abort(all_split.inspect) %>
+  <% abort(presents.inspect) %>
   <% if @connect_exam_obj.total_working_days > 0 %>
      <% @report_data['total'] = @connect_exam_obj.total_working_days %>
      <% unless split_comments[1].blank? %>

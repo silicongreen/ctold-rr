@@ -290,7 +290,7 @@
                                   end
                                   if rs['exam_category'] == '2'
                                     cw = cw+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                    full_mark_cw = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                    full_mark_cw = full_mark_cw+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                   end
                                 end 
                                 
@@ -306,7 +306,7 @@
                             total = cq.round()+mcq.round()+prac.round()
                             full_term = full_mark_cq+full_mark_mcq+full_mark_prac
                             conv_mcw = cw
-                            #&& (full_term.to_i == 100 or full_term.to_i == 50) && full_mark_ct <= 20
+                            ##&& (full_term.to_i == 100 or full_term.to_i == 50) && full_mark_ct <= 20
                             if cw > 0 && full_mark_cw > 0 
                                 conv_mcw = (cw.to_f/full_mark_cw.to_f)*5
                                 conv_mcw = conv_mcw.round()

@@ -291,9 +291,12 @@
                                   end
 
                                   if @connect_exam_obj.batch.course_name == 'XI' and  mtt_total > 0
-                                    abort('here')
                                     mtt = (mtt.to_f/mtt_total.to_f)*25
                                     mtt_total = 25
+                                    mtt = mtt.round()
+                                  elsif @connect_exam_obj.batch.course_name == 'IX' and  mtt_total > 0
+                                    mtt = (mtt.to_i/mtt_total.to_i)*(mtt_total.to_i/2)
+                                    mtt_total = mtt_total.to_i/2
                                     mtt = mtt.round()
                                   end
                                   #########################################################

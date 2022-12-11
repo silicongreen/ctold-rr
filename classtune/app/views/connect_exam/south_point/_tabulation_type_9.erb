@@ -167,9 +167,6 @@
                          <%    
                             st_marks.sort! {|x,y| y <=> x }
                             ct_marks.sort! {|x,y| y <=> x }
-                            if sub['id'].to_i == 77934 and std['id'].to_i == 14290
-                              abort(st_marks.inspect)
-                            end  
                             if ct_full_mark.to_i == 30
                               all_marks_ct = 0
                               iloop = 0
@@ -217,7 +214,7 @@
                       <td>
                          <% if obtained_mark.round() > 0 %>
                           <% total_mark = total_mark+obtained_mark.round() %>
-                          <%= sub['id'].to_s+" "+std['id'].to_s+" "+obtained_mark.round().to_s %><hr/>
+                          <%= obtained_mark.round().to_s %><hr/>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>
                               <%

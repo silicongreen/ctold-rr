@@ -105,7 +105,6 @@
       end
       i = i+1
     end
-    abort(presents[1].inspect)
     unless presents.blank?
       unless presents[0].blank?
         @connect_exam_obj.total_working_days = presents[0]
@@ -122,6 +121,7 @@
           <% @exam_comment.comments = split_comments[0] %>
           <% @report_data['total_new_std'] = "" %>
           <% @report_data['present'] = split_comments[1] %>
+          <%= abort(@report_data['present'].inspect) %>
           <% @report_data['absent'] = @report_data['total'].to_i - @report_data['present'].to_i %>
      <% end %>
       

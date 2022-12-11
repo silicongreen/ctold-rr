@@ -309,10 +309,10 @@
                               
                               
                             end
-                          abort(avg_mark_ct2.to_s + "  " + avg_mark_st2.to_s)
+                          #
                             full_mark2 = ct_full_mark2.to_i+st_full_mark2.to_i
                             obtained_mark2 = avg_mark_ct2.to_f+avg_mark_st2.to_f
-                            
+                            abort(full_mark2.to_s + "  " + obtained_mark2.to_s)
                             if full_mark2 == 100
                               obtained_mark2 = obtained_mark/2
                               obtained_mark2 = obtained_mark.round()

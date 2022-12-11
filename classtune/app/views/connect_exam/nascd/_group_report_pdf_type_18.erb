@@ -29,7 +29,7 @@
                     <tr class="table-header">
                       <td class="col-pdf no-warp" rowspan="3"><b><%= "Subject" %></b></td>
                       <td colspan="4"> Half Yearly Exam</td> 
-                      <td colspan="4">Year Final Exam</td>
+                      <td colspan="4">Yearly Exam</td>
                       <td rowspan="3">Letter Grade</td>
                       <td rowspan="3">Greade Point</td>
                       <td rowspan="3">Combined Marks</td>
@@ -339,6 +339,49 @@
                     </table>
                   </td>
                 </tr>
+                <% 
+                total_working_days_first = ""
+                total_att_first = ""
+                absent_first = ""
+
+                total_working_days_second = ""
+                total_att_second = ""
+                absent_second = ""
+
+                teacher_comments = ""
+                if !@exam_comment.blank?
+                  all_comments = @exam_comment.comments
+
+                  if !all_comments.blank?
+                    all_comments_array = all_comments.split("|")
+                    total_working_days_first = all_comments_array[0]
+                    if !all_comments_array[1].nil?
+                      total_att_first = all_comments_array[1]
+                    end
+                    if !all_comments_array[2].nil?
+                      total_working_days_second = all_comments_array[2]
+                    end
+                    if !all_comments_array[3].nil?
+                      total_att_second = all_comments_array[3]
+                    end
+                    if !all_comments_array[4].nil?
+                      teacher_comments = all_comments_array[4]
+                    end
+                  end
+                  if total_working_days_first.to_i > 0 && total_att_first.to_i > 0
+                    absent_first = total_working_days_first.to_i - total_att_first.to_i
+                    if absent_first < 0
+                      absent_first = 0
+                    end
+                  end
+                  if total_working_days_second.to_i > 0 && total_att_second.to_i > 0
+                    absent_second = total_working_days_second.to_i - total_att_second.to_i
+                    if absent_second < 0
+                      absent_second = 0
+                    end
+                  end
+                end
+              %>   
                 <tr>
                   <td>
                     <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >
@@ -348,9 +391,27 @@
                           <td>Total Absent Days</td>
                         </tr>
                         <tr class="table-header">
-                          <td><%= @report_data['total'] %></td>
-                          <td><%= @report_data['present'] %></td>
-                          <td><%= @report_data['total']-@report_data['present'] %></td>
+                          <td><%= total_working_days_first %></td>
+                          <td><%= total_att_first %></td>
+                          <td><%= absent_first %></td>
+                        </tr>
+                        
+                    </table>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >
+                        <tr class="table-header">
+                          <td>Total Working Days</td>
+                          <td>Total Present Days</td>
+                          <td>Total Absent Days</td>
+                        </tr>
+                        <tr class="table-header">
+                          <td><%= total_working_days_second %></td>
+                          <td><%= total_att_second %></td>
+                          <td><%= absent_second %></td>
                         </tr>
                         
                     </table>

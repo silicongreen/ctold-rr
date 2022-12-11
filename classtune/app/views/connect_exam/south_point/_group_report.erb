@@ -103,7 +103,7 @@
       i = i+1
     end
   %>
-  <% abort(all_comments.inspect) %>
+  <% abort(all_split.inspect) %>
   <% if @connect_exam_obj.total_working_days > 0 %>
      <% @report_data['total'] = @connect_exam_obj.total_working_days %>
      <% unless split_comments[1].blank? %>

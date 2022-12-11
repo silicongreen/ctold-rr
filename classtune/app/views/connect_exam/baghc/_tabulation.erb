@@ -201,7 +201,7 @@ unless @ranked_student.blank?
                             end
                         
                           %>
-                          <% if @connect_exam_obj.result_type.to_i == 10 %> 
+                          <% if @connect_exam_obj.result_type.to_i == 10 || @connect_exam_obj.result_type.to_i == 13 %> 
                           <%
                             if @connect_exam_obj.batch.course_name == 'XI'
                               mtt = 25

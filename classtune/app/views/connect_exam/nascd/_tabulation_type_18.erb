@@ -17,6 +17,10 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <% 
+  quarter = 6
+  unless params[:eq].blank?
+    quarter = params[:eq]
+  end
   @all_subject_id = []
   @has_exam_score = []
   @all_group_exams = GroupedExam.find(
@@ -328,7 +332,7 @@
 
                                 <%
 
-                                if rs['quarter'] == '5'
+                                if rs['quarter'].to_i == quarter.to_i
                                   if rs['exam_category'] == '3' || rs['exam_category'] == '4' || rs['exam_category'] == '5'
                                     term = term+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                     full_mark_term = full_mark_term+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i

@@ -33,7 +33,11 @@
         <tr class="table-header">
           
           <td class="col-pdf">Roll</td>
+          <% if @batch.course.course_name == "Grade 8" %>
+          <td class="col-pdf">Students <br />Name</td>
+          <% else %>
           <td class="col-pdf">Students Name</td>
+          <% end %>
           <td class="col-pdf">Term</td>
           <% @report_data['report']['subjects'].each do |sub| %>
             <td><%=  sub['code'] %><hr/>Marks<hr/>Grd</td>
@@ -69,7 +73,11 @@
               <tr class="table-header">
           
                 <td class="col-pdf">Roll</td>
+                <% if @batch.course.course_name == "Grade 8" %>
+                <td class="col-pdf">Students <br />Name</td>
+                <% else %>
                 <td class="col-pdf">Students Name</td>
+                <% end %>
                 <td class="col-pdf">Term</td>
                 <% @report_data['report']['subjects'].each do |sub| %>
                   <td><%=  sub['code'] %><hr/>Marks<hr/>Grd</td>
@@ -95,7 +103,11 @@
           <tr class="even">
           
             <td class="name"><%= std['class_roll_no'] %></td>
+            <% if @batch.course.course_name == "Grade 8" %>
             <td class="name-std" style="text-align: left; white-space: pre-wrap; !important;"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
+            <% else %>
+            <td class="name-std" style="text-align: left;"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
+            <% end %>
             <td class="name-std">FQ<hr/>SQ<hr/>HY<hr/>TTL</td>
             <% total_mark = 0 %>
             

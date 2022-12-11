@@ -215,7 +215,7 @@
                       <td>
                          <% if obtained_mark.round() > 0 %>
                           <% total_mark = total_mark+obtained_mark.round() %>
-                          <%= obtained_mark.round().to_s + "  " +  sub[id].to_s %><hr/>
+                          <%= sub['id'].to_s+obtained_mark.round().to_s %><hr/>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>
                               <%

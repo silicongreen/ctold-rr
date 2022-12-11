@@ -114,10 +114,10 @@
 
 
 
-                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                    <tr class="odd">
 
                         <td class="name"><%= std['class_roll_no'] %></td>
-                        <td class="name-std"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
+                        <td class="name-std" style="text-align: left;"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
                         <td class="name-std">FQ<hr/>SQ<hr/>TTL</td>
                         <% total_mark = 0 %>
 
@@ -312,7 +312,7 @@
                             #main_mark2 = (obtained_mark2.round().to_f/full_mark2.to_f)*100
                             st_marks2.sort! {|x,y| y <=> x }
                             ct_marks2.sort! {|x,y| y <=> x } 
- 
+  
                             if ct_full_mark2.to_i == 30
                               avg_mark_ct2 = (ct_marks2[0].to_f+ct_marks2[1].to_f+ct_marks2[2].to_f)/3
                             else  

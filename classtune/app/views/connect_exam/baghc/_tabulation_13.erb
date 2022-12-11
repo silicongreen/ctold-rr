@@ -496,9 +496,34 @@ unless @ranked_student.blank?
 
                               <% main_mark = 0 %>
                               <%
-                              
+                              if full_mark_cq > 0
+                                new_full_mark_cq = full_mark_cq.to_i/2
+                                new_cq_obtain_mark = (cq_obtain_mark.to_f / full_mark_cq.to_f) * new_full_mark_cq.to_f
+                                cq_obtain_mark = new_cq_obtain_mark.round()
+                                full_mark_cq = new_full_mark_cq.round()
+                                total_100 = mtt_obtain_mark + cq_obtain_mark
+                                full_100 = full_mark_cq + full_mark_mtt
+                              end
                                 
-                              
+                              total_mark = total_mark+total_100
+                                total_full_mark = total_full_mark+full_100
+                                coverted_100 = 0
+                                if total_100 > 0
+                                  coverted_100 = (total_100.to_f/full_100.to_f)*100
+                                end
+                                
+                                coverted_100 = coverted_100.round()
+                                total_mark_result = total_mark_result+coverted_100
+                                gp_point =0
+                                lg = "-"
+                                grade = GradingLevel.percentage_to_grade(coverted_100, @batch.id)
+                                if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
+                                  gp_point = grade.credit_points
+                                  lg = grade.name
+                                end
+                                if failed_grade == false
+                                  total_gpa = total_gpa+gp_point
+                                end
 
                             %>
                               <% if subject_obtain_mark.to_i > 0 and subject_full_mark.to_i > 0 %>

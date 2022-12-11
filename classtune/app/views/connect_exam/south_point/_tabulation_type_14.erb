@@ -490,6 +490,13 @@
                       <% if i!=total_grade_std %>
                       ,
                       <% end %>
+                      <% elsif @batch.course.course_name == "Grade 8" %>
+                      <% if i > 4 %>
+                      <% break %>
+                      <% end %>
+                      <% if i!=total_grade_std %>
+                      ,
+                      <% end %>
                       <% else %>
                         <% if i!=total_grade_std %>
                         ,
@@ -505,6 +512,13 @@
                       <%= grade.to_s+"-"+grade_count2[grade].to_s %>
                       <% if @batch.course.course_name == "Grade 9" %>
                       <% if i > 2 %>
+                      <% break %>
+                      <% end %>
+                      <% if i!=total_grade_std %>
+                      ,
+                      <% end %>
+                      <% elsif @batch.course.course_name == "Grade 8" %>
+                      <% if i > 4 %>
                       <% break %>
                       <% end %>
                       <% if i!=total_grade_std %>
@@ -529,6 +543,13 @@
                       <% if i!=total_grade_std %>
                       ,
                       <% end %>
+                      <% elsif @batch.course.course_name == "Grade 8" %>
+                      <% if i > 4 %>
+                      <% break %>
+                      <% end %>
+                      <% if i!=total_grade_std %>
+                      ,
+                      <% end %>
                       <% else %>
                         <% if i!=total_grade_std %>
                         ,
@@ -548,6 +569,13 @@
                         <% if i!=total_grade_std %>
                         ,
                         <% end %>
+                      <% elsif @batch.course.course_name == "Grade 8" %>
+                      <% if i > 4 %>
+                      <% break %>
+                      <% end %>
+                      <% if i!=total_grade_std %>
+                      ,
+                      <% end %>
                       <% else %>
                         <% if i!=total_grade_std %>
                         ,

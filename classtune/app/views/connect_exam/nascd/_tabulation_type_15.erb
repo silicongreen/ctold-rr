@@ -306,7 +306,8 @@
                             total = cq.round()+mcq.round()+prac.round()
                             full_term = full_mark_cq+full_mark_mcq+full_mark_prac
                             conv_mcw = cw
-                            if cw > 0 && full_mark_cw > 0 && (full_term.to_i == 100 or full_term.to_i == 50) && full_mark_ct <= 20
+                            #&& (full_term.to_i == 100 or full_term.to_i == 50) && full_mark_ct <= 20
+                            if cw > 0 && full_mark_cw > 0 
                                 conv_mcw = (cw.to_f/full_mark_cw.to_f)*5
                                 conv_mcw = conv_mcw.round()
                             end

@@ -541,12 +541,8 @@ unless @ranked_student.blank?
                                     <hr/>
                                     <%= sprintf( "%0.02f", mcq_obtain_mark) %>
                                     <hr/>
-                                    <% if @connect_exam_obj.result_type == 12 %>
-                                    <%= sprintf( "%0.02f", prac_obtain_mark) %>
-                                    <hr/>
                                     <%= sprintf( "%0.02f", coverted_100) %>
                                     <hr/>
-                                    <% end %>
                                     <%= sprintf( "%0.02f", mtt_obtain_mark) %>
                                     <hr/>
                                     <%

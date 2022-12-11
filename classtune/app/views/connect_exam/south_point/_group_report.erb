@@ -105,9 +105,16 @@
       end
       i = i+1
     end
+    unless presents.blank?
+      unless presents[0].blank?
+        @connect_exam_obj.total_working_days = presents[0]
+      end
+      unless presents[1].blank?
+        split_comments[1] = presents[1]
+      end
+    end
     split_comments[0] = all_split
   %>
-  <% abort(presents.inspect) %>
   <% if @connect_exam_obj.total_working_days > 0 %>
      <% @report_data['total'] = @connect_exam_obj.total_working_days %>
      <% unless split_comments[1].blank? %>

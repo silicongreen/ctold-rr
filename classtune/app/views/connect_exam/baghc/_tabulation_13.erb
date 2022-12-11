@@ -508,6 +508,9 @@ unless @ranked_student.blank?
                                 full_mark_cq = new_full_mark_cq.round()
                                 total_100 = mtt_obtain_mark + cq_obtain_mark
                                 full_100 = full_mark_cq + full_mark_mtt
+                              else
+                                total_100 = mtt_obtain_mark
+                                full_100 = full_mark_mtt
                               end
                                 
                               total_mark = total_mark+total_100

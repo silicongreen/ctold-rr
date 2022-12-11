@@ -93,6 +93,16 @@
 <% if !@exam_comment.blank? %>
   <% split_comments = @exam_comment.comments.split("[]") %>
   <% all_comments = split_comments[0].split("**") %>
+  <%
+    i = 0  
+    all_split = []  
+    all_comments_data.each do |com|
+      if i < 10
+        all_split << all_comments_data
+      end
+      i = i+1
+    end
+  %>
   <% abort(all_comments.inspect) %>
   <% if @connect_exam_obj.total_working_days > 0 %>
      <% @report_data['total'] = @connect_exam_obj.total_working_days %>

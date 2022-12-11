@@ -581,13 +581,32 @@
                 </table>
 
                 
-
-
+                <% 
+                total_working_days_first = ""
+                total_att_first = ""
+                absent_first = ""
+                if !@exam_comment.blank?
+                  all_comments = @exam_comment.comments
+                  if !all_comments.blank?
+                    all_comments_array = all_comments.split("|")
+                    total_working_days_first = all_comments_array[0]
+                    if !all_comments_array[1].nil?
+                      total_att_first = all_comments_array[1]
+                    end
+                  end
+                  if total_working_days_first.to_i > 0 && total_att_first.to_i > 0
+                    absent_first = total_working_days_first.to_i - total_att_first.to_i
+                    if absent_first < 0
+                      absent_first = 0
+                    end
+                  end
+                end
+              %>              
               <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >
                 <tr  class="table-header">
-                  <td>Total Working Days</td><td><%= @report_data['total'] %></td>
-                  <td>Total Present Days</td><td><%= @report_data['present'] %></td>
-                  <td>Total Absent Days</td><td><%= @report_data['total']-@report_data['present'] %></td>
+                  <td>Total Working Days</td><td><%= total_working_days_first %><%#= @report_data['total'] %></td>
+                  <td>Total Present Days</td><td><%= total_att_first %><%#= @report_data['present'] %></td>
+                  <td>Total Absent Days</td><td><%= absent_first %><%#= @report_data['total']-@report_data['present'] %></td>
               </table>
 
             <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >

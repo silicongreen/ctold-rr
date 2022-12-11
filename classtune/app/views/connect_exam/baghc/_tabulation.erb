@@ -207,8 +207,8 @@ unless @ranked_student.blank?
                               mtt = 25
                             end
                           %>
-                          <% if @connect_exam_obj.result_type.to_i == 13 %> 
-                            <% mtt = 25 %>
+                          <% if @connect_exam_obj.result_type.to_i == 13 and !cq.blank? %> 
+                            <% cq = cq.to_i / 2 %>
                           <% end %>
                           <td><%=  sub['code'] %><hr/><%= cq unless cq.blank? %><hr/><%= mcq unless mcq.blank? %><hr/><%= prac unless prac.blank? %><hr/><%= mtt unless mtt.blank? %></td>  
                           <% else %>

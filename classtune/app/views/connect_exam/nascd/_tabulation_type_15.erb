@@ -271,6 +271,7 @@
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? %>
 
                                 <%
+                                abort(quarter.inspect)
                                 if rs['quarter'].to_i == quarter.to_i
                                   if rs['exam_category'] == '3'
                                     cq = cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f

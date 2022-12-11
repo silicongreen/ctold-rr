@@ -233,6 +233,18 @@
                                   
                                 <% end %>
                                 <%
+                                if @connect_exam_obj.batch.course_name == 'XI' and  mtt_total > 0
+                                  mtt = (mtt.to_f/mtt_total.to_f)*25
+                                  mtt_total = 25
+                                  mtt = mtt.round()
+                                elsif @connect_exam_obj.batch.course_name == 'IX' and  mtt_total > 0
+                                  mtt_new_total = mtt_total.to_f/2
+                                  mtt = (mtt.to_f/mtt_total.to_f)*mtt_new_total
+                                  mtt_total = mtt_total.to_f/2
+                                  mtt = mtt.round()
+                                  total_mc_cq_prac = mtt + cq + mcq + prac
+                                  full_mc_cq_prac = cq_total + mtt_total + mcq_total + prac_total
+                                end
                                   coverted_75 = 0
                                   if total_mc_cq_prac > 0
                                     coverted_75 = (total_mc_cq_prac.to_f/full_mc_cq_prac.to_f)*75
@@ -290,16 +302,6 @@
                                     end  
                                   end
 
-                                  if @connect_exam_obj.batch.course_name == 'XI' and  mtt_total > 0
-                                    mtt = (mtt.to_f/mtt_total.to_f)*25
-                                    mtt_total = 25
-                                    mtt = mtt.round()
-                                  elsif @connect_exam_obj.batch.course_name == 'IX' and  mtt_total > 0
-                                    mtt_new_total = mtt_total.to_f/2
-                                    mtt = (mtt.to_f/mtt_total.to_f)*mtt_new_total
-                                    mtt_total = mtt_total.to_f/2
-                                    mtt = mtt.round()
-                                  end
                                   #########################################################
                                   ## Failed On Individual Subjects (Temporary Solution)
                                   #########################################################

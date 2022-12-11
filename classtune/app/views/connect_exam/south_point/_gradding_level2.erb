@@ -3,7 +3,7 @@
   comments = ""
   working_days = @connect_exam_obj.total_working_days
   @main_comments = 
-  if !@exam_comment.blank?
+  if !@exam_comment.blank? 
     all_comments = @exam_comment.comments
     if !all_comments.blank?
       all_comments_array = all_comments.split("|")
@@ -24,7 +24,7 @@
     unless @present_lower_grade.blank?
       present = @present_lower_grade
     end
- 
+    present = @report_data['present'] unless present = @report_data['present'].blank?
 %>
 <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
               <% if @grading_levels.blank? %>

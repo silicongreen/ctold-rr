@@ -105,6 +105,7 @@
       end
       i = i+1
     end
+    abort(presents.inspect)
     unless presents.blank?
       unless presents[0].blank?
         @connect_exam_obj.total_working_days = presents[0]

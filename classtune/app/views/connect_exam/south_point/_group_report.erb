@@ -92,8 +92,8 @@
 <% end %>
 <% if !@exam_comment.blank? %>
   <% split_comments = @exam_comment.comments.split("[]") %>
-  <% all_comments = split_comments.split("**") %>
-  <% abort(split_comments[1].inspect) %>
+  <% all_comments = split_comments[0].split("**") %>
+  <% abort(all_comments.inspect) %>
   <% if @connect_exam_obj.total_working_days > 0 %>
      <% @report_data['total'] = @connect_exam_obj.total_working_days %>
      <% unless split_comments[1].blank? %>

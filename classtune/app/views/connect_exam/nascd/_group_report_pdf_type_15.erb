@@ -585,19 +585,41 @@
                 total_working_days_first = ""
                 total_att_first = ""
                 absent_first = ""
+
+                total_working_days_second = ""
+                total_att_second = ""
+                absent_second = ""
+
+                teacher_comments = ""
                 if !@exam_comment.blank?
                   all_comments = @exam_comment.comments
+
                   if !all_comments.blank?
                     all_comments_array = all_comments.split("|")
                     total_working_days_first = all_comments_array[0]
                     if !all_comments_array[1].nil?
                       total_att_first = all_comments_array[1]
                     end
+                    if !all_comments_array[2].nil?
+                      total_working_days_second = all_comments_array[2]
+                    end
+                    if !all_comments_array[3].nil?
+                      total_att_second = all_comments_array[3]
+                    end
+                    if !all_comments_array[4].nil?
+                      teacher_comments = all_comments_array[4]
+                    end
                   end
                   if total_working_days_first.to_i > 0 && total_att_first.to_i > 0
                     absent_first = total_working_days_first.to_i - total_att_first.to_i
                     if absent_first < 0
                       absent_first = 0
+                    end
+                  end
+                  if total_working_days_second.to_i > 0 && total_att_second.to_i > 0
+                    absent_second = total_working_days_second.to_i - total_att_second.to_i
+                    if absent_second < 0
+                      absent_second = 0
                     end
                   end
                 end
@@ -607,6 +629,13 @@
                   <td>Total Working Days</td><td><%= total_working_days_first %><%#= @report_data['total'] %></td>
                   <td>Total Present Days</td><td><%= total_att_first %><%#= @report_data['present'] %></td>
                   <td>Total Absent Days</td><td><%= absent_first %><%#= @report_data['total']-@report_data['present'] %></td>
+              </table>
+
+              <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >
+                <tr  class="table-header">
+                  <td>Total Working Days</td><td><%= total_working_days_second %><%#= @report_data['total'] %></td>
+                  <td>Total Present Days</td><td><%= total_att_second %><%#= @report_data['present'] %></td>
+                  <td>Total Absent Days</td><td><%= absent_second %><%#= @report_data['total']-@report_data['present'] %></td>
               </table>
 
             <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >
@@ -638,7 +667,7 @@ socially to his or her abilities and opportunities.</i></li>
                       <td width='40%' rowspan="2"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/sign_principal.jpeg")), :width=>"20%" %></td> 
                   </tr>
                   <tr class="table-header">
-                      <td width="20%" colspan="2" rowspan="2" style="text-align: left; vertical-align: top;">Comment: <% if !@exam_comment.blank?%><%= @exam_comment.comments %><% end %></td>      
+                      <td width="20%" colspan="2" rowspan="2" style="text-align: left; vertical-align: top;">Comment: <% if !teacher_comments.blank?%><%= teacher_comments %><% end %></td>      
                   </tr>
                   <tr class="table-header">
                       <td>Signature</td>

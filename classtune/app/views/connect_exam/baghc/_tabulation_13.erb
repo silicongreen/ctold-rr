@@ -399,6 +399,8 @@ unless @ranked_student.blank?
                               <% total_mark_result = 0 %>
                               <% total_gpa = 0 %>
                               <% total_100 = 0 %>
+                              <% total_full_mark = 0 %>
+                              <% full_100 = 0 %>
 
                               <% cq_obtain_mark = 0 %>
                               <% mcq_obtain_mark = 0 %>
@@ -509,11 +511,11 @@ unless @ranked_student.blank?
                               end
                                 
                               total_mark = total_mark+total_100
-                                total_full_mark = total_full_mark+full_100
-                                coverted_100 = 0
-                                if total_100 > 0
-                                  coverted_100 = (total_100.to_f/full_100.to_f)*100
-                                end
+                              total_full_mark = total_full_mark+full_100
+                              coverted_100 = 0
+                              if total_100 > 0
+                                coverted_100 = (total_100.to_f/full_100.to_f)*100
+                              end
                                 
                                 coverted_100 = coverted_100.round()
                                 total_mark_result = total_mark_result+coverted_100

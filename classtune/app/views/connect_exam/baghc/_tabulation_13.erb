@@ -274,17 +274,10 @@ unless @ranked_student.blank?
                               <% prac = 0 %>
                               <% @report_data['report']['exams'].each do |rs| %>
                                 <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
-                                  <% if rs['exam_category'] == '2' %>
-                                    <% mcq = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
+                                  <% if rs['exam_category'] == '1' %>
+                                    <% cq = cq+rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                                   <% elsif rs['exam_category'] == '3' %>
-                                    <% if @connect_exam_obj.result_type.to_i == 12 %> 
-                                      <% unless rs['exam_name'].index('Pra').blank? %>
-                                      <% prac = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
-                                      <% end %>
-                                    <% end %>
-                                    <% mtt = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
-                                  <% else %>
-                                    <% cq = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
+                                    <% mtt = mtt+rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                                   <% end %>
                                 <% end %>
                               <% end %>
@@ -293,11 +286,13 @@ unless @ranked_student.blank?
                                 <% has_exam = true %>
                               <% end %>
                               <% if has_exam == true %>
-                                <% if @connect_exam_obj.result_type.to_i == 12 %> 
-                                <td><%=  sub['code'] %><hr/><%= cq unless cq.blank? %><hr/><%= mcq unless mcq.blank? %><hr/><%= prac unless prac.blank? %><hr/><%= mtt unless mtt.blank? %></td>  
-                                <% else %>
-                                <td><%=  sub['code'] %><hr/><%= cq unless cq.blank? %><hr/><%= mcq unless mcq.blank? %><hr/><%= mtt unless mtt.blank? %></td>
-                                <% end %>
+                                <%
+                                  cq_converted = 0
+                                  if cq.to_i > 0
+                                    cq_converted = cq.to_i / 2
+                                  end
+                                %>
+                                <td><%=  sub['code'] %><hr/><%= cq_converted %><hr/><%= mcq unless mcq.blank? %><hr/><%= mtt unless mtt.blank? %></td>
                               <% end %>
                             <% end %>
                             <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
@@ -337,17 +332,10 @@ unless @ranked_student.blank?
                               <% prac = 0 %>
                               <% @report_data['report']['exams'].each do |rs| %>
                                 <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']]['full_mark'].blank? %>
-                                  <% if rs['exam_category'] == '2' %>
-                                    <% mcq = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
+                                  <% if rs['exam_category'] == '1' %>
+                                    <% cq = cq+rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                                   <% elsif rs['exam_category'] == '3' %>
-                                    <% if @connect_exam_obj.result_type.to_i == 12 %> 
-                                      <% unless rs['exam_name'].index('Pra').blank? %>
-                                      <% prac = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
-                                      <% end %>
-                                    <% end %>
-                                    <% mtt = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
-                                  <% else %>
-                                    <% cq = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
+                                    <% mtt = mtt+rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                                   <% end %>
                                 <% end %>
                               <% end %>
@@ -356,11 +344,13 @@ unless @ranked_student.blank?
                                 <% has_exam = true %>
                               <% end %>
                               <% if has_exam == true %>
-                                <% if @connect_exam_obj.result_type.to_i == 12 %> 
-                                <td><%=  sub['code'] %><hr/><%= cq unless cq.blank? %><hr/><%= mcq unless mcq.blank? %><hr/><%= prac unless prac.blank? %><hr/><%= mtt unless mtt.blank? %></td>  
-                                <% else %>
-                                <td><%=  sub['code'] %><hr/><%= cq unless cq.blank? %><hr/><%= mcq unless mcq.blank? %><hr/><%= mtt unless mtt.blank? %></td>
-                                <% end %>
+                                <%
+                                  cq_converted = 0
+                                  if cq.to_i > 0
+                                    cq_converted = cq.to_i / 2
+                                  end
+                                %>
+                                <td><%=  sub['code'] %><hr/><%= cq_converted %><hr/><%= mcq unless mcq.blank? %><hr/><%= mtt unless mtt.blank? %></td>
                               <% end %>
                             <% end %>
                             <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
@@ -507,104 +497,8 @@ unless @ranked_student.blank?
                               <% main_mark = 0 %>
                               <%
                               
-                              if @connect_exam_obj.result_type == 12
-                                  #########################################################
-                                  ## Failed On Individual Subjects (Temporary Solution)
-                                  #########################################################
-                                  pass_mark = {70 => 23, 100 => 33, 50 => 17, 30 => 10, 25 => 8}
-                                  failed = false
-                                  full_mark_mtt = full_mark_mtt + 1
-                                  unless pass_mark[full_mark_cq.to_i].blank?
-                                    if cq_obtain_mark.to_i <  pass_mark[full_mark_cq.to_i].to_i
-                                      failed_grade = true
-                                    end
-                                  end
-                                  unless pass_mark[full_mark_mcq.to_i].blank?
-                                    if mcq_obtain_mark.to_i <  pass_mark[full_mark_mcq.to_i].to_i
-                                      failed_grade = true
-                                    end
-                                  end
-                                  unless pass_mark[full_mark_prac].blank?
-                                    if prac_obtain_mark.to_i <  pass_mark[full_mark_prac].to_i
-                                      failed_grade = true
-                                    end
-                                  end
-                                  full_mark_mtt = full_mark_mtt - 1
-                              else  
-                                if full_mark_cq > 0
-                                  if grade_mark_cq > 0
-                                    point_mark = (grade_mark_cq.to_f/full_mark_cq.to_f)*100
-                                    grade = GradingLevel.percentage_to_grade(point_mark, @batch.id)
-                                    if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
-                                      if grade.credit_points.to_i == 0
-                                        failed_grade = true
-                                      end  
-                                    end
-                                  else
-                                    failed_grade = true
-                                  end  
-                                end 
+                                
                               
-                                if full_mark_mcq > 0
-                                  if grade_mark_mcq > 0
-                                    point_mark = (grade_mark_mcq.to_f/full_mark_mcq.to_f)*100
-                                    grade = GradingLevel.percentage_to_grade(point_mark, @batch.id)
-                                    if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
-                                      if grade.credit_points.to_i == 0
-                                        failed_grade = true
-                                      end  
-                                    end
-                                  else
-                                    failed_grade = true
-                                  end  
-                                end 
-                              
-                                if full_mark_mtt > 0
-                                  if grade_mark_mtt > 0
-                                    point_mark = (grade_mark_mtt.to_f/full_mark_mtt.to_f)*100
-                                    grade = GradingLevel.percentage_to_grade(point_mark, @batch.id)
-                                    if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
-                                      if grade.credit_points.to_i == 0
-                                        failed_grade = true
-                                      end  
-                                    end
-                                  else
-                                    failed_grade = true
-                                  end  
-                                end 
-                              end
-                              
-                              
-                              if @connect_exam_obj.result_type == 3
-                                if cq_obtain_mark > 0
-                                  cq_obtain_mark = cq_obtain_mark.to_f/2.00
-                                  full_mark_cq = full_mark_cq.to_f/2.00
-                                  cq_obtain_mark = cq_obtain_mark.round()
-                                end  
-                                if mcq_obtain_mark > 0
-                                  mcq_obtain_mark = mcq_obtain_mark.to_f/2.00
-                                  full_mark_mcq = full_mark_mcq.to_f/2.00
-                                  mcq_obtain_mark = mcq_obtain_mark.round()
-                                end
-                                if mtt_obtain_mark > 0
-                                  mtt_obtain_mark = mtt_obtain_mark.to_f/2.00
-                                  full_mark_mtt = full_mark_mtt.to_f/2.00
-                                  mtt_obtain_mark = mtt_obtain_mark.round()
-                                end
-                              end  
-                              coverted_100 = 0
-                              if @connect_exam_obj.result_type == 12
-                                  full_mark_cq_mcq_prac = full_mark_cq+full_mark_mcq+full_mark_prac
-                                  total_mark_cq_mcq_prac = cq_obtain_mark+mcq_obtain_mark+prac_obtain_mark
-                                  if full_mark_cq_mcq_prac > 0
-                                    coverted_100 = (total_mark_cq_mcq_prac.to_f/full_mark_cq_mcq_prac.to_f)*100
-                                  end   
-                                  subject_obtain_mark = coverted_100+mtt_obtain_mark
-                                  subject_full_mark = 100+full_mark_mtt
-                              else
-                                subject_obtain_mark = cq_obtain_mark+mcq_obtain_mark+mtt_obtain_mark
-                                subject_full_mark = full_mark_cq+full_mark_mcq+full_mark_mtt
-                              end
 
                             %>
                               <% if subject_obtain_mark.to_i > 0 and subject_full_mark.to_i > 0 %>

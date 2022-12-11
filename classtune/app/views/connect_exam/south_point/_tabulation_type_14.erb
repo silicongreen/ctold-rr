@@ -33,7 +33,7 @@
         <tr class="table-header">
           
           <td class="col-pdf">Roll</td>
-          <% if @batch.course.course_name == "Grade 9" %>
+          <% if @batch.course.course_name == "Grade 9" || @batch.course.course_name == "Grade 6" %>
           <td class="col-pdf">Students <br />Name</td>
           <% else %>
           <td class="col-pdf">Students Name</td>
@@ -76,7 +76,7 @@
               <tr class="table-header">
           
                 <td class="col-pdf">Roll</td>
-                <% if @batch.course.course_name == "Grade 9" %>
+                <% if @batch.course.course_name == "Grade 9" || @batch.course.course_name == "Grade 6" %>
                 <td class="col-pdf">Students <br />Name</td>
                 <% else %>
                 <td class="col-pdf">Students Name</td>
@@ -106,7 +106,7 @@
           <tr class="even">
           
             <td class="name"><%= std['class_roll_no'] %></td>
-            <% if @batch.course.course_name == "Grade 9" %>
+            <% if @batch.course.course_name == "Grade 9" || @batch.course.course_name == "Grade 6" %>
             <td class="name-std" style="text-align: left; white-space: pre-wrap; !important;"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
             <% else %>
             <td class="name-std" style="text-align: left;"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>

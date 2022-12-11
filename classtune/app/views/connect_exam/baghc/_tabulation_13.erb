@@ -189,11 +189,13 @@ unless @ranked_student.blank?
                             end
                         
                           %>
-                          <% if @connect_exam_obj.result_type.to_i == 12 %> 
-                          <td><%=  sub['code'] %><hr/><%= cq unless cq.blank? %><hr/><%= mcq unless mcq.blank? %><hr/><%= prac unless prac.blank? %><hr/><%= mtt unless mtt.blank? %></td>  
-                          <% else %>
-                          <td><%=  sub['code'] %><hr/><%= cq unless cq.blank? %><hr/><%= mcq unless mcq.blank? %><hr/><%= mtt unless mtt.blank? %></td>
-                          <% end %>
+                          <%
+                            cq_converted = 0
+                            if cq.to_i > 0
+                              cq_converted = cq.to_i / 2
+                            end
+                          %>
+                          <td><%=  sub['code'] %><hr/><%= cq_converted %><hr/><%= mcq unless mcq.blank? %><hr/><%= mtt unless mtt.blank? %></td>
                         <% end %>
                       <% end %>
                       <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>

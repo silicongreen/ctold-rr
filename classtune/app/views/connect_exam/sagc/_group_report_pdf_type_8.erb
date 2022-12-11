@@ -2404,7 +2404,12 @@
                           <br/><br/><%= extra_br %>
                       </td>
                       <td class="col-pdf " width="25%" style="vertical-align: bottom;">
+                          <%#= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/"+batch_split[0].downcase+".png")), :width=>"60%" %>
+                          <% if batch_split[0].downcase == "morning" %>
+                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/vc-signature-2022.jpg")), :width=>"60%" %>
+                          <% else %>
                           <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/"+batch_split[0].downcase+".png")), :width=>"60%" %>
+                          <% end %>
                       </td> 
                       <td class="col-pdf " width="25%" style="vertical-align: bottom;">
                           <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/principal-sir-signature-2019.jpg")), :width=>"40%" %>

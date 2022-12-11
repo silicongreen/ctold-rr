@@ -473,7 +473,12 @@
                               <% if @batch.course.course_name == "Eleven" or @batch.course.course_name == "Twelve" %>
                                 <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/college_vp_signature.png")), :width=>"70%" %>
                               <% else %>
-                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/"+batch_split[0].downcase+".png")), :width=>"70%" %>
+                                <%#= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/"+batch_split[0].downcase+".png")), :width=>"70%" %>
+                                <% if batch_split[0].downcase == "morning" %>
+                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/vc-signature-2022.jpg")), :width=>"60%" %>
+                                <% else %>
+                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/"+batch_split[0].downcase+".png")), :width=>"60%" %>
+                                <% end %>
                               <% end %>
                           </td> 
                           <td class="col-pdf " width="25%">

@@ -282,6 +282,25 @@
                   </tr>
 
               </table>
+              <table id="pdf-table"  width="35%" class="left-table break-table ev-table" cellspacing="0" >
+              <tr class="table-header">
+                    <td colspan="4">Grand Total Marks (Yearly Exam)</td>
+                    <td class="col-pdf"  colspan="9"></td>
+                    <td class="col-pdf"><% if has_final_term %><%= grand_total2.round().to_i %><% end %></td>
+                    <% if has_final_term %>
+                    <% exam_grand_total = grand_total1 + grand_total2.round().to_i %>
+                    <% end %>
+                    <td class="col-pdf"></td>
+                  </tr>
+
+                  <tr class="table-header">
+                    <td colspan="4">Grand Total Marks of Half Yearly and Yearly Exam</td>
+                    <td class="col-pdf"  colspan="9"></td>
+                    <td class="col-pdf"><%= exam_grand_total.round().to_i %></td>
+                    <td class="col-pdf"></td>
+                  </tr>
+
+              </table>
 
               
               <table id="pdf-table"  width="35%" class="left-table break-table ev-table" cellspacing="0" >

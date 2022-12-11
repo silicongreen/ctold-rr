@@ -189,7 +189,7 @@
 
                                     if report['exam_category'] == '4'
                                       if report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained']!="AB"
-                                        st_marks1 << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                        st_marks1 << report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                       else
                                         st_marks1 << 0
                                       end 

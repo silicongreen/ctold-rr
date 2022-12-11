@@ -16,13 +16,6 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-<% if @connect_exam_obj.result_type.to_i == 11 %>
-<%= render  :partial=>"/connect_exam/baghc/tabulation_"+@connect_exam_obj.result_type.to_s %>
-<% elsif @connect_exam_obj.result_type.to_i == 12 %>
-<%= render  :partial=>"/connect_exam/baghc/tabulation_"+@connect_exam_obj.result_type.to_s %>
-<% elsif @connect_exam_obj.result_type.to_i == 13 %>
-<%= render  :partial=>"/connect_exam/baghc/tabulation_"+@connect_exam_obj.result_type.to_s %>
-<% else %>
 <% 
 @all_subject_id = []
 @has_exam_score = []
@@ -163,7 +156,7 @@ unless @ranked_student.blank?
 
                       <td class="col-pdf">Roll</td>
                       <td class="col-pdf">Students Name</td>
-                      <% if @connect_exam_obj.result_type.to_i == 10 %> 
+                      <% if @connect_exam_obj.result_type.to_i == 12 %> 
                       <td class="col-pdf">Exams<hr/>CQ/SQ<hr/>MCQ<hr/>Prac<hr/>MTT</td>
                       <% else %>
                       <td class="col-pdf">Exams<hr/>CQ/SQ<hr/>MCQ<hr/>MTT/Prac</td>
@@ -178,7 +171,7 @@ unless @ranked_student.blank?
                             <% if rs['exam_category'] == '2' %>
                               <% mcq = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                             <% elsif rs['exam_category'] == '3' %>
-                              <% if @connect_exam_obj.result_type.to_i == 10 %> 
+                              <% if @connect_exam_obj.result_type.to_i == 12 %> 
                                 <% unless rs['exam_name'].index('Pra').blank? %>
                                 <% prac = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                                 <% end %>
@@ -203,12 +196,7 @@ unless @ranked_student.blank?
                             end
                         
                           %>
-                          <% if @connect_exam_obj.result_type.to_i == 10 %> 
-                          <%
-                            if @connect_exam_obj.batch.course_name == 'XI'
-                              mtt = 25
-                            end
-                          %>
+                          <% if @connect_exam_obj.result_type.to_i == 12 %> 
                           <td><%=  sub['code'] %><hr/><%= cq unless cq.blank? %><hr/><%= mcq unless mcq.blank? %><hr/><%= prac unless prac.blank? %><hr/><%= mtt unless mtt.blank? %></td>  
                           <% else %>
                           <td><%=  sub['code'] %><hr/><%= cq unless cq.blank? %><hr/><%= mcq unless mcq.blank? %><hr/><%= mtt unless mtt.blank? %></td>
@@ -228,10 +216,10 @@ unless @ranked_student.blank?
                      g_cnt = 4
                      g_cnt_1 = 5
                   %>      
-                  <% if @connect_exam_obj.result_type.to_i == 10 %> 
+                  <% if @connect_exam_obj.result_type.to_i == 12 %> 
                     <%
-                        g_cnt = 2
-                        g_cnt_1 = 3
+                        g_cnt = 3
+                        g_cnt_1 = 4
                     %>    
                   <% end %>
                   <% extender = 0 %>
@@ -266,15 +254,11 @@ unless @ranked_student.blank?
                       <% if std_count>g_cnt && extender ==0 %>
                         <% std_count = 1 %>
                         <% extender = 1 %>
-                        <% if @connect_exam_obj.result_type.to_i == 10 %> 
+                        <% if @connect_exam_obj.result_type.to_i == 12 %> 
                         <tr>
-                            <td colspan="100" style="height: 200px;">&nbsp;</td>
+                            <td colspan="100" style="height: 65px;">&nbsp;</td>
                         </tr> 
-                        <% elsif @connect_exam_obj.result_type.to_i == 13 %> 
-                        <tr>
-                            <td colspan="100" style="height: 42px;">&nbsp;</td>
-                        </tr> 
-                        <% else %> 
+                        <% else %>
                         <tr class="page-break120">
                             <td colspan="100">&nbsp;</td>
                         </tr> 
@@ -283,7 +267,7 @@ unless @ranked_student.blank?
 
                             <td class="col-pdf">Roll</td>
                             <td class="col-pdf">Students Name</td>
-                            <% if @connect_exam_obj.result_type.to_i == 10 %> 
+                            <% if @connect_exam_obj.result_type.to_i == 12 %> 
                             <td class="col-pdf">Exams<hr/>CQ/SQ<hr/>MCQ<hr/>Prac<hr/>MTT</td>
                             <% else %>
                             <td class="col-pdf">Exams<hr/>CQ/SQ<hr/>MCQ<hr/>MTT/Prac</td>
@@ -298,7 +282,7 @@ unless @ranked_student.blank?
                                   <% if rs['exam_category'] == '2' %>
                                     <% mcq = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                                   <% elsif rs['exam_category'] == '3' %>
-                                    <% if @connect_exam_obj.result_type.to_i == 10 %> 
+                                    <% if @connect_exam_obj.result_type.to_i == 12 %> 
                                       <% unless rs['exam_name'].index('Pra').blank? %>
                                       <% prac = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                                       <% end %>
@@ -314,12 +298,7 @@ unless @ranked_student.blank?
                                 <% has_exam = true %>
                               <% end %>
                               <% if has_exam == true %>
-                                <% if @connect_exam_obj.result_type.to_i == 10 %> 
-                                <%
-                                  if @connect_exam_obj.batch.course_name == 'XI' 
-                                    mtt = 25 
-                                  end
-                                %>
+                                <% if @connect_exam_obj.result_type.to_i == 12 %> 
                                 <td><%=  sub['code'] %><hr/><%= cq unless cq.blank? %><hr/><%= mcq unless mcq.blank? %><hr/><%= prac unless prac.blank? %><hr/><%= mtt unless mtt.blank? %></td>  
                                 <% else %>
                                 <td><%=  sub['code'] %><hr/><%= cq unless cq.blank? %><hr/><%= mcq unless mcq.blank? %><hr/><%= mtt unless mtt.blank? %></td>
@@ -338,13 +317,9 @@ unless @ranked_student.blank?
                       <% elsif std_count>g_cnt_1 && extender ==1 %>
                         <% std_count = 1 %>
                         <% extender = 1 %>
-                        <% if @connect_exam_obj.result_type.to_i == 10 %> 
+                        <% if @connect_exam_obj.result_type.to_i == 12 %> 
                         <tr>
-                            <td colspan="100" style="height: 122px;">&nbsp;</td>
-                        </tr> 
-                        <% elsif @connect_exam_obj.result_type.to_i == 13 %> 
-                        <tr>
-                            <td colspan="100" style="height: 50px;">&nbsp;</td>
+                            <td colspan="100" style="height: 40px;">&nbsp;</td>
                         </tr> 
                         <% else %>
                         <tr class="page-break">
@@ -355,7 +330,7 @@ unless @ranked_student.blank?
 
                             <td class="col-pdf">Roll</td>
                             <td class="col-pdf">Students Name</td>
-                            <% if @connect_exam_obj.result_type.to_i == 10 %> 
+                            <% if @connect_exam_obj.result_type.to_i == 12 %> 
                             <td class="col-pdf">Exams<hr/>CQ/SQ<hr/>MCQ<hr/>Prac<hr/>MTT</td>
                             <% else %>
                             <td class="col-pdf">Exams<hr/>CQ/SQ<hr/>MCQ<hr/>MTT/Prac</td>
@@ -370,7 +345,7 @@ unless @ranked_student.blank?
                                   <% if rs['exam_category'] == '2' %>
                                     <% mcq = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                                   <% elsif rs['exam_category'] == '3' %>
-                                    <% if @connect_exam_obj.result_type.to_i == 10 %> 
+                                    <% if @connect_exam_obj.result_type.to_i == 12 %> 
                                       <% unless rs['exam_name'].index('Pra').blank? %>
                                       <% prac = rs['result'][rs['exam_id']][sub['id']]['full_mark'].to_i %>
                                       <% end %>
@@ -386,12 +361,7 @@ unless @ranked_student.blank?
                                 <% has_exam = true %>
                               <% end %>
                               <% if has_exam == true %>
-                                <% if @connect_exam_obj.result_type.to_i == 10 %> 
-                                <%
-                                  if @connect_exam_obj.batch.course_name == 'XI' 
-                                    mtt = 25 
-                                  end
-                                %>
+                                <% if @connect_exam_obj.result_type.to_i == 12 %> 
                                 <td><%=  sub['code'] %><hr/><%= cq unless cq.blank? %><hr/><%= mcq unless mcq.blank? %><hr/><%= prac unless prac.blank? %><hr/><%= mtt unless mtt.blank? %></td>  
                                 <% else %>
                                 <td><%=  sub['code'] %><hr/><%= cq unless cq.blank? %><hr/><%= mcq unless mcq.blank? %><hr/><%= mtt unless mtt.blank? %></td>
@@ -421,8 +391,8 @@ unless @ranked_student.blank?
                           <% else %>
                             <td class="name-std"><%= "-" %></td>
                           <% end %>
-                          <% if @connect_exam_obj.result_type.to_i == 10 %> 
-                          <td>CQ/SQ<hr/>MCQ<hr/>Prac<hr/>Total(75%)<hr/>MTT<hr/>Total(100)<hr/>GP</td>
+                          <% if @connect_exam_obj.result_type.to_i == 12 %> 
+                          <td>CQ/SQ<hr/>MCQ<hr/>Prac<hr/>Total(100%)<hr/>MTT<hr/>GP</td>
                           <% else %>
                           <td>CQ/SQ<hr/>MCQ<hr/>MTT/Prac<hr/>Total(%)<hr/>GP</td>
                           <% end %>
@@ -542,15 +512,11 @@ unless @ranked_student.blank?
                               <% main_mark = 0 %>
                               <%
                               
-                              if @connect_exam_obj.result_type == 10
+                              if @connect_exam_obj.result_type == 12
                                   #########################################################
                                   ## Failed On Individual Subjects (Temporary Solution)
                                   #########################################################
-                                  if @connect_exam_obj.batch.course_name == 'XI'
-                                    pass_mark = {70 => 23, 100 => 33, 50 => 17, 30 => 10, 25 => 8}
-                                  else
-                                    pass_mark = {70 => 24, 100 => 33, 50 => 17, 30 => 10, 25 => 9}
-                                  end
+                                  pass_mark = {70 => 23, 100 => 33, 50 => 17, 30 => 10, 25 => 8}
                                   failed = false
                                   full_mark_mtt = full_mark_mtt + 1
                                   unless pass_mark[full_mark_cq.to_i].blank?
@@ -630,24 +596,16 @@ unless @ranked_student.blank?
                                   full_mark_mtt = full_mark_mtt.to_f/2.00
                                   mtt_obtain_mark = mtt_obtain_mark.round()
                                 end
-                              end
-                              if @connect_exam_obj.result_type == 13
-                                if full_mark_cq > 0
-                                  new_cq_total = full_mark_cq.to_i/2
-                                  new_cq = (cq_obtain_mark.to_f / full_mark_cq.to_f) * new_cq_total.to_f
-                                  cq_obtain_mark = new_cq.round()
-                                  full_mark_cq = new_cq_total.round()
-                                end  
                               end  
-                              coverted_75 = 0
-                              if @connect_exam_obj.result_type == 10
+                              coverted_100 = 0
+                              if @connect_exam_obj.result_type == 12
                                   full_mark_cq_mcq_prac = full_mark_cq+full_mark_mcq+full_mark_prac
                                   total_mark_cq_mcq_prac = cq_obtain_mark+mcq_obtain_mark+prac_obtain_mark
                                   if full_mark_cq_mcq_prac > 0
-                                    coverted_75 = (total_mark_cq_mcq_prac.to_f/full_mark_cq_mcq_prac.to_f)*75
+                                    coverted_100 = (total_mark_cq_mcq_prac.to_f/full_mark_cq_mcq_prac.to_f)*100
                                   end   
-                                  subject_obtain_mark = coverted_75+mtt_obtain_mark
-                                  subject_full_mark = 75+full_mark_mtt
+                                  subject_obtain_mark = coverted_100+mtt_obtain_mark
+                                  subject_full_mark = 100+full_mark_mtt
                               else
                                 subject_obtain_mark = cq_obtain_mark+mcq_obtain_mark+mtt_obtain_mark
                                 subject_full_mark = full_mark_cq+full_mark_mcq+full_mark_mtt
@@ -664,18 +622,12 @@ unless @ranked_student.blank?
                                     <hr/>
                                     <%= sprintf( "%0.02f", mcq_obtain_mark) %>
                                     <hr/>
-                                    <% if @connect_exam_obj.result_type == 10 %>
+                                    <% if @connect_exam_obj.result_type == 12 %>
                                     <%= sprintf( "%0.02f", prac_obtain_mark) %>
                                     <hr/>
-                                    <%= sprintf( "%0.02f", coverted_75) %>
+                                    <%= sprintf( "%0.02f", coverted_100) %>
                                     <hr/>
                                     <% end %>
-                                    <%
-                                      if @connect_exam_obj.batch.course_name == 'XI' and full_mark_mtt > 0
-                                        mtt_obtain_mark = (mtt_obtain_mark.to_f/full_mark_mtt.to_f)*25
-                                        mtt_obtain_mark = mtt_obtain_mark.round()
-                                      end
-                                    %>
                                     <%= sprintf( "%0.02f", mtt_obtain_mark) %>
                                     <hr/>
                                     <%
@@ -684,8 +636,8 @@ unless @ranked_student.blank?
                                     end  
                                     subject_total_marks[sub['id'].to_i] = subject_total_marks[sub['id'].to_i]+main_mark
                                     %>
-                                    <%= sprintf( "%0.02f", main_mark) %>
-                                    <hr/>
+                                    <%#= sprintf( "%0.02f", main_mark) %>
+                                    <!--hr/-->
                                     <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                     <% if !grade.blank? and !grade.name.blank? %>
                                       <%
@@ -760,20 +712,10 @@ unless @ranked_student.blank?
                       </tr>
                     <% end %>
                   <% end %>
-                      <% if @connect_exam_obj.result_type.to_i == 10 %> 
-                      <% if std_count>2 %>
-                        <tr class="page-break-low" style="height: 160px;">
-                            <td colspan="100">&nbsp;</td>
-                        </tr>
-                      <% elsif std_count>1 %>
-                        <tr style="height: 340px;">
-                            <td colspan="100">&nbsp;</td>
-                        </tr>
-                      <% else %>    
-                      <tr style="height: 230px;">
+                      <% if @connect_exam_obj.result_type.to_i == 12 %> 
+                      <tr style="height: 200px;display:block; clear:both; page-break-after:always; ">
                           <td colspan="100">&nbsp;</td>
                       </tr>
-                      <% end %>
                       <% else %>
                         <% if std_count>4 %>
                           <tr class="page-break-low">
@@ -904,4 +846,3 @@ unless @ranked_student.blank?
        text-align: right !important;
     }
 </style>
-<% end %>

@@ -53,10 +53,10 @@
         <% @report_data['report']['students'].each do |std| %>
           <% j = j+1 %>
           <%  std_count = std_count+1; %>
-          <% if std_count>12 && extender ==0 %>
+          <% if std_count>11 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
-              <tr class="page-break">
+              <tr style="border: 0px solid #fff;height: 60px">
                   <td colspan="100">&nbsp;</td>
               </tr>  
               <tr class="table-header">
@@ -99,9 +99,9 @@
         
           
           
-          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+          <tr class="odd">
             <td class="col-pdf"><%= j %></td>
-            <td class="name"><%= std['class_roll_no'] %></td>
+            <td class="name" style="text-align: left;"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
             <% total_mark = 0 %>
             <% grades = [] %>

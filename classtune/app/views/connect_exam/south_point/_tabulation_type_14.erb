@@ -478,7 +478,11 @@
                   <%= f_mark.round().to_s+"<hr/>" %> 
                   <%= tf_mark.round().to_s %>   
               </td>
-              <td>
+              <% cla = "no-wrap" %>
+              <% if @batch.course.course_name == "Grade 9" || @batch.course.course_name == "Grade 8" %>
+              <% cla = "" %>
+              <% end %>
+              <td class="<%= cla %>">
                   <% i = 1 %>
                   <% total_grade_std = grades1.count  %>
                   <% grades1.each do |grade| %>

@@ -285,24 +285,62 @@
               <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" >
               <tr class="table-header">
                     <td colspan="4">Grand Total Marks (Yearly Exam)</td>
-                    <td class="col-pdf"  colspan="9"></td>
                     <td class="col-pdf"><% if has_final_term %><%= grand_total2.round().to_i %><% end %></td>
                     <% if has_final_term %>
                     <% exam_grand_total = grand_total1 + grand_total2.round().to_i %>
                     <% end %>
-                    <td class="col-pdf"></td>
                   </tr>
 
                   <tr class="table-header">
                     <td colspan="4">Grand Total Marks of Half Yearly and Yearly Exam</td>
-                    <td class="col-pdf"  colspan="9"></td>
                     <td class="col-pdf"><%= exam_grand_total.round().to_i %></td>
-                    <td class="col-pdf"></td>
                   </tr>
 
               </table>
 
-              
+              <% 
+                total_working_days_first = ""
+                total_att_first = ""
+                absent_first = ""
+
+                total_working_days_second = ""
+                total_att_second = ""
+                absent_second = ""
+
+                teacher_comments = ""
+                if !@exam_comment.blank?
+                  all_comments = @exam_comment.comments
+
+                  if !all_comments.blank?
+                    all_comments_array = all_comments.split("|")
+                    total_working_days_first = all_comments_array[0]
+                    if !all_comments_array[1].nil?
+                      total_att_first = all_comments_array[1]
+                    end
+                    if !all_comments_array[2].nil?
+                      total_working_days_second = all_comments_array[2]
+                    end
+                    if !all_comments_array[3].nil?
+                      total_att_second = all_comments_array[3]
+                    end
+                    if !all_comments_array[4].nil?
+                      teacher_comments = all_comments_array[4]
+                    end
+                  end
+                  if total_working_days_first.to_i > 0 && total_att_first.to_i > 0
+                    absent_first = total_working_days_first.to_i - total_att_first.to_i
+                    if absent_first < 0
+                      absent_first = 0
+                    end
+                  end
+                  if total_working_days_second.to_i > 0 && total_att_second.to_i > 0
+                    absent_second = total_working_days_second.to_i - total_att_second.to_i
+                    if absent_second < 0
+                      absent_second = 0
+                    end
+                  end
+                end
+              %>   
               <table id="pdf-table"  width="35%" class="left-table break-table ev-table" cellspacing="0" >
                 <tr>
                   <td>
@@ -354,71 +392,25 @@
                             </tr>
                             <% end %>
                         <% end %>
-                        
-                    </table>
-                  </td>
-                </tr>
-                <% 
-                total_working_days_first = ""
-                total_att_first = ""
-                absent_first = ""
-
-                total_working_days_second = ""
-                total_att_second = ""
-                absent_second = ""
-
-                teacher_comments = ""
-                if !@exam_comment.blank?
-                  all_comments = @exam_comment.comments
-
-                  if !all_comments.blank?
-                    all_comments_array = all_comments.split("|")
-                    total_working_days_first = all_comments_array[0]
-                    if !all_comments_array[1].nil?
-                      total_att_first = all_comments_array[1]
-                    end
-                    if !all_comments_array[2].nil?
-                      total_working_days_second = all_comments_array[2]
-                    end
-                    if !all_comments_array[3].nil?
-                      total_att_second = all_comments_array[3]
-                    end
-                    if !all_comments_array[4].nil?
-                      teacher_comments = all_comments_array[4]
-                    end
-                  end
-                  if total_working_days_first.to_i > 0 && total_att_first.to_i > 0
-                    absent_first = total_working_days_first.to_i - total_att_first.to_i
-                    if absent_first < 0
-                      absent_first = 0
-                    end
-                  end
-                  if total_working_days_second.to_i > 0 && total_att_second.to_i > 0
-                    absent_second = total_working_days_second.to_i - total_att_second.to_i
-                    if absent_second < 0
-                      absent_second = 0
-                    end
-                  end
-                end
-              %>   
-                <tr>
-                  <td>
-                    <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" cellpadding="0" >
-                        <tr class="table-header">
-                          <td style="font-size: 10px; height: 30px;">Total Working Days</td>
-                          <td style="font-size: 10px; height: 30px;">Total Present Days</td>
-                          <td style="font-size: 10px; height: 30px;">Total Absent Days</td>
-                        </tr>
-                        <tr class="table-header">
-                          <td><%= total_working_days_first %></td>
-                          <td><%= total_att_first %></td>
-                          <td><%= absent_first %></td>
-                        </tr>
-                        <tr class="table-header">
-                          <td><%= total_working_days_second %></td>
-                          <td><%= total_att_second %></td>
-                          <td><%= absent_second %></td>
-                        </tr>
+                        <tr><td colspan="3">
+                        <table id="pdf-table"  width="100%" class="left-table break-table ev-table" cellspacing="0" cellpadding="0" >
+                            <tr class="table-header">
+                              <td style="font-size: 10px; height: 30px;">Total Working Days</td>
+                              <td style="font-size: 10px; height: 30px;">Total Present Days</td>
+                              <td style="font-size: 10px; height: 30px;">Total Absent Days</td>
+                            </tr>
+                            <tr class="table-header">
+                              <td><%= total_working_days_first %></td>
+                              <td><%= total_att_first %></td>
+                              <td><%= absent_first %></td>
+                            </tr>
+                            <tr class="table-header">
+                              <td><%= total_working_days_second %></td>
+                              <td><%= total_att_second %></td>
+                              <td><%= absent_second %></td>
+                            </tr>
+                        </table>
+                        </td></tr>
                     </table>
                   </td>
                 </tr>

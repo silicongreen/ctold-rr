@@ -238,7 +238,7 @@
                     <tr class="table-header">
                       <td class="col-pdf no-warp" rowspan="4"><b><%= "Subject" %></b></td>
                       <td colspan="3" rowspan="3">Term Exam Marks</td> 
-                      <td colspan="11">Annual Exam</td>
+                      <td colspan="11">Year Final Exam</td>
                     </tr> 
                     <tr class="table-header">
                       <td colspan="2" rowspan="2">Quarterly<br/>(15%* / 25%)</td> 
@@ -445,7 +445,7 @@
                     <% end %>
                   <% end %>
                   <tr class="table-header">
-                    <td colspan="4">Grand Total Marks (Annual Exam)</td>
+                    <td colspan="4">Grand Total Marks (Year Final Exam)</td>
                     <td class="col-pdf"  colspan="9"></td>
                     <td class="col-pdf"><% if has_quarter %><%= grand_total.round().to_i %><% end %></td>
                     <% if has_quarter %>
@@ -455,7 +455,7 @@
                   </tr>
 
                   <tr class="table-header">
-                    <td colspan="4">Grand Total Marks of Half Yearly and Annual Exam</td>
+                    <td colspan="4">Grand Total Marks of Half Yearly and Year Final Exam</td>
                     <td class="col-pdf"  colspan="9"></td>
                     <td class="col-pdf"><%= exam_grand_total.round().to_i %></td>
                     <td class="col-pdf"></td>

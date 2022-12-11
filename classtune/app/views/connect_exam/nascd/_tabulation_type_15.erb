@@ -16,7 +16,12 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
+
 <% 
+  quarter = 6
+  unless params[:eq].blank?
+    quarter = params[:eq]
+  end
   if @std_subject_hash_type.nil?
     std_subject = StudentsSubject.find_all_by_batch_id(@batch.id)
     @std_subject_hash_type = []
@@ -267,7 +272,7 @@
 
                                 <%
 
-                                if rs['quarter'] == '5'
+                                if rs['quarter'] == quarter
                                   if rs['exam_category'] == '3'
                                     cq = cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                     full_mark_cq = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i

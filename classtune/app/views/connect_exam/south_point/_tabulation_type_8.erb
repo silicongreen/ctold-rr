@@ -465,6 +465,9 @@
                                 ,
                               <% end %>
                               <% i = i+1 %>
+                              <% if i >= 5 %>
+                              <% break %>
+                              <% end %>
                             <% end %>
                         </td>
                         <% unless @student_position.blank? %>

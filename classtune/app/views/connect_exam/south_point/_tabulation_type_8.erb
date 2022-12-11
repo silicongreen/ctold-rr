@@ -394,7 +394,7 @@
                                 q2_mark = q2_mark+obtained_mark2.round()
                                 tf_mark = tf_mark+obtained_mark.round()
                               %>
-                                <%= obtained_mark1.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name1+"<hr/>" %>
+                                <%= obtained_mark1.to_f.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name1+"<hr/>" %>
                                 <%= obtained_mark2.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name2+"<hr/>" %>
                                 <%= obtained_mark.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name %>   
                             </td> 

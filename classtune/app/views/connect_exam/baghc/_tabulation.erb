@@ -388,7 +388,7 @@ unless @ranked_student.blank?
                               <% if has_exam == true %>
                                 <% if @connect_exam_obj.result_type.to_i == 10 %> 
                                 <%
-                                  if @connect_exam_obj.batch.course_name == 'XI' 
+                                  if @connect_exam_obj.batch.course_name == 'XI' || @connect_exam_obj.batch.course_name == 'IX' 
                                     mtt = 25 
                                   end
                                 %>
@@ -550,6 +550,17 @@ unless @ranked_student.blank?
                                     pass_mark = {70 => 23, 100 => 33, 50 => 17, 30 => 10, 25 => 8}
                                   else
                                     pass_mark = {70 => 24, 100 => 33, 50 => 17, 30 => 10, 25 => 9}
+                                  end
+                                  if @connect_exam_obj.batch.course_name == 'XI' and  full_mark_mtt > 0
+                                    mtt_new_total = full_mark_mtt.to_f/2
+                                    mtt_obtain_mark = (mtt_obtain_mark.to_f/full_mark_mtt.to_f)*mtt_new_total
+                                    full_mark_mtt = full_mark_mtt.to_f/2
+                                    mtt_obtain_mark = mtt_obtain_mark.round()
+                                  elsif @connect_exam_obj.batch.course_name == 'IX' and  full_mark_mtt > 0
+                                    mtt_new_total = full_mark_mtt.to_f/2
+                                    mtt_obtain_mark = (mtt_obtain_mark.to_f/full_mark_mtt.to_f)*mtt_new_total
+                                    full_mark_mtt = full_mark_mtt.to_f/2
+                                    mtt_obtain_mark = mtt_obtain_mark.round()
                                   end
                                   failed = false
                                   full_mark_mtt = full_mark_mtt + 1

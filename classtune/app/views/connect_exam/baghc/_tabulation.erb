@@ -201,11 +201,11 @@ unless @ranked_student.blank?
                                 subject_grades[sub['id'].to_i][grade.id.to_i] = 0
                               end
                             end
-                        
+                         
                           %>
                           <% if @connect_exam_obj.result_type.to_i == 10 %> 
                           <%
-                            if @connect_exam_obj.batch.course_name == 'XI'
+                            if @connect_exam_obj.batch.course_name == 'XI' or @connect_exam_obj.batch.course_name == 'IX'
                               mtt = 25
                             end
                           %>
@@ -316,7 +316,7 @@ unless @ranked_student.blank?
                               <% if has_exam == true %>
                                 <% if @connect_exam_obj.result_type.to_i == 10 %> 
                                 <%
-                                  if @connect_exam_obj.batch.course_name == 'XI' 
+                                  if @connect_exam_obj.batch.course_name == 'XI' || @connect_exam_obj.batch.course_name == 'IX' 
                                     mtt = 25 
                                   end
                                 %>

@@ -13,12 +13,24 @@
         if !all_comments_array[2].nil?
           present = all_comments_array[1].to_i
           working_days = all_comments_array[2].to_i
-          comments = all_comments_array[0]
+          if all_comments_array[0].blank?
+            comments = ""
+          else
+            comments = all_comments_array[0]
+          end
         elsif !all_comments_array[1].nil?
           present = all_comments_array[1].to_i
-          comments = all_comments_array[0]
+          if all_comments_array[0].blank?
+            comments = ""
+          else
+            comments = all_comments_array[0]
+          end
         else
-          comments = all_comments_array[0]
+          if all_comments_array[0].blank?
+            comments = ""
+          else
+            comments = all_comments_array[0]
+          end
         end
       end
     end

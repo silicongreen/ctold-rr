@@ -546,7 +546,7 @@ unless @ranked_student.blank?
                                   #########################################################
                                   ## Failed On Individual Subjects (Temporary Solution)
                                   #########################################################
-                                  if @connect_exam_obj.batch.course_name == 'XI'
+                                  if @connect_exam_obj.batch.course_name == 'XI' || @connect_exam_obj.batch.course_name == 'IX'
                                     pass_mark = {70 => 23, 100 => 33, 50 => 17, 30 => 10, 25 => 8}
                                   else
                                     pass_mark = {70 => 24, 100 => 33, 50 => 17, 30 => 10, 25 => 9}

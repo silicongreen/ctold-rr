@@ -1,4 +1,5 @@
 <%
+  fnd_data = false
   present = 0
   comments = ""
   working_days = @connect_exam_obj.total_working_days
@@ -7,15 +8,18 @@
     all_comments = @exam_comment.comments
     if !all_comments.blank?
       all_comments_array = all_comments.split("|")
-      if !all_comments_array[2].nil?
-        present = all_comments_array[1].to_i
-        working_days = all_comments_array[2].to_i
-        comments = all_comments_array[0]
-      elsif !all_comments_array[1].nil?
-        present = all_comments_array[1].to_i
-        comments = all_comments_array[0]
-      else
-        comments = all_comments_array[0]
+      unless all_comments_array.blank?
+        fnd_data = true
+        if !all_comments_array[2].nil?
+          present = all_comments_array[1].to_i
+          working_days = all_comments_array[2].to_i
+          comments = all_comments_array[0]
+        elsif !all_comments_array[1].nil?
+          present = all_comments_array[1].to_i
+          comments = all_comments_array[0]
+        else
+          comments = all_comments_array[0]
+        end
       end
     end
     end
@@ -24,7 +28,9 @@
     unless @present_lower_grade.blank?
       present = @present_lower_grade
     end
-    present = @report_data['present'] unless present = @report_data['present'].blank?
+    if fnd_data == false
+      present = @report_data['present'] unless present = @report_data['present'].blank?
+    end
 %>
 <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
               <% if @grading_levels.blank? %>

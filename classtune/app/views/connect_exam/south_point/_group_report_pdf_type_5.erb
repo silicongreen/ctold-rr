@@ -120,7 +120,7 @@
                               <td class="col-2"><b>-</b></td>
                             <% end %>
                             <% unless personal_and_social[i].blank? %>
-                                <td class="col-2"><%= personal_and_social[i] %></td>
+                                <td class="col-2" style="text-align: left;"><%= personal_and_social[i] %></td>
                                 <td class="col-2">
                                   <% if !all_comments_array[i].blank? and all_comments_array[i].to_i == 1  %>
                                     <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>

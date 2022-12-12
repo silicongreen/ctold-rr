@@ -63,7 +63,7 @@
                       <% check_subject_exam = false %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         
-                          <td class="col-pdf no-warp"><%= subjects['name'] %></td>
+                          <td class="col-pdf no-warp" style="text-align: left;"><%= subjects['name'] %></td>
                             <% unless @report_data['report']['exams'].blank? %>  
                               <% @report_data['report']['exams'].each do |report| %>
                           
@@ -156,7 +156,7 @@
                         <td class="col-2"></td>
                         <td class="col-2"></td>
                         <% unless personal_and_social[j].blank? %>
-                            <td class="col-2"><%= personal_and_social[j] %></td>
+                            <td class="col-2" style="text-align: left;"><%= personal_and_social[j] %></td>
                             <td class="col-2">
                               <% if !all_comments_array[j].blank? and all_comments_array[j].to_i == 1  %>
                                 <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>

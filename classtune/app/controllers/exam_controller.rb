@@ -14904,7 +14904,7 @@ class ExamController < ApplicationController
                 end
                 
                 if std['id'].to_i == 25176
-                  abort('here' + total_mark2_80.to_s + "  " + monthly_total_mark2.to_s  + "  " + at_total_mark2.to_s )
+                  abort('here' + total_mark2_80.to_s + "  " + monthly_total_mark2.to_s  + "  " + at_total_mark2.to_s + "  " + monthly_mark_multiply2.to_s )
                 end
                 
                 total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2

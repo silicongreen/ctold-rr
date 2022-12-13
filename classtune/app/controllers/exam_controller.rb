@@ -15011,13 +15011,16 @@ class ExamController < ApplicationController
                 if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['at'] = at_total_mark1+at_total_mark2
                   
-                  
+                  if @connect_exam_obj.result_type == 7
+
+                  end
+                  abort('eheh')
                   if monthly_full_mark1 > 0 || monthly_full_mark2 > 0
                     if appeared_ct
                       ct_not_round = ct_round = monthly_total_main_mark1+monthly_total_main_mark2
                       ct_round = ct_round.round()
                       if monthly_full_mark1 > 0 && monthly_full_mark2 > 0
-                        abort('here')
+                        abort()
                         ct_not_round = ct_round = (monthly_total_main_mark1+monthly_total_main_mark2)/2
                         ct_round = ct_round.round()
                       end

@@ -852,7 +852,7 @@
                 end
                 
                 
-                if @connect_exam_obj.result_type == 7
+                if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 6
                   monthly_total_mark2 = monthly_total_mark2/3
                   monthly_total_mark1 = monthly_total_mark1/3
                   monthly_total_mark2 = monthly_total_mark2.to_f
@@ -1894,7 +1894,7 @@
                         end 
                       end
                     end
-                    if @connect_exam_obj.result_type == 7
+                    if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 6
                       monthly_total_mark2 = monthly_total_mark2/3
                       monthly_total_mark1 = monthly_total_mark1/3
                       monthly_total_mark2 = monthly_total_mark2.to_f

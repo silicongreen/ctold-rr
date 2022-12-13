@@ -473,7 +473,7 @@
                                 <% class_test_mark2 = (class_test_mark2.to_f/divider.to_f) %>
                                 <% monthly2 = class_test_mark2 = class_test_mark2.round() %>
                                 <%## class_test_mark_all = class_test_mark_all+class_test_mark2 %>
-                                <%= sprintf( "%0.02f", class_test_mark2.to_f) +  "  " + "NNN"%>
+                                <%= sprintf( "%0.02f", class_test_mark2.to_f)%>
                                <% end %>
                             </td>
                             <% unless @report_data['report']['exams'].blank? %>  
@@ -550,6 +550,7 @@
                               <%##%>
                           <% 
                             failed_subject3 = false
+                            monthly_marks_converted = (class_test_mark1.to_f+class_test_mark2.to_f)/2.00
                             monthly_marks = (class_test_mark_before1.to_f+class_test_mark_before2.to_f)/2.00
                             
                             if monthly_marks > 0
@@ -565,6 +566,7 @@
                             elsif class_test_full_mark2 > 0
                               failed_subject3 = true
                             end
+                            monthly_marks = monthly_marks_converted
                             sb_marks = 0
                             ob_marks = 0
                             pr_marks = 0

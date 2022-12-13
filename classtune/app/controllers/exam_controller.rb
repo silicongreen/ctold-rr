@@ -6872,10 +6872,16 @@ class ExamController < ApplicationController
               else
                 if value.grade_subject.to_i == 1
                   tmp_row << rt.round().to_s
+                  grade = GradingLevel.percentage_to_grade(rt.round(), @batch.id)
+                  if !grade.blank? && !grade.name.blank?
+                    tmp_row << grade.name.to_s 
+                  else
+                    tmp_row << "F" 
+                  end
                 else
                   tmp_row << std_result['subjects'][key]['result']['ct'].to_s
+                  tmp_row << std_result['subjects'][key]['result']['lg'].to_s 
                 end
-                tmp_row << std_result['subjects'][key]['result']['lg'].to_s 
               end
                     
             else
@@ -15166,9 +15172,6 @@ class ExamController < ApplicationController
                         main_mark = main_mark_res_7 * 2
                       else
                         main_mark = main_mark_res_7
-                      end
-                      if sub['grade_subject'].to_i == 1
-                        abort(main_mark.inspect)
                       end
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()

@@ -15134,7 +15134,7 @@ class ExamController < ApplicationController
                       #  @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = class_test_mark
                       #else
                       #  @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = "AB"
-                      #end
+                      end
                       if appeared_ct
                         ct_not_round = ct_round = monthly_total_main_mark1+monthly_total_main_mark2
                         ct_round = ct_round.round()

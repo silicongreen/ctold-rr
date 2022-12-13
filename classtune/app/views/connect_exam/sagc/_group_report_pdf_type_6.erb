@@ -1061,7 +1061,7 @@
 
                           <% 
                             failed_subject3 = false
-                            monthly_marks = (class_test_mark_before1.to_f+class_test_mark_before2.to_f)/2.00
+                            monthly_marks = (class_test_mark1.to_f+class_test_mark2.to_f)/2.00
                             
                             if monthly_marks > 0
                               grade_mark = (monthly_marks.round().to_f/class_test_full_mark2)*100
@@ -1377,7 +1377,7 @@
               </table>
 
               <% grade_point_avg = (grade_point_avg.to_f*100).round() %>
-              <%= grade_point_avg.to_s + "  " + total_subject.to_s + "  " + total_grade.to_s %>
+              
               <% grade_point_avg = grade_point_avg.to_f/100 %>
               <table id="pdf-table" class="tbl-lign-left-2 top-margin-20" width="26%" cellspacing="0">
                   <tr class="even">

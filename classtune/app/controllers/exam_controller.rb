@@ -14837,7 +14837,7 @@ class ExamController < ApplicationController
                 if sub['name'].upcase == "ICT" and @connect_exam_obj.result_type == 9
                   term_mark_multiplier = 1.00
                 end
-                abort('here' + term_mark_multiplier.to_s)
+                
                 
                 total_mark2 = total_ob2+total_sb2+total_pr2
                 total_mark2_80 = total_mark2.to_f
@@ -14907,6 +14907,9 @@ class ExamController < ApplicationController
                 
                 total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
                 total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
+                if std['id'].to_i == 25176
+                  abort('here' + total_mark2.to_s + "  " + total_mark1.to_s)
+                end
                 #if std['id'].to_s == "39081"
                 ##  abort(total_mark1_80.to_s + "  " + total_sb1.to_s + "  " + monthly_total_mark1.to_s + "  " + at_total_mark1.to_s)
                 #end

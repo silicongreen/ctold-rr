@@ -14961,7 +14961,7 @@ class ExamController < ApplicationController
                   subject_mark = (total_mark1+total_mark2)/2
                   subject_mark = subject_mark.round()
                 elsif  exam_type == 2
-                  if @connect_exam_obj.result_type == 8 or @connect_exam_obj.result_type == 7
+                  if @connect_exam_obj.result_type == 8
                     main_mark = (total_mark1_no_round.to_f+total_mark2_no_round.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
                   else
                     main_mark = (total_mark1.to_f+total_mark2.to_f)/(full_mark1.to_f+full_mark2.to_f)*100

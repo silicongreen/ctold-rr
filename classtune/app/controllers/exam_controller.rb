@@ -16272,9 +16272,7 @@ class ExamController < ApplicationController
               if full_absent
                 @absent_in_all_subject = @absent_in_all_subject+1
               end
-              #if std['id'] == 25176
-                abort(grand_total_with_fraction_marks.to_s)
-              #end
+              
               if exam_type == 3
                 
                 grade_point_avg = grand_grade_point.to_f/total_subject.to_f
@@ -16322,7 +16320,9 @@ class ExamController < ApplicationController
               end
               loop_std = loop_std+1
             end
-            
+            if std['id'] == 25176
+              abort(grand_total_with_fraction_marks.to_s)
+            end
           
             if u_grade == 0
               grand_total_new = 50000-grand_total_with_fraction

@@ -710,7 +710,7 @@
                       <td class="col-pdf"><b><%= total_grade %></b></td>
                   </tr>  
                   if @student.id.to_i == 24490
-                    abort(grand_total.to_s + "  " )
+                    abort(grand_total.to_s)
                   end 
                   <% if has_grade_subject == true %>
                     <tr class="page-break-grade">

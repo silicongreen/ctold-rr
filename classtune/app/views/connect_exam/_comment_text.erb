@@ -1,9 +1,10 @@
 <tr class="even text-align-left">
   <%
   cmt = "&nbsp;"
-  abort(@student_exam_comment.inspect)
   if !@student_exam_comment[@std_id_comment.to_s].blank?
-    cmt = @student_exam_comment[@std_id_comment.to_s]
+    cmt_1 = @student_exam_comment[@std_id_comment.to_s]
+    cmt_t = cmt_1.split('|')
+    cmt = cmt_t[0]
   end  
   %>
   <td colspan="100"><%= cmt %></td>

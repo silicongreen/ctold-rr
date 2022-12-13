@@ -244,6 +244,7 @@
                             end
                           
                           %>
+                          <% divider = 3 %>
                           <% if full_mark.to_f > 0 %>
                             <% full_mark_all = 50 %>
                             <% if full_mark.to_f >= 100 %>
@@ -322,6 +323,9 @@
                                <% if class_test_ab1 == true %>
                                 AB
                                <% else %> 
+                                <% class_test_mark1 = (class_test_mark1.to_f/divider.to_f) %>
+                                <% monthly1 = class_test_mark1 = class_test_mark1.round() %>
+                                <%# class_test_mark_all = class_test_mark_all+class_test_mark1 %>
                                 <%= sprintf( "%0.02f", class_test_mark1.to_f)%>
                                <% end %>
                             </td>
@@ -461,6 +465,9 @@
                                <% if class_test_ab2 == true %>
                                 AB
                                <% else %> 
+                                <% class_test_mark2 = (class_test_mark2.to_f/divider.to_f) %>
+                                <% monthly2 = class_test_mark2 = class_test_mark2.round() %>
+                                <%# class_test_mark_all = class_test_mark_all+class_test_mark2 %>
                                 <%= sprintf( "%0.02f", class_test_mark2.to_f)%>
                                <% end %>
                             </td>
@@ -829,6 +836,9 @@
                                <% elsif class_test_ab1 == true %>
                                 AB
                                <% else %> 
+                                <% class_test_mark1 = (class_test_mark1.to_f/divider.to_f) %>
+                                <% monthly2 = class_test_mark1 = class_test_mark1.round() %>
+                                <%# class_test_mark_all = class_test_mark_all+class_test_mark1 %>
                                 <%= sprintf( "%0.02f", class_test_mark1.to_f)%>
                                <% end %>
                             </td>
@@ -965,6 +975,9 @@
                                <% elsif class_test_ab2 == true %>
                                 AB
                                <% else %> 
+                                <% class_test_mark2 = (class_test_mark2.to_f/divider.to_f) %>
+                                <% monthly2 = class_test_mark2 = class_test_mark2.round() %>
+                                <%# class_test_mark_all = class_test_mark_all+class_test_mark2 %>
                                 <%= sprintf( "%0.02f", class_test_mark2.to_f)%>
                                <% end %>
                             </td>
@@ -1390,7 +1403,7 @@
                       <td class="no-warp">
                          <% if !@student_position_batch[@student.id.to_i].blank? %> 
                           <%= @student_position_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
-                         <% else %>
+                         <% else %> 
                           -
                          <% end %> 
                       </td>

@@ -15128,8 +15128,17 @@ class ExamController < ApplicationController
                     end  
                   end
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = ob_round+sb_round+pr_round
-                  abort(@student_result[loop_std]['subjects'][main_sub_id]['result']['rt'].to_s + "  " + ct_marks_main.to_s)
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
+                  if @connect_exam_obj.result_type == 7
+                    if class_test_mark.to_f > 0
+                      total_pr = @student_result[loop_std]['subjects'][main_sub_id]['result']['rt']
+                      total_pr_converted = total_pr * 0.9
+                      main_mark_res_7 = total_pr_converted + class_test_mark
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = main_mark_res_7.round()
+                    else
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
+                    end
+                  end
+                 
                   
                   
                   if @subject_result[main_sub_id].blank?

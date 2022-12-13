@@ -15015,7 +15015,7 @@ class ExamController < ApplicationController
                     divider = 4
                     class_test_mark = 0
                     class_test_full_mark = 0
-                      tab['exams'].each do |rs|   
+                      tab['exams'].each do |report|   
                         if report['exam_category'] == '1'
                           if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?                                   
                             class_test_mark = class_test_mark+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f

@@ -15128,7 +15128,7 @@ class ExamController < ApplicationController
                     end  
                   end
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = ob_round+sb_round+pr_round
-                  
+                  abort(@student_result[loop_std]['subjects'][main_sub_id]['result']['rt'].inspect)
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
                   
                   

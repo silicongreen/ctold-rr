@@ -558,10 +558,10 @@
                               grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
                               if !grade.blank? and !grade.name.blank?
                                 #&& class_test_full_mark2.to_i != 5 && monthly_marks.round() != 13
-                                if grade.credit_points.to_i == 0 
-                                  if @student.id.to_i == 24319
-                                    abort(grade_mark.to_s + "  " + class_test_full_mark2.to_s + "  " + monthly_marks.to_s + "  " + class_test_mark_before1.to_s +  "  " + class_test_mark_before2.to_s)
-                                  end
+                                if grade.credit_points.to_i == 0  && monthly_marks.round() != 13
+                                  #if @student.id.to_i == 24319
+                                  #  abort(grade_mark.to_s + "  " + class_test_full_mark2.to_s + "  " + monthly_marks.to_s + "  " + class_test_mark_before1.to_s +  "  " + class_test_mark_before2.to_s)
+                                  #end
                                   failed_subject3 = true
                                 end
                               end

@@ -52,7 +52,7 @@ end
     student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
     @tabulation_data = []
     if student_response['status']['code'].to_i == 200
-      @tabulation_data = student_response['data'] 
+      @tabulation_data = student_response['data']  
     end
   end
   render  :partial=>"/connect_exam/sagc/finding_data_5"

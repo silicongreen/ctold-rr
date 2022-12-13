@@ -14648,7 +14648,7 @@ class ExamController < ApplicationController
                     end
                   end    
                 end
-                abort('here')
+               
                 if @connect_exam_obj.result_type == 8 && sub['grade_subject'].to_i != 1
                   if monthly_full_mark1 == 20 
                     if monthly_total_mark1 < 9
@@ -14837,7 +14837,7 @@ class ExamController < ApplicationController
                 if sub['name'].upcase == "ICT" and @connect_exam_obj.result_type == 9
                   term_mark_multiplier = 1.00
                 end
-                
+                abort('here' + term_mark_multiplier.to_s)
                 
                 total_mark2 = total_ob2+total_sb2+total_pr2
                 total_mark2_80 = total_mark2.to_f

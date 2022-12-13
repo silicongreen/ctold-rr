@@ -189,6 +189,7 @@
                   <% failed2 = false %>
                   <% failed = false %>
                   <% grand_total_with_fraction_marks = [] %>
+                  <% individual_marks = [] %>
                   
                   <% grand_total1 = 0 %>
                   <% grand_total_fraction1 = 0 %>
@@ -616,8 +617,12 @@
                               failed_subject3 = true
                             end
                             total_marks_ag = sb_marks_shoud_be+ob_marks+pr_marks+monthly_marks
+                            individual_marks << sb_marks_shoud_be
+                            individual_marks << ob_marks
+                            individual_marks << pr_marks
+                            individual_marks << monthly_marks
                             grand_total_fraction = grand_total_fraction+total_marks_ag
-                            grand_total_with_fraction_marks << total_marks_ag
+                            grand_total_with_fraction_marks << individual_marks
                             total_marks_ag = total_marks_ag.round()
                             grand_total = grand_total+total_marks_ag
                             

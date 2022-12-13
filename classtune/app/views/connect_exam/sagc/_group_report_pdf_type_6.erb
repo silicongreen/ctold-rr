@@ -709,9 +709,11 @@
                       <td class="col-pdf align-left-baf" colspan="2"></td>
                       <td class="col-pdf"><b><%= total_grade %></b></td>
                   </tr>  
-                  if @student.id.to_i == 24490
-                    abort(grand_total.to_s)
-                  end 
+                  <% 
+                  #if @student.id.to_i == 24490
+                  #  abort(grand_total.to_s)
+                  #end 
+                  %>
                   <% if has_grade_subject == true %>
                     <tr class="page-break-grade">
                         <td colspan="100"></td>
@@ -996,7 +998,7 @@
                                 <% class_test_mark2 = (class_test_mark2.to_f/divider.to_f) %>
                                 <% monthly2 = class_test_mark2 = class_test_mark2.round() %>
                                 <%# class_test_mark_all = class_test_mark_all+class_test_mark2 %>
-                                <%= sprintf( "%0.02f", class_test_mark2.to_f)%>
+                                <%= sprintf( "%0.02f", class_test_mark2.to_f)  +  "  " + "NNN"%>
                                <% end %>
                             </td>
                             <% unless @report_data['report']['exams'].blank? %>  

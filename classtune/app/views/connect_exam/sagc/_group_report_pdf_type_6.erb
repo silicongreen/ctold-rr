@@ -538,7 +538,7 @@
                                 <% grade.credit_points = "0.00" %>  
                               <% end %>
                               <% total_grade2 = total_grade2.to_f+grade.credit_points.to_f %>
-                              <td class="col-pdf"><%= grade.name %></td>
+                              <td class="col-pdf"><%= grade.name %> <%= "A" %></td>
                               <td class="col-pdf"><%= grade.credit_points %></td>
                             <% else %>
                               <td class="col-pdf">-</td>

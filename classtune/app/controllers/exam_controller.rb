@@ -15021,7 +15021,7 @@ class ExamController < ApplicationController
                             class_test_mark = class_test_mark+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                           end
                           if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                              class_test_full_mark = class_test_full_mark+report['result'][sub['exam_id']][subjects['id']]['full_mark'].to_f
+                              class_test_full_mark = class_test_full_mark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                             end
                         end
                       end

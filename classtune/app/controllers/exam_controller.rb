@@ -6870,11 +6870,7 @@ class ExamController < ApplicationController
                     tmp_row << "F" 
                   end
               else
-                if value.grade_subject.to_i == 1
-                  tmp_row << rt.round().to_s
-                else
-                  tmp_row << std_result['subjects'][key]['result']['ct'].to_s
-                end
+                tmp_row << std_result['subjects'][key]['result']['ct'].to_s
                 tmp_row << std_result['subjects'][key]['result']['lg'].to_s 
               end
                     
@@ -15168,11 +15164,28 @@ class ExamController < ApplicationController
                         main_mark = main_mark_res_7
                       end
                     else
-
-                      if sub['grade_subject'].to_i == 1
-                        abort(main_mark.inspect)
+                      if @connect_exam_obj.result_type == 7 and sub['grade_subject'].to_i == 1
+                        total_pr = @student_result[loop_std]['subjects'][main_sub_id]['result']['rt']
+                        main_mark_res_7 = total_pr
+                        if full_sb_ob_pr.to_i == 50
+                          main_mark = main_mark_res_7 * 2
+                        else
+                          main_mark = main_mark_res_7
+                        end
+                        @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
+                      elsif @connect_exam_obj.result_type == 7 and sub['grade_subject'].to_i == 0
+                        total_pr = @student_result[loop_std]['subjects'][main_sub_id]['result']['rt']
+                        total_pr_converted = total_pr * 0.9
+                        main_mark_res_7 = total_pr_converted
+                        if full_sb_ob_pr.to_i == 50
+                          main_mark = main_mark_res_7 * 2
+                        else
+                          main_mark = main_mark_res_7
+                        end
+                        @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
+                      else
+                        @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
                       end
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
                     end
                   end
                  

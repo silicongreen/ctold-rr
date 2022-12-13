@@ -3527,7 +3527,21 @@ class ExamController < ApplicationController
       end
       
     else
-      finding_data5()
+      if (@connect_exam_obj.result_type.to_i == 4  || @connect_exam_obj.result_type.to_i == 2 || @connect_exam_obj.result_type.to_i == 3 || @connect_exam_obj.result_type.to_i == 5 || @connect_exam_obj.result_type.to_i == 6 || @connect_exam_obj.result_type.to_i == 7) 
+        @student_result = []
+        @total_std = nil
+        if @tabulation_data.nil?
+          student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+          @tabulation_data = []
+          if student_response['status']['code'].to_i == 200
+            @tabulation_data = student_response['data'] 
+          end
+        end
+        finding_data_5_new()
+      else
+        finding_data5()
+      end
+      #finding_data5()
     end
     render :pdf => 'subject_wise_pass_failed',
       :orientation => 'Portrait', :zoom => 1.00,
@@ -3565,7 +3579,21 @@ class ExamController < ApplicationController
     elsif @connect_exam_obj.result_type.to_i == 27
       finding_data_27()
     else
-      finding_data5()
+      if (@connect_exam_obj.result_type.to_i == 4  || @connect_exam_obj.result_type.to_i == 2 || @connect_exam_obj.result_type.to_i == 3 || @connect_exam_obj.result_type.to_i == 5 || @connect_exam_obj.result_type.to_i == 6 || @connect_exam_obj.result_type.to_i == 7) 
+        @student_result = []
+        @total_std = nil
+        if @tabulation_data.nil?
+          student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+          @tabulation_data = []
+          if student_response['status']['code'].to_i == 200
+            @tabulation_data = student_response['data'] 
+          end
+        end
+        finding_data_5_new()
+      else
+        finding_data5()
+      end
+      #finding_data5()
     end
     render :pdf => 'summary_report',
       :orientation => 'Portrait', :zoom => 1.00,
@@ -3650,7 +3678,21 @@ class ExamController < ApplicationController
       
     #   @exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>"#{qry}", :order => 'gpa DESC, marks DESC, position ASC')
     else
-      finding_data5()
+      if (@connect_exam_obj.result_type.to_i == 4  || @connect_exam_obj.result_type.to_i == 2 || @connect_exam_obj.result_type.to_i == 3 || @connect_exam_obj.result_type.to_i == 5 || @connect_exam_obj.result_type.to_i == 6 || @connect_exam_obj.result_type.to_i == 7) 
+        @student_result = []
+        @total_std = nil
+        if @tabulation_data.nil?
+          student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+          @tabulation_data = []
+          if student_response['status']['code'].to_i == 200
+            @tabulation_data = student_response['data'] 
+          end
+        end
+        finding_data_5_new()
+      else
+        finding_data5()
+      end
+      #finding_data5()
     end
     
     
@@ -3738,7 +3780,21 @@ class ExamController < ApplicationController
     elsif @connect_exam_obj.result_type.to_i == 19
       finding_data_19()
     else
-      finding_data5()
+      if (@connect_exam_obj.result_type.to_i == 4  || @connect_exam_obj.result_type.to_i == 2 || @connect_exam_obj.result_type.to_i == 3 || @connect_exam_obj.result_type.to_i == 5 || @connect_exam_obj.result_type.to_i == 6 || @connect_exam_obj.result_type.to_i == 7) 
+        @student_result = []
+        @total_std = nil
+        if @tabulation_data.nil?
+          student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+          @tabulation_data = []
+          if student_response['status']['code'].to_i == 200
+            @tabulation_data = student_response['data'] 
+          end
+        end
+        finding_data_5_new()
+      else
+        finding_data5()
+      end
+      #finding_data5()
     end
     render :pdf => 'subject_wise_pass_failed',
       :orientation => 'Portrait', :zoom => 1.00,
@@ -6674,7 +6730,6 @@ class ExamController < ApplicationController
             @tabulation_data = student_response['data'] 
           end
         end
-        abort('jeje')
         finding_data_5_new()
       else
         finding_data5()

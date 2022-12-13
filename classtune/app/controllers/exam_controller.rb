@@ -14773,7 +14773,7 @@ class ExamController < ApplicationController
                     term_mark_multiplier = 1
                   end
                 end
-                abort(term_mark_multiplier.inspect)
+                
                 if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6 or sub['grade_subject'].to_i == 1
                   term_mark_multiplier = 1.00
                 end
@@ -15017,6 +15017,7 @@ class ExamController < ApplicationController
                       ct_not_round = ct_round = monthly_total_main_mark1+monthly_total_main_mark2
                       ct_round = ct_round.round()
                       if monthly_full_mark1 > 0 && monthly_full_mark2 > 0
+                        abort('here')
                         ct_not_round = ct_round = (monthly_total_main_mark1+monthly_total_main_mark2)/2
                         ct_round = ct_round.round()
                       end

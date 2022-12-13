@@ -14876,7 +14876,9 @@ class ExamController < ApplicationController
                 if sub['grade_subject'].to_i == 1 and @connect_exam_obj.result_type == 3 and monthly_full_mark1 == 20
                   monthly_mark_multiply = 20
                 end
-                
+                if std['id'].to_i == 25176
+                  abort('here' + monthly_mark_multiply.to_s + "  " + monthly_mark_multiply2.to_s  + "  " + at_total_mark2.to_s + "  " + monthly_mark_multiply2.to_s )
+                end
                 if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
                   monthly_mark_multiply = monthly_mark_multiply/2
                   monthly_mark_multiply2 = monthly_mark_multiply2/2
@@ -14899,13 +14901,13 @@ class ExamController < ApplicationController
                     monthly_total_mark2 = monthly_total_mark2
                     if @connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE"
                       monthly_total_mark2 = monthly_mark_multiply2
+                    elsif @connect_exam_obj.result_type == 7
+
                     end
                   end
                 end
                 
-                if std['id'].to_i == 25176
-                  abort('here' + total_mark2_80.to_s + "  " + monthly_total_mark2.to_s  + "  " + at_total_mark2.to_s + "  " + monthly_mark_multiply2.to_s )
-                end
+                
                 
                 total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
                 total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1

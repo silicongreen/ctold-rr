@@ -14656,7 +14656,7 @@ class ExamController < ApplicationController
                 
                 if exam_type == 3
                   
-                  if @connect_exam_obj.result_type == 8 && sub['grade_subject'].to_i != 1
+                  if @connect_exam_obj.sn == 8 && sub['grade_subject'].to_i != 1
                     monthly_mark_combined = 0
                     if monthly_total_mark1 > 0 || monthly_total_mark2 > 0
                       monthly_mark_combined = (monthly_total_mark1+monthly_total_mark2)/2.00
@@ -14773,7 +14773,7 @@ class ExamController < ApplicationController
                     term_mark_multiplier = 1
                   end
                 end
-                
+                abort(term_mark_multiplier.inspect)
                 if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6 or sub['grade_subject'].to_i == 1
                   term_mark_multiplier = 1.00
                 end

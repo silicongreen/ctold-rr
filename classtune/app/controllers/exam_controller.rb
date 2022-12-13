@@ -14903,7 +14903,9 @@ class ExamController < ApplicationController
                   end
                 end
                 
-                
+                if std['id'].to_i == 25176
+                  abort('here' + total_mark2_80.to_s + "  " + monthly_total_mark2.to_s  + "  " + at_total_mark2.to_s )
+                end
                 
                 total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
                 total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
@@ -14963,11 +14965,7 @@ class ExamController < ApplicationController
                 elsif  exam_type == 2
                   main_mark_no_round = total_mark2_no_round.to_f/full_mark2.to_f*100
                   subject_mark = total_mark2
-                  if std['id'].to_i == 25176
-                    abort('here' + main_mark_no_round.to_s + "  " + total_mark2_no_round.to_s  + "  " + full_mark2.to_s )
-                  end
-                  main_mark_no_round = total_mark2_no_round.to_f/full_mark2.to_f*100
-                  subject_mark = total_mark2
+                  
                 else
                   main_mark = total_mark1.to_f/full_mark1.to_f*100
                   

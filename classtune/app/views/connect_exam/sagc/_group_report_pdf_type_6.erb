@@ -556,7 +556,8 @@
 
                               grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
                               if !grade.blank? and !grade.name.blank?
-                                if grade.credit_points.to_i == 0 && class_test_full_mark2.to_i != 5 && monthly_marks.round() != 13
+                                #&& class_test_full_mark2.to_i != 5 && monthly_marks.round() != 13
+                                if grade.credit_points.to_i == 0 
                                   failed_subject3 = true
                                   abort('here=')
                                 end

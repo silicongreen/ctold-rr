@@ -559,9 +559,6 @@
                               if !grade.blank? and !grade.name.blank?
                                 #&& class_test_full_mark2.to_i != 5 && monthly_marks.round() != 13
                                 if grade.credit_points.to_i == 0  && monthly_marks.round() != 13
-                                  #if @student.id.to_i == 24319
-                                  #  abort(grade_mark.to_s + "  " + class_test_full_mark2.to_s + "  " + monthly_marks.to_s + "  " + class_test_mark_before1.to_s +  "  " + class_test_mark_before2.to_s)
-                                  #end
                                   failed_subject3 = true
                                 end
                               end
@@ -712,7 +709,9 @@
                       <td class="col-pdf align-left-baf" colspan="2"></td>
                       <td class="col-pdf"><b><%= total_grade %></b></td>
                   </tr>  
-                   
+                  if @student.id.to_i == 24490
+                    abort(grand_total.to_s + "  " )
+                  end 
                   <% if has_grade_subject == true %>
                     <tr class="page-break-grade">
                         <td colspan="100"></td>

@@ -15013,12 +15013,30 @@ class ExamController < ApplicationController
                   
                   if @connect_exam_obj.result_type == 7
                     full_mark = 0
+                    full_mark_ob_7 = 0
+                    full_mark_sb_7 = 0
+                    full_mark_pr_7 = 0
                     divider = 4
                     class_test_mark = 0
                     class_test_full_mark = 0
                       tab['exams'].each do |report|   
                         if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
                           full_mark = full_mark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        end
+                        if report['exam_category'] == '3'
+                          if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                            full_mark_sb_7 = full_mark_sb_7+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                          end
+                        end
+                        if report['exam_category'] == '4'
+                          if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                            full_mark_ob_7 = full_mark_ob_7+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                          end
+                        end
+                        if report['exam_category'] == '5'
+                          if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                            full_mark_pr_7 = full_mark_pr_7+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                          end
                         end
                         if report['exam_category'] == '1'
                           if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?                                   
@@ -15028,6 +15046,16 @@ class ExamController < ApplicationController
                               class_test_full_mark = class_test_full_mark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                             end
                         end
+                      end
+                      full_sb_ob_pr = 0
+                      if full_mark_sb_7 > 0
+                        full_sb_ob_pr = full_sb_ob_pr+full_mark_sb_7
+                      end
+                      if full_mark_ob_7 > 0
+                        full_sb_ob_pr = full_sb_ob_pr+full_mark_ob_7
+                      end
+                      if full_mark_pr_7 > 0
+                        full_sb_ob_pr = full_sb_ob_pr+full_mark_pr_7
                       end
                       divider = 3
                       full_mark_all = 0
@@ -15134,6 +15162,7 @@ class ExamController < ApplicationController
                       total_pr_converted = total_pr * 0.9
                       main_mark_res_7 = total_pr_converted + class_test_mark
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = main_mark_res_7.round()
+                      abort(full_sb_ob_pr.inspect)
                       main_mark = main_mark_res_7
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()

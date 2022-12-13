@@ -546,7 +546,7 @@
                             <% end %>  
                               
                             
-
+                              <%##%>
                           <% 
                             failed_subject3 = false
                             monthly_marks = (class_test_mark_before1.to_f+class_test_mark_before2.to_f)/2.00
@@ -558,6 +558,7 @@
                               if !grade.blank? and !grade.name.blank?
                                 #&& class_test_full_mark2.to_i != 5 && monthly_marks.round() != 13
                                 if grade.credit_points.to_i == 0 
+                                  abort(monthly_marks.to_s + "  " + class_test_mark_before1.to_s +  "  " + class_test_mark_before2.to_s)
                                   failed_subject3 = true
                                 end
                               end

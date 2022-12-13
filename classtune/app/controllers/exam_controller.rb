@@ -6664,18 +6664,6 @@ class ExamController < ApplicationController
     elsif @connect_exam_obj.result_type.to_i == 19
       finding_data_19()
     else
-      if (@connect_exam_obj.result_type.to_i == 4  || @connect_exam_obj.result_type.to_i == 2 || @connect_exam_obj.result_type.to_i == 3 || @connect_exam_obj.result_type.to_i == 5 || @connect_exam_obj.result_type.to_i == 6 || @connect_exam_obj.result_type.to_i == 7) 
-        @student_result = []
-        @total_std = nil
-        if @tabulation_data.nil?
-          student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
-          @tabulation_data = []
-          if student_response['status']['code'].to_i == 200
-            @tabulation_data = student_response['data'] 
-          end
-        end
-        render  :partial=>"/connect_exam/sagc/finding_data_5"
-      else
         finding_data5()
     end
     

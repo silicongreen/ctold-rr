@@ -14907,6 +14907,8 @@ class ExamController < ApplicationController
                 if @connect_exam_obj.result_type == 7
                   monthly_total_mark2 = monthly_total_mark2/3
                   monthly_total_mark1 = monthly_total_mark1/3
+                  monthly_total_mark2 = monthly_total_mark2.round()
+                  monthly_total_mark1 = monthly_total_mark1.round()
                 end
                 
                 
@@ -15965,6 +15967,13 @@ class ExamController < ApplicationController
                       end
                     end
                     
+                    if @connect_exam_obj.result_type == 7
+                      monthly_total_mark2 = monthly_total_mark2/3
+                      monthly_total_mark1 = monthly_total_mark1/3
+                      monthly_total_mark2 = monthly_total_mark2.round()
+                      monthly_total_mark1 = monthly_total_mark1.round()
+                    end
+
                     # or (@connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE")
                     total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
                     total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
@@ -17463,7 +17472,12 @@ class ExamController < ApplicationController
                   end
                 end
                 
-                
+                if @connect_exam_obj.result_type == 7
+                  monthly_total_mark2 = monthly_total_mark2/3
+                  monthly_total_mark1 = monthly_total_mark1/3
+                  monthly_total_mark2 = monthly_total_mark2.round()
+                  monthly_total_mark1 = monthly_total_mark1.round()
+                end
                 
                 total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
                 total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
@@ -18378,6 +18392,8 @@ class ExamController < ApplicationController
                     if @connect_exam_obj.result_type == 7
                       monthly_total_mark2 = monthly_total_mark2/3
                       monthly_total_mark1 = monthly_total_mark1/3
+                      monthly_total_mark2 = monthly_total_mark2.round()
+                      monthly_total_mark1 = monthly_total_mark1.round()
                     end
                     #or (@connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE")
                     total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2

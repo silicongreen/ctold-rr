@@ -15017,8 +15017,8 @@ class ExamController < ApplicationController
                     class_test_mark = 0
                     class_test_full_mark = 0
                       tab['exams'].each do |report|   
-                        if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][sub['id']]['full_mark'].blank?
-                          full_mark = full_mark+report['result'][report['exam_id']][sub['id']][sub['id']]['full_mark'].to_f
+                        if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                          full_mark = full_mark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         end
                         if report['exam_category'] == '1'
                           if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?                                   

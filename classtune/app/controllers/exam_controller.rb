@@ -15134,6 +15134,7 @@ class ExamController < ApplicationController
                       total_pr_converted = total_pr * 0.9
                       main_mark_res_7 = total_pr_converted + class_test_mark
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = main_mark_res_7.round()
+                      main_mark = main_mark_res_7
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
                     end

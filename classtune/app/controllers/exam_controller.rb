@@ -15058,7 +15058,6 @@ class ExamController < ApplicationController
                         ct_not_round = ct_round = monthly_total_main_mark1+monthly_total_main_mark2
                         ct_round = ct_round.round()
                         if monthly_full_mark1 > 0 && monthly_full_mark2 > 0
-                          abort()
                           ct_not_round = ct_round = (monthly_total_main_mark1+monthly_total_main_mark2)/2
                           ct_round = ct_round.round()
                         end
@@ -17361,6 +17360,7 @@ class ExamController < ApplicationController
                   subject_mark = total_mark1
                 end  
                 subject_full_marks = main_mark_no_round.round()
+                abort(main_mark_no_round.inspect)
                 ct_marks_main = (main_mark_no_round/100)*full_mark1
                 if sub['grade_subject'].to_i != 1
                   if @student_subject_marks[sub['id'].to_i].blank?

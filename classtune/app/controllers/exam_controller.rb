@@ -14904,11 +14904,11 @@ class ExamController < ApplicationController
                     end
                   end
                 end
-                if @connect_exam_obj.result_type == 7
+                if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 6
                   monthly_total_mark2 = monthly_total_mark2/3
                   monthly_total_mark1 = monthly_total_mark1/3
-                  monthly_total_mark2 = monthly_total_mark2.to_f
-                  monthly_total_mark1 = monthly_total_mark1.to_f
+                  monthly_total_mark2 = monthly_total_mark2.round()
+                  monthly_total_mark1 = monthly_total_mark1.round()
                 end
                 
                 
@@ -15967,11 +15967,11 @@ class ExamController < ApplicationController
                       end
                     end
                     
-                    if @connect_exam_obj.result_type == 7
+                    if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 6
                       monthly_total_mark2 = monthly_total_mark2/3
                       monthly_total_mark1 = monthly_total_mark1/3
-                      monthly_total_mark2 = monthly_total_mark2.to_f
-                      monthly_total_mark1 = monthly_total_mark1.to_f
+                      monthly_total_mark2 = monthly_total_mark2.round()
+                      monthly_total_mark1 = monthly_total_mark1.round()
                     end
 
                     # or (@connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE")
@@ -17472,11 +17472,11 @@ class ExamController < ApplicationController
                   end
                 end
                 
-                if @connect_exam_obj.result_type == 7
+                if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 6
                   monthly_total_mark2 = monthly_total_mark2/3
                   monthly_total_mark1 = monthly_total_mark1/3
-                  monthly_total_mark2 = monthly_total_mark2.to_f
-                  monthly_total_mark1 = monthly_total_mark1.to_f
+                  monthly_total_mark2 = monthly_total_mark2.round()
+                  monthly_total_mark1 = monthly_total_mark1.round()
                 end
                 
                 total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
@@ -18389,11 +18389,11 @@ class ExamController < ApplicationController
                         end 
                       end
                     end
-                    if @connect_exam_obj.result_type == 7
+                    if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 6
                       monthly_total_mark2 = monthly_total_mark2/3
                       monthly_total_mark1 = monthly_total_mark1/3
-                      monthly_total_mark2 = monthly_total_mark2.to_f
-                      monthly_total_mark1 = monthly_total_mark1.to_f
+                      monthly_total_mark2 = monthly_total_mark2.round()
+                      monthly_total_mark1 = monthly_total_mark1.round()
                     end
                     #or (@connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE")
                     total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2

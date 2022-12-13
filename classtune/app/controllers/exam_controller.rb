@@ -15070,13 +15070,13 @@ class ExamController < ApplicationController
                   
                   if monthly_full_mark1 > 0 || monthly_full_mark2 > 0
                     if @connect_exam_obj.result_type == 7
-                      #if class_test_mark.to_f > 0
-                      #  class_test_mark = (class_test_mark.to_f/divider.to_f)
-                      #  class_test_mark = class_test_mark.round()
+                      if class_test_mark.to_f > 0
+                        class_test_mark = (class_test_mark.to_f/divider.to_f)
+                        class_test_mark = class_test_mark.round()
                       #  @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = class_test_mark
                       #else
                       #  @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = "AB"
-                      #end
+                      end
                       if appeared_ct
                         ct_not_round = ct_round = monthly_total_main_mark1+monthly_total_main_mark2
                         ct_round = ct_round.round()

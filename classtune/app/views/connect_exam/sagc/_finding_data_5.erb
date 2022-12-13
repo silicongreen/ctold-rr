@@ -881,11 +881,11 @@
                   total_mark2 = total_ob2+total_sb2+total_pr2+monthly_total_mark2
                 end
                 if @connect_exam_obj.result_type == 6 
-                  converted_mark_1 = (total_sb12+total_ob12+total_pr12) * 0.9
+                  converted_mark_1 = (total_sb1+total_ob1+total_pr1) * 0.9
                   total_mark1 = converted_mark_1+monthly_total_mark1
 
-                  converted_mark_2 = (total_sb22+total_ob22+total_pr22) * 0.9
-                  total_mark2 = converted_mark_1+monthly_total_mark2
+                  converted_mark_2 = (total_sb2+total_ob2+total_pr2) * 0.9
+                  total_mark2 = converted_mark_2+monthly_total_mark2
                 end
                 individual_marks << total_sb1
                 individual_marks << total_ob1

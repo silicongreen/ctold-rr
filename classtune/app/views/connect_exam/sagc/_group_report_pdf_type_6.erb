@@ -1175,7 +1175,7 @@
                               <td class="col-pdf"><%= total_marks_ag.to_i %></td>
                               <td class="col-pdf"><%=  highest_mark.round() %></td>
                               <td class="col-pdf"><%=  letter_grade_name %></td>
-                              <td class="col-pdf"><%= sprintf( "%0.02f", letter_grade_point) %> <%= sprintf( "%0.02f", grade_point_avg1) %></td>
+                              <td class="col-pdf"><%= sprintf( "%0.02f", letter_grade_point) %></td>
                           <% else  %>
                             <td class="col-pdf" colspan="100">-</td>
                           <% end %>
@@ -1210,6 +1210,7 @@
                   end
                 end
               %>
+              <%= abort(grade_point_avg1.inspect) %>
               <% grade_point_avg1 = (grade_point_avg1.to_f*100).round() %>
               <% grade_point_avg1 = grade_point_avg1.to_f/100 %>
               <table id="pdf-table" class="tbl-lign-left-2 first_table top-margin-20" width="26%" cellspacing="0">

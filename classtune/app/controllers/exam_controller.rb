@@ -3688,7 +3688,7 @@ class ExamController < ApplicationController
             @tabulation_data = student_response['data'] 
           end
         end
-        abort('here')
+        
         finding_data_5_new()
       else
         finding_data5()
@@ -14648,7 +14648,7 @@ class ExamController < ApplicationController
                     end
                   end    
                 end
-                
+                abort('here')
                 if @connect_exam_obj.result_type == 8 && sub['grade_subject'].to_i != 1
                   if monthly_full_mark1 == 20 
                     if monthly_total_mark1 < 9

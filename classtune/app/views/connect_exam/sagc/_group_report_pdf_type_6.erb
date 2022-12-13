@@ -671,7 +671,6 @@
                   <% end %>
                       
                   <% if total_grade > 0 && total_subject > 0 %>
-                            <%= total_grade.to_s + "  " + total_subject.to_s %>
                       <% grade_point_avg = total_grade.to_f/total_subject.to_f %>
                   <% end %> 
                       
@@ -1032,7 +1031,7 @@
                             </td>
                               
                               
-                            
+                            <%= grade_point_avg.to_s + "  " + total_subject.to_s %>
                             
                             <td><%=  highest_mark2.round() %></td>
                             <%

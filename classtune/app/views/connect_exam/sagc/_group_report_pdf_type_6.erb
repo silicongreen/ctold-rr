@@ -761,6 +761,7 @@
                             end
                           
                           %>
+                          <%= abort(full_mark.to_s + "  " + class_test_mark1.to_s + " " + class_test_mark_before1.to_s + "  " + class_test_mark_before1.to_s) %>    
                           <% if full_mark.to_f > 0 %>
                             <% full_mark_all = 50 %>
                             <% if full_mark.to_f >= 100 %>
@@ -848,7 +849,6 @@
                                 <%= sprintf( "%0.02f", class_test_mark1.to_f)%>
                                <% end %>
                             </td>
-                            <%= abort(class_test_mark1.to_s + "  " + class_test_mark_before1.to_s) %>    
                             <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
                               <% if report['exam_category'] != '1' && report['quarter'] == '1' %>

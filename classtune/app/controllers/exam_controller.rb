@@ -14946,9 +14946,7 @@ class ExamController < ApplicationController
                 else
                   main_mark1 = 0
                 end 
-                if std['id'].to_i == 25176
-                  abort('here' + total_mark2.to_s + "  " + total_mark1.to_s  + "  " + exam_type.to_s )
-                end
+                
                 subject_mark = 0
                 if exam_type == 3
                   if @connect_exam_obj.result_type == 8
@@ -14963,8 +14961,20 @@ class ExamController < ApplicationController
                   subject_mark = (total_mark1+total_mark2)/2
                   subject_mark = subject_mark.round()
                 elsif  exam_type == 2
-                  
-                 
+                  if @connect_exam_obj.result_type == 8
+                    main_mark = (total_mark1_no_round.to_f+total_mark2_no_round.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
+                  else
+                    main_mark = (total_mark1.to_f+total_mark2.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
+                  end 
+                  main_mark = main_mark.round()
+                  mark_1_half = total_mark1_no_round.to_f/2.00
+                  mark_2_half = total_mark2_no_round.to_f/2.00
+                  main_mark_no_round = mark_1_half+mark_2_half
+                  subject_mark = (total_mark1+total_mark2)/2
+                  subject_mark = subject_mark.round()
+                  if std['id'].to_i == 25176
+                    abort('here' + main_mark_no_round.to_s + "  " + total_mark1.to_s  + "  " + exam_type.to_s )
+                  end
                   main_mark_no_round = total_mark2_no_round.to_f/full_mark2.to_f*100
                   subject_mark = total_mark2
                 else

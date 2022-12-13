@@ -16033,6 +16033,7 @@ class ExamController < ApplicationController
                       grand_total1_with_fraction_marks << total_mark1_no_round
                       
                       grand_total2_with_fraction = grand_total2_with_fraction+total_mark2_no_round
+                      
                       grand_total_with_fraction = grand_total_with_fraction+main_mark_no_round
                       grand_total_with_fraction_marks << main_mark_no_round
                       
@@ -16271,7 +16272,9 @@ class ExamController < ApplicationController
               if full_absent
                 @absent_in_all_subject = @absent_in_all_subject+1
               end
-              
+              if std['id'] == 25176
+                abort(grand_total_with_fraction_marks.to_s)
+              end
               if exam_type == 3
                 
                 grade_point_avg = grand_grade_point.to_f/total_subject.to_f

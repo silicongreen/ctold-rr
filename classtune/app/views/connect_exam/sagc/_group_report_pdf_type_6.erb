@@ -471,7 +471,7 @@
                                <% else %> 
                                 <% class_test_mark2 = (class_test_mark2.to_f/divider.to_f) %>
                                 <% monthly2 = class_test_mark2 = class_test_mark2.round() %>
-                                <%# class_test_mark_all = class_test_mark_all+class_test_mark2 %>
+                                <%## class_test_mark_all = class_test_mark_all+class_test_mark2 %>
                                 <%= sprintf( "%0.02f", class_test_mark2.to_f)%>
                                <% end %>
                             </td>
@@ -936,7 +936,7 @@
                                     <% class_test_ab2 = false %>
                                   <% end %>
                                   <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i != 13 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 5 %>
-                                    
+                                      <%= abort('ehre-1') %>
                                       <% failed_subject2 = true %>
                                       <% failed_positin = "m" %>
                                       
@@ -1006,7 +1006,7 @@
                                     <% end %>
                                      <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" %>
                                       <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
-                                       
+                                      <%= abort('ehre-2') %>
                                         <% failed_subject2 = true %>
                                       <% failed_positin = "sb" %>
                                       <% end %>

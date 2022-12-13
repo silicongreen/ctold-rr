@@ -792,6 +792,7 @@
                                   <% end %>
                                   <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i != 13 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 5 %>
                                     
+                                      <% failed1 = true %>
                                       <% failed_subject1 = true %>
                                       
                                   <% end %>

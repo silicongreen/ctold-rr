@@ -2235,6 +2235,7 @@
                 if grade_point_avg > 5
                   grade_point_avg = 5.00
                 end
+                abort(grand_total1_with_fraction_marks.to_s + "  " + std['id'])
                 @student_result[loop_std]['gpa'] = grand_grade_point1
                 @student_result[loop_std]['grand_total'] = grand_total1
                 @student_result[loop_std]['grand_total_with_fraction'] = grand_total1_with_fraction

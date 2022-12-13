@@ -717,6 +717,7 @@
                   <% unless @report_data['report']['subjects'].blank? %> 
                          
                     <% @report_data['report']['subjects'].each do |subjects| %>
+                      <%= abort(subjects['name'].to_s) %>
                       <% if subjects['grade_subject'].to_i != 1 %>
                         <% next %>
                       <% end %>

@@ -8,6 +8,7 @@
 
             %>
 <%
+@subject_highest_1st_term = @subject_highest_7th_term
   if @student_list_first_term.blank?
     @subject_highest_1st_term = @subject_highest_7th_term
     @student_position_first_term = @student_position_second_term

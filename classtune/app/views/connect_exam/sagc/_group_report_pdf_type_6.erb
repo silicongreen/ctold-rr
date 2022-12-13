@@ -715,6 +715,7 @@
                   
                   <% total_subject_new = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
+                         <%= abort(@report_data['report']['subjects'].map(&:id)) %>   
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['grade_subject'].to_i != 1 %>
                         <% next %>

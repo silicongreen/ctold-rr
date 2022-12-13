@@ -848,6 +848,7 @@
                                 <%= sprintf( "%0.02f", class_test_mark1.to_f)%>
                                <% end %>
                             </td>
+                            <%= abort(class_test_mark1.to_s + "  " + class_test_mark_before1.to_s) %>    
                             <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
                               <% if report['exam_category'] != '1' && report['quarter'] == '1' %>
@@ -887,7 +888,7 @@
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly1.to_f.round.to_i %></b>
                             </td>
-                            <%= abort(class_test_mark1.to_s + "  " + class_test_mark2.to_s + " " + class_test_mark_before1.to_s + "  " + class_test_mark_before2.to_s) %>    
+                            
                             
                             <td><%=  highest_mark1.round() %></td>
                             <%

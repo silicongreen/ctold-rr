@@ -319,7 +319,7 @@ end
                         <% else %>
                             -
                         <% end %></td>
-                        <% if @connect_exam_obj.result_type.to_i == 8 %>
+                        <% if @connect_exam_obj.result_type.to_i == 7 %>
                         <td class="col-pdf no-warp"><%= sprintf( "%0.02f", std_result['grand_total_with_fraction_7'].to_f ) %></td>
                         <% else %>
                         <td class="col-pdf no-warp"><%= sprintf( "%0.02f", std_result['grand_total_with_fraction'].to_f ) %></td>

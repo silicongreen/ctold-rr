@@ -14058,7 +14058,7 @@ class ExamController < ApplicationController
           @grading_levels = GradingLevel.default
         end
       end
-      @total_std_batch = 0
+      @total_std_batch = 0 
       @total_std = 0
       @student_list_first_term = []
       @student_list_second_term = []
@@ -14070,6 +14070,7 @@ class ExamController < ApplicationController
       @subject_highest = {}
       @subject_highest_1st_term = {}
       @subject_highest_2nd_term = {}
+      @subject_highest_7th_term = {}
       @student_avg_mark = {}
       @student_result = []
       @subject_result = {}
@@ -14262,6 +14263,7 @@ class ExamController < ApplicationController
                 total_mark1 = 0
                 full_mark1 = 0
                 total_mark2 = 0
+                total_mark_7 = 0
                 full_mark2 = 0
                 at_total_mark1 = 0
                 at_total_mark2 = 0
@@ -14708,7 +14710,7 @@ class ExamController < ApplicationController
                 
                 if exam_type == 3
                   
-                  if @connect_exam_obj.sn == 8 && sub['grade_subject'].to_i != 1
+                  if @connect_exam_obj.result_type == 8 && sub['grade_subject'].to_i != 1
                     monthly_mark_combined = 0
                     if monthly_total_mark1 > 0 || monthly_total_mark2 > 0
                       monthly_mark_combined = (monthly_total_mark1+monthly_total_mark2)/2.00
@@ -15129,27 +15131,10 @@ class ExamController < ApplicationController
                       if class_test_mark.to_f > 0
                         class_test_mark = (class_test_mark.to_f/divider.to_f)
                         class_test_mark = class_test_mark.round()
-                      #  @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = class_test_mark
-                      #else
-                      #  @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = "AB"
-                      end
-                      if appeared_ct
-                        ct_not_round = ct_round = monthly_total_main_mark1+monthly_total_main_mark2
-                        ct_round = ct_round.round()
-                        if monthly_full_mark1 > 0 && monthly_full_mark2 > 0
-                          ct_not_round = ct_round = (monthly_total_main_mark1+monthly_total_main_mark2)/2
-                          ct_round = ct_round.round()
-                        end
-                        if @connect_exam_obj.result_type < 5
-                          @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = ct_not_round
-                        else
-                          @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = ct_round
-                        end 
-                        
-                        
+                        @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = class_test_mark
                       else
                         @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = "AB"
-                      end 
+                      end
                     else
                       if appeared_ct
                         ct_not_round = ct_round = monthly_total_main_mark1+monthly_total_main_mark2
@@ -15225,11 +15210,14 @@ class ExamController < ApplicationController
                     end  
                   end
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = ob_round+sb_round+pr_round
+                  
                   if @connect_exam_obj.result_type == 7
                     if class_test_mark.to_f > 0
                       total_pr = @student_result[loop_std]['subjects'][main_sub_id]['result']['rt']
                       total_pr_converted = total_pr * 0.9
                       main_mark_res_7 = total_pr_converted + class_test_mark
+                      total_mark1 = total_mark1+main_mark_res_7
+                      total_mark_7 = total_mark_7+main_mark_res_7
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = main_mark_res_7.round()
                       if full_sb_ob_pr.to_i == 50
                         main_mark = main_mark_res_7 * 2
@@ -15245,6 +15233,8 @@ class ExamController < ApplicationController
                         else
                           main_mark = main_mark_res_7
                         end
+                        total_mark1 = total_mark1+total_pr
+                        total_mark_7 = total_mark_7+total_pr
                         @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
                       elsif @connect_exam_obj.result_type == 7 and sub['grade_subject'].to_i == 0
                         total_pr = @student_result[loop_std]['subjects'][main_sub_id]['result']['rt']
@@ -15255,13 +15245,14 @@ class ExamController < ApplicationController
                         else
                           main_mark = main_mark_res_7
                         end
+                        total_mark1 = total_mark1+total_pr_converted
+                        total_mark_7 = total_mark_7+total_pr_converted
                         @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
                       else
                         @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
                       end
                     end
                   end
-                 
                   
                   
                   if @subject_result[main_sub_id].blank?
@@ -15281,7 +15272,6 @@ class ExamController < ApplicationController
                   end
                   
                   grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                  
                   if !grade.blank? && !grade.name.blank?
                     if (subject_failed == true or four_subject_failed == true) and @connect_exam_obj.result_type != 1  and @connect_exam_obj.result_type != 2
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = "F"
@@ -15339,6 +15329,11 @@ class ExamController < ApplicationController
                   @subject_highest_2nd_term[sub['id'].to_i] = total_mark2
                 elsif total_mark2.to_f > @subject_highest_2nd_term[sub['id'].to_i].to_f
                   @subject_highest_2nd_term[sub['id'].to_i] = total_mark2.to_f
+                end
+                if @subject_highest_7th_term[sub['id'].to_i].blank?
+                  @subject_highest_7th_term[sub['id'].to_i] = total_mark_7
+                elsif total_mark_7.to_f > @subject_highest_7th_term[sub['id'].to_i].to_f and total_mark_7.to_i <= 100
+                  @subject_highest_7th_term[sub['id'].to_i] = total_mark_7.to_f
                 end
                 if @subject_highest[sub['id'].to_i].blank?
                   @subject_highest[sub['id'].to_i] = subject_full_marks
@@ -15890,6 +15885,7 @@ class ExamController < ApplicationController
                     if @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2
                       term_mark_multiplier = 1.00
                     end
+                    
                     total_mark2 = total_ob22+total_sb22+total_pr22
                     total_mark2_80 = total_mark2.to_f
                     if full_mark2 > 100 or term_mark_multiplier == 0.80 or term_mark_multiplier == 0.90
@@ -16196,6 +16192,11 @@ class ExamController < ApplicationController
                       @subject_highest_2nd_term[sub2['id'].to_i] = total_mark2
                     elsif total_mark2.to_f > @subject_highest_2nd_term[sub2['id'].to_i].to_f
                       @subject_highest_2nd_term[sub2['id'].to_i] = total_mark2.to_f
+                    end
+                    if @subject_highest_7th_term[sub2['id'].to_i].blank?
+                      @subject_highest_7th_term[sub2['id'].to_i] = total_mark_7
+                    elsif total_mark_7.to_f > @subject_highest_7th_term[sub['id'].to_i].to_f and total_mark_7.to_i <= 100
+                      @subject_highest_7th_term[sub2['id'].to_i] = total_mark_7.to_f
                     end
                     if @subject_highest[sub2['id'].to_i].blank?
                       @subject_highest[sub2['id'].to_i] = subject_full_marks

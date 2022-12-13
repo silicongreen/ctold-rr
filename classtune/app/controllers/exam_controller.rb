@@ -6812,6 +6812,7 @@ class ExamController < ApplicationController
       courseObj = Course.find_by_id(@batch.course_id)
       unless std_result['subjects'].blank?
         @all_subject_connect_exam.each do |value|
+          abort(value.inspect)
           key = value.code.to_s
           unless @subject_result[key].blank?
             unless std_result['subjects'][key].blank?

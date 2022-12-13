@@ -15012,10 +15012,14 @@ class ExamController < ApplicationController
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['at'] = at_total_mark1+at_total_mark2
                   
                   if @connect_exam_obj.result_type == 7
+                    full_mark = 0
                     divider = 4
                     class_test_mark = 0
                     class_test_full_mark = 0
                       tab['exams'].each do |report|   
+                        if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][sub['id']]['full_mark'].blank?
+                          full_mark = full_mark+report['result'][report['exam_id']][sub['id']][sub['id']]['full_mark'].to_f
+                        end
                         if report['exam_category'] == '1'
                           if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?                                   
                             class_test_mark = class_test_mark+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
@@ -15024,6 +15028,16 @@ class ExamController < ApplicationController
                               class_test_full_mark = class_test_full_mark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                             end
                         end
+                      end
+                      divider = 3
+                      full_mark_all = 0
+                      if full_mark.to_f > 0
+                        full_mark_all = 50
+                        if full_mark.to_f >= 100
+                          full_mark_all = 100
+                        else 
+                          divider = 4
+                       end
                       end
                     if class_test_full_mark.to_i == 30 && full_mark_all == 50
                         divider = 6

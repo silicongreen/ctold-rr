@@ -538,7 +538,7 @@
                                 <% grade.credit_points = "0.00" %>  
                               <% end %>
                               <% total_grade2 = total_grade2.to_f+grade.credit_points.to_f %>
-                              <td class="col-pdf"><%= grade.name %> <%= "A" %></td>
+                              <td class="col-pdf"><%= grade.name %></td>
                               <td class="col-pdf"><%= grade.credit_points %></td>
                             <% else %>
                               <td class="col-pdf">-</td>
@@ -558,10 +558,12 @@
                               if !grade.blank? and !grade.name.blank?
                                 if grade.credit_points.to_i == 0 && class_test_full_mark2.to_i != 5 && monthly_marks.round() != 13
                                   failed_subject3 = true
+                                  abort('here=')
                                 end
                               end
                             elsif class_test_full_mark2 > 0
                               failed_subject3 = true
+                              abort('here=1')
                             end
                             sb_marks = 0
                             ob_marks = 0
@@ -580,10 +582,12 @@
                               grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
                               if !grade.blank? and !grade.name.blank?
                                 if grade.credit_points.to_i == 0 && (sb_full_marks2.to_i != 50 || sb_marks_main.round() != 22) && (sb_full_marks2.to_i != 30 || sb_marks_main.round() != 13) && (sb_full_marks2.to_i != 25 || sb_marks_main.round() != 11)
+                                  abort('here=2')  
                                   failed_subject3 = true
                                 end
                               end
                             elsif sb_full_marks2 > 0
+                              abort('here=3')
                               failed_subject3 = true
                             end
                             if ob>0
@@ -592,10 +596,12 @@
                               grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
                               if !grade.blank? and !grade.name.blank?
                                 if grade.credit_points.to_i == 0 && (ob_full_marks2.to_i != 30 || ob_marks.round() != 13) && (ob_full_marks2.to_i != 25 || ob_marks.round() != 11)
+                                  abort('here=4')
                                   failed_subject3 = true
                                 end
                               end
                             elsif ob_full_marks2 > 0
+                              abort('here=5')
                               failed_subject3 = true
                             end
                             if pr>0
@@ -604,10 +610,12 @@
                               grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
                               if !grade.blank? and !grade.name.blank?
                                 if grade.credit_points.to_i == 0 && (pr_full_marks2.to_i != 30 || pr_marks.round() != 13) && (pr_full_marks2.to_i != 25 || pr_marks.round() != 11)
+                                  abort('here=6')
                                   failed_subject3 = true
                                 end
                               end
                             elsif pr_full_marks2 > 0
+                              abort('here=7')
                               failed_subject3 = true
                             end
                             total_marks_ag = sb_marks_shoud_be+ob_marks+pr_marks+monthly_marks
@@ -936,7 +944,7 @@
                                     <% class_test_ab2 = false %>
                                   <% end %>
                                   <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i != 13 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 5 %>
-                                      <%= abort('ehre-1') %>
+                                    
                                       <% failed_subject2 = true %>
                                       <% failed_positin = "m" %>
                                       
@@ -1006,7 +1014,7 @@
                                     <% end %>
                                      <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" %>
                                       <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
-                                      <%= abort('ehre-2') %>
+                                       
                                         <% failed_subject2 = true %>
                                       <% failed_positin = "sb" %>
                                       <% end %>

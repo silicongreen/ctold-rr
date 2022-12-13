@@ -6674,7 +6674,7 @@ class ExamController < ApplicationController
             @tabulation_data = student_response['data'] 
           end
         end
-        finding_data5()
+        finding_data_5_new()
       else
         finding_data5()
       end

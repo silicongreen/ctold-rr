@@ -717,7 +717,7 @@
                   <% unless @report_data['report']['subjects'].blank? %> 
                          
                     <% @report_data['report']['subjects'].each do |subjects| %>
-                      <%= abort(subjects['name'].to_s) %>
+                      
                       <% if subjects['grade_subject'].to_i != 1 %>
                         <% next %>
                       <% end %>
@@ -746,6 +746,7 @@
                               <% end %>
                             <% end %>
                           <% end %>
+                          <%= abort(subjects['name'].to_s) %>
                           <% 
                             highest_mark1 = 0
                             if !@subject_highest_1st_term.blank? and !@subject_highest_1st_term[subjects['id'].to_i].blank?

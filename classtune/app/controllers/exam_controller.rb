@@ -14883,9 +14883,7 @@ class ExamController < ApplicationController
                 end
                 monthly_total_main_mark1 = monthly_total_mark1
                 monthly_total_main_mark2 = monthly_total_mark2
-                if std['id'].to_i == 25176
-                  abort('here' + monthly_total_main_mark2.to_s + "  " + monthly_total_main_mark1.to_s  + "  " + at_total_mark2.to_s + "  " + monthly_mark_multiply2.to_s )
-                end
+                
                 if @connect_exam_obj.result_type != 5 and @connect_exam_obj.result_type != 6 and @connect_exam_obj.result_type != 1  and @connect_exam_obj.result_type != 2
                   if monthly_total_mark1 > 0
                     #monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*monthly_mark_multiply
@@ -14905,6 +14903,10 @@ class ExamController < ApplicationController
 
                     end
                   end
+                end
+                if @connect_exam_obj.result_type == 7
+                  monthly_total_mark2 = monthly_total_mark2/3
+                  monthly_total_mark1 = monthly_total_mark1/3
                 end
                 
                 
@@ -18373,7 +18375,10 @@ class ExamController < ApplicationController
                         end 
                       end
                     end
-                    
+                    if @connect_exam_obj.result_type == 7
+                      monthly_total_mark2 = monthly_total_mark2/3
+                      monthly_total_mark1 = monthly_total_mark1/3
+                    end
                     #or (@connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE")
                     total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
                     total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1

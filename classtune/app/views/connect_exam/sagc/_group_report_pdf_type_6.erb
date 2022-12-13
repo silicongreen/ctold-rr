@@ -188,6 +188,7 @@
                   <% failed1 = false %>
                   <% failed2 = false %>
                   <% failed = false %>
+                  <% grand_total_with_fraction_marks = [] %>
                   
                   <% grand_total1 = 0 %>
                   <% grand_total_fraction1 = 0 %>
@@ -616,6 +617,7 @@
                             end
                             total_marks_ag = sb_marks_shoud_be+ob_marks+pr_marks+monthly_marks
                             grand_total_fraction = grand_total_fraction+total_marks_ag
+                            grand_total_with_fraction_marks << total_marks_ag
                             total_marks_ag = total_marks_ag.round()
                             grand_total = grand_total+total_marks_ag
                             
@@ -1434,7 +1436,11 @@
                       </td>
                   </tr>
                   <tr class="odd">
-                      
+                  <%
+                  if std['id'].to_s == "24621"
+                    abort(grand_total_with_fraction_marks.inspect)
+                  end
+                  %>
                       <td class="align-left no-warp">Total Marks With Fraction</td>
                       <td class="align-left no-warp"><b><%= sprintf( "%0.02f", grand_total_fraction)%></b></td>
                       <td class="align-left no-warp" width="15%">Class/Group</td>

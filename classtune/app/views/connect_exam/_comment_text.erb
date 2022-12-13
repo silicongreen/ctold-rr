@@ -1,7 +1,7 @@
 <tr class="even text-align-left">
   <%
   cmt = "&nbsp;"
-  
+  abort(@student_exam_comment.inspect)
   if !@student_exam_comment[@std_id_comment.to_s].blank?
     cmt = @student_exam_comment[@std_id_comment.to_s]
   end  

@@ -549,7 +549,7 @@
                           <% 
                             failed_subject3 = false
                             monthly_marks = (class_test_mark_before1.to_f+class_test_mark_before2.to_f)/2.00
-                       
+                            abort(monthly_marks.to_s + "  " + class_test_mark_before1.to_s + "  " + class_test_mark_before2.to_s)
                             
                             if monthly_marks > 0
                               grade_mark = (monthly_marks.round().to_f/class_test_full_mark2)*100

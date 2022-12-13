@@ -15015,16 +15015,14 @@ class ExamController < ApplicationController
                     divider = 4
                     class_test_mark = 0
                     class_test_full_mark = 0
-                    unless @report_data['report']['exams'].blank?  
-                      tab['exams'].each do |report|   
-                        if report['exam_category'] == '1'
-                          if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?                                   
-                            class_test_mark = class_test_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                          end
-                          if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
-                              class_test_full_mark = class_test_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f
-                            end
+                    tab['exams'].each do |report|   
+                      if report['exam_category'] == '1'
+                        if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?                                   
+                          class_test_mark = class_test_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                         end
+                        if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
+                            class_test_full_mark = class_test_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f
+                          end
                       end
                     end
                     if class_test_full_mark.to_i == 30 && full_mark_all == 50

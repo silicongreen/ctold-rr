@@ -323,6 +323,7 @@
                                <% if class_test_ab1 == true %>
                                 AB
                                <% else %> 
+                                <% class_test_mark_before = class_test_mark1 %>
                                 <% class_test_mark1 = (class_test_mark1.to_f/divider.to_f) %>
                                 <% monthly1 = class_test_mark1 = class_test_mark1.round() %>
                                 <%# class_test_mark_all = class_test_mark_all+class_test_mark1 %>
@@ -836,6 +837,7 @@
                                <% elsif class_test_ab1 == true %>
                                 AB
                                <% else %> 
+                                <% class_test_mark_before = class_test_mark1 %>
                                 <% class_test_mark1 = (class_test_mark1.to_f/divider.to_f) %>
                                 <% monthly2 = class_test_mark1 = class_test_mark1.round() %>
                                 <%# class_test_mark_all = class_test_mark_all+class_test_mark1 %>
@@ -975,6 +977,7 @@
                                <% elsif class_test_ab2 == true %>
                                 AB
                                <% else %> 
+                                <% class_test_mark_before2 = class_test_mark2 %>
                                 <% class_test_mark2 = (class_test_mark2.to_f/divider.to_f) %>
                                 <% monthly2 = class_test_mark2 = class_test_mark2.round() %>
                                 <%# class_test_mark_all = class_test_mark_all+class_test_mark2 %>
@@ -1053,7 +1056,7 @@
 
                           <% 
                             failed_subject3 = false
-                            monthly_marks = (class_test_mark1.to_f+class_test_mark2.to_f)/2.00
+                            monthly_marks = (class_test_mark_before1.to_f+class_test_mark_before2.to_f)/2.00
                             
                             if monthly_marks > 0
                               grade_mark = (monthly_marks.round().to_f/class_test_full_mark2)*100

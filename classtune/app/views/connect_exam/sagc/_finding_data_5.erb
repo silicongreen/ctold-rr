@@ -856,8 +856,8 @@
                 if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 6
                   monthly_total_mark2 = monthly_total_mark2/3
                   monthly_total_mark1 = monthly_total_mark1/3
-                  monthly_total_mark2 = monthly_total_mark2.to_f
-                  monthly_total_mark1 = monthly_total_mark1.to_f
+                  monthly_total_mark2 = monthly_total_mark2.round()
+                  monthly_total_mark1 = monthly_total_mark1.round()
                 end
                 total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
                 total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
@@ -1901,8 +1901,8 @@
                     if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 6
                       monthly_total_mark2 = monthly_total_mark2/3
                       monthly_total_mark1 = monthly_total_mark1/3
-                      monthly_total_mark2 = monthly_total_mark2.to_f
-                      monthly_total_mark1 = monthly_total_mark1.to_f
+                      monthly_total_mark2 = monthly_total_mark2.round()
+                      monthly_total_mark1 = monthly_total_mark1.round()
                     end
 
                     #or (@connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE")
@@ -2298,9 +2298,9 @@
             end  
         
             
-            if std['id'].to_s == "24621"
-              abort(grand_total1_with_fraction_marks.inspect)
-            end
+            #if std['id'].to_s == "24621"
+            #  abort(grand_total1_with_fraction_marks.inspect)
+            #end
             if u_grade1 == 0
               grand_total_new = 55500-grand_total1_with_fraction
               grand_grade_new = 50000-grand_grade_point1

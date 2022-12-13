@@ -1442,9 +1442,9 @@
                   </tr>
                   <tr class="odd">
                   <%
-                  if @student.id.to_s == "24621"
-                    abort(grand_total_with_fraction_marks.inspect)
-                  end
+                  #if @student.id.to_s == "24621"
+                  #  abort(grand_total_with_fraction_marks.inspect)
+                  #end
                   %>
                       <td class="align-left no-warp">Total Marks With Fraction</td>
                       <td class="align-left no-warp"><b><%= sprintf( "%0.02f", grand_total_fraction)%></b></td>

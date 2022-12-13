@@ -81,6 +81,7 @@ end
       end
       @student_result.sort! { |x, y| x["position"] <=> y["position"] }
     end
+    abort(@student_result.inspect)
   %>
 
 <% end %>

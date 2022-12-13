@@ -15162,8 +15162,11 @@ class ExamController < ApplicationController
                       total_pr_converted = total_pr * 0.9
                       main_mark_res_7 = total_pr_converted + class_test_mark
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = main_mark_res_7.round()
-                      abort(full_sb_ob_pr.inspect)
-                      main_mark = main_mark_res_7
+                      if full_sb_ob_pr.to_i == 50
+                        main_mark = main_mark_res_7 * 2
+                      else
+                        main_mark = main_mark_res_7
+                      end
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
                     end

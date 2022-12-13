@@ -8,10 +8,9 @@
     all_comments = @exam_comment.comments
     if !all_comments.blank?
       all_comments_array = all_comments.split("|")
-      abort(all_comments_array.inspect)
       unless all_comments_array.blank?
-        fnd_data = true
         if !all_comments_array[2].nil?
+          fnd_data = true
           present = all_comments_array[1].to_i
           working_days = all_comments_array[2].to_i
           if all_comments_array[0].blank?
@@ -20,6 +19,7 @@
             comments = all_comments_array[0]
           end
         elsif !all_comments_array[1].nil?
+          fnd_data = true
           present = all_comments_array[1].to_i
           if all_comments_array[0].blank?
             comments = ""

@@ -473,7 +473,7 @@
                                 <% class_test_mark2 = (class_test_mark2.to_f/divider.to_f) %>
                                 <% monthly2 = class_test_mark2 = class_test_mark2.round() %>
                                 <%## class_test_mark_all = class_test_mark_all+class_test_mark2 %>
-                                <%= sprintf( "%0.02f", class_test_mark2.to_f)%>
+                                <%= sprintf( "%0.02f", class_test_mark2.to_f) +  "  " + "NNN"%>
                                <% end %>
                             </td>
                             <% unless @report_data['report']['exams'].blank? %>  
@@ -998,7 +998,7 @@
                                 <% class_test_mark2 = (class_test_mark2.to_f/divider.to_f) %>
                                 <% monthly2 = class_test_mark2 = class_test_mark2.round() %>
                                 <%# class_test_mark_all = class_test_mark_all+class_test_mark2 %>
-                                <%= sprintf( "%0.02f", class_test_mark2.to_f)  +  "  " + "NNN"%>
+                                <%= sprintf( "%0.02f", class_test_mark2.to_f) %>
                                <% end %>
                             </td>
                             <% unless @report_data['report']['exams'].blank? %>  

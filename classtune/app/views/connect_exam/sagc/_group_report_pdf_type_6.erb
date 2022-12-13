@@ -671,6 +671,7 @@
                   <% end %>
                       
                   <% if total_grade > 0 && total_subject > 0 %>
+                            <%= total_grade.to_s + "  " + total_subject.to_s %>
                       <% grade_point_avg = total_grade.to_f/total_subject.to_f %>
                   <% end %> 
                       
@@ -1210,7 +1211,7 @@
                   end
                 end
               %>
-              <%= abort(grade_point_avg1.inspect) %>
+              
               <% grade_point_avg1 = (grade_point_avg1.to_f*100).round() %>
               <% grade_point_avg1 = grade_point_avg1.to_f/100 %>
               <table id="pdf-table" class="tbl-lign-left-2 first_table top-margin-20" width="26%" cellspacing="0">

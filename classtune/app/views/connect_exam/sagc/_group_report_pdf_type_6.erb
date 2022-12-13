@@ -1186,7 +1186,7 @@
                   <% end %>
                   
                   
-                  <%= grade_point_avg.to_s + "  " + total_subject.to_s + "  " + total_grade.to_s %>
+                  
                    
 
               </table>
@@ -1296,6 +1296,7 @@
                       </td>
                   </tr>
               </table>
+              <%= grade_point_avg.to_s + "  " + total_subject.to_s + "  " + total_grade.to_s %>
               <% grade_point_avg2 = (grade_point_avg2.to_f*100).round() %>
               <% grade_point_avg2 = grade_point_avg2.to_f/100 %>
               <table id="pdf-table" class="tbl-lign-left-2 top-margin-20" width="26%" cellspacing="0">

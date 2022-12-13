@@ -14963,9 +14963,9 @@ class ExamController < ApplicationController
                 elsif  exam_type == 2
                   main_mark_no_round = total_mark2_no_round.to_f/full_mark2.to_f*100
                   subject_mark = total_mark2
-                  #if std['id'].to_i == 25176
-                  #  abort('here' + main_mark_no_round.to_s + "  " + total_mark1.to_s  + "  " + exam_type.to_s )
-                  #end
+                  if std['id'].to_i == 25176
+                    abort('here' + main_mark_no_round.to_s + "  " + total_mark2_no_round.to_s  + "  " + full_mark2.to_s )
+                  end
                   main_mark_no_round = total_mark2_no_round.to_f/full_mark2.to_f*100
                   subject_mark = total_mark2
                 else

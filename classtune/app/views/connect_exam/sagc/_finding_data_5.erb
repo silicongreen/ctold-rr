@@ -1164,6 +1164,7 @@
                       total_pr_converted = total_pr * 0.9
                       main_mark_res_7 = total_pr_converted + class_test_mark
                       total_mark1 = total_mark1+main_mark_res_7
+                      total_mark2 = total_mark2+main_mark_res_7
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = main_mark_res_7.round()
                       if full_sb_ob_pr.to_i == 50
                         main_mark = main_mark_res_7 * 2
@@ -1180,6 +1181,7 @@
                           main_mark = main_mark_res_7
                         end
                         total_mark1 = total_mark1+total_pr
+                        total_mark2 = total_mark2+total_pr
                         @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
                       elsif @connect_exam_obj.result_type == 7 and sub['grade_subject'].to_i == 0
                         total_pr = @student_result[loop_std]['subjects'][main_sub_id]['result']['rt']
@@ -1191,6 +1193,7 @@
                           main_mark = main_mark_res_7
                         end
                         total_mark1 = total_mark1+total_pr_converted
+                        total_mark2 = total_mark2+total_pr_converted
                         @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
                       else
                         @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()

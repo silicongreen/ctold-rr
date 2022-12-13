@@ -737,6 +737,7 @@
                           <% total_subject_new = total_subject_new+1 %>
                           <td class="col-pdf"><%= total_subject_new %></td>
                           <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %></td>
+                          <%= abort(subjects['name'].to_s) %>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
                               <% if report['quarter'] == '2' %>
@@ -746,7 +747,7 @@
                               <% end %>
                             <% end %>
                           <% end %>
-                          <%= abort(subjects['name'].to_s) %>
+                          
                           <% 
                             highest_mark1 = 0
                             if !@subject_highest_1st_term.blank? and !@subject_highest_1st_term[subjects['id'].to_i].blank?

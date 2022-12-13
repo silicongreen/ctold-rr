@@ -9010,7 +9010,7 @@ class ExamController < ApplicationController
       if @student_response['status']['code'].to_i == 200
         @report_data = @student_response['data']
       end
-      
+       
       row_first = ['Roll','Student Name']
       @report_data['result']['ALL'].each do |rs|
         row_first << rs['name']+"( "+rs['maximum_marks']+" ) "

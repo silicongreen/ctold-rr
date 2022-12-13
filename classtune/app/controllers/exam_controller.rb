@@ -17360,7 +17360,7 @@ class ExamController < ApplicationController
                   subject_mark = total_mark1
                 end  
                 subject_full_marks = main_mark_no_round.round()
-                abort(main_mark_no_round.inspect)
+                abort(main_mark_no_round.inspect) 
                 ct_marks_main = (main_mark_no_round/100)*full_mark1
                 if sub['grade_subject'].to_i != 1
                   if @student_subject_marks[sub['id'].to_i].blank?

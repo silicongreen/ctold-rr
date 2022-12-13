@@ -717,7 +717,7 @@
                   <% unless @report_data['report']['subjects'].blank? %> 
                          
                     <% @report_data['report']['subjects'].each do |subjects| %>
-                      
+                      <%= abort(subjects['name'].to_s + "  " + subjects['grade_subject'].to_s) %>
                       <% if subjects['grade_subject'].to_i != 1 %>
                         <% next %>
                       <% end %>
@@ -737,7 +737,7 @@
                           <% total_subject_new = total_subject_new+1 %>
                           <td class="col-pdf"><%= total_subject_new %></td>
                           <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %></td>
-                          <%= abort(subjects['name'].to_s) %>
+                          
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
                               <% if report['quarter'] == '2' %>

@@ -14180,6 +14180,7 @@ class ExamController < ApplicationController
             
             grand_total = 0
             grand_total_with_fraction = 0
+            grand_total_with_fraction_7 = 0
             grand_total_with_fraction_marks = []
             grand_total1_with_fraction_marks = []
            
@@ -15235,6 +15236,7 @@ class ExamController < ApplicationController
                       main_mark_res_7 = total_pr_converted + class_test_mark
                       total_mark1 = total_mark1+main_mark_res_7
                       total_mark_7 = total_mark_7+main_mark_res_7
+                      grand_total_with_fraction_7 = grand_total_with_fraction_7+main_mark_res_7
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = main_mark_res_7.round()
                       if full_sb_ob_pr.to_i == 50
                         main_mark = main_mark_res_7 * 2
@@ -15252,6 +15254,7 @@ class ExamController < ApplicationController
                         end
                         total_mark1 = total_mark1+total_pr
                         total_mark_7 = total_mark_7+total_pr
+                        grand_total_with_fraction_7 = grand_total_with_fraction_7+total_pr
                         @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
                       elsif @connect_exam_obj.result_type == 7 and sub['grade_subject'].to_i == 0
                         total_pr = @student_result[loop_std]['subjects'][main_sub_id]['result']['rt']
@@ -15264,6 +15267,7 @@ class ExamController < ApplicationController
                         end
                         total_mark1 = total_mark1+total_pr_converted
                         total_mark_7 = total_mark_7+total_pr_converted
+                        grand_total_with_fraction_7 = grand_total_with_fraction_7+total_pr_converted
                         @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
                       else
                         @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
@@ -16277,6 +16281,7 @@ class ExamController < ApplicationController
                 @student_result[loop_std]['gpa'] = grand_grade_point
                 @student_result[loop_std]['grand_total'] = grand_total
                 @student_result[loop_std]['grand_total_with_fraction'] = grand_total_with_fraction
+                @student_result[loop_std]['grand_total_with_fraction_7'] = grand_total_with_fraction_7
                 
                 
               end
@@ -16290,6 +16295,7 @@ class ExamController < ApplicationController
                 @student_result[loop_std]['gpa'] = grand_grade_point1
                 @student_result[loop_std]['grand_total'] = grand_total1
                 @student_result[loop_std]['grand_total_with_fraction'] = grand_total1_with_fraction
+                @student_result[loop_std]['grand_total_with_fraction_7'] = grand_total_with_fraction_7
                 
               end
               if exam_type == 2
@@ -16302,6 +16308,7 @@ class ExamController < ApplicationController
                 @student_result[loop_std]['gpa'] = grand_grade_point2
                 @student_result[loop_std]['grand_total'] = grand_total2
                 @student_result[loop_std]['grand_total_with_fraction'] = grand_total2_with_fraction
+                @student_result[loop_std]['grand_total_with_fraction_7'] = grand_total_with_fraction_7
                 
               end
               @student_result[loop_std]['gp'] = grade_point_avg

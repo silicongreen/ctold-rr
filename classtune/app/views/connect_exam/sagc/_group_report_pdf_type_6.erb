@@ -617,7 +617,9 @@
                             elsif pr_full_marks2 > 0
                               failed_subject3 = true
                             end
-                            total_marks_ag = sb_marks_shoud_be+ob_marks+pr_marks+monthly_marks
+                            converted_mark = (sb_marks+ob_marks+pr_marks) * 0.9
+                            #total_marks_ag = sb_marks_shoud_be+ob_marks+pr_marks+monthly_marks
+                            total_marks_ag = converted_mark+monthly_marks
                             individual_marks << sb_marks_shoud_be
                             individual_marks << ob_marks
                             individual_marks << pr_marks

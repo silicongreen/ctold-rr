@@ -1043,16 +1043,15 @@
                                 sb_avg_marks = (sb2.to_f/sb_full_marks2.to_f)*sb_full_marks_shoud_be
                               end
                             %> 
-                            <td class="col-pdf no-warp">
-                               <%= main_exam_mark1.to_f.round.to_i %>
-                            </td> 
                             <% avg_mark = (sb2+ob2+pr2)  %>
-                            <% tota_mark_with_monthly2 = avg_mark+class_test_mark2 %>
+                            <td class="col-pdf no-warp">
+                               <%= avg_mark.to_f.round.to_i %>
+                            </td> 
                             <%## avg_mark = sb_avg_marks+ob2+pr2 %>
                             <td class="col-pdf no-warp">
-                               <%= sprintf( "%0.02f", tota_mark_with_monthly2.to_f.round.to_i)%>
+                               <%= sprintf( "%0.02f", avg_mark)%>
                             </td>
-                            
+                            <% tota_mark_with_monthly2 = avg_mark+class_test_mark2 %>
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly2.to_f.round.to_i %></b>
                             </td>

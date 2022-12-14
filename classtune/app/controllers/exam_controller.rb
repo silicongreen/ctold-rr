@@ -15923,7 +15923,7 @@ class ExamController < ApplicationController
                       term_mark_multiplier = 1.00
                     end
                     
-                    total_mark2 = total_ob22+total_sb22+total_pr22
+                    total_mark2 = total_ob22.to_f+total_sb22.to_f+total_pr22.to_f
                     total_mark2_80 = total_mark2.to_f
                     if full_mark2 > 100 or term_mark_multiplier == 0.80 or term_mark_multiplier == 0.90
                       total_mark2_80 = total_mark2.to_f*term_mark_multiplier
@@ -15934,7 +15934,12 @@ class ExamController < ApplicationController
                       total_mark1_80 = total_mark1.to_f*term_mark_multiplier
                     end
                     if @connect_exam_obj.result_type == 7
-                      total_mark2_80 = total_mark2.to_f*0.9
+                      if sub['grade_subject'].to_i == 1
+                        total_mark2_80 = total_mark2.to_f*1
+                      else
+                        total_mark2_80 = total_mark2.to_f*0.9
+                      end
+                      
                     end
                     monthly_mark_multiply = 20
                     if full_mark1 == 75
@@ -15985,7 +15990,7 @@ class ExamController < ApplicationController
                     end
 
                     # or (@connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE")
-                    total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
+                    total_mark2 = total_mark2_80.to_f+monthly_total_mark2.to_f+at_total_mark2.to_f
                     total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
                     if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6 
                       full_mark_sb1_converted = full_mark1-full_pr12-full_ob12-monthly_full_mark1
@@ -16024,6 +16029,7 @@ class ExamController < ApplicationController
                       main_mark = main_mark+(total_mark2.to_f/full_mark2.to_f*100)
                       main_mark = main_mark.round()
                       main_mark_no_round = total_mark2_no_round.to_f/full_mark2.to_f*100
+                      grand_total1_with_fraction_marks << main_mark_no_round
                     else
                       main_mark = main_mark+(total_mark1.to_f/full_mark1.to_f*100)
                       main_mark = main_mark.round()
@@ -16286,6 +16292,9 @@ class ExamController < ApplicationController
                   
               end
             end
+            #if std['id'].to_s == "25176"
+            #  abort(grand_total_with_fraction.to_s + "  " + grand_total_with_fraction_7.to_s + "  " + grand_total2_with_fraction.to_s + "  ")
+            #end
             grand_total_with_fraction = sprintf( "%0.02f", grand_total_with_fraction)
             grand_total_with_fraction = grand_total_with_fraction.to_f
             grand_total1_with_fraction = sprintf( "%0.02f", grand_total1_with_fraction)

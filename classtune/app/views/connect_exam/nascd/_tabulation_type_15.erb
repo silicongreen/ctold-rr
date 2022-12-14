@@ -177,8 +177,8 @@
                         <% end %>
                       <% end %>
 
-                      <td colspan="2" rowspan="2">Total</td>
-                      <td colspan="2" rowspan="2">Letter <br />Grade</td>
+                      <td rowspan="2">Total</td>
+                      <td rowspan="2">Letter <br />Grade</td>
 
                   </tr>
                   <tr class="table-header">
@@ -229,8 +229,8 @@
                         <% end %>
                       <% end %>
 
-                      <td colspan="2" rowspan="2">Total</td>
-                      <td colspan="2" rowspan="2">Letter <br />Grade</td>  
+                      <td rowspan="2">Total</td>
+                      <td rowspan="2">Letter <br />Grade</td>  
                   </tr>
                   <tr class="table-header">
                       <% @report_data['report']['subjects'].each do |sub| %>
@@ -270,8 +270,8 @@
                       <% end %>
                     <% end %>
 
-                    <td colspan="2" rowspan="2">Total</td>
-                    <td colspan="2" rowspan="2">Letter <br />Grade</td>    
+                    <td rowspan="2">Total</td>
+                    <td rowspan="2">Letter <br />Grade</td>    
                 </tr>
                 <tr class="table-header">
                     <% @report_data['report']['subjects'].each do |sub| %>
@@ -472,7 +472,7 @@
                         <td>
                           <%= total_mark_1.round().to_i %>
                         </td>
-                        <td></td>
+                        
                         <%
                           if total_subject > 0 and total_mark_1 > 0
                             gpa = total_mark_1.to_f/total_subject.to_f

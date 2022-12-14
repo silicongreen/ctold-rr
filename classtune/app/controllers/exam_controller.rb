@@ -3678,7 +3678,7 @@ class ExamController < ApplicationController
       
     #   @exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>"#{qry}", :order => 'gpa DESC, marks DESC, position ASC')
     else
-      if (@connect_exam_obj.result_type.to_i == 4  || @connect_exam_obj.result_type.to_i == 2 || @connect_exam_obj.result_type.to_i == 3 || @connect_exam_obj.result_type.to_i == 5 || @connect_exam_obj.result_type.to_i == 6 || @connect_exam_obj.result_type.to_i == 8) 
+      if (@connect_exam_obj.result_type.to_i == 4  || @connect_exam_obj.result_type.to_i == 2 || @connect_exam_obj.result_type.to_i == 3 || @connect_exam_obj.result_type.to_i == 5 || @connect_exam_obj.result_type.to_i == 6 || @connect_exam_obj.result_type.to_i == 7 || @connect_exam_obj.result_type.to_i == 8) 
         @student_result = []
         @total_std = nil
         if @tabulation_data.nil?
@@ -14923,7 +14923,7 @@ class ExamController < ApplicationController
                 total_sb1_main = total_sb1
                 total_sb2_main = total_sb2
                 # or (@connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE")
-                if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6
+                if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6 or @connect_exam_obj.result_type == 7
                   full_mark_sb1_converted = full_mark1-full_pr1-full_ob1-monthly_full_mark1
                   full_mark_sb2_converted = full_mark2-full_pr2-full_ob2-monthly_full_mark2
                   if total_sb1 > 0

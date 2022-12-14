@@ -15244,9 +15244,7 @@ class ExamController < ApplicationController
                     end  
                   end
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = ob_round+sb_round+pr_round
-                  if std['id'].to_s == "25176" and main_mark_no_round.to_i != 81 and main_mark_no_round.to_i != 90
-                    abort(main_mark_no_round.to_s + "  " + total_mark2_no_round.to_s + "  " + subject_mark.to_s + "  " + at_total_mark1.to_s)
-                  end
+                  
                   if @connect_exam_obj.result_type == 7
                     if class_test_mark.to_f > 0
                       total_pr = @student_result[loop_std]['subjects'][main_sub_id]['result']['rt']
@@ -16060,6 +16058,9 @@ class ExamController < ApplicationController
                       grand_total2_with_fraction = grand_total2_with_fraction+total_mark2_no_round
                       
                       grand_total_with_fraction = grand_total_with_fraction+main_mark_no_round
+                      if std['id'].to_s == "25176" and main_mark_no_round.to_i != 81 and main_mark_no_round.to_i != 90
+                        abort(main_mark_no_round.to_s + "  " + total_mark2_no_round.to_s + "  " + subject_mark.to_s + "  " + at_total_mark1.to_s)
+                      end
                       grand_total_with_fraction_marks << main_mark_no_round
                       
                       if fourth_subject.blank?

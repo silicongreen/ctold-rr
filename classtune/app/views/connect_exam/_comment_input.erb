@@ -29,7 +29,7 @@ end
               'Do hard work. Try more & more.', 'Congratulations. Keep it up. Best wishes for you.', 'S/he needs to pay more & more attention in his/her study.',
               'Try hard to make a good result.', 'Study regularly. Best of luck.', 'If s/he tries s/he can do much better in the exam.', 
               'Extra care is needed to improve her overall performance.', 'Good! A little bit effort is needed to improve overall performance.',
-              '<%= name %> is capable of doing better. She is advised to be more active & hard working in studies.', 'promoted', 'Not promoted','Promoted under special consideration'];
+              '<%= name %> is capable of doing better. She is advised to be more active & hard working in studies.'];
             var suggestions = [];
             for (i=0;i<choices.length;i++)
                 if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
@@ -70,7 +70,8 @@ end
             'Good but try to get 80% number in all subjects.',
             'Good but you need to improve our handwriting.',
             'Him/her performance is satisfactory. You have to obtain 80% marks in all subjects.',
-            '<%= name %>  is capable of doing better. Him/her is advised to be more active and hard working in studies.'];
+            '<%= name %>  is capable of doing better. Him/her is advised to be more active and hard working in studies.',
+            'Promoted', 'Not Promoted','Promoted under special consideration'];
             var suggestions = [];
             for (i=0;i<choices.length;i++)
                 if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);

@@ -199,8 +199,8 @@
                     <% if std_count>7 && extender ==0 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
-                      <tr class="page-break">
-                          <td colspan="100">&nbsp;</td>
+                      <tr>
+                          <td colspan="100" style="height: 25px;">&nbsp;</td>
                       </tr>  
                       <tr class="table-header">
                       
@@ -239,7 +239,7 @@
                           <% end %>
 
                       </tr>
-                    <% elsif std_count>11 && extender ==1 %>
+                    <% elsif std_count>9 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break3">

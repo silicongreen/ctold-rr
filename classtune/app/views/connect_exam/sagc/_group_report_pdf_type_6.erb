@@ -420,12 +420,7 @@
                                   <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s != "AB" %>
                                     <% class_test_ab2 = false %>
                                   <% end %>
-                                  <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i != 13 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 5 %>
-                                    
-                                      <% failed2 = true %>
-                                      <% failed_subject2 = true %>
-                                      
-                                  <% end %>
+                                  
                                   
                                 <% end %>
                               <% end %>
@@ -490,10 +485,7 @@
                                     <% end %>
                                      <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" %>
                                       <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
-                                      <%  if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 22 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 50) %>   
-                                        <% failed2 = true %>
-                                        <% failed_subject2 = true %>
-                                      <% end %>
+                                     
                                       <% end %>
                                     <% end %>
                                 <% else %>
@@ -812,12 +804,6 @@
                                   <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s != "AB" %>
                                     <% class_test_ab1 = false %>
                                   <% end %>
-                                  <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i != 13 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 5 %>
-                                    
-                                      <% failed1 = true %>
-                                      <% failed_subject1 = true %>
-                                      
-                                  <% end %>
                                   
                                 <% end %>
                               <% end %>
@@ -882,10 +868,7 @@
                                       <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
                                     <% end %>
                                      <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" %>
-                                      <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
-                                   
-                                        <% failed_subject1 = true %>
-                                      <% end %>
+                                     
                                     <% end %>
                                 <% else %>
                                   <td class="col-pdf">-</td>
@@ -954,12 +937,7 @@
                                   <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s != "AB" %>
                                     <% class_test_ab2 = false %>
                                   <% end %>
-                                  <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i != 13 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 5 %>
-                                    
-                                      <% failed_subject2 = true %>
-                                      <% failed_positin = "m" %>
-                                      
-                                  <% end %>
+                                  
                                   
                                 <% end %>
                               <% end %>
@@ -1024,11 +1002,7 @@
                                       <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
                                     <% end %>
                                      <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" %>
-                                      <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
-                                       
-                                        <% failed_subject2 = true %>
-                                      <% failed_positin = "sb" %>
-                                      <% end %>
+                                      
                                     <% end %>
                                 <% else %>
                                   <td class="col-pdf">-</td>

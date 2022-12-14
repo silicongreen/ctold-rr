@@ -3678,7 +3678,7 @@ class ExamController < ApplicationController
       
     #   @exam_connect_merit_lists = ExamConnectMeritList.find(:all, :conditions=>"#{qry}", :order => 'gpa DESC, marks DESC, position ASC')
     else
-      if (@connect_exam_obj.result_type.to_i == 4  || @connect_exam_obj.result_type.to_i == 2 || @connect_exam_obj.result_type.to_i == 3 || @connect_exam_obj.result_type.to_i == 5 || @connect_exam_obj.result_type.to_i == 6 || @connect_exam_obj.result_type.to_i == 7 || @connect_exam_obj.result_type.to_i == 8) 
+      if (@connect_exam_obj.result_type.to_i == 4  || @connect_exam_obj.result_type.to_i == 2 || @connect_exam_obj.result_type.to_i == 3 || @connect_exam_obj.result_type.to_i == 5 || @connect_exam_obj.result_type.to_i == 6 || @connect_exam_obj.result_type.to_i == 8) 
         @student_result = []
         @total_std = nil
         if @tabulation_data.nil?

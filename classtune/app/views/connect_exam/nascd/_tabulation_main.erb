@@ -346,6 +346,9 @@
                           <% faliled = true %>
                           <% end %>
                         <% end %>
+                        <%
+                        grade_data = []
+                        %>
                         <%  #grade_data = GradingLevel.percentage_to_grade(gpa, @batch.id) %>
                         <% if !grade_data.blank? and !grade_data.name.blank? %>
                             <% if failed %>

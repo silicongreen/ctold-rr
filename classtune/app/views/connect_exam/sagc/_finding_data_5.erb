@@ -598,49 +598,47 @@
                   end    
                 end
                 
-                if @connect_exam_obj.result_type == 8 && sub['grade_subject'].to_i != 1
-                  if monthly_full_mark1 == 20 
-                    if monthly_total_mark1 < 9
-                      if fourth_subject.blank?
-                        u_grade1 = u_grade1+1
-                        subject_failed = true
-                      else
-                        four_subject_failed = true
-                      end    
-                    end
-                  else
-                    if monthly_total_mark1 < 13
-                      if fourth_subject.blank?
-                        u_grade1 = u_grade1+1
-                        subject_failed = true
-                      else
-                        four_subject_failed = true
-                      end    
-                    end
-                  end 
-                  
-                  if monthly_full_mark2 == 20 
-                    if monthly_total_mark2 < 9
-                      if fourth_subject.blank?
-                        u_grade2 = u_grade2+1
-                        subject_failed = true
-                      else
-                        four_subject_failed = true
-                      end    
-                    end
-                  else
-                    if monthly_total_mark2 < 13
-                      if fourth_subject.blank?
-                        u_grade2 = u_grade2+1
-                        subject_failed = true
-                      else
-                        four_subject_failed = true
-                      end    
-                    end
-                  end
-                 
-                  
-                end  
+                #if @connect_exam_obj.result_type == 8 && sub['grade_subject'].to_i != 1
+                #  if monthly_full_mark1 == 20 
+                #    if monthly_total_mark1 < 9
+                #      if fourth_subject.blank?
+                #        u_grade1 = u_grade1+1
+                #        subject_failed = true
+                #      else
+                #        four_subject_failed = true
+                #      end    
+                #    end
+                #  else
+                #    if monthly_total_mark1 < 13
+                #      if fourth_subject.blank?
+                #        u_grade1 = u_grade1+1
+                #        subject_failed = true
+                #      else
+                #        four_subject_failed = true
+                #      end    
+                #    end
+                #  end 
+                #  
+                #  if monthly_full_mark2 == 20 
+                #    if monthly_total_mark2 < 9
+                #      if fourth_subject.blank?
+                #        u_grade2 = u_grade2+1
+                #        subject_failed = true
+                #      else
+                #        four_subject_failed = true
+                #      end    
+                #    end
+                #  else
+                #    if monthly_total_mark2 < 13
+                #      if fourth_subject.blank?
+                #        u_grade2 = u_grade2+1
+                #        subject_failed = true
+                #      else
+                #        four_subject_failed = true
+                #      end    
+                #    end
+                #  end
+                #end  
                 if full_mark1 > 0 && monthly_full_mark1 != 0
                   full_mark1 = full_mark1+20
                 end
@@ -661,32 +659,32 @@
                 
                 if exam_type == 3
                   
-                  if @connect_exam_obj.result_type == 8 && sub['grade_subject'].to_i != 1
-                    monthly_mark_combined = 0
-                    if monthly_total_mark1 > 0 || monthly_total_mark2 > 0
-                      monthly_mark_combined = (monthly_total_mark1+monthly_total_mark2)/2.00
-                      monthly_mark_combined = monthly_mark_combined.round()
-                    end
-                    if monthly_full_mark1 == 20 
-                      if monthly_mark_combined < 9
-                        if fourth_subject.blank?
-                          u_grade = u_grade+1
-                          subject_failed = true
-                        else
-                          four_subject_failed = true
-                        end    
-                      end
-                    else
-                      if monthly_mark_combined < 13
-                        if fourth_subject.blank?
-                          u_grade = u_grade+1
-                          subject_failed = true
-                        else
-                          four_subject_failed = true
-                        end    
-                      end
-                    end
-                  end
+                  #if @connect_exam_obj.result_type == 8 && sub['grade_subject'].to_i != 1
+                  #  monthly_mark_combined = 0
+                  #  if monthly_total_mark1 > 0 || monthly_total_mark2 > 0
+                  #    monthly_mark_combined = (monthly_total_mark1+monthly_total_mark2)/2.00
+                  #    monthly_mark_combined = monthly_mark_combined.round()
+                  #  end
+                  #  if monthly_full_mark1 == 20 
+                  #    if monthly_mark_combined < 9
+                  #      if fourth_subject.blank?
+                  #        u_grade = u_grade+1
+                  #        subject_failed = true
+                  #      else
+                  #        four_subject_failed = true
+                  #      end    
+                  #    end
+                  #  else
+                  #   if monthly_mark_combined < 13
+                  #      if fourth_subject.blank?
+                  #        u_grade = u_grade+1
+                  #       subject_failed = true
+                  #      else
+                  #        four_subject_failed = true
+                  #      end    
+                  #    end
+                  #  end
+                  #end
                   
                   if monthly_full_mark1 > 5 && monthly_full_mark2 > 5  && (@connect_exam_obj.result_type == 6 || @connect_exam_obj.result_type == 8)
                     monthly_mark = (monthly_total_mark1+monthly_total_mark2)/2
@@ -1621,46 +1619,46 @@
                       full_mark2 = full_mark2+20
                     end
                     
-                    if @connect_exam_obj.result_type == 8
-                      if monthly_full_mark1 == 20 
-                        if monthly_total_mark1 < 9
-                          if fourth_subject.blank?
-                            u_grade1 = u_grade1+1
-                            subject_failed = true
-                          else
-                            four_subject_failed = true
-                          end    
-                        end
-                      else
-                        if monthly_total_mark1 < 13
-                          if fourth_subject.blank?
-                            u_grade1 = u_grade1+1
-                            subject_failed = true
-                          else
-                            four_subject_failed = true
-                          end    
-                        end
-                      end 
-                      if monthly_full_mark2 == 20 
-                        if monthly_total_mark2 < 9
-                          if fourth_subject.blank?
-                            u_grade2 = u_grade2+1
-                            subject_failed = true
-                          else
-                            four_subject_failed = true
-                          end    
-                        end
-                      else
-                        if monthly_total_mark2 < 13
-                          if fourth_subject.blank?
-                            u_grade2 = u_grade2+1
-                            subject_failed = true
-                          else
-                            four_subject_failed = true
-                          end    
-                        end
-                      end
-                    end
+                    #if @connect_exam_obj.result_type == 8
+                    #  if monthly_full_mark1 == 20 
+                    #    if monthly_total_mark1 < 9
+                    #      if fourth_subject.blank?
+                    #        u_grade1 = u_grade1+1
+                    #        subject_failed = true
+                    #      else
+                    #        four_subject_failed = true
+                    #      end    
+                    #    end
+                    #  else
+                    #    if monthly_total_mark1 < 13
+                    #      if fourth_subject.blank?
+                    #        u_grade1 = u_grade1+1
+                    #        subject_failed = true
+                    #      else
+                    #        four_subject_failed = true
+                    #      end    
+                    #    end
+                    #  end 
+                    #  if monthly_full_mark2 == 20 
+                    #    if monthly_total_mark2 < 9
+                    #      if fourth_subject.blank?
+                    #        u_grade2 = u_grade2+1
+                    #        subject_failed = true
+                    #      else
+                    #        four_subject_failed = true
+                    #      end    
+                    #    end
+                    #  else
+                    #    if monthly_total_mark2 < 13
+                    #      if fourth_subject.blank?
+                    #        u_grade2 = u_grade2+1
+                    #        subject_failed = true
+                    #      else
+                    #        four_subject_failed = true
+                    #      end    
+                    #    end
+                    #  end
+                    #end
                     if full_mark1 > 0 && full_mark2 > 0
                       exam_type = 3
                       subject_failed = false
@@ -1676,32 +1674,32 @@
                     
                     if exam_type == 3
                   
-                      if @connect_exam_obj.result_type == 8 && sub['grade_subject'].to_i != 1
-                        monthly_mark_combined = 0
-                        if monthly_total_mark1 > 0 || monthly_total_mark2 > 0
-                          monthly_mark_combined = (monthly_total_mark1+monthly_total_mark2)/2.00
-                          monthly_mark_combined = monthly_mark_combined.round()
-                        end
-                        if monthly_full_mark1 == 20 
-                          if monthly_mark_combined < 9
-                            if fourth_subject.blank?
-                              u_grade = u_grade+1
-                              subject_failed = true
-                            else
-                              four_subject_failed = true
-                            end    
-                          end
-                        else
-                          if monthly_mark_combined < 13
-                            if fourth_subject.blank?
-                              u_grade = u_grade+1
-                              subject_failed = true
-                            else
-                              four_subject_failed = true
-                            end    
-                          end
-                        end
-                      end
+                      #if @connect_exam_obj.result_type == 8 && sub['grade_subject'].to_i != 1
+                      #  monthly_mark_combined = 0
+                      #  if monthly_total_mark1 > 0 || monthly_total_mark2 > 0
+                      #    monthly_mark_combined = (monthly_total_mark1+monthly_total_mark2)/2.00
+                      #    monthly_mark_combined = monthly_mark_combined.round()
+                      #  end
+                      #  if monthly_full_mark1 == 20 
+                      #    if monthly_mark_combined < 9
+                      #      if fourth_subject.blank?
+                      #        u_grade = u_grade+1
+                      #        subject_failed = true
+                      #      else
+                      #        four_subject_failed = true
+                      #      end    
+                      #    end
+                      #  else
+                      #    if monthly_mark_combined < 13
+                      #      if fourth_subject.blank?
+                      #        u_grade = u_grade+1
+                      #        subject_failed = true
+                      #      else
+                      #        four_subject_failed = true
+                      #      end    
+                      #    end
+                      #  end
+                      #end
                   
                       if monthly_full_mark1 > 5 && monthly_full_mark2 > 5  && (@connect_exam_obj.result_type == 6 || @connect_exam_obj.result_type == 8)
                         monthly_mark = (monthly_total_mark1+monthly_total_mark2)/2

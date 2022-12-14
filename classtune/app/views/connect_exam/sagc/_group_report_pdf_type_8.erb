@@ -397,7 +397,11 @@
                                       converted_mark = 0
                                         if full_sb1 > 0
                                           sb_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                          converted_mark = (sb_mark.to_f / full_sb1.to_i) * 60
+                                          converted = 60
+                                          if full_sb1.to_i == 100
+                                            converted = 90
+                                          end
+                                          converted_mark = (sb_mark.to_f / full_sb1.to_i) * converted
                                         end
                                       %>
                                       <td class="col-pdf"><%= sprintf( "%0.02f", converted_mark)%></td>
@@ -726,7 +730,11 @@
                                       converted_mark = 0
                                         if full_sb2 > 0
                                           sb_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                          converted_mark = (sb_mark.to_f / full_sb2.to_i) * 60
+                                          converted = 60
+                                          if full_sb2.to_i == 100
+                                            converted = 90
+                                          end
+                                          converted_mark = (sb_mark.to_f / full_sb2.to_i) * converted
                                         end
                                       %>
                                       <td class="col-pdf"><%= sprintf( "%0.02f", converted_mark)%></td>

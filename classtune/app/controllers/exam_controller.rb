@@ -14972,9 +14972,7 @@ class ExamController < ApplicationController
                   if @connect_exam_obj.result_type == 7
                     main_mark_no_round = total_mark2_no_round.to_f/full_mark2.to_f*100
                     subject_mark = total_mark2
-                    if std['id'].to_s == "25176" and main_mark_no_round.to_i != 81 and main_mark_no_round.to_i != 90
-                      abort(main_mark_no_round.to_s + "  " + total_mark2_no_round.to_s + "  " + subject_mark.to_s + "  " + at_total_mark1.to_s)
-                    end
+                    
                   else
                     main_mark_no_round = total_mark2_no_round.to_f/full_mark2.to_f*100
                     subject_mark = total_mark2
@@ -15074,6 +15072,7 @@ class ExamController < ApplicationController
                     end
                   end  
                 end
+               
                 ob_round = 0
                 ob_not_round = 0
                 sb_round = 0
@@ -15245,7 +15244,9 @@ class ExamController < ApplicationController
                     end  
                   end
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = ob_round+sb_round+pr_round
-                  
+                  if std['id'].to_s == "25176" and main_mark_no_round.to_i != 81 and main_mark_no_round.to_i != 90
+                    abort(main_mark_no_round.to_s + "  " + total_mark2_no_round.to_s + "  " + subject_mark.to_s + "  " + at_total_mark1.to_s)
+                  end
                   if @connect_exam_obj.result_type == 7
                     if class_test_mark.to_f > 0
                       total_pr = @student_result[loop_std]['subjects'][main_sub_id]['result']['rt']

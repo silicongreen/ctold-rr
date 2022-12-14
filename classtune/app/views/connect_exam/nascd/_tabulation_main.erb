@@ -273,7 +273,7 @@
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
-
+                            <% total_subject = total_subject+1 %>
                             <% @report_data['report']['exams'].each do |rs| %>
                               <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
@@ -332,7 +332,7 @@
                                 &nbsp;
                               <% end %> 
                           </td>     
-                          <% total_subject = total_subject+1 %>
+                          
                         <% end %>       
                         
                         <td>

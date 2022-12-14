@@ -346,8 +346,8 @@
                           <% faliled = true %>
                           <% end %>
                         <% end %>
-                        <%  grade_data = GradingLevel.percentage_to_grade(gpa, @batch.id) %>
-                        <% if !grade.blank? and !grade.name.blank? %>
+                        <%  #grade_data = GradingLevel.percentage_to_grade(gpa, @batch.id) %>
+                        <% if !grade_data.blank? and !grade_data.name.blank? %>
                             <% if failed %>
                             <td>F</td>  
                             <% else %>
@@ -357,7 +357,7 @@
                             <td>-</td>
                         <% end %>
                         <% else %>
-                        <td>-</td>
+                        <td><%= gpa %></td>
                         <% end %>
                         <td>
                             <%= sprintf( "%0.02f", total_mark) %>    

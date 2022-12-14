@@ -16024,7 +16024,7 @@ class ExamController < ApplicationController
                       main_mark = main_mark+(total_mark2.to_f/full_mark2.to_f*100)
                       main_mark = main_mark.round()
                       main_mark_no_round = total_mark2_no_round.to_f/full_mark2.to_f*100
-                      grand_total1_with_fraction_marks << main_mark_no_round
+                      grand_total1_with_fraction_marks << total_mark2_no_round
                     else
                       main_mark = main_mark+(total_mark1.to_f/full_mark1.to_f*100)
                       main_mark = main_mark.round()

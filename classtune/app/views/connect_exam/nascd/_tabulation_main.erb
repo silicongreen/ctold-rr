@@ -335,6 +335,9 @@
                           <% total_subject = total_subject+1 %>
                         <% end %>       
                         
+                        <td>
+                            <%= sprintf( "%0.02f", total_mark) %>    
+                        </td>
                         <%
                           gpa = total_mark.to_f/total_subject.to_f
                         %>
@@ -357,14 +360,11 @@
                             <td><%= grade_data.name %></td>
                             <% end %>
                             <% else %>
-                            <td>-</td>
+                            <td><%= gpa %></td>
                         <% end %>
                         <% else %>
                         <td><%= gpa %></td>
                         <% end %>
-                        <td>
-                            <%= sprintf( "%0.02f", total_mark) %>    
-                        </td>
                         <td>
                             <% i = 1 %>
                             <% total_grade_std = grades.count  %>

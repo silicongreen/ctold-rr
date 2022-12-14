@@ -179,6 +179,7 @@
 
                       <td rowspan="2">Total</td>
                       <td rowspan="2">Letter <br />Grade</td>
+                      <td rowspan="2">GPA</td>
 
                   </tr>
                   <tr class="table-header">
@@ -230,7 +231,8 @@
                       <% end %>
 
                       <td rowspan="2">Total</td>
-                      <td rowspan="2">Letter <br />Grade</td>  
+                      <td rowspan="2">Letter <br />Grade</td>
+                      <td rowspan="2">GPA</td>  
                   </tr>
                   <tr class="table-header">
                       <% @report_data['report']['subjects'].each do |sub| %>
@@ -271,7 +273,8 @@
                     <% end %>
 
                     <td rowspan="2">Total</td>
-                    <td rowspan="2">Letter <br />Grade</td>    
+                    <td rowspan="2">Letter <br />Grade</td>
+                    <td rowspan="2">GPA</td>    
                 </tr>
                 <tr class="table-header">
                     <% @report_data['report']['subjects'].each do |sub| %>
@@ -484,7 +487,9 @@
                           <% grade_data = GradingLevel.percentage_to_grade(gpa.to_f, @batch.id) %>
                           <% if !grade_data.blank? and !grade_data.name.blank? %>
                               <td><%= grade_data.name %></td>
+                              <td><%= sprintf( "%0.02f", grade_data.credit_points)%></td>
                           <% else %>
+                              <td>-</td>
                               <td>-</td>
                           <% end %>
                         <% end %>

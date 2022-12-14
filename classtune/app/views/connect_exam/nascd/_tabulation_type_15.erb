@@ -192,7 +192,7 @@
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
-                          <td style="white-space:nowarp;">Con. CW<hr/>CT<hr/>CQ<hr/>MCQ</td><td>Prac<hr/>Term TTL<hr/>Conv Term<hr/>TTL</td>
+                          <td style="white-space:nowarp;">Con. CW<hr/>CT<hr/>CQ<hr/>MCQ</td><td>Prac<hr/>Term TTL<hr/>Conv Term<hr/>TTL<hr/>Grade</td>
                         <% end %>
                       <% end %>
 
@@ -244,7 +244,7 @@
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
-                          <td style="white-space:nowarp;">Con. CW<hr/>CT<hr/>CQ<hr/>MCQ</td><td>Prac<hr/>Term TTL<hr/>Conv Term<hr/>TTL</td>
+                          <td style="white-space:nowarp;">Con. CW<hr/>CT<hr/>CQ<hr/>MCQ</td><td>Prac<hr/>Term TTL<hr/>Conv Term<hr/>TTL<hr/>Grade</td>
                         <% end %>
                       <% end %>
 
@@ -286,7 +286,7 @@
                         <% has_exam = true %>
                       <% end %>
                       <% if has_exam == true %>
-                        <td style="white-space:nowarp;">Con. CW<hr/>CT<hr/>CQ<hr/>MCQ</td><td>Prac<hr/>Term TTL<hr/>Conv Term<hr/>TTL</td>
+                        <td style="white-space:nowarp;">Con. CW<hr/>CT<hr/>CQ<hr/>MCQ</td><td>Prac<hr/>Term TTL<hr/>Conv Term<hr/>TTL<hr/>Grade</td>
                       <% end %>
                     <% end %>
 
@@ -454,20 +454,46 @@
                                   <hr/>
                                     <%= total_mark_subject.round() %>
 
-                               </td> 
                                <% if sub['grade_subject'].to_i != 1 %>  
                                   <% if fourth_subject %>
                                   <%
                                     if total_mark_subject.round() > 40
                                       new_mark_to_add = total_mark_subject.round() -40
                                       total_mark_1 = total_mark_1+new_mark_to_add.round()
+                                      grade_sub = GradingLevel.percentage_to_grade(new_mark_to_add.to_f, @batch.id)
+                                      if !grade_sub.blank? and !grade_sub.name.blank?
+                                        %>
+                                        <hr/>
+                                        <%= grade_sub.name %>
+                                        <%
+                                      else
+                                        %>
+                                        <hr/>
+                                        <%= "" %>
+                                        <%
+                                      end
                                     end
                                   %>
 
                                   <% else %>
                                     <% total_mark_1 = total_mark_1+total_mark_subject.round().to_f %>
+                                    <%
+                                    grade_sub = GradingLevel.percentage_to_grade(total_mark_subject.to_f, @batch.id)
+                                    if !grade_sub.blank? and !grade_sub.name.blank?
+                                      %>
+                                      <hr/>
+                                      <%= grade_sub.name %>
+                                      <%
+                                    else
+                                      %>
+                                      <hr/>
+                                      <%= "" %>
+                                      <%
+                                    end
+                                    %>
                                   <% end %>
                                <% end %>
+                               </td> 
                           <% end %>   
                         <% end %> 
                         

@@ -473,8 +473,8 @@
                           <%= total_mark_1.round().to_i %>
                         </td>
                         <%
-                          if total_subject > 0
-                            gpa = total_mark.to_f/total_subject.to_f
+                          if total_subject > 0 and total_mark_1 > 0
+                            gpa = total_mark_1.to_f/total_subject.to_f
                           else
                             gpa = 0
                           end

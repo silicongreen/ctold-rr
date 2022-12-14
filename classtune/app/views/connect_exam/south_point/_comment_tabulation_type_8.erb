@@ -197,79 +197,103 @@
                               end
                               end
 
-                            #Calculation First Quarter Mark
-                            st_marks1.sort! {|x,y| y <=> x }
-                            ct_marks1.sort! {|x,y| y <=> x }
-
-
-                            if ct_full_mark1.to_i == 20 
-                              avg_mark_ct1 = ct_marks1[0].to_f+ct_marks1[1].to_f+ct_marks1[2].to_f
-                              ct_full_mark1 = ct_full_mark1*3
-                              else 
-                              avg_mark_ct1 = ct_marks1[0].to_f+ct_marks1[1].to_f
-                              ct_full_mark1 = ct_full_mark1*2
-                              end 
-
-                            if st_full_mark1.to_i == 10 
-                              avg_mark_st1 = st_marks1[0].to_f+st_marks1[1].to_f+st_marks1[2].to_f+st_marks1[3].to_f
-                              st_full_mark1 = st_full_mark1*4
-                              else st_full_mark1.to_i == 5  
-                              avg_mark_st1 = st_marks1[0].to_f+st_marks1[1].to_f+st_marks1[2].to_f
-                              st_full_mark1 = st_full_mark1*3
+                              #Calculation First Quarter Mark
+                              st_marks1.sort! {|x,y| y <=> x }
+                              ct_marks1.sort! {|x,y| y <=> x }
+                              
+                              if ct_full_mark1.to_i == 30
+                                all_marks_ct1 = 0
+                                iloop1 = 0
+                                ct_marks1.each do |ct_mark|
+                                  all_marks_ct1 = all_marks_ct1+ct_mark
+                                  iloop1 = iloop1+1
+                                end  
+                                avg_mark_ct1 = all_marks_ct1.to_f/iloop1.to_f
+                              else  
+                                if ct_full_mark1.to_i == 20 
+                                    avg_mark_ct1 = ct_marks1[0].to_f+ct_marks1[1].to_f+ct_marks1[2].to_f
+                                    ct_full_mark1 = ct_full_mark1*3
+                                else 
+                                    avg_mark_ct1 = ct_marks1[0].to_f+ct_marks1[1].to_f
+                                    ct_full_mark1 = ct_full_mark1*2
+                                end 
+  
+                                if st_full_mark1.to_i == 10 
+                                    avg_mark_st1 = st_marks1[0].to_f+st_marks1[1].to_f+st_marks1[2].to_f+st_marks1[3].to_f
+                                    st_full_mark1 = st_full_mark1*4
+                                else st_full_mark1.to_i == 5  
+                                    avg_mark_st1 = st_marks1[0].to_f+st_marks1[1].to_f+st_marks1[2].to_f
+                                    st_full_mark1 = st_full_mark1*3
+                                end
+                                
+                                
                               end
-
-                            obtained_mark1 = avg_mark_ct1.to_f+avg_mark_st1.to_f
-                            full_mark1 = ct_full_mark1.to_i+st_full_mark1.to_i
-
-                            if full_mark1 == 100
-                              obtained_mark1 = obtained_mark1/2
-                              obtained_mark1 = obtained_mark1.round()
-                              full_mark1 = 50
+                            
+                              full_mark1 = ct_full_mark1.to_i+st_full_mark1.to_i
+                              obtained_mark1= avg_mark_ct1.to_f+avg_mark_st1.to_f
+                              
+                              if full_mark1 == 100
+                                obtained_mark1 = obtained_mark1/2
+                                obtained_mark1 = obtained_mark1.round()
+                                full_mark1 = 50
                               else
-                              obtained_mark1 = (obtained_mark1/35)*25
-                              obtained_mark1 = obtained_mark1.round()
-                              full_mark1 = 25
+                                obtained_mark1 = (obtained_mark1/35)*25
+                                obtained_mark1 = obtained_mark1.round()
+                                full_mark1 = 25
                               end
-
-                            main_mark1 = (obtained_mark1.round().to_f/full_mark1.to_f)*100
-
-                            #Calculation 2nd Quarter Mark
-                            st_marks2.sort! {|x,y| y <=> x }
-                            ct_marks2.sort! {|x,y| y <=> x }
-
-                            if ct_full_mark2.to_i == 20 
-                              avg_mark_ct2 = ct_marks2[0].to_f+ct_marks2[1].to_f+ct_marks2[2].to_f
-                              ct_full_mark2 = ct_full_mark2*3
-                              else 
-                              avg_mark_ct2 = ct_marks2[0].to_f+ct_marks2[1].to_f
-                              ct_full_mark2 = ct_full_mark2*2
-                              end 
-
-                            if st_full_mark2.to_i == 10 
-                              avg_mark_st2 = st_marks2[0].to_f+st_marks2[1].to_f+st_marks2[2].to_f+st_marks2[3].to_f
-                              st_full_mark2 = st_full_mark2*4
-                              else st_full_mark2.to_i == 5  
-                              avg_mark_st2 = st_marks2[0].to_f+st_marks2[1].to_f+st_marks2[2].to_f
-                              st_full_mark2 = st_full_mark2*3
+                              
+                              main_mark1 = (obtained_mark1.round().to_f/full_mark1.to_f)*100
+  
+                              #Calculation 2nd Quarter Mark
+                              st_marks2.sort! {|x,y| y <=> x }
+                              ct_marks2.sort! {|x,y| y <=> x }
+                              #if sub['id'].to_i == 
+                              if ct_full_mark2.to_i == 30
+                                all_marks_ct2 = 0
+                                iloop2 = 0
+                                ct_marks2.each do |ct_mark|
+                                  all_marks_ct2 = all_marks_ct2+ct_mark
+                                  iloop2 = iloop2+1
+                                end  
+                                avg_mark_ct2 = all_marks_ct2.to_f/iloop2.to_f
+                              else  
+                                if ct_full_mark2.to_i == 20 
+                                    avg_mark_ct2 = ct_marks2[0].to_f+ct_marks2[1].to_f+ct_marks2[2].to_f
+                                    ct_full_mark2 = ct_full_mark2*3
+                                else 
+                                    avg_mark_ct2 = ct_marks2[0].to_f+ct_marks2[1].to_f
+                                    ct_full_mark2 = ct_full_mark2*2
+                                end 
+  
+                                if st_full_mark2.to_i == 10 
+                                    avg_mark_st2 = st_marks2[0].to_f+st_marks2[1].to_f+st_marks2[2].to_f+st_marks2[3].to_f
+                                    st_full_mark2 = st_full_mark2*4
+                                else st_full_mark2.to_i == 5  
+                                    avg_mark_st2 = st_marks2[0].to_f+st_marks2[1].to_f+st_marks2[2].to_f
+                                    st_full_mark2 = st_full_mark2*3
+                                end
+                                
+                                
                               end
-
-                            obtained_mark2 = avg_mark_ct2.to_f+avg_mark_st2.to_f
-                            full_mark2 = ct_full_mark2.to_i+st_full_mark2.to_i
-
-                            if full_mark2 == 100
-                              obtained_mark2 = obtained_mark2/2
-                              obtained_mark2 = obtained_mark2.round()
-                              full_mark2 = 50
+                            #
+                              full_mark2 = ct_full_mark2.to_i+st_full_mark2.to_i
+                              obtained_mark2 = avg_mark_ct2.to_f+avg_mark_st2.to_f
+                              #abort(full_mark2.to_s + "  " + obtained_mark2.to_s)
+                              if full_mark2 == 100
+                                obtained_mark2 = obtained_mark2/2
+                                obtained_mark2 = obtained_mark2.round()
+                                full_mark2 = 50
                               else
-                              obtained_mark2 = (obtained_mark2/35)*25
-                              obtained_mark2 = obtained_mark2.round()
-                              full_mark2 = 25
+                                obtained_mark2 = (obtained_mark2/35)*25
+                                obtained_mark2 = obtained_mark2.round()
+                                full_mark2 = 25
                               end
-                            main_mark2 = (obtained_mark2.round().to_f/full_mark2.to_f)*100
-
-                            #Calculation First Term (40/20) Mark
-                            full_mark = full_mark1+full_mark2
-                            obtained_mark = obtained_mark1.round()+obtained_mark2.round()
+                              
+                              main_mark2 = (obtained_mark2.round().to_f/full_mark2.to_f)*100 
+                              
+                              #Calculation First Term (40/20) Mark
+                              full_mark = full_mark1+full_mark2
+                              obtained_mark = obtained_mark1.round()+obtained_mark2.round()
 
 
 

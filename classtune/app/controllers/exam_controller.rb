@@ -16058,9 +16058,7 @@ class ExamController < ApplicationController
                       grand_total2_with_fraction = grand_total2_with_fraction+total_mark2_no_round
                       
                       grand_total_with_fraction = grand_total_with_fraction+main_mark_no_round
-                      if std['id'].to_s == "25176" and main_mark_no_round.to_i != 81 and main_mark_no_round.to_i != 90
-                        abort(main_mark_no_round.to_s + "  " + total_mark2_no_round.to_s + "  " + subject_mark.to_s + "  " + at_total_mark1.to_s)
-                      end
+                      
                       grand_total_with_fraction_marks << main_mark_no_round
                       
                       if fourth_subject.blank?
@@ -16283,6 +16281,9 @@ class ExamController < ApplicationController
                 grade_point_avg = 5.00
                   
               end
+            end
+            if std['id'].to_s == "25176" and main_mark_no_round.to_i != 81 and main_mark_no_round.to_i != 90
+              abort(grand_total_with_fraction.to_s + "  " + total_mark2_no_round.to_s + "  " + subject_mark.to_s + "  " + at_total_mark1.to_s)
             end
             grand_total_with_fraction = sprintf( "%0.02f", grand_total_with_fraction)
             grand_total_with_fraction = grand_total_with_fraction.to_f

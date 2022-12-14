@@ -338,6 +338,7 @@
                         <%
                           gpa = total_mark.to_f/total_subject.to_f
                         %>
+                        <% if gpa > 0 %>
                         <% total_grade_std = grades.count  %>
                         <% faliled = false %>
                         <% grades.each do |grade| %>
@@ -355,9 +356,9 @@
                             <% else %>
                             <td>-</td>
                         <% end %>
-                        <td>
-                            <%= sprintf( "%0.02f", total_mark) %>    
-                        </td>
+                        <% else %>
+                        <td>-</td>
+                        <% end %>
                         <td>
                             <%= sprintf( "%0.02f", total_mark) %>    
                         </td>

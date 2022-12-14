@@ -626,14 +626,14 @@
               %>              
               <table id="pdf-table"  width="100%" class="break-table ev-table" cellspacing="0" >
                 <tr  class="table-header">
-                  <td>Total Working Days</td><td><%= total_working_days_first %><%#= @report_data['total'] %></td>
+                  <td>Half Yearly Total Working Days</td><td><%= total_working_days_first %><%#= @report_data['total'] %></td>
                   <td>Total Present Days</td><td><%= total_att_first %><%#= @report_data['present'] %></td>
                   <td>Total Absent Days</td><td><%= absent_first %><%#= @report_data['total']-@report_data['present'] %></td>
               </table>
 
               <table id="pdf-table"  width="100%" class="break-table ev-table" cellspacing="0" style="margin-top: 20px !important;">
                 <tr  class="table-header">
-                  <td>Total Working Days</td><td><%= total_working_days_second %><%#= @report_data['total'] %></td>
+                  <td>Yearly Exam Total Working Days</td><td><%= total_working_days_second %><%#= @report_data['total'] %></td>
                   <td>Total Present Days</td><td><%= total_att_second %><%#= @report_data['present'] %></td>
                   <td>Total Absent Days</td><td><%= absent_second %><%#= @report_data['total']-@report_data['present'] %></td>
               </table>

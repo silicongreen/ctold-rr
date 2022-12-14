@@ -2178,6 +2178,7 @@
                       if main_mark >= 40
                         @student_result[loop_std]['subjects'][main_sub_id]['result']['parcent'] = main_mark
                       end
+                      abort(main_mark.inspect)
                       grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                       if !grade.blank? && !grade.name.blank?
                         if subject_failed == true

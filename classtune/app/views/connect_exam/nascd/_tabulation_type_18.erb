@@ -182,7 +182,7 @@
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
-                          <td style="white-space:nowarp;">Con. CW<hr/>CT</td><td>Term<hr/>TTL</td>
+                          <td style="white-space:nowarp;">Con. CW<hr/>CT</td><td>Term<hr/>TTL<hr/>Grade</td>
                         <% end %>
                       <% end %>
 
@@ -234,7 +234,7 @@
                               <% has_exam = true %>
                             <% end %>
                             <% if has_exam == true %>
-                              <td  style="white-space:nowarp;">Con. CW<hr/>CT</td><td>Term<hr/>TTL</td>
+                              <td  style="white-space:nowarp;">Con. CW<hr/>CT</td><td>Term<hr/>TTL<hr/>Grade</td>
                             <% end %>
                           <% end %>
 
@@ -276,7 +276,7 @@
                                 <% has_exam = true %>
                               <% end %>
                               <% if has_exam == true %>
-                                <td  style="white-space:nowarp;">Con. CW<hr/>CT</td><td>Term<hr/>TTL</td>
+                                <td  style="white-space:nowarp;">Con. CW<hr/>CT</td><td>Term<hr/>TTL<hr/>Grade</td>
                               <% end %>
                             <% end %>
 
@@ -424,7 +424,21 @@
                                     <%= term.round() %>
                                   <hr/>
                                     <%= total_mark %>
-
+                                  <hr/>
+                                  <%
+                                    grade_sub = GradingLevel.percentage_to_grade(total_mark.round.to_f, @batch.id)
+                                    if !grade_sub.blank? and !grade_sub.name.blank?
+                                      %>
+                                      <hr/>
+                                      <%= grade_sub.name %>
+                                      <%
+                                    else
+                                      %>
+                                      <hr/>
+                                      <%= "" %>
+                                      <%
+                                    end
+                                    %>
                                </td> 
                                <% if sub['grade_subject'].to_i != 1 %>  
                                   <% total_mark_1 = total_mark_1+total_mark.round().to_f %>

@@ -16058,13 +16058,13 @@ class ExamController < ApplicationController
                       grand_total = grand_total+subject_full_marks
                       grand_total1_with_fraction = grand_total1_with_fraction+total_mark1_no_round
                       
-                      //grand_total1_with_fraction_marks << total_mark1_no_round
+                      #grand_total1_with_fraction_marks << total_mark1_no_round
                       
                       grand_total2_with_fraction = grand_total2_with_fraction+main_mark_no_round
                       
                       grand_total_with_fraction = grand_total_with_fraction+main_mark_no_round
                       
-                      //grand_total_with_fraction_marks << main_mark_no_round
+                      #grand_total_with_fraction_marks << main_mark_no_round
                       
                       if fourth_subject.blank?
                         grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)

@@ -14916,14 +14916,14 @@ class ExamController < ApplicationController
                 total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
                 total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
                 
-                #if std['id'].to_s == "39081"
-                ##  abort(total_mark1_80.to_s + "  " + total_sb1.to_s + "  " + monthly_total_mark1.to_s + "  " + at_total_mark1.to_s)
-                #end
+                if std['id'].to_s == "25176"
+                  abort(total_mark1_80.to_s + "  " + total_sb1.to_s + "  " + monthly_total_mark1.to_s + "  " + at_total_mark1.to_s)
+                end
                 
                 total_sb1_main = total_sb1
                 total_sb2_main = total_sb2
                 # or (@connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE")
-                if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6 or @connect_exam_obj.result_type == 7
+                if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6
                   full_mark_sb1_converted = full_mark1-full_pr1-full_ob1-monthly_full_mark1
                   full_mark_sb2_converted = full_mark2-full_pr2-full_ob2-monthly_full_mark2
                   if total_sb1 > 0

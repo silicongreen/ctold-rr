@@ -482,21 +482,13 @@
                         %>
                         <% if gpa > 0 %>
                           <% total_grade_std = grades.count  %>
-                          <% failed = false %>
-                          <%  grade_data = GradingLevel.percentage_to_grade(gpa, @batch.id) %>
+                          <% grade_data = GradingLevel.percentage_to_grade(gpa, @batch.id) %>
                           <% if !grade_data.blank? and !grade_data.name.blank? %>
-                              <% if failed %>
-                              <td>F</td>  
-                              <% else %>
                               <td><%= grade_data.name %></td>
-                              <% end %>
-                              <% else %>
+                          <% else %>
                               <td>-</td>
                           <% end %>
-                        <% else %>
-                          <td>-</td>
                         <% end %>
-
 
                     </tr>
                    

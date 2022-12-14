@@ -164,7 +164,7 @@
                       <% end %>
 
                       <td>Total</td>
-                      <td>Letter Grade</td>
+                      <td>LG</td>
                       <td>GPA</td>
                       <td>Grade Count</td>
                       <% unless @ranked_positions.blank? %>
@@ -205,7 +205,7 @@
                           <% end %>
 
                           <td>Total</td>
-                          <td>Letter Grade</td>
+                          <td>LG</td>
                           <td>GPA</td>
                           <td>Grade Count</td>
                           <% unless @ranked_positions.blank? %>
@@ -237,7 +237,7 @@
                           <% end %>
 
                           <td>Total</td>
-                          <td>Letter Grade</td>
+                          <td>LG</td>
                           <td>GPA</td>
                           <td>Grade Count</td>
                           <% unless @ranked_positions.blank? %>
@@ -253,9 +253,9 @@
                         
                         <td class="name"><%= std['class_roll_no'] %></td>
                         <% if !std['first_name'].blank? and !std['last_name'].blank?  %>
-                        <td class="name-std"><%= std['first_name']+" "+std['last_name'] %></td>
+                        <td class="name-std" style="white-space: pre-wrap !important;"><%= std['first_name']+" "+std['last_name'] %></td>
                         <% elsif !std['first_name'].blank? %>
-                        <td class="name-std"><%= std['first_name'] %></td>
+                        <td class="name-std" style="white-space: pre-wrap !important;"><%= std['first_name'] %></td>
                         <% else %>
                         <td class="name-std"><%= "-" %></td>
                         <% end %>

@@ -560,14 +560,14 @@
                               grade_mark = (monthly_marks.round().to_f/class_test_full_mark2)*100
 
                               grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
-                              if !grade.blank? and !grade.name.blank?
-                                #&& class_test_full_mark2.to_i != 5 && monthly_marks.round() != 13
-                                if grade.credit_points.to_i == 0  && monthly_marks.round() != 13
-                                  failed_subject3 = true
-                                end
-                              end
-                            elsif class_test_full_mark2 > 0
-                              failed_subject3 = true
+                              #if !grade.blank? and !grade.name.blank?
+                              #  #&& class_test_full_mark2.to_i != 5 && monthly_marks.round() != 13
+                              #  if grade.credit_points.to_i == 0  && monthly_marks.round() != 13
+                              #    failed_subject3 = true
+                              #  end
+                              #end
+                            #elsif class_test_full_mark2 > 0
+                            #  failed_subject3 = true
                             end
                             monthly_marks = monthly_marks_converted
                             sb_marks = 0
@@ -1091,13 +1091,13 @@
                             if monthly_marks > 0
                               grade_mark = (monthly_marks.round().to_f/class_test_full_mark2)*100
                               grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id)
-                              if !grade.blank? and !grade.name.blank?
-                                if grade.credit_points.to_i == 0 && class_test_full_mark2.to_i != 5 && monthly_marks.round() != 13
-                                  failed_subject3 = true
-                                end
-                              end
-                            elsif class_test_full_mark2 > 0
-                              failed_subject3 = true
+                            #  if !grade.blank? and !grade.name.blank?
+                            #    if grade.credit_points.to_i == 0 && class_test_full_mark2.to_i != 5 && monthly_marks.round() != 13
+                            #      failed_subject3 = true
+                            #    end
+                            #  end
+                            #elsif class_test_full_mark2 > 0
+                            #  failed_subject3 = true
                             end
                             sb_marks = 0
                             ob_marks = 0

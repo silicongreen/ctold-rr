@@ -360,6 +360,7 @@
                         <% if !grade_data.blank? and !grade_data.name.blank? %>
                             <% if failed %>
                             <td>F</td>  
+                            <td>0.00</td>
                             <% else %>
                             <td><%= grade_data.name %></td>
                             <td><%= sprintf( "%0.02f", grade_data.credit_points)%></td>

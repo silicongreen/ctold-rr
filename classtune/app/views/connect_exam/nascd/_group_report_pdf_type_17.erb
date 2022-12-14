@@ -119,13 +119,13 @@
                                   <% if report['quarter'] == '6' %>
                                       <% has_final_term = true %>
                                       <% if report['exam_category'] == '3' or report['exam_category'] == '4' or report['exam_category'] == '5' %>
-                                        <% full_mark_term_final = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                        <% full_mark_term_final = full_mark_term_final+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% end %>
                                       <% if report['exam_category'] == '1' %>
-                                        <% full_mark_ct_final = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                        <% full_mark_ct_final = full_mark_ct_final+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% end %>
                                       <% if report['exam_category'] == '2' %>
-                                        <% full_mark_cw_final = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                        <% full_mark_cw_final = full_mark_cw_final+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% end %>
                                   <% end %>
 
@@ -245,13 +245,13 @@
                          <td><% if has_final_term %>
                          
                          <% if main_mark > 79 && main_mark <= 100 %>
-                         Excellent <%= main_mark %>
+                         Excellent <%= term_mark_main %>
                          <% elsif main_mark >= 60 && main_mark <= 79 %>
-                         Very Good <%= main_mark %>
+                         Very Good <%= term_mark_main %>
                          <% elsif main_mark >= 50 && main_mark <= 59 %>
-                         Good <%= main_mark %>
+                         Good <%= term_mark_main %>
                          <% else %>
-                         Need Improvement <%= main_mark %>
+                         Need Improvement <%= term_mark_main %>
                          <% end %>
                          
                          <% end %>

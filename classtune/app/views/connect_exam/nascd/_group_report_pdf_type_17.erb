@@ -58,7 +58,7 @@
                       <% end %>
                       
                       
-                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        <tr class="odd">
                           <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>   
                           <%
                             cw = 0
@@ -196,45 +196,48 @@
                          <%
                          quarter_mark = 0
                          if has_final_term
-                            if full_mark_term_final == 35
-                              if ct_final > 0
-                                ct_final = (ct_final.to_f/full_mark_ct_final.to_f)*10
-                                ct_final = ct_final.round
-                                full_mark_ct = 10
-                              end
-                            end 
-                            if cw_final > 0 
-                              cw_final = (cw_final.to_f/full_mark_cw_final.to_f)*5
-                              cw_final = cw_final.round
+                          if full_mark_term_final == 35
+                            if ct_final > 0
+                              ct_final = (ct_final.to_f/full_mark_ct_final.to_f)*10
+                              ct_final = ct_final.round
+                              full_mark_ct_final = 10
                             end
+                          end 
+                          if cw_final > 0 
+                            cw_final = (cw_final.to_f/full_mark_cw_final.to_f)*5
+                            cw_final = cw_final.round
+                          end
+                          ct_final = ct_final.round
+                          full_mark_quarter = full_mark_ct_final
+                          if full_mark_cw_final > 0
+                            full_mark_quarter = full_mark_ct_final+5
+                          end 
+                          quarter_mark = cw_final+ct_final
+                          quarter_main_mark = 0
+                          if quarter_mark > 0
+                            quarter_main_mark = (quarter_mark.to_f/full_mark_quarter.to_f)*100
+                            quarter_main_mark = quarter_main_mark.round
+                          end
+                          
 
-                            full_mark_quarter = full_mark_ct
-                            if full_mark_cw > 0
-                              full_mark_quarter = full_mark_ct+5
-                            end 
-                            quarter_mark = cw_final+ct_final
-                            quarter_main_mark = 0
-                            if quarter_mark > 0 and full_mark_quarter > 0
-                              quarter_main_mark = (quarter_mark.to_f/full_mark_quarter.to_f)*100
-                              quarter_main_mark = quarter_main_mark.round
-                            end
+                          term_mark_main = 0
 
-                            term_mark_main = 0
+                          if term > 0
+                            term_mark_main = (term.to_f/full_mark_term_final.to_f)*100
+                            term_mark_main.round
+                          end
 
-                            if term_final > 0
-                              term_mark_main = (term_final.to_f/full_mark_term_final.to_f)*100
-                              term_mark_main.round
-                            end
+                          full_mark = full_mark_quarter+full_mark_term_final
+                          total_mark = quarter_mark+term.round()
 
-                            full_mark = full_mark_quarter+full_mark_term
-                            total_mark = quarter_mark+term
+                          main_mark = 0
+                          if total_mark > 0
+                            total_mark = total_mark.round()
+                            main_mark = (total_mark.to_f/full_mark.to_f)*100
+                            main_mark = main_mark.round()
+                          end
 
-                            main_mark = 0
-                            if total_mark > 0 and full_mark > 0
-                              total_mark = total_mark.round()
-                              main_mark = (total_mark.to_f/full_mark.to_f)*100
-                              main_mark = main_mark.round
-                            end
+                           
 
                          end
                          %>

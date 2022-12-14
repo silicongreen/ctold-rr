@@ -170,11 +170,11 @@
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
-                          <td>First</td><td>Second</td>
+                          <td>First</td><td>Second</td><td>Third</td>
                         <% end %>
                       <% end %>
 
-                      <td>First</td><td>Second</td>
+                      <td>First</td><td>Second</td><td>Third</td>
 
                   </tr>
 
@@ -216,11 +216,11 @@
                               <% has_exam = true %>
                             <% end %>
                             <% if has_exam == true %>
-                              <td>First</td><td>Second</td>
+                              <td>First</td><td>Second</td><td>Third</td>
                             <% end %>
                           <% end %>
 
-                          <td>First</td><td>Second</td>
+                          <td>First</td><td>Second</td><td>Third</td>
 
                       </tr>
                     <% elsif std_count>29 && extender ==1 %>
@@ -252,11 +252,11 @@
                                 <% has_exam = true %>
                               <% end %>
                               <% if has_exam == true %>
-                                <td>First</td><td>Second</td>
+                                <td>First</td><td>Second</td><td>Third</td>
                               <% end %>
                             <% end %>
 
-                            <td>First</td><td>Second</td>
+                            <td>First</td><td>Second</td><td>Third</td>
 
                         </tr>
                     <% end %>    
@@ -376,10 +376,17 @@
                                   <%= total_mark2.round().to_i %>
 
                                </td>   
+                               <td>
+                                  
+                                  <%= total_mark3.round().to_i %>
+
+                               </td>   
                                   <% total_mark_1 = total_mark_1+total_mark1.round().to_i %>
-                                  <% total_mark_2= total_mark_2+total_mark2.round().to_i %>
+                                  <% total_mark_2 = total_mark_2+total_mark2.round().to_i %>
+                                  <% total_mark_3 = total_mark_2+total_mark3.round().to_i %>
                                   <%  grade1 = GradingLevel.percentage_to_grade(main_mark1, @batch.id) %>
                                   <%  grade2 = GradingLevel.percentage_to_grade(main_mark2, @batch.id) %>
+                                  <%  grade3 = GradingLevel.percentage_to_grade(main_mark3, @batch.id) %>
                             <% end %>
                           <% end %>   
                         <% end %> 
@@ -390,6 +397,9 @@
                         </td>
                         <td>  
                            <%= total_mark_2 %>
+                        </td>
+                        <td>  
+                           <%= total_mark_3 %>
                         </td>
                         
 

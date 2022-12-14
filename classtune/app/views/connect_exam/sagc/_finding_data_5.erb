@@ -1,4 +1,5 @@
 <%
+
  if @total_std.blank?
       if @grading_levels.blank?
         @grading_levels = GradingLevel.for_batch(@batch.id)
@@ -299,20 +300,16 @@
                       end
                       if rs['quarter'] == '1'
                         monthly_total_mark1 = monthly_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                        if @connect_exam_obj.result_type != 6
-                          if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 5 && !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? &&  (@connect_exam_obj.result_type == 5 || @connect_exam_obj.result_type == 8) && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 13 && @part_by_pass_fail
-                            u_grade1 = u_grade1+1
-                            subject_failed = true
-                          end
+                        if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 5 && !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? &&  (@connect_exam_obj.result_type == 5 ||  @connect_exam_obj.result_type == 6 ||  @connect_exam_obj.result_type == 8) && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 13 && @part_by_pass_fail
+                          u_grade1 = u_grade1+1
+                          subject_failed = true
                         end
                       end  
                       if rs['quarter'] == '2'
                         monthly_total_mark2 = monthly_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                        if @connect_exam_obj.result_type != 6
-                          if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 5 && !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? &&  (@connect_exam_obj.result_type == 5 || @connect_exam_obj.result_type == 8) && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 13 && @part_by_pass_fail
-                            u_grade2 = u_grade2+1
-                            subject_failed = true
-                          end
+                        if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 5 && !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? &&  (@connect_exam_obj.result_type == 5 ||  @connect_exam_obj.result_type == 6 ||  @connect_exam_obj.result_type == 8) && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 13 && @part_by_pass_fail
+                          u_grade2 = u_grade2+1
+                          subject_failed = true
                         end
                       end
                       
@@ -338,97 +335,32 @@
                                 if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
                                   if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)  
                                     if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 50 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 22 || @connect_exam_obj.result_type == 7 )
-                                      if @connect_exam_obj.result_type != 6
-                                        u_grade1 = u_grade1+1
-                                        subject_failed = true
-                                      end
+                                      u_grade1 = u_grade1+1
+                                      subject_failed = true
                                     end 
                                   end  
                                 end
                               end
                             end 
                             if fourth_subject.blank? && sub['grade_subject'].to_i != 1 && sub['subject_group_id'].to_i == 0 && rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i == 70 && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i == 31 && @connect_exam_obj.result_type == 11 && rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 5
-                              if @connect_exam_obj.result_type != 6
-                                u_grade1 = u_grade1+1
-                                subject_failed = true
-                              end
+                              u_grade1 = u_grade1+1
+                              subject_failed = true
                             end
                             if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                               unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
                                 if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
                                   if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)
-                                    if @connect_exam_obj.result_type != 6
-                                      four_subject_failed = true
-                                    end
+                                    four_subject_failed = true
                                   end 
                                 end
                               end
                             end 
                             if sub['grade_subject'].to_i != 1 && sub['subject_group_id'].to_i == 0 && rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i == 70 && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i == 31 && @connect_exam_obj.result_type == 11 && rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 5
-                              if @connect_exam_obj.result_type != 6
-                                four_subject_failed = true
-                              end
-                            end
-                          else
-                            if @connect_exam_obj.result_type != 6
-                              if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"
-                                if sub['subject_group_id'].to_i == 0 && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8)
-                                  if fourth_subject.blank?
-                                    u_grade1 = u_grade1+1
-                                    subject_failed = true
-                                  else
-                                    four_subject_failed = true
-                                  end  
-                                end
-                              end
-                            end
-                          end 
-                        end 
-                      end  
-                      if rs['quarter'] == '2'
-                        total_sb2 = total_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                        if  @part_by_pass_fail
-                        if @connect_exam_obj.result_type != 11 and @connect_exam_obj.result_type != 6
-                          if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
-                            unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
-                              if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
-                                if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)  
-                                  if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 50 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 22)
-                                    if @connect_exam_obj.result_type != 6
-                                      u_grade2 = u_grade2+1
-                                      subject_failed = true
-                                    end
-                                  end
-                                end  
-                              end
-                            end
-                          end 
-                          if fourth_subject.blank? && sub['grade_subject'].to_i != 1 && sub['subject_group_id'].to_i == 0 && rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i == 70 && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i == 31 && @connect_exam_obj.result_type == 11
-                            if @connect_exam_obj.result_type != 6
-                              u_grade1 = u_grade1+1
-                              subject_failed = true
-                            end
-                          end
-                          if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
-                            unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
-                              if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
-                                if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)
-                                  if @connect_exam_obj.result_type != 6
-                                    four_subject_failed = true
-                                  end
-                                end
-                              end
-                            end
-                          end 
-                          if sub['grade_subject'].to_i != 1 && sub['subject_group_id'].to_i == 0 && rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i == 70 && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i == 31 && @connect_exam_obj.result_type == 11
-                            if @connect_exam_obj.result_type != 6
                               four_subject_failed = true
                             end
-                          end
-                        else
-                          if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"
-                            if sub['subject_group_id'].to_i == 0 && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8)
-                              if @connect_exam_obj.result_type != 6
+                          else
+                            if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"
+                              if sub['subject_group_id'].to_i == 0 && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8)
                                 if fourth_subject.blank?
                                   u_grade1 = u_grade1+1
                                   subject_failed = true
@@ -436,6 +368,52 @@
                                   four_subject_failed = true
                                 end  
                               end
+                            end
+                            
+                          end 
+                        end 
+                      end  
+                      if rs['quarter'] == '2'
+                        total_sb2 = total_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        if  @part_by_pass_fail
+                        if @connect_exam_obj.result_type != 11
+                          if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
+                            unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
+                              if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
+                                if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)  
+                                  if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 50 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 22)
+                                    u_grade2 = u_grade2+1
+                                    subject_failed = true
+                                  end
+                                end  
+                              end
+                            end
+                          end 
+                          if fourth_subject.blank? && sub['grade_subject'].to_i != 1 && sub['subject_group_id'].to_i == 0 && rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i == 70 && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i == 31 && @connect_exam_obj.result_type == 11
+                            u_grade1 = u_grade1+1
+                            subject_failed = true
+                          end
+                          if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
+                            unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
+                              if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
+                                if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)
+                                  four_subject_failed = true
+                                end
+                              end
+                            end
+                          end 
+                          if sub['grade_subject'].to_i != 1 && sub['subject_group_id'].to_i == 0 && rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i == 70 && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i == 31 && @connect_exam_obj.result_type == 11
+                            four_subject_failed = true
+                          end
+                        else
+                          if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"
+                            if sub['subject_group_id'].to_i == 0 && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8)
+                              if fourth_subject.blank?
+                                u_grade1 = u_grade1+1
+                                subject_failed = true
+                              else
+                                four_subject_failed = true
+                              end  
                             end
                           end
                         end 
@@ -450,7 +428,7 @@
                       if rs['quarter'] == '1'
                         total_ob1 = total_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if  @part_by_pass_fail
-                          if @connect_exam_obj.result_type != 11 and @connect_exam_obj.result_type != 6
+                        if @connect_exam_obj.result_type != 11
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                             unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
                               if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
@@ -464,13 +442,11 @@
                         else
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"
                             if sub['subject_group_id'].to_i == 0 && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8)
-                              if @connect_exam_obj.result_type != 6
-                                if fourth_subject.blank?
-                                  u_grade1 = u_grade1+1
-                                  subject_failed = true
-                                else
-                                  four_subject_failed = true
-                                end
+                              if fourth_subject.blank?
+                                u_grade1 = u_grade1+1
+                                subject_failed = true
+                              else
+                                four_subject_failed = true
                               end  
                             end
                           end
@@ -480,7 +456,7 @@
                       if rs['quarter'] == '2'
                         total_ob2 = total_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if  @part_by_pass_fail
-                          if @connect_exam_obj.result_type != 11 and @connect_exam_obj.result_type != 6
+                        if @connect_exam_obj.result_type != 11
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                             unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
                               if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
@@ -494,29 +470,25 @@
                         else
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"
                             if sub['subject_group_id'].to_i == 0 && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8)
-                              if @connect_exam_obj.result_type != 6
-                                if fourth_subject.blank?
-                                  u_grade1 = u_grade1+1
-                                  subject_failed = true
-                                else
-                                  four_subject_failed = true
-                                end  
-                              end
+                              if fourth_subject.blank?
+                                u_grade1 = u_grade1+1
+                                subject_failed = true
+                              else
+                                four_subject_failed = true
+                              end  
                             end
                           end
                          
                         end  
                         end  
                       end
-                      if @connect_exam_obj.result_type != 11 and @connect_exam_obj.result_type != 6
+                       if @connect_exam_obj.result_type != 11
                           if rs['quarter'] == '1' && @part_by_pass_fail
                             if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"  && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                               unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
                                 if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
                                   if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)  
-                                    if @connect_exam_obj.result_type != 6
-                                      four_subject_failed = true
-                                    end
+                                    four_subject_failed = true
                                   end  
                                 end
                               end
@@ -527,9 +499,7 @@
                               unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
                                 if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13)
                                   if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9) 
-                                    if @connect_exam_obj.result_type != 6
-                                      four_subject_failed = true
-                                    end
+                                    four_subject_failed = true
                                   end  
                                 end 
                               end
@@ -545,7 +515,7 @@
                       if rs['quarter'] == '1'
                         total_pr1 = total_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if  @part_by_pass_fail
-                        if @connect_exam_obj.result_type != 11 and @connect_exam_obj.result_type != 6
+                        if @connect_exam_obj.result_type != 11
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                             unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
                               if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11
@@ -559,13 +529,11 @@
                         else
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"
                             if sub['subject_group_id'].to_i == 0 && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8)
-                              if @connect_exam_obj.result_type != 6
-                                if fourth_subject.blank?
-                                  u_grade1 = u_grade1+1
-                                  subject_failed = true
-                                else
-                                  four_subject_failed = true
-                                end
+                              if fourth_subject.blank?
+                                u_grade1 = u_grade1+1
+                                subject_failed = true
+                              else
+                                four_subject_failed = true
                               end  
                             end
                           end
@@ -575,7 +543,7 @@
                       if rs['quarter'] == '2'
                         total_pr2 = total_pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if  @part_by_pass_fail
-                        if @connect_exam_obj.result_type != 11 and @connect_exam_obj.result_type != 6
+                        if @connect_exam_obj.result_type != 11
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                             unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
                               if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11
@@ -589,13 +557,11 @@
                         else
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"
                             if sub['subject_group_id'].to_i == 0 && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8)
-                              if @connect_exam_obj.result_type != 6
-                                if fourth_subject.blank?
-                                  u_grade1 = u_grade1+1
-                                  subject_failed = true
-                                else
-                                  four_subject_failed = true
-                                end
+                              if fourth_subject.blank?
+                                u_grade1 = u_grade1+1
+                                subject_failed = true
+                              else
+                                four_subject_failed = true
                               end  
                             end
                           end
@@ -603,7 +569,7 @@
                         end
                       end
                       
-                      if @connect_exam_obj.result_type != 11 and @connect_exam_obj.result_type != 6 && @part_by_pass_fail
+                      if @connect_exam_obj.result_type != 11 && @part_by_pass_fail
                         if rs['quarter'] == '1'
                           if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F"  && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 11 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                             unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
@@ -620,9 +586,7 @@
                             unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 12 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or sub['grade_subject'].to_i == 1
                               if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11
                                 if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 8 || @connect_exam_obj.result_type != 9)  
-                                  if @connect_exam_obj.result_type != 6
-                                    four_subject_failed = true
-                                  end
+                                  four_subject_failed = true
                                 end
                               end
                             end
@@ -722,7 +686,7 @@
                   #  end
                   #end
                   
-                  if monthly_full_mark1 > 5 && monthly_full_mark2 > 5  && (@connect_exam_obj.result_type == 8)
+                  if monthly_full_mark1 > 5 && monthly_full_mark2 > 5  && (@connect_exam_obj.result_type == 6 || @connect_exam_obj.result_type == 8)
                     monthly_mark = (monthly_total_mark1+monthly_total_mark2)/2
                     if monthly_mark.round() != 13
                       grade_mark = (monthly_mark.round().to_f/monthly_full_mark1.to_f)*100
@@ -740,7 +704,7 @@
                     end
                   end
                   
-                  if full_sb1 > 0 && full_sb2 > 0 && sub['subject_group_id'].to_i == 0 && @connect_exam_obj.result_type != 6 && @connect_exam_obj.result_type != 1  && @connect_exam_obj.result_type != 2 && @connect_exam_obj.result_type != 12 && @connect_exam_obj.result_type != 3 && @connect_exam_obj.result_type != 4  && sub['grade_subject'].to_i != 1
+                  if full_sb1 > 0 && full_sb2 > 0 && sub['subject_group_id'].to_i == 0 && @connect_exam_obj.result_type != 1  && @connect_exam_obj.result_type != 2 && @connect_exam_obj.result_type != 12 && @connect_exam_obj.result_type != 3 && @connect_exam_obj.result_type != 4  && sub['grade_subject'].to_i != 1
                     mark = (total_sb1+total_sb2)/2
                     if ( full_sb1 != 25 || mark.round() != 11) && ( (full_sb1 != 50 || mark.round() != 22 ) || (@connect_exam_obj.result_type != 8 || full_sb1 != 50 || mark.round() != 23) ) && ( full_sb1 != 25 || mark.round() != 8 || @connect_exam_obj.result_type != 9)
                       grade_mark = (mark.round().to_f/full_sb1.to_f)*100
@@ -758,7 +722,7 @@
                     end
                   end
                   
-                  if full_ob1 > 0 && full_ob2 > 0 && sub['subject_group_id'].to_i == 0 && @connect_exam_obj.result_type != 6 && @connect_exam_obj.result_type != 1  && @connect_exam_obj.result_type != 2 && @connect_exam_obj.result_type != 12 && @connect_exam_obj.result_type != 3 && @connect_exam_obj.result_type != 4  && sub['grade_subject'].to_i != 1
+                  if full_ob1 > 0 && full_ob2 > 0 && sub['subject_group_id'].to_i == 0 && @connect_exam_obj.result_type != 1  && @connect_exam_obj.result_type != 2 && @connect_exam_obj.result_type != 12 && @connect_exam_obj.result_type != 3 && @connect_exam_obj.result_type != 4  && sub['grade_subject'].to_i != 1
                     mark = (total_ob1+total_ob2)/2
                     if ( full_ob1 != 25 || mark.round() != 11) && ( full_ob1 != 25 || mark.round() != 8 || @connect_exam_obj.result_type != 9)
                       grade_mark = (mark.round().to_f/full_ob1.to_f)*100
@@ -776,7 +740,7 @@
                     end
                   end
                   
-                  if full_pr1 > 0 && full_pr2 > 0 && sub['subject_group_id'].to_i == 0 && @connect_exam_obj.result_type != 6 && @connect_exam_obj.result_type != 1  && @connect_exam_obj.result_type != 2 && @connect_exam_obj.result_type != 12 && @connect_exam_obj.result_type != 3 && @connect_exam_obj.result_type != 4  && sub['grade_subject'].to_i != 1
+                  if full_pr1 > 0 && full_pr2 > 0 && sub['subject_group_id'].to_i == 0 && @connect_exam_obj.result_type != 1  && @connect_exam_obj.result_type != 2 && @connect_exam_obj.result_type != 12 && @connect_exam_obj.result_type != 3 && @connect_exam_obj.result_type != 4  && sub['grade_subject'].to_i != 1
                     mark = (total_pr1+total_pr2)/2
                     if ( full_pr1 != 25 || mark.round() != 11) && ( full_pr1 != 25 || mark.round() != 8 || @connect_exam_obj.result_type != 9)
                       grade_mark = (mark.round().to_f/full_pr1.to_f)*100
@@ -795,8 +759,6 @@
                   end
                   
                 end
-
-                
                 
                
                 term_mark_multiplier = 0.75
@@ -1608,7 +1570,7 @@
                             if  @part_by_pass_fail
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
-                              if @connect_exam_obj.result_type != 11 and @connect_exam_obj.result_type != 6
+                              if @connect_exam_obj.result_type != 11
                                 if grade.credit_points.to_i == 0 and fourth_subject.blank?
                                   if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11
                                     u_grade1 = u_grade1+1
@@ -1631,7 +1593,7 @@
                             if  @part_by_pass_fail
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
-                              if @connect_exam_obj.result_type != 11 and @connect_exam_obj.result_type != 6
+                              if @connect_exam_obj.result_type != 11
                                 if grade.credit_points.to_i == 0 and fourth_subject.blank?
                                   if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11
                                     u_grade2 = u_grade2+1
@@ -1639,16 +1601,9 @@
                                   end
                                 end
                               else
-                                if @connect_exam_obj.result_type == 6
-                                  if grade.credit_points.to_i == 0
-                                    u_grade1 = u_grade1+1
-                                    subject_failed = true
-                                  end
-                                else
-                                  if grade.credit_points.to_i == 0 && fourth_subject.blank? && (full_pr2 != 50 || total_pr2 != 16)
-                                    u_grade1 = u_grade1+1
-                                    subject_failed = true
-                                  end
+                                if grade.credit_points.to_i == 0 && fourth_subject.blank? && (full_pr2 != 50 || total_pr2 != 16)
+                                  u_grade1 = u_grade1+1
+                                  subject_failed = true
                                 end
                               end  
                             end
@@ -1746,7 +1701,7 @@
                       #  end
                       #end
                   
-                      if monthly_full_mark1 > 5 && monthly_full_mark2 > 5  && (@connect_exam_obj.result_type == 8)
+                      if monthly_full_mark1 > 5 && monthly_full_mark2 > 5  && (@connect_exam_obj.result_type == 6 || @connect_exam_obj.result_type == 8)
                         monthly_mark = (monthly_total_mark1+monthly_total_mark2)/2
                         if monthly_mark != 13 and monthly_mark > 0 and monthly_total_mark1 > 0
                           grade_mark = (monthly_mark.to_f/monthly_total_mark1.to_f)*100
@@ -1764,7 +1719,7 @@
                         end
                       end
                   
-                      if full_sb1 > 0 && full_sb2 > 0 && @connect_exam_obj.result_type != 6 && @connect_exam_obj.result_type != 1  && @connect_exam_obj.result_type != 2 && @connect_exam_obj.result_type != 12 && @connect_exam_obj.result_type != 3 && @connect_exam_obj.result_type != 4  && sub['grade_subject'].to_i != 1
+                      if full_sb1 > 0 && full_sb2 > 0 && @connect_exam_obj.result_type != 1  && @connect_exam_obj.result_type != 2 && @connect_exam_obj.result_type != 12 && @connect_exam_obj.result_type != 3 && @connect_exam_obj.result_type != 4  && sub['grade_subject'].to_i != 1
                         mark = (total_sb1+total_sb2)/4
                         full_sb1 = full_sb1/2
                         if ( full_sb1 != 25 || mark.round() != 11) && ( full_sb1 != 25 || mark.round() != 8 || @connect_exam_obj.result_type != 9)
@@ -1781,7 +1736,7 @@
                         end
                       end
                   
-                      if full_ob1 > 0 && full_ob2 > 0 && sub['subject_group_id'].to_i == 0 && @connect_exam_obj.result_type != 6 && @connect_exam_obj.result_type != 1  && @connect_exam_obj.result_type != 2 && @connect_exam_obj.result_type != 12 && @connect_exam_obj.result_type != 3 && @connect_exam_obj.result_type != 4  && sub['grade_subject'].to_i != 1
+                      if full_ob1 > 0 && full_ob2 > 0 && sub['subject_group_id'].to_i == 0 && @connect_exam_obj.result_type != 1  && @connect_exam_obj.result_type != 2 && @connect_exam_obj.result_type != 12 && @connect_exam_obj.result_type != 3 && @connect_exam_obj.result_type != 4  && sub['grade_subject'].to_i != 1
                         mark = (total_ob1+total_ob2)/4
                         full_ob1 = full_ob1/2
                         if ( full_ob1 != 25 || mark.round() != 11) && ( full_ob1 != 25 || mark.round() != 8 || @connect_exam_obj.result_type != 9)
@@ -1798,7 +1753,7 @@
                         end
                       end
                   
-                      if full_pr1 > 0 && full_pr2 > 0 && sub['subject_group_id'].to_i == 0 && @connect_exam_obj.result_type != 6 && @connect_exam_obj.result_type != 1  && @connect_exam_obj.result_type != 2 && @connect_exam_obj.result_type != 12 && @connect_exam_obj.result_type != 3 && @connect_exam_obj.result_type != 4  && sub['grade_subject'].to_i != 1
+                      if full_pr1 > 0 && full_pr2 > 0 && sub['subject_group_id'].to_i == 0 && @connect_exam_obj.result_type != 1  && @connect_exam_obj.result_type != 2 && @connect_exam_obj.result_type != 12 && @connect_exam_obj.result_type != 3 && @connect_exam_obj.result_type != 4  && sub['grade_subject'].to_i != 1
                         mark = (total_pr1+total_pr2)/4
                         full_pr1 = full_pr1/2
                         if ( full_pr1 != 25 || mark.round() != 11) && ( full_pr1 != 25 || mark.round() != 8 || @connect_exam_obj.result_type != 9)

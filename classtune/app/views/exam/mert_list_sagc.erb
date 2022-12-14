@@ -338,6 +338,7 @@ end
 
                           <% else %>
                             <td class="col-pdf no-warp" colspan="2">
+                                &nbsp;
                                 <%
                                 iloop = 0
                                 unless std_result['subject_failed'].blank?
@@ -368,7 +369,7 @@ end
                             <td class="col-pdf no-warp center-class"><%= @section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i] %></td>
 
                           <% else %>
-                            <td class="col-pdf no-warp" colspan="2">
+                            <td class="col-pdf no-warp" colspan="2">&nbsp;
                                 <%
                                 iloop = 0
                                 
@@ -397,7 +398,7 @@ end
                               <td class="col-pdf no-warp center-class"><%= @section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i] %></td>
 
                             <% else %>
-                              <td class="col-pdf no-warp" colspan="2">
+                              <td class="col-pdf no-warp" colspan="2">&nbsp;
                                   <%
                                   iloop = 0
                                   

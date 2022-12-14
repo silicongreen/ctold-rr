@@ -164,6 +164,7 @@
                       <% end %>
 
                       <td>Total</td>
+                      <td>Letter Grade</td>
                       <td>Grade Count</td>
                       <% unless @ranked_positions.blank? %>
                         <td>Position</td>
@@ -203,6 +204,7 @@
                           <% end %>
 
                           <td>Total</td>
+                          <td>Letter Grade</td>
                           <td>Grade Count</td>
                           <% unless @ranked_positions.blank? %>
                               <td>Position</td>
@@ -233,6 +235,7 @@
                           <% end %>
 
                           <td>Total</td>
+                          <td>Letter Grade</td>
                           <td>Grade Count</td>
                           <% unless @ranked_positions.blank? %>
                               <td>Position</td>
@@ -243,7 +246,7 @@
 
 
                       
-                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                    <tr class="odd">
                         
                         <td class="name"><%= std['class_roll_no'] %></td>
                         <% if !std['first_name'].blank? and !std['last_name'].blank?  %>
@@ -254,6 +257,7 @@
                         <td class="name-std"><%= "-" %></td>
                         <% end %>
                         <% total_mark = 0 %>
+                        <% total_subject = 0 %>
                         <% grades = [] %>
                         <% grade_count = {} %>
                         <% @report_data['report']['subjects'].each do |sub| %>
@@ -328,7 +332,7 @@
                                 &nbsp;
                               <% end %> 
                           </td>     
-
+                          
                         <% end %>       
 
                         <td>

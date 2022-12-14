@@ -165,6 +165,7 @@
 
                       <td>Total</td>
                       <td>Letter Grade</td>
+                      <td>GPA</td>
                       <td>Grade Count</td>
                       <% unless @ranked_positions.blank? %>
                         <td>Position</td>
@@ -205,6 +206,7 @@
 
                           <td>Total</td>
                           <td>Letter Grade</td>
+                          <td>GPA</td>
                           <td>Grade Count</td>
                           <% unless @ranked_positions.blank? %>
                               <td>Position</td>
@@ -236,6 +238,7 @@
 
                           <td>Total</td>
                           <td>Letter Grade</td>
+                          <td>GPA</td>
                           <td>Grade Count</td>
                           <% unless @ranked_positions.blank? %>
                               <td>Position</td>
@@ -359,11 +362,14 @@
                             <td>F</td>  
                             <% else %>
                             <td><%= grade_data.name %></td>
+                            <td><%= sprintf( "%0.02f", grade_data.credit_points)%></td>
                             <% end %>
                             <% else %>
                             <td>-</td>
+                            <td>-</td>
                         <% end %>
                         <% else %>
+                        <td>-</td>
                         <td>-</td>
                         <% end %>
                         <td>

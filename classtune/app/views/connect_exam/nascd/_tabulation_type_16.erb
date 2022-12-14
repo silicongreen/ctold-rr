@@ -156,11 +156,11 @@
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
-                          <td  colspan="2"><%=  sub['code'] %></td>
+                          <td  colspan="3"><%=  sub['code'] %></td>
                         <% end %>
                       <% end %>
 
-                      <td colspan="2">Total</td>
+                      <td colspan="3">Total</td>
 
                   </tr>
                   <tr class="table-header">
@@ -202,11 +202,11 @@
                             <% has_exam = true %>
                           <% end %>
                           <% if has_exam == true %>
-                            <td  colspan="2"><%=  sub['code'] %></td>
+                            <td  colspan="3"><%=  sub['code'] %></td>
                           <% end %>
                         <% end %>
 
-                        <td colspan="2">Total</td>
+                        <td colspan="3">Total</td>
 
                       </tr>
                       <tr class="table-header">
@@ -238,11 +238,11 @@
                                 <% has_exam = true %>
                               <% end %>
                               <% if has_exam == true %>
-                                <td  colspan="2"><%=  sub['code'] %></td>
+                                <td  colspan="3"><%=  sub['code'] %></td>
                               <% end %>
                             <% end %>
 
-                            <td colspan="2">Total</td>
+                            <td colspan="3">Total</td>
 
                         </tr>
                         <tr class="table-header">
@@ -263,7 +263,7 @@
 
 
                       
-                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                    <tr class="odd">
                         
                         <td class="name"><%= std['class_roll_no'] %></td>
                         <% if !std['first_name'].blank? and !std['last_name'].blank?  %>

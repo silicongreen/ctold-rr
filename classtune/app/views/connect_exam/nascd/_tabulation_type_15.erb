@@ -472,6 +472,7 @@
                         <td>
                           <%= total_mark_1.round().to_i %>
                         </td>
+                        <td></td>
                         <%
                           if total_subject > 0 and total_mark_1 > 0
                             gpa = total_mark_1.to_f/total_subject.to_f
@@ -480,25 +481,25 @@
                           end
                         %>
                         <% if gpa > 0 %>
-                        <% total_grade_std = grades.count  %>
-                        <% failed = false %>
-                        <% grades.each do |grade| %>
-                          <% if grade == "F" and grade_count[grade].to_i > 0 %>
-                          <% failed = true %>
-                          <% end %>
-                        <% end %>
-                        <%  grade_data = GradingLevel.percentage_to_grade(gpa, @batch.id) %>
-                        <% if !grade_data.blank? and !grade_data.name.blank? %>
-                            <% if failed %>
-                            <td>F</td>  
-                            <% else %>
-                            <td><%= grade_data.name %></td>
+                          <% total_grade_std = grades.count  %>
+                          <% failed = false %>
+                          <% grades.each do |grade| %>
+                            <% if grade == "F" and grade_count[grade].to_i > 0 %>
+                            <% failed = true %>
                             <% end %>
-                            <% else %>
-                            <td>-</td>
-                        <% end %>
+                          <% end %>
+                          <%  grade_data = GradingLevel.percentage_to_grade(gpa, @batch.id) %>
+                          <% if !grade_data.blank? and !grade_data.name.blank? %>
+                              <% if failed %>
+                              <td>F</td>  
+                              <% else %>
+                              <td><%= grade_data.name %></td>
+                              <% end %>
+                              <% else %>
+                              <td>-</td>
+                          <% end %>
                         <% else %>
-                        <td>-</td>
+                          <td>-</td>
                         <% end %>
 
 

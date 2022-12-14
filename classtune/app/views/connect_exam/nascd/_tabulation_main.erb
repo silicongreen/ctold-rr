@@ -346,12 +346,12 @@
                           <% faliled = true %>
                           <% end %>
                         <% end %>
-                        <%  grade = GradingLevel.percentage_to_grade(gpa, @batch.id) %>
+                        <%  grade_data = GradingLevel.percentage_to_grade(gpa, @batch.id) %>
                         <% if !grade.blank? and !grade.name.blank? %>
                             <% if failed %>
                             <td>F</td>  
                             <% else %>
-                            <td><%= grade.name %></td>
+                            <td><%= grade_data.name %></td>
                             <% end %>
                             <% else %>
                             <td>-</td>

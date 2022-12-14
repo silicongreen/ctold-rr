@@ -4,12 +4,12 @@
                     <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
                     
                     <% if month_number.to_i>6 %>
-                      <td align="left" style="text-align: left !important; width: 25% !important;"><b>Year : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %></b></td>
+                      <td align="left" style="text-align: left !important; width: 20% !important;"><b>Year : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %></b></td>
                     <% else %>
-                      <td align="left" style="text-align: left !important; width: 25% !important;"><b>Year : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></b></td>
+                      <td align="left" style="text-align: left !important; width: 20% !important;"><b>Year : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></b></td>
                     <% end %> 
                     
-                    <td align="center" style="text-align:center !important; width: 55% !important;"><b>Class :  
+                    <td align="center" style="text-align:center !important; width: 60% !important;"><b>Class :  
                         <% if @batch.name == "General" %>
                         <%= @batch.course.full_name %>
                         <% else %>

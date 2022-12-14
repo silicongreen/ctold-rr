@@ -347,10 +347,10 @@
                         %>
                         <% if gpa > 0 %>
                         <% total_grade_std = grades.count  %>
-                        <% faliled = false %>
+                        <% failed = false %>
                         <% grades.each do |grade| %>
                           <% if grade == "F" and grade_count[grade].to_i > 0 %>
-                          <% faliled = true %>
+                          <% failed = true %>
                           <% end %>
                         <% end %>
                         <%  grade_data = GradingLevel.percentage_to_grade(gpa, @batch.id) %>

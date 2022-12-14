@@ -14916,9 +14916,9 @@ class ExamController < ApplicationController
                 total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
                 total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
                 
-                if std['id'].to_s == "25176"
-                  abort(total_mark1_80.to_s + "  " + total_sb1.to_s + "  " + monthly_total_mark1.to_s + "  " + at_total_mark1.to_s)
-                end
+                #if std['id'].to_s == "25176"
+                #  abort(total_mark1_80.to_s + "  " + total_sb1.to_s + "  " + monthly_total_mark1.to_s + "  " + at_total_mark1.to_s)
+                #end
                 
                 total_sb1_main = total_sb1
                 total_sb2_main = total_sb2
@@ -14969,8 +14969,13 @@ class ExamController < ApplicationController
                   subject_mark = (total_mark1+total_mark2)/2
                   subject_mark = subject_mark.round()
                 elsif  exam_type == 2
-                  main_mark_no_round = total_mark2_no_round.to_f/full_mark2.to_f*100
-                  subject_mark = total_mark2
+                  if @connect_exam_obj.result_type == 7
+                    main_mark_no_round = total_mark2_no_round.to_f.round/full_mark2.to_f*100
+                    subject_mark = total_mark2
+                  else
+                    main_mark_no_round = total_mark2_no_round.to_f/full_mark2.to_f*100
+                    subject_mark = total_mark2
+                  end
                   
                 else
                   main_mark = total_mark1.to_f/full_mark1.to_f*100

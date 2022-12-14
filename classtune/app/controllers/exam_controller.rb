@@ -16283,7 +16283,7 @@ class ExamController < ApplicationController
               end
             end
             if std['id'].to_s == "25176" and main_mark_no_round.to_i != 81 and main_mark_no_round.to_i != 90
-              abort(grand_total_with_fraction.to_s + "  " + total_mark2_no_round.to_s + "  " + subject_mark.to_s + "  " + at_total_mark1.to_s)
+              abort(grand_total_with_fraction.to_s + "  " + grand_total1_with_fraction.to_s + "  " + grand_total2_with_fraction.to_s + "  ")
             end
             grand_total_with_fraction = sprintf( "%0.02f", grand_total_with_fraction)
             grand_total_with_fraction = grand_total_with_fraction.to_f

@@ -174,7 +174,7 @@
 
 
                       
-                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        <tr class="odd">
                         
                         <td class="name"><%= std['class_roll_no'] %></td>
                         <% if !std['first_name'].blank? and !std['last_name'].blank?  %>
@@ -206,7 +206,7 @@
                             %>
                             <% 
                             cw = 0
-                            ct = 0
+                            ct = 0 
                             term = 0
                             full_mark_cw = 0
                             full_mark_ct = 0
@@ -227,7 +227,7 @@
 
                                 <%
 
-                                if rs['quarter'] == '5'
+                                if rs['quarter'] == '6'
                                   if rs['exam_category'] == '3' || rs['exam_category'] == '4' || rs['exam_category'] == '5'
                                     term = term+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                     full_mark_term = full_mark_term+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i

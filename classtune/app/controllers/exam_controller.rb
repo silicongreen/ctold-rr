@@ -14972,7 +14972,7 @@ class ExamController < ApplicationController
                   if @connect_exam_obj.result_type == 7
                     main_mark_no_round = total_mark2_no_round.to_f.round/full_mark2.to_f*100
                     subject_mark = total_mark2
-                    if std['id'].to_s == "25176"
+                    if std['id'].to_s == "25176" and main_mark_no_round.to_i != 81
                       abort(main_mark_no_round.to_s + "  " + total_mark2_no_round.to_s + "  " + subject_mark.to_s + "  " + at_total_mark1.to_s)
                     end
                   else

@@ -196,7 +196,7 @@
                     <% if !std.blank? and !std['first_name'].blank? %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
-                    <% if std_count>11 && extender ==0 %>
+                    <% if std_count>9 && extender ==0 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -239,7 +239,7 @@
                           <% end %>
 
                       </tr>
-                    <% elsif std_count>13 && extender ==1 %>
+                    <% elsif std_count>11 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break3">
@@ -424,8 +424,8 @@
                                     <%= term.round() %>
                                   <hr/>
                                     <%= total_mark %>
-                                  <hr/>
                                   <% if sub['grade_subject'].to_i != 1 %>
+                                  <hr/>
                                   <%
                                     grade_sub = GradingLevel.percentage_to_grade(total_mark.round.to_f, @batch.id)
                                     if !grade_sub.blank? and !grade_sub.name.blank?
@@ -438,8 +438,6 @@
                                       <%
                                     end
                                     %>
-                                    <% else %>
-                                    <%= "" %>
                                     <% end %>     
                                </td> 
                                <% if sub['grade_subject'].to_i != 1 %>  

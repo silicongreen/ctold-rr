@@ -93,7 +93,7 @@
                                   <% end %>
                                   <% if report['quarter'] == '6' %>
                                       <% if report['exam_category'] == '3' or report['exam_category'] == '4' or report['exam_category'] == '5' %>
-                                        <% term_final = term+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
+                                        <% term_final = term_final+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
                                       <% end %>
                                       <% if report['exam_category'] == '1' %>
                                         <% ct_final = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
@@ -222,8 +222,8 @@
 
                           term_mark_main = 0
 
-                          if term > 0
-                            term_mark_main = (term.to_f/full_mark_term_final.to_f)*100
+                          if term_final > 0
+                            term_mark_main = (term_final.to_f/full_mark_term_final.to_f)*100
                             term_mark_main.round
                           end
 
@@ -245,13 +245,13 @@
                          <td><% if has_final_term %>
                          
                          <% if main_mark > 79 && main_mark <= 100 %>
-                         Excellent <%= main_mark %>
+                         Excellent <%= term_final %>
                          <% elsif main_mark >= 60 && main_mark <= 79 %>
-                         Very Good <%= main_mark %>
+                         Very Good <%= term_final %>
                          <% elsif main_mark >= 50 && main_mark <= 59 %>
-                         Good <%= main_mark %>
+                         Good <%= term_final %>
                          <% else %>
-                         Need Improvement <%= main_mark %>
+                         Need Improvement <%= term_final %>
                          <% end %>
                          
                          <% end %>

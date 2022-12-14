@@ -425,20 +425,22 @@
                                   <hr/>
                                     <%= total_mark %>
                                   <hr/>
+                                  <% if sub['grade_subject'].to_i != 1 %>
                                   <%
                                     grade_sub = GradingLevel.percentage_to_grade(total_mark.round.to_f, @batch.id)
                                     if !grade_sub.blank? and !grade_sub.name.blank?
                                       %>
-                                      <hr/>
                                       <%= grade_sub.name %>
                                       <%
                                     else
                                       %>
-                                      <hr/>
                                       <%= "" %>
                                       <%
                                     end
                                     %>
+                                    <% else %>
+                                    <%= "" %>
+                                    <% end %>     
                                </td> 
                                <% if sub['grade_subject'].to_i != 1 %>  
                                   <% total_mark_1 = total_mark_1+total_mark.round().to_f %>

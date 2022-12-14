@@ -16283,7 +16283,7 @@ class ExamController < ApplicationController
               end
             end
             if std['id'].to_s == "25176"
-              abort(grand_total_with_fraction.to_s + "  " + grand_total1_with_fraction.to_s + "  " + grand_total2_with_fraction.to_s + "  ")
+              abort(grand_total_with_fraction.to_s + "  " + grand_total_with_fraction_7.to_s + "  " + grand_total2_with_fraction.to_s + "  ")
             end
             grand_total_with_fraction = sprintf( "%0.02f", grand_total_with_fraction)
             grand_total_with_fraction = grand_total_with_fraction.to_f

@@ -481,10 +481,9 @@
                           end
                         %>
                         <% if gpa > 0 %>
-                          <% total_grade_std = grades.count  %>
-                          <% grade_data = GradingLevel.percentage_to_grade(gpa, @batch.id) %>
+                          <% grade_data = GradingLevel.percentage_to_grade(gpa.to_f, @batch.id) %>
                           <% if !grade_data.blank? and !grade_data.name.blank? %>
-                              <td><%= grade_data.name %> <%= gpa %></td>
+                              <td><%= grade_data.name %></td>
                           <% else %>
                               <td>-</td>
                           <% end %>

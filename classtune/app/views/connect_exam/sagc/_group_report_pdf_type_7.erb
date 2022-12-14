@@ -339,7 +339,7 @@
                             <% tota_mark_with_monthly = avg_mark+class_test_mark %>
                             
                               <td class="col-pdf no-warp">
-                                  <b><%= tota_mark_with_monthly.to_f.round.to_i %> <%= avg_mark %> <%= class_test_mark %></b>
+                                  <b><%= tota_mark_with_monthly.to_f.round.to_i %> <%= tota_mark_with_monthly %> <%= avg_mark %> <%= class_test_mark %></b>
                               </td>
                             <%
                               main_mark = (tota_mark_with_monthly.to_f.round/full_mark_all.to_f)*100

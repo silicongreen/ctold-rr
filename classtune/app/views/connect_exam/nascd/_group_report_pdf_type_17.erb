@@ -180,15 +180,15 @@
                          %>
                         
                          <td><% if has_first_term %>
-                          <% if main_mark > 79 && main_mark <= 100 %>
-                          Excellent
-                          <% elsif main_mark >= 60 && main_mark <= 79 %>
-                          Very Good
-                          <% elsif main_mark >= 50 && main_mark <= 59 %>
-                          Good
-                          <% else %>
-                          Need Improvement
-                          <% end %>
+                         <% if main_mark > 79 && main_mark <= 100 %>
+                         Excellent
+                         <% elsif main_mark >= 70 && main_mark <= 79 %>
+                         Very Good
+                         <% elsif main_mark >= 60 && main_mark <= 69 %>
+                         Good 
+                         <% else %>
+                         Need Improvement
+                         <% end %>
                          
                          <% end %>
                          </td>
@@ -246,9 +246,9 @@
                          
                          <% if main_mark > 79 && main_mark <= 100 %>
                          Excellent
-                         <% elsif main_mark >= 60 && main_mark <= 79 %>
+                         <% elsif main_mark >= 70 && main_mark <= 79 %>
                          Very Good
-                         <% elsif main_mark >= 50 && main_mark <= 59 %>
+                         <% elsif main_mark >= 60 && main_mark <= 69 %>
                          Good 
                          <% else %>
                          Need Improvement

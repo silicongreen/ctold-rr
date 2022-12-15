@@ -648,7 +648,7 @@
                                 <% end %> 
                                 <% avg_mark = main_exam_mark.to_f*1 %>
 
-                                <% tota_mark_with_monthly = avg_mark+class_test_mark  %>
+                                <% tota_mark_with_monthly = main_exam_mark+class_test_mark  %>
                                 <%
                                 main_mark3 = (tota_mark_with_monthly.to_f.round/full_mark_all.to_f)*100
                                 main_mark = (main_mark.to_f+main_mark3.to_f)/2.00

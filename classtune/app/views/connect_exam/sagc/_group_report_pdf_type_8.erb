@@ -741,18 +741,23 @@
                               <% @report_data['report']['exams'].each do |report| %>   
                                 <% if report['exam_category'] != '1' && report['quarter'] == '2' %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
+                                    <% if report['exam_category'] != '3'  %>
                                     <%  main_exam_mark2 = main_exam_mark2+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <% end %>
                                     <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
                                     <% if report['exam_category'] == '3'  %>
                                       <%
-                                      converted_mark = 0
-                                        if full_sb2 > 0
+                                        converted_mark = 0
+                                        sb3_full_mark = report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i
+                                        if sb3_full_mark > 0
                                           sb_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                           converted = 60
-                                          if full_sb2.to_i == 100
+                                          if sb3_full_mark.to_i == 100
                                             converted = 90
                                           end
-                                          converted_mark = (sb_mark.to_f / full_sb2.to_i) * converted
+                                          converted_mark = (sb_mark.to_f / sb3_full_mark.to_i) * converted
+                                          converted_sb3_mark = converted_mark
+                                          main_exam_mark2 = main_exam_mark2+converted_mark.to_f
                                         end
                                       %>
                                       <td class="col-pdf"><%= sprintf( "%0.02f", converted_mark)%></td>
@@ -798,15 +803,9 @@
                                 <% end %>
                               <% end %>
                             <% end %>
-                            <td class="col-pdf no-warp">
-                                <%= main_exam_mark2.to_f.round.to_i %>
-                            </td>   
-                            <% avg_mark = main_exam_mark2.to_f*0.9 %>
+                            <% avg_mark = main_exam_mark2.to_f*1 %>
 
-                            <td class="col-pdf no-warp">
-                                <%= sprintf( "%0.02f", avg_mark)%>
-                            </td>
-                            <% tota_mark_with_monthly = avg_mark+class_test_mark2 %>
+                            <% tota_mark_with_monthly = main_exam_mark2+class_test_mark2 %>
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
                             </td>
@@ -869,8 +868,24 @@
                                   <% @report_data['report']['exams'].each do |report| %>   
                                     <% if report['exam_category'] != '1' && report['quarter'] == '2' %>
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].blank? %>                                   
+                                        <% if report['exam_category'] != '3'  %>
                                         <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
+                                        <% end %>
                                         <% if report['exam_category'] == '3'  %>
+                                        <%
+                                          converted_mark = 0
+                                          sb4_full_mark = report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i
+                                          if sb4_full_mark > 0
+                                            sb_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                            converted = 60
+                                            if sb4_full_mark.to_i == 100
+                                              converted = 90
+                                            end
+                                            converted_mark = (sb_mark.to_f / sb4_full_mark.to_i) * converted
+                                            converted_sb4_mark = converted_mark
+                                            main_exam_mark = main_exam_mark+converted_mark.to_f
+                                          end
+                                        %>
                                           <% sb = sb+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                           <% total_sb4 = total_sb4+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% elsif report['exam_category'] == '4' %>
@@ -1224,7 +1239,9 @@
                             <% if has_sb %>
                               <% if full_sb > 0 %>
                                 <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
+                                <td class="col-pdf"><%= sprintf( "%0.02f", converted_sb4_mark)%></td>
                               <% else %>
+                                <td class="col-pdf">-</td>
                                 <td class="col-pdf">-</td>
                               <% end %>
                             <% end %>

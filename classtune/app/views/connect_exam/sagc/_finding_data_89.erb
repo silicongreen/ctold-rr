@@ -1,6 +1,7 @@
 <%
 
  if @total_std.blank?
+  abort('here')
       if @grading_levels.blank?
         @grading_levels = GradingLevel.for_batch(@batch.id)
         if @grading_levels.blank?

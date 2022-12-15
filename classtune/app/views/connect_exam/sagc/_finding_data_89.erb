@@ -658,25 +658,25 @@
                       monthly_mark_combined = (monthly_total_mark1+monthly_total_mark2)/2.00
                       monthly_mark_combined = monthly_mark_combined.round()
                     end
-                    if monthly_full_mark1 == 20 
-                      if monthly_mark_combined < 9
-                        if fourth_subject.blank?
-                          u_grade = u_grade+1
-                          subject_failed = true
-                        else
-                          four_subject_failed = true
-                        end    
-                      end
-                    else
-                      if monthly_mark_combined < 13
-                        if fourth_subject.blank?
-                          u_grade = u_grade+1
-                          subject_failed = true
-                        else
-                          four_subject_failed = true
-                        end    
-                      end
-                    end
+                    #if monthly_full_mark1 == 20 
+                    #  if monthly_mark_combined < 9
+                    #    if fourth_subject.blank?
+                    #      u_grade = u_grade+1
+                    #      subject_failed = true
+                    #    else
+                    #      four_subject_failed = true
+                    #    end    
+                    #  end
+                    #else
+                    #  if monthly_mark_combined < 13
+                    #    if fourth_subject.blank?
+                    #      u_grade = u_grade+1
+                    #      subject_failed = true
+                    #    else
+                    #      four_subject_failed = true
+                    #    end    
+                    #  end
+                    #end
                   end
                   
                   if monthly_full_mark1 > 5 && monthly_full_mark2 > 5  && @connect_exam_obj.result_type == 6

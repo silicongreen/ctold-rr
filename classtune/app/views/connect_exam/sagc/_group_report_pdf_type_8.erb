@@ -449,7 +449,7 @@
                                     <% end %>
 
                                   <% else %>
-                                    <td class="col-pdf">-</td>
+                                    <td class="col-pdf">-1</td>
                                   <% end %>
                                 <% end %>
                               <% end %>
@@ -529,9 +529,7 @@
                                   <% @report_data['report']['exams'].each do |report| %>   
                                     <% if report['exam_category'] != '1' && report['quarter'] == '1' %>
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].blank? %>                                   
-                                        <% if report['exam_category'] != '3'  %>
                                         <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
-                                        <% end %>
                                         <% if report['exam_category'] == '3'  %>
                                           <% total_sb2 = total_sb2+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                           <% if report['exam_category'] == '3'  %>
@@ -548,6 +546,7 @@
                                               main_exam_mark = main_exam_mark+converted_mark.to_f
                                             end
                                           %>
+                                          <% end %>
                                         <% elsif report['exam_category'] == '4' %>
                                           <% total_ob2 = total_ob2+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% elsif report['exam_category'] == '5' %>
@@ -2493,6 +2492,6 @@
 
 
   </div>
-  <% break %>                      
+                        <% break %>
 <% end %>
 

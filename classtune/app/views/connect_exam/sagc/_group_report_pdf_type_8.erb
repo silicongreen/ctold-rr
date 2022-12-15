@@ -888,6 +888,7 @@
                                             main_exam_mark = main_exam_mark+converted_mark.to_f
                                           end
                                         %>
+                                        <%= abort("HEHE") %>
                                           <% sb = sb+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                           <% total_sb4 = total_sb4+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% elsif report['exam_category'] == '4' %>

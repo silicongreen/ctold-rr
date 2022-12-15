@@ -463,7 +463,7 @@
                                     if total_mark_subject.round() > 40
                                       new_mark_to_add = total_mark_subject.round() -40
                                       total_mark_1 = total_mark_1+new_mark_to_add.round()
-                                      total_converted_new = total_converted_new+new_mark_to_add.round()
+                                      total_mark_con_1 = total_mark_con_1+new_mark_to_add.round()
                                       grade_sub = GradingLevel.percentage_to_grade(new_mark_to_add.round.to_f, @batch.id)
                                       if !grade_sub.blank? and !grade_sub.name.blank?
                                         %>
@@ -481,7 +481,7 @@
 
                                   <% else %>
                                     <% total_mark_1 = total_mark_1+total_mark_subject.round().to_f %>
-                                    <% total_converted_new = total_converted_new+total_converted_new.round().to_f %>
+                                    <% total_mark_con_1 = total_mark_con_1+total_converted_new.round().to_f %>
                                     <%
                                     grade_sub = GradingLevel.percentage_to_grade(total_converted_new.round.to_f, @batch.id)
                                     if !grade_sub.blank? and !grade_sub.name.blank?
@@ -508,8 +508,8 @@
                         </td>
                         
                         <%
-                          if total_subject > 0 and total_converted_new > 0
-                            gpa = total_converted_new.to_f/total_subject.to_f
+                          if total_subject > 0 and total_mark_con_1 > 0
+                            gpa = total_mark_con_1.to_f/total_subject.to_f
                           else
                             gpa = 0
                           end

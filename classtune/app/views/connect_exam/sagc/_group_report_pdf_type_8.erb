@@ -72,11 +72,11 @@
                         <% end %>  
                       <% end %>
                       <% colspan = colspan+6 %>
-                      <td class="col-pdf" colspan="<%= colspan %>">
+                      <td class="col-pdf" colspan="9">
                           <b>1st Term Exam - <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></b>
                       </td>
-                      <td class="col-pdf" colspan="<%= colspan %>"><b>2nd Term Exam - <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></b></td>
-                      <td class="col-pdf" colspan="<%= colspan-2 %>"><b>Aggregated Result</b></td>
+                      <td class="col-pdf" colspan="9"><b>2nd Term Exam - <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></b></td>
+                      <td class="col-pdf" colspan="9"><b>Aggregated Result</b></td>
 
                   </tr>
 
@@ -96,7 +96,7 @@
                         <% end %>  
                       <% end %>
                       <% colspan = colspan+2 %>
-                      <td class="col-pdf" colspan="<%= colspan %>" rowspan="1"><b>Examination</b></td>
+                      <td class="col-pdf" colspan="4" rowspan="1"><b>Examination</b></td>
                       <td class="col-pdf" rowspan="2"><b>Total</b></td>
                       <td class="col-pdf" rowspan="2"><b>Highest Marks</b></td>
                       <td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
@@ -111,7 +111,7 @@
                         <% end %>  
                       <% end %>
                       <% colspan = colspan+2 %>
-                      <td class="col-pdf" colspan="<%= colspan %>" rowspan="1"><b>Examination</b></td>
+                      <td class="col-pdf" colspan="4" rowspan="1"><b>Examination</b></td>
                       <td class="col-pdf" rowspan="2"><b>Total</b></td>
                       <td class="col-pdf" rowspan="2"><b>Highest Marks</b></td>
                       <td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
@@ -876,7 +876,7 @@
                                           converted_mark = 0
                                           sb4_full_mark = report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i
                                           if sb4_full_mark > 0
-                                            sb_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                            sb_mark = report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f
                                             converted = 60
                                             if sb4_full_mark.to_i == 100
                                               converted = 90
@@ -1402,7 +1402,7 @@
                                           converted_mark = 0
                                           sb4_full_mark = report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i
                                           if sb4_full_mark > 0
-                                            sb_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                            sb_mark = report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f
                                             converted = 60
                                             if sb4_full_mark.to_i == 100
                                               converted = 90
@@ -1444,7 +1444,6 @@
                                 <%
                                 main_mark = (tota_mark_with_monthly.to_f.round/full_mark_all.to_f)*100
                               %>
-                                          <%= abort('hehe')%>
                                 <% class_test_mark2 = 0 %>
                                 <% unless @report_data['report']['exams'].blank? %>  
                                   <% @report_data['report']['exams'].each do |report| %>   

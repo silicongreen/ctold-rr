@@ -671,7 +671,7 @@
                                       <% total_grade1 = total_grade1.to_f+new_grade_point.to_f %>
                                     <% end %>
                                   <% end %>
-                                  <td class="col-pdf" rowspan="2"><%= grade.name %> 1</td>
+                                  <td class="col-pdf" rowspan="2"><%= grade.name %></td>
                                   <td class="col-pdf" rowspan="2"><%= grade.credit_points %></td>
                                 <% else %>
                                   <td class="col-pdf" rowspan="2">-</td>
@@ -805,7 +805,6 @@
                                 <% end %>
                               <% end %>
                             <% end %>
-                            <% abort("jere") %>
                             <% avg_mark = main_exam_mark2.to_f*1 %>
 
                             <% tota_mark_with_monthly = main_exam_mark2+class_test_mark2 %>
@@ -1243,9 +1242,7 @@
                             <% if has_sb %>
                               <% if full_sb > 0 %>
                                 <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
-                                <td class="col-pdf"><%= sprintf( "%0.02f", converted_sb2_mark)%></td>
                               <% else %>
-                                <td class="col-pdf">-</td>
                                 <td class="col-pdf">-</td>
                               <% end %>
                             <% end %>
@@ -1472,7 +1469,7 @@
                                           converted_mark = 0
                                           sb4_full_mark = report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i
                                           if sb4_full_mark > 0
-                                            sb_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                            sb_mark = report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f
                                             converted = 60
                                             if sb4_full_mark.to_i == 100
                                               converted = 90
@@ -1482,6 +1479,7 @@
                                             main_exam_mark2 = main_exam_mark2+converted_mark.to_f
                                           end
                                         %>
+                                        <td class="col-pdf"><%= sprintf( "%0.02f", converted_mark)%></td>
                                         <% end %>
                                         <% if report['exam_category'] == '3'  %>
                                           <% total_sb3 = total_sb3+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
@@ -1562,9 +1560,7 @@
                                 <% if has_sb %>
                                   <% if full_sb > 0 %>
                                     <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
-                                    <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
                                   <% else %>
-                                    <td class="col-pdf">-</td>
                                     <td class="col-pdf">-</td>
                                   <% end %>
                                 <% end %>
@@ -2129,9 +2125,7 @@
                             <% if has_sb %>
                               <% if full_sb > 0 %>
                                 <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
-                                <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
                               <% else %>
-                                <td class="col-pdf">-</td>
                                 <td class="col-pdf">-</td>
                               <% end %>
                             <% end %>

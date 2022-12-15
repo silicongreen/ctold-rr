@@ -163,7 +163,6 @@
                       <% if has_pr == true %>
                         <td><b>PR</b></td>
                       <% end %> 
-                      <td rowspan="1"><b>Total</b></td>
                       <% if has_ob == true %>
                         <td><b>OB</b></td>
                       <% end %> 
@@ -174,8 +173,6 @@
                       <% if has_pr == true %>
                         <td><b>PR</b></td>
                       <% end %> 
-
-                      <td rowspan="1"><b>Total</b></td>
                   </tr>
 
                   <% total_grade = 0 %>
@@ -220,7 +217,7 @@
                         next
                       %>
                       <% end %>
-                      <%%>
+                      
                       <%
                       total_sb1 = 0
                       converted_sb1_mark = 0
@@ -283,7 +280,7 @@
                       monthly5 = 0
                       monthly6 = 0
                     %> 
-                    <%%>
+                    
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% main_mark3 = 0 %>
                           <% main_mark4 = 0 %>
@@ -888,7 +885,6 @@
                                             main_exam_mark = main_exam_mark+converted_mark.to_f
                                           end
                                         %>
-                                        <%= abort("HEHE") %>
                                           <% sb = sb+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                           <% total_sb4 = total_sb4+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% elsif report['exam_category'] == '4' %>
@@ -1621,12 +1617,12 @@
                       <% if has_pr %>
                         <% colspan = colspan+1 %>
                       <% end %>
-                      <td class="col-pdf align-left-baf" colspan="3"><b>Total Marks & Total GP</b></td>
-                      <td class="col-pdf" colspan="<%= colspan %>"></td>
-                      <td class="col-pdf no-warp" ><b><%= grand_total1 %></b></td>
+                      <td class="col-pdf align-left-baf" colspan="2"><b>Total Marks & Total GP</b></td>
+                      <td class="col-pdf" colspan="6"></td>
+                      <td class="col-pdf no-warp"><b><%= grand_total1 %></b></td>
                       <td class="col-pdf" colspan="2"></td>
                       <td class="col-pdf"><b><%= total_grade1 %></b></td>
-                      <td class="col-pdf" colspan="<%= colspan %>"></td>
+                      <td class="col-pdf" colspan="5"></td>
                       <td class="col-pdf no-warp" ><b><%= grand_total2 %></b></td>
                       <td class="col-pdf" colspan="2"></td>
                       <td class="col-pdf"><b><%= total_grade2 %></b></td>

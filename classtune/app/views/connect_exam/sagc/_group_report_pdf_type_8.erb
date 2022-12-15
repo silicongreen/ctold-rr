@@ -1227,9 +1227,6 @@
                                 failed = true
                                 grade.credit_points = 0.0
                                 grade.name = "F" 
-                                elsif failed_subject3_fourth == true
-                                grade.credit_points = 0.0
-                                grade.name = "F" 
                                 end
                               if fourth_subject.blank?
                                 total_grade = total_grade.to_f+grade.credit_points.to_f 
@@ -2164,9 +2161,6 @@
 
                             if !grade.blank? and !grade.name.blank?
                               if  failed_subject3 == true
-                                grade.credit_points = 0.0
-                                grade.name = "F" 
-                                elsif failed_subject3_fourth == true
                                 grade.credit_points = 0.0
                                 grade.name = "F" 
                                 end

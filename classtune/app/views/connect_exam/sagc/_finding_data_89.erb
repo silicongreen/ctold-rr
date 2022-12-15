@@ -1603,7 +1603,8 @@
                     if full_mark2 > 0 && monthly_full_mark2 != 0
                       full_mark2 = full_mark2+20
                     end
-                    if std['id'].to_i == 21667 and sub['code'] != 'Bang-1' and sub['code'] != 'Eng-1'
+                    #and sub['code'] != 'Bang-1' and sub['code'] != 'Eng-1'
+                    if std['id'].to_i == 21667 
                       abort(sub['code'].to_s + "  " + total_mark1_no_round.to_s + "  " + main_mark_no_round.to_s)
                     end
                     #if @connect_exam_obj.result_type == 8

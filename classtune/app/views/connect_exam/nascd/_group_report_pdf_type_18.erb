@@ -254,12 +254,17 @@
                          <td><% if has_final_term %><%= total.round.to_i %><% end %></td>
                           <%  grade = GradingLevel.percentage_to_grade(combined_total.round.to_i, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>
-                            <% if grade.credit_points.to_i == 0 %>
+                            <% if grade.credit_points.to_i == 0 || combined_total.round.to_i < 60 %>
                               <% failed = true %>
                             <% end %>
+                            <% if failed %>
+                            <td class="col-pdf">F</td>
+                            <td class="col-pdf">0.0</td>
+                            <% else %>
                             <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
                             <td class="col-pdf"><%= grade.name %></td>
                             <td class="col-pdf"><%= grade.credit_points %></td>
+                            <% end %>
                           <% else %>
                             <td class="col-pdf">-</td>
                             <td class="col-pdf">-</td>

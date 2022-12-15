@@ -429,8 +429,12 @@
                                   <%
                                     grade_sub = GradingLevel.percentage_to_grade(total_mark.round.to_f, @batch.id)
                                     if !grade_sub.blank? and !grade_sub.name.blank?
+                                      if main_mark.to_i < 60
                                       %>
+                                      F  
+                                      <% else %>
                                       <%= grade_sub.name %>
+                                      <% end %>
                                       <%
                                     else
                                       %>
@@ -459,6 +463,10 @@
                         %>
                         <% if gpa > 0 %>
                           <% total_grade_std = grades.count  %>
+                          <% if gpa.to_i < 60 %> 
+                          <td>F</td>
+                          <td>0.0</td>
+                          <% else %> 
                           <% grade_data = GradingLevel.percentage_to_grade(gpa, @batch.id) %>
                           <% if !grade_data.blank? and !grade_data.name.blank? %>
                               <td><%= grade_data.name %></td>
@@ -467,6 +475,7 @@
                               <td>-</td>
                               <td>-</td>
                           <% end %>
+                        <% end %>
                         <% end %>
 
 

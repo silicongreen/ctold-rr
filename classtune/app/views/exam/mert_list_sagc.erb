@@ -55,7 +55,11 @@ end
       @tabulation_data = student_response['data']  
     end
   end
-  render  :partial=>"/connect_exam/sagc/finding_data_5"
+  if @connect_exam_obj.result_type.to_i == 8 
+    render  :partial=>"/connect_exam/sagc/finding_data_5-n"
+  else
+    render  :partial=>"/connect_exam/sagc/finding_data_5"
+  end
   @student_position_first_term = @student_position
   @student_position_first_term_batch = @student_position_batch
   @std_resutl = []
@@ -96,7 +100,11 @@ end
       @tabulation_data = student_response['data'] 
     end
   end
-  render  :partial=>"/connect_exam/sagc/finding_data_5"
+  if @connect_exam_obj.result_type.to_i == 8 
+    render  :partial=>"/connect_exam/sagc/finding_data_5-n"
+  else
+    render  :partial=>"/connect_exam/sagc/finding_data_5"
+  end
 
   @student_position_first_term_batch = @student_position
 

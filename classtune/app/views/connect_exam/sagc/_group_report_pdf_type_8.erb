@@ -539,18 +539,19 @@
                                           <% total_sb2 = total_sb2+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                           <% if report['exam_category'] == '3'  %>
                                           <%
+                                            sb3_full_mark = report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i
                                             converted_mark = 0
-                                            if full_sb2 > 0
-                                              sb_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                            if sb3_full_mark > 0
+                                              sb_mark = report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f
                                               converted = 60
-                                              if full_sb2.to_i == 100
+                                              if sb3_full_mark.to_i == 100
                                                 converted = 90
-                                              elsif full_sb2.to_i == 50
+                                              elsif sb3_full_mark.to_i == 50
                                                   converted = 40
-                                              elsif full_sb2.to_i == 25
+                                              elsif sb3_full_mark.to_i == 25
                                                   converted = 20
                                               end
-                                              converted_mark = (sb_mark.to_f / full_sb2.to_i) * converted
+                                              converted_mark = (sb_mark.to_f / sb3_full_mark.to_i) * converted
                                               converted_sb2_mark = converted_mark
                                               main_exam_mark = main_exam_mark+converted_mark.to_f
                                             end

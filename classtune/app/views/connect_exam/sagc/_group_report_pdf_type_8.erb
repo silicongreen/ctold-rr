@@ -1053,32 +1053,34 @@
                             if  total_sb1 > 0 or  total_sb3> 0
                               total_sb5 = (total_sb1+total_sb3)/2.00
                               sb_marks = sb_marks+total_sb5
+                              converted_sb5_mark = converted_sb1_mark+converted_sb3_mark
 
-                              converted_mark = 0
-                              sb4_full_mark = full_sb.to_i / 2
-                              if sb4_full_mark > 0
-                                converted = sb4_full_mark - 10
-                                if sb4_full_mark.to_i == 25
-                                  converted = 20
-                                end
-                                converted_mark = (total_sb5.to_f / sb4_full_mark.to_i) * converted
-                                converted_sb5_mark = converted_mark
-                              end
+                              #converted_mark = 0
+                              #sb4_full_mark = full_sb.to_i / 2
+                              #if sb4_full_mark > 0
+                              #  converted = sb4_full_mark - 10
+                              #  if sb4_full_mark.to_i == 25
+                              #    converted = 20
+                              #  end
+                              #  converted_mark = (total_sb5.to_f / sb4_full_mark.to_i) * converted
+                              #  converted_sb5_mark = converted_mark
+                              #end
 
                             end
                             if  total_sb2 > 0 or  total_sb4> 0
                               total_sb6 = (total_sb2+total_sb4)/2.00
                               sb_marks = sb_marks+total_sb6
-                              converted_mark = 0
-                              sb4_full_mark = full_sb.to_i / 2
-                              if sb4_full_mark > 0
-                                converted = sb4_full_mark - 10
-                                if sb4_full_mark.to_i == 25
-                                  converted = 20
-                                end
-                                converted_mark = (total_sb6.to_f / sb4_full_mark.to_i) * converted
-                                converted_sb6_mark = converted_mark
-                              end
+                              converted_sb6_mark = converted_sb2_mark+converted_sb4_mark
+                              #converted_mark = 0
+                              #sb4_full_mark = full_sb.to_i / 2
+                              #if sb4_full_mark > 0
+                              #  converted = sb4_full_mark - 10
+                              #  if sb4_full_mark.to_i == 25
+                              #    converted = 20
+                              #  end
+                              #  converted_mark = (total_sb6.to_f / sb4_full_mark.to_i) * converted
+                              #  converted_sb6_mark = converted_mark
+                              #end
                             end
 
                             if  total_ob1 > 0 or  total_ob3> 0
@@ -1118,19 +1120,19 @@
                             
                             
                             
-                            if monthly_full_mark_combined1.round() < pass_mark_monthly && fourth_subject.blank?
-                                failed_subject3 = true
-                            elsif monthly_full_mark_combined1.round() < pass_mark_monthly && !fourth_subject.blank?
-                                failed_subject3_fourth = true
-                            end
+                            #if monthly_full_mark_combined1.round() < pass_mark_monthly && fourth_subject.blank?
+                            #    failed_subject3 = true
+                            #elsif monthly_full_mark_combined1.round() < pass_mark_monthly && !fourth_subject.blank?
+                            #    failed_subject3_fourth = true
+                            #end
                           
-                            if subjects['subject_group_id'].to_i > 0
-                              if monthly_full_mark_combined2.round() < pass_mark_monthly && fourth_subject.blank?
-                                failed_subject3 = true
-                              elsif monthly_full_mark_combined2.round() < pass_mark_monthly && !fourth_subject.blank?
-                                failed_subject3_fourth = true
-                              end
-                            end
+                            #if subjects['subject_group_id'].to_i > 0
+                            #  if monthly_full_mark_combined2.round() < pass_mark_monthly && fourth_subject.blank?
+                            #    failed_subject3 = true
+                            #  elsif monthly_full_mark_combined2.round() < pass_mark_monthly && !fourth_subject.blank?
+                            #    failed_subject3_fourth = true
+                            #  end
+                            #end
 
 
 
@@ -1427,7 +1429,7 @@
                                                 converted = 20
                                             end
                                             converted_mark = (sb_mark.to_f / sb4_full_mark.to_i) * converted
-                                            converted_sb4_mark = converted_mark
+                                            converted_sb1_mark = converted_mark
                                             main_exam_mark1 = main_exam_mark1+converted_mark.to_f
                                           end
                                         %>
@@ -1498,7 +1500,7 @@
                                               converted = 20
                                             end
                                             converted_mark = (sb_mark.to_f / sb4_full_mark.to_i) * converted
-                                            converted_sb4_mark = converted_mark
+                                            converted_sb3_mark = converted_mark
                                             main_exam_mark2 = main_exam_mark2+converted_mark.to_f
                                           end
                                         %>
@@ -1538,24 +1540,25 @@
                                 if  total_sb1 > 0 or  total_sb3> 0
                                   total_sb5 = (total_sb1+total_sb3)/2.00
                                   sb_marks = sb_marks+total_sb5
-
-                                  converted_mark = 0
-                                  sb4_full_mark = (full_sb1.to_i + full_sb3.to_i) / 2
-                                  if sb4_full_mark > 0
-                                    converted = sb4_full_mark - 10
-                                    if sb4_full_mark.to_i == 25
-                                      converted = 20
-                                    end
-                                    converted_mark = (total_sb5.to_f / sb4_full_mark.to_i) * converted
-                                    converted_sb5_mark = converted_mark
-                                  end
+                                  converted_sb5_mark = (converted_sb1_mark+converted_sb3_mark)/2
+                                  #converted_mark = 0
+                                  #sb4_full_mark = (full_sb1.to_i + full_sb3.to_i) / 2
+                                  #if sb4_full_mark > 0
+                                  #  converted = sb4_full_mark - 10
+                                  #  if sb4_full_mark.to_i == 25
+                                  #    converted = 20
+                                  #  end
+                                  #  converted_mark = (total_sb5.to_f / sb4_full_mark.to_i) * converted
+                                  #  converted_sb5_mark = converted_mark
+                                  #end
 
                                   
                                   end
                                 if  total_sb2 > 0 or  total_sb4> 0
                                   total_sb6 = (total_sb2+total_sb4)/2.00
                                   sb_marks = sb_marks+total_sb6
-                                  end
+                                  converted_sb6_mark = (converted_sb2_mark+converted_sb4_mark)/2
+                                end
                                 if  total_ob1 > 0 or  total_ob3> 0
                                   total_ob5 = (total_ob1+total_ob3)/2.00
                                   ob_marks = ob_marks+total_ob5
@@ -1578,7 +1581,7 @@
                                   end
 
 
-                                total_mark_all = (total_sb5+total_ob5+total_pr5)*0.9
+                                total_mark_all = (converted_sb5_mark+total_ob5+total_pr5)*1
                                 total_marks_ag = total_mark_all+monthly5
                                 total_marks_ag = total_marks_ag.round()
 
@@ -2043,16 +2046,17 @@
                             if  total_sb1 > 0 or  total_sb3> 0
                               total_sb5 = (total_sb1+total_sb3)/2.00
                               sb_marks = sb_marks+total_sb5
-                              converted_mark = 0
-                              sb4_full_mark = full_sb / 2
-                              if sb4_full_mark > 0
-                                converted = sb4_full_mark - 10
-                                if sb4_full_mark.to_i == 25
-                                  converted = 20
-                                end
-                                converted_mark = (total_sb5.to_f / sb4_full_mark.to_i) * converted
-                                converted_sb5_mark = converted_mark
-                              end
+                              converted_sb5_mark = converted_sb1_mark+converted_sb3_mark
+                              #converted_mark = 0
+                              #sb4_full_mark = full_sb / 2
+                              #if sb4_full_mark > 0
+                              #  converted = sb4_full_mark - 10
+                              #  if sb4_full_mark.to_i == 25
+                              #    converted = 20
+                              #  end
+                              #  converted_mark = (total_sb5.to_f / sb4_full_mark.to_i) * converted
+                              #  converted_sb5_mark = converted_mark
+                              #end
 
                             end
 
@@ -2138,7 +2142,7 @@
                               end 
                               end
 
-                            total_mark_all = (total_sb5+total_ob5+total_pr5)*1
+                            total_mark_all = (converted_sb5_mark+total_ob5+total_pr5)*1
                             total_marks_ag = total_mark_all+monthly5
 
                             total_marks_ag = total_marks_ag.round()

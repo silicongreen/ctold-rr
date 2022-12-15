@@ -398,12 +398,14 @@
                                 conv_mcw = conv_mcw.round()
                             end
                             total_converted = total
+                            total_converted_new = total
                             if full_term > 0
                               if full_term.to_i == 100
                                 total_converted = (total.to_f/full_term.to_f)*75
                                 total_converted = total_converted.round
                               elsif full_term.to_i == 50 && full_mark_ct <= 20
                                 total_converted = (total.to_f/full_term.to_f)*35
+                                total_converted_new = (total.to_f/full_term.to_f)*100
                                 total_converted = total_converted.round
                                 full_mark_all = 50
                               end
@@ -478,7 +480,7 @@
                                   <% else %>
                                     <% total_mark_1 = total_mark_1+total_mark_subject.round().to_f %>
                                     <%
-                                    grade_sub = GradingLevel.percentage_to_grade(total_mark_subject.round.to_f, @batch.id)
+                                    grade_sub = GradingLevel.percentage_to_grade(total_converted_new.round.to_f, @batch.id)
                                     if !grade_sub.blank? and !grade_sub.name.blank?
                                       %>
                                       <hr/>

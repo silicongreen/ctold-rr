@@ -398,7 +398,7 @@
                                     <% if report['exam_category'] != '3'  %>
                                     <% main_exam_mark1 = main_exam_mark1+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% end %> 
-                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %> M</td>
                                     <% if report['exam_category'] == '3'  %>
                                       <%
                                         converted_mark = 0
@@ -449,7 +449,7 @@
                                     <% end %>
 
                                   <% else %>
-                                    <td class="col-pdf">-1</td>
+                                    <td class="col-pdf">-</td>
                                   <% end %>
                                 <% end %>
                               <% end %>

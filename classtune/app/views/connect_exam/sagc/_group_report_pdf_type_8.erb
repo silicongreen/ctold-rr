@@ -1661,7 +1661,6 @@
                       <% if has_pr %>
                         <% colspan = colspan+1 %>
                       <% end %>
-                      <%= abort("ejre")%>
                       <td class="col-pdf align-left-baf" colspan="2"><b>Total Marks & Total GP</b></td>
                       <td class="col-pdf" colspan="6"></td>
                       <td class="col-pdf no-warp"><b><%= grand_total1 %></b></td>
@@ -1861,6 +1860,7 @@
                                     <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
                                     <% if report['exam_category'] == '3'  %>
                                       <% total_sb1 = total_sb1+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                      <td class="col-pdf">-</td>
                                     <% elsif report['exam_category'] == '4' %>
                                       <% total_ob1 = total_ob1+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% elsif report['exam_category'] == '5' %>

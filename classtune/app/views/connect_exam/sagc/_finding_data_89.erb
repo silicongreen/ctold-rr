@@ -879,6 +879,9 @@
                   end
                   total_mark1 = total_ob1+total_sb1+total_pr1+monthly_total_mark1
                   total_mark2 = total_ob2+total_sb2+total_pr2+monthly_total_mark2
+                  if std['id'].to_i == 21667
+                    abort(total_mark1.to_s + "  " + total_mark2.to_s)
+                  end
                 end
                   
                 total_mark2_no_round = total_mark2

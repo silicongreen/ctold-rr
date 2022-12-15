@@ -1860,7 +1860,6 @@
                                     <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
                                     <% if report['exam_category'] == '3'  %>
                                       <% total_sb1 = total_sb1+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                      <td class="col-pdf">-</td>
                                     <% elsif report['exam_category'] == '4' %>
                                       <% total_ob1 = total_ob1+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% elsif report['exam_category'] == '5' %>
@@ -1900,7 +1899,7 @@
                             <% end %>
                             <% avg_mark = main_exam_mark1.to_f*1 %>
 
-                            
+                            <td class="col-pdf">-</td>
                             <% tota_mark_with_monthly = main_exam_mark1+class_test_mark1 %>
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>

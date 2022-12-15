@@ -449,7 +449,7 @@
                                     <% end %>
 
                                   <% else %>
-                                    <td class="col-pdf">1-</td>
+                                    <td class="col-pdf">-</td>
                                   <% end %>
                                 <% end %>
                               <% end %>
@@ -703,8 +703,8 @@
                                 <td class="col-pdf"><%= grade.name %></td>
                                 <td class="col-pdf"><%= grade.credit_points %></td>
                               <% else %>
-                                <td class="col-pdf">2-</td>
-                                <td class="col-pdf">3-</td>
+                                <td class="col-pdf">-</td>
+                                <td class="col-pdf">-</td>
                               <% end %>
                             <% end %> 
 
@@ -798,7 +798,7 @@
                                       <% end %>
                                     <% end %>
                                   <% else %>
-                                    <td class="col-pdf">4-</td>
+                                    <td class="col-pdf">-</td>
                                   <% end %>
                                 <% end %>
                               <% end %>
@@ -886,6 +886,7 @@
                                             main_exam_mark = main_exam_mark+converted_mark.to_f
                                           end
                                         %>
+                                          <td class="col-pdf"><%= sprintf( "%0.02f", converted_mark)%></td>
                                           <% sb = sb+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                           <% total_sb4 = total_sb4+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% elsif report['exam_category'] == '4' %>
@@ -1042,8 +1043,8 @@
                                 <td class="col-pdf"><%= grade.name %></td>
                                 <td class="col-pdf"><%= grade.credit_points %></td>
                               <% else %>
-                                <td class="col-pdf">5-</td>
-                                <td class="col-pdf">6-</td>
+                                <td class="col-pdf">-</td>
+                                <td class="col-pdf">-</td>
                               <% end %>
                             <% end %>  
 
@@ -1233,7 +1234,7 @@
                               <% if full_ob > 0 %>
                                 <td class="col-pdf"><%= sprintf( "%0.02f", total_ob5)%></td>
                               <% else %>
-                                <td class="col-pdf">7-</td>
+                                <td class="col-pdf">-</td>
                               <% end %>
                             <% end %>
                             <% if has_sb %>
@@ -1241,15 +1242,15 @@
                                 <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
                                 <td class="col-pdf"><%= sprintf( "%0.02f", converted_sb2_mark)%></td>
                               <% else %>
-                                <td class="col-pdf">8-</td>
-                                <td class="col-pdf">9-</td>
+                                <td class="col-pdf">-</td>
+                                <td class="col-pdf">-</td>
                               <% end %>
                             <% end %>
                             <% if has_pr %>
                               <% if full_pr > 0 %>
                                 <td class="col-pdf"><%= sprintf( "%0.02f", total_pr5)%></td>
                               <% else %>
-                                <td class="col-pdf">10-</td>
+                                <td class="col-pdf">-</td>
                               <% end %>
                             <% end %>
                             <td class="col-pdf"><%= total_marks_ag.round().to_i %></td>
@@ -1411,6 +1412,7 @@
                                             main_exam_mark1 = main_exam_mark1+converted_mark.to_f
                                           end
                                         %>
+                                        <td class="col-pdf"><%= sprintf( "%0.02f", converted_mark)%></td>
                                         <% end %>
                                         <% if report['exam_category'] == '3'  %>
                                           <% total_sb1 = total_sb1+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
@@ -1420,7 +1422,7 @@
                                           <% total_pr1 = total_pr1+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% end %> 
                                       <% else %>
-                                        <td class="col-pdf">11-</td>
+                                        <td class="col-pdf">-</td>
                                       <% end %>
                                     <% end %>
                                   <% end %>
@@ -1494,7 +1496,7 @@
                                         <% end %>
 
                                       <% else %>
-                                        <td class="col-pdf">12-</td>
+                                        <td class="col-pdf">-</td>
                                       <% end %>
                                     <% end %>
                                   <% end %>
@@ -1558,7 +1560,7 @@
                                   <% if full_ob > 0 %>
                                     <td class="col-pdf"><%= sprintf( "%0.02f", total_ob5)%></td>
                                   <% else %>
-                                    <td class="col-pdf">14-</td>
+                                    <td class="col-pdf">-</td>
                                   <% end %>
                                 <% end %>
                                 <% if has_sb %>
@@ -1566,15 +1568,15 @@
                                     <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
                                     <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
                                   <% else %>
-                                    <td class="col-pdf">15-</td>
-                                    <td class="col-pdf">16-</td>
+                                    <td class="col-pdf">-</td>
+                                    <td class="col-pdf">-</td>
                                   <% end %>
                                 <% end %>
                                 <% if has_pr %>
                                   <% if full_pr > 0 %>
                                     <td class="col-pdf"><%= sprintf( "%0.02f", total_pr5)%></td>
                                   <% else %>
-                                    <td class="col-pdf">17-</td>
+                                    <td class="col-pdf">-</td>
                                   <% end %>
                                 <% end %>
                                 <td class="col-pdf"><%= total_marks_ag.round().to_i %></td>
@@ -1858,7 +1860,7 @@
                                     <% end %>
 
                                   <% else %>
-                                    <td class="col-pdf">18-</td>
+                                    <td class="col-pdf">-</td>
                                   <% end %>
                                 <% end %>
                               <% end %>
@@ -1899,8 +1901,8 @@
                               <td class="col-pdf"><%= grade.name %></td>
                               <td class="col-pdf"><%= grade.credit_points %></td>
                             <% else %>
-                              <td class="col-pdf">19-</td>
-                              <td class="col-pdf">20-</td>
+                              <td class="col-pdf">-</td>
+                              <td class="col-pdf">-</td>
                             <% end %>
 
                             <%  sb = 0 %>
@@ -1967,7 +1969,7 @@
                                       <% end %>
                                     <% end %>
                                   <% else %>
-                                    <td class="col-pdf">21-</td>
+                                    <td class="col-pdf">-</td>
                                   <% end %>
                                 <% end %>
                               <% end %>
@@ -2006,8 +2008,8 @@
                               <td class="col-pdf"><%= grade.name %></td>
                               <td class="col-pdf"><%= grade.credit_points %></td>
                             <% else %>
-                              <td class="col-pdf">22-</td>
-                              <td class="col-pdf">23-</td>
+                              <td class="col-pdf">-</td>
+                              <td class="col-pdf">-</td>
                             <% end %> 
 
                             <% 
@@ -2137,7 +2139,7 @@
                               <% if full_ob > 0 %>
                                 <td class="col-pdf"><%= sprintf( "%0.02f", total_ob5)%></td>
                               <% else %>
-                                <td class="col-pdf">24-</td>
+                                <td class="col-pdf">-</td>
                               <% end %>
                             <% end %>
                             <% if has_sb %>
@@ -2145,16 +2147,15 @@
                                 <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
                                 <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
                               <% else %>
-                                <td class="col-pdf">25-</td>
-                                <td class="col-pdf">26-</td>
+                                <td class="col-pdf">-</td>
+                                <td class="col-pdf">-</td>
                               <% end %>
                             <% end %>
-                            <%= abort("hehe")%>
                             <% if has_pr %>
                               <% if full_pr > 0 %>
                                 <td class="col-pdf"><%= sprintf( "%0.02f", total_pr5)%></td>
                               <% else %>
-                                <td class="col-pdf">27-</td>
+                                <td class="col-pdf">-</td>
                               <% end %>
                             <% end %>
                             <td class="col-pdf"><%= total_marks_ag.round().to_i %></td>

@@ -875,6 +875,7 @@
                     total_sb1 = (total_sb1.to_f/full_sb1.to_f)*full_mark_sb1_converted.to_f
                   end
                   if total_sb2 > 0
+                    total_sb2_n = total_sb2
                     total_sb2 = (total_sb2.to_f/full_sb2.to_f)*full_mark_sb2_converted.to_f
                   end
                   monthly_total_mark1_converted = monthly_total_mark1 / 3
@@ -882,7 +883,7 @@
                   total_mark1 = total_ob1+total_sb1+total_pr1+monthly_total_mark1_converted
                   total_mark2 = total_ob2+total_sb2+total_pr2+monthly_total_mark2_converted
                   if std['id'].to_i == 21667
-                    abort(total_mark2.to_s + "  " + total_ob2.to_s + "  " + total_sb2.to_s + "  " + total_pr2.to_s + "  " + monthly_total_mark2_converted.to_s)
+                    abort(total_mark2.to_s + "  " + total_ob2.to_s + "  " + total_sb2_n.to_s + "  " + full_sb2.to_s + "  " + full_mark_sb2_converted.to_s + "  " + monthly_total_mark2.to_s)
                   end
                 end
                   

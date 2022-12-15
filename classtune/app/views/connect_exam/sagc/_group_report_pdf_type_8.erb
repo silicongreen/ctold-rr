@@ -378,6 +378,7 @@
                                 <% end %>
                               <% end %>
                             <% end %>
+                            <%= abort('here') %>
                             <% ct1 = class_test_mark1 %>
                             <% if class_test_mark1 < pass_mark_monthly && fourth_subject.blank? %>
                               <% failed1 = true %>
@@ -410,7 +411,7 @@
                                           end
                                           converted_mark = (sb_mark.to_f / full_sb1.to_i) * converted
                                           converted_sb1_mark = converted_mark
-                                          main_exam_mark1 = main_exam_mark1+converted_sb1_mark.to_f
+                                          main_exam_mark1 = main_exam_mark1+converted_mark.to_f
                                         end
                                       %>
                                       <td class="col-pdf"><%= sprintf( "%0.02f", converted_mark)%></td>
@@ -454,13 +455,10 @@
                                 <% end %>
                               <% end %>
                             <% end %>
-                            <td class="col-pdf no-warp">
-                                <%= main_exam_mark1.to_f.round.to_i %>
-                            </td>   
                             <% avg_mark = main_exam_mark1.to_f %>
 
 
-                            <% tota_mark_with_monthly = avg_mark+class_test_mark1 %>
+                            <% tota_mark_with_monthly = main_exam_mark1+class_test_mark1 %>
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
                             </td>
@@ -532,9 +530,25 @@
                                   <% @report_data['report']['exams'].each do |report| %>   
                                     <% if report['exam_category'] != '1' && report['quarter'] == '1' %>
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].blank? %>                                   
+                                        <% if report['exam_category'] != '3'  %>
                                         <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
+                                        <% end %>
                                         <% if report['exam_category'] == '3'  %>
                                           <% total_sb2 = total_sb2+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
+                                          <% if report['exam_category'] == '3'  %>
+                                          <%
+                                            converted_mark = 0
+                                            if full_sb2 > 0
+                                              sb_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                              converted = 60
+                                              if full_sb2.to_i == 100
+                                                converted = 90
+                                              end
+                                              converted_mark = (sb_mark.to_f / full_sb2.to_i) * converted
+                                              converted_sb2_mark = converted_mark
+                                              main_exam_mark = main_exam_mark+converted_mark.to_f
+                                            end
+                                          %>
                                         <% elsif report['exam_category'] == '4' %>
                                           <% total_ob2 = total_ob2+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% elsif report['exam_category'] == '5' %>

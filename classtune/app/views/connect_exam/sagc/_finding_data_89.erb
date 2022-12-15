@@ -658,25 +658,6 @@
                       monthly_mark_combined = (monthly_total_mark1+monthly_total_mark2)/2.00
                       monthly_mark_combined = monthly_mark_combined.round()
                     end
-                    #if monthly_full_mark1 == 20 
-                    #  if monthly_mark_combined < 9
-                    #    if fourth_subject.blank?
-                    #      u_grade = u_grade+1
-                    #      subject_failed = true
-                    #    else
-                    #      four_subject_failed = true
-                    #    end    
-                    #  end
-                    #else
-                    #  if monthly_mark_combined < 13
-                    #    if fourth_subject.blank?
-                    #      u_grade = u_grade+1
-                    #      subject_failed = true
-                    #    else
-                    #      four_subject_failed = true
-                    #    end    
-                    #  end
-                    #end
                   end
                   
                   
@@ -686,43 +667,12 @@
                 
                
                 term_mark_multiplier = 0.75
-                if @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4
-                  if @batch.course.course_name == "One" or @batch.course.course_name == "Two"
-                    term_mark_multiplier = 1
-                  else
-                    term_mark_multiplier = 0.8
-                  end
-                end
                 if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
                   if monthly_full_mark1 > 0 or monthly_full_mark2 > 0
                     term_mark_multiplier = 0.90
                   else
                     term_mark_multiplier = 1
                   end
-                end
-                
-                if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6 or sub['grade_subject'].to_i == 1
-                  term_mark_multiplier = 1.00
-                end
-                
-                if sub['name'].upcase == "ICT" and @connect_exam_obj.result_type == 9
-                  term_mark_multiplier = 1.00
-                end
-                
-                
-                total_mark2 = total_ob2+total_sb2+total_pr2
-                total_mark2_80 = total_mark2.to_f
-                if full_mark2 > 100 or term_mark_multiplier == 0.80 or term_mark_multiplier == 0.90
-                  total_mark2_80 = total_mark2.to_f*term_mark_multiplier
-                end  
-                
-                total_mark1 = total_ob1+total_sb1+total_pr1
-                #if std['id'].to_s == "39081"
-                ##  abort(total_mark1.to_s + "  " + total_sb1.to_s + "  " + monthly_total_mark1.to_s + "  " + at_total_mark1.to_s)
-                #end
-                total_mark1_80 = total_mark1.to_f
-                if full_mark1 > 100 or term_mark_multiplier == 0.80 or term_mark_multiplier == 0.90
-                  total_mark1_80 = total_mark1.to_f*term_mark_multiplier
                 end
                 
                 monthly_mark_multiply = 20
@@ -744,9 +694,6 @@
                   monthly_mark_multiply2 = 10
                 end 
                 total_mark_grade_check = total_ob1+total_sb1+total_pr1
-                if sub['grade_subject'].to_i == 1 and @connect_exam_obj.result_type == 3 and monthly_full_mark1 == 20
-                  monthly_mark_multiply = 20
-                end
                 
                 if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
                   monthly_mark_multiply = monthly_mark_multiply/2
@@ -755,7 +702,7 @@
                 monthly_total_main_mark1 = monthly_total_mark1
                 monthly_total_main_mark2 = monthly_total_mark2
                 
-                if @connect_exam_obj.result_type != 5 and @connect_exam_obj.result_type != 6 and @connect_exam_obj.result_type != 1  and @connect_exam_obj.result_type != 2
+                if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
                   if monthly_total_mark1 > 0
                     #monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*monthly_mark_multiply
                     #monthly_total_mark1 = monthly_total_mark1.round()
@@ -791,7 +738,7 @@
                 total_sb1_main = total_sb1
                 total_sb2_main = total_sb2
                 # or (@connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE")
-                if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6 or @connect_exam_obj.result_type == 8
+                if @connect_exam_obj.result_type == 8 or @connect_exam_obj.result_type == 7
                   full_mark_sb1_converted = full_mark1-full_pr1-full_ob1-monthly_full_mark1
                   full_mark_sb2_converted = full_mark2-full_pr2-full_ob2-monthly_full_mark2
                   if total_sb1 > 0
@@ -842,7 +789,7 @@
                   subject_mark = subject_mark.round()
                 elsif  exam_type == 2
                   
-                 
+                  
                   main_mark_no_round = total_mark2_no_round.to_f/full_mark2.to_f*100
                   subject_mark = total_mark2
                 else
@@ -946,95 +893,24 @@
                 if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['at'] = at_total_mark1+at_total_mark2
                   
-                  if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8 
-                    full_mark = 0
-                    full_mark_ob_7 = 0
-                    full_mark_sb_7 = 0
-                    full_mark_pr_7 = 0
-                    divider = 4
-                    class_test_mark = 0
-                    class_test_full_mark = 0
-                      tab['exams'].each do |report|   
-                        if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                          full_mark = full_mark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                        end
-                        if report['exam_category'] == '3'
-                          if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                            full_mark_sb_7 = full_mark_sb_7+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                          end
-                        end
-                        if report['exam_category'] == '4'
-                          if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                            full_mark_ob_7 = full_mark_ob_7+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                          end
-                        end
-                        if report['exam_category'] == '5'
-                          if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                            full_mark_pr_7 = full_mark_pr_7+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                          end
-                        end
-                        if report['exam_category'] == '1'
-                          if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?                                   
-                            class_test_mark = class_test_mark+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                          end
-                          if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                              class_test_full_mark = class_test_full_mark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                            end
-                        end
-                      end
-                      full_sb_ob_pr = 0
-                      if full_mark_sb_7 > 0
-                        full_sb_ob_pr = full_sb_ob_pr+full_mark_sb_7
-                      end
-                      if full_mark_ob_7 > 0
-                        full_sb_ob_pr = full_sb_ob_pr+full_mark_ob_7
-                      end
-                      if full_mark_pr_7 > 0
-                        full_sb_ob_pr = full_sb_ob_pr+full_mark_pr_7
-                      end
-                      divider = 3
-                      full_mark_all = 0
-                      if full_mark.to_f > 0
-                        full_mark_all = 50
-                        if full_mark.to_f >= 100
-                          full_mark_all = 100
-                        else 
-                          divider = 4
-                       end
-                      end
-                    if class_test_full_mark.to_i == 30 && full_mark_all == 50
-                        divider = 6
-                    end
-                  end
-                  
                   if monthly_full_mark1 > 0 || monthly_full_mark2 > 0
-                    if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
-                      if class_test_mark.to_f > 0
-                        class_test_mark = (class_test_mark.to_f/divider.to_f)
-                        class_test_mark = class_test_mark.round()
-                        @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = class_test_mark
-                      else
-                        @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = "AB"
-                      end
-                    else
-                      if appeared_ct
-                        ct_not_round = ct_round = monthly_total_main_mark1+monthly_total_main_mark2
+                    if appeared_ct
+                      ct_not_round = ct_round = monthly_total_main_mark1+monthly_total_main_mark2
+                      ct_round = ct_round.round()
+                      if monthly_full_mark1 > 0 && monthly_full_mark2 > 0
+                        ct_not_round = ct_round = (monthly_total_main_mark1+monthly_total_main_mark2)/2
                         ct_round = ct_round.round()
-                        if monthly_full_mark1 > 0 && monthly_full_mark2 > 0
-                          ct_not_round = ct_round = (monthly_total_main_mark1+monthly_total_main_mark2)/2
-                          ct_round = ct_round.round()
-                        end
-                        if @connect_exam_obj.result_type < 5
-                          @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = ct_not_round
-                        else
-                          @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = ct_round
-                        end 
-                        
-                        
+                      end
+                      if @connect_exam_obj.result_type < 5
+                        @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = ct_not_round
                       else
-                        @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = "AB"
-                      end  
-                    end
+                        @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = ct_round
+                      end 
+                      
+                      
+                    else
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = "AB"
+                    end 
                   end
                   if full_ob1 > 0 || full_ob2 > 0
                     if appeared_ob
@@ -1091,52 +967,6 @@
                     end  
                   end
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = ob_round+sb_round+pr_round
-                  
-                  if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
-                    if class_test_mark.to_f > 0
-                      total_pr = @student_result[loop_std]['subjects'][main_sub_id]['result']['rt']
-                      total_pr_converted = total_pr * 0.9
-                      main_mark_res_7 = total_pr_converted + class_test_mark
-                      total_mark1 = total_mark1+main_mark_res_7
-                      total_mark_7 = total_mark_7+main_mark_res_7
-                      grand_total_with_fraction_7 = grand_total_with_fraction_7+main_mark_res_7
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = main_mark_res_7.round()
-                      if full_sb_ob_pr.to_i == 50
-                        main_mark = main_mark_res_7 * 2
-                      else
-                        main_mark = main_mark_res_7
-                      end
-                    else
-                      if (@connect_exam_obj.result_type == 7 and sub['grade_subject'].to_i == 1)
-                        total_pr = @student_result[loop_std]['subjects'][main_sub_id]['result']['rt']
-                        main_mark_res_7 = total_pr
-                        if full_sb_ob_pr.to_i == 50
-                          main_mark = main_mark_res_7 * 2
-                        else
-                          main_mark = main_mark_res_7
-                        end
-                        total_mark1 = total_mark1+total_pr
-                        total_mark_7 = total_mark_7+total_pr
-                        grand_total_with_fraction_7 = grand_total_with_fraction_7+total_pr
-                        @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
-                      elsif (@connect_exam_obj.result_type == 7 and sub['grade_subject'].to_i == 0)
-                        total_pr = @student_result[loop_std]['subjects'][main_sub_id]['result']['rt']
-                        total_pr_converted = total_pr * 0.9
-                        main_mark_res_7 = total_pr_converted
-                        if full_sb_ob_pr.to_i == 50
-                          main_mark = main_mark_res_7 * 2
-                        else
-                          main_mark = main_mark_res_7
-                        end
-                        total_mark1 = total_mark1+total_pr_converted
-                        total_mark_7 = total_mark_7+total_pr_converted
-                        grand_total_with_fraction_7 = grand_total_with_fraction_7+total_pr_converted
-                        @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
-                      else
-                        @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = ct_marks_main.round()
-                      end
-                    end
-                  end
                   
                   
                   if @subject_result[main_sub_id].blank?
@@ -1564,39 +1394,12 @@
                     
                     
                     term_mark_multiplier = 0.75
-                    if @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4
-                      if @batch.course.course_name == "One" or @batch.course.course_name == "Two"
-                        term_mark_multiplier = 1
-                      else
-                        term_mark_multiplier = 0.8
-                      end
-                      #term_mark_multiplier = 0.80
-                    end
                     if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
                       if monthly_full_mark1 > 0 or monthly_full_mark2 > 0
                         term_mark_multiplier = 0.90
                       else
                         term_mark_multiplier = 1
                       end
-                    end
-                    
-                    if sub['grade_subject'].to_i == 1
-                      term_mark_multiplier = 1.00
-                    end
-                    
-                    if @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 2
-                      term_mark_multiplier = 1.00
-                    end
-                    
-                    total_mark2 = total_ob22+total_sb22+total_pr22
-                    total_mark2_80 = total_mark2.to_f
-                    if full_mark2 > 100 or term_mark_multiplier == 0.80 or term_mark_multiplier == 0.90
-                      total_mark2_80 = total_mark2.to_f*term_mark_multiplier
-                    end  
-                    total_mark1 = total_ob12+total_sb12+total_pr12
-                    total_mark1_80 = total_mark1.to_f
-                    if full_mark1 > 100 or term_mark_multiplier == 0.80 or term_mark_multiplier == 0.90
-                      total_mark1_80 = total_mark1.to_f*term_mark_multiplier
                     end
                     
                     monthly_mark_multiply = 20
@@ -1623,7 +1426,7 @@
                     end
                     monthly_total_main_mark1 = monthly_total_mark1
                     monthly_total_main_mark2 = monthly_total_mark2
-                    if @connect_exam_obj.result_type != 5 and @connect_exam_obj.result_type != 6
+                    if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
                       if monthly_total_mark1 > 0
                         monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*monthly_mark_multiply
                         monthly_total_mark1 = monthly_total_mark1.round()
@@ -1646,9 +1449,7 @@
                       end
                     end
                     #or (@connect_exam_obj.result_type == 7 && @batch.course.course_name.upcase == "NINE")
-                    total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
-                    total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
-                    if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6 or @connect_exam_obj.result_type == 8
+                    if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
                       full_mark_sb1_converted = full_mark1-full_pr12-full_ob12-monthly_full_mark1
                       full_mark_sb2_converted = full_mark2-full_pr22-full_ob22-monthly_full_mark2
                       if total_sb12 > 0
@@ -2121,7 +1922,6 @@
       unless @student_list.blank?
         position = 0
         @sorted_students = @student_list.sort
-        abort(@sorted_students.inspect)
         @sorted_students.each do|s|
           if last_grade != s[0] or last_total != s[1]
             position = position+1

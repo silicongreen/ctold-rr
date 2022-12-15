@@ -1968,7 +1968,7 @@
                       grand_total = grand_total+subject_full_marks
                       grand_total1_with_fraction = grand_total1_with_fraction+total_mark1_no_round
                       if std['id'].to_i == 21667 and sub['code'] != 'Bang-1' and sub['code'] != 'Eng-1'
-                        abort(sub['code'].to_s + "  " + total_mark1_no_round.to_s)
+                        abort(sub['code'].to_s + "  " + total_mark1_no_round.to_s + "  " + main_mark_no_round.to_s)
                       end
                       grand_total1_with_fraction_marks << total_mark1_no_round
                       

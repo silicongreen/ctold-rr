@@ -888,7 +888,6 @@
                                             main_exam_mark = main_exam_mark+converted_mark.to_f
                                           end
                                         %>
-                                          <td class="col-pdf"><%= sprintf( "%0.02f", converted_mark)%></td>
                                           <% sb = sb+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                           <% total_sb4 = total_sb4+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% elsif report['exam_category'] == '4' %>
@@ -1621,7 +1620,6 @@
                       <% if has_pr %>
                         <% colspan = colspan+1 %>
                       <% end %>
-                      <% abort("HEHE") %>
                       <td class="col-pdf align-left-baf" colspan="3"><b>Total Marks & Total GP</b></td>
                       <td class="col-pdf" colspan="<%= colspan %>"></td>
                       <td class="col-pdf no-warp" ><b><%= grand_total1 %></b></td>

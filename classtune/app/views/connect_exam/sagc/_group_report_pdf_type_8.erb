@@ -220,7 +220,7 @@
                         next
                       %>
                       <% end %>
-                      <% abort("here") %>
+                      <%%>
                       <%
                       total_sb1 = 0
                       converted_sb1_mark = 0
@@ -283,6 +283,7 @@
                       monthly5 = 0
                       monthly6 = 0
                     %> 
+                    <%%>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% main_mark3 = 0 %>
                           <% main_mark4 = 0 %>
@@ -638,7 +639,7 @@
 
                                 %>
                                 <% end %> 
-                                <% avg_mark = main_exam_mark.to_f*0.9 %>
+                                <% avg_mark = main_exam_mark.to_f*1 %>
 
                                 <% tota_mark_with_monthly = avg_mark+class_test_mark  %>
                                 <%
@@ -982,7 +983,7 @@
 
                                 %>
                                 <% end %>
-                                <% avg_mark = main_exam_mark.to_f*0.9 %>
+                                <% avg_mark = main_exam_mark.to_f*1 %>
                                 <% tota_mark_with_monthly = avg_mark+class_test_mark  %>
                                 <%
                                 main_mark4 = (tota_mark_with_monthly.to_f.round/full_mark_all.to_f)*100
@@ -1428,16 +1429,10 @@
                                     <% end %>
                                   <% end %>
                                 <% end %>
-                                <td class="col-pdf no-warp">
-                                    <%= main_exam_mark1.to_f.round.to_i %>
-                                </td>   
-                                <% avg_mark = main_exam_mark1.to_f*0.9 %>
+                                <% avg_mark = main_exam_mark1.to_f*1 %>
 
-                                <td class="col-pdf no-warp">
-                                    <%= sprintf( "%0.02f", avg_mark)%>
-                                </td>
-
-                                <% tota_mark_with_monthly = avg_mark+class_test_mark1 %>
+                                
+                                <% tota_mark_with_monthly = main_exam_mark1+class_test_mark1 %>
                                 <td class="col-pdf no-warp">
                                     <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
                                 </td>
@@ -1501,7 +1496,7 @@
                                     <% end %>
                                   <% end %>
                                 <% end %>
-                               <% avg_mark = main_exam_mark2.to_f*0.9 %>
+                               <% avg_mark = main_exam_mark2.to_f*1 %>
 
                                 <% tota_mark_with_monthly = main_exam_mark2+class_test_mark2 %>
                                 <td class="col-pdf no-warp">
@@ -1865,16 +1860,10 @@
                                 <% end %>
                               <% end %>
                             <% end %>
-                            <td class="col-pdf no-warp">
-                                <%= main_exam_mark1.to_f.round.to_i %>
-                            </td>   
                             <% avg_mark = main_exam_mark1.to_f*1 %>
 
-                            <td class="col-pdf no-warp">
-                                <%= sprintf( "%0.02f", avg_mark)%>
-                            </td>
-
-                            <% tota_mark_with_monthly = avg_mark+class_test_mark1 %>
+                            
+                            <% tota_mark_with_monthly = main_exam_mark1+class_test_mark1 %>
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
                             </td>
@@ -1974,15 +1963,9 @@
                                 <% end %>
                               <% end %>
                             <% end %>
-                            <td class="col-pdf no-warp">
-                                <%= main_exam_mark2.to_f.round.to_i %>
-                            </td>   
                             <% avg_mark = main_exam_mark2.to_f*1 %>
 
-                            <td class="col-pdf no-warp">
-                                <%= sprintf( "%0.02f", avg_mark)%>
-                            </td>
-                            <% tota_mark_with_monthly = avg_mark+class_test_mark2 %>
+                            <% tota_mark_with_monthly = main_exam_mark2+class_test_mark2 %>
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
                             </td>

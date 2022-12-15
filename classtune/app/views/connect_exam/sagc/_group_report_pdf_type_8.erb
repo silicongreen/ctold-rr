@@ -748,7 +748,7 @@
                                     <% if report['exam_category'] == '3'  %>
                                       <%
                                         converted_mark = 0
-                                        sb3_full_mark = report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i
+                                        sb3_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
                                         if sb3_full_mark > 0
                                           sb_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                           converted = 60
@@ -1239,7 +1239,7 @@
                             <% if has_sb %>
                               <% if full_sb > 0 %>
                                 <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
-                                <td class="col-pdf"><%= sprintf( "%0.02f", converted_sb4_mark)%></td>
+                                <td class="col-pdf"><%= sprintf( "%0.02f", converted_sb2_mark)%></td>
                               <% else %>
                                 <td class="col-pdf">-</td>
                                 <td class="col-pdf">-</td>

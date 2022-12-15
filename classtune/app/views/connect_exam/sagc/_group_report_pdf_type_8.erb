@@ -406,6 +406,8 @@
                                           converted = 60
                                           if full_sb1.to_i == 100
                                             converted = 90
+                                          elsif full_sb1.to_i == 50
+                                              converted = 40
                                           end
                                           converted_mark = (sb_mark.to_f / full_sb1.to_i) * converted
                                           converted_sb1_mark = converted_mark
@@ -539,6 +541,8 @@
                                               converted = 60
                                               if full_sb2.to_i == 100
                                                 converted = 90
+                                              elsif full_sb2.to_i == 50
+                                                  converted = 40
                                               end
                                               converted_mark = (sb_mark.to_f / full_sb2.to_i) * converted
                                               converted_sb2_mark = converted_mark
@@ -753,6 +757,8 @@
                                           converted = 60
                                           if sb3_full_mark.to_i == 100
                                             converted = 90
+                                          elsif sb3_full_mark.to_i == 50
+                                              converted = 40
                                           end
                                           converted_mark = (sb_mark.to_f / sb3_full_mark.to_i) * converted
                                           converted_sb3_mark = converted_mark
@@ -879,6 +885,8 @@
                                             converted = 60
                                             if sb4_full_mark.to_i == 100
                                               converted = 90
+                                            elsif sb4_full_mark.to_i == 50
+                                                converted = 40
                                             end
                                             converted_mark = (sb_mark.to_f / sb4_full_mark.to_i) * converted
                                             converted_sb4_mark = converted_mark
@@ -1238,7 +1246,9 @@
                             <% if has_sb %>
                               <% if full_sb > 0 %>
                                 <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
+                                <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
                               <% else %>
+                                <td class="col-pdf">-</td>
                                 <td class="col-pdf">-</td>
                               <% end %>
                             <% end %>
@@ -1402,6 +1412,8 @@
                                             converted = 60
                                             if sb4_full_mark.to_i == 100
                                               converted = 90
+                                            elsif sb4_full_mark.to_i == 50
+                                                converted = 40
                                             end
                                             converted_mark = (sb_mark.to_f / sb4_full_mark.to_i) * converted
                                             converted_sb4_mark = converted_mark
@@ -1469,6 +1481,8 @@
                                             converted = 60
                                             if sb4_full_mark.to_i == 100
                                               converted = 90
+                                            elsif sb4_full_mark.to_i == 50
+                                                converted = 40
                                             end
                                             converted_mark = (sb_mark.to_f / sb4_full_mark.to_i) * converted
                                             converted_sb4_mark = converted_mark
@@ -1556,7 +1570,9 @@
                                 <% if has_sb %>
                                   <% if full_sb > 0 %>
                                     <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
+                                    <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
                                   <% else %>
+                                    <td class="col-pdf">-</td>
                                     <td class="col-pdf">-</td>
                                   <% end %>
                                 <% end %>
@@ -1617,7 +1633,6 @@
                       <% if has_pr %>
                         <% colspan = colspan+1 %>
                       <% end %>
-                      <%= abort("here") %>
                       <td class="col-pdf align-left-baf" colspan="2"><b>Total Marks & Total GP</b></td>
                       <td class="col-pdf" colspan="6"></td>
                       <td class="col-pdf no-warp"><b><%= grand_total1 %></b></td>
@@ -2122,7 +2137,9 @@
                             <% if has_sb %>
                               <% if full_sb > 0 %>
                                 <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
+                                <td class="col-pdf"><%= sprintf( "%0.02f", total_sb5)%></td>
                               <% else %>
+                                <td class="col-pdf">-</td>
                                 <td class="col-pdf">-</td>
                               <% end %>
                             <% end %>

@@ -1,5 +1,5 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-<%= abort('hehe')%>
+
   <% total_u = 0 %>
   <div id="page-yield"  class="available_sections1 baf_shaheen">
       <%= render  :partial=>"/connect_exam/sagc/header" %>
@@ -164,7 +164,6 @@
                         <td><b>PR</b></td>
                       <% end %> 
                       <td rowspan="1"><b>Total</b></td>
-                      <td rowspan="1"><b>Avg</b></td>
                       <% if has_ob == true %>
                         <td><b>OB</b></td>
                       <% end %> 
@@ -177,7 +176,6 @@
                       <% end %> 
 
                       <td rowspan="1"><b>Total</b></td>
-                      <td rowspan="1"><b>Avg</b></td>
                   </tr>
 
                   <% total_grade = 0 %>
@@ -392,10 +390,10 @@
                                 <% if report['exam_category'] != '1' && report['quarter'] == '1' %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                     <%  main_exam_mark1 = main_exam_mark1+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %> <%= report['exam_category'] %></td>
                                     <% if report['exam_category'] == '3'  %>
                                       <%
-                                      converted_mark = 0
+                                        converted_mark = 0
                                         if full_sb1 > 0
                                           sb_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                           converted = 60
@@ -451,9 +449,6 @@
                             </td>   
                             <% avg_mark = main_exam_mark1.to_f*0.9 %>
 
-                            <td class="col-pdf no-warp">
-                                <%= sprintf( "%0.02f", avg_mark)%>
-                            </td>
 
                             <% tota_mark_with_monthly = avg_mark+class_test_mark1 %>
                             <td class="col-pdf no-warp">

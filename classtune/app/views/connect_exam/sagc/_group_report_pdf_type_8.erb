@@ -408,6 +408,8 @@
                                             converted = 90
                                           elsif full_sb1.to_i == 50
                                               converted = 40
+                                          elsif full_sb1.to_i == 25
+                                              converted = 20
                                           end
                                           converted_mark = (sb_mark.to_f / full_sb1.to_i) * converted
                                           converted_sb1_mark = converted_mark
@@ -543,6 +545,8 @@
                                                 converted = 90
                                               elsif full_sb2.to_i == 50
                                                   converted = 40
+                                              elsif full_sb2.to_i == 25
+                                                  converted = 20
                                               end
                                               converted_mark = (sb_mark.to_f / full_sb2.to_i) * converted
                                               converted_sb2_mark = converted_mark
@@ -759,6 +763,8 @@
                                             converted = 90
                                           elsif sb3_full_mark.to_i == 50
                                               converted = 40
+                                          elsif sb3_full_mark.to_i == 25
+                                              converted = 20
                                           end
                                           converted_mark = (sb_mark.to_f / sb3_full_mark.to_i) * converted
                                           converted_sb3_mark = converted_mark
@@ -887,6 +893,8 @@
                                               converted = 90
                                             elsif sb4_full_mark.to_i == 50
                                                 converted = 40
+                                            elsif sb4_full_mark.to_i == 25
+                                                converted = 20
                                             end
                                             converted_mark = (sb_mark.to_f / sb4_full_mark.to_i) * converted
                                             converted_sb4_mark = converted_mark
@@ -1073,6 +1081,9 @@
                               sb4_full_mark = full_sb.to_i / 2
                               if sb4_full_mark > 0
                                 converted = sb4_full_mark - 10
+                                if sb4_full_mark.to_i == 25
+                                  converted = 20
+                                end
                                 converted_mark = (total_sb5.to_f / sb4_full_mark.to_i) * converted
                                 converted_sb5_mark = converted_mark
                               end
@@ -1085,6 +1096,9 @@
                               sb4_full_mark = full_sb.to_i / 2
                               if sb4_full_mark > 0
                                 converted = sb4_full_mark - 10
+                                if sb4_full_mark.to_i == 25
+                                  converted = 20
+                                end
                                 converted_mark = (total_sb6.to_f / sb4_full_mark.to_i) * converted
                                 converted_sb6_mark = converted_mark
                               end
@@ -1432,6 +1446,8 @@
                                               converted = 90
                                             elsif sb4_full_mark.to_i == 50
                                                 converted = 40
+                                            elsif sb4_full_mark.to_i == 25
+                                                converted = 20
                                             end
                                             converted_mark = (sb_mark.to_f / sb4_full_mark.to_i) * converted
                                             converted_sb4_mark = converted_mark
@@ -1501,6 +1517,8 @@
                                               converted = 90
                                             elsif sb4_full_mark.to_i == 50
                                                 converted = 40
+                                            elsif sb4_full_mark.to_i == 25
+                                              converted = 20
                                             end
                                             converted_mark = (sb_mark.to_f / sb4_full_mark.to_i) * converted
                                             converted_sb4_mark = converted_mark
@@ -1548,6 +1566,9 @@
                                   sb4_full_mark = (full_sb1.to_i + full_sb3.to_i) / 2
                                   if sb4_full_mark > 0
                                     converted = sb4_full_mark - 10
+                                    if sb4_full_mark.to_i == 25
+                                      converted = 20
+                                    end
                                     converted_mark = (total_sb5.to_f / sb4_full_mark.to_i) * converted
                                     converted_sb5_mark = converted_mark
                                   end
@@ -2047,6 +2068,9 @@
                               sb4_full_mark = full_sb / 2
                               if sb4_full_mark > 0
                                 converted = sb4_full_mark - 10
+                                if sb4_full_mark.to_i == 25
+                                  converted = 20
+                                end
                                 converted_mark = (total_sb5.to_f / sb4_full_mark.to_i) * converted
                                 converted_sb5_mark = converted_mark
                               end

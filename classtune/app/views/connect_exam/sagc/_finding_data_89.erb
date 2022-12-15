@@ -1911,6 +1911,9 @@
                       end
                       total_mark1 = total_ob12+total_sb12+total_pr12+monthly_total_mark1
                       total_mark2 = total_ob22+total_sb22+total_pr22+monthly_total_mark2
+                      if std['id'].to_i == 21667 
+                        abort(sub['code'].to_s + "  " + total_ob12.to_s + "  " + total_sb12.to_s + "  " + monthly_total_mark1.to_s)
+                      end
                     end
                     
                     total_mark2_no_round = total_mark2
@@ -1974,9 +1977,7 @@
                       grand_total2_with_fraction = grand_total2_with_fraction+total_mark2_no_round
                       grand_total_with_fraction = grand_total_with_fraction+main_mark_no_round
                       grand_total_with_fraction_marks << main_mark_no_round
-                      if std['id'].to_i == 21667 
-                        abort(sub['code'].to_s + "  " + total_mark1_no_round.to_s + "  " + main_mark_no_round.to_s)
-                      end
+                      
                       if fourth_subject.blank?
                         grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
                         if !grade.blank? and !grade.name.blank?

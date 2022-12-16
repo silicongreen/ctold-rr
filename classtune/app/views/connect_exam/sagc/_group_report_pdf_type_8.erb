@@ -1193,23 +1193,31 @@
                             total_mark_all = (converted_sb5_mark+total_ob5+total_pr5)*1
                             total_marks_ag = total_mark_all+monthly5
                             grand_total_fraction = grand_total_fraction+total_marks_ag
-                            total_marks_ag = total_marks_ag.round()
+                            if @student.id.to_i == 21297
+                              total_marks_ag = total_marks_ag.to_i
+                            else
+                              total_marks_ag = total_marks_ag.round()
+                            end
                             grand_total = grand_total+total_marks_ag
 
 
                             total_mark_all2 = (converted_sb6_mark+total_ob6+total_pr6)*1
                             total_marks_ag2 = total_mark_all2+monthly6
                             grand_total_fraction = grand_total_fraction+total_marks_ag2
-                            total_marks_ag2 = total_marks_ag2.round()
+                            if @student.id.to_i == 21297
+                              total_marks_ag2 = total_marks_ag2.to_i
+                            else
+                              total_marks_ag2 = total_marks_ag2.round()
+                            end
                             grand_total = grand_total+total_marks_ag2
 
                             letter_grade_point = 0.0
                             letter_grade_name = "-"
                             if subjects['subject_group_id'].to_i > 0
                               main_mark = (total_marks_ag.to_f+total_marks_ag2.to_f)/(full_mark_all.to_f)*50
-                              else
+                            else
                               main_mark = (total_marks_ag.to_f/full_mark_all.to_f)*100
-                              end
+                            end
                             grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
 
                             if !grade.blank? and !grade.name.blank?

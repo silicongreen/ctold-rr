@@ -1876,31 +1876,6 @@
                                     <% elsif report['exam_category'] == '5' %>
                                       <% total_pr1 = total_pr1+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% end %>
-                                    <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
-                                      <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
-                                        <% failed1 = true %>
-                                        <% failed_subject1 = true %>
-                                      <% end %>
-                                    <% end %>
-                                    <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && !fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
-                                      <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
-                                        <% failed_subject1 = true %>
-                                      <% end %>
-                                    <% end %>
-                                      
-                                    <% if fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
-                                      <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i == 31 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == 70 %>
-                                        <% failed1 = true %>
-                                        <% failed_subject1 = true %>
-                                      <% end %>
-                                    <% end %>
-                                      
-                                    <% if !fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
-                                      <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i == 31 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == 70 %>
-                  
-                                        <% failed_subject1 = true %>
-                                      <% end %>
-                                    <% end %>
 
                                   <% else %>
                                     <td class="col-pdf">-</td>
@@ -1915,7 +1890,7 @@
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
                             </td>
-                            <td><%=  highest_mark1.round() %> <%= full_mark_all %></td>
+                            <td><%=  highest_mark1.round() %></td>
                             <%
                             main_mark = (tota_mark_with_monthly.to_f.round/full_mark_all.to_f)*100
                           %>
@@ -1926,13 +1901,6 @@
 
                               <% if grade.credit_points.to_i == 0 && fourth_subject.blank? %>
                                 <% failed_subject1 = true %>
-                              <% end %>
-                              <% if  failed_subject1 == true %>
-                                <% grade.credit_points = 0.0 %>
-                                <% grade.name = "F" %>
-                              <% elsif failed_subject1_fourth == true %>
-                                <% grade.credit_points = 0.0 %>
-                                <% grade.name = "F" %>
                               <% end %>
 
                               <td class="col-pdf"><%= grade.name %></td>

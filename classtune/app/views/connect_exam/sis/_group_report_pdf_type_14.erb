@@ -301,6 +301,9 @@
                           <% if @covid_main.blank? and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                             <td class="col-pdf"><b>-</b></td>
                           <% end %>
+                          <% if (@batch.course.course_name == "KG I" or @batch.course.course_name == "KG II" or @batch.course.course_name == "I" or @batch.course.course_name == "II"  or @batch.course.course_name == "III") %>
+                          <td class="col-pdf height-18"><b><%= "-" %></b></td>
+                          <% end %> 
                           <% unless report['subject_comment'].blank? %>
                             <td class="col-pdf"><b><%= report['subject_comment'] %></b></td>
                           <% else %>
@@ -572,7 +575,7 @@
                                 <%= '%i%' % grade.min_score %> - <%= '%i%' % grade.max_score %>
                               <% end %>
                             </td>
-                            <td class="align-left"><%= grade.name %> 3</td>
+                            <td class="align-left"><%= grade.name %></td>
                           <% end %>
                           <% i = i+1 %>
                           <% end %>

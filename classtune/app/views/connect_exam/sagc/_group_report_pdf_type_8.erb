@@ -1878,27 +1878,27 @@
                                     <% end %>
                                     <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
                                       <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
-
+                                        <% failed1 = true %>
                                         <% failed_subject1 = true %>
                                       <% end %>
                                     <% end %>
                                     <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && !fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
                                       <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
-                                        <% failed_subject1_fourth = true %>
-                                      <% end %>
-                                    <% end %>
-
-                                    <% if fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
-                                      <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i == 31 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == 70 %>
-
                                         <% failed_subject1 = true %>
                                       <% end %>
                                     <% end %>
-
+                                      
+                                    <% if fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
+                                      <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i == 31 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == 70 %>
+                                        <% failed1 = true %>
+                                        <% failed_subject1 = true %>
+                                      <% end %>
+                                    <% end %>
+                                      
                                     <% if !fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
                                       <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i == 31 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == 70 %>
-
-                                        <% failed_subject1_fourth = true %>
+                  
+                                        <% failed_subject1 = true %>
                                       <% end %>
                                     <% end %>
 

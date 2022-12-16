@@ -402,7 +402,7 @@
                             end
                           end
                           
-                          total_mark_subject = total_converted+conv_mcw+ct
+                          total_mark_subject = total_converted.round()+conv_mcw.round()+ct.round()
                           if subjects['grade_subject'].to_i != 1
                             if fourth_subject.blank?
                               grand_total = grand_total+total_mark_subject.round()

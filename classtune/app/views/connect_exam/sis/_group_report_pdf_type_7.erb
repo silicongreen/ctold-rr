@@ -294,15 +294,15 @@
                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td class="col-pdf no-warp align-left"><b>Principal</b></td>
                       <td class="col-pdf no-warp align-left width-60">
-                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/anjum.png")), :width=>"40%" %>
+                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/sign.png")), :width=>"40%" %>
                       </td>
                      </tr>
-                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                     <!--tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td class="col-pdf no-warp align-left"><b>Section In-Charge</b></td>
                       <td class="col-pdf no-warp align-left width-60">
-                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/#{@section_in_charge}.png")), :width=>"30%" %>
+                          <%#= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/#{@section_in_charge}.png")), :width=>"30%" %>
                       </td>
-                     </tr>
+                     </tr-->
                      <% if @covid_main == 0 %>
                       <% if @batch.course.course_name.upcase == "NURSERY" %>
                       <!--tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">

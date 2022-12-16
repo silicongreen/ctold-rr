@@ -390,6 +390,7 @@
                             if full_term.to_i == 100
                               total_converted = (total.to_f/full_term.to_f)*75
                               total_converted = total_converted.round
+                              total_mark_converted = total_converted.round()+conv_mcw.round()+ct.round()
                             else
                               total_converted = (total.to_f/full_term.to_f)*35
                               total_mark_converted = (total.to_f/full_term.to_f)*100
@@ -421,12 +422,12 @@
                             grade_subject_mark_second[subjects['id'].to_i] = main_mark
                           end 
                           
-                          grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                          grade = GradingLevel.percentage_to_grade(total_mark_converted.round.to_i, @batch.id)
                         %>
                           
                         <% if subjects['grade_subject'].to_i != 1  %>
-                         <td><% if has_quarter %><%= total.to_i %><% end %></td>
-                         <td><% if has_quarter %><%= total_converted.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= total.round.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= total_converted.round.to_i %><% end %></td>
                          <%
                           main_mark = 0
                           if total_mark_subject > 0
@@ -436,8 +437,8 @@
                         %>
                           <td><% if !grade2.blank? and !grade2.name.blank? %><%= grade2.name %><% end %></td>
                           <td><% if !grade2.blank? and !grade2.name.blank? %><%= grade2.credit_points %><% end %></td>
-                          <td><% if has_quarter %><%= total_mark_subject.to_i %><% end %></td>
-                         <td><% if has_quarter %><%= highest_mark1.to_i %><% end %></td>
+                          <td><% if has_quarter %><%= total_mark_subject.round.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= highest_mark1.round.to_i %><% end %></td>
                         
 
            

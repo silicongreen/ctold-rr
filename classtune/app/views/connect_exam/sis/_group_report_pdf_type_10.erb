@@ -531,6 +531,18 @@
               <% end %>
               
               <% end %>
+              <table id="pdf-table"  width="40%" class="left-table even-table" cellspacing="0" >
+                  <tr class="even">
+                      <td class="align-left">Total Working Days</td>
+                      <td><%= @report_data['total'] %></td>
+                  </tr>    
+                  <tr class="even">    
+                      <td class="align-left">Attendance</td>
+                      <td><%= @report_data['present'] %></td>
+                  </tr>
+                  
+              </table>
+              
               <table id="pdf-table"  width="100%" class="left-table even-table signature2" cellspacing="0" >
                   <% if @covid_main == 0 %>
                   <!--tr class="even">

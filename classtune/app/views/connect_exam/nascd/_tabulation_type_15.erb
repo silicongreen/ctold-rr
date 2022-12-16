@@ -404,6 +404,7 @@
                               if full_term.to_i == 100
                                 total_converted = (total.to_f/full_term.to_f)*75
                                 total_converted = total_converted.round
+                                total_converted_new = total_converted.round()+conv_mcw.round()+ct.round()
                               elsif full_term.to_i == 50 && full_mark_ct <= 20
                                 total_converted = (total.to_f/full_term.to_f)*35
                                 total_converted_new = (total.to_f/full_term.to_f)*100
@@ -412,7 +413,7 @@
                               end
                             end
                             total_mark_subject = total_converted.round()+conv_mcw.round()+ct.round()
-                            total_converted_new = total_converted_new.round()+conv_mcw.round()+ct.round()
+                            
                             
                             %>
                               <td>

@@ -50,6 +50,9 @@
                       <% else %>
                         <td class="col-pdf"><%= "Subject" %></td>
                       <% end %>
+                      <% if (@batch.course.course_name == "KG I" or @batch.course.course_name == "KG II" or @batch.course.course_name == "I" or @batch.course.course_name == "II"  or @batch.course.course_name == "III") %>
+                      <td class="col-pdf height-18">Marks</td>
+                      <% end %>  
                       <% if @covid_main.blank? and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                         <% if @connect_exam_obj.quarter_number == 5 %>
                           <td class="col-pdf height-18" colspan="2">First Term</td>
@@ -240,7 +243,9 @@
                            
                           if has_mark == true
                           %>
-                          
+                          <% if (@batch.course.course_name == "KG I" or @batch.course.course_name == "KG II" or @batch.course.course_name == "I" or @batch.course.course_name == "II"  or @batch.course.course_name == "III") %>
+                          <td class="col-pdf height-18">Marks</td>
+                          <% end %> 
                           <% if @covid_main.blank? and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                           <td class="col-pdf"><b><%= total_mark %></b></td>
                           <% end %>

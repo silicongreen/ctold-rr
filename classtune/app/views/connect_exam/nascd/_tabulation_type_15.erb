@@ -466,11 +466,11 @@
                                       new_mark_to_add = total_mark_subject.round() -40
                                       total_mark_1 = total_mark_1+new_mark_to_add.round()
                                       total_mark_con_1 = total_mark_con_1+new_mark_to_add.round()
-                                      grade_sub = GradingLevel.percentage_to_grade(new_mark_to_add.round.to_f, @batch.id)
+                                      grade_sub = GradingLevel.percentage_to_grade(total_converted_new.round.to_f, @batch.id)
                                       if !grade_sub.blank? and !grade_sub.name.blank?
                                         %>
                                         <hr/>
-                                        <%= grade_sub.name %> <%= new_mark_to_add.to_s  %>
+                                        <%= grade_sub.name %> 
                                         <%
                                       else
                                         %>
@@ -489,7 +489,7 @@
                                     if !grade_sub.blank? and !grade_sub.name.blank?
                                       %>
                                       <hr/>
-                                      <%= grade_sub.name %>
+                                      <%= grade_sub.name %> <%= new_mark_to_add.to_s  %>
                                       <%
                                     else
                                       %>

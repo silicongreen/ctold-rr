@@ -292,7 +292,7 @@
                     <td colspan="4">Grand Total Marks (Yearly Exam)</td>
                     <td class="col-pdf"><% if has_final_term %><%#= grand_total2.round().to_i %><% end %></td>
                     <% if has_final_term %>
-                    <% exam_grand_total = grand_total1 + grand_total2.round().to_i %>
+                    <% exam_grand_total = grand_total1.round() + grand_total2.round().to_i %>
                     <% end %>
                   </tr-->
 

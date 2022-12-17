@@ -459,6 +459,7 @@
                                     <%= total_mark_subject.round() %>
 
                                <% if sub['grade_subject'].to_i != 1 %>  
+                                  <% total_subject = total_subject+1 %>
                                   <% if fourth_subject %>
                                   <%
                                     if total_mark_subject.round() > 40
@@ -468,7 +469,6 @@
                                       grade_sub = GradingLevel.percentage_to_grade(new_mark_to_add.round.to_f, @batch.id)
                                       if !grade_sub.blank? and !grade_sub.name.blank?
                                         %>
-                                        <% total_subject = total_subject+1 %>
                                         <hr/>
                                         <%= grade_sub.name %>
                                         <%
@@ -482,7 +482,6 @@
                                   %>
 
                                   <% else %>
-                                    <% total_subject = total_subject+1 %>
                                     <% total_mark_1 = total_mark_1+total_mark_subject.round().to_f %>
                                     <% total_mark_con_1 = total_mark_con_1+total_converted_new.round().to_f %>
                                     <%

@@ -490,7 +490,7 @@
                                     if !grade_sub.blank? and !grade_sub.name.blank?
                                       %>
                                       <hr/>
-                                      <%= grade_sub.name %>
+                                      <%= grade_sub.name %> <%= full_term.to_s  %> <%= full_mark_ct.to_s  %>
                                       <%
                                     else
                                       %>

@@ -429,7 +429,7 @@
                                   <%
                                     grade_sub = GradingLevel.percentage_to_grade(total_mark.round.to_f, @batch.id)
                                     if !grade_sub.blank? and !grade_sub.name.blank?
-                                      if main_mark.to_i < 60
+                                      if main_mark.to_i < 50
                                       %>
                                       F  
                                       <% else %>

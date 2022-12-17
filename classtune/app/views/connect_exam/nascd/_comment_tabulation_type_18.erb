@@ -17,7 +17,7 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <% 
-  @all_subject_id = []
+  @all_subject_id = [] 
   @has_exam_score = []
   @all_group_exams = GroupedExam.find(
      :all,
@@ -137,197 +137,241 @@
                   <% @report_data['report']['students'].each do |std| %>
                     <% if !std.blank? and !std['first_name'].blank? %>
                     <tr class="table-header">
-                            <td class="col-pdf" rowspan="2">Roll</td>
-                            <td class="col-pdf" rowspan="2">Students Name</td>
-                            <% @report_data['report']['subjects'].each do |sub| %>
-                              <% if sub['no_exams_sjws'].to_i == 1  %>
-                                <% next %>
-                              <% end %>
-                              <% has_exam = false %>
-                              <% if @all_subject_id.include?(sub['id'].to_i) %>
-                                <% has_exam = true %>
-                              <% end %>
-                              <% if has_exam == true %>
-                                <td  colspan="2"><%=  sub['code'] %></td>
-                              <% end %>
-                            <% end %>
-
-                            <td colspan="2" rowspan="2">Total</td>
-
-                        </tr>
-                        <tr class="table-header">
-                            <% @report_data['report']['subjects'].each do |sub| %>
-                              <% if sub['no_exams_sjws'].to_i == 1  %>
-                                <% next %>
-                              <% end %>
-                              <% has_exam = false %>
-                              <% if @all_subject_id.include?(sub['id'].to_i) %>
-                                <% has_exam = true %>
-                              <% end %>
-                              <% if has_exam == true %>
-                                <td>Con. CW<hr/>CT</td><td>Term<hr/>TTL</td>
-                              <% end %>
-                            <% end %>
-
-                        </tr>
-                        
-
-
                       
-                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                        
-                        <td class="name"><%= std['class_roll_no'] %></td>
-                        <% if !std['first_name'].blank? and !std['last_name'].blank?  %>
-                        <td class="name-std"><%= std['first_name']+" "+std['last_name'] %></td>
-                        <% elsif !std['first_name'].blank? %>
-                        <td class="name-std"><%= std['first_name'] %></td>
-                        <% else %>
-                        <td class="name-std"><%= "-" %></td>
-                        <% end %>
-                        
-
-                        
-
-                        <% total_mark_1 = 0 %>
-                        <% grades = [] %>
-                        <% grade_count = {} %>
+                        <td class="col-pdf" rowspan="2">Roll</td>
+                        <td class="col-pdf" rowspan="2">Students Name</td>
                         <% @report_data['report']['subjects'].each do |sub| %>
                           <% if sub['no_exams_sjws'].to_i == 1  %>
                             <% next %>
                           <% end %>
-                          <% subjectdata = Subject.find(sub['id'].to_i) %>
-                          <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
-                          <% if @has_exam_student == false %>
-                            <td>-</td><td>-</td>
-                          <% else %>
-                            <%
-                              total_mark_subject = 0
-                              full_mark1 = 0
-                            %>
-                            <% 
-                            cw = 0
-                            ct = 0
-                            term = 0
-                            full_mark_cw = 0
-                            full_mark_ct = 0
-                            full_mark_term = 0
-                            
-                            %>
+                          <% has_exam = false %>
+                          <% if @all_subject_id.include?(sub['id'].to_i) %>
+                            <% has_exam = true %>
+                          <% end %>
+                          <% if has_exam == true %>
+                            <td  colspan="2"><%=  sub['code'] %></td>
+                          <% end %>
+                        <% end %>
 
-                            <% subject_full_mark = 0 %>
-                            <% subject_obtain_mark = 0 %>
+                        <td rowspan="2">Total</td>
+                        <td rowspan="2">LG</td>
+                        <td rowspan="2">GPA</td>
+
+                      </tr>
+                      <tr class="table-header">
+                          <% @report_data['report']['subjects'].each do |sub| %>
+                            <% if sub['no_exams_sjws'].to_i == 1  %>
+                            <% next %>
+                          <% end %>
                             <% has_exam = false %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
+                            <% if has_exam == true %>
+                              <td  style="white-space:nowarp;">Con. CW<hr/>CT</td><td>Term<hr/>TTL<hr/>Grade</td>
+                            <% end %>
+                          <% end %>
 
-                            <% @report_data['report']['exams'].each do |rs| %>
-                              <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
-                              <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
-
-                                <%
-
-                                if rs['quarter'] == '5'
-                                  if rs['exam_category'] == '3' || rs['exam_category'] == '4' || rs['exam_category'] == '5'
-                                    term = term+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                    full_mark_term = full_mark_term+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                  end
-                                  if rs['exam_category'] == '1'
-                                    ct = ct+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                    full_mark_ct = full_mark_ct+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                  end
-                                  if rs['exam_category'] == '2'
-                                    cw = cw+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                    full_mark_cw = full_mark_cw+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                  end
-                                end 
-                                
-
-
-                              %>
-                              <% end %>
-                            <% end %> 
-
-                            
-                            <%
-                              if full_mark_term == 35
-                                if ct > 0
-                                  ct = (ct.to_f/full_mark_ct.to_f)*10
-                                  ct = ct.round
-                                  full_mark_ct = 10
-                                end
-                              end 
-                              if cw > 0 
-                                cw = (cw.to_f/full_mark_cw.to_f)*5
-                                cw = cw.round
-                              end
-                              ct = ct.round
-                              full_mark_quarter = full_mark_ct
-                              if full_mark_cw > 0
-                                full_mark_quarter = full_mark_ct+5
-                              end 
-                              quarter_mark = cw+ct
-                              quarter_main_mark = 0
-                              if quarter_mark > 0
-                                quarter_main_mark = (quarter_mark.to_f/full_mark_quarter.to_f)*100
-                                quarter_main_mark = quarter_main_mark.round
-                              end
-                              
-
-                              term_mark_main = 0
-
-                              if term > 0
-                                term_mark_main = (term.to_f/full_mark_term.to_f)*100
-                                term_mark_main.round
-                              end
-
-                              full_mark = full_mark_quarter+full_mark_term
-                              total_mark = quarter_mark+term.round()
-
-                              main_mark = 0
-                              if total_mark > 0
-                                total_mark = total_mark.round()
-                                main_mark = (total_mark.to_f/full_mark.to_f)*100
-                                main_mark = main_mark.round()
-                              end
-                            
-                            
-                            %>
-                              <td>
-                                  <% if full_mark_cw > 0 %>
-                                    <%= cw %>
-                                  <% else %>
-                                    -
-                                  <% end %>
-                                  <hr/>
-                               
-                                  <% if full_mark_ct > 0 %>
-                                    <%= ct %>
-                                  <% else %>
-                                    -
-                                  <% end %>
-
-                               </td> 
-                               <td>
-                                    <%= term.round() %>
-                                  <hr/>
-                                    <%= total_mark %>
-
-                               </td> 
-                               <% if sub['grade_subject'].to_i != 1 %>  
-                                  <% total_mark_1 = total_mark_1+total_mark.round().to_f %>
-                               <% end %>
-                          <% end %>   
-                        <% end %> 
-                              
-
-                        <td>
-                          <%= total_mark_1.round().to_i %>
-                        </td>
+                      </tr>
                         
 
 
-                    </tr>
+                      
+                      <tr class="odd">
+                        
+                      <td class="name"><%= std['class_roll_no'] %></td>
+                      <% if !std['first_name'].blank? and !std['last_name'].blank?  %>
+                      <td class="name-std" style="white-space: pre-line;"><%= std['first_name']+" "+std['last_name'] %></td>
+                      <% elsif !std['first_name'].blank? %>
+                      <td class="name-std" style="white-space: pre-line;"><%= std['first_name'] %></td>
+                      <% else %>
+                      <td class="name-std"><%= "-" %></td>
+                      <% end %>
+                      
+
+                      
+
+                      <% total_mark_1 = 0 %>
+                      <% total_subject = 0 %>
+                      <% grades = [] %>
+                      <% grade_count = {} %>
+                      <% @report_data['report']['subjects'].each do |sub| %>
+                        <% if sub['no_exams_sjws'].to_i == 1  %>
+                          <% next %>
+                        <% end %>
+                        <% subjectdata = Subject.find(sub['id'].to_i) %>
+                        <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                        <% if @has_exam_student == false %>
+                          <td>-</td><td>-</td>
+                        <% else %>
+                          <%
+                            total_mark_subject = 0
+                            full_mark1 = 0
+                          %>
+                          <% 
+                          cw = 0
+                          ct = 0
+                          term = 0
+                          full_mark_cw = 0
+                          full_mark_ct = 0
+                          full_mark_term = 0
+                          
+                          %>
+
+                          <% subject_full_mark = 0 %>
+                          <% subject_obtain_mark = 0 %>
+                          <% has_exam = false %>
+                          <% if @all_subject_id.include?(sub['id'].to_i) %>
+                            <% has_exam = true %>
+                          <% end %>
+                          <% total_subject = total_subject+1 %>
+                          <% @report_data['report']['exams'].each do |rs| %>
+                            <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
+                            <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
+
+                              <%
+
+                              if rs['quarter'].to_i == quarter.to_i
+                                if rs['exam_category'] == '3' || rs['exam_category'] == '4' || rs['exam_category'] == '5'
+                                  term = term+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  full_mark_term = full_mark_term+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                end
+                                if rs['exam_category'] == '1'
+                                  ct = ct+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  full_mark_ct = full_mark_ct+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                end
+                                if rs['exam_category'] == '2'
+                                  cw = cw+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  full_mark_cw = full_mark_cw+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                end
+                              end 
+                              
+
+
+                            %>
+                            <% end %>
+                          <% end %> 
+
+                          
+                          <%
+                            if full_mark_term == 35
+                              if ct > 0
+                                ct = (ct.to_f/full_mark_ct.to_f)*10
+                                ct = ct.round
+                                full_mark_ct = 10
+                              end
+                            end 
+                            if cw > 0 
+                              cw = (cw.to_f/full_mark_cw.to_f)*5
+                              cw = cw.round
+                            end
+                            ct = ct.round
+                            full_mark_quarter = full_mark_ct
+                            if full_mark_cw > 0
+                              full_mark_quarter = full_mark_ct+5
+                            end 
+                            quarter_mark = cw+ct
+                            quarter_main_mark = 0
+                            if quarter_mark > 0
+                              quarter_main_mark = (quarter_mark.to_f/full_mark_quarter.to_f)*100
+                              quarter_main_mark = quarter_main_mark.round
+                            end
+                            
+
+                            term_mark_main = 0
+
+                            if term > 0
+                              term_mark_main = (term.to_f/full_mark_term.to_f)*100
+                              term_mark_main.round
+                            end
+
+                            full_mark = full_mark_quarter+full_mark_term
+                            total_mark = quarter_mark+term.round()
+
+                            main_mark = 0
+                            if total_mark > 0 
+                              total_mark = total_mark.round()
+                              main_mark = (total_mark.to_f/full_mark.to_f)*100
+                              main_mark = main_mark.round()
+                            end
+                          
+                          
+                          %>
+                            <td>
+                                <% if full_mark_cw > 0 %>
+                                  <%= cw %>
+                                <% else %>
+                                  -
+                                <% end %>
+                                <hr/>
+                             
+                                <% if full_mark_ct > 0 %>
+                                  <%= ct %>
+                                <% else %>
+                                  -
+                                <% end %>
+
+                             </td> 
+                             <td>
+                                  <%= term.round() %>
+                                <hr/>
+                                  <%= total_mark %>
+                                <% if sub['grade_subject'].to_i != 1 %>
+                                <hr/>
+                                <%
+                                  grade_sub = GradingLevel.percentage_to_grade(total_mark.round.to_f, @batch.id)
+                                  if !grade_sub.blank? and !grade_sub.name.blank?
+                                    if main_mark.to_i < 50
+                                    %>
+                                    F  
+                                    <% else %>
+                                    <%= grade_sub.name %>
+                                    <% end %>
+                                    <%
+                                  else
+                                    %>
+                                    <%= "" %>
+                                    <%
+                                  end
+                                  %>
+                                  <% end %>     
+                             </td> 
+                             <% if sub['grade_subject'].to_i != 1 %>  
+                                <% total_mark_1 = total_mark_1+total_mark.round().to_f %>
+                             <% end %>
+                        <% end %>   
+                      <% end %> 
+                            
+
+                      <td>
+                        <%= total_mark_1.round().to_i %>
+                      </td>
+                      <%
+                        if total_subject > 0 and total_mark_1 > 0
+                          gpa = total_mark_1.to_f/total_subject.to_f
+                        else
+                          gpa = 0
+                        end
+                      %>
+                      <% if gpa > 0 %>
+                        <% total_grade_std = grades.count  %>
+                        <% if gpa.to_i < 60 %> 
+                        <td>F</td>
+                        <td>0.0</td>
+                        <% else %> 
+                        <% grade_data = GradingLevel.percentage_to_grade(gpa, @batch.id) %>
+                        <% if !grade_data.blank? and !grade_data.name.blank? %>
+                            <td><%= grade_data.name %></td>
+                            <td><%= sprintf( "%0.02f", grade_data.credit_points)%></td>
+                        <% else %>
+                            <td>-</td>
+                            <td>-</td>
+                        <% end %>
+                      <% end %>
+                      <% end %>
+
+
+                  </tr>
         <% @std_info = std %>
         <% @std_id_comment = std['id'] %>
         <% @std_id_comment = std['id'] %>

@@ -376,6 +376,11 @@
 
                 if !all_comments.blank?
                   all_comments_array = all_comments.split("|")
+                  if all_comments_array.length > 1
+                    total_working_days_first = all_comments_array[0]
+                  elsif all_comments_array.length == 1
+                    teacher_comments = all_comments_array[0]  
+                  end
                   total_working_days_first = all_comments_array[0]
                   if !all_comments_array[1].nil?
                     total_att_first = all_comments_array[1]
@@ -475,7 +480,7 @@ socially to his or her abilities and opportunities.</i></li>
                       <td width='40%' rowspan="2"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/sign_principal.jpeg")), :width=>"20%" %></td> 
                   </tr>
                   <tr class="table-header">
-                      <td width="20%" colspan="2" rowspan="2" style="text-align: left; vertical-align: top;">Comment: <% if !@exam_comment.blank?%><%= @exam_comment.comments %><% end %></td>      
+                      <td width="20%" colspan="2" rowspan="2" style="text-align: left; vertical-align: top;">Comment: <% if !teacher_comments.blank?%><%= teacher_comments %><% end %><%# if !@exam_comment.blank?%><%#= @exam_comment.comments %><%# end %></td>      
                   </tr>
                   <tr class="table-header">
                       <td>Signature</td>

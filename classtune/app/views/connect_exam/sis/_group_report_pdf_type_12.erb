@@ -398,21 +398,21 @@
                   end
                 end
               %>
-              <% #if @covid_main == 0  || @batch.course.course_name == "IX" %>
-              <% #if @batch.id == 1 %>
-              <table id="pdf-table" width="20%" class="left-table even-table signature" cellspacing="0" >
+              <%# if @covid_main == 0  || @batch.course.course_name == "IX" %>
+              <%# if @batch.id == 1 %>
+              <!--table id="pdf-table" width="20%" class="left-table even-table signature" cellspacing="0" >
                   <tr class="even">
                       <td class="align-left">Total Working Days</td>
-                      <td><%= @report_data['total'] %></td>
+                      <td><%#= @report_data['total'] %></td>
                   </tr>    
                   <tr class="even">    
                       <td class="align-left">Attendance</td>
-                      <td><%= @report_data['present'] %></td>
+                      <td><%#= @report_data['present'] %></td>
                   </tr>
                   
-              </table>
-              <% #end %>
-              <% #end %>
+              </table-->
+              <%# end %>
+              <%# end %>
             
               <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
               <% if @grading_levels.blank? %>
@@ -433,7 +433,7 @@
                     <td class="col-pdf left-td">Needs Improvement</td>
                   </tr>
                   <% else %>
-                  <table id="pdf-table" width="20%" class="left-table even-table signature" cellspacing="0" >
+                  <table id="pdf-table" width="30%" class="left-table even-table signature" cellspacing="0" style="float: left;">
                       <tr class="even">
                           <td class="align-left">Total Working Days</td>
                           <td><%= @report_data['total'] %></td>
@@ -444,7 +444,7 @@
                       </tr>
                       
                   </table>
-                  <table id="pdf-table" width="72%" class="left-table even-table signature" cellspacing="0" >
+                  <table id="pdf-table" width="50%" class="left-table even-table signature" cellspacing="0" >
                   <tr class="even">
                       <%  unless @grading_levels.empty? %>
                         <% i = 0 %>

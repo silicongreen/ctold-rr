@@ -798,7 +798,7 @@
                   main_mark_no_round = total_mark1_no_round.to_f/full_mark1.to_f*100
                   subject_mark = total_mark1
                 end  
-                subject_full_marks = main_mark_no_round.round()
+                subject_full_marks = main_mark_no_round.to_i
                 ct_marks_main = (main_mark_no_round/100)*full_mark1
                 if sub['grade_subject'].to_i != 1
                   if @student_subject_marks[sub['id'].to_i].blank?
@@ -1018,7 +1018,7 @@
                           @student_result[loop_std]['subject_failed'] = []
                         end
                         
-                        @student_result[loop_std]['subject_failed'] << sub['code']+"-"+subject_full_marks.round().to_s
+                        @student_result[loop_std]['subject_failed'] << sub['code']+"-"+subject_full_marks.to_i.to_s
                       end 
                     else
                       if @subject_result[main_sub_id].blank?
@@ -1508,7 +1508,7 @@
                       main_mark2 = main_mark2/2.00
                       main_mark2 = main_mark2.round()
                     end
-                    subject_full_marks = main_mark_no_round.round()
+                    subject_full_marks = main_mark_no_round.to_i
                     if sub2['grade_subject'].to_i != 1
                       if @student_subject_marks[sub2['id'].to_i].blank?
                         @student_subject_marks[sub2['id'].to_i] = {}

@@ -482,6 +482,7 @@
                                   %>
 
                                   <% else %>
+                                    
                                     <% total_mark_1 = total_mark_1+total_mark_subject.round().to_f %>
                                     <% total_mark_con_1 = total_mark_con_1+total_converted_new.round().to_f %>
                                     <%
@@ -489,7 +490,7 @@
                                     if !grade_sub.blank? and !grade_sub.name.blank?
                                       %>
                                       <hr/>
-                                      <%= grade_sub.name %> <%= total_converted_new.to_s  %>
+                                      <%= grade_sub.name %>
                                       <%
                                     else
                                       %>

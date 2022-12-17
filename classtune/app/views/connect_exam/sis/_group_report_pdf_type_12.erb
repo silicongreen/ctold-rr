@@ -285,7 +285,7 @@
                     <% end %>
                   <% end %>    
                   <tr class="even">    
-                      <td colspan="3" style="border-top: 1px solid #fff !important;border-left: 1px solid #fff !important; height: 80px;border-right: 1px solid #fff !important;"></td>
+                      <td colspan="3" style="border-top: 1px solid #fff !important;border-left: 1px solid #fff !important; height: 60px;border-right: 1px solid #fff !important;"></td>
                   </tr>
                   <tr class="even" style="border-top: 1px solid #000 !important;">
                       <td colspan="2" class="align-left" style="border-top: 1px solid #000 !important;">Total Working Days</td>
@@ -371,46 +371,12 @@
                       
                     <% end %>
                   <% end %>
-                  
-                 
-              </table>
-              <% 
-                not_promoted = "false"
-                if total_marks_obtain > 0 
-                  total_marks_obtain = (total_marks_obtain.to_f/2.00)
-                  total_marks_obtain = total_marks_obtain.round()
-                end
-                marks_from_string = total_marks_obtain.to_s
-                if !@exam_comment.blank?
-                  all_comments = @exam_comment.comments
-                  if !all_comments.blank?
-                    all_comments_array = all_comments.split("|")
-                    @report_data['total'] = all_comments_array[0]
-                    if !all_comments_array[1].nil?
-                      @report_data['present'] = all_comments_array[1]
-                      if !all_comments_array[2].nil?
-                        if @student_position.blank?
-                          @student_position = {}
-                        end
-                        @student_position[@student.id.to_i] = all_comments_array[2]
-                        if !all_comments_array[3].nil?
-                         not_promoted = all_comments_array[3]
-                         if !all_comments_array[4].nil?
-                          marks_from_string = all_comments_array[4]
-                         end
-                        end
-                      else
-                        if @student_position.blank?
-                          @student_position = {}
-                        end  
-                        @student_position[@student.id.to_i] = ""
-                      end
-                    end
-                  end
-                end
-              %>
-            
-              <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+                  <tr class="even">    
+                      <td colspan="6" style="border-top: 1px solid #fff !important;border-left: 1px solid #fff !important; height: 60px;border-right: 1px solid #fff !important;"></td>
+                  </tr>
+                  <tr class="even" style="border-top: 1px solid #000 !important;">
+                      <td colspan="6" class="align-left" style="border-top: 1px solid #000 !important;">
+                      <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
               <% if @grading_levels.blank? %>
               <% @grading_levels = GradingLevel.default %>
               <% end %>
@@ -506,6 +472,46 @@
                     
                 </table>
                   <% end %>
+                      </td>
+                  </tr>    
+              </table>
+              <% 
+                not_promoted = "false"
+                if total_marks_obtain > 0 
+                  total_marks_obtain = (total_marks_obtain.to_f/2.00)
+                  total_marks_obtain = total_marks_obtain.round()
+                end
+                marks_from_string = total_marks_obtain.to_s
+                if !@exam_comment.blank?
+                  all_comments = @exam_comment.comments
+                  if !all_comments.blank?
+                    all_comments_array = all_comments.split("|")
+                    @report_data['total'] = all_comments_array[0]
+                    if !all_comments_array[1].nil?
+                      @report_data['present'] = all_comments_array[1]
+                      if !all_comments_array[2].nil?
+                        if @student_position.blank?
+                          @student_position = {}
+                        end
+                        @student_position[@student.id.to_i] = all_comments_array[2]
+                        if !all_comments_array[3].nil?
+                         not_promoted = all_comments_array[3]
+                         if !all_comments_array[4].nil?
+                          marks_from_string = all_comments_array[4]
+                         end
+                        end
+                      else
+                        if @student_position.blank?
+                          @student_position = {}
+                        end  
+                        @student_position[@student.id.to_i] = ""
+                      end
+                    end
+                  end
+                end
+              %>
+            
+              
 
               <table id="pdf-table"  width="100%" class="left-table even-table signature2" cellspacing="0" >
                   <% if @covid_main == 0 %>

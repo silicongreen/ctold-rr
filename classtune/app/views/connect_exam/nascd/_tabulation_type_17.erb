@@ -351,6 +351,7 @@
 
                             
                             <%
+                              main_ct = full_mark_term
                               if full_mark_term == 35
                                 if ct > 0
                                   ct = (ct.to_f/full_mark_ct.to_f)*10
@@ -358,7 +359,6 @@
                                   full_mark_ct = 10
                                 end
                               end 
-                              main_ct = ct
                               if cw > 0 
                                 cw = (cw.to_f/full_mark_cw.to_f)*5
                                 cw = cw.round

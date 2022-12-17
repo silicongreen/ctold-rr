@@ -286,6 +286,18 @@
                   <% end %>    
 
               </table>
+
+              <table id="pdf-table" width="20%" class="left-table even-table signature" cellspacing="0" style="float: left !important;">
+                  <tr class="even">
+                      <td class="align-left">Total Working Days</td>
+                      <td><%= @report_data['total'] %></td>
+                  </tr>    
+                  <tr class="even">    
+                      <td class="align-left">Attendance</td>
+                      <td><%= @report_data['present'] %></td>
+                  </tr>
+                  
+              </table>
               
               
             
@@ -418,17 +430,7 @@
                     <td class="col-pdf left-td">Needs Improvement</td>
                   </tr>
                   <% else %>
-                  <table id="pdf-table" width="20%" class="left-table even-table signature" cellspacing="0" style="float: left !important;">
-                      <tr class="even">
-                          <td class="align-left">Total Working Days</td>
-                          <td><%= @report_data['total'] %></td>
-                      </tr>    
-                      <tr class="even">    
-                          <td class="align-left">Attendance</td>
-                          <td><%= @report_data['present'] %></td>
-                      </tr>
-                      
-                  </table>
+                  
                   <table id="pdf-table" width="40%" class="left-table even-table signature" cellspacing="0" style="float: left !important;">
                   <tr class="even">
                       <%  unless @grading_levels.empty? %>

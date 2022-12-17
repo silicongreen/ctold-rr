@@ -85,10 +85,10 @@
                                         <% term = term+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
                                       <% end %>
                                       <% if report['exam_category'] == '1' %>
-                                        <% ct = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
+                                        <% ct = ct+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
                                       <% end %>
                                       <% if report['exam_category'] == '2' %>
-                                        <% cw = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
+                                        <% cw = cw+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
                                       <% end %>
                                   <% end %>
                                   <% if report['quarter'] == '6' %>
@@ -96,10 +96,10 @@
                                         <% term_final = term_final+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
                                       <% end %>
                                       <% if report['exam_category'] == '1' %>
-                                        <% ct_final = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
+                                        <% ct_final = ct_final+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
                                       <% end %>
                                       <% if report['exam_category'] == '2' %>
-                                        <% cw_final = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
+                                        <% cw_final = cw_final+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
                                       <% end %>
                                   <% end %>
                                 <% end %>
@@ -107,13 +107,13 @@
                                   <% if report['quarter'] == '5' %>
                                       <% has_first_term = true %>
                                       <% if report['exam_category'] == '3' or report['exam_category'] == '4' or report['exam_category'] == '5' %>
-                                        <% full_mark_term = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                        <% full_mark_term = full_mark_term+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% end %>
                                       <% if report['exam_category'] == '1' %>
-                                        <% full_mark_ct = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                        <% full_mark_ct = full_mark_ct+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% end %>
                                       <% if report['exam_category'] == '2' %>
-                                        <% full_mark_cw = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                        <% full_mark_cw = full_mark_cw+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% end %>
                                   <% end %>
                                   <% if report['quarter'] == '6' %>
@@ -196,23 +196,23 @@
                          <%
                          quarter_mark = 0
                          if has_final_term
-                          if full_mark_term == 35
-                            if ct > 0
-                              ct = (ct.to_f/full_mark_ct.to_f)*10
-                              ct = ct.round
-                              full_mark_ct = 10
+                          if full_mark_term_final == 35
+                            if ct_final > 0
+                              ct_final = (ct_final.to_f/full_mark_ct_final.to_f)*10
+                              ct_final = ct_final.round
+                              full_mark_ct_final = 10
                             end
                           end 
-                          if cw > 0 
-                            cw = (cw.to_f/full_mark_cw.to_f)*5
-                            cw = cw.round
+                          if cw_final > 0 
+                            cw_final = (cw_final.to_f/full_mark_cw_final.to_f)*5
+                            cw_final = cw_final.round
                           end
-                          ct = ct.round
-                          full_mark_quarter = full_mark_ct
-                          if full_mark_cw > 0
-                            full_mark_quarter = full_mark_ct+5
+                          ct_final = ct_final.round
+                          full_mark_quarter = full_mark_ct_final
+                          if full_mark_cw_final > 0
+                            full_mark_quarter = full_mark_ct_final+5
                           end 
-                          quarter_mark = cw+ct
+                          quarter_mark = cw_final+ct_final
                           quarter_main_mark = 0
                           if quarter_mark > 0
                             quarter_main_mark = (quarter_mark.to_f/full_mark_quarter.to_f)*100
@@ -222,13 +222,13 @@
 
                           term_mark_main = 0
 
-                          if term > 0
-                            term_mark_main = (term.to_f/full_mark_term.to_f)*100
+                          if term_final > 0
+                            term_mark_main = (term_final.to_f/full_mark_term_final.to_f)*100
                             term_mark_main.round
                           end
 
-                          full_mark = full_mark_quarter+full_mark_term
-                          total_mark = quarter_mark+term.round()
+                          full_mark = full_mark_quarter+full_mark_term_final
+                          total_mark = quarter_mark+term_final.round()
 
                           main_mark = 0
                           if total_mark > 0

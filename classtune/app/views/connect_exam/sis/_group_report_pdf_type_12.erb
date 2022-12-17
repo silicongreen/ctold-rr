@@ -55,9 +55,10 @@
                       <% if @covid_main == 0 and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                         <% if @connect_exam_obj.quarter_number == 5 %>
                           <td class="col-pdf height-18">Marks</td>
-                          <td class="col-pdf height-18">First Term</td><!-- <br/>(Grade) -->
+                          <td class="col-pdf height-18">First Term <br/>(Grade)</td><!-- -->
                         <% else %>
-                          <td class="col-pdf height-18">Final Term</td>
+                          <td class="col-pdf height-18">Marks</td>
+                          <td class="col-pdf height-18">Final Term <br/>(Grade)</td>
                         <% end %>
                       <% else %>  
                         <% if @connect_exam_obj.quarter_number == 5 %>
@@ -291,13 +292,44 @@
                   <tr class="even">    
                       <td colspan="3" style="border-top: 1px solid #fff !important;border-left: 1px solid #fff !important; height: 60px;border-right: 1px solid #fff !important;"></td>
                   </tr>
+                  <% 
+                total_working_days= ""
+                total_att = ""
+                absent = ""
+
+                comments = ""
+                if !@exam_comment.blank?
+                  all_comments = @exam_comment.comments
+
+                  if !all_comments.blank?
+                    all_comments_array = all_comments.split("|")
+                    if all_comments_array.length > 1
+                      total_working_days = all_comments_array[0]
+                    elsif all_comments_array.length == 1
+                      comments = all_comments_array[0]  
+                    end
+                    if !all_comments_array[1].nil?
+                      total_att = all_comments_array[1]
+                    end
+                    if !all_comments_array[2].nil?
+                      comments = all_comments_array[4]
+                    end
+                  end
+                  if total_working_days.to_i > 0 && total_att_first.to_i > 0
+                    absent = total_working_days.to_i - total_att.to_i
+                    if absent < 0
+                      absent = 0
+                    end
+                  end
+                end
+              %>  
                   <tr class="even" style="border-top: 1px solid #000 !important;">
                       <td colspan="2" class="align-left" style="border-top: 1px solid #000 !important;">Total Working Days</td>
-                      <td style="border-top: 1px solid #000 !important;"><%= @report_data['total'] %></td>
+                      <td style="border-top: 1px solid #000 !important;"><%= total_working_days %><%#= @report_data['total'] %></td>
                   </tr>    
                   <tr class="even" style="border-top: 1px solid #000 !important;">    
                       <td colspan="2" style="border-top: 1px solid #000 !important;" class="align-left">Attendance</td>
-                      <td style="border-top: 1px solid #000 !important;"><%= @report_data['present'] %></td>
+                      <td style="border-top: 1px solid #000 !important;"><%= total_att %><%#= @report_data['present'] %></td>
                   </tr>
 
               </table>

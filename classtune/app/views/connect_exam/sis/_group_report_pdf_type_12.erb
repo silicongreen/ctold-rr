@@ -372,7 +372,7 @@
                     <% end %>
                   <% end %>
                   <tr class="even">    
-                      <td colspan="6" style="border-top: 1px solid #fff !important;border-left: 1px solid #fff !important; height: 60px;border-right: 1px solid #fff !important;"></td>
+                      <td colspan="6" style="border: 1px solid #fff !important;border-left: 1px solid #fff !important; height: 60px;border-right: 1px solid #fff !important;"></td>
                   </tr>
                   <% 
                 not_promoted = "false"
@@ -409,7 +409,7 @@
                   end
                 end
               %>
-                  <tr class="even" style="border-top: 1px solid #000 !important;">
+                  <tr class="even" style="border: 1px solid #fff !important;">
                       <td colspan="6" class="align-left" style="border-top: 1px solid #000 !important;">
                       <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
               <% if @grading_levels.blank? %>
@@ -431,7 +431,7 @@
                   </tr>
                   <% else %>
                   
-                  <table id="pdf-table" width="40%" class="left-table even-table signature" cellspacing="0" style="float: left !important;">
+                  <table id="pdf-table" width="70%" class="left-table even-table signature" cellspacing="0" style="float: left !important;">
                   <tr class="even">
                       <%  unless @grading_levels.empty? %>
                         <% i = 0 %>
@@ -491,7 +491,7 @@
                       <% end %>
                   </tr>
                   </table>
-                  <table id="pdf-table"  width="20%" class="left-table  odd-table signature" cellspacing="0"  style="float: left !important;">
+                  <table id="pdf-table"  width="30%" class="left-table  odd-table signature" cellspacing="0"  style="float: left !important;">
                     <tr class="even">
                         <td class="align-left">Total Marks Obtained</td>
                         <td><%= marks_from_string %></td>

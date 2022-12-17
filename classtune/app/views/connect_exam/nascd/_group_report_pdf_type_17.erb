@@ -196,7 +196,7 @@
                          <%
                          quarter_mark = 0
                          if has_final_term
-                          main_ct = full_mark_term_final
+                          main_ct = full_mark_term_final.to_s + "  " + full_mark_ct_final.to_s + "  " + full_mark_cw_final.to_s
                           if full_mark_term_final == 35
                             if ct_final > 0
                               ct_final = (ct_final.to_f/full_mark_ct_final.to_f)*10

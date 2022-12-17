@@ -300,7 +300,8 @@
                         
 
                         <% total_mark_1 = 0 %>
-                        <% total_subject = 0 %>
+                        <% total_subject = 0 %> 
+                        <% failed_count = 0 %>
                         <% grades = [] %>
                         <% grade_count = {} %>
                         <% @report_data['report']['subjects'].each do |sub| %>
@@ -429,7 +430,11 @@
                                   <%
                                     grade_sub = GradingLevel.percentage_to_grade(total_mark.round.to_f, @batch.id)
                                     if !grade_sub.blank? and !grade_sub.name.blank?
+                                      if grade_sub.name == 'F'
+                                        failed_count = failed_count + 1
+                                      end
                                       if main_mark.to_i < 50
+                                        failed_count = failed_count + 1
                                       %>
                                       F  
                                       <% else %>
@@ -457,6 +462,9 @@
                         <%
                           if total_subject > 0 and total_mark_1 > 0
                             gpa = total_mark_1.to_f/total_subject.to_f
+                            if failed_count.to_i > 0
+                              gpa = 10
+                            end
                           else
                             gpa = 0
                           end

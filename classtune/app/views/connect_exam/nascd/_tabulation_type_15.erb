@@ -410,6 +410,8 @@
                                 total_converted_new = (total.to_f/full_term.to_f)*100
                                 total_converted = total_converted.round
                                 full_mark_all = 50
+                              elsif full_term.to_i == 75
+                                total_converted_new = (total.to_f/full_term.to_f)*100
                               end
                             end
                             total_mark_subject = total_converted.round()+conv_mcw.round()+ct.round()

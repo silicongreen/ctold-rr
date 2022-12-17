@@ -181,13 +181,13 @@
                         
                          <td><% if has_first_term %>
                          <% if main_mark > 79 && main_mark <= 100 %>
-                         Excellent
+                         Excellent <%= main_mark %>
                          <% elsif main_mark >= 60 && main_mark <= 79 %>
-                         Very Good
+                         Very Good <%= main_mark %>
                          <% elsif main_mark >= 50 && main_mark <= 59 %>
-                         Good 
+                         Good  <%= main_mark %>
                          <% else %>
-                         Need Improvement
+                         Need Improvement <%= main_mark %>
                          <% end %>
                          
                          <% end %>

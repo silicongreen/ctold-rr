@@ -351,6 +351,7 @@
 
                             
                             <%
+                              main_ct = ct
                               if full_mark_term == 35
                                 if ct > 0
                                   ct = (ct.to_f/full_mark_ct.to_f)*10
@@ -403,7 +404,7 @@
                                   <hr/>
                                
                                   <% if full_mark_ct > 0 %>
-                                    <%= ct %>
+                                    <%= ct %> <%= main_ct %>
                                   <% else %>
                                     -
                                   <% end %>

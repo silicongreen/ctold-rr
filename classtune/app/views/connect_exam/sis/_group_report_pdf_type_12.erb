@@ -54,6 +54,7 @@
                       <% end %>
                       <% if @covid_main == 0 and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                         <% if @connect_exam_obj.quarter_number == 5 %>
+                          <td class="col-pdf height-18">Marks</td>
                           <td class="col-pdf height-18">First Term</td><!-- <br/>(Grade) -->
                         <% else %>
                           <td class="col-pdf height-18">Final Term</td>
@@ -234,6 +235,7 @@
                           %>
                           <% if @covid_main == 0 and (@batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII") %>
                           <!--td class="col-pdf"><b><%#= total_mark %></b></td-->
+                          <td class="col-pdf"><b><%= total_mark %></b></td>
                           <% end %>
                           <% if !grade.blank? and !grade.name.blank? %>
                             <td class="col-pdf"><b><%= grade.name %></b></td>
@@ -396,8 +398,8 @@
                   end
                 end
               %>
-              <% if @covid_main == 0  || @batch.course.course_name == "IX" %>
-              <% if @batch.id == 1 %>
+              <% #if @covid_main == 0  || @batch.course.course_name == "IX" %>
+              <% #if @batch.id == 1 %>
               <table id="pdf-table"  width="30%" class="left-table even-table signature" cellspacing="0" >
                   <tr class="even">
                       <td class="align-left">Total Working Days</td>
@@ -409,8 +411,8 @@
                   </tr>
                   
               </table>
-              <% end %>
-              <% end %>
+              <% #end %>
+              <% #end %>
             
               <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
               <% if @grading_levels.blank? %>
@@ -493,8 +495,8 @@
                   </table>
                   <% end %>
               
-              <% if @connect_exam_obj.quarter_number == 6 %>
-              <% if @covid_main == 0 %>
+              <% #if @connect_exam_obj.quarter_number == 6 %>
+              <% #if @covid_main == 0 %>
               <table id="pdf-table"  width="20%" class="left-table  odd-table signature" cellspacing="0" >
                   <tr class="even">
                       <td class="align-left">Total Marks Obtained</td>
@@ -510,19 +512,19 @@
                   </tr>
                   
               </table>
-              <% end %>
+              <% #end %>
               
               <% end %>
               
-              <table id="pdf-table"  width="100%" class="left-table even-table" cellspacing="0" >
+              <!--table id="pdf-table"  width="100%" class="left-table even-table" cellspacing="0" >
                 <tr class="even">
                     <td class="align-left" style="width: 35% !important;">Total Working Days</td>
-                    <td style="width: 15% !important;"><%= @report_data['total'] %></td>
+                    <td style="width: 15% !important;"><%#= @report_data['total'] %></td>
                     <td class="align-left" style="width: 35% !important;">Attendance</td>
-                    <td style="width: 15% !important;"><%= @report_data['present'] %></td>
+                    <td style="width: 15% !important;"><%#= @report_data['present'] %></td>
                 </tr>    
                 
-            </table>
+            </table-->
 
               <table id="pdf-table"  width="100%" class="left-table even-table signature2" cellspacing="0" >
                   <% if @covid_main == 0 %>

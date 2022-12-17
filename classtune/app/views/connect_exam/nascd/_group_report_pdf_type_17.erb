@@ -66,7 +66,7 @@
                             term = 0
                             full_mark_cw = 0
                             full_mark_ct = 0
-                            full_mark_term = 0
+                            full_mark_term = 0 
 
                             cw_final = 0
                             ct_final = 0
@@ -245,13 +245,13 @@
                          <td><% if has_final_term %>
                          
                          <% if main_mark > 79 && main_mark <= 100 %>
-                         Excellent 
+                         Excellent <%= main_mark %>
                          <% elsif main_mark >= 60 && main_mark <= 79 %>
-                         Very Good 
+                         Very Good  <%= main_mark %>
                          <% elsif main_mark >= 50 && main_mark <= 59 %>
-                         Good  
+                         Good   <%= main_mark %>
                          <% else %>
-                         Need Improvement
+                         Need Improvement <%= main_mark %>
                          <% end %>
                          
                          <% end %>

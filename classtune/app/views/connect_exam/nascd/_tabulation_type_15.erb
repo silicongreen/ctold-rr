@@ -468,6 +468,7 @@
                                       grade_sub = GradingLevel.percentage_to_grade(new_mark_to_add.round.to_f, @batch.id)
                                       if !grade_sub.blank? and !grade_sub.name.blank?
                                         %>
+                                        <% total_subject = total_subject+1 %>
                                         <hr/>
                                         <%= grade_sub.name %>
                                         <%

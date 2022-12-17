@@ -196,7 +196,6 @@
                          <%
                          quarter_mark = 0
                          if has_final_term
-                          main_ct = cw_final
                           if full_mark_term_final == 35
                             if ct_final > 0
                               ct_final = (ct_final.to_f/full_mark_ct_final.to_f)*10
@@ -204,6 +203,7 @@
                               full_mark_ct_final = 10
                             end
                           end 
+                          main_ct = ct_final
                           if cw_final > 0 
                             cw_final = (cw_final.to_f/full_mark_cw_final.to_f)*5
                             cw_final = cw_final.round

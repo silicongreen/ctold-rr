@@ -444,7 +444,7 @@
                           
                         <% if subjects['grade_subject'].to_i != 1  %>
                          <td><% if has_quarter %><%= total.round.to_i %><% end %></td>
-                         <td><% if has_quarter %><%= total_converted.round.to_i %><% end %></td>
+                         <td><% if has_quarter %><%= total_converted.round.to_i %><% end %> <%= total_subjects_final %> <%= total_con_mark %> </td>
                          <%
                           main_mark = 0
                           if total_mark_subject > 0

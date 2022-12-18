@@ -136,7 +136,7 @@
                          <%
                          quarter_mark = 0
                          if has_first_term
-                          main_ct = ct
+                          main_ct = ct.to_s + "  " + cw.to_s + "  " + term.to_s + "  " + full_mark_term.to_s + "  " + full_mark_ct.to_s + "  " + full_mark_cw.to_s
                             if full_mark_term == 35
                               if ct > 0
                                 ct = (ct.to_f/full_mark_ct.to_f)*10

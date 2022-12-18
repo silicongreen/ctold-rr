@@ -54,6 +54,9 @@
                     <%
                     grand_total = 0
                     total_grade = 0
+                    failed_subject = 0
+                    total_subjects = 0
+                    total_subjects_final = 0
                     has_quarter = false
                     grade_subject_mark_first = {}
                     %>
@@ -193,6 +196,7 @@
                           
                           total_mark_subject = total_converted+conv_mcw.round()+ct.round()
                           if subjects['grade_subject'].to_i != 1
+                            total_subjects = total_subjects+1
                             if fourth_subject.blank?
                               grand_total = grand_total+total_mark_subject.round()
                             else
@@ -408,6 +412,8 @@
                           
                           total_mark_subject = total_converted.round()+conv_mcw.round()+ct.round()
                           if subjects['grade_subject'].to_i != 1
+                            total_subjects = total_subjects+1
+                            total_subjects_final = total_subjects_final+1
                             if fourth_subject.blank?
                               grand_total = grand_total+total_mark_subject.round()
                             else
@@ -454,7 +460,21 @@
                   <% end %>
                   <tr class="table-header">
                     <td colspan="4">Grand Total Marks (Yearly Exam)</td>
-                    <td class="col-pdf"  colspan="9"></td>
+                    <td class="col-pdf"  colspan="7"></td>
+                    <% if has_quarter %>
+                    <% total_mark_all = (grand_total.round().to_i) / (total_subjects_final)  %>
+                    <% grade = GradingLevel.percentage_to_grade(total_mark_all.round.to_i, @batch.id) %>
+                    <% if !grade.blank? and !grade.name.blank? %>
+                    <td class="col-pdf"><% if has_final_term %><%= grade.name %><% end %></td>
+                    <td class="col-pdf"><% if has_final_term %><%= grade.credit_points %><% end %> <%= total_mark_all %></td>
+                    <% else %>
+                    <td class="col-pdf"><% if has_final_term %>-<% end %></td>
+                    <td class="col-pdf"><% if has_final_term %>-<% end %></td>
+                    <% end %>
+                    <% else %>
+                    <td class="col-pdf">-</td>
+                    <td class="col-pdf">-</td>
+                    <% end %>
                     <td class="col-pdf"><% if has_quarter %><%= grand_total.round().to_i %><% end %></td>
                     <% if has_quarter %>
                     <% exam_grand_total = exam_grand_total + grand_total.round().to_i %>
@@ -464,7 +484,21 @@
 
                   <tr class="table-header">
                     <td colspan="4">Total Marks of Half Yearly and Yearly Exam</td>
-                    <td class="col-pdf"  colspan="9"></td>
+                    <td class="col-pdf"  colspan="7"></td>
+                    <% if has_quarter %>
+                    <% total_mark_all = (exam_grand_total.round().to_i) / (total_subjects)  %>
+                    <% grade = GradingLevel.percentage_to_grade(total_mark_all.round.to_i, @batch.id) %>
+                    <% if !grade.blank? and !grade.name.blank? %>
+                    <td class="col-pdf"><% if has_final_term %><%= grade.name %><% end %></td>
+                    <td class="col-pdf"><% if has_final_term %><%= grade.credit_points %><% end %> <%= total_mark_all %></td>
+                    <% else %>
+                    <td class="col-pdf"><% if has_final_term %>-<% end %></td>
+                    <td class="col-pdf"><% if has_final_term %>-<% end %></td>
+                    <% end %>
+                    <% else %>
+                    <td class="col-pdf">-</td>
+                    <td class="col-pdf">-</td>
+                    <% end %>
                     <td class="col-pdf"><%= exam_grand_total.round().to_i %></td>
                     <td class="col-pdf"></td>
                   </tr>

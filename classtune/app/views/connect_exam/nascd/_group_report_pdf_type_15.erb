@@ -453,6 +453,11 @@
                           if total_mark_subject > 0
                             main_mark = total_mark_converted.round()
                             grade2 = GradingLevel.percentage_to_grade(total_con_mark_grade, @batch.id)
+                            if !grade2.blank? and !grade2.name.blank?
+                              if grade2.name == 'F'
+                                failed_subject  = failed_subject + 1
+                              end
+                            end
                           end
                         %>
                           <td><% if !grade2.blank? and !grade2.name.blank? %><%= grade2.name %><% end %></td>
@@ -472,6 +477,9 @@
                     <td colspan="4">Grand Total Marks (Yearly Exam)</td>
                     <td class="col-pdf"  colspan="7"></td>
                     <% if has_quarter %>
+                    <% if failed_subject > 0 %>
+                        <% grand_total_converted = 1 %>
+                    <% end %>
                     <% total_mark_all = (grand_total_converted.round().to_i) / (total_subjects_final)  %>
                     <% grade = GradingLevel.percentage_to_grade(total_mark_all.round.to_i, @batch.id) %>
                     <% if !grade.blank? and !grade.name.blank? %>

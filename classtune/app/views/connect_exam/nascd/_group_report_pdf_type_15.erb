@@ -437,14 +437,14 @@
                           total_con_mark = 0
                           if full_term > 0 && total_mark_subject > 0
                             total_con_mark = (total_mark_subject.to_f/full_mark_all.to_f)*100
-                            grand_total_converted = grand_total_converted+total_mark_converted.round.to_i
+                            grand_total_converted = grand_total_converted+total_con_mark.round.to_i
                           end
                           grade = GradingLevel.percentage_to_grade(total_mark_converted.round.to_i, @batch.id)
                         %>
                           
                         <% if subjects['grade_subject'].to_i != 1  %>
                          <td><% if has_quarter %><%= total.round.to_i %><% end %></td>
-                         <td><% if has_quarter %><%= total_converted.round.to_i %><% end %> <%= total_con_mark.to_s %></td>
+                         <td><% if has_quarter %><%= total_converted.round.to_i %><% end %></td>
                          <%
                           main_mark = 0
                           if total_mark_subject > 0

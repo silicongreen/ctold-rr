@@ -54,9 +54,12 @@
                       <td>75</td>
                     </tr>
                     <%
+                    total_grade = 0
                     grand_total1 = 0
                     total_grade1 = 0
                     grand_total2 = 0
+                    total_subject = 0
+                    failed_subject = false
                     total_grade2 = 0
                     has_first_term = false
                     has_final_term = false
@@ -256,11 +259,13 @@
                           <% if !grade.blank? and !grade.name.blank? %>
                             <% if grade.credit_points.to_i == 0 || combined_total.round.to_i < 50 %>
                               <% failed = true %>
+                              <% failed_subject = true %>
                             <% end %>
                             <% if failed %>
                             <td class="col-pdf">F</td>
                             <td class="col-pdf">0.0</td>
                             <% else %>
+                            <% total_subject = total_subject + 1 %>
                             <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
                             <td class="col-pdf"><%= grade.name %></td>
                             <td class="col-pdf"><%= grade.credit_points %></td>
@@ -282,7 +287,20 @@
                     <td class="col-pdf"><% if has_first_term %><%= grand_total1 %><% end %></td>
                     <td colspan="3">Grand Total Marks</td>
                     <td class="col-pdf"><% if has_final_term %><%= grand_total2 %><% end %></td>
-                    <td colspan="2"></td>
+                    <% if failed_subject %>
+                    <td class="col-pdf"><% if has_final_term %>F<% end %></td>
+                    <td class="col-pdf"><% if has_final_term %>0.0<% end %></td>
+                    <% else %>
+                    <% total_mark_all = grand_total2+grand_total1 %>
+                    <% grade = GradingLevel.percentage_to_grade(total_mark_all.round.to_i, @batch.id) %>
+                    <% if !grade.blank? and !grade.name.blank? %>
+                    <td class="col-pdf"><% if has_final_term %><%= grade.name %><% end %></td>
+                    <td class="col-pdf"><% if has_final_term %><%= grade.credit_points %><% end %></td>
+                    <% else %>
+                    <td class="col-pdf"><% if has_final_term %>-<% end %></td>
+                    <td class="col-pdf"><% if has_final_term %>-<% end %></td>
+                    <% end %>
+                    <% end %>
                     <td class="col-pdf"><% if has_final_term || has_first_term %><%= grand_total2+grand_total1 %><% end %></td>
                   </tr>
 

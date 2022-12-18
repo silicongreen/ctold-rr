@@ -53,6 +53,7 @@
                     </tr>
                     <%
                     grand_total = 0
+                    grand_total_converted = 0
                     total_grade = 0
                     failed_subject = 0
                     total_subjects = 0
@@ -196,8 +197,8 @@
                           
                           total_mark_subject = total_converted+conv_mcw.round()+ct.round()
                           if subjects['grade_subject'].to_i != 1
-                            total_subjects = total_subjects+1
                             if fourth_subject.blank?
+                              total_subjects = total_subjects+1
                               grand_total = grand_total+total_mark_subject.round()
                             else
                               if total_mark_subject.round() > 40
@@ -431,7 +432,7 @@
                           if  subjects['grade_subject'].to_i == 1 && has_quarter
                             grade_subject_mark_second[subjects['id'].to_i] = main_mark
                           end 
-                          
+                          grand_total_converted = grand_total_converted+total_mark_converted.round.to_i
                           grade = GradingLevel.percentage_to_grade(total_mark_converted.round.to_i, @batch.id)
                         %>
                           
@@ -462,11 +463,11 @@
                     <td colspan="4">Grand Total Marks (Yearly Exam)</td>
                     <td class="col-pdf"  colspan="7"></td>
                     <% if has_quarter %>
-                    <% total_mark_all = (grand_total.round().to_i) / (total_subjects_final)  %>
+                    <% total_mark_all = (grand_total_converted.round().to_i) / (total_subjects_final)  %>
                     <% grade = GradingLevel.percentage_to_grade(total_mark_all.round.to_i, @batch.id) %>
                     <% if !grade.blank? and !grade.name.blank? %>
                     <td class="col-pdf"><%= grade.name %></td>
-                    <td class="col-pdf"><%= grade.credit_points %> <%= total_mark_all %> <%= total_subjects_final %></td>
+                    <td class="col-pdf"><%= grade.credit_points %> <%= total_mark_all %></td>
                     <% else %>
                     <td class="col-pdf">-</td>
                     <td class="col-pdf">-</td>

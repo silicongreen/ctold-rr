@@ -444,7 +444,7 @@
                           
                         <% if subjects['grade_subject'].to_i != 1  %>
                          <td><% if has_quarter %><%= total.round.to_i %><% end %></td>
-                         <td><% if has_quarter %><%= total_converted.round.to_i %><% end %> <%= grand_total_converted %> <%= total_con_mark %> </td>
+                         <td><% if has_quarter %><%= total_converted.round.to_i %><% end %></td>
                          <%
                           main_mark = 0
                           if total_mark_subject > 0
@@ -466,14 +466,14 @@
                     <% end %>
                   <% end %>
                   <tr class="table-header">
-                    <td colspan="4">Grand Total Marks (Yearly Exam)<%= grand_total_converted %></td>
+                    <td colspan="4">Grand Total Marks (Yearly Exam)</td>
                     <td class="col-pdf"  colspan="7"></td>
                     <% if has_quarter %>
                     <% total_mark_all = (grand_total_converted.round().to_i) / (total_subjects_final)  %>
                     <% grade = GradingLevel.percentage_to_grade(total_mark_all.round.to_i, @batch.id) %>
                     <% if !grade.blank? and !grade.name.blank? %>
                     <td class="col-pdf"><%= grade.name %></td>
-                    <td class="col-pdf"><%= grade.credit_points %> <%= grand_total_converted %> <%= total_subjects_final %></td>
+                    <td class="col-pdf"><%= grade.credit_points %></td>
                     <% else %>
                     <td class="col-pdf">-</td>
                     <td class="col-pdf">-</td>

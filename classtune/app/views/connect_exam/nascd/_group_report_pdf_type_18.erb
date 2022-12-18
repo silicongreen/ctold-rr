@@ -251,7 +251,7 @@
                          %>
                          <% if subjects['grade_subject'].to_i != 1  %>
                          <% combined_total = combined_total+total.round.to_i %>
-                         <td><% if has_final_term %><%= cw_final.round.to_i %><% end %></td>
+                         <td><% if has_final_term %><%= cw_final.round.to_i %><% end %> <%= combined_total %></td>
                          <td><% if has_final_term %><%= ct_final.round.to_i %><% end %></td>
                          <td><% if has_final_term %><%= term_final.round.to_i %><% end %></td>
                          <td><% if has_final_term %><%= total.round.to_i %><% end %></td>

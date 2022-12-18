@@ -456,6 +456,8 @@
                             if !grade2.blank? and !grade2.name.blank?
                               if grade2.name == 'F'
                                 failed_subject  = failed_subject + 1
+                              else
+                                total_grade = total_grade+grade2.credit_points
                               end
                             end
                           end
@@ -466,7 +468,7 @@
                          <td><% if has_quarter %><%= highest_mark1.round.to_i %><% end %></td>
                         
 
-           
+            
                           
                       </tr>
                       <% end %>
@@ -484,7 +486,7 @@
                     <% grade = GradingLevel.percentage_to_grade(total_mark_all.round.to_i, @batch.id) %>
                     <% if !grade.blank? and !grade.name.blank? %>
                     <td class="col-pdf"><%= grade.name %></td>
-                    <td class="col-pdf"><%= grade.credit_points %></td>
+                    <td class="col-pdf"><%#= grade.credit_points %><%= total_grade %></td>
                     <% else %>
                     <td class="col-pdf">-</td>
                     <td class="col-pdf">-</td>
@@ -576,7 +578,7 @@
                         <% iloop = 0 %>
                         <% subject_groups.each do |group_name| %>
                           <tr class="table-header">
-                          <td class="col-pdf align-left"><%= group_name.name %></td>
+                          <td class="col-pdf align-left" style=" font-weight: normal !important;"><%= group_name.name %></td>
                           <% total_exam = 0 %>
                           <% @report_data['report']['exams'].each do |report| %>
                             <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? %>
@@ -586,16 +588,16 @@
                               <% end %>
                               <% wordString = wordString_main.split("|") %>
                               <% if !wordString.blank? and !wordString[iloop].blank? %>
-                                <td class="col-pdf"><%=  wordString[iloop] %></td>
+                                <td class="col-pdf" style=" font-weight: normal !important;"><%=  wordString[iloop] %></td>
                               <% else %>
-                                  <td class="col-pdf"></td>
+                                  <td class="col-pdf" style=" font-weight: normal !important;"></td>
                               <% end %>
                               <% total_exam = total_exam+1 %>
                             <% end %>
                           <% end %> 
                           <% iloop = iloop+1 %>
                           <% if total_exam == 1 %>
-                            <td></td>
+                            <td style=" font-weight: normal !important;"></td>
                           <% end %>  
                           </tr> 
                         <% end %>  
@@ -716,7 +718,7 @@ socially to his or her abilities and opportunities.</i></li>
                       <td width='40%' rowspan="2"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/nascd/sign_principal.jpeg")), :width=>"20%" %></td> 
                   </tr>
                   <tr class="table-header">
-                      <td width="20%" colspan="2" rowspan="2" style="text-align: left; vertical-align: top;">Comment: <% if !teacher_comments.blank?%><%= teacher_comments %><% end %></td>      
+                      <td width="20%" colspan="2" rowspan="2" style="text-align: left; vertical-align: top; font-size: 18px !important; font-weight: normal !important;">Comment: <% if !teacher_comments.blank?%><%= teacher_comments %><% end %></td>      
                   </tr>
                   <tr class="table-header">
                       <td>Signature</td>

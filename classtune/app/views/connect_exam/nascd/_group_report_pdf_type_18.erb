@@ -294,7 +294,7 @@
                     <% total_mark_all = (grand_total2+grand_total1) / total_subject  %>
                     <% grade = GradingLevel.percentage_to_grade(total_mark_all.round.to_i, @batch.id) %>
                     <% if !grade.blank? and !grade.name.blank? %>
-                    <td class="col-pdf"><% if has_final_term %><%= grade.name %><% end %> <%= total_subject %></td>
+                    <td class="col-pdf"><% if has_final_term %><%= grade.name %><% end %> <%= total_subject %> <%= total_mark_all.round.to_i %></td>
                     <td class="col-pdf"><% if has_final_term %><%= grade.credit_points %><% end %></td>
                     <% else %>
                     <td class="col-pdf"><% if has_final_term %>-<% end %></td>

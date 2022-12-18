@@ -136,7 +136,6 @@
                          <%
                          quarter_mark = 0
                          if has_first_term
-                          main_ct = ct.to_s + "  " + cw.to_s + "  " + term.to_s + "  " + full_mark_term.to_s + "  " + full_mark_ct.to_s + "  " + full_mark_cw.to_s
                             if full_mark_term == 35
                               if ct > 0
                                 ct = (ct.to_f/full_mark_ct.to_f)*10
@@ -181,14 +180,14 @@
                          %>
                         
                          <td><% if has_first_term %>
-                         <% if main_mark > 79 && main_mark <= 100 %>
-                         Excellent  <%= main_mark %> <%= total_mark %> <%= main_ct %>
+                         <% if main_mark > 79 %>
+                         Excellent 
                          <% elsif main_mark >= 60 && main_mark <= 79 %>
-                         Very Good  <%= main_mark %> <%= total_mark %> <%= main_ct %>
+                         Very Good  
                          <% elsif main_mark >= 50 && main_mark <= 59 %>
-                         Good  <%= main_mark %> <%= total_mark %> <%= main_ct %>
+                         Good  
                          <% else %>
-                         Need Improvement  <%= main_mark %> <%= total_mark %> <%= main_ct %>
+                         Need Improvement 
                          <% end %>
                          
                          <% end %>

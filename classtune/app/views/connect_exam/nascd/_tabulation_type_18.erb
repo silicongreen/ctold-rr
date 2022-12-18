@@ -424,11 +424,11 @@
                                <td>
                                     <%= term.round() %>
                                   <hr/>
-                                    <%= total_mark %>
+                                    <%= total_mark %> <%= main_mark %>
                                   <% if sub['grade_subject'].to_i != 1 %>
                                   <hr/>
                                   <%
-                                    grade_sub = GradingLevel.percentage_to_grade(total_mark.round.to_f, @batch.id)
+                                    grade_sub = GradingLevel.percentage_to_grade(main_mark.round.to_f, @batch.id)
                                     if !grade_sub.blank? and !grade_sub.name.blank?
                                       if grade_sub.name == 'F'
                                         failed_count = failed_count + 1

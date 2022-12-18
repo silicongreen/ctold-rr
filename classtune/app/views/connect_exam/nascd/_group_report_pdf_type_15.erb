@@ -446,10 +446,13 @@
                          <td><% if has_quarter %><%= total.round.to_i %><% end %></td>
                          <td><% if has_quarter %><%= total_converted.round.to_i %><% end %></td>
                          <%
+                          if full_term > 0 && total_mark_subject > 0 
+                            total_con_mark_grade = (total_mark_subject.to_f/full_mark_all.to_f)*100
+                          end
                           main_mark = 0
                           if total_mark_subject > 0
                             main_mark = total_mark_converted.round()
-                            grade2 = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                            grade2 = GradingLevel.percentage_to_grade(total_con_mark_grade, @batch.id)
                           end
                         %>
                           <td><% if !grade2.blank? and !grade2.name.blank? %><%= grade2.name %><% end %></td>

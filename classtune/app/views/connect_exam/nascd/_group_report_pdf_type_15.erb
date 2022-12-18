@@ -413,8 +413,8 @@
                           total_mark_subject = total_converted.round()+conv_mcw.round()+ct.round()
                           if subjects['grade_subject'].to_i != 1
                             total_subjects = total_subjects+1
-                            total_subjects_final = total_subjects_final+1
                             if fourth_subject.blank?
+                              total_subjects_final = total_subjects_final+1
                               grand_total = grand_total+total_mark_subject.round()
                             else
                               if total_mark_subject.round() > 40
@@ -484,21 +484,7 @@
 
                   <tr class="table-header">
                     <td colspan="4">Total Marks of Half Yearly and Yearly Exam</td>
-                    <td class="col-pdf"  colspan="7"></td>
-                    <% if has_quarter %>
-                    <% total_mark_all = (exam_grand_total.round().to_i) / (total_subjects)  %>
-                    <% grade = GradingLevel.percentage_to_grade(total_mark_all.round.to_i, @batch.id) %>
-                    <% if !grade.blank? and !grade.name.blank? %>
-                    <td class="col-pdf"><%= grade.name %></td>
-                    <td class="col-pdf"><%= grade.credit_points %> <%= total_mark_all %></td>
-                    <% else %>
-                    <td class="col-pdf">-</td>
-                    <td class="col-pdf">-</td>
-                    <% end %>
-                    <% else %>
-                    <td class="col-pdf">-</td>
-                    <td class="col-pdf">-</td>
-                    <% end %>
+                    <td class="col-pdf"  colspan="9"></td>
                     <td class="col-pdf"><%= exam_grand_total.round().to_i %></td>
                     <td class="col-pdf"></td>
                   </tr>

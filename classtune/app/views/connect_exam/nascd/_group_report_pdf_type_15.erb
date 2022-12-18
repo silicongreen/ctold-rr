@@ -466,7 +466,7 @@
                     <% end %>
                   <% end %>
                   <tr class="table-header">
-                    <td colspan="4">Grand Total Marks (Yearly Exam)</td>
+                    <td colspan="4">Grand Total Marks (Yearly Exam)<%= grand_total_converted %></td>
                     <td class="col-pdf"  colspan="7"></td>
                     <% if has_quarter %>
                     <% total_mark_all = (grand_total_converted.round().to_i) / (total_subjects_final)  %>

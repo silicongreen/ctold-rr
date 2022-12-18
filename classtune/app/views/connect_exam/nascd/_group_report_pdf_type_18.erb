@@ -462,7 +462,7 @@
                         <% iloop = 0 %>
                         <% subject_groups.each do |group_name| %>
                           <tr class="table-header">
-                          <td class="col-pdf align-left"><%= group_name.name %></td>
+                          <td class="col-pdf align-left" style="font-size: 18px !important; font-weight: normal;"><%= group_name.name %></td>
                           <% total_exam = 0 %>
                           <% @report_data['report']['exams'].each do |report| %>
                             <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? %>
@@ -472,16 +472,16 @@
                               <% end %>
                               <% wordString = wordString_main.split("|") %>
                               <% if !wordString.blank? and !wordString[iloop].blank? %>
-                                <td class="col-pdf"><%=  wordString[iloop].strip %></td>
+                                <td class="col-pdf" style="font-size: 18px !important; font-weight: normal;"><%=  wordString[iloop].strip %></td>
                               <% else %>
-                                  <td class="col-pdf"></td>
+                                  <td class="col-pdf" style="font-size: 18px !important; font-weight: normal;"></td>
                               <% end %>
                               <% total_exam = total_exam+1 %>
                             <% end %>
                           <% end %> 
                           <% iloop = iloop+1 %>
                           <% if total_exam == 1 %>
-                            <td></td>
+                            <td style="font-size: 18px !important; font-weight: normal;"></td>
                           <% end %>  
                           </tr> 
                         <% end %>  
@@ -493,23 +493,23 @@
               
               <table id="pdf-table"  width="25%" class="left-table" cellspacing="0" >
                   <tr class="table-header">
-                    <td colspan="2">Assessment Criteria</td>
+                    <td colspan="2" style="font-size: 18px !important; font-weight: normal;">Assessment Criteria</td>
                   </tr>
                   <tr class="table-header">
-                    <td>80%-100%</td>
-                    <td>Excellent (Ex)</td>
+                    <td style="font-size: 18px !important; font-weight: normal;">80%-100%</td>
+                    <td style="font-size: 18px !important; font-weight: normal;">Excellent (Ex)</td>
                   </tr>
                   <tr class="table-header">
-                    <td>60%-79%</td>
-                    <td>Very Good (VG)</td>
+                    <td style="font-size: 18px !important; font-weight: normal;">60%-79%</td>
+                    <td style="font-size: 18px !important; font-weight: normal;">Very Good (VG)</td>
                   </tr>
                   <tr class="table-header">
-                    <td>50%-59%</td>
-                    <td>Good (G)</td>
+                    <td style="font-size: 18px !important; font-weight: normal;">50%-59%</td>
+                    <td style="font-size: 18px !important; font-weight: normal;">Good (G)</td>
                   </tr>
                   <tr class="table-header">
-                    <td>0%-49%</td>
-                    <td>Need Improvement (NI)</td>
+                    <td style="font-size: 18px !important; font-weight: normal;">0%-49%</td>
+                    <td style="font-size: 18px !important; font-weight: normal;">Need Improvement (NI)</td>
                   </tr>
                 </table>
 

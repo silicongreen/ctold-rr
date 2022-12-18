@@ -251,13 +251,13 @@
                          %>
                          <% if subjects['grade_subject'].to_i != 1  %>
                          <% combined_total = combined_total+total.round.to_i %>
-                         <td><% if has_final_term %><%= cw_final.round.to_i %><% end %> <%= combined_total %></td>
+                         <td><% if has_final_term %><%= cw_final.round.to_i %><% end %></td>
                          <td><% if has_final_term %><%= ct_final.round.to_i %><% end %></td>
                          <td><% if has_final_term %><%= term_final.round.to_i %><% end %></td>
                          <td><% if has_final_term %><%= total.round.to_i %><% end %></td>
-                          <%  grade = GradingLevel.percentage_to_grade(combined_total.round.to_i, @batch.id) %>
+                          <%  grade = GradingLevel.percentage_to_grade(total.round.to_i, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>
-                            <% if grade.credit_points.to_i == 0 || combined_total.round.to_i < 50 %>
+                            <% if grade.credit_points.to_i == 0 %>
                               <% failed = true %>
                               <% failed_subject = true %>
                             <% end %>

@@ -465,11 +465,11 @@
                     <% total_mark_all = (grand_total.round().to_i) / (total_subjects_final)  %>
                     <% grade = GradingLevel.percentage_to_grade(total_mark_all.round.to_i, @batch.id) %>
                     <% if !grade.blank? and !grade.name.blank? %>
-                    <td class="col-pdf"><% if has_final_term %><%= grade.name %><% end %></td>
-                    <td class="col-pdf"><% if has_final_term %><%= grade.credit_points %><% end %> <%= total_mark_all %></td>
+                    <td class="col-pdf"><%= grade.name %></td>
+                    <td class="col-pdf"><%= grade.credit_points %> <%= total_mark_all %></td>
                     <% else %>
-                    <td class="col-pdf"><% if has_final_term %>-<% end %></td>
-                    <td class="col-pdf"><% if has_final_term %>-<% end %></td>
+                    <td class="col-pdf">-</td>
+                    <td class="col-pdf">-</td>
                     <% end %>
                     <% else %>
                     <td class="col-pdf">-</td>
@@ -489,11 +489,11 @@
                     <% total_mark_all = (exam_grand_total.round().to_i) / (total_subjects)  %>
                     <% grade = GradingLevel.percentage_to_grade(total_mark_all.round.to_i, @batch.id) %>
                     <% if !grade.blank? and !grade.name.blank? %>
-                    <td class="col-pdf"><% if has_final_term %><%= grade.name %><% end %></td>
-                    <td class="col-pdf"><% if has_final_term %><%= grade.credit_points %><% end %> <%= total_mark_all %></td>
+                    <td class="col-pdf"><%= grade.name %></td>
+                    <td class="col-pdf"><%= grade.credit_points %> <%= total_mark_all %></td>
                     <% else %>
-                    <td class="col-pdf"><% if has_final_term %>-<% end %></td>
-                    <td class="col-pdf"><% if has_final_term %>-<% end %></td>
+                    <td class="col-pdf">-</td>
+                    <td class="col-pdf">-</td>
                     <% end %>
                     <% else %>
                     <td class="col-pdf">-</td>

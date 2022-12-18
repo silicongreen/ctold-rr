@@ -459,7 +459,7 @@
                                   <hr/>
                                     <%= total_converted %>
                                   <hr/>
-                                    <%= total_mark_subject.round() %>
+                                    <%= total_mark_subject.round() %> <%= total_mark_subject.to_s + "  " + full_mark_all.to_s %>
 
                                <% if sub['grade_subject'].to_i != 1 %>  
                                   <% total_subject = total_subject+1 %>

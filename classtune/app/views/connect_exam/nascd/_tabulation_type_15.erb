@@ -459,7 +459,7 @@
                                   <hr/>
                                     <%= total_converted %>
                                   <hr/>
-                                    <%= total_mark_subject.round() %> <%= total_mark_subject.to_s + "  " + full_mark_all.to_s %>
+                                    <%= total_mark_subject.round() %>
 
                                <% if sub['grade_subject'].to_i != 1 %>  
                                   <% total_subject = total_subject+1 %>
@@ -489,7 +489,10 @@
                                     <% total_mark_1 = total_mark_1+total_mark_subject.round().to_f %>
                                     <% total_mark_con_1 = total_mark_con_1+total_converted_new.round().to_f %>
                                     <%
-                                    grade_sub = GradingLevel.percentage_to_grade(total_converted_new.round.to_f, @batch.id)
+                                    if full_mark_all > 0 && total_mark_subject > 0 
+                                      total_con_mark_grade = (total_mark_subject.to_f/full_mark_all.to_f)*100
+                                    end
+                                    grade_sub = GradingLevel.percentage_to_grade(total_con_mark_grade.round.to_f, @batch.id)
                                     if !grade_sub.blank? and !grade_sub.name.blank?
                                       if grade_sub.name == 'F'
                                         failed_count = failed_count + 1

@@ -136,6 +136,7 @@
                          <%
                          quarter_mark = 0
                          if has_first_term
+                          main_ct = ct
                             if full_mark_term == 35
                               if ct > 0
                                 ct = (ct.to_f/full_mark_ct.to_f)*10
@@ -187,7 +188,7 @@
                          <% elsif main_mark >= 50 && main_mark <= 59 %>
                          Good  <%= main_mark %> <%= total_mark %>
                          <% else %>
-                         Need Improvement  <%= main_mark %> <%= total_mark %>
+                         Need Improvement  <%= main_mark %> <%= main_ct %>
                          <% end %>
                          
                          <% end %>

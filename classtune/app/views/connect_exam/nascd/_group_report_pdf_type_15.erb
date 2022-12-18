@@ -466,7 +466,7 @@
                     <% grade = GradingLevel.percentage_to_grade(total_mark_all.round.to_i, @batch.id) %>
                     <% if !grade.blank? and !grade.name.blank? %>
                     <td class="col-pdf"><%= grade.name %></td>
-                    <td class="col-pdf"><%= grade.credit_points %> <%= total_mark_all %></td>
+                    <td class="col-pdf"><%= grade.credit_points %> <%= total_mark_all %> <%= total_subjects_final %></td>
                     <% else %>
                     <td class="col-pdf">-</td>
                     <td class="col-pdf">-</td>

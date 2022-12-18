@@ -88,7 +88,7 @@
                                         <% ct = ct+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
                                       <% end %>
                                       <% if report['exam_category'] == '2' %>
-                                        <% cw = cw+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
+                                        <% cw = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
                                       <% end %>
                                   <% end %>
                                   <% if report['quarter'] == '6' %>
@@ -99,7 +99,7 @@
                                         <% ct_final = ct_final+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
                                       <% end %>
                                       <% if report['exam_category'] == '2' %>
-                                        <% cw_final = cw_final+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
+                                        <% cw_final = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f%>
                                       <% end %>
                                   <% end %>
                                 <% end %>

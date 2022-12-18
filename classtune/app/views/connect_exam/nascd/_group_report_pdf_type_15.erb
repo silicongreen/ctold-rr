@@ -415,7 +415,9 @@
                           if subjects['grade_subject'].to_i != 1
                             total_subjects = total_subjects+1
                             if fourth_subject.blank?
-                              total_subjects_final = total_subjects_final+1
+                              if full_term > 0 && total_mark_subject > 0
+                                total_subjects_final = total_subjects_final+1
+                              end
                               grand_total = grand_total+total_mark_subject.round()
                             else
                               if total_mark_subject.round() > 40

@@ -126,10 +126,10 @@
                                   <% if report['quarter'] == '5' %>
                                       <% has_first_term = true %>
                                       <% if report['exam_category'] == '3' or report['exam_category'] == '4' or report['exam_category'] == '5' %>
-                                        <% full_mark_term = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                        <% full_mark_term = full_mark_term+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% end %>
                                       <% if report['exam_category'] == '1' %>
-                                        <% full_mark_ct = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                        <% full_mark_ct = full_mark_ct+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% end %>
                                       <% if report['exam_category'] == '2' %>
                                         <% full_mark_cw = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -138,10 +138,10 @@
                                   <% if report['quarter'] == '6' %>
                                       <% has_final_term = true %>
                                       <% if report['exam_category'] == '3' or report['exam_category'] == '4' or report['exam_category'] == '5' %>
-                                        <% full_mark_term_final = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                        <% full_mark_term_final = full_mark_term_final+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% end %>
                                       <% if report['exam_category'] == '1' %>
-                                        <% full_mark_ct_final = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                        <% full_mark_ct_final = full_mark_ct_final+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% end %>
                                       <% if report['exam_category'] == '2' %>
                                         <% full_mark_cw_final = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>

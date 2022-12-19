@@ -121,7 +121,7 @@ class GradingLevel < ActiveRecord::Base
       batch_grades = GradingLevel.for_batch(batch_id)
       grade = {}
       if batch_grades.empty?
-        grades = GradingLevel.default
+        grades = GradingLevel.default 
         grades.each do |val|
           if val.credit_points <= grade_point
             grade = val

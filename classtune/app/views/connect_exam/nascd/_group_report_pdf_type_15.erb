@@ -483,7 +483,7 @@
                         <% grand_total_converted = 1 %>
                     <% end %>
                     <%# total_mark_all = (grand_total_converted.round().to_i) / (total_subjects_final)  %>
-                    <% grade_point_avg = total_grade / total_subject  %>
+                    <% grade_point_avg = total_grade / total_subjects_final  %>
                     <%# grade = GradingLevel.percentage_to_grade(total_mark_all.round.to_i, @batch.id) %>
                     <% grade = GradingLevel.grade_point_to_grade(grade_point_avg.to_f, @batch.id) %>
                     <% if !grade.blank? and !grade.name.blank? %>

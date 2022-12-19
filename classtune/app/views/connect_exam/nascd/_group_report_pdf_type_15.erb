@@ -488,7 +488,7 @@
                     <% grade = GradingLevel.grade_point_to_grade(grade_point_avg.to_f, @batch.id) %>
                     <% if !grade.blank? and !grade.name.blank? %>
                     <td class="col-pdf"><%= grade.name %></td>
-                    <td class="col-pdf"><%= sprintf( "%0.02f", grade_point_avg) + " " + total_subjects_final.to_s + "  " + total_grade.to_s %><%#= grade.credit_points %><%#= total_grade %></td>
+                    <td class="col-pdf"><%= sprintf( "%0.02f", grade_point_avg)  %><%#= grade.credit_points %><%#= total_grade %></td>
                     <% else %>
                     <td class="col-pdf">-</td>
                     <td class="col-pdf">-</td>

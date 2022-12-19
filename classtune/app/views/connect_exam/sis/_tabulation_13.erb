@@ -172,7 +172,7 @@
                       <% end %>
 
                       <td>Total</td>
-                      <td>Grade Count</td>
+                      <td style=" display: none;">Grade Count</td>
                       <% unless @ranked_positions.blank? %>
                         <td>Position</td>
                       <% end %>
@@ -187,7 +187,7 @@
                     <% if !std.blank? and !std['first_name'].blank? %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
-                    <% if std_count>12 && extender ==0 %>
+                    <% if std_count>10 && extender ==0 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -213,13 +213,13 @@
                           <% end %>
 
                           <td>Total</td>
-                          <td>Grade Count</td>
+                          <td style=" display: none;">Grade Count</td>
                           <% unless @ranked_positions.blank? %>
                               <td>Position</td>
                           <% end %>
 
                       </tr>
-                    <% elsif std_count>13 && extender ==1 %>
+                    <% elsif std_count>11 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -245,7 +245,7 @@
                           <% end %>
 
                           <td>Total</td>
-                          <td>Grade Count</td>
+                          <td style=" display: none;">Grade Count</td>
                           <% unless @ranked_positions.blank? %>
                               <td>Position</td>
                            <% end %>
@@ -373,7 +373,7 @@
                               -
                             <% end %>    
                         </td>
-                        <td style="white-space: normal !important;">
+                        <td style="white-space: normal !important; display: none;">
                             <% i = 1 %>
                             <% total_grade_std = grades.count  %>
                             <% grades.each do |grade| %>

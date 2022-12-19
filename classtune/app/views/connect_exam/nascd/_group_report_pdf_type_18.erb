@@ -291,8 +291,8 @@
                     <td class="col-pdf"><% if has_final_term %>F<% end %></td>
                     <td class="col-pdf"><% if has_final_term %>0.0<% end %></td>
                     <% else %>
-                    <% total_mark_all = total_grade / total_subject  %>
-                    <% grade_point_avg = (total_grade) / (total_subject * 2)  %>
+                    <%# total_mark_all = total_grade / total_subject  %>
+                    <% grade_point_avg = total_grade / total_subject  %>
                     <%# grade = GradingLevel.percentage_to_grade(total_mark_all.round.to_i, @batch.id) %>
                     <% grade = GradingLevel.grade_point_to_grade(grade_point_avg.to_f, @batch.id) %>
                     <% if !grade.blank? and !grade.name.blank? %>

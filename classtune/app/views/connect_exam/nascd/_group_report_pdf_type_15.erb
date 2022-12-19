@@ -415,7 +415,7 @@
                           if subjects['grade_subject'].to_i != 1
                             total_subjects = total_subjects+1
                             if fourth_subject.blank?
-                              if full_term > 0 && total_mark_subject > 0
+                              if full_term > 0 && total_mark_subject > 0 
                                 total_subjects_final = total_subjects_final+1
                               end
                               grand_total = grand_total+total_mark_subject.round()
@@ -457,7 +457,12 @@
                               if grade2.name == 'F'
                                 failed_subject  = failed_subject + 1
                               else
-                                total_grade = total_grade+grade2.credit_points
+                                if fourth_subject.blank?
+                                  total_grade = total_grade+grade2.credit_points
+                                else
+                                  fourth_grade = grade2.credit_points - 2
+                                  total_grade = total_grade+fourth_grade
+                                end
                               end
                             end
                           end

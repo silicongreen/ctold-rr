@@ -239,7 +239,7 @@
               main_mark = main_mark.round()
             end
 
-            if full_marks_sub_code.include?(sub['code'])
+            if @batch.course.course_name == "IX" and full_marks_sub_code.include?(sub['code'])
               total_mark_subject = subs_total_for_special.round.to_i
             end
             if @subject_highest2[sub['id'].to_i].blank?

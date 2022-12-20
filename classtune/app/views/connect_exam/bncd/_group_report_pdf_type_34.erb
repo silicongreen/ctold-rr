@@ -86,15 +86,10 @@ end
                         <td class="col-pdf"><%= report['exam_name'] %></td>
                       <% end %>
                     <% end %> 
-                    <td class="col-pdf" ><b>Total</b></td>
-                    <td class="col-pdf"><b>Conv. Marks</b></td>
+                    <td class="col-pdf"><b>Total</b></td>
+                    <td class="col-pdf"><b>Conv. Marks <hr/>100</b></td>
                     <td class="col-pdf"><b>Letter Grade</b></td>
                   </tr>
-
-                  <tr class="even header-shade">
-                       
-                      <td class="col-pdf">100</td> 
-                  </tr> 
                   
                   <% sl = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %>

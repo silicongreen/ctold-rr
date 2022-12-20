@@ -420,15 +420,22 @@
                               if full_term > 0 && total_mark_subject > 0 
                                 total_subjects_final = total_subjects_final+1
                               end
-                              if @batch.course.course_name == "IX" and full_marks_sub_code.include?(subjects['code'])
+                              if @batch.course.course_name == "IX" && full_marks_sub_code.include?(subjects['code'])
                                 grand_total = grand_total+subs_total_for_special.round()
                               else
                                 grand_total = grand_total+total_mark_subject.round()
                               end
                             else
-                              if total_mark_subject.round() > 40
-                                new_mark_to_add = total_mark_subject.round()-40
-                                grand_total = grand_total+new_mark_to_add.round()
+                              if @batch.course.course_name == "IX" && full_marks_sub_code.include?(subjects['code'])
+                                if subs_total_for_special.round() > 40
+                                  new_mark_to_add = subs_total_for_special.round()-40
+                                  grand_total = grand_total+new_mark_to_add.round()
+                                end
+                              else
+                                if total_mark_subject.round() > 40
+                                  new_mark_to_add = total_mark_subject.round()-40
+                                  grand_total = grand_total+new_mark_to_add.round()
+                                end
                               end
                             end
                           end 
@@ -449,7 +456,7 @@
                         %>
                           
                         <% if subjects['grade_subject'].to_i != 1  %> 
-                         <% if @batch.course.course_name == "IX" and full_marks_sub_code.include?(subjects['code']) %> 
+                         <% if @batch.course.course_name == "IX" && full_marks_sub_code.include?(subjects['code']) %> 
                          <td><% if has_quarter %><%= subs_total_for_special.round.to_i %><% end %></td>
                          <td>-</td>
                          <% else %>
@@ -480,7 +487,7 @@
                         %>
                           <td><% if !grade2.blank? and !grade2.name.blank? %><%= grade2.name %><% end %></td>
                           <td><% if !grade2.blank? and !grade2.name.blank? %><%= grade2.credit_points %><% end %></td>
-                          <% if full_marks_sub_code.include?(subjects['code']) %> 
+                          <% if @batch.course.course_name == "IX" && full_marks_sub_code.include?(subjects['code']) %> 
                           <td><% if has_quarter %><%= subs_total_for_special.round.to_i %><% end %></td>
                           <% else %>
                           <td><% if has_quarter %><%= total_mark_subject.round.to_i %><% end %></td>

@@ -468,7 +468,7 @@
                                       grand_total_fraction_half = grand_total_fraction_half+total_ob_half.to_f
                                       percent_half = (total_ob_half.to_f/full_ob_half.to_f)*100
                                       percent_half = percent_half.round()
-                                      if percent < 33
+                                      if percent_half < 33
                                         if fourth_subject.blank?
                                           failed = true
                                         end

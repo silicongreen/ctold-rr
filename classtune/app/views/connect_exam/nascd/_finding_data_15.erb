@@ -3,7 +3,7 @@
   <% if @grading_levels.blank? %>
   <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
   <% if @grading_levels.blank? %>
-    <% @grading_levels = GradingLevel.default %>
+    <% @grading_levels = GradingLevel.default %> 
   <% end %>
   <% end %>
   <%
@@ -181,34 +181,86 @@
               end    
             end
 
-            full_mark_term = full_mark_prac+full_mark_mcq+full_mark_cq
-            cw_converted = cw
-            if cw > 0 && (full_mark_term == 100 or full_mark_term == 50) && full_mark_ct<=20
-              cw_converted = (cw.to_f/full_mark_cw.to_f)*5
-            end
-            cw_converted = cw_converted.round
-            total_term = cq+mcq+prac
-            
-            full_mark_all = 100
-            converted_term = total_term
-            if full_mark_term == 100
-              if total_term > 0
-                converted_term = (total_term.to_f/full_mark_term.to_f)*75
-                converted_term = converted_term.round
-              end 
-            elsif full_mark_term == 50 && full_mark_ct<=20
-              if total_term > 0
-                full_mark_all = 50
-                converted_term = (total_term.to_f/full_mark_term.to_f)*35
-                converted_term = converted_term.round
-              end
-            end  
-            subject_total_mark = converted_term+cw_converted+ct
+           # full_mark_term = full_mark_prac+full_mark_mcq+full_mark_cq
+           # cw_converted = cw
+           # if cw > 0 && (full_mark_term == 100 or full_mark_term == 50) && full_mark_ct<=20
+           #   cw_converted = (cw.to_f/full_mark_cw.to_f)*5
+           # end
+           # cw_converted = cw_converted.round
+           #total_term = cq+mcq+prac
+           # 
+            #full_mark_all = 100
+            #converted_term = total_term
+            #if full_mark_term == 100
+            # if total_term > 0
+            #   converted_term = (total_term.to_f/full_mark_term.to_f)*75
+            #    converted_term = converted_term.round
+            #  end 
+            #elsif full_mark_term == 50 && full_mark_ct<=20
+            #  if total_term > 0
+            #    full_mark_all = 50
+            #    converted_term = (total_term.to_f/full_mark_term.to_f)*35
+            #    converted_term = converted_term.round
+            #  end
+            #end  
+            #subject_total_mark = converted_term+cw_converted+ct
 
+            full_marks_sub_code = ['HMath.','Phy','Chem','Bio.']
+            full_mark_all = 100
+            total = cq+mcq+prac
+            subs_total_for_special = total+conv_mcw.round.to_i+ct.round.to_i
+            total_mark_converted = total
+            full_term = full_mark_cq+full_mark_mcq+full_mark_prac
+            total_converted = 0
+            if full_term > 0
+              if full_term.to_i == 100
+                total_converted = (total.to_f/full_term.to_f)*75
+                total_converted = total_converted.round
+                total_mark_converted = total_converted.round()+conv_mcw.round()+ct.round()
+              else
+                total_converted = (total.to_f/full_term.to_f)*35
+                total_mark_converted = (total.to_f/full_term.to_f)*100
+                total_converted = total_converted.round
+                full_mark_all = 50
+              end
+              if full_term.to_i == 30 || full_term.to_i == 20
+                full_mark_all = 50
+              end
+            end
+            
+            total_mark_subject = total_converted.round()+conv_mcw.round()+ct.round()
+            if subjects['grade_subject'].to_i != 1
+              total_subjects = total_subjects+1
+              if fourth_subject.blank?
+                if full_term > 0 && total_mark_subject > 0 
+                  total_subjects_final = total_subjects_final+1
+                end
+                grand_total = grand_total+total_mark_subject.round()
+              else
+                if total_mark_subject.round() > 40
+                  new_mark_to_add = total_mark_subject.round()-40
+                  grand_total = grand_total+new_mark_to_add.round()
+                end
+              end
+            end 
+            main_mark = 0
+            if full_term > 0 && total_mark_subject > 0
+              main_mark = (total_mark_subject.to_f/full_mark_all.to_f)*100
+              main_mark = main_mark.round()
+            end
+
+            total_con_mark = 0
+            if full_term > 0 && total_mark_subject > 0 and subjects['grade_subject'].to_i != 1
+              total_con_mark = (total_mark_subject.to_f/full_mark_all.to_f)*100
+              grand_total_converted = grand_total_converted+total_con_mark.round.to_i
+            end
+            if full_marks_sub_code.include?(subjects['code'])
+              total_mark_subject = subs_total_for_special.round.to_i
+            end
             if @subject_highest2[sub['id'].to_i].blank?
-              @subject_highest2[sub['id'].to_i] = subject_total_mark
-            elsif subject_total_mark.to_f > @subject_highest2[sub['id'].to_i].to_f
-               @subject_highest2[sub['id'].to_i] = subject_total_mark.to_f
+              @subject_highest2[sub['id'].to_i] = total_mark_subject
+            elsif total_mark_subject.to_f > @subject_highest2[sub['id'].to_i].to_f
+               @subject_highest2[sub['id'].to_i] = total_mark_subject.to_f
             end
 
 

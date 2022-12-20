@@ -204,7 +204,11 @@
             #  end
             #end  
             #subject_total_mark = converted_term+cw_converted+ct
-
+            conv_mcw = 0
+            if cw > 0 && full_mark_cw > 0
+              conv_mcw = (cw.to_f/full_mark_cw.to_f)*5
+              conv_mcw = conv_mcw.round()
+            end
             full_marks_sub_code = ['HMath.','Phy','Chem','Bio.']
             full_mark_all = 100
             total = cq+mcq+prac

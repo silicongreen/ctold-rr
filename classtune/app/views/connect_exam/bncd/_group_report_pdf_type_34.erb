@@ -76,20 +76,21 @@ end
                   <tr class="even header-shade">
                       <td class="col-pdf" rowspan="2"><b>Sl.</b></td>
                       <td class="col-pdf no-warp  align-left-baf" rowspan="2"><b><%= "SUBJECTS" %></b></td>
-                      <td class="col-pdf no-warp  align-left-baf" rowspan="2" colspan=<%= mid_term_colspan+3 %>><b><%= "Half Yearly Exam" %></b></td>
-                      <td class="col-pdf no-warp  align-left-baf" rowspan="2" colspan=<%= final_term_colspan+3 %>><b><%= "Final Exam" %></b></td>
+                      <td class="col-pdf no-warp  align-left-baf" rowspan="2" colspan="<%= mid_term_colspan+3 %>"><b><%= "Half Yearly Exam" %></b></td>
+                      <td class="col-pdf no-warp  align-left-baf" rowspan="2" colspan="<%= final_term_colspan+3 %>"><b><%= "Final Exam" %></b></td>
                   </tr>
                   <tr class="even header-shade">
                     <% unless @report_data['report']['exams'].blank? %>
                       <% @report_data['report']['exams'].each do |report| %>
                         <% colspan = colspan+1 %>
-                        <td class="col-pdf"><%= report['exam_name'] %></td>
+                        <td class="col-pdf" rowspan="1"><%= report['exam_name'] %></td>
                       <% end %>
                     <% end %> 
-                    <td class="col-pdf"><b>Total</b></td>
-                    <td class="col-pdf"><b>Conv. Marks <hr/>100</b></td>
-                    <td class="col-pdf"><b>Letter Grade</b></td>
+                    <td class="col-pdf" rowspan="1"><b>Total</b></td>
+                    <td class="col-pdf" rowspan="1"><b>Conv. Marks</b></td>
+                    <td class="col-pdf" rowspan="1"><b>Letter Grade</b></td>
                   </tr>
+
                   
                   <% sl = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %>

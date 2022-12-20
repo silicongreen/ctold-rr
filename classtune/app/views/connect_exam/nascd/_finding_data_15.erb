@@ -233,32 +233,13 @@
             end
             
             total_mark_subject = total_converted.round()+conv_mcw.round()+ct.round()
-            if subjects['grade_subject'].to_i != 1
-              total_subjects = total_subjects+1
-              if fourth_subject.blank?
-                if full_term > 0 && total_mark_subject > 0 
-                  total_subjects_final = total_subjects_final+1
-                end
-                grand_total = grand_total+total_mark_subject.round()
-              else
-                if total_mark_subject.round() > 40
-                  new_mark_to_add = total_mark_subject.round()-40
-                  grand_total = grand_total+new_mark_to_add.round()
-                end
-              end
-            end 
-            main_mark = 0
+             main_mark = 0
             if full_term > 0 && total_mark_subject > 0
               main_mark = (total_mark_subject.to_f/full_mark_all.to_f)*100
               main_mark = main_mark.round()
             end
 
-            total_con_mark = 0
-            if full_term > 0 && total_mark_subject > 0 and subjects['grade_subject'].to_i != 1
-              total_con_mark = (total_mark_subject.to_f/full_mark_all.to_f)*100
-              grand_total_converted = grand_total_converted+total_con_mark.round.to_i
-            end
-            if full_marks_sub_code.include?(subjects['code'])
+            if full_marks_sub_code.include?(sub['code'])
               total_mark_subject = subs_total_for_special.round.to_i
             end
             if @subject_highest2[sub['id'].to_i].blank?

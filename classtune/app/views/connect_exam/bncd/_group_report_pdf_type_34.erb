@@ -76,8 +76,8 @@ end
                   <tr class="even header-shade">
                       <td class="col-pdf" rowspan="2"><b>Sl.</b></td>
                       <td class="col-pdf no-warp  align-left-baf" rowspan="2"><b><%= "SUBJECTS" %></b></td>
-                      <td class="col-pdf no-warp  align-left-baf" rowspan="1" colspan="<%= mid_term_colspan+3%>"><b><%= "Half Yearly Exam" %></b></td>
-                      <td class="col-pdf no-warp  align-left-baf" rowspan="1" colspan="<%= final_term_colspan+3%>"><b><%= "Final Exam" %></b></td>
+                      <td class="col-pdf no-warp" rowspan="1" colspan="<%= mid_term_colspan+3%>"><b><%= "Half Yearly Exam" %></b></td>
+                      <td class="col-pdf no-warp" rowspan="1" colspan="<%= final_term_colspan+3%>"><b><%= "Final Exam" %></b></td>
                   </tr>
                   <tr class="even header-shade">
                     <% unless @report_data['report']['exams'].blank? %>
@@ -141,7 +141,7 @@ end
                                   <% end %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                     <% if report['quarter'] == '3' %>
-                                      <% total_mark_half = total_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                      <% total_mark_half = total_mark_half+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                     <% end %>
                                   <% end %>
                                 <% end %>
@@ -204,7 +204,8 @@ end
               
                   <% colspan = colspan+2 %>
                   <tr class="even" >
-                    <td class="col-pdf  no-warp align-right" colspan="<%= colspan+1 %>"><b>GRAND TOTAL</b></td>
+                    <% total_colspan = mid_term_colspan+final_term_colspan %>              
+                    <td class="col-pdf  no-warp align-right" colspan="<%= total_colspan-2 %>"><b>GRAND TOTAL</b></td>
                     <td class="col-pdf  no-warp"><b><%= total_mark_of_allexam %></b></td>
                     <% if !@student_position_batch[@student.id.to_i].blank? %>
                       <td class="col-pdf  no-warp"><%= grade.name %></td>

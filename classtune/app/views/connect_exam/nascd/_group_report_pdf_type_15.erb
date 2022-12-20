@@ -390,8 +390,10 @@
                          <td><% if has_quarter && full_mark_prac > 0 %><%= prac.round.to_i %><% end %></td>
                          <% end %>
                          <%
+                          full_marks_sub_code = ['HMath.','Phy','Chem','Bio.']
                           full_mark_all = 100
                           total = cq+mcq+prac
+                          subs_total_for_special = total+conv_mcw.round.to_i+ct.round.to_i
                           total_mark_converted = total
                           full_term = full_mark_cq+full_mark_mcq+full_mark_prac
                           total_converted = 0
@@ -443,8 +445,13 @@
                         %>
                           
                         <% if subjects['grade_subject'].to_i != 1  %> 
+                         <% if full_marks_sub_code.include?(subjects['code']) %> 
+                         <td><% if has_quarter %><%= subs_total_for_special.round.to_i %><% end %></td>
+                         <td>-</td>
+                         <% else %>
                          <td><% if has_quarter %><%= total.round.to_i %><% end %></td>
                          <td><% if has_quarter %><%= total_converted.round.to_i %><% end %></td>
+                         <% end %>
                          <%
                           if full_term > 0 && total_mark_subject > 0 
                             total_con_mark_grade = (total_mark_subject.to_f/full_mark_all.to_f)*100
@@ -469,7 +476,11 @@
                         %>
                           <td><% if !grade2.blank? and !grade2.name.blank? %><%= grade2.name %><% end %></td>
                           <td><% if !grade2.blank? and !grade2.name.blank? %><%= grade2.credit_points %><% end %></td>
+                          <% if full_marks_sub_code.include?(subjects['code']) %> 
+                          <td><% if has_quarter %><%= subs_total_for_special.round.to_i %><% end %></td>
+                          <% else %>
                           <td><% if has_quarter %><%= total_mark_subject.round.to_i %><% end %></td>
+                          <% end %>
                          <td><% if has_quarter %><%= highest_mark1.round.to_i %><% end %></td>
                         
 

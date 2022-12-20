@@ -83,11 +83,9 @@
                           <% end %>
                       <% end %>
                       <% colspan = colspan+1 %> 
-                      <td class="col-pdf" colspan="4" rowspan="1"><b>Half Yearly Exam</b></td>
-                      <% if @batch.course.course_name == "IX" && has_mid %>
-                            <td class="col-pdf" rowspan="2"><b>Mid</b></td>
-                      <% end %> 
-                      <td class="col-pdf" colspan="4" rowspan="1"><b>Final Exam</b></td>
+                      <td class="col-pdf" colspan="7" rowspan="1"><b>Half Yearly Exam</b></td>
+                      
+                      <td class="col-pdf" colspan="5" rowspan="1"><b>Final Exam</b></td>
                       <td class="col-pdf" rowspan="2"><b>Total Marks (100%)</b></td>
                       <td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
                       <td class="col-pdf" rowspan="2"><b>Grade Point</b></td>
@@ -103,7 +101,13 @@
                             <td rowspan="1"><b>PR</b></td>
                       <% end %>
                       <td rowspan="1"><b>Total</b></td>
+                      <td rowspan="1"><b>Total (100%)</b></td>
+                      <td rowspan="1"><b>LG</b></td>
+                      <td rowspan="1"><b>Grade Point</b></td>
 
+                      <% if @batch.course.course_name == "IX" && has_mid %>
+                            <td class="col-pdf" rowspan="2"><b>Mid</b></td>
+                      <% end %> 
                       <% if has_ob == true %>
                             <td rowspan="1"><b>CQ</b></td>
                       <% end %> 
@@ -117,10 +121,13 @@
                   </tr>
 
                   <% total_grade = 0 %>
+                  <% total_grade_half = 0 %>
                   <% total_subject = 0 %>
                   <% total_subject_main = 0 %>
                   <% grand_total = 0 %>
+                  <% grand_total_half = 0 %>
                   <% grand_total_fraction = 0 %>
+                  <% grand_total_fraction_half = 0 %>
                   <% grade_point_avg = 0 %>
                   <% failed = false %>
                   <% already_done = false %>
@@ -277,6 +284,277 @@
                             <% end %>  
                             <td class="col-pdf no-warp"><%= total_all_half %></td>
 
+                            <% tota_mark_with_monthly_half = total_ob_half+total_sb_half+total_pr_half %>
+                            <% tota_mark_with_monthly_half = (tota_mark_with_monthly_half.to_f/full_mark_half.to_f)*100 %>
+                            <% if fourth_subject.blank? %>
+                              <% grand_total_half = grand_total_half+tota_mark_with_monthly_half.to_f.round.to_i %>
+                            <% else %>
+                                <% 
+                                new_mark_half = tota_mark_with_monthly_half.to_f.round.to_i-40
+                                if new_mark > 0
+                                  grand_total_half = grand_total_half+new_mark_half
+                                end
+                                
+                                %>
+                            <% end %>
+                            
+                            <td class="col-pdf no-warp">
+                                <b><%= tota_mark_with_monthly_half.to_f.round.to_i %></b>
+                            </td>
+                            <%
+                              main_mark_half = tota_mark_with_monthly.round()
+                            %>
+                            <% if subjects['subject_group_id'].to_i > 0 %>
+                            <%
+                              total_sb2_half = 0
+                              total_ob2_half = 0
+                              total_pr2_half = 0
+                          
+                              full_sb2_half = 0
+                              full_ob2_half = 0
+                              full_pr2_half = 0
+                            %> 
+                              
+                              <% @report_data['report']['subjects'].each do |subjects2| %>
+                                <% if subjects2['subject_group_id'].to_i != subjects['subject_group_id'].to_i || subjects2['id'].to_i == subjects['id'].to_i  %>
+                                  <% next %>
+                                <% end %>
+                                <% total_mark_half = 0 %>
+                                <% full_mark_half = 0 %>
+                                <% unless @report_data['report']['exams'].blank? %>  
+                                  <% @report_data['report']['exams'].each do |report| %>   
+                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['full_mark'].blank? %>
+                                      <% if report['exam_category'] == '3' && report['quarter'] == '3' %>
+                                        <% full_sb2_half = full_sb2_half+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
+                                      <% end %>
+                                      <% if report['exam_category'] == '4' && report['quarter'] == '3' %>
+                                        <% full_ob2_half = full_ob2_half+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
+                                      <% end %>
+                                      <% if report['exam_category'] == '5' && report['quarter'] == '3' %>
+                                        <% full_pr2_half = full_pr2_half+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
+                                      <% end %>
+                                    <% end %> 
+                                  <% end %>
+                                <% end %>
+                                <% full_mark = 100 %>
+                                <% full_mark_all = 100 %>
+
+                                <% main_exam_mark = 0 %>
+                                <% unless @report_data['report']['exams'].blank? %>  
+                                  <% @report_data['report']['exams'].each do |report| %>   
+                                    <% if report['exam_category'] != '1' %>
+                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].blank? %>                                   
+                                        <% if report['exam_category'] == '3' && report['quarter'] == '3' %>
+                                          <% total_sb2_half = total_sb2_half+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
+                                        <% end %>
+                                        <% if report['exam_category'] == '4' && report['quarter'] == '3' %>
+                                          <% total_ob2_half = total_ob2_half+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
+                                        <% end %>
+                                        <% if report['exam_category'] == '5' && report['quarter'] == '3' %>
+                                          <% total_pr2_half = total_pr2_half+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
+                                        <% end %>
+                                      <% end %>
+                                    <% end %>
+                                  <% end %>
+                                  
+                                <% end %>
+                                <%
+                                if full_ob2_half > 0 
+                                  if total_ob2_half > 0
+                                    total_ob2_half = total_ob2_half.round()
+                                    total_ob_half =  total_ob_half+total_ob2_half
+                                      grand_total_fraction_half = grand_total_fraction_half+total_ob_half.to_f
+                                      full_ob_half = full_ob2_half*2
+                                      percent_half = (total_ob_half.to_f/full_ob_half.to_f)*100
+                                      percent_half = percent_half.round()
+                                      if percent_half < 33
+                                        if fourth_subject.blank?
+                                          failed = true
+                                        end
+                                        failed_subject = true
+                                      end
+                                  else
+                                    if fourth_subject.blank?
+                                      failed = true
+                                    end
+                                    failed_subject = true
+                                  end
+                                  
+                                end
+                                if full_ob2_half > 0
+                                  if total_sb2_half > 0
+                                      
+                                    total_sb2_half = total_sb2_half.round()
+                                    total_sb_half =  total_sb_half+total_sb2_half
+                                      grand_total_fraction_half = grand_total_fraction_half+total_sb_half.to_f
+                                      total_sb_half = total_sb2_half*2 
+                                      percent_half = (total_sb_half.to_f/total_sb_half.to_f)*100
+                                      percent_half = percent_half.round()
+                                      if percent_half < 33
+                                        if fourth_subject.blank?
+                                          failed = true
+                                        end
+                                        failed_subject = true
+                                      end
+                                  else
+                                    if fourth_subject.blank?
+                                      failed = true
+                                    end
+                                    failed_subject = true
+                                  end
+                                  
+                                end
+                                if full_pr2_half > 0
+                                  if total_pr2_half > 0     
+                                    total_pr2_half = total_pr2_half.round()
+                                    total_pr_half =  total_pr_half+total_pr2_half
+                                    grand_total_fraction_half = grand_total_fraction_half+total_pr_half.to_f
+                                      full_pr_half = full_pr2_half*2 
+                                      percent_half = (total_pr.to_f/full_pr_half.to_f)*100
+                                      percent_half = percent_half.round()
+                                      if percent_half < 33
+                                        if fourth_subject.blank?
+                                          failed = true
+                                        end
+                                        failed_subject = true
+                                      end
+                                  else
+                                    if fourth_subject.blank?
+                                      failed = true
+                                    end
+                                    failed_subject = true
+                                  end
+                                end
+                                %> 
+                                <% tota_mark_with_monthly_half = total_ob_half+total_sb_half+total_pr2_half %>
+                                <%
+                                  main_mark_half = (tota_mark_with_monthly_half.round().to_f/200.00)*100.00
+                                %>
+                                <%  %>
+                                
+                                <%  grade = GradingLevel.percentage_to_grade(main_mark_half, @batch.id) %>
+                                <% if !grade.blank? and !grade.name.blank? %>
+                            
+                                  <% if grade.credit_points.to_i == 0 && fourth_subject.blank? %>
+                                    <% failed = true %>
+                                    <% failed_subject = true %>
+                                  <% end %>
+                                  <% if  failed_subject == true %>
+                                    <% grade.credit_points = 0.0 %>
+                                    <% grade.name = "F" %>
+                                  <% end %>
+                            
+                                  <% if fourth_subject.blank? %>
+                                    <% total_grade_half = total_grade_half.to_f+grade.credit_points.to_f %>
+                                  <% else %>
+                                    <% new_grade_point_half = grade.credit_points.to_f-2 %>
+                                    <% if new_grade_point > 0 %>
+                                     <% total_grade_half = total_grade_half.to_f+new_grade_point_half.to_f %>
+                                    <% end %>  
+                                  <% end %>
+                                  <td class="col-pdf" rowspan="2"><%= grade.name %></td>
+                                  <td class="col-pdf" rowspan="2"><%= grade.credit_points %></td>
+                                <% else %>
+                                  <td class="col-pdf" rowspan="2">-</td>
+                                  <td class="col-pdf" rowspan="2">-</td>
+                                <% end %>
+                               <% end %>
+                            <% else %>
+                              <%
+                                if full_ob_half > 0
+                                  if total_ob_half > 0
+                                      grand_total_fraction_half = grand_total_fraction_half+total_ob_half.to_f
+                                      percent_half = (total_ob_half.to_f/full_ob_half.to_f)*100
+                                      percent_half = percent_half.round()
+                                      if percent < 33
+                                        if fourth_subject.blank?
+                                          failed = true
+                                        end
+                                        failed_subject = true
+                                      end
+                                  else
+                                    if fourth_subject.blank?
+                                      failed = true
+                                    end
+                                    failed_subject = true
+                                  end
+                                  
+                                end
+                                if full_sb_half > 0
+                                  if total_sb_half > 0
+                                      grand_total_fraction_half = grand_total_fraction_half+total_sb_half.to_f
+                                      percent_half = (total_sb_half.to_f/full_sb_half.to_f)*100
+                                      percent_half = percent_half.round()
+                                      if percent_half < 33
+                                        if fourth_subject.blank?
+                                          failed = true
+                                        end
+                                        failed_subject = true
+                                      end
+                                  else
+                                    if fourth_subject.blank?
+                                      failed = true
+                                    end
+                                    failed_subject = true
+                                  end
+                                  
+                                end
+                                if full_pr_half > 0
+                                  if total_pr_half > 0
+                                    grand_total_fraction_half = grand_total_fraction_half+total_pr_half.to_f
+                                      percent_half = (total_pr_half.to_f/full_pr_half.to_f)*100
+                                      percent_half = percent_half.round()
+                                      if percent_half < 33
+                                        if fourth_subject.blank?
+                                          failed = true
+                                        end
+                                        failed_subject = true
+                                      end
+                                  else
+                                    if fourth_subject.blank?
+                                      failed = true
+                                    end
+                                    failed_subject = true
+                                  end
+                                end
+                                %> 
+                                <% tota_mark_with_monthly_half = total_ob_half+total_sb_half+total_pr_half %>
+                                
+                            
+                              <%  grade = GradingLevel.percentage_to_grade(main_mark_half, @batch.id) %>
+                              <% if !grade.blank? and !grade.name.blank? %>
+                                <% if grade.credit_points.to_i == 0 && fourth_subject.blank? %>
+                                  <% failed = true %>
+                                  <% failed_subject = true %>
+                                <% end %>
+                                <% if  failed_subject == true %>
+                                  <% grade.credit_points = 0.0 %>
+                                  <% grade.name = "F" %>
+                                <% end %>
+                                <% if fourth_subject.blank? %>
+                                    <% total_grade_half = total_grade_half.to_f+grade.credit_points.to_f %>
+                                <% else %>
+                                  <% new_grade_point_half = grade.credit_points.to_f-2 %>
+                                  <% if new_grade_point_half > 0 %>
+                                   <% total_grade_half = total_grade_half.to_f+new_grade_point_half.to_f %>
+                                  <% end %>  
+                                <% end %>
+                                <td class="col-pdf"><%= grade.name %></td>
+                                <td class="col-pdf"><%= grade.credit_points %></td>
+                              <% else %>
+                                <td class="col-pdf">-</td>
+                                <td class="col-pdf">-</td>
+                              <% end %>
+                            <% end %>
+                          <% end %>   
+
+                          ##Done Here
+
+
+
+
+                            
+
                             <% added_mark = 0 %>
                             <% if @batch.course.course_name == "IX" && has_mid %>
                               <% if full_sb > 0 %>
@@ -318,6 +596,7 @@
 
                             <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
                             <% tota_mark_with_monthly = (tota_mark_with_monthly.to_f/full_mark.to_f)*100 %>
+
                             <% if fourth_subject.blank? %>
                               <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
                             <% else %>

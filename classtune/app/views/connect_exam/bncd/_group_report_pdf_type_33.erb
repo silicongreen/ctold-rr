@@ -69,7 +69,7 @@
                           <% if report['exam_category'] == '3' && report['quarter'] == '1' %>
                             <% has_mid = true %>
                           <% end %>
-                          <% if report['exam_category'] == '3' && report['quarter'] == '3' %>
+                          <% if report['exam_category'] == '3' %>
                             <% has_sb = true %>
                             <% colspan = colspan+1 %> 
                           <% end %>
@@ -83,11 +83,11 @@
                           <% end %>
                       <% end %>
                       <% colspan = colspan+1 %> 
-                      <td class="col-pdf" colspan="<%= colspan %>" rowspan="1"><b>Half Yearly Exam</b></td>
+                      <td class="col-pdf" colspan="4" rowspan="1"><b>Half Yearly Exam</b></td>
                       <% if @batch.course.course_name == "IX" && has_mid %>
                             <td class="col-pdf" rowspan="2"><b>Mid</b></td>
                       <% end %> 
-                      <td class="col-pdf" colspan="<%= colspan %>" rowspan="1"><b>Final Exam</b></td>
+                      <td class="col-pdf" colspan="4" rowspan="1"><b>Final Exam</b></td>
                       <td class="col-pdf" rowspan="2"><b>Total Marks (100%)</b></td>
                       <td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
                       <td class="col-pdf" rowspan="2"><b>Grade Point</b></td>

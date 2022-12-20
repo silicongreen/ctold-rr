@@ -141,7 +141,7 @@ end
                             %>
                             <td class="col-pdf"><%= obtain_mark_half.to_i %></td>
                             <td class="col-pdf"><%= main_mark_half.round().to_i %></td>
-                            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                            <%  grade = GradingLevel.percentage_to_grade(main_mark_half, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><%= grade.name %></td>
                             <% else %>

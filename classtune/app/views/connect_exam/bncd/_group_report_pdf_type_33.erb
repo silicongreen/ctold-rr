@@ -73,10 +73,6 @@
                             <% has_sb = true %>
                             <% colspan = colspan+1 %> 
                           <% end %>
-                          <% if report['exam_category'] == '3' && report['quarter'] == '2' %>
-                            <% has_sb = true %>
-                            <% colspan = colspan+1 %> 
-                          <% end %>
                           <% if report['exam_category'] == '4' %>
                             <% has_ob = true %>
                              <% colspan = colspan+1 %> 
@@ -87,7 +83,7 @@
                           <% end %>
                       <% end %>
                       <% colspan = colspan+1 %> 
-                      <td class="col-pdf" colspan="4" rowspan="1"><b>Half Yearly Exam</b></td>
+                      <td class="col-pdf" colspan="<%= colspan %>" rowspan="1"><b>Half Yearly Exam</b></td>
                       <% if @batch.course.course_name == "IX" && has_mid %>
                             <td class="col-pdf" rowspan="2"><b>Mid</b></td>
                       <% end %> 
@@ -230,7 +226,7 @@
                                     <% divid = divid + 1 %>
                                   <% end %>
                                   <% if report['exam_category'] == '3' && report['quarter'] == '3' %>
-                                    <% total_sb_half = total_sb+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <% total_sb_half = total_sb_half+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% divid_half = divid_half + 1 %>
                                   <% end %>
 
@@ -279,6 +275,7 @@
                             <% else %>
                               <td class="col-pdf no-warp">-</td>
                             <% end %>  
+                            <td class="col-pdf no-warp"><%= total_all_half %></td>
 
                             <% added_mark = 0 %>
                             <% if @batch.course.course_name == "IX" && has_mid %>
@@ -315,7 +312,7 @@
                               <% end %>
                             <% end %>
                             
-                            <td class="col-pdf no-warp"><%= total_all_half %></td>
+                            <td class="col-pdf no-warp"><%= total_all %></td>
                             
                             
 

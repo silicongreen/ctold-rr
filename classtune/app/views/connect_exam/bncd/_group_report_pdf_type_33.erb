@@ -86,9 +86,9 @@
                       <td class="col-pdf" colspan="7" rowspan="1"><b>Half Yearly Exam</b></td>
                       
                       <td class="col-pdf" colspan="5" rowspan="1"><b>Final Exam</b></td>
-                      <td class="col-pdf" rowspan="2"><b>Total Marks (100%)</b></td>
-                      <td class="col-pdf" rowspan="2"><b>Letter Grade</b></td>
-                      <td class="col-pdf" rowspan="2"><b>Grade Point</b></td>
+                      <td class="col-pdf" rowspan="2"><b>Total (100%)</b></td>
+                      <td class="col-pdf" rowspan="2"><b>LG</b></td>
+                      <td class="col-pdf" rowspan="2"><b>GP</b></td>
                   </tr>
                   <tr class="even header-shade">
                       <% if has_ob == true %>
@@ -1057,7 +1057,7 @@
                       <% end %>  
                   <% end %>  
                   <tr class="even">
-                      <% colspan = colspan+2 %>
+                      <% colspan = colspan+4 %>
                       <td class="col-pdf align-left-baf" colspan="<%= colspan+1 %>"><b>Total Marks & Total GP</b></td>
                       <td class="col-pdf no-warp align-left-baf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><%= grand_total %></b></td>
                       <td class="col-pdf"></td>

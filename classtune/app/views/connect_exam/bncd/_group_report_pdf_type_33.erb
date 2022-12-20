@@ -283,6 +283,7 @@
                               <td class="col-pdf no-warp">-</td>
                             <% end %>  
                             <td class="col-pdf no-warp"><%= total_all_half %></td>
+                            <% full_mark_half = full_sb_half+full_ob_half+full_pr_half %>
 
                             <% tota_mark_with_monthly_half = total_ob_half+total_sb_half+total_pr_half %>
                             <% tota_mark_with_monthly_half = (tota_mark_with_monthly_half.to_f/full_mark_half.to_f)*100 %>

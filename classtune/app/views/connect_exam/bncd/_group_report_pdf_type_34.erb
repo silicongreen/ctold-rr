@@ -77,13 +77,27 @@ end
                       <td class="col-pdf" rowspan="2"><b>Sl.</b></td>
                       <td class="col-pdf no-warp  align-left-baf" rowspan="2"><b><%= "SUBJECTS" %></b></td>
                       <td class="col-pdf no-warp  align-left-baf" rowspan="1" colspan="<%= mid_term_colspan+3%>"><b><%= "Half Yearly Exam" %></b></td>
-                      <td class="col-pdf no-warp  align-left-baf" rowspan="1" colspan="5"><b><%= "Final Exam" %></b></td>
+                      <td class="col-pdf no-warp  align-left-baf" rowspan="1" colspan="<%= final_term_colspan+3%>"><b><%= "Final Exam" %></b></td>
                   </tr>
                   <tr class="even header-shade">
                     <% unless @report_data['report']['exams'].blank? %>
                       <% @report_data['report']['exams'].each do |report| %>
+                        <% if report['quarter'] == '3' %>
                         <% colspan = colspan+1 %>
                         <td class="col-pdf" rowspan="1"><%= report['exam_name'] %></td>
+                        <% end %>
+                      <% end %>
+                    <% end %> 
+                    <td class="col-pdf" rowspan="1"><b>Total</b></td>
+                    <td class="col-pdf" rowspan="1"><b>Conv. Marks</b></td>
+                    <td class="col-pdf" rowspan="1"><b>Letter Grade</b></td>
+
+                    <% unless @report_data['report']['exams'].blank? %>
+                      <% @report_data['report']['exams'].each do |report| %>
+                        <% if report['quarter'] == '2' %>
+                        <% colspan = colspan+1 %>
+                        <td class="col-pdf" rowspan="1"><%= report['exam_name'] %></td>
+                        <% end %>
                       <% end %>
                     <% end %> 
                     <td class="col-pdf" rowspan="1"><b>Total</b></td>

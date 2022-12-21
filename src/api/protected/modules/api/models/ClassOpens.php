@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "class_opens".
  *
- * The followings are the available columns in table 'class_opens':
+ * The followings are the available columns in table 'class_opens': 
  * @property integer $id
  * @property string $date
  * @property string $details

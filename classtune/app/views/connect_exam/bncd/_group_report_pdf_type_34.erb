@@ -308,6 +308,7 @@ end
                       <% end %>
                   </tr>
                   
+                  <% grade_point_avg = 0 %>
                   <% if total_grade_of_allexam > 0 && total_subject > 0 %>
                       <% grade_point_avg = total_grade_of_allexam.to_f/total_subject.to_f %>
                       <% if grade_point_avg > 5 %>
@@ -315,7 +316,7 @@ end
                       <% end %>
                        <% grade = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id) %>
                   <% end %> 
-                  
+
                   <tr class="even">
                       <td class="col-pdf  no-warp"><% if !@student_position_batch[@student.id.to_i].blank? %>Pass<% else %>Failed<% end %></td>
                       <td class="col-pdf  no-warp"><% if !@student_position_batch[@student.id.to_i].blank? %><%= sprintf( "%0.02f", grade_point_avg) %><% else %>0.00<% end %></td>

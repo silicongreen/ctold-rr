@@ -48,7 +48,7 @@
               <tr>
                   <td class="align-left">Name : <%= @student.full_name %></td>
                   <td class="align-left">Roll : <%= @student.class_roll_no %></td>
-                  <td class="align-left">Section : <%= @batch.course.section_name %></td>
+                  <td class="align-left">Shift : <%= @batch.course.section_name %></td>
                   <td class="align-left">A /C ID : <%= @student.admission_no %></td>
               </tr>
               <tr>
@@ -216,7 +216,7 @@
                  
               </table>
 
-              <div style="width:30%; float: left; clear:both; margin-top: 10px;" >
+              <div style="width:30%; float: left; clear:both;" >
                 <% if @grading_levels.blank? %>
                   <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
                   <% if @grading_levels.blank? %>

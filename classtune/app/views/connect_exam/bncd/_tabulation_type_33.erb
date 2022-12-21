@@ -90,6 +90,9 @@
         if @all_subject_id.include?(sub['id'].to_i) and (!check_std_subject.blank? or subjectdata.elective_group_id.blank?)
           @report_data['report']['exams'].each do |rs|
             %>
+            <% if rs['quarter'] == '3' %>
+              <% next %>
+            <% end %>
             <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
             <%
             if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s].blank? and @check_exam_score==true
@@ -180,6 +183,9 @@ end
                         <% if has_exam == true %>
                           <% colspan = 0 %>
                           <% @report_data['report']['exams'].each do |rs| %>
+                            <% if rs['quarter'] == '3' %>
+                              <% next %>
+                            <% end %>
                             <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
                               <% colspan = colspan+1 %>
                             <% end %>
@@ -212,6 +218,9 @@ end
                        
                         <% if has_exam == true %>
                           <% @report_data['report']['exams'].each do |rs| %>
+                            <% if rs['quarter'] == '3' %>
+                              <% next %>
+                            <% end %>
                             <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
                              <td><%= rs['exam_name'].slice(0,2) %></td>
                             <% end %>
@@ -233,6 +242,9 @@ end
                        
                         <% if has_exam == true %>
                           <% @report_data['report']['exams'].each do |rs| %>
+                            <% if rs['quarter'] == '3' %>
+                              <% next %>
+                            <% end %>
                             <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
                              <% @report_data['report']['students'].each do |std_marks| %>
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std_marks['id']].blank? %>
@@ -280,6 +292,9 @@ end
                         <% if has_exam == true %>
                           <% colspan = 0 %>
                           <% @report_data['report']['exams'].each do |rs| %>
+                            <% if rs['quarter'] == '3' %>
+                              <% next %>
+                            <% end %>
                             <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
                               <% colspan = colspan+1 %>
                             <% end %>
@@ -308,6 +323,9 @@ end
                        
                         <% if has_exam == true %>
                           <% @report_data['report']['exams'].each do |rs| %>
+                            <% if rs['quarter'] == '3' %>
+                              <% next %>
+                            <% end %>
                             <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
                              <td><%= rs['exam_name'].slice(0,2) %></td>
                             <% end %>
@@ -329,6 +347,9 @@ end
                        
                         <% if has_exam == true %>
                           <% @report_data['report']['exams'].each do |rs| %>
+                            <% if rs['quarter'] == '3' %>
+                              <% next %>
+                            <% end %>
                             <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
                              <% @report_data['report']['students'].each do |std_marks| %>
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std_marks['id']].blank? %>
@@ -364,6 +385,9 @@ end
                         <% if has_exam == true %>
                           <% colspan = 0 %>
                           <% @report_data['report']['exams'].each do |rs| %>
+                            <% if rs['quarter'] == '3' %>
+                              <% next %>
+                            <% end %>
                             <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
                               <% colspan = colspan+1 %>
                             <% end %>
@@ -392,6 +416,9 @@ end
                        
                         <% if has_exam == true %>
                           <% @report_data['report']['exams'].each do |rs| %>
+                            <% if rs['quarter'] == '3' %>
+                              <% next %>
+                            <% end %>
                             <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
                              <td><%= rs['exam_name'].slice(0,2) %></td>
                             <% end %>
@@ -413,6 +440,9 @@ end
                        
                         <% if has_exam == true %>
                           <% @report_data['report']['exams'].each do |rs| %>
+                            <% if rs['quarter'] == '3' %>
+                              <% next %>
+                            <% end %>
                             <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? %>
                              <% @report_data['report']['students'].each do |std_marks| %>
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std_marks['id']].blank? %>
@@ -494,6 +524,9 @@ end
                              <% subject_count = subject_count+1 %>
                             <% end %>
                             <% @report_data['report']['exams'].each do |rs| %>
+                              <% if rs['quarter'] == '3' %>
+                              <% next %>
+                            <% end %>
                               <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
                                 <%

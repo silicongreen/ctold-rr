@@ -24,7 +24,7 @@
   %>
   <%= render  :partial=>"/connect_exam/bncd/finding_data_8" %>
 <% end %>
-<% if @connect_exam_obj.result_type.to_i == 22 or @connect_exam_obj.result_type.to_i == 24 or @connect_exam_obj.result_type.to_i == 27 or @connect_exam_obj.result_type.to_i == 34 %> 
+<% if @connect_exam_obj.result_type.to_i == 22 or @connect_exam_obj.result_type.to_i == 24 or @connect_exam_obj.result_type.to_i == 27 %> 
 <%= render  :partial=>"/connect_exam/student_subject" %>
   <%
         if @tabulation_data.nil?
@@ -37,7 +37,20 @@
   %>
   <%= render  :partial=>"/connect_exam/bncd/finding_data_9" %>
 <% end %>
-<% if @connect_exam_obj.result_type.to_i == 28 or @connect_exam_obj.result_type.to_i == 33  %> 
+<% if @connect_exam_obj.result_type.to_i == 34 %> 
+<%= render  :partial=>"/connect_exam/student_subject" %>
+  <%
+        if @tabulation_data.nil?
+          student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+          @tabulation_data = []
+          if student_response['status']['code'].to_i == 200
+            @tabulation_data = student_response['data']
+          end
+        end
+  %>
+  <%= render  :partial=>"/connect_exam/bncd/finding_data_34" %>
+<% end %>
+<% if @connect_exam_obj.result_type.to_i == 28  %> 
   <%
         if @tabulation_data.nil?
           student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
@@ -49,5 +62,18 @@
   %>
   
   <%= render  :partial=>"/connect_exam/bncd/finding_data_28" %>
+<% end %>
+<% if @connect_exam_obj.result_type.to_i == 33  %> 
+  <%
+        if @tabulation_data.nil?
+          student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+          @tabulation_data = []
+          if student_response['status']['code'].to_i == 200
+            @tabulation_data = student_response['data']
+          end
+        end
+  %>
+  
+  <%= render  :partial=>"/connect_exam/bncd/finding_data_33" %>
 <% end %>
 <%= render  :partial=>"/connect_exam/bncd/tabulation_type_"+@connect_exam_obj.result_type.to_s %>

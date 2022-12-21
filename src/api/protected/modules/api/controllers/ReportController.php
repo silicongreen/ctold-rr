@@ -363,8 +363,10 @@ class ReportController extends Controller
                 $response['data']['report'] = $exam_report;
                 $response['data']['total'] = $adata[0];
                 $response['data']['present_all'] = $adata[1];
-                $response['data']['absent_all'] = $adata[3];
+                $response['data']['absent_all'] = $adata[3]; 
                 $response['data']['total_new'] = $adata[2];
+                $response['data']['attandence_start'] = $adata[4];
+                $response['data']['attandence_end'] = $adata[5]; 
                 $response['data']['first_term_id'] = 0;
                 if($adata_first_term)
                 {

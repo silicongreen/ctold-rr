@@ -438,7 +438,7 @@ class Attendances extends CActiveRecord {
        }
        
        
-       return array($number_of_days,$return,$return2,$absent);
+       return array($number_of_days,$return,$return2,$absent,$attandence_start,$attandence_end);
         
     }   
     

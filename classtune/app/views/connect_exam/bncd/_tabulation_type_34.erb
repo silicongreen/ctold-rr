@@ -281,7 +281,7 @@ end
                     <% if !std.blank? and !std['first_name'].blank? %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
-                    <% if std_count>23 && extender ==0 %>
+                    <% if std_count>22 && extender ==0 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       </table>
@@ -381,7 +381,7 @@ end
                       <% end %>
 
                   </tr>
-                    <% elsif std_count>26 && extender ==1 %>
+                    <% elsif std_count>25 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       </table>
@@ -488,7 +488,7 @@ end
                     
 
 
-                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                    <tr class="odd">
                         <td><%= j %></td>
                         <td class="name"><%= std['class_roll_no'] %></td>
                         <% if !std['first_name'].blank? and !std['last_name'].blank?  %>

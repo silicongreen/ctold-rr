@@ -133,7 +133,9 @@
                           half_quarter_full_mark = 0
                           unless @report_data['report']['exams'].blank?   
                             @report_data['report']['exams'].each do |report| 
-                             
+                                %>
+                                <%= abort(report.inspect) %>
+                                <%
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   if report['exam_category'] == 1 && report['quarter'] == 5
                                     first_quarter_mark = first_quarter_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
@@ -173,7 +175,7 @@
                                 end
                                 %>
                                 <% if first_quarter_out_of_25.to_i > 0 %>
-                                <td class="col-pdf"><%= first_quarter_out_of_25.round.to_i %> <%= first_quarter_mark %></td>
+                                <td class="col-pdf"><%= first_quarter_out_of_25.round.to_i %></td>
                                 <% else %>
                                 <td class="col-pdf">-</td>
                                 <% end %>

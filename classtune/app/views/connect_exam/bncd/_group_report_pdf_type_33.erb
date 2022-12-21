@@ -301,7 +301,7 @@
                             <% end %>
                             
                             <td class="col-pdf no-warp">
-                                <b><%= tota_mark_with_monthly_half.to_f.round.to_i %></b>
+                                <b><%= tota_mark_with_monthly_half.to_f.round.to_i %> a</b>
                             </td>
                             <%
                               main_mark_half = tota_mark_with_monthly_half.round()
@@ -454,8 +454,8 @@
                                      <% total_grade_half = total_grade_half.to_f+new_grade_point_half.to_f %>
                                     <% end %>  
                                   <% end %>
-                                  <td class="col-pdf" rowspan="2"><%= grade.name %> 'h'</td>
-                                  <td class="col-pdf" rowspan="2"><%= grade.credit_points %> 'c'</td>
+                                  <td class="col-pdf" rowspan="2"><%= grade.name %></td>
+                                  <td class="col-pdf" rowspan="2"><%= grade.credit_points %></td>
                                 <% else %>
                                   <td class="col-pdf" rowspan="2">-</td>
                                   <td class="col-pdf" rowspan="2">-</td>

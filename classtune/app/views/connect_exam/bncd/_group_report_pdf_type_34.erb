@@ -253,10 +253,10 @@ end
                                 <% end %>
                             <% end %>
                             <%
-                              main_mark = (obtain_mark_half.to_f/total_mark_half.to_f)*100
+                              main_mark_half = (obtain_mark_half.to_f/total_mark_half.to_f)*100
                             %>
-                            <td class="col-pdf"  colspan="<%= colspan %>"></td>
-                            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                            <td class="col-pdf"  colspan="<%= mid_term_colspan-1 %>"></td>
+                            <%  grade = GradingLevel.percentage_to_grade(main_mark_half, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><%= grade.name %></td>
                             <% else %>
@@ -279,7 +279,7 @@ end
                             <%
                               main_mark = (obtain_mark.to_f/total_mark.to_f)*100
                             %>
-                            <td class="col-pdf"  colspan="<%= colspan %>"></td>
+                            <td class="col-pdf"  colspan="<%= final_term_colspan-1 %>"></td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><%= grade.name %></td>

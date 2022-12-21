@@ -162,7 +162,7 @@
                             next
                           %>
                       <% end %>
-                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <tr class="odd">
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
                           <%
@@ -272,7 +272,7 @@
                             <% end %>  
 
                             <% if full_ob_half > 0 %>
-                              <td class="col-pdf no-warp"><%= total_ob_half %></td>
+                              <td class="col-pdf no-warp"><%= total_ob_half %> </td>
                             <% else %>
                               <td class="col-pdf no-warp">-</td>
                             <% end %>  
@@ -282,7 +282,7 @@
                             <% else %>
                               <td class="col-pdf no-warp">-</td>
                             <% end %>  
-                            <td class="col-pdf no-warp"><%= total_all_half %></td>
+                            <td class="col-pdf no-warp"><%= total_all_half.round.to_i %></td>
                             <%# full_mark_half = full_sb_half+full_ob_half+full_pr_half %>
                             <% full_mark_half = 100 %>
 
@@ -454,8 +454,8 @@
                                      <% total_grade_half = total_grade_half.to_f+new_grade_point_half.to_f %>
                                     <% end %>  
                                   <% end %>
-                                  <td class="col-pdf" rowspan="2"><%= grade.name %></td>
-                                  <td class="col-pdf" rowspan="2"><%= grade.credit_points %></td>
+                                  <td class="col-pdf" rowspan="2"><%= grade.name %> 'h'</td>
+                                  <td class="col-pdf" rowspan="2"><%= grade.credit_points %> 'c'</td>
                                 <% else %>
                                   <td class="col-pdf" rowspan="2">-</td>
                                   <td class="col-pdf" rowspan="2">-</td>
@@ -867,7 +867,7 @@
                             <% next %>
                           <% end %>
                           <% already_done = true %>
-                          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                          <tr class="odd">
                             <% total_mark = 0 %>
                             <% full_mark = 0 %>
                               <%

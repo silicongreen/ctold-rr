@@ -215,8 +215,11 @@
                   
                  
               </table>
-
-              <div style="width:30%; float: left; " >
+              <% style="" %>            
+              <% if @batch.course.course_name == "Playgroup" %>
+                <% style="margin-top: -30px !important;" %>            
+              <% end %>
+              <div style="width:30%; float: left; <%= style %>" >
                 <% if @grading_levels.blank? %>
                   <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
                   <% if @grading_levels.blank? %>

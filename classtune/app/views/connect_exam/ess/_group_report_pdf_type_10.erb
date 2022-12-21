@@ -156,9 +156,21 @@
                                 second_quarter_out_of_100 = (second_quarter_mark.to_f/second_quarter_full_mark.to_f)*100
                                 half_quarter_out_of_100 = (half_quarter_mark.to_f/half_quarter_full_mark.to_f)*100
 
-                                first_quarter_out_of_25 = (first_quarter_out_of_100.to_f/100)*25
-                                second_quarter_out_of_25 = (second_quarter_out_of_100.to_f/100)*25
-                                half_quarter_out_of_50 = (half_quarter_out_of_100.to_f/100)*50
+                                if first_quarter_out_of_100 > 0
+                                  first_quarter_out_of_25 = (first_quarter_out_of_100.to_f/100)*25
+                                else
+                                  first_quarter_out_of_25 = 0
+                                end
+                                if second_quarter_out_of_100 > 0
+                                  second_quarter_out_of_25 = (second_quarter_out_of_100.to_f/100)*25
+                                else
+                                  second_quarter_out_of_25 = 0
+                                end
+                                if half_quarter_out_of_100 > 0
+                                  half_quarter_out_of_50 = (half_quarter_out_of_100.to_f/100)*50
+                                else
+                                  half_quarter_out_of_50 =  0
+                                end
                                 %>
                                 <% if first_quarter_out_of_25.to_i > 0 %>
                                 <td class="col-pdf"><%= first_quarter_out_of_25.round.to_i %></td>

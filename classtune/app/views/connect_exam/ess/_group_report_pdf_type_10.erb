@@ -133,23 +133,20 @@
                           half_quarter_full_mark = 0
                           unless @report_data['report']['exams'].blank?   
                             @report_data['report']['exams'].each do |report| 
-                                %>
-                                <%= abort(report.inspect) %>
-                                <%
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
-                                  if report['exam_category'] == 1 && report['quarter'] == 5
+                                  if report['exam_category'] == '1' && report['quarter'] == '5'
                                     first_quarter_mark = first_quarter_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                     first_quarter_full_mark = first_quarter_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
-                                  elsif report['exam_category'] == 3 && report['quarter'] == 5
+                                  elsif report['exam_category'] == '3' && report['quarter'] == '5'
                                     first_quarter_mark = first_quarter_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                     first_quarter_full_mark = first_quarter_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
-                                  elsif report['exam_category'] == 1 && report['quarter'] == 2
+                                  elsif report['exam_category'] == '1' && report['quarter'] == '2'
                                     second_quarter_mark = second_quarter_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                     second_quarter_full_mark = second_quarter_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
-                                  elsif report['exam_category'] == 3 && report['quarter'] == 2
+                                  elsif report['exam_category'] == '3' && report['quarter'] == '2'
                                     second_quarter_mark = second_quarter_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                     second_quarter_full_mark = second_quarter_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
-                                  elsif report['exam_category'] == 3 && report['quarter'] == 3
+                                  elsif report['exam_category'] == '3' && report['quarter'] == '3'
                                     half_quarter_mark = half_quarter_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                     half_quarter_full_mark = half_quarter_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
                                   end

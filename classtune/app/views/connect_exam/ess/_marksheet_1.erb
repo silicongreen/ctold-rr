@@ -32,9 +32,8 @@ end
 %>
 <div id="page-yield" class="available_sections1">
   <div class="page1"> </div>
-  <center>
-  <div class="section1 row" style="border: 1px solid #000;" >
-    
+  <div class="section1 row" >
+    <center>
       <table id="pdf-table"  width="100%" class="no-border margin-bottom-20" style="border:none !important;"  cellspacing="0" >
           <tr>
               <td class="align-left" width="28%">&nbsp;</td>
@@ -76,13 +75,13 @@ end
               <% end %> 
           </tr>    
       </table>    
-  </div>     
-  <div class="section1 row" style="border: 1px solid #000; float: left;" >  
+       
+      
       <% unless @report_data.blank?  or  @report_data['result'].blank? %>
       <% c = 'even' %>
       <% full_mark = 0 %>
       <% colspan = 0 %>
-      <table id="pdf-table"  width="100%" class="no-border margin-bottom-20" style="border:none !important;"  cellspacing="0" >
+      <table id="pdf-table"  width="100%" class="no-border left-clear-both margin-bottom-20" style="border:none !important;"  cellspacing="0" >
         <tr class="table-header">
           <td rowspan="2">A/C Code</td>  
           <td class="name" rowspan="2">Roll NO.</td>
@@ -114,14 +113,14 @@ end
    
           <%  std_count = std_count+1; %>
           <% colspan = colspan+4 %>
-          <% if std_count>4 && extender ==0 %>
+          <% if std_count>6 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
                   <td colspan="13">&nbsp;</td>
               </tr>    
               </table>
-              <table id="pdf-table"  width="100%" class="no-border margin-bottom-20" style="border:none !important;"  cellspacing="0" >
+              <table id="pdf-table"  width="100%" class="no-border left-clear-both margin-bottom-20" style="border:none !important;"  cellspacing="0" >
                 <tr class="table-header">
                   <td rowspan="2">A/C Code</td>  
                   <td class="name" rowspan="2">Roll NO.</td>
@@ -148,7 +147,7 @@ end
                   <td colspan="13">&nbsp;</td>
               </tr> 
               </table>
-              <table id="pdf-table"  width="100%" class="no-border margin-bottom-20" style="border:none !important;"  cellspacing="0" >
+              <table id="pdf-table"  width="100%" class="no-border left-clear-both margin-bottom-20" style="border:none !important;"  cellspacing="0" >
                 <tr class="table-header">
                   <td rowspan="2">A/C Code</td>  
                   <td class="name" rowspan="2">Roll NO.</td>

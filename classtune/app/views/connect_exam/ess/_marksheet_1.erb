@@ -137,7 +137,6 @@ end
             <td class="name"><%= std['admission_no'] %></td>
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['name'] %></td>
-            <td></td>
             <% @report_data['result']['ALL'].each do |rs| %>
               <td>
               <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>

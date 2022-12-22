@@ -132,6 +132,11 @@
                           half_quarter_mark = 0
                           half_quarter_full_mark = 0
                           unless @report_data['report']['exams'].blank?   
+                            unless report['exam_category'] == '1' && report['quarter'] == '5'
+                            %>
+                            <%= abort(report.inspect)%>
+                            <%
+                            end
                             @report_data['report']['exams'].each do |report| 
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   if report['exam_category'] == '1' && report['quarter'] == '5'

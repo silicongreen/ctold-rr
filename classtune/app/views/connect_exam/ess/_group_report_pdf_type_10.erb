@@ -261,7 +261,7 @@
               </table>
               <p>&nbsp;</p>
               
-              <div style="width:40%; float: left; margin-left: 10px !important;" >
+              <div style="width:40%; float: left; margin-left: 10px !important; margin-top: 20px !important;" >
                   <% if @grading_levels.blank? %>
                     <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
                     <% if @grading_levels.blank? %>
@@ -319,14 +319,14 @@
 
                 <% end %> 
               </div>
-              <div style="width:50%; float: left; margin-left: 4%;" >
+              <div style="width:50%; float: left; margin-left: 4%; margin-top: 20px !important;" >
                 <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
                       <td class="align-left">Total No. of Working Days:</td>
                       <td  style="padding:5px !important;"><%= @connect_exam_obj.total_working_days %></td>
                     </tr>
                     <tr class="even">
-                      <% date_string = @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d%m%Y") %>
+                      <% date_string = @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d/%m/%Y") %>
                       <td class="align-left">Next Term Begin On:</td>
                       <td  style="padding:5px !important;"><%= date_string %></td>
                     </tr>
@@ -334,13 +334,13 @@
                 </table>
                 </div>
           </div>
-          <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"   width="99.8%" style="margin-top: 0 !important;">
+          <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"   width="99.8%" style="margin-top: -10 !important;">
               <tr class="even border-bottom-1-px">
                   <td class="col-pdf no-border" width="70%" ></td>
                   
                     <td class="col-pdf" width="30%">
                     
-                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"20%" %>
+                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"40%" %>
                   </td>
               </tr>
               <tr class="even">

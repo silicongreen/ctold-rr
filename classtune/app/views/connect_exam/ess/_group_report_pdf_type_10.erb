@@ -78,7 +78,11 @@
               </tr>
           </table>
       </div>
-     
+      
+      <%
+      total_marks = 0
+      outof_marks = 0
+      %>
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
               <table id="pdf-table"  width="100%" class="left-table even-table exam-marks" cellspacing="0">
@@ -123,8 +127,6 @@
 
                           <td class="col-pdf no-warp  align-left"  style="padding:5px !important;"><%= subjects['name'] %></td>
                           <%
-                          total_marks = 0
-                          outof_marks = 0
                           full_mark = 0
                           obtain_mark = 0
                           first_quarter_mark = 0

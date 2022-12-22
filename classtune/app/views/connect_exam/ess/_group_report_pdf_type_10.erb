@@ -261,7 +261,7 @@
               </table>
               <p>&nbsp;</p>
               
-              <div style="width:40%; float: left;" >
+              <div style="width:40%; float: left; margin-left: 10px !important;" >
                 <% if @grading_levels.blank? %>
                   <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
                   <% if @grading_levels.blank? %>

@@ -262,57 +262,70 @@
               <p>&nbsp;</p>
               
               
-              <% style="margin-top: -10px !important;" %>            
-              <% if @batch.course.course_name == "Playgroup" %>
-                <% style="margin-top: -30px !important;" %>            
-              <% end %>
-              <div style="width:30%; float: left; <%= style %>" >
-                <% if @grading_levels.blank? %>
-                  <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
-                  <% if @grading_levels.blank? %>
-                    <% @grading_levels = GradingLevel.default %>
-                  <% end %>
-                <% end %>
-                <%  unless @grading_levels.empty? %>
-                  <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
-                      <tr class="even">
-                          <td style="background-color:#e3f2fd">Grading</td>
-                          <td style="background-color:#e3f2fd">System</td>  
-                      </tr> 
-                      <% prev_score = 0 %>
-                      <% @grading_levels.each_with_index do |grade,index| %>
-                         <tr class="odd">
-                             <td style="padding:0px 2px !important;"><%= grade.name %></td>
-                             <td style="padding:0px 2px !important;" class="no-warp">
+              <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
+                  <tr class="even border-bottom-1-px">
+                       <td class="col-pdf" width="40%" style="text-align:left !important;">
+                        
+                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"60%" %>
+                      </td>
+                      <td class="col-pdf no-border" width="60%" rowspan="2">
+                      <% if @grading_levels.blank? %>
+                      <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+                      <% if @grading_levels.blank? %>
+                        <% @grading_levels = GradingLevel.default %>
+                      <% end %>
+                    <% end %>
+                    <%  unless @grading_levels.empty? %>
+                      <% if @batch.course.course_name == 'VIII' or @batch.course.course_name == 'IX' %>
+
+                      <% else %>
+                      <div style="border: 1px solid #000; width: 50%; padding: 20px; float: right;">
+                      <p style="padding: 0; margin: 0"><font size="3"><b>Grading System</b></font></p>
+                      <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
+                          <tr class="even" cellspacing="0" cellpadding="1">
+                              <td class="small" style="font-size: 10px;"><font size="3"><b>Marks Range</b></font></td>
+                              <td class="small" style="font-size: 10px;"><font size="3"><b>Grade</b></font></td>  
+                          </tr> 
+                          <% prev_score = 0 %>
+                          <% @grading_levels.each_with_index do |grade,index| %>
+                             <tr class="odd">
+                            <td class="small">
                                 <% if grade.max_score.nil? %> 
                                   <% if grade.min_score.to_i == 0 %>
-                                    <&nbsp;<%= '%i%' % prev_score %>
+                                    <font size="3"><&nbsp;<%= '%i%' % prev_score %></font>
                                   <% else %>
-                                      <%= '%i%' % grade.min_score %> 
+                                    <font size="3"><%= '%i%' % grade.min_score %></font> 
                                   <% end %>
                                 <% else %> 
-                                  <%= grade.min_score.to_i.to_s + " - " + grade.max_score.to_i.to_s %> <% if grade.min_score.to_i == 0 %>(Below Average)<% end %>
+                                  <% if grade.min_score.to_i == 0 %>
+                                    <font size="3"><&nbsp;<%= '%i%' % prev_score %></font>
+                                  <% else %>
+                                    <font size="3"><%= grade.min_score.to_i.to_s + " - " + grade.max_score.to_i.to_s+" %" %></font>
+                                  <% end %>
                                 <% end %>
-                                <%  prev_score = grade.min_score %>
+                                <%  prev_score = grade.min_score.to_i %>
                             </td>
-                          </tr> 
-                      <% end %> 
+                            <td class="small"><font size="3"><%= grade.name %></font></td>
+                              </tr> 
+                          <% end %> 
+                
+                      </table>
+                      </div>
+                      <% end %>
+                    <% end %> 
+                      </td>
+                  </tr>
+                  <tr class="even">
+                      
+                      <td class="col-pdf align-left" style="text-align:left !important;" width="40%">
+                          <b><pre>MD. MORSHEDUL ISLAM
+Principal
+European Standard School (ESS)</pre></b>
+                      </td>
 
-                  </table>
+                  </tr>
 
-                <% end %> 
-              </div>
-              <div style="width:66%; float: left; margin-left: 4%;" >
-                <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
-                    <tr class="even">
-                      <td class="align-left" style="background-color:#e3f2fd">Total No. of Working Days:</td>
-                      <td  style="padding:5px !important;"><%= @connect_exam_obj.total_working_days %></td>
-                      <td class="align-left" style="background-color:#e3f2fd">Attendance:</td>
-                      <td  style="padding:5px !important;"><%= @report_data['present'] %></td>
-                    </tr>
-
-                </table>
-              </div>
+              </table>
 
 
           </div>

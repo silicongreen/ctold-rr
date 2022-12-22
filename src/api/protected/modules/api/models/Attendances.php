@@ -311,7 +311,8 @@ class Attendances extends CActiveRecord {
         
         if($type != "days")
         {
-            $number_of_days = $this->getNumberOfdays($prev_day, $value);
+            
+            list($number_of_days,$weekend_array, $class_opens,$holiday_array) = $this->getNumberOfdays($prev_day, $value);
             $total = $total*$number_of_days;
         }
 
@@ -359,7 +360,7 @@ class Attendances extends CActiveRecord {
         
         $attandence_start = date("Y-m-d" , strtotime($start_date_end_date->attandence_start_date));
         $attandence_end =  date("Y-m-d" , strtotime($start_date_end_date->attandence_end_date));
-        $number_of_days = $this->getNumberOfdays($attandence_start, $attandence_end, $batch_id);
+        list($number_of_days,$weekend_array, $class_opens,$holiday_array) = $this->getNumberOfdays($attandence_start, $attandence_end, $batch_id);
         
       
         
@@ -401,7 +402,7 @@ class Attendances extends CActiveRecord {
             $std_admission = $std_data->admission_date;
             if($std_admission>$attandence_start)
             {
-                $number_of_days2 = $this->getNumberOfdays($std_admission, $attandence_end,$batch_id);
+                list($number_of_days2,$weekend_array, $class_opens,$holiday_array) = $this->getNumberOfdays($std_admission, $attandence_end,$batch_id);
                 
                 $return2[$value->id] = $number_of_days2;
                 
@@ -438,7 +439,7 @@ class Attendances extends CActiveRecord {
        }
        
        
-       return array($number_of_days,$return,$return2,$absent,$attandence_start,$attandence_end);
+       return array($number_of_days,$return,$return2,$absent,$attandence_start,$attandence_end,$weekend_array, $class_opens,$holiday_array);
         
     }   
     
@@ -454,7 +455,7 @@ class Attendances extends CActiveRecord {
         
         $attandence_start = date("Y-m-d" , strtotime($start_date_end_date->attandence_start_date));
         $attandence_end =  date("Y-m-d" , strtotime($start_date_end_date->attandence_end_date));
-        $number_of_days = $this->getNumberOfdays($attandence_start, $attandence_end,$batch_id);
+        list($number_of_days,$weekend_array, $class_opens,$holiday_array) = $this->getNumberOfdays($attandence_start, $attandence_end,$batch_id);
         $number_of_days2 = $number_of_days;
         
         $stdobj = new Students();
@@ -464,7 +465,7 @@ class Attendances extends CActiveRecord {
           $std_admission = $std_data->admission_date;
           if($std_admission>$attandence_start)
           {
-              $number_of_days2 = $this->getNumberOfdays($std_admission, $attandence_end,$batch_id);
+            list($number_of_days2,$weekend_array, $class_opens,$holiday_array) = $this->getNumberOfdays($std_admission, $attandence_end,$batch_id);
               
           }   
         }
@@ -635,7 +636,7 @@ class Attendances extends CActiveRecord {
             $total = $stdobj->getStudentTotal($batch_name,$class_name,$batch_id);
             if($type != "days")
             {
-                $number_of_days = $this->getNumberOfdays($prev_day, $value);
+                list($number_of_days,$weekend_array, $class_opens,$holiday_array) = $this->getNumberOfdays($prev_day, $value);
                 $total = $total*$number_of_days;
                 
                 $att_date_array[$j] = date("j M", strtotime($prev_day))."-".date("j M", strtotime($value));
@@ -705,7 +706,7 @@ class Attendances extends CActiveRecord {
             }
             $holiday_array[] = $end_holiday->format("Y-m-d");
         }
-        $attendance = new Attendances();
+        $attendance = new Attendances(); 
         $weekend_array = $attendance->getWeekend(Yii::app()->user->schoolId,$batch_id);
         
         $class_open = new ClassOpens();
@@ -725,7 +726,7 @@ class Attendances extends CActiveRecord {
             }
             $i++;
         } 
-        return $i;
+        return [$i,implode(",",$weekend_array),$class_opens,implode(",",$holiday_array)) ;
         
     }
     
@@ -842,7 +843,7 @@ class Attendances extends CActiveRecord {
         
         $end_date = date("Y-m-d");
         
-        $total_number_of_days = $this->getNumberOfdays($month_start,$end_date);
+        list($total_number_of_days,$weekend_array, $class_opens,$holiday_array) = $this->getNumberOfdays($month_start,$end_date);
         
       
          

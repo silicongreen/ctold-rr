@@ -121,7 +121,7 @@ end
               </tr>   
               </table>
               <table id="pdf-table" style  style="border:none !important;" cellspacing="0" >
-                <tr class="table-header">
+                <tr>
                   <td rowspan="2">A/C Code</td>  
                   <td class="name" rowspan="2">Roll NO.</td>
                   <td class="name" rowspan="2">Name</td>
@@ -131,7 +131,7 @@ end
                   <td rowspan="2">Grade</td>
                 
                 </tr>
-                <tr class="table-header">
+                <tr>
                   <% @report_data['result']['ALL'].each do |rs| %>
                     <td style="white-space: normal !important;">
                       <%=  rs['name'] %>

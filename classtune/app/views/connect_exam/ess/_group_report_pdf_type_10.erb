@@ -183,7 +183,7 @@
                           else
                             second_quarter_out_of_25 = 0
                           end
-
+                          current_full_mark = first_quarter_full_mark+second_quarter_full_mark+half_quarter_full_mark  
                           if half_quarter_out_of_100 > 0
                             half_quarter_out_of_50 = (half_quarter_out_of_100.to_f/100)*50
                           else
@@ -191,7 +191,7 @@
                           end
                         %>
                         <% if first_quarter_out_of_25.to_i > 0 %>
-                        <td class="col-pdf"><%= first_quarter_out_of_25.round.to_i %></td>
+                        <td class="col-pdf"><%= first_quarter_out_of_25.round.to_i %> <%= current_full_mark %></td>
                         <% else %>
                         <td class="col-pdf">-</td>
                         <% end %>

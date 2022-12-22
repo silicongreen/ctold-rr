@@ -229,7 +229,11 @@
                           
                           main_mark = main_mark.round()
                           grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                          total_marks += main_mark
+                          if f_mark_current == 50
+                            total_marks += main_mark
+                          else
+                            total_marks += (main_mark/2)
+                          end
                           outof_marks += f_mark_current
                         %>  
                         <% 

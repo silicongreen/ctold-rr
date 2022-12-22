@@ -13,7 +13,7 @@
                           
                           <td class="align-left" width="22%">  
                               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/logo_grayscale.jpg")),:width=> '80%' %>  
-                          </td>
+                          </td> 
                           <td width="74%">
                               <h4 align="center"><font size="6">EUROPEAN STANDARD SCHOOL(ESS)</font></h2><!--  color="#4CAEE3" -->
                               <h4 align="center" style="margin-top:-3px;"><font size="5" color="#000"><%= @batch.name %></font></h4>
@@ -123,6 +123,8 @@
 
                           <td class="col-pdf no-warp  align-left"  style="padding:5px !important;"><%= subjects['name'] %></td>
                           <%
+                          total_marks = 0
+                          outof_marks = 0
                           full_mark = 0
                           obtain_mark = 0
                           first_quarter_mark = 0
@@ -212,6 +214,8 @@
                           
                           main_mark = main_mark.round()
                           grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                          total_marks += main_mark
+                          outof_marks += 100
                         %>  
                         <% if main_mark.to_i > 0 %>
                         <td class="col-pdf"><%= main_mark.round.to_i %></td>
@@ -320,6 +324,69 @@
                 <% end %> 
               </div>
               <div style="width:55%; float: left; margin-left: 4%; margin-top: -40px !important;" >
+                <% if @batch.course.course_name == 'IV' or @batch.course.course_name == 'V' or @batch.course.course_name == 'VI' or @batch.course.course_name == 'VII' %>                    
+                <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
+                    <tr class="even">
+                      <td class="align-left">Total Marks (Out of <%= outof_marks %>):</td>
+                      <td  style="padding:5px !important;"><%= total_marks.round.to_i %></td>
+                      <td class="align-left">Percentage:</td>
+                      <% percent = (total_marks.round.to_i/outof_marks) * 100 %>
+                      <td  style="padding:5px !important;"><%= sprintf( "%0.02f", percent)%>%</td>
+                    </tr>
+                    <tr class="even">
+                      <td class="align-left" colspan="3">Comment on Overall Performance: </td>
+                      <td  style="padding:5px !important;"></td>
+                    </tr>
+                    <tr class="even">
+                      <td class="align-left">Total No. of Working Days:</td>
+                      <td  style="padding:5px !important;"><%= @connect_exam_obj.total_working_days %></td>
+                      <td class="align-left">Attendance:</td>
+                      <td  style="padding:5px !important;">@report_data['present']</td>
+                    </tr>
+                    <tr class="even">
+                      <% date_string = @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d/%m/%Y") %>
+                      <td class="align-left">Next Term Begin On:</td>
+                      <td  style="padding:5px !important;" colspan="3">
+                          <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:10px !important;" cellspacing="0" >
+
+                              <tr class="even">
+                                <% unless @connect_exam_obj.name.index("Final").blank? %>
+                                  <td class="width-30 align-left" width="30%" rowspan="2" style="background-color:#e3f2fd;">Next Academic Session Begins on:</td>
+                                <% else %>
+                                  <td class="width-30 align-left" width="30%" rowspan="2" style="background-color:#e3f2fd;">Next Term Begins on:</td>
+                                <% end %>
+                                
+                                <td colspan="2" style="padding:2px !important">D</td>
+                                <td colspan="2" style="padding:2px !important">M</td>
+                                <td colspan="4" style="padding:2px !important">Y</td>
+                            </tr>
+                            <tr class="even">
+                                <% unless date_split.blank? %>
+                                  <td style="padding:2px !important"><%= date_split[0] %></td>
+                                  <td style="padding:2px !important"><%= date_split[1] %></td>
+                                  <td><%= date_split[2] %></td>
+                                  <td><%= date_split[3] %></td>
+                                  <td><%= date_split[4] %></td>
+                                  <td><%= date_split[5] %></td>
+                                  <td><%= date_split[6] %></td>
+                                  <td><%= date_split[7] %></td>
+                                <% else %>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                <% end %>
+                            </tr>
+                          </table>
+                      </td>
+                    </tr>
+
+                </table>
+                <% else %>
                 <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
                       <td class="align-left">Total No. of Working Days:</td>
@@ -332,6 +399,7 @@
                     </tr>
 
                 </table>
+                <% end %>
               </div>
               <div style="width: 100%;clear: both; margin-top: -10px !important;">
                    <table id="pdf-table" class="evaluation table_99 top-left-center sign_table" width="99.8%">

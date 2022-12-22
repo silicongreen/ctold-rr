@@ -77,7 +77,7 @@ end
           </tr>    
       </table>    
   </div>     
-      
+  <div class="section1 row" style="border: 1px solid #000; float: left;" >  
       <% unless @report_data.blank?  or  @report_data['result'].blank? %>
       <% c = 'even' %>
       <% full_mark = 0 %>
@@ -114,7 +114,7 @@ end
    
           <%  std_count = std_count+1; %>
           <% colspan = colspan+4 %>
-          <% if std_count>14 && extender ==0 %>
+          <% if std_count>4 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">

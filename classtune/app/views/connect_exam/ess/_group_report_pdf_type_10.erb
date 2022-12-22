@@ -346,7 +346,12 @@
                       <td  style="padding:5px !important;">@report_data['present']</td>
                     </tr>
                     <tr class="even">
-                      <% date_string = @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d/%m/%Y") %>
+                    <%  
+                        date_string = @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d%m%Y")
+                        unless date_string.blank? 
+                          date_split = date_string.split("")
+                        end
+                      %>
                       <td class="align-left">Next Term Begin On:</td>
                       <td  style="padding:5px !important;" colspan="3">
                           <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:10px !important;" cellspacing="0" >

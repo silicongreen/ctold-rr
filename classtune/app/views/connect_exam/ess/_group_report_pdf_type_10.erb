@@ -153,72 +153,84 @@
                                 end
                               end
                             end
+                          end
+                          first_quarter_out_of_100 = 0
+                          second_quarter_out_of_100 = 0
+                          half_quarter_out_of_100 = 0
+                          if first_quarter_mark > 0 && first_quarter_full_mark > 0
                             first_quarter_out_of_100 = (first_quarter_mark.to_f/first_quarter_full_mark.to_f)*100
+                          end
+
+                          if second_quarter_mark > 0 && second_quarter_full_mark > 0
                             second_quarter_out_of_100 = (second_quarter_mark.to_f/second_quarter_full_mark.to_f)*100
+                          end
+
+                          if half_quarter_mark > 0 && half_quarter_full_mark > 0
                             half_quarter_out_of_100 = (half_quarter_mark.to_f/half_quarter_full_mark.to_f)*100
+                          end
 
-                            if first_quarter_out_of_100 > 0
-                              first_quarter_out_of_25 = (first_quarter_out_of_100.to_f/100)*25
-                            else
-                              first_quarter_out_of_25 = 0
-                            end
-                            if second_quarter_out_of_100 > 0
-                              second_quarter_out_of_25 = (second_quarter_out_of_100.to_f/100)*25
-                            else
-                              second_quarter_out_of_25 = 0
-                            end
-                            if half_quarter_out_of_100 > 0
-                              half_quarter_out_of_50 = (half_quarter_out_of_100.to_f/100)*50
-                            else
-                              half_quarter_out_of_50 =  0
-                            end
-                          %>
-                          <% if first_quarter_out_of_25.to_i > 0 %>
-                          <td class="col-pdf"><%= first_quarter_out_of_25.round.to_i %></td>
-                          <% else %>
-                          <td class="col-pdf">-</td>
-                          <% end %>
-                          <% if second_quarter_out_of_25.to_i > 0 %>
-                          <td class="col-pdf"><%= second_quarter_out_of_25.round.to_i %></td>
-                          <% else %>
-                          <td class="col-pdf">-</td>
-                          <% end %>
-                          <% if half_quarter_out_of_50.to_i > 0 %>
-                          <td class="col-pdf"><%= half_quarter_out_of_50.round.to_i %></td>
-                          <% else %>
-                          <td class="col-pdf">-</td>
-                          <% end %>
-                                <%
-                                f_mark = 100
-                                o_mark = first_quarter_out_of_25.round.to_i+second_quarter_out_of_25.round.to_i+half_quarter_out_of_50.round.to_i
-                                main_mark = 0
-                                if f_mark > 0 && o_mark > 0
-                                  main_mark = (o_mark.to_f/f_mark.to_f)*100
-                                end  
-                                
-                                main_mark = main_mark.round()
-                                grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                                %>  
-                                <% if main_mark.to_i > 0 %>
-                                <td class="col-pdf"><%= main_mark.round.to_i %></td>
-                                <% else %>
-                                <td class="col-pdf">-</td>
-                                <% end %>
-                                <% if !grade.blank? and !grade.name.blank? %>
-                                  <td class="col-pdf" style="padding:5px !important;"><b><%= grade.name %></b></td>
-                                <% else %>
-                                  <td class="col-pdf" style="padding:5px !important;"><b>-</b></td>
-                                <% end %> 
-                                <%
-                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
-                                  full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
-                                end
-                              
-                            end 
+                          if first_quarter_out_of_100 > 0
+                            first_quarter_out_of_25 = (first_quarter_out_of_100.to_f/100)*25
+                          else
+                            first_quarter_out_of_25 = 0
+                          end
+
+                          if second_quarter_out_of_100 > 0
+                            second_quarter_out_of_25 = (second_quarter_out_of_100.to_f/100)*25
+                          else
+                            second_quarter_out_of_25 = 0
+                          end
+
+                          if half_quarter_out_of_100 > 0
+                            half_quarter_out_of_50 = (half_quarter_out_of_100.to_f/100)*50
+                          else
+                            half_quarter_out_of_50 =  0
+                          end
                         %>
-                         
-                          
+                        <% if first_quarter_out_of_25.to_i > 0 %>
+                        <td class="col-pdf"><%= first_quarter_out_of_25.round.to_i %></td>
+                        <% else %>
+                        <td class="col-pdf">-</td>
+                        <% end %>
+                        <% if second_quarter_out_of_25.to_i > 0 %>
+                        <td class="col-pdf"><%= second_quarter_out_of_25.round.to_i %></td>
+                        <% else %>
+                        <td class="col-pdf">-</td>
+                        <% end %>
+                        <% if half_quarter_out_of_50.to_i > 0 %>
+                        <td class="col-pdf"><%= half_quarter_out_of_50.round.to_i %></td>
+                        <% else %>
+                        <td class="col-pdf">-</td>
+                        <% end %>
 
+                        <%
+                          f_mark = 100
+                          o_mark = first_quarter_out_of_25.round.to_i+second_quarter_out_of_25.round.to_i+half_quarter_out_of_50.round.to_i
+                          main_mark = 0
+                          if f_mark > 0 && o_mark > 0
+                            main_mark = (o_mark.to_f/f_mark.to_f)*100
+                          end  
+                          
+                          main_mark = main_mark.round()
+                          grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                        %>  
+                        <% if main_mark.to_i > 0 %>
+                        <td class="col-pdf"><%= main_mark.round.to_i %></td>
+                        <% else %>
+                        <td class="col-pdf">-</td>
+                        <% end %>
+
+                        <% if !grade.blank? and !grade.name.blank? %>
+                          <td class="col-pdf" style="padding:5px !important;"><b><%= grade.name %></b></td>
+                        <% else %>
+                          <td class="col-pdf" style="padding:5px !important;"><b>-</b></td>
+                        <% end %> 
+
+                        <%
+                          if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
+                            full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                          end
+                        %>                      
                       </tr>
                     <% end %>  
                   <% end %>   

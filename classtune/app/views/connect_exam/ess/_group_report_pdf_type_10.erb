@@ -261,7 +261,7 @@
               </table>
               <p>&nbsp;</p>
               
-              <div style="width:30%; float: left;" >
+              <div style="width:40%; float: left;" >
                 <% if @grading_levels.blank? %>
                   <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
                   <% if @grading_levels.blank? %>
@@ -279,7 +279,7 @@
                       <% end %>
                     <% end %>
                     <%  unless @grading_levels.empty? %>
-                      <div style="border: 1px solid #000; width: 50%; padding: 20px; float: right;">
+                      <div style="border: 1px solid #000; width: 100%; padding: 20px; float: right;">
                       <p style="padding: 0; margin: 0"><font size="3"><b>Grading System</b></font></p>
                       <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
                           <tr class="even" cellspacing="0" cellpadding="1">

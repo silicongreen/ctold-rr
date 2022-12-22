@@ -133,7 +133,10 @@
                           half_quarter_full_mark = 0
                           unless @report_data['report']['exams'].blank?   
                             @report_data['report']['exams'].each do |report| 
+<<<<<<< HEAD
+=======
                               
+>>>>>>> d9794cd237ccdfda0fc47c03e149adcb2e58f6af
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   if report['exam_category'] == '1' && report['quarter'] == '5'
                                     first_quarter_mark = first_quarter_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
@@ -152,41 +155,43 @@
                                     half_quarter_full_mark = half_quarter_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
                                   end
                                 end
-                                first_quarter_out_of_100 = (first_quarter_mark.to_f/first_quarter_full_mark.to_f)*100
-                                second_quarter_out_of_100 = (second_quarter_mark.to_f/second_quarter_full_mark.to_f)*100
-                                half_quarter_out_of_100 = (half_quarter_mark.to_f/half_quarter_full_mark.to_f)*100
+                              end
+                            end
+                            first_quarter_out_of_100 = (first_quarter_mark.to_f/first_quarter_full_mark.to_f)*100
+                            second_quarter_out_of_100 = (second_quarter_mark.to_f/second_quarter_full_mark.to_f)*100
+                            half_quarter_out_of_100 = (half_quarter_mark.to_f/half_quarter_full_mark.to_f)*100
 
-                                if first_quarter_out_of_100 > 0
-                                  first_quarter_out_of_25 = (first_quarter_out_of_100.to_f/100)*25
-                                else
-                                  first_quarter_out_of_25 = 0
-                                end
-                                if second_quarter_out_of_100 > 0
-                                  second_quarter_out_of_25 = (second_quarter_out_of_100.to_f/100)*25
-                                else
-                                  second_quarter_out_of_25 = 0
-                                end
-                                if half_quarter_out_of_100 > 0
-                                  half_quarter_out_of_50 = (half_quarter_out_of_100.to_f/100)*50
-                                else
-                                  half_quarter_out_of_50 =  0
-                                end
-                                %>
-                                <% if first_quarter_out_of_25.to_i > 0 %>
-                                <td class="col-pdf"><%= first_quarter_out_of_25.round.to_i %></td>
-                                <% else %>
-                                <td class="col-pdf">-</td>
-                                <% end %>
-                                <% if second_quarter_mark.to_i > 0 %>
-                                <td class="col-pdf"><%= second_quarter_mark.round.to_i %></td>
-                                <% else %>
-                                <td class="col-pdf">-</td>
-                                <% end %>
-                                <% if half_quarter_out_of_50.to_i > 0 %>
-                                <td class="col-pdf"><%= half_quarter_out_of_50.round.to_i %></td>
-                                <% else %>
-                                <td class="col-pdf">-</td>
-                                <% end %>
+                            if first_quarter_out_of_100 > 0
+                              first_quarter_out_of_25 = (first_quarter_out_of_100.to_f/100)*25
+                            else
+                              first_quarter_out_of_25 = 0
+                            end
+                            if second_quarter_out_of_100 > 0
+                              second_quarter_out_of_25 = (second_quarter_out_of_100.to_f/100)*25
+                            else
+                              second_quarter_out_of_25 = 0
+                            end
+                            if half_quarter_out_of_100 > 0
+                              half_quarter_out_of_50 = (half_quarter_out_of_100.to_f/100)*50
+                            else
+                              half_quarter_out_of_50 =  0
+                            end
+                          %>
+                          <% if first_quarter_out_of_25.to_i > 0 %>
+                          <td class="col-pdf"><%= first_quarter_out_of_25.round.to_i %></td>
+                          <% else %>
+                          <td class="col-pdf">-</td>
+                          <% end %>
+                          <% if second_quarter_out_of_25.to_i > 0 %>
+                          <td class="col-pdf"><%= second_quarter_out_of_25.round.to_i %></td>
+                          <% else %>
+                          <td class="col-pdf">-</td>
+                          <% end %>
+                          <% if half_quarter_out_of_50.to_i > 0 %>
+                          <td class="col-pdf"><%= half_quarter_out_of_50.round.to_i %></td>
+                          <% else %>
+                          <td class="col-pdf">-</td>
+                          <% end %>
                                 <%
                                 f_mark = 100
                                 o_mark = first_quarter_out_of_25.round.to_i+second_quarter_out_of_25.round.to_i+half_quarter_out_of_50.round.to_i
@@ -214,7 +219,6 @@
                                 end
                               
                             end 
-                          end 
                         %>
                          
                           

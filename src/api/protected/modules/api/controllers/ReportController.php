@@ -367,9 +367,9 @@ class ReportController extends Controller
                 $response['data']['total_new'] = $adata[2];
                 $response['data']['attandence_start'] = $adata[4];
                 $response['data']['attandence_end'] = $adata[5];  
-                //$response['data']['weekend_array'] = $adata[6];
-                //$response['data']['class_opens'] = $adata[7];  
-                //$response['data']['holiday_array'] = $adata[8]; 
+                $response['data']['weekend_array'] = $adata[6];
+                $response['data']['class_opens'] = $adata[7];  
+                $response['data']['holiday_array'] = $adata[8]; 
                 $response['data']['first_term_id'] = 0;
                 if($adata_first_term)
                 {

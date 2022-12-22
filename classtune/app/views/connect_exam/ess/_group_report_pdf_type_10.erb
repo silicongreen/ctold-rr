@@ -334,13 +334,13 @@
                       <td class="align-left">Percentage:</td>
                       <% percent = 0 %>
                       <% if total_marks > 0 && outof_marks > 0 %>
-                      <% percent = (total_marks.round.to_i/outof_marks.to_i) * 100 %>
+                      <% percent = (total_marks.round/outof_marks.to_i) * 100 %>
+                      <td  style="padding:5px !important;"><%= sprintf( "%0.02f", percent.to_f)%>%</td>
                       <% end %>
-                      <td  style="padding:5px !important;"><%= sprintf( "%0.02f", percent)%>%</td>
+                      
                     </tr>
                     <tr class="even">
-                      <td class="align-left" colspan="3">Comment on Overall Performance: </td>
-                      <td  style="padding:5px !important;"></td>
+                      <td class="align-left" colspan="4">Comment on Overall Performance: </td>
                     </tr>
                     <tr class="even">
                       <td class="align-left">Total No. of Working Days:</td>

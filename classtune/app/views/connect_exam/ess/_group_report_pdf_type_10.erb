@@ -346,7 +346,7 @@
                       <td class="align-left">Total No. of Working Days:</td>
                       <td  style="padding:5px !important;"><%= @connect_exam_obj.total_working_days %></td>
                       <td class="align-left">Attendance:</td>
-                      <td  style="padding:5px !important;">@report_data['present']</td>
+                      <td  style="padding:5px !important;"><%= @report_data['present'] %></td>
                     </tr>
                     <tr class="even">
                     <%  
@@ -355,17 +355,11 @@
                           date_split = date_string.split("")
                         end
                       %>
-                      <td class="align-left">Next Term Begin On:</td>
+                      <td class="align-left">Next Term Begins On:</td>
                       <td  style="padding:5px !important;" colspan="3">
                           <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:10px !important;" cellspacing="0" >
 
                               <tr class="even">
-                                <% unless @connect_exam_obj.name.index("Final").blank? %>
-                                  <td class="width-30 align-left" width="30%" rowspan="2" style="background-color:#e3f2fd;">Next Academic Session Begins on:</td>
-                                <% else %>
-                                  <td class="width-30 align-left" width="30%" rowspan="2" style="background-color:#e3f2fd;">Next Term Begins on:</td>
-                                <% end %>
-                                
                                 <td colspan="2" style="padding:2px !important">D</td>
                                 <td colspan="2" style="padding:2px !important">M</td>
                                 <td colspan="4" style="padding:2px !important">Y</td>
@@ -404,7 +398,7 @@
                     </tr>
                     <tr class="even">
                       <% date_string = @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d/%m/%Y") %>
-                      <td class="align-left">Next Term Begin On:</td>
+                      <td class="align-left">Next Term Begins On:</td>
                       <td  style="padding:5px !important;"><%= date_string %></td>
                     </tr>
 

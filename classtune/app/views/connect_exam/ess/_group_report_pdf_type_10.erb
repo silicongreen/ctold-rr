@@ -262,63 +262,76 @@
               <p>&nbsp;</p>
               
               <div style="width:40%; float: left; margin-left: 10px !important;" >
-                <% if @grading_levels.blank? %>
-                  <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
                   <% if @grading_levels.blank? %>
-                    <% @grading_levels = GradingLevel.default %>
-                  <% end %>
-                <% end %>
-                <%  unless @grading_levels.empty? %>
-                <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
-                  <tr class="even border-bottom-1-px">
-                      <td class="col-pdf no-border" width="100%" rowspan="2">
-                      <% if @grading_levels.blank? %>
-                      <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
-                      <% if @grading_levels.blank? %>
-                        <% @grading_levels = GradingLevel.default %>
-                      <% end %>
+                    <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+                    <% if @grading_levels.blank? %>
+                      <% @grading_levels = GradingLevel.default %>
                     <% end %>
-                    <%  unless @grading_levels.empty? %>
-                      <div style="border: 1px solid #000; width: 100%; padding: 20px; float: right;">
-                      <p style="padding: 0; margin: 0"><font size="3"><b>Grading System</b></font></p>
-                      <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
-                          <tr class="even" cellspacing="0" cellpadding="1">
-                              <td class="small" style="font-size: 10px;"><font size="3"><b>Marks Range</b></font></td>
-                              <td class="small" style="font-size: 10px;"><font size="3"><b>Grade</b></font></td>  
-                          </tr> 
-                          <% prev_score = 0 %>
-                          <% @grading_levels.each_with_index do |grade,index| %>
-                            <tr class="odd">
-                            <td class="small">
-                                <% if grade.max_score.nil? %> 
-                                  <% if grade.min_score.to_i == 0 %>
-                                    <font size="3"><&nbsp;<%= '%i%' % prev_score %></font>
-                                  <% else %>
-                                    <font size="3"><%= '%i%' % grade.min_score %></font> 
-                                  <% end %>
-                                <% else %> 
-                                  <% if grade.min_score.to_i == 0 %>
-                                    <font size="3"><&nbsp;<%= '%i%' % prev_score %></font>
-                                  <% else %>
-                                    <font size="3"><%= grade.min_score.to_i.to_s + " - " + grade.max_score.to_i.to_s+" %" %></font>
-                                  <% end %>
-                                <% end %>
-                                <%  prev_score = grade.min_score.to_i %>
-                            </td>
-                            <td class="small"><font size="3"><%= grade.name %></font></td>
-                              </tr> 
+                  <% end %>
+                  <%  unless @grading_levels.empty? %>
+                  <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
+                    <tr class="even border-bottom-1-px">
+                        <td class="col-pdf no-border" width="100%" rowspan="2">
+                        <% if @grading_levels.blank? %>
+                        <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+                        <% if @grading_levels.blank? %>
+                          <% @grading_levels = GradingLevel.default %>
+                          <% end %>
+                        <% end %>
+                          <%  unless @grading_levels.empty? %>
+                            <div style="border: 1px solid #000; width: 100%; padding: 20px; float: right;">
+                              <p style="padding: 0; margin: 0"><font size="3"><b>Grading System</b></font></p>
+                              <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
+                                  <tr class="even" cellspacing="0" cellpadding="1">
+                                      <td class="small" style="font-size: 10px;"><font size="3"><b>Marks Range</b></font></td>
+                                      <td class="small" style="font-size: 10px;"><font size="3"><b>Grade</b></font></td>  
+                                  </tr> 
+                                  <% prev_score = 0 %>
+                                  <% @grading_levels.each_with_index do |grade,index| %>
+                                    <tr class="odd">
+                                    <td class="small">
+                                        <% if grade.max_score.nil? %> 
+                                          <% if grade.min_score.to_i == 0 %>
+                                            <font size="3"><&nbsp;<%= '%i%' % prev_score %></font>
+                                          <% else %>
+                                            <font size="3"><%= '%i%' % grade.min_score %></font> 
+                                          <% end %>
+                                        <% else %> 
+                                          <% if grade.min_score.to_i == 0 %>
+                                            <font size="3"><&nbsp;<%= '%i%' % prev_score %></font>
+                                          <% else %>
+                                            <font size="3"><%= grade.min_score.to_i.to_s + " - " + grade.max_score.to_i.to_s+" %" %></font>
+                                          <% end %>
+                                        <% end %>
+                                        <%  prev_score = grade.min_score.to_i %>
+                                    </td>
+                                    <td class="small"><font size="3"><%= grade.name %></font></td>
+                                      </tr> 
+                                  <% end %> 
+                        
+                              </table>
+                            </div>
                           <% end %> 
-                
-                      </table>
-                      </div>
-                    <% end %> 
-                      </td>
-                  </tr>
-                 
-              </table>
+                        </td>
+                    </tr>
+                  
+                  </table>
 
                 <% end %> 
               </div>
+              <div style="width:66%; float: left; margin-left: 4%;" >
+                <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
+                    <tr class="even">
+                      <td class="align-left">Total No. of Working Days:</td>
+                      <td  style="padding:5px !important;"><%= @connect_exam_obj.total_working_days %></td>
+                    </tr>
+                    <tr class="even">
+                      <td class="align-left">Attendance:</td>
+                      <td  style="padding:5px !important;"><%= @report_data['present'] %></td>
+                    </tr>
+
+                </table>
+                </div>
           </div>
       </div>
 

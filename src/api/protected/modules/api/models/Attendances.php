@@ -726,7 +726,7 @@ class Attendances extends CActiveRecord {
             }
             $i++;
         } 
-        return [$i,implode(",",$weekend_array),$class_opens,implode(",",$holiday_array)) ;
+        return array($i,implode(",",$weekend_array),$class_opens,implode(",",$holiday_array)) ;
         
     }
     

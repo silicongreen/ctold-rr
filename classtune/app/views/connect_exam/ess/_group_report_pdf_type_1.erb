@@ -48,7 +48,7 @@
               <tr>
                   <td class="align-left">Name : <%= @student.full_name %></td>
                   <td class="align-left">Roll : <%= @student.class_roll_no %></td>
-                  <% if @batch.course.course_name == "I" or @batch.course.course_name == "II" or @batch.course.course_name == "III" %>
+                  <% if @batch.course.course_name == "I" or @batch.course.course_name == "KG I" or @batch.course.course_name == "KG II" or @batch.course.course_name == "II" or @batch.course.course_name == "III" %>
                   <td class="align-left">Section : <%= @batch.course.section_name %></td>
                   <% else %>
                   <td class="align-left">Shift : <%= @batch.course.section_name %></td>

@@ -134,9 +134,11 @@
                           unless @report_data['report']['exams'].blank?   
                             @report_data['report']['exams'].each do |report| 
                               unless report['exam_category'] == '1' && report['quarter'] == '5'
+                                unless report['exam_category'] == '3' && report['quarter'] == '5'
                                 %>
                                 <%= abort(report.inspect)%>
                                 <%
+                              end
                                 end
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   if report['exam_category'] == '1' && report['quarter'] == '5'

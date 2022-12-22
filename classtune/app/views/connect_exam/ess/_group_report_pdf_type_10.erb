@@ -333,22 +333,17 @@
 
                 </table>
               </div>
-              <div style="width: 100%;margin-top: -20px !important;">
+              <div style="width: 100%">
                    <table id="pdf-table" width="99.8%">
                     <tr class="even border-bottom-1-px">
-                        <td class="col-pdf no-border" width="70%" style="margin-top: 0px !important;"></td>
-                        
-                          <td class="col-pdf" width="30%">
-                          
-                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"20%" %>
+                        <td class="col-pdf no-border" width="70%"></td>
+                        <td class="col-pdf" width="30%">
+                            <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"20%" %>
                         </td>
                     </tr>
                     <tr class="even">
                         <td class="col-pdf no-border" width="70%" style="text-align:left !important"><b>Date of Issue: <%= @connect_exam_obj.published_date.strftime("%d/%m/%Y") %></b></td>
-                        <td class="col-pdf" width="30%">
-                            Principal
-                        </td>
-
+                        <td class="col-pdf" width="30%">Principal</td>
                     </tr>
 
                 </table>                   

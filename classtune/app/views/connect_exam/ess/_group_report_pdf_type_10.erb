@@ -223,13 +223,7 @@
                           <td class="col-pdf" style="padding:5px !important;"><b><%= grade.name %></b></td>
                         <% else %>
                           <td class="col-pdf" style="padding:5px !important;"><b>-</b></td>
-                        <% end %> 
-
-                        <%
-                          if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
-                            full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
-                          end
-                        %>                      
+                        <% end %>                    
                       </tr>
                     <% end %>  
                   <% end %>   

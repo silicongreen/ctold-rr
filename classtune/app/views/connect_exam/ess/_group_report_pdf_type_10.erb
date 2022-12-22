@@ -93,9 +93,9 @@
                   <tr class="even">
                       <td class="col-pdf" rowspan="2"><b><%= "Subject" %></b></td>
                       <% if @batch.course.course_name == 'IV' or @batch.course.course_name == 'V' or @batch.course.course_name == 'VI' or @batch.course.course_name == 'VII' %>
-                      <td colspan="5" ><b><%= @extra_text %> ACADEMIC PERFORMANCE</b></td>
-                      <% else %>
                       <td colspan="6" ><b><%= @extra_text %> ACADEMIC PERFORMANCE</b></td>
+                      <% else %>
+                      <td colspan="5" ><b><%= @extra_text %> ACADEMIC PERFORMANCE</b></td>
                       <% end %>
                   </tr>
                   <tr class="even">

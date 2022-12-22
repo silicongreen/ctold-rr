@@ -184,6 +184,12 @@
                             second_quarter_out_of_25 = 0
                           end
                           current_full_mark = first_quarter_full_mark+second_quarter_full_mark+half_quarter_full_mark  
+                          f_mark_current = 0
+                          if current_full_mark >= 100
+                            f_mark_current = 100
+                          else
+                            f_mark_current = 50
+                          end
                           if half_quarter_out_of_100 > 0
                             half_quarter_out_of_50 = (half_quarter_out_of_100.to_f/100)*50
                           else
@@ -191,7 +197,7 @@
                           end
                         %>
                         <% if first_quarter_out_of_25.to_i > 0 %>
-                        <td class="col-pdf"><%= first_quarter_out_of_25.round.to_i %> <%= current_full_mark %></td>
+                        <td class="col-pdf"><%= first_quarter_out_of_25.round.to_i %></td>
                         <% else %>
                         <td class="col-pdf">-</td>
                         <% end %>
@@ -217,7 +223,7 @@
                           main_mark = main_mark.round()
                           grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                           total_marks += main_mark
-                          outof_marks += 100
+                          outof_marks += f_mark_current
                         %>  
                         <% if main_mark.to_i > 0 %>
                         <td class="col-pdf"><%= main_mark.round.to_i %></td>

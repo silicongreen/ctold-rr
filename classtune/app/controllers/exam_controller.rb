@@ -232,7 +232,7 @@ class ExamController < ApplicationController
       report_data = []
       if @student_response['status']['code'].to_i == 200
         report_data = @student_response['data']
-      end
+      end 
       report_data
     }
 
@@ -10366,8 +10366,8 @@ class ExamController < ApplicationController
           :grayscale => true,
           :margin => {:top=> 3,
           :bottom => 3,
-          :left=> 10,
-          :right => 10},
+          :left=> 3,
+          :right => 3},
           :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
           :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
       else

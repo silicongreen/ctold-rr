@@ -149,6 +149,12 @@
           else
             second_quarter_out_of_25 = 0
           end
+          
+          if half_quarter_out_of_100 > 0
+            half_quarter_out_of_50 = (half_quarter_out_of_100.to_f/100)*50
+          else
+            half_quarter_out_of_50 =  0
+          end
 
           f_mark = 100
           o_mark = first_quarter_out_of_25.round.to_i+second_quarter_out_of_25.round.to_i+half_quarter_out_of_50.round.to_i

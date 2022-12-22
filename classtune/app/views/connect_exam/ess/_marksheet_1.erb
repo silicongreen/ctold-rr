@@ -36,13 +36,13 @@ end
     <center>
       <table id="pdf-table"  width="100%" class="no-border margin-bottom-20" style="border:none !important;"  cellspacing="0" >
           <tr>
-              <td class="align-left" width="28%">&nbsp;</td>
+              <td class="align-left col-pdf" width="28%">&nbsp;</td>
 
-              <td class="align-left" width="6%" style="vertical-align: top;">  
+              <td class="align-left col-pdf" width="6%" style="vertical-align: top;">  
                   <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/logo.jpg")),:width=> '90%' %>  
               </td>
               <% month_number = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
-              <td width="28%">
+              <td class="col-pdf" width="28%">
                   <h4 align="center"><font size="5">EUROPEAN STANDARD SCHOOL(ESS)</font></h4>
                   <h4 align="center" style="margin-top:-15px;"><font size="5"><%= @batch.name %> Campus</font></h4>
                   <h4 align="center" style="margin-top:-15px;"><font size="4" color="#000">Subject Wise Mark Sheet</font></h4>
@@ -59,17 +59,17 @@ end
                     </font>
                   </h4>  
               </td>
-              <td class="align-left" width="28%">&nbsp;</td>
+              <td class="align-left col-pdf" width="28%">&nbsp;</td>
 
          </tr>
-         <tr><td colspan="3">&nbsp;</td></tr>
+         <tr><td class="col-pdf" colspan="3">&nbsp;</td></tr>
       </table>
       
       <table id="pdf-table"  width="100%" class="no-border margin-bottom-20" style="border:none !important;"  cellspacing="0" >
           <tr>
               <% if !@employee.nil? %> 
-              <td align='left'><h4>Teacher's Name : <%=  employee_string %></h4></td>
-              <td align='right' style="text-align:right !important;"><h4>Subject : <%= @subject.name %></h4></td>
+              <td class="col-pdf" align='left'><h4>Teacher's Name : <%=  employee_string %></h4></td>
+              <td class="col-pdf" align='right' style="text-align:right !important;"><h4>Subject : <%= @subject.name %></h4></td>
               <% else %>
               <td align='left'><h4>Subject : <%= @subject.name %></h4></td>
               <% end %> 
@@ -122,11 +122,11 @@ end
               </table>
               <table id="pdf-table" style  style="border:none !important;" cellspacing="0" >
                 <tr class="table-header">
-                  <td rowspan="2">A/C Code</td>  
-                  <td class="name" rowspan="2">Roll NO.</td>
-                  <td class="name" rowspan="2">Name</td>
-                  <td class="name" colspan="4">Continues Assessment(80)</td>
-                  <td class="name" colspan="4">Performance(20)</td>
+                  <td class="col-pdf" rowspan="2">A/C Code</td>  
+                  <td class="name col-pdf" rowspan="2">Roll NO.</td>
+                  <td class="name col-pdf" rowspan="2">Name</td>
+                  <td class="name col-pdf" colspan="4">Continues Assessment(80)</td>
+                  <td class="name col-pdf" colspan="4">Performance(20)</td>
                   <td rowspan="2">Total <br />(100)</td>
                   <td rowspan="2">Grade</td>
                 

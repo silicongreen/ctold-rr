@@ -111,22 +111,63 @@ end
           <% if @has_exam_student == false %>
             <% next %>
           <% end %>          
-                
-
+   
           <%  std_count = std_count+1; %>
           <% colspan = colspan+4 %>
           <% if std_count>14 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
-                  <td colspan="<%= colspan %>">&nbsp;</td>
+                  <td colspan="13">&nbsp;</td>
               </tr>    
+              </table>
+              <table id="pdf-table" width="100%" cellspacing="0">
+                <tr class="table-header">
+                  <td rowspan="2">A/C Code</td>  
+                  <td class="name" rowspan="2">Roll NO.</td>
+                  <td class="name" rowspan="2">Name</td>
+                  <td class="name" colspan="4">Continues Assessment(80)</td>
+                  <td class="name" colspan="4">Performance(20)</td>
+                  <td rowspan="2">Total <br />(100)</td>
+                  <td rowspan="2">Grade</td>
+                
+                </tr>
+                <tr class="table-header">
+                  <% @report_data['result']['ALL'].each do |rs| %>
+                    <td style="white-space: normal !important;">
+                      <%=  rs['name'] %>
+                      <br />
+                      (<%= rs['maximum_marks'] %>)
+                    </td>
+                  <% end %>  
+                </tr>
           <% elsif std_count>18 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
-                  <td colspan="<%= colspan %>">&nbsp;</td>
+                  <td colspan="13">&nbsp;</td>
               </tr> 
+              </table>
+              <table id="pdf-table" width="100%" cellspacing="0">
+                <tr class="table-header">
+                  <td rowspan="2">A/C Code</td>  
+                  <td class="name" rowspan="2">Roll NO.</td>
+                  <td class="name" rowspan="2">Name</td>
+                  <td class="name" colspan="4">Continues Assessment(80)</td>
+                  <td class="name" colspan="4">Performance(20)</td>
+                  <td rowspan="2">Total <br />(100)</td>
+                  <td rowspan="2">Grade</td>
+                
+                </tr>
+                <tr class="table-header">
+                  <% @report_data['result']['ALL'].each do |rs| %>
+                    <td style="white-space: normal !important;">
+                      <%=  rs['name'] %>
+                      <br />
+                      (<%= rs['maximum_marks'] %>)
+                    </td>
+                  <% end %>  
+                </tr>
           <% end %>    
         
         

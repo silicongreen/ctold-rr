@@ -326,13 +326,32 @@
                       <td  style="padding:5px !important;"><%= @connect_exam_obj.total_working_days %></td>
                     </tr>
                     <tr class="even">
+                      <% date_string = @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d%m%Y") %>
                       <td class="align-left">Next Term Begin On:</td>
-                      <td  style="padding:5px !important;"><%= @report_data['present'] %></td>
+                      <td  style="padding:5px !important;"><%= date_string %></td>
                     </tr>
 
                 </table>
                 </div>
           </div>
+          <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"   width="99.8%" style="margin-top: 0 !important;">
+              <tr class="even border-bottom-1-px">
+                  <td class="col-pdf no-border" width="70%" ></td>
+                  
+                    <td class="col-pdf" width="30%">
+                    
+                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"20%" %>
+                  </td>
+              </tr>
+              <tr class="even">
+                  <td class="col-pdf no-border" width="70%" style="text-align:left !important"><b>Date of Issue: <%= @connect_exam_obj.published_date.strftime("%d/%m/%Y") %></b></td>
+                  <td class="col-pdf" width="30%">
+                      Principal
+                  </td>
+
+              </tr>
+
+          </table>
       </div>
 
 

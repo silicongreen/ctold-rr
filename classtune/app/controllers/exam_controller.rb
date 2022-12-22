@@ -10366,8 +10366,8 @@ class ExamController < ApplicationController
           :grayscale => true,
           :margin => {:top=> 3,
           :bottom => 3,
-          :left=> 3,
-          :right => 3},
+          :left=> 10,
+          :right => 10},
           :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
           :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
       else

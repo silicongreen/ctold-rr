@@ -12,6 +12,7 @@
                           </td>
                           <td width="32%">
                               <h4 align="center"><font size="5">EUROPEAN STANDARD SCHOOL(ESS)</font></h2><!-- color="#4CAEE3" -->
+                              <h4 align="center" style="margin-top:-5px;"><font size="4" color="#000"><%= @batch.name %></font></h2>
                               <h4 align="center" style="margin-top:-5px;"><font size="4" color="#000"><%= @connect_exam_obj.name %></font></h2>
                               <% month_number = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
                               <h4 align="center" style="margin-top:-5px;">
@@ -23,7 +24,6 @@
                                   <% end %>
                                 </font>
                               </h4>
-                              <h4 align="center" style="margin-top:-5px;"><font size="4" color="#000"><%= @batch.name %></font></h2>
                               <h4 align="center" style="margin-top:-5px;">
                                 <font size="4" color="#000">
                                   Class : <%= @batch.course.course_name %>
@@ -48,7 +48,11 @@
               <tr>
                   <td class="align-left">Name : <%= @student.full_name %></td>
                   <td class="align-left">Roll : <%= @student.class_roll_no %></td>
+                  <% if @batch.course.course_name == "I" or @batch.course.course_name == "II" or @batch.course.course_name == "III" %>
+                  <td class="align-left">Section : <%= @batch.course.section_name %></td>
+                  <% else %>
                   <td class="align-left">Shift : <%= @batch.course.section_name %></td>
+                  <% end %>
                   <td class="align-left">A /C ID : <%= @student.admission_no %></td>
               </tr>
               <tr>

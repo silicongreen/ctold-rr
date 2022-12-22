@@ -71,7 +71,7 @@ end
               <td class="col-pdf" align='left'><h4>Teacher's Name : <%=  employee_string %></h4></td>
               <td class="col-pdf" align='right' style="text-align:right !important;"><h4>Subject : <%= @subject.name %></h4></td>
               <% else %>
-              <td align='left'><h4>Subject : <%= @subject.name %></h4></td>
+              <td class="col-pdf" align='left'><h4>Subject : <%= @subject.name %></h4></td>
               <% end %> 
           </tr>    
       </table>    
@@ -83,18 +83,18 @@ end
       <% colspan = 0 %>
       <table id="pdf-table"  cellspacing="0" >
         <tr class="table-header">
-          <td rowspan="2">A/C Code</td>  
-          <td class="name" rowspan="2">Roll NO.</td>
-          <td class="name" rowspan="2">Name</td>
-          <td class="name" style="text-align: center;" colspan="4">Continues Assessment(80)</td>
-          <td class="name" style="text-align: center;" colspan="4">Performance(20)</td>
-          <td rowspan="2">Total <br />(100)</td>
-          <td rowspan="2">Grade</td>
+          <td class="col-pdf" rowspan="2">A/C Code</td>  
+          <td class="name col-pdf" rowspan="2">Roll NO.</td>
+          <td class="name col-pdf" rowspan="2">Name</td>
+          <td class="name col-pdf" style="text-align: center;" colspan="4">Continues Assessment(80)</td>
+          <td class="name col-pdf" style="text-align: center;" colspan="4">Performance(20)</td>
+          <td class="col-pdf" rowspan="2">Total <br />(100)</td>
+          <td class="col-pdf" rowspan="2">Grade</td>
         
         </tr>
         <tr class="table-header">
           <% @report_data['result']['ALL'].each do |rs| %>
-            <td style="white-space: normal !important;">
+            <td class="col-pdf" style="white-space: normal !important;">
               <%=  rs['name'] %>
               <br />
               (<%= rs['maximum_marks'] %>)
@@ -117,7 +117,7 @@ end
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
-                  <td colspan="13" style="height: 80px !important;">&nbsp;</td>
+                  <td class="col-pdf"colspan="13" style="height: 80px !important;">&nbsp;</td>
               </tr>   
               </table>
               <table id="pdf-table" style  style="border:none !important;" cellspacing="0" >
@@ -127,13 +127,13 @@ end
                   <td class="name col-pdf" rowspan="2">Name</td>
                   <td class="name col-pdf" colspan="4">Continues Assessment(80)</td>
                   <td class="name col-pdf" colspan="4">Performance(20)</td>
-                  <td rowspan="2">Total <br />(100)</td>
-                  <td rowspan="2">Grade</td>
+                  <td class="col-pdf" rowspan="2">Total <br />(100)</td>
+                  <td class="col-pdf" rowspan="2">Grade</td>
                 
                 </tr>
                 <tr class="table-header">
                   <% @report_data['result']['ALL'].each do |rs| %>
-                    <td style="white-space: normal !important;">
+                    <td class="col-pdf" style="white-space: normal !important;">
                       <%=  rs['name'] %>
                       <br />
                       (<%= rs['maximum_marks'] %>)
@@ -144,23 +144,23 @@ end
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
-                  <td colspan="13">&nbsp;</td>
+                  <td class="col-pdf" colspan="13">&nbsp;</td>
               </tr> 
               </table>
               <table id="pdf-table"  cellspacing="0" >
                 <tr class="table-header">
-                  <td rowspan="2">A/C Code</td>  
-                  <td class="name" rowspan="2">Roll NO.</td>
-                  <td class="name" rowspan="2">Name</td>
-                  <td class="name" colspan="4">Continues Assessment(80)</td>
-                  <td class="name" colspan="4">Performance(20)</td>
-                  <td rowspan="2">Total <br />(100)</td>
-                  <td rowspan="2">Grade</td>
+                  <td class="col-pdf" rowspan="2">A/C Code</td>  
+                  <td class="name col-pdf" rowspan="2">Roll NO.</td>
+                  <td class="name col-pdf" rowspan="2">Name</td>
+                  <td class="name col-pdf" colspan="4">Continues Assessment(80)</td>
+                  <td class="name col-pdf" colspan="4">Performance(20)</td>
+                  <td class="col-pdf" rowspan="2">Total <br />(100)</td>
+                  <td class="col-pdf" rowspan="2">Grade</td>
                 
                 </tr>
                 <tr class="table-header">
                   <% @report_data['result']['ALL'].each do |rs| %>
-                    <td style="white-space: normal !important;">
+                    <td class="col-pdf" style="white-space: normal !important;">
                       <%=  rs['name'] %>
                       <br />
                       (<%= rs['maximum_marks'] %>)
@@ -174,11 +174,11 @@ end
           <% full_mark = 0 %>
               
           <tr class="even">
-            <td class="name"><%= std['admission_no'] %></td>
-            <td class="name"><%= std['class_roll_no'] %></td>
-            <td class="name-std"><%= std['name'] %></td>
+            <td class="name col-pdf"><%= std['admission_no'] %></td>
+            <td class="name col-pdf"><%= std['class_roll_no'] %></td>
+            <td class="name-std col-pdf"><%= std['name'] %></td>
             <% @report_data['result']['ALL'].each do |rs| %>
-              <td>
+              <td class="col-pdf">
               <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
                   <%= rs['students'][std['id']]['score'] %>
                   <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
@@ -195,13 +195,13 @@ end
             <% end %> 
             
 
-           <td class="name"><%= sprintf( "%0.02f", total_mark) %></td>
+           <td class="name col-pdf"><%= sprintf( "%0.02f", total_mark) %></td>
 
            <%  grade = GradingLevel.percentage_to_grade(total_mark, @batch.id) %>
            <% if !grade.blank? and !grade.name.blank? %>
-            <td class="col-2"><b><%= grade.name %></b></td>
+            <td class="col-2 col-pdf"><b><%= grade.name %></b></td>
           <% else %>
-            <td class="col-2"><b>-</b></td>
+            <td class="col-2 col-pdf"><b>-</b></td>
           <% end %>
         </tr>
         <% end %>

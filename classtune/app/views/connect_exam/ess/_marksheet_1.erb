@@ -65,18 +65,6 @@ end
          <tr><td colspan="3">&nbsp;</td></tr>
       </table>
       
-      <div id ="main_info">
-          <table width="100%">
-              <tr>
-                 <% if !@employee.nil? %> 
-                  <td align='left'><h4>Teacher's Name : <%=  employee_string %></h4></td>
-                  <td align='right' style="text-align:right !important;"><h4>Subject : <%= @subject.name %></h4></td>
-                 <% else %>
-                  <td align='left'><h4>Subject : <%= @subject.name %></h4></td>
-                 <% end %> 
-              </tr>    
-          </table>    
-       
       
       <% unless @report_data.blank?  or  @report_data['result'].blank? %>
       <% c = 'even' %>
@@ -209,7 +197,6 @@ end
         <% end %>
       </table>
       <% end %>
-      </div>
     </center>
   </div>
   

@@ -335,12 +335,23 @@
                       <% percent = 0 %>
                       <% if total_marks > 0 && outof_marks > 0 %>
                       <% percent = (total_marks.to_f/outof_marks.to_f) * 100 %>
-                      <td style="padding:5px !important;"><%= outof_marks.round %><%= sprintf( "%0.02f", percent.to_f)%>%</td>
                       <% end %>
-                      
+                      <td style="padding:5px !important;"><%= sprintf( "%0.02f", percent.to_f)%>%</td>
                     </tr>
                     <tr class="even">
-                      <td class="align-left" colspan="4">Comment on Overall Performance: </td>
+                      <%
+                        status = "Needs Improvement"        
+                        if percent >= 90 
+                          status = "Excellent"        
+                        elsif percent >= 80 and percent < 90
+                          status = "Very Good"
+                        elsif percent >= 70 and percent < 80
+                          status = "Good"
+                        elsif percent >= 60 and percent < 70
+                          status = "Satisfactory "
+                        end
+                      %>              
+                      <td class="align-left" colspan="4">Comment on Overall Performance: <b><%= status %></b></td>
                     </tr>
                     <tr class="even">
                       <td class="align-left">Total No. of Working Days:</td>

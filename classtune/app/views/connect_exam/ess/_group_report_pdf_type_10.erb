@@ -332,7 +332,10 @@
                       <td class="align-left">Total Marks (Out of <%= outof_marks %>):</td>
                       <td  style="padding:5px !important;"><%= total_marks.round.to_i %></td>
                       <td class="align-left">Percentage:</td>
-                      <% percent = (total_marks.round.to_i/outof_marks) * 100 %>
+                      <% percent = 0 %>
+                      <% if total_marks > 0 && outof_marks > 0 %>
+                      <% percent = (total_marks.round.to_i/outof_marks.to_i) * 100 %>
+                      <% end %>
                       <td  style="padding:5px !important;"><%= sprintf( "%0.02f", percent)%>%</td>
                     </tr>
                     <tr class="even">

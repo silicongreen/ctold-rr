@@ -247,7 +247,7 @@
                           <td class="col-pdf" style="padding:5px !important;"><b>-</b></td>
                         <% end %>              
                         <% if @batch.course.course_name == 'IV' or @batch.course.course_name == 'V' or @batch.course.course_name == 'VI' or @batch.course.course_name == 'VII' %>
-                        <td class="col-pdf" style="padding:5px !important;"><b><%= highest_mark %></b></td>
+                        <td class="col-pdf" style="padding:5px !important;"><b><%= highest_mark.to_i %></b></td>
                         <% end %>              
                       </tr>
                     <% end %>  
@@ -278,6 +278,9 @@
                             <td class="col-pdf"></td>
                             <td class="col-pdf"></td>
                             <td class="col-pdf"><b><%= report['subject_comment'] unless report['subject_comment'].blank? %></b></td>
+                            <% if @batch.course.course_name == 'IV' or @batch.course.course_name == 'V' or @batch.course.course_name == 'VI' or @batch.course.course_name == 'VII' %>
+                            <td class="col-pdf"></td>
+                            <% end %>              
                         </tr>
                       <% end %>
                     <% end %>

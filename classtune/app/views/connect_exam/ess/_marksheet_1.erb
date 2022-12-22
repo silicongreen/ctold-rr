@@ -113,11 +113,11 @@ end
    
           <%  std_count = std_count+1; %>
           <% colspan = colspan+4 %>
-          <% if std_count>12 && extender ==0 %>
+          <% if std_count>11 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
-              <tr class="page-break">
-                  <td colspan="13">&nbsp;</td>
+              <tr style="border: 1px solid #fff;">
+                  <td colspan="13" style="border: 1px solid #fff; height: 40px;">&nbsp;</td>
               </tr>    
               </table>
               <table id="pdf-table"  width="100%" class="no-border left-clear-both margin-bottom-20" style="border:none !important;"  cellspacing="0" >

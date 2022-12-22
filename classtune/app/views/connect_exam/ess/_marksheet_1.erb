@@ -87,21 +87,20 @@ end
           <td rowspan="2">A/C Code</td>  
           <td class="name" rowspan="2">Roll NO.</td>
           <td class="name" rowspan="2">Name</td>
-          <td class="name"></td>
-          <% @report_data['result']['ALL'].each do |rs| %>
-            <td style="white-space: normal !important;"><%=  rs['name'] %></td>
-          <% end %>  
-          
-          <td>Total</td>
+          <td class="name" rowspan="2" colspan="4">Continues Assessment(80)</td>
+          <td class="name" rowspan="2" colspan="4">Performance(20)</td>
+          <td rowspan="2">Total <br />(100)</td>
           <td rowspan="2">Grade</td>
         
         </tr>
         <tr class="table-header">
-          <td class="name">Marks</td>
           <% @report_data['result']['ALL'].each do |rs| %>
-            <td><%= rs['maximum_marks'] %></td>
-          <% end %> 
-          <td class="name">100</td>
+            <td style="white-space: normal !important;">
+              <%=  rs['name'] %>
+              <br />
+              (<%= rs['maximum_marks'] %>)
+            </td>
+          <% end %>  
         </tr>
         
         <% extender = 0 %>

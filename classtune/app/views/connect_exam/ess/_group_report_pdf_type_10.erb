@@ -261,7 +261,7 @@
               </table>
               <p>&nbsp;</p>
               
-              <div style="width:40%; float: left; margin-left: 10px !important; margin-top: -40px !important;" >
+              <div style="width:40%; float: left; margin-left: 10px !important; margin-top: -30px !important;" >
                   <% if @grading_levels.blank? %>
                     <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
                     <% if @grading_levels.blank? %>
@@ -319,7 +319,7 @@
 
                 <% end %> 
               </div>
-              <div style="width:55%; float: left; margin-left: 4%; margin-top: -40px !important;" >
+              <div style="width:55%; float: left; margin-left: 4%; margin-top: -30px !important;" >
                 <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
                       <td class="align-left">Total No. of Working Days:</td>
@@ -333,17 +333,22 @@
 
                 </table>
               </div>
-              <div style="width: 100%">
+              <div style="width: 100%;clear: both;">
                    <table id="pdf-table" width="99.8%">
                     <tr class="even border-bottom-1-px">
-                        <td class="col-pdf no-border" width="70%"></td>
-                        <td class="col-pdf" width="30%">
-                            <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"20%" %>
+                        <td class="col-pdf no-border" width="70%" style="margin-top: 0px !important;"></td>
+                        
+                          <td class="col-pdf" width="30%">
+                          
+                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/ess/principal.png")), :width=>"20%" %>
                         </td>
                     </tr>
                     <tr class="even">
                         <td class="col-pdf no-border" width="70%" style="text-align:left !important"><b>Date of Issue: <%= @connect_exam_obj.published_date.strftime("%d/%m/%Y") %></b></td>
-                        <td class="col-pdf" width="30%">Principal</td>
+                        <td class="col-pdf" width="30%">
+                            Principal
+                        </td>
+
                     </tr>
 
                 </table>                   

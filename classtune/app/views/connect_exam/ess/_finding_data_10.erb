@@ -64,6 +64,7 @@
       total_grade = 0
       
       tab['students'].each do |std| 
+        
         total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
         std_subject_id = total_std_subject.map(&:subject_id)
         grand_total = 0
@@ -186,15 +187,15 @@
           #  main_mark_student = (o_mark.to_f/f_mark.to_f)*f_mark_current
           end  
 
+
          
           if @subject_highest[sub['name'].strip].blank?
-            @subject_highest[sub['name'].strip] = main_mark_student
+            @subject_highest[sub['name'].strip] = main_mark_student.to_s + "  " + std['class_roll_no'].to_s + "  " + std['first_name'].to_s + "  " + std['last_name'].to_s + " " + batch_data.course.course_name + " " + batch_data.course.section_name
           elsif main_mark_student.to_f > @subject_highest[sub['name'].strip].to_f
-            @subject_highest[sub['name'].strip] = main_mark_student.to_f
+            @subject_highest[sub['name'].strip] = main_mark_student.to_s + "  " + std['class_roll_no'].to_s + "  " + std['first_name'].to_s + "  " + std['last_name'].to_s + " " + batch_data.course.course_name + " " + batch_data.course.section_name
           end
         end 
         @student_total_grade[std['id'].to_i] = total_grade
-        abort(std.inspect)
         if subject_failed == false
           if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
             std_marks_full_new = 5000.00-grand_total.to_f

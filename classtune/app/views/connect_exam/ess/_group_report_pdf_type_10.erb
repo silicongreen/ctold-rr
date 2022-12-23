@@ -24,9 +24,6 @@
                               </h4-->
                               <h4 align="center" style="margin-top:-3px;"><font size="5" color="#000"><%= @connect_exam_obj.name %></font></h4>
                               <% month_number = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
-                              <% if @batch.course.course_name == 'VIII' or @batch.course.course_name == 'IX' %>
-
-                              <% else %>
                               <h4 align="center" style="margin-top:-3px;">
                                 <font size="5" color="#000">
                                   <% if month_number.to_i>6 %>
@@ -36,7 +33,6 @@
                                   <% end %>
                                 </font>
                               </h4>
-                              <% end %>
                               <h4 align="center" style="margin-top:-3px;">
                                 <font size="5" color="#000">
                                   Class : <%= @batch.course.course_name %>
@@ -544,9 +540,9 @@
                         <td class="col-pdf no-border" width="70%" style="text-align:left !important"><b>Date of Issue: <%= @connect_exam_obj.published_date.strftime("%d/%m/%Y") %></b></td>
                         <td class="col-pdf" width="30%">
                         <% if @batch.course.course_name == 'VIII' or @batch.course.course_name == 'IX' or @batch.course.course_name == 'X' or @batch.course.course_name == 'XI' or @batch.course.course_name == 'XII' %>          
-                        <b><pre>MD. MORSHEDUL ISLAM
+                        <b>MD. MORSHEDUL ISLAM
                         Principal
-                        <!-- European Standard School (ESS)--></pre></b>
+                        <!-- European Standard School (ESS)--></b>
                        <% else %>
                         Principal
                         <% end %>

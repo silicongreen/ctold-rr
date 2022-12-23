@@ -188,7 +188,7 @@
           end  
 
 
-         
+         abort(batch_data.name.strip.to_s)
           if @subject_highest[sub['name'].strip].blank?
             @subject_highest[sub['name'].strip + " " + batch_data.name.strip] = main_mark_student.to_s + " | <br /> Student Info: " + std['class_roll_no'].to_s + "  " + std['first_name'].to_s + "  " + std['last_name'].to_s + " " + batch_data.course.course_name + " " + batch_data.course.section_name
           elsif main_mark_student.to_f > @subject_highest[sub['name'].strip].to_f

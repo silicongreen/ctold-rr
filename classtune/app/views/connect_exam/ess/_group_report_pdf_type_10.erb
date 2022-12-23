@@ -137,10 +137,13 @@
                           full_mark = 0
                           obtain_mark = 0
                           first_quarter_mark = 0
+                          first_quarter_ab = false
                           first_quarter_full_mark = 0
                           second_quarter_mark = 0
+                          second_quarter_ab = false
                           second_quarter_full_mark = 0
                           half_quarter_mark = 0
+                          half_quarter_ab = false
                           half_quarter_full_mark = 0
                           unless @report_data['report']['exams'].blank?   
                             @report_data['report']['exams'].each do |report| 
@@ -149,17 +152,29 @@
                                     first_quarter_mark = first_quarter_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                     first_quarter_full_mark = first_quarter_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
                                   elsif report['exam_category'] == '3' && report['quarter'] == '5'
-                                    first_quarter_mark = first_quarter_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                    first_quarter_full_mark = first_quarter_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                    if report['result'][report['exam_id']][subjects['id']]['marks_obtained'] == "AB"
+                                      first_quarter_ab = true
+                                    else
+                                      first_quarter_mark = first_quarter_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                      first_quarter_full_mark = first_quarter_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                    end
                                   elsif report['exam_category'] == '1' && report['quarter'] == '2'
                                     second_quarter_mark = second_quarter_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                     second_quarter_full_mark = second_quarter_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
                                   elsif report['exam_category'] == '3' && report['quarter'] == '2'
-                                    second_quarter_mark = second_quarter_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                    second_quarter_full_mark = second_quarter_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                    if report['result'][report['exam_id']][subjects['id']]['marks_obtained'] == "AB"
+                                      second_quarter_ab = true
+                                    else
+                                      second_quarter_mark = second_quarter_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                      second_quarter_full_mark = second_quarter_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                    end
                                   elsif report['exam_category'] == '3' && report['quarter'] == '3'
-                                    half_quarter_mark = half_quarter_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                    half_quarter_full_mark = half_quarter_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                    if report['result'][report['exam_id']][subjects['id']]['marks_obtained'] == "AB"
+                                      half_quarter_ab = true
+                                    else
+                                      half_quarter_mark = half_quarter_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                      half_quarter_full_mark = half_quarter_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                    end
                                   end
                                 end
                               end
@@ -213,21 +228,36 @@
                           end
                           
                         %>
-                        <% if first_quarter_out_of_25.to_i > 0 %>
-                        <td class="col-pdf"><%= sprintf( "%0.02f", first_quarter_out_of_25.to_f)%></td>
+                        <% if first_quarter_ab %>
+                          <td class="col-pdf">AB</td>
                         <% else %>
-                        <td class="col-pdf">-</td>
+                          <% if first_quarter_out_of_25.to_i > 0 %>
+                          <td class="col-pdf"><%= sprintf( "%0.02f", first_quarter_out_of_25.to_f)%></td>
+                          <% else %>
+                          <td class="col-pdf">-</td>
+                          <% end %>
                         <% end %>
-                        <% if second_quarter_out_of_25.to_i > 0 %>
-                        <td class="col-pdf"><%= sprintf( "%0.02f", second_quarter_out_of_25.to_f)%></td>
+
+                        <% if second_quarter_ab %>
+                          <td class="col-pdf">AB</td>
                         <% else %>
-                        <td class="col-pdf">-</td>
+                          <% if second_quarter_out_of_25.to_i > 0 %>
+                          <td class="col-pdf"><%= sprintf( "%0.02f", second_quarter_out_of_25.to_f)%></td>
+                          <% else %>
+                          <td class="col-pdf">-</td>
+                          <% end %>
                         <% end %>
-                        <% if half_quarter_out_of_50.to_i > 0 %>
-                        <td class="col-pdf"><%= sprintf( "%0.02f", half_quarter_out_of_50.to_f)%></td>
+                        
+                        <% if half_quarter_ab %>
+                          <td class="col-pdf">AB</td>
                         <% else %>
-                        <td class="col-pdf">-</td>
+                          <% if half_quarter_out_of_50.to_i > 0 %>
+                          <td class="col-pdf"><%= sprintf( "%0.02f", half_quarter_out_of_50.to_f)%></td>
+                          <% else %>
+                          <td class="col-pdf">-</td>
+                          <% end %>
                         <% end %>
+                        
 
                         <%
                           f_mark = f_mark_current

@@ -283,8 +283,8 @@
                         <% 
                           highest_mark = 0
                           if !@subject_highest.blank? and !@subject_highest[subjects['name'].strip + "  " + @batch.name.strip].blank?
-                            #highest_mark = @subject_highest[subjects['name'].strip + "  " + @batch.name.strip].to_f
-                            highest_mark = @subject_highest[subjects['name'].strip + "  " + @batch.name.strip]
+                            #highest_mark = @subject_highest[subjects['name'].strip + " " + @batch.name.strip].to_f
+                            highest_mark = @subject_highest[subjects['name'].strip + " " + @batch.name.strip]
                           end
                         
                         %>

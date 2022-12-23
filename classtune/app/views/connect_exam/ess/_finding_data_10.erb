@@ -126,42 +126,48 @@
           first_quarter_out_of_100 = 0
           second_quarter_out_of_100 = 0
           half_quarter_out_of_100 = 0
+          current_full_mark = first_quarter_full_mark+second_quarter_full_mark+half_quarter_full_mark 
+          f_mark_current = 0
+          need_for_test = 25
+          need_for_term = 50
+          if current_full_mark >= 100
+            f_mark_current = 100
+            need_for_test = 25
+            need_for_term = 50
+          else
+            f_mark_current = 50
+            need_for_test = 12.5
+            need_for_term = 25
+          end
+
           if first_quarter_mark > 0 && first_quarter_full_mark > 0
-            first_quarter_out_of_100 = (first_quarter_mark.to_f/first_quarter_full_mark.to_f)*100
+            first_quarter_out_of_100 = (first_quarter_mark.to_f/first_quarter_full_mark.to_f)*f_mark_current
           end
 
           if second_quarter_mark > 0 && second_quarter_full_mark > 0
-            second_quarter_out_of_100 = (second_quarter_mark.to_f/second_quarter_full_mark.to_f)*100
+            second_quarter_out_of_100 = (second_quarter_mark.to_f/second_quarter_full_mark.to_f)*f_mark_current
           end
 
           if half_quarter_mark > 0 && half_quarter_full_mark > 0
-            half_quarter_out_of_100 = (half_quarter_mark.to_f/half_quarter_full_mark.to_f)*100
+            half_quarter_out_of_100 = (half_quarter_mark.to_f/half_quarter_full_mark.to_f)*f_mark_current
           end
 
           if first_quarter_out_of_100 > 0
-            first_quarter_out_of_25 = (first_quarter_out_of_100.to_f/100)*25
+            first_quarter_out_of_25 = (first_quarter_out_of_100.to_f/100)*need_for_test
           else
             first_quarter_out_of_25 = 0
           end
 
           if second_quarter_out_of_100 > 0
-            second_quarter_out_of_25 = (second_quarter_out_of_100.to_f/100)*25
+            second_quarter_out_of_25 = (second_quarter_out_of_100.to_f/100)*need_for_test
           else
             second_quarter_out_of_25 = 0
           end
           
           if half_quarter_out_of_100 > 0
-            half_quarter_out_of_50 = (half_quarter_out_of_100.to_f/100)*50
+            half_quarter_out_of_50 = (half_quarter_out_of_100.to_f/100)*need_for_term
           else
             half_quarter_out_of_50 =  0
-          end
-
-          current_full_mark = first_quarter_full_mark+second_quarter_full_mark+half_quarter_full_mark 
-          f_mark_current = 0
-          if current_full_mark >= 100
-            f_mark_current = 100
-          else
-            f_mark_current = 50
           end
 
           f_mark = f_mark_current

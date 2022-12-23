@@ -231,7 +231,7 @@
                         <% if first_quarter_ab %>
                           <td class="col-pdf">AB</td>
                         <% else %>
-                          <% if first_quarter_out_of_25.to_i > 0 %>
+                          <% if first_quarter_out_of_25.to_i >= 0 %>
                           <td class="col-pdf"><%= sprintf( "%0.02f", first_quarter_out_of_25.to_f)%></td>
                           <% else %>
                           <td class="col-pdf">-</td>
@@ -241,7 +241,7 @@
                         <% if second_quarter_ab %>
                           <td class="col-pdf">AB</td>
                         <% else %>
-                          <% if second_quarter_out_of_25.to_i > 0 %>
+                          <% if second_quarter_out_of_25.to_i >= 0 %>
                           <td class="col-pdf"><%= sprintf( "%0.02f", second_quarter_out_of_25.to_f)%></td>
                           <% else %>
                           <td class="col-pdf">-</td>
@@ -251,7 +251,7 @@
                         <% if half_quarter_ab %>
                           <td class="col-pdf">AB</td>
                         <% else %>
-                          <% if half_quarter_out_of_50.to_i > 0 %>
+                          <% if half_quarter_out_of_50.to_i >= 0 %>
                           <td class="col-pdf"><%= sprintf( "%0.02f", half_quarter_out_of_50.to_f)%></td>
                           <% else %>
                           <td class="col-pdf">-</td>

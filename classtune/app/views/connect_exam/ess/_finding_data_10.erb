@@ -139,87 +139,42 @@
             need_for_term = 25
           end
 
-          #if first_quarter_mark > 0 && first_quarter_full_mark > 0
-          #  first_quarter_out_of_100 = (first_quarter_mark.to_f/first_quarter_full_mark.to_f)*f_mark_current
-          #end
+          if first_quarter_mark > 0 && first_quarter_full_mark > 0
+            first_quarter_out_of_100 = (first_quarter_mark.to_f/first_quarter_full_mark.to_f)*f_mark_current
+          end
 
-          #if second_quarter_mark > 0 && second_quarter_full_mark > 0
-          #  second_quarter_out_of_100 = (second_quarter_mark.to_f/second_quarter_full_mark.to_f)*f_mark_current
-          #end
+          if second_quarter_mark > 0 && second_quarter_full_mark > 0
+            second_quarter_out_of_100 = (second_quarter_mark.to_f/second_quarter_full_mark.to_f)*f_mark_current
+          end
 
-          #if half_quarter_mark > 0 && half_quarter_full_mark > 0
-          #  half_quarter_out_of_100 = (half_quarter_mark.to_f/half_quarter_full_mark.to_f)*f_mark_current
-          #end
+          if half_quarter_mark > 0 && half_quarter_full_mark > 0
+            half_quarter_out_of_100 = (half_quarter_mark.to_f/half_quarter_full_mark.to_f)*f_mark_current
+          end
 
-          #if first_quarter_out_of_100 > 0
-          #  first_quarter_out_of_25 = (first_quarter_out_of_100.to_f/f_mark_current)*need_for_test
-          #else
-          #  first_quarter_out_of_25 = 0
-          #end
-
-          #if second_quarter_out_of_100 > 0
-          #  second_quarter_out_of_25 = (second_quarter_out_of_100.to_f/f_mark_current)*need_for_test
-          #else
-          #  second_quarter_out_of_25 = 0
-          #end
-          
-          #if half_quarter_out_of_100 > 0
-          #  half_quarter_out_of_50 = (half_quarter_out_of_100.to_f/f_mark_current)*need_for_term
-          #else
-          #  half_quarter_out_of_50 =  0
-          #nd
-
-          if first_quarter_mark > 0
-            #first_quarter_out_of_25 = (first_quarter_out_of_100.to_f/f_mark_current)*need_for_test
-            first_quarter_out_of_25 = first_quarter_mark/2
+          if first_quarter_out_of_100 > 0
+            first_quarter_out_of_25 = (first_quarter_out_of_100.to_f/f_mark_current)*need_for_test
           else
             first_quarter_out_of_25 = 0
           end
 
-          if second_quarter_mark > 0
-            #second_quarter_out_of_25 = (second_quarter_out_of_100.to_f/f_mark_current)*need_for_test
-            second_quarter_out_of_25 = second_quarter_mark/2
+          if second_quarter_out_of_100 > 0
+            second_quarter_out_of_25 = (second_quarter_out_of_100.to_f/f_mark_current)*need_for_test
           else
             second_quarter_out_of_25 = 0
           end
           
-          if half_quarter_mark > 0
-            #half_quarter_out_of_50 = (half_quarter_out_of_100.to_f/f_mark_current)*need_for_term
-            half_quarter_out_of_50 = half_quarter_mark
+          if half_quarter_out_of_100 > 0
+            half_quarter_out_of_50 = (half_quarter_out_of_100.to_f/f_mark_current)*need_for_term
           else
             half_quarter_out_of_50 =  0
           end
 
-          if first_quarter_mark > 0 && first_quarter_full_mark > 0
-            #first_quarter_out_of_100 = (first_quarter_mark.to_f/first_quarter_full_mark.to_f)*f_mark_current
-            first_quarter_out_of_100 = first_quarter_out_of_25*2
-          end
-
-          if second_quarter_mark > 0 && second_quarter_full_mark > 0
-            #second_quarter_out_of_100 = (second_quarter_mark.to_f/second_quarter_full_mark.to_f)*f_mark_current
-            second_quarter_out_of_100 = second_quarter_out_of_25*2
-          end
-
-          if half_quarter_mark > 0 && half_quarter_full_mark > 0
-            #half_quarter_out_of_100 = (half_quarter_mark.to_f/half_quarter_full_mark.to_f)*f_mark_current
-            half_quarter_out_of_100 = half_quarter_out_of_50*2
-          end
-
-          #f_mark = f_mark_current
-          #o_mark = first_quarter_out_of_25.to_f+second_quarter_out_of_25.to_f+half_quarter_out_of_50.to_f
-          #main_mark_student = 0
-          #if f_mark > 0 && o_mark > 0
-          #  main_mark_student = (o_mark.to_f/f_mark.to_f)*f_mark_current
-          #end  
           f_mark = f_mark_current
-          o_mark = first_quarter_out_of_100.to_f+second_quarter_out_of_100.to_f+half_quarter_out_of_100.to_f
-          #main_mark = 0
-          #if f_mark > 0 && o_mark > 0
-            #main_mark = (o_mark.to_f/f_mark.to_f)*100
-            #main_mark_to_show = (o_mark.to_f/f_mark.to_f)*f_mark_current
-          #end  
-          main_mark_student = o_mark.to_f
-          main_mark_to_show = o_mark
+          o_mark = first_quarter_out_of_25.to_f+second_quarter_out_of_25.to_f+half_quarter_out_of_50.to_f
+          main_mark_student = 0
+          if f_mark > 0 && o_mark > 0
+            main_mark_student = (o_mark.to_f/f_mark.to_f)*f_mark_current
+          end  
 
          
           if @subject_highest[sub['name'].strip].blank?

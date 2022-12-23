@@ -169,21 +169,21 @@
           #  half_quarter_out_of_50 =  0
           #nd
 
-          if first_quarter_out_of_100 > 0
+          if first_quarter_mark > 0
             #first_quarter_out_of_25 = (first_quarter_out_of_100.to_f/f_mark_current)*need_for_test
             first_quarter_out_of_25 = first_quarter_mark/2
           else
             first_quarter_out_of_25 = 0
           end
 
-          if second_quarter_out_of_100 > 0
+          if second_quarter_mark > 0
             #second_quarter_out_of_25 = (second_quarter_out_of_100.to_f/f_mark_current)*need_for_test
             second_quarter_out_of_25 = second_quarter_mark/2
           else
             second_quarter_out_of_25 = 0
           end
           
-          if half_quarter_out_of_100 > 0
+          if half_quarter_mark > 0
             #half_quarter_out_of_50 = (half_quarter_out_of_100.to_f/f_mark_current)*need_for_term
             half_quarter_out_of_50 = half_quarter_mark
           else
@@ -192,17 +192,17 @@
 
           if first_quarter_mark > 0 && first_quarter_full_mark > 0
             #first_quarter_out_of_100 = (first_quarter_mark.to_f/first_quarter_full_mark.to_f)*f_mark_current
-            first_quarter_out_of_100 = first_quarter_mark*2
+            first_quarter_out_of_100 = first_quarter_out_of_25*2
           end
 
           if second_quarter_mark > 0 && second_quarter_full_mark > 0
             #second_quarter_out_of_100 = (second_quarter_mark.to_f/second_quarter_full_mark.to_f)*f_mark_current
-            second_quarter_out_of_100 = second_quarter_mark*2
+            second_quarter_out_of_100 = second_quarter_out_of_25*2
           end
 
           if half_quarter_mark > 0 && half_quarter_full_mark > 0
             #half_quarter_out_of_100 = (half_quarter_mark.to_f/half_quarter_full_mark.to_f)*f_mark_current
-            half_quarter_out_of_100 = half_quarter_mark*2
+            half_quarter_out_of_100 = half_quarter_out_of_50*2
           end
 
           #f_mark = f_mark_current

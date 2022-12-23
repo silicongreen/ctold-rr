@@ -5,7 +5,6 @@ if @tabulation_data.nil?
   @tabulation_data = []
   if student_response['status']['code'].to_i == 200
     @tabulation_data = student_response['data']
-    abort(@tabulation_data.inspect)
   end
 end
 %>

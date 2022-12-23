@@ -1,5 +1,6 @@
 <% if @connect_exam_obj.result_type.to_i == 10  %> 
 <%
+abort(@tabulation_data.inspect)
 if @tabulation_data.nil?
   student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
   @tabulation_data = []

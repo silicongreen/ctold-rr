@@ -153,19 +153,19 @@
           end
 
           if first_quarter_out_of_100 > 0
-            first_quarter_out_of_25 = (first_quarter_out_of_100.to_f/100)*need_for_test
+            first_quarter_out_of_25 = (first_quarter_out_of_100.to_f/f_mark_current)*need_for_test
           else
             first_quarter_out_of_25 = 0
           end
 
           if second_quarter_out_of_100 > 0
-            second_quarter_out_of_25 = (second_quarter_out_of_100.to_f/100)*need_for_test
+            second_quarter_out_of_25 = (second_quarter_out_of_100.to_f/f_mark_current)*need_for_test
           else
             second_quarter_out_of_25 = 0
           end
           
           if half_quarter_out_of_100 > 0
-            half_quarter_out_of_50 = (half_quarter_out_of_100.to_f/100)*need_for_term
+            half_quarter_out_of_50 = (half_quarter_out_of_100.to_f/f_mark_current)*need_for_term
           else
             half_quarter_out_of_50 =  0
           end

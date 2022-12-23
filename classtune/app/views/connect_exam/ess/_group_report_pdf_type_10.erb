@@ -307,7 +307,12 @@
                         
                         %>
                         <% if main_mark.to_i > 0 %>
-                        <td class="col-pdf"><%= sprintf( "%0.02f", main_mark_to_show.to_f)%></td>
+                        <td class="col-pdf">
+                          <%= sprintf( "%0.02f", main_mark_to_show.to_f)%>
+                          <% if f_mark_current == 50 %>
+                          / <%= f_mark_current %>
+                          <% end %>
+                        </td>
                         <% else %>
                         <td class="col-pdf">-</td>
                         <% end %>
@@ -318,7 +323,12 @@
                           <td class="col-pdf" style="padding:5px !important;">-</td>
                         <% end %>              
                         <% if @batch.course.course_name == 'IV' or @batch.course.course_name == 'V' or @batch.course.course_name == 'VI' or @batch.course.course_name == 'VII' %>
-                        <td class="col-pdf" style="padding:5px !important;"><%= sprintf( "%0.02f", highest_mark.to_f)%></td>
+                        <td class="col-pdf" style="padding:5px !important;">
+                          <%= sprintf( "%0.02f", highest_mark.to_f)%>
+                          <% if f_mark_current == 50 %>
+                          / <%= f_mark_current %>
+                          <% end %>
+                        </td>
                         <% end %>              
                       </tr>
                     <% end %>  

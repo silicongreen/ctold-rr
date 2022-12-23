@@ -74,7 +74,7 @@
         if connect_exam_id.to_i == @connect_exam_obj.id
           @total_std_batch = @total_std_batch+1
         end 
-        
+        abort(tab['subjects'].map(:&id).inspect)
         tab['subjects'].each do |sub|
           if sub['grade_subject'].to_i == 1
             next

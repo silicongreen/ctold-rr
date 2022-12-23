@@ -79,7 +79,7 @@
           if sub['grade_subject'].to_i == 1
             next
           end  
-          subjectss << sub['id']
+          subjectss << sub['id'].to_i
           if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
               next
           end 

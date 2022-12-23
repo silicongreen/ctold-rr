@@ -156,36 +156,22 @@
             half_quarter_out_of_50 =  0
           end
 
-          f_mark = 100
+          current_full_mark = first_quarter_full_mark+second_quarter_full_mark+half_quarter_full_mark 
+          f_mark_current = 0
+          if current_full_mark >= 100
+            f_mark_current = 100
+          else
+            f_mark_current = 50
+          end
+
+          f_mark = f_mark_current
           o_mark = first_quarter_out_of_25.round.to_i+second_quarter_out_of_25.round.to_i+half_quarter_out_of_50.round.to_i
           main_mark_student = 0
           if f_mark > 0 && o_mark > 0
-            main_mark_student = (o_mark.to_f/f_mark.to_f)*100
+            main_mark_student = (o_mark.to_f/f_mark.to_f)*f_mark_current
           end  
 
-          main_mark = 0
-          if full_mark > 0
-            if subject_marks > 0
-              main_mark = ( subject_marks.to_f/full_mark.to_f )*100.00
-              grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-              if !grade.blank? and !grade.name.blank?
-                if grade.name == "F" and fourth_subject == false
-                  subject_failed = true
-                else
-                  if fourth_subject == false
-                    total_grade = total_grade+grade.credit_points.to_f
-                  else
-                    new_grade_point = grade.credit_points.to_f-2
-                    if new_grade_point > 0
-                      total_grade = total_grade.to_f+new_grade_point.to_f
-                    end
-                  end
-                end  
-              end   
-            elsif fourth_subject == false
-              subject_failed = true
-            end  
-          end
+         
           if @subject_highest[sub['id'].to_i].blank?
             @subject_highest[sub['id'].to_i] = main_mark_student
           elsif main_mark_student.to_f > @subject_highest[sub['id'].to_i].to_f

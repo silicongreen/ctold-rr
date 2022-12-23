@@ -204,27 +204,28 @@
                           end
                         %>
                         <% if first_quarter_out_of_25.to_i > 0 %>
-                        <td class="col-pdf"><%= first_quarter_out_of_25.round.to_i %></td>
+                        <td class="col-pdf"><%= sprintf( "%0.02f", first_quarter_out_of_25.to_f)%></td>
                         <% else %>
                         <td class="col-pdf">-</td>
                         <% end %>
                         <% if second_quarter_out_of_25.to_i > 0 %>
-                        <td class="col-pdf"><%= second_quarter_out_of_25.round.to_i %></td>
+                        <td class="col-pdf"><%= sprintf( "%0.02f", second_quarter_out_of_25.to_f)%></td>
                         <% else %>
                         <td class="col-pdf">-</td>
                         <% end %>
                         <% if half_quarter_out_of_50.to_i > 0 %>
-                        <td class="col-pdf"><%= half_quarter_out_of_50.round.to_i %></td>
+                        <td class="col-pdf"><%= sprintf( "%0.02f", half_quarter_out_of_50.to_f)%></td>
                         <% else %>
                         <td class="col-pdf">-</td>
                         <% end %>
 
                         <%
-                          f_mark = 100
-                          o_mark = first_quarter_out_of_25.round.to_i+second_quarter_out_of_25.round.to_i+half_quarter_out_of_50.round.to_i
+                          f_mark = f_mark_current
+                          o_mark = first_quarter_out_of_25.to_f+second_quarter_out_of_25.to_f+half_quarter_out_of_50.to_f
                           main_mark = 0
                           if f_mark > 0 && o_mark > 0
                             main_mark = (o_mark.to_f/f_mark.to_f)*100
+                            main_mark_to_show = (o_mark.to_f/f_mark.to_f)*f_mark_current
                           end  
                           
                           main_mark = main_mark.round()
@@ -244,7 +245,7 @@
                         
                         %>
                         <% if main_mark.to_i > 0 %>
-                        <td class="col-pdf"><%= main_mark.round.to_i %></td>
+                        <td class="col-pdf"><%= sprintf( "%0.02f", main_mark_to_show.to_f)%></td>
                         <% else %>
                         <td class="col-pdf">-</td>
                         <% end %>
@@ -319,8 +320,8 @@
                               <p style="padding: 0; margin: 0"><font size="3"><b>Grading System</b></font></p>
                               <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
                                   <tr class="even" cellspacing="0" cellpadding="1">
-                                      <td class="small" style="font-size: 10px;"><font size="3"><b>Marks Range</b></font></td>
-                                      <td class="small" style="font-size: 10px;"><font size="3"><b>Grade</b></font></td>  
+                                      <td class="small" style="font-size: 10px;"><font size="3">Marks Range</font></td>
+                                      <td class="small" style="font-size: 10px;"><font size="3">Grade</font></td>  
                                   </tr> 
                                   <% prev_score = 0 %>
                                   <% @grading_levels.each_with_index do |grade,index| %>
@@ -360,7 +361,7 @@
                 <table id="pdf-table"  width="100%" class="left-table even-table signature"  cellspacing="0" >
                     <tr class="even">
                       <td class="align-left">Total Marks (Out of <%= outof_marks %>):</td>
-                      <td  style="padding:5px !important;"><%= total_marks.round.to_i %></td>
+                      <td  style="padding:5px !important;"><%= sprintf( "%0.02f", total_marks.to_f)%></td>
                       <td class="align-left">Percentage:</td>
                       <% percent = 0 %>
                       <% if total_marks > 0 && outof_marks > 0 %>
@@ -381,7 +382,7 @@
                           status = "Satisfactory "
                         end
                       %>              
-                      <td class="align-left" colspan="4">Comment on Overall Performance: <b><%= status %></b></td>
+                      <td class="align-left" colspan="4">Comment on Overall Performance: <%= status %></td>
                     </tr>
                     <tr class="even">
                       <td class="align-left">Total No. of Working Days:</td>

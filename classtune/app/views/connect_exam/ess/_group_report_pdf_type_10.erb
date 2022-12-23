@@ -234,7 +234,12 @@
                         <% else %>
                           <% if first_quarter_out_of_25.to_i >= 0 %>
                           <% first_quarter_out_of_25 = first_quarter_mark.to_f/2 %>
-                          <td class="col-pdf"><%= sprintf( "%0.02f", first_quarter_out_of_25.to_f)%></td>
+                          <td class="col-pdf">
+                            <%= sprintf( "%0.02f", first_quarter_out_of_25.to_f)%>
+                            <% if f_mark_current == 50 %>
+                            / <%= need_for_test %>
+                            <% end %>
+                          </td>
                           <% else %>
                           <td class="col-pdf">-</td>
                           <% end %>
@@ -246,7 +251,12 @@
                         <% else %>
                           <% if second_quarter_out_of_25.to_i >= 0 %>
                           <% second_quarter_out_of_25 = second_quarter_mark.to_f/2 %>
-                          <td class="col-pdf"><%= sprintf( "%0.02f", second_quarter_out_of_25.to_f)%></td>
+                          <td class="col-pdf">
+                            <%= sprintf( "%0.02f", second_quarter_out_of_25.to_f)%>
+                            <% if f_mark_current == 50 %>
+                            / <%= need_for_test %>
+                            <% end %>
+                          </td>
                           <% else %>
                           <td class="col-pdf">-</td>
                           <% end %>
@@ -258,7 +268,12 @@
                         <% else %>
                           <% if half_quarter_out_of_50.to_i >= 0 %>
                           <% half_quarter_out_of_50 = half_quarter_mark %>
-                          <td class="col-pdf"><%= sprintf( "%0.02f", half_quarter_out_of_50.to_f)%></td>
+                          <td class="col-pdf">
+                            <%= sprintf( "%0.02f", half_quarter_out_of_50.to_f)%>
+                            <% if f_mark_current == 50 %>
+                            / <%= need_for_term %>
+                            <% end %>
+                          </td>
                           <% else %>
                           <td class="col-pdf">-</td>
                           <% end %>

@@ -229,6 +229,7 @@
                           
                         %>
                         <% if first_quarter_ab %>
+                          <% first_quarter_out_of_25 = 0 %>
                           <td class="col-pdf">AB</td>
                         <% else %>
                           <% if first_quarter_out_of_25.to_i >= 0 %>
@@ -240,6 +241,7 @@
                         <% end %>
 
                         <% if second_quarter_ab %>
+                          <% second_quarter_out_of_25 = 0 %>
                           <td class="col-pdf">AB</td>
                         <% else %>
                           <% if second_quarter_out_of_25.to_i >= 0 %>
@@ -251,6 +253,7 @@
                         <% end %>
                         
                         <% if half_quarter_ab %>
+                          <% half_quarter_out_of_50 = 0 %>
                           <td class="col-pdf">AB</td>
                         <% else %>
                           <% if half_quarter_out_of_50.to_i >= 0 %>

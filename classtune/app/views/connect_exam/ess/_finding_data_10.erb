@@ -39,6 +39,7 @@
     batch_loop = 0
     group_name = courseObj.group
     @group_name_upper = group_name
+    subjectss = []
     @tabulation_data['report'].each do |tab|
       batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
       batch_subject_id = batch_subject.map(&:id)
@@ -61,7 +62,7 @@
       connect_exam = connect_exam+1
       std_group_name = batch_data.course.group
       total_grade = 0
-      abort(tab['subjects'].map(&:id).inspect)
+      
       tab['students'].each do |std| 
         total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
         std_subject_id = total_std_subject.map(&:subject_id)
@@ -78,7 +79,7 @@
           if sub['grade_subject'].to_i == 1
             next
           end  
-          
+          subjectss << sub['id']
           if !batch_subject_id.include?(sub['id'].to_i) and !std_subject_id.include?(sub['id'].to_i)
               next
           end 
@@ -247,4 +248,5 @@
  </style>   
 <%  
  end
+ abort(subjectss.inspect)
 %> 

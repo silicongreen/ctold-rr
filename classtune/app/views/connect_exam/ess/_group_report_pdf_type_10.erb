@@ -273,11 +273,11 @@
                           
                           main_mark = main_mark.round()
                           grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                          if f_mark_current == 100
+                          #if f_mark_current == 100
                             total_marks = total_marks+main_mark_to_show.to_f
-                          else
-                            total_marks = total_marks+(main_mark_to_show.to_f/2)
-                          end
+                          #else
+                          #  total_marks = total_marks+main_mark_to_show.to_f/2)
+                          #end
                           outof_marks += f_mark_current
                         %>  
                         <% 

@@ -263,7 +263,7 @@
                         <% if !grade.blank? and !grade.name.blank? %>
                           <td class="col-pdf" style="padding:5px !important;"><b><%= grade.name %></b></td>
                         <% else %>
-                          <td class="col-pdf" style="padding:5px !important;"><b>-</b></td>
+                          <td class="col-pdf" style="padding:5px !important;">-</td>
                         <% end %>              
                         <% if @batch.course.course_name == 'IV' or @batch.course.course_name == 'V' or @batch.course.course_name == 'VI' or @batch.course.course_name == 'VII' %>
                         <td class="col-pdf" style="padding:5px !important;"><%= sprintf( "%0.02f", highest_mark.to_f)%></td>
@@ -335,8 +335,8 @@
                                   </tr> 
                                   <% prev_score = 0 %>
                                   <% @grading_levels.each_with_index do |grade,index| %>
-                                    <tr class="odd">
-                                    <td class="small">
+                                    <tr class="odd" style="height: 20px !important;">
+                                    <td class="small" style="height: 20px !important;">
                                         <% if grade.max_score.nil? %> 
                                           <% if grade.min_score.to_i == 0 %>
                                             <font size="3"><&nbsp;<%= '%i%' % prev_score %></font>
@@ -352,8 +352,8 @@
                                         <% end %>
                                         <%  prev_score = grade.min_score.to_i %>
                                     </td>
-                                    <td class="small"><font size="3"><%= grade.name %></font></td>
-                                      </tr> 
+                                    <td class="small" style="height: 20px !important;"><font size="3"><%= grade.name %></font></td>
+                                  </tr> 
                                   <% end %> 
                         
                               </table>

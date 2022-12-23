@@ -261,7 +261,7 @@
                         <% end %>
 
                         <% if !grade.blank? and !grade.name.blank? %>
-                          <td class="col-pdf" style="padding:5px !important;"><b><%= grade.name %></b></td>
+                          <td class="col-pdf" style="padding:5px !important;"><%= grade.name %></td>
                         <% else %>
                           <td class="col-pdf" style="padding:5px !important;">-</td>
                         <% end %>              
@@ -407,7 +407,7 @@
                           date_split = date_string.split("")
                         end
                       %>
-                      <td  style="padding:5px !important;" colspan="4">
+                      <td colspan="4">
                           <table id="pdf-table"  width="100%" class="left-table even-table signature" style="margin-top:10px !important;" cellspacing="0" >
 
                               <tr class="even">

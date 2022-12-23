@@ -170,17 +170,17 @@
           end
 
           f_mark = f_mark_current
-          o_mark = first_quarter_out_of_25.round.to_i+second_quarter_out_of_25.round.to_i+half_quarter_out_of_50.round.to_i
+          o_mark = first_quarter_out_of_25.to_f+second_quarter_out_of_25.to_f+half_quarter_out_of_50.to_f
           main_mark_student = 0
           if f_mark > 0 && o_mark > 0
             main_mark_student = (o_mark.to_f/f_mark.to_f)*f_mark_current
           end  
 
          
-          if @subject_highest[sub['id'].to_i].blank?
-            @subject_highest[sub['id'].to_i] = main_mark_student
-          elsif main_mark_student.to_f > @subject_highest[sub['id'].to_i].to_f
-            @subject_highest[sub['id'].to_i] = main_mark_student.to_f
+          if @subject_highest[sub['name'].strip].blank?
+            @subject_highest[sub['name'].strip] = main_mark_student
+          elsif main_mark_student.to_f > @subject_highest[sub['name'].strip].to_f
+            @subject_highest[sub['name'].strip] = main_mark_student.to_f
           end
         end 
         @student_total_grade[std['id'].to_i] = total_grade

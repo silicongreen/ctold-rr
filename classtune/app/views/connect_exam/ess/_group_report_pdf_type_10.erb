@@ -249,8 +249,8 @@
                         %>  
                         <% 
                           highest_mark = 0
-                          if !@subject_highest.blank? and !@subject_highest[subjects['id'].to_i].blank?
-                            highest_mark = @subject_highest[subjects['id'].to_i].to_f
+                          if !@subject_highest.blank? and !@subject_highest[subjects['name'].strip].blank?
+                            highest_mark = @subject_highest[subjects['name'].strip].to_f
                           end
                         
                         %>
@@ -266,7 +266,7 @@
                           <td class="col-pdf" style="padding:5px !important;"><b>-</b></td>
                         <% end %>              
                         <% if @batch.course.course_name == 'IV' or @batch.course.course_name == 'V' or @batch.course.course_name == 'VI' or @batch.course.course_name == 'VII' %>
-                        <td class="col-pdf" style="padding:5px !important;"><b><%= highest_mark.to_i %></b></td>
+                        <td class="col-pdf" style="padding:5px !important;"><%= sprintf( "%0.02f", highest_mark.to_f)%></td>
                         <% end %>              
                       </tr>
                     <% end %>  

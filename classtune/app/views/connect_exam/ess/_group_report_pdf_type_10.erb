@@ -295,9 +295,13 @@
                         <% end %>
 
                         <% if !grade.blank? and !grade.name.blank? %>
+                          <% if grade.name.length == 2 %>
                           <td class="col-pdf" style="padding:5px !important;"><%= grade.name %></td>
+                          <% else %>
+                          <td class="col-pdf" style="padding:5px !important;"><%= grade.name + " " %></td>
+                          <% end %>
                         <% else %>
-                          <td class="col-pdf" style="padding:5px !important;">-</td>
+                          <td class="col-pdf" style="padding:5px !important;">- </td>
                         <% end %>              
                         <% if @batch.course.course_name == 'IV' or @batch.course.course_name == 'V' or @batch.course.course_name == 'VI' or @batch.course.course_name == 'VII' %>
                         <td class="col-pdf" style="padding:5px !important;"><%= sprintf( "%0.02f", highest_mark.to_f)%></td>
@@ -330,7 +334,15 @@
                             <td class="col-pdf"></td>
                             <td class="col-pdf"></td>
                             <td class="col-pdf"></td>
-                            <td class="col-pdf"><%= report['subject_comment'] unless report['subject_comment'].blank? %></td>
+                            <td class="col-pdf">
+                              <%  unless report['subject_comment'].blank? %>
+                                <% if report['subject_comment'].length == 2 %>
+                                  <%= report['subject_comment'] %>
+                                <% else %>
+                                <%= report['subject_comment'] + " " %>
+                                <% end %>
+                              <% end %>
+                            </td>
                             <% if @batch.course.course_name == 'IV' or @batch.course.course_name == 'V' or @batch.course.course_name == 'VI' or @batch.course.course_name == 'VII' %>
                             <td class="col-pdf"></td>
                             <% end %>              

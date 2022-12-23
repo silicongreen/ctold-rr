@@ -318,9 +318,9 @@
                         <% end %>
 
                         <% if !grade.blank? and !grade.name.blank? %>
-                          <td class="col-pdf" style="padding-left:40px !important; text-align: left !important;"><%= grade.name %></td>
+                          <td class="col-pdf" style="padding-left:30px !important; text-align: left !important;"><%= grade.name %></td>
                         <% else %>
-                          <td class="col-pdf" style="padding-left:40px !important; text-align: left !important;">-</td>
+                          <td class="col-pdf" style="padding-left:30px !important; text-align: left !important;">-</td>
                         <% end %>              
                         <% if @batch.course.course_name == 'IV' or @batch.course.course_name == 'V' or @batch.course.course_name == 'VI' or @batch.course.course_name == 'VII' %>
                         <td class="col-pdf" style="padding:5px !important;">
@@ -358,7 +358,7 @@
                             <td class="col-pdf"></td>
                             <td class="col-pdf"></td>
                             <td class="col-pdf"></td>
-                            <td class="col-pdf" style="padding-left:40px !important; text-align: left !important;"><%= report['subject_comment'] unless report['subject_comment'].blank? %></td>
+                            <td class="col-pdf" style="padding-left:30px !important; text-align: left !important;"><%= report['subject_comment'] unless report['subject_comment'].blank? %></td>
                             <% if @batch.course.course_name == 'IV' or @batch.course.course_name == 'V' or @batch.course.course_name == 'VI' or @batch.course.course_name == 'VII' %>
                             <td class="col-pdf"></td>
                             <% end %>              
@@ -370,7 +370,7 @@
               </table>
               <p>&nbsp;</p>
               
-              <div style="width:40%; float: left; margin-left: 10px !important; margin-top: -40px !important;" >
+              <div style="width:40%; float: left; margin-left: 10px !important; margin-top: -30px !important;" >
                   <% if @grading_levels.blank? %>
                     <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
                     <% if @grading_levels.blank? %>

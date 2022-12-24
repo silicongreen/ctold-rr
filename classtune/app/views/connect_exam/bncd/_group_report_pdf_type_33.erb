@@ -195,7 +195,7 @@
                                 <% if report['exam_category'] == '3' && report['quarter'] == '1' %>
                                   <% full_mid = full_mid+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                 <% end %>
-                                <% if report['exam_category'] == '4' && report['quarter'] == '3' %>
+                               <% if report['exam_category'] == '4' && report['quarter'] == '3' %>
                                   <% full_ob_half = full_ob_half+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                 <% end %>
                                 <% if report['exam_category'] == '4' && report['quarter'] == '2' %>
@@ -236,7 +236,7 @@
                                     <% total_sb_half = total_sb_half+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% divid_half = divid_half + 1 %>
                                   <% end %>
-
+                                  
                                   <% if report['exam_category'] == '3' && report['quarter'] == '1' %>
                                     <% total_mid = total_mid+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% end %>
@@ -555,11 +555,11 @@
                             
 
                             <% added_mark = 0 %>
-                            <% if @batch.course.course_name == "IX" && has_mid %>
-                              <% if full_sb > 0 %>
+                            <% if has_mid %>
+                              <% if full_mid > 0 %>
                                 <td class="col-pdf no-warp"><%= total_mid %></td>
-                                <% added_mark = total_mid / divid %>
-                                <% added_mark = added_mark.to_i %>
+                                <% #added_mark = total_mid / divid %>
+                                <% #added_mark = added_mark.to_i %>
                               <% else %>  
                                 <td class="col-pdf no-warp">-</td>
                               <% end %> 
@@ -896,6 +896,7 @@
                             %>
                             <%
                               total_sb = 0
+                              total_mid = 0
                               total_sb_half = 0
                               total_ob = 0
                               total_ob_half = 0
@@ -903,6 +904,7 @@
                               total_pr_half = 0
                           
                               full_sb = 0
+                              full_mid = 0  
                               full_sb_half = 0
                               full_ob = 0
                               full_ob_half = 0
@@ -919,7 +921,9 @@
                                     <% if report['exam_category'] == '3' && report['quarter'] == "3" %>
                                       <% full_sb_half = full_sb_half+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
                                     <% end %>
-
+                                    <% if report['exam_category'] == '3' && report['quarter'] == '1' %>
+                                      <% full_mid = full_mid+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                    <% end %>
                                     <% if report['exam_category'] == '4' && report['quarter'] == "2" %>
                                       <% full_ob = full_ob+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
                                     <% end %>
@@ -945,6 +949,10 @@
                                       <% end %>
                                       <% if report['exam_category'] == '3' && report['quarter'] == "3" %>
                                         <% total_sb_half = total_sb_half+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
+                                      <% end %>
+
+                                      <% if report['exam_category'] == '3' && report['quarter'] == '1' %>
+                                        <% total_mid = total_mid+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                       <% end %>
 
                                       <% if report['exam_category'] == '4' && report['quarter'] == "2" %>
@@ -1015,7 +1023,15 @@
                               %>   
 
 
-
+                              <% added_mark = 0 %>
+                              <% if full_mid > 0 %>
+                                <td class="col-pdf no-warp"><%= total_mid %></td>
+                                <% #added_mark = total_mid / divid %>
+                                <% #added_mark = added_mark.to_i %>
+                              <% else %>  
+                                <td class="col-pdf no-warp">-</td>
+                              <% end %> 
+                              
                               <% if has_sb %>
                                 <% if full_sb > 0 %>
                                   <td class="col-pdf no-warp"><%= total_sb %> f</td>

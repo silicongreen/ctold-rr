@@ -235,7 +235,7 @@ end
                       <% end %>
                       <% sl = sl+1 %>
                         
-                      <% total_subject = total_subject+1 %>       
+                      <%# total_subject = total_subject+1 %>       
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                             <td class="col-pdf  no-warp"><%= sl %></td>
                             <td class="col-pdf  no-warp align-left-baf"><%= subjects['name'] %></td>
@@ -320,7 +320,7 @@ end
                   <tr class="even">
                       <td class="col-pdf  no-warp"><% if !@student_position_batch[@student.id.to_i].blank? %>Pass<% else %>Failed<% end %></td>
                       <td class="col-pdf  no-warp"><% if !@student_position_batch[@student.id.to_i].blank? %><%= sprintf( "%0.02f", grade_point_avg) %><% else %>0.00<% end %></td>
-                       <td class="col-pdf  no-warp"><%= total_subject %><%= sprintf( "%0.02f", total_grade_of_allexam) %></td>
+                       <td class="col-pdf  no-warp"><%= sprintf( "%0.02f", total_grade_of_allexam) %></td>
                       <% if class_type != 1 %>
                       <td class="col-pdf  no-warp">
                           <% if !@student_position_batch[@student.id.to_i].blank? %> 

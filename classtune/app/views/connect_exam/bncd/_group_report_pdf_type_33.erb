@@ -563,7 +563,7 @@
                             <% added_mark = 0 %>
                             <% if has_mid %>
                               <% if full_mid > 0 %>
-                                <td class="col-pdf no-warp"><%= total_mid %></td>
+                                <td class="col-pdf no-warp"><%= total_mid.round.to_i %></td>
                                 <% #added_mark = total_mid / divid %>
                                 <% #added_mark = added_mark.to_i %>
                               <% else %>  
@@ -595,7 +595,7 @@
                               <% end %>
                             <% end %>
                             <% total_all = (total_mid)+(total_sb.to_f+added_mark.to_f)+(total_ob.to_f+added_mark.to_f)+(total_pr.to_f+added_mark.to_f)  %>
-                            <td class="col-pdf no-warp"><%= total_all %></td>
+                            <td class="col-pdf no-warp"><%= total_all.round.to_i %></td>
                             
                             
                             <% full_mark=full_mid+full_sb+full_ob+full_pr %>      

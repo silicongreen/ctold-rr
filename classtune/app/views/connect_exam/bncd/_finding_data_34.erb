@@ -75,6 +75,7 @@
           @total_std_batch = @total_std_batch+1
         end 
         total_grade = 0
+        total_subjects = 0
         tab['subjects'].each do |sub|
           if sub['grade_subject'].to_i == 1
             next
@@ -90,7 +91,7 @@
             end  
           end   
           subject_marks = 0
-          
+          total_subjects = total_subjects+1
           full_mark = 0
           unless tab['exams'].blank? 
             tab['exams'].each do |rs|
@@ -106,8 +107,8 @@
           main_mark = 0
           if full_mark > 0
             if subject_marks > 0
-              main_mark = ( obtained_total.to_f/full_mark.to_f )*100.00
-              grand_total = ( obtained_total.to_f/full_mark.to_f )*100.00
+              main_mark = ( subject_marks.to_f/full_mark.to_f )*100.00
+              grand_total = grand_total+main_mark
               grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
               if !grade.blank? and !grade.name.blank?
                 if grade.name == "F" and fourth_subject == false

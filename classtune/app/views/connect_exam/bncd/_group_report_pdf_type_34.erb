@@ -84,13 +84,13 @@ end
                       <% @report_data['report']['exams'].each do |report| %>
                         <% if report['quarter'] == '3' %>
                         <% colspan = colspan+1 %>
-                        <td class="col-pdf" rowspan="1"><%= report['exam_name'] %></td>
+                        <td class="col-pdf" rowspan="1" style="white-space: nowrap;"><%= report['exam_name'] %></td>
                         <% end %>
                       <% end %>
                     <% end %> 
-                    <td class="col-pdf" rowspan="1">Total</td>
-                    <td class="col-pdf" rowspan="1">Conv. Marks</td>
-                    <td class="col-pdf" rowspan="1">Letter Grade</td>
+                    <td class="col-pdf" rowspan="1" style="white-space: nowrap;">Total</td>
+                    <td class="col-pdf" rowspan="1" style="white-space: nowrap;">Conv. Marks</td>
+                    <td class="col-pdf" rowspan="1" style="white-space: nowrap;">Letter Grade</td>
 
                     <% unless @report_data['report']['exams'].blank? %>
                       <% @report_data['report']['exams'].each do |report| %>
@@ -100,9 +100,9 @@ end
                         <% end %>
                       <% end %>
                     <% end %> 
-                    <td class="col-pdf" rowspan="1">Total</td>
-                    <td class="col-pdf" rowspan="1">Conv. Marks</td>
-                    <td class="col-pdf" rowspan="1">Letter Grade</td>
+                    <td class="col-pdf" rowspan="1" style="white-space: nowrap;">Total</td>
+                    <td class="col-pdf" rowspan="1" style="white-space: nowrap;">Conv. Marks</td>
+                    <td class="col-pdf" rowspan="1" style="white-space: nowrap;">Letter Grade</td>
                   </tr>
 
                   

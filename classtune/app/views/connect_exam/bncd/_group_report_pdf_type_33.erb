@@ -883,7 +883,7 @@
                                 <% end %>
                               <% end %>
                             <% total_subject_main = total_subject_main+1 %>
-                            <td class="col-pdf"><%= total_subject_main %> d</td>
+                            <td class="col-pdf"><%= total_subject_main %></td>
                             <td class="col-pdf no-warp align-left-baf"><%= subjects2['name'] %><%= fourth_subject %><%= third_subject %></td>
                       
                             <% full_mark = 100.00 %>
@@ -992,7 +992,7 @@
                                 <% end %>
                               <% end %>
                               
-                              <td class="col-pdf no-warp"><%= total_all_half.round.to_i %></td>   
+                              <td class="col-pdf no-warp"><%= total_all_half.round.to_i %> d</td>   
                               
                               <% tota_mark_with_monthly_half = total_ob_half+total_sb_half+total_pr_half %>
                               <% if fourth_subject.blank? %>

@@ -367,72 +367,6 @@
                                 total_second_sub=total_sb2_half+total_ob2_half+total_pr2_half
                                 tot_first_mark = (total_first_sub.to_f/full_first_sub.to_f)*100
                                 tot_second_mark = (total_second_sub.to_f/full_second_sub.to_f)*100
-                                if full_ob2_half > 0 
-                                  if total_ob2_half > 0
-                                    total_ob2_half = total_ob2_half.round()
-                                    total_ob_half =  total_ob_half+total_ob2_half
-                                      grand_total_fraction_half = grand_total_fraction_half+total_ob_half.to_f
-                                      full_ob_half = full_ob2_half*2
-                                      percent_half = (total_ob_half.to_f/full_ob_half.to_f)*100
-                                      percent_half = percent_half.round()
-                                      if percent_half < 33
-                                        if fourth_subject.blank?
-                                          failed = true
-                                        end
-                                        failed_subject = true
-                                      end
-                                  else
-                                    if fourth_subject.blank?
-                                      failed = true
-                                    end
-                                    failed_subject = true
-                                  end
-                                  
-                                end
-                                if full_ob2_half > 0
-                                  if total_sb2_half > 0
-                                      
-                                    total_sb2_half = total_sb2_half.round()
-                                    total_sb_half =  total_sb_half+total_sb2_half
-                                      grand_total_fraction_half = grand_total_fraction_half+total_sb_half.to_f
-                                      total_sb_half = total_sb2_half*2 
-                                      percent_half = (total_sb_half.to_f/total_sb_half.to_f)*100
-                                      percent_half = percent_half.round()
-                                      if percent_half < 33
-                                        if fourth_subject.blank?
-                                          failed = true
-                                        end
-                                        failed_subject = true
-                                      end
-                                  else
-                                    if fourth_subject.blank?
-                                      failed = true
-                                    end
-                                    failed_subject = true
-                                  end
-                                  
-                                end
-                                if full_pr2_half > 0
-                                  if total_pr2_half > 0     
-                                    total_pr2_half = total_pr2_half.round()
-                                    total_pr_half =  total_pr_half+total_pr2_half
-                                    grand_total_fraction_half = grand_total_fraction_half+total_pr_half.to_f
-                                      full_pr_half = full_pr2_half*2 
-                                      percent_half = (total_pr.to_f/full_pr_half.to_f)*100
-                                      percent_half = percent_half.round()
-                                      if percent_half < 33
-                                        if fourth_subject.blank?
-                                          failed = true
-                                        end
-                                        failed_subject = true
-                                      end
-                                  else
-                                    if fourth_subject.blank?
-                                      failed = true
-                                    end
-                                    failed_subject = true
-                                  end
-                                end
                                 %> 
                                 <% tota_mark_with_monthly_half = tot_first_mark.to_f+tot_second_mark.to_f %>
                                 <%
@@ -577,7 +511,11 @@
                               <% else %>
                                 <td class="col-pdf no-warp">-</td>
                               <% end %>
-                              
+                              <% if full_sb == 50 && total_sb.round.to_i < 20 %> 
+                                <% failed_subject == true %>
+                              <% elsif full_sb == 70 && total_sb.round.to_i < 28 %> 
+                                <% failed_subject == true %>
+                              <% end %>
                             <% end %>
                             <% if has_ob %>
                               <% if full_ob > 0 %>
@@ -586,6 +524,11 @@
                                 <td class="col-pdf no-warp">-</td>
                               <% end %>
                             <% end %>
+                            <% if full_ob == 25 && total_ob.round.to_i < 10 %> 
+                                <% failed_subject == true %>
+                              <% elsif full_ob == 30 && total_ob.round.to_i < 12 %> 
+                                <% failed_subject == true %>
+                              <% end %>
                             <% if has_pr %>
                               <% if full_pr > 0 %>
                                 <td class="col-pdf no-warp"><%= (total_pr + added_mark).round.to_i %></td>
@@ -594,6 +537,9 @@
                                 <td class="col-pdf no-warp">-</td>
                               <% end %>
                             <% end %>
+                            <% if full_pr == 25 && total_ob.round.to_i < 10 %> 
+                              <% failed_subject == true %>
+                           <% end %>
                             <% total_all = (total_mid)+(total_sb.to_f+added_mark.to_f)+(total_ob.to_f+added_mark.to_f)+(total_pr.to_f+added_mark.to_f)  %>
                             <td class="col-pdf no-warp"><%= total_all.round.to_i %></td>
                             
@@ -689,73 +635,25 @@
                                 total_second_sub=total_mid2+total_sb2+total_ob2+total_pr2
                                 tot_first_mark = (total_first_sub.to_f/full_first_sub.to_f)*100
                                 tot_second_mark = (total_second_sub.to_f/full_second_sub.to_f)*100
-                                if has_ob && full_ob2 > 0 
-                                  if total_ob2 > 0
-                                      total_ob2 = total_ob2.round()
-                                      total_ob =  total_ob+total_ob2
-                                      grand_total_fraction = grand_total_fraction+total_ob.to_f
-                                      full_ob = full_ob2*2
-                                      percent = (total_ob.to_f/full_ob.to_f)*100
-                                      percent = percent.round()
-                                      if percent < 33
-                                        if fourth_subject.blank?
-                                          failed = true
-                                        end
-                                        failed_subject = true
-                                      end
-                                  else
-                                    if fourth_subject.blank?
-                                      failed = true
-                                    end
-                                    failed_subject = true
-                                  end
-                                  
+
+                                if full_sb2 == 50 && total_sb2.round.to_i < 20
+                                  failed_subject == true
+                                elsif full_sb2 == 70 && total_sb2.round.to_i < 28
+                                  failed_subject == true
+                                end
+
+                                if full_ob2 == 25 && total_ob2.round.to_i < 10
+                                  failed_subject == true
+                                elsif full_ob2 == 30 && total_ob2.round.to_i < 12
+                                  failed_subject == true
+                                end
+
+
+                                if full_pr2 == 25 && total_pr2.round.to_i < 10
+                                  failed_subject == true
                                 end
                                 
-                                if has_sb && full_sb2 > 0
-                                  if total_sb2 > 0
-                                      
-                                      total_sb2 = total_sb2.round()
-                                      total_sb =  total_sb+total_sb2
-                                      grand_total_fraction = grand_total_fraction+total_sb.to_f
-                                      full_sb = full_sb2*2 
-                                      percent = (total_sb.to_f/full_sb.to_f)*100
-                                      percent = percent.round()
-                                      if percent < 33
-                                        if fourth_subject.blank?
-                                          failed = true
-                                        end
-                                        failed_subject = true
-                                      end
-                                  else
-                                    if fourth_subject.blank?
-                                      failed = true
-                                    end
-                                    failed_subject = true
-                                  end
-                                  
-                                end
-                                if has_pr && full_pr2 > 0
-                                  if total_pr2 > 0     
-                                      total_pr2 = total_pr2.round()
-                                      total_pr =  total_pr+total_pr2
-                                      grand_total_fraction = grand_total_fraction+total_pr.to_f
-                                      full_pr = full_pr2*2 
-                                      percent = (total_pr.to_f/full_pr.to_f)*100
-                                      percent = percent.round()
-                                      if percent < 33
-                                        if fourth_subject.blank?
-                                          failed = true
-                                        end
-                                        failed_subject = true
-                                      end
-                                  else
-                                    if fourth_subject.blank?
-                                      failed = true
-                                    end
-                                    failed_subject = true
-                                  end
-                                end
+                                
                                 %> 
                                 <% tota_mark_with_monthly = tot_first_mark.round.to_i+tot_second_mark.round.to_i %>
                                 <%
@@ -792,62 +690,23 @@
                                <% end %>
                             <% else %>
                               <%
-                                if has_ob && full_ob > 0
-                                  if total_ob > 0
-                                      grand_total_fraction = grand_total_fraction+total_ob.to_f
-                                      percent = (total_ob.to_f/full_ob.to_f)*100
-                                      percent = percent.round()
-                                      if percent < 33
-                                        if fourth_subject.blank?
-                                          failed = true
-                                        end
-                                        failed_subject = true
-                                      end
-                                  else
-                                    if fourth_subject.blank?
-                                      failed = true
-                                    end
-                                    failed_subject = true
-                                  end
-                                  
-                                end
-                                if has_sb && full_sb > 0
-                                  if total_sb > 0
-                                      grand_total_fraction = grand_total_fraction+total_sb.to_f
-                                      percent = (total_sb.to_f/full_sb.to_f)*100
-                                      percent = percent.round()
-                                      if percent < 33
-                                        if fourth_subject.blank?
-                                          failed = true
-                                        end
-                                        failed_subject = true
-                                      end
-                                  else
-                                    if fourth_subject.blank?
-                                      failed = true
-                                    end
-                                    failed_subject = true
-                                  end
-                                  
-                                end
-                                if has_pr && full_pr > 0
-                                  if total_pr > 0
-                                      grand_total_fraction = grand_total_fraction+total_pr.to_f
-                                      percent = (total_pr.to_f/full_pr.to_f)*100
-                                      percent = percent.round()
-                                      if percent < 33
-                                        if fourth_subject.blank?
-                                          failed = true
-                                        end
-                                        failed_subject = true
-                                      end
-                                  else
-                                    if fourth_subject.blank?
-                                      failed = true
-                                    end
-                                    failed_subject = true
-                                  end
-                                end
+                              if full_sb == 50 && total_sb.round.to_i < 20
+                                failed_subject == true
+                              elsif full_sb == 70 && total_sb.round.to_i < 28
+                                failed_subject == true
+                              end
+
+                              if full_ob == 25 && total_ob.round.to_i < 10
+                                failed_subject == true
+                              elsif full_ob == 30 && total_ob.round.to_i < 12
+                                failed_subject == true
+                              end
+
+
+                              if full_pr == 25 && total_pr.round.to_i < 10
+                                failed_subject == true
+                              end
+                                
                                 %> 
                                 <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
                                 

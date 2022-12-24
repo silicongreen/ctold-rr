@@ -131,7 +131,7 @@
             @subject_highest[sub['id'].to_i] = main_mark.to_f
           end
         end 
-        @student_total_grade[std['id'].to_i] = total_grade
+        @student_total_grade[std['id'].to_i] = total_grade.to_s + "  " + grand_total.to_s
         total_grade = 0
         if subject_failed == false
           if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id

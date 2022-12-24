@@ -1056,8 +1056,9 @@
                                 <% end %>
                               <% end %>
                               <% total_all=total_sb+total_ob+total_pr+total_mid %>
-                              <td class="col-pdf no-warp"><%= total_all.round.to_i %></td>   
-                              <% tota_mark_with_monthly = total_mid+total_ob+total_sb+total_pr %>
+                              <td class="col-pdf no-warp"><%= total_all.round.to_i %></td>  
+                              <% full_mark=full_mid+full_sb+full_ob+full_pr %> 
+                              <% tota_mark_with_monthly = (total_all.to_f/full_mark)*100 %>
                               <% if fourth_subject.blank? %>
                                 <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
                               <% else %>

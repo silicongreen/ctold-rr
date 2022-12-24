@@ -96,7 +96,7 @@ end
                       <% @report_data['report']['exams'].each do |report| %>
                         <% if report['quarter'] == '2' %>
                         <% colspan = colspan+1 %>
-                        <td class="col-pdf" rowspan="1"><%= report['exam_name'] %></td>
+                        <td class="col-pdf" rowspan="1" style="white-space: nowrap;"><%= report['exam_name'] %></td>
                         <% end %>
                       <% end %>
                     <% end %> 

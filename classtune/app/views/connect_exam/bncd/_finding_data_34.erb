@@ -60,9 +60,9 @@
       exam_type = 1
       connect_exam = connect_exam+1
       std_group_name = batch_data.course.group
-      total_grade = 0
       
       tab['students'].each do |std| 
+        total_grade = 0
         total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
         std_subject_id = total_std_subject.map(&:subject_id)
         grand_total = 0

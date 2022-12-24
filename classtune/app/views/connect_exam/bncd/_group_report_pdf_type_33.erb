@@ -751,7 +751,7 @@
                                   end
                                 end
                                 %> 
-                                <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
+                                <% tota_mark_with_monthly = tot_first_mark.round.to_i+tot_second_mark.round.to_i+ %>
                                 <%
                                   main_mark = (tota_mark_with_monthly.round().to_f/200.00)*100.00
                                 %>
@@ -777,7 +777,7 @@
                                      <% total_grade = total_grade.to_f+new_grade_point.to_f %>
                                     <% end %>  
                                   <% end %>
-                                  <td class="col-pdf" rowspan="2"><%= grade.name %> <%= tot_first_mark.to_s + "  " + tot_second_mark.to_s %></td>
+                                  <td class="col-pdf" rowspan="2"><%= grade.name %> <%= tota_mark_with_monthly.to_s %></td>
                                   <td class="col-pdf" rowspan="2"><%= grade.credit_points %></td>
                                 <% else %>
                                   <td class="col-pdf" rowspan="2">-</td>

@@ -361,6 +361,12 @@
                                   
                                 <% end %>
                                 <%
+                                full_first_sub=full_sb_half+full_ob_half+full_pr_half
+                                full_second_sub=full_sb2_half+full_ob2_half+full_pr2_half
+                                total_first_sub=total_sb_half+total_ob_half+total_pr_half
+                                total_second_sub=total_sb2_half+total_ob2_half+total_pr2_half
+                                tot_first_mark = (total_first_sub.to_f/full_first_sub.to_f)*100
+                                tot_second_mark = (total_second_sub.to_f/full_second_sub.to_f)*100
                                 if full_ob2_half > 0 
                                   if total_ob2_half > 0
                                     total_ob2_half = total_ob2_half.round()
@@ -428,7 +434,7 @@
                                   end
                                 end
                                 %> 
-                                <% tota_mark_with_monthly_half = total_ob_half+total_sb_half+total_pr2_half %>
+                                <% tota_mark_with_monthly_half = tot_first_mark.to_f+tot_second_mark.to_f %>
                                 <%
                                   main_mark_half = (tota_mark_with_monthly_half.round().to_f/200.00)*100.00
                                 %>
@@ -454,7 +460,7 @@
                                      <% total_grade_half = total_grade_half.to_f+new_grade_point_half.to_f %>
                                     <% end %>  
                                   <% end %>
-                                  <td class="col-pdf" rowspan="2"><%= grade.name %></td>
+                                  <td class="col-pdf" rowspan="2"><%= grade.name %> <%= main_mark_half %></td>
                                   <td class="col-pdf" rowspan="2"><%= grade.credit_points %></td>
                                 <% else %>
                                   <td class="col-pdf" rowspan="2">-</td>
@@ -777,7 +783,7 @@
                                      <% total_grade = total_grade.to_f+new_grade_point.to_f %>
                                     <% end %>  
                                   <% end %>
-                                  <td class="col-pdf" rowspan="2"><%= grade.name %> <%= tot_first_mark.to_s + "  " + tot_second_mark.to_s %></td>
+                                  <td class="col-pdf" rowspan="2"><%= grade.name %></td>
                                   <td class="col-pdf" rowspan="2"><%= grade.credit_points %></td>
                                 <% else %>
                                   <td class="col-pdf" rowspan="2">-</td>

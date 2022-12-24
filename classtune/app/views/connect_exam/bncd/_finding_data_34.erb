@@ -136,12 +136,14 @@
         
         if subject_failed == false
           if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
-            std_marks_full_new = 5000.00-grand_total.to_f
-            @student_list << [std_marks_full_new.to_f,std['id'].to_i]
+            std_marks_full_new = 55000.00-grand_total.to_f
+            total_grade_new = 55000.00-total_grade.to_f
+            @student_list << [total_grade_new, std_marks_full_new.to_f,grand_total.to_f,total_grade.to_f,std['id'].to_i]
           end 
           if connect_exam_id.to_i == @connect_exam_obj.id
-            std_marks_full_new = 5000.00-grand_total.to_f
-            @student_list_batch << [std_marks_full_new.to_f,std['id'].to_i]
+            std_marks_full_new = 55000.00-grand_total.to_f
+            total_grade_new = 55000.00-total_grade.to_f
+            @student_list_batch << [total_grade_new, std_marks_full_new.to_f,grand_total.to_f,total_grade.to_f,std['id'].to_i]
           end
         end  
         

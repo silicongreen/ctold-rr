@@ -137,6 +137,7 @@
                         <% next %>
                       <% end %>
                       <% failed_subject = false %>
+                      <% failed_subject_half = false %>
                       <%
                         divid = 0
                         divid_half = 0
@@ -379,9 +380,9 @@
                             
                                   <% if grade.credit_points.to_i == 0 && fourth_subject.blank? %>
                                     <% failed = true %>
-                                    <% failed_subject = true %>
+                                    <% failed_subject_half = true %>
                                   <% end %>
-                                  <% if  failed_subject == true %>
+                                  <% if  failed_subject_half == true %>
                                     <% grade.credit_points = 0.0 %>
                                     <% grade.name = "F" %>
                                   <% end %>
@@ -412,13 +413,13 @@
                                         if fourth_subject.blank?
                                           failed = true
                                         end
-                                        failed_subject = true
+                                        failed_subject_half = true
                                       end
                                   else
                                     if fourth_subject.blank?
                                       failed = true
                                     end
-                                    failed_subject = true
+                                    failed_subject_half = true
                                   end
                                   
                                 end
@@ -431,13 +432,13 @@
                                         if fourth_subject.blank?
                                           failed = true
                                         end
-                                        failed_subject = true
+                                        failed_subject_half = true
                                       end
                                   else
                                     if fourth_subject.blank?
                                       failed = true
                                     end
-                                    failed_subject = true
+                                    failed_subject_half = true
                                   end
                                   
                                 end
@@ -450,13 +451,13 @@
                                         if fourth_subject.blank?
                                           failed = true
                                         end
-                                        failed_subject = true
+                                        failed_subject_half = true
                                       end
                                   else
                                     if fourth_subject.blank?
                                       failed = true
                                     end
-                                    failed_subject = true
+                                    failed_subject_half = true
                                   end
                                 end
                                 %> 
@@ -467,9 +468,9 @@
                               <% if !grade.blank? and !grade.name.blank? %>
                                 <% if grade.credit_points.to_i == 0 && fourth_subject.blank? %>
                                   <% failed = true %>
-                                  <% failed_subject = true %>
+                                  <% failed_subject_half = true %>
                                 <% end %>
-                                <% if  failed_subject == true %>
+                                <% if  failed_subject_half == true %>
                                   <% grade.credit_points = 0.0 %>
                                   <% grade.name = "F" %>
                                 <% end %>

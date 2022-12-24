@@ -969,7 +969,7 @@
 
                               <% if has_sb %>
                                 <% if full_sb > 0 %>
-                                  <td class="col-pdf no-warp"><%= total_sb_half %></td>
+                                  <td class="col-pdf no-warp"><%= total_sb_half %> a</td>
                                 <% else %>
                                   <td class="col-pdf no-warp">-</td>
                                 <% end %>
@@ -978,14 +978,14 @@
 
                               <% if has_ob %>
                                 <% if full_ob > 0 %>
-                                  <td class="col-pdf no-warp"> <%= total_ob_half %></td>
+                                  <td class="col-pdf no-warp"> <%= total_ob_half %> b</td>
                                 <% else %>
                                   <td class="col-pdf no-warp">-</td>
                                 <% end %>
                               <% end %>
                               <% if has_pr %>
                                 <% if full_pr > 0 %>
-                                  <td class="col-pdf no-warp"><%= total_pr_half %></td>
+                                  <td class="col-pdf no-warp"><%= total_pr_half %> c</td>
                                   
                                 <% else %>
                                   <td class="col-pdf no-warp">-</td>
@@ -1008,7 +1008,7 @@
                               <% end %>    
                               
                               <td class="col-pdf no-warp">
-                                  <b><%= tota_mark_with_monthly_half.to_f.round.to_i %></b>
+                                  <b><%= tota_mark_with_monthly_half.to_f.round.to_i %> e</b>
                               </td>
                               <%
                                 main_mark_half = tota_mark_with_monthly_half
@@ -1018,7 +1018,7 @@
 
                               <% if has_sb %>
                                 <% if full_sb > 0 %>
-                                  <td class="col-pdf no-warp"><%= total_sb %></td>
+                                  <td class="col-pdf no-warp"><%= total_sb %> f</td>
                                 <% else %>
                                   <td class="col-pdf no-warp">-</td>
                                 <% end %>
@@ -1026,21 +1026,21 @@
                               <% end %>
                               <% if has_ob %>
                                 <% if full_ob > 0 %>
-                                  <td class="col-pdf no-warp"> <%= total_ob %></td>
+                                  <td class="col-pdf no-warp"> <%= total_ob %> g</td>
                                 <% else %>
                                   <td class="col-pdf no-warp">-</td>
                                 <% end %>
                               <% end %>
                               <% if has_pr %>
                                 <% if full_pr > 0 %>
-                                  <td class="col-pdf no-warp"><%= total_pr %></td>
+                                  <td class="col-pdf no-warp"><%= total_pr %> h</td>
                                   
                                 <% else %>
                                   <td class="col-pdf no-warp">-</td>
                                 <% end %>
                               <% end %>
                               
-                              <td class="col-pdf no-warp"><%= total_all.round.to_i %></td>   
+                              <td class="col-pdf no-warp"><%= total_all.round.to_i %> i</td>   
                               <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
                               <% if fourth_subject.blank? %>
                                 <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
@@ -1054,7 +1054,7 @@
                                 %>
                               <% end %>
                               <td class="col-pdf no-warp">
-                                  <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
+                                  <b><%= tota_mark_with_monthly.to_f.round.to_i %> j</b>
                               </td>
                               <%
                                 main_mark = tota_mark_with_monthly

@@ -639,7 +639,7 @@
                                     <% if report['exam_category'] == '3' && report['quarter'] == "2" %>
                                         <% full_sb2 = full_sb2+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
                                       <% end %>
-                                      <% if report['exam_category'] == '3' && report['quarter'] == '1' %>
+                                      <% if report['exam_category'] == '3' && report['quarter'] == "1" %>
                                         <% full_mid2 = full_mid2+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% end %>
                                       <% if report['exam_category'] == '4' && report['quarter'] == "2" %>
@@ -777,7 +777,7 @@
                                      <% total_grade = total_grade.to_f+new_grade_point.to_f %>
                                     <% end %>  
                                   <% end %>
-                                  <td class="col-pdf" rowspan="2"><%= grade.name %> <%= tot_first_mark.to_s + "  " + tot_second_mark.to_s % ></td>
+                                  <td class="col-pdf" rowspan="2"><%= grade.name %> <%= tot_first_mark.to_s + "  " + tot_second_mark.to_s %></td>
                                   <td class="col-pdf" rowspan="2"><%= grade.credit_points %></td>
                                 <% else %>
                                   <td class="col-pdf" rowspan="2">-</td>

@@ -139,7 +139,7 @@
           if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
             std_marks_full_new = 55000.00-grand_total.to_f
             total_grade_new = 55000.00-total_grade.to_f
-            @student_list << [total_grade_new, std_marks_full_new.to_f,std['id'].to_i,std['class_roll_no'].to_i,grand_total.to_f,total_grade_new]
+            @student_list << [total_grade_new, std_marks_full_new.to_f,std['id'].to_i,std['class_roll_no'].to_i]
           end 
           if connect_exam_id.to_i == @connect_exam_obj.id
             std_marks_full_new = 55000.00-grand_total.to_f
@@ -159,8 +159,33 @@
 
   unless @student_list.blank?
     position = 0
-    @sorted_students = @student_list.sort
-    abort(@sorted_students.inspect)
+    @sorted_students = @student_list.sort do |x,y|
+      if x[0] == y[0]
+        if x[1] == y[1]
+          if x[3] == y[3]
+            0
+          else
+            if x[3] > y[3]
+              1
+            else
+              0
+            end  
+          end
+        else
+          if x[1] > y[1]
+            1
+          else
+            0
+          end
+        end
+      else
+        if x[0] > y[0]
+          1
+        else
+          0
+        end
+      end
+    end
     @sorted_students.each do|s|
         position = position+1
         @student_position[s[2].to_i] = position
@@ -169,7 +194,33 @@
 
   unless @student_list_batch.blank?
     position = 0
-    @sorted_students = @student_list_batch.sort
+    @sorted_students = @student_list_batch.sort do |x,y|
+      if x[0] == y[0]
+        if x[1] == y[1]
+          if x[3] == y[3]
+            0
+          else
+            if x[3] > y[3]
+              1
+            else
+              0
+            end  
+          end
+        else
+          if x[1] > y[1]
+            1
+          else
+            0
+          end
+        end
+      else
+        if x[0] > y[0]
+          1
+        else
+          0
+        end
+      end
+    end
     @sorted_students.each do|s|
         position = position+1
         @student_position_batch[s[2].to_i] = position

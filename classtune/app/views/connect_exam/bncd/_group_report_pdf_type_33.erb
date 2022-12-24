@@ -617,9 +617,11 @@
                             <% if subjects['subject_group_id'].to_i > 0 %>
                             <%
                               total_sb2 = 0
+                              total_mid2 = 0
                               total_ob2 = 0
                               total_pr2 = 0
                           
+                              full_mid2 = 0
                               full_sb2 = 0
                               full_ob2 = 0
                               full_pr2 = 0
@@ -636,6 +638,9 @@
                                     <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['full_mark'].blank? %>
                                       <% if report['exam_category'] == '3' %>
                                         <% full_sb2 = full_sb2+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
+                                      <% end %>
+                                      <% if report['exam_category'] == '3' && report['quarter'] == '1' %>
+                                        <% full_mid2 = full_mid2+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% end %>
                                       <% if report['exam_category'] == '4' %>
                                         <% full_ob2 = full_ob2+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
@@ -657,6 +662,9 @@
                                         <% if report['exam_category'] == '3' %>
                                           <% total_sb2 = total_sb2+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% end %>
+                                        <% if report['exam_category'] == '3' && report['quarter'] == '1' %>
+                                        <% total_mid2 = total_mid2+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                        <% end %>
                                         <% if report['exam_category'] == '4' %>
                                           <% total_ob2 = total_ob2+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% end %>
@@ -669,10 +677,12 @@
                                   
                                 <% end %>
                                 <%
-                                total_mid_tmp = total_mid
-                                total_sb_tmp = total_sb
-                                total_ob_tmp = total_ob
-                                total_pr_tmp = total_pr
+                                full_first_sub=full_mid+full_sb+full_ob+full_pr
+                                full_second_sub=full_mid2+full_sb2+full_ob2+full_pr2
+                                total_first_sub=total_mid+total_sb+total_ob+total_pr
+                                total_second_sub=total_mid2+total_sb2+total_ob2+total_pr2
+                                tot_first_mark = (total_first_sub.to_f/full_first_sub.to_f)*100
+                                tot_second_mark = (total_second_sub.to_f/full_second_sub.to_f)*100
                                 if has_ob && full_ob2 > 0 
                                   if total_ob2 > 0
                                       total_ob2 = total_ob2.round()
@@ -767,7 +777,7 @@
                                      <% total_grade = total_grade.to_f+new_grade_point.to_f %>
                                     <% end %>  
                                   <% end %>
-                                  <td class="col-pdf" rowspan="2"><%= grade.name %> <%= total_mid_tmp.to_s + "  " + total_sb_tmp.to_s + "  " + total_ob_tmp.to_s + "  " + total_pr_tmp.to_s %></td>
+                                  <td class="col-pdf" rowspan="2"><%= grade.name %> <%= tot_first_mark.to_s + "  " + tot_second_mark.to_s %></td>
                                   <td class="col-pdf" rowspan="2"><%= grade.credit_points %></td>
                                 <% else %>
                                   <td class="col-pdf" rowspan="2">-</td>

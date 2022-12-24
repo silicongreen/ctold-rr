@@ -669,6 +669,7 @@
                                   
                                 <% end %>
                                 <%
+                                total_mid_tmp = total_mid
                                 total_sb_tmp = total_sb
                                 total_ob_tmp = total_ob
                                 total_pr_tmp = total_pr
@@ -766,7 +767,7 @@
                                      <% total_grade = total_grade.to_f+new_grade_point.to_f %>
                                     <% end %>  
                                   <% end %>
-                                  <td class="col-pdf" rowspan="2"><%= grade.name %> <%= total_sb_tmp.to_s + "  " + total_ob_tmp.to_s + "  " + total_pr_tmp.to_s %></td>
+                                  <td class="col-pdf" rowspan="2"><%= grade.name %> <%= total_mid_tmp.to_s + "  " + total_sb_tmp.to_s + "  " + total_ob_tmp.to_s + "  " + total_pr_tmp.to_s %></td>
                                   <td class="col-pdf" rowspan="2"><%= grade.credit_points %></td>
                                 <% else %>
                                   <td class="col-pdf" rowspan="2">-</td>

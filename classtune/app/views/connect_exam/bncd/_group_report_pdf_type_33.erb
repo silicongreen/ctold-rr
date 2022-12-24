@@ -636,16 +636,16 @@
                                 <% unless @report_data['report']['exams'].blank? %>  
                                   <% @report_data['report']['exams'].each do |report| %>   
                                     <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['full_mark'].blank? %>
-                                      <% if report['exam_category'] == '3' %>
+                                    <% if report['exam_category'] == '3' && report['quarter'] == "2" %>
                                         <% full_sb2 = full_sb2+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
                                       <% end %>
                                       <% if report['exam_category'] == '3' && report['quarter'] == '1' %>
                                         <% full_mid2 = full_mid2+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% end %>
-                                      <% if report['exam_category'] == '4' %>
+                                      <% if report['exam_category'] == '4' && report['quarter'] == "2" %>
                                         <% full_ob2 = full_ob2+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
                                       <% end %>
-                                      <% if report['exam_category'] == '5' %>
+                                      <% if report['exam_category'] == '5' && report['quarter'] == "2" %>
                                         <% full_pr2 = full_pr2+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
                                       <% end %>
                                     <% end %> 
@@ -659,16 +659,16 @@
                                   <% @report_data['report']['exams'].each do |report| %>   
                                     <% if report['exam_category'] != '1' %>
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].blank? %>                                   
-                                        <% if report['exam_category'] == '3' %>
+                                        <% if report['exam_category'] == '3' && report['quarter'] == "2" %>
                                           <% total_sb2 = total_sb2+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% end %>
                                         <% if report['exam_category'] == '3' && report['quarter'] == '1' %>
                                         <% total_mid2 = total_mid2+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                         <% end %>
-                                        <% if report['exam_category'] == '4' %>
+                                        <% if report['exam_category'] == '4' && report['quarter'] == "2" %>
                                           <% total_ob2 = total_ob2+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% end %>
-                                        <% if report['exam_category'] == '5' %>
+                                        <% if report['exam_category'] == '5' && report['quarter'] == "2" %>
                                           <% total_pr2 = total_pr2+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% end %>
                                       <% end %>
@@ -1086,7 +1086,7 @@
                                 %>
                               <% end %>
                               <td class="col-pdf no-warp">
-                                  <b><%= tota_mark_with_monthly.to_s %> s</b>
+                                  <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
                               </td>
                               <%
                                 main_mark = tota_mark_with_monthly

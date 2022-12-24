@@ -301,7 +301,7 @@
                             <% end %>
                             
                             <td class="col-pdf no-warp">
-                                <b><%= tota_mark_with_monthly_half.to_f.round.to_i %> a</b>
+                                <b><%= tota_mark_with_monthly_half.to_f.round.to_i %></b>
                             </td>
                             <%
                               main_mark_half = tota_mark_with_monthly_half.round()
@@ -609,7 +609,7 @@
                             <% end %>
                             
                             <td class="col-pdf no-warp">
-                                <b><%= tota_mark_with_monthly.to_f.round.to_i %> b</b>
+                                <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
                             </td>
                             <%
                               main_mark = tota_mark_with_monthly.round()
@@ -977,7 +977,7 @@
 
                               <% if has_sb %>
                                 <% if full_sb > 0 %>
-                                  <td class="col-pdf no-warp"><%= total_sb_half %> a</td>
+                                  <td class="col-pdf no-warp"><%= total_sb_half %></td>
                                 <% else %>
                                   <td class="col-pdf no-warp">-</td>
                                 <% end %>
@@ -986,21 +986,21 @@
 
                               <% if has_ob %>
                                 <% if full_ob > 0 %>
-                                  <td class="col-pdf no-warp"> <%= total_ob_half %> b</td>
+                                  <td class="col-pdf no-warp"> <%= total_ob_half %></td>
                                 <% else %>
                                   <td class="col-pdf no-warp">-</td>
                                 <% end %>
                               <% end %>
                               <% if has_pr %>
                                 <% if full_pr > 0 %>
-                                  <td class="col-pdf no-warp"><%= total_pr_half %> c</td>
+                                  <td class="col-pdf no-warp"><%= total_pr_half %></td>
                                   
                                 <% else %>
                                   <td class="col-pdf no-warp">-</td>
                                 <% end %>
                               <% end %>
                               
-                              <td class="col-pdf no-warp"><%= total_all_half.round.to_i %> d</td>   
+                              <td class="col-pdf no-warp"><%= total_all_half.round.to_i %></td>   
                               
                               <% tota_mark_with_monthly_half = total_ob_half+total_sb_half+total_pr_half %>
                               <% if fourth_subject.blank? %>
@@ -1016,7 +1016,7 @@
                               <% end %>    
                               
                               <td class="col-pdf no-warp">
-                                  <b><%= tota_mark_with_monthly_half.to_f.round.to_i %> e</b>
+                                  <b><%= tota_mark_with_monthly_half.to_f.round.to_i %></b>
                               </td>
                               <%
                                 main_mark_half = tota_mark_with_monthly_half
@@ -1034,7 +1034,7 @@
                               
                               <% if has_sb %>
                                 <% if full_sb > 0 %>
-                                  <td class="col-pdf no-warp"><%= total_sb %> f</td>
+                                  <td class="col-pdf no-warp"><%= total_sb %></td>
                                 <% else %>
                                   <td class="col-pdf no-warp">-</td>
                                 <% end %>
@@ -1042,21 +1042,21 @@
                               <% end %>
                               <% if has_ob %>
                                 <% if full_ob > 0 %>
-                                  <td class="col-pdf no-warp"> <%= total_ob %> g</td>
+                                  <td class="col-pdf no-warp"> <%= total_ob %></td>
                                 <% else %>
                                   <td class="col-pdf no-warp">-</td>
                                 <% end %>
                               <% end %>
                               <% if has_pr %>
                                 <% if full_pr > 0 %>
-                                  <td class="col-pdf no-warp"><%= total_pr %> h</td>
+                                  <td class="col-pdf no-warp"><%= total_pr %></td>
                                   
                                 <% else %>
                                   <td class="col-pdf no-warp">-</td>
                                 <% end %>
                               <% end %>
                               
-                              <td class="col-pdf no-warp"><%= total_all.round.to_i %> i</td>   
+                              <td class="col-pdf no-warp"><%= total_all.round.to_i %></td>   
                               <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
                               <% if fourth_subject.blank? %>
                                 <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
@@ -1070,7 +1070,7 @@
                                 %>
                               <% end %>
                               <td class="col-pdf no-warp">
-                                  <b><%= tota_mark_with_monthly.to_f.round.to_i %> j</b>
+                                  <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
                               </td>
                               <%
                                 main_mark = tota_mark_with_monthly

@@ -266,19 +266,19 @@
                             <% total_all_half = total_ob_half+total_sb_half+total_pr_half %>
                             
                             <% if full_sb_half > 0 %>
-                              <td class="col-pdf no-warp"><%= total_sb_half %></td>
+                              <td class="col-pdf no-warp"><%= total_sb_half.round.to_i %></td>
                             <% else %>
                               <td class="col-pdf no-warp">-</td>
                             <% end %>  
 
                             <% if full_ob_half > 0 %>
-                              <td class="col-pdf no-warp"><%= total_ob_half %> </td>
+                              <td class="col-pdf no-warp"><%= total_ob_half.round.to_i %> </td>
                             <% else %>
                               <td class="col-pdf no-warp">-</td>
                             <% end %>  
 
                             <% if full_pr_half > 0 %>
-                              <td class="col-pdf no-warp"><%= total_pr_half %></td>
+                              <td class="col-pdf no-warp"><%= total_pr_half.round.to_i %></td>
                             <% else %>
                               <td class="col-pdf no-warp">-</td>
                             <% end %>  
@@ -573,7 +573,7 @@
 
                               <% if has_sb %>
                               <% if full_sb > 0 %>
-                                <td class="col-pdf no-warp"><%= total_sb + added_mark %></td>
+                                <td class="col-pdf no-warp"><%= (total_sb + added_mark).round.to_i %></td>
                               <% else %>
                                 <td class="col-pdf no-warp">-</td>
                               <% end %>
@@ -581,14 +581,14 @@
                             <% end %>
                             <% if has_ob %>
                               <% if full_ob > 0 %>
-                                <td class="col-pdf no-warp"> <%= total_ob + added_mark %></td>
+                                <td class="col-pdf no-warp"> <%= (total_ob + added_mark).round.to_i %></td>
                               <% else %>
                                 <td class="col-pdf no-warp">-</td>
                               <% end %>
                             <% end %>
                             <% if has_pr %>
                               <% if full_pr > 0 %>
-                                <td class="col-pdf no-warp"><%= total_pr + added_mark %></td>
+                                <td class="col-pdf no-warp"><%= (total_pr + added_mark).round.to_i %></td>
                                 
                               <% else %>
                                 <td class="col-pdf no-warp">-</td>

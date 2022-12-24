@@ -594,7 +594,7 @@
                             
                             <% full_mark=full_mid+full_sb+full_ob+full_pr %>      
                             <% tota_mark_with_monthly = total_ob+total_sb+total_pr+total_mid %>
-                            <% tota_mark_with_monthly = (tota_mark_with_monthly.to_f/full_mark.to_f)*100 %>
+                            <% tota_mark_with_monthly = (total_all.to_f/full_mark.to_f)*100 %>
 
                             <% if fourth_subject.blank? %>
                               <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
@@ -609,7 +609,7 @@
                             <% end %>
                             
                             <td class="col-pdf no-warp">
-                                <b><%= tota_mark_with_monthly.to_s + " s" %></b>
+                                <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
                             </td>
                             <%
                               main_mark = tota_mark_with_monthly.round()
@@ -1070,7 +1070,7 @@
                                   <td class="col-pdf no-warp">-</td>
                                 <% end %>
                               <% end %>
-                              <% total_all=total_sb+total_ob+total_pr+total_mid %>
+                              <% total_all=total_sb.to_f+total_ob.to_f+total_pr.to_f+total_mid.to_f %>
                               <td class="col-pdf no-warp"><%= total_all.round.to_i %></td>  
                               <% full_mark=full_mid+full_sb+full_ob+full_pr %> 
                               <% tota_mark_with_monthly = (total_all.to_f/full_mark)*100 %>
@@ -1086,7 +1086,7 @@
                                 %>
                               <% end %>
                               <td class="col-pdf no-warp">
-                                  <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
+                                  <b><%= tota_mark_with_monthly.to_s %> s</b>
                               </td>
                               <%
                                 main_mark = tota_mark_with_monthly

@@ -592,8 +592,8 @@
                             <td class="col-pdf no-warp"><%= total_all %></td>
                             
                             
-
-                            <% tota_mark_with_monthly = total_ob+total_sb+total_pr %>
+                            <% full_mark=full_mid+full_sb+full_ob+full_pr %>      
+                            <% tota_mark_with_monthly = total_ob+total_sb+total_pr+total_mid %>
                             <% tota_mark_with_monthly = (tota_mark_with_monthly.to_f/full_mark.to_f)*100 %>
 
                             <% if fourth_subject.blank? %>

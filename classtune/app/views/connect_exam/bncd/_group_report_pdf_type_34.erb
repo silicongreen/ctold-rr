@@ -323,18 +323,8 @@ end
                        <td class="col-pdf  no-warp"><%= sprintf( "%0.02f", total_grade_of_allexam) %></td>
                       <% if class_type != 1 %>
                       <td class="col-pdf  no-warp">
-                      a<%= @student_total_grade[@student.id.to_i] %>dd<Br />
                           <% if !@student_position_batch[@student.id.to_i].blank? %> 
-                             <% 
-                              @student_list.each do |student_list| 
-                                if student_list[4].to_i == @student.id.to_i
-                                  %>
-                                  <%= student_list[0].to_s %> <%= student_list[1].to_s %> <%= student_list[2].to_s %> <%= student_list[3].to_s %> <%= student_list[4].to_s %>
-                                  <%
-                                end
-                              end 
-                            %>
-                            <%= @student_position_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
+                             <%= @student_position_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
                           <% else %>
                             -
                           <% end %>

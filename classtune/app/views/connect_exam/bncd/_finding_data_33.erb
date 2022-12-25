@@ -207,13 +207,11 @@ if @total_std.blank?
                 if fourth_subject.blank? 
                     grand_total_with_fraction = grand_total_with_fraction+total_mark_subject.to_f
                     grand_total = grand_total+total_mark_subject.to_f.round
-                    marks_all = marks_all.to_s + "," + total_mark_subject.to_f.round.to_s
                 else
                   new_mark = total_mark_subject.to_f.round - 40
                   if new_mark > 0
                     grand_total_with_fraction = grand_total_with_fraction+new_mark
                     grand_total = grand_total+new_mark
-                    marks_all = marks_all.to_s + "," + new_mark.to_s
                   end
                 end
                 if sub['subject_group_id'].to_i == 0
@@ -477,10 +475,12 @@ if @total_std.blank?
                     if !grade.blank? and !grade.name.blank?
                       if fourth_subject.blank? && subject_failed == false
                         grand_grade_point = grand_grade_point+grade.credit_points.to_f
+                        marks_all = marks_all.to_s + "," + grade.credit_points.to_s
                       elsif subject_failed == false and four_subject_failed == false
                         new_grade_point = grade.credit_points.to_f-2
                         if new_grade_point > 0
                           grand_grade_point = grand_grade_point+new_grade_point.to_f
+                          marks_all = marks_all.to_s + "," + grade.credit_points.to_s
                         end
                       end
                     end
@@ -494,10 +494,12 @@ if @total_std.blank?
                   if !grade.blank? and !grade.name.blank?
                     if fourth_subject.blank? && subject_failed == false
                       grand_grade_point = grand_grade_point+grade.credit_points.to_f
+                      marks_all = marks_all.to_s + "," + grade.credit_points.to_s
                     elsif subject_failed == false and four_subject_failed == false
                       new_grade_point = grade.credit_points.to_f-2
                       if new_grade_point > 0
                         grand_grade_point = grand_grade_point+new_grade_point.to_f
+                        marks_all = marks_all.to_s + "," + grade.credit_points.to_s
                       end
                     end
                   end
@@ -621,7 +623,7 @@ if @total_std.blank?
                   grade_point_avg = 5.00
                 end
               end
-              @subject_marks_info[std['id'].to_i] = grand_grade_point.to_s + "  " + grand_total.to_s + "  " + grand_total_with_fraction.to_s + "  " + grade_point_avg.to_s
+              @subject_marks_info[std['id'].to_i] = grand_grade_point.to_s + "  " + grand_total.to_s + "  " + marks_all.to_s + "  " + grade_point_avg.to_s
               @student_result[loop_std]['gpa'] = grand_grade_point
               @student_result[loop_std]['grand_total'] = grand_total
               @student_result[loop_std]['grand_total_with_fraction'] = grand_total_with_fraction

@@ -179,19 +179,19 @@ if @total_std.blank?
                       appeared = true
                       full_absent = false
                     end
-                    if rs['exam_category'] == '3' && report['quarter'] == "1"
+                    if rs['exam_category'] == '3' && rs['quarter'] == "1"
                       total_mid = total_mid+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       full_mid = full_mid+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                     end
-                    if rs['exam_category'] == '3' && report['quarter'] == "2"
+                    if rs['exam_category'] == '3' && rs['quarter'] == "2"
                       total_sb = total_sb+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       full_sb = full_sb+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                     end
-                    if rs['exam_category'] == '4' && report['quarter'] == "2"
+                    if rs['exam_category'] == '4' && rs['quarter'] == "2"
                       total_ob = total_ob+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       full_ob = full_ob+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                     end
-                    if rs['exam_category'] == '5' && report['quarter'] == "2"
+                    if rs['exam_category'] == '5' && rs['quarter'] == "2"
                       total_pr = total_pr+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       full_pr = full_pr+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                     end
@@ -334,19 +334,19 @@ if @total_std.blank?
                           appeared = true
                           full_absent = false
                         end
-                        if rs['exam_category'] == '3' && report['quarter'] == "2"
+                        if rs['exam_category'] == '3' && rs['quarter'] == "2"
                           total_sb2 = total_sb2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                           full_sb2 = full_sb2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
                         end
-                        if rs['exam_category'] == '3' && report['quarter'] == "1"
+                        if rs['exam_category'] == '3' && rs['quarter'] == "1"
                           total_mid2 = total_mid2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                           full_mid2 = full_mid2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
                         end
-                        if rs['exam_category'] == '4' && report['quarter'] == "2"
+                        if rs['exam_category'] == '4' && rs['quarter'] == "2"
                           total_ob2 = total_ob2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                           full_ob2 = full_ob2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
                         end
-                        if rs['exam_category'] == '5' && report['quarter'] == "2"
+                        if rs['exam_category'] == '5' && rs['quarter'] == "2"
                           total_pr2 = total_pr2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                           full_pr2 = full_pr2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
                         end

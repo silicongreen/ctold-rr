@@ -466,21 +466,20 @@ if @total_std.blank?
                     tot_second_mark = (total_second_sub.to_f/full_second_sub.to_f)*100
 
                     total_mark_subject2 = tot_first_mark.round.to_i+tot_second_mark.round.to_i
-                    full_mark_subject2 = full_first_sub+full_second_sub
 
-                    main_mark = (total_mark_subject2.to_f/full_mark_subject2.to_f)*100
+                    main_mark = (total_mark_subject2.to_f/200)*100
                     #grand_total = grand_total+main_mark.to_f.round
                     main_mark = main_mark.round()
                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                     if !grade.blank? and !grade.name.blank?
                       if fourth_subject.blank? && subject_failed == false
                         grand_grade_point = grand_grade_point+grade.credit_points.to_f
-                        marks_all = marks_all.to_s + "," + total_mark_subject2.to_s + "-" + full_mark_subject2.to_s + "-" + grade.credit_points.to_s
+                        marks_all = marks_all.to_s + "," grade.credit_points.to_s
                       elsif subject_failed == false and four_subject_failed == false
                         new_grade_point = grade.credit_points.to_f-2
                         if new_grade_point > 0
                           grand_grade_point = grand_grade_point+new_grade_point.to_f
-                          marks_all = marks_all.to_s + "," + total_mark_subject2.to_s + "-" + full_mark_subject2.to_s + "-" + grade.credit_points.to_s
+                          marks_all = marks_all.to_s + "," + grade.credit_points.to_s
                         end
                       end
                     end

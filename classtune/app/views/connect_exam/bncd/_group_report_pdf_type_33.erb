@@ -833,7 +833,7 @@
                                       <% end %>
 
                                       <% if report['exam_category'] == '3' && report['quarter'] == '1' %>
-                                        <% total_mid = total_mid+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                        <% total_mid = total_mid+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                       <% end %>
 
                                       <% if report['exam_category'] == '4' && report['quarter'] == "2" %>
@@ -853,7 +853,7 @@
                                   <% end %>
                                 <% end %>
                               <% end %>
-                              <% total_all = total_ob+total_sb+total_pr %>
+                              <% total_all = total_mid+total_ob+total_sb+total_pr %>
                               <% total_all_half = total_ob_half+total_sb_half+total_pr_half %>
 
                               <% if has_sb %>
@@ -906,7 +906,7 @@
 
                               <% added_mark = 0 %>
                               <% if full_mid > 0 %>
-                                <td class="col-pdf no-warp"><%= total_mid.round.to_i %> h</td>
+                                <td class="col-pdf no-warp"><%= total_mid.round.to_i %></td>
                                 <% #added_mark = total_mid / divid %>
                                 <% #added_mark = added_mark.to_i %>
                               <% else %>  

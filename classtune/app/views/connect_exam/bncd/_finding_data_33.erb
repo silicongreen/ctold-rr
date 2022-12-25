@@ -480,7 +480,7 @@ if @total_std.blank?
                   grade_point_avg = 5.00
                 end
               end
-              @subject_marks_info[std['id'].to_i] = grand_grade_point.to_s + "  " + grand_total.to_s + "  " + marks_all.to_s + "  " + grade_point_avg.to_s
+              @subject_marks_info[std['id'].to_i] = u_grade.to_s + "  " +  grand_grade_point.to_s + "  " + grand_total.to_s + "  " + marks_all.to_s + "  " + grade_point_avg.to_s
               @student_result[loop_std]['gpa'] = grand_grade_point
               @student_result[loop_std]['grand_total'] = grand_total
               @student_result[loop_std]['grand_total_with_fraction'] = grand_total_with_fraction

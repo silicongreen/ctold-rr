@@ -138,7 +138,7 @@ if @total_std.blank?
                   fourth_subject = true
                 end  
               end 
-              has_exam = false
+              has_exam = false 
               tab['exams'].each do |rs|
                 if rs['quarter'] == '3'
                   next
@@ -162,9 +162,11 @@ if @total_std.blank?
                 full_mark_subject = 0
                 main_mark = 0
                 total_sb = 0
+                total_mid = 0
                 total_ob = 0
                 total_pr = 0
             
+                full_mid = 0
                 full_sb = 0
                 full_ob = 0
                 full_pr = 0
@@ -177,15 +179,19 @@ if @total_std.blank?
                       appeared = true
                       full_absent = false
                     end
-                    if rs['exam_category'] == '3'
+                    if rs['exam_category'] == '3' && report['quarter'] == "1"
+                      total_mid = total_mid+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                      full_mid = full_mid+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                    end
+                    if rs['exam_category'] == '3' && report['quarter'] == "2"
                       total_sb = total_sb+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       full_sb = full_sb+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                     end
-                    if rs['exam_category'] == '4'
+                    if rs['exam_category'] == '4' && report['quarter'] == "2"
                       total_ob = total_ob+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       full_ob = full_ob+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                     end
-                    if rs['exam_category'] == '5'
+                    if rs['exam_category'] == '5' && report['quarter'] == "2"
                       total_pr = total_pr+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       full_pr = full_pr+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                     end
@@ -193,8 +199,8 @@ if @total_std.blank?
                 end
 
                 
-                total_mark_subject = total_ob+total_sb+total_pr
-                full_mark = full_pr+full_sb+full_ob
+                total_mark_subject = total_mid+total_ob+total_sb+total_pr
+                full_mark = full_mid+full_pr+full_sb+full_ob
                 total_mark_subject = (total_mark_subject.to_f/full_mark.to_f)*100
                 if fourth_subject.blank? 
                       grand_total_with_fraction = grand_total_with_fraction+total_mark_subject.to_f.round
@@ -205,72 +211,93 @@ if @total_std.blank?
                   end
                 end
                 if sub['subject_group_id'].to_i == 0
-                  if full_ob > 0
-                    if total_ob > 0
-                        
-                        percent = (total_ob.to_f/full_ob.to_f)*100
-                        percent = percent.round()
-                        if percent < 33
-                          #if fourth_subject.blank?
-                              u_grade = u_grade+1 
-                              subject_failed = true
-                         #   else
-                         #    four_subject_failed = true
-                         #   end
-                        end
-                    else
-                      #if fourth_subject.blank?
-                              u_grade = u_grade+1 
-                              subject_failed = true
-                       #     else
-                       #       four_subject_failed = true
-                        #    end
-                    end
-                    
+                  if full_ob == 25 && total_ob.round.to_i < 10 
+                    u_grade = u_grade+1 
+                    subject_failed == true
+                  elsif full_ob == 30 && total_ob.round.to_i < 12
+                    u_grade = u_grade+1 
+                    subject_failed == true
                   end
-                  if full_sb > 0
-                    if total_sb > 0
-                        percent = (total_sb.to_f/full_sb.to_f)*100
-                        percent = percent.round()
-                        if percent < 33
-                          #if fourth_subject.blank?
-                              u_grade = u_grade+1 
-                              subject_failed = true
-                          #  else
-                          #    four_subject_failed = true
-                          #  end
-                        end
-                    else
-                     # if fourth_subject.blank?
-                              u_grade = u_grade+1 
-                              subject_failed = true
-                      #      else
-                     #         four_subject_failed = true
-                     #       end
-                    end
-                    
+
+                  if full_sb == 50 && total_sb.round.to_i < 20 
+                    u_grade = u_grade+1 
+                    subject_failed == true
+                  elsif full_sb == 70 && total_sb.round.to_i < 28
+                    u_grade = u_grade+1 
+                    subject_failed == true
                   end
-                  if full_pr > 0
-                    if total_pr > 0
-                        percent = (total_pr.to_f/full_pr.to_f)*100
-                        percent = percent.round()
-                        if percent < 33
-                         # if fourth_subject.blank?
-                              u_grade = u_grade+1 
-                              subject_failed = true
-                         #   else
-                         #     four_subject_failed = true
-                         #   end
-                        end
-                    else
-                      #if fourth_subject.blank?
-                              u_grade = u_grade+1 
-                              subject_failed = true
-                      #      else
-                      #        four_subject_failed = true
-                      #      end
-                    end
+
+                  if full_pr == 25 && total_pr.round.to_i < 10
+                    u_grade = u_grade+1 
+                    subject_failed == true
                   end
+                  #if full_ob > 0
+                  #  if total_ob > 0
+                  #      
+                  #      percent = (total_ob.to_f/full_ob.to_f)*100
+                  #      percent = percent.round()
+                  #      if percent < 33
+                  #        #if fourth_subject.blank?
+                  #            u_grade = u_grade+1 
+                  #            subject_failed = true
+                  #       #   else
+                  #       #    four_subject_failed = true
+                  #      #   end
+                  #      end
+                  #  else
+                  #    #if fourth_subject.blank?
+                  #            u_grade = u_grade+1 
+                  #            subject_failed = true
+                  #     #     else
+                  #     #       four_subject_failed = true
+                  #     #    end
+                  #  end
+                  #  
+                  #end
+
+                  #if full_sb > 0
+                  #  if total_sb > 0
+                  #      percent = (total_sb.to_f/full_sb.to_f)*100
+                  #      percent = percent.round()
+                  #      if percent < 33
+                  #        #if fourth_subject.blank?
+                  #            u_grade = u_grade+1 
+                  #            subject_failed = true
+                  #        #  else
+                  #        #    four_subject_failed = true
+                  #        #  end
+                  #      end
+                  #  else
+                  #   # if fourth_subject.blank?
+                  #            u_grade = u_grade+1 
+                  #           subject_failed = true
+                  #   #      else
+                  #   #         four_subject_failed = true
+                  #  #       end
+                  #  end
+                  #  
+                  #end
+                  #if full_pr > 0
+                  #  if total_pr > 0
+                  #      percent = (total_pr.to_f/full_pr.to_f)*100
+                  #      percent = percent.round()
+                  #      if percent < 33
+                  #       # if fourth_subject.blank?
+                  #            u_grade = u_grade+1 
+                  #            subject_failed = true
+                  #       #   else
+                  #       #     four_subject_failed = true
+                  #       #   end
+                  #      end
+                  #  else
+                  #    #if fourth_subject.blank?
+                  #            u_grade = u_grade+1 
+                  #            subject_failed = true
+                  #    #      else
+                  #    #        four_subject_failed = true
+                  #    #      end
+                  #  end
+                  #end
 
                 end
 
@@ -290,9 +317,11 @@ if @total_std.blank?
                     full_mark_subject2 = 0
                     total_mark_subject2 = 0
                     total_sb2 = 0
+                    total_mid2 = 0
                     total_ob2 = 0
                     total_pr2 = 0
-                
+                    
+                    full_mid2 = 0
                     full_sb2 = 0
                     full_ob2 = 0
                     full_pr2 = 0
@@ -305,101 +334,136 @@ if @total_std.blank?
                           appeared = true
                           full_absent = false
                         end
-                        if rs['exam_category'] == '3'
+                        if rs['exam_category'] == '3' && report['quarter'] == "2"
                           total_sb2 = total_sb2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                           full_sb2 = full_sb2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
                         end
-                        if rs['exam_category'] == '4'
+                        if rs['exam_category'] == '3' && report['quarter'] == "1"
+                          total_mid2 = total_mid2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
+                          full_mid2 = full_mid2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
+                        end
+                        if rs['exam_category'] == '4' && report['quarter'] == "2"
                           total_ob2 = total_ob2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                           full_ob2 = full_ob2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
                         end
-                        if rs['exam_category'] == '5'
+                        if rs['exam_category'] == '5' && report['quarter'] == "2"
                           total_pr2 = total_pr2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                           full_pr2 = full_pr2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
                         end
                       end
                     end
-                    total_mark_subject = total_ob2+total_sb2+total_pr2
+                    total_mark_subject_all = total_mid2+total_ob2+total_sb2+total_pr2
+                    full_mark_all = full_mid2+full_pr2+full_sb2+full_ob2
+                    total_mark_subject = (total_mark_subject_all.to_f/full_mark_all.to_f)*100
 
                     grand_total_with_fraction = grand_total_with_fraction+total_mark_subject.to_f.round
-                    if full_ob2 > 0
-                      if total_ob2 > 0
-                          total_ob2 = total_ob2.round()
-                          total_ob =  total_ob+total_ob2
-                          full_ob = full_ob2*2
-                          percent = (total_ob.to_f/full_ob.to_f)*100
-                          percent = percent.round()
-                          if percent < 33
-                            if fourth_subject.blank?
-                              u_grade = u_grade+1 
-                              subject_failed = true
-                            else
-                              four_subject_failed = true
-                            end
-                          end
-                      else
-                        if fourth_subject.blank?
-                          u_grade = u_grade+1 
-                          subject_failed = true
-                        else
-                          four_subject_failed = true
-                        end
-                      end
-                      
+                    if full_ob2 == 25 && total_ob2.round.to_i < 10 
+                      u_grade = u_grade+1 
+                      subject_failed == true
+                    elsif full_ob2 == 30 && total_ob2.round.to_i < 12
+                      u_grade = u_grade+1 
+                      subject_failed == true
                     end
-                    if full_sb2 > 0
-                      if total_sb2 > 0
-                          total_sb2 = total_sb2.round()
-                          total_sb =  total_sb+total_sb2
-                          full_sb = full_sb2*2 
-                          percent = (total_sb.to_f/full_sb.to_f)*100
-                          percent = percent.round()
-                          if percent < 33
-                            if fourth_subject.blank?
-                              u_grade = u_grade+1 
-                              subject_failed = true
-                            else
-                              four_subject_failed = true
-                            end
-                          end
-                      else
-                        if fourth_subject.blank?
-                          u_grade = u_grade+1 
-                          subject_failed = true
-                        else
-                          four_subject_failed = true
-                        end
-                      end
-                      
+  
+                    if full_sb2 == 50 && total_sb2.round.to_i < 20 
+                      u_grade = u_grade+1 
+                      subject_failed == true
+                    elsif full_sb2 == 70 && total_sb2.round.to_i < 28
+                      u_grade = u_grade+1 
+                      subject_failed == true
                     end
-                    if full_pr2 > 0
-                      if total_pr2 > 0
-                          total_pr2 = total_pr2.round()
-                          total_pr =  total_pr+total_pr2
-                          full_pr = full_pr2*2 
-                          percent = (total_pr.to_f/full_pr.to_f)*100
-                          percent = percent.round()
-                          if percent < 33
-                            if fourth_subject.blank?
-                              u_grade = u_grade+1 
-                              subject_failed = true
-                            else
-                              four_subject_failed = true
-                            end
-                          end
-                      else
-                        if fourth_subject.blank?
-                          u_grade = u_grade+1 
-                          subject_failed = true
-                        else
-                          four_subject_failed = true
-                        end
-                      end
+  
+                    if full_pr2 == 25 && total_pr2.round.to_i < 10
+                      u_grade = u_grade+1 
+                      subject_failed == true
                     end
 
-                    total_mark_subject2 = total_ob+total_sb+total_pr 
-                    full_mark_subject2 = full_ob+full_sb+full_pr
-                    grand_total = grand_total+total_mark_subject2
+                    #if full_ob2 > 0
+                    #  if total_ob2 > 0
+                    #      total_ob2 = total_ob2.round()
+                    #     total_ob =  total_ob+total_ob2
+                    #      full_ob = full_ob2*2
+                    #      percent = (total_ob.to_f/full_ob.to_f)*100
+                    #      percent = percent.round()
+                    #      if percent < 33
+                    #        if fourth_subject.blank?
+                    #          u_grade = u_grade+1 
+                    #          subject_failed = true
+                    #        else
+                    #          four_subject_failed = true
+                    #        end
+                    #      end
+                    #  else
+                    #    if fourth_subject.blank?
+                    #      u_grade = u_grade+1 
+                    #      subject_failed = true
+                    #    else
+                    #      four_subject_failed = true
+                    #    end
+                    #  end
+                    #  
+                    #end
+                    #if full_sb2 > 0
+                    #  if total_sb2 > 0
+                    #      total_sb2 = total_sb2.round()
+                    #      total_sb =  total_sb+total_sb2
+                    #      full_sb = full_sb2*2 
+                    #      percent = (total_sb.to_f/full_sb.to_f)*100
+                    #      percent = percent.round()
+                    #      if percent < 33
+                    #        if fourth_subject.blank?
+                    #          u_grade = u_grade+1 
+                    #          subject_failed = true
+                    #        else
+                    #         four_subject_failed = true
+                    #        end
+                    #      end
+                    #  else
+                    #    if fourth_subject.blank?
+                    #      u_grade = u_grade+1 
+                    #      subject_failed = true
+                    #    else
+                    #      four_subject_failed = true
+                    #    end
+                    #  end
+                    #  
+                    #end
+                    #if full_pr2 > 0
+                    #  if total_pr2 > 0
+                    #      total_pr2 = total_pr2.round()
+                    #      total_pr =  total_pr+total_pr2
+                    #      full_pr = full_pr2*2 
+                    #      percent = (total_pr.to_f/full_pr.to_f)*100
+                    #      percent = percent.round()
+                    #      if percent < 33
+                    #        if fourth_subject.blank?
+                    #          u_grade = u_grade+1 
+                    #         subject_failed = true
+                    #        else
+                    #         four_subject_failed = true
+                    #        end
+                    #      end
+                    #  else
+                    #    if fourth_subject.blank?
+                    #      u_grade = u_grade+1 
+                    #      subject_failed = true
+                    #    else
+                    #      four_subject_failed = true
+                    #    end
+                    #  end
+                    #end
+                    
+                    full_first_sub=full_mid+full_sb+full_ob+full_pr
+                    full_second_sub=full_mid2+full_sb2+full_ob2+full_pr2
+                    total_first_sub=total_mid+total_sb+total_ob+total_pr
+                    total_second_sub=total_mid2+total_sb2+total_ob2+total_pr2
+                    tot_first_mark = (total_first_sub.to_f/full_first_sub.to_f)*100
+                    tot_second_mark = (total_second_sub.to_f/full_second_sub.to_f)*100
+
+                    total_mark_subject2 = tot_first_mark.round.to_i+tot_second_mark.round.to_i
+                    full_mark_subject2 = full_first_sub+full_second_sub
+
+                    grand_total = grand_total+tot_second_mark
                     main_mark = (total_mark_subject2.to_f/full_mark_subject2.to_f)*100
                     main_mark = main_mark.round()
                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
@@ -549,6 +613,7 @@ if @total_std.blank?
                   grade_point_avg = 5.00
                 end
               end
+              abort(loop_std.inspect)
               @student_result[loop_std]['gpa'] = grand_grade_point
               @student_result[loop_std]['grand_total'] = grand_total
               @student_result[loop_std]['grand_total_with_fraction'] = grand_total_with_fraction

@@ -593,7 +593,7 @@
                                         <% full_sb2 = full_sb2+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
                                       <% end %>
                                       <% if report['exam_category'] == '3' && report['quarter'] == "1" %>
-                                        <% full_mid2 = full_mid2+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                        <% full_mid2 = full_mid2+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
                                       <% end %>
                                       <% if report['exam_category'] == '4' && report['quarter'] == "2" %>
                                         <% full_ob2 = full_ob2+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
@@ -803,7 +803,7 @@
                                       <% full_sb_half = full_sb_half+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
                                     <% end %>
                                     <% if report['exam_category'] == '3' && report['quarter'] == '1' %>
-                                      <% full_mid = full_mid+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                      <% full_mid = full_mid+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
                                     <% end %>
                                     <% if report['exam_category'] == '4' && report['quarter'] == "2" %>
                                       <% full_ob = full_ob+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
@@ -936,6 +936,25 @@
                                   <td class="col-pdf no-warp">-</td>
                                 <% end %>
                               <% end %>
+                              <%
+                              if full_sb == 50 && total_sb.round.to_i < 20
+                                failed_subject == true
+                              elsif full_sb == 70 && total_sb.round.to_i < 28
+                                failed_subject == true
+                              end
+
+                              if full_ob == 25 && total_ob.round.to_i < 10
+                                failed_subject == true
+                              elsif full_ob == 30 && total_ob.round.to_i < 12
+                                failed_subject == true
+                              end
+
+
+                              if full_pr == 25 && total_pr.round.to_i < 10
+                                failed_subject == true
+                              end
+                              
+                              %>
                               <% total_all=total_sb.to_f+total_ob.to_f+total_pr.to_f+total_mid.to_f %>
                               <td class="col-pdf no-warp"><%= total_all.round.to_i %></td>  
                               <% full_mark=full_mid+full_sb+full_ob+full_pr %> 

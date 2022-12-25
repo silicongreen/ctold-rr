@@ -218,22 +218,27 @@ if @total_std.blank?
                   if full_ob == 25 && total_ob.round.to_i < 10 
                     u_grade = u_grade+1 
                     subject_failed == true
+                    marks_all = marks_all + ",mo---" + sub['code'].to_s + "---"
                   elsif full_ob == 30 && total_ob.round.to_i < 12
                     u_grade = u_grade+1 
+                    marks_all = marks_all + ",mo1---" + sub['code'].to_s + "---"
                     subject_failed == true
                   end
 
                   if full_sb == 50 && total_sb.round.to_i < 20 
                     u_grade = u_grade+1 
                     subject_failed == true
+                    marks_all = marks_all + ",ms---" + sub['code'].to_s + "---"
                   elsif full_sb == 70 && total_sb.round.to_i < 28
                     u_grade = u_grade+1 
                     subject_failed == true
+                    marks_all = marks_all + ",ms1---" + sub['code'].to_s + "---"
                   end
 
                   if full_pr == 25 && total_pr.round.to_i < 10
                     u_grade = u_grade+1 
                     subject_failed == true
+                    marks_all = marks_all + ",mp---" + sub['code'].to_s + "---"
                   end
 
                 end
@@ -298,22 +303,27 @@ if @total_std.blank?
                     if full_ob2 == 25 && total_ob2.round.to_i < 10 
                       u_grade = u_grade+1 
                       subject_failed == true
+                      marks_all = marks_all + ",mo11---" + sub['code'].to_s + "---"
                     elsif full_ob2 == 30 && total_ob2.round.to_i < 12
                       u_grade = u_grade+1 
                       subject_failed == true
+                      marks_all = marks_all + ",mo111---" + sub['code'].to_s + "---"
                     end
   
                     if full_sb2 == 50 && total_sb2.round.to_i < 20 
                       u_grade = u_grade+1 
                       subject_failed == true
+                      marks_all = marks_all + ",ms11---" + sub['code'].to_s + "---"
                     elsif full_sb2 == 70 && total_sb2.round.to_i < 28
                       u_grade = u_grade+1 
                       subject_failed == true
+                      marks_all = marks_all + ",ms111---" + sub['code'].to_s + "---"
                     end
   
                     if full_pr2 == 25 && total_pr2.round.to_i < 10
                       u_grade = u_grade+1 
                       subject_failed == true
+                      marks_all = marks_all + ",mp11---" + sub['code'].to_s + "---"
                     end
 
                     full_first_sub=full_mid+full_sb+full_ob+full_pr

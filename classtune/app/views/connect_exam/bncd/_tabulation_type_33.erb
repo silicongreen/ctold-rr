@@ -558,6 +558,7 @@ end
                               <% end %>  
                             <% end %> 
                             <%
+                            abort(subject_full_mark.inspect)
                               subject_obtain_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100
                               subject_obtain_mark = subject_obtain_mark.round()
                               if double_subject_start == true

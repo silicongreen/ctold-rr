@@ -8985,8 +8985,8 @@ class ExamController < ApplicationController
           :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
     elsif (MultiSchool.current_school.id == 357 && @connect_exam_obj.result_type==33)
           render :pdf => 'tabulation',
-            :orientation => 'Landscape', :zoom => 1.00,
-            :page_size => 'A3',
+            :orientation => 'Landscape', :zoom => 2.00,
+            :page_size => 'B4',
             :margin => {    :top=> 10,
             :bottom => 10,
             :left=> 10,

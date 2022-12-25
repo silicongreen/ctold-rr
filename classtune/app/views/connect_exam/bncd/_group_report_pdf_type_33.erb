@@ -616,7 +616,7 @@
                                           <% total_sb2 = total_sb2+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% end %>
                                         <% if report['exam_category'] == '3' && report['quarter'] == '1' %>
-                                        <% total_mid2 = total_mid2+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                        <% total_mid2 = total_mid2+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% end %>
                                         <% if report['exam_category'] == '4' && report['quarter'] == "2" %>
                                           <% total_ob2 = total_ob2+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>

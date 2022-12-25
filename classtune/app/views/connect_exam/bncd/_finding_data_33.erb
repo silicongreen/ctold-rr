@@ -90,6 +90,7 @@ if @total_std.blank?
             u_grade = 0
             grand_total_main = 0
             grade_poin_main = 0
+            marks_all = ""
 
             @student_tab = @student_all_tab.find{|val| val.id.to_i == std['id'].to_i }
             if @student_tab.blank?
@@ -206,11 +207,13 @@ if @total_std.blank?
                 if fourth_subject.blank? 
                     grand_total_with_fraction = grand_total_with_fraction+total_mark_subject.to_f
                     grand_total = grand_total+total_mark_subject.to_f.round
+                    marks_all = marks_all.to_s + "," + total_mark_subject.to_f.round.to_s
                 else
                   new_mark = total_mark_subject.to_f.round - 40
                   if new_mark > 0
                     grand_total_with_fraction = grand_total_with_fraction+new_mark
                     grand_total = grand_total+new_mark
+                    marks_all = marks_all.to_s + "," + new_mark.to_s
                   end
                 end
                 if sub['subject_group_id'].to_i == 0
@@ -361,6 +364,7 @@ if @total_std.blank?
 
                     grand_total_with_fraction = grand_total_with_fraction+total_mark_subject.to_f
                     grand_total = grand_total+total_mark_subject.to_f.round
+                    marks_all = marks_all.to_s + "," + total_mark_subject.to_f.round.to_s
                     if full_ob2 == 25 && total_ob2.round.to_i < 10 
                       u_grade = u_grade+1 
                       subject_failed == true
@@ -618,7 +622,7 @@ if @total_std.blank?
                   grade_point_avg = 5.00
                 end
               end
-              @subject_marks_info[std['id'].to_i] = grand_grade_point.to_s + "  " + grand_total.to_s + "  " + grand_total_with_fraction.to_s + "  " + grade_point_avg.to_s
+              @subject_marks_info[std['id'].to_i] = marks_all = marks_all.to_s + "  " + grand_total.to_s + "  " + grand_total_with_fraction.to_s + "  " + grade_point_avg.to_s
               @student_result[loop_std]['gpa'] = grand_grade_point
               @student_result[loop_std]['grand_total'] = grand_total
               @student_result[loop_std]['grand_total_with_fraction'] = grand_total_with_fraction

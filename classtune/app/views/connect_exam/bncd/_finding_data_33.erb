@@ -634,11 +634,11 @@ if @total_std.blank?
               loop_std = loop_std+1
             end
             if u_grade == 0
-              grand_total_new = 50000-grand_total_with_fraction
-              grand_grade_new = 50000-grand_grade_point
+              grand_total_new = 55000-grand_total_with_fraction
+              grand_grade_new = 55000-grand_grade_point
 
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
-                @student_list_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                @student_list_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i,std['class_roll_no'].to_i]
                 if !gradeObj.blank? and !gradeObj.name.blank?
                   if @grade_count[gradeObj.name].blank?
                     @grade_count[gradeObj.name] = 1
@@ -648,11 +648,11 @@ if @total_std.blank?
                 end
               end 
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
-                @student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                @student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i,std['class_roll_no'].to_i]
                 if @section_wise_position[batch_data.id].blank?
                   @section_wise_position[batch_data.id] = []
                 end
-                @section_wise_position[batch_data.id] << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                @section_wise_position[batch_data.id] << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i,std['class_roll_no'].to_i]
               end
             end 
             if total_failed_appaered > 0
@@ -680,7 +680,33 @@ if @total_std.blank?
 
       unless @student_list.blank?
         position = 0
-        @sorted_students = @student_list.sort
+        @sorted_students = @student_list.sort do |x,y|
+          if x[0] == y[0]
+            if x[1] == y[1]
+              if x[3] == y[3]
+                0
+              else
+                if x[3] > y[3]
+                  1
+                else
+                  -1
+                end  
+              end
+            else
+              if x[1] > y[1]
+                1
+              else
+                -1
+              end
+            end
+          else
+            if x[0] > y[0]
+              1
+            else
+              -1
+            end
+          end
+        end
         @sorted_students.each do|s|
           if last_grade != s[0] or last_total != s[1]
             position = position+1
@@ -695,7 +721,33 @@ if @total_std.blank?
       last_total = 0.0
       unless @student_list_batch.blank?
         position = 0
-        @sorted_students = @student_list_batch.sort
+        @sorted_students = @student_list_batch.sort do |x,y|
+          if x[0] == y[0]
+            if x[1] == y[1]
+              if x[3] == y[3]
+                0
+              else
+                if x[3] > y[3]
+                  1
+                else
+                  -1
+                end  
+              end
+            else
+              if x[1] > y[1]
+                1
+              else
+                -1
+              end
+            end
+          else
+            if x[0] > y[0]
+              1
+            else
+              -1
+            end
+          end
+        end
         @sorted_students.each do|s|
           if last_grade != s[0] or last_total != s[1]
             position = position+1
@@ -715,7 +767,33 @@ if @total_std.blank?
         @section_wise_position.each do|key,value|
           position = 0
 
-          @sorted_students = @section_wise_position[key].sort
+          @sorted_students = @section_wise_position[key].sort do |x,y|
+            if x[0] == y[0]
+              if x[1] == y[1]
+                if x[3] == y[3]
+                  0
+                else
+                  if x[3] > y[3]
+                    1
+                  else
+                    -1
+                  end  
+                end
+              else
+                if x[1] > y[1]
+                  1
+                else
+                  -1
+                end
+              end
+            else
+              if x[0] > y[0]
+                1
+              else
+                -1
+              end
+            end
+          end
           @sorted_students.each do|s|
 
             if last_grade != s[0] or last_total != s[1]

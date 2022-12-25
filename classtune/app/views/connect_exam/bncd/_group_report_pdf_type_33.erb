@@ -512,6 +512,9 @@
                               <% else %>
                                 <td class="col-pdf no-warp">-</td>
                               <% end %>
+                              <% if @student.admission_no.to_s == '201664' %>
+                              <%= subject['code'].to_s%> <%= total_sb %><br />
+                              <% end %>
                               <% if full_sb == 50 && total_sb.round.to_i < 20 %> 
                                 <% failed_subject == true %>
                               <% elsif full_sb == 70 && total_sb.round.to_i < 28 %> 

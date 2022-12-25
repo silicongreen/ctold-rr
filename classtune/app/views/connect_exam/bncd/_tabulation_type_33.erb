@@ -306,9 +306,9 @@ end
                       <td class="col-pdf" rowspan="3">G. Tot</td>
                        <td class="col-pdf" rowspan="3">Tot GP</td>
                       <td class="col-pdf" rowspan="3">GPA</td>
-                      <td class="col-pdf" rowspan="3">Rem.</td>
-                      <td class="col-pdf" rowspan="3" style="display: none;">Position in Section</td>
-                      <td class="col-pdf" rowspan="3" style="display: none;">Position in Class</td>
+                      <td class="col-pdf" rowspan="3" style="display: none;">Rem.</td>
+                      <td class="col-pdf" rowspan="3">Position in Section</td>
+                      <td class="col-pdf" rowspan="3">Position in Class</td>
                      
 
                   </tr>
@@ -399,9 +399,9 @@ end
                       <td class="col-pdf" rowspan="3">G. Tot</td>
                        <td class="col-pdf" rowspan="3">Tot GP</td>
                       <td class="col-pdf" rowspan="3">GPA</td>
-                      <td class="col-pdf" rowspan="3">Rem.</td>
-                      <td class="col-pdf" rowspan="3" style="display: none;">Position in Section</td>
-                      <td class="col-pdf" rowspan="3" style="display: none;">Position in Class</td>
+                      <td class="col-pdf" rowspan="3" style="display: none;">Rem.</td>
+                      <td class="col-pdf" rowspan="3">Position in Section</td>
+                      <td class="col-pdf" rowspan="3">Position in Class</td>
                      
 
                   </tr>
@@ -483,12 +483,15 @@ end
                         <% count_grade = false %>
                         <% two_sub_mark = 0 %>
                         <% @report_data['report']['subjects'].each do |sub| %>
+                          <% has_mid = false %>
                           <% has_cq = false %>
                           <% has_mcq = false %>
                           <% has_pr = false %>
                           <% cq = 0 %>
                           <% cq_total = 0 %>
                           <% mcq = 0 %>
+                          <% mid = 0 %>
+                          <% mid_total = 0 %>
                           <% mcq_total = 0 %>
                           <% pr = 0 %>
                           <% pr_total = 0 %>
@@ -530,15 +533,19 @@ end
                               <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
                                 <%
-                                  if rs['exam_category'] == '3'
+                                  if rs['exam_category'] == '3' && rs['quarter'] == '2'
                                     has_cq = true
                                     cq = cq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
                                     cq_total = cq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                  elsif rs['exam_category'] == '4'
+                                  elsif rs['exam_category'] == '3' && rs['quarter'] == '1'
+                                      has_mid = true
+                                      mid = mid+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
+                                      mid_total = mid_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                  elsif rs['exam_category'] == '4' && rs['quarter'] == '2'
                                       has_mcq = true
                                       mcq = mcq+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
                                       mcq_total = mcq_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                  elsif rs['exam_category'] == '5'
+                                  elsif rs['exam_category'] == '5' && rs['quarter'] == '2'
                                       has_pr = true
                                       pr = pr+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i
                                       pr_total = pr_total+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
@@ -547,8 +554,8 @@ end
                                 <td><%= rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i %></td>
                                 <%
 
-                                subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                subject_full_mark = cq_total+mcq_total+pr_total+mid_total
+                                subject_obtain_mark = cq+mid+mcq+pr
 
 
                               %>
@@ -560,29 +567,24 @@ end
                               end
                               subject_obtain_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100
                               subject_obtain_mark = subject_obtain_mark.round()
-                              cq_pass_mark = 23
-                              mcq_pass_mark = 10
-                              pr_pass_mark = 8
-                              if has_cq and has_mcq and has_pr
-                                cq_pass_mark = 17
-                                mcq_pass_mark = 8
-                              end
                               failed_student = false
-                              if has_cq and cq_total > 0
-                                if cq.to_i < cq_pass_mark
-                                  failed_student = true
-                                end
+                              if mcq_total == 25 && mcq.round.to_i < 10 && fourth_subject.blank?
+                                failed_student = true
+                              elsif mcq_total == 30 && mcq.round.to_i < 12 && fourth_subject.blank?
+                                failed_student = true
                               end
-                              if has_mcq and mcq_total > 0
-                                if mcq.to_i < mcq_pass_mark
-                                  failed_student = true
-                                end
+            
+                              if cq_total == 50 && cq.round.to_i < 20 && fourth_subject.blank?
+                                failed_student = true
+                              elsif cq_total == 70 && cq.round.to_i < 28 && fourth_subject.blank?
+                                failed_student = true
                               end
-                              if has_pr and pr_total > 0
-                                if pr.to_i < pr_pass_mark
-                                  failed_student = true
-                                end
+            
+                              if pr_total == 25 && pr.round.to_i < 10 && fourth_subject.blank?
+                                failed_student = true
                               end
+                              
+                              
                             %>
                             <td>
                                 <%= subject_obtain_mark.to_i %>   
@@ -654,7 +656,7 @@ end
 
                           <td>
                               <%#= sprintf( "%0.02f", total_mark) %>    
-                              <%= total_mark.to_i %>    
+                              <%= total_mark.round.to_i %>    
                           </td>
                           
 
@@ -673,21 +675,21 @@ end
                           <td>
                               <%= sprintf( "%0.02f", grade_point_avg) %>
                           </td> 
-                          <td>
+                          <td style="display: none;">
                             <% if !@student_position_batch[std['id'].to_i].blank? %> 
                               Pass
                             <% else %>
                               Fail
                             <% end %>
                           </td> 
-                          <td style="display: none;">
+                          <td>
                               <% if !@student_position_batch[std['id'].to_i].blank? %> 
                                 <%= @student_position_batch[std['id'].to_i] %>
                               <% else %>
                                 -
                               <% end %>
                           </td>
-                          <td style="display: none;">
+                          <td>
                               <% if !@student_position[std['id'].to_i].blank? %> 
                                 <%= @student_position[std['id'].to_i] %>
                               <% else %>

@@ -996,10 +996,7 @@
                       <td class="col-pdf  no-warp"><% if !@student_position_batch[@student.id.to_i].blank? %>Pass<% else %>Failed<% end %></td>
                       <td class="col-pdf  no-warp"><% if !@student_position_batch[@student.id.to_i].blank? %><%= sprintf( "%0.02f", grade_point_avg) %><% else %>0.00<% end %></td>
                       <td class="col-pdf  no-warp">
-                          "GP = "<%= @subject_marks_info[@student.id.to_i][0] %><br />
-                          "Grand Total = "<%= @subject_marks_info[@student.id.to_i][1] %><br />
-                          "Grand Total Fraction = "<%= @subject_marks_info[@student.id.to_i][2] %><br />
-                          "GPA = "<%= @subject_marks_info[@student.id.to_i][3] %><br />
+                          <%= @subject_marks_info[@student.id.to_i] %><br />
                           <% if !@student_position_batch[@student.id.to_i].blank? %> 
                             <%= @student_position_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
                           <% else %>

@@ -558,11 +558,11 @@ end
                               <% end %>  
                             <% end %> 
                             <%
+                              subject_obtain_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100
+                              subject_obtain_mark = subject_obtain_mark.round()
                               if double_subject_start == true
                                 two_sub_mark = two_sub_mark+subject_obtain_mark
                               end
-                              subject_obtain_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100
-                              subject_obtain_mark = subject_obtain_mark.round()
                               failed_student = false
                               if mcq_total == 25 && mcq.round.to_i < 10 && fourth_subject.blank?
                                 failed_student = true
@@ -600,7 +600,7 @@ end
                                <% end %>   
                             <% end %>
                             <% main_mark = subject_obtain_mark.to_f %>
-                            <% if double_subject_start == false %>
+                            <% if count_grade == true %>
                               <%
                                  main_mark = 0
                                  if two_sub_mark > 0

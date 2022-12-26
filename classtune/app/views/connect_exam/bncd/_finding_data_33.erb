@@ -577,11 +577,11 @@ if @total_std.blank?
           end
         end
         @sorted_students.each do|s|
-          if last_grade != s[0] or last_total != s[1]
-            position = position+1
-          end
-          last_grade = s[0]
-          last_total = s[1]
+          #if last_grade != s[0] or last_total != s[1]
+          position = position+1
+          #end
+          #last_grade = s[0]
+          #last_total = s[1]
           @student_position[s[2].to_i] = position
         end 
       end
@@ -618,11 +618,11 @@ if @total_std.blank?
           end
         end
         @sorted_students.each do|s|
-          if last_grade != s[0] or last_total != s[1]
-            position = position+1
-          end
-          last_grade = s[0]
-          last_total = s[1]
+          #if last_grade != s[0] or last_total != s[1]
+          position = position+1
+          #end
+          #last_grade = s[0]
+          #last_total = s[1]
           @student_position_batch[s[2].to_i] = position
         end 
       end
@@ -665,11 +665,11 @@ if @total_std.blank?
           end
           @sorted_students.each do|s|
 
-            if last_grade != s[0] or last_total != s[1]
-              position = position+1
-            end
-            last_grade = s[0]
-            last_total = s[1]
+            #if last_grade != s[0] or last_total != s[1]
+            position = position+1
+            #end
+            #last_grade = s[0]
+            #last_total = s[1]
             if @section_all_position_batch[key].blank?
               @section_all_position_batch[key] = {}
             end

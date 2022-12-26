@@ -76,6 +76,7 @@
         end 
         total_grade = 0
         total_subjects = 0
+        all_marks = ""
         tab['subjects'].each do |sub|
           if sub['grade_subject'].to_i == 1
             next
@@ -108,6 +109,7 @@
           if full_mark > 0
             if subject_marks > 0
               main_mark = ( subject_marks.to_f/full_mark.to_f )*100.00
+              all_marks = all_marks + "," + main_mark
               grand_total = grand_total+main_mark
               grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
               if !grade.blank? and !grade.name.blank?
@@ -134,7 +136,7 @@
             @subject_highest[sub['id'].to_i] = main_mark.to_f
           end
         end  
-        @student_total_grade[std['id'].to_i] = total_grade.to_s + "  " + grand_total.to_s + "  " + subject_failed.to_s
+        @student_total_grade[std['id'].to_i] = all_marks.to_s + "  " + total_grade.to_s + "  " + grand_total.to_s + "  " + subject_failed.to_s
         if subject_failed == false
           if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
             std_marks_full_new = 55000.00-grand_total.to_f

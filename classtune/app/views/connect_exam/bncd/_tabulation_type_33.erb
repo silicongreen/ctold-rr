@@ -199,8 +199,11 @@ end
                       <td class="col-pdf" rowspan="3">GPA</td>
                       <td class="col-pdf" rowspan="3" style="display: none;">Rem.</td>
                       <td class="col-pdf" rowspan="3">Position in Section</td>
+                      <% if @batch.course.course_name == "IX" %>
+                      <td class="col-pdf" rowspan="3">Position in Group</td>
+                      <% else %>
                       <td class="col-pdf" rowspan="3">Position in Class</td>
-                     
+                      <% end %>
 
                   </tr>
                   
@@ -304,7 +307,11 @@ end
                       <td class="col-pdf" rowspan="3">GPA</td>
                       <td class="col-pdf" rowspan="3" style="display: none;">Rem.</td>
                       <td class="col-pdf" rowspan="3">Position in Section</td>
+                      <% if @batch.course.course_name == "IX" %>
+                      <td class="col-pdf" rowspan="3">Position in Group</td>
+                      <% else %>
                       <td class="col-pdf" rowspan="3">Position in Class</td>
+                      <% end %>
                      
 
                   </tr>
@@ -397,7 +404,11 @@ end
                       <td class="col-pdf" rowspan="3">GPA</td>
                       <td class="col-pdf" rowspan="3" style="display: none;">Rem.</td>
                       <td class="col-pdf" rowspan="3">Position in Section</td>
+                      <% if @batch.course.course_name == "IX" %>
+                      <td class="col-pdf" rowspan="3">Position in Group</td>
+                      <% else %>
                       <td class="col-pdf" rowspan="3">Position in Class</td>
+                      <% end %>
                      
 
                   </tr>

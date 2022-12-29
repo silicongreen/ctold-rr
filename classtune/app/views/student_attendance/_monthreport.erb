@@ -51,12 +51,12 @@
       <tr class="week">
         <% @days_of_week= ["#{t('sun')}","#{t('mon')}","#{t('tue')}","#{t('wed')}","#{t('thu')}","#{t('fri')}","#{t('sat')}"] %>
         <%
-        i = 0
+        i = 0 
         weekend_class = ''
         @days_of_week.each do |d|
-          if @attendence['week_end'].include?(i.to_s)
-            weekend_class = ' weekend'
-          end
+          #if @attendence['week_end'].include?(i.to_s)
+          #  weekend_class = ' weekend'
+          #end
         %>
           <th class="f5<%= weekend_class %>"><%= d %></th>
           <%

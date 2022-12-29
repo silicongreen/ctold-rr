@@ -63,6 +63,7 @@
       </div>
       <% end %>
       <% if !@current_user.admin?  %>
+      <div id="subjects" style="display: none;"></div>
       <div style="height: 60px;"></div>
         <div style="width: 100%; text-align: center;clear: both;margin-top: 20px;height: 40px;">
         <%= link_to_remote "View Report",

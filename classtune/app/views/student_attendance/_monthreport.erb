@@ -51,10 +51,10 @@
       <tr class="week">
         <% @days_of_week= ["#{t('sun')}","#{t('mon')}","#{t('tue')}","#{t('wed')}","#{t('thu')}","#{t('fri')}","#{t('sat')}"] %>
         <%
+        abort(@attendence['week_end'].to_s)
         i = 0 
         weekend_class = ''
         @days_of_week.each do |d|
-          abort(@attendence['week_end'].inspect)
           if @attendence['week_end'].include?(i.to_s)
             weekend_class = ' weekend'
           end

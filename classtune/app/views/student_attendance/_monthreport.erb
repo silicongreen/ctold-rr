@@ -51,12 +51,13 @@
       <tr class="week">
         <% @days_of_week= ["#{t('sun')}","#{t('mon')}","#{t('tue')}","#{t('wed')}","#{t('thu')}","#{t('fri')}","#{t('sat')}"] %>
         <%
-        abort(@attendence.inspect)
         i = 0 
         weekend_class = ''
         @days_of_week.each do |d|
-          if @attendence['week_end'].include?(i.to_s)
-            weekend_class = ' weekend'
+          unless  @attendence.blank?
+            if @attendence['week_end'].include?(i.to_s)
+              weekend_class = ' weekend'
+            end
           end
         %>
           <th class="f5<%= weekend_class %>"><%= d %></th>
@@ -86,7 +87,7 @@
     <%# Weekend %>
             <% unless (r == 1 and c <= @start_date_day) %>
               <% unless dt > @last_day.day %>
-                <% unless @attendence['week_end'].empty? %>
+                <% unless @attendence['week_end'].blank? %>
                   <% @attendence['week_end'].each do |week_end| %>
                     <% k=c-1; %>
                     <% if k == week_end%>
@@ -105,7 +106,7 @@
     <%# Absent %>
             <% unless (r == 1 and c <= @start_date_day) %>
               <% unless dt > @last_day.day %>
-                <% unless @attendence['absent'].empty? or data_found == true %>
+                <% unless @attendence['absent'].blank? or data_found == true %>
                   <% @attendence['absent'].each do |absent| %>
                     <% if absent['date'].to_date == "#{@show_month.year}-#{@show_month.month}-#{dt}".to_date %>
                       <%
@@ -124,7 +125,7 @@
     <%# Late %>
             <% unless (r == 1 and c <= @start_date_day) %>
               <% unless dt > @last_day.day %>
-                <% unless @attendence['late'].empty? or data_found == true %>
+                <% unless @attendence['late'].blank? or data_found == true %>
                   <% @attendence['late'].each do |late| %>
                     <% if late['date'].to_date == "#{@show_month.year}-#{@show_month.month}-#{dt}".to_date %>
                       <%
@@ -143,7 +144,7 @@
     <%# Leave %>
             <% unless (r == 1 and c <= @start_date_day) %>
               <% unless dt > @last_day.day %>
-                <% unless @attendence['leave'].empty? or data_found == true %>
+                <% unless @attendence['leave'].blank? or data_found == true %>
                   <% @attendence['leave'].each do |leave| %>
                     <%  %>
                     <% if leave['start_date'].to_date == "#{@show_month.year}-#{@show_month.month}-#{dt}".to_date %>
@@ -163,7 +164,7 @@
     <%# Holiday %>
             <% unless (r == 1 and c <= @start_date_day) %>
               <% unless dt > @last_day.day %>
-                <% unless @attendence['holiday'].empty? or data_found == true %>
+                <% unless @attendence['holiday'].blank? or data_found == true %>
                   <% @attendence['holiday'].each do |holiday| %>
                     <% if holiday['start_date'].to_date == "#{@show_month.year}-#{@show_month.month}-#{dt}".to_date %>
                       <%
@@ -181,7 +182,7 @@
     <%# Today %>
             <% unless (r == 1 and c <= @start_date_day) %>
               <% unless dt > @last_day.day %>
-                <% unless @attendence['current_date'].empty? or data_found == true %>
+                <% unless @attendence['current_date'].blank? or data_found == true %>
                   <% if @attendence['current_date'].to_date == "#{@show_month.year}-#{@show_month.month}-#{dt}".to_date %>
                     <%
                     td_class = 'today'

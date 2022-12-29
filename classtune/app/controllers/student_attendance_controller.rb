@@ -67,7 +67,6 @@ class StudentAttendanceController < ApplicationController
   end
   
   def month_report
-    abort('ggegeg')
     if params[:new_month].nil?
       @show_month = @local_tzone_time.to_date
     else

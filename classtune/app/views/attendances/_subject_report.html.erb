@@ -3,7 +3,7 @@
     <% #@batches.reject!{|c| c.course.no_call.to_i == 0} %>
   <% #end %>
   <% @batches.reject!{|c| c.is_deleted == true} %>
-  <div id="page-yield"  style="margin-top:0px; padding: 14px;"> 
+  <div id="page-yield"  style="margin-top:0px; padding: 14px; width: 96%;"> 
       <div class="label-field-pair" style="float:left; clear:both; width:80%; margin-bottom:5px;">
         <label for="duedate">Select Date</label>
         <div  class="text-input-bg">
@@ -62,7 +62,17 @@
         </div>
       </div>
       <% end %>
-      
+      <% if !@current_user.admin?  %>
+        <div style="width: 100%; text-align: center;">
+        <%= link_to_remote "View Report",
+        :before => "Element.show('loader2');",
+        :success => "Element.hide('loader2');",
+        :update => 'monthreport',
+        :url=>{:controller=>"student_attendance", :action=>"month_report_data"},
+        :html => {:class => 'f2'}
+    %>
+        </div>
+      <% end %>
     <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loader", :style =>"display: none;" ) %>
 
 

@@ -69,7 +69,7 @@
         :before => "Element.show('loader2');",
         :success => "Element.hide('loader2');",
         :update => 'monthreport',
-        :url => {:controller => "attendances", :action => "subjects3"}, :with => "'batch_id='+value+'&date_from='+j('#attandence_date').val()+'&date_to='+j('#end_date').val()",
+        :url => {:controller => "attendances", :action => "subjects3"}, :with => "'date_from='+j('#attandence_date').val()+'&date_to='+j('#end_date').val()",
         :html => {:class => 'button-link button-link-report',:style => "float: none;width: 11%;margin: auto;margin-top: 50px;background: #49BB4B !important;color: #fff;"}
     %>
         </div>

@@ -26,7 +26,7 @@
              
        
       </div>
-      <% if !@current_user.admin? and MultiSchool.current_school.code == "sfx" %>
+      <% if @current_user.admin?  %>
       <div class="row" style="width:45%;">  
         <div class="row_label">
           <div>

@@ -63,13 +63,13 @@
       </div>
       <% end %>
       <% if !@current_user.admin?  %>
-        <div style="width: 100%; text-align: center;">
+        <div style="width: 100%; text-align: center;clear: both;margin-top: 20px;height: 40px;">
         <%= link_to_remote "View Report",
         :before => "Element.show('loader2');",
         :success => "Element.hide('loader2');",
         :update => 'monthreport',
         :url=>{:controller=>"student_attendance", :action=>"month_report_data"},
-        :html => {:class => 'f2'}
+        :html => {:class => 'button-link button-link-report',:style => "float: none;width: 11%;margin: auto;margin-top: 50px;background: #49BB4B !important;color: #fff;"}
     %>
         </div>
       <% end %>

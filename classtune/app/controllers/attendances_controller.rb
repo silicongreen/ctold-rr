@@ -440,6 +440,24 @@ class AttendancesController < ApplicationController
       @subjects.sort! { |a, b|  a.name <=> b.name }
         
     end
+
+
+    if @current_user.employee?
+      employee = @current_user.employee_record
+      @employee_subjects = employee.subjects
+      batch_ids = []
+      subject_ids = []
+      unless @employee_subjects.blank?
+        @employee_subjects.each do |employee_subject|
+          batch_ids << employee_subject.batch_id
+          subject_ids << employee_subject.id
+        end
+      end
+      unless subject_ids.blank?
+        @subjects = Subject.find(:all, :conditions => "id in (" + subject_ids.join(",") + ")")
+      end
+    end
+
     render(:update) do |page|
       page.replace_html 'subjects', :partial=> 'subjects3'
       page.replace_html 'register', :partial=> 'batch_attendance_report'

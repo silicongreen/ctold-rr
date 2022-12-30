@@ -26,7 +26,6 @@
              
        
       </div>
-      <% if @current_user.admin?  %>
       <div class="row" style="width:45%;">  
         <div class="row_label">
           <div>
@@ -46,7 +45,6 @@
           </div>
         </div>
       </div>
-      <% end %>
       <div class="row" style="width:45%;">
         <div class="row_label">
           <div>
@@ -63,14 +61,14 @@
       </div>
       
       <% if !@current_user.admin?  %>
-      <div style="height: 60px;"></div>
-        <div style="width: 100%; text-align: center;clear: both;margin-top: 20px;height: 40px;">
+      <div style="height: 60px;display: none;"></div>
+        <div style="width: 100%; text-align: center;clear: both;margin-top: 20px;height: 40px;display: none; ">
         <%= link_to_remote "View Report",
         :before => "Element.show('loader2');",
         :success => "Element.hide('loader2');",
         :update => 'monthreport',
         :url => {:controller => "attendances", :action => "subjects3"}, :with => "'option=1&date_from='+j('#attandence_date').val()+'&date_to='+j('#end_date').val()",
-        :html => {:class => 'button-link button-link-report',:style => "float: none;width: 11%;margin: auto;margin-top: 50px;background: #49BB4B !important;color: #fff;"}
+        :html => {:class => 'button-link button-link-report',:style => "display: none; float: none;width: 11%;margin: auto;margin-top: 50px;background: #49BB4B !important;color: #fff;"}
     %>
         </div>
       <% end %>

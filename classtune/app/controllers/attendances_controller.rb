@@ -300,7 +300,7 @@ class AttendancesController < ApplicationController
             if !params[:date_from].blank?
               @date_form = params[:date_from].to_date.strftime("%Y-%m-%d")
             end
-            @students = Student.find(:all, :condition => "batch_id in (" + params[:batch_id].join(",") + ")")
+            @students = Student.find(:all, :condition => "batch_id in (" + batch_ids.join(",") + ")")
           end
           abort(@students.inspect)
         elsif @current_user.student?

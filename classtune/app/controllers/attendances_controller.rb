@@ -285,7 +285,7 @@ class AttendancesController < ApplicationController
         if @current_user.employee?
           employee = @current_user.employee_record
           @employee_subjects = employee.subjects
-          abort(@employee_subjects.insoect)
+          abort(@employee_subjects.inspect)
         elsif @current_user.student?
         elsif @current_user.student?
         end

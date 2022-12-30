@@ -287,11 +287,14 @@ class AttendancesController < ApplicationController
           @employee_subjects = employee.subjects
           @subject_batch = @employee_subjects
           batch_ids = []
+          subject_ids = []
           unless @employee_subjects.blank?
             @employee_subjects.each do |employee_subject|
               batch_ids << employee_subject.batch_id
+              subject_ids << employee_subject.id
             end
           end
+          abort(subject_ids.inspect)
           unless batch_ids.blank?
             @date_to = @local_tzone_time.to_date.strftime("%Y-%m-%d")
             @date_form = @local_tzone_time.to_date.strftime("%Y-%m-%d")

@@ -43,7 +43,13 @@
             </tr> 
             <% unless @data['std_att'].blank? %>
             <% @data['std_att'].each do |att| %>
-              <%= abort(att.inspect) %>
+              <% if current_user.student? or current_user.parent? %>
+                <%
+                  if att['roll_no'].to_s != @student_id.to_s
+                    next
+                  end
+                %>
+              <% end %>
             <tr>
               <td class="col-2"><%= att['roll_no'] %></td>
               <td class="col-2 left-align"><%= att['name'] %></td>

@@ -295,7 +295,7 @@ class AttendancesController < ApplicationController
       end
       @subject_batch = Subject.find_all_by_batch_id(params[:batch_id])
       if @current_user.student?
-        @students = Student.find(:all, :conditions => "batch_id = " + params[:batch_id] + " and id = " + @current_user.student_record.id)
+        @students = Student.find(:all, :conditions => "batch_id = " + params[:batch_id].to_s + " and id = " + @current_user.student_record.id.to_s)
       else
         @students = Student.find_all_by_batch_id(params[:batch_id])
       end

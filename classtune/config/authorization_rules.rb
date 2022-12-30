@@ -1096,7 +1096,7 @@ authorization do
       :download_attachment,
       :leave_history,
       :update_leave_history,
-      :month_report123,
+      :month_report,
       :subject_report,
       :subject_report_pdf
     ]
@@ -3624,6 +3624,14 @@ authorization do
       :fee_details,
       :update_is_promoted
     ]
+    has_permission_on [:attendances], :to => [:index,:show_report_student,:rollcall,:subjects,:save_attendance_subject,:save_attendance_day,
+      :get_subject_student,:get_subject_report_all,:get_subject_report_pdf,
+      :get_subject_report_all_name,
+      :subjects2,
+      :subjects3,
+      :get_subject_batch_report_pdf,
+      :get_subject_batch_report_excel,
+      :subject_report,:graph_code,:show_report,:student_report,:show_student,:class_report]
     has_permission_on [:detention],
       :to => [
       :index,

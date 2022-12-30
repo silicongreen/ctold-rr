@@ -291,7 +291,18 @@ class AttendancesController < ApplicationController
               batch_ids << employee_subject.batch_id
             end
           end
-          abort(batch_ids.inspect)
+          unless batch_ids.blank?
+            @date_to = @local_tzone_time.to_date.strftime("%Y-%m-%d")
+            @date_form = @local_tzone_time.to_date.strftime("%Y-%m-%d")
+            if !params[:date_to].blank?
+              @date_to = params[:date_to].to_date.strftime("%Y-%m-%d")
+            end
+            if !params[:date_from].blank?
+              @date_form = params[:date_from].to_date.strftime("%Y-%m-%d")
+            end
+            @students = Student.find(:all, :condition => "batch_id in (" + params[:batch_id].join(",") + ")")
+          end
+          abort(@students.inspect)
         elsif @current_user.student?
         elsif @current_user.student?
         end

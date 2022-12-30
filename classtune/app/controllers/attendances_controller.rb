@@ -440,16 +440,11 @@ class AttendancesController < ApplicationController
       @subjects.sort! { |a, b|  a.name <=> b.name }
         
     end
-    unless params[:option].blank?
-      render(:update) do |page|
-        page.replace_html 'register', :partial=> 'batch_attendance_report'
-      end
-    else
-      render(:update) do |page|
-        page.replace_html 'subjects', :partial=> 'subjects3'
-        page.replace_html 'register', :partial=> 'batch_attendance_report'
-      end
+    render(:update) do |page|
+      page.replace_html 'subjects', :partial=> 'subjects3'
+      page.replace_html 'register', :partial=> 'batch_attendance_report'
     end
+ 
   end
   
   

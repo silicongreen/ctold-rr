@@ -301,8 +301,18 @@ class AttendancesController < ApplicationController
               @date_form = params[:date_from].to_date.strftime("%Y-%m-%d")
             end
             @students = Student.find(:all, :conditions => "batch_id in (" + batch_ids.join(",") + ")")
+            std_subject = StudentsSubject.find(:all, :conditions => "batch_id in (" + batch_ids.join(",") + ")")
+
+            @std_subject_hash = []
+            unless std_subject.blank?
+              std_subject.each do |std_sub|
+                @std_subject_hash << std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s
+              end
+            end
+            @subject_att_register = SubjectAttendanceRegister.all(:select=>"count(id) as total_register,subject_id",:conditions=>["batch_id in (" + batch_ids.join(",") + ") and attendance_date >= ? and attendance_date <= ?",@date_form,@date_to],:group=>"subject_id")
+            
+            @subject_att = SubjectAttendance.all(:select=>"count(id) as total_absent,student_id",:conditions=>["batch_id in (" + batch_ids.join(",") + ") and attendance_date >= ? and attendance_date <= ? and is_late = 0",@date_form,@date_to],:group=>"student_id")
           end
-          abort(@students.inspect)
         elsif @current_user.student?
         elsif @current_user.student?
         end

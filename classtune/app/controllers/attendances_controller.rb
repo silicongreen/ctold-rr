@@ -294,7 +294,11 @@ class AttendancesController < ApplicationController
         @date_form = params[:date_from].to_date.strftime("%Y-%m-%d")
       end
       @subject_batch = Subject.find_all_by_batch_id(params[:batch_id])
-      @students = Student.find_all_by_batch_id(params[:batch_id])
+      if @current_user.student?
+        @students = Student.find(:all, :conditions => "batch_id = " + params[:batch_id] + " and id = " + @current_user.student_record.id)
+      else
+        @students = Student.find_all_by_batch_id(params[:batch_id])
+      end
       std_subject = StudentsSubject.find_all_by_batch_id(params[:batch_id])
       @std_subject_hash = []
       unless std_subject.blank?

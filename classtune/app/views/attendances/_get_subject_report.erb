@@ -43,7 +43,7 @@
             </tr> 
             <% unless @data['std_att'].blank? %>
             <% @data['std_att'].each do |att| %>
-              <% if current_user.student? or current_user.parent? %>
+              <% if @current_user.student? or @current_user.parent? %>
                 <%
                   if att['roll_no'].to_s != @student_id.to_s
                     next

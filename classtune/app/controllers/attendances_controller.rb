@@ -280,6 +280,18 @@ class AttendancesController < ApplicationController
   end
   
   def subjects3
+    unless params[:option].blank?
+      if params[:option].to_i == 1
+        if @current_user.employee?
+          employee = @current_user.employee_record
+          @employee_subjects = employee.subjects
+          abort(@employee_subjects.insoect)
+        elsif @current_user.student?
+        elsif @current_user.student?
+        end
+      end
+    end
+    
     if params[:batch_id].present?
       @batch_id = params[:batch_id]
       @date_to = @local_tzone_time.to_date.strftime("%Y-%m-%d")
@@ -393,10 +405,15 @@ class AttendancesController < ApplicationController
       @subjects.sort! { |a, b|  a.name <=> b.name }
         
     end
-   
-    render(:update) do |page|
-      page.replace_html 'subjects', :partial=> 'subjects3'
-      page.replace_html 'register', :partial=> 'batch_attendance_report'
+    unless params[:option].blank?
+      render(:update) do |page|
+        page.replace_html 'register', :partial=> 'batch_attendance_report'
+      end
+    else
+      render(:update) do |page|
+        page.replace_html 'subjects', :partial=> 'subjects3'
+        page.replace_html 'register', :partial=> 'batch_attendance_report'
+      end
     end
   end
   

@@ -286,6 +286,7 @@ class AttendancesController < ApplicationController
           employee = @current_user.employee_record
           @employee_subjects = employee.subjects
           @subject_batch = @employee_subjects
+          abort(@subject_batch.inspect)
           batch_ids = []
           unless @employee_subjects.blank?
             @employee_subjects.each do |employee_subject|

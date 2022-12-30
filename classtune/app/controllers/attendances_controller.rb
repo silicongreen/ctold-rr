@@ -285,35 +285,43 @@ class AttendancesController < ApplicationController
         if @current_user.employee?
           employee = @current_user.employee_record
           @employee_subjects = employee.subjects
-          abort(@employee_subjects.inspect)
+          batch_ids = []
+          unless @employee_subjects.blank?
+            @employee_subjects.each do |employee_subject|
+              batch_ids << employee_subject.batch_id
+            end
+          end
+          abort(batch_ids.inspect)
         elsif @current_user.student?
         elsif @current_user.student?
         end
       end
     end
     
-    if params[:batch_id].present?
-      @batch_id = params[:batch_id]
-      @date_to = @local_tzone_time.to_date.strftime("%Y-%m-%d")
-      @date_form = @local_tzone_time.to_date.strftime("%Y-%m-%d")
-      if !params[:date_to].blank?
-        @date_to = params[:date_to].to_date.strftime("%Y-%m-%d")
-      end
-      if !params[:date_from].blank?
-        @date_form = params[:date_from].to_date.strftime("%Y-%m-%d")
-      end
-      @subject_batch = Subject.find_all_by_batch_id(params[:batch_id])
-      @students = Student.find_all_by_batch_id(params[:batch_id])
-      std_subject = StudentsSubject.find_all_by_batch_id(params[:batch_id])
-      @std_subject_hash = []
-      unless std_subject.blank?
-        std_subject.each do |std_sub|
-          @std_subject_hash << std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s
+    if !params[:option].present?
+      if params[:batch_id].present?
+        @batch_id = params[:batch_id]
+        @date_to = @local_tzone_time.to_date.strftime("%Y-%m-%d")
+        @date_form = @local_tzone_time.to_date.strftime("%Y-%m-%d")
+        if !params[:date_to].blank?
+          @date_to = params[:date_to].to_date.strftime("%Y-%m-%d")
         end
+        if !params[:date_from].blank?
+          @date_form = params[:date_from].to_date.strftime("%Y-%m-%d")
+        end
+        @subject_batch = Subject.find_all_by_batch_id(params[:batch_id])
+        @students = Student.find_all_by_batch_id(params[:batch_id])
+        std_subject = StudentsSubject.find_all_by_batch_id(params[:batch_id])
+        @std_subject_hash = []
+        unless std_subject.blank?
+          std_subject.each do |std_sub|
+            @std_subject_hash << std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s
+          end
+        end
+        @subject_att_register = SubjectAttendanceRegister.all(:select=>"count(id) as total_register,subject_id",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ?",params[:batch_id],@date_form,@date_to],:group=>"subject_id")
+        
+        @subject_att = SubjectAttendance.all(:select=>"count(id) as total_absent,student_id",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ? and is_late = 0",params[:batch_id],@date_form,@date_to],:group=>"student_id")
       end
-      @subject_att_register = SubjectAttendanceRegister.all(:select=>"count(id) as total_register,subject_id",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ?",params[:batch_id],@date_form,@date_to],:group=>"subject_id")
-      
-      @subject_att = SubjectAttendance.all(:select=>"count(id) as total_absent,student_id",:conditions=>["batch_id = ? and attendance_date >= ? and attendance_date <= ? and is_late = 0",params[:batch_id],@date_form,@date_to],:group=>"student_id")
     end   
 
     @subjects = []

@@ -325,8 +325,8 @@ class AttendanceController extends Controller
         $subject_id = Yii::app()->request->getPost('subject_id');
         $date_start = Yii::app()->request->getPost('date_start');
         $date_end = Yii::app()->request->getPost('date_end');
-        
-        if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $subject_id)
+        //&& (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin)
+        if (Yii::app()->user->user_secret === $user_secret && $subject_id)
         { 
             $subjectObj = new Subjects();
             $sub_data = $subjectObj->findByPk($subject_id);     

@@ -109,7 +109,7 @@ class AttendancesController < ApplicationController
       @batches = @batches.uniq unless @batches.blank?
     elsif @current_user.student?
       batch_id = @current_user.student_record.batch_id
-      @batches = Batch.find(:all, :conditions => "batch_id = " + batch_id.to_s)
+      @batches = Batch.find(:all, :conditions => "id = " + batch_id.to_s)
     end
     render :partial=>"subject_report"
   end

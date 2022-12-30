@@ -556,6 +556,7 @@ class AttendancesController < ApplicationController
         else
           get_subject_report_name(params[:subject_id])
         end
+        abort(@student_response.inspect)
         @subject = Subject.find(params[:subject_id])
         if @student_response['status']['code'].to_i == 200
           @data = @student_response['data']

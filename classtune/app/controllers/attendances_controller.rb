@@ -110,6 +110,11 @@ class AttendancesController < ApplicationController
     elsif @current_user.student?
       batch_id = @current_user.student_record.batch_id
       @batches = Batch.find(:all, :conditions => "id = " + batch_id.to_s)
+    elsif @current_user.parent?
+      target = @current_user.guardian_entry.current_ward_id      
+      @student = Student.find_by_id(target)
+      batch_id = @student.batch_id
+      @batches = Batch.find(:all, :conditions => "id = " + batch_id.to_s)
     end
     render :partial=>"subject_report"
   end
@@ -296,6 +301,10 @@ class AttendancesController < ApplicationController
       @subject_batch = Subject.find_all_by_batch_id(params[:batch_id])
       if @current_user.student?
         @students = Student.find(:all, :conditions => "batch_id = " + params[:batch_id].to_s + " and id = " + @current_user.student_record.id.to_s)
+      elsif @current_user.parent?
+        target = @current_user.guardian_entry.current_ward_id      
+        student = Student.find_by_id(target)
+        @students = Student.find(:all, :conditions => "batch_id = " + params[:batch_id].to_s + " and id = " + student.id.to_s)
       else
         @students = Student.find_all_by_batch_id(params[:batch_id])
       end
@@ -556,7 +565,6 @@ class AttendancesController < ApplicationController
         else
           get_subject_report_name(params[:subject_id])
         end
-        abort(@student_response.inspect)
         @subject = Subject.find(params[:subject_id])
         if @student_response['status']['code'].to_i == 200
           @data = @student_response['data']
@@ -1886,7 +1894,7 @@ class AttendancesController < ApplicationController
     api_endpoint = champs21_api_config['api_url']
     date_start = date_start.to_date unless date_start.blank?
     date_end = date_end.to_date unless date_end.blank?
-    if current_user.employee? or current_user.admin?
+    if current_user.employee? or current_user.admin? or current_user.student? or current_user.parent?
       api_uri = URI(api_endpoint + "api/attendance/reportallteachername")
       http = Net::HTTP.new(api_uri.host, api_uri.port)
       request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })

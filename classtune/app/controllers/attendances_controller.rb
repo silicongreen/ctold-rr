@@ -285,6 +285,7 @@ class AttendancesController < ApplicationController
         if @current_user.employee?
           employee = @current_user.employee_record
           @employee_subjects = employee.subjects
+          @subject_batch = @employee_subjects
           batch_ids = []
           unless @employee_subjects.blank?
             @employee_subjects.each do |employee_subject|
@@ -369,7 +370,7 @@ class AttendancesController < ApplicationController
           subjects = @employee_subjects.select{|sub| sub.elective_group_id.nil?}
           electives = @employee_subjects.select{|sub| sub.elective_group_id.present?}
           elective_subjects=electives.map{|x| x.elective_group.subjects.first}
-          @entries=[]
+          @entries=[] 
           @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:batch_id=>@batch.id,:employee_id => @employee.id,:class_timing_id=>@class_timing_id})
           @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>elective_subjects,:class_timing_id=>@class_timing_id})
           unless @entries.blank?

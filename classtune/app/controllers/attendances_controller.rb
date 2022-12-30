@@ -569,6 +569,13 @@ class AttendancesController < ApplicationController
         if @student_response['status']['code'].to_i == 200
           @data = @student_response['data']
         end
+        if @current_user.student?
+          @student_id = @current_user.student_record.batch_id
+        elsif @current_user.parent?
+          target = @current_user.guardian_entry.current_ward_id      
+          @student = Student.find_by_id(target)
+          @student_id = @current_user.student_record.batch_id
+        end
         respond_to do |format|
           format.js { render :action => 'get_subject_report' }
         end

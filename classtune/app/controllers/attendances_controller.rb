@@ -286,7 +286,6 @@ class AttendancesController < ApplicationController
           employee = @current_user.employee_record
           @employee_subjects = employee.subjects
           @subject_batch = @employee_subjects
-          abort(@subject_batch.inspect)
           batch_ids = []
           unless @employee_subjects.blank?
             @employee_subjects.each do |employee_subject|
@@ -314,6 +313,7 @@ class AttendancesController < ApplicationController
             @subject_att_register = SubjectAttendanceRegister.all(:select=>"count(id) as total_register,subject_id",:conditions=>["batch_id in (" + batch_ids.join(",") + ") and attendance_date >= ? and attendance_date <= ?",@date_form,@date_to],:group=>"subject_id")
             
             @subject_att = SubjectAttendance.all(:select=>"count(id) as total_absent,student_id",:conditions=>["batch_id in (" + batch_ids.join(",") + ") and attendance_date >= ? and attendance_date <= ? and is_late = 0",@date_form,@date_to],:group=>"student_id")
+            abort(@subject_att_register.inspect)
           end
         elsif @current_user.student?
         elsif @current_user.student?

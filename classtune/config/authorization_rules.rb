@@ -962,7 +962,7 @@ authorization do
       :leaves,
       :leave_history,
       :update_leave_history,
-      :month_report123,
+      :month_report,
       :subject_report,
       :subject_report_pdf
     ] 
@@ -1096,7 +1096,7 @@ authorization do
       :download_attachment,
       :leave_history,
       :update_leave_history,
-      :month_report,
+      :month_report123,
       :subject_report,
       :subject_report_pdf
     ]

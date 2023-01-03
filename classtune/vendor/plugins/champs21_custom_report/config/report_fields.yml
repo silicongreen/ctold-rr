@@ -92,6 +92,7 @@
   - :batch
   - :course
   - :course_section_name
+  - :course_session
   - :admission_no
   - :first_name
   - :middle_name

@@ -67,7 +67,7 @@ class Student < ActiveRecord::Base
   named_scope :by_first_name, :order=>'first_name',:conditions => { :is_active => true,:is_deleted=>false }
   
   named_scope :by_roll_number_name, :order=>'cast(class_roll_no as unsigned) ASC, first_name ASC',:conditions => { :is_active => true,:is_deleted=>false }
-
+ 
   validates_presence_of :admission_no, :batch_id, :date_of_birth,:nationality_id
   validates_presence_of :pass, :unless => Proc.new { |student| student.batch_name.nil? or student.batch_name.empty?}
   validates_presence_of :section, :unless => Proc.new { |student| student.batch_name.nil? or student.batch_name.empty?}
@@ -342,6 +342,10 @@ class Student < ActiveRecord::Base
 
   def graduated_batches
     self.batch_students.map{|bt| bt.batch}
+  end
+
+  def course_section_name
+    self.batch.course.section_name
   end
 
   def all_batches

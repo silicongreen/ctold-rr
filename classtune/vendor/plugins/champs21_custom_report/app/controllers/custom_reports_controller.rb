@@ -86,7 +86,7 @@ class CustomReportsController < ApplicationController
   def show
     @report=Report.find params[:id]
     @report_columns = @report.report_columns
-    abort(@report.model_object.instance_methods.inspect)
+    #abort(@report.model_object.instance_methods.inspect)
     @report_columns.delete_if{|rc| !((@report.model_object.instance_methods+@report.model_object.column_names).include?(rc.method))}
     @column_type = Hash.new
     @report.model_object.columns_hash.each{|key,val| @column_type[key]=val.type }

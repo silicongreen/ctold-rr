@@ -348,6 +348,10 @@ class Student < ActiveRecord::Base
     self.batch.course.section_name
   end
 
+  def course_session
+    self.batch.course.session
+  end
+
   def all_batches
     self.graduated_batches + self.batch.to_a
   end

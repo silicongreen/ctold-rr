@@ -91,6 +91,7 @@
   - :student_category
   - :batch
   - :course
+  - :course_section_name
   - :admission_no
   - :first_name
   - :middle_name

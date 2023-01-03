@@ -33,7 +33,7 @@
         <%if i%3==0 %>
           <li class="list<%=cycle('odd', 'even')%>">
           <%end%>
-          <span class="col-cell">
+          <span class="col-cell"> 
             <% check_box_id = (key==:additional ? ("additional_fields_#{col.to_s.split('_additional_fields_')[1]}") : col.to_s) %>
             <%= check_box_tag "report_fields[#{col.to_s}][]",
               col.to_s,

@@ -103,9 +103,6 @@
                       <% loop=0 %>
                       <% unless @report_data['report']['exams'].blank? %>
                         <% @report_data['report']['exams'].each do |report| %>
-                          <% if report['quarter'] != '0'  %>
-                            <% next %>
-                          <% end %>
                           <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                             <% has_exam = true %>
                             <% break %>
@@ -137,9 +134,6 @@
                           <td class="col-pdf border-left-none  no-warp align-left-baf"><%= subjects['name'].upcase %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
-                                <% if report['quarter'] != '1'  %>
-                                  <% next %>
-                                <% end %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                  
                                   <% if report['exam_category'] == '7' %>
@@ -192,9 +186,6 @@
                           
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
-                            <% if report['quarter'] != '6'  %>
-                              <% next %>
-                            <% end %>
                             <% if report['exam_category'] == '1' %> 
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                   <% class_test << report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
@@ -388,9 +379,6 @@
                   loop=0
                   unless @report_data['report']['exams'].blank?
                     @report_data['report']['exams'].each do |report|
-                      if report['quarter'] == '6' 
-                        next
-                      end
                       if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                         has_exam = true
                       break
@@ -410,9 +398,6 @@
                   
                   unless @report_data['report']['exams'].blank?  
                     @report_data['report']['exams'].each do |report|
-                      if report['quarter'] == '6' 
-                        next
-                      end
                       if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                         
                         if report['exam_category'] == '7'
@@ -436,9 +421,6 @@
                   
                   unless @report_data['report']['exams'].blank?  
                     @report_data['report']['exams'].each do |report|
-                      if report['quarter'] == '6' 
-                        next
-                      end
                       if report['exam_category'] == '1'
                         if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                           class_test << report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
@@ -511,9 +493,6 @@
                       sub_mark = 0
                       unless @report_data['report']['exams'].blank?  
                         @report_data['report']['exams'].each do |report|
-                            if report['quarter'] == '6' 
-                              next
-                            end
                             if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                               #if report['exam_category'] == '6'
                                 sub_mark = sub_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f

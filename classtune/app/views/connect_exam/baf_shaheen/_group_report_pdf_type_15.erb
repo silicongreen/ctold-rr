@@ -152,11 +152,11 @@
                                               <% sub_cwhw = sub_cwhw.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                           <% end %>
 
-                                          <% if report['exam_category'] == '6' %>
+                                          <% if report['exam_category'] == '8' %>
                                               <% sub_spt = sub_spt.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                           <% end %>
 
-                                          <% if report['exam_category'] == '8' %>
+                                          <% if report['exam_category'] == '6' %>
                                               <% sub_classroom = sub_classroom.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                           <% end %>
 
@@ -178,11 +178,11 @@
                                               <% sub_cwhw_full_mark = sub_cwhw_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                           <% end %>
 
-                                          <% if report['exam_category'] == '6' %>
+                                          <% if report['exam_category'] == '8' %>
                                               <% sub_spt_full_mark = sub_spt_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                           <% end %>
 
-                                          <% if report['exam_category'] == '8' %>
+                                          <% if report['exam_category'] == '6' %>
                                               <% sub_classroom_full_mark = sub_classroom_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                           <% end %>
 

@@ -8,7 +8,7 @@
     <div id="pdf-header-south" class="sfx-header" style="width: 100%; height: 300px;"></div>
   <% end %>
   <% total_u = 0 %>
-  <div id="page-yield"  class="available_sections1 baf_shaheen" style="border: 1px solid #fff !important;">
+  <div id="page-yield"  class="available_sections1 baf_shaheen">
     <div class="student_information">
       <h4><b>Student's Information</b></h4>
 
@@ -56,12 +56,18 @@
     
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
-
-              
-
-              
-             
-              
+            <h4><b>Academics</b></h4>
+            <table id="pdf-table" width="99.8%" cellspacing="0">
+                <% c = 'even'  %>
+                <tr class="table-header">
+                    <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><%= "SUBJECTS" %></b></td>
+                    <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><b>Assessment<br/>(Out Of 20)</b></td>
+                    <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><b>H.W & C.W. & S.T<br/>(Out Of 10)</b></td>
+                    <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><b>Mid Term <br/>(Out Of 70)</b></td>
+                    <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><b>Marks</b></td>
+                    <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><b>Grade</b></td>
+                </tr>
+            </table>
           </div>
       </div>
 

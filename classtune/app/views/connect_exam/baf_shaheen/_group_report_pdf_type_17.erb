@@ -60,12 +60,12 @@
             <table id="pdf-table" width="99.8%" cellspacing="0">
                 <% c = 'even'  %>
                 <tr class="table-header">
-                    <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><%= "SUBJECTS" %></b></td>
+                    <td class="col-pdf border-left-none" style="font-size: 18px !important; font-weight: normal !important;"><%= "SUBJECTS" %></b></td>
                     <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><b>Assessment<br/>(Out Of 20)</b></td>
                     <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><b>H.W & C.W. & S.T<br/>(Out Of 10)</b></td>
                     <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><b>Mid Term <br/>(Out Of 70)</b></td>
                     <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><b>Marks</b></td>
-                    <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><b>Grade</b></td>
+                    <td class="col-pdf border-right-none" style="font-size: 18px !important; font-weight: normal !important;"><b>Grade</b></td>
                 </tr>
 
                 <% assessment = 0 %>
@@ -113,7 +113,7 @@
                         <% total_subject = total_subject+1 %>
                         <% class_test = [] %>
 
-                        <td class="col-pdf align-left-baf"><%= subjects['name'].upcase %></td>
+                        <td class="col-pdf align-left-baf border-left-none"><%= subjects['name'].upcase %></td>
 
                         <% unless @report_data['report']['exams'].blank? %>
                             <% @report_data['report']['exams'].each do |report| %>
@@ -187,7 +187,7 @@
                             <td class="col-pdf"><%= sprintf( "%0.01f", total_c_marks) %></td>
 
                             <% grade = GradingLevel.percentage_to_grade(total_c_marks, @batch.id) %>
-                            <td class="col-pdf">
+                            <td class="col-pdf border-right-none">
                                 <% if !grade.blank? and !grade.name.blank? %>
                                     <b><%= grade.name %><b>
                                 <% end %>
@@ -197,7 +197,7 @@
                     <% end %>
                 <% end %>
                 <tr class="even">
-                    <td class="col-pdf" colspan="3"><b>Total Score:</b></td>
+                    <td class="col-pdf border-left-none" colspan="3"><b>Total Score:</b></td>
                     <td class="col-pdf"><%= sprintf( "%0.01f", mid) %></td>
                     <td class="col-pdf"><%= sprintf( "%0.01f", total_mark) %></td>
 
@@ -206,7 +206,7 @@
                       grade = GradingLevel.percentage_to_grade(total_avg_mark.to_f, @batch.id)
                     %>
 
-                    <td class="col-pdf">
+                    <td class="col-pdf border-right-none">
                         <% if !grade.blank? and !grade.name.blank? %>
                           <b><%= grade.name %><b>
                         <% end %>
@@ -225,7 +225,7 @@
                     <td class="col-pdf"  width="20%">
                         <b>Score</b>
                     </td>
-                    <td class="col-pdf"><%= sprintf( "%0.01f", total_mark) %></td>
+                    <td class="col-pdf border-right-none"><%= sprintf( "%0.01f", total_mark) %></td>
                 </tr>
             </table>
           </div>

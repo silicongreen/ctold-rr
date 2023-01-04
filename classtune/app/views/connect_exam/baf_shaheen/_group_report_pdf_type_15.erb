@@ -310,7 +310,7 @@
                         total_avg_mark = total_mark.to_f/total_subject.to_i
                         grade = GradingLevel.percentage_to_grade(total_avg_mark.to_f, @batch.id)
                       %>
-                      <td class="col-pdf">
+                      <td class="col-pdf border-right-none">
                           <% if !grade.blank? and !grade.name.blank? %>
                               <b><%= grade.name %><b>
                           <% end %>

@@ -223,9 +223,7 @@
                               assessment_avg = (ass_total_mark.to_f/sub_assessment_full_mark.to_f)*20.00
                               assessment_avg = assessment_avg.round()
                               assessment = assessment+assessment_avg
-                              %>
-                              <%= abort(assessment.to_s + "  " + sub_assessment.to_s)%>
-                              <%
+                              
                             end
 
                             if sub_cwhw > 0
@@ -265,15 +263,6 @@
                               pa = pa+pa_avg
                             end
 
-                            classroom_avg = 0
-                            assessment_avg = 0
-                            cwhw_avg = 0
-                            spt_avg = 0
-
-                            ds_avg = 0
-                            pr_avg = 0
-                            so_avg = 0
-                            pa_avg = 0
                             total_c_marks = classroom_avg.to_f+assessment_avg.to_f+cwhw_avg.to_f+spt_avg.to_f+ds_avg.to_f+pr_avg.to_f+so_avg.to_f+pa_avg.to_f
                             total_mark = total_mark+total_c_marks.to_f
                           %>

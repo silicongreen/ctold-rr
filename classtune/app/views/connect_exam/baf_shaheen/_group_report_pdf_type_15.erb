@@ -342,11 +342,7 @@
                           <b>Comment:</b>
                           <% if !@exam_comment.blank? %>
                             <%= @exam_comment.comments %>
-                            <br/>
-                            <br/>
                           <% else %>
-                            <br/>
-                            <br/>
                             <br/>
                           <% end %>
                       </td>
@@ -367,7 +363,7 @@
     <h4 align="center">This is a computer generated Report Card and does not require any signature.</h4>
   </div-->
 <% end %>
-<Br /><Br />
+
 <div class="powered-text">
     <font size='2'>Print Date: <%#= Time.now.strftime("%Y/%m/%d") %><%= Time.now.strftime("%d-%m-%Y") %></font>
 </div>

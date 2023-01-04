@@ -198,7 +198,7 @@
                             <% end %>
                             <% end %>
                           <% end %>
-                                <%= abort(sub_classroom_full_mark.to_s + "  " + sub_assessment.to_s)%>
+                                
                           <% 
                             classroom_avg = 0
                             assessment_avg = 0
@@ -223,6 +223,9 @@
                               assessment_avg = (ass_total_mark.to_f/sub_assessment_full_mark.to_f)*20.00
                               assessment_avg = assessment_avg.round()
                               assessment = assessment+assessment_avg
+                              %>
+                              <%= abort(assessment.to_s + "  " + sub_assessment.to_s)%>
+                              <%
                             end
 
                             if sub_cwhw > 0

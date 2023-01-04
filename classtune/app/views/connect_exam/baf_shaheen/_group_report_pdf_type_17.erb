@@ -228,6 +228,27 @@
                     <td class="col-pdf border-right-none"><%= sprintf( "%0.01f", total_mark) %></td>
                 </tr>
             </table>
+
+            <% total_mark = sprintf( "%0.01f", total_mark) %>
+
+            <% grade = GradingLevel.percentage_to_grade(total_mark.to_f, @batch.id) %>
+
+            <% total_mark_final_term = total_mark %>
+
+            <h4 class="h4-evaluation"></h4>
+
+            <table id="pdf-table" class="evaluation" width="99.8%" style="margin-top: 40px !important;">
+                <tr class="odd">
+                    <td class="col-pdf border-left-none border-right-none">
+                        <b>Comment:</b>
+                        <% if !@exam_comment.blank? %>
+                        <%= @exam_comment.comments %>
+                        <% else %>
+                        <br/>
+                        <% end %>
+                    </td>
+                </tr>
+            </table>
           </div>
       </div>
 

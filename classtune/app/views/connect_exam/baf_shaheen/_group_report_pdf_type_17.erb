@@ -194,6 +194,23 @@
                             </td>
                         <% end %>
                       </tr>
+
+                      <tr class="even">
+                          <td class="col-pdf" colspan="3"><b>Total Score:</b></td>
+                          <td class="col-pdf"><%= sprintf( "%0.01f", mid) %></td>
+                          <td class="col-pdf"><%= sprintf( "%0.01f", total_mark) %></td>
+
+                          <%
+                            total_avg_mark = total_mark.to_f/total_subject.to_i
+                            grade = GradingLevel.percentage_to_grade(total_avg_mark.to_f, @batch.id)
+                          %>
+
+                          <td class="col-pdf">
+                              <% if !grade.blank? and !grade.name.blank? %>
+                                <b><%= grade.name %><b>
+                              <% end %>
+                          </td>
+                      </tr>
                     <% end %>
                 <% end %>
             </table>

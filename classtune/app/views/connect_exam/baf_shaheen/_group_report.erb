@@ -14,7 +14,7 @@
     <%= render  :partial=>"/connect_exam/baf_shaheen/finding_data3" %>
   <% elsif @connect_exam_obj.result_type.to_i == 13 %>
     <%= render  :partial=>"/connect_exam/baf_shaheen/finding_data4" %>
-  <% elsif @connect_exam_obj.result_type.to_i == 14 %>
+  <% elsif @connect_exam_obj.result_type.to_i == 14 or @connect_exam_obj.result_type.to_i == 15 %>
     <%= render  :partial=>"/connect_exam/baf_shaheen/finding_data5" %>
   <% else %>
     <%= render  :partial=>"/connect_exam/baf_shaheen/finding_data" %>

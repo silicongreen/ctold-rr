@@ -11,46 +11,7 @@
   <div id="page-yield"  class="available_sections1 baf_shaheen">
 
       
-      <div class="student_information">
-        <h4><b>Student's Information</b></h4>
       
-        <table class="std_info_table" width="100%" cellspacing="0">
-            <tr>
-                <td>Student's ID </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @student.admission_no %></td>
-            </tr>
-            <tr>
-                <td>Student's Name </td><td colspan="3" class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.full_name.upcase %></td>
-            </tr>
-            <tr>
-                <td>Date of Birth </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>"%d %b %Y") unless @student.date_of_birth.nil? %></td>
-                <td>Gender </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<% unless @student.gender_as_text.blank?  %><%= t("#{@student.gender_as_text.downcase}") %><% end %></td>
-            </tr> 
-            <tr>
-                <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
-                  
-                <% if month_number.to_i>6 %>
-                  <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %></td>
-                <% else %>
-                  <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
-                <% end %> 
-                <td>Roll </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.class_roll_no %></td>
-            </tr> 
-            <tr>
-                <td>Standard </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @batch.course.course_name %></td>
-                <td>Section </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @batch.course.section_name %></td>
-                
-            </tr>
-            <tr>
-                <td>Exam Name </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.name %></td>
-                <td>Enrollment </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.admission_date,:format=>"%d %b %Y") unless @student.admission_date.nil? %></td>
-                
-            </tr>
-            
-        </table>
-      </div>
-      <div class="grade_information">
-        <%= render  :partial=>"/connect_exam/baf_shaheen/gradding_level" %>   
-      </div>
 
 
     

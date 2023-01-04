@@ -297,13 +297,11 @@
                             <td class="col-pdf"><%= sprintf( "%0.01f", total_c_marks) %></td> 
 
                             grade = GradingLevel.percentage_to_grade(total_c_marks, @batch.id)
-                            <% if !grade.blank? and !grade.name.blank? %>
-                              <td class="col-pdf">
-                                  <b><%= grade.name %><b>  
-                              </td>  
-                            <% else %>
-                              <td>-</td>
-                            <% end %>   
+                            <td class="col-pdf">
+                                <% #if !grade.blank? and !grade.name.blank? %>
+                                  <b><%#= grade.name %><b>  
+                                <% #end %>   
+                            </td>  
                       </tr> 
                     <% end %>  
                   <% end %>
@@ -314,13 +312,11 @@
                           total_avg_mark = total_mark.to_f/total_subject.to_i
                           grade = GradingLevel.percentage_to_grade(total_avg_mark.to_f, @batch.id)
                       %>
-                      <% if !grade.blank? and !grade.name.blank? %>
-                        <td class="col-pdf">
-                            <b><%= grade.name %><b>  
-                        </td>  
-                      <% else %>
-                        <td>-</td>
-                      <% end %>   
+                      <td class="col-pdf">
+                      <% #if !grade.blank? and !grade.name.blank? %>
+                        <b><%#= grade.name %><b>  
+                      <% #end %>   
+                      </td>
                   </tr>    
 
               </table>

@@ -99,7 +99,7 @@
                       <% subject_obtain_mark = 0 %>
                       <% total_mark = 0 %>
                       <% full_mark = 0 %>
-
+                      <%= abort(full_mark.inspect)%>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <td><%= std['class_roll_no'] %></td>
                           <td><%= std['name'] %></td>

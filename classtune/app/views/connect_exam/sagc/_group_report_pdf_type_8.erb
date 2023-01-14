@@ -416,7 +416,7 @@
                                           main_exam_mark1 = main_exam_mark1+converted_mark.to_f
                                         end
                                       %>
-                                      <td class="col-pdf"><%= sprintf( "%0.02f", converted_mark)%></td>
+                                      <td class="col-pdf"><%= full_sb1.to_i %> <%= sprintf( "%0.02f", converted_mark)%></td>
                                     <% end %>
                                     <% if report['exam_category'] == '3'  %>
                                       <% total_sb1 = total_sb1+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>

@@ -397,7 +397,30 @@
                                     <% if report['exam_category'] != '3'  %>
                                     <% main_exam_mark1 = main_exam_mark1+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% end %> 
-                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f.round.to_i %> <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                    <% f_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f.round.to_i %>
+                                    <% o_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %>
+                                    <% if f_mark > 0  %>
+                                      <% if f_mark == 30 and o_mark < 13 %>
+                                        <% failed1 = true %>
+                                        <% failed_subject1 = true %>
+                                      <% elsif f_mark == 25 and o_mark < 11 %>
+                                        <% failed1 = true %>
+                                        <% failed_subject1 = true %>
+                                      <% elsif f_mark == 70 and o_mark < 32 %>
+                                        <% failed1 = true %>
+                                        <% failed_subject1 = true %>
+                                      <% elsif f_mark == 50 and o_mark < 23 %>
+                                        <% failed1 = true %>
+                                        <% failed_subject1 = true %>
+                                      <% elsif f_mark == 200 and o_mark < 90 %>
+                                        <% failed1 = true %>
+                                        <% failed_subject1 = true %>
+                                      <% elsif f_mark == 100 and o_mark < 45 %>
+                                        <% failed1 = true %>
+                                        <% failed_subject1 = true %>
+                                      <% end %>
+                                    <% end %>
+                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
                                     <% if report['exam_category'] == '3'  %>
                                       <%
                                         converted_mark = 0
@@ -728,7 +751,30 @@
                                     <% if report['exam_category'] != '3'  %>
                                     <%  main_exam_mark2 = main_exam_mark2+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% end %>
-                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                    <% f_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f.round.to_i %>
+                                    <% o_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %>
+                                    <% if f_mark > 0  %>
+                                      <% if f_mark == 30 and o_mark < 13 %>
+                                        <% failed1 = true %>
+                                        <% failed_subject1 = true %>
+                                      <% elsif f_mark == 25 and o_mark < 11 %>
+                                        <% failed1 = true %>
+                                        <% failed_subject1 = true %>
+                                      <% elsif f_mark == 70 and o_mark < 32 %>
+                                        <% failed1 = true %>
+                                        <% failed_subject1 = true %>
+                                      <% elsif f_mark == 50 and o_mark < 23 %>
+                                        <% failed1 = true %>
+                                        <% failed_subject1 = true %>
+                                      <% elsif f_mark == 200 and o_mark < 90 %>
+                                        <% failed1 = true %>
+                                        <% failed_subject1 = true %>
+                                      <% elsif f_mark == 100 and o_mark < 45 %>
+                                        <% failed1 = true %>
+                                        <% failed_subject1 = true %>
+                                      <% end %>
+                                    <% end %> 
+                                    <td class="col-pdf"><%= f_mark %><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
                                     <% if report['exam_category'] == '3'  %>
                                       <%
                                         converted_mark = 0

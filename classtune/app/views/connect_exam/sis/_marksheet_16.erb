@@ -247,7 +247,7 @@
                           <% @report_data['result']['ALL'].each do |rs| %>
                             <% if rs['quarter'] == '5' or rs['quarter'] == '6' %>
                               <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
-                                <td><%= rs['students'][std['id']]['score'].to_f %></td>
+                                <td><%= rs['students'][std['id']]['score'].to_f %> J</td>
                               <% else %>
                                 <td>-</td>
                               <% end %>  

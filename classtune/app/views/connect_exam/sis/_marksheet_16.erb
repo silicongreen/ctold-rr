@@ -28,13 +28,13 @@
                 <table>
                     <tr>
                         <% if !@employee.nil? %> 
-                          <td align='left'><h4>Teacher's Name : <%=  @employee.full_name %></h4></td>
+                          <td align='left'><h4><%= "Teacher's Name" %> : <%=  @employee.full_name %></h4></td>
                           <td align='center'><h4>Subject : <%= @subject.name %></h4></td>
                         <% else %>
                           <td align='left'><h4>Subject : <%= @subject.name %></h4></td>
                         <% end %> 
 
-                        <td align='center'><h4>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %></h4></td>
+                        <td align='center'><h4>Class : <%= (@batch.name=="General") ? "" : @batch.name+" " %><%= @batch.course.course_name %></h4></td>
                         <td align='right'><h4>Section : <%= @batch.course.section_name %></h4></td>
                     </tr>    
                 </table>    
@@ -99,7 +99,6 @@
                       <% subject_obtain_mark = 0 %>
                       <% total_mark = 0 %>
                       <% full_mark = 0 %>
-                      <%= abort(full_mark.inspect)%>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <td><%= std['class_roll_no'] %></td>
                           <td><%= std['name'] %></td>
@@ -180,11 +179,11 @@
 
 
                             if q1_fullmark > 0 && q1_mark > 0
-                              q1_mark_20 = (q1_mark.to_f/q1_fullmark.to_f)*25
+                              q1_mark_20 = (q1_mark.to_f/q1_fullmark.to_f)*20
                               q1_mark_20 = q1_mark_20.round()
                               end 
                             if q2_fullmark > 0 && q2_mark > 0
-                              q2_mark_20 = (q2_mark.to_f/q2_fullmark.to_f)*25
+                              q2_mark_20 = (q2_mark.to_f/q2_fullmark.to_f)*20
                               q2_mark_20 = q2_mark_20.round()
                               end 
                             if first_term_fullmark > 0
@@ -203,11 +202,11 @@
 
 
                             if q3_fullmark > 0 && q3_mark > 0
-                              q3_mark_20 = (q3_mark.to_f/q3_fullmark.to_f)*25
+                              q3_mark_20 = (q3_mark.to_f/q3_fullmark.to_f)*20
                               q3_mark_20 = q3_mark_20.round()
                               end 
                             if q4_fullmark > 0 && q4_mark > 0
-                              q4_mark_20 = (q4_mark.to_f/q4_fullmark.to_f)*25
+                              q4_mark_20 = (q4_mark.to_f/q4_fullmark.to_f)*20
                               q4_mark_20 = q4_mark_20.round()
                               end
                             if final_term_fullmark > 0

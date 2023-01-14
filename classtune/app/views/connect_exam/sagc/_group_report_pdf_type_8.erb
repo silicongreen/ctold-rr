@@ -756,25 +756,25 @@
                                     <% if f_mark > 0  %>
                                       <% if f_mark == 30 and o_mark < 13 %>
                                         <% failed1 = true %>
-                                        <% failed_subject1 = true %>
+                                        <% failed_subject2 = true %>
                                       <% elsif f_mark == 25 and o_mark < 11 %>
                                         <% failed1 = true %>
-                                        <% failed_subject1 = true %>
+                                        <% failed_subject2 = true %>
                                       <% elsif f_mark == 70 and o_mark < 32 %>
                                         <% failed1 = true %>
-                                        <% failed_subject1 = true %>
+                                        <% failed_subject2 = true %>
                                       <% elsif f_mark == 50 and o_mark < 23 %>
                                         <% failed1 = true %>
-                                        <% failed_subject1 = true %>
+                                        <% failed_subject2 = true %>
                                       <% elsif f_mark == 200 and o_mark < 90 %>
                                         <% failed1 = true %>
-                                        <% failed_subject1 = true %>
+                                        <% failed_subject2 = true %>
                                       <% elsif f_mark == 100 and o_mark < 45 %>
                                         <% failed1 = true %>
-                                        <% failed_subject1 = true %>
+                                        <% failed_subject2 = true %>
                                       <% end %>
                                     <% end %> 
-                                    <td class="col-pdf"><%= f_mark %><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
                                     <% if report['exam_category'] == '3'  %>
                                       <%
                                         converted_mark = 0
@@ -808,14 +808,14 @@
                                     <% end %>
                                     <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && !fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
                                       <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
-                                        <% failed_subject1 = true %>
+                                        <% failed_subject2 = true %>
                                       <% end %>
                                     <% end %>
                                       
                                     <% if fourth_subject.blank? && subjects['subject_group_id'].to_i == 0 %>
                                       <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i == 31 && report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i == 70 %>
                                         <% failed1 = true %>
-                                        <% failed_subject1 = true %>
+                                        <% failed_subject2 = true %>
                                       <% end %>
                                     <% end %>
                                       
@@ -981,7 +981,7 @@
                                     end   
                                     else
                                     if fourth_subject.blank?
-                                      failed_subject1 = true
+                                      failed_subject2 = true
                                       else
                                       failed_subject2_fourth = true
                                     end

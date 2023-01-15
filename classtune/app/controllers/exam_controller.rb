@@ -1657,7 +1657,7 @@ class ExamController < ApplicationController
     if MultiSchool.current_school.id != 325 and MultiSchool.current_school.id != 7 and MultiSchool.current_school.code != "baghc"
       @students.sort! { |a, b|  a.class_roll_no.to_i <=> b.class_roll_no.to_i }
     end  
-    
+     
     render :pdf => 'student_wise_tabulation',
       :orientation => 'Landscape', :zoom => 1.00,
       :margin => {    :top=> 10,
@@ -10522,7 +10522,7 @@ class ExamController < ApplicationController
           :right => 10},
           :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
           :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-      elsif MultiSchool.current_school.id == 323 and (@connect_exam_obj.result_type == 9 or @connect_exam_obj.result_type == 11 or @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 8 or @connect_exam_obj.result_type == 10 or @connect_exam_obj.result_type == 13 or @connect_exam_obj.result_type == 14)
+      elsif MultiSchool.current_school.id == 323 and (@connect_exam_obj.result_type == 17 or @connect_exam_obj.result_type == 16 or @connect_exam_obj.result_type == 15 or @connect_exam_obj.result_type == 9 or @connect_exam_obj.result_type == 11 or @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 8 or @connect_exam_obj.result_type == 10 or @connect_exam_obj.result_type == 13 or @connect_exam_obj.result_type == 14)
         render :pdf => template,
           
           :save_only    => for_save,

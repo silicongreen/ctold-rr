@@ -36,7 +36,6 @@
     )
 
     unless @all_exams.blank?
-     #@all_subject_id = @all_exams.map(&:subject_id).uniq
      @all_exam_id = @all_exams.map(&:id).uniq
      @exam_score_all = ExamScore.find(
         :all,
@@ -166,9 +165,9 @@
                           <td><%=  sub['code'] %></td>
                         <% end %>
                       <% end %>
-                      <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
-                        <td><%=  sub['code'] %></td>
-                      <% end %>
+                      <% #@report_data['report']['no_exam_subject_resutl'].each do |sub| %>
+                        <!--td><%=  sub['code'] %></td-->
+                      <% #end %>
                      
 
                   </tr>

@@ -59,7 +59,6 @@
     end
    end
 %>
-<%= abort(@all_subject_id.inspect) %>
 <%
 
   @grouped_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id)

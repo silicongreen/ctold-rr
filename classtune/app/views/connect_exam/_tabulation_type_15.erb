@@ -35,9 +35,8 @@
       :conditions => ["exam_group_id IN (?)", @all_exam_group_id]
     )
 
-
     unless @all_exams.blank?
-     @all_subject_id = @all_exams.map(&:subject_id).uniq
+     #@all_subject_id = @all_exams.map(&:subject_id).uniq
      @all_exam_id = @all_exams.map(&:id).uniq
      @exam_score_all = ExamScore.find(
         :all,
@@ -50,14 +49,17 @@
               exammain = score.exam
               unless exammain.blank?
                 @has_exam_score << exammain.exam_group_id.to_s+"_"+exammain.subject_id.to_s
+                unless @all_subject_id.include?(exammain.subject_id)
+                  @all_subject_id << exammain.subject_id
+                end
               end
             end
         end
       end
     end
    end
-
-
+%>
+<%
   @grouped_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id)
   @exam_group_ids = @grouped_exams.map(&:exam_group_id)
   @ranked_student = ExamScore.all(:select =>["SUM(exam_scores.marks) as total_score,exam_scores.student_id"],:conditions=>["exams.exam_group_id IN (?)",@exam_group_ids,],:joins=>[:exam,:student,:grading_level],:group =>"exam_scores.student_id",:order=>"total_score DESC")

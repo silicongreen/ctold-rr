@@ -2,6 +2,12 @@
     <%= render  :partial=>"/group_exam_report/tabulation/student_wise_tabulation_kinderland" %>
 <% elsif MultiSchool.current_school.id == 280 %>
     <%= render  :partial=>"/group_exam_report/tabulation/student_wise_tabulation_sjs" %>
+<% elsif MultiSchool.current_school.id == 323 %>
+    <% if @exam_group.exam_category == 5 %>
+    <%= render  :partial=>"/group_exam_report/tabulation/student_wise_tabulation_type_5_1" %>
+    <% else %>
+    <%= render  :partial=>"/group_exam_report/tabulation/student_wise_tabulation" %>
+    <% end %>
 <% else %>
 <% if @exam_group.exam_category == 5 %>
    <%= render  :partial=>"/group_exam_report/tabulation/student_wise_tabulation_type_5" %>

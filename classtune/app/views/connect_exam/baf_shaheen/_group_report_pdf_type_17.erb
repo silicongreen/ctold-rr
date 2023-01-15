@@ -60,11 +60,11 @@
             <table id="pdf-table" width="99.8%" cellspacing="0">
                 <% c = 'even'  %>
                 <tr class="table-header">
-                    <td class="col-pdf border-left-none" style="font-size: 18px !important; font-weight: normal !important;"><%= "SUBJECTS" %></b></td>
-                    <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><b>Assessment<br/>(Out Of 20)</b></td>
-                    <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><b>H.W & C.W. & S.T<br/>(Out Of 10)</b></td>
-                    <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><b>Mid Term <br/>(Out Of 70)</b></td>
-                    <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><b>Marks</b></td>
+                    <td class="col-pdf border-left-none" style="font-size: 18px !important; font-weight: normal !important;"><b><%= "SUBJECTS" %></b></td>
+                    <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><b>Assessment<br/>(20)</b></td>
+                    <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><b>H.W & C.W. & S.T<br/>(10)</b></td>
+                    <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><b>Mid Term <br/>(70)</b></td>
+                    <td class="col-pdf" style="font-size: 18px !important; font-weight: normal !important;"><b>Marks<br/>(100)</b></td>
                     <td class="col-pdf border-right-none" style="font-size: 18px !important; font-weight: normal !important;"><b>Grade</b></td>
                 </tr>
 
@@ -197,8 +197,8 @@
                     <% end %>
                 <% end %>
                 <tr class="even">
-                    <td class="col-pdf border-left-none" colspan="3"><b>Total Score:</b></td>
-                    <td class="col-pdf"><%= sprintf( "%0.01f", mid) %></td>
+                    <td class="col-pdf border-left-none" colspan="4"><b>Total Score:</b></td>
+                    <!--td class="col-pdf"><%##= sprintf( "%0.01f", mid) %></td-->
                     <td class="col-pdf"><%= sprintf( "%0.01f", total_mark) %></td>
 
                     <%
@@ -250,6 +250,22 @@
                         <br/>
                         <br/>
                         <% end %>
+                    </td>
+                </tr>
+            </table>
+            <table id="pdf-table" class="evaluation" width="99.8%" >
+                <tr class="odd">
+                    <td class="col-pdf border-left-none no-warp" width="25%" style="height: 55px;">
+                        <b>Class Teacher's signature<b>
+                    </td> 
+                    <td class="col-pdf align-center" width="25%" style="height: 25px;">
+                        <br/><br/><br/>
+                    </td> 
+                    <td class="col-pdf no-warp"  width="25%" style="height: 25px;">
+                        <b>Principal's Signature</b>
+                    </td>
+                    <td class="col-pdf border-right-none"  width="25%" style="height: 25px;">
+                        <br/><br/><br/>
                     </td>
                 </tr>
             </table>

@@ -32,9 +32,11 @@
 
    @all_exams = Exam.find(
       :all,
-      :conditions => ["exam_group_id IN (?)", @all_exam_group_id]
+      :conditions => ["exam_group_id1 IN (?)", @all_exam_group_id]
     )
-
+%>
+<%= abort(@all_exams.map(&:subject_id).uniq) %>
+<%
 
     unless @all_exams.blank?
      @all_subject_id = @all_exams.map(&:subject_id).uniq

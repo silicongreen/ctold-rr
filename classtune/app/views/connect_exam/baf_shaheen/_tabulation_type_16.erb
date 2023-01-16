@@ -315,19 +315,19 @@
                                     <% end %>
 
                                     <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true and !rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].blank? %>
-                                        <% if report['exam_category'] == '7' %>
+                                        <% if rs['exam_category'] == '7' %>
                                             <% sub_cwhw_full_mark = sub_cwhw_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i %>
                                         <% end %>
 
-                                        <% if report['exam_category'] == '8' %>
+                                        <% if rs['exam_category'] == '8' %>
                                             <% sub_spt_full_mark = sub_spt_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i %>
                                         <% end %>
 
-                                        <% if report['exam_category'] == '6' %>
+                                        <% if rs['exam_category'] == '6' %>
                                             <% sub_fa_full_mark = sub_fa_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i %>
                                         <% end %>
 
-                                        <% if report['exam_category'] == '3' %>
+                                        <% if rs['exam_category'] == '3' %>
                                             <% sub_mid_full_mark = sub_mid_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i %>
                                         <% end %>
 

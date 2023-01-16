@@ -361,31 +361,26 @@
                                 ass_total_mark = class_test[0].to_f+class_test[1].to_f
                                 assessment_avg = (ass_total_mark.to_f/sub_assessment_full_mark.to_f)*20.00
                                 assessment_avg = assessment_avg.round()
-                                assessment = assessment+assessment_avg
                               end
 
                               if sub_cwhw > 0
                                 cwhw_avg = (sub_cwhw.to_f/sub_cwhw_full_mark.to_f)*10
                                 cwhw_avg = cwhw_avg.round()
-                                cwhw = cwhw+cwhw_avg
                               end
 
                               if sub_spt > 0
                                 spt_avg = (sub_spt.to_f/sub_spt_full_mark.to_f)*10
                                 spt_avg = spt_avg.round()
-                                spt = spt+spt_avg
                               end
 
                               if sub_fa > 0
                                 fa_avg = (sub_fa.to_f/sub_fa_full_mark.to_f)*10
                                 fa_avg = fa_avg.round()
-                                fa = fa+fa_avg
                               end
 
                               if sub_mid > 0
                                 mid_avg = (sub_mid.to_f/sub_mid_full_mark.to_f)*50
                                 mid_avg = mid_avg.round()
-                                mid = mid+mid_avg
                               end
 
                               total_c_marks = assessment_avg.to_f+cwhw_avg.to_f+spt_avg.to_f+fa_avg.to_f+mid_avg.to_f

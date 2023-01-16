@@ -169,7 +169,7 @@
                       <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
                         <td><%=  sub['code'] %></td>
                       <% end %>
-                     
+                      <td>Total</td>
 
                   </tr>
 
@@ -184,8 +184,8 @@
                     <% if std_count>8 && extender ==0 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
-                      <tr class="page-break">
-                          <td colspan="100">&nbsp;</td>
+                      <tr>
+                          <td style="height: 20px;">&nbsp;</td>
                       </tr>  
                       <tr class="table-header">
                           
@@ -208,14 +208,14 @@
                           <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
                             <td><%=  sub['code'] %></td>
                           <% end %>
-
+                          <td>Total</td>  
                       </tr>
                     <% elsif std_count>9 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
-                      <tr class="page-break2-bf">
-                          <td colspan="100">&nbsp;</td>
-                      </tr> 
+                      <tr>
+                          <td style="height: 20px;">&nbsp;</td>
+                      </tr>  
                       <tr class="table-header">
                           
                           <td class="col-pdf">Roll</td>
@@ -237,6 +237,7 @@
                           <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
                             <td><%=  sub['code'] %></td>
                           <% end %>
+                          <td>Total</td>
 
                       </tr>
                     <% end %>   
@@ -401,7 +402,8 @@
                           <% end %>   
                         <% end %> 
                         <td></td>        
-                        <td></td>            
+                        <td></td>   
+                        <td><%= sprintf( "%0.02f", total_mark) %></td>         
                     </tr>
                     <% end %>
                   <% end %>

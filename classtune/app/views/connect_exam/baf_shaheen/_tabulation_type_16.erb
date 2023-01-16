@@ -210,11 +210,11 @@
                           <% end %>
                           <td>Total</td>  
                       </tr>
-                    <% elsif std_count>9 && extender ==1 %>
+                    <% elsif std_count>8 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr>
-                          <td style="height: 20px;">&nbsp;</td>
+                          <td style="height: 45px;">&nbsp;</td>
                       </tr>  
                       <tr class="table-header">
                           
@@ -395,7 +395,7 @@
                             
                             
                               <td>
-                                  <% total_mark = total_mark+a_mark.to_f+h_mark.to_f %>
+                                  <% total_mark = total_mark+t_mark.to_f %>
                                   A: <%= sprintf( "%0.02f", a_mark) %><hr/>M: <%= sprintf( "%0.02f", h_mark) %><hr/>
                                   T: <%= sprintf( "%0.02f", t_mark) %>
                               </td> 

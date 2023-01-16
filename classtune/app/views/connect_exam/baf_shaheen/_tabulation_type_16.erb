@@ -258,14 +258,14 @@
                         <% total_mark = 0 %>
                         <% grades = [] %>
                         <% grade_count = {} %>
-                        <% @report_data['report']['subjects'].each do |subjects| %>
-                          <% subjectdata = Subject.find(subjects['id'].to_i) %>
-                          <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                        <% @report_data['report']['subjects'].each do |sub| %>
+                          <% subjectdata = Subject.find(sub['id'].to_i) %>
+                          <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
                           <% if @has_exam_student == false %>
                             <td>&nbsp;</td>
                           <% else %>
                             <%
-                              if subjects['grade_subject'].to_i == 1
+                              if sub['grade_subject'].to_i == 1
                                 next
                               end
                             %>
@@ -289,45 +289,46 @@
                             <% subject_full_mark = 22.5 %>
                             <% subject_obtain_mark = 0 %>
                             <% has_exam = false %>
-                            <% if @all_subject_id.include?(subjects['id'].to_i) %>
+                            <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
                             <% class_test = [] %>
                             <% unless @report_data['report']['exams'].blank? %>
-                                <% @report_data['report']['exams'].each do |report| %>
-                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                        <% if report['exam_category'] == '7' %>
-                                            <% sub_cwhw = sub_cwhw.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                              <% @report_data['report']['exams'].each do |rs| %>
+                                    <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
+                                    <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true and !rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].blank? %>
+                                        <% if rs['exam_category'] == '7' %>
+                                            <% sub_cwhw = sub_cwhw.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
                                         <% end %>
 
-                                        <% if report['exam_category'] == '8' %>
-                                            <% sub_spt = sub_spt.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                        <% if rs['exam_category'] == '8' %>
+                                            <% sub_spt = sub_spt.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
                                         <% end %>
 
-                                        <% if report['exam_category'] == '6' %>
-                                            <% sub_fa = sub_fa.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                        <% if rs['exam_category'] == '6' %>
+                                            <% sub_fa = sub_fa.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
                                         <% end %>
 
-                                        <% if report['exam_category'] == '3' %>
-                                            <% sub_mid = sub_mid.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                        <% if rs['exam_category'] == '3' %>
+                                            <% sub_mid = sub_mid.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
                                         <% end %>
                                     <% end %>
 
-                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                    <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true and !rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].blank? %>
                                         <% if report['exam_category'] == '7' %>
-                                            <% sub_cwhw_full_mark = sub_cwhw_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                            <% sub_cwhw_full_mark = sub_cwhw_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i %>
                                         <% end %>
 
                                         <% if report['exam_category'] == '8' %>
-                                            <% sub_spt_full_mark = sub_spt_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                            <% sub_spt_full_mark = sub_spt_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i %>
                                         <% end %>
 
                                         <% if report['exam_category'] == '6' %>
-                                            <% sub_fa_full_mark = sub_fa_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                            <% sub_fa_full_mark = sub_fa_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i %>
                                         <% end %>
 
                                         <% if report['exam_category'] == '3' %>
-                                            <% sub_mid_full_mark = sub_mid_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                            <% sub_mid_full_mark = sub_mid_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i %>
                                         <% end %>
 
                                     <% end %>
@@ -335,12 +336,13 @@
                             <% end %>
 
                             <% unless @report_data['report']['exams'].blank? %>
-                                <% @report_data['report']['exams'].each do |report| %>
-                                    <% if report['exam_category'] == '1' %>
-                                        <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                            <% class_test << report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                            <% sub_assessment = sub_assessment.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                            <% sub_assessment_full_mark = sub_assessment_full_mark.to_f+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f %>
+                                <% @report_data['report']['exams'].each do |rs| %>
+                                    <% if rs['exam_category'] == '1' %>
+                                        <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
+                                        <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true and !rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].blank? %>
+                                            <% class_test << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
+                                            <% sub_assessment = sub_assessment.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
+                                            <% sub_assessment_full_mark = sub_assessment_full_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f %>
                                         <% else %>
                                             <% class_test << 0 %>
                                         <% end %>

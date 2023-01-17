@@ -36,7 +36,7 @@
     )
 
     unless @all_exams.blank?
-     #@all_subject_id = @all_exams.map(&:subject_id).uniq
+     @all_subject_id = @all_exams.map(&:subject_id).uniq
      @all_exam_id = @all_exams.map(&:id).uniq
      @exam_score_all = ExamScore.find(
         :all,
@@ -49,9 +49,9 @@
               exammain = score.exam
               unless exammain.blank?
                 @has_exam_score << exammain.exam_group_id.to_s+"_"+exammain.subject_id.to_s
-                unless @all_subject_id.include?(exammain.subject_id)
-                  @all_subject_id << exammain.subject_id
-                end
+                #unless @all_subject_id.include?(exammain.subject_id)
+                #  @all_subject_id << exammain.subject_id
+                #end
               end
             end
         end
@@ -364,7 +364,6 @@
                             
                               <td>
                                   <% total_mark = total_mark+t_mark.to_f %>
-                                  <%= sub['code'] %><br />
                                   A: <%= sprintf( "%0.02f", a_mark) %><hr/>M: <%= sprintf( "%0.02f", h_mark) %><hr/>
                                   T: <%= sprintf( "%0.02f", t_mark) %>
                               </td> 

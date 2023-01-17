@@ -361,7 +361,7 @@
                                 class_test.sort! {|x,y| y <=> x }
                                 ass_total_mark = class_test[0].to_f+class_test[1].to_f
                                 assessment_avg = (ass_total_mark.to_f/sub_assessment_full_mark.to_f)*20.00
-                                assessment_avg = assessment_avg.round()
+                                assessment_avg = ass_total_mark.round()
                               end
 
                               if sub_cwhw > 0

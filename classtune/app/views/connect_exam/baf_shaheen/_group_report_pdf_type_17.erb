@@ -196,6 +196,25 @@
                       </tr>
                     <% end %>
                 <% end %> 
+                <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                    <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
+
+                    <%  if @all_subjects.include?(report['id'].to_i) %>
+
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+
+                        <td class="col-pdf border-left-none  align-left-baf"><%= report['subject_name'].upcase %></td>
+                        
+          
+                        <td class="col-pdf"></td>
+                        <td class="col-pdf"></td>
+                        <td class="col-pdf"></td>
+                        <td class="col-pdf"></td>
+                        <td class="col-pdf border-right-none"><b><%= report['subject_comment'] %></b></td>
+                        </tr>
+                    <% end %>
+                    <% end %>
+                <% end %>
                 <tr class="even">
                     <td class="col-pdf border-left-none" colspan="4"><b>Total Score:</b></td>
                     <!--td class="col-pdf"><%##= sprintf( "%0.01f", mid) %></td-->

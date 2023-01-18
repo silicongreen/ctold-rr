@@ -256,9 +256,9 @@
             <table id="pdf-table" class="evaluation" width="99.8%" style="margin-top: 40px !important;">
                 <tr class="odd">
                     <td class="col-pdf border-left-none border-right-none">
-                        <b>Comment:</b>
+                        <b style="display: none;">Comment:</b>
                         <% if !@exam_comment.blank? %>
-                        <%= @exam_comment.comments %>
+                        <%#= @exam_comment.comments %>
                         <% else %>
                         <br/>
                         <br/>

@@ -280,9 +280,9 @@
                   end
                 %>
               
-              <h4 class="h4-evaluation"><b>Evaluation</b></h4>
               <% unless result.blank?  %>
-              <table id="pdf-table" class="evaluation" width="99.8%" >
+              <h4 class="h4-evaluation" style="display: none;"><b>Evaluation</b></h4>
+              <table id="pdf-table" class="evaluation" width="99.8%" style="display: none;">
                       <tr class="odd">
                           <td class="col-pdf border-left-none" width="50%">
                               Result
@@ -317,10 +317,10 @@
                      
                       
                       <tr class="odd">
-                          <td class="col-pdf border-left-none" width="50%">
+                          <td class="col-pdf border-left-none" width="50%" style="display: none;">
                               No. of Working Days
                           </td> 
-                          <td class="col-pdf align-center border-right-none" width="50%">
+                          <td class="col-pdf align-center border-right-none" width="50%" style="display: none;">
                               <% if @report_data['total'].to_i == 1 %>
                                 <%= @connect_exam_obj.total_working_days.to_i == 0 ? 'N/A' : @connect_exam_obj.total_working_days %>
                               <% else %>

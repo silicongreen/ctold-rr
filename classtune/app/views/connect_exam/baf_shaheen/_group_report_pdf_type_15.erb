@@ -162,7 +162,7 @@
                                           <% end %>
 
                                           <% if report['exam_category'] == '5' %>
-                                          <%= abort(sub_mamama.inspect) %>
+                                          <%= abort(report['exam_category'].index('Discipline').blank?.inspect) %>
                                               <% sub_mamama = sub_mamama.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>  
                                               <% if !report['exam_category'].index('Discipline').blank? %>
                                                   <% sub_ds = sub_ds.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>

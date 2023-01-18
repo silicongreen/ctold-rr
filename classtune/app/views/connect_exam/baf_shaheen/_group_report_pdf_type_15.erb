@@ -172,7 +172,7 @@
                                               <% end %>
                                           <% end %>
                                       <% end %>
-
+                                        <%= abort(sub_ds.inspect) %>
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                           <% if report['exam_category'] == '7' %>
                                               <% sub_cwhw_full_mark = sub_cwhw_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>

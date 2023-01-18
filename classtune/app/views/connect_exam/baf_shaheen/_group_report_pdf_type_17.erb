@@ -1,4 +1,5 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
+  <% params[:no_logo] = 1 %>  
   <% if params[:no_logo].blank? %>
   <div id="pdf-header-south" class="sfx-header" style="width: 100%;">
     <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/323/transcript.png")),:width=> '65%' %></h4>

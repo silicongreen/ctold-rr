@@ -128,6 +128,7 @@
                               <% sub_cwhw_full_mark = 0 %>
                               <% sub_spt = 0 %>
                               <% sub_spt_full_mark = 0 %>
+                              <% sub_mamama = 0 %>
                               <% sub_ds = 0 %>
                               <% sub_ds_full_mark = 0 %>
                               <% sub_pr = 0 %>
@@ -161,6 +162,7 @@
                                           <% end %>
 
                                           <% if report['exam_category'] == '5' %>
+                                              <% sub_mamama = sub_mamama.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>  
                                               <% if !report['exam_category'].index('Discipline').blank? %>
                                                   <% sub_ds = sub_ds.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                               <% elsif !report['exam_category'].index('turnout').blank? %>
@@ -172,7 +174,7 @@
                                               <% end %>
                                           <% end %>
                                       <% end %>
-                                        <%= abort(sub_ds.inspect) %>
+                                        <%= abort(sub_mamama.inspect) %>
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                           <% if report['exam_category'] == '7' %>
                                               <% sub_cwhw_full_mark = sub_cwhw_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>

@@ -298,13 +298,13 @@
                                         <% end %>
 
                                         <% if rs['exam_category'] == '5' %>
-                                            <% if !rs['exam_category'].index('Discipline').blank? %>
+                                            <% if !rs['exam_name'].index('Discipline').blank? %>
                                                 <% sub_ds = sub_ds.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
-                                            <% elsif !rs['exam_category'].index('turnout').blank? %>
+                                            <% elsif !rs['exam_name'].index('turnout').blank? %>
                                                 <% sub_pr = sub_pr.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
-                                            <% elsif !rs['exam_category'].index('Social').blank? %>
+                                            <% elsif !rs['exam_name'].index('Social').blank? %>
                                                 <% sub_so = sub_so.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
-                                            <% elsif !rs['exam_category'].index('Participation').blank? %>
+                                            <% elsif !rs['exam_name'].index('Participation').blank? %>
                                                 <% sub_pa = sub_pa.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
                                             <% end %>
                                         <% end %>  
@@ -324,13 +324,13 @@
                                         <% end %>
 
                                         <% if rs['exam_category'] == '5' %>
-                                            <% if !rs['exam_category'].index('Discipline').blank? %>
+                                            <% if !rs['exam_name'].index('Discipline').blank? %>
                                                 <% sub_ds_full_mark = sub_ds_full_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i %>
-                                            <% elsif !rs['exam_category'].index('turnout').blank? %>
+                                            <% elsif !rs['exam_name'].index('turnout').blank? %>
                                                 <% sub_pr_full_mark = sub_pr_full_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i %>
-                                            <% elsif !rs['exam_category'].index('Social').blank? %>
+                                            <% elsif !rs['exam_name'].index('Social').blank? %>
                                                 <% sub_so_full_mark = sub_so_full_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i %>
-                                            <% elsif !rs['exam_category'].index('Participation').blank? %>
+                                            <% elsif !rs['exam_name'].index('Participation').blank? %>
                                                 <% sub_pa_full_mark = sub_pa_full_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i %>
                                             <% end %>
                                         <% end %>

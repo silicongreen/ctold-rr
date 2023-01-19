@@ -372,7 +372,14 @@
     <% end %>
   </div>
 </div>
-  
+
+<% if MultiSchool.current_school.id == 323  %>
+<p>&nbsp;</p>
+<div class="powered-text" style="margin-top: 40px;">
+    <font size='2'>Print Date: <%#= Time.now.strftime("%Y/%m/%d") %><%= Time.now.strftime("%d-%m-%Y") %></font>
+</div>
+<% end %>
+
  <% if @batch.course.course_name == "X" or @batch.course.course_name == "IX"  or @batch.course.course_name == "A2"  or @batch.course.course_name == "AS" %>
  <style>
   .baf_shaheen table.table_99 .table-header td{

@@ -333,7 +333,7 @@
                 </table>
 
               <% end %>
-              <div id="pdf-footer" class="st-joshef-footer">
+              <div id="pdf-footer" class="st-joshef-footer" style="margin-top:0 !important; margin-bottom:0 !important;">
 
       <table id="listing table-design"  width="100%">
           <thead>          
@@ -346,8 +346,8 @@
                   </td>
 
                   <td class=""  colspan="8"><center>
-              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/principal_signature.png")), :width=>"16%" %><br />
-              <%= "------------------------------------------" %><br />
+                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/principal_signature.png")), :width=>"16%" %><br />
+                    <%= "------------------------------------------" %><br />
               <font size='3'><%= "Dr. Shaleha Kader (Chairman & Principal)" %></font></center>
           </td>
           </tr>

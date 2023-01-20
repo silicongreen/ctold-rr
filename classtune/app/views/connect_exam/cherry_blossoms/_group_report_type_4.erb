@@ -37,11 +37,15 @@
                
           </tr>
           <tr >
+              <td class="align-right col-pdf" width="15%">Section : </td>
+              <td class="align-left"><b><%= @batch.course.section_name %></b></td>               
+          </tr>
+          <tr >
               <td class="align-right col-pdf" width="15%" >Shift : </td><td class="align-left"><%= batch_split[0] %></td>  
           </tr>
           <tr >
               <td class="align-right col-pdf" width="15%">Session : </td>
-              <td class="align-left" >2021 - 2022<%#= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
+              <td class="align-left" >2022 - 2023<%#= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
           </tr>
       </table>
       
@@ -64,9 +68,9 @@
                             <% unless report['exam_name'].downcase.index('performance').blank? %>  
                             <td rowspan="2" class="col-pdf" colspan="2"><%= report['exam_name'].gsub('2021-2022','') %><br />
                             <% if @connect_exam_obj.name.index("Final").blank? %>
-                            (First Term: 2021-2022)
+                            (First Term: 2022-2023)
                             <% else %>
-                            (Final Term: 2021-2022)
+                            (Final Term: 2022-2023)
                             <% end %>
                             </td>
                             <% else %>
@@ -86,9 +90,9 @@
                           <% if rowcreated == false and report['exam_category'].to_i == 1 and report['exam_name'].downcase.index('performance').blank? %>
                             <% rowcreated = true %>
                             <% if @connect_exam_obj.name.index("Final").blank? %>
-                              <td colspan="4" class="col-pdf">Class Assessment<br />(First Term: 2021-2022)</td>
+                              <td colspan="4" class="col-pdf">Class Assessment<br />(First Term: 2022-2023)</td>
                             <% else %>
-                              <td colspan="4" class="col-pdf">Class Assessment<br />(Final Term: 2021-2022)</td>
+                              <td colspan="4" class="col-pdf">Class Assessment<br />(Final Term: 2022-2023)</td>
                             <% end %>
                           <% end %>
                         <% end %>

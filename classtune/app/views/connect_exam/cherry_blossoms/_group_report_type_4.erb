@@ -17,15 +17,15 @@
           <tr >
               <td class="align-right col-pdf" width="15%">Student ID : </td>
               <td  class="align-left"><b><%= @student.admission_no %></b></td>
-          </tr>
-          
-          <tr >
               <td class="align-right" width="15%">Roll No : </td>
               <td  class="align-left"><%= @student.class_roll_no %></td>
           </tr>
+          
           <tr >
               <td class="align-right col-pdf col-pdf" width="15%">Name : </td>
               <td  class="align-left"><%= @student.full_name.upcase %></td>
+              <td></td>
+              <td></td>
           </tr>
           <tr >
               <td class="align-right col-pdf" width="15%">Class : </td>
@@ -34,11 +34,8 @@
               <% unless batch_split[2].blank?  %>
                 <% batch_split[1] = batch_split[1]+" "+batch_split[2] %>
               <% end %>
-               
-          </tr>
-          <tr >
               <td class="align-right col-pdf" width="15%">Section : </td>
-              <td class="align-left"><b><%= @batch.course.section_name %></b></td>               
+              <td class="align-left"><b><%= @batch.course.section_name %></b></td> 
           </tr>
           <tr >
               <td class="align-right col-pdf" width="15%" >Shift : </td><td class="align-left"><%= batch_split[0] %></td>  

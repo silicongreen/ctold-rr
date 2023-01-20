@@ -338,7 +338,28 @@
                 </table>
 
               <% end %>
-              <%= render  :partial=>"/connect_exam/cherry_blossoms/footer" %>
+              <div id="pdf-footer" class="st-joshef-footer">
+
+      <table id="listing table-design"  width="100%">
+          <thead>          
+
+              <tr>
+                  <td class="" colspan="8">
+                       <br/> <br/> <br/>
+                       <%= "------------------------------------------" %><br />
+                      <font size='3'><%= "Teacher's Signature" %></font>
+                  </td>
+
+                  <td class=""  colspan="8"><center>
+              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/principal_signature.png")), :width=>"16%" %><br />
+              <%= "------------------------------------------" %><br />
+              <font size='3'><%= "Dr. Shaleha Kader (Chairman & Principal)" %></font></center>
+          </td>
+          </tr>
+          </thead>  
+
+      </table>
+  </div>
 
 
           </div>

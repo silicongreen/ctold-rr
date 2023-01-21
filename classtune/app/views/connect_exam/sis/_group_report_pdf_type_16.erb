@@ -175,7 +175,7 @@
 
                           <td class="col-pdf no-warp  align-left"><%= subjects['name'] %></td>
                           <% if subjects['id'].to_i == 92453 %>
-                            abort(first_term_fullmark.to_s + "  " + q1_fullmark.to_s + "  " + q2_fullmark.to_s)
+                            <% abort(first_term_fullmark.to_s + "  " + q1_fullmark.to_s + "  " + q2_fullmark.to_s) %>
                           <% end %>
                           <% 
                           

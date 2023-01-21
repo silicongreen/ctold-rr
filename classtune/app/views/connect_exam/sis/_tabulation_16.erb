@@ -395,6 +395,8 @@ unless @ranked_student.blank?
                                   end
                                 if first_term_fullmark > 0
                                   full_mark_term = first_term_fullmark+q1_fullmark+q2_fullmark
+                                else
+                                  full_mark_term = q1_fullmark+q2_fullmark
                                 end  
                                 if first_term_fullmark > 0 && first_term_mark > 0
                                   #full_mark_term = first_term_fullmark

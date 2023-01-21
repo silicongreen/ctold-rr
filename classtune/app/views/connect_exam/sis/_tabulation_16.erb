@@ -394,10 +394,10 @@ unless @ranked_student.blank?
                                   q2_mark_20 = q2_mark_20.round()
                                   end
                                 if first_term_fullmark > 0
-                                  full_mark_term = first_term_fullmark
+                                  full_mark_term = first_term_fullmark+q1_fullmark+q2_fullmark
                                 end  
                                 if first_term_fullmark > 0 && first_term_mark > 0
-                                  full_mark_term = first_term_fullmark
+                                  #full_mark_term = first_term_fullmark
                                   first_term_mark_60 = first_term_mark.to_f
                                   end
                                 total_mark = q1_mark_20+q2_mark_20+first_term_mark_60
@@ -419,10 +419,10 @@ unless @ranked_student.blank?
                                   q4_mark_20 = q4_mark_20.round()
                                   end 
                                 if final_term_fullmark > 0
-                                  full_mark_term = final_term_fullmark
+                                  full_mark_term = full_mark_term+final_term_fullmark+q3_fullmark+q4_fullmark
                                 end
                                 if final_term_fullmark > 0 && final_term_mark > 0
-                                  full_mark_term = final_term_fullmark
+                                  #full_mark_term = final_term_fullmark
                                   final_term_mark_60 = final_term_mark.to_f
                                   end
                                   total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
@@ -432,7 +432,7 @@ unless @ranked_student.blank?
                                   total_mark_all = total_mark_all+total_mark.round()
                                 end
                                 total_mark = total_mark.round()
-                                full_mark_all = full_mark_term+50
+                                full_mark_all = full_mark_term #+50
                                 main_mark = 0
                                 if total_mark > 0 && full_mark_all > 0
                                   main_mark = (total_mark.to_f/full_mark_all.to_f)*100

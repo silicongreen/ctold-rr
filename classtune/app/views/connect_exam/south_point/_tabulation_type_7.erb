@@ -8,7 +8,7 @@
 #you may not use this file except in compliance with the License.
 #You may obtain a copy of the License at
 #
-#  http://www.apache.org/licenses/LICENSE-2.0
+#  http://www.apache.org/licenses/LICENSE-2.0 
 #
 #Unless required by applicable law or agreed to in writing,
 #software distributed under the License is distributed on an
@@ -53,11 +53,14 @@
         <% extender = 0 %>
         <% std_count = 0 %>
         <% j = 0 %>
-      
+        <% cnt_first = 4 %>    
+        <% if @batch.course.course_name == "Grade 9" %>
+        <% cnt_first = 5 %>    
+        <% end %>     
         <% @report_data['report']['students'].each do |std| %>
           <% j = j+1 %>
           <%  std_count = std_count+1; %>
-          <% if std_count>5 && extender ==0 %>
+          <% if std_count>cnt_first && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break3">
@@ -111,10 +114,16 @@
         
           
           
-          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+          <tr class="even">
             <td class="col-pdf"><%= j %></td>
             <td class="name"><%= std['class_roll_no'] %></td>
-            <td class="name-std"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
+            <% if @batch.course.course_name == "Grade 9" %>
+            <td class="name-std" style="text-align: left; white-space: pre-wrap; !important;"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
+            <% elsif @batch.course.course_name == "Grade 6" %>
+            <td class="name-std" style="text-align: left; white-space: pre-wrap; !important;"><%= std['first_name'].to_s+" "+std['last_name'].to_s.gsub("Chowdhury","") %></td>
+            <% else %>
+            <td class="name-std" style="text-align: left;"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
+            <% end %>
             <td class="name-std">M1<hr/>M2<hr/>M3<hr/>AVG<hr/>CMB</td>
             <% total_mark = 0 %>
             <% q1_mark = 0 %>

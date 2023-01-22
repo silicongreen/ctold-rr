@@ -53,10 +53,8 @@
         <% extender = 0 %>
         <% std_count = 0 %>
         <% j = 0 %>
-        <% cnt_first = 4 %>    
-        <% if @batch.course.course_name == "Grade 9" %>
-        <% cnt_first = 5 %>    
-        <% end %>     
+        <% cnt_first = 10 %>    
+        
         <% @report_data['report']['students'].each do |std| %>
           <% j = j+1 %>
           <%  std_count = std_count+1; %>

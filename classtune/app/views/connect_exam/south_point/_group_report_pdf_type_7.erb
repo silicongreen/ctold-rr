@@ -370,15 +370,14 @@
                                 m_mark = m_mark+main_mark_first_term.round().to_f 
                               end
                             end
-                            unless main_mark_only_final_term.to_f.nan? 
-                              if main_mark_only_final_term.to_i > 0
-                                m_mark = m_mark+main_mark_only_final_term.round().to_f 
+                            unless main_mark_final_term.to_f.nan? 
+                              if main_mark_final_term.to_i > 0
+                                m_mark = m_mark+main_mark_final_term.round().to_f 
                               end
                             end
-                            main_mark = (m_mark)/2
                             
                           %>
-                          <% main_mark_combned = (m_mark)/2.00 %>
+                          <% main_mark_combned = (main_mark)/2.00 %>
                           <td class="col-pdf"><%=  main_mark_combned.round() %></td>
                           <%  main_mark = main_mark_combned.round() %>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

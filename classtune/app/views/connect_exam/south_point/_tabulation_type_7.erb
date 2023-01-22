@@ -61,8 +61,8 @@
           <% if std_count>cnt_first && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
-              <tr class="page-break3">
-                  <td colspan="100">&nbsp;</td>
+              <tr>
+                  <td style="height: 30px;" colspan="100">&nbsp;</td>
               </tr>  
               <tr class="table-header">
                 <td class="col-pdf">Sl.</td>
@@ -83,7 +83,7 @@
                            <% end %>
 
               </tr>
-          <% elsif std_count>5 && extender ==1 %>
+          <% elsif std_count>7 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break3">

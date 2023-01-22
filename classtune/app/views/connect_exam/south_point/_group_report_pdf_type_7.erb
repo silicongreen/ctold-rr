@@ -345,6 +345,8 @@
                                   <td class="col-pdf">
                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                   </td>
+                                <% else %>  
+                                <td>-</td>
                                 <% end %>   
                             <% end %>
                            <% end %>
@@ -382,7 +384,7 @@
                           <%  main_mark = main_mark_combned.round() %>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>
-                            <td class="col-pdf"><b><%= grade.name %>11</b></td>
+                            <td class="col-pdf"><b><%= grade.name %></b></td>
                           <% else %>
                             <td class="col-pdf"><b>-</b></td>
                           <% end %>

@@ -362,7 +362,23 @@
                               <%= @subject_highest_mock_test[subjects['id'].to_i].to_i %>
                             <% end %>
                           </td>
-                          <% main_mark_combned = (main_mark_first_term.to_f+main_mark_final_term.to_f)/2.00 %>
+                          <%
+                            m_mark = 0
+                            
+                            unless main_mark_first_term.to_f.nan? 
+                              if main_mark_first_term.to_i > 0
+                                m_mark = m_mark+main_mark_first_term.round().to_f 
+                              end
+                            end
+                            unless main_mark_only_final_term.to_f.nan? 
+                              if main_mark_only_final_term.to_i > 0
+                                m_mark = m_mark+main_mark_only_final_term.round().to_f 
+                              end
+                            end
+                            main_mark = (m_mark)/2
+                            
+                          %>
+                          <% main_mark_combned = (m_mark)/2.00 %>
                           <td class="col-pdf"><%=  main_mark_combned.round() %></td>
                           <%  main_mark = main_mark_combned.round() %>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

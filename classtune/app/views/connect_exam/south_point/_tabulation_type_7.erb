@@ -493,6 +493,13 @@
                         q1_mark = q1_mark+mock1.round()
                         q2_mark = q2_mark+mock2.round()
                         q3_mark = q3_mark+mock3.round()
+                        m_mark = 0
+                        unless tf_mark.to_f.nan? 
+                          m_mark = m_mark+tf_mark
+                        end
+                        unless main_mark_only_final_term.to_f.nan? 
+                          m_mark = m_mark+main_mark_only_final_term.round()
+                        end
                         tf_mark = tf_mark+main_mark_only_final_term.round()
                         cmb_mark = cmb_mark+main_mark.round()
 

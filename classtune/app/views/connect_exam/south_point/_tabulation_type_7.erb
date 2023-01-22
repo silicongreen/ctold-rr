@@ -495,6 +495,7 @@
                         q3_mark = q3_mark+mock3.round()
                         m_mark = 0
                         mc_mark = 0
+                        m_mark1 = 0
                         unless tf_mark.to_f.nan? 
                           m_mark = m_mark+tf_mark
                         end
@@ -502,12 +503,15 @@
                           m_mark = m_mark+main_mark_only_final_term.round()
                           mc_mark = main_mark_only_final_term.round()
                         end
+                        unless mock2.to_f.nan? 
+                          m_mark1 = mock2.round()
+                        end
                         tf_mark = m_mark
                         cmb_mark = cmb_mark+main_mark.round()
 
                         %>
                           <%= mock1.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name1+"<hr/>" %>
-                          <%= mock2.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name2+"<hr/>" %>
+                          <%= m_mark1.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name2+"<hr/>" %>
                           <%= mock3.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name3+"<hr/>" %>
                           <%= mc_mark.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name4+"<hr/>" %>
                           <%= main_mark.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name %>

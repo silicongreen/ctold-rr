@@ -375,9 +375,6 @@
                           main_mark2 = (obtained_mark2.round().to_f/full_mark2.to_f)*100
 
                           
-                          main_mark_first_term=0
-                          main_mark_only_final_term=0
-
                           #Calculation First Term (40/20) Mark
                           full_mark_first_term = full_mark1+full_mark2+first_term_full_mark
                           obtained_mark_first_term = obtained_mark1.round()+obtained_mark2.round()+first_term_mark.round()
@@ -388,17 +385,16 @@
 
                           main_mark_only_final_term = (final_term_mark.round().to_f/final_term_full_mark.to_f)*100
                           m_mark = 0
-                          if main_mark_first_term.blank?
-                            main_mark_first_term=0
+                          
+                          unless main_mark_first_term.to_f.nan? 
+                            if main_mark_first_term.to_i > 0
+                              m_mark = m_mark+main_mark_first_term.round().to_f 
+                            end
                           end
-                          if main_mark_only_final_term.blank?
-                            main_mark_only_final_term=0
-                          end
-                          if main_mark_first_term.to_i > 0
-                            m_mark = m_mark+main_mark_first_term.round().to_f 
-                          end
-                          if main_mark_only_final_term.to_i > 0
-                            m_mark = m_mark+main_mark_only_final_term.round().to_f 
+                          unless main_mark_only_final_term.to_f.nan? 
+                            if main_mark_only_final_term.to_i > 0
+                              m_mark = m_mark+main_mark_only_final_term.round().to_f 
+                            end
                           end
                           main_mark = (m_mark)/2
                           

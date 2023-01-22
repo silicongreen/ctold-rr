@@ -8997,6 +8997,16 @@ class ExamController < ApplicationController
             :right => 10},
             :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
             :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
+    elsif (MultiSchool.current_school.id == 312 && @connect_exam_obj.result_type==7)
+            render :pdf => 'tabulation',
+              :orientation => 'Landscape', :zoom => 1.00,
+              :page_size => 'A3',
+              :margin => {    :top=> 10,
+              :bottom => 10,
+              :left=> 10,
+              :right => 10},
+              :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+              :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
     else
       render :pdf => 'tabulation',
         :orientation => 'Landscape', :zoom => 1.00,

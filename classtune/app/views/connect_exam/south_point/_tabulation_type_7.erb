@@ -385,8 +385,14 @@
 
 
                           main_mark_only_final_term = (final_term_mark.round().to_f/final_term_full_mark.to_f)*100
-
-                          main_mark = (main_mark_first_term.round().to_f+main_mark_only_final_term.round().to_f)/2
+                          m_mark = 0
+                          if main_mark_first_term.to_i > 0
+                            m_mark = m_mark+main_mark_first_term.round().to_f 
+                          end
+                          if main_mark_only_final_term.to_i > 0
+                            m_mark = m_mark+main_mark_only_final_term.round().to_f 
+                          end
+                          main_mark = (m_mark)/2
                           
                           main_mark_mock1 = 0
                           main_mark_mock2 = 0

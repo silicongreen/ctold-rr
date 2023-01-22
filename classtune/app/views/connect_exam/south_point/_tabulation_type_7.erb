@@ -117,13 +117,7 @@
           <tr class="even">
             <td class="col-pdf"><%= j %></td>
             <td class="name"><%= std['class_roll_no'] %></td>
-            <% if @batch.course.course_name == "Grade 9" %>
             <td class="name-std" style="text-align: left; white-space: pre-wrap; !important;"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
-            <% elsif @batch.course.course_name == "Grade 6" %>
-            <td class="name-std" style="text-align: left; white-space: pre-wrap; !important;"><%= std['first_name'].to_s+" "+std['last_name'].to_s.gsub("Chowdhury","") %></td>
-            <% else %>
-            <td class="name-std" style="text-align: left;"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
-            <% end %>
             <td class="name-std">M1<hr/>M2<hr/>M3<hr/>AVG<hr/>CMB</td>
             <% total_mark = 0 %>
             <% q1_mark = 0 %>
@@ -676,6 +670,9 @@
     border-top: 0px solid #fff;
     text-align: center;
 
+}
+.table-header td {
+  font-size: 13px;
 }
  
 .odd td{

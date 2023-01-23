@@ -310,15 +310,30 @@
                     <tr>
                       <td colspan="2" style="text-align:center; font-size: 16px !important; font-weight:bold;">Class Attendance</td>
                     </tr>
+                    <% 
+                      total_att = 0
+                      absent = 0
+                      if !@exam_comment.blank?
+                        all_comments = @exam_comment.comments
+                        if !all_comments.blank?
+                          all_comments_array = all_comments.split("|")
+                          total_att = all_comments_array[0]
+                          if !all_comments_array[1].nil?
+                            absent = all_comments_array[1]
+                          end
+                        end
+                      end
+                      working_days  = total_att.to_i + absent.to_i
+                    %>
                     <tr class="table-header">
 
-                      <td class="col-pdf" style="text-align:left;">Total Working Days</td> <td><%= @report_data['total'] %></td>
+                      <td class="col-pdf" style="text-align:left;">Total Working Days</td> <td><%= working_days %><%#= @report_data['total'] %></td>
                     </tr>  
                      <tr class="table-header">
-                      <td class="col-pdf" style="text-align:left;">Present</td> <td><%= @report_data['present'] %> </td>
+                      <td class="col-pdf" style="text-align:left;">Present</td> <td><%= total_att %><%#= @report_data['present'] %> </td>
                     </tr>  
                      <tr class="table-header">
-                      <td class="col-pdf" style="text-align:left;">Absent</td> <td><%= @report_data['total']-@report_data['present'] %> </td>
+                      <td class="col-pdf" style="text-align:left;">Absent</td> <td><%= absent %><%#= @report_data['total']-@report_data['present'] %> </td>
                       
                   </tr> 
                 </table>

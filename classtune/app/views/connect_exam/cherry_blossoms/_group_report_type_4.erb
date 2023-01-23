@@ -277,11 +277,18 @@
               <table class="font-size-20 float-left" width="68.2%" >
                       <tr>
                           <td width="15%" style="vertical-align: top;">
+                              <% if @student.id.to_i == 2820 %>
+                              <br/>
+                              <b><%= "Teacher's Remark" %></b>
+                              <br/>
+                              <br/>
+                              <% else %>
                               <br/> 
                               <br/>
-                              <b>Teacher's Remark</b>
+                              <b><%= "Teacher's Remark" %></b>
                               <br/>
                               <br/>
+                              <% end %>
                           </td> 
                           <td width="85%">
                               <% if @student.id.to_i == 2820 %>

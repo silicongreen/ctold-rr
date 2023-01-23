@@ -28,6 +28,7 @@ class BoardController < ApplicationController
     @board_exam_student = BoardExamStudent.find(params[:id2])
     @std_info = get_student_all_type(@board_exam_student.student_id)
     @std_guardians = @std_info.student_guardian
+    abort(@std_guardians.inspect)
     render :layout => false
   end
   def testimonial_excel

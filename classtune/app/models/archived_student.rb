@@ -103,6 +103,7 @@ class ArchivedStudent < ActiveRecord::Base
   def student_guardian
     guardians = []
     g_students= GuardianStudents.find_all_by_student_id(self.former_id,:order=>"relation ASC")
+    abort(g_students.inspect)
     g_students.each do|bs|
       gu = Guardian.find_by_id(bs.guardian_id)
       guardians.push gu unless gu.nil?

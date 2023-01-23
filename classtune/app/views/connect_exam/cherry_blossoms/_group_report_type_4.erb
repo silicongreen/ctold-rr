@@ -284,6 +284,19 @@
                               <br/>
                           </td> 
                           <td width="85%">
+                              <% if @student.id.to_i == 2820 %>
+                              <br/>
+                              <hr style="width:100%;"/>
+                              <div style="margin-left: -18% !important; width: 65%; float: left;">
+                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/principal_signature.png")), :width=>"15%" %><br />
+                              <%= "--------------------------------------------------------------" %><br />
+                              <font size='3'><%= "Dr. Shaleha Kader (Chairman & Principal)" %></font></center>
+                              </div>
+                              <div style="width: 30%; margin-top: 60px;  float: left; text-align: left !important;">
+                              <%= "------------------------------------------" %><br />
+                              <font size='3'><%= "Teacher's Signature" %></font>
+                              </div>
+                              <% else %>
                               <br/>
                               <br/>
                               <hr style="width:100%;"/>
@@ -295,9 +308,9 @@
                               </div>
                               <div style="width: 30%; margin-top: 60px;  float: left; text-align: left !important;">
                               <%= "------------------------------------------" %><br />
-                      <font size='3'><%= "Teacher's Signature" %></font>
+                              <font size='3'><%= "Teacher's Signature" %></font>
                               </div>
-                              
+                              <% end %>
                           </td>
                       </tr>
               </table>

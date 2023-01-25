@@ -127,9 +127,9 @@
                                   <td class="col-pdf"><%= present-present2 unless present-present2<0 %><%##= @report_data['total_first_term']-@report_data['present_first_term'] %></td>
                                 <% end %>
                                 <% unless @report_data['absent'].nil?  %>
-                                  <td class="col-pdf"><%= present3-present4 unless present3-present4<0 %><%= @report_data['absent'] %></td>
+                                  <td class="col-pdf"><%= present3-present4 unless present3-present4<0 %><%#= @report_data['absent'] %></td>
                                 <% else %>
-                                  <td class="col-pdf"><%= present3-present4 unless present3-present4<0 %><%= @report_data['total']-@report_data['present'] %></td>
+                                  <td class="col-pdf"><%= present3-present4 unless present3-present4<0 %><%#= @report_data['total']-@report_data['present'] %></td>
                                 <% end %>
                             <% else %>
                                 <td class="col-pdf"></td>

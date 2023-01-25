@@ -47,7 +47,7 @@
      
      <% i = i+1 %> 
      <% end %>
-     <% if @connect_exam_obj.exam_type == 6 %>
+     <% if @connect_exam_obj.result_type == 6 %>
       <input type="number" placeholder="Days Present Half Yearly" name="commentstd_<%= @std_id_comment %>_10" value="<%=  present.to_i%>" class="comment_input_box_connect_exam_multiple_<%= @std_id_comment %>" id="commentstd_<%= @std_id_comment %>_10" style="width:<%= width_percentize %>%; margin:5px 5px 0px 0px;" />
       <input type="number" placeholder="Days Present" name="commentstd_<%= @std_id_comment %>_11" value="<%=  present2.to_i%>" class="comment_input_box_connect_exam_multiple_<%= @std_id_comment %>" id="commentstd_<%= @std_id_comment %>_11" style="width:<%= width_percentize %>%; margin:5px 5px 0px 0px;" /> 
       <input type="number" placeholder="Days Present Final" name="commentstd_<%= @std_id_comment %>_12" value="<%=  present3.to_i%>" class="comment_input_box_connect_exam_multiple_<%= @std_id_comment %>" id="commentstd_<%= @std_id_comment %>_12" style="width:<%= width_percentize %>%; margin:5px 5px 0px 0px;" />

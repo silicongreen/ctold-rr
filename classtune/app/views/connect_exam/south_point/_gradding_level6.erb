@@ -1,7 +1,7 @@
 <%  
   all_comments_array = []
-  if !@student_exam_comment[@std_id_comment.to_s].blank?
-    all_comments = @student_exam_comment[@std_id_comment.to_s]
+  if !exam_comment.blank?
+    all_comments = exam_comment
     if !all_comments.blank?
       all_comments_array = all_comments.split("**")
     end

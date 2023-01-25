@@ -7,23 +7,54 @@
     end
   end
   
-  all_comments_array = all_comments_array.reverse()
-  present = 0
-  unless all_comments_array[3].blank?
-    present = all_comments_array[3].to_i
-  end 
-  present2 = 0
-  unless all_comments_array[2].blank?
-    present2 = all_comments_array[2].to_i
-  end   
-  present3 = 0
-  unless all_comments_array[1].blank?
-    present3 = all_comments_array[1].to_i
-  end 
-  present4 = 0
-  unless all_comments_array[0].blank?
-    present4 = all_comments_array[0].to_i
-  end   
+  if all_comments_array.length > 4
+    all_comments_array = all_comments_array.reverse()
+    present = 0
+    unless all_comments_array[3].blank?
+      present = all_comments_array[3].to_i
+    end 
+    present2 = 0
+    unless all_comments_array[2].blank?
+      present2 = all_comments_array[2].to_i
+    end   
+    present3 = 0
+    unless all_comments_array[1].blank?
+      present3 = all_comments_array[1].to_i
+    end 
+    present4 = 0
+    unless all_comments_array[0].blank?
+      present4 = all_comments_array[0].to_i
+    end   
+  elsif all_comments_array.length == 4
+    all_comments_array = all_comments_array.reverse()
+    present = 0
+    unless all_comments_array[3].blank?
+      present = all_comments_array[3].to_i
+    end 
+    present2 = 0
+    unless all_comments_array[2].blank?
+      present2 = all_comments_array[2].to_i
+    end   
+    present3 = 0
+    unless all_comments_array[1].blank?
+      present3 = all_comments_array[1].to_i
+    end 
+    present4 = 0
+    unless all_comments_array[0].blank?
+      present4 = all_comments_array[0].to_i
+    end   
+  elsif all_comments_array.length < 4
+    present = 0
+    unless all_comments_array[0].blank?
+      present = all_comments_array[0].to_i
+    end 
+    present2 = 0
+    unless all_comments_array[1].blank?
+      present2 = all_comments_array[1].to_i
+    end   
+    present3 = 0
+    present4 = 0 
+  end
 %>
 <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
               <% if @grading_levels.blank? %>

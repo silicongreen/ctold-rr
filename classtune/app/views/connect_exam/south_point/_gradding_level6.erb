@@ -1,52 +1,30 @@
-<%
-  fnd_data = false
-  present = 0
-  comments = ""
-  working_days = @connect_exam_obj.total_working_days
-  @main_comments = 
-  if !@exam_comment.blank? 
+<%  
+  all_comments_array = []
+  if !@exam_comment.blank?
     all_comments = @exam_comment.comments
     if !all_comments.blank?
-      all_comments_array = all_comments.split("|")
-      %>
-      <%= abort(all_comments_array.inspect)%>
-      <%
-      unless all_comments_array.blank?
-        if !all_comments_array[2].nil?
-          fnd_data = true
-          present = all_comments_array[1].to_i
-          working_days = all_comments_array[2].to_i
-          if all_comments_array[0].blank?
-            comments = "" 
-          else
-            comments = all_comments_array[0]
-          end
-        elsif !all_comments_array[1].nil?
-          fnd_data = true
-          present = all_comments_array[1].to_i
-          if all_comments_array[0].blank?
-            comments = ""
-          else
-            comments = all_comments_array[0]
-          end
-        else
-          if all_comments_array[0].blank?
-            comments = ""
-          else
-            comments = all_comments_array[0]
-          end
-        end
-      end
+      all_comments_array = all_comments.split("**")
     end
-    end
-    @main_comments = comments
-    
-    unless @present_lower_grade.blank?
-      present = @present_lower_grade
-    end
-    if fnd_data == false
-      present = @report_data['present'] unless present = @report_data['present'].blank?
-    end
+  end
+  %>
+  <%= abort(all_comments_array.reverse().inspect) %>
+  <%
+  present = 0
+  unless all_comments_array[10].blank?
+    present = all_comments_array[10].to_i
+  end 
+  present2 = 0
+  unless all_comments_array[11].blank?
+    present2 = all_comments_array[11].to_i
+  end   
+  present3 = 0
+  unless all_comments_array[11].blank?
+    present3 = all_comments_array[11].to_i
+  end 
+  present4 = 0
+  unless all_comments_array[12].blank?
+    present4 = all_comments_array[12].to_i
+  end   
 %>
 <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
               <% if @grading_levels.blank? %>

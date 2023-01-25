@@ -3,7 +3,7 @@
   <%
     personal_and_social = ['Complete works in time','Does home-work regularly','Does work neatly','Eagerly participates in class','Express good behaviour','Is attentive to work','Punctual in class','Takes interest in game','Understand and follows instruction','Works cooperatively with peers']
   %>
-  <% 
+  <%  
     all_comments_array = []
     if !@student_exam_comment[@std_id_comment.to_s].blank?
       all_comments = @student_exam_comment[@std_id_comment.to_s]
@@ -18,6 +18,14 @@
   present2 = 0
   unless all_comments_array[11].blank?
     present2 = all_comments_array[11].to_i
+  end   
+  present3 = 0
+  unless all_comments_array[11].blank?
+    present3 = all_comments_array[11].to_i
+  end 
+  present4 = 0
+  unless all_comments_array[12].blank?
+    present4 = all_comments_array[12].to_i
   end   
   %>
 
@@ -39,8 +47,15 @@
      
      <% i = i+1 %> 
      <% end %>
-     <input type="number" placeholder="Days Present" name="commentstd_<%= @std_id_comment %>_10" value="<%=  present.to_i%>" class="comment_input_box_connect_exam_multiple_<%= @std_id_comment %>" id="commentstd_<%= @std_id_comment %>_10" style="width:<%= width_percentize %>%; margin:5px 5px 0px 0px;" />
-     <input type="number" placeholder="Days Present" name="commentstd_<%= @std_id_comment %>_11" value="<%=  present2.to_i%>" class="comment_input_box_connect_exam_multiple_<%= @std_id_comment %>" id="commentstd_<%= @std_id_comment %>_11" style="width:<%= width_percentize %>%; margin:5px 5px 0px 0px;" /> 
+     <% if @connect_exam_obj.exam_type == 6 %>
+      <input type="number" placeholder="Days Present Half Yearly" name="commentstd_<%= @std_id_comment %>_10" value="<%=  present.to_i%>" class="comment_input_box_connect_exam_multiple_<%= @std_id_comment %>" id="commentstd_<%= @std_id_comment %>_10" style="width:<%= width_percentize %>%; margin:5px 5px 0px 0px;" />
+      <input type="number" placeholder="Days Present" name="commentstd_<%= @std_id_comment %>_11" value="<%=  present2.to_i%>" class="comment_input_box_connect_exam_multiple_<%= @std_id_comment %>" id="commentstd_<%= @std_id_comment %>_11" style="width:<%= width_percentize %>%; margin:5px 5px 0px 0px;" /> 
+      <input type="number" placeholder="Days Present Final" name="commentstd_<%= @std_id_comment %>_12" value="<%=  present3.to_i%>" class="comment_input_box_connect_exam_multiple_<%= @std_id_comment %>" id="commentstd_<%= @std_id_comment %>_12" style="width:<%= width_percentize %>%; margin:5px 5px 0px 0px;" />
+      <input type="number" placeholder="Days Present" name="commentstd_<%= @std_id_comment %>_13" value="<%=  present4.to_i%>" class="comment_input_box_connect_exam_multiple_<%= @std_id_comment %>" id="commentstd_<%= @std_id_comment %>_13" style="width:<%= width_percentize %>%; margin:5px 5px 0px 0px;" /> 
+     <% else %>
+      <input type="number" placeholder="Days Present" name="commentstd_<%= @std_id_comment %>_10" value="<%=  present.to_i%>" class="comment_input_box_connect_exam_multiple_<%= @std_id_comment %>" id="commentstd_<%= @std_id_comment %>_10" style="width:<%= width_percentize %>%; margin:5px 5px 0px 0px;" />
+      <input type="number" placeholder="Days Present" name="commentstd_<%= @std_id_comment %>_11" value="<%=  present2.to_i%>" class="comment_input_box_connect_exam_multiple_<%= @std_id_comment %>" id="commentstd_<%= @std_id_comment %>_11" style="width:<%= width_percentize %>%; margin:5px 5px 0px 0px;" /> 
+     <% end %>
  </td>
 
 </tr>

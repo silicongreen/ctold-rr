@@ -6,6 +6,9 @@
       all_comments_array = all_comments.split("**")
     end
   end
+  %>
+  <%= abort(all_comments_array.inspect) %>
+  <%
   present = 0
   unless all_comments_array[10].blank?
     present = all_comments_array[10].to_i

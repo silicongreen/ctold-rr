@@ -45,7 +45,7 @@ class EmployeeController < ApplicationController
     else  
       @date_to_use = @local_tzone_time.to_date
     end
-    
+    abort(@date_to_use.inspect)
     @dep_id = 0 
     dep_ids = [2304,2375,2376,2377]
     @departments = EmployeeDepartment.find_all_by_id(dep_ids)

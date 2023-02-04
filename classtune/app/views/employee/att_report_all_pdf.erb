@@ -4,7 +4,8 @@
       <font size='2'>Print Date: <%##= Time.now.strftime("%Y/%m/%d") %><%= Time.now.strftime("%d-%m-%Y") %></font>
     </div>
     <center>
-      <div id="pdf-header-south" class="general-header" style="margin-top: 50px;">
+      <div id="pdf-header-south" class="general-header">
+        <br /><br />
           <h4 align="center" style="margin-top: 50px;"><%=Configuration.get_config_value('InstitutionName'); %></h4>
           <h2 align="center">Academic Module Report On <%= @date_to_use.to_date.strftime("%d-%m-%Y") %></h2>
       </div>

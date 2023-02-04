@@ -2,43 +2,34 @@
 <div id="page-yield">
     <h4 align="center">Academic module report</h4>
     <div id="pdf-info">
-          <table id="pdf-table" width="99%" cellspacing="0" style="bordeR: 1px solid #aaa; text-align: center;">
+          <table id="pdf-table" width="99%" cellspacing="0" style="bordeR: 1px solid #000; text-align: center;">
               <% c = 'even'  %>
               <tr class="even">
-                <td rowspan="2" style="bordeR: 1px solid #aaa; text-align: center;">ID</td>
-                <td rowspan="2" style="bordeR: 1px solid #aaa; text-align: center;">Teacher Name</td>
-                <td rowspan="2" style="bordeR: 1px solid #aaa; text-align: center;">Department Name</td>
-                <td rowspan="2" style="bordeR: 1px solid #aaa; text-align: center;">Attendance</td>
-                <td rowspan="2" style="bordeR: 1px solid #aaa; text-align: center;">Class Section</td>
-                <td rowspan="2" style="bordeR: 1px solid #aaa; text-align: center;">Total Class</td>
-                <td colspan="2" style="bordeR: 1px solid #aaa; text-align: center;">Homework</td>
-                <td colspan="2" style="bordeR: 1px solid #aaa; text-align: center;">Classwork</td>
-                <td colspan="2" style="bordeR: 1px solid #aaa; text-align: center;">Lessonplan</td>
-                <td colspan="2" style="bordeR: 1px solid #aaa; text-align: center;">Quiz</td>
-                <td rowspan="2" style="bordeR: 1px solid #aaa; text-align: center;">Class Routine</td>
-              </tr> 
-              <tr class="odd">
-                <td>Total</td><td>Given</td>
-                <td>Total</td><td>Given</td>
-                <td colspan="2">Total</td>
-                <td>Total</td><td>Given</td>
+                <td style="bordeR: 1px solid #aaa; text-align: center;">Date</td>
+                <td style="bordeR: 1px solid #aaa; text-align: center;">ID</td>
+                <td style="bordeR: 1px solid #aaa; text-align: center;">Teacher Name</td>
+                <td style="bordeR: 1px solid #aaa; text-align: center;">C-T</td>
+                <td style="bordeR: 1px solid #aaa; text-align: center;">Attendance</td>
+                <td style="bordeR: 1px solid #aaa; text-align: center;">Total Class</td>
+                <td style="bordeR: 1px solid #aaa; text-align: center;">Homework</td>
+                <td style="bordeR: 1px solid #aaa; text-align: center;">Classwork</td>
+                <td style="bordeR: 1px solid #aaa; text-align: center;">Lessonplan</td>
+                <td style="bordeR: 1px solid #aaa; text-align: center;">Class Routine</td>
+                <td style="bordeR: 1px solid #aaa; text-align: center;">Remarks</td>
               </tr> 
               <% @data.each do |data| %>
                 <tr class="odd" style="bordeR: 1px solid #aaa; text-align: center;">
-                  <td style="bordeR: 1px solid #aaa; text-align: center;"><%= data[0] %></td>
+                <td style="bordeR: 1px solid #aaa; text-align: center;"><%= @data_to_use %></td>
+                  <td style="bordeR: 1px solid #aaa; text-align: center;"><%= data[0].gsub('sagc-','') %></td>
                   <td style="bordeR: 1px solid #aaa; text-align: center;"><%= data[1] %></td>
-                  <td style="bordeR: 1px solid #aaa; text-align: center;"><%= data[2] %></td>
-                  <td style="bordeR: 1px solid #aaa; text-align: center;"><%= data[3] %></td>
                   <td style="bordeR: 1px solid #aaa; text-align: center;"><%= data[4] %></td>
+                  <td style="bordeR: 1px solid #aaa; text-align: center;"><%= data[3] %></td>
                   <td style="bordeR: 1px solid #aaa; text-align: center;"><%= data[5] %></td>
                   <td style="bordeR: 1px solid #aaa; text-align: center;"><%= data[6] %></td>
-                  <td style="bordeR: 1px solid #aaa; text-align: center;"><%= 0 %></td>
                   <td style="bordeR: 1px solid #aaa; text-align: center;"><%= data[7] %></td>
-                  <td style="bordeR: 1px solid #aaa; text-align: center;"><%= 0 %></td>
                   <td style="bordeR: 1px solid #aaa; text-align: center;" colspan="2"><%= data[8] %></td>
-                  <td style="bordeR: 1px solid #aaa; text-align: center;">0</td>
-                  <td style="bordeR: 1px solid #aaa; text-align: center;">0</td>
                   <td style="bordeR: 1px solid #aaa; text-align: center;">Yes</td>
+                  <td style="bordeR: 1px solid #aaa; text-align: center;">&nbsp;</td>
                 </tr>
               <% end %>
 

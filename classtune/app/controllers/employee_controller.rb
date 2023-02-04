@@ -55,7 +55,7 @@ class EmployeeController < ApplicationController
     end  
     @all_employee = Employee.find_all_by_employee_department_id(dep_ids)
     @data = []
-    abort(@all_employee.inspect)
+    
     @all_employee.each do |employee|
       temp = []
       temp << employee.employee_number
@@ -140,7 +140,6 @@ class EmployeeController < ApplicationController
       end  
       @data << temp
     end  
-    abort(@data.inspect)
     render :pdf => 'att_report_all_pdf',
       :page_size => 'A4',
       :margin => {:top=> 10,

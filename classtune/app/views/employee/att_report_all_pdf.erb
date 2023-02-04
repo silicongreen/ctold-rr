@@ -27,10 +27,12 @@
                 <td style="width: 20%;bordeR: 1px solid #aaa; text-align: center;">Remarks</td>
               </tr> 
               <% cnt = 0 %>
+              <% extender = 0 %>
               <% @data.each do |data| %>
                 <% cnt = cnt+1; %>
-                <% if cnt>24 %>
+                <% if cnt>30 %>
                   <% cnt = 0 %>
+                  <% extender = 1 %>
                   <tr>
                       <td colspan="10" style="height: 50px; border: 1px solid #fff;">&nbsp;</td>
                   </tr>  

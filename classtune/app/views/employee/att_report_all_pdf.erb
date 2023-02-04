@@ -39,14 +39,14 @@
                   <tr class="even">
                     <td style="width: 8%; bordeR: 1px solid #aaa; text-align: center;">Date</td>
                     <td style="width: 8%; bordeR: 1px solid #aaa; text-align: center;">ID</td>
-                    <td style="width: 15%;bordeR: 1px solid #aaa; text-align: center; white-space: nowarp;">Teacher Name</td>
+                    <td style="width: 15%;bordeR: 1px solid #aaa; text-align: center; white-space: nowrap;">Teacher Name</td>
                     <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">C-T</td>
-                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center; white-space: nowarp;">Attendance</td>
-                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center; white-space: nowarp;">Total Class</td>
+                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center; white-space: nowrap;">Attendance</td>
+                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center; white-space: nowrap;">Total Class</td>
                     <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">Homework</td>
                     <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">Classwork</td>
                     <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">Lessonplan</td>
-                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center; white-space: nowarp;">Class Routine</td>
+                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center; white-space: nowrap;">Class Routine</td>
                     <td style="width: 20%;bordeR: 1px solid #aaa; text-align: center;">Remarks</td>
                   </tr> 
                 <% elsif cnt>29 && extender == 1 %>
@@ -58,10 +58,10 @@
                   <tr class="even">
                     <td style="width: 8%; bordeR: 1px solid #aaa; text-align: center;">Date</td>
                     <td style="width: 8%; bordeR: 1px solid #aaa; text-align: center;">ID</td>
-                    <td style="width: 15%;bordeR: 1px solid #aaa; text-align: center; white-space: nowarp;">Teacher Name</td>
+                    <td style="width: 15%;bordeR: 1px solid #aaa; text-align: center; white-space: nowrap;">Teacher Name</td>
                     <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">C-T</td>
-                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center; white-space: nowarp;">Attendance</td>
-                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center; white-space: nowarp;">Total Class</td>
+                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center; white-space: nowrap;">Attendance</td>
+                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center; white-space: nowrap;">Total Class</td>
                     <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">Homework</td>
                     <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">Classwork</td>
                     <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">Lessonplan</td>
@@ -71,14 +71,14 @@
                 <% end %>
                 <tr class="odd" style="bordeR: 1px solid #aaa; text-align: center;">
                 <td style="bordeR: 1px solid #aaa; text-align: center;"><%= @date_to_use.to_date.strftime("%d-%m-%Y") %></td>
-                  <td style="bordeR: 1px solid #aaa; text-align: center; white-space: nowarp;"><%= data[0].gsub('sagc-','') %></td>
-                  <td style="bordeR: 1px solid #aaa; text-align: left; white-space: nowarp;"><%= data[1] %></td>
-                  <td style="bordeR: 1px solid #aaa; text-align: center; white-space: nowarp;"><%= data[4] %></td>
-                  <td style="bordeR: 1px solid #aaa; text-align: center; white-space: nowarp;"><%= data[3] %></td>
-                  <td style="bordeR: 1px solid #aaa; text-align: center; white-space: nowarp;"><%= data[5] %></td>
-                  <td style="bordeR: 1px solid #aaa; text-align: center; white-space: nowarp;"><%= data[6] %></td>
-                  <td style="bordeR: 1px solid #aaa; text-align: center; white-space: nowarp;"><%= data[7] %></td>
-                  <td style="bordeR: 1px solid #aaa; text-align: center; white-space: nowarp;"><%= data[8] %></td>
+                  <td style="bordeR: 1px solid #aaa; text-align: center; white-space: nowrap;"><%= data[0].gsub('sagc-','') %></td>
+                  <td style="bordeR: 1px solid #aaa; text-align: left; white-space: nowrap;"><%= data[1] %></td>
+                  <td style="bordeR: 1px solid #aaa; text-align: center; white-space: nowrap;"><%= data[4] %></td>
+                  <td style="bordeR: 1px solid #aaa; text-align: center; white-space: nowrap;"><%= data[3] %></td>
+                  <td style="bordeR: 1px solid #aaa; text-align: center; white-space: nowrap;"><%= data[5] %></td>
+                  <td style="bordeR: 1px solid #aaa; text-align: center; white-space: nowrap;"><%= data[6] %></td>
+                  <td style="bordeR: 1px solid #aaa; text-align: center; white-space: nowrap;"><%= data[7] %></td>
+                  <td style="bordeR: 1px solid #aaa; text-align: center; white-space: nowrap;"><%= data[8] %></td>
                   <td style="bordeR: 1px solid #aaa; text-align: center;">Yes</td>
                   <td style="bordeR: 1px solid #aaa; text-align: center;">&nbsp;</td>
                 </tr>

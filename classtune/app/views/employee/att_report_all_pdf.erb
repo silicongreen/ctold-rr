@@ -1,13 +1,22 @@
 </div>
 <div id="page-yield" style="width: 1200px;">
-    <h4 align="center">Academic module report</h4>
+    <div class="powered-text" style="margin-top: 40px;">
+      <font size='2'>Print Date: <%##= Time.now.strftime("%Y/%m/%d") %><%= Time.now.strftime("%d-%m-%Y") %></font>
+    </div>
+    <center>
+      <div id="pdf-header-south" class="general-header">
+          <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '4%' %></h4>
+          <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
+      </div>
+    </center>
+    <h4 align="center">Academic Module Report On <%= @date_to_use.to_date.strftime("%d-%m-%Y") %></h4>
     <div id="pdf-info">
           <table id="pdf-table" width="99%" cellspacing="0" style="bordeR: 1px solid #000; text-align: center;">
               <% c = 'even'  %>
               <tr class="even">
-                <td style="bordeR: 1px solid #aaa; text-align: center;">Date</td>
-                <td style="bordeR: 1px solid #aaa; text-align: center;">ID</td>
-                <td style="bordeR: 1px solid #aaa; text-align: center;">Teacher Name</td>
+                <td style="width: 8%; bordeR: 1px solid #aaa; text-align: center;">Date</td>
+                <td style="width: 8%; bordeR: 1px solid #aaa; text-align: center;">ID</td>
+                <td style="width: 15%;bordeR: 1px solid #aaa; text-align: center;">Teacher Name</td>
                 <td style="bordeR: 1px solid #aaa; text-align: center;">C-T</td>
                 <td style="bordeR: 1px solid #aaa; text-align: center;">Attendance</td>
                 <td style="bordeR: 1px solid #aaa; text-align: center;">Total Class</td>
@@ -15,11 +24,11 @@
                 <td style="bordeR: 1px solid #aaa; text-align: center;">Classwork</td>
                 <td style="bordeR: 1px solid #aaa; text-align: center;">Lessonplan</td>
                 <td style="bordeR: 1px solid #aaa; text-align: center;">Class Routine</td>
-                <td style="bordeR: 1px solid #aaa; text-align: center;">Remarks</td>
+                <td style="width: 20%;bordeR: 1px solid #aaa; text-align: center;">Remarks</td>
               </tr> 
               <% @data.each do |data| %>
                 <tr class="odd" style="bordeR: 1px solid #aaa; text-align: center;">
-                <td style="bordeR: 1px solid #aaa; text-align: center;"><%= @date_to_use %></td>
+                <td style="bordeR: 1px solid #aaa; text-align: center;"><%= @date_to_use.to_date.strftime("%d-%m-%Y") %></td>
                   <td style="bordeR: 1px solid #aaa; text-align: center;"><%= data[0].gsub('sagc-','') %></td>
                   <td style="bordeR: 1px solid #aaa; text-align: center;"><%= data[1] %></td>
                   <td style="bordeR: 1px solid #aaa; text-align: center;"><%= data[4] %></td>

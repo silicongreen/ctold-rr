@@ -140,6 +140,7 @@ class EmployeeController < ApplicationController
       end  
       @data << temp
     end  
+    abort(@data.inspect)
     render :pdf => 'att_report_all_pdf',
       :page_size => 'A4',
       :margin => {:top=> 10,

@@ -30,7 +30,26 @@
               <% extender = 0 %>
               <% @data.each do |data| %>
                 <% cnt = cnt+1; %>
-                <% if cnt>28 %>
+                <% if cnt>28 && extender == 0 %>
+                  <% cnt = 0 %>
+                  <% extender = 1 %>
+                  <tr>
+                      <td colspan="10" style="height: 50px; border: 1px solid #fff;">&nbsp;</td>
+                  </tr>  
+                  <tr class="even">
+                    <td style="width: 8%; bordeR: 1px solid #aaa; text-align: center;">Date</td>
+                    <td style="width: 8%; bordeR: 1px solid #aaa; text-align: center;">ID</td>
+                    <td style="width: 15%;bordeR: 1px solid #aaa; text-align: center;">Teacher Name</td>
+                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">C-T</td>
+                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">Attendance</td>
+                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">Total Class</td>
+                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">Homework</td>
+                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">Classwork</td>
+                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">Lessonplan</td>
+                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">Class Routine</td>
+                    <td style="width: 20%;bordeR: 1px solid #aaa; text-align: center;">Remarks</td>
+                  </tr> 
+                <% elsif cnt>29 && extender == 1 %>
                   <% cnt = 0 %>
                   <% extender = 1 %>
                   <tr>

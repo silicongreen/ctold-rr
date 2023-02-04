@@ -4,13 +4,13 @@
       <font size='2'>Print Date: <%##= Time.now.strftime("%Y/%m/%d") %><%= Time.now.strftime("%d-%m-%Y") %></font>
     </div>
     <center>
-      <div id="pdf-header-south" class="general-header">
+      <div id="pdf-header-south" class="general-header" style="margin-top: 50px;">
           <h4 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h4>
           <h2 align="center">Academic Module Report On <%= @date_to_use.to_date.strftime("%d-%m-%Y") %></h2>
       </div>
     </center>
     <div id="pdf-info">
-          <table id="pdf-table" width="99%" cellspacing="0" style="bordeR: 1px solid #000; text-align: center;">
+          <table id="pdf-table" width="101%" cellspacing="0" style="bordeR: 1px solid #000; text-align: center;">
               <% c = 'even'  %>
               <tr class="even">
                 <td style="width: 8%; bordeR: 1px solid #aaa; text-align: center;">Date</td>

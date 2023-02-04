@@ -26,7 +26,28 @@
                 <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">Class Routine</td>
                 <td style="width: 20%;bordeR: 1px solid #aaa; text-align: center;">Remarks</td>
               </tr> 
+              <% cnt = 0 %>
               <% @data.each do |data| %>
+                <% cnt = cnt+1; %>
+                <% if cnt>12 %>
+                  <% cnt = 0 %>
+                  <tr>
+                      <td colspan="10" style="height: 50px;">&nbsp;</td>
+                  </tr>  
+                  <tr class="even">
+                    <td style="width: 8%; bordeR: 1px solid #aaa; text-align: center;">Date</td>
+                    <td style="width: 8%; bordeR: 1px solid #aaa; text-align: center;">ID</td>
+                    <td style="width: 15%;bordeR: 1px solid #aaa; text-align: center;">Teacher Name</td>
+                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">C-T</td>
+                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">Attendance</td>
+                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">Total Class</td>
+                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">Homework</td>
+                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">Classwork</td>
+                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">Lessonplan</td>
+                    <td style="width: 7%; bordeR: 1px solid #aaa; text-align: center;">Class Routine</td>
+                    <td style="width: 20%;bordeR: 1px solid #aaa; text-align: center;">Remarks</td>
+                  </tr> 
+                <% end %>
                 <tr class="odd" style="bordeR: 1px solid #aaa; text-align: center;">
                 <td style="bordeR: 1px solid #aaa; text-align: center;"><%= @date_to_use.to_date.strftime("%d-%m-%Y") %></td>
                   <td style="bordeR: 1px solid #aaa; text-align: center;"><%= data[0].gsub('sagc-','') %></td>

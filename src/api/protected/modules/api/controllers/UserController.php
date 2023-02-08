@@ -11,7 +11,7 @@ class UserController extends Controller {
             'postOnly + delete', // we only allow deletion via POST request
         );
     }
-
+ 
     /**
      * Specifies the access control rules.
      * This method is used by the 'accessControl' filter.
@@ -819,6 +819,23 @@ class UserController extends Controller {
                         $exam_category = $exam_category->getExamCategory(Yii::app()->user->schoolId, Yii::app()->user->batchId, 3);
 
                         $response['data']['paid_user']['terms'] = array();
+
+                        $studentsobj = new Students();
+                        $std = $studentsobj->findByPk(Yii::app()->user->profileId);
+
+                        $fullname = ($std->first_name) ? $std->first_name . " " : "";
+                        $fullname.= ($std->middle_name) ? $std->middle_name . " " : "";
+                        $fullname.= ($std->last_name) ? $std->last_name : "";
+                        $response['data']['paid_user']['student']['name'] = $fullname;
+                        $response['data']['paid_user']['student']['roll'] = $std->class_roll_no;
+                        $response['data']['paid_user']['student']['admission_no'] = $std->admission_no;
+                        $response['data']['paid_user']['student']['date_of_birth'] = $std->date_of_birth;
+                        $response['data']['paid_user']['student']['gender'] = $std->gender;
+                        $response['data']['paid_user']['student']['admission_no'] = $std->admission_no;
+                        $response['data']['paid_user']['student']['class'] = $std['batchDetails']['courseDetails']->course_name;
+                        $response['data']['paid_user']['student']['class'] = $std['batchDetails']['courseDetails']->section_name;
+                        $response['data']['paid_user']['student']['batch'] = $std['batchDetails']->name;
+                        
 
                         if ($exam_category)
                             $response['data']['paid_user']['terms'] = $exam_category;

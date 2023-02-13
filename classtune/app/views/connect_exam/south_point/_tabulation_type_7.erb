@@ -110,13 +110,16 @@
               </tr>
           <% end %>    
         
+          <% str = "M3<hr/>" %>
           
-          
+          <% if (batch.course.course_name == "Grade 10" || batch.course.course_name == "Grade 11" || batch.course.course_name == "Grade 12") %>
+             <% str = "" %>       
+          <% end %>
           <tr class="odd">
             <td class="col-pdf"><%= j %></td>
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std" style="text-align: left; white-space: pre-wrap; !important;"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
-            <td class="name-std">M1<hr/>M2<hr/>M3<hr/>AVG<hr/>CMB</td>
+            <td class="name-std">M1<hr/>M2<hr/><%= str %>AVG<hr/>CMB</td>
             <% total_mark = 0 %>
             <% q1_mark = 0 %>
             <% q2_mark = 0 %>
@@ -512,7 +515,10 @@
                         %>
                           <%= mock1.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name1+"<hr/>" %>
                           <%= m_mark1.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name2+"<hr/>" %>
+                          <% if (batch.course.course_name == "Grade 10" || batch.course.course_name == "Grade 11" || batch.course.course_name == "Grade 12") %>
+                          <% else %>  
                           <%= mock3.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name3+"<hr/>" %>
+                          <% end %>
                           <%= mc_mark.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name4+"<hr/>" %>
                           <%= main_mark.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name %>
                           
@@ -603,7 +609,11 @@
                 
                   <%= q1_mark.round().to_s+"<hr/>" %> 
                   <%= q2_mark.round().to_s+"<hr/>" %> 
+                  <% if (batch.course.course_name == "Grade 10" || batch.course.course_name == "Grade 11" || batch.course.course_name == "Grade 12") %>
+
+                  <% else %>
                   <%= q3_mark.round().to_s+"<hr/>" %> 
+                  <% end %>
                   <%= tf_mark.round().to_s+"<hr/>" %> 
                   <%= cmb_mark.round().to_s %> 
                   

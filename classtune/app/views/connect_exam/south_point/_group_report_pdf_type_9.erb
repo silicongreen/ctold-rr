@@ -9,7 +9,7 @@
                     <td><b>Student's Name : <%= "#{@student.full_name}" %> </b></td>
                     <td align="right"><b>Roll No. : <%= "#{@student.class_roll_no}" %></b></td>
                     <td align="right"><b>Section. : <%= @batch.course.section_name %></b></td>
-                    <% if (batch.course.course_name == "Grade 1" || batch.course.course_name == "Grade 2") %>
+                    <% if (@batch.course.course_name == "Grade 1" || @batch.course.course_name == "Grade 2") %>
                     <td align="right"></td>
                     <% else %>
                     <td align="right"><b>Batch : <%= (@batch.name.downcase == "morning") ? "1" : "2" %></b></td>

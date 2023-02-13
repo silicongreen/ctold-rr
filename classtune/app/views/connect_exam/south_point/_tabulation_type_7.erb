@@ -112,7 +112,7 @@
         
           <% str = "M3<hr/>" %>
           
-          <% if (batch.course.course_name == "Grade 10" || batch.course.course_name == "Grade 11" || batch.course.course_name == "Grade 12") %>
+          <% if (@batch.course.course_name == "Grade 10" || @batch.course.course_name == "Grade 11" || @batch.course.course_name == "Grade 12") %>
              <% str = "" %>       
           <% end %>
           <tr class="odd">
@@ -515,7 +515,7 @@
                         %>
                           <%= mock1.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name1+"<hr/>" %>
                           <%= m_mark1.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name2+"<hr/>" %>
-                          <% if (batch.course.course_name == "Grade 10" || batch.course.course_name == "Grade 11" || batch.course.course_name == "Grade 12") %>
+                          <% if (@batch.course.course_name == "Grade 10" || @batch.course.course_name == "Grade 11" || @batch.course.course_name == "Grade 12") %>
                           <% else %>  
                           <%= mock3.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name3+"<hr/>" %>
                           <% end %>
@@ -609,7 +609,7 @@
                 
                   <%= q1_mark.round().to_s+"<hr/>" %> 
                   <%= q2_mark.round().to_s+"<hr/>" %> 
-                  <% if (batch.course.course_name == "Grade 10" || batch.course.course_name == "Grade 11" || batch.course.course_name == "Grade 12") %>
+                  <% if (@batch.course.course_name == "Grade 10" || @batch.course.course_name == "Grade 11" || @batch.course.course_name == "Grade 12") %>
 
                   <% else %>
                   <%= q3_mark.round().to_s+"<hr/>" %> 

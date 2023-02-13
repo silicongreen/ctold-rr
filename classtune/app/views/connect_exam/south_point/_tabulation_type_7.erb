@@ -639,7 +639,9 @@
                       <% i = i+1 %>
                   <% end %>
                   <hr/> 
-                  
+                  <% if (@batch.course.course_name == "Grade 10" || @batch.course.course_name == "Grade 11" || @batch.course.course_name == "Grade 12") %>
+
+                  <% else %>
                   <% i = 1 %>
                   <% total_grade_std = grades3.count  %>
                   <% grades3.each do |grade| %>
@@ -650,6 +652,7 @@
                       <% i = i+1 %>
                   <% end %>
                   <hr/>
+                  <% end %>
                   <% i = 1 %>
                   <% total_grade_std = grades4.count  %>
                   <% grades4.each do |grade| %>

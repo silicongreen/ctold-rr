@@ -649,9 +649,103 @@ class AttendanceController extends Controller
     public function actionreport()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
+        $subject_id = Yii::app()->request->getPost('subject_id');
+        $date_start = Yii::app()->request->getPost('date_start');
+        $date_end = Yii::app()->request->getPost('date_end');
+        //&& (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin)
+        if (Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent && $student_id )))
+        { 
+            if (Yii::app()->user->isStudent)
+            {
+                $student_id = Yii::app()->user->profileId;
+                $batch_id = Yii::app()->user->batchId;
+            } else
+            {
+                $stdobj = new Students();
+                $stdData = $stdobj->findByPk($student_id);
+                $batch_id = $stdData->batch_id;
+            }
+            $stdData = $stdobj->findByPk($student_id);
+
+            if (!$report_type)
+            {
+                $report_type = 0;
+            }
+
+            $registerobj = new SubjectAttendanceRegisters();
+            $total = $registerobj->getTotalRegisterStudent($subject_id, $batch_id, $report_type);
+            if ($total > 0)
+            {
+                $atovj = new SubjectAttendances();
+
+                $absent = $atovj->getAllattendence($student_id, $subject_id, $batch_id, $report_type);
+                $late = $atovj->getAllattendence($student_id, $subject_id, $batch_id, $report_type, 1);
+                
+                $subject_name = "";
+                if($subject_id)
+                {
+                    $subObj = new Subjects();
+                    $subData = $subObj->findByPk($subject_id);
+                    $subject_name = $subData->name;
+                    
+                }
+
+                $std_array = array();
+                $std_array[] = $student_id;
+                
+                $att_std = new SubjectAttendances();
+                $absent = $att_std->getAllStdAttname($std_array, $subject_id, $sub_data->batch_id,0,$date_start,$date_end);
+                $late = $att_std->getAllStdAttname($std_array, $subject_id, $sub_data->batch_id, 1,$date_start,$date_end);
+
+                $std_data['roll_no'] = $stdData['roll_no'];
+                $std_data['name'] = $stdData['student_name'];
+                $present = $total_class;
+                $std_data['absent'] = 0;
+                $std_data['late'] =  0;
+                if(isset($absent[$stdData['student_id']]))
+                {
+                    $std_data['absent'] = (int)$absent[$stdData['student_id']];
+                    $present = $present -$absent[$stdData['student_id']]; 
+                } 
+                if(isset($late[$stdData['student_id']]))
+                {
+                    $std_data['late'] = (int)$late[$stdData['student_id']];
+                    $present = $present -$late[$stdData['student_id']];
+                }
+                $std_data['present'] = (int)$present;
+
+                $present = $total - $absent-$late;
+                $response['data']['report']['subject_name'] = $subject_name;
+                $response['data']['report']['std_att'] = $std_data;
+                $response['data']['report']['total'] = (int) $total;
+                $response['data']['report']['absent'] = (int) $absent;
+                $response['data']['report']['late'] = (int) $late;
+                $response['data']['report']['present'] = (int) $present;
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "EVENTS_FOUND";
+            } else
+            {
+                $response['status']['code'] = 404;
+                $response['status']['msg'] = "No attendance report found";
+            }
+            
+        } 
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+        exit;
+
+        $user_secret = Yii::app()->request->getPost('user_secret');
         $student_id = Yii::app()->request->getPost('student_id');
         $subject_id = Yii::app()->request->getPost('subject_id');
         $report_type = Yii::app()->request->getPost('report_type');
+
+        $date_start = Yii::app()->request->getPost('date_start');
+        $date_end = Yii::app()->request->getPost('date_end');
 
         if (Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent && $student_id )))
         {

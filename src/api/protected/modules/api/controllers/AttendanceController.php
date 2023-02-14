@@ -648,6 +648,8 @@ class AttendanceController extends Controller
     }        
     public function actionreport()
     {
+        print_r('here');
+        exit;
         $user_secret = Yii::app()->request->getPost('user_secret');
         $subject_id = Yii::app()->request->getPost('subject_id');
         $date_start = Yii::app()->request->getPost('date_start');

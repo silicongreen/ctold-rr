@@ -646,7 +646,7 @@ class AttendanceController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }        
-    public function actionreport()
+    public function actionReport()
     {
         print_r('here');
         exit;

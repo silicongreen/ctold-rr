@@ -711,7 +711,7 @@ class AttendanceController extends Controller
                 $present = $total_class;
                 $std_data['absent'] = 0;
                 $std_data['late'] =  0;
-                if(isset($absent[$stdData['student_id']]))
+                if(isset($absent[$stdData['id']]))
                 {
                     $std_data['absent'] = (int)$absent[$stdData['id']];
                     $present = $present -$absent[$stdData['id']]; 

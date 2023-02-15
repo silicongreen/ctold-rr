@@ -657,8 +657,6 @@ class AttendanceController extends Controller
         $date_end = Yii::app()->request->getPost('end_date');
         //print_r($user_secret);
         //&& (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin)
-        echo Yii::app()->user->user_secret === $user_secret . 'attrn ';
-        echo Yii::app()->user->isStudent . 'attrn';
         if (Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent && $student_id )))
         { 
             if (Yii::app()->user->isStudent)

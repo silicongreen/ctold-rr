@@ -723,7 +723,7 @@ class AttendanceController extends Controller
                 }
                 $std_data['present'] = (int)$present;
 
-                $present = $total_class-($absent-$late);
+                $present = 0;//$total_class-($absent-$late);
                 $response['data']['report']['subject_name'] = $subject_name;
                 $response['data']['report']['std_att'] = $std_data;
                 $response['data']['report']['total'] = (int) $total;

@@ -702,7 +702,10 @@ class AttendanceController extends Controller
                 $late = $att_std->getAllStdAttname($std_array, $subject_id, $subData->batch_id, 1,$date_start,$date_end);
 
                 $std_data['roll_no'] = $stdData['class_roll_no'];
-                $std_data['name'] = $stdData['student_name'];
+                $fullname = ($stdData['first_name']) ? $stdData['first_name'] . " " : "";
+                $fullname.= ($stdData['middle_name']) ? $stdData['middle_name'] . " " : "";
+                $fullname.= ($stdData['last_name']) ? $stdData['last_name'] : "";
+                $std_data['name'] = $fullname;
                 $present = $total_class;
                 $std_data['absent'] = 0;
                 $std_data['late'] =  0;

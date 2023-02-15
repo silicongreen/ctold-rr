@@ -723,13 +723,14 @@ class AttendanceController extends Controller
                     $present = $present -$late[$stdData['id']];
                 }
                 $std_data['present'] = (int)$present;
+                $total = $present+$std_data['absent']+$std_data['late'];
 
                 //$present = 0;//$total_class-($absent-$late);
                 $response['data']['report']['subject_name'] = $subject_name;
                 $response['data']['report']['std_att'] = $std_data;
                 $response['data']['report']['total'] = (int) $total;
-                $response['data']['report']['absent'] = (int) $absent;
-                $response['data']['report']['late'] = (int) $late;
+                $response['data']['report']['absent'] = (int) $std_data['absent'];
+                $response['data']['report']['late'] = (int) $std_data['late'];
                 $response['data']['report']['present'] = (int) $present;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "EVENTS_FOUND";

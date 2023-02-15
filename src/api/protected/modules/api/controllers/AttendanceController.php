@@ -697,8 +697,8 @@ class AttendanceController extends Controller
                 $std_array[] = $student_id;
                 
                 $att_std = new SubjectAttendances();
-                $absent = $att_std->getAllStdAttname($std_array, $subject_id, $sub_data->batch_id,0,$date_start,$date_end);
-                $late = $att_std->getAllStdAttname($std_array, $subject_id, $sub_data->batch_id, 1,$date_start,$date_end);
+                $absent = $att_std->getAllStdAttname($std_array, $subject_id, $subData->batch_id,0,$date_start,$date_end);
+                $late = $att_std->getAllStdAttname($std_array, $subject_id, $subData->batch_id, 1,$date_start,$date_end);
 
                 $std_data['roll_no'] = $stdData['roll_no'];
                 $std_data['name'] = $stdData['student_name'];

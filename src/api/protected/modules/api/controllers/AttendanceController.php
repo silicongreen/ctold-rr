@@ -713,13 +713,13 @@ class AttendanceController extends Controller
                 $std_data['late'] =  0;
                 if(isset($absent[$stdData['student_id']]))
                 {
-                    $std_data['absent'] = (int)$absent[$stdData['student_id']];
-                    $present = $present -$absent[$stdData['student_id']]; 
+                    $std_data['absent'] = (int)$absent[$stdData['id']];
+                    $present = $present -$absent[$stdData['id']]; 
                 } 
-                if(isset($late[$stdData['student_id']]))
+                if(isset($late[$stdData['id']]))
                 {
-                    $std_data['late'] = (int)$late[$stdData['student_id']];
-                    $present = $present -$late[$stdData['student_id']];
+                    $std_data['late'] = (int)$late[$stdData['id']];
+                    $present = $present -$late[$stdData['id']];
                 }
                 $std_data['present'] = (int)$present;
 

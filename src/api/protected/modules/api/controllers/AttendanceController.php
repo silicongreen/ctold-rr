@@ -668,6 +668,7 @@ class AttendanceController extends Controller
                 $stdData = $stdobj->findByPk($student_id);
                 $batch_id = $stdData->batch_id;
             }
+            $stdobj = new Students();
             $stdData = $stdobj->findByPk($student_id);
 
             if (!$report_type)

@@ -706,6 +706,8 @@ class AttendanceController extends Controller
                 $fullname.= ($stdData['middle_name']) ? $stdData['middle_name'] . " " : "";
                 $fullname.= ($stdData['last_name']) ? $stdData['last_name'] : "";
                 $std_data['name'] = $fullname;
+                $att_register = new SubjectAttendanceRegisters();
+                $total_class = $att_register->getRegisterClassName($subject_id,$subData->batch_id,$date_start,$date_end);
                 $present = $total_class;
                 $std_data['absent'] = 0;
                 $std_data['late'] =  0;
